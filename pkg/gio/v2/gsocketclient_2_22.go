@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -21,6 +20,9 @@ import (
 // extern void _gotk4_gio2_SocketClient_ConnectEvent(gpointer, GSocketClientEvent, GSocketConnectable*, GIOStream*, guintptr);
 // extern void _gotk4_gio2_SocketClientClass_event(GSocketClient*, GSocketClientEvent, GSocketConnectable*, GIOStream*);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_SocketClient_virtual_event(void* fnptr, GSocketClient* arg0, GSocketClientEvent arg1, GSocketConnectable* arg2, GIOStream* arg3) {
+//   ((void (*)(GSocketClient*, GSocketClientEvent, GSocketConnectable*, GIOStream*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 import "C"
 
 // GType values.
@@ -171,6 +173,41 @@ func NewSocketClient() *SocketClient {
 	_socketClient = wrapSocketClient(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _socketClient
+}
+
+// AddApplicationProxy: enable proxy protocols to be handled by the application.
+// When the indicated proxy protocol is returned by the Resolver, Client will
+// consider this protocol as supported but will not try to find a #GProxy
+// instance to handle handshaking. The application must check for this case by
+// calling g_socket_connection_get_remote_address() on the returned Connection,
+// and seeing if it's a Address of the appropriate type, to determine whether or
+// not it needs to handle the proxy handshaking itself.
+//
+// This should be used for proxy protocols that are dialects of another protocol
+// such as HTTP proxy. It also allows cohabitation of proxy protocols that are
+// reused between protocols. A good example is HTTP. It can be used to proxy
+// HTTP, FTP and Gopher and can also be use as generic socket proxy through the
+// HTTP CONNECT method.
+//
+// When the proxy is detected as being an application proxy, TLS handshake will
+// be skipped. This is required to let the application do the proxy specific
+// handshake.
+//
+// The function takes the following parameters:
+//
+//    - protocol: proxy protocol.
+//
+func (client *SocketClient) AddApplicationProxy(protocol string) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.gchar         // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.g_socket_client_add_application_proxy(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(protocol)
 }
 
 // ConnectSocketClient tries to resolve the connectable and make a network
@@ -466,6 +503,66 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 	return _socketConnection, _goerr
 }
 
+// ConnectToService attempts to create a TCP connection to a service.
+//
+// This call looks up the SRV record for service at domain for the "tcp"
+// protocol. It then attempts to connect, in turn, to each of the hosts
+// providing the service until either a connection succeeds or there are no
+// hosts remaining.
+//
+// Upon a successful connection, a new Connection is constructed and returned.
+// The caller owns this new object and must drop their reference to it when
+// finished with it.
+//
+// In the event of any failure (DNS error, service not found, no hosts
+// connectable) NULL is returned and error (if non-NULL) is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - domain name.
+//    - service: name of the service to connect to.
+//
+// The function returns the following values:
+//
+//    - socketConnection if successful, or NULL on error.
+//
+func (client *SocketClient) ConnectToService(ctx context.Context, domain, service string) (*SocketConnection, error) {
+	var _arg0 *C.GSocketClient     // out
+	var _arg3 *C.GCancellable      // out
+	var _arg1 *C.gchar             // out
+	var _arg2 *C.gchar             // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_socket_client_connect_to_service(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(service)
+
+	var _socketConnection *SocketConnection // out
+	var _goerr error                        // out
+
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _socketConnection, _goerr
+}
+
 // ConnectToServiceAsync: this is the asynchronous version of
 // g_socket_client_connect_to_service().
 //
@@ -540,6 +637,174 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 	}
 
 	return _socketConnection, _goerr
+}
+
+// ConnectToURI: this is a helper function for g_socket_client_connect().
+//
+// Attempts to create a TCP connection with a network URI.
+//
+// uri may be any valid URI containing an "authority" (hostname/port) component.
+// If a port is not specified in the URI, default_port will be used. TLS will be
+// negotiated if Client:tls is TRUE. (Client does not know to automatically
+// assume TLS for certain URI schemes.)
+//
+// Using this rather than g_socket_client_connect() or
+// g_socket_client_connect_to_host() allows Client to determine when to use
+// application-specific proxy protocols.
+//
+// Upon a successful connection, a new Connection is constructed and returned.
+// The caller owns this new object and must drop their reference to it when
+// finished with it.
+//
+// In the event of any failure (DNS error, service not found, no hosts
+// connectable) NULL is returned and error (if non-NULL) is set accordingly.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - uri: network URI.
+//    - defaultPort: default port to connect to.
+//
+// The function returns the following values:
+//
+//    - socketConnection on success, NULL on error.
+//
+func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaultPort uint16) (*SocketConnection, error) {
+	var _arg0 *C.GSocketClient     // out
+	var _arg3 *C.GCancellable      // out
+	var _arg1 *C.gchar             // out
+	var _arg2 C.guint16            // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
+
+	_cret = C.g_socket_client_connect_to_uri(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(defaultPort)
+
+	var _socketConnection *SocketConnection // out
+	var _goerr error                        // out
+
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _socketConnection, _goerr
+}
+
+// ConnectToURIAsync: this is the asynchronous version of
+// g_socket_client_connect_to_uri().
+//
+// When the operation is finished callback will be called. You can then call
+// g_socket_client_connect_to_uri_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - uri: network uri.
+//    - defaultPort: default port to connect to.
+//    - callback (optional): ReadyCallback.
+//
+func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, defaultPort uint16, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_client_connect_to_uri_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(defaultPort)
+	runtime.KeepAlive(callback)
+}
+
+// ConnectToURIFinish finishes an async connect operation. See
+// g_socket_client_connect_to_uri_async().
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+// The function returns the following values:
+//
+//    - socketConnection on success, NULL on error.
+//
+func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error) {
+	var _arg0 *C.GSocketClient     // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cret *C.GSocketConnection // in
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	_cret = C.g_socket_client_connect_to_uri_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(result)
+
+	var _socketConnection *SocketConnection // out
+	var _goerr error                        // out
+
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _socketConnection, _goerr
+}
+
+// EnableProxy gets the proxy enable state; see
+// g_socket_client_set_enable_proxy().
+//
+// The function returns the following values:
+//
+//    - ok: whether proxying is enabled.
+//
+func (client *SocketClient) EnableProxy() bool {
+	var _arg0 *C.GSocketClient // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_enable_proxy(_arg0)
+	runtime.KeepAlive(client)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Family gets the socket family of the socket client.
@@ -629,6 +894,30 @@ func (client *SocketClient) Protocol() SocketProtocol {
 	return _socketProtocol
 }
 
+// ProxyResolver gets the Resolver being used by client. Normally, this will be
+// the resolver returned by g_proxy_resolver_get_default(), but you can override
+// it with g_socket_client_set_proxy_resolver().
+//
+// The function returns the following values:
+//
+//    - proxyResolver being used by client.
+//
+func (client *SocketClient) ProxyResolver() *ProxyResolver {
+	var _arg0 *C.GSocketClient  // out
+	var _cret *C.GProxyResolver // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_proxy_resolver(_arg0)
+	runtime.KeepAlive(client)
+
+	var _proxyResolver *ProxyResolver // out
+
+	_proxyResolver = wrapProxyResolver(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _proxyResolver
+}
+
 // SocketType gets the socket type of the socket client.
 //
 // See g_socket_client_set_socket_type() for details.
@@ -651,6 +940,103 @@ func (client *SocketClient) SocketType() SocketType {
 	_socketType = SocketType(_cret)
 
 	return _socketType
+}
+
+// Timeout gets the I/O timeout time for sockets created by client.
+//
+// See g_socket_client_set_timeout() for details.
+//
+// The function returns the following values:
+//
+//    - guint: timeout in seconds.
+//
+func (client *SocketClient) Timeout() uint {
+	var _arg0 *C.GSocketClient // out
+	var _cret C.guint          // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_timeout(_arg0)
+	runtime.KeepAlive(client)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// TLS gets whether client creates TLS connections. See
+// g_socket_client_set_tls() for details.
+//
+// The function returns the following values:
+//
+//    - ok: whether client uses TLS.
+//
+func (client *SocketClient) TLS() bool {
+	var _arg0 *C.GSocketClient // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_tls(_arg0)
+	runtime.KeepAlive(client)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TLSValidationFlags gets the TLS validation flags used creating TLS
+// connections via client.
+//
+// The function returns the following values:
+//
+//    - tlsCertificateFlags: TLS validation flags.
+//
+func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
+	var _arg0 *C.GSocketClient       // out
+	var _cret C.GTlsCertificateFlags // in
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+
+	_cret = C.g_socket_client_get_tls_validation_flags(_arg0)
+	runtime.KeepAlive(client)
+
+	var _tlsCertificateFlags TLSCertificateFlags // out
+
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
+
+	return _tlsCertificateFlags
+}
+
+// SetEnableProxy sets whether or not client attempts to make connections via a
+// proxy server. When enabled (the default), Client will use a Resolver to
+// determine if a proxy protocol such as SOCKS is needed, and automatically do
+// the necessary proxy negotiation.
+//
+// See also g_socket_client_set_proxy_resolver().
+//
+// The function takes the following parameters:
+//
+//    - enable: whether to enable proxies.
+//
+func (client *SocketClient) SetEnableProxy(enable bool) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.gboolean       // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	if enable {
+		_arg1 = C.TRUE
+	}
+
+	C.g_socket_client_set_enable_proxy(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(enable)
 }
 
 // SetFamily sets the socket family of the socket client. If this is set to
@@ -724,6 +1110,32 @@ func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 	runtime.KeepAlive(protocol)
 }
 
+// SetProxyResolver overrides the Resolver used by client. You can call this if
+// you want to use specific proxies, rather than using the system default proxy
+// settings.
+//
+// Note that whether or not the proxy resolver is actually used depends on the
+// setting of Client:enable-proxy, which is not changed by this function (but
+// which is TRUE by default).
+//
+// The function takes the following parameters:
+//
+//    - proxyResolver (optional) or NULL for the default.
+//
+func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
+	var _arg0 *C.GSocketClient  // out
+	var _arg1 *C.GProxyResolver // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	if proxyResolver != nil {
+		_arg1 = (*C.GProxyResolver)(unsafe.Pointer(coreglib.InternObject(proxyResolver).Native()))
+	}
+
+	C.g_socket_client_set_proxy_resolver(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(proxyResolver)
+}
+
 // SetSocketType sets the socket type of the socket client. The sockets created
 // by this object will be of the specified type.
 //
@@ -744,4 +1156,108 @@ func (client *SocketClient) SetSocketType(typ SocketType) {
 	C.g_socket_client_set_socket_type(_arg0, _arg1)
 	runtime.KeepAlive(client)
 	runtime.KeepAlive(typ)
+}
+
+// SetTimeout sets the I/O timeout for sockets created by client. timeout is a
+// time in seconds, or 0 for no timeout (the default).
+//
+// The timeout value affects the initial connection attempt as well, so setting
+// this may cause calls to g_socket_client_connect(), etc, to fail with
+// G_IO_ERROR_TIMED_OUT.
+//
+// The function takes the following parameters:
+//
+//    - timeout: timeout.
+//
+func (client *SocketClient) SetTimeout(timeout uint) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.guint          // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = C.guint(timeout)
+
+	C.g_socket_client_set_timeout(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(timeout)
+}
+
+// SetTLS sets whether client creates TLS (aka SSL) connections. If tls is TRUE,
+// client will wrap its connections in a ClientConnection and perform a TLS
+// handshake when connecting.
+//
+// Note that since Client must return a Connection, but ClientConnection is not
+// a Connection, this actually wraps the resulting ClientConnection in a
+// WrapperConnection when returning it. You can use
+// g_tcp_wrapper_connection_get_base_io_stream() on the return value to extract
+// the ClientConnection.
+//
+// If you need to modify the behavior of the TLS handshake (eg, by setting a
+// client-side certificate to use, or connecting to the
+// Connection::accept-certificate signal), you can connect to client's
+// Client::event signal and wait for it to be emitted with
+// G_SOCKET_CLIENT_TLS_HANDSHAKING, which will give you a chance to see the
+// ClientConnection before the handshake starts.
+//
+// The function takes the following parameters:
+//
+//    - tls: whether to use TLS.
+//
+func (client *SocketClient) SetTLS(tls bool) {
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.gboolean       // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	if tls {
+		_arg1 = C.TRUE
+	}
+
+	C.g_socket_client_set_tls(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(tls)
+}
+
+// SetTLSValidationFlags sets the TLS validation flags used when creating TLS
+// connections via client. The default value is G_TLS_CERTIFICATE_VALIDATE_ALL.
+//
+// The function takes the following parameters:
+//
+//    - flags: validation flags.
+//
+func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
+	var _arg0 *C.GSocketClient       // out
+	var _arg1 C.GTlsCertificateFlags // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = C.GTlsCertificateFlags(flags)
+
+	C.g_socket_client_set_tls_validation_flags(_arg0, _arg1)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(flags)
+}
+
+// The function takes the following parameters:
+//
+//    - event
+//    - connectable
+//    - connection
+//
+func (client *SocketClient) event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer) {
+	gclass := (*C.GSocketClientClass)(coreglib.PeekParentClass(client))
+	fnarg := gclass.event
+
+	var _arg0 *C.GSocketClient      // out
+	var _arg1 C.GSocketClientEvent  // out
+	var _arg2 *C.GSocketConnectable // out
+	var _arg3 *C.GIOStream          // out
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	_arg1 = C.GSocketClientEvent(event)
+	_arg2 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	_arg3 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+
+	C._gotk4_gio2_SocketClient_virtual_event(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(connectable)
+	runtime.KeepAlive(connection)
 }

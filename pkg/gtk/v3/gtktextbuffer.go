@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -509,6 +508,33 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 	return _textBuffer
 }
 
+// AddMark adds the mark at position where. The mark must not be added to
+// another buffer, and if its name is not NULL then there must not be another
+// mark in the buffer with the same name.
+//
+// Emits the TextBuffer::mark-set signal as notification of the mark's initial
+// placement.
+//
+// The function takes the following parameters:
+//
+//    - mark to add.
+//    - where: location to place mark.
+//
+func (buffer *TextBuffer) AddMark(mark *TextMark, where *TextIter) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextMark   // out
+	var _arg2 *C.GtkTextIter   // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
+	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(where)))
+
+	C.gtk_text_buffer_add_mark(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(mark)
+	runtime.KeepAlive(where)
+}
+
 // AddSelectionClipboard adds clipboard to the list of clipboards in which the
 // selection contents of buffer are available. In most cases, clipboard will be
 // the Clipboard of type GDK_SELECTION_PRIMARY for a view of buffer.
@@ -583,6 +609,57 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
+}
+
+// Backspace performs the appropriate action as if the user hit the delete key
+// with the cursor at the position specified by iter. In the normal case a
+// single character will be deleted, but when combining accents are involved,
+// more than one character can be deleted, and when precomposed character and
+// accent combinations are involved, less than one character will be deleted.
+//
+// Because the buffer is modified, all outstanding iterators become invalid
+// after calling this function; however, the iter will be re-initialized to
+// point to the location where text was deleted.
+//
+// The function takes the following parameters:
+//
+//    - iter: position in buffer.
+//    - interactive: whether the deletion is caused by user interaction.
+//    - defaultEditable: whether the buffer is editable by default.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the buffer was modified.
+//
+func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable bool) bool {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 C.gboolean       // out
+	var _arg3 C.gboolean       // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	if interactive {
+		_arg2 = C.TRUE
+	}
+	if defaultEditable {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C.gtk_text_buffer_backspace(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(interactive)
+	runtime.KeepAlive(defaultEditable)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // BeginUserAction: called to indicate that the buffer operations between here
@@ -963,6 +1040,39 @@ func (buffer *TextBuffer) CharCount() int {
 	return _gint
 }
 
+// CopyTargetList: this function returns the list of targets this text buffer
+// can provide for copying and as DND source. The targets in the list are added
+// with info values from the TextBufferTargetInfo enum, using
+// gtk_target_list_add_rich_text_targets() and
+// gtk_target_list_add_text_targets().
+//
+// The function returns the following values:
+//
+//    - targetList: TargetList.
+//
+func (buffer *TextBuffer) CopyTargetList() *TargetList {
+	var _arg0 *C.GtkTextBuffer // out
+	var _cret *C.GtkTargetList // in
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	_cret = C.gtk_text_buffer_get_copy_target_list(_arg0)
+	runtime.KeepAlive(buffer)
+
+	var _targetList *TargetList // out
+
+	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_target_list_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_targetList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
+		},
+	)
+
+	return _targetList
+}
+
 // EndIter initializes iter with the “end iterator,” one past the last valid
 // character in the text buffer. If dereferenced with gtk_text_iter_get_char(),
 // the end iterator has a character value of 0. The entire buffer lies in the
@@ -988,6 +1098,30 @@ func (buffer *TextBuffer) EndIter() *TextIter {
 	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _iter
+}
+
+// HasSelection indicates whether the buffer has some text currently selected.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the there is text selected.
+//
+func (buffer *TextBuffer) HasSelection() bool {
+	var _arg0 *C.GtkTextBuffer // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	_cret = C.gtk_text_buffer_get_has_selection(_arg0)
+	runtime.KeepAlive(buffer)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // GetInsert returns the mark that represents the cursor (insertion point).
@@ -1296,6 +1430,39 @@ func (buffer *TextBuffer) Modified() bool {
 	}
 
 	return _ok
+}
+
+// PasteTargetList: this function returns the list of targets this text buffer
+// supports for pasting and as DND destination. The targets in the list are
+// added with info values from the TextBufferTargetInfo enum, using
+// gtk_target_list_add_rich_text_targets() and
+// gtk_target_list_add_text_targets().
+//
+// The function returns the following values:
+//
+//    - targetList: TargetList.
+//
+func (buffer *TextBuffer) PasteTargetList() *TargetList {
+	var _arg0 *C.GtkTextBuffer // out
+	var _cret *C.GtkTargetList // in
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	_cret = C.gtk_text_buffer_get_paste_target_list(_arg0)
+	runtime.KeepAlive(buffer)
+
+	var _targetList *TargetList // out
+
+	_targetList = (*TargetList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_target_list_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_targetList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_target_list_unref((*C.GtkTargetList)(intern.C))
+		},
+	)
+
+	return _targetList
 }
 
 // SelectionBound returns the mark that represents the selection bound.
@@ -1687,6 +1854,37 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 	return _ok
 }
 
+// InsertMarkup inserts the text in markup at position iter. markup will be
+// inserted in its entirety and must be nul-terminated and valid UTF-8. Emits
+// the TextBuffer::insert-text signal, possibly multiple times; insertion
+// actually occurs in the default handler for the signal. iter will point to the
+// end of the inserted text on return.
+//
+// The function takes the following parameters:
+//
+//    - iter: location to insert the markup.
+//    - markup: nul-terminated UTF-8 string containing [Pango
+//      markup][PangoMarkupFormat].
+//
+func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.char          // out
+	var _arg3 C.gint
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	_arg3 = (C.gint)(len(markup))
+	_arg2 = (*C.char)(C.calloc(C.size_t((len(markup) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg2)), len(markup)), markup)
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_text_buffer_insert_markup(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(markup)
+}
+
 // InsertPixbuf inserts an image into the text buffer at iter. The image will be
 // counted as one character in character counts, and when obtaining the buffer
 // contents as a string, will be represented by the Unicode “object replacement
@@ -2001,6 +2199,33 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 	runtime.KeepAlive(name)
 	runtime.KeepAlive(start)
 	runtime.KeepAlive(end)
+}
+
+// SelectRange: this function moves the “insert” and “selection_bound” marks
+// simultaneously. If you move them in two steps with
+// gtk_text_buffer_move_mark(), you will temporarily select a region in between
+// their old and new locations, which can be pretty inefficient since the
+// temporarily-selected region will force stuff to be recalculated. This
+// function moves them as a unit, which can be optimized.
+//
+// The function takes the following parameters:
+//
+//    - ins: where to put the “insert” mark.
+//    - bound: where to put the “selection_bound” mark.
+//
+func (buffer *TextBuffer) SelectRange(ins, bound *TextIter) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 *C.GtkTextIter   // out
+	var _arg2 *C.GtkTextIter   // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(ins)))
+	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(bound)))
+
+	C.gtk_text_buffer_select_range(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ins)
+	runtime.KeepAlive(bound)
 }
 
 // SetModified: used to keep track of whether the buffer has been modified since

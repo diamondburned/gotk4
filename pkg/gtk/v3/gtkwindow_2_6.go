@@ -5,8 +5,6 @@ package gtk
 import (
 	"runtime"
 	"unsafe"
-
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
@@ -14,103 +12,6 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// FocusOnMap gets the value set by gtk_window_set_focus_on_map().
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if window should receive the input focus when mapped.
-//
-func (window *Window) FocusOnMap() bool {
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_focus_on_map(_arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// IconName returns the name of the themed icon for the window, see
-// gtk_window_set_icon_name().
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): icon name or NULL if the window has no themed icon.
-//
-func (window *Window) IconName() string {
-	var _arg0 *C.GtkWindow // out
-	var _cret *C.gchar     // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gtk_window_get_icon_name(_arg0)
-	runtime.KeepAlive(window)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
-// SetFocusOnMap windows may set a hint asking the desktop environment not to
-// receive the input focus when the window is mapped. This function sets this
-// hint.
-//
-// The function takes the following parameters:
-//
-//    - setting: TRUE to let this window receive input focus on map.
-//
-func (window *Window) SetFocusOnMap(setting bool) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if setting {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_window_set_focus_on_map(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(setting)
-}
-
-// SetIconName sets the icon for the window from a named themed icon. See the
-// docs for IconTheme for more details. On some platforms, the window icon is
-// not used at all.
-//
-// Note that this has nothing to do with the WM_ICON_NAME property which is
-// mentioned in the ICCCM.
-//
-// The function takes the following parameters:
-//
-//    - name (optional) of the themed icon.
-//
-func (window *Window) SetIconName(name string) {
-	var _arg0 *C.GtkWindow // out
-	var _arg1 *C.gchar     // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if name != "" {
-		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	C.gtk_window_set_icon_name(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(name)
-}
 
 // WindowSetDefaultIconName sets an icon to be used as fallback for windows that
 // haven't had gtk_window_set_icon_list() called on them from a named themed

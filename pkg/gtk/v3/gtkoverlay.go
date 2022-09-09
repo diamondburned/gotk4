@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -152,6 +151,134 @@ func (overlay *Overlay) ConnectGetChildPosition(f func(widget Widgetter) (alloca
 	return coreglib.ConnectGeneratedClosure(overlay, "get-child-position", false, unsafe.Pointer(C._gotk4_gtk3_Overlay_ConnectGetChildPosition), f)
 }
 
+// NewOverlay creates a new Overlay.
+//
+// The function returns the following values:
+//
+//    - overlay: new Overlay object.
+//
+func NewOverlay() *Overlay {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_overlay_new()
+
+	var _overlay *Overlay // out
+
+	_overlay = wrapOverlay(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _overlay
+}
+
+// AddOverlay adds widget to overlay.
+//
+// The widget will be stacked on top of the main widget added with
+// gtk_container_add().
+//
+// The position at which widget is placed is determined from its Widget:halign
+// and Widget:valign properties.
+//
+// The function takes the following parameters:
+//
+//    - widget to be added to the container.
+//
+func (overlay *Overlay) AddOverlay(widget Widgetter) {
+	var _arg0 *C.GtkOverlay // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	C.gtk_overlay_add_overlay(_arg0, _arg1)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
+}
+
+// OverlayPassThrough: convenience function to get the value of the
+// Overlay:pass-through child property for widget.
+//
+// The function takes the following parameters:
+//
+//    - widget: overlay child of Overlay.
+//
+// The function returns the following values:
+//
+//    - ok: whether the widget is a pass through child.
+//
+func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
+	var _arg0 *C.GtkOverlay // out
+	var _arg1 *C.GtkWidget  // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ReorderOverlay moves child to a new index in the list of overlay children.
+// The list contains overlays in the order that these were added to overlay by
+// default. See also Overlay:index.
+//
+// A widget’s index in the overlay children list determines which order the
+// children are drawn if they overlap. The first child is drawn at the bottom.
+// It also affects the default focus chain order.
+//
+// The function takes the following parameters:
+//
+//    - child: overlaid Widget to move.
+//    - index_: new index for child in the list of overlay children of overlay,
+//      starting from 0. If negative, indicates the end of the list.
+//
+func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
+	var _arg0 *C.GtkOverlay // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.int         // out
+
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.int(index_)
+
+	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(index_)
+}
+
+// SetOverlayPassThrough: convenience function to set the value of the
+// Overlay:pass-through child property for widget.
+//
+// The function takes the following parameters:
+//
+//    - widget: overlay child of Overlay.
+//    - passThrough: whether the child should pass the input through.
+//
+func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool) {
+	var _arg0 *C.GtkOverlay // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.gboolean    // out
+
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	if passThrough {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_overlay_set_overlay_pass_through(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(overlay)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(passThrough)
+}
+
 // The function takes the following parameters:
 //
 //    - widget
@@ -171,6 +298,8 @@ func (overlay *Overlay) childPosition(widget Widgetter, allocation *Allocation) 
 	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(coreglib.InternObject(overlay).Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg2 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
+	type _ = *Allocation
+	type _ = *gdk.Rectangle
 
 	_cret = C._gotk4_gtk3_Overlay_virtual_get_child_position(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(overlay)

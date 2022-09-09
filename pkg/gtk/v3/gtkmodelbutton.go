@@ -183,3 +183,21 @@ func wrapModelButton(obj *coreglib.Object) *ModelButton {
 func marshalModelButton(p uintptr) (interface{}, error) {
 	return wrapModelButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
+
+// NewModelButton creates a new GtkModelButton.
+//
+// The function returns the following values:
+//
+//    - modelButton: newly created ModelButton widget.
+//
+func NewModelButton() *ModelButton {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_model_button_new()
+
+	var _modelButton *ModelButton // out
+
+	_modelButton = wrapModelButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _modelButton
+}

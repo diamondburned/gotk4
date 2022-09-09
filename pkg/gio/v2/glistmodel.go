@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -12,6 +13,15 @@ import (
 // #include <gio/gio.h>
 // #include <glib-object.h>
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
+// GType _gotk4_gio2_ListModel_virtual_get_item_type(void* fnptr, GListModel* arg0) {
+//   return ((GType (*)(GListModel*))(fnptr))(arg0);
+// };
+// gpointer _gotk4_gio2_ListModel_virtual_get_item(void* fnptr, GListModel* arg0, guint arg1) {
+//   return ((gpointer (*)(GListModel*, guint))(fnptr))(arg0, arg1);
+// };
+// guint _gotk4_gio2_ListModel_virtual_get_n_items(void* fnptr, GListModel* arg0) {
+//   return ((guint (*)(GListModel*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -117,4 +127,228 @@ func marshalListModel(p uintptr) (interface{}, error) {
 // change.
 func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(list, "items-changed", false, unsafe.Pointer(C._gotk4_gio2_ListModel_ConnectItemsChanged), f)
+}
+
+// ItemType gets the type of the items in list. All items returned from
+// g_list_model_get_type() are of that type or a subtype, or are an
+// implementation of that interface.
+//
+// The item type of a Model can not change during the life of the model.
+//
+// The function returns the following values:
+//
+//    - gType of the items contained in list.
+//
+func (list *ListModel) ItemType() coreglib.Type {
+	var _arg0 *C.GListModel // out
+	var _cret C.GType       // in
+
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+
+	_cret = C.g_list_model_get_item_type(_arg0)
+	runtime.KeepAlive(list)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// NItems gets the number of items in list.
+//
+// Depending on the model implementation, calling this function may be less
+// efficient than iterating the list with increasing values for position until
+// g_list_model_get_item() returns NULL.
+//
+// The function returns the following values:
+//
+//    - guint: number of items in list.
+//
+func (list *ListModel) NItems() uint {
+	var _arg0 *C.GListModel // out
+	var _cret C.guint       // in
+
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+
+	_cret = C.g_list_model_get_n_items(_arg0)
+	runtime.KeepAlive(list)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Item: get the item at position. If position is greater than the number of
+// items in list, NULL is returned.
+//
+// NULL is never returned for an index that is smaller than the length of the
+// list. See g_list_model_get_n_items().
+//
+// The function takes the following parameters:
+//
+//    - position of the item to fetch.
+//
+// The function returns the following values:
+//
+//    - object (optional) at position.
+//
+func (list *ListModel) Item(position uint) *coreglib.Object {
+	var _arg0 *C.GListModel // out
+	var _arg1 C.guint       // out
+	var _cret *C.GObject    // in
+
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	_arg1 = C.guint(position)
+
+	_cret = C.g_list_model_get_object(_arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(position)
+
+	var _object *coreglib.Object // out
+
+	if _cret != nil {
+		_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+	}
+
+	return _object
+}
+
+// ItemsChanged emits the Model::items-changed signal on list.
+//
+// This function should only be called by classes implementing Model. It has to
+// be called after the internal representation of list has been updated, because
+// handlers connected to this signal might query the new state of the list.
+//
+// Implementations must only make changes to the model (as visible to its
+// consumer) in places that will not cause problems for that consumer. For
+// models that are driven directly by a write API (such as Store), changes can
+// be reported in response to uses of that API. For models that represent remote
+// data, changes should only be made from a fresh mainloop dispatch. It is
+// particularly not permitted to make changes in response to a call to the Model
+// consumer API.
+//
+// Stated another way: in general, it is assumed that code making a series of
+// accesses to the model via the API, without returning to the mainloop, and
+// without calling other code, will continue to view the same contents of the
+// model.
+//
+// The function takes the following parameters:
+//
+//    - position at which list changed.
+//    - removed: number of items removed.
+//    - added: number of items added.
+//
+func (list *ListModel) ItemsChanged(position, removed, added uint) {
+	var _arg0 *C.GListModel // out
+	var _arg1 C.guint       // out
+	var _arg2 C.guint       // out
+	var _arg3 C.guint       // out
+
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(removed)
+	_arg3 = C.guint(added)
+
+	C.g_list_model_items_changed(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(removed)
+	runtime.KeepAlive(added)
+}
+
+// Item: get the item at position. If position is greater than the number of
+// items in list, NULL is returned.
+//
+// NULL is never returned for an index that is smaller than the length of the
+// list. See g_list_model_get_n_items().
+//
+// The function takes the following parameters:
+//
+//    - position of the item to fetch.
+//
+// The function returns the following values:
+//
+//    - object (optional) at position.
+//
+func (list *ListModel) item(position uint) *coreglib.Object {
+	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))
+	fnarg := gclass.get_item
+
+	var _arg0 *C.GListModel // out
+	var _arg1 C.guint       // out
+	var _cret C.gpointer    // in
+
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+	_arg1 = C.guint(position)
+
+	_cret = C._gotk4_gio2_ListModel_virtual_get_item(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(list)
+	runtime.KeepAlive(position)
+
+	var _object *coreglib.Object // out
+
+	_object = coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+
+	return _object
+}
+
+// itemType gets the type of the items in list. All items returned from
+// g_list_model_get_type() are of that type or a subtype, or are an
+// implementation of that interface.
+//
+// The item type of a Model can not change during the life of the model.
+//
+// The function returns the following values:
+//
+//    - gType of the items contained in list.
+//
+func (list *ListModel) itemType() coreglib.Type {
+	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))
+	fnarg := gclass.get_item_type
+
+	var _arg0 *C.GListModel // out
+	var _cret C.GType       // in
+
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+
+	_cret = C._gotk4_gio2_ListModel_virtual_get_item_type(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(list)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// nItems gets the number of items in list.
+//
+// Depending on the model implementation, calling this function may be less
+// efficient than iterating the list with increasing values for position until
+// g_list_model_get_item() returns NULL.
+//
+// The function returns the following values:
+//
+//    - guint: number of items in list.
+//
+func (list *ListModel) nItems() uint {
+	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))
+	fnarg := gclass.get_n_items
+
+	var _arg0 *C.GListModel // out
+	var _cret C.guint       // in
+
+	_arg0 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(list).Native()))
+
+	_cret = C._gotk4_gio2_ListModel_virtual_get_n_items(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(list)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }

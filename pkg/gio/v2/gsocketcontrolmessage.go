@@ -2,40 +2,9 @@
 
 package gio
 
-import (
-	"runtime"
-	"unsafe"
-
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-)
-
 // #include <stdlib.h>
 // #include <gio/gio.h>
-// int _gotk4_gio2_SocketControlMessage_virtual_get_type(void* fnptr, GSocketControlMessage* arg0) {
-//   return ((int (*)(GSocketControlMessage*))(fnptr))(arg0);
-// };
 import "C"
-
-// The function returns the following values:
-//
-func (message *SocketControlMessage) typ() int {
-	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
-	fnarg := gclass.get_type
-
-	var _arg0 *C.GSocketControlMessage // out
-	var _cret C.int                    // in
-
-	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(coreglib.InternObject(message).Native()))
-
-	_cret = C._gotk4_gio2_SocketControlMessage_virtual_get_type(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(message)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
 
 // SocketControlMessageClass class structure for ControlMessage.
 //

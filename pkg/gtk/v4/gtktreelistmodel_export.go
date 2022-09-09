@@ -31,6 +31,8 @@ func _gotk4_gtk4_TreeListModelCreateModelFunc(arg1 C.gpointer, arg2 C.gpointer) 
 
 	listModel := fn(_item)
 
+	var _ *gio.ListModel
+
 	if listModel != nil {
 		cret = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(listModel).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(listModel).Native()))

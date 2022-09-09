@@ -3,13 +3,13 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -271,6 +271,32 @@ func (paned *Paned) ConnectToggleHandleFocus(f func() (ok bool)) coreglib.Signal
 	return coreglib.ConnectGeneratedClosure(paned, "toggle-handle-focus", false, unsafe.Pointer(C._gotk4_gtk3_Paned_ConnectToggleHandleFocus), f)
 }
 
+// NewPaned creates a new Paned widget.
+//
+// The function takes the following parameters:
+//
+//    - orientation paned’s orientation.
+//
+// The function returns the following values:
+//
+//    - paned: new Paned.
+//
+func NewPaned(orientation Orientation) *Paned {
+	var _arg1 C.GtkOrientation // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_paned_new(_arg1)
+	runtime.KeepAlive(orientation)
+
+	var _paned *Paned // out
+
+	_paned = wrapPaned(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _paned
+}
+
 // Add1 adds a child to the top or left pane with default parameters. This is
 // equivalent to gtk_paned_pack1 (paned, child, FALSE, TRUE).
 //
@@ -309,6 +335,120 @@ func (paned *Paned) Add2(child Widgetter) {
 	runtime.KeepAlive(child)
 }
 
+// Child1 obtains the first child of the paned widget.
+//
+// The function returns the following values:
+//
+//    - widget (optional): first child, or NULL if it is not set.
+//
+func (paned *Paned) Child1() Widgetter {
+	var _arg0 *C.GtkPaned  // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+
+	_cret = C.gtk_paned_get_child1(_arg0)
+	runtime.KeepAlive(paned)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
+// Child2 obtains the second child of the paned widget.
+//
+// The function returns the following values:
+//
+//    - widget (optional): second child, or NULL if it is not set.
+//
+func (paned *Paned) Child2() Widgetter {
+	var _arg0 *C.GtkPaned  // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+
+	_cret = C.gtk_paned_get_child2(_arg0)
+	runtime.KeepAlive(paned)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
+// HandleWindow returns the Window of the handle. This function is useful when
+// handling button or motion events because it enables the callback to
+// distinguish between the window of the paned, a child and the handle.
+//
+// The function returns the following values:
+//
+//    - window paned’s handle window.
+//
+func (paned *Paned) HandleWindow() gdk.Windower {
+	var _arg0 *C.GtkPaned  // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+
+	_cret = C.gtk_paned_get_handle_window(_arg0)
+	runtime.KeepAlive(paned)
+
+	var _window gdk.Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gdk.Windower)
+			return ok
+		})
+		rv, ok := casted.(gdk.Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_window = rv
+	}
+
+	return _window
+}
+
 // Position obtains the position of the divider between the two panes.
 //
 // The function returns the following values:
@@ -329,6 +469,30 @@ func (paned *Paned) Position() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// WideHandle gets the Paned:wide-handle property.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the paned should have a wide handle.
+//
+func (paned *Paned) WideHandle() bool {
+	var _arg0 *C.GtkPaned // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+
+	_cret = C.gtk_paned_get_wide_handle(_arg0)
+	runtime.KeepAlive(paned)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Pack1 adds a child to the top or left pane.
@@ -408,6 +572,26 @@ func (paned *Paned) SetPosition(position int) {
 	C.gtk_paned_set_position(_arg0, _arg1)
 	runtime.KeepAlive(paned)
 	runtime.KeepAlive(position)
+}
+
+// SetWideHandle sets the Paned:wide-handle property.
+//
+// The function takes the following parameters:
+//
+//    - wide: new value for the Paned:wide-handle property.
+//
+func (paned *Paned) SetWideHandle(wide bool) {
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.gboolean  // out
+
+	_arg0 = (*C.GtkPaned)(unsafe.Pointer(coreglib.InternObject(paned).Native()))
+	if wide {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_paned_set_wide_handle(_arg0, _arg1)
+	runtime.KeepAlive(paned)
+	runtime.KeepAlive(wide)
 }
 
 // The function returns the following values:

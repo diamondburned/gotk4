@@ -691,6 +691,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 
 		value.p.Line(result.Conversion)
 		value.header.ApplyFrom(result.Header())
+
+		// Dumb hack! I am too lazy to deal with this shit.
+		value.p.Linef("type _ = %s", value.GoType)
+		value.p.Linef("type _ = %s", result.GoType)
+
 		return true
 	}
 

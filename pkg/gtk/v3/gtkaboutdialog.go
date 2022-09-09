@@ -3,13 +3,14 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -150,6 +151,818 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 // call gtk_show_uri_on_window().
 func (about *AboutDialog) ConnectActivateLink(f func(uri string) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(about, "activate-link", false, unsafe.Pointer(C._gotk4_gtk3_AboutDialog_ConnectActivateLink), f)
+}
+
+// NewAboutDialog creates a new AboutDialog.
+//
+// The function returns the following values:
+//
+//    - aboutDialog: newly created AboutDialog.
+//
+func NewAboutDialog() *AboutDialog {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_about_dialog_new()
+
+	var _aboutDialog *AboutDialog // out
+
+	_aboutDialog = wrapAboutDialog(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _aboutDialog
+}
+
+// AddCreditSection creates a new section in the Credits page.
+//
+// The function takes the following parameters:
+//
+//    - sectionName: name of the section.
+//    - people who belong to that section.
+//
+func (about *AboutDialog) AddCreditSection(sectionName string, people []string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+	var _arg2 **C.gchar         // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(sectionName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		_arg2 = (**C.gchar)(C.calloc(C.size_t((len(people) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg2))
+		{
+			out := unsafe.Slice(_arg2, len(people)+1)
+			var zero *C.gchar
+			out[len(people)] = zero
+			for i := range people {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(people[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	C.gtk_about_dialog_add_credit_section(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(sectionName)
+	runtime.KeepAlive(people)
+}
+
+// Artists returns the string which are displayed in the artists tab of the
+// secondary credits dialog.
+//
+// The function returns the following values:
+//
+//    - utf8s: a NULL-terminated string array containing the artists. The array
+//      is owned by the about dialog and must not be modified.
+//
+func (about *AboutDialog) Artists() []string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret **C.gchar         // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_artists(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8s []string // out
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
+}
+
+// Authors returns the string which are displayed in the authors tab of the
+// secondary credits dialog.
+//
+// The function returns the following values:
+//
+//    - utf8s: a NULL-terminated string array containing the authors. The array
+//      is owned by the about dialog and must not be modified.
+//
+func (about *AboutDialog) Authors() []string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret **C.gchar         // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_authors(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8s []string // out
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
+}
+
+// Comments returns the comments string.
+//
+// The function returns the following values:
+//
+//    - utf8: comments. The string is owned by the about dialog and must not be
+//      modified.
+//
+func (about *AboutDialog) Comments() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_comments(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Copyright returns the copyright string.
+//
+// The function returns the following values:
+//
+//    - utf8: copyright string. The string is owned by the about dialog and must
+//      not be modified.
+//
+func (about *AboutDialog) Copyright() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_copyright(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Documenters returns the string which are displayed in the documenters tab of
+// the secondary credits dialog.
+//
+// The function returns the following values:
+//
+//    - utf8s: a NULL-terminated string array containing the documenters. The
+//      array is owned by the about dialog and must not be modified.
+//
+func (about *AboutDialog) Documenters() []string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret **C.gchar         // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_documenters(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8s []string // out
+
+	{
+		var i int
+		var z *C.gchar
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_utf8s = make([]string, i)
+		for i := range src {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	return _utf8s
+}
+
+// License returns the license information.
+//
+// The function returns the following values:
+//
+//    - utf8: license information. The string is owned by the about dialog and
+//      must not be modified.
+//
+func (about *AboutDialog) License() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_license(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// LicenseType retrieves the license set using
+// gtk_about_dialog_set_license_type().
+//
+// The function returns the following values:
+//
+//    - license: License value.
+//
+func (about *AboutDialog) LicenseType() License {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret C.GtkLicense      // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_license_type(_arg0)
+	runtime.KeepAlive(about)
+
+	var _license License // out
+
+	_license = License(_cret)
+
+	return _license
+}
+
+// Logo returns the pixbuf displayed as logo in the about dialog.
+//
+// The function returns the following values:
+//
+//    - pixbuf displayed as logo. The pixbuf is owned by the about dialog. If you
+//      want to keep a reference to it, you have to call g_object_ref() on it.
+//
+func (about *AboutDialog) Logo() *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.GdkPixbuf      // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_logo(_arg0)
+	runtime.KeepAlive(about)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	{
+		obj := coreglib.Take(unsafe.Pointer(_cret))
+		_pixbuf = &gdkpixbuf.Pixbuf{
+			Object: obj,
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
+			},
+		}
+	}
+
+	return _pixbuf
+}
+
+// LogoIconName returns the icon name displayed as logo in the about dialog.
+//
+// The function returns the following values:
+//
+//    - utf8: icon name displayed as logo. The string is owned by the dialog. If
+//      you want to keep a reference to it, you have to call g_strdup() on it.
+//
+func (about *AboutDialog) LogoIconName() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ProgramName returns the program name displayed in the about dialog.
+//
+// The function returns the following values:
+//
+//    - utf8: program name. The string is owned by the about dialog and must not
+//      be modified.
+//
+func (about *AboutDialog) ProgramName() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_program_name(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// TranslatorCredits returns the translator credits string which is displayed in
+// the translators tab of the secondary credits dialog.
+//
+// The function returns the following values:
+//
+//    - utf8: translator credits string. The string is owned by the about dialog
+//      and must not be modified.
+//
+func (about *AboutDialog) TranslatorCredits() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Version returns the version string.
+//
+// The function returns the following values:
+//
+//    - utf8: version string. The string is owned by the about dialog and must
+//      not be modified.
+//
+func (about *AboutDialog) Version() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_version(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Website returns the website URL.
+//
+// The function returns the following values:
+//
+//    - utf8: website URL. The string is owned by the about dialog and must not
+//      be modified.
+//
+func (about *AboutDialog) Website() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_website(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// WebsiteLabel returns the label used for the website link.
+//
+// The function returns the following values:
+//
+//    - utf8: label used for the website link. The string is owned by the about
+//      dialog and must not be modified.
+//
+func (about *AboutDialog) WebsiteLabel() string {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_website_label(_arg0)
+	runtime.KeepAlive(about)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// WrapLicense returns whether the license text in about is automatically
+// wrapped.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the license text is wrapped.
+//
+func (about *AboutDialog) WrapLicense() bool {
+	var _arg0 *C.GtkAboutDialog // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+
+	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
+	runtime.KeepAlive(about)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetArtists sets the strings which are displayed in the artists tab of the
+// secondary credits dialog.
+//
+// The function takes the following parameters:
+//
+//    - artists: NULL-terminated array of strings.
+//
+func (about *AboutDialog) SetArtists(artists []string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 **C.gchar         // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	{
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(artists) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(artists)+1)
+			var zero *C.gchar
+			out[len(artists)] = zero
+			for i := range artists {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(artists[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	C.gtk_about_dialog_set_artists(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(artists)
+}
+
+// SetAuthors sets the strings which are displayed in the authors tab of the
+// secondary credits dialog.
+//
+// The function takes the following parameters:
+//
+//    - authors: NULL-terminated array of strings.
+//
+func (about *AboutDialog) SetAuthors(authors []string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 **C.gchar         // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	{
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(authors) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(authors)+1)
+			var zero *C.gchar
+			out[len(authors)] = zero
+			for i := range authors {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(authors[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	C.gtk_about_dialog_set_authors(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(authors)
+}
+
+// SetComments sets the comments string to display in the about dialog. This
+// should be a short string of one or two lines.
+//
+// The function takes the following parameters:
+//
+//    - comments (optional) string.
+//
+func (about *AboutDialog) SetComments(comments string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if comments != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(comments)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_about_dialog_set_comments(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(comments)
+}
+
+// SetCopyright sets the copyright string to display in the about dialog. This
+// should be a short string of one or two lines.
+//
+// The function takes the following parameters:
+//
+//    - copyright (optional) string.
+//
+func (about *AboutDialog) SetCopyright(copyright string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if copyright != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(copyright)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_about_dialog_set_copyright(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(copyright)
+}
+
+// SetDocumenters sets the strings which are displayed in the documenters tab of
+// the secondary credits dialog.
+//
+// The function takes the following parameters:
+//
+//    - documenters: NULL-terminated array of strings.
+//
+func (about *AboutDialog) SetDocumenters(documenters []string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 **C.gchar         // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	{
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(documenters) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(documenters)+1)
+			var zero *C.gchar
+			out[len(documenters)] = zero
+			for i := range documenters {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(documenters[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	C.gtk_about_dialog_set_documenters(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(documenters)
+}
+
+// SetLicense sets the license information to be displayed in the secondary
+// license dialog. If license is NULL, the license button is hidden.
+//
+// The function takes the following parameters:
+//
+//    - license (optional) information or NULL.
+//
+func (about *AboutDialog) SetLicense(license string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if license != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(license)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_about_dialog_set_license(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(license)
+}
+
+// SetLicenseType sets the license of the application showing the about dialog
+// from a list of known licenses.
+//
+// This function overrides the license set using gtk_about_dialog_set_license().
+//
+// The function takes the following parameters:
+//
+//    - licenseType: type of license.
+//
+func (about *AboutDialog) SetLicenseType(licenseType License) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 C.GtkLicense      // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	_arg1 = C.GtkLicense(licenseType)
+
+	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(licenseType)
+}
+
+// SetLogo sets the pixbuf to be displayed as logo in the about dialog. If it is
+// NULL, the default window icon set with gtk_window_set_default_icon() will be
+// used.
+//
+// The function takes the following parameters:
+//
+//    - logo (optional) or NULL.
+//
+func (about *AboutDialog) SetLogo(logo *gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.GdkPixbuf      // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if logo != nil {
+		_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(logo).Native()))
+	}
+
+	C.gtk_about_dialog_set_logo(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(logo)
+}
+
+// SetLogoIconName sets the pixbuf to be displayed as logo in the about dialog.
+// If it is NULL, the default window icon set with gtk_window_set_default_icon()
+// will be used.
+//
+// The function takes the following parameters:
+//
+//    - iconName (optional): icon name, or NULL.
+//
+func (about *AboutDialog) SetLogoIconName(iconName string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if iconName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_about_dialog_set_logo_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(iconName)
+}
+
+// SetProgramName sets the name to display in the about dialog. If this is not
+// set, it defaults to g_get_application_name().
+//
+// The function takes the following parameters:
+//
+//    - name: program name.
+//
+func (about *AboutDialog) SetProgramName(name string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_about_dialog_set_program_name(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(name)
+}
+
+// SetTranslatorCredits sets the translator credits string which is displayed in
+// the translators tab of the secondary credits dialog.
+//
+// The intended use for this string is to display the translator of the language
+// which is currently used in the user interface. Using gettext(), a simple way
+// to achieve that is to mark the string for translation:
+//
+//    GtkWidget *about = gtk_about_dialog_new ();
+//    gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
+//                                             _("translator-credits"));
+//
+// It is a good idea to use the customary msgid “translator-credits” for this
+// purpose, since translators will already know the purpose of that msgid, and
+// since AboutDialog will detect if “translator-credits” is untranslated and
+// hide the tab.
+//
+// The function takes the following parameters:
+//
+//    - translatorCredits (optional): translator credits.
+//
+func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if translatorCredits != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(translatorCredits)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_about_dialog_set_translator_credits(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(translatorCredits)
+}
+
+// SetVersion sets the version string to display in the about dialog.
+//
+// The function takes the following parameters:
+//
+//    - version (optional) string.
+//
+func (about *AboutDialog) SetVersion(version string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if version != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(version)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_about_dialog_set_version(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(version)
+}
+
+// SetWebsite sets the URL to use for the website link.
+//
+// The function takes the following parameters:
+//
+//    - website (optional): URL string starting with "http://".
+//
+func (about *AboutDialog) SetWebsite(website string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if website != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(website)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_about_dialog_set_website(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(website)
+}
+
+// SetWebsiteLabel sets the label to be used for the website link.
+//
+// The function takes the following parameters:
+//
+//    - websiteLabel: label used for the website link.
+//
+func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(websiteLabel)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_about_dialog_set_website_label(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(websiteLabel)
+}
+
+// SetWrapLicense sets whether the license text in about is automatically
+// wrapped.
+//
+// The function takes the following parameters:
+//
+//    - wrapLicense: whether to wrap the license.
+//
+func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
+	var _arg0 *C.GtkAboutDialog // out
+	var _arg1 C.gboolean        // out
+
+	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
+	if wrapLicense {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_about_dialog_set_wrap_license(_arg0, _arg1)
+	runtime.KeepAlive(about)
+	runtime.KeepAlive(wrapLicense)
 }
 
 // The function takes the following parameters:

@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -89,4 +91,68 @@ func wrapAppChooser(obj *coreglib.Object) *AppChooser {
 
 func marshalAppChooser(p uintptr) (interface{}, error) {
 	return wrapAppChooser(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// AppInfo returns the currently selected application.
+//
+// The function returns the following values:
+//
+//    - appInfo (optional) for the currently selected application, or NULL if
+//      none is selected. Free with g_object_unref().
+//
+func (self *AppChooser) AppInfo() *gio.AppInfo {
+	var _arg0 *C.GtkAppChooser // out
+	var _cret *C.GAppInfo      // in
+
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_app_chooser_get_app_info(_arg0)
+	runtime.KeepAlive(self)
+
+	var _appInfo *gio.AppInfo // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_appInfo = &gio.AppInfo{
+				Object: obj,
+			}
+		}
+	}
+
+	return _appInfo
+}
+
+// ContentType returns the current value of the AppChooser:content-type
+// property.
+//
+// The function returns the following values:
+//
+//    - utf8: content type of self. Free with g_free().
+//
+func (self *AppChooser) ContentType() string {
+	var _arg0 *C.GtkAppChooser // out
+	var _cret *C.gchar         // in
+
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_app_chooser_get_content_type(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// Refresh reloads the list of applications.
+func (self *AppChooser) Refresh() {
+	var _arg0 *C.GtkAppChooser // out
+
+	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C.gtk_app_chooser_refresh(_arg0)
+	runtime.KeepAlive(self)
 }

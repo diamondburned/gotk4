@@ -3,12 +3,13 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -24,6 +25,18 @@ import (
 // extern void _gotk4_gtk3_SearchEntryClass_search_changed(GtkSearchEntry*);
 // extern void _gotk4_gtk3_SearchEntryClass_previous_match(GtkSearchEntry*);
 // extern void _gotk4_gtk3_SearchEntryClass_next_match(GtkSearchEntry*);
+// void _gotk4_gtk3_SearchEntry_virtual_next_match(void* fnptr, GtkSearchEntry* arg0) {
+//   ((void (*)(GtkSearchEntry*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_SearchEntry_virtual_previous_match(void* fnptr, GtkSearchEntry* arg0) {
+//   ((void (*)(GtkSearchEntry*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_SearchEntry_virtual_search_changed(void* fnptr, GtkSearchEntry* arg0) {
+//   ((void (*)(GtkSearchEntry*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_SearchEntry_virtual_stop_search(void* fnptr, GtkSearchEntry* arg0) {
+//   ((void (*)(GtkSearchEntry*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -218,4 +231,92 @@ func NewSearchEntry() *SearchEntry {
 	_searchEntry = wrapSearchEntry(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _searchEntry
+}
+
+// HandleEvent: this function should be called when the top-level window which
+// contains the search entry received a key event. If the entry is part of a
+// SearchBar, it is preferable to call gtk_search_bar_handle_event() instead,
+// which will reveal the entry in addition to passing the event to this
+// function.
+//
+// If the key event is handled by the search entry and starts or continues a
+// search, GDK_EVENT_STOP will be returned. The caller should ensure that the
+// entry is shown in this case, and not propagate the event further.
+//
+// The function takes the following parameters:
+//
+//    - event: key event.
+//
+// The function returns the following values:
+//
+//    - ok: GDK_EVENT_STOP if the key press event resulted in a search beginning
+//      or continuing, GDK_EVENT_PROPAGATE otherwise.
+//
+func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
+	var _arg0 *C.GtkSearchEntry // out
+	var _arg1 *C.GdkEvent       // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_search_entry_handle_event(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (entry *SearchEntry) nextMatch() {
+	gclass := (*C.GtkSearchEntryClass)(coreglib.PeekParentClass(entry))
+	fnarg := gclass.next_match
+
+	var _arg0 *C.GtkSearchEntry // out
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C._gotk4_gtk3_SearchEntry_virtual_next_match(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(entry)
+}
+
+func (entry *SearchEntry) previousMatch() {
+	gclass := (*C.GtkSearchEntryClass)(coreglib.PeekParentClass(entry))
+	fnarg := gclass.previous_match
+
+	var _arg0 *C.GtkSearchEntry // out
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C._gotk4_gtk3_SearchEntry_virtual_previous_match(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(entry)
+}
+
+func (entry *SearchEntry) searchChanged() {
+	gclass := (*C.GtkSearchEntryClass)(coreglib.PeekParentClass(entry))
+	fnarg := gclass.search_changed
+
+	var _arg0 *C.GtkSearchEntry // out
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C._gotk4_gtk3_SearchEntry_virtual_search_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(entry)
+}
+
+func (entry *SearchEntry) stopSearch() {
+	gclass := (*C.GtkSearchEntryClass)(coreglib.PeekParentClass(entry))
+	fnarg := gclass.stop_search
+
+	var _arg0 *C.GtkSearchEntry // out
+
+	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C._gotk4_gtk3_SearchEntry_virtual_stop_search(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(entry)
 }

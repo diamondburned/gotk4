@@ -53,6 +53,8 @@ func _gotk4_gtk3_TreeModelForEachFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath,
 
 	ok := fn(_model, _path, _iter)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

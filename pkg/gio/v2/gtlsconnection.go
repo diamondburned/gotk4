@@ -3,147 +3,14 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
-// gboolean _gotk4_gio2_TLSConnection_virtual_accept_certificate(void* fnptr, GTlsConnection* arg0, GTlsCertificate* arg1, GTlsCertificateFlags arg2) {
-//   return ((gboolean (*)(GTlsConnection*, GTlsCertificate*, GTlsCertificateFlags))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gio2_TLSConnection_virtual_get_binding_data(void* fnptr, GTlsConnection* arg0, GTlsChannelBindingType arg1, GByteArray* arg2, GError** arg3) {
-//   return ((gboolean (*)(GTlsConnection*, GTlsChannelBindingType, GByteArray*, GError**))(fnptr))(arg0, arg1, arg2, arg3);
-// };
 import "C"
-
-// UseSystemCertDB gets whether conn uses the system certificate database to
-// verify peer certificates. See g_tls_connection_set_use_system_certdb().
-//
-// Deprecated: Use g_tls_connection_get_database() instead.
-//
-// The function returns the following values:
-//
-//    - ok: whether conn uses the system certificate database.
-//
-func (conn *TLSConnection) UseSystemCertDB() bool {
-	var _arg0 *C.GTlsConnection // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	_cret = C.g_tls_connection_get_use_system_certdb(_arg0)
-	runtime.KeepAlive(conn)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetUseSystemCertDB sets whether conn uses the system certificate database to
-// verify peer certificates. This is TRUE by default. If set to FALSE, then peer
-// certificate validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA error
-// (meaning Connection::accept-certificate will always be emitted on client-side
-// connections, unless that bit is not set in
-// ClientConnection:validation-flags).
-//
-// Deprecated: Use g_tls_connection_set_database() instead.
-//
-// The function takes the following parameters:
-//
-//    - useSystemCertdb: whether to use the system certificate database.
-//
-func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
-	var _arg0 *C.GTlsConnection // out
-	var _arg1 C.gboolean        // out
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	if useSystemCertdb {
-		_arg1 = C.TRUE
-	}
-
-	C.g_tls_connection_set_use_system_certdb(_arg0, _arg1)
-	runtime.KeepAlive(conn)
-	runtime.KeepAlive(useSystemCertdb)
-}
-
-// The function takes the following parameters:
-//
-//    - peerCert
-//    - errors
-//
-// The function returns the following values:
-//
-func (connection *TLSConnection) acceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
-	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(connection))
-	fnarg := gclass.accept_certificate
-
-	var _arg0 *C.GTlsConnection      // out
-	var _arg1 *C.GTlsCertificate     // out
-	var _arg2 C.GTlsCertificateFlags // out
-	var _cret C.gboolean             // in
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(peerCert).Native()))
-	_arg2 = C.GTlsCertificateFlags(errors)
-
-	_cret = C._gotk4_gio2_TLSConnection_virtual_accept_certificate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(peerCert)
-	runtime.KeepAlive(errors)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-//    - typ
-//    - data
-//
-func (conn *TLSConnection) bindingData(typ TLSChannelBindingType, data []byte) error {
-	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(conn))
-	fnarg := gclass.get_binding_data
-
-	var _arg0 *C.GTlsConnection        // out
-	var _arg1 C.GTlsChannelBindingType // out
-	var _arg2 *C.GByteArray            // out
-	var _cerr *C.GError                // in
-
-	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-	_arg1 = C.GTlsChannelBindingType(typ)
-	_arg2 = C.g_byte_array_sized_new(C.guint(len(data)))
-	if len(data) > 0 {
-		_arg2 = C.g_byte_array_append(_arg2, (*C.guint8)(&data[0]), C.guint(len(data)))
-	}
-	defer C.g_byte_array_unref(_arg2)
-
-	C._gotk4_gio2_TLSConnection_virtual_get_binding_data(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_cerr)
-	runtime.KeepAlive(conn)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(data)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
 
 // TLSConnectionClass: instance of this type is always passed by reference.
 type TLSConnectionClass struct {

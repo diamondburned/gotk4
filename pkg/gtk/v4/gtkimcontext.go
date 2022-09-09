@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -49,6 +48,9 @@ import (
 // gboolean _gotk4_gtk4_IMContext_virtual_get_surrounding(void* fnptr, GtkIMContext* arg0, char** arg1, int* arg2) {
 //   return ((gboolean (*)(GtkIMContext*, char**, int*))(fnptr))(arg0, arg1, arg2);
 // };
+// gboolean _gotk4_gtk4_IMContext_virtual_get_surrounding_with_selection(void* fnptr, GtkIMContext* arg0, char** arg1, int* arg2, int* arg3) {
+//   return ((gboolean (*)(GtkIMContext*, char**, int*, int*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 // gboolean _gotk4_gtk4_IMContext_virtual_retrieve_surrounding(void* fnptr, GtkIMContext* arg0) {
 //   return ((gboolean (*)(GtkIMContext*))(fnptr))(arg0);
 // };
@@ -84,6 +86,9 @@ import (
 // };
 // void _gotk4_gtk4_IMContext_virtual_set_surrounding(void* fnptr, GtkIMContext* arg0, char* arg1, int arg2, int arg3) {
 //   ((void (*)(GtkIMContext*, char*, int, int))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk4_IMContext_virtual_set_surrounding_with_selection(void* fnptr, GtkIMContext* arg0, char* arg1, int arg2, int arg3, int arg4) {
+//   ((void (*)(GtkIMContext*, char*, int, int, int))(fnptr))(arg0, arg1, arg2, arg3, arg4);
 // };
 // void _gotk4_gtk4_IMContext_virtual_set_use_preedit(void* fnptr, GtkIMContext* arg0, gboolean arg1) {
 //   ((void (*)(GtkIMContext*, gboolean))(fnptr))(arg0, arg1);
@@ -808,6 +813,62 @@ func (context *IMContext) Surrounding() (string, int, bool) {
 	return _text, _cursorIndex, _ok
 }
 
+// SurroundingWithSelection retrieves context around the insertion point.
+//
+// Input methods typically want context in order to constrain input text based
+// on existing text; this is important for languages such as Thai where only
+// some sequences of characters are allowed.
+//
+// This function is implemented by emitting the
+// gtk.IMContext::retrieve-surrounding signal on the input method; in response
+// to this signal, a widget should provide as much context as is available, up
+// to an entire paragraph, by calling
+// gtk.IMContext.SetSurroundingWithSelection().
+//
+// Note that there is no obligation for a widget to respond to the
+// ::retrieve-surrounding signal, so input methods must be prepared to function
+// without context.
+//
+// The function returns the following values:
+//
+//    - text: location to store a UTF-8 encoded string of text holding context
+//      around the insertion point. If the function returns TRUE, then you must
+//      free the result stored in this location with g_free().
+//    - cursorIndex: location to store byte index of the insertion cursor within
+//      text.
+//    - anchorIndex: location to store byte index of the selection bound within
+//      text.
+//    - ok: TRUE if surrounding text was provided; in this case you must free the
+//      result stored in text.
+//
+func (context *IMContext) SurroundingWithSelection() (text string, cursorIndex, anchorIndex int, ok bool) {
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.char         // in
+	var _arg2 C.int           // in
+	var _arg3 C.int           // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gtk_im_context_get_surrounding_with_selection(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(context)
+
+	var _text string     // out
+	var _cursorIndex int // out
+	var _anchorIndex int // out
+	var _ok bool         // out
+
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_cursorIndex = int(_arg2)
+	_anchorIndex = int(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _text, _cursorIndex, _anchorIndex, _ok
+}
+
 // Reset: notify the input method that a change such as a change in cursor
 // position has been made.
 //
@@ -900,6 +961,41 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(len)
 	runtime.KeepAlive(cursorIndex)
+}
+
+// SetSurroundingWithSelection sets surrounding context around the insertion
+// point and preedit string. This function is expected to be called in response
+// to the GtkIMContext::retrieve_surrounding signal, and will likely have no
+// effect if called at other times.
+//
+// The function takes the following parameters:
+//
+//    - text surrounding the insertion point, as UTF-8. the preedit string should
+//      not be included within text.
+//    - len: length of text, or -1 if text is nul-terminated.
+//    - cursorIndex: byte index of the insertion cursor within text.
+//    - anchorIndex: byte index of the selection bound within text.
+//
+func (context *IMContext) SetSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int) {
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.char         // out
+	var _arg2 C.int           // out
+	var _arg3 C.int           // out
+	var _arg4 C.int           // out
+
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(len)
+	_arg3 = C.int(cursorIndex)
+	_arg4 = C.int(anchorIndex)
+
+	C.gtk_im_context_set_surrounding_with_selection(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(cursorIndex)
+	runtime.KeepAlive(anchorIndex)
 }
 
 // SetUsePreedit sets whether the IM context should use the preedit string to
@@ -1173,6 +1269,65 @@ func (context *IMContext) surrounding() (string, int, bool) {
 	return _text, _cursorIndex, _ok
 }
 
+// surroundingWithSelection retrieves context around the insertion point.
+//
+// Input methods typically want context in order to constrain input text based
+// on existing text; this is important for languages such as Thai where only
+// some sequences of characters are allowed.
+//
+// This function is implemented by emitting the
+// gtk.IMContext::retrieve-surrounding signal on the input method; in response
+// to this signal, a widget should provide as much context as is available, up
+// to an entire paragraph, by calling
+// gtk.IMContext.SetSurroundingWithSelection().
+//
+// Note that there is no obligation for a widget to respond to the
+// ::retrieve-surrounding signal, so input methods must be prepared to function
+// without context.
+//
+// The function returns the following values:
+//
+//    - text: location to store a UTF-8 encoded string of text holding context
+//      around the insertion point. If the function returns TRUE, then you must
+//      free the result stored in this location with g_free().
+//    - cursorIndex: location to store byte index of the insertion cursor within
+//      text.
+//    - anchorIndex: location to store byte index of the selection bound within
+//      text.
+//    - ok: TRUE if surrounding text was provided; in this case you must free the
+//      result stored in text.
+//
+func (context *IMContext) surroundingWithSelection() (text string, cursorIndex, anchorIndex int, ok bool) {
+	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.get_surrounding_with_selection
+
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.char         // in
+	var _arg2 C.int           // in
+	var _arg3 C.int           // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C._gotk4_gtk4_IMContext_virtual_get_surrounding_with_selection(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(context)
+
+	var _text string     // out
+	var _cursorIndex int // out
+	var _anchorIndex int // out
+	var _ok bool         // out
+
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_cursorIndex = int(_arg2)
+	_anchorIndex = int(_arg3)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _text, _cursorIndex, _anchorIndex, _ok
+}
+
 func (context *IMContext) preeditChanged() {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
 	fnarg := gclass.preedit_changed
@@ -1336,6 +1491,44 @@ func (context *IMContext) setSurrounding(text string, len, cursorIndex int) {
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(len)
 	runtime.KeepAlive(cursorIndex)
+}
+
+// setSurroundingWithSelection sets surrounding context around the insertion
+// point and preedit string. This function is expected to be called in response
+// to the GtkIMContext::retrieve_surrounding signal, and will likely have no
+// effect if called at other times.
+//
+// The function takes the following parameters:
+//
+//    - text surrounding the insertion point, as UTF-8. the preedit string should
+//      not be included within text.
+//    - len: length of text, or -1 if text is nul-terminated.
+//    - cursorIndex: byte index of the insertion cursor within text.
+//    - anchorIndex: byte index of the selection bound within text.
+//
+func (context *IMContext) setSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int) {
+	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
+	fnarg := gclass.set_surrounding_with_selection
+
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.char         // out
+	var _arg2 C.int           // out
+	var _arg3 C.int           // out
+	var _arg4 C.int           // out
+
+	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(len)
+	_arg3 = C.int(cursorIndex)
+	_arg4 = C.int(anchorIndex)
+
+	C._gotk4_gtk4_IMContext_virtual_set_surrounding_with_selection(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(len)
+	runtime.KeepAlive(cursorIndex)
+	runtime.KeepAlive(anchorIndex)
 }
 
 // setUsePreedit sets whether the IM context should use the preedit string to

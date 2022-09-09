@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -145,6 +146,44 @@ func (controller *EventControllerKey) Group() uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// IMContext gets the IM context of a key controller.
+//
+// The function returns the following values:
+//
+//    - imContext: IM context.
+//
+func (controller *EventControllerKey) IMContext() IMContexter {
+	var _arg0 *C.GtkEventControllerKey // out
+	var _cret *C.GtkIMContext          // in
+
+	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
+
+	_cret = C.gtk_event_controller_key_get_im_context(_arg0)
+	runtime.KeepAlive(controller)
+
+	var _imContext IMContexter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.IMContexter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(IMContexter)
+			return ok
+		})
+		rv, ok := casted.(IMContexter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.IMContexter")
+		}
+		_imContext = rv
+	}
+
+	return _imContext
 }
 
 // The function takes the following parameters:

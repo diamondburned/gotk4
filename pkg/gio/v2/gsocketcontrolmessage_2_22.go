@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -22,6 +21,9 @@ import (
 //   return ((gsize (*)(GSocketControlMessage*))(fnptr))(arg0);
 // };
 // int _gotk4_gio2_SocketControlMessage_virtual_get_level(void* fnptr, GSocketControlMessage* arg0) {
+//   return ((int (*)(GSocketControlMessage*))(fnptr))(arg0);
+// };
+// int _gotk4_gio2_SocketControlMessage_virtual_get_type(void* fnptr, GSocketControlMessage* arg0) {
 //   return ((int (*)(GSocketControlMessage*))(fnptr))(arg0);
 // };
 // void _gotk4_gio2_SocketControlMessage_virtual_serialize(void* fnptr, GSocketControlMessage* arg0, gpointer arg1) {
@@ -314,6 +316,27 @@ func (message *SocketControlMessage) size() uint {
 	_gsize = uint(_cret)
 
 	return _gsize
+}
+
+// The function returns the following values:
+//
+func (message *SocketControlMessage) typ() int {
+	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
+	fnarg := gclass.get_type
+
+	var _arg0 *C.GSocketControlMessage // out
+	var _cret C.int                    // in
+
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+
+	_cret = C._gotk4_gio2_SocketControlMessage_virtual_get_type(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(message)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }
 
 // Serialize converts the data in the message to bytes placed in the message.

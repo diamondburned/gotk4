@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -147,6 +146,30 @@ func NewTextTag(name string) *TextTag {
 	_textTag = wrapTextTag(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textTag
+}
+
+// Changed emits the TextTagTable::tag-changed signal on the TextTagTable where
+// the tag is included.
+//
+// The signal is already emitted when setting a TextTag property. This function
+// is useful for a TextTag subclass.
+//
+// The function takes the following parameters:
+//
+//    - sizeChanged: whether the change affects the TextView layout.
+//
+func (tag *TextTag) Changed(sizeChanged bool) {
+	var _arg0 *C.GtkTextTag // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
+	if sizeChanged {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_text_tag_changed(_arg0, _arg1)
+	runtime.KeepAlive(tag)
+	runtime.KeepAlive(sizeChanged)
 }
 
 // Event emits the “event” signal on the TextTag.

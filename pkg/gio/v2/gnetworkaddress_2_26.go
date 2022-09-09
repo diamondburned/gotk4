@@ -14,30 +14,6 @@ import (
 // #include <gio/gio.h>
 import "C"
 
-// Scheme gets addr's scheme.
-//
-// The function returns the following values:
-//
-//    - utf8 (optional) addr's scheme (NULL if not built from URI).
-//
-func (addr *NetworkAddress) Scheme() string {
-	var _arg0 *C.GNetworkAddress // out
-	var _cret *C.gchar           // in
-
-	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
-
-	_cret = C.g_network_address_get_scheme(_arg0)
-	runtime.KeepAlive(addr)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
 // NetworkAddressParseURI creates a new Connectable for connecting to the given
 // uri. May fail and return NULL in case parsing uri fails.
 //

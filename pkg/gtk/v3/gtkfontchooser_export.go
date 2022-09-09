@@ -67,6 +67,8 @@ func _gotk4_gtk3_FontFilterFunc(arg1 *C.PangoFontFamily, arg2 *C.PangoFontFace, 
 
 	ok := fn(_family, _face)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

@@ -55,39 +55,3 @@ func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 
 	return _ok
 }
-
-// SetAlternativeButtonOrderFromArray sets an alternative button order. If the
-// Settings:gtk-alternative-button-order setting is set to TRUE, the dialog
-// buttons are reordered according to the order of the response ids in
-// new_order.
-//
-// See gtk_dialog_set_alternative_button_order() for more information.
-//
-// This function is for use by language bindings.
-//
-// Deprecated: Deprecated.
-//
-// The function takes the following parameters:
-//
-//    - newOrder: array of response ids of dialog’s buttons.
-//
-func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
-	var _arg0 *C.GtkDialog // out
-	var _arg2 *C.gint      // out
-	var _arg1 C.gint
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	_arg1 = (C.gint)(len(newOrder))
-	_arg2 = (*C.gint)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		out := unsafe.Slice((*C.gint)(_arg2), len(newOrder))
-		for i := range newOrder {
-			out[i] = C.gint(newOrder[i])
-		}
-	}
-
-	C.gtk_dialog_set_alternative_button_order_from_array(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(dialog)
-	runtime.KeepAlive(newOrder)
-}

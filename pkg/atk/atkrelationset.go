@@ -3,7 +3,6 @@
 package atk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -113,6 +112,31 @@ func (set *RelationSet) Add(relation *Relation) {
 	C.atk_relation_set_add(_arg0, _arg1)
 	runtime.KeepAlive(set)
 	runtime.KeepAlive(relation)
+}
+
+// AddRelationByType: add a new relation of the specified type with the
+// specified target to the current relation set if the relation set does not
+// contain a relation of that type. If it is does contain a relation of that
+// typea the target is added to the relation.
+//
+// The function takes the following parameters:
+//
+//    - relationship: RelationType.
+//    - target: Object.
+//
+func (set *RelationSet) AddRelationByType(relationship RelationType, target *AtkObject) {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
 }
 
 // Contains determines whether the relation set contains a relation that matches

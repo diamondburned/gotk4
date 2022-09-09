@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -114,6 +113,26 @@ func wrapVolumeButton(obj *coreglib.Object) *VolumeButton {
 
 func marshalVolumeButton(p uintptr) (interface{}, error) {
 	return wrapVolumeButton(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewVolumeButton creates a VolumeButton, with a range between 0.0 and 1.0,
+// with a stepping of 0.02. Volume values can be obtained and modified using the
+// functions from ScaleButton.
+//
+// The function returns the following values:
+//
+//    - volumeButton: new VolumeButton.
+//
+func NewVolumeButton() *VolumeButton {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_volume_button_new()
+
+	var _volumeButton *VolumeButton // out
+
+	_volumeButton = wrapVolumeButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _volumeButton
 }
 
 // VolumeButtonClass: instance of this type is always passed by reference.

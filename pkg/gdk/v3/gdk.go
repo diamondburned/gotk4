@@ -4,10 +4,10 @@ package gdk
 
 import (
 	"fmt"
+	"runtime"
 	_ "runtime/cgo"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -48,6 +48,8 @@ func GLErrorQuark() glib.Quark {
 	var _quark glib.Quark // out
 
 	_quark = uint32(_cret)
+	type _ = glib.Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -101,6 +103,82 @@ func wrapDeviceTool(obj *coreglib.Object) *DeviceTool {
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
 	return wrapDeviceTool(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// HardwareID gets the hardware ID of this tool, or 0 if it's not known. When
+// non-zero, the identificator is unique for the given tool model, meaning that
+// two identical tools will share the same hardware_id, but will have different
+// serial numbers (see gdk_device_tool_get_serial()).
+//
+// This is a more concrete (and device specific) method to identify a DeviceTool
+// than gdk_device_tool_get_tool_type(), as a tablet may support multiple
+// devices with the same DeviceToolType, but having different hardware
+// identificators.
+//
+// The function returns the following values:
+//
+//    - guint64: hardware identificator of this tool.
+//
+func (tool *DeviceTool) HardwareID() uint64 {
+	var _arg0 *C.GdkDeviceTool // out
+	var _cret C.guint64        // in
+
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
+
+	_cret = C.gdk_device_tool_get_hardware_id(_arg0)
+	runtime.KeepAlive(tool)
+
+	var _guint64 uint64 // out
+
+	_guint64 = uint64(_cret)
+
+	return _guint64
+}
+
+// Serial gets the serial of this tool, this value can be used to identify a
+// physical tool (eg. a tablet pen) across program executions.
+//
+// The function returns the following values:
+//
+//    - guint64: serial ID for this tool.
+//
+func (tool *DeviceTool) Serial() uint64 {
+	var _arg0 *C.GdkDeviceTool // out
+	var _cret C.guint64        // in
+
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
+
+	_cret = C.gdk_device_tool_get_serial(_arg0)
+	runtime.KeepAlive(tool)
+
+	var _guint64 uint64 // out
+
+	_guint64 = uint64(_cret)
+
+	return _guint64
+}
+
+// ToolType gets the DeviceToolType of the tool.
+//
+// The function returns the following values:
+//
+//    - deviceToolType: physical type for this tool. This can be used to figure
+//      out what sort of pen is being used, such as an airbrush or a pencil.
+//
+func (tool *DeviceTool) ToolType() DeviceToolType {
+	var _arg0 *C.GdkDeviceTool    // out
+	var _cret C.GdkDeviceToolType // in
+
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(coreglib.InternObject(tool).Native()))
+
+	_cret = C.gdk_device_tool_get_tool_type(_arg0)
+	runtime.KeepAlive(tool)
+
+	var _deviceToolType DeviceToolType // out
+
+	_deviceToolType = DeviceToolType(_cret)
+
+	return _deviceToolType
 }
 
 type DragContext struct {
@@ -158,81 +236,343 @@ func (context *DragContext) ConnectDropPerformed(f func(time int)) coreglib.Sign
 	return coreglib.ConnectGeneratedClosure(context, "drop-performed", false, unsafe.Pointer(C._gotk4_gdk3_DragContext_ConnectDropPerformed), f)
 }
 
-//export _gotk4_gdk3_Monitor_ConnectInvalidate
-func _gotk4_gdk3_Monitor_ConnectInvalidate(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
+// Actions determines the bitmask of actions proposed by the source if
+// gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
+//
+// The function returns the following values:
+//
+//    - dragAction: DragAction flags.
+//
+func (context *DragContext) Actions() DragAction {
+	var _arg0 *C.GdkDragContext // out
+	var _cret C.GdkDragAction   // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gdk_drag_context_get_actions(_arg0)
+	runtime.KeepAlive(context)
+
+	var _dragAction DragAction // out
+
+	_dragAction = DragAction(_cret)
+
+	return _dragAction
+}
+
+// DestWindow returns the destination window for the DND operation.
+//
+// The function returns the following values:
+//
+//    - window: Window.
+//
+func (context *DragContext) DestWindow() Windower {
+	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GdkWindow      // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gdk_drag_context_get_dest_window(_arg0)
+	runtime.KeepAlive(context)
+
+	var _window Windower // out
+
 	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
 		}
-		defer closure.TryRepanic()
 
-		f = closure.Func.(func())
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
+		rv, ok := casted.(Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_window = rv
 	}
 
-	f()
+	return _window
 }
 
-//export _gotk4_gdk3_WindowClass_create_surface
-func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2 C.gint) (cret *C.cairo_surface_t) {
-	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
-	if overrides.CreateSurface == nil {
-		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.CreateSurface, got none")
+// Device returns the Device associated to the drag context.
+//
+// The function returns the following values:
+//
+//    - device associated to context.
+//
+func (context *DragContext) Device() Devicer {
+	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GdkDevice      // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gdk_drag_context_get_device(_arg0)
+	runtime.KeepAlive(context)
+
+	var _device Devicer // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Devicer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Devicer)
+			return ok
+		})
+		rv, ok := casted.(Devicer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Devicer")
+		}
+		_device = rv
 	}
 
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	surface := overrides.CreateSurface(_width, _height)
-
-	cret = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-
-	return cret
+	return _device
 }
 
-//export _gotk4_gdk3_WindowClass_from_embedder
-func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
-	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
-	if overrides.FromEmbedder == nil {
-		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.FromEmbedder, got none")
+// DragWindow returns the window on which the drag icon should be rendered
+// during the drag operation. Note that the window may not be available until
+// the drag operation has begun. GDK will move the window in accordance with the
+// ongoing drag operation. The window is owned by context and will be destroyed
+// when the drag operation is over.
+//
+// The function returns the following values:
+//
+//    - window (optional): drag window, or NULL.
+//
+func (context *DragContext) DragWindow() Windower {
+	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GdkWindow      // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gdk_drag_context_get_drag_window(_arg0)
+	runtime.KeepAlive(context)
+
+	var _window Windower // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
+			rv, ok := casted.(Windower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+			}
+			_window = rv
+		}
 	}
 
-	var _embedderX float64   // out
-	var _embedderY float64   // out
-	var _offscreenX *float64 // out
-	var _offscreenY *float64 // out
-
-	_embedderX = float64(arg1)
-	_embedderY = float64(arg2)
-	_offscreenX = (*float64)(unsafe.Pointer(arg3))
-	_offscreenY = (*float64)(unsafe.Pointer(arg4))
-
-	overrides.FromEmbedder(_embedderX, _embedderY, _offscreenX, _offscreenY)
+	return _window
 }
 
-//export _gotk4_gdk3_WindowClass_to_embedder
-func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
-	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
-	if overrides.ToEmbedder == nil {
-		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.ToEmbedder, got none")
+// Protocol returns the drag protocol that is used by this context.
+//
+// The function returns the following values:
+//
+//    - dragProtocol: drag protocol.
+//
+func (context *DragContext) Protocol() DragProtocol {
+	var _arg0 *C.GdkDragContext // out
+	var _cret C.GdkDragProtocol // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gdk_drag_context_get_protocol(_arg0)
+	runtime.KeepAlive(context)
+
+	var _dragProtocol DragProtocol // out
+
+	_dragProtocol = DragProtocol(_cret)
+
+	return _dragProtocol
+}
+
+// SelectedAction determines the action chosen by the drag destination.
+//
+// The function returns the following values:
+//
+//    - dragAction: DragAction value.
+//
+func (context *DragContext) SelectedAction() DragAction {
+	var _arg0 *C.GdkDragContext // out
+	var _cret C.GdkDragAction   // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gdk_drag_context_get_selected_action(_arg0)
+	runtime.KeepAlive(context)
+
+	var _dragAction DragAction // out
+
+	_dragAction = DragAction(_cret)
+
+	return _dragAction
+}
+
+// SourceWindow returns the Window where the DND operation started.
+//
+// The function returns the following values:
+//
+//    - window: Window.
+//
+func (context *DragContext) SourceWindow() Windower {
+	var _arg0 *C.GdkDragContext // out
+	var _cret *C.GdkWindow      // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gdk_drag_context_get_source_window(_arg0)
+	runtime.KeepAlive(context)
+
+	var _window Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
+		rv, ok := casted.(Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_window = rv
 	}
 
-	var _offscreenX float64 // out
-	var _offscreenY float64 // out
-	var _embedderX *float64 // out
-	var _embedderY *float64 // out
+	return _window
+}
 
-	_offscreenX = float64(arg1)
-	_offscreenY = float64(arg2)
-	_embedderX = (*float64)(unsafe.Pointer(arg3))
-	_embedderY = (*float64)(unsafe.Pointer(arg4))
+// SuggestedAction determines the suggested drag action of the context.
+//
+// The function returns the following values:
+//
+//    - dragAction: DragAction value.
+//
+func (context *DragContext) SuggestedAction() DragAction {
+	var _arg0 *C.GdkDragContext // out
+	var _cret C.GdkDragAction   // in
 
-	overrides.ToEmbedder(_offscreenX, _offscreenY, _embedderX, _embedderY)
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gdk_drag_context_get_suggested_action(_arg0)
+	runtime.KeepAlive(context)
+
+	var _dragAction DragAction // out
+
+	_dragAction = DragAction(_cret)
+
+	return _dragAction
+}
+
+// ManageDND requests the drag and drop operation to be managed by context. When
+// a drag and drop operation becomes managed, the DragContext will internally
+// handle all input and source-side EventDND events as required by the windowing
+// system.
+//
+// Once the drag and drop operation is managed, the drag context will emit the
+// following signals:
+//
+// - The DragContext::action-changed signal whenever the final action to be
+// performed by the drag and drop operation changes.
+//
+// - The DragContext::drop-performed signal after the user performs the drag and
+// drop gesture (typically by releasing the mouse button).
+//
+// - The DragContext::dnd-finished signal after the drag and drop operation
+// concludes (after all Selection transfers happen).
+//
+// - The DragContext::cancel signal if the drag and drop operation is finished
+// but doesn't happen over an accepting destination, or is cancelled through
+// other means.
+//
+// The function takes the following parameters:
+//
+//    - ipcWindow: window to use for IPC messaging/events.
+//    - actions supported by the drag source.
+//
+// The function returns the following values:
+//
+//    - ok if the drag and drop operation is managed.
+//
+func (context *DragContext) ManageDND(ipcWindow Windower, actions DragAction) bool {
+	var _arg0 *C.GdkDragContext // out
+	var _arg1 *C.GdkWindow      // out
+	var _arg2 C.GdkDragAction   // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(ipcWindow).Native()))
+	_arg2 = C.GdkDragAction(actions)
+
+	_cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(ipcWindow)
+	runtime.KeepAlive(actions)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetDevice associates a Device to context, so all Drag and Drop events for
+// context are emitted as if they came from this device.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
+func (context *DragContext) SetDevice(device Devicer) {
+	var _arg0 *C.GdkDragContext // out
+	var _arg1 *C.GdkDevice      // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	C.gdk_drag_context_set_device(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(device)
+}
+
+// SetHotspot sets the position of the drag window that will be kept under the
+// cursor hotspot. Initially, the hotspot is at the top left corner of the drag
+// window.
+//
+// The function takes the following parameters:
+//
+//    - hotX: x coordinate of the drag window hotspot.
+//    - hotY: y coordinate of the drag window hotspot.
+//
+func (context *DragContext) SetHotspot(hotX, hotY int) {
+	var _arg0 *C.GdkDragContext // out
+	var _arg1 C.gint            // out
+	var _arg2 C.gint            // out
+
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = C.gint(hotX)
+	_arg2 = C.gint(hotY)
+
+	C.gdk_drag_context_set_hotspot(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(hotX)
+	runtime.KeepAlive(hotY)
 }

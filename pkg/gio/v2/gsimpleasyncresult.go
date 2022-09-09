@@ -3,10 +3,12 @@
 package gio
 
 import (
+	"context"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -451,6 +453,44 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 	}
 
 	return _goerr
+}
+
+// SetCheckCancellable sets a #GCancellable to check before dispatching results.
+//
+// This function has one very specific purpose: the provided cancellable is
+// checked at the time of g_simple_async_result_propagate_error() If it is
+// cancelled, these functions will return an "Operation was cancelled" error
+// (G_IO_ERROR_CANCELLED).
+//
+// Implementors of cancellable asynchronous functions should use this in order
+// to provide a guarantee to their callers that cancelling an async operation
+// will reliably result in an error being returned for that operation (even if a
+// positive result for the operation has already been sent as an idle to the
+// main context to be dispatched).
+//
+// The checking described above is done regardless of any call to the unrelated
+// g_simple_async_result_set_handle_cancellation() function.
+//
+// Deprecated: Use #GTask instead.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) to check, or NULL to unset.
+//
+func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
+	var _arg0 *C.GSimpleAsyncResult // out
+	var _arg1 *C.GCancellable       // out
+
+	_arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(coreglib.InternObject(simple).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	C.g_simple_async_result_set_check_cancellable(_arg0, _arg1)
+	runtime.KeepAlive(simple)
+	runtime.KeepAlive(ctx)
 }
 
 // SetFromError sets the result from a #GError.

@@ -3,13 +3,13 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -123,6 +123,67 @@ func marshalPlug(p uintptr) (interface{}, error) {
 // ConnectEmbedded gets emitted when the plug becomes embedded in a socket.
 func (plug *Plug) ConnectEmbedded(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(plug, "embedded", false, unsafe.Pointer(C._gotk4_gtk3_Plug_ConnectEmbedded), f)
+}
+
+// Embedded determines whether the plug is embedded in a socket.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the plug is embedded in a socket.
+//
+func (plug *Plug) Embedded() bool {
+	var _arg0 *C.GtkPlug // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+
+	_cret = C.gtk_plug_get_embedded(_arg0)
+	runtime.KeepAlive(plug)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SocketWindow retrieves the socket the plug is embedded in.
+//
+// The function returns the following values:
+//
+//    - window (optional) of the socket, or NULL.
+//
+func (plug *Plug) SocketWindow() gdk.Windower {
+	var _arg0 *C.GtkPlug   // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+
+	_cret = C.gtk_plug_get_socket_window(_arg0)
+	runtime.KeepAlive(plug)
+
+	var _window gdk.Windower // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(gdk.Windower)
+				return ok
+			})
+			rv, ok := casted.(gdk.Windower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+			}
+			_window = rv
+		}
+	}
+
+	return _window
 }
 
 func (plug *Plug) embedded() {

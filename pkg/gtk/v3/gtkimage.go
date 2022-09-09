@@ -4,11 +4,11 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -297,6 +297,75 @@ func NewImageFromFile(filename string) *Image {
 	return _image
 }
 
+// NewImageFromGIcon creates a Image displaying an icon from the current icon
+// theme. If the icon name isn’t known, a “broken image” icon will be displayed
+// instead. If the current icon theme is changed, the icon will be updated
+// appropriately.
+//
+// The function takes the following parameters:
+//
+//    - icon: icon.
+//    - size: stock icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - image: new Image displaying the themed icon.
+//
+func NewImageFromGIcon(icon gio.Iconner, size int) *Image {
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
+	var _cret *C.GtkWidget  // in
+
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	_cret = C.gtk_image_new_from_gicon(_arg1, _arg2)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(size)
+
+	var _image *Image // out
+
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _image
+}
+
+// NewImageFromIconName creates a Image displaying an icon from the current icon
+// theme. If the icon name isn’t known, a “broken image” icon will be displayed
+// instead. If the current icon theme is changed, the icon will be updated
+// appropriately.
+//
+// The function takes the following parameters:
+//
+//    - iconName (optional): icon name or NULL.
+//    - size: stock icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - image: new Image displaying the themed icon.
+//
+func NewImageFromIconName(iconName string, size int) *Image {
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
+	var _cret *C.GtkWidget  // in
+
+	if iconName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	_arg2 = C.GtkIconSize(size)
+
+	_cret = C.gtk_image_new_from_icon_name(_arg1, _arg2)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+
+	var _image *Image // out
+
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _image
+}
+
 // NewImageFromIconSet creates a Image displaying an icon set. Sample stock
 // sizes are K_ICON_SIZE_MENU, K_ICON_SIZE_SMALL_TOOLBAR. Instead of using this
 // function, usually it’s better to create a IconFactory, put your icon sets in
@@ -372,6 +441,46 @@ func NewImageFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Image {
 	return _image
 }
 
+// NewImageFromResource creates a new Image displaying the resource file
+// resource_path. If the file isn’t found or can’t be loaded, the resulting
+// Image will display a “broken image” icon. This function never returns NULL,
+// it always returns a valid Image widget.
+//
+// If the file contains an animation, the image will contain an animation.
+//
+// If you need to detect failures to load the file, use
+// gdk_pixbuf_new_from_file() to load the file yourself, then create the Image
+// from the pixbuf. (Or for animations, use
+// gdk_pixbuf_animation_new_from_file()).
+//
+// The storage type (gtk_image_get_storage_type()) of the returned image is not
+// defined, it will be whatever is appropriate for displaying the file.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath: resource path.
+//
+// The function returns the following values:
+//
+//    - image: new Image.
+//
+func NewImageFromResource(resourcePath string) *Image {
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_image_new_from_resource(_arg1)
+	runtime.KeepAlive(resourcePath)
+
+	var _image *Image // out
+
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _image
+}
+
 // NewImageFromStock creates a Image displaying a stock icon. Sample stock icon
 // names are K_STOCK_OPEN, K_STOCK_QUIT. Sample stock sizes are
 // K_ICON_SIZE_MENU, K_ICON_SIZE_SMALL_TOOLBAR. If the stock icon name isn’t
@@ -409,6 +518,46 @@ func NewImageFromStock(stockId string, size int) *Image {
 	return _image
 }
 
+// NewImageFromSurface creates a new Image displaying surface. The Image does
+// not assume a reference to the surface; you still need to unref it if you own
+// references. Image will add its own reference rather than adopting yours.
+//
+// The function takes the following parameters:
+//
+//    - surface (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - image: new Image.
+//
+func NewImageFromSurface(surface *cairo.Surface) *Image {
+	var _arg1 *C.cairo_surface_t // out
+	var _cret *C.GtkWidget       // in
+
+	if surface != nil {
+		_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	}
+
+	_cret = C.gtk_image_new_from_surface(_arg1)
+	runtime.KeepAlive(surface)
+
+	var _image *Image // out
+
+	_image = wrapImage(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _image
+}
+
+// Clear resets the image to be empty.
+func (image *Image) Clear() {
+	var _arg0 *C.GtkImage // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	C.gtk_image_clear(_arg0)
+	runtime.KeepAlive(image)
+}
+
 // Animation gets the PixbufAnimation being displayed by the Image. The storage
 // type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ANIMATION (see
 // gtk_image_get_storage_type()). The caller of this function does not own a
@@ -440,6 +589,73 @@ func (image *Image) Animation() *gdkpixbuf.PixbufAnimation {
 	}
 
 	return _pixbufAnimation
+}
+
+// GIcon gets the #GIcon and size being displayed by the Image. The storage type
+// of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
+// gtk_image_get_storage_type()). The caller of this function does not own a
+// reference to the returned #GIcon.
+//
+// The function returns the following values:
+//
+//    - gicon (optional): place to store a #GIcon, or NULL.
+//    - size (optional): place to store an icon size (IconSize), or NULL.
+//
+func (image *Image) GIcon() (*gio.Icon, int) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GIcon      // in
+	var _arg2 C.GtkIconSize // in
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	C.gtk_image_get_gicon(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(image)
+
+	var _gicon *gio.Icon // out
+	var _size int        // out
+
+	if _arg1 != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_arg1))
+			_gicon = &gio.Icon{
+				Object: obj,
+			}
+		}
+	}
+	_size = int(_arg2)
+
+	return _gicon, _size
+}
+
+// IconName gets the icon name and size being displayed by the Image. The
+// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME (see
+// gtk_image_get_storage_type()). The returned string is owned by the Image and
+// should not be freed.
+//
+// The function returns the following values:
+//
+//    - iconName (optional): place to store an icon name, or NULL.
+//    - size (optional): place to store an icon size (IconSize), or NULL.
+//
+func (image *Image) IconName() (string, int) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.gchar      // in
+	var _arg2 C.GtkIconSize // in
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	C.gtk_image_get_icon_name(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(image)
+
+	var _iconName string // out
+	var _size int        // out
+
+	if _arg1 != nil {
+		_iconName = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
+	}
+	_size = int(_arg2)
+
+	return _iconName, _size
 }
 
 // IconSet gets the icon set and size being displayed by the Image. The storage
@@ -516,6 +732,28 @@ func (image *Image) Pixbuf() *gdkpixbuf.Pixbuf {
 	}
 
 	return _pixbuf
+}
+
+// PixelSize gets the pixel size used for named icons.
+//
+// The function returns the following values:
+//
+//    - gint: pixel size used for named icons.
+//
+func (image *Image) PixelSize() int {
+	var _arg0 *C.GtkImage // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C.gtk_image_get_pixel_size(_arg0)
+	runtime.KeepAlive(image)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }
 
 // Stock gets the stock icon name and size being displayed by the Image. The
@@ -615,6 +853,53 @@ func (image *Image) SetFromFile(filename string) {
 	runtime.KeepAlive(filename)
 }
 
+// SetFromGIcon: see gtk_image_new_from_gicon() for details.
+//
+// The function takes the following parameters:
+//
+//    - icon: icon.
+//    - size: icon size (IconSize).
+//
+func (image *Image) SetFromGIcon(icon gio.Iconner, size int) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	_arg2 = C.GtkIconSize(size)
+
+	C.gtk_image_set_from_gicon(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(size)
+}
+
+// SetFromIconName: see gtk_image_new_from_icon_name() for details.
+//
+// The function takes the following parameters:
+//
+//    - iconName (optional): icon name or NULL.
+//    - size: icon size (IconSize).
+//
+func (image *Image) SetFromIconName(iconName string, size int) {
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	if iconName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	_arg2 = C.GtkIconSize(size)
+
+	C.gtk_image_set_from_icon_name(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+}
+
 // SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 //
 // Deprecated: Use gtk_image_set_from_icon_name() instead.
@@ -703,6 +988,46 @@ func (image *Image) SetFromStock(stockId string, size int) {
 	runtime.KeepAlive(image)
 	runtime.KeepAlive(stockId)
 	runtime.KeepAlive(size)
+}
+
+// SetFromSurface: see gtk_image_new_from_surface() for details.
+//
+// The function takes the following parameters:
+//
+//    - surface (optional): cairo_surface_t or NULL.
+//
+func (image *Image) SetFromSurface(surface *cairo.Surface) {
+	var _arg0 *C.GtkImage        // out
+	var _arg1 *C.cairo_surface_t // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	if surface != nil {
+		_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	}
+
+	C.gtk_image_set_from_surface(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(surface)
+}
+
+// SetPixelSize sets the pixel size to use for named icons. If the pixel size is
+// set to a value != -1, it is used instead of the icon size set by
+// gtk_image_set_from_icon_name().
+//
+// The function takes the following parameters:
+//
+//    - pixelSize: new pixel size.
+//
+func (image *Image) SetPixelSize(pixelSize int) {
+	var _arg0 *C.GtkImage // out
+	var _arg1 C.gint      // out
+
+	_arg0 = (*C.GtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = C.gint(pixelSize)
+
+	C.gtk_image_set_pixel_size(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(pixelSize)
 }
 
 // ImageClass: instance of this type is always passed by reference.

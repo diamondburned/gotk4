@@ -3,53 +3,14 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
-// gboolean _gotk4_gio2_SocketService_virtual_incoming(void* fnptr, GSocketService* arg0, GSocketConnection* arg1, GObject* arg2) {
-//   return ((gboolean (*)(GSocketService*, GSocketConnection*, GObject*))(fnptr))(arg0, arg1, arg2);
-// };
 import "C"
-
-// The function takes the following parameters:
-//
-//    - connection
-//    - sourceObject
-//
-// The function returns the following values:
-//
-func (service *SocketService) incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool {
-	gclass := (*C.GSocketServiceClass)(coreglib.PeekParentClass(service))
-	fnarg := gclass.incoming
-
-	var _arg0 *C.GSocketService    // out
-	var _arg1 *C.GSocketConnection // out
-	var _arg2 *C.GObject           // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GSocketService)(unsafe.Pointer(coreglib.InternObject(service).Native()))
-	_arg1 = (*C.GSocketConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
-
-	_cret = C._gotk4_gio2_SocketService_virtual_incoming(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(service)
-	runtime.KeepAlive(connection)
-	runtime.KeepAlive(sourceObject)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
 
 // SocketServiceClass class structure for Service.
 //

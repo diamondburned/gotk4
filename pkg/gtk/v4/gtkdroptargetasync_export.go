@@ -48,6 +48,8 @@ func _gotk4_gtk4_DropTargetAsync_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop,
 
 	ok := f(_drop)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -93,6 +95,8 @@ func _gotk4_gtk4_DropTargetAsync_ConnectDragEnter(arg0 C.gpointer, arg1 *C.GdkDr
 	_y = float64(arg3)
 
 	dragAction := f(_drop, _x, _y)
+
+	var _ gdk.DragAction
 
 	cret = C.GdkDragAction(dragAction)
 
@@ -174,6 +178,8 @@ func _gotk4_gtk4_DropTargetAsync_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkD
 
 	dragAction := f(_drop, _x, _y)
 
+	var _ gdk.DragAction
+
 	cret = C.GdkDragAction(dragAction)
 
 	return cret
@@ -217,6 +223,8 @@ func _gotk4_gtk4_DropTargetAsync_ConnectDrop(arg0 C.gpointer, arg1 *C.GdkDrop, a
 	_y = float64(arg3)
 
 	ok := f(_drop, _x, _y)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

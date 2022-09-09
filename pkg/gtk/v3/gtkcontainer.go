@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -506,6 +505,35 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 	runtime.KeepAlive(value)
 }
 
+// ChildNotify emits a Widget::child-notify signal for the [child
+// property][child-properties] child_property on the child.
+//
+// This is an analogue of g_object_notify() for child properties.
+//
+// Also see gtk_widget_child_notify().
+//
+// The function takes the following parameters:
+//
+//    - child widget.
+//    - childProperty: name of a child property installed on the class of
+//      container.
+//
+func (container *Container) ChildNotify(child Widgetter, childProperty string) {
+	var _arg0 *C.GtkContainer // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.gchar        // out
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(childProperty)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_container_child_notify(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(container)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(childProperty)
+}
+
 // ChildSetProperty sets a child property for child and container.
 //
 // The function takes the following parameters:
@@ -740,6 +768,46 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	}
 
 	return _focusableWidgets, _ok
+}
+
+// FocusChild returns the current focus child widget inside container. This is
+// not the currently focused widget. That can be obtained by calling
+// gtk_window_get_focus().
+//
+// The function returns the following values:
+//
+//    - widget (optional): child widget which will receive the focus inside
+//      container when the container is focused, or NULL if none is set.
+//
+func (container *Container) FocusChild() Widgetter {
+	var _arg0 *C.GtkContainer // out
+	var _cret *C.GtkWidget    // in
+
+	_arg0 = (*C.GtkContainer)(unsafe.Pointer(coreglib.InternObject(container).Native()))
+
+	_cret = C.gtk_container_get_focus_child(_arg0)
+	runtime.KeepAlive(container)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
 }
 
 // FocusHAdjustment retrieves the horizontal focus adjustment for the container.

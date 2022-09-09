@@ -49,6 +49,8 @@ func _gotk4_gtk3_Label_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar, arg2 
 
 	ok := f(_uri)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

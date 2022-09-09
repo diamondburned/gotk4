@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -26,6 +25,9 @@ import (
 // };
 // GVariant* _gotk4_gio2_DBusInterfaceSkeleton_virtual_get_properties(void* fnptr, GDBusInterfaceSkeleton* arg0) {
 //   return ((GVariant* (*)(GDBusInterfaceSkeleton*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_DBusInterfaceSkeleton_virtual_g_authorize_method(void* fnptr, GDBusInterfaceSkeleton* arg0, GDBusMethodInvocation* arg1) {
+//   return ((gboolean (*)(GDBusInterfaceSkeleton*, GDBusMethodInvocation*))(fnptr))(arg0, arg1);
 // };
 // void _gotk4_gio2_DBusInterfaceSkeleton_virtual_flush(void* fnptr, GDBusInterfaceSkeleton* arg0) {
 //   ((void (*)(GDBusInterfaceSkeleton*))(fnptr))(arg0);
@@ -277,6 +279,36 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	return _dBusConnection
 }
 
+// Connections gets a list of the connections that interface_ is exported on.
+//
+// The function returns the following values:
+//
+//    - list of all the connections that interface_ is exported on. The returned
+//      list should be freed with g_list_free() after each element has been freed
+//      with g_object_unref().
+//
+func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _cret *C.GList                  // in
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+
+	_cret = C.g_dbus_interface_skeleton_get_connections(_arg0)
+	runtime.KeepAlive(interface_)
+
+	var _list []*DBusConnection // out
+
+	_list = make([]*DBusConnection, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GDBusConnection)(v)
+		var dst *DBusConnection // out
+		dst = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(src)))
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
 // Flags gets the BusInterfaceSkeletonFlags that describes what the behavior of
 // interface_.
 //
@@ -385,6 +417,37 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	return _variant
 }
 
+// HasConnection checks if interface_ is exported on connection.
+//
+// The function takes the following parameters:
+//
+//    - connection: BusConnection.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if interface_ is exported on connection, FALSE otherwise.
+//
+func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnection) bool {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _arg1 *C.GDBusConnection        // out
+	var _cret C.gboolean                // in
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+
+	_cret = C.g_dbus_interface_skeleton_has_connection(_arg0, _arg1)
+	runtime.KeepAlive(interface_)
+	runtime.KeepAlive(connection)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // SetFlags sets flags describing what the behavior of skeleton should be.
 //
 // The function takes the following parameters:
@@ -416,6 +479,27 @@ func (interface_ *DBusInterfaceSkeleton) Unexport() {
 	runtime.KeepAlive(interface_)
 }
 
+// UnexportFromConnection stops exporting interface_ on connection.
+//
+// To stop exporting on all connections the interface is exported on, use
+// g_dbus_interface_skeleton_unexport().
+//
+// The function takes the following parameters:
+//
+//    - connection: BusConnection.
+//
+func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBusConnection) {
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _arg1 *C.GDBusConnection        // out
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+
+	C.g_dbus_interface_skeleton_unexport_from_connection(_arg0, _arg1)
+	runtime.KeepAlive(interface_)
+	runtime.KeepAlive(connection)
+}
+
 // Flush: if interface_ has outstanding changes, request for these changes to be
 // emitted immediately.
 //
@@ -433,6 +517,34 @@ func (interface_ *DBusInterfaceSkeleton) flush() {
 
 	C._gotk4_gio2_DBusInterfaceSkeleton_virtual_flush(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(interface_)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (interface_ *DBusInterfaceSkeleton) gAuthorizeMethod(invocation *DBusMethodInvocation) bool {
+	gclass := (*C.GDBusInterfaceSkeletonClass)(coreglib.PeekParentClass(interface_))
+	fnarg := gclass.g_authorize_method
+
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _arg1 *C.GDBusMethodInvocation  // out
+	var _cret C.gboolean                // in
+
+	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	_arg1 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+
+	_cret = C._gotk4_gio2_DBusInterfaceSkeleton_virtual_g_authorize_method(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(interface_)
+	runtime.KeepAlive(invocation)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface implemented

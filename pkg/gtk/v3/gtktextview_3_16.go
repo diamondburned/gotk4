@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -55,49 +54,4 @@ func (t TextExtendSelection) String() string {
 	default:
 		return fmt.Sprintf("TextExtendSelection(%d)", t)
 	}
-}
-
-// Monospace gets the value of the TextView:monospace property.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if monospace fonts are desired.
-//
-func (textView *TextView) Monospace() bool {
-	var _arg0 *C.GtkTextView // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-
-	_cret = C.gtk_text_view_get_monospace(_arg0)
-	runtime.KeepAlive(textView)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetMonospace sets the TextView:monospace property, which indicates that the
-// text view should use monospace fonts.
-//
-// The function takes the following parameters:
-//
-//    - monospace: TRUE to request monospace styling.
-//
-func (textView *TextView) SetMonospace(monospace bool) {
-	var _arg0 *C.GtkTextView // out
-	var _arg1 C.gboolean     // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-	if monospace {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_text_view_set_monospace(_arg0, _arg1)
-	runtime.KeepAlive(textView)
-	runtime.KeepAlive(monospace)
 }

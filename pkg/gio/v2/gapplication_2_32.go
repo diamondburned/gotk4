@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -12,43 +11,6 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 import "C"
-
-// Quit: immediately quits the application.
-//
-// Upon return to the mainloop, g_application_run() will return, calling only
-// the 'shutdown' function before doing so.
-//
-// The hold count is ignored. Take care if your code has called
-// g_application_hold() on the application and is therefore still expecting it
-// to exist. (Note that you may have called g_application_hold() indirectly, for
-// example through gtk_application_add_window().)
-//
-// The result of calling g_application_run() again after it returns is
-// unspecified.
-func (application *Application) Quit() {
-	var _arg0 *C.GApplication // out
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-
-	C.g_application_quit(_arg0)
-	runtime.KeepAlive(application)
-}
-
-// SetDefault sets or unsets the default application for the process, as
-// returned by g_application_get_default().
-//
-// This function does not take its own reference on application. If application
-// is destroyed then the default application will revert back to NULL.
-func (application *Application) SetDefault() {
-	var _arg0 *C.GApplication // out
-
-	if application != nil {
-		_arg0 = (*C.GApplication)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	}
-
-	C.g_application_set_default(_arg0)
-	runtime.KeepAlive(application)
-}
 
 // ApplicationGetDefault returns the default #GApplication instance for this
 // process.

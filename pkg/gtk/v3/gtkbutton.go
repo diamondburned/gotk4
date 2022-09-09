@@ -3,13 +3,13 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -267,6 +267,47 @@ func NewButton() *Button {
 	return _button
 }
 
+// NewButtonFromIconName creates a new button containing an icon from the
+// current icon theme.
+//
+// If the icon name isn’t known, a “broken image” icon will be displayed
+// instead. If the current icon theme is changed, the icon will be updated
+// appropriately.
+//
+// This function is a convenience wrapper around gtk_button_new() and
+// gtk_button_set_image().
+//
+// The function takes the following parameters:
+//
+//    - iconName (optional): icon name or NULL.
+//    - size: icon size (IconSize).
+//
+// The function returns the following values:
+//
+//    - button: new Button displaying the themed icon.
+//
+func NewButtonFromIconName(iconName string, size int) *Button {
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
+	var _cret *C.GtkWidget  // in
+
+	if iconName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	_arg2 = C.GtkIconSize(size)
+
+	_cret = C.gtk_button_new_from_icon_name(_arg1, _arg2)
+	runtime.KeepAlive(iconName)
+	runtime.KeepAlive(size)
+
+	var _button *Button // out
+
+	_button = wrapButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _button
+}
+
 // NewButtonFromStock creates a new Button containing the image and text from a
 // [stock item][gtkstock]. Some stock ids have preprocessor macros like
 // K_STOCK_OK and K_STOCK_APPLY.
@@ -382,6 +423,188 @@ func (button *Button) Enter() {
 
 	C.gtk_button_enter(_arg0)
 	runtime.KeepAlive(button)
+}
+
+// Alignment gets the alignment of the child in the button.
+//
+// Deprecated: Access the child widget directly if you need to control its
+// alignment.
+//
+// The function returns the following values:
+//
+//    - xalign: return location for horizontal alignment.
+//    - yalign: return location for vertical alignment.
+//
+func (button *Button) Alignment() (xalign, yalign float32) {
+	var _arg0 *C.GtkButton // out
+	var _arg1 C.gfloat     // in
+	var _arg2 C.gfloat     // in
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	C.gtk_button_get_alignment(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(button)
+
+	var _xalign float32 // out
+	var _yalign float32 // out
+
+	_xalign = float32(_arg1)
+	_yalign = float32(_arg2)
+
+	return _xalign, _yalign
+}
+
+// AlwaysShowImage returns whether the button will ignore the
+// Settings:gtk-button-images setting and always show the image, if available.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the button will always show the image.
+//
+func (button *Button) AlwaysShowImage() bool {
+	var _arg0 *C.GtkButton // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	_cret = C.gtk_button_get_always_show_image(_arg0)
+	runtime.KeepAlive(button)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// EventWindow returns the button’s event window if it is realized, NULL
+// otherwise. This function should be rarely needed.
+//
+// The function returns the following values:
+//
+//    - window button’s event window.
+//
+func (button *Button) EventWindow() gdk.Windower {
+	var _arg0 *C.GtkButton // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	_cret = C.gtk_button_get_event_window(_arg0)
+	runtime.KeepAlive(button)
+
+	var _window gdk.Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gdk.Windower)
+			return ok
+		})
+		rv, ok := casted.(gdk.Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_window = rv
+	}
+
+	return _window
+}
+
+// FocusOnClick returns whether the button grabs focus when it is clicked with
+// the mouse. See gtk_button_set_focus_on_click().
+//
+// Deprecated: Use gtk_widget_get_focus_on_click() instead.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the button grabs focus when it is clicked with the mouse.
+//
+func (button *Button) FocusOnClick() bool {
+	var _arg0 *C.GtkButton // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	_cret = C.gtk_button_get_focus_on_click(_arg0)
+	runtime.KeepAlive(button)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Image gets the widget that is currenty set as the image of button. This may
+// have been explicitly set by gtk_button_set_image() or constructed by
+// gtk_button_new_from_stock().
+//
+// The function returns the following values:
+//
+//    - widget (optional) or NULL in case there is no image.
+//
+func (button *Button) Image() Widgetter {
+	var _arg0 *C.GtkButton // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	_cret = C.gtk_button_get_image(_arg0)
+	runtime.KeepAlive(button)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
+// ImagePosition gets the position of the image relative to the text inside the
+// button.
+//
+// The function returns the following values:
+//
+//    - positionType: position.
+//
+func (button *Button) ImagePosition() PositionType {
+	var _arg0 *C.GtkButton      // out
+	var _cret C.GtkPositionType // in
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+
+	_cret = C.gtk_button_get_image_position(_arg0)
+	runtime.KeepAlive(button)
+
+	var _positionType PositionType // out
+
+	_positionType = PositionType(_cret)
+
+	return _positionType
 }
 
 // Label fetches the text from the label of the button, as set by
@@ -519,6 +742,125 @@ func (button *Button) Released() {
 
 	C.gtk_button_released(_arg0)
 	runtime.KeepAlive(button)
+}
+
+// SetAlignment sets the alignment of the child. This property has no effect
+// unless the child is a Misc or a Alignment.
+//
+// Deprecated: Access the child widget directly if you need to control its
+// alignment.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal position of the child, 0.0 is left aligned, 1.0 is
+//      right aligned.
+//    - yalign: vertical position of the child, 0.0 is top aligned, 1.0 is bottom
+//      aligned.
+//
+func (button *Button) SetAlignment(xalign, yalign float32) {
+	var _arg0 *C.GtkButton // out
+	var _arg1 C.gfloat     // out
+	var _arg2 C.gfloat     // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = C.gfloat(xalign)
+	_arg2 = C.gfloat(yalign)
+
+	C.gtk_button_set_alignment(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(xalign)
+	runtime.KeepAlive(yalign)
+}
+
+// SetAlwaysShowImage: if TRUE, the button will ignore the
+// Settings:gtk-button-images setting and always show the image, if available.
+//
+// Use this property if the button would be useless or hard to use without the
+// image.
+//
+// The function takes the following parameters:
+//
+//    - alwaysShow: TRUE if the menuitem should always show the image.
+//
+func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
+	var _arg0 *C.GtkButton // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	if alwaysShow {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_button_set_always_show_image(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(alwaysShow)
+}
+
+// SetFocusOnClick sets whether the button will grab focus when it is clicked
+// with the mouse. Making mouse clicks not grab focus is useful in places like
+// toolbars where you don’t want the keyboard focus removed from the main area
+// of the application.
+//
+// Deprecated: Use gtk_widget_set_focus_on_click() instead.
+//
+// The function takes the following parameters:
+//
+//    - focusOnClick: whether the button grabs focus when clicked with the mouse.
+//
+func (button *Button) SetFocusOnClick(focusOnClick bool) {
+	var _arg0 *C.GtkButton // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	if focusOnClick {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_button_set_focus_on_click(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(focusOnClick)
+}
+
+// SetImage: set the image of button to the given widget. The image will be
+// displayed if the label text is NULL or if Button:always-show-image is TRUE.
+// You don’t have to call gtk_widget_show() on image yourself.
+//
+// The function takes the following parameters:
+//
+//    - image (optional): widget to set as the image for the button, or NULL to
+//      unset.
+//
+func (button *Button) SetImage(image Widgetter) {
+	var _arg0 *C.GtkButton // out
+	var _arg1 *C.GtkWidget // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	if image != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	}
+
+	C.gtk_button_set_image(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(image)
+}
+
+// SetImagePosition sets the position of the image relative to the text inside
+// the button.
+//
+// The function takes the following parameters:
+//
+//    - position: position.
+//
+func (button *Button) SetImagePosition(position PositionType) {
+	var _arg0 *C.GtkButton      // out
+	var _arg1 C.GtkPositionType // out
+
+	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
+	_arg1 = C.GtkPositionType(position)
+
+	C.gtk_button_set_image_position(_arg0, _arg1)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(position)
 }
 
 // SetLabel sets the text of the label of the button to str. This text is also

@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -483,6 +482,74 @@ func (notebook *Notebook) AppendPageMenu(child, tabLabel, menuLabel Widgetter) i
 	return _gint
 }
 
+// DetachTab removes the child from the notebook.
+//
+// This function is very similar to gtk_container_remove(), but additionally
+// informs the notebook that the removal is happening as part of a tab DND
+// operation, which should not be cancelled.
+//
+// The function takes the following parameters:
+//
+//    - child: child.
+//
+func (notebook *Notebook) DetachTab(child Widgetter) {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	C.gtk_notebook_detach_tab(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+}
+
+// ActionWidget gets one of the action widgets. See
+// gtk_notebook_set_action_widget().
+//
+// The function takes the following parameters:
+//
+//    - packType: pack type of the action widget to receive.
+//
+// The function returns the following values:
+//
+//    - widget (optional): action widget with the given pack_type or NULL when
+//      this action widget has not been set.
+//
+func (notebook *Notebook) ActionWidget(packType PackType) Widgetter {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 C.GtkPackType  // out
+	var _cret *C.GtkWidget   // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	_arg1 = C.GtkPackType(packType)
+
+	_cret = C.gtk_notebook_get_action_widget(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(packType)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
 // CurrentPage returns the page number of the current page.
 //
 // The function returns the following values:
@@ -504,6 +571,30 @@ func (notebook *Notebook) CurrentPage() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// GroupName gets the current group name for notebook.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): group name, or NULL if none is set.
+//
+func (notebook *Notebook) GroupName() string {
+	var _arg0 *C.GtkNotebook // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+
+	_cret = C.gtk_notebook_get_group_name(_arg0)
+	runtime.KeepAlive(notebook)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
 }
 
 // MenuLabel retrieves the menu label widget of the page containing child.
@@ -584,6 +675,28 @@ func (notebook *Notebook) MenuLabelText(child Widgetter) string {
 	}
 
 	return _utf8
+}
+
+// NPages gets the number of pages in a notebook.
+//
+// The function returns the following values:
+//
+//    - gint: number of pages in the notebook.
+//
+func (notebook *Notebook) NPages() int {
+	var _arg0 *C.GtkNotebook // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+
+	_cret = C.gtk_notebook_get_n_pages(_arg0)
+	runtime.KeepAlive(notebook)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }
 
 // NthPage returns the child widget contained in page number page_num.
@@ -705,6 +818,61 @@ func (notebook *Notebook) ShowTabs() bool {
 	return _ok
 }
 
+// TabDetachable returns whether the tab contents can be detached from notebook.
+//
+// The function takes the following parameters:
+//
+//    - child Widget.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the tab is detachable.
+//
+func (notebook *Notebook) TabDetachable(child Widgetter) bool {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	_cret = C.gtk_notebook_get_tab_detachable(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TabHborder returns the horizontal width of a tab border.
+//
+// Deprecated: this function returns zero.
+//
+// The function returns the following values:
+//
+//    - guint16: horizontal width of a tab border.
+//
+func (notebook *Notebook) TabHborder() uint16 {
+	var _arg0 *C.GtkNotebook // out
+	var _cret C.guint16      // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+
+	_cret = C.gtk_notebook_get_tab_hborder(_arg0)
+	runtime.KeepAlive(notebook)
+
+	var _guint16 uint16 // out
+
+	_guint16 = uint16(_cret)
+
+	return _guint16
+}
+
 // TabLabel returns the tab label widget for the page child. NULL is returned if
 // child is not in notebook or if no tab label has specifically been set for
 // child.
@@ -805,6 +973,62 @@ func (notebook *Notebook) TabPos() PositionType {
 	_positionType = PositionType(_cret)
 
 	return _positionType
+}
+
+// TabReorderable gets whether the tab can be reordered via drag and drop or
+// not.
+//
+// The function takes the following parameters:
+//
+//    - child Widget.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the tab is reorderable.
+//
+func (notebook *Notebook) TabReorderable(child Widgetter) bool {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	_cret = C.gtk_notebook_get_tab_reorderable(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// TabVborder returns the vertical width of a tab border.
+//
+// Deprecated: this function returns zero.
+//
+// The function returns the following values:
+//
+//    - guint16: vertical width of a tab border.
+//
+func (notebook *Notebook) TabVborder() uint16 {
+	var _arg0 *C.GtkNotebook // out
+	var _cret C.guint16      // in
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+
+	_cret = C.gtk_notebook_get_tab_vborder(_arg0)
+	runtime.KeepAlive(notebook)
+
+	var _guint16 uint16 // out
+
+	_guint16 = uint16(_cret)
+
+	return _guint16
 }
 
 // InsertPage: insert a page into notebook at the given position.
@@ -1102,6 +1326,33 @@ func (notebook *Notebook) ReorderChild(child Widgetter, position int) {
 	runtime.KeepAlive(position)
 }
 
+// SetActionWidget sets widget as one of the action widgets. Depending on the
+// pack type the widget will be placed before or after the tabs. You can use a
+// Box if you need to pack more than one widget on the same side.
+//
+// Note that action widgets are “internal” children of the notebook and thus not
+// included in the list returned from gtk_container_foreach().
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//    - packType: pack type of the action widget.
+//
+func (notebook *Notebook) SetActionWidget(widget Widgetter, packType PackType) {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+	var _arg2 C.GtkPackType  // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.GtkPackType(packType)
+
+	C.gtk_notebook_set_action_widget(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(packType)
+}
+
 // SetCurrentPage switches to the page number page_num.
 //
 // Note that due to historical reasons, GtkNotebook refuses to switch to a page
@@ -1124,6 +1375,31 @@ func (notebook *Notebook) SetCurrentPage(pageNum int) {
 	C.gtk_notebook_set_current_page(_arg0, _arg1)
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(pageNum)
+}
+
+// SetGroupName sets a group name for notebook.
+//
+// Notebooks with the same name will be able to exchange tabs via drag and drop.
+// A notebook with a NULL group name will not be able to exchange tabs with any
+// other notebook.
+//
+// The function takes the following parameters:
+//
+//    - groupName (optional): name of the notebook group, or NULL to unset it.
+//
+func (notebook *Notebook) SetGroupName(groupName string) {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.gchar       // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	if groupName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(groupName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_notebook_set_group_name(_arg0, _arg1)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(groupName)
 }
 
 // SetMenuLabel changes the menu label for the page containing child.
@@ -1236,6 +1512,70 @@ func (notebook *Notebook) SetShowTabs(showTabs bool) {
 	runtime.KeepAlive(showTabs)
 }
 
+// SetTabDetachable sets whether the tab can be detached from notebook to
+// another notebook or widget.
+//
+// Note that 2 notebooks must share a common group identificator (see
+// gtk_notebook_set_group_name()) to allow automatic tabs interchange between
+// them.
+//
+// If you want a widget to interact with a notebook through DnD (i.e.: accept
+// dragged tabs from it) it must be set as a drop destination and accept the
+// target “GTK_NOTEBOOK_TAB”. The notebook will fill the selection with a
+// GtkWidget** pointing to the child widget that corresponds to the dropped tab.
+//
+// Note that you should use gtk_notebook_detach_tab() instead of
+// gtk_container_remove() if you want to remove the tab from the source notebook
+// as part of accepting a drop. Otherwise, the source notebook will think that
+// the dragged tab was removed from underneath the ongoing drag operation, and
+// will initiate a drag cancel animation.
+//
+//     static void
+//     on_drag_data_received (GtkWidget        *widget,
+//                            GdkDragContext   *context,
+//                            gint              x,
+//                            gint              y,
+//                            GtkSelectionData *data,
+//                            guint             info,
+//                            guint             time,
+//                            gpointer          user_data)
+//     {
+//       GtkWidget *notebook;
+//       GtkWidget **child;
+//
+//       notebook = gtk_drag_get_source_widget (context);
+//       child = (void*) gtk_selection_data_get_data (data);
+//
+//       // process_widget (*child);
+//
+//       gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
+//     }
+//
+// If you want a notebook to accept drags from other widgets, you will have to
+// set your own DnD code to do it.
+//
+// The function takes the following parameters:
+//
+//    - child Widget.
+//    - detachable: whether the tab is detachable or not.
+//
+func (notebook *Notebook) SetTabDetachable(child Widgetter, detachable bool) {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+	var _arg2 C.gboolean     // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	if detachable {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_notebook_set_tab_detachable(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(detachable)
+}
+
 // SetTabLabel changes the tab label for child. If NULL is specified for
 // tab_label, then the page will have the label “page N”.
 //
@@ -1303,6 +1643,31 @@ func (notebook *Notebook) SetTabPos(pos PositionType) {
 	C.gtk_notebook_set_tab_pos(_arg0, _arg1)
 	runtime.KeepAlive(notebook)
 	runtime.KeepAlive(pos)
+}
+
+// SetTabReorderable sets whether the notebook tab can be reordered via drag and
+// drop or not.
+//
+// The function takes the following parameters:
+//
+//    - child Widget.
+//    - reorderable: whether the tab is reorderable or not.
+//
+func (notebook *Notebook) SetTabReorderable(child Widgetter, reorderable bool) {
+	var _arg0 *C.GtkNotebook // out
+	var _arg1 *C.GtkWidget   // out
+	var _arg2 C.gboolean     // out
+
+	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	if reorderable {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_notebook_set_tab_reorderable(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(notebook)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(reorderable)
 }
 
 // The function takes the following parameters:

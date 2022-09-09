@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -444,6 +443,44 @@ func (radioButton *RadioButton) Group() []*RadioButton {
 	})
 
 	return _sList
+}
+
+// JoinGroup joins a RadioButton object to the group of another RadioButton
+// object
+//
+// Use this in language bindings instead of the gtk_radio_button_get_group() and
+// gtk_radio_button_set_group() methods
+//
+// A common way to set up a group of radio buttons is the following:
+//
+//      GtkRadioButton *radio_button;
+//      GtkRadioButton *last_button;
+//
+//      while (some_condition)
+//        {
+//           radio_button = gtk_radio_button_new (NULL);
+//
+//           gtk_radio_button_join_group (radio_button, last_button);
+//           last_button = radio_button;
+//        }.
+//
+// The function takes the following parameters:
+//
+//    - groupSource (optional): radio button object whos group we are joining, or
+//      NULL to remove the radio button from its group.
+//
+func (radioButton *RadioButton) JoinGroup(groupSource *RadioButton) {
+	var _arg0 *C.GtkRadioButton // out
+	var _arg1 *C.GtkRadioButton // out
+
+	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(coreglib.InternObject(radioButton).Native()))
+	if groupSource != nil {
+		_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
+	}
+
+	C.gtk_radio_button_join_group(_arg0, _arg1)
+	runtime.KeepAlive(radioButton)
+	runtime.KeepAlive(groupSource)
 }
 
 // SetGroup sets a RadioButton’s group. It should be noted that this does not

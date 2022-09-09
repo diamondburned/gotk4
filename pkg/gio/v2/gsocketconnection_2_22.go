@@ -3,10 +3,12 @@
 package gio
 
 import (
-	"reflect"
+	"context"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -15,6 +17,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
 // GType values.
@@ -26,29 +29,6 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeSocketConnection, F: marshalSocketConnection},
 	})
-}
-
-// ConnectionFactoryCreateConnection creates a Connection subclass of the right
-// type for socket.
-//
-// The function returns the following values:
-//
-//    - socketConnection: Connection.
-//
-func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
-	var _arg0 *C.GSocket           // out
-	var _cret *C.GSocketConnection // in
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
-
-	_cret = C.g_socket_connection_factory_create_connection(_arg0)
-	runtime.KeepAlive(socket)
-
-	var _socketConnection *SocketConnection // out
-
-	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _socketConnection
 }
 
 // SocketConnectionOverrides contains methods that are overridable.
@@ -109,6 +89,108 @@ func wrapSocketConnection(obj *coreglib.Object) *SocketConnection {
 
 func marshalSocketConnection(p uintptr) (interface{}, error) {
 	return wrapSocketConnection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectSocketConnection: connect connection to the specified remote address.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable or NULL.
+//    - address specifying the remote address.
+//
+func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context, address SocketAddresser) error {
+	var _arg0 *C.GSocketConnection // out
+	var _arg2 *C.GCancellable      // out
+	var _arg1 *C.GSocketAddress    // out
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+
+	C.g_socket_connection_connect(_arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// ConnectAsync: asynchronously connect connection to the specified remote
+// address.
+//
+// This clears the #GSocket:blocking flag on connection's underlying socket if
+// it is currently set.
+//
+// Use g_socket_connection_connect_finish() to retrieve the result.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable or NULL.
+//    - address specifying the remote address.
+//    - callback (optional): ReadyCallback.
+//
+func (connection *SocketConnection) ConnectAsync(ctx context.Context, address SocketAddresser, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketConnection  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketAddress     // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_connection_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(callback)
+}
+
+// ConnectFinish gets the result of a g_socket_connection_connect_async() call.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
+	var _arg0 *C.GSocketConnection // out
+	var _arg1 *C.GAsyncResult      // out
+	var _cerr *C.GError            // in
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C.g_socket_connection_connect_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
 }
 
 // LocalAddress: try to get the local address of a socket connection.
@@ -227,6 +309,31 @@ func (connection *SocketConnection) Socket() *Socket {
 	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _socket
+}
+
+// IsConnected checks if connection is connected. This is equivalent to calling
+// g_socket_is_connected() on connection's underlying #GSocket.
+//
+// The function returns the following values:
+//
+//    - ok: whether connection is connected.
+//
+func (connection *SocketConnection) IsConnected() bool {
+	var _arg0 *C.GSocketConnection // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+
+	_cret = C.g_socket_connection_is_connected(_arg0)
+	runtime.KeepAlive(connection)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SocketConnectionFactoryLookupType looks up the #GType to be used when

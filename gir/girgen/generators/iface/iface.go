@@ -418,7 +418,7 @@ func (g *Generator) Use(typ interface{}) bool {
 			CGoTail:      callbackGen.CGoTail,
 			Block:        callbackGen.Block,
 			InfoElements: sig.InfoElements,
-			Header:       callbackGen.Header(),
+			Header:       callbackGen.Header().Copy(),
 			Results:      callbackGen.Results,
 		})
 	}

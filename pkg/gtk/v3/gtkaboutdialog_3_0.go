@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -124,48 +123,4 @@ func (l License) String() string {
 	default:
 		return fmt.Sprintf("License(%d)", l)
 	}
-}
-
-// LicenseType retrieves the license set using
-// gtk_about_dialog_set_license_type().
-//
-// The function returns the following values:
-//
-//    - license: License value.
-//
-func (about *AboutDialog) LicenseType() License {
-	var _arg0 *C.GtkAboutDialog // out
-	var _cret C.GtkLicense      // in
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-
-	_cret = C.gtk_about_dialog_get_license_type(_arg0)
-	runtime.KeepAlive(about)
-
-	var _license License // out
-
-	_license = License(_cret)
-
-	return _license
-}
-
-// SetLicenseType sets the license of the application showing the about dialog
-// from a list of known licenses.
-//
-// This function overrides the license set using gtk_about_dialog_set_license().
-//
-// The function takes the following parameters:
-//
-//    - licenseType: type of license.
-//
-func (about *AboutDialog) SetLicenseType(licenseType License) {
-	var _arg0 *C.GtkAboutDialog // out
-	var _arg1 C.GtkLicense      // out
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(coreglib.InternObject(about).Native()))
-	_arg1 = C.GtkLicense(licenseType)
-
-	C.gtk_about_dialog_set_license_type(_arg0, _arg1)
-	runtime.KeepAlive(about)
-	runtime.KeepAlive(licenseType)
 }

@@ -32,6 +32,8 @@ func _gotk4_gtk3_ListBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret
 
 	widget := fn(_item)
 
+	var _ Widgetter
+
 	cret = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(widget).Native()))
 

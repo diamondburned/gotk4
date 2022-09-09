@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -402,6 +401,31 @@ func (scrolledWindow *ScrolledWindow) AddWithViewport(child Widgetter) {
 	runtime.KeepAlive(child)
 }
 
+// CaptureButtonPress: return whether button presses are captured during kinetic
+// scrolling. See gtk_scrolled_window_set_capture_button_press().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if button presses are captured during kinetic scrolling.
+//
+func (scrolledWindow *ScrolledWindow) CaptureButtonPress() bool {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_capture_button_press(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // HAdjustment returns the horizontal scrollbar’s adjustment, used to connect
 // the horizontal scrollbar to the child widget’s horizontal scroll
 // functionality.
@@ -424,6 +448,183 @@ func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
+}
+
+// HScrollbar returns the horizontal scrollbar of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - widget: horizontal scrollbar of the scrolled window.
+//
+func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret *C.GtkWidget         // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_hscrollbar(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// KineticScrolling returns the specified kinetic scrolling behavior.
+//
+// The function returns the following values:
+//
+//    - ok: scrolling behavior flags.
+//
+func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_kinetic_scrolling(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// MaxContentHeight returns the maximum content height set.
+//
+// The function returns the following values:
+//
+//    - gint: maximum content height, or -1.
+//
+func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gint               // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_max_content_height(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// MaxContentWidth returns the maximum content width set.
+//
+// The function returns the following values:
+//
+//    - gint: maximum content width, or -1.
+//
+func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gint               // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_max_content_width(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// MinContentHeight gets the minimal content height of scrolled_window, or -1 if
+// not set.
+//
+// The function returns the following values:
+//
+//    - gint: minimal content height.
+//
+func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gint               // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_min_content_height(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// MinContentWidth gets the minimum content width of scrolled_window, or -1 if
+// not set.
+//
+// The function returns the following values:
+//
+//    - gint: minimum content width.
+//
+func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gint               // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_min_content_width(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// OverlayScrolling returns whether overlay scrolling is enabled for this
+// scrolled window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if overlay scrolling is enabled.
+//
+func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_overlay_scrolling(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Placement gets the placement of the contents with respect to the scrollbars
@@ -481,6 +682,58 @@ func (scrolledWindow *ScrolledWindow) Policy() (hscrollbarPolicy, vscrollbarPoli
 	return _hscrollbarPolicy, _vscrollbarPolicy
 }
 
+// PropagateNaturalHeight reports whether the natural height of the child will
+// be calculated and propagated through the scrolled window’s requested natural
+// height.
+//
+// The function returns the following values:
+//
+//    - ok: whether natural height propagation is enabled.
+//
+func (scrolledWindow *ScrolledWindow) PropagateNaturalHeight() bool {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_propagate_natural_height(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// PropagateNaturalWidth reports whether the natural width of the child will be
+// calculated and propagated through the scrolled window’s requested natural
+// width.
+//
+// The function returns the following values:
+//
+//    - ok: whether natural width propagation is enabled.
+//
+func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_propagate_natural_width(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ShadowType gets the shadow type of the scrolled window. See
 // gtk_scrolled_window_set_shadow_type().
 //
@@ -527,6 +780,74 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 	return _adjustment
 }
 
+// VScrollbar returns the vertical scrollbar of scrolled_window.
+//
+// The function returns the following values:
+//
+//    - widget: vertical scrollbar of the scrolled window.
+//
+func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _cret *C.GtkWidget         // in
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	_cret = C.gtk_scrolled_window_get_vscrollbar(_arg0)
+	runtime.KeepAlive(scrolledWindow)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// SetCaptureButtonPress changes the behaviour of scrolled_window with regard to
+// the initial event that possibly starts kinetic scrolling. When
+// capture_button_press is set to TRUE, the event is captured by the scrolled
+// window, and then later replayed if it is meant to go to the child widget.
+//
+// This should be enabled if any child widgets perform non-reversible actions on
+// Widget::button-press-event. If they don't, and handle additionally handle
+// Widget::grab-broken-event, it might be better to set capture_button_press to
+// FALSE.
+//
+// This setting only has an effect if kinetic scrolling is enabled.
+//
+// The function takes the following parameters:
+//
+//    - captureButtonPress: TRUE to capture button presses.
+//
+func (scrolledWindow *ScrolledWindow) SetCaptureButtonPress(captureButtonPress bool) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	if captureButtonPress {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_scrolled_window_set_capture_button_press(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(captureButtonPress)
+}
+
 // SetHAdjustment sets the Adjustment for the horizontal scrollbar.
 //
 // The function takes the following parameters:
@@ -545,6 +866,140 @@ func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
 	C.gtk_scrolled_window_set_hadjustment(_arg0, _arg1)
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(hadjustment)
+}
+
+// SetKineticScrolling turns kinetic scrolling on or off. Kinetic scrolling only
+// applies to devices with source GDK_SOURCE_TOUCHSCREEN.
+//
+// The function takes the following parameters:
+//
+//    - kineticScrolling: TRUE to enable kinetic scrolling.
+//
+func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	if kineticScrolling {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_scrolled_window_set_kinetic_scrolling(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(kineticScrolling)
+}
+
+// SetMaxContentHeight sets the maximum height that scrolled_window should keep
+// visible. The scrolled_window will grow up to this height before it starts
+// scrolling the content.
+//
+// It is a programming error to set the maximum content height to a value
+// smaller than ScrolledWindow:min-content-height.
+//
+// The function takes the following parameters:
+//
+//    - height: maximum content height.
+//
+func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gint               // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	_arg1 = C.gint(height)
+
+	C.gtk_scrolled_window_set_max_content_height(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(height)
+}
+
+// SetMaxContentWidth sets the maximum width that scrolled_window should keep
+// visible. The scrolled_window will grow up to this width before it starts
+// scrolling the content.
+//
+// It is a programming error to set the maximum content width to a value smaller
+// than ScrolledWindow:min-content-width.
+//
+// The function takes the following parameters:
+//
+//    - width: maximum content width.
+//
+func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gint               // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	_arg1 = C.gint(width)
+
+	C.gtk_scrolled_window_set_max_content_width(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(width)
+}
+
+// SetMinContentHeight sets the minimum height that scrolled_window should keep
+// visible. Note that this can and (usually will) be smaller than the minimum
+// size of the content.
+//
+// It is a programming error to set the minimum content height to a value
+// greater than ScrolledWindow:max-content-height.
+//
+// The function takes the following parameters:
+//
+//    - height: minimal content height.
+//
+func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gint               // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	_arg1 = C.gint(height)
+
+	C.gtk_scrolled_window_set_min_content_height(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(height)
+}
+
+// SetMinContentWidth sets the minimum width that scrolled_window should keep
+// visible. Note that this can and (usually will) be smaller than the minimum
+// size of the content.
+//
+// It is a programming error to set the minimum content width to a value greater
+// than ScrolledWindow:max-content-width.
+//
+// The function takes the following parameters:
+//
+//    - width: minimal content width.
+//
+func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gint               // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	_arg1 = C.gint(width)
+
+	C.gtk_scrolled_window_set_min_content_width(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(width)
+}
+
+// SetOverlayScrolling enables or disables overlay scrolling for this scrolled
+// window.
+//
+// The function takes the following parameters:
+//
+//    - overlayScrolling: whether to enable overlay scrolling.
+//
+func (scrolledWindow *ScrolledWindow) SetOverlayScrolling(overlayScrolling bool) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	if overlayScrolling {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_scrolled_window_set_overlay_scrolling(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(overlayScrolling)
 }
 
 // SetPlacement sets the placement of the contents with respect to the
@@ -604,6 +1059,50 @@ func (scrolledWindow *ScrolledWindow) SetPolicy(hscrollbarPolicy, vscrollbarPoli
 	runtime.KeepAlive(vscrollbarPolicy)
 }
 
+// SetPropagateNaturalHeight sets whether the natural height of the child should
+// be calculated and propagated through the scrolled window’s requested natural
+// height.
+//
+// The function takes the following parameters:
+//
+//    - propagate: whether to propagate natural height.
+//
+func (scrolledWindow *ScrolledWindow) SetPropagateNaturalHeight(propagate bool) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	if propagate {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_scrolled_window_set_propagate_natural_height(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(propagate)
+}
+
+// SetPropagateNaturalWidth sets whether the natural width of the child should
+// be calculated and propagated through the scrolled window’s requested natural
+// width.
+//
+// The function takes the following parameters:
+//
+//    - propagate: whether to propagate natural width.
+//
+func (scrolledWindow *ScrolledWindow) SetPropagateNaturalWidth(propagate bool) {
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+	if propagate {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_scrolled_window_set_propagate_natural_width(_arg0, _arg1)
+	runtime.KeepAlive(scrolledWindow)
+	runtime.KeepAlive(propagate)
+}
+
 // SetShadowType changes the type of shadow drawn around the contents of
 // scrolled_window.
 //
@@ -641,6 +1140,21 @@ func (scrolledWindow *ScrolledWindow) SetVAdjustment(vadjustment *Adjustment) {
 	C.gtk_scrolled_window_set_vadjustment(_arg0, _arg1)
 	runtime.KeepAlive(scrolledWindow)
 	runtime.KeepAlive(vadjustment)
+}
+
+// UnsetPlacement unsets the placement of the contents with respect to the
+// scrollbars for the scrolled window. If no window placement is set for a
+// scrolled window, it defaults to GTK_CORNER_TOP_LEFT.
+//
+// See also gtk_scrolled_window_set_placement() and
+// gtk_scrolled_window_get_placement().
+func (scrolledWindow *ScrolledWindow) UnsetPlacement() {
+	var _arg0 *C.GtkScrolledWindow // out
+
+	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(coreglib.InternObject(scrolledWindow).Native()))
+
+	C.gtk_scrolled_window_unset_placement(_arg0)
+	runtime.KeepAlive(scrolledWindow)
 }
 
 // The function takes the following parameters:

@@ -66,6 +66,8 @@ func _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 
 
 	object := f()
 
+	var _ *coreglib.Object
+
 	cret = *(*C.GObject)(unsafe.Pointer(object.Native()))
 
 	return cret
@@ -188,6 +190,8 @@ func _gotk4_gtk4_PrintOperation_ConnectPaginate(arg0 C.gpointer, arg1 *C.GtkPrin
 
 	ok := f(_context)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -235,6 +239,8 @@ func _gotk4_gtk4_PrintOperation_ConnectPreview(arg0 C.gpointer, arg1 *C.GtkPrint
 	}
 
 	ok := f(_preview, _context, _parent)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

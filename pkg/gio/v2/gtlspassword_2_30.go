@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -16,6 +15,9 @@ import (
 // #include <glib-object.h>
 // extern guchar* _gotk4_gio2_TlsPasswordClass_get_value(GTlsPassword*, gsize*);
 // extern gchar* _gotk4_gio2_TlsPasswordClass_get_default_warning(GTlsPassword*);
+// gchar* _gotk4_gio2_TLSPassword_virtual_get_default_warning(void* fnptr, GTlsPassword* arg0) {
+//   return ((gchar* (*)(GTlsPassword*))(fnptr))(arg0);
+// };
 // guchar* _gotk4_gio2_TLSPassword_virtual_get_value(void* fnptr, GTlsPassword* arg0, gsize* arg1) {
 //   return ((guchar* (*)(GTlsPassword*, gsize*))(fnptr))(arg0, arg1);
 // };
@@ -104,6 +106,37 @@ func wrapTLSPassword(obj *coreglib.Object) *TLSPassword {
 
 func marshalTLSPassword(p uintptr) (interface{}, error) {
 	return wrapTLSPassword(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewTLSPassword: create a new Password object.
+//
+// The function takes the following parameters:
+//
+//    - flags: password flags.
+//    - description of what the password is for.
+//
+// The function returns the following values:
+//
+//    - tlsPassword: newly allocated password object.
+//
+func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
+	var _arg1 C.GTlsPasswordFlags // out
+	var _arg2 *C.gchar            // out
+	var _cret *C.GTlsPassword     // in
+
+	_arg1 = C.GTlsPasswordFlags(flags)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.g_tls_password_new(_arg1, _arg2)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(description)
+
+	var _tlsPassword *TLSPassword // out
+
+	_tlsPassword = wrapTLSPassword(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _tlsPassword
 }
 
 // Description: get a description string about what the password will be used
@@ -294,6 +327,27 @@ func (password *TLSPassword) SetWarning(warning string) {
 	C.g_tls_password_set_warning(_arg0, _arg1)
 	runtime.KeepAlive(password)
 	runtime.KeepAlive(warning)
+}
+
+// The function returns the following values:
+//
+func (password *TLSPassword) defaultWarning() string {
+	gclass := (*C.GTlsPasswordClass)(coreglib.PeekParentClass(password))
+	fnarg := gclass.get_default_warning
+
+	var _arg0 *C.GTlsPassword // out
+	var _cret *C.gchar        // in
+
+	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(coreglib.InternObject(password).Native()))
+
+	_cret = C._gotk4_gio2_TLSPassword_virtual_get_default_warning(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(password)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
 }
 
 // Value: get the password value. If length is not NULL then it will be filled

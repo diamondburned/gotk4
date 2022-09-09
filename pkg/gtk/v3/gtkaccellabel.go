@@ -3,13 +3,13 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -147,6 +147,32 @@ func NewAccelLabel(str string) *AccelLabel {
 	return _accelLabel
 }
 
+// Accel gets the keyval and modifier mask set with gtk_accel_label_set_accel().
+//
+// The function returns the following values:
+//
+//    - acceleratorKey: return location for the keyval.
+//    - acceleratorMods: return location for the modifier mask.
+//
+func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
+	var _arg0 *C.GtkAccelLabel  // out
+	var _arg1 C.guint           // in
+	var _arg2 C.GdkModifierType // in
+
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+
+	C.gtk_accel_label_get_accel(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(accelLabel)
+
+	var _acceleratorKey uint              // out
+	var _acceleratorMods gdk.ModifierType // out
+
+	_acceleratorKey = uint(_arg1)
+	_acceleratorMods = gdk.ModifierType(_arg2)
+
+	return _acceleratorKey, _acceleratorMods
+}
+
 // AccelWidget fetches the widget monitored by this accelerator label. See
 // gtk_accel_label_set_accel_widget().
 //
@@ -233,6 +259,34 @@ func (accelLabel *AccelLabel) Refetch() bool {
 	}
 
 	return _ok
+}
+
+// SetAccel: manually sets a keyval and modifier mask as the accelerator
+// rendered by accel_label.
+//
+// If a keyval and modifier are explicitly set then these values are used
+// regardless of any associated accel closure or widget.
+//
+// Providing an accelerator_key of 0 removes the manual setting.
+//
+// The function takes the following parameters:
+//
+//    - acceleratorKey: keyval, or 0.
+//    - acceleratorMods: modifier mask for the accel.
+//
+func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
+	var _arg0 *C.GtkAccelLabel  // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+
+	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(coreglib.InternObject(accelLabel).Native()))
+	_arg1 = C.guint(acceleratorKey)
+	_arg2 = C.GdkModifierType(acceleratorMods)
+
+	C.gtk_accel_label_set_accel(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(accelLabel)
+	runtime.KeepAlive(acceleratorKey)
+	runtime.KeepAlive(acceleratorMods)
 }
 
 // SetAccelClosure sets the closure to be monitored by this accelerator label.

@@ -18,6 +18,12 @@ import (
 // #include <glib-object.h>
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern gboolean _gotk4_gio2_DtlsConnection_ConnectAcceptCertificate(gpointer, GTlsCertificate*, GTlsCertificateFlags, guintptr);
+// gboolean _gotk4_gio2_DTLSConnection_virtual_accept_certificate(void* fnptr, GDtlsConnection* arg0, GTlsCertificate* arg1, GTlsCertificateFlags arg2) {
+//   return ((gboolean (*)(GDtlsConnection*, GTlsCertificate*, GTlsCertificateFlags))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_DTLSConnection_virtual_get_binding_data(void* fnptr, GDtlsConnection* arg0, GTlsChannelBindingType arg1, GByteArray* arg2, GError** arg3) {
+//   return ((gboolean (*)(GDtlsConnection*, GTlsChannelBindingType, GByteArray*, GError**))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 // gboolean _gotk4_gio2_DTLSConnection_virtual_handshake(void* fnptr, GDtlsConnection* arg0, GCancellable* arg1, GError** arg2) {
 //   return ((gboolean (*)(GDtlsConnection*, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2);
 // };
@@ -30,8 +36,14 @@ import (
 // gboolean _gotk4_gio2_DTLSConnection_virtual_shutdown_finish(void* fnptr, GDtlsConnection* arg0, GAsyncResult* arg1, GError** arg2) {
 //   return ((gboolean (*)(GDtlsConnection*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
 // };
+// gchar* _gotk4_gio2_DTLSConnection_virtual_get_negotiated_protocol(void* fnptr, GDtlsConnection* arg0) {
+//   return ((gchar* (*)(GDtlsConnection*))(fnptr))(arg0);
+// };
 // void _gotk4_gio2_DTLSConnection_virtual_handshake_async(void* fnptr, GDtlsConnection* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
 //   ((void (*)(GDtlsConnection*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_DTLSConnection_virtual_set_advertised_protocols(void* fnptr, GDtlsConnection* arg0, gchar** arg1) {
+//   ((void (*)(GDtlsConnection*, gchar**))(fnptr))(arg0, arg1);
 // };
 // void _gotk4_gio2_DTLSConnection_virtual_shutdown_async(void* fnptr, GDtlsConnection* arg0, gboolean arg1, gboolean arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
 //   ((void (*)(GDtlsConnection*, gboolean, gboolean, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
@@ -384,6 +396,53 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 	return _tlsCertificate
 }
 
+// ChannelBindingData: query the TLS backend for TLS channel binding data of
+// type for conn.
+//
+// This call retrieves TLS channel binding data as specified in RFC 5056
+// (https://tools.ietf.org/html/rfc5056), RFC 5929
+// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data is
+// returned in data. The data is resized by the callee using Array buffer
+// management and will be freed when the data is destroyed by
+// g_byte_array_unref(). If data is NULL, it will only check whether TLS backend
+// is able to fetch the data (e.g. whether type is supported by the TLS
+// backend). It does not guarantee that the data will be available though. That
+// could happen if TLS connection does not support type or the binding data is
+// not available yet due to additional negotiation or input required.
+//
+// The function takes the following parameters:
+//
+//    - typ type of data to fetch.
+//
+// The function returns the following values:
+//
+//    - data (optional) is filled with the binding data, or NULL.
+//
+func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
+	var _arg0 *C.GDtlsConnection       // out
+	var _arg1 C.GTlsChannelBindingType // out
+	var _arg2 C.GByteArray             // in
+	var _cerr *C.GError                // in
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	_arg1 = C.GTlsChannelBindingType(typ)
+
+	C.g_dtls_connection_get_channel_binding_data(_arg0, _arg1, &_arg2, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(typ)
+
+	var _data []byte // out
+	var _goerr error // out
+
+	_data = make([]byte, _arg2.len)
+	copy(_data, unsafe.Slice((*byte)(_arg2.data), _arg2.len))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _data, _goerr
+}
+
 // Database gets the certificate database that conn uses to verify peer
 // certificates. See g_dtls_connection_set_database().
 //
@@ -446,6 +505,36 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 	}
 
 	return _tlsInteraction
+}
+
+// NegotiatedProtocol gets the name of the application-layer protocol negotiated
+// during the handshake.
+//
+// If the peer did not use the ALPN extension, or did not advertise a protocol
+// that matched one of conn's protocols, or the TLS backend does not support
+// ALPN, then this will be NULL. See
+// g_dtls_connection_set_advertised_protocols().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): negotiated protocol, or NULL.
+//
+func (conn *DTLSConnection) NegotiatedProtocol() string {
+	var _arg0 *C.GDtlsConnection // out
+	var _cret *C.gchar           // in
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+
+	_cret = C.g_dtls_connection_get_negotiated_protocol(_arg0)
+	runtime.KeepAlive(conn)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
 }
 
 // PeerCertificate gets conn's peer's certificate after the handshake has
@@ -679,6 +768,47 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// SetAdvertisedProtocols sets the list of application-layer protocols to
+// advertise that the caller is willing to speak on this connection. The
+// Application-Layer Protocol Negotiation (ALPN) extension will be used to
+// negotiate a compatible protocol with the peer; use
+// g_dtls_connection_get_negotiated_protocol() to find the negotiated protocol
+// after the handshake. Specifying NULL for the the value of protocols will
+// disable ALPN negotiation.
+//
+// See IANA TLS ALPN Protocol IDs
+// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+// for a list of registered protocol IDs.
+//
+// The function takes the following parameters:
+//
+//    - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
+//      "http/1.1", "h2"), or NULL.
+//
+func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
+	var _arg0 *C.GDtlsConnection // out
+	var _arg1 **C.gchar          // out
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(protocols)+1)
+			var zero *C.gchar
+			out[len(protocols)] = zero
+			for i := range protocols {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	C.g_dtls_connection_set_advertised_protocols(_arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(protocols)
 }
 
 // SetCertificate: this sets the certificate that conn will present to its peer
@@ -962,6 +1092,109 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 	return _goerr
 }
 
+// The function takes the following parameters:
+//
+//    - peerCert
+//    - errors
+//
+// The function returns the following values:
+//
+func (connection *DTLSConnection) acceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
+	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(connection))
+	fnarg := gclass.accept_certificate
+
+	var _arg0 *C.GDtlsConnection     // out
+	var _arg1 *C.GTlsCertificate     // out
+	var _arg2 C.GTlsCertificateFlags // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(peerCert).Native()))
+	_arg2 = C.GTlsCertificateFlags(errors)
+
+	_cret = C._gotk4_gio2_DTLSConnection_virtual_accept_certificate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(peerCert)
+	runtime.KeepAlive(errors)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//    - typ
+//    - data
+//
+func (conn *DTLSConnection) bindingData(typ TLSChannelBindingType, data []byte) error {
+	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
+	fnarg := gclass.get_binding_data
+
+	var _arg0 *C.GDtlsConnection       // out
+	var _arg1 C.GTlsChannelBindingType // out
+	var _arg2 *C.GByteArray            // out
+	var _cerr *C.GError                // in
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	_arg1 = C.GTlsChannelBindingType(typ)
+	_arg2 = C.g_byte_array_sized_new(C.guint(len(data)))
+	if len(data) > 0 {
+		_arg2 = C.g_byte_array_append(_arg2, (*C.guint8)(&data[0]), C.guint(len(data)))
+	}
+	defer C.g_byte_array_unref(_arg2)
+
+	C._gotk4_gio2_DTLSConnection_virtual_get_binding_data(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(data)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// negotiatedProtocol gets the name of the application-layer protocol negotiated
+// during the handshake.
+//
+// If the peer did not use the ALPN extension, or did not advertise a protocol
+// that matched one of conn's protocols, or the TLS backend does not support
+// ALPN, then this will be NULL. See
+// g_dtls_connection_set_advertised_protocols().
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): negotiated protocol, or NULL.
+//
+func (conn *DTLSConnection) negotiatedProtocol() string {
+	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
+	fnarg := gclass.get_negotiated_protocol
+
+	var _arg0 *C.GDtlsConnection // out
+	var _cret *C.gchar           // in
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+
+	_cret = C._gotk4_gio2_DTLSConnection_virtual_get_negotiated_protocol(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(conn)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
 // Handshake attempts a TLS handshake on conn.
 //
 // On the client side, it is never necessary to call this method; although the
@@ -1086,6 +1319,50 @@ func (conn *DTLSConnection) handshakeFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// setAdvertisedProtocols sets the list of application-layer protocols to
+// advertise that the caller is willing to speak on this connection. The
+// Application-Layer Protocol Negotiation (ALPN) extension will be used to
+// negotiate a compatible protocol with the peer; use
+// g_dtls_connection_get_negotiated_protocol() to find the negotiated protocol
+// after the handshake. Specifying NULL for the the value of protocols will
+// disable ALPN negotiation.
+//
+// See IANA TLS ALPN Protocol IDs
+// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+// for a list of registered protocol IDs.
+//
+// The function takes the following parameters:
+//
+//    - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
+//      "http/1.1", "h2"), or NULL.
+//
+func (conn *DTLSConnection) setAdvertisedProtocols(protocols []string) {
+	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
+	fnarg := gclass.set_advertised_protocols
+
+	var _arg0 *C.GDtlsConnection // out
+	var _arg1 **C.gchar          // out
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		_arg1 = (**C.gchar)(C.calloc(C.size_t((len(protocols) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(protocols)+1)
+			var zero *C.gchar
+			out[len(protocols)] = zero
+			for i := range protocols {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(protocols[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	C._gotk4_gio2_DTLSConnection_virtual_set_advertised_protocols(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(protocols)
 }
 
 // Shutdown: shut down part or all of a DTLS connection.

@@ -22,7 +22,13 @@ import (
 // extern void _gotk4_gio2_Drive_ConnectDisconnected(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// GDriveStartStopType _gotk4_gio2_Drive_virtual_get_start_stop_type(void* fnptr, GDrive* arg0) {
+//   return ((GDriveStartStopType (*)(GDrive*))(fnptr))(arg0);
+// };
 // GIcon* _gotk4_gio2_Drive_virtual_get_icon(void* fnptr, GDrive* arg0) {
+//   return ((GIcon* (*)(GDrive*))(fnptr))(arg0);
+// };
+// GIcon* _gotk4_gio2_Drive_virtual_get_symbolic_icon(void* fnptr, GDrive* arg0) {
 //   return ((GIcon* (*)(GDrive*))(fnptr))(arg0);
 // };
 // GList* _gotk4_gio2_Drive_virtual_get_volumes(void* fnptr, GDrive* arg0) {
@@ -43,7 +49,19 @@ import (
 // gboolean _gotk4_gio2_Drive_virtual_can_poll_for_media(void* fnptr, GDrive* arg0) {
 //   return ((gboolean (*)(GDrive*))(fnptr))(arg0);
 // };
+// gboolean _gotk4_gio2_Drive_virtual_can_start(void* fnptr, GDrive* arg0) {
+//   return ((gboolean (*)(GDrive*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_Drive_virtual_can_start_degraded(void* fnptr, GDrive* arg0) {
+//   return ((gboolean (*)(GDrive*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_Drive_virtual_can_stop(void* fnptr, GDrive* arg0) {
+//   return ((gboolean (*)(GDrive*))(fnptr))(arg0);
+// };
 // gboolean _gotk4_gio2_Drive_virtual_eject_finish(void* fnptr, GDrive* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GDrive*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Drive_virtual_eject_with_operation_finish(void* fnptr, GDrive* arg0, GAsyncResult* arg1, GError** arg2) {
 //   return ((gboolean (*)(GDrive*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
 // };
 // gboolean _gotk4_gio2_Drive_virtual_has_media(void* fnptr, GDrive* arg0) {
@@ -58,8 +76,20 @@ import (
 // gboolean _gotk4_gio2_Drive_virtual_is_media_removable(void* fnptr, GDrive* arg0) {
 //   return ((gboolean (*)(GDrive*))(fnptr))(arg0);
 // };
+// gboolean _gotk4_gio2_Drive_virtual_is_removable(void* fnptr, GDrive* arg0) {
+//   return ((gboolean (*)(GDrive*))(fnptr))(arg0);
+// };
 // gboolean _gotk4_gio2_Drive_virtual_poll_for_media_finish(void* fnptr, GDrive* arg0, GAsyncResult* arg1, GError** arg2) {
 //   return ((gboolean (*)(GDrive*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Drive_virtual_start_finish(void* fnptr, GDrive* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GDrive*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Drive_virtual_stop_finish(void* fnptr, GDrive* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GDrive*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gchar* _gotk4_gio2_Drive_virtual_get_sort_key(void* fnptr, GDrive* arg0) {
+//   return ((gchar* (*)(GDrive*))(fnptr))(arg0);
 // };
 // void _gotk4_gio2_Drive_virtual_changed(void* fnptr, GDrive* arg0) {
 //   ((void (*)(GDrive*))(fnptr))(arg0);
@@ -73,8 +103,17 @@ import (
 // void _gotk4_gio2_Drive_virtual_eject_button(void* fnptr, GDrive* arg0) {
 //   ((void (*)(GDrive*))(fnptr))(arg0);
 // };
+// void _gotk4_gio2_Drive_virtual_eject_with_operation(void* fnptr, GDrive* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GDrive*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
 // void _gotk4_gio2_Drive_virtual_poll_for_media(void* fnptr, GDrive* arg0, GCancellable* arg1, GAsyncReadyCallback arg2, gpointer arg3) {
 //   ((void (*)(GDrive*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gio2_Drive_virtual_start(void* fnptr, GDrive* arg0, GDriveStartFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GDrive*, GDriveStartFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Drive_virtual_stop(void* fnptr, GDrive* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GDrive*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
 // };
 // void _gotk4_gio2_Drive_virtual_stop_button(void* fnptr, GDrive* arg0) {
 //   ((void (*)(GDrive*))(fnptr))(arg0);
@@ -290,6 +329,78 @@ func (drive *Drive) CanPollForMedia() bool {
 	return _ok
 }
 
+// CanStart checks if a drive can be started.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be started, FALSE otherwise.
+//
+func (drive *Drive) CanStart() bool {
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C.g_drive_can_start(_arg0)
+	runtime.KeepAlive(drive)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// CanStartDegraded checks if a drive can be started degraded.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
+//
+func (drive *Drive) CanStartDegraded() bool {
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C.g_drive_can_start_degraded(_arg0)
+	runtime.KeepAlive(drive)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// CanStop checks if a drive can be stopped.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be stopped, FALSE otherwise.
+//
+func (drive *Drive) CanStop() bool {
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C.g_drive_can_stop(_arg0)
+	runtime.KeepAlive(drive)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Eject: asynchronously ejects a drive.
 //
 // When the operation is finished, callback will be called. You can then call
@@ -346,6 +457,77 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	C.g_drive_eject_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// EjectWithOperation ejects a drive. This is an asynchronous operation, and is
+// finished by calling g_drive_eject_with_operation_finish() with the drive and
+// Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
+// EjectWithOperationFinish finishes ejecting a drive. If any errors occurred
+// during the operation, error will be set to contain the errors and FALSE will
+// be returned.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C.g_drive_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
@@ -475,6 +657,76 @@ func (drive *Drive) Name() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// SortKey gets the sort key for drive, if any.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): sorting key for drive or NULL if no such key is
+//      available.
+//
+func (drive *Drive) SortKey() string {
+	var _arg0 *C.GDrive // out
+	var _cret *C.gchar  // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C.g_drive_get_sort_key(_arg0)
+	runtime.KeepAlive(drive)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// StartStopType gets a hint about how a drive can be started/stopped.
+//
+// The function returns the following values:
+//
+//    - driveStartStopType: value from the StartStopType enumeration.
+//
+func (drive *Drive) StartStopType() DriveStartStopType {
+	var _arg0 *C.GDrive             // out
+	var _cret C.GDriveStartStopType // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C.g_drive_get_start_stop_type(_arg0)
+	runtime.KeepAlive(drive)
+
+	var _driveStartStopType DriveStartStopType // out
+
+	_driveStartStopType = DriveStartStopType(_cret)
+
+	return _driveStartStopType
+}
+
+// SymbolicIcon gets the icon for drive.
+//
+// The function returns the following values:
+//
+//    - icon: symbolic #GIcon for the drive. Free the returned object with
+//      g_object_unref().
+//
+func (drive *Drive) SymbolicIcon() *Icon {
+	var _arg0 *C.GDrive // out
+	var _cret *C.GIcon  // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C.g_drive_get_symbolic_icon(_arg0)
+	runtime.KeepAlive(drive)
+
+	var _icon *Icon // out
+
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _icon
 }
 
 // Volumes: get a list of mountable volumes for drive.
@@ -608,6 +860,32 @@ func (drive *Drive) IsMediaRemovable() bool {
 	return _ok
 }
 
+// IsRemovable checks if the #GDrive and/or its media is considered removable by
+// the user. See g_drive_is_media_removable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if drive and/or its media is considered removable, FALSE
+//      otherwise.
+//
+func (drive *Drive) IsRemovable() bool {
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C.g_drive_is_removable(_arg0)
+	runtime.KeepAlive(drive)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // PollForMedia: asynchronously polls drive to see if media has been inserted or
 // removed.
 //
@@ -670,6 +948,146 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	return _goerr
 }
 
+// Start: asynchronously starts a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_start_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the start operation.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GDriveStartFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_start(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
+// StartFinish finishes starting a drive.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (drive *Drive) StartFinish(result AsyncResulter) error {
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C.g_drive_start_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// Stop: asynchronously stops a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_stop_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for stopping.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_stop(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
+// StopFinish finishes stopping a drive.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (drive *Drive) StopFinish(result AsyncResulter) error {
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C.g_drive_stop_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
 // canEject checks if a drive can be ejected.
 //
 // The function returns the following values:
@@ -713,6 +1131,87 @@ func (drive *Drive) canPollForMedia() bool {
 	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
 
 	_cret = C._gotk4_gio2_Drive_virtual_can_poll_for_media(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(drive)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// canStart checks if a drive can be started.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be started, FALSE otherwise.
+//
+func (drive *Drive) canStart() bool {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.can_start
+
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C._gotk4_gio2_Drive_virtual_can_start(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(drive)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// canStartDegraded checks if a drive can be started degraded.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
+//
+func (drive *Drive) canStartDegraded() bool {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.can_start_degraded
+
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C._gotk4_gio2_Drive_virtual_can_start_degraded(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(drive)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// canStop checks if a drive can be stopped.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drive can be stopped, FALSE otherwise.
+//
+func (drive *Drive) canStop() bool {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.can_stop
+
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C._gotk4_gio2_Drive_virtual_can_stop(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(drive)
 
 	var _ok bool // out
@@ -822,6 +1321,83 @@ func (drive *Drive) ejectFinish(result AsyncResulter) error {
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
 
 	C._gotk4_gio2_Drive_virtual_eject_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// ejectWithOperation ejects a drive. This is an asynchronous operation, and is
+// finished by calling g_drive_eject_with_operation_finish() with the drive and
+// Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for eject.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.eject_with_operation
+
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Drive_virtual_eject_with_operation(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
+// ejectWithOperationFinish finishes ejecting a drive. If any errors occurred
+// during the operation, error will be set to contain the errors and FALSE will
+// be returned.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (drive *Drive) ejectWithOperationFinish(result AsyncResulter) error {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.eject_with_operation_finish
+
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Drive_virtual_eject_with_operation_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
 	runtime.KeepAlive(drive)
 	runtime.KeepAlive(result)
 
@@ -963,6 +1539,85 @@ func (drive *Drive) name() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// sortKey gets the sort key for drive, if any.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): sorting key for drive or NULL if no such key is
+//      available.
+//
+func (drive *Drive) sortKey() string {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.get_sort_key
+
+	var _arg0 *C.GDrive // out
+	var _cret *C.gchar  // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C._gotk4_gio2_Drive_virtual_get_sort_key(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(drive)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// startStopType gets a hint about how a drive can be started/stopped.
+//
+// The function returns the following values:
+//
+//    - driveStartStopType: value from the StartStopType enumeration.
+//
+func (drive *Drive) startStopType() DriveStartStopType {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.get_start_stop_type
+
+	var _arg0 *C.GDrive             // out
+	var _cret C.GDriveStartStopType // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C._gotk4_gio2_Drive_virtual_get_start_stop_type(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(drive)
+
+	var _driveStartStopType DriveStartStopType // out
+
+	_driveStartStopType = DriveStartStopType(_cret)
+
+	return _driveStartStopType
+}
+
+// symbolicIcon gets the icon for drive.
+//
+// The function returns the following values:
+//
+//    - icon: symbolic #GIcon for the drive. Free the returned object with
+//      g_object_unref().
+//
+func (drive *Drive) symbolicIcon() *Icon {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.get_symbolic_icon
+
+	var _arg0 *C.GDrive // out
+	var _cret *C.GIcon  // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C._gotk4_gio2_Drive_virtual_get_symbolic_icon(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(drive)
+
+	var _icon *Icon // out
+
+	_icon = wrapIcon(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _icon
 }
 
 // Volumes: get a list of mountable volumes for drive.
@@ -1111,6 +1766,35 @@ func (drive *Drive) isMediaRemovable() bool {
 	return _ok
 }
 
+// isRemovable checks if the #GDrive and/or its media is considered removable by
+// the user. See g_drive_is_media_removable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if drive and/or its media is considered removable, FALSE
+//      otherwise.
+//
+func (drive *Drive) isRemovable() bool {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.is_removable
+
+	var _arg0 *C.GDrive  // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+
+	_cret = C._gotk4_gio2_Drive_virtual_is_removable(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(drive)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // pollForMedia: asynchronously polls drive to see if media has been inserted or
 // removed.
 //
@@ -1179,6 +1863,128 @@ func (drive *Drive) pollForMediaFinish(result AsyncResulter) error {
 	return _goerr
 }
 
+// Start: asynchronously starts a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_start_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the start operation.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.start
+
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GDriveStartFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Drive_virtual_start(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
+// startFinish finishes starting a drive.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (drive *Drive) startFinish(result AsyncResulter) error {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.start_finish
+
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Drive_virtual_start_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// Stop: asynchronously stops a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_stop_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - flags affecting the unmount if required for stopping.
+//    - mountOperation (optional) or NULL to avoid user interaction.
+//    - callback (optional) or NULL.
+//
+func (drive *Drive) stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.stop
+
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Drive_virtual_stop(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
 func (drive *Drive) stopButton() {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.stop_button
@@ -1189,6 +1995,36 @@ func (drive *Drive) stopButton() {
 
 	C._gotk4_gio2_Drive_virtual_stop_button(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(drive)
+}
+
+// stopFinish finishes stopping a drive.
+//
+// The function takes the following parameters:
+//
+//    - result: Result.
+//
+func (drive *Drive) stopFinish(result AsyncResulter) error {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.stop_finish
+
+	var _arg0 *C.GDrive       // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Drive_virtual_stop_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
 }
 
 // DriveIface: interface for creating #GDrive implementations.

@@ -3,39 +3,14 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_ColorChooser_virtual_color_activated(void* fnptr, GtkColorChooser* arg0, GdkRGBA* arg1) {
-//   ((void (*)(GtkColorChooser*, GdkRGBA*))(fnptr))(arg0, arg1);
-// };
 import "C"
-
-// The function takes the following parameters:
-//
-func (chooser *ColorChooser) colorActivated(color *gdk.RGBA) {
-	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))
-	fnarg := gclass.color_activated
-
-	var _arg0 *C.GtkColorChooser // out
-	var _arg1 *C.GdkRGBA         // out
-
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
-
-	C._gotk4_gtk3_ColorChooser_virtual_color_activated(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(chooser)
-	runtime.KeepAlive(color)
-}
 
 // ColorChooserInterface: instance of this type is always passed by reference.
 type ColorChooserInterface struct {

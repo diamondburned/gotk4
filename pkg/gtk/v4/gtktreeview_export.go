@@ -37,6 +37,8 @@ func _gotk4_gtk4_TreeViewColumnDropFunc(arg1 *C.GtkTreeView, arg2 *C.GtkTreeView
 
 	ok := fn(_treeView, _column, _prevColumn, _nextColumn)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -99,6 +101,8 @@ func _gotk4_gtk4_TreeViewRowSeparatorFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeI
 
 	ok := fn(_model, _iter)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -144,6 +148,8 @@ func _gotk4_gtk4_TreeViewSearchEqualFunc(arg1 *C.GtkTreeModel, arg2 C.int, arg3 
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
 	ok := fn(_model, _column, _key, _iter)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -212,6 +218,8 @@ func _gotk4_gtk4_TreeView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementS
 	}
 
 	ok := f(_step, _direction, _extend, _modify)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -307,6 +315,8 @@ func _gotk4_gtk4_TreeView_ConnectTestCollapseRow(arg0 C.gpointer, arg1 *C.GtkTre
 
 	ok := f(_iter, _path)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -334,6 +344,8 @@ func _gotk4_gtk4_TreeView_ConnectTestExpandRow(arg0 C.gpointer, arg1 *C.GtkTreeI
 	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
 	ok := f(_iter, _path)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

@@ -51,6 +51,9 @@ func _gotk4_gtk3_Overlay_ConnectGetChildPosition(arg0 C.gpointer, arg1 *C.GtkWid
 
 	allocation, ok := f(_widget)
 
+	var _ *gdk.Rectangle
+	var _ bool
+
 	*arg2 = *(*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
 	if ok {
 		cret = C.TRUE

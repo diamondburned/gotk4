@@ -3,7 +3,7 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -106,6 +106,55 @@ func wrapRecentChooserWidget(obj *coreglib.Object) *RecentChooserWidget {
 
 func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 	return wrapRecentChooserWidget(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewRecentChooserWidget creates a new RecentChooserWidget object. This is an
+// embeddable widget used to access the recently used resources list.
+//
+// The function returns the following values:
+//
+//    - recentChooserWidget: new RecentChooserWidget.
+//
+func NewRecentChooserWidget() *RecentChooserWidget {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_recent_chooser_widget_new()
+
+	var _recentChooserWidget *RecentChooserWidget // out
+
+	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _recentChooserWidget
+}
+
+// NewRecentChooserWidgetForManager creates a new RecentChooserWidget with a
+// specified recent manager.
+//
+// This is useful if you have implemented your own recent manager, or if you
+// have a customized instance of a RecentManager object.
+//
+// The function takes the following parameters:
+//
+//    - manager: RecentManager.
+//
+// The function returns the following values:
+//
+//    - recentChooserWidget: new RecentChooserWidget.
+//
+func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidget {
+	var _arg1 *C.GtkRecentManager // out
+	var _cret *C.GtkWidget        // in
+
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+
+	_cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
+	runtime.KeepAlive(manager)
+
+	var _recentChooserWidget *RecentChooserWidget // out
+
+	_recentChooserWidget = wrapRecentChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _recentChooserWidget
 }
 
 // RecentChooserWidgetClass: instance of this type is always passed by

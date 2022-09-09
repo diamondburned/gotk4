@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -13,6 +12,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
@@ -24,6 +24,9 @@ import (
 // extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(GDBusObjectManagerClient*, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern GType _gotk4_gio2_DBusProxyTypeFunc(GDBusObjectManagerClient*, gchar*, gchar*, gpointer);
+// void _gotk4_gio2_DBusObjectManagerClient_virtual_interface_proxy_signal(void* fnptr, GDBusObjectManagerClient* arg0, GDBusObjectProxy* arg1, GDBusProxy* arg2, gchar* arg3, gchar* arg4, GVariant* arg5) {
+//   ((void (*)(GDBusObjectManagerClient*, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
 import "C"
 
 // GType values.
@@ -508,6 +511,43 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 	}
 
 	return _utf8
+}
+
+// The function takes the following parameters:
+//
+//    - objectProxy
+//    - interfaceProxy
+//    - senderName
+//    - signalName
+//    - parameters
+//
+func (manager *DBusObjectManagerClient) interfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant) {
+	gclass := (*C.GDBusObjectManagerClientClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.interface_proxy_signal
+
+	var _arg0 *C.GDBusObjectManagerClient // out
+	var _arg1 *C.GDBusObjectProxy         // out
+	var _arg2 *C.GDBusProxy               // out
+	var _arg3 *C.gchar                    // out
+	var _arg4 *C.gchar                    // out
+	var _arg5 *C.GVariant                 // out
+
+	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GDBusObjectProxy)(unsafe.Pointer(coreglib.InternObject(objectProxy).Native()))
+	_arg2 = (*C.GDBusProxy)(unsafe.Pointer(coreglib.InternObject(interfaceProxy).Native()))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(senderName)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+
+	C._gotk4_gio2_DBusObjectManagerClient_virtual_interface_proxy_signal(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(objectProxy)
+	runtime.KeepAlive(interfaceProxy)
+	runtime.KeepAlive(senderName)
+	runtime.KeepAlive(signalName)
+	runtime.KeepAlive(parameters)
 }
 
 // NewDBusObjectManagerClient: asynchronously creates a new

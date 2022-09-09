@@ -29,6 +29,8 @@ func _gotk4_gtk3_TextCharPredicate(arg1 C.gunichar, arg2 C.gpointer) (cret C.gbo
 
 	ok := fn(_ch)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

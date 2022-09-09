@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -259,6 +258,30 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 	return _ok
 }
 
+// DrawAsRadio returns whether check_menu_item looks like a RadioMenuItem.
+//
+// The function returns the following values:
+//
+//    - ok: whether check_menu_item looks like a RadioMenuItem.
+//
+func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+
+	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
+	runtime.KeepAlive(checkMenuItem)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Inconsistent retrieves the value set by
 // gtk_check_menu_item_set_inconsistent().
 //
@@ -302,6 +325,26 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	C.gtk_check_menu_item_set_active(_arg0, _arg1)
 	runtime.KeepAlive(checkMenuItem)
 	runtime.KeepAlive(isActive)
+}
+
+// SetDrawAsRadio sets whether check_menu_item is drawn like a RadioMenuItem.
+//
+// The function takes the following parameters:
+//
+//    - drawAsRadio: whether check_menu_item is drawn like a RadioMenuItem.
+//
+func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _arg1 C.gboolean          // out
+
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(coreglib.InternObject(checkMenuItem).Native()))
+	if drawAsRadio {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_check_menu_item_set_draw_as_radio(_arg0, _arg1)
+	runtime.KeepAlive(checkMenuItem)
+	runtime.KeepAlive(drawAsRadio)
 }
 
 // SetInconsistent: if the user has selected a range of elements (such as some

@@ -3,7 +3,7 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -125,6 +125,38 @@ func wrapScrollbar(obj *coreglib.Object) *Scrollbar {
 
 func marshalScrollbar(p uintptr) (interface{}, error) {
 	return wrapScrollbar(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewScrollbar creates a new scrollbar with the given orientation.
+//
+// The function takes the following parameters:
+//
+//    - orientation scrollbar’s orientation.
+//    - adjustment (optional) to use, or NULL to create a new adjustment.
+//
+// The function returns the following values:
+//
+//    - scrollbar: new Scrollbar.
+//
+func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
+	var _arg1 C.GtkOrientation // out
+	var _arg2 *C.GtkAdjustment // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+	if adjustment != nil {
+		_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	}
+
+	_cret = C.gtk_scrollbar_new(_arg1, _arg2)
+	runtime.KeepAlive(orientation)
+	runtime.KeepAlive(adjustment)
+
+	var _scrollbar *Scrollbar // out
+
+	_scrollbar = wrapScrollbar(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _scrollbar
 }
 
 // ScrollbarClass: instance of this type is always passed by reference.

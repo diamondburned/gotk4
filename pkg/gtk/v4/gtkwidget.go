@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1638,6 +1637,50 @@ func (widget *Widget) CreatePangoLayout(text string) *pango.Layout {
 	return _layout
 }
 
+// DragCheckThreshold checks to see if a drag movement has passed the GTK drag
+// threshold.
+//
+// The function takes the following parameters:
+//
+//    - startX: x coordinate of start of drag.
+//    - startY: y coordinate of start of drag.
+//    - currentX: current X coordinate.
+//    - currentY: current Y coordinate.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the drag threshold has been passed.
+//
+func (widget *Widget) DragCheckThreshold(startX, startY, currentX, currentY int) bool {
+	var _arg0 *C.GtkWidget // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+	var _arg3 C.int        // out
+	var _arg4 C.int        // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = C.int(startX)
+	_arg2 = C.int(startY)
+	_arg3 = C.int(currentX)
+	_arg4 = C.int(currentY)
+
+	_cret = C.gtk_drag_check_threshold(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(startX)
+	runtime.KeepAlive(startY)
+	runtime.KeepAlive(currentX)
+	runtime.KeepAlive(currentY)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // ErrorBell notifies the user about an input-related error on this widget.
 //
 // If the gtk.Settings:gtk-error-bell setting is TRUE, it calls
@@ -1758,6 +1801,8 @@ func (widget *Widget) Allocation() *Allocation {
 	var _allocation *Allocation // out
 
 	_allocation = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	type _ = *Allocation
+	type _ = *gdk.Rectangle
 
 	return _allocation
 }
@@ -5493,6 +5538,8 @@ func (widget *Widget) SizeAllocate(allocation *Allocation, baseline int) {
 
 	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
+	type _ = *Allocation
+	type _ = *gdk.Rectangle
 	_arg2 = C.int(baseline)
 
 	C.gtk_widget_size_allocate(_arg0, _arg1, _arg2)

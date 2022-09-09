@@ -52,6 +52,8 @@ func _gotk4_gtk3_KeySnoopFunc(arg1 *C.GtkWidget, arg2 *C.GdkEventKey, arg3 C.gpo
 
 	gint := fn(_grabWidget, _event)
 
+	var _ int
+
 	cret = C.gint(gint)
 
 	return cret

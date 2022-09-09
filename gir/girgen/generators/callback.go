@@ -30,7 +30,7 @@ func GenerateCallback(gen FileGeneratorWriter, cb *gir.Callback) bool {
 		writer := FileWriterFromType(gen, cb)
 		writer.Pen().WriteTmpl(callbackTmpl, &generator)
 		for _, result := range generator.Results {
-			file.ApplyHeader(writer, &result)
+			result.Resolved.ImportPubl(gen, writer.Header())
 		}
 	}
 

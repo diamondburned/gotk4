@@ -3,7 +3,6 @@
 package gsk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 

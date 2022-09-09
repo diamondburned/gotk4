@@ -462,6 +462,8 @@ func _gotk4_gio2_DtlsConnection_ConnectAcceptCertificate(arg0 C.gpointer, arg1 *
 
 	ok := f(_peerCert, _errors)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -731,6 +733,8 @@ func _gotk4_gio2_Application_ConnectCommandLine(arg0 C.gpointer, arg1 *C.GApplic
 
 	gint := f(_commandLine)
 
+	var _ int
+
 	cret = C.gint(gint)
 
 	return cret
@@ -762,6 +766,8 @@ func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.
 
 	gint := f(_options)
 
+	var _ int
+
 	cret = C.gint(gint)
 
 	return cret
@@ -781,6 +787,8 @@ func _gotk4_gio2_Application_ConnectNameLost(arg0 C.gpointer, arg1 C.guintptr) (
 	}
 
 	ok := f()
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -900,6 +908,8 @@ func _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(arg0 C.gpointer, arg1 *C
 
 	ok := f(_mechanism)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -945,6 +955,8 @@ func _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(arg0 C.gpoin
 	}
 
 	ok := f(_stream, _credentials)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -997,6 +1009,8 @@ func _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(arg0 C.gpointer, 
 	_invocation = wrapDBusMethodInvocation(coreglib.Take(unsafe.Pointer(arg1)))
 
 	ok := f(_invocation)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1122,6 +1136,8 @@ func _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(arg0 C.gpointer, arg1
 
 	ok := f(_iface, _invocation)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1221,6 +1237,8 @@ func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusC
 	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 
 	ok := f(_connection)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1480,10 +1498,14 @@ func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 C.gpointer, a
 		_keys = make([]glib.Quark, arg2)
 		for i := 0; i < int(arg2); i++ {
 			_keys[i] = uint32(src[i])
+			type _ = glib.Quark
+			type _ = uint32
 		}
 	}
 
 	ok := f(_keys)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1530,6 +1552,8 @@ func _gotk4_gio2_Settings_ConnectWritableChangeEvent(arg0 C.gpointer, arg1 C.gui
 	_key = uint(arg1)
 
 	ok := f(_key)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1714,6 +1738,8 @@ func _gotk4_gio2_SocketService_ConnectIncoming(arg0 C.gpointer, arg1 *C.GSocketC
 
 	ok := f(_connection, _sourceObject)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1741,6 +1767,8 @@ func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.GSock
 	_sourceObject = coreglib.Take(unsafe.Pointer(&arg2))
 
 	ok := f(_connection, _sourceObject)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1785,6 +1813,8 @@ func _gotk4_gio2_TlsConnection_ConnectAcceptCertificate(arg0 C.gpointer, arg1 *C
 	_errors = TLSCertificateFlags(arg2)
 
 	ok := f(_peerCert, _errors)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

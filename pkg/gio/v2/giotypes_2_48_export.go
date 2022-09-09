@@ -49,6 +49,8 @@ func _gotk4_gio2_DatagramBasedSourceFunc(arg1 *C.GDatagramBased, arg2 C.GIOCondi
 
 	ok := fn(_datagramBased, _condition)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

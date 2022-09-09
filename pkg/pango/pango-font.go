@@ -4,7 +4,6 @@ package pango
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -44,6 +43,15 @@ import (
 // PangoFontDescription* _gotk4_pango1_Font_virtual_describe_absolute(void* fnptr, PangoFont* arg0) {
 //   return ((PangoFontDescription* (*)(PangoFont*))(fnptr))(arg0);
 // };
+// PangoFontFace* _gotk4_pango1_FontFamily_virtual_get_face(void* fnptr, PangoFontFamily* arg0, char* arg1) {
+//   return ((PangoFontFace* (*)(PangoFontFamily*, char*))(fnptr))(arg0, arg1);
+// };
+// PangoFontFamily* _gotk4_pango1_FontFace_virtual_get_family(void* fnptr, PangoFontFace* arg0) {
+//   return ((PangoFontFamily* (*)(PangoFontFace*))(fnptr))(arg0);
+// };
+// PangoFontMap* _gotk4_pango1_Font_virtual_get_font_map(void* fnptr, PangoFont* arg0) {
+//   return ((PangoFontMap* (*)(PangoFont*))(fnptr))(arg0);
+// };
 // PangoFontMetrics* _gotk4_pango1_Font_virtual_get_metrics(void* fnptr, PangoFont* arg0, PangoLanguage* arg1) {
 //   return ((PangoFontMetrics* (*)(PangoFont*, PangoLanguage*))(fnptr))(arg0, arg1);
 // };
@@ -52,6 +60,18 @@ import (
 // };
 // char* _gotk4_pango1_FontFamily_virtual_get_name(void* fnptr, PangoFontFamily* arg0) {
 //   return ((char* (*)(PangoFontFamily*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_pango1_FontFace_virtual_is_synthesized(void* fnptr, PangoFontFace* arg0) {
+//   return ((gboolean (*)(PangoFontFace*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_pango1_FontFamily_virtual_is_monospace(void* fnptr, PangoFontFamily* arg0) {
+//   return ((gboolean (*)(PangoFontFamily*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_pango1_FontFamily_virtual_is_variable(void* fnptr, PangoFontFamily* arg0) {
+//   return ((gboolean (*)(PangoFontFamily*))(fnptr))(arg0);
+// };
+// void _gotk4_pango1_FontFace_virtual_list_sizes(void* fnptr, PangoFontFace* arg0, int** arg1, int* arg2) {
+//   ((void (*)(PangoFontFace*, int**, int*))(fnptr))(arg0, arg1, arg2);
 // };
 // void _gotk4_pango1_FontFamily_virtual_list_faces(void* fnptr, PangoFontFamily* arg0, PangoFontFace*** arg1, int* arg2) {
 //   ((void (*)(PangoFontFamily*, PangoFontFace***, int*))(fnptr))(arg0, arg1, arg2);
@@ -558,6 +578,37 @@ func (font *Font) Describe() *FontDescription {
 	return _fontDescription
 }
 
+// DescribeWithAbsoluteSize returns a description of the font, with absolute
+// font size set in device units.
+//
+// Use pango.Font.Describe() if you want the font size in points.
+//
+// The function returns the following values:
+//
+//    - fontDescription: newly-allocated PangoFontDescription object.
+//
+func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
+	var _arg0 *C.PangoFont            // out
+	var _cret *C.PangoFontDescription // in
+
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+
+	_cret = C.pango_font_describe_with_absolute_size(_arg0)
+	runtime.KeepAlive(font)
+
+	var _fontDescription *FontDescription // out
+
+	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
+		},
+	)
+
+	return _fontDescription
+}
+
 // Coverage computes the coverage map for a given font and language tag.
 //
 // The function takes the following parameters:
@@ -585,6 +636,92 @@ func (font *Font) Coverage(language *Language) *Coverage {
 	_coverage = wrapCoverage(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _coverage
+}
+
+// Face gets the PangoFontFace to which font belongs.
+//
+// The function returns the following values:
+//
+//    - fontFace: PangoFontFace.
+//
+func (font *Font) Face() FontFacer {
+	var _arg0 *C.PangoFont     // out
+	var _cret *C.PangoFontFace // in
+
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+
+	_cret = C.pango_font_get_face(_arg0)
+	runtime.KeepAlive(font)
+
+	var _fontFace FontFacer // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type pango.FontFacer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(FontFacer)
+			return ok
+		})
+		rv, ok := casted.(FontFacer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFacer")
+		}
+		_fontFace = rv
+	}
+
+	return _fontFace
+}
+
+// FontMap gets the font map for which the font was created.
+//
+// Note that the font maintains a *weak* reference to the font map, so if all
+// references to font map are dropped, the font map will be finalized even if
+// there are fonts created with the font map that are still alive. In that case
+// this function will return NULL.
+//
+// It is the responsibility of the user to ensure that the font map is kept
+// alive. In most uses this is not an issue as a Context holds a reference to
+// the font map.
+//
+// The function returns the following values:
+//
+//    - fontMap (optional): PangoFontMap for the font, or NULL if font is NULL.
+//
+func (font *Font) FontMap() FontMapper {
+	var _arg0 *C.PangoFont    // out
+	var _cret *C.PangoFontMap // in
+
+	if font != nil {
+		_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	}
+
+	_cret = C.pango_font_get_font_map(_arg0)
+	runtime.KeepAlive(font)
+
+	var _fontMap FontMapper // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(FontMapper)
+				return ok
+			})
+			rv, ok := casted.(FontMapper)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
+			}
+			_fontMap = rv
+		}
+	}
+
+	return _fontMap
 }
 
 // GlyphExtents gets the logical and ink extents of a glyph within a font.
@@ -620,6 +757,8 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 		_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	}
 	_arg1 = C.guint32(glyph)
+	type _ = Glyph
+	type _ = uint32
 
 	C.pango_font_get_glyph_extents(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(font)
@@ -680,6 +819,37 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 	)
 
 	return _fontMetrics
+}
+
+// HasChar returns whether the font provides a glyph for this character.
+//
+// Returns TRUE if font can render wc.
+//
+// The function takes the following parameters:
+//
+//    - wc: unicode character.
+//
+// The function returns the following values:
+//
+func (font *Font) HasChar(wc uint32) bool {
+	var _arg0 *C.PangoFont // out
+	var _arg1 C.gunichar   // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	_arg1 = C.gunichar(wc)
+
+	_cret = C.pango_font_has_char(_arg0, _arg1)
+	runtime.KeepAlive(font)
+	runtime.KeepAlive(wc)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Describe returns a description of the font, with font size set in points.
@@ -775,6 +945,57 @@ func (font *Font) coverage(language *Language) *Coverage {
 	return _coverage
 }
 
+// fontMap gets the font map for which the font was created.
+//
+// Note that the font maintains a *weak* reference to the font map, so if all
+// references to font map are dropped, the font map will be finalized even if
+// there are fonts created with the font map that are still alive. In that case
+// this function will return NULL.
+//
+// It is the responsibility of the user to ensure that the font map is kept
+// alive. In most uses this is not an issue as a Context holds a reference to
+// the font map.
+//
+// The function returns the following values:
+//
+//    - fontMap (optional): PangoFontMap for the font, or NULL if font is NULL.
+//
+func (font *Font) fontMap() FontMapper {
+	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
+	fnarg := gclass.get_font_map
+
+	var _arg0 *C.PangoFont    // out
+	var _cret *C.PangoFontMap // in
+
+	if font != nil {
+		_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
+	}
+
+	_cret = C._gotk4_pango1_Font_virtual_get_font_map(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(font)
+
+	var _fontMap FontMapper // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(FontMapper)
+				return ok
+			})
+			rv, ok := casted.(FontMapper)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
+			}
+			_fontMap = rv
+		}
+	}
+
+	return _fontMap
+}
+
 // glyphExtents gets the logical and ink extents of a glyph within a font.
 //
 // The coordinate system for each rectangle has its origin at the base line and
@@ -811,6 +1032,8 @@ func (font *Font) glyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 		_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	}
 	_arg1 = C.guint32(glyph)
+	type _ = Glyph
+	type _ = uint32
 
 	C._gotk4_pango1_Font_virtual_get_glyph_extents(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(font)
@@ -1076,6 +1299,107 @@ func (face *FontFace) FaceName() string {
 	return _utf8
 }
 
+// Family gets the PangoFontFamily that face belongs to.
+//
+// The function returns the following values:
+//
+//    - fontFamily: PangoFontFamily.
+//
+func (face *FontFace) Family() FontFamilier {
+	var _arg0 *C.PangoFontFace   // out
+	var _cret *C.PangoFontFamily // in
+
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(coreglib.InternObject(face).Native()))
+
+	_cret = C.pango_font_face_get_family(_arg0)
+	runtime.KeepAlive(face)
+
+	var _fontFamily FontFamilier // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type pango.FontFamilier is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(FontFamilier)
+			return ok
+		})
+		rv, ok := casted.(FontFamilier)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
+		}
+		_fontFamily = rv
+	}
+
+	return _fontFamily
+}
+
+// IsSynthesized returns whether a PangoFontFace is synthesized by the
+// underlying font rendering engine from another face, perhaps by shearing,
+// emboldening, or lightening it.
+//
+// The function returns the following values:
+//
+//    - ok: whether face is synthesized.
+//
+func (face *FontFace) IsSynthesized() bool {
+	var _arg0 *C.PangoFontFace // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(coreglib.InternObject(face).Native()))
+
+	_cret = C.pango_font_face_is_synthesized(_arg0)
+	runtime.KeepAlive(face)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ListSizes: list the available sizes for a font.
+//
+// This is only applicable to bitmap fonts. For scalable fonts, stores NULL at
+// the location pointed to by sizes and 0 at the location pointed to by n_sizes.
+// The sizes returned are in Pango units and are sorted in ascending order.
+//
+// The function returns the following values:
+//
+//    - sizes (optional): location to store a pointer to an array of int. This
+//      array should be freed with g_free().
+//
+func (face *FontFace) ListSizes() []int {
+	var _arg0 *C.PangoFontFace // out
+	var _arg1 *C.int           // in
+	var _arg2 C.int            // in
+
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(coreglib.InternObject(face).Native()))
+
+	C.pango_font_face_list_sizes(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(face)
+
+	var _sizes []int // out
+
+	if _arg1 != nil {
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			src := unsafe.Slice((*C.int)(_arg1), _arg2)
+			_sizes = make([]int, _arg2)
+			for i := 0; i < int(_arg2); i++ {
+				_sizes[i] = int(src[i])
+			}
+		}
+	}
+
+	return _sizes
+}
+
 // Describe returns the family, style, variant, weight and stretch of a
 // PangoFontFace. The size field of the resulting font description will be
 // unset.
@@ -1137,6 +1461,116 @@ func (face *FontFace) faceName() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// Family gets the PangoFontFamily that face belongs to.
+//
+// The function returns the following values:
+//
+//    - fontFamily: PangoFontFamily.
+//
+func (face *FontFace) family() FontFamilier {
+	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
+	fnarg := gclass.get_family
+
+	var _arg0 *C.PangoFontFace   // out
+	var _cret *C.PangoFontFamily // in
+
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(coreglib.InternObject(face).Native()))
+
+	_cret = C._gotk4_pango1_FontFace_virtual_get_family(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(face)
+
+	var _fontFamily FontFamilier // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type pango.FontFamilier is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(FontFamilier)
+			return ok
+		})
+		rv, ok := casted.(FontFamilier)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
+		}
+		_fontFamily = rv
+	}
+
+	return _fontFamily
+}
+
+// isSynthesized returns whether a PangoFontFace is synthesized by the
+// underlying font rendering engine from another face, perhaps by shearing,
+// emboldening, or lightening it.
+//
+// The function returns the following values:
+//
+//    - ok: whether face is synthesized.
+//
+func (face *FontFace) isSynthesized() bool {
+	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
+	fnarg := gclass.is_synthesized
+
+	var _arg0 *C.PangoFontFace // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(coreglib.InternObject(face).Native()))
+
+	_cret = C._gotk4_pango1_FontFace_virtual_is_synthesized(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(face)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// listSizes: list the available sizes for a font.
+//
+// This is only applicable to bitmap fonts. For scalable fonts, stores NULL at
+// the location pointed to by sizes and 0 at the location pointed to by n_sizes.
+// The sizes returned are in Pango units and are sorted in ascending order.
+//
+// The function returns the following values:
+//
+//    - sizes (optional): location to store a pointer to an array of int. This
+//      array should be freed with g_free().
+//
+func (face *FontFace) listSizes() []int {
+	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
+	fnarg := gclass.list_sizes
+
+	var _arg0 *C.PangoFontFace // out
+	var _arg1 *C.int           // in
+	var _arg2 C.int            // in
+
+	_arg0 = (*C.PangoFontFace)(unsafe.Pointer(coreglib.InternObject(face).Native()))
+
+	C._gotk4_pango1_FontFace_virtual_list_sizes(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(face)
+
+	var _sizes []int // out
+
+	if _arg1 != nil {
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			src := unsafe.Slice((*C.int)(_arg1), _arg2)
+			_sizes = make([]int, _arg2)
+			for i := 0; i < int(_arg2); i++ {
+				_sizes[i] = int(src[i])
+			}
+		}
+	}
+
+	return _sizes
 }
 
 // FontFamilyOverrides contains methods that are overridable.
@@ -1299,6 +1733,55 @@ func BaseFontFamily(obj FontFamilier) *FontFamily {
 	return obj.baseFontFamily()
 }
 
+// Face gets the PangoFontFace of family with the given name.
+//
+// The function takes the following parameters:
+//
+//    - name (optional) of a face. If the name is NULL, the family's default face
+//      (fontconfig calls it "Regular") will be returned.
+//
+// The function returns the following values:
+//
+//    - fontFace (optional): PangoFontFace, or NULL if no face with the given
+//      name exists.
+//
+func (family *FontFamily) Face(name string) FontFacer {
+	var _arg0 *C.PangoFontFamily // out
+	var _arg1 *C.char            // out
+	var _cret *C.PangoFontFace   // in
+
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(coreglib.InternObject(family).Native()))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	_cret = C.pango_font_family_get_face(_arg0, _arg1)
+	runtime.KeepAlive(family)
+	runtime.KeepAlive(name)
+
+	var _fontFace FontFacer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(FontFacer)
+				return ok
+			})
+			rv, ok := casted.(FontFacer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFacer")
+			}
+			_fontFace = rv
+		}
+	}
+
+	return _fontFace
+}
+
 // Name gets the name of the family.
 //
 // The name is unique among all fonts for the font backend and can be used in a
@@ -1323,6 +1806,67 @@ func (family *FontFamily) Name() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// IsMonospace: monospace font is a font designed for text display where the the
+// characters form a regular grid.
+//
+// For Western languages this would mean that the advance width of all
+// characters are the same, but this categorization also includes Asian fonts
+// which include double-width characters: characters that occupy two grid cells.
+// g_unichar_iswide() returns a result that indicates whether a character is
+// typically double-width in a monospace font.
+//
+// The best way to find out the grid-cell size is to call
+// pango.FontMetrics.GetApproximateDigitWidth(), since the results of
+// pango.FontMetrics.GetApproximateCharWidth() may be affected by double-width
+// characters.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the family is monospace.
+//
+func (family *FontFamily) IsMonospace() bool {
+	var _arg0 *C.PangoFontFamily // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(coreglib.InternObject(family).Native()))
+
+	_cret = C.pango_font_family_is_monospace(_arg0)
+	runtime.KeepAlive(family)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsVariable: variable font is a font which has axes that can be modified to
+// produce different faces.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the family is variable.
+//
+func (family *FontFamily) IsVariable() bool {
+	var _arg0 *C.PangoFontFamily // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(coreglib.InternObject(family).Native()))
+
+	_cret = C.pango_font_family_is_variable(_arg0)
+	runtime.KeepAlive(family)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // ListFaces lists the different font faces that make up family.
@@ -1378,6 +1922,58 @@ func (family *FontFamily) ListFaces() []FontFacer {
 	return _faces
 }
 
+// Face gets the PangoFontFace of family with the given name.
+//
+// The function takes the following parameters:
+//
+//    - name (optional) of a face. If the name is NULL, the family's default face
+//      (fontconfig calls it "Regular") will be returned.
+//
+// The function returns the following values:
+//
+//    - fontFace (optional): PangoFontFace, or NULL if no face with the given
+//      name exists.
+//
+func (family *FontFamily) face(name string) FontFacer {
+	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
+	fnarg := gclass.get_face
+
+	var _arg0 *C.PangoFontFamily // out
+	var _arg1 *C.char            // out
+	var _cret *C.PangoFontFace   // in
+
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(coreglib.InternObject(family).Native()))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	_cret = C._gotk4_pango1_FontFamily_virtual_get_face(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(family)
+	runtime.KeepAlive(name)
+
+	var _fontFace FontFacer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(FontFacer)
+				return ok
+			})
+			rv, ok := casted.(FontFacer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFacer")
+			}
+			_fontFace = rv
+		}
+	}
+
+	return _fontFace
+}
+
 // Name gets the name of the family.
 //
 // The name is unique among all fonts for the font backend and can be used in a
@@ -1405,6 +2001,73 @@ func (family *FontFamily) name() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// isMonospace: monospace font is a font designed for text display where the the
+// characters form a regular grid.
+//
+// For Western languages this would mean that the advance width of all
+// characters are the same, but this categorization also includes Asian fonts
+// which include double-width characters: characters that occupy two grid cells.
+// g_unichar_iswide() returns a result that indicates whether a character is
+// typically double-width in a monospace font.
+//
+// The best way to find out the grid-cell size is to call
+// pango.FontMetrics.GetApproximateDigitWidth(), since the results of
+// pango.FontMetrics.GetApproximateCharWidth() may be affected by double-width
+// characters.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the family is monospace.
+//
+func (family *FontFamily) isMonospace() bool {
+	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
+	fnarg := gclass.is_monospace
+
+	var _arg0 *C.PangoFontFamily // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(coreglib.InternObject(family).Native()))
+
+	_cret = C._gotk4_pango1_FontFamily_virtual_is_monospace(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(family)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// isVariable: variable font is a font which has axes that can be modified to
+// produce different faces.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the family is variable.
+//
+func (family *FontFamily) isVariable() bool {
+	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
+	fnarg := gclass.is_variable
+
+	var _arg0 *C.PangoFontFamily // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.PangoFontFamily)(unsafe.Pointer(coreglib.InternObject(family).Native()))
+
+	_cret = C._gotk4_pango1_FontFamily_virtual_is_variable(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(family)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // listFaces lists the different font faces that make up family.

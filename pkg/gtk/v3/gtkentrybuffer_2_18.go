@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -24,6 +23,9 @@ import (
 // extern guint _gotk4_gtk3_EntryBufferClass_get_length(GtkEntryBuffer*);
 // extern guint _gotk4_gtk3_EntryBufferClass_delete_text(GtkEntryBuffer*, guint, guint);
 // extern gchar* _gotk4_gtk3_EntryBufferClass_get_text(GtkEntryBuffer*, gsize*);
+// gchar* _gotk4_gtk3_EntryBuffer_virtual_get_text(void* fnptr, GtkEntryBuffer* arg0, gsize* arg1) {
+//   return ((gchar* (*)(GtkEntryBuffer*, gsize*))(fnptr))(arg0, arg1);
+// };
 // guint _gotk4_gtk3_EntryBuffer_virtual_delete_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, guint arg2) {
 //   return ((guint (*)(GtkEntryBuffer*, guint, guint))(fnptr))(arg0, arg1, arg2);
 // };
@@ -32,6 +34,12 @@ import (
 // };
 // guint _gotk4_gtk3_EntryBuffer_virtual_insert_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, gchar* arg2, guint arg3) {
 //   return ((guint (*)(GtkEntryBuffer*, guint, gchar*, guint))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_EntryBuffer_virtual_deleted_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, guint arg2) {
+//   ((void (*)(GtkEntryBuffer*, guint, guint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_EntryBuffer_virtual_inserted_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, gchar* arg2, guint arg3) {
+//   ((void (*)(GtkEntryBuffer*, guint, gchar*, guint))(fnptr))(arg0, arg1, arg2, arg3);
 // };
 import "C"
 
@@ -567,6 +575,29 @@ func (buffer *EntryBuffer) deleteText(position, nChars uint) uint {
 	return _guint
 }
 
+// The function takes the following parameters:
+//
+//    - position
+//    - nChars
+//
+func (buffer *EntryBuffer) deletedText(position, nChars uint) {
+	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.deleted_text
+
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 C.guint           // out
+	var _arg2 C.guint           // out
+
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nChars)
+
+	C._gotk4_gtk3_EntryBuffer_virtual_deleted_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(nChars)
+}
+
 // Length retrieves the length in characters of the buffer.
 //
 // The function returns the following values:
@@ -590,6 +621,32 @@ func (buffer *EntryBuffer) length() uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (buffer *EntryBuffer) text(nBytes *uint) string {
+	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.get_text
+
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 *C.gsize          // out
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = (*C.gsize)(unsafe.Pointer(nBytes))
+
+	_cret = C._gotk4_gtk3_EntryBuffer_virtual_get_text(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(nBytes)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
 }
 
 // insertText inserts n_chars characters of chars into the contents of the
@@ -638,4 +695,32 @@ func (buffer *EntryBuffer) insertText(position uint, chars string, nChars uint) 
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// The function takes the following parameters:
+//
+//    - position
+//    - chars
+//    - nChars
+//
+func (buffer *EntryBuffer) insertedText(position uint, chars string, nChars uint) {
+	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
+	fnarg := gclass.inserted_text
+
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 C.guint           // out
+	var _arg2 *C.gchar          // out
+	var _arg3 C.guint           // out
+
+	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = C.guint(position)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(chars)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint(nChars)
+
+	C._gotk4_gtk3_EntryBuffer_virtual_inserted_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(chars)
+	runtime.KeepAlive(nChars)
 }

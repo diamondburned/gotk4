@@ -3,92 +3,12 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 import "C"
-
-// Range queries the range of a key.
-//
-// Deprecated: Use g_settings_schema_key_get_range() instead.
-//
-// The function takes the following parameters:
-//
-//    - key to query the range of.
-//
-// The function returns the following values:
-//
-func (settings *Settings) Range(key string) *glib.Variant {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _cret *C.GVariant  // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.g_settings_get_range(_arg0, _arg1)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-
-	var _variant *glib.Variant // out
-
-	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
-
-	return _variant
-}
-
-// RangeCheck checks if the given value is of the correct type and within the
-// permitted range for key.
-//
-// Deprecated: Use g_settings_schema_key_range_check() instead.
-//
-// The function takes the following parameters:
-//
-//    - key to check.
-//    - value to check.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if value is valid for key.
-//
-func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings // out
-	var _arg1 *C.gchar     // out
-	var _arg2 *C.GVariant  // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
-
-	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(settings)
-	runtime.KeepAlive(key)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
 
 // SettingsListRelocatableSchemas: deprecated.
 //

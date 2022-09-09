@@ -398,6 +398,8 @@ func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 
 	_arg0 = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(datetime)))
 	_arg1 = C.gint64(timespan)
+	type _ = TimeSpan
+	type _ = int64
 
 	_cret = C.g_date_time_add(_arg0, _arg1)
 	runtime.KeepAlive(datetime)
@@ -816,6 +818,8 @@ func (end *DateTime) Difference(begin *DateTime) TimeSpan {
 	var _timeSpan TimeSpan // out
 
 	_timeSpan = int64(_cret)
+	type _ = TimeSpan
+	type _ = int64
 
 	return _timeSpan
 }
@@ -1345,6 +1349,8 @@ func (datetime *DateTime) UTCOffset() TimeSpan {
 	var _timeSpan TimeSpan // out
 
 	_timeSpan = int64(_cret)
+	type _ = TimeSpan
+	type _ = int64
 
 	return _timeSpan
 }

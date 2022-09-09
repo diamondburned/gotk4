@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -105,6 +104,27 @@ func wrapSettings(obj *coreglib.Object) *Settings {
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	return wrapSettings(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ResetProperty undoes the effect of calling g_object_set() to install an
+// application-specific value for a setting. After this call, the setting will
+// again follow the session-wide value for this setting.
+//
+// The function takes the following parameters:
+//
+//    - name of the setting to reset.
+//
+func (settings *Settings) ResetProperty(name string) {
+	var _arg0 *C.GtkSettings // out
+	var _arg1 *C.gchar       // out
+
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_settings_reset_property(_arg0, _arg1)
+	runtime.KeepAlive(settings)
+	runtime.KeepAlive(name)
 }
 
 // SetDoubleProperty: deprecated: Use g_object_set() instead.

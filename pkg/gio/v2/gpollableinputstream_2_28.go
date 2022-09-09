@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -24,6 +25,9 @@ import (
 // };
 // gboolean _gotk4_gio2_PollableInputStream_virtual_is_readable(void* fnptr, GPollableInputStream* arg0) {
 //   return ((gboolean (*)(GPollableInputStream*))(fnptr))(arg0);
+// };
+// gssize _gotk4_gio2_PollableInputStream_virtual_read_nonblocking(void* fnptr, GPollableInputStream* arg0, void* arg1, gsize arg2, GError** arg3) {
+//   return ((gssize (*)(GPollableInputStream*, void*, gsize, GError**))(fnptr))(arg0, arg1, arg2, arg3);
 // };
 import "C"
 
@@ -191,6 +195,62 @@ func (stream *PollableInputStream) IsReadable() bool {
 	return _ok
 }
 
+// ReadNonblocking attempts to read up to count bytes from stream into buffer,
+// as with g_input_stream_read(). If stream is not currently readable, this will
+// immediately return G_IO_ERROR_WOULD_BLOCK, and you can use
+// g_pollable_input_stream_create_source() to create a #GSource that will be
+// triggered when stream is readable.
+//
+// Note that since this method never blocks, you cannot actually use cancellable
+// to cancel it. However, it will return an error if cancellable has already
+// been cancelled when you call, which may happen if you call this method after
+// a source triggers due to having been cancelled.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - buffer to read data into (which should be at least count bytes long).
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read, or -1 on error (including
+//      G_IO_ERROR_WOULD_BLOCK).
+//
+func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer []byte) (int, error) {
+	var _arg0 *C.GPollableInputStream // out
+	var _arg3 *C.GCancellable         // out
+	var _arg1 *C.void                 // out
+	var _arg2 C.gsize
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_cret = C.g_pollable_input_stream_read_nonblocking(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
+}
+
 // canPoll checks if stream is actually pollable. Some classes may implement
 // InputStream but have only certain instances of that class be pollable. If
 // this method returns FALSE, then the behavior of other InputStream methods is
@@ -306,6 +366,58 @@ func (stream *PollableInputStream) isReadable() bool {
 	}
 
 	return _ok
+}
+
+// readNonblocking attempts to read up to count bytes from stream into buffer,
+// as with g_input_stream_read(). If stream is not currently readable, this will
+// immediately return G_IO_ERROR_WOULD_BLOCK, and you can use
+// g_pollable_input_stream_create_source() to create a #GSource that will be
+// triggered when stream is readable.
+//
+// Note that since this method never blocks, you cannot actually use cancellable
+// to cancel it. However, it will return an error if cancellable has already
+// been cancelled when you call, which may happen if you call this method after
+// a source triggers due to having been cancelled.
+//
+// The function takes the following parameters:
+//
+//    - buffer (optional) to read data into (which should be at least count bytes
+//      long).
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read, or -1 on error (including
+//      G_IO_ERROR_WOULD_BLOCK).
+//
+func (stream *PollableInputStream) readNonblocking(buffer []byte) (int, error) {
+	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.read_nonblocking
+
+	var _arg0 *C.GPollableInputStream // out
+	var _arg1 *C.void                 // out
+	var _arg2 C.gsize
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+
+	_cret = C._gotk4_gio2_PollableInputStream_virtual_read_nonblocking(unsafe.Pointer(fnarg), _arg0, unsafe.Pointer(_arg1), _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(buffer)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
 }
 
 // PollableInputStreamInterface: interface for pollable input streams.

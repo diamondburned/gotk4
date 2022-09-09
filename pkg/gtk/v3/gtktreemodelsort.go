@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -349,6 +348,40 @@ func (treeModel *TreeModelSort) Model() *TreeModel {
 	_treeModel = wrapTreeModel(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _treeModel
+}
+
+// IterIsValid: > This function is slow. Only use it for debugging and/or
+// testing > purposes.
+//
+// Checks if the given iter is a valid iter for this TreeModelSort.
+//
+// The function takes the following parameters:
+//
+//    - iter: TreeIter.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the iter is valid, FALSE if the iter is invalid.
+//
+func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
+	var _arg0 *C.GtkTreeModelSort // out
+	var _arg1 *C.GtkTreeIter      // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkTreeModelSort)(unsafe.Pointer(coreglib.InternObject(treeModelSort).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C.gtk_tree_model_sort_iter_is_valid(_arg0, _arg1)
+	runtime.KeepAlive(treeModelSort)
+	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // ResetDefaultSortFunc: this resets the default sort function to be in the

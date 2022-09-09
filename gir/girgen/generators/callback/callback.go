@@ -318,6 +318,7 @@ func (g *Generator) renderBlock() bool {
 		return false
 	}
 
+	g.Results = results
 	file.ApplyHeader(g, convert)
 
 	// Do a bit of trickery: if we have a GCancellable in the function, then it
@@ -351,9 +352,10 @@ func (g *Generator) renderBlock() bool {
 			goCallRets.Add(result.In.Call)
 			goTypeRets.Addf("%s %s", result.InName, result.In.Type)
 
-			// Out.Declare is declared in the function signature.
-			// g.pen.Line(secOutputPre, result.Out.Declare)
-
+			// Ensure that we still have the output declared, since in some
+			// cases, the Go return types are only written in a different file
+			// (for the function signature type).
+			g.pen.Line(secOutputPre, "var _ "+result.In.Type)
 			g.pen.Line(secOutputConv, result.Conversion)
 		}
 	}

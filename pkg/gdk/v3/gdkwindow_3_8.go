@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"fmt"
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -51,99 +50,4 @@ func (f FullscreenMode) String() string {
 	default:
 		return fmt.Sprintf("FullscreenMode(%d)", f)
 	}
-}
-
-// FrameClock gets the frame clock for the window. The frame clock for a window
-// never changes unless the window is reparented to a new toplevel window.
-//
-// The function returns the following values:
-//
-//    - frameClock: frame clock.
-//
-func (window *Window) FrameClock() FrameClocker {
-	var _arg0 *C.GdkWindow     // out
-	var _cret *C.GdkFrameClock // in
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gdk_window_get_frame_clock(_arg0)
-	runtime.KeepAlive(window)
-
-	var _frameClock FrameClocker // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.FrameClocker is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(FrameClocker)
-			return ok
-		})
-		rv, ok := casted.(FrameClocker)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.FrameClocker")
-		}
-		_frameClock = rv
-	}
-
-	return _frameClock
-}
-
-// FullscreenMode obtains the FullscreenMode of the window.
-//
-// The function returns the following values:
-//
-//    - fullscreenMode applied to the window when fullscreen.
-//
-func (window *Window) FullscreenMode() FullscreenMode {
-	var _arg0 *C.GdkWindow        // out
-	var _cret C.GdkFullscreenMode // in
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C.gdk_window_get_fullscreen_mode(_arg0)
-	runtime.KeepAlive(window)
-
-	var _fullscreenMode FullscreenMode // out
-
-	_fullscreenMode = FullscreenMode(_cret)
-
-	return _fullscreenMode
-}
-
-// SetFullscreenMode specifies whether the window should span over all monitors
-// (in a multi-head setup) or only the current monitor when in fullscreen mode.
-//
-// The mode argument is from the FullscreenMode enumeration. If
-// K_FULLSCREEN_ON_ALL_MONITORS is specified, the fullscreen window will span
-// over all monitors from the Screen.
-//
-// On X11, searches through the list of monitors from the Screen the ones which
-// delimit the 4 edges of the entire Screen and will ask the window manager to
-// span the window over these monitors.
-//
-// If the XINERAMA extension is not available or not usable, this function has
-// no effect.
-//
-// Not all window managers support this, so you can’t rely on the fullscreen
-// window to span over the multiple monitors when K_FULLSCREEN_ON_ALL_MONITORS
-// is specified.
-//
-// The function takes the following parameters:
-//
-//    - mode: fullscreen mode.
-//
-func (window *Window) SetFullscreenMode(mode FullscreenMode) {
-	var _arg0 *C.GdkWindow        // out
-	var _arg1 C.GdkFullscreenMode // out
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = C.GdkFullscreenMode(mode)
-
-	C.gdk_window_set_fullscreen_mode(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(mode)
 }

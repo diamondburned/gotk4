@@ -86,6 +86,8 @@ func _gotk4_gtk4_DragSource_ConnectDragCancel(arg0 C.gpointer, arg1 *C.GdkDrag, 
 
 	ok := f(_drag, _reason)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -153,6 +155,8 @@ func _gotk4_gtk4_DragSource_ConnectPrepare(arg0 C.gpointer, arg1 C.gdouble, arg2
 	_y = float64(arg2)
 
 	contentProvider := f(_x, _y)
+
+	var _ *gdk.ContentProvider
 
 	if contentProvider != nil {
 		cret = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(contentProvider).Native()))

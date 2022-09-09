@@ -43,6 +43,8 @@ func _gotk4_gtk3_TextTag_ConnectEvent(arg0 C.gpointer, arg1 C.GObject, arg2 C.Gd
 
 	ok := f(_object, _event, _iter)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

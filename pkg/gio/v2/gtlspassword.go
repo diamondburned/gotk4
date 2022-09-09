@@ -2,71 +2,9 @@
 
 package gio
 
-import (
-	"runtime"
-	"unsafe"
-
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-)
-
 // #include <stdlib.h>
 // #include <gio/gio.h>
-// gchar* _gotk4_gio2_TLSPassword_virtual_get_default_warning(void* fnptr, GTlsPassword* arg0) {
-//   return ((gchar* (*)(GTlsPassword*))(fnptr))(arg0);
-// };
 import "C"
-
-// NewTLSPassword: create a new Password object.
-//
-// The function takes the following parameters:
-//
-//    - flags: password flags.
-//    - description of what the password is for.
-//
-// The function returns the following values:
-//
-//    - tlsPassword: newly allocated password object.
-//
-func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
-	var _arg1 C.GTlsPasswordFlags // out
-	var _arg2 *C.gchar            // out
-	var _cret *C.GTlsPassword     // in
-
-	_arg1 = C.GTlsPasswordFlags(flags)
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C.g_tls_password_new(_arg1, _arg2)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(description)
-
-	var _tlsPassword *TLSPassword // out
-
-	_tlsPassword = wrapTLSPassword(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _tlsPassword
-}
-
-// The function returns the following values:
-//
-func (password *TLSPassword) defaultWarning() string {
-	gclass := (*C.GTlsPasswordClass)(coreglib.PeekParentClass(password))
-	fnarg := gclass.get_default_warning
-
-	var _arg0 *C.GTlsPassword // out
-	var _cret *C.gchar        // in
-
-	_arg0 = (*C.GTlsPassword)(unsafe.Pointer(coreglib.InternObject(password).Native()))
-
-	_cret = C._gotk4_gio2_TLSPassword_virtual_get_default_warning(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(password)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
 
 // TLSPasswordClass class structure for Password.
 //

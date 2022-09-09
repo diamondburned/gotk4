@@ -4,11 +4,9 @@ package gdk
 
 import (
 	"fmt"
-	"runtime"
 	"strings"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -115,82 +113,4 @@ func (a AnchorHints) String() string {
 // Has returns true if a contains other.
 func (a AnchorHints) Has(other AnchorHints) bool {
 	return (a & other) == other
-}
-
-// BeginDrawFrame indicates that you are beginning the process of redrawing
-// region on window, and provides you with a DrawingContext.
-//
-// If window is a top level Window, backed by a native window implementation, a
-// backing store (offscreen buffer) large enough to contain region will be
-// created. The backing store will be initialized with the background color or
-// background surface for window. Then, all drawing operations performed on
-// window will be diverted to the backing store. When you call
-// gdk_window_end_frame(), the contents of the backing store will be copied to
-// window, making it visible on screen. Only the part of window contained in
-// region will be modified; that is, drawing operations are clipped to region.
-//
-// The net result of all this is to remove flicker, because the user sees the
-// finished product appear all at once when you call
-// gdk_window_end_draw_frame(). If you draw to window directly without calling
-// gdk_window_begin_draw_frame(), the user may see flicker as individual drawing
-// operations are performed in sequence.
-//
-// When using GTK+, the widget system automatically places calls to
-// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() around
-// emissions of the GtkWidget::draw signal. That is, if you’re drawing the
-// contents of the widget yourself, you can assume that the widget has a cleared
-// background, is already set as the clip region, and already has a backing
-// store. Therefore in most cases, application code in GTK does not need to call
-// gdk_window_begin_draw_frame() explicitly.
-//
-// The function takes the following parameters:
-//
-//    - region: cairo region.
-//
-// The function returns the following values:
-//
-//    - drawingContext context that should be used to draw the contents of the
-//      window; the returned context is owned by GDK.
-//
-func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
-	var _arg0 *C.GdkWindow         // out
-	var _arg1 *C.cairo_region_t    // out
-	var _cret *C.GdkDrawingContext // in
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
-
-	_cret = C.gdk_window_begin_draw_frame(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(region)
-
-	var _drawingContext *DrawingContext // out
-
-	_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _drawingContext
-}
-
-// EndDrawFrame indicates that the drawing of the contents of window started
-// with gdk_window_begin_frame() has been completed.
-//
-// This function will take care of destroying the DrawingContext.
-//
-// It is an error to call this function without a matching
-// gdk_window_begin_frame() first.
-//
-// The function takes the following parameters:
-//
-//    - context created by gdk_window_begin_draw_frame().
-//
-func (window *Window) EndDrawFrame(context *DrawingContext) {
-	var _arg0 *C.GdkWindow         // out
-	var _arg1 *C.GdkDrawingContext // out
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = (*C.GdkDrawingContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C.gdk_window_end_draw_frame(_arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(context)
 }

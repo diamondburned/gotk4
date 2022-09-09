@@ -67,6 +67,8 @@ func _gotk4_gtk3_Window_ConnectEnableDebugging(arg0 C.gpointer, arg1 C.gboolean,
 
 	ok := f(_toggle)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

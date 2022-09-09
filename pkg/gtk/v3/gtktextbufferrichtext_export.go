@@ -45,6 +45,8 @@ func _gotk4_gtk3_TextBufferDeserializeFunc(arg1 *C.GtkTextBuffer, arg2 *C.GtkTex
 
 	_goerr := fn(_registerBuffer, _contentBuffer, _iter, _data, _createTags)
 
+	var _ error
+
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
@@ -74,6 +76,9 @@ func _gotk4_gtk3_TextBufferSerializeFunc(arg1 *C.GtkTextBuffer, arg2 *C.GtkTextB
 	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
 	length, guint8 := fn(_registerBuffer, _contentBuffer, _start, _end)
+
+	var _ uint
+	var _ *byte
 
 	*arg5 = C.gsize(length)
 	if guint8 != nil {

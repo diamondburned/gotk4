@@ -105,6 +105,8 @@ func VariantParserGetErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }

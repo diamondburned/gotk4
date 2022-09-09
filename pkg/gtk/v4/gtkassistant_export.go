@@ -30,6 +30,8 @@ func _gotk4_gtk4_AssistantPageFunc(arg1 C.int, arg2 C.gpointer) (cret C.int) {
 
 	gint := fn(_currentPage)
 
+	var _ int
+
 	cret = C.int(gint)
 
 	return cret

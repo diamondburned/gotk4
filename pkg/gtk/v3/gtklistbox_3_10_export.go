@@ -32,6 +32,8 @@ func _gotk4_gtk3_ListBoxFilterFunc(arg1 *C.GtkListBoxRow, arg2 C.gpointer) (cret
 
 	ok := fn(_row)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -57,6 +59,8 @@ func _gotk4_gtk3_ListBoxSortFunc(arg1 *C.GtkListBoxRow, arg2 *C.GtkListBoxRow, a
 	_row2 = wrapListBoxRow(coreglib.Take(unsafe.Pointer(arg2)))
 
 	gint := fn(_row1, _row2)
+
+	var _ int
 
 	cret = C.gint(gint)
 

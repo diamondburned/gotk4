@@ -30,6 +30,8 @@ func _gotk4_gtk4_FlowBoxCreateWidgetFunc(arg1 C.gpointer, arg2 C.gpointer) (cret
 
 	widget := fn(_item)
 
+	var _ Widgetter
+
 	cret = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(widget).Native()))
 
@@ -52,6 +54,8 @@ func _gotk4_gtk4_FlowBoxFilterFunc(arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cr
 	_child = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(arg1)))
 
 	ok := fn(_child)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -98,6 +102,8 @@ func _gotk4_gtk4_FlowBoxSortFunc(arg1 *C.GtkFlowBoxChild, arg2 *C.GtkFlowBoxChil
 	_child2 = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(arg2)))
 
 	gint := fn(_child1, _child2)
+
+	var _ int
 
 	cret = C.int(gint)
 
@@ -168,6 +174,8 @@ func _gotk4_gtk4_FlowBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementSt
 	}
 
 	ok := f(_step, _count, _extend, _modify)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

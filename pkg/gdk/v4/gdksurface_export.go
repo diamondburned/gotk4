@@ -69,6 +69,8 @@ func _gotk4_gdk4_Surface_ConnectEvent(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -143,6 +145,8 @@ func _gotk4_gdk4_Surface_ConnectRender(arg0 C.gpointer, arg1 *C.cairo_region_t, 
 	})
 
 	ok := f(_region)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

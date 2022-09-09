@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -127,6 +126,31 @@ func NewCellRendererToggle() *CellRendererToggle {
 	return _cellRendererToggle
 }
 
+// Activatable returns whether the cell renderer is activatable. See
+// gtk_cell_renderer_toggle_set_activatable().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the cell renderer is activatable.
+//
+func (toggle *CellRendererToggle) Activatable() bool {
+	var _arg0 *C.GtkCellRendererToggle // out
+	var _cret C.gboolean               // in
+
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(coreglib.InternObject(toggle).Native()))
+
+	_cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
+	runtime.KeepAlive(toggle)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Active returns whether the cell renderer is active. See
 // gtk_cell_renderer_toggle_set_active().
 //
@@ -174,6 +198,26 @@ func (toggle *CellRendererToggle) Radio() bool {
 	}
 
 	return _ok
+}
+
+// SetActivatable makes the cell renderer activatable.
+//
+// The function takes the following parameters:
+//
+//    - setting: value to set.
+//
+func (toggle *CellRendererToggle) SetActivatable(setting bool) {
+	var _arg0 *C.GtkCellRendererToggle // out
+	var _arg1 C.gboolean               // out
+
+	_arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(coreglib.InternObject(toggle).Native()))
+	if setting {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_cell_renderer_toggle_set_activatable(_arg0, _arg1)
+	runtime.KeepAlive(toggle)
+	runtime.KeepAlive(setting)
 }
 
 // SetActive activates or deactivates a cell renderer.

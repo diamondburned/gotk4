@@ -2,73 +2,12 @@
 
 package pango
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-)
+import ()
 
 // #include <stdlib.h>
 // #include <pango/pango.h>
-// extern gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
-// void _gotk4_pango1_Fontset_virtual_foreach(void* fnptr, PangoFontset* arg0, PangoFontsetForeachFunc arg1, gpointer arg2) {
-//   ((void (*)(PangoFontset*, PangoFontsetForeachFunc, gpointer))(fnptr))(arg0, arg1, arg2);
-// };
 import "C"
 
 // FontsetForEachFunc: callback used by pango_fontset_foreach() when enumerating
 // fonts in a fontset.
 type FontsetForEachFunc func(fontset Fontsetter, font Fonter) (ok bool)
-
-// ForEach iterates through all the fonts in a fontset, calling func for each
-// one.
-//
-// If func returns TRUE, that stops the iteration.
-//
-// The function takes the following parameters:
-//
-//    - fn: callback function.
-//
-func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
-	var _arg0 *C.PangoFontset           // out
-	var _arg1 C.PangoFontsetForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForEachFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
-
-	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(fontset)
-	runtime.KeepAlive(fn)
-}
-
-// forEach iterates through all the fonts in a fontset, calling func for each
-// one.
-//
-// If func returns TRUE, that stops the iteration.
-//
-// The function takes the following parameters:
-//
-//    - fn: callback function.
-//
-func (fontset *Fontset) forEach(fn FontsetForEachFunc) {
-	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
-	fnarg := gclass.foreach
-
-	var _arg0 *C.PangoFontset           // out
-	var _arg1 C.PangoFontsetForeachFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForEachFunc)
-	_arg2 = C.gpointer(gbox.Assign(fn))
-	defer gbox.Delete(uintptr(_arg2))
-
-	C._gotk4_pango1_Fontset_virtual_foreach(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(fontset)
-	runtime.KeepAlive(fn)
-}

@@ -162,6 +162,9 @@ func (n *NamespaceGenerator) Pkgconfig() []string {
 // FileWriter returns the respective file writer from the given InfoFields.
 func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields, export bool) generators.FileWriter {
 	if n.Generator.Opts.SingleFile || info.Elements == nil {
+		if export {
+			return n.MakeFile(n.PkgName + "_export.go")
+		}
 		return n.MakeFile("")
 	}
 
@@ -173,6 +176,9 @@ func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields, export bool) genera
 	case info.Elements.Doc != nil:
 		filename = info.Elements.Doc.Filename
 	default:
+		if export {
+			return n.MakeFile(n.PkgName + "_export.go")
+		}
 		return n.MakeFile("")
 	}
 

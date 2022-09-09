@@ -4,7 +4,6 @@ package gdk
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -14,6 +13,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
@@ -210,6 +210,116 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 // provider has changed.
 func (provider *ContentProvider) ConnectContentChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(provider, "content-changed", false, unsafe.Pointer(C._gotk4_gdk4_ContentProvider_ConnectContentChanged), f)
+}
+
+// NewContentProviderForBytes: create a content provider that provides the given
+// bytes as data for the given mime_type.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: mime type.
+//    - bytes: GBytes with the data for mime_type.
+//
+// The function returns the following values:
+//
+//    - contentProvider: new GdkContentProvider.
+//
+func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProvider {
+	var _arg1 *C.char               // out
+	var _arg2 *C.GBytes             // out
+	var _cret *C.GdkContentProvider // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+
+	_cret = C.gdk_content_provider_new_for_bytes(_arg1, _arg2)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(bytes)
+
+	var _contentProvider *ContentProvider // out
+
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _contentProvider
+}
+
+// NewContentProviderForValue: create a content provider that provides the given
+// value.
+//
+// The function takes the following parameters:
+//
+//    - value: GValue.
+//
+// The function returns the following values:
+//
+//    - contentProvider: new GdkContentProvider.
+//
+func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
+	var _arg1 *C.GValue             // out
+	var _cret *C.GdkContentProvider // in
+
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	_cret = C.gdk_content_provider_new_for_value(_arg1)
+	runtime.KeepAlive(value)
+
+	var _contentProvider *ContentProvider // out
+
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _contentProvider
+}
+
+// NewContentProviderUnion creates a content provider that represents all the
+// given providers.
+//
+// Whenever data needs to be written, the union provider will try the given
+// providers in the given order and the first one supporting a format will be
+// chosen to provide it.
+//
+// This allows an easy way to support providing data in different formats. For
+// example, an image may be provided by its file and by the image contents with
+// a call such as
+//
+//    gdk_content_provider_new_union ((GdkContentProvider *[2]) {
+//                                      gdk_content_provider_new_typed (G_TYPE_FILE, file),
+//                                      gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture)
+//                                    }, 2);.
+//
+// The function takes the following parameters:
+//
+//    - providers (optional): The ContentProviders to present the union of.
+//
+// The function returns the following values:
+//
+//    - contentProvider: new GdkContentProvider.
+//
+func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
+	var _arg1 **C.GdkContentProvider // out
+	var _arg2 C.gsize
+	var _cret *C.GdkContentProvider // in
+
+	if providers != nil {
+		_arg2 = (C.gsize)(len(providers))
+		_arg1 = (**C.GdkContentProvider)(C.calloc(C.size_t(len(providers)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice((**C.GdkContentProvider)(_arg1), len(providers))
+			for i := range providers {
+				out[i] = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(providers[i]).Native()))
+				C.g_object_ref(C.gpointer(coreglib.InternObject(providers[i]).Native()))
+			}
+		}
+	}
+
+	_cret = C.gdk_content_provider_new_union(_arg1, _arg2)
+	runtime.KeepAlive(providers)
+
+	var _contentProvider *ContentProvider // out
+
+	_contentProvider = wrapContentProvider(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _contentProvider
 }
 
 // ContentChanged emits the ::content-changed signal.

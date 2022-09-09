@@ -3,13 +3,13 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #include <stdlib.h>
@@ -115,6 +115,172 @@ func NewFontSelection() *FontSelection {
 	return _fontSelection
 }
 
+// Face gets the FontFace representing the selected font group details (i.e.
+// family, slant, weight, width, etc).
+//
+// Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - fontFace representing the selected font group details. The returned
+//      object is owned by fontsel and must not be modified or freed.
+//
+func (fontsel *FontSelection) Face() pango.FontFacer {
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.PangoFontFace    // in
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+
+	_cret = C.gtk_font_selection_get_face(_arg0)
+	runtime.KeepAlive(fontsel)
+
+	var _fontFace pango.FontFacer // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type pango.FontFacer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(pango.FontFacer)
+			return ok
+		})
+		rv, ok := casted.(pango.FontFacer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFacer")
+		}
+		_fontFace = rv
+	}
+
+	return _fontFace
+}
+
+// FaceList: this returns the TreeView which lists all styles available for the
+// selected font. For example, “Regular”, “Bold”, etc.
+//
+// Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
+func (fontsel *FontSelection) FaceList() Widgetter {
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+
+	_cret = C.gtk_font_selection_get_face_list(_arg0)
+	runtime.KeepAlive(fontsel)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// Family gets the FontFamily representing the selected font family.
+//
+// Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - fontFamily representing the selected font family. Font families are a
+//      collection of font faces. The returned object is owned by fontsel and
+//      must not be modified or freed.
+//
+func (fontsel *FontSelection) Family() pango.FontFamilier {
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.PangoFontFamily  // in
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+
+	_cret = C.gtk_font_selection_get_family(_arg0)
+	runtime.KeepAlive(fontsel)
+
+	var _fontFamily pango.FontFamilier // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type pango.FontFamilier is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(pango.FontFamilier)
+			return ok
+		})
+		rv, ok := casted.(pango.FontFamilier)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
+		}
+		_fontFamily = rv
+	}
+
+	return _fontFamily
+}
+
+// FamilyList: this returns the TreeView that lists font families, for example,
+// “Sans”, “Serif”, etc.
+//
+// Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
+func (fontsel *FontSelection) FamilyList() Widgetter {
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+
+	_cret = C.gtk_font_selection_get_family_list(_arg0)
+	runtime.KeepAlive(fontsel)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
 // FontName gets the currently-selected font name.
 //
 // Note that this can be a different string than what you set with
@@ -148,6 +314,46 @@ func (fontsel *FontSelection) FontName() string {
 	return _utf8
 }
 
+// PreviewEntry: this returns the Entry used to display the font as a preview.
+//
+// Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
+func (fontsel *FontSelection) PreviewEntry() Widgetter {
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+
+	_cret = C.gtk_font_selection_get_preview_entry(_arg0)
+	runtime.KeepAlive(fontsel)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
 // PreviewText gets the text displayed in the preview area.
 //
 // Deprecated: Use FontChooser.
@@ -171,6 +377,112 @@ func (fontsel *FontSelection) PreviewText() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// Size: selected font size.
+//
+// Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - gint: n integer representing the selected font size, or -1 if no font
+//      size is selected.
+//
+func (fontsel *FontSelection) Size() int {
+	var _arg0 *C.GtkFontSelection // out
+	var _cret C.gint              // in
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+
+	_cret = C.gtk_font_selection_get_size(_arg0)
+	runtime.KeepAlive(fontsel)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SizeEntry: this returns the Entry used to allow the user to edit the font
+// number manually instead of selecting it from the list of font sizes.
+//
+// Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
+func (fontsel *FontSelection) SizeEntry() Widgetter {
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+
+	_cret = C.gtk_font_selection_get_size_entry(_arg0)
+	runtime.KeepAlive(fontsel)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// SizeList: this returns the TreeView used to list font sizes.
+//
+// Deprecated: Use FontChooser.
+//
+// The function returns the following values:
+//
+//    - widget that is part of fontsel.
+//
+func (fontsel *FontSelection) SizeList() Widgetter {
+	var _arg0 *C.GtkFontSelection // out
+	var _cret *C.GtkWidget        // in
+
+	_arg0 = (*C.GtkFontSelection)(unsafe.Pointer(coreglib.InternObject(fontsel).Native()))
+
+	_cret = C.gtk_font_selection_get_size_list(_arg0)
+	runtime.KeepAlive(fontsel)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
 }
 
 // SetFontName sets the currently-selected font.
@@ -325,6 +637,46 @@ func NewFontSelectionDialog(title string) *FontSelectionDialog {
 	return _fontSelectionDialog
 }
 
+// CancelButton gets the “Cancel” button.
+//
+// Deprecated: Use FontChooserDialog.
+//
+// The function returns the following values:
+//
+//    - widget used in the dialog for the “Cancel” button.
+//
+func (fsd *FontSelectionDialog) CancelButton() Widgetter {
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _cret *C.GtkWidget              // in
+
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+
+	_cret = C.gtk_font_selection_dialog_get_cancel_button(_arg0)
+	runtime.KeepAlive(fsd)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
 // FontName gets the currently-selected font name.
 //
 // Note that this can be a different string than what you set with
@@ -356,6 +708,86 @@ func (fsd *FontSelectionDialog) FontName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// FontSelection retrieves the FontSelection widget embedded in the dialog.
+//
+// Deprecated: Use FontChooserDialog.
+//
+// The function returns the following values:
+//
+//    - widget: embedded FontSelection.
+//
+func (fsd *FontSelectionDialog) FontSelection() Widgetter {
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _cret *C.GtkWidget              // in
+
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+
+	_cret = C.gtk_font_selection_dialog_get_font_selection(_arg0)
+	runtime.KeepAlive(fsd)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// OKButton gets the “OK” button.
+//
+// Deprecated: Use FontChooserDialog.
+//
+// The function returns the following values:
+//
+//    - widget used in the dialog for the “OK” button.
+//
+func (fsd *FontSelectionDialog) OKButton() Widgetter {
+	var _arg0 *C.GtkFontSelectionDialog // out
+	var _cret *C.GtkWidget              // in
+
+	_arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(coreglib.InternObject(fsd).Native()))
+
+	_cret = C.gtk_font_selection_dialog_get_ok_button(_arg0)
+	runtime.KeepAlive(fsd)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
 }
 
 // PreviewText gets the text displayed in the preview area.

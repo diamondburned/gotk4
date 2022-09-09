@@ -53,6 +53,8 @@ func _gotk4_gtk4_EventControllerScroll_ConnectScroll(arg0 C.gpointer, arg1 C.gdo
 
 	ok := f(_dx, _dy)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

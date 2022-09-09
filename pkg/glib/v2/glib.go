@@ -22,6 +22,8 @@ func ConvertErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -36,6 +38,8 @@ func FileErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -50,6 +54,8 @@ func MarkupErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -64,6 +70,8 @@ func NumberParserErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -78,6 +86,8 @@ func OptionErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -92,6 +102,8 @@ func ShellErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -106,6 +118,8 @@ func SpawnErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -120,6 +134,8 @@ func SpawnExitErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -134,6 +150,8 @@ func IOChannelErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -148,6 +166,8 @@ func KeyFileErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -162,6 +182,8 @@ func RegexErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -176,6 +198,8 @@ func URIErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }
@@ -190,6 +214,8 @@ func VariantParseErrorQuark() Quark {
 	var _quark Quark // out
 
 	_quark = uint32(_cret)
+	type _ = Quark
+	type _ = uint32
 
 	return _quark
 }

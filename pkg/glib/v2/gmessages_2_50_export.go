@@ -38,6 +38,8 @@ func _gotk4_glib2_LogWriterFunc(arg1 C.GLogLevelFlags, arg2 *C.GLogField, arg3 C
 
 	logWriterOutput := fn(_logLevel, _fields)
 
+	var _ LogWriterOutput
+
 	cret = C.GLogWriterOutput(logWriterOutput)
 
 	return cret

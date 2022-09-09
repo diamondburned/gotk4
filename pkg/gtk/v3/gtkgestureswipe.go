@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -66,4 +67,64 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 // velocity and direction are a product of previously recorded events.
 func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "swipe", false, unsafe.Pointer(C._gotk4_gtk3_GestureSwipe_ConnectSwipe), f)
+}
+
+// NewGestureSwipe returns a newly created Gesture that recognizes swipes.
+//
+// The function takes the following parameters:
+//
+//    - widget: Widget.
+//
+// The function returns the following values:
+//
+//    - gestureSwipe: newly created GestureSwipe.
+//
+func NewGestureSwipe(widget Widgetter) *GestureSwipe {
+	var _arg1 *C.GtkWidget  // out
+	var _cret *C.GtkGesture // in
+
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	_cret = C.gtk_gesture_swipe_new(_arg1)
+	runtime.KeepAlive(widget)
+
+	var _gestureSwipe *GestureSwipe // out
+
+	_gestureSwipe = wrapGestureSwipe(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _gestureSwipe
+}
+
+// Velocity: if the gesture is recognized, this function returns TRUE and fill
+// in velocity_x and velocity_y with the recorded velocity, as per the last
+// event(s) processed.
+//
+// The function returns the following values:
+//
+//    - velocityX: return value for the velocity in the X axis, in pixels/sec.
+//    - velocityY: return value for the velocity in the Y axis, in pixels/sec.
+//    - ok: whether velocity could be calculated.
+//
+func (gesture *GestureSwipe) Velocity() (velocityX, velocityY float64, ok bool) {
+	var _arg0 *C.GtkGestureSwipe // out
+	var _arg1 C.gdouble          // in
+	var _arg2 C.gdouble          // in
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(coreglib.InternObject(gesture).Native()))
+
+	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(gesture)
+
+	var _velocityX float64 // out
+	var _velocityY float64 // out
+	var _ok bool           // out
+
+	_velocityX = float64(_arg1)
+	_velocityY = float64(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _velocityX, _velocityY, _ok
 }

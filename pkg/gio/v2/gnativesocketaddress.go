@@ -3,7 +3,7 @@
 package gio
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -73,6 +73,36 @@ func wrapNativeSocketAddress(obj *coreglib.Object) *NativeSocketAddress {
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	return wrapNativeSocketAddress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewNativeSocketAddress creates a new SocketAddress for native and len.
+//
+// The function takes the following parameters:
+//
+//    - native (optional) address object.
+//    - len: length of native, in bytes.
+//
+// The function returns the following values:
+//
+//    - nativeSocketAddress: new SocketAddress.
+//
+func NewNativeSocketAddress(native unsafe.Pointer, len uint) *NativeSocketAddress {
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
+	var _cret *C.GSocketAddress // in
+
+	_arg1 = (C.gpointer)(unsafe.Pointer(native))
+	_arg2 = C.gsize(len)
+
+	_cret = C.g_native_socket_address_new(_arg1, _arg2)
+	runtime.KeepAlive(native)
+	runtime.KeepAlive(len)
+
+	var _nativeSocketAddress *NativeSocketAddress // out
+
+	_nativeSocketAddress = wrapNativeSocketAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _nativeSocketAddress
 }
 
 // NativeSocketAddressClass: instance of this type is always passed by

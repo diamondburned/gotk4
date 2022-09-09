@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -31,6 +30,9 @@ import (
 // };
 // gboolean _gotk4_gio2_IOStream_virtual_close_finish(void* fnptr, GIOStream* arg0, GAsyncResult* arg1, GError** arg2) {
 //   return ((gboolean (*)(GIOStream*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_IOStream_virtual_close_fn(void* fnptr, GIOStream* arg0, GCancellable* arg1, GError** arg2) {
+//   return ((gboolean (*)(GIOStream*, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2);
 // };
 // void _gotk4_gio2_IOStream_virtual_close_async(void* fnptr, GIOStream* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
 //   ((void (*)(GIOStream*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
@@ -490,6 +492,53 @@ func (stream *IOStream) SetPending() error {
 	return _goerr
 }
 
+// SpliceAsync: asynchronously splice the output stream of stream1 to the input
+// stream of stream2, and splice the output stream of stream2 to the input
+// stream of stream1.
+//
+// When the operation is finished callback will be called. You can then call
+// g_io_stream_splice_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//    - stream2: OStream.
+//    - flags: set of OStreamSpliceFlags.
+//    - ioPriority: io priority of the request.
+//    - callback (optional): ReadyCallback.
+//
+func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GIOStream           // out
+	var _arg4 *C.GCancellable        // out
+	var _arg1 *C.GIOStream           // out
+	var _arg2 C.GIOStreamSpliceFlags // out
+	var _arg3 C.int                  // out
+	var _arg5 C.GAsyncReadyCallback  // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream1).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream2).Native()))
+	_arg2 = C.GIOStreamSpliceFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_io_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream1)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream2)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // closeAsync requests an asynchronous close of the stream, releasing resources
 // related to it. When the operation is finished callback will be called. You
 // can then call g_io_stream_close_finish() to get the result of the operation.
@@ -555,6 +604,36 @@ func (stream *IOStream) closeFinish(result AsyncResulter) error {
 	C._gotk4_gio2_IOStream_virtual_close_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
 	runtime.KeepAlive(stream)
 	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// The function takes the following parameters:
+//
+func (stream *IOStream) closeFn(ctx context.Context) error {
+	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.close_fn
+
+	var _arg0 *C.GIOStream    // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	C._gotk4_gio2_IOStream_virtual_close_fn(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
 
 	var _goerr error // out
 

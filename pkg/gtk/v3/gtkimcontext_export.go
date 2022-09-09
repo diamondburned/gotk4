@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"unsafe"
+
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -52,6 +54,8 @@ func _gotk4_gtk3_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint
 	_nChars = int(arg2)
 
 	ok := f(_offset, _nChars)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -122,6 +126,8 @@ func _gotk4_gtk3_IMContext_ConnectRetrieveSurrounding(arg0 C.gpointer, arg1 C.gu
 	}
 
 	ok := f()
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

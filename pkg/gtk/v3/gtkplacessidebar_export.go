@@ -34,6 +34,8 @@ func _gotk4_gtk3_PlacesSidebar_ConnectDragActionAsk(arg0 C.gpointer, arg1 C.gint
 
 	gint := f(_actions)
 
+	var _ int
+
 	cret = C.gint(gint)
 
 	return cret

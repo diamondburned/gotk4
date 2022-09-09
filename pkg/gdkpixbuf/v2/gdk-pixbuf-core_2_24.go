@@ -20,40 +20,6 @@ import (
 // extern void _gotk4_gdkpixbuf2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
 
-// NewPixbufFromStreamFinish finishes an asynchronous pixbuf creation operation
-// started with gdk_pixbuf_new_from_stream_async().
-//
-// The function takes the following parameters:
-//
-//    - asyncResult: GAsyncResult.
-//
-// The function returns the following values:
-//
-//    - pixbuf (optional): newly created pixbuf.
-//
-func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
-	var _arg1 *C.GAsyncResult // out
-	var _cret *C.GdkPixbuf    // in
-	var _cerr *C.GError       // in
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(asyncResult).Native()))
-
-	_cret = C.gdk_pixbuf_new_from_stream_finish(_arg1, &_cerr)
-	runtime.KeepAlive(asyncResult)
-
-	var _pixbuf *Pixbuf // out
-	var _goerr error    // out
-
-	if _cret != nil {
-		_pixbuf = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _pixbuf, _goerr
-}
-
 // NewPixbufFromStreamAsync creates a new pixbuf by asynchronously loading an
 // image from an input stream.
 //

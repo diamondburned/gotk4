@@ -3,13 +3,13 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -149,6 +149,44 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	return _viewport
 }
 
+// BinWindow gets the bin window of the Viewport.
+//
+// The function returns the following values:
+//
+//    - window: Window.
+//
+func (viewport *Viewport) BinWindow() gdk.Windower {
+	var _arg0 *C.GtkViewport // out
+	var _cret *C.GdkWindow   // in
+
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+
+	_cret = C.gtk_viewport_get_bin_window(_arg0)
+	runtime.KeepAlive(viewport)
+
+	var _window gdk.Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gdk.Windower)
+			return ok
+		})
+		rv, ok := casted.(gdk.Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_window = rv
+	}
+
+	return _window
+}
+
 // HAdjustment returns the horizontal adjustment of the viewport.
 //
 // Deprecated: Use gtk_scrollable_get_hadjustment().
@@ -218,6 +256,44 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _adjustment
+}
+
+// ViewWindow gets the view window of the Viewport.
+//
+// The function returns the following values:
+//
+//    - window: Window.
+//
+func (viewport *Viewport) ViewWindow() gdk.Windower {
+	var _arg0 *C.GtkViewport // out
+	var _cret *C.GdkWindow   // in
+
+	_arg0 = (*C.GtkViewport)(unsafe.Pointer(coreglib.InternObject(viewport).Native()))
+
+	_cret = C.gtk_viewport_get_view_window(_arg0)
+	runtime.KeepAlive(viewport)
+
+	var _window gdk.Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gdk.Windower)
+			return ok
+		})
+		rv, ok := casted.(gdk.Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_window = rv
+	}
+
+	return _window
 }
 
 // SetHAdjustment sets the horizontal adjustment of the viewport.

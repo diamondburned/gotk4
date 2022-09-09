@@ -20,6 +20,9 @@ import (
 // void _gotk4_gtk3_ColorChooser_virtual_add_palette(void* fnptr, GtkColorChooser* arg0, GtkOrientation arg1, gint arg2, gint arg3, GdkRGBA* arg4) {
 //   ((void (*)(GtkColorChooser*, GtkOrientation, gint, gint, GdkRGBA*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
 // };
+// void _gotk4_gtk3_ColorChooser_virtual_color_activated(void* fnptr, GtkColorChooser* arg0, GdkRGBA* arg1) {
+//   ((void (*)(GtkColorChooser*, GdkRGBA*))(fnptr))(arg0, arg1);
+// };
 // void _gotk4_gtk3_ColorChooser_virtual_get_rgba(void* fnptr, GtkColorChooser* arg0, GdkRGBA* arg1) {
 //   ((void (*)(GtkColorChooser*, GdkRGBA*))(fnptr))(arg0, arg1);
 // };
@@ -282,6 +285,23 @@ func (chooser *ColorChooser) addPalette(orientation Orientation, colorsPerLine i
 	runtime.KeepAlive(orientation)
 	runtime.KeepAlive(colorsPerLine)
 	runtime.KeepAlive(colors)
+}
+
+// The function takes the following parameters:
+//
+func (chooser *ColorChooser) colorActivated(color *gdk.RGBA) {
+	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.color_activated
+
+	var _arg0 *C.GtkColorChooser // out
+	var _arg1 *C.GdkRGBA         // out
+
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
+
+	C._gotk4_gtk3_ColorChooser_virtual_color_activated(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(color)
 }
 
 // rgbA gets the currently-selected color.

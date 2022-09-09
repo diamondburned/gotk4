@@ -52,6 +52,8 @@ func _gotk4_gtk4_TreeModelFilterModifyFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTree
 
 	value := fn(_model, _iter, _column)
 
+	var _ coreglib.Value
+
 	*arg3 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
 }
 
@@ -89,6 +91,8 @@ func _gotk4_gtk4_TreeModelFilterVisibleFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTre
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
 	ok := fn(_model, _iter)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

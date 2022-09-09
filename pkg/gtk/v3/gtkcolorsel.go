@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -179,6 +178,29 @@ func (colorsel *ColorSelection) CurrentColor() *gdk.Color {
 	return _color
 }
 
+// CurrentRGBA sets rgba to be the current color in the GtkColorSelection
+// widget.
+//
+// The function returns the following values:
+//
+//    - rgba to fill in with the current color.
+//
+func (colorsel *ColorSelection) CurrentRGBA() *gdk.RGBA {
+	var _arg0 *C.GtkColorSelection // out
+	var _arg1 C.GdkRGBA            // in
+
+	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+
+	C.gtk_color_selection_get_current_rgba(_arg0, &_arg1)
+	runtime.KeepAlive(colorsel)
+
+	var _rgba *gdk.RGBA // out
+
+	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
+	return _rgba
+}
+
 // HasOpacityControl determines whether the colorsel has an opacity control.
 //
 // The function returns the following values:
@@ -273,6 +295,28 @@ func (colorsel *ColorSelection) PreviousColor() *gdk.Color {
 	return _color
 }
 
+// PreviousRGBA fills rgba in with the original color value.
+//
+// The function returns the following values:
+//
+//    - rgba to fill in with the original color value.
+//
+func (colorsel *ColorSelection) PreviousRGBA() *gdk.RGBA {
+	var _arg0 *C.GtkColorSelection // out
+	var _arg1 C.GdkRGBA            // in
+
+	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+
+	C.gtk_color_selection_get_previous_rgba(_arg0, &_arg1)
+	runtime.KeepAlive(colorsel)
+
+	var _rgba *gdk.RGBA // out
+
+	_rgba = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
+	return _rgba
+}
+
 // IsAdjusting gets the current state of the colorsel.
 //
 // The function returns the following values:
@@ -340,6 +384,27 @@ func (colorsel *ColorSelection) SetCurrentColor(color *gdk.Color) {
 	C.gtk_color_selection_set_current_color(_arg0, _arg1)
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(color)
+}
+
+// SetCurrentRGBA sets the current color to be rgba.
+//
+// The first time this is called, it will also set the original color to be rgba
+// too.
+//
+// The function takes the following parameters:
+//
+//    - rgba to set the current color with.
+//
+func (colorsel *ColorSelection) SetCurrentRGBA(rgba *gdk.RGBA) {
+	var _arg0 *C.GtkColorSelection // out
+	var _arg1 *C.GdkRGBA           // out
+
+	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+
+	C.gtk_color_selection_set_current_rgba(_arg0, _arg1)
+	runtime.KeepAlive(colorsel)
+	runtime.KeepAlive(rgba)
 }
 
 // SetHasOpacityControl sets the colorsel to use or not use opacity.
@@ -427,6 +492,29 @@ func (colorsel *ColorSelection) SetPreviousColor(color *gdk.Color) {
 	C.gtk_color_selection_set_previous_color(_arg0, _arg1)
 	runtime.KeepAlive(colorsel)
 	runtime.KeepAlive(color)
+}
+
+// SetPreviousRGBA sets the “previous” color to be rgba.
+//
+// This function should be called with some hesitations, as it might seem
+// confusing to have that color change. Calling
+// gtk_color_selection_set_current_rgba() will also set this color the first
+// time it is called.
+//
+// The function takes the following parameters:
+//
+//    - rgba to set the previous color with.
+//
+func (colorsel *ColorSelection) SetPreviousRGBA(rgba *gdk.RGBA) {
+	var _arg0 *C.GtkColorSelection // out
+	var _arg1 *C.GdkRGBA           // out
+
+	_arg0 = (*C.GtkColorSelection)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(rgba)))
+
+	C.gtk_color_selection_set_previous_rgba(_arg0, _arg1)
+	runtime.KeepAlive(colorsel)
+	runtime.KeepAlive(rgba)
 }
 
 func (colorSelection *ColorSelection) colorChanged() {

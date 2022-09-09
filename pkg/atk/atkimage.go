@@ -18,6 +18,9 @@ import (
 // gchar* _gotk4_atk1_Image_virtual_get_image_description(void* fnptr, AtkImage* arg0) {
 //   return ((gchar* (*)(AtkImage*))(fnptr))(arg0);
 // };
+// gchar* _gotk4_atk1_Image_virtual_get_image_locale(void* fnptr, AtkImage* arg0) {
+//   return ((gchar* (*)(AtkImage*))(fnptr))(arg0);
+// };
 // void _gotk4_atk1_Image_virtual_get_image_position(void* fnptr, AtkImage* arg0, gint* arg1, gint* arg2, AtkCoordType arg3) {
 //   ((void (*)(AtkImage*, gint*, gint*, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3);
 // };
@@ -107,6 +110,32 @@ func (image *Image) ImageDescription() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ImageLocale retrieves the locale identifier associated to the Image.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+//      used by the image description, or NULL if the image does not specify a
+//      locale.
+//
+func (image *Image) ImageLocale() string {
+	var _arg0 *C.AtkImage // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C.atk_image_get_image_locale(_arg0)
+	runtime.KeepAlive(image)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -237,6 +266,35 @@ func (image *Image) imageDescription() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// imageLocale retrieves the locale identifier associated to the Image.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+//      used by the image description, or NULL if the image does not specify a
+//      locale.
+//
+func (image *Image) imageLocale() string {
+	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
+	fnarg := gclass.get_image_locale
+
+	var _arg0 *C.AtkImage // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C._gotk4_atk1_Image_virtual_get_image_locale(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(image)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

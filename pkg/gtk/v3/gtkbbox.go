@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -144,6 +143,96 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 	return wrapButtonBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewButtonBox creates a new ButtonBox.
+//
+// The function takes the following parameters:
+//
+//    - orientation box's orientation.
+//
+// The function returns the following values:
+//
+//    - buttonBox: new ButtonBox.
+//
+func NewButtonBox(orientation Orientation) *ButtonBox {
+	var _arg1 C.GtkOrientation // out
+	var _cret *C.GtkWidget     // in
+
+	_arg1 = C.GtkOrientation(orientation)
+
+	_cret = C.gtk_button_box_new(_arg1)
+	runtime.KeepAlive(orientation)
+
+	var _buttonBox *ButtonBox // out
+
+	_buttonBox = wrapButtonBox(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _buttonBox
+}
+
+// ChildNonHomogeneous returns whether the child is exempted from homogenous
+// sizing.
+//
+// The function takes the following parameters:
+//
+//    - child of widget.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the child is not subject to homogenous sizing.
+//
+func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
+	var _arg0 *C.GtkButtonBox // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	_cret = C.gtk_button_box_get_child_non_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(child)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ChildSecondary returns whether child should appear in a secondary group of
+// children.
+//
+// The function takes the following parameters:
+//
+//    - child of widget.
+//
+// The function returns the following values:
+//
+//    - ok: whether child should appear in a secondary group of children.
+//
+func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
+	var _arg0 *C.GtkButtonBox // out
+	var _arg1 *C.GtkWidget    // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	_cret = C.gtk_button_box_get_child_secondary(_arg0, _arg1)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(child)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Layout retrieves the method being used to arrange the buttons in a button
 // box.
 //
@@ -165,6 +254,31 @@ func (widget *ButtonBox) Layout() ButtonBoxStyle {
 	_buttonBoxStyle = ButtonBoxStyle(_cret)
 
 	return _buttonBoxStyle
+}
+
+// SetChildNonHomogeneous sets whether the child is exempted from homogeous
+// sizing.
+//
+// The function takes the following parameters:
+//
+//    - child of widget.
+//    - nonHomogeneous: new value.
+//
+func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous bool) {
+	var _arg0 *C.GtkButtonBox // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 C.gboolean      // out
+
+	_arg0 = (*C.GtkButtonBox)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	if nonHomogeneous {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_button_box_set_child_non_homogeneous(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(nonHomogeneous)
 }
 
 // SetChildSecondary sets whether child should appear in a secondary group of

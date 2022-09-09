@@ -478,6 +478,38 @@ func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter *T
 	return coreglib.ConnectGeneratedClosure(childModel, "rows-reordered", false, unsafe.Pointer(C._gotk4_gtk4_TreeModel_ConnectRowsReordered), f)
 }
 
+// NewFilter creates a new TreeModel, with child_model as the child_model and
+// root as the virtual root.
+//
+// The function takes the following parameters:
+//
+//    - root (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - treeModel: new TreeModel.
+//
+func (childModel *TreeModel) NewFilter(root *TreePath) *TreeModel {
+	var _arg0 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreePath  // out
+	var _cret *C.GtkTreeModel // in
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(childModel).Native()))
+	if root != nil {
+		_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(root)))
+	}
+
+	_cret = C.gtk_tree_model_filter_new(_arg0, _arg1)
+	runtime.KeepAlive(childModel)
+	runtime.KeepAlive(root)
+
+	var _treeModel *TreeModel // out
+
+	_treeModel = wrapTreeModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _treeModel
+}
+
 // ForEach calls func on each node in model in a depth-first fashion.
 //
 // If func returns TRUE, then the tree ceases to be walked, and

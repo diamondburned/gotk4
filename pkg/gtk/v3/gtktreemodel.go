@@ -51,6 +51,9 @@ import (
 // gboolean _gotk4_gtk3_TreeModel_virtual_iter_parent(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1, GtkTreeIter* arg2) {
 //   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*))(fnptr))(arg0, arg1, arg2);
 // };
+// gboolean _gotk4_gtk3_TreeModel_virtual_iter_previous(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1) {
+//   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1);
+// };
 // gint _gotk4_gtk3_TreeModel_virtual_get_n_columns(void* fnptr, GtkTreeModel* arg0) {
 //   return ((gint (*)(GtkTreeModel*))(fnptr))(arg0);
 // };
@@ -440,6 +443,38 @@ func (childModel *TreeModel) ConnectRowsReordered(f func(path *TreePath, iter *T
 	return coreglib.ConnectGeneratedClosure(childModel, "rows-reordered", false, unsafe.Pointer(C._gotk4_gtk3_TreeModel_ConnectRowsReordered), f)
 }
 
+// NewFilter creates a new TreeModel, with child_model as the child_model and
+// root as the virtual root.
+//
+// The function takes the following parameters:
+//
+//    - root (optional) or NULL.
+//
+// The function returns the following values:
+//
+//    - treeModel: new TreeModel.
+//
+func (childModel *TreeModel) NewFilter(root *TreePath) *TreeModel {
+	var _arg0 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreePath  // out
+	var _cret *C.GtkTreeModel // in
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(childModel).Native()))
+	if root != nil {
+		_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(root)))
+	}
+
+	_cret = C.gtk_tree_model_filter_new(_arg0, _arg1)
+	runtime.KeepAlive(childModel)
+	runtime.KeepAlive(root)
+
+	var _treeModel *TreeModel // out
+
+	_treeModel = wrapTreeModel(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _treeModel
+}
+
 // ForEach calls func on each node in model in a depth-first fashion.
 //
 // If func returns TRUE, then the tree ceases to be walked, and
@@ -677,6 +712,39 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 	)
 
 	return _treePath
+}
+
+// StringFromIter generates a string representation of the iter.
+//
+// This string is a “:” separated list of numbers. For example, “4:10:0:3” would
+// be an acceptable return value for this string.
+//
+// The function takes the following parameters:
+//
+//    - iter: TreeIter-struct.
+//
+// The function returns the following values:
+//
+//    - utf8: newly-allocated string. Must be freed with g_free().
+//
+func (treeModel *TreeModel) StringFromIter(iter *TreeIter) string {
+	var _arg0 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _cret *C.gchar        // in
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C.gtk_tree_model_get_string_from_iter(_arg0, _arg1)
+	runtime.KeepAlive(treeModel)
+	runtime.KeepAlive(iter)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
 }
 
 // Value initializes and sets value to that at column.
@@ -944,6 +1012,40 @@ func (treeModel *TreeModel) IterParent(child *TreeIter) (*TreeIter, bool) {
 	return _iter, _ok
 }
 
+// IterPrevious sets iter to point to the previous node at the current level.
+//
+// If there is no previous iter, FALSE is returned and iter is set to be
+// invalid.
+//
+// The function takes the following parameters:
+//
+//    - iter: TreeIter-struct.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter has been changed to the previous node.
+//
+func (treeModel *TreeModel) IterPrevious(iter *TreeIter) bool {
+	var _arg0 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C.gtk_tree_model_iter_previous(_arg0, _arg1)
+	runtime.KeepAlive(treeModel)
+	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // RefNode lets the tree ref the node.
 //
 // This is an optional method for models to implement. To be more specific,
@@ -1067,6 +1169,47 @@ func (treeModel *TreeModel) RowInserted(path *TreePath, iter *TreeIter) {
 	runtime.KeepAlive(treeModel)
 	runtime.KeepAlive(path)
 	runtime.KeepAlive(iter)
+}
+
+// RowsReordered emits the TreeModel::rows-reordered signal on tree_model.
+//
+// This should be called by models when their rows have been reordered.
+//
+// The function takes the following parameters:
+//
+//    - path pointing to the tree node whose children have been reordered.
+//    - iter (optional): valid TreeIter-struct pointing to the node whose
+//      children have been reordered, or NULL if the depth of path is 0.
+//    - newOrder: array of integers mapping the current position of each child to
+//      its old position before the re-ordering, i.e. new_order[newpos] = oldpos.
+//
+func (treeModel *TreeModel) RowsReordered(path *TreePath, iter *TreeIter, newOrder []int) {
+	var _arg0 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreePath  // out
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 *C.gint         // out
+	var _arg4 C.gint
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
+	if iter != nil {
+		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	}
+	_arg4 = (C.gint)(len(newOrder))
+	_arg3 = (*C.gint)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_arg3))
+	{
+		out := unsafe.Slice((*C.gint)(_arg3), len(newOrder))
+		for i := range newOrder {
+			out[i] = C.gint(newOrder[i])
+		}
+	}
+
+	C.gtk_tree_model_rows_reordered_with_length(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(treeModel)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(iter)
+	runtime.KeepAlive(newOrder)
 }
 
 // UnrefNode lets the tree unref the node.
@@ -1541,6 +1684,43 @@ func (treeModel *TreeModel) iterParent(child *TreeIter) (*TreeIter, bool) {
 	}
 
 	return _iter, _ok
+}
+
+// iterPrevious sets iter to point to the previous node at the current level.
+//
+// If there is no previous iter, FALSE is returned and iter is set to be
+// invalid.
+//
+// The function takes the following parameters:
+//
+//    - iter: TreeIter-struct.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if iter has been changed to the previous node.
+//
+func (treeModel *TreeModel) iterPrevious(iter *TreeIter) bool {
+	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
+	fnarg := gclass.iter_previous
+
+	var _arg0 *C.GtkTreeModel // out
+	var _arg1 *C.GtkTreeIter  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
+	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
+
+	_cret = C._gotk4_gtk3_TreeModel_virtual_iter_previous(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(treeModel)
+	runtime.KeepAlive(iter)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // refNode lets the tree ref the node.

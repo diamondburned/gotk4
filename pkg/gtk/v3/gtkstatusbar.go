@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -222,6 +221,28 @@ func (statusbar *Statusbar) ContextID(contextDescription string) uint {
 	return _guint
 }
 
+// MessageArea retrieves the box containing the label widget.
+//
+// The function returns the following values:
+//
+//    - box: Box.
+//
+func (statusbar *Statusbar) MessageArea() *Box {
+	var _arg0 *C.GtkStatusbar // out
+	var _cret *C.GtkWidget    // in
+
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
+
+	_cret = C.gtk_statusbar_get_message_area(_arg0)
+	runtime.KeepAlive(statusbar)
+
+	var _box *Box // out
+
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _box
+}
+
 // Pop removes the first message in the Statusbar’s stack with the given context
 // id.
 //
@@ -300,6 +321,25 @@ func (statusbar *Statusbar) Remove(contextId, messageId uint) {
 	runtime.KeepAlive(statusbar)
 	runtime.KeepAlive(contextId)
 	runtime.KeepAlive(messageId)
+}
+
+// RemoveAll forces the removal of all messages from a statusbar's stack with
+// the exact context_id.
+//
+// The function takes the following parameters:
+//
+//    - contextId: context identifier.
+//
+func (statusbar *Statusbar) RemoveAll(contextId uint) {
+	var _arg0 *C.GtkStatusbar // out
+	var _arg1 C.guint         // out
+
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(coreglib.InternObject(statusbar).Native()))
+	_arg1 = C.guint(contextId)
+
+	C.gtk_statusbar_remove_all(_arg0, _arg1)
+	runtime.KeepAlive(statusbar)
+	runtime.KeepAlive(contextId)
 }
 
 // The function takes the following parameters:

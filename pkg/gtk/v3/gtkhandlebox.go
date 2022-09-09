@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -169,6 +168,32 @@ func NewHandleBox() *HandleBox {
 	_handleBox = wrapHandleBox(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _handleBox
+}
+
+// ChildDetached: whether the handlebox’s child is currently detached.
+//
+// Deprecated: HandleBox has been deprecated.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the child is currently detached, otherwise FALSE.
+//
+func (handleBox *HandleBox) ChildDetached() bool {
+	var _arg0 *C.GtkHandleBox // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(coreglib.InternObject(handleBox).Native()))
+
+	_cret = C.gtk_handle_box_get_child_detached(_arg0)
+	runtime.KeepAlive(handleBox)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // HandlePosition gets the handle position of the handle box. See

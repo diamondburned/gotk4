@@ -4,6 +4,9 @@ package pangocairo
 
 import (
 	_ "runtime/cgo"
+
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config: pangocairo pango

@@ -3,7 +3,7 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -256,6 +256,34 @@ func (v *FileChooserWidget) ConnectShowHidden(f func()) coreglib.SignalHandle {
 // The default binding for this signal is Alt + Up.
 func (v *FileChooserWidget) ConnectUpFolder(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "up-folder", false, unsafe.Pointer(C._gotk4_gtk3_FileChooserWidget_ConnectUpFolder), f)
+}
+
+// NewFileChooserWidget creates a new FileChooserWidget. This is a file chooser
+// widget that can be embedded in custom windows, and it is the same widget that
+// is used by FileChooserDialog.
+//
+// The function takes the following parameters:
+//
+//    - action: open or save mode for the widget.
+//
+// The function returns the following values:
+//
+//    - fileChooserWidget: new FileChooserWidget.
+//
+func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
+	var _arg1 C.GtkFileChooserAction // out
+	var _cret *C.GtkWidget           // in
+
+	_arg1 = C.GtkFileChooserAction(action)
+
+	_cret = C.gtk_file_chooser_widget_new(_arg1)
+	runtime.KeepAlive(action)
+
+	var _fileChooserWidget *FileChooserWidget // out
+
+	_fileChooserWidget = wrapFileChooserWidget(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _fileChooserWidget
 }
 
 // FileChooserWidgetClass: instance of this type is always passed by reference.

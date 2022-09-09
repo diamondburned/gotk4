@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -23,6 +22,9 @@ import (
 // extern void _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(gpointer, GVariant*, gchar**, guintptr);
 // extern void _gotk4_gio2_DBusProxyClass_g_signal(GDBusProxy*, gchar*, gchar*, GVariant*);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_DBusProxy_virtual_g_signal(void* fnptr, GDBusProxy* arg0, gchar* arg1, gchar* arg2, GVariant* arg3) {
+//   ((void (*)(GDBusProxy*, gchar*, gchar*, GVariant*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 import "C"
 
 // GType values.
@@ -990,6 +992,35 @@ func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	C.g_dbus_proxy_set_interface_info(_arg0, _arg1)
 	runtime.KeepAlive(proxy)
 	runtime.KeepAlive(info)
+}
+
+// The function takes the following parameters:
+//
+//    - senderName
+//    - signalName
+//    - parameters
+//
+func (proxy *DBusProxy) gSignal(senderName, signalName string, parameters *glib.Variant) {
+	gclass := (*C.GDBusProxyClass)(coreglib.PeekParentClass(proxy))
+	fnarg := gclass.g_signal
+
+	var _arg0 *C.GDBusProxy // out
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.gchar      // out
+	var _arg3 *C.GVariant   // out
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(senderName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(signalName)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+
+	C._gotk4_gio2_DBusProxy_virtual_g_signal(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(proxy)
+	runtime.KeepAlive(senderName)
+	runtime.KeepAlive(signalName)
+	runtime.KeepAlive(parameters)
 }
 
 // NewDBusProxy creates a proxy for accessing interface_name on the remote

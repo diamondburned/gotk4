@@ -52,6 +52,8 @@ func _gotk4_gtk4_CellAllocCallback(arg1 *C.GtkCellRenderer, arg2 *C.GdkRectangle
 
 	ok := fn(_renderer, _cellArea, _cellBackground)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -91,6 +93,8 @@ func _gotk4_gtk4_CellCallback(arg1 *C.GtkCellRenderer, arg2 C.gpointer) (cret C.
 	}
 
 	ok := fn(_renderer)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

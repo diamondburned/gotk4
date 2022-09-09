@@ -27,6 +27,8 @@ func _gotk4_gtk3_FileChooser_ConnectConfirmOverwrite(arg0 C.gpointer, arg1 C.gui
 
 	fileChooserConfirmation := f()
 
+	var _ FileChooserConfirmation
+
 	cret = C.GtkFileChooserConfirmation(fileChooserConfirmation)
 
 	return cret

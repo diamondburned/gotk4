@@ -600,33 +600,3 @@ func True() bool {
 
 	return _ok
 }
-
-// GrabAdd makes widget the current grabbed widget.
-//
-// This means that interaction with other widgets in the same application is
-// blocked and mouse as well as keyboard events are delivered to this widget.
-//
-// If widget is not sensitive, it is not set as the current grabbed widget and
-// this function does nothing.
-func (widget *Widget) GrabAdd() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_grab_add(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// GrabRemove removes the grab from the given widget.
-//
-// You have to pair calls to gtk_grab_add() and gtk_grab_remove().
-//
-// If widget does not have the grab, this function does nothing.
-func (widget *Widget) GrabRemove() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_grab_remove(_arg0)
-	runtime.KeepAlive(widget)
-}

@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"unsafe"
+
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -68,6 +70,8 @@ func _gotk4_gtk3_FlowBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementSt
 	_count = int(arg2)
 
 	ok := f(_step, _count)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

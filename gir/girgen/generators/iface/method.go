@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
+	"github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
 type Method struct {
@@ -21,6 +22,7 @@ type Method struct {
 	Tail       string
 	Block      string
 	Header     file.Header
+	Results    []typeconv.ValueConverted
 	ParamDocs  []cmt.ParamDoc
 	ReturnDocs []cmt.ParamDoc
 }
@@ -41,6 +43,7 @@ func newMethod(cgen *callable.Generator) Method {
 		Tail:       callable.CoalesceTail(cgen.Tail),
 		Block:      cgen.Block,
 		Header:     file.CopyHeader(cgen.Header()),
+		Results:    cgen.Results,
 		ParamDocs:  cgen.ParamDocs,
 		ReturnDocs: cgen.ReturnDocs,
 	}

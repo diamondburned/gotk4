@@ -2,13 +2,6 @@
 
 package gio
 
-import (
-	"runtime"
-	"unsafe"
-
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-)
-
 // #include <stdlib.h>
 // #include <gio/gio.h>
 import "C"
@@ -17,46 +10,3 @@ import "C"
 // getting the symbolic icon for the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_OBJECT. The value for this key should contain a #GIcon.
 const FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON = "standard::symbolic-icon"
-
-// SymbolicIcon gets the symbolic icon for a file.
-//
-// The function returns the following values:
-//
-//    - icon (optional) for the given info.
-//
-func (info *FileInfo) SymbolicIcon() *Icon {
-	var _arg0 *C.GFileInfo // out
-	var _cret *C.GIcon     // in
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-
-	_cret = C.g_file_info_get_symbolic_icon(_arg0)
-	runtime.KeepAlive(info)
-
-	var _icon *Icon // out
-
-	if _cret != nil {
-		_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _icon
-}
-
-// SetSymbolicIcon sets the symbolic icon for a given Info. See
-// G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
-//
-// The function takes the following parameters:
-//
-//    - icon: #GIcon.
-//
-func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
-	var _arg0 *C.GFileInfo // out
-	var _arg1 *C.GIcon     // out
-
-	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
-	runtime.KeepAlive(info)
-	runtime.KeepAlive(icon)
-}

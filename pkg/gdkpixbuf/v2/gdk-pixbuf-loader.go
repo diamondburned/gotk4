@@ -3,13 +3,13 @@
 package gdkpixbuf
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
@@ -233,6 +233,50 @@ func NewPixbufLoader() *PixbufLoader {
 	return _pixbufLoader
 }
 
+// NewPixbufLoaderWithMIMEType creates a new pixbuf loader object that always
+// attempts to parse image data as if it were an image of MIME type mime_type,
+// instead of identifying the type automatically.
+//
+// This function is useful if you want an error if the image isn't the expected
+// MIME type; for loading image formats that can't be reliably identified by
+// looking at the data; or if the user manually forces a specific MIME type.
+//
+// The list of supported mime types depends on what image loaders are installed,
+// but typically "image/png", "image/jpeg", "image/gif", "image/tiff" and
+// "image/x-xpixmap" are among the supported mime types. To obtain the full list
+// of supported mime types, call gdk_pixbuf_format_get_mime_types() on each of
+// the PixbufFormat structs returned by gdk_pixbuf_get_formats().
+//
+// The function takes the following parameters:
+//
+//    - mimeType: mime type to be loaded.
+//
+// The function returns the following values:
+//
+//    - pixbufLoader: newly-created pixbuf loader.
+//
+func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
+	var _arg1 *C.char            // out
+	var _cret *C.GdkPixbufLoader // in
+	var _cerr *C.GError          // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_pixbuf_loader_new_with_mime_type(_arg1, &_cerr)
+	runtime.KeepAlive(mimeType)
+
+	var _pixbufLoader *PixbufLoader // out
+	var _goerr error                // out
+
+	_pixbufLoader = wrapPixbufLoader(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _pixbufLoader, _goerr
+}
+
 // NewPixbufLoaderWithType creates a new pixbuf loader object that always
 // attempts to parse image data as if it were an image of type image_type,
 // instead of identifying the type automatically.
@@ -342,6 +386,31 @@ func (loader *PixbufLoader) Animation() *PixbufAnimation {
 	return _pixbufAnimation
 }
 
+// Format obtains the available information about the format of the currently
+// loading image file.
+//
+// The function returns the following values:
+//
+//    - pixbufFormat (optional): PixbufFormat.
+//
+func (loader *PixbufLoader) Format() *PixbufFormat {
+	var _arg0 *C.GdkPixbufLoader // out
+	var _cret *C.GdkPixbufFormat // in
+
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(coreglib.InternObject(loader).Native()))
+
+	_cret = C.gdk_pixbuf_loader_get_format(_arg0)
+	runtime.KeepAlive(loader)
+
+	var _pixbufFormat *PixbufFormat // out
+
+	if _cret != nil {
+		_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _pixbufFormat
+}
+
 // Pixbuf queries the Pixbuf that a pixbuf loader is currently creating.
 //
 // In general it only makes sense to call this function after the
@@ -380,6 +449,35 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 	return _pixbuf
 }
 
+// SetSize causes the image to be scaled while it is loaded.
+//
+// The desired image size can be determined relative to the original size of the
+// image by calling gdk_pixbuf_loader_set_size() from a signal handler for the
+// ::size-prepared signal.
+//
+// Attempts to set the desired image size are ignored after the emission of the
+// ::size-prepared signal.
+//
+// The function takes the following parameters:
+//
+//    - width: desired width of the image being loaded.
+//    - height: desired height of the image being loaded.
+//
+func (loader *PixbufLoader) SetSize(width, height int) {
+	var _arg0 *C.GdkPixbufLoader // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
+
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(coreglib.InternObject(loader).Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
+
+	C.gdk_pixbuf_loader_set_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(loader)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+}
+
 // Write parses the next count bytes in the given image buffer.
 //
 // The function takes the following parameters:
@@ -401,6 +499,33 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 	C.gdk_pixbuf_loader_write(_arg0, _arg1, _arg2, &_cerr)
 	runtime.KeepAlive(loader)
 	runtime.KeepAlive(buf)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// WriteBytes parses the next contents of the given image buffer.
+//
+// The function takes the following parameters:
+//
+//    - buffer: image data as a GBytes buffer.
+//
+func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
+	var _arg0 *C.GdkPixbufLoader // out
+	var _arg1 *C.GBytes          // out
+	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(coreglib.InternObject(loader).Native()))
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(buffer)))
+
+	C.gdk_pixbuf_loader_write_bytes(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(loader)
+	runtime.KeepAlive(buffer)
 
 	var _goerr error // out
 

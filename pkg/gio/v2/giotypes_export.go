@@ -86,6 +86,8 @@ func _gotk4_gio2_FileReadMoreCallback(arg1 *C.char, arg2 C.goffset, arg3 C.gpoin
 
 	ok := fn(_fileContents, _fileSize)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

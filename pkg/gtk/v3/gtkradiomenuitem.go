@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -180,6 +179,35 @@ func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
 	return _radioMenuItem
 }
 
+// NewRadioMenuItemFromWidget creates a new RadioMenuItem adding it to the same
+// group as group.
+//
+// The function takes the following parameters:
+//
+//    - group (optional): existing RadioMenuItem.
+//
+// The function returns the following values:
+//
+//    - radioMenuItem: new RadioMenuItem.
+//
+func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
+	var _arg1 *C.GtkRadioMenuItem // out
+	var _cret *C.GtkWidget        // in
+
+	if group != nil {
+		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	}
+
+	_cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
+	runtime.KeepAlive(group)
+
+	var _radioMenuItem *RadioMenuItem // out
+
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _radioMenuItem
+}
+
 // NewRadioMenuItemWithLabel creates a new RadioMenuItem whose child is a simple
 // Label.
 //
@@ -210,6 +238,43 @@ func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuI
 	defer C.free(unsafe.Pointer(_arg2))
 
 	_cret = C.gtk_radio_menu_item_new_with_label(_arg1, _arg2)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(label)
+
+	var _radioMenuItem *RadioMenuItem // out
+
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _radioMenuItem
+}
+
+// NewRadioMenuItemWithLabelFromWidget creates a new GtkRadioMenuItem whose
+// child is a simple GtkLabel. The new RadioMenuItem is added to the same group
+// as group.
+//
+// The function takes the following parameters:
+//
+//    - group (optional): existing RadioMenuItem.
+//    - label (optional): text for the label.
+//
+// The function returns the following values:
+//
+//    - radioMenuItem: new RadioMenuItem.
+//
+func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
+	var _arg1 *C.GtkRadioMenuItem // out
+	var _arg2 *C.gchar            // out
+	var _cret *C.GtkWidget        // in
+
+	if group != nil {
+		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	}
+	if label != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	_cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
 	runtime.KeepAlive(group)
 	runtime.KeepAlive(label)
 
@@ -262,6 +327,47 @@ func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMe
 	return _radioMenuItem
 }
 
+// NewRadioMenuItemWithMnemonicFromWidget creates a new GtkRadioMenuItem
+// containing a label. The label will be created using
+// gtk_label_new_with_mnemonic(), so underscores in label indicate the mnemonic
+// for the menu item.
+//
+// The new RadioMenuItem is added to the same group as group.
+//
+// The function takes the following parameters:
+//
+//    - group (optional): existing RadioMenuItem.
+//    - label (optional): text of the button, with an underscore in front of the
+//      mnemonic character.
+//
+// The function returns the following values:
+//
+//    - radioMenuItem: new RadioMenuItem.
+//
+func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
+	var _arg1 *C.GtkRadioMenuItem // out
+	var _arg2 *C.gchar            // out
+	var _cret *C.GtkWidget        // in
+
+	if group != nil {
+		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	}
+	if label != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	_cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(label)
+
+	var _radioMenuItem *RadioMenuItem // out
+
+	_radioMenuItem = wrapRadioMenuItem(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _radioMenuItem
+}
+
 // Group returns the group to which the radio menu item belongs, as a #GList of
 // RadioMenuItem. The list belongs to GTK+ and should not be freed.
 //
@@ -289,6 +395,46 @@ func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
 	})
 
 	return _sList
+}
+
+// JoinGroup joins a RadioMenuItem object to the group of another RadioMenuItem
+// object.
+//
+// This function should be used by language bindings to avoid the memory
+// manangement of the opaque List of gtk_radio_menu_item_get_group() and
+// gtk_radio_menu_item_set_group().
+//
+// A common way to set up a group of RadioMenuItem instances is:
+//
+//      GtkRadioMenuItem *last_item = NULL;
+//
+//      while ( ...more items to add... )
+//        {
+//          GtkRadioMenuItem *radio_item;
+//
+//          radio_item = gtk_radio_menu_item_new (...);
+//
+//          gtk_radio_menu_item_join_group (radio_item, last_item);
+//          last_item = radio_item;
+//        }.
+//
+// The function takes the following parameters:
+//
+//    - groupSource (optional) whose group we are joining, or NULL to remove the
+//      radio_menu_item from its current group.
+//
+func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
+	var _arg0 *C.GtkRadioMenuItem // out
+	var _arg1 *C.GtkRadioMenuItem // out
+
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(radioMenuItem).Native()))
+	if groupSource != nil {
+		_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(coreglib.InternObject(groupSource).Native()))
+	}
+
+	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
+	runtime.KeepAlive(radioMenuItem)
+	runtime.KeepAlive(groupSource)
 }
 
 // SetGroup sets the group of a radio menu item, or changes it.

@@ -31,6 +31,8 @@ func _gotk4_gtk4_AboutDialog_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar,
 
 	ok := f(_uri)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

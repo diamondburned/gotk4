@@ -16,6 +16,9 @@ import (
 // GDBusInterfaceInfo* _gotk4_gio2_DBusInterface_virtual_get_info(void* fnptr, GDBusInterface* arg0) {
 //   return ((GDBusInterfaceInfo* (*)(GDBusInterface*))(fnptr))(arg0);
 // };
+// GDBusObject* _gotk4_gio2_DBusInterface_virtual_dup_object(void* fnptr, GDBusInterface* arg0) {
+//   return ((GDBusObject* (*)(GDBusInterface*))(fnptr))(arg0);
+// };
 // void _gotk4_gio2_DBusInterface_virtual_set_object(void* fnptr, GDBusInterface* arg0, GDBusObject* arg1) {
 //   ((void (*)(GDBusInterface*, GDBusObject*))(fnptr))(arg0, arg1);
 // };
@@ -71,6 +74,31 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 	return wrapDBusInterface(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// GetObject gets the BusObject that interface_ belongs to, if any.
+//
+// The function returns the following values:
+//
+//    - dBusObject (optional) or NULL. The returned reference should be freed
+//      with g_object_unref().
+//
+func (interface_ *DBusInterface) GetObject() *DBusObject {
+	var _arg0 *C.GDBusInterface // out
+	var _cret *C.GDBusObject    // in
+
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+
+	_cret = C.g_dbus_interface_dup_object(_arg0)
+	runtime.KeepAlive(interface_)
+
+	var _dBusObject *DBusObject // out
+
+	if _cret != nil {
+		_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _dBusObject
+}
+
 // Info gets D-Bus introspection information for the D-Bus interface implemented
 // by interface_.
 //
@@ -121,6 +149,34 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	C.g_dbus_interface_set_object(_arg0, _arg1)
 	runtime.KeepAlive(interface_)
 	runtime.KeepAlive(object)
+}
+
+// dupObject gets the BusObject that interface_ belongs to, if any.
+//
+// The function returns the following values:
+//
+//    - dBusObject (optional) or NULL. The returned reference should be freed
+//      with g_object_unref().
+//
+func (interface_ *DBusInterface) dupObject() *DBusObject {
+	gclass := (*C.GDBusInterfaceIface)(coreglib.PeekParentClass(interface_))
+	fnarg := gclass.dup_object
+
+	var _arg0 *C.GDBusInterface // out
+	var _cret *C.GDBusObject    // in
+
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+
+	_cret = C._gotk4_gio2_DBusInterface_virtual_dup_object(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(interface_)
+
+	var _dBusObject *DBusObject // out
+
+	if _cret != nil {
+		_dBusObject = wrapDBusObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _dBusObject
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface implemented

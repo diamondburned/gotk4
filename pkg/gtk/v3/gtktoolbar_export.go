@@ -33,6 +33,8 @@ func _gotk4_gtk3_Toolbar_ConnectFocusHomeOrEnd(arg0 C.gpointer, arg1 C.gboolean,
 
 	ok := f(_focusHome)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -82,6 +84,8 @@ func _gotk4_gtk3_Toolbar_ConnectPopupContextMenu(arg0 C.gpointer, arg1 C.gint, a
 	_button = int(arg3)
 
 	ok := f(_x, _y, _button)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

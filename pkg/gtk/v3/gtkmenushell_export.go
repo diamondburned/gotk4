@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"unsafe"
+
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -162,6 +164,8 @@ func _gotk4_gtk3_MenuShell_ConnectMoveSelected(arg0 C.gpointer, arg1 C.gint, arg
 	_distance = int(arg1)
 
 	ok := f(_distance)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

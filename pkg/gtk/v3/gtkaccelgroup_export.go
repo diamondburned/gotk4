@@ -2,6 +2,13 @@
 
 package gtk
 
+import (
+	"unsafe"
+
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+)
+
 // #include <stdlib.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -30,6 +37,8 @@ func _gotk4_gtk3_AccelGroup_ConnectAccelActivate(arg0 C.gpointer, arg1 C.GObject
 	_modifier = gdk.ModifierType(arg3)
 
 	ok := f(_acceleratable, _keyval, _modifier)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

@@ -50,6 +50,8 @@ func _gotk4_gtk3_RecentSortFunc(arg1 *C.GtkRecentInfo, arg2 *C.GtkRecentInfo, ar
 
 	gint := fn(_a, _b)
 
+	var _ int
+
 	cret = C.gint(gint)
 
 	return cret

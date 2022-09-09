@@ -3,13 +3,14 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -17,12 +18,14 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
 // extern void _gotk4_gtk3_FlowBox_ConnectUnselectAll(gpointer, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectToggleCursorChild(gpointer, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectSelectedChildrenChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectSelectAll(gpointer, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectChildActivated(gpointer, GtkFlowBoxChild*, guintptr);
 // extern void _gotk4_gtk3_FlowBox_ConnectActivateCursorChild(gpointer, guintptr);
+// extern void _gotk4_gtk3_FlowBoxForEachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 // extern void _gotk4_gtk3_FlowBoxClass_unselect_all(GtkFlowBox*);
 // extern void _gotk4_gtk3_FlowBoxClass_toggle_cursor_child(GtkFlowBox*);
 // extern void _gotk4_gtk3_FlowBoxClass_selected_children_changed(GtkFlowBox*);
@@ -31,8 +34,11 @@ import (
 // extern void _gotk4_gtk3_FlowBoxClass_activate_cursor_child(GtkFlowBox*);
 // extern void _gotk4_gtk3_FlowBoxChild_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk3_FlowBoxChildClass_activate(GtkFlowBoxChild*);
+// extern gint _gotk4_gtk3_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
 // extern gboolean _gotk4_gtk3_FlowBox_ConnectMoveCursor(gpointer, GtkMovementStep, gint, guintptr);
+// extern gboolean _gotk4_gtk3_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
 // extern gboolean _gotk4_gtk3_FlowBoxClass_move_cursor(GtkFlowBox*, GtkMovementStep, gint);
+// extern GtkWidget* _gotk4_gtk3_FlowBoxCreateWidgetFunc(gpointer, gpointer);
 // gboolean _gotk4_gtk3_FlowBox_virtual_move_cursor(void* fnptr, GtkFlowBox* arg0, GtkMovementStep arg1, gint arg2) {
 //   return ((gboolean (*)(GtkFlowBox*, GtkMovementStep, gint))(fnptr))(arg0, arg1, arg2);
 // };
@@ -45,10 +51,16 @@ import (
 // void _gotk4_gtk3_FlowBox_virtual_child_activated(void* fnptr, GtkFlowBox* arg0, GtkFlowBoxChild* arg1) {
 //   ((void (*)(GtkFlowBox*, GtkFlowBoxChild*))(fnptr))(arg0, arg1);
 // };
+// void _gotk4_gtk3_FlowBox_virtual_select_all(void* fnptr, GtkFlowBox* arg0) {
+//   ((void (*)(GtkFlowBox*))(fnptr))(arg0);
+// };
 // void _gotk4_gtk3_FlowBox_virtual_selected_children_changed(void* fnptr, GtkFlowBox* arg0) {
 //   ((void (*)(GtkFlowBox*))(fnptr))(arg0);
 // };
 // void _gotk4_gtk3_FlowBox_virtual_toggle_cursor_child(void* fnptr, GtkFlowBox* arg0) {
+//   ((void (*)(GtkFlowBox*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_FlowBox_virtual_unselect_all(void* fnptr, GtkFlowBox* arg0) {
 //   ((void (*)(GtkFlowBox*))(fnptr))(arg0);
 // };
 import "C"
@@ -290,6 +302,720 @@ func (box *FlowBox) ConnectUnselectAll(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "unselect-all", false, unsafe.Pointer(C._gotk4_gtk3_FlowBox_ConnectUnselectAll), f)
 }
 
+// NewFlowBox creates a GtkFlowBox.
+//
+// The function returns the following values:
+//
+//    - flowBox: new FlowBox container.
+//
+func NewFlowBox() *FlowBox {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_flow_box_new()
+
+	var _flowBox *FlowBox // out
+
+	_flowBox = wrapFlowBox(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _flowBox
+}
+
+// BindModel binds model to box.
+//
+// If box was already bound to a model, that previous binding is destroyed.
+//
+// The contents of box are cleared and then filled with widgets that represent
+// items from model. box is updated whenever model changes. If model is NULL,
+// box is left empty.
+//
+// It is undefined to add or remove widgets directly (for example, with
+// gtk_flow_box_insert() or gtk_container_add()) while box is bound to a model.
+//
+// Note that using a model is incompatible with the filtering and sorting
+// functionality in GtkFlowBox. When using a model, filtering and sorting should
+// be implemented by the model.
+//
+// The function takes the following parameters:
+//
+//    - model (optional) to be bound to box.
+//    - createWidgetFunc: function that creates widgets for items.
+//
+func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
+	var _arg0 *C.GtkFlowBox                // out
+	var _arg1 *C.GListModel                // out
+	var _arg2 C.GtkFlowBoxCreateWidgetFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	}
+	_arg2 = (*[0]byte)(C._gotk4_gtk3_FlowBoxCreateWidgetFunc)
+	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_flow_box_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(createWidgetFunc)
+}
+
+// ActivateOnSingleClick returns whether children activate on single clicks.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if children are activated on single click, FALSE otherwise.
+//
+func (box *FlowBox) ActivateOnSingleClick() bool {
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_activate_on_single_click(_arg0)
+	runtime.KeepAlive(box)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ChildAtIndex gets the nth child in the box.
+//
+// The function takes the following parameters:
+//
+//    - idx: position of the child.
+//
+// The function returns the following values:
+//
+//    - flowBoxChild (optional): child widget, which will always be a
+//      FlowBoxChild or NULL in case no child widget with the given index exists.
+//
+func (box *FlowBox) ChildAtIndex(idx int) *FlowBoxChild {
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.gint             // out
+	var _cret *C.GtkFlowBoxChild // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.gint(idx)
+
+	_cret = C.gtk_flow_box_get_child_at_index(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(idx)
+
+	var _flowBoxChild *FlowBoxChild // out
+
+	if _cret != nil {
+		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _flowBoxChild
+}
+
+// ChildAtPos gets the child in the (x, y) position.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of the child.
+//    - y coordinate of the child.
+//
+// The function returns the following values:
+//
+//    - flowBoxChild (optional): child widget, which will always be a
+//      FlowBoxChild or NULL in case no child widget exists for the given x and y
+//      coordinates.
+//
+func (box *FlowBox) ChildAtPos(x, y int) *FlowBoxChild {
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+	var _cret *C.GtkFlowBoxChild // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+
+	_cret = C.gtk_flow_box_get_child_at_pos(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _flowBoxChild *FlowBoxChild // out
+
+	if _cret != nil {
+		_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _flowBoxChild
+}
+
+// ColumnSpacing gets the horizontal spacing.
+//
+// The function returns the following values:
+//
+//    - guint: horizontal spacing.
+//
+func (box *FlowBox) ColumnSpacing() uint {
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_column_spacing(_arg0)
+	runtime.KeepAlive(box)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Homogeneous returns whether the box is homogeneous (all children are the same
+// size). See gtk_box_set_homogeneous().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the box is homogeneous.
+//
+func (box *FlowBox) Homogeneous() bool {
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_homogeneous(_arg0)
+	runtime.KeepAlive(box)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// MaxChildrenPerLine gets the maximum number of children per line.
+//
+// The function returns the following values:
+//
+//    - guint: maximum number of children per line.
+//
+func (box *FlowBox) MaxChildrenPerLine() uint {
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_max_children_per_line(_arg0)
+	runtime.KeepAlive(box)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// MinChildrenPerLine gets the minimum number of children per line.
+//
+// The function returns the following values:
+//
+//    - guint: minimum number of children per line.
+//
+func (box *FlowBox) MinChildrenPerLine() uint {
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_min_children_per_line(_arg0)
+	runtime.KeepAlive(box)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// RowSpacing gets the vertical spacing.
+//
+// The function returns the following values:
+//
+//    - guint: vertical spacing.
+//
+func (box *FlowBox) RowSpacing() uint {
+	var _arg0 *C.GtkFlowBox // out
+	var _cret C.guint       // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_row_spacing(_arg0)
+	runtime.KeepAlive(box)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// SelectedChildren creates a list of all selected children.
+//
+// The function returns the following values:
+//
+//    - list: A #GList containing the Widget for each selected child. Free with
+//      g_list_free() when done.
+//
+func (box *FlowBox) SelectedChildren() []*FlowBoxChild {
+	var _arg0 *C.GtkFlowBox // out
+	var _cret *C.GList      // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_selected_children(_arg0)
+	runtime.KeepAlive(box)
+
+	var _list []*FlowBoxChild // out
+
+	_list = make([]*FlowBoxChild, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkFlowBoxChild)(v)
+		var dst *FlowBoxChild // out
+		dst = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(src)))
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
+// SelectionMode gets the selection mode of box.
+//
+// The function returns the following values:
+//
+//    - selectionMode: SelectionMode.
+//
+func (box *FlowBox) SelectionMode() SelectionMode {
+	var _arg0 *C.GtkFlowBox      // out
+	var _cret C.GtkSelectionMode // in
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_flow_box_get_selection_mode(_arg0)
+	runtime.KeepAlive(box)
+
+	var _selectionMode SelectionMode // out
+
+	_selectionMode = SelectionMode(_cret)
+
+	return _selectionMode
+}
+
+// Insert inserts the widget into box at position.
+//
+// If a sort function is set, the widget will actually be inserted at the
+// calculated position and this function has the same effect as
+// gtk_container_add().
+//
+// If position is -1, or larger than the total number of children in the box,
+// then the widget will be appended to the end.
+//
+// The function takes the following parameters:
+//
+//    - widget to add.
+//    - position to insert child in.
+//
+func (box *FlowBox) Insert(widget Widgetter, position int) {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.gint        // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	_arg2 = C.gint(position)
+
+	C.gtk_flow_box_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(widget)
+	runtime.KeepAlive(position)
+}
+
+// InvalidateFilter updates the filtering for all children.
+//
+// Call this function when the result of the filter function on the box is
+// changed due ot an external factor. For instance, this would be used if the
+// filter function just looked for a specific search term, and the entry with
+// the string has changed.
+func (box *FlowBox) InvalidateFilter() {
+	var _arg0 *C.GtkFlowBox // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_flow_box_invalidate_filter(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// InvalidateSort updates the sorting for all children.
+//
+// Call this when the result of the sort function on box is changed due to an
+// external factor.
+func (box *FlowBox) InvalidateSort() {
+	var _arg0 *C.GtkFlowBox // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_flow_box_invalidate_sort(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// SelectAll: select all children of box, if the selection mode allows it.
+func (box *FlowBox) SelectAll() {
+	var _arg0 *C.GtkFlowBox // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_flow_box_select_all(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// SelectChild selects a single child of box, if the selection mode allows it.
+//
+// The function takes the following parameters:
+//
+//    - child of box.
+//
+func (box *FlowBox) SelectChild(child *FlowBoxChild) {
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 *C.GtkFlowBoxChild // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	C.gtk_flow_box_select_child(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+}
+
+// SelectedForEach calls a function for each selected child.
+//
+// Note that the selection cannot be modified from within this function.
+//
+// The function takes the following parameters:
+//
+//    - fn: function to call for each selected child.
+//
+func (box *FlowBox) SelectedForEach(fn FlowBoxForEachFunc) {
+	var _arg0 *C.GtkFlowBox           // out
+	var _arg1 C.GtkFlowBoxForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxForEachFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
+
+	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(fn)
+}
+
+// SetActivateOnSingleClick: if single is TRUE, children will be activated when
+// you click on them, otherwise you need to double-click.
+//
+// The function takes the following parameters:
+//
+//    - single: TRUE to emit child-activated on a single click.
+//
+func (box *FlowBox) SetActivateOnSingleClick(single bool) {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if single {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_flow_box_set_activate_on_single_click(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(single)
+}
+
+// SetColumnSpacing sets the horizontal space to add between children. See the
+// FlowBox:column-spacing property.
+//
+// The function takes the following parameters:
+//
+//    - spacing to use.
+//
+func (box *FlowBox) SetColumnSpacing(spacing uint) {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.guint       // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.guint(spacing)
+
+	C.gtk_flow_box_set_column_spacing(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
+}
+
+// SetFilterFunc: by setting a filter function on the box one can decide
+// dynamically which of the children to show. For instance, to implement a
+// search function that only shows the children matching the search terms.
+//
+// The filter_func will be called for each child after the call, and it will
+// continue to be called each time a child changes (via
+// gtk_flow_box_child_changed()) or when gtk_flow_box_invalidate_filter() is
+// called.
+//
+// Note that using a filter function is incompatible with using a model (see
+// gtk_flow_box_bind_model()).
+//
+// The function takes the following parameters:
+//
+//    - filterFunc (optional): callback that lets you filter which children to
+//      show.
+//
+func (box *FlowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc) {
+	var _arg0 *C.GtkFlowBox          // out
+	var _arg1 C.GtkFlowBoxFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if filterFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(filterFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.gtk_flow_box_set_filter_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(filterFunc)
+}
+
+// SetHAdjustment hooks up an adjustment to focus handling in box. The
+// adjustment is also used for autoscrolling during rubberband selection. See
+// gtk_scrolled_window_get_hadjustment() for a typical way of obtaining the
+// adjustment, and gtk_flow_box_set_vadjustment()for setting the vertical
+// adjustment.
+//
+// The adjustments have to be in pixel units and in the same coordinate system
+// as the allocation for immediate children of the box.
+//
+// The function takes the following parameters:
+//
+//    - adjustment which should be adjusted when the focus is moved among the
+//      descendents of container.
+//
+func (box *FlowBox) SetHAdjustment(adjustment *Adjustment) {
+	var _arg0 *C.GtkFlowBox    // out
+	var _arg1 *C.GtkAdjustment // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+
+	C.gtk_flow_box_set_hadjustment(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(adjustment)
+}
+
+// SetHomogeneous sets the FlowBox:homogeneous property of box, controlling
+// whether or not all children of box are given equal space in the box.
+//
+// The function takes the following parameters:
+//
+//    - homogeneous: TRUE to create equal allotments, FALSE for variable
+//      allotments.
+//
+func (box *FlowBox) SetHomogeneous(homogeneous bool) {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if homogeneous {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_flow_box_set_homogeneous(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(homogeneous)
+}
+
+// SetMaxChildrenPerLine sets the maximum number of children to request and
+// allocate space for in box’s orientation.
+//
+// Setting the maximum number of children per line limits the overall natural
+// size request to be no more than n_children children long in the given
+// orientation.
+//
+// The function takes the following parameters:
+//
+//    - nChildren: maximum number of children per line.
+//
+func (box *FlowBox) SetMaxChildrenPerLine(nChildren uint) {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.guint       // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.guint(nChildren)
+
+	C.gtk_flow_box_set_max_children_per_line(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(nChildren)
+}
+
+// SetMinChildrenPerLine sets the minimum number of children to line up in box’s
+// orientation before flowing.
+//
+// The function takes the following parameters:
+//
+//    - nChildren: minimum number of children per line.
+//
+func (box *FlowBox) SetMinChildrenPerLine(nChildren uint) {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.guint       // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.guint(nChildren)
+
+	C.gtk_flow_box_set_min_children_per_line(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(nChildren)
+}
+
+// SetRowSpacing sets the vertical space to add between children. See the
+// FlowBox:row-spacing property.
+//
+// The function takes the following parameters:
+//
+//    - spacing to use.
+//
+func (box *FlowBox) SetRowSpacing(spacing uint) {
+	var _arg0 *C.GtkFlowBox // out
+	var _arg1 C.guint       // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.guint(spacing)
+
+	C.gtk_flow_box_set_row_spacing(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(spacing)
+}
+
+// SetSelectionMode sets how selection works in box. See SelectionMode for
+// details.
+//
+// The function takes the following parameters:
+//
+//    - mode: new selection mode.
+//
+func (box *FlowBox) SetSelectionMode(mode SelectionMode) {
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 C.GtkSelectionMode // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.GtkSelectionMode(mode)
+
+	C.gtk_flow_box_set_selection_mode(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(mode)
+}
+
+// SetSortFunc: by setting a sort function on the box, one can dynamically
+// reorder the children of the box, based on the contents of the children.
+//
+// The sort_func will be called for each child after the call, and will continue
+// to be called each time a child changes (via gtk_flow_box_child_changed()) and
+// when gtk_flow_box_invalidate_sort() is called.
+//
+// Note that using a sort function is incompatible with using a model (see
+// gtk_flow_box_bind_model()).
+//
+// The function takes the following parameters:
+//
+//    - sortFunc (optional): sort function.
+//
+func (box *FlowBox) SetSortFunc(sortFunc FlowBoxSortFunc) {
+	var _arg0 *C.GtkFlowBox        // out
+	var _arg1 C.GtkFlowBoxSortFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if sortFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_FlowBoxSortFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.gtk_flow_box_set_sort_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(sortFunc)
+}
+
+// SetVAdjustment hooks up an adjustment to focus handling in box. The
+// adjustment is also used for autoscrolling during rubberband selection. See
+// gtk_scrolled_window_get_vadjustment() for a typical way of obtaining the
+// adjustment, and gtk_flow_box_set_hadjustment()for setting the horizontal
+// adjustment.
+//
+// The adjustments have to be in pixel units and in the same coordinate system
+// as the allocation for immediate children of the box.
+//
+// The function takes the following parameters:
+//
+//    - adjustment which should be adjusted when the focus is moved among the
+//      descendents of container.
+//
+func (box *FlowBox) SetVAdjustment(adjustment *Adjustment) {
+	var _arg0 *C.GtkFlowBox    // out
+	var _arg1 *C.GtkAdjustment // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+
+	C.gtk_flow_box_set_vadjustment(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(adjustment)
+}
+
+// UnselectAll: unselect all children of box, if the selection mode allows it.
+func (box *FlowBox) UnselectAll() {
+	var _arg0 *C.GtkFlowBox // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_flow_box_unselect_all(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// UnselectChild unselects a single child of box, if the selection mode allows
+// it.
+//
+// The function takes the following parameters:
+//
+//    - child of box.
+//
+func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
+	var _arg0 *C.GtkFlowBox      // out
+	var _arg1 *C.GtkFlowBoxChild // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	C.gtk_flow_box_unselect_child(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+}
+
 func (box *FlowBox) activateCursorChild() {
 	gclass := (*C.GtkFlowBoxClass)(coreglib.PeekParentClass(box))
 	fnarg := gclass.activate_cursor_child
@@ -353,6 +1079,19 @@ func (box *FlowBox) moveCursor(step MovementStep, count int) bool {
 	return _ok
 }
 
+// selectAll: select all children of box, if the selection mode allows it.
+func (box *FlowBox) selectAll() {
+	gclass := (*C.GtkFlowBoxClass)(coreglib.PeekParentClass(box))
+	fnarg := gclass.select_all
+
+	var _arg0 *C.GtkFlowBox // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C._gotk4_gtk3_FlowBox_virtual_select_all(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(box)
+}
+
 func (box *FlowBox) selectedChildrenChanged() {
 	gclass := (*C.GtkFlowBoxClass)(coreglib.PeekParentClass(box))
 	fnarg := gclass.selected_children_changed
@@ -374,6 +1113,19 @@ func (box *FlowBox) toggleCursorChild() {
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	C._gotk4_gtk3_FlowBox_virtual_toggle_cursor_child(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(box)
+}
+
+// unselectAll: unselect all children of box, if the selection mode allows it.
+func (box *FlowBox) unselectAll() {
+	gclass := (*C.GtkFlowBoxClass)(coreglib.PeekParentClass(box))
+	fnarg := gclass.unselect_all
+
+	var _arg0 *C.GtkFlowBox // out
+
+	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C._gotk4_gtk3_FlowBox_virtual_unselect_all(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(box)
 }
 
@@ -452,6 +1204,96 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 // be used by applications for their own purposes.
 func (child *FlowBoxChild) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(child, "activate", false, unsafe.Pointer(C._gotk4_gtk3_FlowBoxChild_ConnectActivate), f)
+}
+
+// NewFlowBoxChild creates a new FlowBoxChild, to be used as a child of a
+// FlowBox.
+//
+// The function returns the following values:
+//
+//    - flowBoxChild: new FlowBoxChild.
+//
+func NewFlowBoxChild() *FlowBoxChild {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_flow_box_child_new()
+
+	var _flowBoxChild *FlowBoxChild // out
+
+	_flowBoxChild = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _flowBoxChild
+}
+
+// Changed marks child as changed, causing any state that depends on this to be
+// updated. This affects sorting and filtering.
+//
+// Note that calls to this method must be in sync with the data used for the
+// sorting and filtering functions. For instance, if the list is mirroring some
+// external data set, and *two* children changed in the external data set when
+// you call gtk_flow_box_child_changed() on the first child, the sort function
+// must only read the new data for the first of the two changed children,
+// otherwise the resorting of the children will be wrong.
+//
+// This generally means that if you don’t fully control the data model, you have
+// to duplicate the data that affects the sorting and filtering functions into
+// the widgets themselves. Another alternative is to call
+// gtk_flow_box_invalidate_sort() on any model change, but that is more
+// expensive.
+func (child *FlowBoxChild) Changed() {
+	var _arg0 *C.GtkFlowBoxChild // out
+
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	C.gtk_flow_box_child_changed(_arg0)
+	runtime.KeepAlive(child)
+}
+
+// Index gets the current index of the child in its FlowBox container.
+//
+// The function returns the following values:
+//
+//    - gint: index of the child, or -1 if the child is not in a flow box.
+//
+func (child *FlowBoxChild) Index() int {
+	var _arg0 *C.GtkFlowBoxChild // out
+	var _cret C.gint             // in
+
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	_cret = C.gtk_flow_box_child_get_index(_arg0)
+	runtime.KeepAlive(child)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// IsSelected returns whether the child is currently selected in its FlowBox
+// container.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if child is selected.
+//
+func (child *FlowBoxChild) IsSelected() bool {
+	var _arg0 *C.GtkFlowBoxChild // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	_cret = C.gtk_flow_box_child_is_selected(_arg0)
+	runtime.KeepAlive(child)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 func (child *FlowBoxChild) activate() {

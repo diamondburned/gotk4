@@ -3,13 +3,14 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -17,6 +18,7 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
 // extern void _gotk4_gtk3_ListBox_ConnectUnselectAll(gpointer, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectToggleCursorRow(gpointer, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectSelectedRowsChanged(gpointer, guintptr);
@@ -25,8 +27,10 @@ import (
 // extern void _gotk4_gtk3_ListBox_ConnectRowActivated(gpointer, GtkListBoxRow*, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectMoveCursor(gpointer, GtkMovementStep, gint, guintptr);
 // extern void _gotk4_gtk3_ListBox_ConnectActivateCursorRow(gpointer, guintptr);
+// extern void _gotk4_gtk3_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 // extern void _gotk4_gtk3_ListBoxRow_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk3_ListBoxRowClass_activate(GtkListBoxRow*);
+// extern void _gotk4_gtk3_ListBoxForEachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 // extern void _gotk4_gtk3_ListBoxClass_unselect_all(GtkListBox*);
 // extern void _gotk4_gtk3_ListBoxClass_toggle_cursor_row(GtkListBox*);
 // extern void _gotk4_gtk3_ListBoxClass_selected_rows_changed(GtkListBox*);
@@ -35,6 +39,9 @@ import (
 // extern void _gotk4_gtk3_ListBoxClass_row_activated(GtkListBox*, GtkListBoxRow*);
 // extern void _gotk4_gtk3_ListBoxClass_move_cursor(GtkListBox*, GtkMovementStep, gint);
 // extern void _gotk4_gtk3_ListBoxClass_activate_cursor_row(GtkListBox*);
+// extern gint _gotk4_gtk3_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
+// extern gboolean _gotk4_gtk3_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
+// extern GtkWidget* _gotk4_gtk3_ListBoxCreateWidgetFunc(gpointer, gpointer);
 // void _gotk4_gtk3_ListBoxRow_virtual_activate(void* fnptr, GtkListBoxRow* arg0) {
 //   ((void (*)(GtkListBoxRow*))(fnptr))(arg0);
 // };
@@ -50,10 +57,16 @@ import (
 // void _gotk4_gtk3_ListBox_virtual_row_selected(void* fnptr, GtkListBox* arg0, GtkListBoxRow* arg1) {
 //   ((void (*)(GtkListBox*, GtkListBoxRow*))(fnptr))(arg0, arg1);
 // };
+// void _gotk4_gtk3_ListBox_virtual_select_all(void* fnptr, GtkListBox* arg0) {
+//   ((void (*)(GtkListBox*))(fnptr))(arg0);
+// };
 // void _gotk4_gtk3_ListBox_virtual_selected_rows_changed(void* fnptr, GtkListBox* arg0) {
 //   ((void (*)(GtkListBox*))(fnptr))(arg0);
 // };
 // void _gotk4_gtk3_ListBox_virtual_toggle_cursor_row(void* fnptr, GtkListBox* arg0) {
+//   ((void (*)(GtkListBox*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_ListBox_virtual_unselect_all(void* fnptr, GtkListBox* arg0) {
 //   ((void (*)(GtkListBox*))(fnptr))(arg0);
 // };
 import "C"
@@ -276,6 +289,649 @@ func (box *ListBox) ConnectUnselectAll(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "unselect-all", false, unsafe.Pointer(C._gotk4_gtk3_ListBox_ConnectUnselectAll), f)
 }
 
+// NewListBox creates a new ListBox container.
+//
+// The function returns the following values:
+//
+//    - listBox: new ListBox.
+//
+func NewListBox() *ListBox {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_list_box_new()
+
+	var _listBox *ListBox // out
+
+	_listBox = wrapListBox(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _listBox
+}
+
+// BindModel binds model to box.
+//
+// If box was already bound to a model, that previous binding is destroyed.
+//
+// The contents of box are cleared and then filled with widgets that represent
+// items from model. box is updated whenever model changes. If model is NULL,
+// box is left empty.
+//
+// It is undefined to add or remove widgets directly (for example, with
+// gtk_list_box_insert() or gtk_container_add()) while box is bound to a model.
+//
+// Note that using a model is incompatible with the filtering and sorting
+// functionality in GtkListBox. When using a model, filtering and sorting should
+// be implemented by the model.
+//
+// The function takes the following parameters:
+//
+//    - model (optional) to be bound to box.
+//    - createWidgetFunc (optional): function that creates widgets for items or
+//      NULL in case you also passed NULL as model.
+//
+func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCreateWidgetFunc) {
+	var _arg0 *C.GtkListBox                // out
+	var _arg1 *C.GListModel                // out
+	var _arg2 C.GtkListBoxCreateWidgetFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if model != nil {
+		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
+	}
+	if createWidgetFunc != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gtk3_ListBoxCreateWidgetFunc)
+		_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.gtk_list_box_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(model)
+	runtime.KeepAlive(createWidgetFunc)
+}
+
+// DragHighlightRow: this is a helper function for implementing DnD onto a
+// ListBox. The passed in row will be highlighted via gtk_drag_highlight(), and
+// any previously highlighted row will be unhighlighted.
+//
+// The row will also be unhighlighted when the widget gets a drag leave event.
+//
+// The function takes the following parameters:
+//
+//    - row: ListBoxRow.
+//
+func (box *ListBox) DragHighlightRow(row *ListBoxRow) {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+
+	C.gtk_list_box_drag_highlight_row(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(row)
+}
+
+// DragUnhighlightRow: if a row has previously been highlighted via
+// gtk_list_box_drag_highlight_row() it will have the highlight removed.
+func (box *ListBox) DragUnhighlightRow() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_list_box_drag_unhighlight_row(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// ActivateOnSingleClick returns whether rows activate on single clicks.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if rows are activated on single click, FALSE otherwise.
+//
+func (box *ListBox) ActivateOnSingleClick() bool {
+	var _arg0 *C.GtkListBox // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
+	runtime.KeepAlive(box)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Adjustment gets the adjustment (if any) that the widget uses to for vertical
+// scrolling.
+//
+// The function returns the following values:
+//
+//    - adjustment: adjustment.
+//
+func (box *ListBox) Adjustment() *Adjustment {
+	var _arg0 *C.GtkListBox    // out
+	var _cret *C.GtkAdjustment // in
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_list_box_get_adjustment(_arg0)
+	runtime.KeepAlive(box)
+
+	var _adjustment *Adjustment // out
+
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _adjustment
+}
+
+// RowAtIndex gets the n-th child in the list (not counting headers). If _index
+// is negative or larger than the number of items in the list, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//    - index_: index of the row.
+//
+// The function returns the following values:
+//
+//    - listBoxRow (optional): child Widget or NULL.
+//
+func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 C.gint           // out
+	var _cret *C.GtkListBoxRow // in
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.gint(index_)
+
+	_cret = C.gtk_list_box_get_row_at_index(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(index_)
+
+	var _listBoxRow *ListBoxRow // out
+
+	if _cret != nil {
+		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _listBoxRow
+}
+
+// RowAtY gets the row at the y position.
+//
+// The function takes the following parameters:
+//
+//    - y: position.
+//
+// The function returns the following values:
+//
+//    - listBoxRow (optional): row or NULL in case no row exists for the given y
+//      coordinate.
+//
+func (box *ListBox) RowAtY(y int) *ListBoxRow {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 C.gint           // out
+	var _cret *C.GtkListBoxRow // in
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.gint(y)
+
+	_cret = C.gtk_list_box_get_row_at_y(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(y)
+
+	var _listBoxRow *ListBoxRow // out
+
+	if _cret != nil {
+		_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _listBoxRow
+}
+
+// SelectedRow gets the selected row.
+//
+// Note that the box may allow multiple selection, in which case you should use
+// gtk_list_box_selected_foreach() to find all selected rows.
+//
+// The function returns the following values:
+//
+//    - listBoxRow: selected row.
+//
+func (box *ListBox) SelectedRow() *ListBoxRow {
+	var _arg0 *C.GtkListBox    // out
+	var _cret *C.GtkListBoxRow // in
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_list_box_get_selected_row(_arg0)
+	runtime.KeepAlive(box)
+
+	var _listBoxRow *ListBoxRow // out
+
+	_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _listBoxRow
+}
+
+// SelectedRows creates a list of all selected children.
+//
+// The function returns the following values:
+//
+//    - list: A #GList containing the Widget for each selected child. Free with
+//      g_list_free() when done.
+//
+func (box *ListBox) SelectedRows() []*ListBoxRow {
+	var _arg0 *C.GtkListBox // out
+	var _cret *C.GList      // in
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_list_box_get_selected_rows(_arg0)
+	runtime.KeepAlive(box)
+
+	var _list []*ListBoxRow // out
+
+	_list = make([]*ListBoxRow, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkListBoxRow)(v)
+		var dst *ListBoxRow // out
+		dst = wrapListBoxRow(coreglib.Take(unsafe.Pointer(src)))
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
+// SelectionMode gets the selection mode of the listbox.
+//
+// The function returns the following values:
+//
+//    - selectionMode: SelectionMode.
+//
+func (box *ListBox) SelectionMode() SelectionMode {
+	var _arg0 *C.GtkListBox      // out
+	var _cret C.GtkSelectionMode // in
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	_cret = C.gtk_list_box_get_selection_mode(_arg0)
+	runtime.KeepAlive(box)
+
+	var _selectionMode SelectionMode // out
+
+	_selectionMode = SelectionMode(_cret)
+
+	return _selectionMode
+}
+
+// Insert the child into the box at position. If a sort function is set, the
+// widget will actually be inserted at the calculated position and this function
+// has the same effect of gtk_container_add().
+//
+// If position is -1, or larger than the total number of items in the box, then
+// the child will be appended to the end.
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//    - position to insert child in.
+//
+func (box *ListBox) Insert(child Widgetter, position int) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.gint        // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = C.gint(position)
+
+	C.gtk_list_box_insert(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(position)
+}
+
+// InvalidateFilter: update the filtering for all rows. Call this when result of
+// the filter function on the box is changed due to an external factor. For
+// instance, this would be used if the filter function just looked for a
+// specific search string and the entry with the search string has changed.
+func (box *ListBox) InvalidateFilter() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_list_box_invalidate_filter(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// InvalidateHeaders: update the separators for all rows. Call this when result
+// of the header function on the box is changed due to an external factor.
+func (box *ListBox) InvalidateHeaders() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_list_box_invalidate_headers(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// InvalidateSort: update the sorting for all rows. Call this when result of the
+// sort function on the box is changed due to an external factor.
+func (box *ListBox) InvalidateSort() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_list_box_invalidate_sort(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// Prepend a widget to the list. If a sort function is set, the widget will
+// actually be inserted at the calculated position and this function has the
+// same effect of gtk_container_add().
+//
+// The function takes the following parameters:
+//
+//    - child to add.
+//
+func (box *ListBox) Prepend(child Widgetter) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	C.gtk_list_box_prepend(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(child)
+}
+
+// SelectAll: select all children of box, if the selection mode allows it.
+func (box *ListBox) SelectAll() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_list_box_select_all(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// SelectRow: make row the currently selected row.
+//
+// The function takes the following parameters:
+//
+//    - row (optional) to select or NULL.
+//
+func (box *ListBox) SelectRow(row *ListBoxRow) {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if row != nil {
+		_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	}
+
+	C.gtk_list_box_select_row(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(row)
+}
+
+// SelectedForEach calls a function for each selected child.
+//
+// Note that the selection cannot be modified from within this function.
+//
+// The function takes the following parameters:
+//
+//    - fn: function to call for each selected child.
+//
+func (box *ListBox) SelectedForEach(fn ListBoxForEachFunc) {
+	var _arg0 *C.GtkListBox           // out
+	var _arg1 C.GtkListBoxForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxForEachFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
+
+	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(fn)
+}
+
+// SetActivateOnSingleClick: if single is TRUE, rows will be activated when you
+// click on them, otherwise you need to double-click.
+//
+// The function takes the following parameters:
+//
+//    - single: boolean.
+//
+func (box *ListBox) SetActivateOnSingleClick(single bool) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if single {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_list_box_set_activate_on_single_click(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(single)
+}
+
+// SetAdjustment sets the adjustment (if any) that the widget uses to for
+// vertical scrolling. For instance, this is used to get the page size for
+// PageUp/Down key handling.
+//
+// In the normal case when the box is packed inside a ScrolledWindow the
+// adjustment from that will be picked up automatically, so there is no need to
+// manually do that.
+//
+// The function takes the following parameters:
+//
+//    - adjustment (optional): adjustment, or NULL.
+//
+func (box *ListBox) SetAdjustment(adjustment *Adjustment) {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkAdjustment // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	}
+
+	C.gtk_list_box_set_adjustment(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(adjustment)
+}
+
+// SetFilterFunc: by setting a filter function on the box one can decide
+// dynamically which of the rows to show. For instance, to implement a search
+// function on a list that filters the original list to only show the matching
+// rows.
+//
+// The filter_func will be called for each row after the call, and it will
+// continue to be called each time a row changes (via
+// gtk_list_box_row_changed()) or when gtk_list_box_invalidate_filter() is
+// called.
+//
+// Note that using a filter function is incompatible with using a model (see
+// gtk_list_box_bind_model()).
+//
+// The function takes the following parameters:
+//
+//    - filterFunc (optional): callback that lets you filter which rows to show.
+//
+func (box *ListBox) SetFilterFunc(filterFunc ListBoxFilterFunc) {
+	var _arg0 *C.GtkListBox          // out
+	var _arg1 C.GtkListBoxFilterFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if filterFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxFilterFunc)
+		_arg2 = C.gpointer(gbox.Assign(filterFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.gtk_list_box_set_filter_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(filterFunc)
+}
+
+// SetHeaderFunc: by setting a header function on the box one can dynamically
+// add headers in front of rows, depending on the contents of the row and its
+// position in the list. For instance, one could use it to add headers in front
+// of the first item of a new kind, in a list sorted by the kind.
+//
+// The update_header can look at the current header widget using
+// gtk_list_box_row_get_header() and either update the state of the widget as
+// needed, or set a new one using gtk_list_box_row_set_header(). If no header is
+// needed, set the header to NULL.
+//
+// Note that you may get many calls update_header to this for a particular row
+// when e.g. changing things that don’t affect the header. In this case it is
+// important for performance to not blindly replace an existing header with an
+// identical one.
+//
+// The update_header function will be called for each row after the call, and it
+// will continue to be called each time a row changes (via
+// gtk_list_box_row_changed()) and when the row before changes (either by
+// gtk_list_box_row_changed() on the previous row, or when the previous row
+// becomes a different row). It is also called for all rows when
+// gtk_list_box_invalidate_headers() is called.
+//
+// The function takes the following parameters:
+//
+//    - updateHeader (optional): callback that lets you add row headers.
+//
+func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
+	var _arg0 *C.GtkListBox                // out
+	var _arg1 C.GtkListBoxUpdateHeaderFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if updateHeader != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxUpdateHeaderFunc)
+		_arg2 = C.gpointer(gbox.Assign(updateHeader))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.gtk_list_box_set_header_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(updateHeader)
+}
+
+// SetPlaceholder sets the placeholder widget that is shown in the list when it
+// doesn't display any visible children.
+//
+// The function takes the following parameters:
+//
+//    - placeholder (optional) or NULL.
+//
+func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if placeholder != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(placeholder).Native()))
+	}
+
+	C.gtk_list_box_set_placeholder(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(placeholder)
+}
+
+// SetSelectionMode sets how selection works in the listbox. See SelectionMode
+// for details.
+//
+// The function takes the following parameters:
+//
+//    - mode: SelectionMode.
+//
+func (box *ListBox) SetSelectionMode(mode SelectionMode) {
+	var _arg0 *C.GtkListBox      // out
+	var _arg1 C.GtkSelectionMode // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = C.GtkSelectionMode(mode)
+
+	C.gtk_list_box_set_selection_mode(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(mode)
+}
+
+// SetSortFunc: by setting a sort function on the box one can dynamically
+// reorder the rows of the list, based on the contents of the rows.
+//
+// The sort_func will be called for each row after the call, and will continue
+// to be called each time a row changes (via gtk_list_box_row_changed()) and
+// when gtk_list_box_invalidate_sort() is called.
+//
+// Note that using a sort function is incompatible with using a model (see
+// gtk_list_box_bind_model()).
+//
+// The function takes the following parameters:
+//
+//    - sortFunc (optional): sort function.
+//
+func (box *ListBox) SetSortFunc(sortFunc ListBoxSortFunc) {
+	var _arg0 *C.GtkListBox        // out
+	var _arg1 C.GtkListBoxSortFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	if sortFunc != nil {
+		_arg1 = (*[0]byte)(C._gotk4_gtk3_ListBoxSortFunc)
+		_arg2 = C.gpointer(gbox.Assign(sortFunc))
+		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.gtk_list_box_set_sort_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(sortFunc)
+}
+
+// UnselectAll: unselect all children of box, if the selection mode allows it.
+func (box *ListBox) UnselectAll() {
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C.gtk_list_box_unselect_all(_arg0)
+	runtime.KeepAlive(box)
+}
+
+// UnselectRow unselects a single row of box, if the selection mode allows it.
+//
+// The function takes the following parameters:
+//
+//    - row to unselected.
+//
+func (box *ListBox) UnselectRow(row *ListBoxRow) {
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+
+	C.gtk_list_box_unselect_row(_arg0, _arg1)
+	runtime.KeepAlive(box)
+	runtime.KeepAlive(row)
+}
+
 func (box *ListBox) activateCursorRow() {
 	gclass := (*C.GtkListBoxClass)(coreglib.PeekParentClass(box))
 	fnarg := gclass.activate_cursor_row
@@ -345,6 +1001,19 @@ func (box *ListBox) rowSelected(row *ListBoxRow) {
 	runtime.KeepAlive(row)
 }
 
+// selectAll: select all children of box, if the selection mode allows it.
+func (box *ListBox) selectAll() {
+	gclass := (*C.GtkListBoxClass)(coreglib.PeekParentClass(box))
+	fnarg := gclass.select_all
+
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C._gotk4_gtk3_ListBox_virtual_select_all(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(box)
+}
+
 func (box *ListBox) selectedRowsChanged() {
 	gclass := (*C.GtkListBoxClass)(coreglib.PeekParentClass(box))
 	fnarg := gclass.selected_rows_changed
@@ -366,6 +1035,19 @@ func (box *ListBox) toggleCursorRow() {
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
 
 	C._gotk4_gtk3_ListBox_virtual_toggle_cursor_row(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(box)
+}
+
+// unselectAll: unselect all children of box, if the selection mode allows it.
+func (box *ListBox) unselectAll() {
+	gclass := (*C.GtkListBoxClass)(coreglib.PeekParentClass(box))
+	fnarg := gclass.unselect_all
+
+	var _arg0 *C.GtkListBox // out
+
+	_arg0 = (*C.GtkListBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
+
+	C._gotk4_gtk3_ListBox_virtual_unselect_all(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(box)
 }
 
@@ -462,6 +1144,245 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 // the ListBox::row-activated signal on the row’s parent ListBox.
 func (row *ListBoxRow) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(row, "activate", false, unsafe.Pointer(C._gotk4_gtk3_ListBoxRow_ConnectActivate), f)
+}
+
+// NewListBoxRow creates a new ListBoxRow, to be used as a child of a ListBox.
+//
+// The function returns the following values:
+//
+//    - listBoxRow: new ListBoxRow.
+//
+func NewListBoxRow() *ListBoxRow {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_list_box_row_new()
+
+	var _listBoxRow *ListBoxRow // out
+
+	_listBoxRow = wrapListBoxRow(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _listBoxRow
+}
+
+// Changed marks row as changed, causing any state that depends on this to be
+// updated. This affects sorting, filtering and headers.
+//
+// Note that calls to this method must be in sync with the data used for the row
+// functions. For instance, if the list is mirroring some external data set, and
+// *two* rows changed in the external data set then when you call
+// gtk_list_box_row_changed() on the first row the sort function must only read
+// the new data for the first of the two changed rows, otherwise the resorting
+// of the rows will be wrong.
+//
+// This generally means that if you don’t fully control the data model you have
+// to duplicate the data that affects the listbox row functions into the row
+// widgets themselves. Another alternative is to call
+// gtk_list_box_invalidate_sort() on any model change, but that is more
+// expensive.
+func (row *ListBoxRow) Changed() {
+	var _arg0 *C.GtkListBoxRow // out
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+
+	C.gtk_list_box_row_changed(_arg0)
+	runtime.KeepAlive(row)
+}
+
+// Activatable gets the value of the ListBoxRow:activatable property for this
+// row.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the row is activatable.
+//
+func (row *ListBoxRow) Activatable() bool {
+	var _arg0 *C.GtkListBoxRow // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+
+	_cret = C.gtk_list_box_row_get_activatable(_arg0)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Header returns the current header of the row. This can be used in a
+// ListBoxUpdateHeaderFunc to see if there is a header set already, and if so to
+// update the state of it.
+//
+// The function returns the following values:
+//
+//    - widget (optional): current header, or NULL if none.
+//
+func (row *ListBoxRow) Header() Widgetter {
+	var _arg0 *C.GtkListBoxRow // out
+	var _cret *C.GtkWidget     // in
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+
+	_cret = C.gtk_list_box_row_get_header(_arg0)
+	runtime.KeepAlive(row)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
+// Index gets the current index of the row in its ListBox container.
+//
+// The function returns the following values:
+//
+//    - gint: index of the row, or -1 if the row is not in a listbox.
+//
+func (row *ListBoxRow) Index() int {
+	var _arg0 *C.GtkListBoxRow // out
+	var _cret C.gint           // in
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+
+	_cret = C.gtk_list_box_row_get_index(_arg0)
+	runtime.KeepAlive(row)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Selectable gets the value of the ListBoxRow:selectable property for this row.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the row is selectable.
+//
+func (row *ListBoxRow) Selectable() bool {
+	var _arg0 *C.GtkListBoxRow // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+
+	_cret = C.gtk_list_box_row_get_selectable(_arg0)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsSelected returns whether the child is currently selected in its ListBox
+// container.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if row is selected.
+//
+func (row *ListBoxRow) IsSelected() bool {
+	var _arg0 *C.GtkListBoxRow // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+
+	_cret = C.gtk_list_box_row_is_selected(_arg0)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetActivatable: set the ListBoxRow:activatable property for this row.
+//
+// The function takes the following parameters:
+//
+//    - activatable: TRUE to mark the row as activatable.
+//
+func (row *ListBoxRow) SetActivatable(activatable bool) {
+	var _arg0 *C.GtkListBoxRow // out
+	var _arg1 C.gboolean       // out
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	if activatable {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_list_box_row_set_activatable(_arg0, _arg1)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(activatable)
+}
+
+// SetHeader sets the current header of the row. This is only allowed to be
+// called from a ListBoxUpdateHeaderFunc. It will replace any existing header in
+// the row, and be shown in front of the row in the listbox.
+//
+// The function takes the following parameters:
+//
+//    - header (optional): header, or NULL.
+//
+func (row *ListBoxRow) SetHeader(header Widgetter) {
+	var _arg0 *C.GtkListBoxRow // out
+	var _arg1 *C.GtkWidget     // out
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	if header != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(header).Native()))
+	}
+
+	C.gtk_list_box_row_set_header(_arg0, _arg1)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(header)
+}
+
+// SetSelectable: set the ListBoxRow:selectable property for this row.
+//
+// The function takes the following parameters:
+//
+//    - selectable: TRUE to mark the row as selectable.
+//
+func (row *ListBoxRow) SetSelectable(selectable bool) {
+	var _arg0 *C.GtkListBoxRow // out
+	var _arg1 C.gboolean       // out
+
+	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
+	if selectable {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_list_box_row_set_selectable(_arg0, _arg1)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(selectable)
 }
 
 func (row *ListBoxRow) activate() {

@@ -112,6 +112,10 @@ func (ts *TypeStruct) virtualMethod(virtual *gir.VirtualMethod, vmethod *Method)
 	cbgen.Parent = ts.igen.Root.Type
 	cbgen.Preamble = func(cbgen *callback.Generator, p *pen.BlockSection) (string, bool) {
 		if ts.igen.IsClass() {
+			h := cbgen.Header()
+			h.NeedsExternGLib()
+			h.Import("unsafe")
+
 			p.Linef("instance0 := coreglib.Take(unsafe.Pointer(arg0))")
 			p.Linef("overrides := coreglib.OverridesFromObj[%sOverrides](instance0)", ts.igen.StructName)
 			p.Linef("if overrides.%s == nil {", method.Go.Name)

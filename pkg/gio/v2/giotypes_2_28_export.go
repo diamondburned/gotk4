@@ -34,6 +34,8 @@ func _gotk4_gio2_CancellableSourceFunc(arg1 *C.GCancellable, arg2 C.gpointer) (c
 
 	ok := fn(_cancellable)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -57,6 +59,8 @@ func _gotk4_gio2_PollableSourceFunc(arg1 *C.GObject, arg2 C.gpointer) (cret C.gb
 	_pollableStream = coreglib.Take(unsafe.Pointer(arg1))
 
 	ok := fn(_pollableStream)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

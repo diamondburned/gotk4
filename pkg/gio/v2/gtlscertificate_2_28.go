@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -272,6 +271,69 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 	return _tlsCertificate, _goerr
 }
 
+// NewTLSCertificateFromPKCS11URIs creates a Certificate from a PKCS \#11 URI.
+//
+// An example pkcs11_uri would be
+// pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01
+//
+// Where the token’s layout is:
+//
+//    Object 0:
+//      URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=private20key;type=private
+//      Type: Private key (RSA-2048)
+//      ID: 01
+//
+//    Object 1:
+//      URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=Certificate20for20Authentication;type=cert
+//      Type: X.509 Certificate (RSA-2048)
+//      ID: 01
+//
+//
+// In this case the certificate and private key would both be detected and used
+// as expected. pkcs_uri may also just reference an X.509 certificate object and
+// then optionally private_key_pkcs11_uri allows using a private key exposed
+// under a different URI.
+//
+// Note that the private key is not accessed until usage and may fail or require
+// a PIN later.
+//
+// The function takes the following parameters:
+//
+//    - pkcs11Uri: PKCS \#11 URI.
+//    - privateKeyPkcs11Uri (optional): PKCS \#11 URI.
+//
+// The function returns the following values:
+//
+//    - tlsCertificate: new certificate, or NULL on error.
+//
+func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.gchar           // out
+	var _cret *C.GTlsCertificate // in
+	var _cerr *C.GError          // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(pkcs11Uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if privateKeyPkcs11Uri != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(privateKeyPkcs11Uri)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	_cret = C.g_tls_certificate_new_from_pkcs11_uris(_arg1, _arg2, &_cerr)
+	runtime.KeepAlive(pkcs11Uri)
+	runtime.KeepAlive(privateKeyPkcs11Uri)
+
+	var _tlsCertificate *TLSCertificate // out
+	var _goerr error                    // out
+
+	_tlsCertificate = wrapTLSCertificate(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _tlsCertificate, _goerr
+}
+
 // Issuer gets the Certificate representing cert's issuer, if known.
 //
 // The function returns the following values:
@@ -308,6 +370,41 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 	}
 
 	return _tlsCertificate
+}
+
+// IsSame: check if two Certificate objects represent the same certificate. The
+// raw DER byte data of the two certificates are checked for equality. This has
+// the effect that two certificates may compare equal even if their
+// Certificate:issuer, Certificate:private-key, or Certificate:private-key-pem
+// properties differ.
+//
+// The function takes the following parameters:
+//
+//    - certTwo: second certificate to compare.
+//
+// The function returns the following values:
+//
+//    - ok: whether the same or not.
+//
+func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
+	var _arg0 *C.GTlsCertificate // out
+	var _arg1 *C.GTlsCertificate // out
+	var _cret C.gboolean         // in
+
+	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(certOne).Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(certTwo).Native()))
+
+	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
+	runtime.KeepAlive(certOne)
+	runtime.KeepAlive(certTwo)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Verify: this verifies cert and returns a set of CertificateFlags indicating

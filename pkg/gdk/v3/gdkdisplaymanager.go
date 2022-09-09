@@ -3,8 +3,10 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -82,4 +84,107 @@ func marshalDisplayManager(p uintptr) (interface{}, error) {
 // ConnectDisplayOpened signal is emitted when a display is opened.
 func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(manager, "display-opened", false, unsafe.Pointer(C._gotk4_gdk3_DisplayManager_ConnectDisplayOpened), f)
+}
+
+// DefaultDisplay gets the default Display.
+//
+// The function returns the following values:
+//
+//    - display (optional) or NULL if there is no default display.
+//
+func (manager *DisplayManager) DefaultDisplay() *Display {
+	var _arg0 *C.GdkDisplayManager // out
+	var _cret *C.GdkDisplay        // in
+
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+
+	_cret = C.gdk_display_manager_get_default_display(_arg0)
+	runtime.KeepAlive(manager)
+
+	var _display *Display // out
+
+	if _cret != nil {
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _display
+}
+
+// ListDisplays: list all currently open displays.
+//
+// The function returns the following values:
+//
+//    - sList: newly allocated List of Display objects. Free with g_slist_free()
+//      when you are done with it.
+//
+func (manager *DisplayManager) ListDisplays() []*Display {
+	var _arg0 *C.GdkDisplayManager // out
+	var _cret *C.GSList            // in
+
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+
+	_cret = C.gdk_display_manager_list_displays(_arg0)
+	runtime.KeepAlive(manager)
+
+	var _sList []*Display // out
+
+	_sList = make([]*Display, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkDisplay)(v)
+		var dst *Display // out
+		dst = wrapDisplay(coreglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// OpenDisplay opens a display.
+//
+// The function takes the following parameters:
+//
+//    - name of the display to open.
+//
+// The function returns the following values:
+//
+//    - display (optional) or NULL if the display could not be opened.
+//
+func (manager *DisplayManager) OpenDisplay(name string) *Display {
+	var _arg0 *C.GdkDisplayManager // out
+	var _arg1 *C.gchar             // out
+	var _cret *C.GdkDisplay        // in
+
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(name)
+
+	var _display *Display // out
+
+	if _cret != nil {
+		_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _display
+}
+
+// SetDefaultDisplay sets display as the default display.
+//
+// The function takes the following parameters:
+//
+//    - display: Display.
+//
+func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
+	var _arg0 *C.GdkDisplayManager // out
+	var _arg1 *C.GdkDisplay        // out
+
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	C.gdk_display_manager_set_default_display(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(display)
 }

@@ -36,6 +36,8 @@ func _gotk4_gtk3_EventControllerKey_ConnectKeyPressed(arg0 C.gpointer, arg1 C.gu
 
 	ok := f(_keyval, _keycode, _state)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -16,6 +15,9 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_ThreadedSocketService_ConnectRun(gpointer, GSocketConnection*, GObject, guintptr);
 // extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(GThreadedSocketService*, GSocketConnection*, GObject*);
+// gboolean _gotk4_gio2_ThreadedSocketService_virtual_run(void* fnptr, GThreadedSocketService* arg0, GSocketConnection* arg1, GObject* arg2) {
+//   return ((gboolean (*)(GThreadedSocketService*, GSocketConnection*, GObject*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -139,4 +141,38 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	_threadedSocketService = wrapThreadedSocketService(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _threadedSocketService
+}
+
+// The function takes the following parameters:
+//
+//    - connection
+//    - sourceObject
+//
+// The function returns the following values:
+//
+func (service *ThreadedSocketService) run(connection *SocketConnection, sourceObject *coreglib.Object) bool {
+	gclass := (*C.GThreadedSocketServiceClass)(coreglib.PeekParentClass(service))
+	fnarg := gclass.run
+
+	var _arg0 *C.GThreadedSocketService // out
+	var _arg1 *C.GSocketConnection      // out
+	var _arg2 *C.GObject                // out
+	var _cret C.gboolean                // in
+
+	_arg0 = (*C.GThreadedSocketService)(unsafe.Pointer(coreglib.InternObject(service).Native()))
+	_arg1 = (*C.GSocketConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+
+	_cret = C._gotk4_gio2_ThreadedSocketService_virtual_run(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(service)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(sourceObject)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }

@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -197,6 +196,58 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 	_dBusConnection = wrapDBusConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _dBusConnection
+}
+
+// IsExported returns whether object is currently exported on manager.
+//
+// The function takes the following parameters:
+//
+//    - object: object.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if object is exported.
+//
+func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) bool {
+	var _arg0 *C.GDBusObjectManagerServer // out
+	var _arg1 *C.GDBusObjectSkeleton      // out
+	var _cret C.gboolean                  // in
+
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	_arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+
+	_cret = C.g_dbus_object_manager_server_is_exported(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(object)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetConnection exports all objects managed by manager on connection. If
+// connection is NULL, stops exporting objects.
+//
+// The function takes the following parameters:
+//
+//    - connection (optional) or NULL.
+//
+func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection) {
+	var _arg0 *C.GDBusObjectManagerServer // out
+	var _arg1 *C.GDBusConnection          // out
+
+	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+	if connection != nil {
+		_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	}
+
+	C.g_dbus_object_manager_server_set_connection(_arg0, _arg1)
+	runtime.KeepAlive(manager)
+	runtime.KeepAlive(connection)
 }
 
 // Unexport: if manager has an object at path, removes the object. Otherwise

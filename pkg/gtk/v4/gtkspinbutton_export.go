@@ -45,6 +45,8 @@ func _gotk4_gtk4_SpinButton_ConnectOutput(arg0 C.gpointer, arg1 C.guintptr) (cre
 
 	ok := f()
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

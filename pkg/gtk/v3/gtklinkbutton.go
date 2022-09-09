@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -156,6 +155,159 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 // handler.
 func (linkButton *LinkButton) ConnectActivateLink(f func() (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(linkButton, "activate-link", false, unsafe.Pointer(C._gotk4_gtk3_LinkButton_ConnectActivateLink), f)
+}
+
+// NewLinkButton creates a new LinkButton with the URI as its text.
+//
+// The function takes the following parameters:
+//
+//    - uri: valid URI.
+//
+// The function returns the following values:
+//
+//    - linkButton: new link button widget.
+//
+func NewLinkButton(uri string) *LinkButton {
+	var _arg1 *C.gchar     // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_link_button_new(_arg1)
+	runtime.KeepAlive(uri)
+
+	var _linkButton *LinkButton // out
+
+	_linkButton = wrapLinkButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _linkButton
+}
+
+// NewLinkButtonWithLabel creates a new LinkButton containing a label.
+//
+// The function takes the following parameters:
+//
+//    - uri: valid URI.
+//    - label (optional): text of the button.
+//
+// The function returns the following values:
+//
+//    - linkButton: new link button widget.
+//
+func NewLinkButtonWithLabel(uri, label string) *LinkButton {
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.gchar     // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if label != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	_cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(label)
+
+	var _linkButton *LinkButton // out
+
+	_linkButton = wrapLinkButton(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _linkButton
+}
+
+// URI retrieves the URI set using gtk_link_button_set_uri().
+//
+// The function returns the following values:
+//
+//    - utf8: valid URI. The returned string is owned by the link button and
+//      should not be modified or freed.
+//
+func (linkButton *LinkButton) URI() string {
+	var _arg0 *C.GtkLinkButton // out
+	var _cret *C.gchar         // in
+
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+
+	_cret = C.gtk_link_button_get_uri(_arg0)
+	runtime.KeepAlive(linkButton)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Visited retrieves the “visited” state of the URI where the LinkButton points.
+// The button becomes visited when it is clicked. If the URI is changed on the
+// button, the “visited” state is unset again.
+//
+// The state may also be changed using gtk_link_button_set_visited().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the link has been visited, FALSE otherwise.
+//
+func (linkButton *LinkButton) Visited() bool {
+	var _arg0 *C.GtkLinkButton // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+
+	_cret = C.gtk_link_button_get_visited(_arg0)
+	runtime.KeepAlive(linkButton)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetURI sets uri as the URI where the LinkButton points. As a side-effect this
+// unsets the “visited” state of the button.
+//
+// The function takes the following parameters:
+//
+//    - uri: valid URI.
+//
+func (linkButton *LinkButton) SetURI(uri string) {
+	var _arg0 *C.GtkLinkButton // out
+	var _arg1 *C.gchar         // out
+
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_link_button_set_uri(_arg0, _arg1)
+	runtime.KeepAlive(linkButton)
+	runtime.KeepAlive(uri)
+}
+
+// SetVisited sets the “visited” state of the URI where the LinkButton points.
+// See gtk_link_button_get_visited() for more details.
+//
+// The function takes the following parameters:
+//
+//    - visited: new “visited” state.
+//
+func (linkButton *LinkButton) SetVisited(visited bool) {
+	var _arg0 *C.GtkLinkButton // out
+	var _arg1 C.gboolean       // out
+
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(coreglib.InternObject(linkButton).Native()))
+	if visited {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_link_button_set_visited(_arg0, _arg1)
+	runtime.KeepAlive(linkButton)
+	runtime.KeepAlive(visited)
 }
 
 // The function returns the following values:

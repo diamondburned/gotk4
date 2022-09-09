@@ -3,7 +3,7 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -93,6 +93,44 @@ func wrapSpinner(obj *coreglib.Object) *Spinner {
 
 func marshalSpinner(p uintptr) (interface{}, error) {
 	return wrapSpinner(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewSpinner returns a new spinner widget. Not yet started.
+//
+// The function returns the following values:
+//
+//    - spinner: new Spinner.
+//
+func NewSpinner() *Spinner {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_spinner_new()
+
+	var _spinner *Spinner // out
+
+	_spinner = wrapSpinner(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _spinner
+}
+
+// Start starts the animation of the spinner.
+func (spinner *Spinner) Start() {
+	var _arg0 *C.GtkSpinner // out
+
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
+
+	C.gtk_spinner_start(_arg0)
+	runtime.KeepAlive(spinner)
+}
+
+// Stop stops the animation of the spinner.
+func (spinner *Spinner) Stop() {
+	var _arg0 *C.GtkSpinner // out
+
+	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(coreglib.InternObject(spinner).Native()))
+
+	C.gtk_spinner_stop(_arg0)
+	runtime.KeepAlive(spinner)
 }
 
 // SpinnerClass: instance of this type is always passed by reference.

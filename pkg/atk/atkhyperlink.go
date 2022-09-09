@@ -4,7 +4,6 @@ package atk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -28,6 +27,9 @@ import (
 // extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(AtkHyperlink*, gint);
 // AtkObject* _gotk4_atk1_Hyperlink_virtual_get_object(void* fnptr, AtkHyperlink* arg0, gint arg1) {
 //   return ((AtkObject* (*)(AtkHyperlink*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Hyperlink_virtual_is_selected_link(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gboolean (*)(AtkHyperlink*))(fnptr))(arg0);
 // };
 // gboolean _gotk4_atk1_Hyperlink_virtual_is_valid(void* fnptr, AtkHyperlink* arg0) {
 //   return ((gboolean (*)(AtkHyperlink*))(fnptr))(arg0);
@@ -447,6 +449,33 @@ func (link_ *Hyperlink) IsInline() bool {
 	return _ok
 }
 
+// IsSelectedLink determines whether this AtkHyperlink is selected
+//
+// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+// ATK_STATE_FOCUSED for focused links.
+//
+// The function returns the following values:
+//
+//    - ok: true if the AtkHyperlink is selected, False otherwise.
+//
+func (link_ *Hyperlink) IsSelectedLink() bool {
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C.atk_hyperlink_is_selected_link(_arg0)
+	runtime.KeepAlive(link_)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // IsValid: since the document that a link is associated with may have changed
 // this method returns TRUE if the link is still valid (with respect to the
 // document it references) and FALSE otherwise.
@@ -618,6 +647,36 @@ func (link_ *Hyperlink) urI(i int) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
+}
+
+// isSelectedLink determines whether this AtkHyperlink is selected
+//
+// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+// ATK_STATE_FOCUSED for focused links.
+//
+// The function returns the following values:
+//
+//    - ok: true if the AtkHyperlink is selected, False otherwise.
+//
+func (link_ *Hyperlink) isSelectedLink() bool {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.is_selected_link
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_is_selected_link(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // isValid: since the document that a link is associated with may have changed

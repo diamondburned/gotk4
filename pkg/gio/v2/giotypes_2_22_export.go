@@ -33,6 +33,8 @@ func _gotk4_gio2_SocketSourceFunc(arg1 *C.GSocket, arg2 C.GIOCondition, arg3 C.g
 
 	ok := fn(_socket, _condition)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

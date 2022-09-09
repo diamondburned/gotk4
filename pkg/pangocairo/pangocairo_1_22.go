@@ -88,28 +88,3 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(glyphItem)
 }
-
-// SetDefault sets a default PangoCairoFontMap to use with Cairo.
-//
-// This can be used to change the Cairo font backend that the default fontmap
-// uses for example. The old default font map is unreffed and the new font map
-// referenced.
-//
-// Note that since Pango 1.32.6, the default fontmap is per-thread. This
-// function only changes the default fontmap for the current thread. Default
-// fontmaps of existing threads are not changed. Default fontmaps of any new
-// threads will still be created using pangocairo.FontMap.New.
-//
-// A value of NULL for fontmap will cause the current default font map to be
-// released and a new default font map to be created on demand, using
-// pangocairo.FontMap.New.
-func (fontmap *FontMap) SetDefault() {
-	var _arg0 *C.PangoCairoFontMap // out
-
-	if fontmap != nil {
-		_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
-	}
-
-	C.pango_cairo_font_map_set_default(_arg0)
-	runtime.KeepAlive(fontmap)
-}

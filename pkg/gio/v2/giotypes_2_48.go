@@ -2,6 +2,10 @@
 
 package gio
 
+import (
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+)
+
 // #include <stdlib.h>
 // #include <gio/gio.h>
 import "C"

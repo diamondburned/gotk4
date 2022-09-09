@@ -2,6 +2,10 @@
 
 package gio
 
+import (
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+)
+
 // #include <stdlib.h>
 // #include <gio/gio.h>
 import "C"

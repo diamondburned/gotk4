@@ -31,6 +31,8 @@ func _gotk4_gdkx114_X11Display_ConnectXevent(arg0 C.gpointer, arg1 C.gpointer, a
 
 	ok := f(_xevent)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

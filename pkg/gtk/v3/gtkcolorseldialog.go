@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -117,6 +116,44 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 	_colorSelectionDialog = wrapColorSelectionDialog(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _colorSelectionDialog
+}
+
+// ColorSelection retrieves the ColorSelection widget embedded in the dialog.
+//
+// The function returns the following values:
+//
+//    - widget: embedded ColorSelection.
+//
+func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
+	var _arg0 *C.GtkColorSelectionDialog // out
+	var _cret *C.GtkWidget               // in
+
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(coreglib.InternObject(colorsel).Native()))
+
+	_cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
+	runtime.KeepAlive(colorsel)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
 }
 
 // ColorSelectionDialogClass: instance of this type is always passed by

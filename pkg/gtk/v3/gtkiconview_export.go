@@ -51,6 +51,8 @@ func _gotk4_gtk3_IconView_ConnectActivateCursorItem(arg0 C.gpointer, arg1 C.guin
 
 	ok := f()
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -98,6 +100,8 @@ func _gotk4_gtk3_IconView_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementS
 	_count = int(arg2)
 
 	ok := f(_step, _count)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

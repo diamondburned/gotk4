@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -104,6 +107,8 @@ func _gotk4_gtk4_TextView_ConnectExtendSelection(arg0 C.gpointer, arg1 C.GtkText
 	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
 	ok := f(_granularity, _location, _start, _end)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

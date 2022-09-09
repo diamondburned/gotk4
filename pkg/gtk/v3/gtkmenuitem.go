@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -30,6 +29,9 @@ import (
 // extern void _gotk4_gtk3_MenuItemClass_activate_item(GtkMenuItem*);
 // extern void _gotk4_gtk3_MenuItemClass_activate(GtkMenuItem*);
 // extern gchar* _gotk4_gtk3_MenuItemClass_get_label(GtkMenuItem*);
+// gchar* _gotk4_gtk3_MenuItem_virtual_get_label(void* fnptr, GtkMenuItem* arg0) {
+//   return ((gchar* (*)(GtkMenuItem*))(fnptr))(arg0);
+// };
 // void _gotk4_gtk3_MenuItem_virtual_activate(void* fnptr, GtkMenuItem* arg0) {
 //   ((void (*)(GtkMenuItem*))(fnptr))(arg0);
 // };
@@ -41,6 +43,9 @@ import (
 // };
 // void _gotk4_gtk3_MenuItem_virtual_select(void* fnptr, GtkMenuItem* arg0) {
 //   ((void (*)(GtkMenuItem*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_MenuItem_virtual_set_label(void* fnptr, GtkMenuItem* arg0, gchar* arg1) {
+//   ((void (*)(GtkMenuItem*, gchar*))(fnptr))(arg0, arg1);
 // };
 // void _gotk4_gtk3_MenuItem_virtual_toggle_size_allocate(void* fnptr, GtkMenuItem* arg0, gint arg1) {
 //   ((void (*)(GtkMenuItem*, gint))(fnptr))(arg0, arg1);
@@ -351,6 +356,82 @@ func (menuItem *MenuItem) Deselect() {
 	runtime.KeepAlive(menuItem)
 }
 
+// AccelPath: retrieve the accelerator path that was previously set on
+// menu_item.
+//
+// See gtk_menu_item_set_accel_path() for details.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): accelerator path corresponding to this menu item’s
+//      functionality, or NULL if not set.
+//
+func (menuItem *MenuItem) AccelPath() string {
+	var _arg0 *C.GtkMenuItem // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	_cret = C.gtk_menu_item_get_accel_path(_arg0)
+	runtime.KeepAlive(menuItem)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// Label sets text on the menu_item label.
+//
+// The function returns the following values:
+//
+//    - utf8: text in the menu_item label. This is the internal string used by
+//      the label, and must not be modified.
+//
+func (menuItem *MenuItem) Label() string {
+	var _arg0 *C.GtkMenuItem // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	_cret = C.gtk_menu_item_get_label(_arg0)
+	runtime.KeepAlive(menuItem)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ReserveIndicator returns whether the menu_item reserves space for the submenu
+// indicator, regardless if it has a submenu or not.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if menu_item always reserves space for the submenu indicator.
+//
+func (menuItem *MenuItem) ReserveIndicator() bool {
+	var _arg0 *C.GtkMenuItem // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	_cret = C.gtk_menu_item_get_reserve_indicator(_arg0)
+	runtime.KeepAlive(menuItem)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // RightJustified gets whether the menu item appears justified at the right side
 // of the menu bar.
 //
@@ -417,6 +498,32 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 	return _widget
 }
 
+// UseUnderline checks if an underline in the text indicates the next character
+// should be used for the mnemonic accelerator key.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if an embedded underline in the label indicates the mnemonic
+//      accelerator key.
+//
+func (menuItem *MenuItem) UseUnderline() bool {
+	var _arg0 *C.GtkMenuItem // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	_cret = C.gtk_menu_item_get_use_underline(_arg0)
+	runtime.KeepAlive(menuItem)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Select emits the MenuItem::select signal on the given item.
 func (menuItem *MenuItem) Select() {
 	var _arg0 *C.GtkMenuItem // out
@@ -466,6 +573,48 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	runtime.KeepAlive(accelPath)
 }
 
+// SetLabel sets text on the menu_item label.
+//
+// The function takes the following parameters:
+//
+//    - label: text you want to set.
+//
+func (menuItem *MenuItem) SetLabel(label string) {
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 *C.gchar       // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_menu_item_set_label(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(label)
+}
+
+// SetReserveIndicator sets whether the menu_item should reserve space for the
+// submenu indicator, regardless if it actually has a submenu or not.
+//
+// There should be little need for applications to call this functions.
+//
+// The function takes the following parameters:
+//
+//    - reserve: new value.
+//
+func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	if reserve {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_menu_item_set_reserve_indicator(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(reserve)
+}
+
 // SetRightJustified sets whether the menu item appears justified at the right
 // side of a menu bar. This was traditionally done for “Help” menu items, but is
 // now considered a bad idea. (If the widget layout is reversed for a
@@ -513,6 +662,27 @@ func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 	C.gtk_menu_item_set_submenu(_arg0, _arg1)
 	runtime.KeepAlive(menuItem)
 	runtime.KeepAlive(submenu)
+}
+
+// SetUseUnderline: if true, an underline in the text indicates the next
+// character should be used for the mnemonic accelerator key.
+//
+// The function takes the following parameters:
+//
+//    - setting: TRUE if underlines in the text indicate mnemonics.
+//
+func (menuItem *MenuItem) SetUseUnderline(setting bool) {
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	if setting {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_menu_item_set_use_underline(_arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(setting)
 }
 
 // ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
@@ -572,6 +742,32 @@ func (menuItem *MenuItem) deselect() {
 	runtime.KeepAlive(menuItem)
 }
 
+// Label sets text on the menu_item label.
+//
+// The function returns the following values:
+//
+//    - utf8: text in the menu_item label. This is the internal string used by
+//      the label, and must not be modified.
+//
+func (menuItem *MenuItem) label() string {
+	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
+	fnarg := gclass.get_label
+
+	var _arg0 *C.GtkMenuItem // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+
+	_cret = C._gotk4_gtk3_MenuItem_virtual_get_label(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(menuItem)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
 // Sel emits the MenuItem::select signal on the given item.
 func (menuItem *MenuItem) sel() {
 	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
@@ -583,6 +779,28 @@ func (menuItem *MenuItem) sel() {
 
 	C._gotk4_gtk3_MenuItem_virtual_select(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(menuItem)
+}
+
+// setLabel sets text on the menu_item label.
+//
+// The function takes the following parameters:
+//
+//    - label: text you want to set.
+//
+func (menuItem *MenuItem) setLabel(label string) {
+	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
+	fnarg := gclass.set_label
+
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 *C.gchar       // out
+
+	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(coreglib.InternObject(menuItem).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(label)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gtk3_MenuItem_virtual_set_label(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(menuItem)
+	runtime.KeepAlive(label)
 }
 
 // toggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the

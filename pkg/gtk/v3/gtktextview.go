@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -858,6 +857,32 @@ func (textView *TextView) ForwardDisplayLineEnd(iter *TextIter) bool {
 	return _ok
 }
 
+// AcceptsTab returns whether pressing the Tab key inserts a tab characters.
+// gtk_text_view_set_accepts_tab().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if pressing the Tab key inserts a tab character, FALSE if
+//      pressing the Tab key moves the keyboard focus.
+//
+func (textView *TextView) AcceptsTab() bool {
+	var _arg0 *C.GtkTextView // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_accepts_tab(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // BorderWindowSize gets the width of the specified border window. See
 // gtk_text_view_set_border_window_size().
 //
@@ -888,6 +913,28 @@ func (textView *TextView) BorderWindowSize(typ TextWindowType) int {
 	return _gint
 }
 
+// BottomMargin gets the bottom margin for text in the text_view.
+//
+// The function returns the following values:
+//
+//    - gint: bottom margin in pixels.
+//
+func (textView *TextView) BottomMargin() int {
+	var _arg0 *C.GtkTextView // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_bottom_margin(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
 // Buffer returns the TextBuffer being displayed by this text view. The
 // reference count on the buffer is not incremented; the caller of this function
 // won’t own a new reference.
@@ -910,6 +957,60 @@ func (textView *TextView) Buffer() *TextBuffer {
 	_textBuffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _textBuffer
+}
+
+// CursorLocations: given an iter within a text layout, determine the positions
+// of the strong and weak cursors if the insertion point is at that iterator.
+// The position of each cursor is stored as a zero-width rectangle. The strong
+// cursor location is the location where characters of the directionality equal
+// to the base direction of the paragraph are inserted. The weak cursor location
+// is the location where characters of the directionality opposite to the base
+// direction of the paragraph are inserted.
+//
+// If iter is NULL, the actual cursor position is used.
+//
+// Note that if iter happens to be the actual cursor position, and there is
+// currently an IM preedit sequence being entered, the returned locations will
+// be adjusted to account for the preedit cursor’s offset within the preedit
+// sequence.
+//
+// The rectangle position is in buffer coordinates; use
+// gtk_text_view_buffer_to_window_coords() to convert these coordinates to
+// coordinates for one of the windows in the text view.
+//
+// The function takes the following parameters:
+//
+//    - iter (optional): TextIter.
+//
+// The function returns the following values:
+//
+//    - strong (optional): location to store the strong cursor position (may be
+//      NULL).
+//    - weak (optional): location to store the weak cursor position (may be
+//      NULL).
+//
+func (textView *TextView) CursorLocations(iter *TextIter) (strong, weak *gdk.Rectangle) {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 *C.GtkTextIter // out
+	var _arg2 C.GdkRectangle // in
+	var _arg3 C.GdkRectangle // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	if iter != nil {
+		_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
+	}
+
+	C.gtk_text_view_get_cursor_locations(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(iter)
+
+	var _strong *gdk.Rectangle // out
+	var _weak *gdk.Rectangle   // out
+
+	_strong = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	_weak = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+
+	return _strong, _weak
 }
 
 // CursorVisible: find out whether the cursor should be displayed.
@@ -995,6 +1096,30 @@ func (textView *TextView) Editable() bool {
 	return _ok
 }
 
+// HAdjustment gets the horizontal-scrolling Adjustment.
+//
+// Deprecated: Use gtk_scrollable_get_hadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment: pointer to the horizontal Adjustment.
+//
+func (textView *TextView) HAdjustment() *Adjustment {
+	var _arg0 *C.GtkTextView   // out
+	var _cret *C.GtkAdjustment // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_hadjustment(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _adjustment *Adjustment // out
+
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _adjustment
+}
+
 // Indent gets the default indentation of paragraphs in text_view. Tags in the
 // view’s buffer may override the default. The indentation may be negative.
 //
@@ -1016,6 +1141,46 @@ func (textView *TextView) Indent() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// InputHints gets the value of the TextView:input-hints property.
+//
+// The function returns the following values:
+//
+func (textView *TextView) InputHints() InputHints {
+	var _arg0 *C.GtkTextView  // out
+	var _cret C.GtkInputHints // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_input_hints(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _inputHints InputHints // out
+
+	_inputHints = InputHints(_cret)
+
+	return _inputHints
+}
+
+// InputPurpose gets the value of the TextView:input-purpose property.
+//
+// The function returns the following values:
+//
+func (textView *TextView) InputPurpose() InputPurpose {
+	var _arg0 *C.GtkTextView    // out
+	var _cret C.GtkInputPurpose // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_input_purpose(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _inputPurpose InputPurpose // out
+
+	_inputPurpose = InputPurpose(_cret)
+
+	return _inputPurpose
 }
 
 // IterAtLocation retrieves the iterator at buffer coordinates x and y. Buffer
@@ -1059,6 +1224,59 @@ func (textView *TextView) IterAtLocation(x, y int) (*TextIter, bool) {
 	}
 
 	return _iter, _ok
+}
+
+// IterAtPosition retrieves the iterator pointing to the character at buffer
+// coordinates x and y. Buffer coordinates are coordinates for the entire
+// buffer, not just the currently-displayed portion. If you have coordinates
+// from an event, you have to convert those to buffer coordinates with
+// gtk_text_view_window_to_buffer_coords().
+//
+// Note that this is different from gtk_text_view_get_iter_at_location(), which
+// returns cursor locations, i.e. positions between characters.
+//
+// The function takes the following parameters:
+//
+//    - x position, in buffer coordinates.
+//    - y position, in buffer coordinates.
+//
+// The function returns the following values:
+//
+//    - iter: TextIter.
+//    - trailing (optional): if non-NULL, location to store an integer indicating
+//      where in the grapheme the user clicked. It will either be zero, or the
+//      number of characters in the grapheme. 0 represents the trailing edge of
+//      the grapheme.
+//    - ok: TRUE if the position is over text.
+//
+func (textView *TextView) IterAtPosition(x, y int) (*TextIter, int, bool) {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 C.GtkTextIter  // in
+	var _arg2 C.gint         // in
+	var _arg3 C.gint         // out
+	var _arg4 C.gint         // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg3 = C.gint(x)
+	_arg4 = C.gint(y)
+
+	_cret = C.gtk_text_view_get_iter_at_position(_arg0, &_arg1, &_arg2, _arg3, _arg4)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _iter *TextIter // out
+	var _trailing int   // out
+	var _ok bool        // out
+
+	_iter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	_trailing = int(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _iter, _trailing, _ok
 }
 
 // IterLocation gets a rectangle which roughly contains the character at iter.
@@ -1210,6 +1428,54 @@ func (textView *TextView) LineYrange(iter *TextIter) (y, height int) {
 	return _y, _height
 }
 
+// Monospace gets the value of the TextView:monospace property.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if monospace fonts are desired.
+//
+func (textView *TextView) Monospace() bool {
+	var _arg0 *C.GtkTextView // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_monospace(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Overwrite returns whether the TextView is in overwrite mode or not.
+//
+// The function returns the following values:
+//
+//    - ok: whether text_view is in overwrite mode or not.
+//
+func (textView *TextView) Overwrite() bool {
+	var _arg0 *C.GtkTextView // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_overwrite(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // PixelsAboveLines gets the default number of pixels to put above paragraphs.
 // Adding this function with gtk_text_view_get_pixels_below_lines() is equal to
 // the line space between each paragraph.
@@ -1339,6 +1605,52 @@ func (textView *TextView) Tabs() *pango.TabArray {
 	return _tabArray
 }
 
+// TopMargin gets the top margin for text in the text_view.
+//
+// The function returns the following values:
+//
+//    - gint: top margin in pixels.
+//
+func (textView *TextView) TopMargin() int {
+	var _arg0 *C.GtkTextView // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_top_margin(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// VAdjustment gets the vertical-scrolling Adjustment.
+//
+// Deprecated: Use gtk_scrollable_get_vadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment: pointer to the vertical Adjustment.
+//
+func (textView *TextView) VAdjustment() *Adjustment {
+	var _arg0 *C.GtkTextView   // out
+	var _cret *C.GtkAdjustment // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	_cret = C.gtk_text_view_get_vadjustment(_arg0)
+	runtime.KeepAlive(textView)
+
+	var _adjustment *Adjustment // out
+
+	_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _adjustment
+}
+
 // VisibleRect fills visible_rect with the currently-visible region of the
 // buffer, in buffer coordinates. Convert to window coordinates with
 // gtk_text_view_buffer_to_window_coords().
@@ -1463,6 +1775,64 @@ func (textView *TextView) WrapMode() WrapMode {
 	_wrapMode = WrapMode(_cret)
 
 	return _wrapMode
+}
+
+// IMContextFilterKeypress: allow the TextView input method to internally handle
+// key press and release events. If this function returns TRUE, then no further
+// processing should be done for this key event. See
+// gtk_im_context_filter_keypress().
+//
+// Note that you are expected to call this function from your handler when
+// overriding key event handling. This is needed in the case when you need to
+// insert your own key handling between the input method and the default key
+// event handling of the TextView.
+//
+//    static gboolean
+//    gtk_foo_bar_key_press_event (GtkWidget   *widget,
+//                                 GdkEventKey *event)
+//    {
+//      guint keyval;
+//
+//      gdk_event_get_keyval ((GdkEvent*)event, &keyval);
+//
+//      if (keyval == GDK_KEY_Return || keyval == GDK_KEY_KP_Enter)
+//        {
+//          if (gtk_text_view_im_context_filter_keypress (GTK_TEXT_VIEW (widget), event))
+//            return TRUE;
+//        }
+//
+//      // Do some stuff
+//
+//      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
+//    }.
+//
+// The function takes the following parameters:
+//
+//    - event: key event.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the input method handled the key event.
+//
+func (textView *TextView) IMContextFilterKeypress(event *gdk.EventKey) bool {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 *C.GdkEventKey // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_text_view_im_context_filter_keypress(_arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // MoveChild updates the position of a child, as for
@@ -1593,6 +1963,34 @@ func (textView *TextView) PlaceCursorOnscreen() bool {
 	return _ok
 }
 
+// ResetCursorBlink ensures that the cursor is shown (i.e. not in an 'off' blink
+// interval) and resets the time that it will stay blinking (or visible, in case
+// blinking is disabled).
+//
+// This function should be called in response to user input (e.g. from derived
+// classes that override the textview's Widget::key-press-event handler).
+func (textView *TextView) ResetCursorBlink() {
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C.gtk_text_view_reset_cursor_blink(_arg0)
+	runtime.KeepAlive(textView)
+}
+
+// ResetIMContext: reset the input method context of the text view if needed.
+//
+// This can be necessary in the case where modifying the buffer would confuse
+// on-going input method behavior.
+func (textView *TextView) ResetIMContext() {
+	var _arg0 *C.GtkTextView // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+
+	C.gtk_text_view_reset_im_context(_arg0)
+	runtime.KeepAlive(textView)
+}
+
 // ScrollMarkOnscreen scrolls text_view the minimum distance such that mark is
 // contained within the visible area of the widget.
 //
@@ -1715,6 +2113,29 @@ func (textView *TextView) ScrollToMark(mark *TextMark, withinMargin float64, use
 	runtime.KeepAlive(yalign)
 }
 
+// SetAcceptsTab sets the behavior of the text widget when the Tab key is
+// pressed. If accepts_tab is TRUE, a tab character is inserted. If accepts_tab
+// is FALSE the keyboard focus is moved to the next widget in the focus chain.
+//
+// The function takes the following parameters:
+//
+//    - acceptsTab: TRUE if pressing the Tab key should insert a tab character,
+//      FALSE, if pressing the Tab key should move the keyboard focus.
+//
+func (textView *TextView) SetAcceptsTab(acceptsTab bool) {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	if acceptsTab {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_text_view_set_accepts_tab(_arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(acceptsTab)
+}
+
 // SetBorderWindowSize sets the width of GTK_TEXT_WINDOW_LEFT or
 // GTK_TEXT_WINDOW_RIGHT, or the height of GTK_TEXT_WINDOW_TOP or
 // GTK_TEXT_WINDOW_BOTTOM. Automatically destroys the corresponding window if
@@ -1741,6 +2162,27 @@ func (textView *TextView) SetBorderWindowSize(typ TextWindowType, size int) {
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(typ)
 	runtime.KeepAlive(size)
+}
+
+// SetBottomMargin sets the bottom margin for text in text_view.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+//
+// The function takes the following parameters:
+//
+//    - bottomMargin: bottom margin in pixels.
+//
+func (textView *TextView) SetBottomMargin(bottomMargin int) {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 C.gint         // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.gint(bottomMargin)
+
+	C.gtk_text_view_set_bottom_margin(_arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(bottomMargin)
 }
 
 // SetBuffer sets buffer as the buffer being displayed by text_view. The
@@ -1833,6 +2275,44 @@ func (textView *TextView) SetIndent(indent int) {
 	runtime.KeepAlive(indent)
 }
 
+// SetInputHints sets the TextView:input-hints property, which allows input
+// methods to fine-tune their behaviour.
+//
+// The function takes the following parameters:
+//
+//    - hints: hints.
+//
+func (textView *TextView) SetInputHints(hints InputHints) {
+	var _arg0 *C.GtkTextView  // out
+	var _arg1 C.GtkInputHints // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.GtkInputHints(hints)
+
+	C.gtk_text_view_set_input_hints(_arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(hints)
+}
+
+// SetInputPurpose sets the TextView:input-purpose property which can be used by
+// on-screen keyboards and other input methods to adjust their behaviour.
+//
+// The function takes the following parameters:
+//
+//    - purpose: purpose.
+//
+func (textView *TextView) SetInputPurpose(purpose InputPurpose) {
+	var _arg0 *C.GtkTextView    // out
+	var _arg1 C.GtkInputPurpose // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.GtkInputPurpose(purpose)
+
+	C.gtk_text_view_set_input_purpose(_arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(purpose)
+}
+
 // SetJustification sets the default justification of text in text_view. Tags in
 // the view’s buffer may override the default.
 //
@@ -1872,6 +2352,47 @@ func (textView *TextView) SetLeftMargin(leftMargin int) {
 	C.gtk_text_view_set_left_margin(_arg0, _arg1)
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(leftMargin)
+}
+
+// SetMonospace sets the TextView:monospace property, which indicates that the
+// text view should use monospace fonts.
+//
+// The function takes the following parameters:
+//
+//    - monospace: TRUE to request monospace styling.
+//
+func (textView *TextView) SetMonospace(monospace bool) {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	if monospace {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_text_view_set_monospace(_arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(monospace)
+}
+
+// SetOverwrite changes the TextView overwrite mode.
+//
+// The function takes the following parameters:
+//
+//    - overwrite: TRUE to turn on overwrite mode, FALSE to turn it off.
+//
+func (textView *TextView) SetOverwrite(overwrite bool) {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 C.gboolean     // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	if overwrite {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_text_view_set_overwrite(_arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(overwrite)
 }
 
 // SetPixelsAboveLines sets the default number of blank pixels above paragraphs
@@ -1972,6 +2493,27 @@ func (textView *TextView) SetTabs(tabs *pango.TabArray) {
 	C.gtk_text_view_set_tabs(_arg0, _arg1)
 	runtime.KeepAlive(textView)
 	runtime.KeepAlive(tabs)
+}
+
+// SetTopMargin sets the top margin for text in text_view.
+//
+// Note that this function is confusingly named. In CSS terms, the value set
+// here is padding.
+//
+// The function takes the following parameters:
+//
+//    - topMargin: top margin in pixels.
+//
+func (textView *TextView) SetTopMargin(topMargin int) {
+	var _arg0 *C.GtkTextView // out
+	var _arg1 C.gint         // out
+
+	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
+	_arg1 = C.gint(topMargin)
+
+	C.gtk_text_view_set_top_margin(_arg0, _arg1)
+	runtime.KeepAlive(textView)
+	runtime.KeepAlive(topMargin)
 }
 
 // SetWrapMode sets the line wrapping for the view.

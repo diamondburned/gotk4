@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -310,6 +309,65 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 	return _goerr
 }
 
+// Child: return a new #GFile which refers to the file named by info in the
+// source directory of enumerator. This function is primarily intended to be
+// used inside loops with g_file_enumerator_next_file().
+//
+// This is a convenience method that's equivalent to:
+//
+//    gchar *name = g_file_info_get_name (info);
+//    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
+//                                     name);.
+//
+// The function takes the following parameters:
+//
+//    - info gotten from g_file_enumerator_next_file() or the async equivalents.
+//
+// The function returns the following values:
+//
+//    - file for the Info passed it.
+//
+func (enumerator *FileEnumerator) Child(info *FileInfo) *File {
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GFileInfo       // out
+	var _cret *C.GFile           // in
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+
+	_cret = C.g_file_enumerator_get_child(_arg0, _arg1)
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(info)
+
+	var _file *File // out
+
+	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _file
+}
+
+// Container: get the #GFile container which is being enumerated.
+//
+// The function returns the following values:
+//
+//    - file which is being enumerated.
+//
+func (enumerator *FileEnumerator) Container() *File {
+	var _arg0 *C.GFileEnumerator // out
+	var _cret *C.GFile           // in
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+
+	_cret = C.g_file_enumerator_get_container(_arg0)
+	runtime.KeepAlive(enumerator)
+
+	var _file *File // out
+
+	_file = wrapFile(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _file
+}
+
 // HasPending checks if the file enumerator has pending operations.
 //
 // The function returns the following values:
@@ -356,6 +414,84 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 	}
 
 	return _ok
+}
+
+// Iterate: this is a version of g_file_enumerator_next_file() that's easier to
+// use correctly from C programs. With g_file_enumerator_next_file(), the
+// gboolean return value signifies "end of iteration or error", which requires
+// allocation of a temporary #GError.
+//
+// In contrast, with this function, a FALSE return from
+// g_file_enumerator_iterate() *always* means "error". End of iteration is
+// signaled by out_info or out_child being NULL.
+//
+// Another crucial difference is that the references for out_info and out_child
+// are owned by direnum (they are cached as hidden properties). You must not
+// unref them in your own code. This makes memory management significantly
+// easier for C code in combination with loops.
+//
+// Finally, this function optionally allows retrieving a #GFile as well.
+//
+// You must specify at least one of out_info or out_child.
+//
+// The code pattern for correctly using g_file_enumerator_iterate() from C is:
+//
+//    direnum = g_file_enumerate_children (file, ...);
+//    while (TRUE)
+//      {
+//        GFileInfo *info;
+//        if (!g_file_enumerator_iterate (direnum, &info, NULL, cancellable, error))
+//          goto out;
+//        if (!info)
+//          break;
+//        ... do stuff with "info"; do not unref it! ...
+//      }
+//
+//    out:
+//      g_object_unref (direnum); // Note: frees the last info.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): #GCancellable.
+//
+// The function returns the following values:
+//
+//    - outInfo (optional): output location for the next Info, or NULL.
+//    - outChild (optional): output location for the next #GFile, or NULL.
+//
+func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, *File, error) {
+	var _arg0 *C.GFileEnumerator // out
+	var _arg3 *C.GCancellable    // out
+	var _arg1 *C.GFileInfo       // in
+	var _arg2 *C.GFile           // in
+	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(direnum).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	C.g_file_enumerator_iterate(_arg0, &_arg1, &_arg2, _arg3, &_cerr)
+	runtime.KeepAlive(direnum)
+	runtime.KeepAlive(ctx)
+
+	var _outInfo *FileInfo // out
+	var _outChild *File    // out
+	var _goerr error       // out
+
+	if _arg1 != nil {
+		_outInfo = wrapFileInfo(coreglib.Take(unsafe.Pointer(_arg1)))
+	}
+	if _arg2 != nil {
+		_outChild = wrapFile(coreglib.Take(unsafe.Pointer(_arg2)))
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _outInfo, _outChild, _goerr
 }
 
 // NextFile returns information for the next file in the enumerated object. Will

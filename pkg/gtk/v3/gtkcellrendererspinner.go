@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -82,6 +81,25 @@ func wrapCellRendererSpinner(obj *coreglib.Object) *CellRendererSpinner {
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	return wrapCellRendererSpinner(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewCellRendererSpinner returns a new cell renderer which will show a spinner
+// to indicate activity.
+//
+// The function returns the following values:
+//
+//    - cellRendererSpinner: new CellRenderer.
+//
+func NewCellRendererSpinner() *CellRendererSpinner {
+	var _cret *C.GtkCellRenderer // in
+
+	_cret = C.gtk_cell_renderer_spinner_new()
+
+	var _cellRendererSpinner *CellRendererSpinner // out
+
+	_cellRendererSpinner = wrapCellRendererSpinner(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _cellRendererSpinner
 }
 
 // CellRendererSpinnerClass: instance of this type is always passed by

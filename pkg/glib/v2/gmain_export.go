@@ -23,6 +23,8 @@ func _gotk4_glib2_SourceFunc(arg1 C.gpointer) (cret C.gboolean) {
 
 	ok := fn()
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

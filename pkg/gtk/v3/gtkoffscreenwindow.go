@@ -3,12 +3,15 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -102,6 +105,91 @@ func wrapOffscreenWindow(obj *coreglib.Object) *OffscreenWindow {
 
 func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 	return wrapOffscreenWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewOffscreenWindow creates a toplevel container widget that is used to
+// retrieve snapshots of widgets without showing them on the screen.
+//
+// The function returns the following values:
+//
+//    - offscreenWindow: pointer to a Widget.
+//
+func NewOffscreenWindow() *OffscreenWindow {
+	var _cret *C.GtkWidget // in
+
+	_cret = C.gtk_offscreen_window_new()
+
+	var _offscreenWindow *OffscreenWindow // out
+
+	_offscreenWindow = wrapOffscreenWindow(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _offscreenWindow
+}
+
+// Pixbuf retrieves a snapshot of the contained widget in the form of a Pixbuf.
+// This is a new pixbuf with a reference count of 1, and the application should
+// unreference it once it is no longer needed.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional) pointer, or NULL.
+//
+func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkOffscreenWindow // out
+	var _cret *C.GdkPixbuf          // in
+
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
+
+	_cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
+	runtime.KeepAlive(offscreen)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+	}
+
+	return _pixbuf
+}
+
+// Surface retrieves a snapshot of the contained widget in the form of a
+// #cairo_surface_t. If you need to keep this around over window resizes then
+// you should add a reference to it.
+//
+// The function returns the following values:
+//
+//    - surface (optional) pointer to the offscreen surface, or NULL.
+//
+func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
+	var _arg0 *C.GtkOffscreenWindow // out
+	var _cret *C.cairo_surface_t    // in
+
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(coreglib.InternObject(offscreen).Native()))
+
+	_cret = C.gtk_offscreen_window_get_surface(_arg0)
+	runtime.KeepAlive(offscreen)
+
+	var _surface *cairo.Surface // out
+
+	if _cret != nil {
+		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+		C.cairo_surface_reference(_cret)
+		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+		})
+	}
+
+	return _surface
 }
 
 // OffscreenWindowClass: instance of this type is always passed by reference.

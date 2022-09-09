@@ -37,6 +37,8 @@ func _gotk4_gio2_DBusProxyTypeFunc(arg1 *C.GDBusObjectManagerClient, arg2 *C.gch
 
 	gType := fn(_manager, _objectPath, _interfaceName)
 
+	var _ coreglib.Type
+
 	cret = C.GType(gType)
 
 	return cret

@@ -2,123 +2,14 @@
 
 package gtk
 
-import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-)
+import ()
 
 // #include <stdlib.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void _gotk4_gtk3_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
 import "C"
 
 // ClipboardURIReceivedFunc: function to be called when the results of
 // gtk_clipboard_request_uris() are received, or when the request fails.
 type ClipboardURIReceivedFunc func(clipboard *Clipboard, uris []string)
-
-// RequestURIs requests the contents of the clipboard as URIs. When the URIs are
-// later received callback will be called.
-//
-// The uris parameter to callback will contain the resulting array of URIs if
-// the request succeeded, or NULL if it failed. This could happen for various
-// reasons, in particular if the clipboard was empty or if the contents of the
-// clipboard could not be converted into URI form.
-//
-// The function takes the following parameters:
-//
-//    - callback: function to call when the URIs are received, or the retrieval
-//      fails. (It will always be called one way or the other.).
-//
-func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
-	var _arg0 *C.GtkClipboard               // out
-	var _arg1 C.GtkClipboardURIReceivedFunc // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardURIReceivedFunc)
-	_arg2 = C.gpointer(gbox.AssignOnce(callback))
-
-	C.gtk_clipboard_request_uris(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(clipboard)
-	runtime.KeepAlive(callback)
-}
-
-// WaitForURIs requests the contents of the clipboard as URIs. This function
-// waits for the data to be received using the main loop, so events, timeouts,
-// etc, may be dispatched during the wait.
-//
-// The function returns the following values:
-//
-//    - utf8s (optional): a newly-allocated NULL-terminated array of strings
-//      which must be freed with g_strfreev(), or NULL if retrieving the
-//      selection data failed. (This could happen for various reasons, in
-//      particular if the clipboard was empty or if the contents of the clipboard
-//      could not be converted into URI form.).
-//
-func (clipboard *Clipboard) WaitForURIs() []string {
-	var _arg0 *C.GtkClipboard // out
-	var _cret **C.gchar       // in
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-
-	_cret = C.gtk_clipboard_wait_for_uris(_arg0)
-	runtime.KeepAlive(clipboard)
-
-	var _utf8s []string // out
-
-	if _cret != nil {
-		defer C.free(unsafe.Pointer(_cret))
-		{
-			var i int
-			var z *C.gchar
-			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-				i++
-			}
-
-			src := unsafe.Slice(_cret, i)
-			_utf8s = make([]string, i)
-			for i := range src {
-				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-				defer C.free(unsafe.Pointer(src[i]))
-			}
-		}
-	}
-
-	return _utf8s
-}
-
-// WaitIsURIsAvailable: test to see if there is a list of URIs available to be
-// pasted This is done by requesting the TARGETS atom and checking if it
-// contains the URI targets. This function waits for the data to be received
-// using the main loop, so events, timeouts, etc, may be dispatched during the
-// wait.
-//
-// This function is a little faster than calling gtk_clipboard_wait_for_uris()
-// since it doesn’t need to retrieve the actual URI data.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE is there is an URI list available, FALSE otherwise.
-//
-func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
-	var _arg0 *C.GtkClipboard // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-
-	_cret = C.gtk_clipboard_wait_is_uris_available(_arg0)
-	runtime.KeepAlive(clipboard)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}

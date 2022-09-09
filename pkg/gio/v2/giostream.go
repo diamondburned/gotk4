@@ -2,52 +2,9 @@
 
 package gio
 
-import (
-	"context"
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gcancel"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-)
-
 // #include <stdlib.h>
 // #include <gio/gio.h>
-// gboolean _gotk4_gio2_IOStream_virtual_close_fn(void* fnptr, GIOStream* arg0, GCancellable* arg1, GError** arg2) {
-//   return ((gboolean (*)(GIOStream*, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2);
-// };
 import "C"
-
-// The function takes the following parameters:
-//
-func (stream *IOStream) closeFn(ctx context.Context) error {
-	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
-	fnarg := gclass.close_fn
-
-	var _arg0 *C.GIOStream    // out
-	var _arg1 *C.GCancellable // out
-	var _cerr *C.GError       // in
-
-	_arg0 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-
-	C._gotk4_gio2_IOStream_virtual_close_fn(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(ctx)
-
-	var _goerr error // out
-
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _goerr
-}
 
 // IOStreamClass: instance of this type is always passed by reference.
 type IOStreamClass struct {

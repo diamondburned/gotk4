@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -22,6 +21,12 @@ import (
 // extern void _gotk4_gio2_SocketListenerClass_event(GSocketListener*, GSocketListenerEvent, GSocket*);
 // extern void _gotk4_gio2_SocketListenerClass_changed(GSocketListener*);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// void _gotk4_gio2_SocketListener_virtual_changed(void* fnptr, GSocketListener* arg0) {
+//   ((void (*)(GSocketListener*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_SocketListener_virtual_event(void* fnptr, GSocketListener* arg0, GSocketListenerEvent arg1, GSocket* arg2) {
+//   ((void (*)(GSocketListener*, GSocketListenerEvent, GSocket*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -478,6 +483,50 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 	return _effectiveAddress, _goerr
 }
 
+// AddAnyInetPort listens for TCP connections on any available port number for
+// both IPv6 and IPv4 (if each is available).
+//
+// This is useful if you need to have a socket for incoming connections but
+// don't care about the specific port number.
+//
+// source_object will be passed out in the various calls to accept to identify
+// this particular source, which is useful if you're listening on multiple
+// addresses and do different things depending on what address is connected to.
+//
+// The function takes the following parameters:
+//
+//    - sourceObject (optional): optional #GObject identifying this source.
+//
+// The function returns the following values:
+//
+//    - guint16: port number, or 0 in case of failure.
+//
+func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (uint16, error) {
+	var _arg0 *C.GSocketListener // out
+	var _arg1 *C.GObject         // out
+	var _cret C.guint16          // in
+	var _cerr *C.GError          // in
+
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	if sourceObject != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
+
+	_cret = C.g_socket_listener_add_any_inet_port(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(sourceObject)
+
+	var _guint16 uint16 // out
+	var _goerr error    // out
+
+	_guint16 = uint16(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _guint16, _goerr
+}
+
 // AddInetPort: helper function for g_socket_listener_add_address() that creates
 // a TCP/IP socket listening on IPv4 and IPv6 (if supported) on the specified
 // port on all interfaces.
@@ -594,4 +643,39 @@ func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	C.g_socket_listener_set_backlog(_arg0, _arg1)
 	runtime.KeepAlive(listener)
 	runtime.KeepAlive(listenBacklog)
+}
+
+func (listener *SocketListener) changed() {
+	gclass := (*C.GSocketListenerClass)(coreglib.PeekParentClass(listener))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GSocketListener // out
+
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+
+	C._gotk4_gio2_SocketListener_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(listener)
+}
+
+// The function takes the following parameters:
+//
+//    - event
+//    - socket
+//
+func (listener *SocketListener) event(event SocketListenerEvent, socket *Socket) {
+	gclass := (*C.GSocketListenerClass)(coreglib.PeekParentClass(listener))
+	fnarg := gclass.event
+
+	var _arg0 *C.GSocketListener     // out
+	var _arg1 C.GSocketListenerEvent // out
+	var _arg2 *C.GSocket             // out
+
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	_arg1 = C.GSocketListenerEvent(event)
+	_arg2 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	C._gotk4_gio2_SocketListener_virtual_event(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(event)
+	runtime.KeepAlive(socket)
 }

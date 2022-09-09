@@ -42,6 +42,9 @@ func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 
 	err, variant := fn(_connection, _sender, _objectPath, _interfaceName, _propertyName)
 
+	var _ error
+	var _ *glib.Variant
+
 	if err != nil && arg6 != nil {
 		*arg6 = (*C.GError)(gerror.New(err))
 	}
@@ -121,6 +124,9 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 
 	err, ok := fn(_connection, _sender, _objectPath, _interfaceName, _propertyName, _value)
 
+	var _ error
+	var _ bool
+
 	if err != nil && arg7 != nil {
 		*arg7 = (*C.GError)(gerror.New(err))
 	}
@@ -153,6 +159,8 @@ func _gotk4_gio2_DBusMessageFilterFunction(arg1 *C.GDBusConnection, arg2 *C.GDBu
 	}
 
 	dBusMessage := fn(_connection, _message, _incoming)
+
+	var _ *DBusMessage
 
 	if dBusMessage != nil {
 		cret = (*C.GDBusMessage)(unsafe.Pointer(coreglib.InternObject(dBusMessage).Native()))
@@ -224,6 +232,9 @@ func _gotk4_gio2_DBusSubtreeDispatchFunc(arg1 *C.GDBusConnection, arg2 *C.gchar,
 
 	outUserData, dBusInterfaceVTable := fn(_connection, _sender, _objectPath, _interfaceName, _node)
 
+	var _ unsafe.Pointer
+	var _ *DBusInterfaceVTable
+
 	*arg6 = (C.gpointer)(unsafe.Pointer(outUserData))
 	if dBusInterfaceVTable != nil {
 		cret = (*C.GDBusInterfaceVTable)(gextras.StructNative(unsafe.Pointer(dBusInterfaceVTable)))
@@ -252,6 +263,8 @@ func _gotk4_gio2_DBusSubtreeEnumerateFunc(arg1 *C.GDBusConnection, arg2 *C.gchar
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 
 	utf8s := fn(_connection, _sender, _objectPath)
+
+	var _ []string
 
 	{
 		cret = (**C.gchar)(C.calloc(C.size_t((len(utf8s) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
@@ -290,6 +303,8 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg1 *C.GDBusConnection, arg2 *C.gcha
 	_node = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 
 	dBusInterfaceInfos := fn(_connection, _sender, _objectPath, _node)
+
+	var _ []*DBusInterfaceInfo
 
 	if dBusInterfaceInfos != nil {
 		{

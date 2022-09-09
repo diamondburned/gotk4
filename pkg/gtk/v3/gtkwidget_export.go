@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -70,6 +72,8 @@ func _gotk4_gtk3_Widget_ConnectButtonPressEvent(arg0 C.gpointer, arg1 *C.GdkEven
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -96,6 +100,8 @@ func _gotk4_gtk3_Widget_ConnectButtonReleaseEvent(arg0 C.gpointer, arg1 *C.GdkEv
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -121,6 +127,8 @@ func _gotk4_gtk3_Widget_ConnectCanActivateAccel(arg0 C.gpointer, arg1 C.guint, a
 	_signalId = uint(arg1)
 
 	ok := f(_signalId)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -164,6 +172,8 @@ func _gotk4_gtk3_Widget_ConnectConfigureEvent(arg0 C.gpointer, arg1 *C.GdkEventC
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -189,6 +199,8 @@ func _gotk4_gtk3_Widget_ConnectDamageEvent(arg0 C.gpointer, arg1 *C.GdkEventExpo
 	_event = (*gdk.EventExpose)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -219,6 +231,8 @@ func _gotk4_gtk3_Widget_ConnectDeleteEvent(arg0 C.gpointer, arg1 C.GdkEvent, arg
 	}
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -265,6 +279,8 @@ func _gotk4_gtk3_Widget_ConnectDestroyEvent(arg0 C.gpointer, arg1 C.GdkEvent, ar
 	}
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -439,6 +455,8 @@ func _gotk4_gtk3_Widget_ConnectDragDrop(arg0 C.gpointer, arg1 *C.GdkDragContext,
 
 	ok := f(_context, _x, _y, _time)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -496,6 +514,8 @@ func _gotk4_gtk3_Widget_ConnectDragFailed(arg0 C.gpointer, arg1 *C.GdkDragContex
 	_result = DragResult(arg2)
 
 	ok := f(_context, _result)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -561,6 +581,8 @@ func _gotk4_gtk3_Widget_ConnectDragMotion(arg0 C.gpointer, arg1 *C.GdkDragContex
 
 	ok := f(_context, _x, _y, _time)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -591,6 +613,8 @@ func _gotk4_gtk3_Widget_ConnectDraw(arg0 C.gpointer, arg1 *C.cairo_t, arg2 C.gui
 
 	ok := f(_cr)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -616,6 +640,8 @@ func _gotk4_gtk3_Widget_ConnectEnterNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEven
 	_event = (*gdk.EventCrossing)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -646,6 +672,8 @@ func _gotk4_gtk3_Widget_ConnectEvent(arg0 C.gpointer, arg1 C.GdkEvent, arg2 C.gu
 	}
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -697,6 +725,8 @@ func _gotk4_gtk3_Widget_ConnectFocusInEvent(arg0 C.gpointer, arg1 *C.GdkEventFoc
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -723,6 +753,8 @@ func _gotk4_gtk3_Widget_ConnectFocusOutEvent(arg0 C.gpointer, arg1 *C.GdkEventFo
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -748,6 +780,8 @@ func _gotk4_gtk3_Widget_ConnectGrabBrokenEvent(arg0 C.gpointer, arg1 *C.GdkEvent
 	_event = (*gdk.EventGrabBroken)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -848,6 +882,8 @@ func _gotk4_gtk3_Widget_ConnectKeyPressEvent(arg0 C.gpointer, arg1 *C.GdkEventKe
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -873,6 +909,8 @@ func _gotk4_gtk3_Widget_ConnectKeyReleaseEvent(arg0 C.gpointer, arg1 *C.GdkEvent
 	_event = (*gdk.EventKey)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -900,6 +938,8 @@ func _gotk4_gtk3_Widget_ConnectKeynavFailed(arg0 C.gpointer, arg1 C.GtkDirection
 
 	ok := f(_direction)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -925,6 +965,8 @@ func _gotk4_gtk3_Widget_ConnectLeaveNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEven
 	_event = (*gdk.EventCrossing)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -968,6 +1010,8 @@ func _gotk4_gtk3_Widget_ConnectMapEvent(arg0 C.gpointer, arg1 *C.GdkEventAny, ar
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -996,6 +1040,8 @@ func _gotk4_gtk3_Widget_ConnectMnemonicActivate(arg0 C.gpointer, arg1 C.gboolean
 
 	ok := f(_groupCycling)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1021,6 +1067,8 @@ func _gotk4_gtk3_Widget_ConnectMotionNotifyEvent(arg0 C.gpointer, arg1 *C.GdkEve
 	_event = (*gdk.EventMotion)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1079,6 +1127,8 @@ func _gotk4_gtk3_Widget_ConnectPopupMenu(arg0 C.gpointer, arg1 C.guintptr) (cret
 
 	ok := f()
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1104,6 +1154,8 @@ func _gotk4_gtk3_Widget_ConnectPropertyNotifyEvent(arg0 C.gpointer, arg1 *C.GdkE
 	_event = (*gdk.EventProperty)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1131,6 +1183,8 @@ func _gotk4_gtk3_Widget_ConnectProximityInEvent(arg0 C.gpointer, arg1 *C.GdkEven
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1156,6 +1210,8 @@ func _gotk4_gtk3_Widget_ConnectProximityOutEvent(arg0 C.gpointer, arg1 *C.GdkEve
 	_event = (*gdk.EventProximity)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1190,6 +1246,8 @@ func _gotk4_gtk3_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 	_tooltip = wrapTooltip(coreglib.Take(unsafe.Pointer(arg4)))
 
 	ok := f(_x, _y, _keyboardMode, _tooltip)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1260,6 +1318,8 @@ func _gotk4_gtk3_Widget_ConnectScrollEvent(arg0 C.gpointer, arg1 *C.GdkEventScro
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1286,6 +1346,8 @@ func _gotk4_gtk3_Widget_ConnectSelectionClearEvent(arg0 C.gpointer, arg1 *C.GdkE
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1311,6 +1373,8 @@ func _gotk4_gtk3_Widget_ConnectSelectionRequestEvent(arg0 C.gpointer, arg1 *C.Gd
 	_event = (*gdk.EventSelection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -1448,6 +1512,8 @@ func _gotk4_gtk3_Widget_ConnectUnmapEvent(arg0 C.gpointer, arg1 *C.GdkEventAny, 
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1490,6 +1556,8 @@ func _gotk4_gtk3_Widget_ConnectVisibilityNotifyEvent(arg0 C.gpointer, arg1 *C.Gd
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -1515,6 +1583,8 @@ func _gotk4_gtk3_Widget_ConnectWindowStateEvent(arg0 C.gpointer, arg1 *C.GdkEven
 	_event = (*gdk.EventWindowState)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

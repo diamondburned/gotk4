@@ -6,6 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -14,13 +17,48 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
 // extern void _gotk4_gtk3_RecentChooser_ConnectSelectionChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_RecentChooser_ConnectItemActivated(gpointer, guintptr);
+// extern gint _gotk4_gtk3_RecentSortFunc(GtkRecentInfo*, GtkRecentInfo*, gpointer);
+// GList* _gotk4_gtk3_RecentChooser_virtual_get_items(void* fnptr, GtkRecentChooser* arg0) {
+//   return ((GList* (*)(GtkRecentChooser*))(fnptr))(arg0);
+// };
+// GSList* _gotk4_gtk3_RecentChooser_virtual_list_filters(void* fnptr, GtkRecentChooser* arg0) {
+//   return ((GSList* (*)(GtkRecentChooser*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gtk3_RecentChooser_virtual_select_uri(void* fnptr, GtkRecentChooser* arg0, gchar* arg1, GError** arg2) {
+//   return ((gboolean (*)(GtkRecentChooser*, gchar*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gtk3_RecentChooser_virtual_set_current_uri(void* fnptr, GtkRecentChooser* arg0, gchar* arg1, GError** arg2) {
+//   return ((gboolean (*)(GtkRecentChooser*, gchar*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gchar* _gotk4_gtk3_RecentChooser_virtual_get_current_uri(void* fnptr, GtkRecentChooser* arg0) {
+//   return ((gchar* (*)(GtkRecentChooser*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_RecentChooser_virtual_add_filter(void* fnptr, GtkRecentChooser* arg0, GtkRecentFilter* arg1) {
+//   ((void (*)(GtkRecentChooser*, GtkRecentFilter*))(fnptr))(arg0, arg1);
+// };
 // void _gotk4_gtk3_RecentChooser_virtual_item_activated(void* fnptr, GtkRecentChooser* arg0) {
+//   ((void (*)(GtkRecentChooser*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_RecentChooser_virtual_remove_filter(void* fnptr, GtkRecentChooser* arg0, GtkRecentFilter* arg1) {
+//   ((void (*)(GtkRecentChooser*, GtkRecentFilter*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_RecentChooser_virtual_select_all(void* fnptr, GtkRecentChooser* arg0) {
 //   ((void (*)(GtkRecentChooser*))(fnptr))(arg0);
 // };
 // void _gotk4_gtk3_RecentChooser_virtual_selection_changed(void* fnptr, GtkRecentChooser* arg0) {
 //   ((void (*)(GtkRecentChooser*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_RecentChooser_virtual_set_sort_func(void* fnptr, GtkRecentChooser* arg0, GtkRecentSortFunc arg1, gpointer arg2, GDestroyNotify arg3) {
+//   ((void (*)(GtkRecentChooser*, GtkRecentSortFunc, gpointer, GDestroyNotify))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_RecentChooser_virtual_unselect_all(void* fnptr, GtkRecentChooser* arg0) {
+//   ((void (*)(GtkRecentChooser*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_RecentChooser_virtual_unselect_uri(void* fnptr, GtkRecentChooser* arg0, gchar* arg1) {
+//   ((void (*)(GtkRecentChooser*, gchar*))(fnptr))(arg0, arg1);
 // };
 import "C"
 
@@ -178,6 +216,824 @@ func (chooser *RecentChooser) ConnectSelectionChanged(f func()) coreglib.SignalH
 	return coreglib.ConnectGeneratedClosure(chooser, "selection-changed", false, unsafe.Pointer(C._gotk4_gtk3_RecentChooser_ConnectSelectionChanged), f)
 }
 
+// AddFilter adds filter to the list of RecentFilter objects held by chooser.
+//
+// If no previous filter objects were defined, this function will call
+// gtk_recent_chooser_set_filter().
+//
+// The function takes the following parameters:
+//
+//    - filter: RecentFilter.
+//
+func (chooser *RecentChooser) AddFilter(filter *RecentFilter) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.GtkRecentFilter  // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+
+	C.gtk_recent_chooser_add_filter(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(filter)
+}
+
+// CurrentItem gets the RecentInfo currently selected by chooser.
+//
+// The function returns the following values:
+//
+//    - recentInfo: RecentInfo. Use gtk_recent_info_unref() when when you have
+//      finished using it.
+//
+func (chooser *RecentChooser) CurrentItem() *RecentInfo {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GtkRecentInfo    // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_current_item(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _recentInfo *RecentInfo // out
+
+	_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_recentInfo)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+		},
+	)
+
+	return _recentInfo
+}
+
+// CurrentURI gets the URI currently selected by chooser.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated string holding a URI.
+//
+func (chooser *RecentChooser) CurrentURI() string {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.gchar            // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_current_uri(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// Filter gets the RecentFilter object currently used by chooser to affect the
+// display of the recently used resources.
+//
+// The function returns the following values:
+//
+//    - recentFilter: RecentFilter object.
+//
+func (chooser *RecentChooser) Filter() *RecentFilter {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GtkRecentFilter  // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_filter(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _recentFilter *RecentFilter // out
+
+	_recentFilter = wrapRecentFilter(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _recentFilter
+}
+
+// Items gets the list of recently used resources in form of RecentInfo objects.
+//
+// The return value of this function is affected by the “sort-type” and “limit”
+// properties of chooser.
+//
+// The function returns the following values:
+//
+//    - list: newly allocated list of RecentInfo objects. You should use
+//      gtk_recent_info_unref() on every item of the list, and then free the list
+//      itself using g_list_free().
+//
+func (chooser *RecentChooser) Items() []*RecentInfo {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GList            // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_items(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _list []*RecentInfo // out
+
+	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentInfo)(v)
+		var dst *RecentInfo // out
+		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+			},
+		)
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
+// Limit gets the number of items returned by gtk_recent_chooser_get_items() and
+// gtk_recent_chooser_get_uris().
+//
+// The function returns the following values:
+//
+//    - gint: positive integer, or -1 meaning that all items are returned.
+//
+func (chooser *RecentChooser) Limit() int {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gint              // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_limit(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// LocalOnly gets whether only local resources should be shown in the recently
+// used resources selector. See gtk_recent_chooser_set_local_only().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if only local resources should be shown.
+//
+func (chooser *RecentChooser) LocalOnly() bool {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_local_only(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SelectMultiple gets whether chooser can select multiple items.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if chooser can select more than one item.
+//
+func (chooser *RecentChooser) SelectMultiple() bool {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_select_multiple(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ShowIcons retrieves whether chooser should show an icon near the resource.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the icons should be displayed, FALSE otherwise.
+//
+func (chooser *RecentChooser) ShowIcons() bool {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_show_icons(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ShowNotFound retrieves whether chooser should show the recently used
+// resources that were not found.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the resources not found should be displayed, and FALSE
+//      otheriwse.
+//
+func (chooser *RecentChooser) ShowNotFound() bool {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_show_not_found(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ShowPrivate returns whether chooser should display recently used resources
+// registered as private.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the recent chooser should show private items, FALSE
+//      otherwise.
+//
+func (chooser *RecentChooser) ShowPrivate() bool {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_show_private(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ShowTips gets whether chooser should display tooltips containing the full
+// path of a recently user resource.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the recent chooser should show tooltips, FALSE otherwise.
+//
+func (chooser *RecentChooser) ShowTips() bool {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_show_tips(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SortType gets the value set by gtk_recent_chooser_set_sort_type().
+//
+// The function returns the following values:
+//
+//    - recentSortType: sorting order of the chooser.
+//
+func (chooser *RecentChooser) SortType() RecentSortType {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret C.GtkRecentSortType // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_sort_type(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _recentSortType RecentSortType // out
+
+	_recentSortType = RecentSortType(_cret)
+
+	return _recentSortType
+}
+
+// URIs gets the URI of the recently used resources.
+//
+// The return value of this function is affected by the “sort-type” and “limit”
+// properties of chooser.
+//
+// Since the returned array is NULL terminated, length may be NULL.
+//
+// The function returns the following values:
+//
+//    - utf8s: A newly allocated, NULL-terminated array of strings. Use
+//      g_strfreev() to free it.
+//
+func (chooser *RecentChooser) URIs() []string {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret **C.gchar           // in
+	var _arg1 C.gsize             // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_get_uris(_arg0, &_arg1)
+	runtime.KeepAlive(chooser)
+
+	var _utf8s []string // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		src := unsafe.Slice((**C.gchar)(_cret), _arg1)
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < int(_arg1); i++ {
+			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			defer C.free(unsafe.Pointer(src[i]))
+		}
+	}
+
+	return _utf8s
+}
+
+// ListFilters gets the RecentFilter objects held by chooser.
+//
+// The function returns the following values:
+//
+//    - sList: singly linked list of RecentFilter objects. You should just free
+//      the returned list using g_slist_free().
+//
+func (chooser *RecentChooser) ListFilters() []*RecentFilter {
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GSList           // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C.gtk_recent_chooser_list_filters(_arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []*RecentFilter // out
+
+	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentFilter)(v)
+		var dst *RecentFilter // out
+		dst = wrapRecentFilter(coreglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// RemoveFilter removes filter from the list of RecentFilter objects held by
+// chooser.
+//
+// The function takes the following parameters:
+//
+//    - filter: RecentFilter.
+//
+func (chooser *RecentChooser) RemoveFilter(filter *RecentFilter) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.GtkRecentFilter  // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+
+	C.gtk_recent_chooser_remove_filter(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(filter)
+}
+
+// SelectAll selects all the items inside chooser, if the chooser supports
+// multiple selection.
+func (chooser *RecentChooser) SelectAll() {
+	var _arg0 *C.GtkRecentChooser // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	C.gtk_recent_chooser_select_all(_arg0)
+	runtime.KeepAlive(chooser)
+}
+
+// SelectURI selects uri inside chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
+func (chooser *RecentChooser) SelectURI(uri string) error {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_recent_chooser_select_uri(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetCurrentURI sets uri as the current URI for chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
+func (chooser *RecentChooser) SetCurrentURI(uri string) error {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_recent_chooser_set_current_uri(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetFilter sets filter as the current RecentFilter object used by chooser to
+// affect the displayed recently used resources.
+//
+// The function takes the following parameters:
+//
+//    - filter (optional): RecentFilter.
+//
+func (chooser *RecentChooser) SetFilter(filter *RecentFilter) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.GtkRecentFilter  // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	if filter != nil {
+		_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+	}
+
+	C.gtk_recent_chooser_set_filter(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(filter)
+}
+
+// SetLimit sets the number of items that should be returned by
+// gtk_recent_chooser_get_items() and gtk_recent_chooser_get_uris().
+//
+// The function takes the following parameters:
+//
+//    - limit: positive integer, or -1 for all items.
+//
+func (chooser *RecentChooser) SetLimit(limit int) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gint              // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = C.gint(limit)
+
+	C.gtk_recent_chooser_set_limit(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(limit)
+}
+
+// SetLocalOnly sets whether only local resources, that is resources using the
+// file:// URI scheme, should be shown in the recently used resources selector.
+// If local_only is TRUE (the default) then the shown resources are guaranteed
+// to be accessible through the operating system native file system.
+//
+// The function takes the following parameters:
+//
+//    - localOnly: TRUE if only local files can be shown.
+//
+func (chooser *RecentChooser) SetLocalOnly(localOnly bool) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	if localOnly {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_recent_chooser_set_local_only(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(localOnly)
+}
+
+// SetSelectMultiple sets whether chooser can select multiple items.
+//
+// The function takes the following parameters:
+//
+//    - selectMultiple: TRUE if chooser can select more than one item.
+//
+func (chooser *RecentChooser) SetSelectMultiple(selectMultiple bool) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	if selectMultiple {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_recent_chooser_set_select_multiple(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(selectMultiple)
+}
+
+// SetShowIcons sets whether chooser should show an icon near the resource when
+// displaying it.
+//
+// The function takes the following parameters:
+//
+//    - showIcons: whether to show an icon near the resource.
+//
+func (chooser *RecentChooser) SetShowIcons(showIcons bool) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	if showIcons {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_recent_chooser_set_show_icons(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(showIcons)
+}
+
+// SetShowNotFound sets whether chooser should display the recently used
+// resources that it didn’t find. This only applies to local resources.
+//
+// The function takes the following parameters:
+//
+//    - showNotFound: whether to show the local items we didn’t find.
+//
+func (chooser *RecentChooser) SetShowNotFound(showNotFound bool) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	if showNotFound {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_recent_chooser_set_show_not_found(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(showNotFound)
+}
+
+// SetShowPrivate: whether to show recently used resources marked registered as
+// private.
+//
+// The function takes the following parameters:
+//
+//    - showPrivate: TRUE to show private items, FALSE otherwise.
+//
+func (chooser *RecentChooser) SetShowPrivate(showPrivate bool) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	if showPrivate {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_recent_chooser_set_show_private(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(showPrivate)
+}
+
+// SetShowTips sets whether to show a tooltips containing the full path of each
+// recently used resource in a RecentChooser widget.
+//
+// The function takes the following parameters:
+//
+//    - showTips: TRUE if tooltips should be shown.
+//
+func (chooser *RecentChooser) SetShowTips(showTips bool) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.gboolean          // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	if showTips {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_recent_chooser_set_show_tips(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(showTips)
+}
+
+// SetSortFunc sets the comparison function used when sorting to be sort_func.
+// If the chooser has the sort type set to K_RECENT_SORT_CUSTOM then the chooser
+// will sort using this function.
+//
+// To the comparison function will be passed two RecentInfo structs and
+// sort_data; sort_func should return a positive integer if the first item comes
+// before the second, zero if the two items are equal and a negative integer if
+// the first item comes after the second.
+//
+// The function takes the following parameters:
+//
+//    - sortFunc: comparison function.
+//
+func (chooser *RecentChooser) SetSortFunc(sortFunc RecentSortFunc) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.GtkRecentSortFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_RecentSortFunc)
+	_arg2 = C.gpointer(gbox.Assign(sortFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C.gtk_recent_chooser_set_sort_func(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(sortFunc)
+}
+
+// SetSortType changes the sorting order of the recently used resources list
+// displayed by chooser.
+//
+// The function takes the following parameters:
+//
+//    - sortType: sort order that the chooser should use.
+//
+func (chooser *RecentChooser) SetSortType(sortType RecentSortType) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.GtkRecentSortType // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = C.GtkRecentSortType(sortType)
+
+	C.gtk_recent_chooser_set_sort_type(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(sortType)
+}
+
+// UnselectAll unselects all the items inside chooser.
+func (chooser *RecentChooser) UnselectAll() {
+	var _arg0 *C.GtkRecentChooser // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	C.gtk_recent_chooser_unselect_all(_arg0)
+	runtime.KeepAlive(chooser)
+}
+
+// UnselectURI unselects uri inside chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
+func (chooser *RecentChooser) UnselectURI(uri string) {
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_recent_chooser_unselect_uri(_arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
+}
+
+// addFilter adds filter to the list of RecentFilter objects held by chooser.
+//
+// If no previous filter objects were defined, this function will call
+// gtk_recent_chooser_set_filter().
+//
+// The function takes the following parameters:
+//
+//    - filter: RecentFilter.
+//
+func (chooser *RecentChooser) addFilter(filter *RecentFilter) {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.add_filter
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.GtkRecentFilter  // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+
+	C._gotk4_gtk3_RecentChooser_virtual_add_filter(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(filter)
+}
+
+// currentURI gets the URI currently selected by chooser.
+//
+// The function returns the following values:
+//
+//    - utf8: newly allocated string holding a URI.
+//
+func (chooser *RecentChooser) currentURI() string {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.get_current_uri
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.gchar            // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C._gotk4_gtk3_RecentChooser_virtual_get_current_uri(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(chooser)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// Items gets the list of recently used resources in form of RecentInfo objects.
+//
+// The return value of this function is affected by the “sort-type” and “limit”
+// properties of chooser.
+//
+// The function returns the following values:
+//
+//    - list: newly allocated list of RecentInfo objects. You should use
+//      gtk_recent_info_unref() on every item of the list, and then free the list
+//      itself using g_list_free().
+//
+func (chooser *RecentChooser) items() []*RecentInfo {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.get_items
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GList            // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C._gotk4_gtk3_RecentChooser_virtual_get_items(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(chooser)
+
+	var _list []*RecentInfo // out
+
+	_list = make([]*RecentInfo, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentInfo)(v)
+		var dst *RecentInfo // out
+		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
+			},
+		)
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
 func (chooser *RecentChooser) itemActivated() {
 	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
 	fnarg := gclass.item_activated
@@ -190,6 +1046,105 @@ func (chooser *RecentChooser) itemActivated() {
 	runtime.KeepAlive(chooser)
 }
 
+// listFilters gets the RecentFilter objects held by chooser.
+//
+// The function returns the following values:
+//
+//    - sList: singly linked list of RecentFilter objects. You should just free
+//      the returned list using g_slist_free().
+//
+func (chooser *RecentChooser) listFilters() []*RecentFilter {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.list_filters
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _cret *C.GSList           // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	_cret = C._gotk4_gtk3_RecentChooser_virtual_list_filters(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(chooser)
+
+	var _sList []*RecentFilter // out
+
+	_sList = make([]*RecentFilter, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkRecentFilter)(v)
+		var dst *RecentFilter // out
+		dst = wrapRecentFilter(coreglib.Take(unsafe.Pointer(src)))
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// removeFilter removes filter from the list of RecentFilter objects held by
+// chooser.
+//
+// The function takes the following parameters:
+//
+//    - filter: RecentFilter.
+//
+func (chooser *RecentChooser) removeFilter(filter *RecentFilter) {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.remove_filter
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.GtkRecentFilter  // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.GtkRecentFilter)(unsafe.Pointer(coreglib.InternObject(filter).Native()))
+
+	C._gotk4_gtk3_RecentChooser_virtual_remove_filter(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(filter)
+}
+
+// selectAll selects all the items inside chooser, if the chooser supports
+// multiple selection.
+func (chooser *RecentChooser) selectAll() {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.select_all
+
+	var _arg0 *C.GtkRecentChooser // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	C._gotk4_gtk3_RecentChooser_virtual_select_all(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(chooser)
+}
+
+// selectURI selects uri inside chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
+func (chooser *RecentChooser) selectURI(uri string) error {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.select_uri
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gtk3_RecentChooser_virtual_select_uri(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
 func (chooser *RecentChooser) selectionChanged() {
 	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
 	fnarg := gclass.selection_changed
@@ -200,6 +1155,104 @@ func (chooser *RecentChooser) selectionChanged() {
 
 	C._gotk4_gtk3_RecentChooser_virtual_selection_changed(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(chooser)
+}
+
+// setCurrentURI sets uri as the current URI for chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
+func (chooser *RecentChooser) setCurrentURI(uri string) error {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.set_current_uri
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
+	var _cerr *C.GError           // in
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gtk3_RecentChooser_virtual_set_current_uri(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// setSortFunc sets the comparison function used when sorting to be sort_func.
+// If the chooser has the sort type set to K_RECENT_SORT_CUSTOM then the chooser
+// will sort using this function.
+//
+// To the comparison function will be passed two RecentInfo structs and
+// sort_data; sort_func should return a positive integer if the first item comes
+// before the second, zero if the two items are equal and a negative integer if
+// the first item comes after the second.
+//
+// The function takes the following parameters:
+//
+//    - sortFunc: comparison function.
+//
+func (chooser *RecentChooser) setSortFunc(sortFunc RecentSortFunc) {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.set_sort_func
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 C.GtkRecentSortFunc // out
+	var _arg2 C.gpointer
+	var _arg3 C.GDestroyNotify
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_RecentSortFunc)
+	_arg2 = C.gpointer(gbox.Assign(sortFunc))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	C._gotk4_gtk3_RecentChooser_virtual_set_sort_func(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(sortFunc)
+}
+
+// unselectAll unselects all the items inside chooser.
+func (chooser *RecentChooser) unselectAll() {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.unselect_all
+
+	var _arg0 *C.GtkRecentChooser // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+
+	C._gotk4_gtk3_RecentChooser_virtual_unselect_all(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(chooser)
+}
+
+// unselectURI unselects uri inside chooser.
+//
+// The function takes the following parameters:
+//
+//    - uri: URI.
+//
+func (chooser *RecentChooser) unselectURI(uri string) {
+	gclass := (*C.GtkRecentChooserIface)(coreglib.PeekParentClass(chooser))
+	fnarg := gclass.unselect_uri
+
+	var _arg0 *C.GtkRecentChooser // out
+	var _arg1 *C.gchar            // out
+
+	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gtk3_RecentChooser_virtual_unselect_uri(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(chooser)
+	runtime.KeepAlive(uri)
 }
 
 // RecentChooserIface: instance of this type is always passed by reference.

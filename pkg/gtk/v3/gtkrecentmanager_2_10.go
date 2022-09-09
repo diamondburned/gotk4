@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -22,6 +21,9 @@ import (
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_RecentManager_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk3_RecentManagerClass_changed(GtkRecentManager*);
+// void _gotk4_gtk3_RecentManager_virtual_changed(void* fnptr, GtkRecentManager* arg0) {
+//   ((void (*)(GtkRecentManager*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -518,6 +520,18 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	}
 
 	return _goerr
+}
+
+func (manager *RecentManager) changed() {
+	gclass := (*C.GtkRecentManagerClass)(coreglib.PeekParentClass(manager))
+	fnarg := gclass.changed
+
+	var _arg0 *C.GtkRecentManager // out
+
+	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
+
+	C._gotk4_gtk3_RecentManager_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(manager)
 }
 
 // RecentManagerGetDefault gets a unique instance of RecentManager, that you can

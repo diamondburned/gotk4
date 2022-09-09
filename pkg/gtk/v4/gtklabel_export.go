@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"unsafe"
+
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -44,6 +46,8 @@ func _gotk4_gtk4_Label_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar, arg2 
 	_uri = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 
 	ok := f(_uri)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

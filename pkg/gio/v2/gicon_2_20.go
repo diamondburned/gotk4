@@ -14,46 +14,6 @@ import (
 // #include <gio/gio.h>
 import "C"
 
-// String generates a textual representation of icon that can be used for
-// serialization such as when passing icon to a different process or saving it
-// to persistent storage. Use g_icon_new_for_string() to get icon back from the
-// returned string.
-//
-// The encoding of the returned string is proprietary to #GIcon except in the
-// following two cases
-//
-// - If icon is a Icon, the returned string is a native path (such as
-// /path/to/my icon.png) without escaping if the #GFile for icon is a native
-// file. If the file is not native, the returned string is the result of
-// g_file_get_uri() (such as sftp://path/to/my20icon.png).
-//
-// - If icon is a Icon with exactly one name and no fallbacks, the encoding is
-// simply the name (such as network-server).
-//
-// The function returns the following values:
-//
-//    - utf8 (optional): allocated NUL-terminated UTF8 string or NULL if icon
-//      can't be serialized. Use g_free() to free.
-//
-func (icon *Icon) String() string {
-	var _arg0 *C.GIcon // out
-	var _cret *C.gchar // in
-
-	_arg0 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
-
-	_cret = C.g_icon_to_string(_arg0)
-	runtime.KeepAlive(icon)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-		defer C.free(unsafe.Pointer(_cret))
-	}
-
-	return _utf8
-}
-
 // NewIconForString: generate a #GIcon instance from str. This function can fail
 // if str is not valid - see g_icon_to_string() for discussion.
 //

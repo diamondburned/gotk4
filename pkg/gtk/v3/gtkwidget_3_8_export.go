@@ -67,6 +67,8 @@ func _gotk4_gtk3_TickCallback(arg1 *C.GtkWidget, arg2 *C.GdkFrameClock, arg3 C.g
 
 	ok := fn(_widget, _frameClock)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

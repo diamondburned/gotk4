@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -189,6 +188,29 @@ func (proxy *ProxyAddress) DestinationPort() uint16 {
 	return _guint16
 }
 
+// DestinationProtocol gets the protocol that is being spoken to the destination
+// server; eg, "http" or "ftp".
+//
+// The function returns the following values:
+//
+//    - utf8 proxy's destination protocol.
+//
+func (proxy *ProxyAddress) DestinationProtocol() string {
+	var _arg0 *C.GProxyAddress // out
+	var _cret *C.gchar         // in
+
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+
+	_cret = C.g_proxy_address_get_destination_protocol(_arg0)
+	runtime.KeepAlive(proxy)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
 // Password gets proxy's password.
 //
 // The function returns the following values:
@@ -231,6 +253,30 @@ func (proxy *ProxyAddress) Protocol() string {
 	var _utf8 string // out
 
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// URI gets the proxy URI that proxy was constructed from.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) proxy's URI, or NULL if unknown.
+//
+func (proxy *ProxyAddress) URI() string {
+	var _arg0 *C.GProxyAddress // out
+	var _cret *C.gchar         // in
+
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+
+	_cret = C.g_proxy_address_get_uri(_arg0)
+	runtime.KeepAlive(proxy)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }

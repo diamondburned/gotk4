@@ -3,8 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 

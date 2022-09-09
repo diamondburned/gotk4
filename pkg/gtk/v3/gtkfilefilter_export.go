@@ -32,6 +32,8 @@ func _gotk4_gtk3_FileFilterFunc(arg1 *C.GtkFileFilterInfo, arg2 C.gpointer) (cre
 
 	ok := fn(_filterInfo)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

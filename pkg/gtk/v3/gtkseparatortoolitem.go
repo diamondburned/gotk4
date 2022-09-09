@@ -3,7 +3,7 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
@@ -106,6 +106,71 @@ func wrapSeparatorToolItem(obj *coreglib.Object) *SeparatorToolItem {
 
 func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 	return wrapSeparatorToolItem(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewSeparatorToolItem: create a new SeparatorToolItem.
+//
+// The function returns the following values:
+//
+//    - separatorToolItem: new SeparatorToolItem.
+//
+func NewSeparatorToolItem() *SeparatorToolItem {
+	var _cret *C.GtkToolItem // in
+
+	_cret = C.gtk_separator_tool_item_new()
+
+	var _separatorToolItem *SeparatorToolItem // out
+
+	_separatorToolItem = wrapSeparatorToolItem(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _separatorToolItem
+}
+
+// Draw returns whether item is drawn as a line, or just blank. See
+// gtk_separator_tool_item_set_draw().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if item is drawn as a line, or just blank.
+//
+func (item *SeparatorToolItem) Draw() bool {
+	var _arg0 *C.GtkSeparatorToolItem // out
+	var _cret C.gboolean              // in
+
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+
+	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
+	runtime.KeepAlive(item)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetDraw: whether item is drawn as a vertical line, or just blank. Setting
+// this to FALSE along with gtk_tool_item_set_expand() is useful to create an
+// item that forces following items to the end of the toolbar.
+//
+// The function takes the following parameters:
+//
+//    - draw: whether item is drawn as a vertical line.
+//
+func (item *SeparatorToolItem) SetDraw(draw bool) {
+	var _arg0 *C.GtkSeparatorToolItem // out
+	var _arg1 C.gboolean              // out
+
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(coreglib.InternObject(item).Native()))
+	if draw {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
+	runtime.KeepAlive(item)
+	runtime.KeepAlive(draw)
 }
 
 // SeparatorToolItemClass: instance of this type is always passed by reference.

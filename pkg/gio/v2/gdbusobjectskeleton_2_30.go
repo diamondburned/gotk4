@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -16,6 +15,9 @@ import (
 // #include <glib-object.h>
 // extern gboolean _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(gpointer, GDBusInterfaceSkeleton*, GDBusMethodInvocation*, guintptr);
 // extern gboolean _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(GDBusObjectSkeleton*, GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
+// gboolean _gotk4_gio2_DBusObjectSkeleton_virtual_authorize_method(void* fnptr, GDBusObjectSkeleton* arg0, GDBusInterfaceSkeleton* arg1, GDBusMethodInvocation* arg2) {
+//   return ((gboolean (*)(GDBusObjectSkeleton*, GDBusInterfaceSkeleton*, GDBusMethodInvocation*))(fnptr))(arg0, arg1, arg2);
+// };
 import "C"
 
 // GType values.
@@ -230,6 +232,40 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)
 	runtime.KeepAlive(object)
 	runtime.KeepAlive(objectPath)
+}
+
+// The function takes the following parameters:
+//
+//    - interface_
+//    - invocation
+//
+// The function returns the following values:
+//
+func (object *DBusObjectSkeleton) authorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool {
+	gclass := (*C.GDBusObjectSkeletonClass)(coreglib.PeekParentClass(object))
+	fnarg := gclass.authorize_method
+
+	var _arg0 *C.GDBusObjectSkeleton    // out
+	var _arg1 *C.GDBusInterfaceSkeleton // out
+	var _arg2 *C.GDBusMethodInvocation  // out
+	var _cret C.gboolean                // in
+
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(coreglib.InternObject(interface_).Native()))
+	_arg2 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
+
+	_cret = C._gotk4_gio2_DBusObjectSkeleton_virtual_authorize_method(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(interface_)
+	runtime.KeepAlive(invocation)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // DBusObjectSkeletonClass class structure for BusObjectSkeleton.

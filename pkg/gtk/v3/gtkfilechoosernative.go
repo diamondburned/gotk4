@@ -3,7 +3,7 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -235,6 +235,165 @@ func wrapFileChooserNative(obj *coreglib.Object) *FileChooserNative {
 
 func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	return wrapFileChooserNative(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewFileChooserNative creates a new FileChooserNative.
+//
+// The function takes the following parameters:
+//
+//    - title (optional): title of the native, or NULL.
+//    - parent (optional): transient parent of the native, or NULL.
+//    - action: open or save mode for the dialog.
+//    - acceptLabel (optional): text to go in the accept button, or NULL for the
+//      default.
+//    - cancelLabel (optional): text to go in the cancel button, or NULL for the
+//      default.
+//
+// The function returns the following values:
+//
+//    - fileChooserNative: new FileChooserNative.
+//
+func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel, cancelLabel string) *FileChooserNative {
+	var _arg1 *C.gchar                // out
+	var _arg2 *C.GtkWindow            // out
+	var _arg3 C.GtkFileChooserAction  // out
+	var _arg4 *C.gchar                // out
+	var _arg5 *C.gchar                // out
+	var _cret *C.GtkFileChooserNative // in
+
+	if title != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(title)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if parent != nil {
+		_arg2 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+	}
+	_arg3 = C.GtkFileChooserAction(action)
+	if acceptLabel != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(acceptLabel)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
+	if cancelLabel != "" {
+		_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(cancelLabel)))
+		defer C.free(unsafe.Pointer(_arg5))
+	}
+
+	_cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(title)
+	runtime.KeepAlive(parent)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(acceptLabel)
+	runtime.KeepAlive(cancelLabel)
+
+	var _fileChooserNative *FileChooserNative // out
+
+	_fileChooserNative = wrapFileChooserNative(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _fileChooserNative
+}
+
+// AcceptLabel retrieves the custom label text for the accept button.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): custom label, or NULL for the default. This string is
+//      owned by GTK+ and should not be modified or freed.
+//
+func (self *FileChooserNative) AcceptLabel() string {
+	var _arg0 *C.GtkFileChooserNative // out
+	var _cret *C.char                 // in
+
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// CancelLabel retrieves the custom label text for the cancel button.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): custom label, or NULL for the default. This string is
+//      owned by GTK+ and should not be modified or freed.
+//
+func (self *FileChooserNative) CancelLabel() string {
+	var _arg0 *C.GtkFileChooserNative // out
+	var _cret *C.char                 // in
+
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// SetAcceptLabel sets the custom label text for the accept button.
+//
+// If characters in label are preceded by an underscore, they are underlined. If
+// you need a literal underscore character in a label, use “__” (two
+// underscores). The first underlined character represents a keyboard
+// accelerator called a mnemonic. Pressing Alt and that key activates the
+// button.
+//
+// The function takes the following parameters:
+//
+//    - acceptLabel (optional): custom label or NULL for the default.
+//
+func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
+	var _arg0 *C.GtkFileChooserNative // out
+	var _arg1 *C.char                 // out
+
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if acceptLabel != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(acceptLabel)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_file_chooser_native_set_accept_label(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(acceptLabel)
+}
+
+// SetCancelLabel sets the custom label text for the cancel button.
+//
+// If characters in label are preceded by an underscore, they are underlined. If
+// you need a literal underscore character in a label, use “__” (two
+// underscores). The first underlined character represents a keyboard
+// accelerator called a mnemonic. Pressing Alt and that key activates the
+// button.
+//
+// The function takes the following parameters:
+//
+//    - cancelLabel (optional): custom label or NULL for the default.
+//
+func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
+	var _arg0 *C.GtkFileChooserNative // out
+	var _arg1 *C.char                 // out
+
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if cancelLabel != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(cancelLabel)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(cancelLabel)
 }
 
 // FileChooserNativeClass: instance of this type is always passed by reference.

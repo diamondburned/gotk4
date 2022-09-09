@@ -118,6 +118,8 @@ func FileChooserErrorQuark() glib.Quark {
 	var _quark glib.Quark // out
 
 	_quark = uint32(_cret)
+	type _ = glib.Quark
+	type _ = uint32
 
 	return _quark
 }

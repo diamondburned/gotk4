@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -394,6 +393,8 @@ func (frame *Frame) computeChildAllocation(allocation *Allocation) {
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
 	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
+	type _ = *Allocation
+	type _ = *gdk.Rectangle
 
 	C._gotk4_gtk4_Frame_virtual_compute_child_allocation(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(frame)

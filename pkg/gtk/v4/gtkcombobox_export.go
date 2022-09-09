@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"unsafe"
+
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -45,6 +47,8 @@ func _gotk4_gtk4_ComboBox_ConnectFormatEntryText(arg0 C.gpointer, arg1 *C.gchar,
 
 	utf8 := f(_path)
 
+	var _ string
+
 	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
@@ -84,6 +88,8 @@ func _gotk4_gtk4_ComboBox_ConnectPopdown(arg0 C.gpointer, arg1 C.guintptr) (cret
 	}
 
 	ok := f()
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

@@ -27,6 +27,8 @@ func _gotk4_gtk3_Paned_ConnectAcceptPosition(arg0 C.gpointer, arg1 C.guintptr) (
 
 	ok := f()
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -48,6 +50,8 @@ func _gotk4_gtk3_Paned_ConnectCancelPosition(arg0 C.gpointer, arg1 C.guintptr) (
 	}
 
 	ok := f()
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -77,6 +81,8 @@ func _gotk4_gtk3_Paned_ConnectCycleChildFocus(arg0 C.gpointer, arg1 C.gboolean, 
 
 	ok := f(_reversed)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -105,6 +111,8 @@ func _gotk4_gtk3_Paned_ConnectCycleHandleFocus(arg0 C.gpointer, arg1 C.gboolean,
 
 	ok := f(_reversed)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -131,6 +139,8 @@ func _gotk4_gtk3_Paned_ConnectMoveHandle(arg0 C.gpointer, arg1 C.GtkScrollType, 
 
 	ok := f(_scrollType)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -152,6 +162,8 @@ func _gotk4_gtk3_Paned_ConnectToggleHandleFocus(arg0 C.gpointer, arg1 C.guintptr
 	}
 
 	ok := f()
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

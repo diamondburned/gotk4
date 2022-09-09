@@ -43,6 +43,8 @@ func _gotk4_gtk3_Socket_ConnectPlugRemoved(arg0 C.gpointer, arg1 C.guintptr) (cr
 
 	ok := f()
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

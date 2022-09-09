@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -158,6 +157,24 @@ func (v *CellRendererAccel) ConnectAccelCleared(f func(pathString string)) coreg
 // ConnectAccelEdited gets emitted when the user has selected a new accelerator.
 func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "accel-edited", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererAccel_ConnectAccelEdited), f)
+}
+
+// NewCellRendererAccel creates a new CellRendererAccel.
+//
+// The function returns the following values:
+//
+//    - cellRendererAccel: new cell renderer.
+//
+func NewCellRendererAccel() *CellRendererAccel {
+	var _cret *C.GtkCellRenderer // in
+
+	_cret = C.gtk_cell_renderer_accel_new()
+
+	var _cellRendererAccel *CellRendererAccel // out
+
+	_cellRendererAccel = wrapCellRendererAccel(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _cellRendererAccel
 }
 
 // The function takes the following parameters:

@@ -71,6 +71,12 @@ func (h *Header) Reset() {
 	*h = Header{stop: h.stop}
 }
 
+func (h *Header) Copy() *Header {
+	var new Header
+	new.ApplyFrom(h)
+	return &new
+}
+
 // HasImport returns true if the header imports the given path.
 func (h *Header) HasImport(path string) bool {
 	_, ok := h.Imports[path]

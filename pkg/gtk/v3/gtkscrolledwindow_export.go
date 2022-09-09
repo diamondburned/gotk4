@@ -95,6 +95,8 @@ func _gotk4_gtk3_ScrolledWindow_ConnectScrollChild(arg0 C.gpointer, arg1 C.GtkSc
 
 	ok := f(_scroll, _horizontal)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

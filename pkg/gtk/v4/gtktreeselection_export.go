@@ -93,6 +93,8 @@ func _gotk4_gtk4_TreeSelectionFunc(arg1 *C.GtkTreeSelection, arg2 *C.GtkTreeMode
 
 	ok := fn(_selection, _model, _path, _pathCurrentlySelected)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

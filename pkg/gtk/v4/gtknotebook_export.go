@@ -47,6 +47,8 @@ func _gotk4_gtk4_Notebook_ConnectCreateWindow(arg0 C.gpointer, arg1 *C.GtkWidget
 
 	notebook := f(_page)
 
+	var _ *Notebook
+
 	cret = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
 
 	return cret

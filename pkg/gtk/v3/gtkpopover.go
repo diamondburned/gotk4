@@ -3,86 +3,16 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_Popover_virtual_closed(void* fnptr, GtkPopover* arg0) {
-//   ((void (*)(GtkPopover*))(fnptr))(arg0);
-// };
 import "C"
-
-// PointingTo: if a rectangle to point to has been set, this function will
-// return TRUE and fill in rect with such rectangle, otherwise it will return
-// FALSE and fill in rect with the attached widget coordinates.
-//
-// The function returns the following values:
-//
-//    - rect: location to store the rectangle.
-//    - ok: TRUE if a rectangle to point to was set.
-//
-func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover  // out
-	var _arg1 C.GdkRectangle // in
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-
-	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
-	runtime.KeepAlive(popover)
-
-	var _rect *gdk.Rectangle // out
-	var _ok bool             // out
-
-	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _rect, _ok
-}
-
-// Position returns the preferred position of popover.
-//
-// The function returns the following values:
-//
-//    - positionType: preferred position.
-//
-func (popover *Popover) Position() PositionType {
-	var _arg0 *C.GtkPopover     // out
-	var _cret C.GtkPositionType // in
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-
-	_cret = C.gtk_popover_get_position(_arg0)
-	runtime.KeepAlive(popover)
-
-	var _positionType PositionType // out
-
-	_positionType = PositionType(_cret)
-
-	return _positionType
-}
-
-func (popover *Popover) closed() {
-	gclass := (*C.GtkPopoverClass)(coreglib.PeekParentClass(popover))
-	fnarg := gclass.closed
-
-	var _arg0 *C.GtkPopover // out
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-
-	C._gotk4_gtk3_Popover_virtual_closed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(popover)
-}
 
 // PopoverClass: instance of this type is always passed by reference.
 type PopoverClass struct {

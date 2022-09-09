@@ -32,6 +32,8 @@ func _gotk4_gtk3_RecentFilterFunc(arg1 *C.GtkRecentFilterInfo, arg2 C.gpointer) 
 
 	ok := fn(_filterInfo)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

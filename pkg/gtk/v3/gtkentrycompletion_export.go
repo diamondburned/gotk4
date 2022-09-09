@@ -37,6 +37,8 @@ func _gotk4_gtk3_EntryCompletionMatchFunc(arg1 *C.GtkEntryCompletion, arg2 *C.gc
 
 	ok := fn(_completion, _key, _iter)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -101,6 +103,8 @@ func _gotk4_gtk3_EntryCompletion_ConnectCursorOnMatch(arg0 C.gpointer, arg1 *C.G
 
 	ok := f(_model, _iter)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -126,6 +130,8 @@ func _gotk4_gtk3_EntryCompletion_ConnectInsertPrefix(arg0 C.gpointer, arg1 *C.gc
 	_prefix = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 
 	ok := f(_prefix)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -170,6 +176,8 @@ func _gotk4_gtk3_EntryCompletion_ConnectMatchSelected(arg0 C.gpointer, arg1 *C.G
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
 	ok := f(_model, _iter)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

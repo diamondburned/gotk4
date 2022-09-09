@@ -32,6 +32,8 @@ func _gotk4_gtk3_FlowBoxFilterFunc(arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) (cr
 
 	ok := fn(_child)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -77,6 +79,8 @@ func _gotk4_gtk3_FlowBoxSortFunc(arg1 *C.GtkFlowBoxChild, arg2 *C.GtkFlowBoxChil
 	_child2 = wrapFlowBoxChild(coreglib.Take(unsafe.Pointer(arg2)))
 
 	gint := fn(_child1, _child2)
+
+	var _ int
 
 	cret = C.gint(gint)
 

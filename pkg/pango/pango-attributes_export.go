@@ -26,6 +26,8 @@ func _gotk4_pango1_AttrDataCopyFunc(arg1 C.gconstpointer) (cret C.gpointer) {
 
 	gpointer := fn()
 
+	var _ unsafe.Pointer
+
 	cret = (C.gpointer)(unsafe.Pointer(gpointer))
 
 	return cret
@@ -47,6 +49,8 @@ func _gotk4_pango1_AttrFilterFunc(arg1 *C.PangoAttribute, arg2 C.gpointer) (cret
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := fn(_attribute)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

@@ -2,57 +2,9 @@
 
 package gio
 
-import (
-	"runtime"
-	"unsafe"
-
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-)
-
 // #include <stdlib.h>
 // #include <gio/gio.h>
-// void _gotk4_gio2_SocketListener_virtual_changed(void* fnptr, GSocketListener* arg0) {
-//   ((void (*)(GSocketListener*))(fnptr))(arg0);
-// };
-// void _gotk4_gio2_SocketListener_virtual_event(void* fnptr, GSocketListener* arg0, GSocketListenerEvent arg1, GSocket* arg2) {
-//   ((void (*)(GSocketListener*, GSocketListenerEvent, GSocket*))(fnptr))(arg0, arg1, arg2);
-// };
 import "C"
-
-func (listener *SocketListener) changed() {
-	gclass := (*C.GSocketListenerClass)(coreglib.PeekParentClass(listener))
-	fnarg := gclass.changed
-
-	var _arg0 *C.GSocketListener // out
-
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
-
-	C._gotk4_gio2_SocketListener_virtual_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(listener)
-}
-
-// The function takes the following parameters:
-//
-//    - event
-//    - socket
-//
-func (listener *SocketListener) event(event SocketListenerEvent, socket *Socket) {
-	gclass := (*C.GSocketListenerClass)(coreglib.PeekParentClass(listener))
-	fnarg := gclass.event
-
-	var _arg0 *C.GSocketListener     // out
-	var _arg1 C.GSocketListenerEvent // out
-	var _arg2 *C.GSocket             // out
-
-	_arg0 = (*C.GSocketListener)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
-	_arg1 = C.GSocketListenerEvent(event)
-	_arg2 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
-
-	C._gotk4_gio2_SocketListener_virtual_event(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(listener)
-	runtime.KeepAlive(event)
-	runtime.KeepAlive(socket)
-}
 
 // SocketListenerClass class structure for Listener.
 //

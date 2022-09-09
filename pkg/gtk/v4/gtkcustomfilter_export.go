@@ -30,6 +30,8 @@ func _gotk4_gtk4_CustomFilterFunc(arg1 C.gpointer, arg2 C.gpointer) (cret C.gboo
 
 	ok := fn(_item)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

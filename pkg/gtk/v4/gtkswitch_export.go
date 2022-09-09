@@ -47,6 +47,8 @@ func _gotk4_gtk4_Switch_ConnectStateSet(arg0 C.gpointer, arg1 C.gboolean, arg2 C
 
 	ok := f(_state)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

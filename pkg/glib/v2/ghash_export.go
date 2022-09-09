@@ -31,6 +31,8 @@ func _gotk4_glib2_HRFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) (cre
 
 	ok := fn(_key, _value)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

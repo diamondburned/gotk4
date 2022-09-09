@@ -3,9 +3,13 @@
 package gio
 
 import (
-	"reflect"
+	"context"
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -13,10 +17,29 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern gboolean _gotk4_gio2_PermissionClass_release_finish(GPermission*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_PermissionClass_release(GPermission*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_PermissionClass_acquire_finish(GPermission*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_PermissionClass_acquire(GPermission*, GCancellable*, GError**);
+// gboolean _gotk4_gio2_Permission_virtual_acquire(void* fnptr, GPermission* arg0, GCancellable* arg1, GError** arg2) {
+//   return ((gboolean (*)(GPermission*, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Permission_virtual_acquire_finish(void* fnptr, GPermission* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GPermission*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Permission_virtual_release(void* fnptr, GPermission* arg0, GCancellable* arg1, GError** arg2) {
+//   return ((gboolean (*)(GPermission*, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_Permission_virtual_release_finish(void* fnptr, GPermission* arg0, GAsyncResult* arg1, GError** arg2) {
+//   return ((gboolean (*)(GPermission*, GAsyncResult*, GError**))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gio2_Permission_virtual_acquire_async(void* fnptr, GPermission* arg0, GCancellable* arg1, GAsyncReadyCallback arg2, gpointer arg3) {
+//   ((void (*)(GPermission*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gio2_Permission_virtual_release_async(void* fnptr, GPermission* arg0, GCancellable* arg1, GAsyncReadyCallback arg2, gpointer arg3) {
+//   ((void (*)(GPermission*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
 import "C"
 
 // GType values.
@@ -191,6 +214,570 @@ func (permission *Permission) basePermission() *Permission {
 // BasePermission returns the underlying base object.
 func BasePermission(obj Permissioner) *Permission {
 	return obj.basePermission()
+}
+
+// Acquire attempts to acquire the permission represented by permission.
+//
+// The precise method by which this happens depends on the permission and the
+// underlying authentication mechanism. A simple example is that a dialog may
+// appear asking the user to enter their password.
+//
+// You should check with g_permission_get_can_acquire() before calling this
+// function.
+//
+// If the permission is acquired then TRUE is returned. Otherwise, FALSE is
+// returned and error is set appropriately.
+//
+// This call is blocking, likely for a very long time (in the case that user
+// interaction is required). See g_permission_acquire_async() for the
+// non-blocking version.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//
+func (permission *Permission) Acquire(ctx context.Context) error {
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	C.g_permission_acquire(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// AcquireAsync attempts to acquire the permission represented by permission.
+//
+// This is the first half of the asynchronous version of g_permission_acquire().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - callback (optional) to call when done.
+//
+func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
+// AcquireFinish collects the result of attempting to acquire the permission
+// represented by permission.
+//
+// This is the second half of the asynchronous version of
+// g_permission_acquire().
+//
+// The function takes the following parameters:
+//
+//    - result given to the ReadyCallback.
+//
+func (permission *Permission) AcquireFinish(result AsyncResulter) error {
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// Allowed gets the value of the 'allowed' property. This property is TRUE if
+// the caller currently has permission to perform the action that permission
+// represents the permission to perform.
+//
+// The function returns the following values:
+//
+//    - ok: value of the 'allowed' property.
+//
+func (permission *Permission) Allowed() bool {
+	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+
+	_cret = C.g_permission_get_allowed(_arg0)
+	runtime.KeepAlive(permission)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// CanAcquire gets the value of the 'can-acquire' property. This property is
+// TRUE if it is generally possible to acquire the permission by calling
+// g_permission_acquire().
+//
+// The function returns the following values:
+//
+//    - ok: value of the 'can-acquire' property.
+//
+func (permission *Permission) CanAcquire() bool {
+	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+
+	_cret = C.g_permission_get_can_acquire(_arg0)
+	runtime.KeepAlive(permission)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// CanRelease gets the value of the 'can-release' property. This property is
+// TRUE if it is generally possible to release the permission by calling
+// g_permission_release().
+//
+// The function returns the following values:
+//
+//    - ok: value of the 'can-release' property.
+//
+func (permission *Permission) CanRelease() bool {
+	var _arg0 *C.GPermission // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+
+	_cret = C.g_permission_get_can_release(_arg0)
+	runtime.KeepAlive(permission)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ImplUpdate: this function is called by the #GPermission implementation to
+// update the properties of the permission. You should never call this function
+// except from a #GPermission implementation.
+//
+// GObject notify signals are generated, as appropriate.
+//
+// The function takes the following parameters:
+//
+//    - allowed: new value for the 'allowed' property.
+//    - canAcquire: new value for the 'can-acquire' property.
+//    - canRelease: new value for the 'can-release' property.
+//
+func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
+	var _arg0 *C.GPermission // out
+	var _arg1 C.gboolean     // out
+	var _arg2 C.gboolean     // out
+	var _arg3 C.gboolean     // out
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	if allowed {
+		_arg1 = C.TRUE
+	}
+	if canAcquire {
+		_arg2 = C.TRUE
+	}
+	if canRelease {
+		_arg3 = C.TRUE
+	}
+
+	C.g_permission_impl_update(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(allowed)
+	runtime.KeepAlive(canAcquire)
+	runtime.KeepAlive(canRelease)
+}
+
+// Release attempts to release the permission represented by permission.
+//
+// The precise method by which this happens depends on the permission and the
+// underlying authentication mechanism. In most cases the permission will be
+// dropped immediately without further action.
+//
+// You should check with g_permission_get_can_release() before calling this
+// function.
+//
+// If the permission is released then TRUE is returned. Otherwise, FALSE is
+// returned and error is set appropriately.
+//
+// This call is blocking, likely for a very long time (in the case that user
+// interaction is required). See g_permission_release_async() for the
+// non-blocking version.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//
+func (permission *Permission) Release(ctx context.Context) error {
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	C.g_permission_release(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// ReleaseAsync attempts to release the permission represented by permission.
+//
+// This is the first half of the asynchronous version of g_permission_release().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - callback (optional) to call when done.
+//
+func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
+// ReleaseFinish collects the result of attempting to release the permission
+// represented by permission.
+//
+// This is the second half of the asynchronous version of
+// g_permission_release().
+//
+// The function takes the following parameters:
+//
+//    - result given to the ReadyCallback.
+//
+func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// Acquire attempts to acquire the permission represented by permission.
+//
+// The precise method by which this happens depends on the permission and the
+// underlying authentication mechanism. A simple example is that a dialog may
+// appear asking the user to enter their password.
+//
+// You should check with g_permission_get_can_acquire() before calling this
+// function.
+//
+// If the permission is acquired then TRUE is returned. Otherwise, FALSE is
+// returned and error is set appropriately.
+//
+// This call is blocking, likely for a very long time (in the case that user
+// interaction is required). See g_permission_acquire_async() for the
+// non-blocking version.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//
+func (permission *Permission) acquire(ctx context.Context) error {
+	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
+	fnarg := gclass.acquire
+
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	C._gotk4_gio2_Permission_virtual_acquire(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// acquireAsync attempts to acquire the permission represented by permission.
+//
+// This is the first half of the asynchronous version of g_permission_acquire().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - callback (optional) to call when done.
+//
+func (permission *Permission) acquireAsync(ctx context.Context, callback AsyncReadyCallback) {
+	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
+	fnarg := gclass.acquire_async
+
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Permission_virtual_acquire_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
+// acquireFinish collects the result of attempting to acquire the permission
+// represented by permission.
+//
+// This is the second half of the asynchronous version of
+// g_permission_acquire().
+//
+// The function takes the following parameters:
+//
+//    - result given to the ReadyCallback.
+//
+func (permission *Permission) acquireFinish(result AsyncResulter) error {
+	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
+	fnarg := gclass.acquire_finish
+
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Permission_virtual_acquire_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// Release attempts to release the permission represented by permission.
+//
+// The precise method by which this happens depends on the permission and the
+// underlying authentication mechanism. In most cases the permission will be
+// dropped immediately without further action.
+//
+// You should check with g_permission_get_can_release() before calling this
+// function.
+//
+// If the permission is released then TRUE is returned. Otherwise, FALSE is
+// returned and error is set appropriately.
+//
+// This call is blocking, likely for a very long time (in the case that user
+// interaction is required). See g_permission_release_async() for the
+// non-blocking version.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//
+func (permission *Permission) release(ctx context.Context) error {
+	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
+	fnarg := gclass.release
+
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GCancellable // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+
+	C._gotk4_gio2_Permission_virtual_release(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// releaseAsync attempts to release the permission represented by permission.
+//
+// This is the first half of the asynchronous version of g_permission_release().
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - callback (optional) to call when done.
+//
+func (permission *Permission) releaseAsync(ctx context.Context, callback AsyncReadyCallback) {
+	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
+	fnarg := gclass.release_async
+
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Permission_virtual_release_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
+// releaseFinish collects the result of attempting to release the permission
+// represented by permission.
+//
+// This is the second half of the asynchronous version of
+// g_permission_release().
+//
+// The function takes the following parameters:
+//
+//    - result given to the ReadyCallback.
+//
+func (permission *Permission) releaseFinish(result AsyncResulter) error {
+	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
+	fnarg := gclass.release_finish
+
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GAsyncResult // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
+
+	C._gotk4_gio2_Permission_virtual_release_finish(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(result)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
 }
 
 // PermissionClass: instance of this type is always passed by reference.

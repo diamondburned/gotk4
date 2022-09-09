@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -433,6 +432,58 @@ func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOConditio
 	return _ioCondition
 }
 
+// ConditionTimedWait waits for up to timeout_us microseconds for condition to
+// become true on socket. If the condition is met, TRUE is returned.
+//
+// If cancellable is cancelled before the condition is met, or if timeout_us (or
+// the socket's #GSocket:timeout) is reached before the condition is met, then
+// FALSE is returned and error, if non-NULL, is set to the appropriate value
+// (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+//
+// If you don't want a timeout, use g_socket_condition_wait(). (Alternatively,
+// you can pass -1 for timeout_us.)
+//
+// Note that although timeout_us is in microseconds for consistency with other
+// GLib APIs, this function actually only has millisecond resolution, and the
+// behavior is undefined if timeout_us is not an exact number of milliseconds.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional) or NULL.
+//    - condition mask to wait for.
+//    - timeoutUs: maximum time (in microseconds) to wait, or -1.
+//
+func (socket *Socket) ConditionTimedWait(ctx context.Context, condition glib.IOCondition, timeoutUs int64) error {
+	var _arg0 *C.GSocket      // out
+	var _arg3 *C.GCancellable // out
+	var _arg1 C.GIOCondition  // out
+	var _arg2 C.gint64        // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GIOCondition(condition)
+	_arg2 = C.gint64(timeoutUs)
+
+	C.g_socket_condition_timed_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(condition)
+	runtime.KeepAlive(timeoutUs)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
 // ConditionWait waits for condition to become true on socket. When the
 // condition is met, TRUE is returned.
 //
@@ -526,6 +577,62 @@ func (socket *Socket) ConnectSocket(ctx context.Context, address SocketAddresser
 	return _goerr
 }
 
+// ConnectionFactoryCreateConnection creates a Connection subclass of the right
+// type for socket.
+//
+// The function returns the following values:
+//
+//    - socketConnection: Connection.
+//
+func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
+	var _arg0 *C.GSocket           // out
+	var _cret *C.GSocketConnection // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	_cret = C.g_socket_connection_factory_create_connection(_arg0)
+	runtime.KeepAlive(socket)
+
+	var _socketConnection *SocketConnection // out
+
+	_socketConnection = wrapSocketConnection(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _socketConnection
+}
+
+// AvailableBytes: get the amount of data pending in the OS input buffer,
+// without blocking.
+//
+// If socket is a UDP or SCTP socket, this will return the size of just the next
+// packet, even if additional packets are buffered after that one.
+//
+// Note that on Windows, this function is rather inefficient in the UDP case,
+// and so if you know any plausible upper bound on the size of the incoming
+// packet, it is better to just do a g_socket_receive() with a buffer of that
+// size, rather than calling g_socket_get_available_bytes() first and then doing
+// a receive of exactly the right size.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes that can be read from the socket without blocking
+//      or truncating, or -1 on error.
+//
+func (socket *Socket) AvailableBytes() int {
+	var _arg0 *C.GSocket // out
+	var _cret C.gssize   // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	_cret = C.g_socket_get_available_bytes(_arg0)
+	runtime.KeepAlive(socket)
+
+	var _gssize int // out
+
+	_gssize = int(_cret)
+
+	return _gssize
+}
+
 // Blocking gets the blocking mode of the socket. For details on blocking I/O,
 // see g_socket_set_blocking().
 //
@@ -549,6 +656,80 @@ func (socket *Socket) Blocking() bool {
 	}
 
 	return _ok
+}
+
+// Broadcast gets the broadcast setting on socket; if TRUE, it is possible to
+// send packets to broadcast addresses.
+//
+// The function returns the following values:
+//
+//    - ok: broadcast setting on socket.
+//
+func (socket *Socket) Broadcast() bool {
+	var _arg0 *C.GSocket // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	_cret = C.g_socket_get_broadcast(_arg0)
+	runtime.KeepAlive(socket)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Credentials returns the credentials of the foreign process connected to this
+// socket, if any (e.g. it is only supported for G_SOCKET_FAMILY_UNIX sockets).
+//
+// If this operation isn't supported on the OS, the method fails with the
+// G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented by reading the
+// SO_PEERCRED option on the underlying socket.
+//
+// This method can be expected to be available on the following platforms:
+//
+// - Linux since GLib 2.26
+//
+// - OpenBSD since GLib 2.30
+//
+// - Solaris, Illumos and OpenSolaris since GLib 2.40
+//
+// - NetBSD since GLib 2.42
+//
+// - macOS, tvOS, iOS since GLib 2.66
+//
+// Other ways to obtain credentials from a foreign peer includes the
+// CredentialsMessage type and g_unix_connection_send_credentials() /
+// g_unix_connection_receive_credentials() functions.
+//
+// The function returns the following values:
+//
+//    - credentials: NULL if error is set, otherwise a #GCredentials object that
+//      must be freed with g_object_unref().
+//
+func (socket *Socket) Credentials() (*Credentials, error) {
+	var _arg0 *C.GSocket      // out
+	var _cret *C.GCredentials // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	_cret = C.g_socket_get_credentials(_arg0, &_cerr)
+	runtime.KeepAlive(socket)
+
+	var _credentials *Credentials // out
+	var _goerr error              // out
+
+	_credentials = wrapCredentials(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _credentials, _goerr
 }
 
 // Family gets the socket family of the socket.
@@ -692,6 +873,104 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 	return _socketAddress, _goerr
 }
 
+// MulticastLoopback gets the multicast loopback setting on socket; if TRUE (the
+// default), outgoing multicast packets will be looped back to multicast
+// listeners on the same host.
+//
+// The function returns the following values:
+//
+//    - ok: multicast loopback setting on socket.
+//
+func (socket *Socket) MulticastLoopback() bool {
+	var _arg0 *C.GSocket // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	_cret = C.g_socket_get_multicast_loopback(_arg0)
+	runtime.KeepAlive(socket)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// MulticastTTL gets the multicast time-to-live setting on socket; see
+// g_socket_set_multicast_ttl() for more details.
+//
+// The function returns the following values:
+//
+//    - guint: multicast time-to-live setting on socket.
+//
+func (socket *Socket) MulticastTTL() uint {
+	var _arg0 *C.GSocket // out
+	var _cret C.guint    // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	_cret = C.g_socket_get_multicast_ttl(_arg0)
+	runtime.KeepAlive(socket)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Option gets the value of an integer-valued option on socket, as with
+// getsockopt(). (If you need to fetch a non-integer-valued option, you will
+// need to call getsockopt() directly.)
+//
+// The [<gio/gnetworking.h>][gio-gnetworking.h] header pulls in system headers
+// that will define most of the standard/portable socket options. For unusual
+// socket protocols or platform-dependent options, you may need to include
+// additional headers.
+//
+// Note that even for socket options that are a single byte in size, value is
+// still a pointer to a #gint variable, not a #guchar; g_socket_get_option()
+// will handle the conversion internally.
+//
+// The function takes the following parameters:
+//
+//    - level: "API level" of the option (eg, SOL_SOCKET).
+//    - optname: "name" of the option (eg, SO_BROADCAST).
+//
+// The function returns the following values:
+//
+//    - value: return location for the option value.
+//
+func (socket *Socket) Option(level, optname int) (int, error) {
+	var _arg0 *C.GSocket // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _arg3 C.gint     // in
+	var _cerr *C.GError  // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = C.gint(level)
+	_arg2 = C.gint(optname)
+
+	C.g_socket_get_option(_arg0, _arg1, _arg2, &_arg3, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(level)
+	runtime.KeepAlive(optname)
+
+	var _value int   // out
+	var _goerr error // out
+
+	_value = int(_arg3)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _value, _goerr
+}
+
 // Protocol gets the socket protocol id the socket was created with. In case the
 // protocol is unknown, -1 is returned.
 //
@@ -782,6 +1061,52 @@ func (socket *Socket) SocketType() SocketType {
 	return _socketType
 }
 
+// Timeout gets the timeout setting of the socket. For details on this, see
+// g_socket_set_timeout().
+//
+// The function returns the following values:
+//
+//    - guint: timeout in seconds.
+//
+func (socket *Socket) Timeout() uint {
+	var _arg0 *C.GSocket // out
+	var _cret C.guint    // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	_cret = C.g_socket_get_timeout(_arg0)
+	runtime.KeepAlive(socket)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// TTL gets the unicast time-to-live setting on socket; see g_socket_set_ttl()
+// for more details.
+//
+// The function returns the following values:
+//
+//    - guint: time-to-live setting on socket.
+//
+func (socket *Socket) TTL() uint {
+	var _arg0 *C.GSocket // out
+	var _cret C.guint    // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+
+	_cret = C.g_socket_get_ttl(_arg0)
+	runtime.KeepAlive(socket)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
 // IsClosed checks whether a socket is closed.
 //
 // The function returns the following values:
@@ -834,6 +1159,206 @@ func (socket *Socket) IsConnected() bool {
 	}
 
 	return _ok
+}
+
+// JoinMulticastGroup registers socket to receive multicast messages sent to
+// group. socket must be a G_SOCKET_TYPE_DATAGRAM socket, and must have been
+// bound to an appropriate interface and port with g_socket_bind().
+//
+// If iface is NULL, the system will automatically pick an interface to bind to
+// based on group.
+//
+// If source_specific is TRUE, source-specific multicast as defined in RFC 4604
+// is used. Note that on older platforms this may fail with a
+// G_IO_ERROR_NOT_SUPPORTED error.
+//
+// To bind to a given source-specific multicast address, use
+// g_socket_join_multicast_group_ssm() instead.
+//
+// The function takes the following parameters:
+//
+//    - group specifying the group address to join.
+//    - sourceSpecific: TRUE if source-specific multicast should be used.
+//    - iface (optional): name of the interface to use, or NULL.
+//
+func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error {
+	var _arg0 *C.GSocket      // out
+	var _arg1 *C.GInetAddress // out
+	var _arg2 C.gboolean      // out
+	var _arg3 *C.gchar        // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	if sourceSpecific {
+		_arg2 = C.TRUE
+	}
+	if iface != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	C.g_socket_join_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(sourceSpecific)
+	runtime.KeepAlive(iface)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// JoinMulticastGroupSSM registers socket to receive multicast messages sent to
+// group. socket must be a G_SOCKET_TYPE_DATAGRAM socket, and must have been
+// bound to an appropriate interface and port with g_socket_bind().
+//
+// If iface is NULL, the system will automatically pick an interface to bind to
+// based on group.
+//
+// If source_specific is not NULL, use source-specific multicast as defined in
+// RFC 4604. Note that on older platforms this may fail with a
+// G_IO_ERROR_NOT_SUPPORTED error.
+//
+// Note that this function can be called multiple times for the same group with
+// different source_specific in order to receive multicast packets from more
+// than one source.
+//
+// The function takes the following parameters:
+//
+//    - group specifying the group address to join.
+//    - sourceSpecific (optional) specifying the source-specific multicast
+//      address or NULL to ignore.
+//    - iface (optional): name of the interface to use, or NULL.
+//
+func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
+	var _arg0 *C.GSocket      // out
+	var _arg1 *C.GInetAddress // out
+	var _arg2 *C.GInetAddress // out
+	var _arg3 *C.gchar        // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	if sourceSpecific != nil {
+		_arg2 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(sourceSpecific).Native()))
+	}
+	if iface != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	C.g_socket_join_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(sourceSpecific)
+	runtime.KeepAlive(iface)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// LeaveMulticastGroup removes socket from the multicast group defined by group,
+// iface, and source_specific (which must all have the same values they had when
+// you joined the group).
+//
+// socket remains bound to its address and port, and can still receive unicast
+// messages after calling this.
+//
+// To unbind to a given source-specific multicast address, use
+// g_socket_leave_multicast_group_ssm() instead.
+//
+// The function takes the following parameters:
+//
+//    - group specifying the group address to leave.
+//    - sourceSpecific: TRUE if source-specific multicast was used.
+//    - iface (optional): interface used.
+//
+func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error {
+	var _arg0 *C.GSocket      // out
+	var _arg1 *C.GInetAddress // out
+	var _arg2 C.gboolean      // out
+	var _arg3 *C.gchar        // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	if sourceSpecific {
+		_arg2 = C.TRUE
+	}
+	if iface != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	C.g_socket_leave_multicast_group(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(sourceSpecific)
+	runtime.KeepAlive(iface)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// LeaveMulticastGroupSSM removes socket from the multicast group defined by
+// group, iface, and source_specific (which must all have the same values they
+// had when you joined the group).
+//
+// socket remains bound to its address and port, and can still receive unicast
+// messages after calling this.
+//
+// The function takes the following parameters:
+//
+//    - group specifying the group address to leave.
+//    - sourceSpecific (optional) specifying the source-specific multicast
+//      address or NULL to ignore.
+//    - iface (optional): name of the interface to use, or NULL.
+//
+func (socket *Socket) LeaveMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
+	var _arg0 *C.GSocket      // out
+	var _arg1 *C.GInetAddress // out
+	var _arg2 *C.GInetAddress // out
+	var _arg3 *C.gchar        // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(group).Native()))
+	if sourceSpecific != nil {
+		_arg2 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(sourceSpecific).Native()))
+	}
+	if iface != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(iface)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	C.g_socket_leave_multicast_group_ssm(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(group)
+	runtime.KeepAlive(sourceSpecific)
+	runtime.KeepAlive(iface)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
 }
 
 // Listen marks the socket as a server socket, i.e. a socket that is used to
@@ -998,6 +1523,167 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 	}
 
 	return _address, _gssize, _goerr
+}
+
+// ReceiveMessages: receive multiple data messages from socket in one go. This
+// is the most complicated and fully-featured version of this call. For easier
+// use, see g_socket_receive(), g_socket_receive_from(), and
+// g_socket_receive_message().
+//
+// messages must point to an array of Message structs and num_messages must be
+// the length of this array. Each Message contains a pointer to an array of
+// Vector structs describing the buffers that the data received in each message
+// will be written to. Using multiple Vectors is more memory-efficient than
+// manually copying data out of a single buffer to multiple sources, and more
+// system-call-efficient than making multiple calls to g_socket_receive(), such
+// as in scenarios where a lot of data packets need to be received (e.g.
+// high-bandwidth video streaming over RTP/UDP).
+//
+// flags modify how all messages are received. The commonly available arguments
+// for this are available in the MsgFlags enum, but the values there are the
+// same as the system values, and the flags are passed in as-is, so you can pass
+// in system-specific flags too. These flags affect the overall receive
+// operation. Flags affecting individual messages are returned in Message.flags.
+//
+// The other members of Message are treated as described in its documentation.
+//
+// If #GSocket:blocking is TRUE the call will block until num_messages have been
+// received, or the end of the stream is reached.
+//
+// If #GSocket:blocking is FALSE the call will return up to num_messages without
+// blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the
+// operating system to be received.
+//
+// In blocking mode, if #GSocket:timeout is positive and is reached before any
+// messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up to
+// num_messages are returned. (Note: This is effectively the behaviour of
+// MSG_WAITFORONE with recvmmsg().)
+//
+// To be notified when messages are available, wait for the G_IO_IN condition.
+// Note though that you may still receive G_IO_ERROR_WOULD_BLOCK from
+// g_socket_receive_messages() even if you were previously notified of a G_IO_IN
+// condition.
+//
+// If the remote peer closes the connection, any messages queued in the
+// operating system will be returned, and subsequent calls to
+// g_socket_receive_messages() will return 0 (with no error set).
+//
+// On error -1 is returned and error is set accordingly. An error will only be
+// returned if zero messages could be received; otherwise the number of messages
+// successfully received before the error will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable or NULL.
+//    - messages: array of Message structs.
+//    - flags: int containing MsgFlags flags for the overall operation, which may
+//      additionally contain other platform specific flags
+//      (http://man7.org/linux/man-pages/man2/recv.2.html).
+//
+// The function returns the following values:
+//
+//    - gint: number of messages received, or -1 on error. Note that the number
+//      of messages received may be smaller than num_messages if in non-blocking
+//      mode, if the peer closed the connection, or if num_messages was larger
+//      than UIO_MAXIOV (1024), in which case the caller may re-try to receive
+//      the remaining messages.
+//
+func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int) (int, error) {
+	var _arg0 *C.GSocket       // out
+	var _arg4 *C.GCancellable  // out
+	var _arg1 *C.GInputMessage // out
+	var _arg2 C.guint
+	var _arg3 C.gint    // out
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.guint)(len(messages))
+	_arg1 = (*C.GInputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GInputMessage)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GInputMessage)(_arg1), len(messages))
+		for i := range messages {
+			out[i] = *(*C.GInputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
+		}
+	}
+	_arg3 = C.gint(flags)
+
+	_cret = C.g_socket_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(messages)
+	runtime.KeepAlive(flags)
+
+	var _gint int    // out
+	var _goerr error // out
+
+	_gint = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gint, _goerr
+}
+
+// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
+// except that the choice of blocking or non-blocking behavior is determined by
+// the blocking argument rather than by socket's properties.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable or NULL.
+//    - buffer: a buffer to read data into (which should be at least size bytes
+//      long).
+//    - blocking: whether to do blocking or non-blocking I/O.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes read, or 0 if the connection was closed by the
+//      peer, or -1 on error.
+//
+func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, blocking bool) (int, error) {
+	var _arg0 *C.GSocket      // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gsize
+	var _arg3 C.gboolean // out
+	var _cret C.gssize   // in
+	var _cerr *C.GError  // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	_arg1 = (*C.gchar)(C.CBytes(buffer))
+	defer C.free(unsafe.Pointer(_arg1))
+	if blocking {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C.g_socket_receive_with_blocking(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(blocking)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
 }
 
 // Send tries to send size bytes from buffer on the socket. This is mainly used
@@ -1177,6 +1863,194 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 	return _gssize, _goerr
 }
 
+// SendMessageWithTimeout: this behaves exactly the same as
+// g_socket_send_message(), except that the choice of timeout behavior is
+// determined by the timeout_us argument rather than by socket's properties.
+//
+// On error G_POLLABLE_RETURN_FAILED is returned and error is set accordingly,
+// or if the socket is currently not writable G_POLLABLE_RETURN_WOULD_BLOCK is
+// returned. bytes_written will contain 0 in both cases.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable or NULL.
+//    - address (optional) or NULL.
+//    - vectors: array of Vector structs.
+//    - messages (optional): pointer to an array of ControlMessages, or NULL.
+//    - flags: int containing MsgFlags flags, which may additionally contain
+//      other platform specific flags
+//      (http://man7.org/linux/man-pages/man2/recv.2.html).
+//    - timeoutUs: maximum time (in microseconds) to wait, or -1.
+//
+// The function returns the following values:
+//
+//    - bytesWritten (optional): location to store the number of bytes that were
+//      written to the socket.
+//    - pollableReturn: G_POLLABLE_RETURN_OK if all data was successfully
+//      written, G_POLLABLE_RETURN_WOULD_BLOCK if the socket is currently not
+//      writable, or G_POLLABLE_RETURN_FAILED if an error happened and error is
+//      set.
+//
+func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int, timeoutUs int64) (uint, PollableReturn, error) {
+	var _arg0 *C.GSocket        // out
+	var _arg9 *C.GCancellable   // out
+	var _arg1 *C.GSocketAddress // out
+	var _arg2 *C.GOutputVector  // out
+	var _arg3 C.gint
+	var _arg4 **C.GSocketControlMessage // out
+	var _arg5 C.gint
+	var _arg6 C.gint            // out
+	var _arg7 C.gint64          // out
+	var _arg8 C.gsize           // in
+	var _cret C.GPollableReturn // in
+	var _cerr *C.GError         // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if address != nil {
+		_arg1 = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	}
+	_arg3 = (C.gint)(len(vectors))
+	_arg2 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.GOutputVector)(_arg2), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
+	}
+	if messages != nil {
+		_arg5 = (C.gint)(len(messages))
+		_arg4 = (**C.GSocketControlMessage)(C.calloc(C.size_t(len(messages)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg4))
+		{
+			out := unsafe.Slice((**C.GSocketControlMessage)(_arg4), len(messages))
+			for i := range messages {
+				out[i] = (*C.GSocketControlMessage)(unsafe.Pointer(coreglib.InternObject(messages[i]).Native()))
+			}
+		}
+	}
+	_arg6 = C.gint(flags)
+	_arg7 = C.gint64(timeoutUs)
+
+	_cret = C.g_socket_send_message_with_timeout(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, &_arg8, _arg9, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(vectors)
+	runtime.KeepAlive(messages)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(timeoutUs)
+
+	var _bytesWritten uint             // out
+	var _pollableReturn PollableReturn // out
+	var _goerr error                   // out
+
+	_bytesWritten = uint(_arg8)
+	_pollableReturn = PollableReturn(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _bytesWritten, _pollableReturn, _goerr
+}
+
+// SendMessages: send multiple data messages from socket in one go. This is the
+// most complicated and fully-featured version of this call. For easier use, see
+// g_socket_send(), g_socket_send_to(), and g_socket_send_message().
+//
+// messages must point to an array of Message structs and num_messages must be
+// the length of this array. Each Message contains an address to send the data
+// to, and a pointer to an array of Vector structs to describe the buffers that
+// the data to be sent for each message will be gathered from. Using multiple
+// Vectors is more memory-efficient than manually copying data from multiple
+// sources into a single buffer, and more network-efficient than making multiple
+// calls to g_socket_send(). Sending multiple messages in one go avoids the
+// overhead of making a lot of syscalls in scenarios where a lot of data packets
+// need to be sent (e.g. high-bandwidth video streaming over RTP/UDP), or where
+// the same data needs to be sent to multiple recipients.
+//
+// flags modify how the message is sent. The commonly available arguments for
+// this are available in the MsgFlags enum, but the values there are the same as
+// the system values, and the flags are passed in as-is, so you can pass in
+// system-specific flags too.
+//
+// If the socket is in blocking mode the call will block until there is space
+// for all the data in the socket queue. If there is no space available and the
+// socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error will be
+// returned if no data was written at all, otherwise the number of messages sent
+// will be returned. To be notified when space is available, wait for the
+// G_IO_OUT condition. Note though that you may still receive
+// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+// common due to the way the underlying APIs work.)
+//
+// On error -1 is returned and error is set accordingly. An error will only be
+// returned if zero messages could be sent; otherwise the number of messages
+// successfully sent before the error will be returned.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable or NULL.
+//    - messages: array of Message structs.
+//    - flags: int containing MsgFlags flags, which may additionally contain
+//      other platform specific flags
+//      (http://man7.org/linux/man-pages/man2/recv.2.html).
+//
+// The function returns the following values:
+//
+//    - gint: number of messages sent, or -1 on error. Note that the number of
+//      messages sent may be smaller than num_messages if the socket is
+//      non-blocking or if num_messages was larger than UIO_MAXIOV (1024), in
+//      which case the caller may re-try to send the remaining messages.
+//
+func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage, flags int) (int, error) {
+	var _arg0 *C.GSocket        // out
+	var _arg4 *C.GCancellable   // out
+	var _arg1 *C.GOutputMessage // out
+	var _arg2 C.guint
+	var _arg3 C.gint    // out
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.guint)(len(messages))
+	_arg1 = (*C.GOutputMessage)(C.calloc(C.size_t(len(messages)), C.size_t(C.sizeof_GOutputMessage)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GOutputMessage)(_arg1), len(messages))
+		for i := range messages {
+			out[i] = *(*C.GOutputMessage)(gextras.StructNative(unsafe.Pointer((&messages[i]))))
+		}
+	}
+	_arg3 = C.gint(flags)
+
+	_cret = C.g_socket_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(messages)
+	runtime.KeepAlive(flags)
+
+	var _gint int    // out
+	var _goerr error // out
+
+	_gint = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gint, _goerr
+}
+
 // SendTo tries to send size bytes from buffer to address. If address is NULL
 // then the message is sent to the default receiver (set by g_socket_connect()).
 //
@@ -1233,6 +2107,61 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 	return _gssize, _goerr
 }
 
+// SendWithBlocking: this behaves exactly the same as g_socket_send(), except
+// that the choice of blocking or non-blocking behavior is determined by the
+// blocking argument rather than by socket's properties.
+//
+// The function takes the following parameters:
+//
+//    - ctx (optional): GCancellable or NULL.
+//    - buffer: buffer containing the data to send.
+//    - blocking: whether to do blocking or non-blocking I/O.
+//
+// The function returns the following values:
+//
+//    - gssize: number of bytes written (which may be less than size), or -1 on
+//      error.
+//
+func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, blocking bool) (int, error) {
+	var _arg0 *C.GSocket      // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gsize
+	var _arg3 C.gboolean // out
+	var _cret C.gssize   // in
+	var _cerr *C.GError  // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(buffer) + 1)), C.size_t(C.sizeof_gchar)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(buffer)), buffer)
+	defer C.free(unsafe.Pointer(_arg1))
+	if blocking {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C.g_socket_send_with_blocking(_arg0, _arg1, _arg2, _arg3, _arg4, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(blocking)
+
+	var _gssize int  // out
+	var _goerr error // out
+
+	_gssize = int(_cret)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _gssize, _goerr
+}
+
 // SetBlocking sets the blocking mode of the socket. In blocking mode all
 // operations (which don’t take an explicit blocking parameter) block until they
 // succeed or there is an error. In non-blocking mode all functions return
@@ -1258,6 +2187,27 @@ func (socket *Socket) SetBlocking(blocking bool) {
 	C.g_socket_set_blocking(_arg0, _arg1)
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(blocking)
+}
+
+// SetBroadcast sets whether socket should allow sending to broadcast addresses.
+// This is FALSE by default.
+//
+// The function takes the following parameters:
+//
+//    - broadcast: whether socket should allow sending to broadcast addresses.
+//
+func (socket *Socket) SetBroadcast(broadcast bool) {
+	var _arg0 *C.GSocket // out
+	var _arg1 C.gboolean // out
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	if broadcast {
+		_arg1 = C.TRUE
+	}
+
+	C.g_socket_set_broadcast(_arg0, _arg1)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(broadcast)
 }
 
 // SetKeepalive sets or unsets the SO_KEEPALIVE flag on the underlying socket.
@@ -1315,6 +2265,144 @@ func (socket *Socket) SetListenBacklog(backlog int) {
 	C.g_socket_set_listen_backlog(_arg0, _arg1)
 	runtime.KeepAlive(socket)
 	runtime.KeepAlive(backlog)
+}
+
+// SetMulticastLoopback sets whether outgoing multicast packets will be received
+// by sockets listening on that multicast address on the same host. This is TRUE
+// by default.
+//
+// The function takes the following parameters:
+//
+//    - loopback: whether socket should receive messages sent to its multicast
+//      groups from the local host.
+//
+func (socket *Socket) SetMulticastLoopback(loopback bool) {
+	var _arg0 *C.GSocket // out
+	var _arg1 C.gboolean // out
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	if loopback {
+		_arg1 = C.TRUE
+	}
+
+	C.g_socket_set_multicast_loopback(_arg0, _arg1)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(loopback)
+}
+
+// SetMulticastTTL sets the time-to-live for outgoing multicast datagrams on
+// socket. By default, this is 1, meaning that multicast packets will not leave
+// the local network.
+//
+// The function takes the following parameters:
+//
+//    - ttl: time-to-live value for all multicast datagrams on socket.
+//
+func (socket *Socket) SetMulticastTTL(ttl uint) {
+	var _arg0 *C.GSocket // out
+	var _arg1 C.guint    // out
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = C.guint(ttl)
+
+	C.g_socket_set_multicast_ttl(_arg0, _arg1)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ttl)
+}
+
+// SetOption sets the value of an integer-valued option on socket, as with
+// setsockopt(). (If you need to set a non-integer-valued option, you will need
+// to call setsockopt() directly.)
+//
+// The [<gio/gnetworking.h>][gio-gnetworking.h] header pulls in system headers
+// that will define most of the standard/portable socket options. For unusual
+// socket protocols or platform-dependent options, you may need to include
+// additional headers.
+//
+// The function takes the following parameters:
+//
+//    - level: "API level" of the option (eg, SOL_SOCKET).
+//    - optname: "name" of the option (eg, SO_BROADCAST).
+//    - value to set the option to.
+//
+func (socket *Socket) SetOption(level, optname, value int) error {
+	var _arg0 *C.GSocket // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _arg3 C.gint     // out
+	var _cerr *C.GError  // in
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = C.gint(level)
+	_arg2 = C.gint(optname)
+	_arg3 = C.gint(value)
+
+	C.g_socket_set_option(_arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(level)
+	runtime.KeepAlive(optname)
+	runtime.KeepAlive(value)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// SetTimeout sets the time in seconds after which I/O operations on socket will
+// time out if they have not yet completed.
+//
+// On a blocking socket, this means that any blocking #GSocket operation will
+// time out after timeout seconds of inactivity, returning G_IO_ERROR_TIMED_OUT.
+//
+// On a non-blocking socket, calls to g_socket_condition_wait() will also fail
+// with G_IO_ERROR_TIMED_OUT after the given time. Sources created with
+// g_socket_create_source() will trigger after timeout seconds of inactivity,
+// with the requested condition set, at which point calling g_socket_receive(),
+// g_socket_send(), g_socket_check_connect_result(), etc, will fail with
+// G_IO_ERROR_TIMED_OUT.
+//
+// If timeout is 0 (the default), operations will never time out on their own.
+//
+// Note that if an I/O operation is interrupted by a signal, this may cause the
+// timeout to be reset.
+//
+// The function takes the following parameters:
+//
+//    - timeout for socket, in seconds, or 0 for none.
+//
+func (socket *Socket) SetTimeout(timeout uint) {
+	var _arg0 *C.GSocket // out
+	var _arg1 C.guint    // out
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = C.guint(timeout)
+
+	C.g_socket_set_timeout(_arg0, _arg1)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(timeout)
+}
+
+// SetTTL sets the time-to-live for outgoing unicast packets on socket. By
+// default the platform-specific default value is used.
+//
+// The function takes the following parameters:
+//
+//    - ttl: time-to-live value for all unicast packets on socket.
+//
+func (socket *Socket) SetTTL(ttl uint) {
+	var _arg0 *C.GSocket // out
+	var _arg1 C.guint    // out
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(coreglib.InternObject(socket).Native()))
+	_arg1 = C.guint(ttl)
+
+	C.g_socket_set_ttl(_arg0, _arg1)
+	runtime.KeepAlive(socket)
+	runtime.KeepAlive(ttl)
 }
 
 // Shutdown: shut down part or all of a full-duplex connection.

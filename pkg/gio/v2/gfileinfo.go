@@ -837,6 +837,52 @@ func (info *FileInfo) AttributeString(attribute string) string {
 	return _utf8
 }
 
+// AttributeStringv gets the value of a stringv attribute. If the attribute does
+// not contain a stringv, NULL will be returned.
+//
+// The function takes the following parameters:
+//
+//    - attribute: file attribute key.
+//
+// The function returns the following values:
+//
+//    - utf8s (optional) contents of the attribute value as a stringv, or NULL
+//      otherwise. Do not free. These returned strings are UTF-8.
+//
+func (info *FileInfo) AttributeStringv(attribute string) []string {
+	var _arg0 *C.GFileInfo // out
+	var _arg1 *C.char      // out
+	var _cret **C.char     // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_file_info_get_attribute_stringv(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+
+	var _utf8s []string // out
+
+	if _cret != nil {
+		{
+			var i int
+			var z *C.char
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
+
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+			}
+		}
+	}
+
+	return _utf8s
+}
+
 // AttributeType gets the attribute type for an attribute key.
 //
 // The function takes the following parameters:
@@ -955,6 +1001,38 @@ func (info *FileInfo) ContentType() string {
 	}
 
 	return _utf8
+}
+
+// DeletionDate returns the Time representing the deletion date of the file, as
+// available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
+// G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - dateTime (optional) or NULL.
+//
+func (info *FileInfo) DeletionDate() *glib.DateTime {
+	var _arg0 *C.GFileInfo // out
+	var _cret *C.GDateTime // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+
+	_cret = C.g_file_info_get_deletion_date(_arg0)
+	runtime.KeepAlive(info)
+
+	var _dateTime *glib.DateTime // out
+
+	if _cret != nil {
+		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_dateTime)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_date_time_unref((*C.GDateTime)(intern.C))
+			},
+		)
+	}
+
+	return _dateTime
 }
 
 // DisplayName gets a display name for a file. This is guaranteed to always be
@@ -1148,6 +1226,41 @@ func (info *FileInfo) IsSymlink() bool {
 	return _ok
 }
 
+// ModificationDateTime gets the modification time of the current info and
+// returns it as a Time.
+//
+// This requires the G_FILE_ATTRIBUTE_TIME_MODIFIED attribute. If
+// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is provided, the resulting Time will have
+// microsecond precision.
+//
+// The function returns the following values:
+//
+//    - dateTime (optional): modification time, or NULL if unknown.
+//
+func (info *FileInfo) ModificationDateTime() *glib.DateTime {
+	var _arg0 *C.GFileInfo // out
+	var _cret *C.GDateTime // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+
+	_cret = C.g_file_info_get_modification_date_time(_arg0)
+	runtime.KeepAlive(info)
+
+	var _dateTime *glib.DateTime // out
+
+	if _cret != nil {
+		_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_dateTime)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_date_time_unref((*C.GDateTime)(intern.C))
+			},
+		)
+	}
+
+	return _dateTime
+}
+
 // ModificationTime gets the modification time of the current info and sets it
 // in result.
 //
@@ -1243,6 +1356,30 @@ func (info *FileInfo) SortOrder() int32 {
 	return _gint32
 }
 
+// SymbolicIcon gets the symbolic icon for a file.
+//
+// The function returns the following values:
+//
+//    - icon (optional) for the given info.
+//
+func (info *FileInfo) SymbolicIcon() *Icon {
+	var _arg0 *C.GFileInfo // out
+	var _cret *C.GIcon     // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+
+	_cret = C.g_file_info_get_symbolic_icon(_arg0)
+	runtime.KeepAlive(info)
+
+	var _icon *Icon // out
+
+	if _cret != nil {
+		_icon = wrapIcon(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _icon
+}
+
 // SymlinkTarget gets the symlink target for a given Info.
 //
 // The function returns the following values:
@@ -1290,6 +1427,39 @@ func (info *FileInfo) HasAttribute(attribute string) bool {
 	_cret = C.g_file_info_has_attribute(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// HasNamespace checks if a file info structure has an attribute in the
+// specified name_space.
+//
+// The function takes the following parameters:
+//
+//    - nameSpace: file attribute namespace.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if info has an attribute in name_space, FALSE otherwise.
+//
+func (info *FileInfo) HasNamespace(nameSpace string) bool {
+	var _arg0 *C.GFileInfo // out
+	var _arg1 *C.char      // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(nameSpace)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_file_info_has_namespace(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(nameSpace)
 
 	var _ok bool // out
 
@@ -1536,6 +1706,47 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue *coreglib.O
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(attribute)
 	runtime.KeepAlive(attrValue)
+}
+
+// SetAttributeStatus sets the attribute status for an attribute key. This is
+// only needed by external code that implement g_file_set_attributes_from_info()
+// or similar functions.
+//
+// The attribute must exist in info for this to work. Otherwise FALSE is
+// returned and info is unchanged.
+//
+// The function takes the following parameters:
+//
+//    - attribute: file attribute key.
+//    - status: AttributeStatus.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the status was changed, FALSE if the key was not set.
+//
+func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
+	var _arg0 *C.GFileInfo           // out
+	var _arg1 *C.char                // out
+	var _arg2 C.GFileAttributeStatus // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileAttributeStatus(status)
+
+	_cret = C.g_file_info_set_attribute_status(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(status)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // SetAttributeString sets the attribute to contain the given attr_value, if
@@ -1788,6 +1999,26 @@ func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 	runtime.KeepAlive(isSymlink)
 }
 
+// SetModificationDateTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
+// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the given
+// date/time value.
+//
+// The function takes the following parameters:
+//
+//    - mtime: Time.
+//
+func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
+	var _arg0 *C.GFileInfo // out
+	var _arg1 *C.GDateTime // out
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(mtime)))
+
+	C.g_file_info_set_modification_date_time(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(mtime)
+}
+
 // SetModificationTime sets the G_FILE_ATTRIBUTE_TIME_MODIFIED and
 // G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the given
 // time value.
@@ -1867,6 +2098,25 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 	C.g_file_info_set_sort_order(_arg0, _arg1)
 	runtime.KeepAlive(info)
 	runtime.KeepAlive(sortOrder)
+}
+
+// SetSymbolicIcon sets the symbolic icon for a given Info. See
+// G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON.
+//
+// The function takes the following parameters:
+//
+//    - icon: #GIcon.
+//
+func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
+	var _arg0 *C.GFileInfo // out
+	var _arg1 *C.GIcon     // out
+
+	_arg0 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+
+	C.g_file_info_set_symbolic_icon(_arg0, _arg1)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(icon)
 }
 
 // SetSymlinkTarget sets the G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET attribute

@@ -312,13 +312,11 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	file.ApplyHeader(writer, igen)
 
 	for _, ctor := range igen.Constructors {
-		writer := FileWriterFromType(gen, ctor)
 		writer.Header().ApplyFrom(&ctor.Header)
 		writer.Pen().WriteTmpl(constructorInterfaceImpl, ctor)
 	}
 
 	for _, method := range igen.Methods {
-		writer := FileWriterFromType(gen, method)
 		writer.Header().ApplyFrom(&method.Header)
 		writer.Pen().WriteTmpl(methodInterfaceTmpl, gotmpl.M{
 			"Method":     method,
@@ -327,12 +325,10 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	}
 
 	for _, virtual := range igen.VirtualMethods {
-		writer := FileWriterFromType(gen, virtual)
-		writer.Header().ApplyFrom(&virtual.Header)
-
 		// Unexport virtual method calls.
 		virtual.Name = strcases.UnexportPascal(virtual.Name)
 
+		writer.Header().ApplyFrom(&virtual.Header)
 		writer.Pen().WriteTmpl(methodInterfaceTmpl, gotmpl.M{
 			"Method":     virtual,
 			"StructName": igen.StructName,
@@ -348,6 +344,11 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 	}
 
 	for _, signal := range igen.Signals {
+		for _, result := range signal.Results {
+			// Apply type imports into the main file.
+			result.Resolved.ImportPubl(gen, writer.Header())
+		}
+
 		writer := FileWriterExportedFromType(gen, signal)
 		writer.Header().ApplyFrom(signal.Header)
 		writer.Pen().WriteTmpl(signalInterfaceTmpl, signal)

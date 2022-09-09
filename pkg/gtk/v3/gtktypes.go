@@ -2069,6 +2069,8 @@ func (path *WidgetPath) IterHasQclass(pos int, qname glib.Quark) bool {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = C.guint32(qname)
+	type _ = glib.Quark
+	type _ = uint32
 
 	_cret = C.gtk_widget_path_iter_has_qclass(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
@@ -2105,6 +2107,8 @@ func (path *WidgetPath) IterHasQname(pos int, qname glib.Quark) bool {
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = C.guint32(qname)
+	type _ = glib.Quark
+	type _ = uint32
 
 	_cret = C.gtk_widget_path_iter_has_qname(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(path)
@@ -2145,6 +2149,8 @@ func (path *WidgetPath) IterHasQregion(pos int, qname glib.Quark) (RegionFlags, 
 	_arg0 = (*C.GtkWidgetPath)(gextras.StructNative(unsafe.Pointer(path)))
 	_arg1 = C.gint(pos)
 	_arg2 = C.guint32(qname)
+	type _ = glib.Quark
+	type _ = uint32
 
 	_cret = C.gtk_widget_path_iter_has_qregion(_arg0, _arg1, _arg2, &_arg3)
 	runtime.KeepAlive(path)

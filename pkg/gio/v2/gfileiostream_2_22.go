@@ -4,7 +4,6 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -13,6 +12,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
@@ -35,6 +35,21 @@ import (
 // };
 // char* _gotk4_gio2_FileIOStream_virtual_get_etag(void* fnptr, GFileIOStream* arg0) {
 //   return ((char* (*)(GFileIOStream*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_FileIOStream_virtual_can_seek(void* fnptr, GFileIOStream* arg0) {
+//   return ((gboolean (*)(GFileIOStream*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_FileIOStream_virtual_can_truncate(void* fnptr, GFileIOStream* arg0) {
+//   return ((gboolean (*)(GFileIOStream*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_gio2_FileIOStream_virtual_seek(void* fnptr, GFileIOStream* arg0, goffset arg1, GSeekType arg2, GCancellable* arg3, GError** arg4) {
+//   return ((gboolean (*)(GFileIOStream*, goffset, GSeekType, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// gboolean _gotk4_gio2_FileIOStream_virtual_truncate_fn(void* fnptr, GFileIOStream* arg0, goffset arg1, GCancellable* arg2, GError** arg3) {
+//   return ((gboolean (*)(GFileIOStream*, goffset, GCancellable*, GError**))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// goffset _gotk4_gio2_FileIOStream_virtual_tell(void* fnptr, GFileIOStream* arg0) {
+//   return ((goffset (*)(GFileIOStream*))(fnptr))(arg0);
 // };
 // void _gotk4_gio2_FileIOStream_virtual_query_info_async(void* fnptr, GFileIOStream* arg0, char* arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
 //   ((void (*)(GFileIOStream*, char*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
@@ -398,6 +413,52 @@ func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, er
 	return _fileInfo, _goerr
 }
 
+// The function returns the following values:
+//
+func (stream *FileIOStream) canSeek() bool {
+	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.can_seek
+
+	var _arg0 *C.GFileIOStream // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+
+	_cret = C._gotk4_gio2_FileIOStream_virtual_can_seek(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(stream)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function returns the following values:
+//
+func (stream *FileIOStream) canTruncate() bool {
+	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.can_truncate
+
+	var _arg0 *C.GFileIOStream // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+
+	_cret = C._gotk4_gio2_FileIOStream_virtual_can_truncate(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(stream)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // eTag gets the entity tag for the file when it has been written. This must be
 // called after the stream has been written and closed, as the etag can change
 // while writing.
@@ -571,4 +632,101 @@ func (stream *FileIOStream) queryInfoFinish(result AsyncResulter) (*FileInfo, er
 	}
 
 	return _fileInfo, _goerr
+}
+
+// The function takes the following parameters:
+//
+//    - ctx (optional)
+//    - offset
+//    - typ
+//
+func (stream *FileIOStream) seek(ctx context.Context, offset int64, typ glib.SeekType) error {
+	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.seek
+
+	var _arg0 *C.GFileIOStream // out
+	var _arg3 *C.GCancellable  // out
+	var _arg1 C.goffset        // out
+	var _arg2 C.GSeekType      // out
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.goffset(offset)
+	_arg2 = C.GSeekType(typ)
+
+	C._gotk4_gio2_FileIOStream_virtual_seek(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(typ)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// The function returns the following values:
+//
+func (stream *FileIOStream) tell() int64 {
+	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.tell
+
+	var _arg0 *C.GFileIOStream // out
+	var _cret C.goffset        // in
+
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+
+	_cret = C._gotk4_gio2_FileIOStream_virtual_tell(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(stream)
+
+	var _gint64 int64 // out
+
+	_gint64 = int64(_cret)
+
+	return _gint64
+}
+
+// The function takes the following parameters:
+//
+//    - ctx (optional)
+//    - size
+//
+func (stream *FileIOStream) truncateFn(ctx context.Context, size int64) error {
+	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.truncate_fn
+
+	var _arg0 *C.GFileIOStream // out
+	var _arg2 *C.GCancellable  // out
+	var _arg1 C.goffset        // out
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.goffset(size)
+
+	C._gotk4_gio2_FileIOStream_virtual_truncate_fn(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_cerr)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(size)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
 }

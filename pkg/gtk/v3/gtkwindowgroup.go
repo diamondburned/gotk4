@@ -3,12 +3,12 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -120,6 +120,118 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	C.gtk_window_group_add_window(_arg0, _arg1)
 	runtime.KeepAlive(windowGroup)
 	runtime.KeepAlive(window)
+}
+
+// CurrentDeviceGrab returns the current grab widget for device, or NULL if
+// none.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
+// The function returns the following values:
+//
+//    - widget (optional): grab widget, or NULL.
+//
+func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter {
+	var _arg0 *C.GtkWindowGroup // out
+	var _arg1 *C.GdkDevice      // out
+	var _cret *C.GtkWidget      // in
+
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	_cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
+	runtime.KeepAlive(windowGroup)
+	runtime.KeepAlive(device)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
+// CurrentGrab gets the current grab widget of the given group, see
+// gtk_grab_add().
+//
+// The function returns the following values:
+//
+//    - widget: current grab widget of the group.
+//
+func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
+	var _arg0 *C.GtkWindowGroup // out
+	var _cret *C.GtkWidget      // in
+
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+
+	_cret = C.gtk_window_group_get_current_grab(_arg0)
+	runtime.KeepAlive(windowGroup)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
+// ListWindows returns a list of the Windows that belong to window_group.
+//
+// The function returns the following values:
+//
+//    - list: a newly-allocated list of windows inside the group.
+//
+func (windowGroup *WindowGroup) ListWindows() []*Window {
+	var _arg0 *C.GtkWindowGroup // out
+	var _cret *C.GList          // in
+
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(coreglib.InternObject(windowGroup).Native()))
+
+	_cret = C.gtk_window_group_list_windows(_arg0)
+	runtime.KeepAlive(windowGroup)
+
+	var _list []*Window // out
+
+	_list = make([]*Window, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkWindow)(v)
+		var dst *Window // out
+		dst = wrapWindow(coreglib.Take(unsafe.Pointer(src)))
+		_list = append(_list, dst)
+	})
+
+	return _list
 }
 
 // RemoveWindow removes a window from a WindowGroup.

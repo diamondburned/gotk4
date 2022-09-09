@@ -3,7 +3,7 @@
 package gio
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -80,6 +80,148 @@ func wrapNetworkAddress(obj *coreglib.Object) *NetworkAddress {
 
 func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	return wrapNetworkAddress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewNetworkAddress creates a new Connectable for connecting to the given
+// hostname and port.
+//
+// Note that depending on the configuration of the machine, a hostname of
+// localhost may refer to the IPv4 loopback address only, or to both IPv4 and
+// IPv6; use g_network_address_new_loopback() to create a Address that is
+// guaranteed to resolve to both addresses.
+//
+// The function takes the following parameters:
+//
+//    - hostname: hostname.
+//    - port: port.
+//
+// The function returns the following values:
+//
+//    - networkAddress: new Address.
+//
+func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _cret *C.GSocketConnectable // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(port)
+
+	_cret = C.g_network_address_new(_arg1, _arg2)
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(port)
+
+	var _networkAddress *NetworkAddress // out
+
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _networkAddress
+}
+
+// NewNetworkAddressLoopback creates a new Connectable for connecting to the
+// local host over a loopback connection to the given port. This is intended for
+// use in connecting to local services which may be running on IPv4 or IPv6.
+//
+// The connectable will return IPv4 and IPv6 loopback addresses, regardless of
+// how the host resolves localhost. By contrast, g_network_address_new() will
+// often only return an IPv4 address when resolving localhost, and an IPv6
+// address for localhost6.
+//
+// g_network_address_get_hostname() will always return localhost for a Address
+// created with this constructor.
+//
+// The function takes the following parameters:
+//
+//    - port: port.
+//
+// The function returns the following values:
+//
+//    - networkAddress: new Address.
+//
+func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
+	var _arg1 C.guint16             // out
+	var _cret *C.GSocketConnectable // in
+
+	_arg1 = C.guint16(port)
+
+	_cret = C.g_network_address_new_loopback(_arg1)
+	runtime.KeepAlive(port)
+
+	var _networkAddress *NetworkAddress // out
+
+	_networkAddress = wrapNetworkAddress(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _networkAddress
+}
+
+// Hostname gets addr's hostname. This might be either UTF-8 or ASCII-encoded,
+// depending on what addr was created with.
+//
+// The function returns the following values:
+//
+//    - utf8 addr's hostname.
+//
+func (addr *NetworkAddress) Hostname() string {
+	var _arg0 *C.GNetworkAddress // out
+	var _cret *C.gchar           // in
+
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
+
+	_cret = C.g_network_address_get_hostname(_arg0)
+	runtime.KeepAlive(addr)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Port gets addr's port number.
+//
+// The function returns the following values:
+//
+//    - guint16 addr's port (which may be 0).
+//
+func (addr *NetworkAddress) Port() uint16 {
+	var _arg0 *C.GNetworkAddress // out
+	var _cret C.guint16          // in
+
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
+
+	_cret = C.g_network_address_get_port(_arg0)
+	runtime.KeepAlive(addr)
+
+	var _guint16 uint16 // out
+
+	_guint16 = uint16(_cret)
+
+	return _guint16
+}
+
+// Scheme gets addr's scheme.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) addr's scheme (NULL if not built from URI).
+//
+func (addr *NetworkAddress) Scheme() string {
+	var _arg0 *C.GNetworkAddress // out
+	var _cret *C.gchar           // in
+
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(coreglib.InternObject(addr).Native()))
+
+	_cret = C.g_network_address_get_scheme(_arg0)
+	runtime.KeepAlive(addr)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
 }
 
 // NetworkAddressClass: instance of this type is always passed by reference.

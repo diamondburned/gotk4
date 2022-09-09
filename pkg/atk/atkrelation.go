@@ -3,7 +3,6 @@
 package atk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -194,6 +193,25 @@ func NewRelation(targets []*AtkObject, relationship RelationType) *Relation {
 	_relation = wrapRelation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _relation
+}
+
+// AddTarget adds the specified AtkObject to the target for the relation, if it
+// is not already present. See also atk_object_add_relationship().
+//
+// The function takes the following parameters:
+//
+//    - target: Object.
+//
+func (relation *Relation) AddTarget(target *AtkObject) {
+	var _arg0 *C.AtkRelation // out
+	var _arg1 *C.AtkObject   // out
+
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	C.atk_relation_add_target(_arg0, _arg1)
+	runtime.KeepAlive(relation)
+	runtime.KeepAlive(target)
 }
 
 // RelationType gets the type of relation.

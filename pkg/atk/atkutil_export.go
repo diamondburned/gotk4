@@ -30,6 +30,8 @@ func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret 
 
 	gint := fn(_event)
 
+	var _ int
+
 	cret = C.gint(gint)
 
 	return cret

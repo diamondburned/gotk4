@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -14,8 +15,17 @@ import (
 // #include <atk/atk.h>
 // #include <glib-object.h>
 // extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
+// AtkRange* _gotk4_atk1_Value_virtual_get_range(void* fnptr, AtkValue* arg0) {
+//   return ((AtkRange* (*)(AtkValue*))(fnptr))(arg0);
+// };
+// GSList* _gotk4_atk1_Value_virtual_get_sub_ranges(void* fnptr, AtkValue* arg0) {
+//   return ((GSList* (*)(AtkValue*))(fnptr))(arg0);
+// };
 // gboolean _gotk4_atk1_Value_virtual_set_current_value(void* fnptr, AtkValue* arg0, GValue* arg1) {
 //   return ((gboolean (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
+// };
+// gdouble _gotk4_atk1_Value_virtual_get_increment(void* fnptr, AtkValue* arg0) {
+//   return ((gdouble (*)(AtkValue*))(fnptr))(arg0);
 // };
 // void _gotk4_atk1_Value_virtual_get_current_value(void* fnptr, AtkValue* arg0, GValue* arg1) {
 //   ((void (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
@@ -23,8 +33,17 @@ import (
 // void _gotk4_atk1_Value_virtual_get_maximum_value(void* fnptr, AtkValue* arg0, GValue* arg1) {
 //   ((void (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
 // };
+// void _gotk4_atk1_Value_virtual_get_minimum_increment(void* fnptr, AtkValue* arg0, GValue* arg1) {
+//   ((void (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
+// };
 // void _gotk4_atk1_Value_virtual_get_minimum_value(void* fnptr, AtkValue* arg0, GValue* arg1) {
 //   ((void (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Value_virtual_get_value_and_text(void* fnptr, AtkValue* arg0, gdouble* arg1, gchar** arg2) {
+//   ((void (*)(AtkValue*, gdouble*, gchar**))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Value_virtual_set_value(void* fnptr, AtkValue* arg0, gdouble arg1) {
+//   ((void (*)(AtkValue*, gdouble))(fnptr))(arg0, arg1);
 // };
 import "C"
 
@@ -348,6 +367,31 @@ func (obj *Value) CurrentValue() coreglib.Value {
 	return _value
 }
 
+// Increment gets the minimum increment by which the value of this object may be
+// changed. If zero, the minimum increment is undefined, which may mean that it
+// is limited only by the floating point precision of the platform.
+//
+// The function returns the following values:
+//
+//    - gdouble: minimum increment by which the value of this object may be
+//      changed. zero if undefined.
+//
+func (obj *Value) Increment() float64 {
+	var _arg0 *C.AtkValue // out
+	var _cret C.gdouble   // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C.atk_value_get_increment(_arg0)
+	runtime.KeepAlive(obj)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // MaximumValue gets the maximum value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_range() instead.
@@ -363,6 +407,33 @@ func (obj *Value) MaximumValue() coreglib.Value {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	C.atk_value_get_maximum_value(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// MinimumIncrement gets the minimum increment by which the value of this object
+// may be changed. If zero, the minimum increment is undefined, which may mean
+// that it is limited only by the floating point precision of the platform.
+//
+// Deprecated: Since 2.12. Use atk_value_get_increment() instead.
+//
+// The function returns the following values:
+//
+//    - value representing the minimum increment by which the accessible value
+//      may be changed.
+//
+func (obj *Value) MinimumIncrement() coreglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C.atk_value_get_minimum_increment(_arg0, &_arg1)
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
@@ -394,6 +465,106 @@ func (obj *Value) MinimumValue() coreglib.Value {
 	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
 
 	return _value
+}
+
+// Range gets the range of this object.
+//
+// The function returns the following values:
+//
+//    - _range (optional): newly allocated Range that represents the minimum,
+//      maximum and descriptor (if available) of obj. NULL if that range is not
+//      defined.
+//
+func (obj *Value) Range() *Range {
+	var _arg0 *C.AtkValue // out
+	var _cret *C.AtkRange // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C.atk_value_get_range(_arg0)
+	runtime.KeepAlive(obj)
+
+	var __range *Range // out
+
+	if _cret != nil {
+		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(__range)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.atk_range_free((*C.AtkRange)(intern.C))
+			},
+		)
+	}
+
+	return __range
+}
+
+// SubRanges gets the list of subranges defined for this object. See Value
+// introduction for examples of subranges and when to expose them.
+//
+// The function returns the following values:
+//
+//    - sList of Range which each of the subranges defined for this object. Free
+//      the returns list with g_slist_free().
+//
+func (obj *Value) SubRanges() []*Range {
+	var _arg0 *C.AtkValue // out
+	var _cret *C.GSList   // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C.atk_value_get_sub_ranges(_arg0)
+	runtime.KeepAlive(obj)
+
+	var _sList []*Range // out
+
+	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.AtkRange)(v)
+		var dst *Range // out
+		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.atk_range_free((*C.AtkRange)(intern.C))
+			},
+		)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// ValueAndText gets the current value and the human readable text alternative
+// of obj. text is a newly created string, that must be freed by the caller. Can
+// be NULL if no descriptor is available.
+//
+// The function returns the following values:
+//
+//    - value address of #gdouble to put the current value of obj.
+//    - text (optional) address of #gchar to put the human readable text
+//      alternative for value.
+//
+func (obj *Value) ValueAndText() (float64, string) {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // in
+	var _arg2 *C.gchar    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C.atk_value_get_value_and_text(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(obj)
+
+	var _value float64 // out
+	var _text string   // out
+
+	_value = float64(_arg1)
+	if _arg2 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	return _value, _text
 }
 
 // SetCurrentValue sets the value of this object.
@@ -429,6 +600,35 @@ func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 	return _ok
 }
 
+// SetValue sets the value of this object.
+//
+// This method is intended to provide a way to change the value of the object.
+// In any case, it is possible that the value can't be modified (ie: a read-only
+// component). If the value changes due this call, it is possible that the text
+// could change, and will trigger an Value::value-changed signal emission.
+//
+// Note for implementors: the deprecated atk_value_set_current_value() method
+// returned TRUE or FALSE depending if the value was assigned or not. In the
+// practice several implementors were not able to decide it, and returned TRUE
+// in any case. For that reason it is not required anymore to return if the
+// value was properly assigned or not.
+//
+// The function takes the following parameters:
+//
+//    - newValue: double which is the desired new accessible value.
+//
+func (obj *Value) SetValue(newValue float64) {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // out
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = C.gdouble(newValue)
+
+	C.atk_value_set_value(_arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(newValue)
+}
+
 // currentValue gets the value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
@@ -456,6 +656,34 @@ func (obj *Value) currentValue() coreglib.Value {
 	return _value
 }
 
+// Increment gets the minimum increment by which the value of this object may be
+// changed. If zero, the minimum increment is undefined, which may mean that it
+// is limited only by the floating point precision of the platform.
+//
+// The function returns the following values:
+//
+//    - gdouble: minimum increment by which the value of this object may be
+//      changed. zero if undefined.
+//
+func (obj *Value) increment() float64 {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_increment
+
+	var _arg0 *C.AtkValue // out
+	var _cret C.gdouble   // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C._gotk4_atk1_Value_virtual_get_increment(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(obj)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // maximumValue gets the maximum value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_get_range() instead.
@@ -474,6 +702,36 @@ func (obj *Value) maximumValue() coreglib.Value {
 	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
 
 	C._gotk4_atk1_Value_virtual_get_maximum_value(unsafe.Pointer(fnarg), _arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// minimumIncrement gets the minimum increment by which the value of this object
+// may be changed. If zero, the minimum increment is undefined, which may mean
+// that it is limited only by the floating point precision of the platform.
+//
+// Deprecated: Since 2.12. Use atk_value_get_increment() instead.
+//
+// The function returns the following values:
+//
+//    - value representing the minimum increment by which the accessible value
+//      may be changed.
+//
+func (obj *Value) minimumIncrement() coreglib.Value {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_minimum_increment
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C._gotk4_atk1_Value_virtual_get_minimum_increment(unsafe.Pointer(fnarg), _arg0, &_arg1)
 	runtime.KeepAlive(obj)
 
 	var _value coreglib.Value // out
@@ -510,6 +768,115 @@ func (obj *Value) minimumValue() coreglib.Value {
 	return _value
 }
 
+// Range gets the range of this object.
+//
+// The function returns the following values:
+//
+//    - _range (optional): newly allocated Range that represents the minimum,
+//      maximum and descriptor (if available) of obj. NULL if that range is not
+//      defined.
+//
+func (obj *Value) _range() *Range {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_range
+
+	var _arg0 *C.AtkValue // out
+	var _cret *C.AtkRange // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C._gotk4_atk1_Value_virtual_get_range(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(obj)
+
+	var __range *Range // out
+
+	if _cret != nil {
+		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(__range)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.atk_range_free((*C.AtkRange)(intern.C))
+			},
+		)
+	}
+
+	return __range
+}
+
+// subRanges gets the list of subranges defined for this object. See Value
+// introduction for examples of subranges and when to expose them.
+//
+// The function returns the following values:
+//
+//    - sList of Range which each of the subranges defined for this object. Free
+//      the returns list with g_slist_free().
+//
+func (obj *Value) subRanges() []*Range {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_sub_ranges
+
+	var _arg0 *C.AtkValue // out
+	var _cret *C.GSList   // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C._gotk4_atk1_Value_virtual_get_sub_ranges(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(obj)
+
+	var _sList []*Range // out
+
+	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.AtkRange)(v)
+		var dst *Range // out
+		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.atk_range_free((*C.AtkRange)(intern.C))
+			},
+		)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// valueAndText gets the current value and the human readable text alternative
+// of obj. text is a newly created string, that must be freed by the caller. Can
+// be NULL if no descriptor is available.
+//
+// The function returns the following values:
+//
+//    - value address of #gdouble to put the current value of obj.
+//    - text (optional) address of #gchar to put the human readable text
+//      alternative for value.
+//
+func (obj *Value) valueAndText() (float64, string) {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_value_and_text
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // in
+	var _arg2 *C.gchar    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C._gotk4_atk1_Value_virtual_get_value_and_text(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(obj)
+
+	var _value float64 // out
+	var _text string   // out
+
+	_value = float64(_arg1)
+	if _arg2 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	return _value, _text
+}
+
 // setCurrentValue sets the value of this object.
 //
 // Deprecated: Since 2.12. Use atk_value_set_value() instead.
@@ -544,6 +911,38 @@ func (obj *Value) setCurrentValue(value *coreglib.Value) bool {
 	}
 
 	return _ok
+}
+
+// setValue sets the value of this object.
+//
+// This method is intended to provide a way to change the value of the object.
+// In any case, it is possible that the value can't be modified (ie: a read-only
+// component). If the value changes due this call, it is possible that the text
+// could change, and will trigger an Value::value-changed signal emission.
+//
+// Note for implementors: the deprecated atk_value_set_current_value() method
+// returned TRUE or FALSE depending if the value was assigned or not. In the
+// practice several implementors were not able to decide it, and returned TRUE
+// in any case. For that reason it is not required anymore to return if the
+// value was properly assigned or not.
+//
+// The function takes the following parameters:
+//
+//    - newValue: double which is the desired new accessible value.
+//
+func (obj *Value) setValue(newValue float64) {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.set_value
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // out
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = C.gdouble(newValue)
+
+	C._gotk4_atk1_Value_virtual_set_value(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(newValue)
 }
 
 // ValueIface: instance of this type is always passed by reference.

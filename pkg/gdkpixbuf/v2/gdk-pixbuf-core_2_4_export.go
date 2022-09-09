@@ -31,6 +31,9 @@ func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg1 *C.gchar, arg2 C.gsize, arg3 **C.GErr
 
 	err, ok := fn(_buf)
 
+	var _ error
+	var _ bool
+
 	if err != nil && arg3 != nil {
 		*arg3 = (*C.GError)(gerror.New(err))
 	}

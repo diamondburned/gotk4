@@ -4,10 +4,10 @@ package gio
 
 import (
 	"context"
-	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -17,6 +17,7 @@ import (
 // #include <stdlib.h>
 // #include <gio/gio.h>
 // #include <glib-object.h>
+// extern void callbackDelete(gpointer);
 // extern void _gotk4_gio2_VfsClass_local_file_removed(GVfs*, char*);
 // extern void _gotk4_gio2_VfsClass_local_file_moved(GVfs*, char*, char*);
 // extern void _gotk4_gio2_VfsClass_add_writable_namespaces(GVfs*, GFileAttributeInfoList*);
@@ -26,6 +27,7 @@ import (
 // extern GFile* _gotk4_gio2_VfsClass_parse_name(GVfs*, char*);
 // extern GFile* _gotk4_gio2_VfsClass_get_file_for_uri(GVfs*, char*);
 // extern GFile* _gotk4_gio2_VfsClass_get_file_for_path(GVfs*, char*);
+// extern GFile* _gotk4_gio2_VFSFileLookupFunc(GVfs*, char*, gpointer);
 // GFile* _gotk4_gio2_VFS_virtual_get_file_for_path(void* fnptr, GVfs* arg0, char* arg1) {
 //   return ((GFile* (*)(GVfs*, char*))(fnptr))(arg0, arg1);
 // };
@@ -391,6 +393,112 @@ func (vfs *VFS) ParseName(parseName string) *File {
 	_file = wrapFile(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _file
+}
+
+// RegisterURIScheme registers uri_func and parse_name_func as the #GFile URI
+// and parse name lookup functions for URIs with a scheme matching scheme. Note
+// that scheme is registered only within the running application, as opposed to
+// desktop-wide as it happens with GVfs backends.
+//
+// When a #GFile is requested with an URI containing scheme (e.g. through
+// g_file_new_for_uri()), uri_func will be called to allow a custom constructor.
+// The implementation of uri_func should not be blocking, and must not call
+// g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
+//
+// When g_file_parse_name() is called with a parse name obtained from such file,
+// parse_name_func will be called to allow the #GFile to be created again. In
+// that case, it's responsibility of parse_name_func to make sure the parse name
+// matches what the custom #GFile implementation returned when
+// g_file_get_parse_name() was previously called. The implementation of
+// parse_name_func should not be blocking, and must not call
+// g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
+//
+// It's an error to call this function twice with the same scheme. To unregister
+// a custom URI scheme, use g_vfs_unregister_uri_scheme().
+//
+// The function takes the following parameters:
+//
+//    - scheme: URI scheme, e.g. "http".
+//    - uriFunc (optional): FileLookupFunc.
+//    - parseNameFunc (optional): FileLookupFunc.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if scheme was successfully registered, or FALSE if a handler for
+//      scheme already exists.
+//
+func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileLookupFunc) bool {
+	var _arg0 *C.GVfs              // out
+	var _arg1 *C.char              // out
+	var _arg2 C.GVfsFileLookupFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+	var _arg5 C.GVfsFileLookupFunc // out
+	var _arg6 C.gpointer
+	var _arg7 C.GDestroyNotify
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if uriFunc != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
+		_arg3 = C.gpointer(gbox.Assign(uriFunc))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+	if parseNameFunc != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_VFSFileLookupFunc)
+		_arg6 = C.gpointer(gbox.Assign(parseNameFunc))
+		_arg7 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	_cret = C.g_vfs_register_uri_scheme(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(scheme)
+	runtime.KeepAlive(uriFunc)
+	runtime.KeepAlive(parseNameFunc)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// UnregisterURIScheme unregisters the URI handler for scheme previously
+// registered with g_vfs_register_uri_scheme().
+//
+// The function takes the following parameters:
+//
+//    - scheme: URI scheme, e.g. "http".
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if scheme was successfully unregistered, or FALSE if a handler
+//      for scheme does not exist.
+//
+func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
+	var _arg0 *C.GVfs    // out
+	var _arg1 *C.char    // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GVfs)(unsafe.Pointer(coreglib.InternObject(vfs).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(scheme)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)
+	runtime.KeepAlive(vfs)
+	runtime.KeepAlive(scheme)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // The function takes the following parameters:

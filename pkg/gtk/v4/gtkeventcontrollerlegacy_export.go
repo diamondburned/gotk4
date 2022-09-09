@@ -48,6 +48,8 @@ func _gotk4_gtk4_EventControllerLegacy_ConnectEvent(arg0 C.gpointer, arg1 *C.Gdk
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

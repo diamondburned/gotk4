@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -1102,6 +1101,8 @@ func (r *RCProperty) TypeName() glib.Quark {
 	valptr := &r.native.type_name
 	var _v glib.Quark // out
 	_v = uint32(*valptr)
+	type _ = glib.Quark
+	type _ = uint32
 	return _v
 }
 
@@ -1110,6 +1111,8 @@ func (r *RCProperty) PropertyName() glib.Quark {
 	valptr := &r.native.property_name
 	var _v glib.Quark // out
 	_v = uint32(*valptr)
+	type _ = glib.Quark
+	type _ = uint32
 	return _v
 }
 

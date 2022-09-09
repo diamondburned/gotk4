@@ -32,6 +32,8 @@ func _gotk4_gio2_VFSFileLookupFunc(arg1 *C.GVfs, arg2 *C.char, arg3 C.gpointer) 
 
 	file := fn(_vfs, _identifier)
 
+	var _ *File
+
 	cret = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(file).Native()))
 

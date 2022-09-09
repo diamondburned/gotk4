@@ -16,11 +16,23 @@ import (
 // extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadComplete(gpointer, guintptr);
+// gboolean _gotk4_atk1_Document_virtual_set_document_attribute(void* fnptr, AtkDocument* arg0, gchar* arg1, gchar* arg2) {
+//   return ((gboolean (*)(AtkDocument*, gchar*, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// gchar* _gotk4_atk1_Document_virtual_get_document_attribute_value(void* fnptr, AtkDocument* arg0, gchar* arg1) {
+//   return ((gchar* (*)(AtkDocument*, gchar*))(fnptr))(arg0, arg1);
+// };
 // gchar* _gotk4_atk1_Document_virtual_get_document_locale(void* fnptr, AtkDocument* arg0) {
 //   return ((gchar* (*)(AtkDocument*))(fnptr))(arg0);
 // };
 // gchar* _gotk4_atk1_Document_virtual_get_document_type(void* fnptr, AtkDocument* arg0) {
 //   return ((gchar* (*)(AtkDocument*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Document_virtual_get_current_page_number(void* fnptr, AtkDocument* arg0) {
+//   return ((gint (*)(AtkDocument*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Document_virtual_get_page_count(void* fnptr, AtkDocument* arg0) {
+//   return ((gint (*)(AtkDocument*))(fnptr))(arg0);
 // };
 // gpointer _gotk4_atk1_Document_virtual_get_document(void* fnptr, AtkDocument* arg0) {
 //   return ((gpointer (*)(AtkDocument*))(fnptr))(arg0);
@@ -139,6 +151,65 @@ func (document *Document) ConnectReload(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(document, "reload", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectReload), f)
 }
 
+// AttributeValue retrieves the value of the given attribute_name inside
+// document.
+//
+// The function takes the following parameters:
+//
+//    - attributeName: character string representing the name of the attribute
+//      whose value is being queried.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string value associated with the named attribute for
+//      this document, or NULL if a value for attribute_name has not been
+//      specified for this document.
+//
+func (document *Document) AttributeValue(attributeName string) string {
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_document_get_attribute_value(_arg0, _arg1)
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// CurrentPageNumber retrieves the current page number inside document.
+//
+// The function returns the following values:
+//
+//    - gint: current page number inside document, or -1 if not implemented, not
+//      know by the implementor, or irrelevant.
+//
+func (document *Document) CurrentPageNumber() int {
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C.atk_document_get_current_page_number(_arg0)
+	runtime.KeepAlive(document)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
 // Document gets a gpointer that points to an instance of the DOM. It is up to
 // the caller to check atk_document_get_type to determine how to cast this
 // pointer.
@@ -220,6 +291,96 @@ func (document *Document) Locale() string {
 	return _utf8
 }
 
+// PageCount retrieves the total number of pages inside document.
+//
+// The function returns the following values:
+//
+//    - gint: total page count of document, or -1 if not implemented, not know by
+//      the implementor or irrelevant.
+//
+func (document *Document) PageCount() int {
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C.atk_document_get_page_count(_arg0)
+	runtime.KeepAlive(document)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SetAttributeValue sets the value for the given attribute_name inside
+// document.
+//
+// The function takes the following parameters:
+//
+//    - attributeName: character string representing the name of the attribute
+//      whose value is being set.
+//    - attributeValue: string value to be associated with attribute_name.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if attribute_value is successfully associated with
+//      attribute_name for this document, and FALSE if if the document does not
+//      allow the attribute to be modified.
+//
+func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.gchar       // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.atk_document_set_attribute_value(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+	runtime.KeepAlive(attributeValue)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// currentPageNumber retrieves the current page number inside document.
+//
+// The function returns the following values:
+//
+//    - gint: current page number inside document, or -1 if not implemented, not
+//      know by the implementor, or irrelevant.
+//
+func (document *Document) currentPageNumber() int {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_current_page_number
+
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_current_page_number(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(document)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
 // Document gets a gpointer that points to an instance of the DOM. It is up to
 // the caller to check atk_document_get_type to determine how to cast this
 // pointer.
@@ -248,6 +409,45 @@ func (document *Document) document() unsafe.Pointer {
 	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
 
 	return _gpointer
+}
+
+// documentAttributeValue retrieves the value of the given attribute_name inside
+// document.
+//
+// The function takes the following parameters:
+//
+//    - attributeName: character string representing the name of the attribute
+//      whose value is being queried.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): string value associated with the named attribute for
+//      this document, or NULL if a value for attribute_name has not been
+//      specified for this document.
+//
+func (document *Document) documentAttributeValue(attributeName string) string {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_document_attribute_value
+
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_document_attribute_value(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
 }
 
 // documentLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
@@ -308,6 +508,76 @@ func (document *Document) documentType() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// pageCount retrieves the total number of pages inside document.
+//
+// The function returns the following values:
+//
+//    - gint: total page count of document, or -1 if not implemented, not know by
+//      the implementor or irrelevant.
+//
+func (document *Document) pageCount() int {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_page_count
+
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_page_count(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(document)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// setDocumentAttribute sets the value for the given attribute_name inside
+// document.
+//
+// The function takes the following parameters:
+//
+//    - attributeName: character string representing the name of the attribute
+//      whose value is being set.
+//    - attributeValue: string value to be associated with attribute_name.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if attribute_value is successfully associated with
+//      attribute_name for this document, and FALSE if if the document does not
+//      allow the attribute to be modified.
+//
+func (document *Document) setDocumentAttribute(attributeName, attributeValue string) bool {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.set_document_attribute
+
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.gchar       // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C._gotk4_atk1_Document_virtual_set_document_attribute(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+	runtime.KeepAlive(attributeValue)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // DocumentIface: instance of this type is always passed by reference.

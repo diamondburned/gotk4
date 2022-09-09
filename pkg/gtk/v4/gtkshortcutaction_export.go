@@ -60,6 +60,8 @@ func _gotk4_gtk4_ShortcutFunc(arg1 *C.GtkWidget, arg2 *C.GVariant, arg3 C.gpoint
 
 	ok := fn(_widget, _args)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

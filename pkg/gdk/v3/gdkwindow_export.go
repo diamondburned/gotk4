@@ -5,6 +5,7 @@ package gdk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -46,6 +47,8 @@ func _gotk4_gdk3_WindowChildFunc(arg1 *C.GdkWindow, arg2 C.gpointer) (cret C.gbo
 
 	ok := fn(_window)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -73,6 +76,8 @@ func _gotk4_gdk3_Window_ConnectCreateSurface(arg0 C.gpointer, arg1 C.gint, arg2 
 	_height = int(arg2)
 
 	surface := f(_width, _height)
+
+	var _ *cairo.Surface
 
 	cret = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
@@ -129,6 +134,8 @@ func _gotk4_gdk3_Window_ConnectPickEmbeddedChild(arg0 C.gpointer, arg1 C.gdouble
 	_y = float64(arg2)
 
 	window := f(_x, _y)
+
+	var _ Windower
 
 	if window != nil {
 		cret = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))

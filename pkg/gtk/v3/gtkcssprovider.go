@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -286,6 +285,56 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) error {
 	}
 
 	return _goerr
+}
+
+// LoadFromResource loads the data contained in the resource at resource_path
+// into the CssProvider, clearing any previously loaded information.
+//
+// To track errors while loading CSS, connect to the CssProvider::parsing-error
+// signal.
+//
+// The function takes the following parameters:
+//
+//    - resourcePath resource path.
+//
+func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.gchar          // out
+
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(coreglib.InternObject(cssProvider).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(resourcePath)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
+	runtime.KeepAlive(cssProvider)
+	runtime.KeepAlive(resourcePath)
+}
+
+// String converts the provider into a string representation in CSS format.
+//
+// Using gtk_css_provider_load_from_data() with the return value from this
+// function on a new provider created with gtk_css_provider_new() will basically
+// create a duplicate of this provider.
+//
+// The function returns the following values:
+//
+//    - utf8: new string representing the provider.
+//
+func (provider *CSSProvider) String() string {
+	var _arg0 *C.GtkCssProvider // out
+	var _cret *C.char           // in
+
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+
+	_cret = C.gtk_css_provider_to_string(_arg0)
+	runtime.KeepAlive(provider)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
 }
 
 // The function takes the following parameters:

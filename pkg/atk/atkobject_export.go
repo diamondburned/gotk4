@@ -3,7 +3,10 @@
 package atk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -23,6 +26,8 @@ func _gotk4_atk1_Function(arg1 C.gpointer) (cret C.gboolean) {
 	}
 
 	ok := fn()
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

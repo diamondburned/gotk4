@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -172,6 +171,33 @@ func NewTreeViewColumn() *TreeViewColumn {
 	var _cret *C.GtkTreeViewColumn // in
 
 	_cret = C.gtk_tree_view_column_new()
+
+	var _treeViewColumn *TreeViewColumn // out
+
+	_treeViewColumn = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _treeViewColumn
+}
+
+// NewTreeViewColumnWithArea creates a new TreeViewColumn using area to render
+// its cells.
+//
+// The function takes the following parameters:
+//
+//    - area that the newly created column should use to layout cells.
+//
+// The function returns the following values:
+//
+//    - treeViewColumn: newly created TreeViewColumn.
+//
+func NewTreeViewColumnWithArea(area CellAreaer) *TreeViewColumn {
+	var _arg1 *C.GtkCellArea       // out
+	var _cret *C.GtkTreeViewColumn // in
+
+	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
+
+	_cret = C.gtk_tree_view_column_new_with_area(_arg1)
+	runtime.KeepAlive(area)
 
 	var _treeViewColumn *TreeViewColumn // out
 
@@ -406,6 +432,25 @@ func (treeColumn *TreeViewColumn) Clicked() {
 	runtime.KeepAlive(treeColumn)
 }
 
+// FocusCell sets the current keyboard focus to be at cell, if the column
+// contains 2 or more editable and activatable cells.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//
+func (treeColumn *TreeViewColumn) FocusCell(cell CellRendererer) {
+	var _arg0 *C.GtkTreeViewColumn // out
+	var _arg1 *C.GtkCellRenderer   // out
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	C.gtk_tree_view_column_focus_cell(_arg0, _arg1)
+	runtime.KeepAlive(treeColumn)
+	runtime.KeepAlive(cell)
+}
+
 // Alignment returns the current x alignment of tree_column. This value can
 // range between 0.0 and 1.0.
 //
@@ -429,6 +474,44 @@ func (treeColumn *TreeViewColumn) Alignment() float32 {
 	return _gfloat
 }
 
+// Button returns the button used in the treeview column header.
+//
+// The function returns the following values:
+//
+//    - widget: button for the column header.
+//
+func (treeColumn *TreeViewColumn) Button() Widgetter {
+	var _arg0 *C.GtkTreeViewColumn // out
+	var _cret *C.GtkWidget         // in
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+
+	_cret = C.gtk_tree_view_column_get_button(_arg0)
+	runtime.KeepAlive(treeColumn)
+
+	var _widget Widgetter // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gtk.Widgetter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Widgetter)
+			return ok
+		})
+		rv, ok := casted.(Widgetter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+		}
+		_widget = rv
+	}
+
+	return _widget
+}
+
 // Clickable returns TRUE if the user can click on the header for the column.
 //
 // The function returns the following values:
@@ -442,6 +525,30 @@ func (treeColumn *TreeViewColumn) Clickable() bool {
 	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
 
 	_cret = C.gtk_tree_view_column_get_clickable(_arg0)
+	runtime.KeepAlive(treeColumn)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Expand returns TRUE if the column expands to fill available space.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the column expands to fill available space.
+//
+func (treeColumn *TreeViewColumn) Expand() bool {
+	var _arg0 *C.GtkTreeViewColumn // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+
+	_cret = C.gtk_tree_view_column_get_expand(_arg0)
 	runtime.KeepAlive(treeColumn)
 
 	var _ok bool // out
@@ -709,6 +816,45 @@ func (treeColumn *TreeViewColumn) Title() string {
 	return _utf8
 }
 
+// TreeView returns the TreeView wherein tree_column has been inserted. If
+// column is currently not inserted in any tree view, NULL is returned.
+//
+// The function returns the following values:
+//
+//    - widget (optional): tree view wherein column has been inserted if any,
+//      NULL otherwise.
+//
+func (treeColumn *TreeViewColumn) TreeView() Widgetter {
+	var _arg0 *C.GtkTreeViewColumn // out
+	var _cret *C.GtkWidget         // in
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+
+	_cret = C.gtk_tree_view_column_get_tree_view(_arg0)
+	runtime.KeepAlive(treeColumn)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
 // Visible returns TRUE if tree_column is visible.
 //
 // The function returns the following values:
@@ -794,6 +940,28 @@ func (treeColumn *TreeViewColumn) Width() int {
 	return _gint
 }
 
+// XOffset returns the current X offset of tree_column in pixels.
+//
+// The function returns the following values:
+//
+//    - gint: current X offset of tree_column.
+//
+func (treeColumn *TreeViewColumn) XOffset() int {
+	var _arg0 *C.GtkTreeViewColumn // out
+	var _cret C.gint               // in
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+
+	_cret = C.gtk_tree_view_column_get_x_offset(_arg0)
+	runtime.KeepAlive(treeColumn)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
 // PackEnd adds the cell to end of the column. If expand is FALSE, then the cell
 // is allocated no more space than it needs. Any unused space is divided evenly
 // between cells for which expand is TRUE.
@@ -844,6 +1012,17 @@ func (treeColumn *TreeViewColumn) PackStart(cell CellRendererer, expand bool) {
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(cell)
 	runtime.KeepAlive(expand)
+}
+
+// QueueResize flags the column, and the cell renderers added to this column, to
+// have their sizes renegotiated.
+func (treeColumn *TreeViewColumn) QueueResize() {
+	var _arg0 *C.GtkTreeViewColumn // out
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+
+	C.gtk_tree_view_column_queue_resize(_arg0)
+	runtime.KeepAlive(treeColumn)
 }
 
 // SetAlignment sets the alignment of the title or custom widget inside the
@@ -916,6 +1095,32 @@ func (treeColumn *TreeViewColumn) SetClickable(clickable bool) {
 	C.gtk_tree_view_column_set_clickable(_arg0, _arg1)
 	runtime.KeepAlive(treeColumn)
 	runtime.KeepAlive(clickable)
+}
+
+// SetExpand sets the column to take available extra space. This space is shared
+// equally amongst all columns that have the expand set to TRUE. If no column
+// has this option set, then the last column gets all extra space. By default,
+// every column is created with this FALSE.
+//
+// Along with “fixed-width”, the “expand” property changes when the column is
+// resized by the user.
+//
+// The function takes the following parameters:
+//
+//    - expand: TRUE if the column should expand to fill available space.
+//
+func (treeColumn *TreeViewColumn) SetExpand(expand bool) {
+	var _arg0 *C.GtkTreeViewColumn // out
+	var _arg1 C.gboolean           // out
+
+	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(treeColumn).Native()))
+	if expand {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_tree_view_column_set_expand(_arg0, _arg1)
+	runtime.KeepAlive(treeColumn)
+	runtime.KeepAlive(expand)
 }
 
 // SetFixedWidth: if fixed_width is not -1, sets the fixed width of tree_column;

@@ -38,6 +38,8 @@ func _gotk4_gtk3_CalendarDetailFunc(arg1 *C.GtkCalendar, arg2 C.guint, arg3 C.gu
 
 	utf8 := fn(_calendar, _year, _month, _day)
 
+	var _ string
+
 	if utf8 != "" {
 		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 	}

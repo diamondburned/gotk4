@@ -3,11 +3,12 @@
 package gio
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
@@ -105,6 +106,51 @@ func NewMemoryInputStream() *MemoryInputStream {
 	_memoryInputStream = wrapMemoryInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryInputStream
+}
+
+// NewMemoryInputStreamFromBytes creates a new InputStream with data from the
+// given bytes.
+//
+// The function takes the following parameters:
+//
+//    - bytes: #GBytes.
+//
+// The function returns the following values:
+//
+//    - memoryInputStream: new Stream read from bytes.
+//
+func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
+	var _arg1 *C.GBytes       // out
+	var _cret *C.GInputStream // in
+
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+
+	_cret = C.g_memory_input_stream_new_from_bytes(_arg1)
+	runtime.KeepAlive(bytes)
+
+	var _memoryInputStream *MemoryInputStream // out
+
+	_memoryInputStream = wrapMemoryInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _memoryInputStream
+}
+
+// AddBytes appends bytes to data that can be read from the input stream.
+//
+// The function takes the following parameters:
+//
+//    - bytes: input data.
+//
+func (stream *MemoryInputStream) AddBytes(bytes *glib.Bytes) {
+	var _arg0 *C.GMemoryInputStream // out
+	var _arg1 *C.GBytes             // out
+
+	_arg0 = (*C.GMemoryInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+
+	C.g_memory_input_stream_add_bytes(_arg0, _arg1)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(bytes)
 }
 
 // MemoryInputStreamClass: instance of this type is always passed by reference.

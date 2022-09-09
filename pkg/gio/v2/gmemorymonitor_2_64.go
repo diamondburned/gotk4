@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -12,6 +13,9 @@ import (
 // #include <gio/gio.h>
 // #include <glib-object.h>
 // extern void _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning(gpointer, GMemoryMonitorWarningLevel, guintptr);
+// void _gotk4_gio2_MemoryMonitor_virtual_low_memory_warning(void* fnptr, GMemoryMonitor* arg0, GMemoryMonitorWarningLevel arg1) {
+//   ((void (*)(GMemoryMonitor*, GMemoryMonitorWarningLevel))(fnptr))(arg0, arg1);
+// };
 import "C"
 
 // GType values.
@@ -125,6 +129,23 @@ func BaseMemoryMonitor(obj MemoryMonitorrer) *MemoryMonitor {
 // on the warning level. See the MonitorWarningLevel documentation for details.
 func (v *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitorWarningLevel)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "low-memory-warning", false, unsafe.Pointer(C._gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning), f)
+}
+
+// The function takes the following parameters:
+//
+func (monitor *MemoryMonitor) lowMemoryWarning(level MemoryMonitorWarningLevel) {
+	gclass := (*C.GMemoryMonitorInterface)(coreglib.PeekParentClass(monitor))
+	fnarg := gclass.low_memory_warning
+
+	var _arg0 *C.GMemoryMonitor            // out
+	var _arg1 C.GMemoryMonitorWarningLevel // out
+
+	_arg0 = (*C.GMemoryMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	_arg1 = C.GMemoryMonitorWarningLevel(level)
+
+	C._gotk4_gio2_MemoryMonitor_virtual_low_memory_warning(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(level)
 }
 
 // MemoryMonitorDupDefault gets a reference to the default Monitor for the

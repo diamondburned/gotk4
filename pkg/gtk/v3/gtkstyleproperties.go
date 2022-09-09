@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -127,6 +126,199 @@ func (props *StyleProperties) Clear() {
 
 	C.gtk_style_properties_clear(_arg0)
 	runtime.KeepAlive(props)
+}
+
+// Property gets a style property from props for the given state. When done with
+// value, g_value_unset() needs to be called to free any allocated memory.
+//
+// Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property: style property name.
+//    - state to retrieve the property value for.
+//
+// The function returns the following values:
+//
+//    - value: return location for the style property value.
+//    - ok: TRUE if the property exists in props, FALSE otherwise.
+//
+func (props *StyleProperties) Property(property string, state StateFlags) (coreglib.Value, bool) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+	var _arg3 C.GValue              // in
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+
+	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
+
+	var _value coreglib.Value // out
+	var _ok bool              // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg3)))
+	runtime.SetFinalizer(_value, func(v *coreglib.Value) {
+		C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))
+	})
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _value, _ok
+}
+
+// LookupColor returns the symbolic color that is mapped to name.
+//
+// Deprecated: SymbolicColor is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - name: color name to lookup.
+//
+// The function returns the following values:
+//
+//    - symbolicColor: mapped color.
+//
+func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _cret *C.GtkSymbolicColor   // in
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_style_properties_lookup_color(_arg0, _arg1)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(name)
+
+	var _symbolicColor *SymbolicColor // out
+
+	_symbolicColor = (*SymbolicColor)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gtk_symbolic_color_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_symbolicColor)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_symbolic_color_unref((*C.GtkSymbolicColor)(intern.C))
+		},
+	)
+
+	return _symbolicColor
+}
+
+// MapColor maps color so it can be referenced by name. See
+// gtk_style_properties_lookup_color()
+//
+// Deprecated: SymbolicColor is deprecated.
+//
+// The function takes the following parameters:
+//
+//    - name: color name.
+//    - color to map name to.
+//
+func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GtkSymbolicColor   // out
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkSymbolicColor)(gextras.StructNative(unsafe.Pointer(color)))
+
+	C.gtk_style_properties_map_color(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(color)
+}
+
+// Merge merges into props all the style information contained in
+// props_to_merge. If replace is TRUE, the values will be overwritten, if it is
+// FALSE, the older values will prevail.
+//
+// Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - propsToMerge: second StyleProperties.
+//    - replace: whether to replace values or not.
+//
+func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.GtkStyleProperties // out
+	var _arg2 C.gboolean            // out
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(propsToMerge).Native()))
+	if replace {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_style_properties_merge(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(propsToMerge)
+	runtime.KeepAlive(replace)
+}
+
+// SetProperty sets a styling property in props.
+//
+// Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property: styling property to set.
+//    - state to set the value for.
+//    - value: new value for the property.
+//
+func (props *StyleProperties) SetProperty(property string, state StateFlags, value *coreglib.Value) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+	var _arg3 *C.GValue             // out
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	C.gtk_style_properties_set_property(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(value)
+}
+
+// UnsetProperty unsets a style property in props.
+//
+// Deprecated: StyleProperties are deprecated.
+//
+// The function takes the following parameters:
+//
+//    - property to unset.
+//    - state to unset.
+//
+func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+
+	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(coreglib.InternObject(props).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(property)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GtkStateFlags(state)
+
+	C.gtk_style_properties_unset_property(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(props)
+	runtime.KeepAlive(property)
+	runtime.KeepAlive(state)
 }
 
 // Gradient is a boxed type that represents a gradient. It is the result of

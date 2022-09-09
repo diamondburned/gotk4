@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -21,6 +20,9 @@ import (
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_Popover_ConnectClosed(gpointer, guintptr);
 // extern void _gotk4_gtk3_PopoverClass_closed(GtkPopover*);
+// void _gotk4_gtk3_Popover_virtual_closed(void* fnptr, GtkPopover* arg0) {
+//   ((void (*)(GtkPopover*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -279,6 +281,67 @@ func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string
 	runtime.KeepAlive(actionNamespace)
 }
 
+// ConstrainTo returns the constraint for placing this popover. See
+// gtk_popover_set_constrain_to().
+//
+// The function returns the following values:
+//
+//    - popoverConstraint: constraint for placing this popover.
+//
+func (popover *Popover) ConstrainTo() PopoverConstraint {
+	var _arg0 *C.GtkPopover          // out
+	var _cret C.GtkPopoverConstraint // in
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	_cret = C.gtk_popover_get_constrain_to(_arg0)
+	runtime.KeepAlive(popover)
+
+	var _popoverConstraint PopoverConstraint // out
+
+	_popoverConstraint = PopoverConstraint(_cret)
+
+	return _popoverConstraint
+}
+
+// DefaultWidget gets the widget that should be set as the default while the
+// popover is shown.
+//
+// The function returns the following values:
+//
+//    - widget (optional): default widget, or NULL if there is none.
+//
+func (popover *Popover) DefaultWidget() Widgetter {
+	var _arg0 *C.GtkPopover // out
+	var _cret *C.GtkWidget  // in
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	_cret = C.gtk_popover_get_default_widget(_arg0)
+	runtime.KeepAlive(popover)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
 // Modal returns whether the popover is modal, see gtk_popover_set_modal to see
 // the implications of this.
 //
@@ -302,6 +365,58 @@ func (popover *Popover) Modal() bool {
 	}
 
 	return _ok
+}
+
+// PointingTo: if a rectangle to point to has been set, this function will
+// return TRUE and fill in rect with such rectangle, otherwise it will return
+// FALSE and fill in rect with the attached widget coordinates.
+//
+// The function returns the following values:
+//
+//    - rect: location to store the rectangle.
+//    - ok: TRUE if a rectangle to point to was set.
+//
+func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
+	var _arg0 *C.GtkPopover  // out
+	var _arg1 C.GdkRectangle // in
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	_cret = C.gtk_popover_get_pointing_to(_arg0, &_arg1)
+	runtime.KeepAlive(popover)
+
+	var _rect *gdk.Rectangle // out
+	var _ok bool             // out
+
+	_rect = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _rect, _ok
+}
+
+// Position returns the preferred position of popover.
+//
+// The function returns the following values:
+//
+//    - positionType: preferred position.
+//
+func (popover *Popover) Position() PositionType {
+	var _arg0 *C.GtkPopover     // out
+	var _cret C.GtkPositionType // in
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	_cret = C.gtk_popover_get_position(_arg0)
+	runtime.KeepAlive(popover)
+
+	var _positionType PositionType // out
+
+	_positionType = PositionType(_cret)
+
+	return _positionType
 }
 
 // RelativeTo returns the widget popover is currently attached to.
@@ -340,6 +455,103 @@ func (popover *Popover) RelativeTo() Widgetter {
 	}
 
 	return _widget
+}
+
+// TransitionsEnabled returns whether show/hide transitions are enabled on this
+// popover.
+//
+// Deprecated: You can show or hide the popover without transitions using
+// gtk_widget_show() and gtk_widget_hide() while gtk_popover_popup() and
+// gtk_popover_popdown() will use transitions.
+//
+// The function returns the following values:
+//
+//    - ok if the show and hide transitions of the given popover are enabled, LSE
+//      otherwise.
+//
+func (popover *Popover) TransitionsEnabled() bool {
+	var _arg0 *C.GtkPopover // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	_cret = C.gtk_popover_get_transitions_enabled(_arg0)
+	runtime.KeepAlive(popover)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Popdown pops popover down.This is different than a gtk_widget_hide() call in
+// that it shows the popover with a transition. If you want to hide the popover
+// without a transition, use gtk_widget_hide().
+func (popover *Popover) Popdown() {
+	var _arg0 *C.GtkPopover // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	C.gtk_popover_popdown(_arg0)
+	runtime.KeepAlive(popover)
+}
+
+// Popup pops popover up. This is different than a gtk_widget_show() call in
+// that it shows the popover with a transition. If you want to show the popover
+// without a transition, use gtk_widget_show().
+func (popover *Popover) Popup() {
+	var _arg0 *C.GtkPopover // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	C.gtk_popover_popup(_arg0)
+	runtime.KeepAlive(popover)
+}
+
+// SetConstrainTo sets a constraint for positioning this popover.
+//
+// Note that not all platforms support placing popovers freely, and may already
+// impose constraints.
+//
+// The function takes the following parameters:
+//
+//    - constraint: new constraint.
+//
+func (popover *Popover) SetConstrainTo(constraint PopoverConstraint) {
+	var _arg0 *C.GtkPopover          // out
+	var _arg1 C.GtkPopoverConstraint // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	_arg1 = C.GtkPopoverConstraint(constraint)
+
+	C.gtk_popover_set_constrain_to(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(constraint)
+}
+
+// SetDefaultWidget sets the widget that should be set as default widget while
+// the popover is shown (see gtk_window_set_default()). Popover remembers the
+// previous default widget and reestablishes it when the popover is dismissed.
+//
+// The function takes the following parameters:
+//
+//    - widget (optional): new default widget, or NULL.
+//
+func (popover *Popover) SetDefaultWidget(widget Widgetter) {
+	var _arg0 *C.GtkPopover // out
+	var _arg1 *C.GtkWidget  // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	if widget != nil {
+		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+	}
+
+	C.gtk_popover_set_default_widget(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(widget)
 }
 
 // SetModal sets whether popover is modal, a modal popover will grab all input
@@ -432,4 +644,41 @@ func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 	C.gtk_popover_set_relative_to(_arg0, _arg1)
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(relativeTo)
+}
+
+// SetTransitionsEnabled sets whether show/hide transitions are enabled on this
+// popover
+//
+// Deprecated: You can show or hide the popover without transitions using
+// gtk_widget_show() and gtk_widget_hide() while gtk_popover_popup() and
+// gtk_popover_popdown() will use transitions.
+//
+// The function takes the following parameters:
+//
+//    - transitionsEnabled: whether transitions are enabled.
+//
+func (popover *Popover) SetTransitionsEnabled(transitionsEnabled bool) {
+	var _arg0 *C.GtkPopover // out
+	var _arg1 C.gboolean    // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+	if transitionsEnabled {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_popover_set_transitions_enabled(_arg0, _arg1)
+	runtime.KeepAlive(popover)
+	runtime.KeepAlive(transitionsEnabled)
+}
+
+func (popover *Popover) closed() {
+	gclass := (*C.GtkPopoverClass)(coreglib.PeekParentClass(popover))
+	fnarg := gclass.closed
+
+	var _arg0 *C.GtkPopover // out
+
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
+
+	C._gotk4_gtk3_Popover_virtual_closed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(popover)
 }

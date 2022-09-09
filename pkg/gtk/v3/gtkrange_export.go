@@ -53,6 +53,8 @@ func _gotk4_gtk3_Range_ConnectChangeValue(arg0 C.gpointer, arg1 C.GtkScrollType,
 
 	ok := f(_scroll, _value)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

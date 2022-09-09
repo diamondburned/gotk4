@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -122,6 +121,28 @@ func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *C
 	_converterInputStream = wrapConverterInputStream(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _converterInputStream
+}
+
+// Converter gets the #GConverter that is used by converter_stream.
+//
+// The function returns the following values:
+//
+//    - converter of the converter input stream.
+//
+func (converterStream *ConverterInputStream) Converter() *Converter {
+	var _arg0 *C.GConverterInputStream // out
+	var _cret *C.GConverter            // in
+
+	_arg0 = (*C.GConverterInputStream)(unsafe.Pointer(coreglib.InternObject(converterStream).Native()))
+
+	_cret = C.g_converter_input_stream_get_converter(_arg0)
+	runtime.KeepAlive(converterStream)
+
+	var _converter *Converter // out
+
+	_converter = wrapConverter(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _converter
 }
 
 // ConverterInputStreamClass: instance of this type is always passed by

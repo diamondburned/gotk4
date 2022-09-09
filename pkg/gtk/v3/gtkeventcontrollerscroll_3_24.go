@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"runtime"
 	"strings"
 	"unsafe"
 
@@ -91,75 +90,4 @@ func (e EventControllerScrollFlags) String() string {
 // Has returns true if e contains other.
 func (e EventControllerScrollFlags) Has(other EventControllerScrollFlags) bool {
 	return (e & other) == other
-}
-
-// NewEventControllerScroll creates a new event controller that will handle
-// scroll events for the given widget.
-//
-// The function takes the following parameters:
-//
-//    - widget: Widget.
-//    - flags: behavior flags.
-//
-// The function returns the following values:
-//
-//    - eventControllerScroll: new EventControllerScroll.
-//
-func NewEventControllerScroll(widget Widgetter, flags EventControllerScrollFlags) *EventControllerScroll {
-	var _arg1 *C.GtkWidget                    // out
-	var _arg2 C.GtkEventControllerScrollFlags // out
-	var _cret *C.GtkEventController           // in
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.GtkEventControllerScrollFlags(flags)
-
-	_cret = C.gtk_event_controller_scroll_new(_arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(flags)
-
-	var _eventControllerScroll *EventControllerScroll // out
-
-	_eventControllerScroll = wrapEventControllerScroll(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _eventControllerScroll
-}
-
-// Flags gets the flags conditioning the scroll controller behavior.
-//
-// The function returns the following values:
-//
-//    - eventControllerScrollFlags: controller flags.
-//
-func (controller *EventControllerScroll) Flags() EventControllerScrollFlags {
-	var _arg0 *C.GtkEventControllerScroll     // out
-	var _cret C.GtkEventControllerScrollFlags // in
-
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-
-	_cret = C.gtk_event_controller_scroll_get_flags(_arg0)
-	runtime.KeepAlive(controller)
-
-	var _eventControllerScrollFlags EventControllerScrollFlags // out
-
-	_eventControllerScrollFlags = EventControllerScrollFlags(_cret)
-
-	return _eventControllerScrollFlags
-}
-
-// SetFlags sets the flags conditioning scroll controller behavior.
-//
-// The function takes the following parameters:
-//
-//    - flags: behavior flags.
-//
-func (controller *EventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
-	var _arg0 *C.GtkEventControllerScroll     // out
-	var _arg1 C.GtkEventControllerScrollFlags // out
-
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-	_arg1 = C.GtkEventControllerScrollFlags(flags)
-
-	C.gtk_event_controller_scroll_set_flags(_arg0, _arg1)
-	runtime.KeepAlive(controller)
-	runtime.KeepAlive(flags)
 }

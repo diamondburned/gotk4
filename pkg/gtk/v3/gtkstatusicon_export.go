@@ -3,7 +3,11 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -47,6 +51,8 @@ func _gotk4_gtk3_StatusIcon_ConnectButtonPressEvent(arg0 C.gpointer, arg1 *C.Gdk
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -72,6 +78,8 @@ func _gotk4_gtk3_StatusIcon_ConnectButtonReleaseEvent(arg0 C.gpointer, arg1 *C.G
 	_event = (*gdk.EventButton)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	ok := f(_event)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -129,6 +137,8 @@ func _gotk4_gtk3_StatusIcon_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, ar
 
 	ok := f(_x, _y, _keyboardMode, _tooltip)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -155,6 +165,8 @@ func _gotk4_gtk3_StatusIcon_ConnectScrollEvent(arg0 C.gpointer, arg1 *C.GdkEvent
 
 	ok := f(_event)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -180,6 +192,8 @@ func _gotk4_gtk3_StatusIcon_ConnectSizeChanged(arg0 C.gpointer, arg1 C.gint, arg
 	_size = int(arg1)
 
 	ok := f(_size)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

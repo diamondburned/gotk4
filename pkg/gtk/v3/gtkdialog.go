@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -477,6 +476,152 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	return _widget
 }
 
+// ActionArea returns the action area of dialog.
+//
+// Deprecated: Direct access to the action area is discouraged; use
+// gtk_dialog_add_button(), etc.
+//
+// The function returns the following values:
+//
+//    - box: action area.
+//
+func (dialog *Dialog) ActionArea() *Box {
+	var _arg0 *C.GtkDialog // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+
+	_cret = C.gtk_dialog_get_action_area(_arg0)
+	runtime.KeepAlive(dialog)
+
+	var _box *Box // out
+
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _box
+}
+
+// ContentArea returns the content area of dialog.
+//
+// The function returns the following values:
+//
+//    - box: content area Box.
+//
+func (dialog *Dialog) ContentArea() *Box {
+	var _arg0 *C.GtkDialog // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+
+	_cret = C.gtk_dialog_get_content_area(_arg0)
+	runtime.KeepAlive(dialog)
+
+	var _box *Box // out
+
+	_box = wrapBox(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _box
+}
+
+// HeaderBar returns the header bar of dialog. Note that the headerbar is only
+// used by the dialog if the Dialog:use-header-bar property is TRUE.
+//
+// The function returns the following values:
+//
+//    - headerBar: header bar.
+//
+func (dialog *Dialog) HeaderBar() *HeaderBar {
+	var _arg0 *C.GtkDialog // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+
+	_cret = C.gtk_dialog_get_header_bar(_arg0)
+	runtime.KeepAlive(dialog)
+
+	var _headerBar *HeaderBar // out
+
+	_headerBar = wrapHeaderBar(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _headerBar
+}
+
+// ResponseForWidget gets the response id of a widget in the action area of a
+// dialog.
+//
+// The function takes the following parameters:
+//
+//    - widget in the action area of dialog.
+//
+// The function returns the following values:
+//
+//    - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
+//      a response id set.
+//
+func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
+	var _arg0 *C.GtkDialog // out
+	var _arg1 *C.GtkWidget // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
+
+	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(widget)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// WidgetForResponse gets the widget button that uses the given response ID in
+// the action area of a dialog.
+//
+// The function takes the following parameters:
+//
+//    - responseId: response ID used by the dialog widget.
+//
+// The function returns the following values:
+//
+//    - widget (optional) button that uses the given response_id, or NULL.
+//
+func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.gint       // out
+	var _cret *C.GtkWidget // in
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = C.gint(responseId)
+
+	_cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(responseId)
+
+	var _widget Widgetter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
+		}
+	}
+
+	return _widget
+}
+
 // Response emits the Dialog::response signal with the given response ID. Used
 // to indicate that the user has responded to the dialog in some way; typically
 // either you or gtk_dialog_run() will be monitoring the ::response signal and
@@ -559,6 +704,42 @@ func (dialog *Dialog) Run() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// SetAlternativeButtonOrderFromArray sets an alternative button order. If the
+// Settings:gtk-alternative-button-order setting is set to TRUE, the dialog
+// buttons are reordered according to the order of the response ids in
+// new_order.
+//
+// See gtk_dialog_set_alternative_button_order() for more information.
+//
+// This function is for use by language bindings.
+//
+// Deprecated: Deprecated.
+//
+// The function takes the following parameters:
+//
+//    - newOrder: array of response ids of dialog’s buttons.
+//
+func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
+	var _arg0 *C.GtkDialog // out
+	var _arg2 *C.gint      // out
+	var _arg1 C.gint
+
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
+	_arg1 = (C.gint)(len(newOrder))
+	_arg2 = (*C.gint)(C.calloc(C.size_t(len(newOrder)), C.size_t(C.sizeof_gint)))
+	defer C.free(unsafe.Pointer(_arg2))
+	{
+		out := unsafe.Slice((*C.gint)(_arg2), len(newOrder))
+		for i := range newOrder {
+			out[i] = C.gint(newOrder[i])
+		}
+	}
+
+	C.gtk_dialog_set_alternative_button_order_from_array(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(dialog)
+	runtime.KeepAlive(newOrder)
 }
 
 // SetDefaultResponse sets the last widget in the dialog’s action area with the

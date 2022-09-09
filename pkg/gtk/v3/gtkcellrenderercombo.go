@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -103,6 +102,29 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 // renderer emits the edited or editing_canceled signal.
 func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *TreeIter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererCombo_ConnectChanged), f)
+}
+
+// NewCellRendererCombo creates a new CellRendererCombo. Adjust how text is
+// drawn using object properties. Object properties can be set globally (with
+// g_object_set()). Also, with TreeViewColumn, you can bind a property to a
+// value in a TreeModel. For example, you can bind the “text” property on the
+// cell renderer to a string value in the model, thus rendering a different
+// string in each row of the TreeView.
+//
+// The function returns the following values:
+//
+//    - cellRendererCombo: new cell renderer.
+//
+func NewCellRendererCombo() *CellRendererCombo {
+	var _cret *C.GtkCellRenderer // in
+
+	_cret = C.gtk_cell_renderer_combo_new()
+
+	var _cellRendererCombo *CellRendererCombo // out
+
+	_cellRendererCombo = wrapCellRendererCombo(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _cellRendererCombo
 }
 
 // CellRendererComboClass: instance of this type is always passed by reference.

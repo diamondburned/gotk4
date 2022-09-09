@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -464,6 +463,34 @@ func (table *Table) RowSpacing(row uint) uint {
 	_guint = uint(_cret)
 
 	return _guint
+}
+
+// Size gets the number of rows and columns in the table.
+//
+// Deprecated: Grid does not expose the number of columns and rows.
+//
+// The function returns the following values:
+//
+//    - rows (optional): return location for the number of rows, or NULL.
+//    - columns (optional): return location for the number of columns, or NULL.
+//
+func (table *Table) Size() (rows, columns uint) {
+	var _arg0 *C.GtkTable // out
+	var _arg1 C.guint     // in
+	var _arg2 C.guint     // in
+
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(table)
+
+	var _rows uint    // out
+	var _columns uint // out
+
+	_rows = uint(_arg1)
+	_columns = uint(_arg2)
+
+	return _rows, _columns
 }
 
 // Resize: if you need to change a table’s size after it has been created, this

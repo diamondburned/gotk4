@@ -3,32 +3,14 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
-
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// void _gotk4_gtk3_RecentManager_virtual_changed(void* fnptr, GtkRecentManager* arg0) {
-//   ((void (*)(GtkRecentManager*))(fnptr))(arg0);
-// };
 import "C"
-
-func (manager *RecentManager) changed() {
-	gclass := (*C.GtkRecentManagerClass)(coreglib.PeekParentClass(manager))
-	fnarg := gclass.changed
-
-	var _arg0 *C.GtkRecentManager // out
-
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	C._gotk4_gtk3_RecentManager_virtual_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(manager)
-}
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
 // registering a recently used resource.

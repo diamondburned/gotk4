@@ -3,12 +3,13 @@
 package gtk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
 // #include <stdlib.h>
@@ -104,6 +105,77 @@ func NewInvisible() *Invisible {
 	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _invisible
+}
+
+// NewInvisibleForScreen creates a new Invisible object for a specified screen.
+//
+// The function takes the following parameters:
+//
+//    - screen which identifies on which the new Invisible will be created.
+//
+// The function returns the following values:
+//
+//    - invisible: newly created Invisible object.
+//
+func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
+	var _arg1 *C.GdkScreen // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+
+	_cret = C.gtk_invisible_new_for_screen(_arg1)
+	runtime.KeepAlive(screen)
+
+	var _invisible *Invisible // out
+
+	_invisible = wrapInvisible(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _invisible
+}
+
+// Screen returns the Screen object associated with invisible.
+//
+// The function returns the following values:
+//
+//    - screen: associated Screen.
+//
+func (invisible *Invisible) Screen() *gdk.Screen {
+	var _arg0 *C.GtkInvisible // out
+	var _cret *C.GdkScreen    // in
+
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
+
+	_cret = C.gtk_invisible_get_screen(_arg0)
+	runtime.KeepAlive(invisible)
+
+	var _screen *gdk.Screen // out
+
+	{
+		obj := coreglib.Take(unsafe.Pointer(_cret))
+		_screen = &gdk.Screen{
+			Object: obj,
+		}
+	}
+
+	return _screen
+}
+
+// SetScreen sets the Screen where the Invisible object will be displayed.
+//
+// The function takes the following parameters:
+//
+//    - screen: Screen.
+//
+func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
+	var _arg0 *C.GtkInvisible // out
+	var _arg1 *C.GdkScreen    // out
+
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(coreglib.InternObject(invisible).Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(coreglib.InternObject(screen).Native()))
+
+	C.gtk_invisible_set_screen(_arg0, _arg1)
+	runtime.KeepAlive(invisible)
+	runtime.KeepAlive(screen)
 }
 
 // InvisibleClass: instance of this type is always passed by reference.

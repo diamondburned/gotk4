@@ -31,6 +31,8 @@ func _gotk4_glib2_CompareDataFunc(arg1 C.gconstpointer, arg2 C.gconstpointer, ar
 
 	gint := fn(_a, _b)
 
+	var _ int
+
 	cret = C.gint(gint)
 
 	return cret

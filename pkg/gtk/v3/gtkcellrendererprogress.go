@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -82,6 +81,24 @@ func wrapCellRendererProgress(obj *coreglib.Object) *CellRendererProgress {
 
 func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	return wrapCellRendererProgress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewCellRendererProgress creates a new CellRendererProgress.
+//
+// The function returns the following values:
+//
+//    - cellRendererProgress: new cell renderer.
+//
+func NewCellRendererProgress() *CellRendererProgress {
+	var _cret *C.GtkCellRenderer // in
+
+	_cret = C.gtk_cell_renderer_progress_new()
+
+	var _cellRendererProgress *CellRendererProgress // out
+
+	_cellRendererProgress = wrapCellRendererProgress(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _cellRendererProgress
 }
 
 // CellRendererProgressClass: instance of this type is always passed by

@@ -7,7 +7,11 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
@@ -16,7 +20,9 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 // extern void _gotk4_gtk3_Clipboard_ConnectOwnerChange(gpointer, GdkEventOwnerChange*, guintptr);
+// extern void _gotk4_gtk3_ClipboardURIReceivedFunc(GtkClipboard*, gchar**, gpointer);
 // extern void _gotk4_gtk3_ClipboardTextReceivedFunc(GtkClipboard*, gchar*, gpointer);
+// extern void _gotk4_gtk3_ClipboardImageReceivedFunc(GtkClipboard*, GdkPixbuf*, gpointer);
 import "C"
 
 // GType values.
@@ -127,6 +133,33 @@ func (clipboard *Clipboard) Clear() {
 	runtime.KeepAlive(clipboard)
 }
 
+// Display gets the Display associated with clipboard.
+//
+// The function returns the following values:
+//
+//    - display associated with clipboard.
+//
+func (clipboard *Clipboard) Display() *gdk.Display {
+	var _arg0 *C.GtkClipboard // out
+	var _cret *C.GdkDisplay   // in
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+
+	_cret = C.gtk_clipboard_get_display(_arg0)
+	runtime.KeepAlive(clipboard)
+
+	var _display *gdk.Display // out
+
+	{
+		obj := coreglib.Take(unsafe.Pointer(_cret))
+		_display = &gdk.Display{
+			Object: obj,
+		}
+	}
+
+	return _display
+}
+
 // Owner: if the clipboard contents callbacks were set with
 // gtk_clipboard_set_with_owner(), and the gtk_clipboard_set_with_data() or
 // gtk_clipboard_clear() has not subsequently called, returns the owner set by
@@ -152,6 +185,34 @@ func (clipboard *Clipboard) Owner() *coreglib.Object {
 	}
 
 	return _object
+}
+
+// RequestImage requests the contents of the clipboard as image. When the image
+// is later received, it will be converted to a Pixbuf, and callback will be
+// called.
+//
+// The pixbuf parameter to callback will contain the resulting Pixbuf if the
+// request succeeded, or NULL if it failed. This could happen for various
+// reasons, in particular if the clipboard was empty or if the contents of the
+// clipboard could not be converted into an image.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call when the image is received, or the retrieval
+//      fails. (It will always be called one way or the other.).
+//
+func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
+	var _arg0 *C.GtkClipboard                 // out
+	var _arg1 C.GtkClipboardImageReceivedFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardImageReceivedFunc)
+	_arg2 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gtk_clipboard_request_image(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(callback)
 }
 
 // RequestText requests the contents of the clipboard as text. When the text is
@@ -182,6 +243,86 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 	runtime.KeepAlive(callback)
 }
 
+// RequestURIs requests the contents of the clipboard as URIs. When the URIs are
+// later received callback will be called.
+//
+// The uris parameter to callback will contain the resulting array of URIs if
+// the request succeeded, or NULL if it failed. This could happen for various
+// reasons, in particular if the clipboard was empty or if the contents of the
+// clipboard could not be converted into URI form.
+//
+// The function takes the following parameters:
+//
+//    - callback: function to call when the URIs are received, or the retrieval
+//      fails. (It will always be called one way or the other.).
+//
+func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
+	var _arg0 *C.GtkClipboard               // out
+	var _arg1 C.GtkClipboardURIReceivedFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_gtk3_ClipboardURIReceivedFunc)
+	_arg2 = C.gpointer(gbox.AssignOnce(callback))
+
+	C.gtk_clipboard_request_uris(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(callback)
+}
+
+// SetCanStore hints that the clipboard data should be stored somewhere when the
+// application exits or when gtk_clipboard_store () is called.
+//
+// This value is reset when the clipboard owner changes. Where the clipboard
+// data is stored is platform dependent, see gdk_display_store_clipboard () for
+// more information.
+//
+// The function takes the following parameters:
+//
+//    - targets (optional): array containing information about which forms should
+//      be stored or NULL to indicate that all forms should be stored.
+//
+func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
+	var _arg0 *C.GtkClipboard   // out
+	var _arg1 *C.GtkTargetEntry // out
+	var _arg2 C.gint
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg2 = (C.gint)(len(targets))
+	_arg1 = (*C.GtkTargetEntry)(C.calloc(C.size_t(len(targets)), C.size_t(C.sizeof_GtkTargetEntry)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GtkTargetEntry)(_arg1), len(targets))
+		for i := range targets {
+			out[i] = *(*C.GtkTargetEntry)(gextras.StructNative(unsafe.Pointer((&targets[i]))))
+		}
+	}
+
+	C.gtk_clipboard_set_can_store(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(targets)
+}
+
+// SetImage sets the contents of the clipboard to the given Pixbuf. GTK+ will
+// take responsibility for responding for requests for the image, and for
+// converting the image into the requested format.
+//
+// The function takes the following parameters:
+//
+//    - pixbuf: Pixbuf.
+//
+func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkClipboard // out
+	var _arg1 *C.GdkPixbuf    // out
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+
+	C.gtk_clipboard_set_image(_arg0, _arg1)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(pixbuf)
+}
+
 // SetText sets the contents of the clipboard to the given UTF-8 string. GTK+
 // will make a copy of the text and take responsibility for responding for
 // requests for the text, and for converting the text into the requested format.
@@ -206,6 +347,57 @@ func (clipboard *Clipboard) SetText(text string, len int) {
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(len)
+}
+
+// Store stores the current clipboard data somewhere so that it will stay around
+// after the application has quit.
+func (clipboard *Clipboard) Store() {
+	var _arg0 *C.GtkClipboard // out
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+
+	C.gtk_clipboard_store(_arg0)
+	runtime.KeepAlive(clipboard)
+}
+
+// WaitForImage requests the contents of the clipboard as image and converts the
+// result to a Pixbuf. This function waits for the data to be received using the
+// main loop, so events, timeouts, etc, may be dispatched during the wait.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional): newly-allocated Pixbuf object which must be disposed
+//      with g_object_unref(), or NULL if retrieving the selection data failed.
+//      (This could happen for various reasons, in particular if the clipboard
+//      was empty or if the contents of the clipboard could not be converted into
+//      an image.).
+//
+func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkClipboard // out
+	var _cret *C.GdkPixbuf    // in
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+
+	_cret = C.gtk_clipboard_wait_for_image(_arg0)
+	runtime.KeepAlive(clipboard)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+	}
+
+	return _pixbuf
 }
 
 // WaitForText requests the contents of the clipboard as text and converts the
@@ -239,6 +431,120 @@ func (clipboard *Clipboard) WaitForText() string {
 	return _utf8
 }
 
+// WaitForURIs requests the contents of the clipboard as URIs. This function
+// waits for the data to be received using the main loop, so events, timeouts,
+// etc, may be dispatched during the wait.
+//
+// The function returns the following values:
+//
+//    - utf8s (optional): a newly-allocated NULL-terminated array of strings
+//      which must be freed with g_strfreev(), or NULL if retrieving the
+//      selection data failed. (This could happen for various reasons, in
+//      particular if the clipboard was empty or if the contents of the clipboard
+//      could not be converted into URI form.).
+//
+func (clipboard *Clipboard) WaitForURIs() []string {
+	var _arg0 *C.GtkClipboard // out
+	var _cret **C.gchar       // in
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+
+	_cret = C.gtk_clipboard_wait_for_uris(_arg0)
+	runtime.KeepAlive(clipboard)
+
+	var _utf8s []string // out
+
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
+		{
+			var i int
+			var z *C.gchar
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
+
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
+		}
+	}
+
+	return _utf8s
+}
+
+// WaitIsImageAvailable: test to see if there is an image available to be pasted
+// This is done by requesting the TARGETS atom and checking if it contains any
+// of the supported image targets. This function waits for the data to be
+// received using the main loop, so events, timeouts, etc, may be dispatched
+// during the wait.
+//
+// This function is a little faster than calling gtk_clipboard_wait_for_image()
+// since it doesn’t need to retrieve the actual image data.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE is there is an image available, FALSE otherwise.
+//
+func (clipboard *Clipboard) WaitIsImageAvailable() bool {
+	var _arg0 *C.GtkClipboard // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+
+	_cret = C.gtk_clipboard_wait_is_image_available(_arg0)
+	runtime.KeepAlive(clipboard)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// WaitIsRichTextAvailable: test to see if there is rich text available to be
+// pasted This is done by requesting the TARGETS atom and checking if it
+// contains any of the supported rich text targets. This function waits for the
+// data to be received using the main loop, so events, timeouts, etc, may be
+// dispatched during the wait.
+//
+// This function is a little faster than calling
+// gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
+// actual text.
+//
+// The function takes the following parameters:
+//
+//    - buffer: TextBuffer.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE is there is rich text available, FALSE otherwise.
+//
+func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
+	var _arg0 *C.GtkClipboard  // out
+	var _arg1 *C.GtkTextBuffer // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	_cret = C.gtk_clipboard_wait_is_rich_text_available(_arg0, _arg1)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(buffer)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // WaitIsTextAvailable: test to see if there is text available to be pasted This
 // is done by requesting the TARGETS atom and checking if it contains any of the
 // supported text targets. This function waits for the data to be received using
@@ -258,6 +564,37 @@ func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
 
 	_cret = C.gtk_clipboard_wait_is_text_available(_arg0)
+	runtime.KeepAlive(clipboard)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// WaitIsURIsAvailable: test to see if there is a list of URIs available to be
+// pasted This is done by requesting the TARGETS atom and checking if it
+// contains the URI targets. This function waits for the data to be received
+// using the main loop, so events, timeouts, etc, may be dispatched during the
+// wait.
+//
+// This function is a little faster than calling gtk_clipboard_wait_for_uris()
+// since it doesn’t need to retrieve the actual URI data.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE is there is an URI list available, FALSE otherwise.
+//
+func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
+	var _arg0 *C.GtkClipboard // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+
+	_cret = C.gtk_clipboard_wait_is_uris_available(_arg0)
 	runtime.KeepAlive(clipboard)
 
 	var _ok bool // out

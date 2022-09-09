@@ -33,6 +33,8 @@ func _gotk4_gtk3_Scale_ConnectFormatValue(arg0 C.gpointer, arg1 C.gdouble, arg2 
 
 	utf8 := f(_value)
 
+	var _ string
+
 	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret

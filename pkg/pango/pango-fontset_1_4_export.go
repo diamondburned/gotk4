@@ -64,6 +64,8 @@ func _gotk4_pango1_FontsetForEachFunc(arg1 *C.PangoFontset, arg2 *C.PangoFont, a
 
 	ok := fn(_fontset, _font)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}

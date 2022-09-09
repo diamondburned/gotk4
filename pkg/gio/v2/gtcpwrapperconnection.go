@@ -3,54 +3,14 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
-	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <gio/gio.h>
 import "C"
-
-// BaseIOStream gets conn's base OStream.
-//
-// The function returns the following values:
-//
-//    - ioStream conn's base OStream.
-//
-func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
-	var _arg0 *C.GTcpWrapperConnection // out
-	var _cret *C.GIOStream             // in
-
-	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
-
-	_cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
-	runtime.KeepAlive(conn)
-
-	var _ioStream IOStreamer // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gio.IOStreamer is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(IOStreamer)
-			return ok
-		})
-		rv, ok := casted.(IOStreamer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.IOStreamer")
-		}
-		_ioStream = rv
-	}
-
-	return _ioStream
-}
 
 // TCPWrapperConnectionClass: instance of this type is always passed by
 // reference.

@@ -31,6 +31,8 @@ func _gotk4_gtk3_TranslateFunc(arg1 *C.gchar, arg2 C.gpointer) (cret *C.gchar) {
 
 	utf8 := fn(_path)
 
+	var _ string
+
 	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret

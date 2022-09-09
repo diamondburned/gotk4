@@ -3,13 +3,15 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/atk"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -500,6 +502,32 @@ func NewEntry() *Entry {
 	return _entry
 }
 
+// NewEntryWithBuffer creates a new entry with the specified text buffer.
+//
+// The function takes the following parameters:
+//
+//    - buffer to use for the new Entry.
+//
+// The function returns the following values:
+//
+//    - entry: new Entry.
+//
+func NewEntryWithBuffer(buffer *EntryBuffer) *Entry {
+	var _arg1 *C.GtkEntryBuffer // out
+	var _cret *C.GtkWidget      // in
+
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	_cret = C.gtk_entry_new_with_buffer(_arg1)
+	runtime.KeepAlive(buffer)
+
+	var _entry *Entry // out
+
+	_entry = wrapEntry(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _entry
+}
+
 // ActivatesDefault retrieves the value set by
 // gtk_entry_set_activates_default().
 //
@@ -525,6 +553,156 @@ func (entry *Entry) ActivatesDefault() bool {
 	return _ok
 }
 
+// Alignment gets the value set by gtk_entry_set_alignment().
+//
+// The function returns the following values:
+//
+//    - gfloat: alignment.
+//
+func (entry *Entry) Alignment() float32 {
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gfloat    // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_alignment(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// Attributes gets the attribute list that was set on the entry using
+// gtk_entry_set_attributes(), if any.
+//
+// The function returns the following values:
+//
+//    - attrList (optional): attribute list, or NULL if none was set.
+//
+func (entry *Entry) Attributes() *pango.AttrList {
+	var _arg0 *C.GtkEntry      // out
+	var _cret *C.PangoAttrList // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_attributes(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _attrList *pango.AttrList // out
+
+	if _cret != nil {
+		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.pango_attr_list_ref(_cret)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_attrList)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
+			},
+		)
+	}
+
+	return _attrList
+}
+
+// Buffer: get the EntryBuffer object which holds the text for this widget.
+//
+// The function returns the following values:
+//
+//    - entryBuffer: EntryBuffer object.
+//
+func (entry *Entry) Buffer() *EntryBuffer {
+	var _arg0 *C.GtkEntry       // out
+	var _cret *C.GtkEntryBuffer // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_buffer(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _entryBuffer *EntryBuffer // out
+
+	_entryBuffer = wrapEntryBuffer(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _entryBuffer
+}
+
+// Completion returns the auxiliary completion object currently in use by entry.
+//
+// The function returns the following values:
+//
+//    - entryCompletion: auxiliary completion object currently in use by entry.
+//
+func (entry *Entry) Completion() *EntryCompletion {
+	var _arg0 *C.GtkEntry           // out
+	var _cret *C.GtkEntryCompletion // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_completion(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _entryCompletion *EntryCompletion // out
+
+	_entryCompletion = wrapEntryCompletion(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _entryCompletion
+}
+
+// CurrentIconDragSource returns the index of the icon which is the source of
+// the current DND operation, or -1.
+//
+// This function is meant to be used in a Widget::drag-data-get callback.
+//
+// The function returns the following values:
+//
+//    - gint: index of the icon which is the source of the current DND operation,
+//      or -1.
+//
+func (entry *Entry) CurrentIconDragSource() int {
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_current_icon_drag_source(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// CursorHAdjustment retrieves the horizontal cursor adjustment for the entry.
+// See gtk_entry_set_cursor_hadjustment().
+//
+// The function returns the following values:
+//
+//    - adjustment (optional): horizontal cursor adjustment, or NULL if none has
+//      been set.
+//
+func (entry *Entry) CursorHAdjustment() *Adjustment {
+	var _arg0 *C.GtkEntry      // out
+	var _cret *C.GtkAdjustment // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_cursor_hadjustment(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _adjustment *Adjustment // out
+
+	if _cret != nil {
+		_adjustment = wrapAdjustment(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _adjustment
+}
+
 // HasFrame gets the value set by gtk_entry_set_has_frame().
 //
 // The function returns the following values:
@@ -547,6 +725,459 @@ func (entry *Entry) HasFrame() bool {
 	}
 
 	return _ok
+}
+
+// IconActivatable returns whether the icon is activatable.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the icon is activatable.
+//
+func (entry *Entry) IconActivatable(iconPos EntryIconPosition) bool {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_activatable(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IconArea gets the area where entry’s icon at icon_pos is drawn. This function
+// is useful when drawing something to the entry in a draw callback.
+//
+// If the entry is not realized or has no icon at the given position, icon_area
+// is filled with zeros. Otherwise, icon_area will be filled with the icon’s
+// allocation, relative to entry’s allocation.
+//
+// See also gtk_entry_get_text_area().
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - iconArea: return location for the icon’s area.
+//
+func (entry *Entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.GdkRectangle         // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	C.gtk_entry_get_icon_area(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _iconArea *gdk.Rectangle // out
+
+	_iconArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+
+	return _iconArea
+}
+
+// IconAtPos finds the icon at the given position and return its index. The
+// position’s coordinates are relative to the entry’s top left corner. If x, y
+// doesn’t lie inside an icon, -1 is returned. This function is intended for use
+// in a Widget::query-tooltip signal handler.
+//
+// The function takes the following parameters:
+//
+//    - x coordinate of the position to find.
+//    - y coordinate of the position to find.
+//
+// The function returns the following values:
+//
+//    - gint: index of the icon at the given position, or -1.
+//
+func (entry *Entry) IconAtPos(x, y int) int {
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+
+	_cret = C.gtk_entry_get_icon_at_pos(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// IconGIcon retrieves the #GIcon used for the icon, or NULL if there is no icon
+// or if the icon was set by some other method (e.g., by stock, pixbuf, or icon
+// name).
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - icon (optional) or NULL if no icon is set or if the icon is not a #GIcon.
+//
+func (entry *Entry) IconGIcon(iconPos EntryIconPosition) *gio.Icon {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.GIcon               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_gicon(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _icon *gio.Icon // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_icon = &gio.Icon{
+				Object: obj,
+			}
+		}
+	}
+
+	return _icon
+}
+
+// IconName retrieves the icon name used for the icon, or NULL if there is no
+// icon or if the icon was set by some other method (e.g., by pixbuf, stock or
+// gicon).
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): icon name, or NULL if no icon is set or if the icon
+//      wasn’t set from an icon name.
+//
+func (entry *Entry) IconName(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.gchar               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_name(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// IconPixbuf retrieves the image used for the icon.
+//
+// Unlike the other methods of setting and getting icon data, this method will
+// work regardless of whether the icon was set using a Pixbuf, a #GIcon, a stock
+// item, or an icon name.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - pixbuf (optional) or NULL if no icon is set for this position.
+//
+func (entry *Entry) IconPixbuf(iconPos EntryIconPosition) *gdkpixbuf.Pixbuf {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.GdkPixbuf           // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_pixbuf(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _pixbuf *gdkpixbuf.Pixbuf // out
+
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_pixbuf = &gdkpixbuf.Pixbuf{
+				Object: obj,
+				LoadableIcon: gio.LoadableIcon{
+					Icon: gio.Icon{
+						Object: obj,
+					},
+				},
+			}
+		}
+	}
+
+	return _pixbuf
+}
+
+// IconSensitive returns whether the icon appears sensitive or insensitive.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the icon is sensitive.
+//
+func (entry *Entry) IconSensitive(iconPos EntryIconPosition) bool {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_sensitive(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IconStock retrieves the stock id used for the icon, or NULL if there is no
+// icon or if the icon was set by some other method (e.g., by pixbuf, icon name
+// or gicon).
+//
+// Deprecated: Use gtk_entry_get_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - utf8: stock id, or NULL if no icon is set or if the icon wasn’t set from
+//      a stock id.
+//
+func (entry *Entry) IconStock(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.gchar               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_stock(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// IconStorageType gets the type of representation being used by the icon to
+// store image data. If the icon has no image data, the return value will be
+// GTK_IMAGE_EMPTY.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - imageType: image representation being used.
+//
+func (entry *Entry) IconStorageType(iconPos EntryIconPosition) ImageType {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret C.GtkImageType         // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_storage_type(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _imageType ImageType // out
+
+	_imageType = ImageType(_cret)
+
+	return _imageType
+}
+
+// IconTooltipMarkup gets the contents of the tooltip on the icon at the
+// specified position in entry.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. Free the returned string with
+//      g_free() when done.
+//
+func (entry *Entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.gchar               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_tooltip_markup(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// IconTooltipText gets the contents of the tooltip on the icon at the specified
+// position in entry.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional): tooltip text, or NULL. Free the returned string with
+//      g_free() when done.
+//
+func (entry *Entry) IconTooltipText(iconPos EntryIconPosition) string {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _cret *C.gchar               // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+
+	_cret = C.gtk_entry_get_icon_tooltip_text(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _utf8
+}
+
+// InnerBorder: this function returns the entry’s Entry:inner-border property.
+// See gtk_entry_set_inner_border() for more information.
+//
+// Deprecated: Use the standard border and padding CSS properties (through
+// objects like StyleContext and CssProvider); the value returned by this
+// function is ignored by Entry.
+//
+// The function returns the following values:
+//
+//    - border (optional) entry’s Border, or NULL if none was set.
+//
+func (entry *Entry) InnerBorder() *Border {
+	var _arg0 *C.GtkEntry  // out
+	var _cret *C.GtkBorder // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_inner_border(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _border *Border // out
+
+	if _cret != nil {
+		_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _border
+}
+
+// InputHints gets the value of the Entry:input-hints property.
+//
+// The function returns the following values:
+//
+func (entry *Entry) InputHints() InputHints {
+	var _arg0 *C.GtkEntry     // out
+	var _cret C.GtkInputHints // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_input_hints(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _inputHints InputHints // out
+
+	_inputHints = InputHints(_cret)
+
+	return _inputHints
+}
+
+// InputPurpose gets the value of the Entry:input-purpose property.
+//
+// The function returns the following values:
+//
+func (entry *Entry) InputPurpose() InputPurpose {
+	var _arg0 *C.GtkEntry       // out
+	var _cret C.GtkInputPurpose // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_input_purpose(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _inputPurpose InputPurpose // out
+
+	_inputPurpose = InputPurpose(_cret)
+
+	return _inputPurpose
 }
 
 // InvisibleChar retrieves the character displayed in place of the real
@@ -678,6 +1309,149 @@ func (entry *Entry) MaxLength() int {
 	return _gint
 }
 
+// MaxWidthChars retrieves the desired maximum width of entry, in characters.
+// See gtk_entry_set_max_width_chars().
+//
+// The function returns the following values:
+//
+//    - gint: maximum width of the entry, in characters.
+//
+func (entry *Entry) MaxWidthChars() int {
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_max_width_chars(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// OverwriteMode gets the value set by gtk_entry_set_overwrite_mode().
+//
+// The function returns the following values:
+//
+//    - ok: whether the text is overwritten when typing.
+//
+func (entry *Entry) OverwriteMode() bool {
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_overwrite_mode(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// PlaceholderText retrieves the text that will be displayed when entry is empty
+// and unfocused.
+//
+// The function returns the following values:
+//
+//    - utf8: pointer to the placeholder text as a string. This string points to
+//      internally allocated storage in the widget and must not be freed,
+//      modified or stored.
+//
+func (entry *Entry) PlaceholderText() string {
+	var _arg0 *C.GtkEntry // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_placeholder_text(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ProgressFraction returns the current fraction of the task that’s been
+// completed. See gtk_entry_set_progress_fraction().
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
+func (entry *Entry) ProgressFraction() float64 {
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gdouble   // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_progress_fraction(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// ProgressPulseStep retrieves the pulse step set with
+// gtk_entry_set_progress_pulse_step().
+//
+// The function returns the following values:
+//
+//    - gdouble: fraction from 0.0 to 1.0.
+//
+func (entry *Entry) ProgressPulseStep() float64 {
+	var _arg0 *C.GtkEntry // out
+	var _cret C.gdouble   // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_progress_pulse_step(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// Tabs gets the tabstops that were set on the entry using gtk_entry_set_tabs(),
+// if any.
+//
+// The function returns the following values:
+//
+//    - tabArray (optional): tabstops, or NULL if none was set.
+//
+func (entry *Entry) Tabs() *pango.TabArray {
+	var _arg0 *C.GtkEntry      // out
+	var _cret *C.PangoTabArray // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_tabs(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _tabArray *pango.TabArray // out
+
+	if _cret != nil {
+		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
+
+	return _tabArray
+}
+
 // Text retrieves the contents of the entry widget. See also
 // gtk_editable_get_chars().
 //
@@ -704,6 +1478,58 @@ func (entry *Entry) Text() string {
 	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 
 	return _utf8
+}
+
+// TextArea gets the area where the entry’s text is drawn. This function is
+// useful when drawing something to the entry in a draw callback.
+//
+// If the entry is not realized, text_area is filled with zeros.
+//
+// See also gtk_entry_get_icon_area().
+//
+// The function returns the following values:
+//
+//    - textArea: return location for the text area.
+//
+func (entry *Entry) TextArea() *gdk.Rectangle {
+	var _arg0 *C.GtkEntry    // out
+	var _arg1 C.GdkRectangle // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C.gtk_entry_get_text_area(_arg0, &_arg1)
+	runtime.KeepAlive(entry)
+
+	var _textArea *gdk.Rectangle // out
+
+	_textArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+
+	return _textArea
+}
+
+// TextLength retrieves the current length of the text in entry.
+//
+// This is equivalent to getting entry's EntryBuffer and calling
+// gtk_entry_buffer_get_length() on it.
+//
+// The function returns the following values:
+//
+//    - guint16: current number of characters in Entry, or 0 if there are none.
+//
+func (entry *Entry) TextLength() uint16 {
+	var _arg0 *C.GtkEntry // out
+	var _cret C.guint16   // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	_cret = C.gtk_entry_get_text_length(_arg0)
+	runtime.KeepAlive(entry)
+
+	var _guint16 uint16 // out
+
+	_guint16 = uint16(_cret)
+
+	return _guint16
 }
 
 // Visibility retrieves whether the text in entry is visible. See
@@ -753,6 +1579,61 @@ func (entry *Entry) WidthChars() int {
 	return _gint
 }
 
+// GrabFocusWithoutSelecting causes entry to have keyboard focus.
+//
+// It behaves like gtk_widget_grab_focus(), except that it doesn't select the
+// contents of the entry. You only want to call this on some special entries
+// which the user usually doesn't want to replace all text in, such as
+// search-as-you-type entries.
+func (entry *Entry) GrabFocusWithoutSelecting() {
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C.gtk_entry_grab_focus_without_selecting(_arg0)
+	runtime.KeepAlive(entry)
+}
+
+// IMContextFilterKeypress: allow the Entry input method to internally handle
+// key press and release events. If this function returns TRUE, then no further
+// processing should be done for this key event. See
+// gtk_im_context_filter_keypress().
+//
+// Note that you are expected to call this function from your handler when
+// overriding key event handling. This is needed in the case when you need to
+// insert your own key handling between the input method and the default key
+// event handling of the Entry. See gtk_text_view_reset_im_context() for an
+// example of use.
+//
+// The function takes the following parameters:
+//
+//    - event: key event.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the input method handled the key event.
+//
+func (entry *Entry) IMContextFilterKeypress(event *gdk.EventKey) bool {
+	var _arg0 *C.GtkEntry    // out
+	var _arg1 *C.GdkEventKey // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.GdkEventKey)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gtk_entry_im_context_filter_keypress(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // LayoutIndexToTextIndex converts from a position in the entry’s Layout
 // (returned by gtk_entry_get_layout()) to a position in the entry contents
 // (returned by gtk_entry_get_text()).
@@ -784,6 +1665,33 @@ func (entry *Entry) LayoutIndexToTextIndex(layoutIndex int) int {
 	return _gint
 }
 
+// ProgressPulse indicates that some progress is made, but you don’t know how
+// much. Causes the entry’s progress indicator to enter “activity mode,” where a
+// block bounces back and forth. Each call to gtk_entry_progress_pulse() causes
+// the block to move by a little bit (the amount of movement per pulse is
+// determined by gtk_entry_set_progress_pulse_step()).
+func (entry *Entry) ProgressPulse() {
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C.gtk_entry_progress_pulse(_arg0)
+	runtime.KeepAlive(entry)
+}
+
+// ResetIMContext: reset the input method context of the entry if needed.
+//
+// This can be necessary in the case where modifying the buffer would confuse
+// on-going input method behavior.
+func (entry *Entry) ResetIMContext() {
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C.gtk_entry_reset_im_context(_arg0)
+	runtime.KeepAlive(entry)
+}
+
 // SetActivatesDefault: if setting is TRUE, pressing Enter in the entry will
 // activate the default widget for the window containing the entry. This usually
 // means that the dialog box containing the entry will be closed, since the
@@ -811,6 +1719,114 @@ func (entry *Entry) SetActivatesDefault(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
+// SetAlignment sets the alignment for the contents of the entry. This controls
+// the horizontal positioning of the contents when the displayed text is shorter
+// than the width of the entry.
+//
+// The function takes the following parameters:
+//
+//    - xalign: horizontal alignment, from 0 (left) to 1 (right). Reversed for
+//      RTL layouts.
+//
+func (entry *Entry) SetAlignment(xalign float32) {
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gfloat    // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.gfloat(xalign)
+
+	C.gtk_entry_set_alignment(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(xalign)
+}
+
+// SetAttributes sets a AttrList; the attributes in the list are applied to the
+// entry text.
+//
+// The function takes the following parameters:
+//
+//    - attrs: AttrList.
+//
+func (entry *Entry) SetAttributes(attrs *pango.AttrList) {
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.PangoAttrList // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(attrs)))
+
+	C.gtk_entry_set_attributes(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(attrs)
+}
+
+// SetBuffer: set the EntryBuffer object which holds the text for this widget.
+//
+// The function takes the following parameters:
+//
+//    - buffer: EntryBuffer.
+//
+func (entry *Entry) SetBuffer(buffer *EntryBuffer) {
+	var _arg0 *C.GtkEntry       // out
+	var _arg1 *C.GtkEntryBuffer // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+
+	C.gtk_entry_set_buffer(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(buffer)
+}
+
+// SetCompletion sets completion to be the auxiliary completion object to use
+// with entry. All further configuration of the completion mechanism is done on
+// completion using the EntryCompletion API. Completion is disabled if
+// completion is set to NULL.
+//
+// The function takes the following parameters:
+//
+//    - completion (optional) or NULL.
+//
+func (entry *Entry) SetCompletion(completion *EntryCompletion) {
+	var _arg0 *C.GtkEntry           // out
+	var _arg1 *C.GtkEntryCompletion // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	if completion != nil {
+		_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer(coreglib.InternObject(completion).Native()))
+	}
+
+	C.gtk_entry_set_completion(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(completion)
+}
+
+// SetCursorHAdjustment hooks up an adjustment to the cursor position in an
+// entry, so that when the cursor is moved, the adjustment is scrolled to show
+// that position. See gtk_scrolled_window_get_hadjustment() for a typical way of
+// obtaining the adjustment.
+//
+// The adjustment has to be in pixel units and in the same coordinate system as
+// the entry.
+//
+// The function takes the following parameters:
+//
+//    - adjustment (optional) which should be adjusted when the cursor is moved,
+//      or NULL.
+//
+func (entry *Entry) SetCursorHAdjustment(adjustment *Adjustment) {
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.GtkAdjustment // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	if adjustment != nil {
+		_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
+	}
+
+	C.gtk_entry_set_cursor_hadjustment(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(adjustment)
+}
+
 // SetHasFrame sets whether the entry has a beveled frame around it.
 //
 // The function takes the following parameters:
@@ -829,6 +1845,346 @@ func (entry *Entry) SetHasFrame(setting bool) {
 	C.gtk_entry_set_has_frame(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(setting)
+}
+
+// SetIconActivatable sets whether the icon is activatable.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - activatable: TRUE if the icon should be activatable.
+//
+func (entry *Entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.gboolean             // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if activatable {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_entry_set_icon_activatable(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(activatable)
+}
+
+// SetIconDragSource sets up the icon at the given position so that GTK+ will
+// start a drag operation when the user clicks and drags the icon.
+//
+// To handle the drag operation, you need to connect to the usual
+// Widget::drag-data-get (or possibly Widget::drag-data-delete) signal, and use
+// gtk_entry_get_current_icon_drag_source() in your signal handler to find out
+// if the drag was started from an icon.
+//
+// By default, GTK+ uses the icon as the drag icon. You can use the
+// Widget::drag-begin signal to set a different icon. Note that you have to use
+// g_signal_connect_after() to ensure that your signal handler gets executed
+// after the default handler.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - targetList targets (data formats) in which the data can be provided.
+//    - actions: bitmask of the allowed drag actions.
+//
+func (entry *Entry) SetIconDragSource(iconPos EntryIconPosition, targetList *TargetList, actions gdk.DragAction) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GtkTargetList       // out
+	var _arg3 C.GdkDragAction        // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	_arg2 = (*C.GtkTargetList)(gextras.StructNative(unsafe.Pointer(targetList)))
+	_arg3 = C.GdkDragAction(actions)
+
+	C.gtk_entry_set_icon_drag_source(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(targetList)
+	runtime.KeepAlive(actions)
+}
+
+// SetIconFromGIcon sets the icon shown in the entry at the specified position
+// from the current icon theme. If the icon isn’t known, a “broken image” icon
+// will be displayed instead.
+//
+// If icon is NULL, no icon will be shown in the specified position.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: position at which to set the icon.
+//    - icon (optional) to set, or NULL.
+//
+func (entry *Entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Iconner) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GIcon               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if icon != nil {
+		_arg2 = (*C.GIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	}
+
+	C.gtk_entry_set_icon_from_gicon(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(icon)
+}
+
+// SetIconFromIconName sets the icon shown in the entry at the specified
+// position from the current icon theme.
+//
+// If the icon name isn’t known, a “broken image” icon will be displayed
+// instead.
+//
+// If icon_name is NULL, no icon will be shown in the specified position.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: position at which to set the icon.
+//    - iconName (optional): icon name, or NULL.
+//
+func (entry *Entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if iconName != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(iconName)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	C.gtk_entry_set_icon_from_icon_name(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(iconName)
+}
+
+// SetIconFromPixbuf sets the icon shown in the specified position using a
+// pixbuf.
+//
+// If pixbuf is NULL, no icon will be shown in the specified position.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - pixbuf (optional) or NULL.
+//
+func (entry *Entry) SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf *gdkpixbuf.Pixbuf) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GdkPixbuf           // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if pixbuf != nil {
+		_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
+	}
+
+	C.gtk_entry_set_icon_from_pixbuf(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(pixbuf)
+}
+
+// SetIconFromStock sets the icon shown in the entry at the specified position
+// from a stock image.
+//
+// If stock_id is NULL, no icon will be shown in the specified position.
+//
+// Deprecated: Use gtk_entry_set_icon_from_icon_name() instead.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - stockId (optional): name of the stock item, or NULL.
+//
+func (entry *Entry) SetIconFromStock(iconPos EntryIconPosition, stockId string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if stockId != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	C.gtk_entry_set_icon_from_stock(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(stockId)
+}
+
+// SetIconSensitive sets the sensitivity for the specified icon.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - sensitive specifies whether the icon should appear sensitive or
+//      insensitive.
+//
+func (entry *Entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.gboolean             // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if sensitive {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_entry_set_icon_sensitive(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(sensitive)
+}
+
+// SetIconTooltipMarkup sets tooltip as the contents of the tooltip for the icon
+// at the specified position. tooltip is assumed to be marked up with the [Pango
+// text markup language][PangoMarkupFormat].
+//
+// Use NULL for tooltip to remove an existing tooltip.
+//
+// See also gtk_widget_set_tooltip_markup() and
+// gtk_entry_set_icon_tooltip_text().
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - tooltip (optional) contents of the tooltip for the icon, or NULL.
+//
+func (entry *Entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if tooltip != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	C.gtk_entry_set_icon_tooltip_markup(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(tooltip)
+}
+
+// SetIconTooltipText sets tooltip as the contents of the tooltip for the icon
+// at the specified position.
+//
+// Use NULL for tooltip to remove an existing tooltip.
+//
+// See also gtk_widget_set_tooltip_text() and
+// gtk_entry_set_icon_tooltip_markup().
+//
+// If you unset the widget tooltip via gtk_widget_set_tooltip_text() or
+// gtk_widget_set_tooltip_markup(), this sets GtkWidget:has-tooltip to FALSE,
+// which suppresses icon tooltips too. You can resolve this by then calling
+// gtk_widget_set_has_tooltip() to set GtkWidget:has-tooltip back to TRUE, or
+// setting at least one non-empty tooltip on any icon achieves the same result.
+//
+// The function takes the following parameters:
+//
+//    - iconPos: icon position.
+//    - tooltip (optional) contents of the tooltip for the icon, or NULL.
+//
+func (entry *Entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string) {
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.gchar               // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkEntryIconPosition(iconPos)
+	if tooltip != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(tooltip)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	C.gtk_entry_set_icon_tooltip_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(iconPos)
+	runtime.KeepAlive(tooltip)
+}
+
+// SetInnerBorder sets entry’s inner-border property to border, or clears it if
+// NULL is passed. The inner-border is the area around the entry’s text, but
+// inside its frame.
+//
+// If set, this property overrides the inner-border style property. Overriding
+// the style-provided border is useful when you want to do in-place editing of
+// some text in a canvas or list widget, where pixel-exact positioning of the
+// entry is important.
+//
+// Deprecated: Use the standard border and padding CSS properties (through
+// objects like StyleContext and CssProvider); the value set with this function
+// is ignored by Entry.
+//
+// The function takes the following parameters:
+//
+//    - border (optional) or NULL.
+//
+func (entry *Entry) SetInnerBorder(border *Border) {
+	var _arg0 *C.GtkEntry  // out
+	var _arg1 *C.GtkBorder // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	if border != nil {
+		_arg1 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border)))
+	}
+
+	C.gtk_entry_set_inner_border(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(border)
+}
+
+// SetInputHints sets the Entry:input-hints property, which allows input methods
+// to fine-tune their behaviour.
+//
+// The function takes the following parameters:
+//
+//    - hints: hints.
+//
+func (entry *Entry) SetInputHints(hints InputHints) {
+	var _arg0 *C.GtkEntry     // out
+	var _arg1 C.GtkInputHints // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkInputHints(hints)
+
+	C.gtk_entry_set_input_hints(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(hints)
+}
+
+// SetInputPurpose sets the Entry:input-purpose property which can be used by
+// on-screen keyboards and other input methods to adjust their behaviour.
+//
+// The function takes the following parameters:
+//
+//    - purpose: purpose.
+//
+func (entry *Entry) SetInputPurpose(purpose InputPurpose) {
+	var _arg0 *C.GtkEntry       // out
+	var _arg1 C.GtkInputPurpose // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.GtkInputPurpose(purpose)
+
+	C.gtk_entry_set_input_purpose(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(purpose)
 }
 
 // SetInvisibleChar sets the character to use in place of the actual text when
@@ -878,6 +2234,132 @@ func (entry *Entry) SetMaxLength(max int) {
 	C.gtk_entry_set_max_length(_arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(max)
+}
+
+// SetMaxWidthChars sets the desired maximum width in characters of entry.
+//
+// The function takes the following parameters:
+//
+//    - nChars: new desired maximum width, in characters.
+//
+func (entry *Entry) SetMaxWidthChars(nChars int) {
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gint      // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.gint(nChars)
+
+	C.gtk_entry_set_max_width_chars(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(nChars)
+}
+
+// SetOverwriteMode sets whether the text is overwritten when typing in the
+// Entry.
+//
+// The function takes the following parameters:
+//
+//    - overwrite: new value.
+//
+func (entry *Entry) SetOverwriteMode(overwrite bool) {
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	if overwrite {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_entry_set_overwrite_mode(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(overwrite)
+}
+
+// SetPlaceholderText sets text to be displayed in entry when it is empty and
+// unfocused. This can be used to give a visual hint of the expected contents of
+// the Entry.
+//
+// Note that since the placeholder text gets removed when the entry received
+// focus, using this feature is a bit problematic if the entry is given the
+// initial focus in a window. Sometimes this can be worked around by delaying
+// the initial focus setting until the first key event arrives.
+//
+// The function takes the following parameters:
+//
+//    - text (optional): string to be displayed when entry is empty and
+//      unfocused, or NULL.
+//
+func (entry *Entry) SetPlaceholderText(text string) {
+	var _arg0 *C.GtkEntry // out
+	var _arg1 *C.gchar    // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	if text != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.gtk_entry_set_placeholder_text(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(text)
+}
+
+// SetProgressFraction causes the entry’s progress indicator to “fill in” the
+// given fraction of the bar. The fraction should be between 0.0 and 1.0,
+// inclusive.
+//
+// The function takes the following parameters:
+//
+//    - fraction of the task that’s been completed.
+//
+func (entry *Entry) SetProgressFraction(fraction float64) {
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gdouble   // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.gdouble(fraction)
+
+	C.gtk_entry_set_progress_fraction(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(fraction)
+}
+
+// SetProgressPulseStep sets the fraction of total entry width to move the
+// progress bouncing block for each call to gtk_entry_progress_pulse().
+//
+// The function takes the following parameters:
+//
+//    - fraction between 0.0 and 1.0.
+//
+func (entry *Entry) SetProgressPulseStep(fraction float64) {
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gdouble   // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = C.gdouble(fraction)
+
+	C.gtk_entry_set_progress_pulse_step(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(fraction)
+}
+
+// SetTabs sets a TabArray; the tabstops in the array are applied to the entry
+// text.
+//
+// The function takes the following parameters:
+//
+//    - tabs: TabArray.
+//
+func (entry *Entry) SetTabs(tabs *pango.TabArray) {
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.PangoTabArray // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+	_arg1 = (*C.PangoTabArray)(gextras.StructNative(unsafe.Pointer(tabs)))
+
+	C.gtk_entry_set_tabs(_arg0, _arg1)
+	runtime.KeepAlive(entry)
+	runtime.KeepAlive(tabs)
 }
 
 // SetText sets the text in the widget to the given value, replacing the current
@@ -983,6 +2465,18 @@ func (entry *Entry) TextIndexToLayoutIndex(textIndex int) int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// UnsetInvisibleChar unsets the invisible char previously set with
+// gtk_entry_set_invisible_char(). So that the default invisible char is used
+// again.
+func (entry *Entry) UnsetInvisibleChar() {
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C.gtk_entry_unset_invisible_char(_arg0)
+	runtime.KeepAlive(entry)
 }
 
 func (entry *Entry) activate() {

@@ -32,6 +32,8 @@ func _gotk4_gtk4_ScaleFormatValueFunc(arg1 *C.GtkScale, arg2 C.double, arg3 C.gp
 
 	utf8 := fn(_scale, _value)
 
+	var _ string
+
 	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret

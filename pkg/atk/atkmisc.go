@@ -3,7 +3,7 @@
 package atk
 
 import (
-	"reflect"
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
@@ -15,6 +15,12 @@ import (
 // #include <glib-object.h>
 // extern void _gotk4_atk1_MiscClass_threads_leave(AtkMisc*);
 // extern void _gotk4_atk1_MiscClass_threads_enter(AtkMisc*);
+// void _gotk4_atk1_Misc_virtual_threads_enter(void* fnptr, AtkMisc* arg0) {
+//   ((void (*)(AtkMisc*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Misc_virtual_threads_leave(void* fnptr, AtkMisc* arg0) {
+//   ((void (*)(AtkMisc*))(fnptr))(arg0);
+// };
 import "C"
 
 // GType values.
@@ -102,6 +108,78 @@ func wrapMisc(obj *coreglib.Object) *Misc {
 
 func marshalMisc(p uintptr) (interface{}, error) {
 	return wrapMisc(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_ENTER).
+//
+// Deprecated: Since 2.12.
+func (misc *Misc) ThreadsEnter() {
+	var _arg0 *C.AtkMisc // out
+
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	C.atk_misc_threads_enter(_arg0)
+	runtime.KeepAlive(misc)
+}
+
+// ThreadsLeave: release the thread mutex for the GUI toolkit, if one exists.
+// This method, and atk_misc_threads_enter, are needed in some situations by
+// threaded application code which services ATK requests, since fulfilling ATK
+// requests often requires calling into the GUI toolkit. If a long-running or
+// potentially blocking call takes place inside such a block, it should be
+// bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
+//
+// Deprecated: Since 2.12.
+func (misc *Misc) ThreadsLeave() {
+	var _arg0 *C.AtkMisc // out
+
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	C.atk_misc_threads_leave(_arg0)
+	runtime.KeepAlive(misc)
+}
+
+// threadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_ENTER).
+//
+// Deprecated: Since 2.12.
+func (misc *Misc) threadsEnter() {
+	gclass := (*C.AtkMiscClass)(coreglib.PeekParentClass(misc))
+	fnarg := gclass.threads_enter
+
+	var _arg0 *C.AtkMisc // out
+
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	C._gotk4_atk1_Misc_virtual_threads_enter(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(misc)
+}
+
+// threadsLeave: release the thread mutex for the GUI toolkit, if one exists.
+// This method, and atk_misc_threads_enter, are needed in some situations by
+// threaded application code which services ATK requests, since fulfilling ATK
+// requests often requires calling into the GUI toolkit. If a long-running or
+// potentially blocking call takes place inside such a block, it should be
+// bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
+//
+// Deprecated: Since 2.12.
+func (misc *Misc) threadsLeave() {
+	gclass := (*C.AtkMiscClass)(coreglib.PeekParentClass(misc))
+	fnarg := gclass.threads_leave
+
+	var _arg0 *C.AtkMisc // out
+
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	C._gotk4_atk1_Misc_virtual_threads_leave(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(misc)
 }
 
 // MiscClass: usage of AtkMisc is deprecated since 2.12 and heavily discouraged.

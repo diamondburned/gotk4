@@ -3,8 +3,11 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
@@ -13,6 +16,35 @@ import (
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
+// extern void callbackDelete(gpointer);
+// extern void _gotk4_gtk3_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
+// GList* _gotk4_gtk3_CellLayout_virtual_get_cells(void* fnptr, GtkCellLayout* arg0) {
+//   return ((GList* (*)(GtkCellLayout*))(fnptr))(arg0);
+// };
+// GtkCellArea* _gotk4_gtk3_CellLayout_virtual_get_area(void* fnptr, GtkCellLayout* arg0) {
+//   return ((GtkCellArea* (*)(GtkCellLayout*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_CellLayout_virtual_add_attribute(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, gchar* arg2, gint arg3) {
+//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, gchar*, gint))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gtk3_CellLayout_virtual_clear(void* fnptr, GtkCellLayout* arg0) {
+//   ((void (*)(GtkCellLayout*))(fnptr))(arg0);
+// };
+// void _gotk4_gtk3_CellLayout_virtual_clear_attributes(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1) {
+//   ((void (*)(GtkCellLayout*, GtkCellRenderer*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_CellLayout_virtual_pack_end(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, gboolean arg2) {
+//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, gboolean))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_CellLayout_virtual_pack_start(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, gboolean arg2) {
+//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, gboolean))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_CellLayout_virtual_reorder(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, gint arg2) {
+//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gtk3_CellLayout_virtual_set_cell_data_func(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, GtkCellLayoutDataFunc arg2, gpointer arg3, GDestroyNotify arg4) {
+//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, GtkCellLayoutDataFunc, gpointer, GDestroyNotify))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
 import "C"
 
 // GType values.
@@ -165,6 +197,557 @@ func wrapCellLayout(obj *coreglib.Object) *CellLayout {
 
 func marshalCellLayout(p uintptr) (interface{}, error) {
 	return wrapCellLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// AddAttribute adds an attribute mapping to the list in cell_layout.
+//
+// The column is the column of the model to get a value from, and the attribute
+// is the parameter on cell to be set from the value. So for example if column 2
+// of the model contains strings, you could have the “text” attribute of a
+// CellRendererText get its values from column 2.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - attribute on the renderer.
+//    - column position on the model to get the attribute from.
+//
+func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int) {
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.gchar           // out
+	var _arg3 C.gint             // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gint(column)
+
+	C.gtk_cell_layout_add_attribute(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(column)
+}
+
+// Clear unsets all the mappings on all renderers on cell_layout and removes all
+// renderers from cell_layout.
+func (cellLayout *CellLayout) Clear() {
+	var _arg0 *C.GtkCellLayout // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+
+	C.gtk_cell_layout_clear(_arg0)
+	runtime.KeepAlive(cellLayout)
+}
+
+// ClearAttributes clears all existing attributes previously set with
+// gtk_cell_layout_set_attributes().
+//
+// The function takes the following parameters:
+//
+//    - cell to clear the attribute mapping on.
+//
+func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	C.gtk_cell_layout_clear_attributes(_arg0, _arg1)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+}
+
+// Area returns the underlying CellArea which might be cell_layout if called on
+// a CellArea or might be NULL if no CellArea is used by cell_layout.
+//
+// The function returns the following values:
+//
+//    - cellArea (optional): cell area used by cell_layout, or NULL in case no
+//      cell area is used.
+//
+func (cellLayout *CellLayout) Area() CellAreaer {
+	var _arg0 *C.GtkCellLayout // out
+	var _cret *C.GtkCellArea   // in
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+
+	_cret = C.gtk_cell_layout_get_area(_arg0)
+	runtime.KeepAlive(cellLayout)
+
+	var _cellArea CellAreaer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(CellAreaer)
+				return ok
+			})
+			rv, ok := casted.(CellAreaer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellAreaer")
+			}
+			_cellArea = rv
+		}
+	}
+
+	return _cellArea
+}
+
+// Cells returns the cell renderers which have been added to cell_layout.
+//
+// The function returns the following values:
+//
+//    - list: a list of cell renderers. The list, but not the renderers has been
+//      newly allocated and should be freed with g_list_free() when no longer
+//      needed.
+//
+func (cellLayout *CellLayout) Cells() []CellRendererer {
+	var _arg0 *C.GtkCellLayout // out
+	var _cret *C.GList         // in
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+
+	_cret = C.gtk_cell_layout_get_cells(_arg0)
+	runtime.KeepAlive(cellLayout)
+
+	var _list []CellRendererer // out
+
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkCellRenderer)(v)
+		var dst CellRendererer // out
+		{
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gtk.CellRendererer is nil")
+			}
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
+			rv, ok := casted.(CellRendererer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+			}
+			dst = rv
+		}
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
+// PackEnd adds the cell to the end of cell_layout. If expand is FALSE, then the
+// cell is allocated no more space than it needs. Any unused space is divided
+// evenly between cells for which expand is TRUE.
+//
+// Note that reusing the same cell renderer is not supported.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
+//
+func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.gboolean         // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	if expand {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_cell_layout_pack_end(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(expand)
+}
+
+// PackStart packs the cell into the beginning of cell_layout. If expand is
+// FALSE, then the cell is allocated no more space than it needs. Any unused
+// space is divided evenly between cells for which expand is TRUE.
+//
+// Note that reusing the same cell renderer is not supported.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
+//
+func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.gboolean         // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	if expand {
+		_arg2 = C.TRUE
+	}
+
+	C.gtk_cell_layout_pack_start(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(expand)
+}
+
+// Reorder re-inserts cell at position.
+//
+// Note that cell has already to be packed into cell_layout for this to function
+// properly.
+//
+// The function takes the following parameters:
+//
+//    - cell to reorder.
+//    - position: new position to insert cell at.
+//
+func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.gint             // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg2 = C.gint(position)
+
+	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(position)
+}
+
+// SetCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
+//
+// This function is used instead of the standard attributes mapping for setting
+// the column value, and should set the value of cell_layout’s cell renderer(s)
+// as appropriate.
+//
+// func may be NULL to remove a previously set function.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - fn (optional) to use, or NULL.
+//
+func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
+	var _arg0 *C.GtkCellLayout        // out
+	var _arg1 *C.GtkCellRenderer      // out
+	var _arg2 C.GtkCellLayoutDataFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	if fn != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gtk3_CellLayoutDataFunc)
+		_arg3 = C.gpointer(gbox.Assign(fn))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C.gtk_cell_layout_set_cell_data_func(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(fn)
+}
+
+// addAttribute adds an attribute mapping to the list in cell_layout.
+//
+// The column is the column of the model to get a value from, and the attribute
+// is the parameter on cell to be set from the value. So for example if column 2
+// of the model contains strings, you could have the “text” attribute of a
+// CellRendererText get its values from column 2.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - attribute on the renderer.
+//    - column position on the model to get the attribute from.
+//
+func (cellLayout *CellLayout) addAttribute(cell CellRendererer, attribute string, column int) {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.add_attribute
+
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.gchar           // out
+	var _arg3 C.gint             // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attribute)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gint(column)
+
+	C._gotk4_gtk3_CellLayout_virtual_add_attribute(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(attribute)
+	runtime.KeepAlive(column)
+}
+
+// Clear unsets all the mappings on all renderers on cell_layout and removes all
+// renderers from cell_layout.
+func (cellLayout *CellLayout) clear() {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.clear
+
+	var _arg0 *C.GtkCellLayout // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+
+	C._gotk4_gtk3_CellLayout_virtual_clear(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(cellLayout)
+}
+
+// clearAttributes clears all existing attributes previously set with
+// gtk_cell_layout_set_attributes().
+//
+// The function takes the following parameters:
+//
+//    - cell to clear the attribute mapping on.
+//
+func (cellLayout *CellLayout) clearAttributes(cell CellRendererer) {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.clear_attributes
+
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	C._gotk4_gtk3_CellLayout_virtual_clear_attributes(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+}
+
+// Area returns the underlying CellArea which might be cell_layout if called on
+// a CellArea or might be NULL if no CellArea is used by cell_layout.
+//
+// The function returns the following values:
+//
+//    - cellArea (optional): cell area used by cell_layout, or NULL in case no
+//      cell area is used.
+//
+func (cellLayout *CellLayout) area() CellAreaer {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.get_area
+
+	var _arg0 *C.GtkCellLayout // out
+	var _cret *C.GtkCellArea   // in
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+
+	_cret = C._gotk4_gtk3_CellLayout_virtual_get_area(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(cellLayout)
+
+	var _cellArea CellAreaer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(CellAreaer)
+				return ok
+			})
+			rv, ok := casted.(CellAreaer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellAreaer")
+			}
+			_cellArea = rv
+		}
+	}
+
+	return _cellArea
+}
+
+// Cells returns the cell renderers which have been added to cell_layout.
+//
+// The function returns the following values:
+//
+//    - list: a list of cell renderers. The list, but not the renderers has been
+//      newly allocated and should be freed with g_list_free() when no longer
+//      needed.
+//
+func (cellLayout *CellLayout) cells() []CellRendererer {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.get_cells
+
+	var _arg0 *C.GtkCellLayout // out
+	var _cret *C.GList         // in
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+
+	_cret = C._gotk4_gtk3_CellLayout_virtual_get_cells(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(cellLayout)
+
+	var _list []CellRendererer // out
+
+	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GtkCellRenderer)(v)
+		var dst CellRendererer // out
+		{
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gtk.CellRendererer is nil")
+			}
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(CellRendererer)
+				return ok
+			})
+			rv, ok := casted.(CellRendererer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
+			}
+			dst = rv
+		}
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
+// packEnd adds the cell to the end of cell_layout. If expand is FALSE, then the
+// cell is allocated no more space than it needs. Any unused space is divided
+// evenly between cells for which expand is TRUE.
+//
+// Note that reusing the same cell renderer is not supported.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
+//
+func (cellLayout *CellLayout) packEnd(cell CellRendererer, expand bool) {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.pack_end
+
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.gboolean         // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	if expand {
+		_arg2 = C.TRUE
+	}
+
+	C._gotk4_gtk3_CellLayout_virtual_pack_end(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(expand)
+}
+
+// packStart packs the cell into the beginning of cell_layout. If expand is
+// FALSE, then the cell is allocated no more space than it needs. Any unused
+// space is divided evenly between cells for which expand is TRUE.
+//
+// Note that reusing the same cell renderer is not supported.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
+//
+func (cellLayout *CellLayout) packStart(cell CellRendererer, expand bool) {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.pack_start
+
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.gboolean         // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	if expand {
+		_arg2 = C.TRUE
+	}
+
+	C._gotk4_gtk3_CellLayout_virtual_pack_start(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(expand)
+}
+
+// Reorder re-inserts cell at position.
+//
+// Note that cell has already to be packed into cell_layout for this to function
+// properly.
+//
+// The function takes the following parameters:
+//
+//    - cell to reorder.
+//    - position: new position to insert cell at.
+//
+func (cellLayout *CellLayout) reorder(cell CellRendererer, position int) {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.reorder
+
+	var _arg0 *C.GtkCellLayout   // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.gint             // out
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	_arg2 = C.gint(position)
+
+	C._gotk4_gtk3_CellLayout_virtual_reorder(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(position)
+}
+
+// setCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
+//
+// This function is used instead of the standard attributes mapping for setting
+// the column value, and should set the value of cell_layout’s cell renderer(s)
+// as appropriate.
+//
+// func may be NULL to remove a previously set function.
+//
+// The function takes the following parameters:
+//
+//    - cell: CellRenderer.
+//    - fn (optional) to use, or NULL.
+//
+func (cellLayout *CellLayout) setCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
+	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
+	fnarg := gclass.set_cell_data_func
+
+	var _arg0 *C.GtkCellLayout        // out
+	var _arg1 *C.GtkCellRenderer      // out
+	var _arg2 C.GtkCellLayoutDataFunc // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+	if fn != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gtk3_CellLayoutDataFunc)
+		_arg3 = C.gpointer(gbox.Assign(fn))
+		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+	}
+
+	C._gotk4_gtk3_CellLayout_virtual_set_cell_data_func(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(cellLayout)
+	runtime.KeepAlive(cell)
+	runtime.KeepAlive(fn)
 }
 
 // CellLayoutIface: instance of this type is always passed by reference.

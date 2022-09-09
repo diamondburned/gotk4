@@ -4,13 +4,13 @@ package gdk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -803,6 +803,72 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 	return _window
 }
 
+// Beep emits a short beep associated to window in the appropriate display, if
+// supported. Otherwise, emits a short beep on the display just as
+// gdk_display_beep().
+func (window *Window) Beep() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_beep(_arg0)
+	runtime.KeepAlive(window)
+}
+
+// BeginDrawFrame indicates that you are beginning the process of redrawing
+// region on window, and provides you with a DrawingContext.
+//
+// If window is a top level Window, backed by a native window implementation, a
+// backing store (offscreen buffer) large enough to contain region will be
+// created. The backing store will be initialized with the background color or
+// background surface for window. Then, all drawing operations performed on
+// window will be diverted to the backing store. When you call
+// gdk_window_end_frame(), the contents of the backing store will be copied to
+// window, making it visible on screen. Only the part of window contained in
+// region will be modified; that is, drawing operations are clipped to region.
+//
+// The net result of all this is to remove flicker, because the user sees the
+// finished product appear all at once when you call
+// gdk_window_end_draw_frame(). If you draw to window directly without calling
+// gdk_window_begin_draw_frame(), the user may see flicker as individual drawing
+// operations are performed in sequence.
+//
+// When using GTK+, the widget system automatically places calls to
+// gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() around
+// emissions of the GtkWidget::draw signal. That is, if you’re drawing the
+// contents of the widget yourself, you can assume that the widget has a cleared
+// background, is already set as the clip region, and already has a backing
+// store. Therefore in most cases, application code in GTK does not need to call
+// gdk_window_begin_draw_frame() explicitly.
+//
+// The function takes the following parameters:
+//
+//    - region: cairo region.
+//
+// The function returns the following values:
+//
+//    - drawingContext context that should be used to draw the contents of the
+//      window; the returned context is owned by GDK.
+//
+func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
+	var _arg0 *C.GdkWindow         // out
+	var _arg1 *C.cairo_region_t    // out
+	var _cret *C.GdkDrawingContext // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+
+	_cret = C.gdk_window_begin_draw_frame(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
+
+	var _drawingContext *DrawingContext // out
+
+	_drawingContext = wrapDrawingContext(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _drawingContext
+}
+
 // BeginMoveDrag begins a window move operation (for a toplevel window).
 //
 // This function assumes that the drag is controlled by the client pointer
@@ -831,6 +897,44 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) 
 
 	C.gdk_window_begin_move_drag(_arg0, _arg1, _arg2, _arg3, _arg4)
 	runtime.KeepAlive(window)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(rootX)
+	runtime.KeepAlive(rootY)
+	runtime.KeepAlive(timestamp)
+}
+
+// BeginMoveDragForDevice begins a window move operation (for a toplevel
+// window). You might use this function to implement a “window move grip,” for
+// example. The function works best with window managers that support the
+// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
+// but has a fallback implementation for other window managers.
+//
+// The function takes the following parameters:
+//
+//    - device used for the operation.
+//    - button being used to drag, or 0 for a keyboard-initiated drag.
+//    - rootX: root window X coordinate of mouse click that began the drag.
+//    - rootY: root window Y coordinate of mouse click that began the drag.
+//    - timestamp of mouse click that began the drag.
+//
+func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, rootY int, timestamp uint32) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkDevice // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
+	var _arg5 C.guint32    // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg2 = C.gint(button)
+	_arg3 = C.gint(rootX)
+	_arg4 = C.gint(rootY)
+	_arg5 = C.guint32(timestamp)
+
+	C.gdk_window_begin_move_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(rootX)
 	runtime.KeepAlive(rootY)
@@ -950,6 +1054,343 @@ func (window *Window) BeginResizeDrag(edge WindowEdge, button, rootX, rootY int,
 	runtime.KeepAlive(timestamp)
 }
 
+// BeginResizeDragForDevice begins a window resize operation (for a toplevel
+// window). You might use this function to implement a “window resize grip,” for
+// example; in fact Statusbar uses it. The function works best with window
+// managers that support the Extended Window Manager Hints
+// (http://www.freedesktop.org/Standards/wm-spec) but has a fallback
+// implementation for other window managers.
+//
+// The function takes the following parameters:
+//
+//    - edge or corner from which the drag is started.
+//    - device used for the operation.
+//    - button being used to drag, or 0 for a keyboard-initiated drag.
+//    - rootX: root window X coordinate of mouse click that began the drag.
+//    - rootY: root window Y coordinate of mouse click that began the drag.
+//    - timestamp of mouse click that began the drag (use gdk_event_get_time()).
+//
+func (window *Window) BeginResizeDragForDevice(edge WindowEdge, device Devicer, button, rootX, rootY int, timestamp uint32) {
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkWindowEdge // out
+	var _arg2 *C.GdkDevice    // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gint          // out
+	var _arg5 C.gint          // out
+	var _arg6 C.guint32       // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkWindowEdge(edge)
+	_arg2 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg3 = C.gint(button)
+	_arg4 = C.gint(rootX)
+	_arg5 = C.gint(rootY)
+	_arg6 = C.guint32(timestamp)
+
+	C.gdk_window_begin_resize_drag_for_device(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(edge)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(button)
+	runtime.KeepAlive(rootX)
+	runtime.KeepAlive(rootY)
+	runtime.KeepAlive(timestamp)
+}
+
+// ConfigureFinished does nothing, present only for compatiblity.
+//
+// Deprecated: this function is no longer needed.
+func (window *Window) ConfigureFinished() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_configure_finished(_arg0)
+	runtime.KeepAlive(window)
+}
+
+// CoordsFromParent transforms window coordinates from a parent window to a
+// child window, where the parent window is the normal parent as returned by
+// gdk_window_get_parent() for normal windows, and the window's embedder as
+// returned by gdk_offscreen_window_get_embedder() for offscreen windows.
+//
+// For normal windows, calling this function is equivalent to subtracting the
+// return values of gdk_window_get_position() from the parent coordinates. For
+// offscreen windows however (which can be arbitrarily transformed), this
+// function calls the GdkWindow::from-embedder: signal to translate the
+// coordinates.
+//
+// You should always use this function when writing generic code that walks down
+// a window hierarchy.
+//
+// See also: gdk_window_coords_to_parent().
+//
+// The function takes the following parameters:
+//
+//    - parentX: x coordinate in parent’s coordinate system.
+//    - parentY: y coordinate in parent’s coordinate system.
+//
+// The function returns the following values:
+//
+//    - x (optional): return location for X coordinate in child’s coordinate
+//      system.
+//    - y (optional): return location for Y coordinate in child’s coordinate
+//      system.
+//
+func (window *Window) CoordsFromParent(parentX, parentY float64) (x, y float64) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
+	var _arg2 C.gdouble    // out
+	var _arg3 C.gdouble    // in
+	var _arg4 C.gdouble    // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gdouble(parentX)
+	_arg2 = C.gdouble(parentY)
+
+	C.gdk_window_coords_from_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(parentX)
+	runtime.KeepAlive(parentY)
+
+	var _x float64 // out
+	var _y float64 // out
+
+	_x = float64(_arg3)
+	_y = float64(_arg4)
+
+	return _x, _y
+}
+
+// CoordsToParent transforms window coordinates from a child window to its
+// parent window, where the parent window is the normal parent as returned by
+// gdk_window_get_parent() for normal windows, and the window's embedder as
+// returned by gdk_offscreen_window_get_embedder() for offscreen windows.
+//
+// For normal windows, calling this function is equivalent to adding the return
+// values of gdk_window_get_position() to the child coordinates. For offscreen
+// windows however (which can be arbitrarily transformed), this function calls
+// the GdkWindow::to-embedder: signal to translate the coordinates.
+//
+// You should always use this function when writing generic code that walks up a
+// window hierarchy.
+//
+// See also: gdk_window_coords_from_parent().
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate in child’s coordinate system.
+//    - y: y coordinate in child’s coordinate system.
+//
+// The function returns the following values:
+//
+//    - parentX (optional): return location for X coordinate in parent’s
+//      coordinate system, or NULL.
+//    - parentY (optional): return location for Y coordinate in parent’s
+//      coordinate system, or NULL.
+//
+func (window *Window) CoordsToParent(x, y float64) (parentX, parentY float64) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
+	var _arg2 C.gdouble    // out
+	var _arg3 C.gdouble    // in
+	var _arg4 C.gdouble    // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gdouble(x)
+	_arg2 = C.gdouble(y)
+
+	C.gdk_window_coords_to_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _parentX float64 // out
+	var _parentY float64 // out
+
+	_parentX = float64(_arg3)
+	_parentY = float64(_arg4)
+
+	return _parentX, _parentY
+}
+
+// CreateGLContext creates a new GLContext matching the framebuffer format to
+// the visual of the Window. The context is disconnected from any particular
+// window or surface.
+//
+// If the creation of the GLContext failed, error will be set.
+//
+// Before using the returned GLContext, you will need to call
+// gdk_gl_context_make_current() or gdk_gl_context_realize().
+//
+// The function returns the following values:
+//
+//    - glContext: newly created GLContext, or NULL on error.
+//
+func (window *Window) CreateGLContext() (GLContexter, error) {
+	var _arg0 *C.GdkWindow    // out
+	var _cret *C.GdkGLContext // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_create_gl_context(_arg0, &_cerr)
+	runtime.KeepAlive(window)
+
+	var _glContext GLContexter // out
+	var _goerr error           // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.GLContexter is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(GLContexter)
+			return ok
+		})
+		rv, ok := casted.(GLContexter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
+		}
+		_glContext = rv
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _glContext, _goerr
+}
+
+// CreateSimilarImageSurface: create a new image surface that is efficient to
+// draw on the given window.
+//
+// Initially the surface contents are all 0 (transparent if contents have
+// transparency, black otherwise.)
+//
+// The width and height of the new surface are not affected by the scaling
+// factor of the window, or by the scale argument; they are the size of the
+// surface in device pixels. If you wish to create an image surface capable of
+// holding the contents of window you can use:
+//
+//      int scale = gdk_window_get_scale_factor (window);
+//      int width = gdk_window_get_width (window) * scale;
+//      int height = gdk_window_get_height (window) * scale;
+//
+//      // format is set elsewhere
+//      cairo_surface_t *surface =
+//        gdk_window_create_similar_image_surface (window,
+//                                                 format,
+//                                                 width, height,
+//                                                 scale);
+//
+// Note that unlike cairo_surface_create_similar_image(), the new surface's
+// device scale is set to scale, or to the scale factor of window if scale is 0.
+//
+// The function takes the following parameters:
+//
+//    - format for the new surface.
+//    - width of the new surface.
+//    - height of the new surface.
+//    - scale of the new surface, or 0 to use same as window.
+//
+// The function returns the following values:
+//
+//    - surface: pointer to the newly allocated surface. The caller owns the
+//      surface and should call cairo_surface_destroy() when done with it.
+//
+//      This function always returns a valid pointer, but it will return a
+//      pointer to a “nil” surface if other is already in an error state or any
+//      other error occurs.
+//
+func (window *Window) CreateSimilarImageSurface(format cairo.Format, width, height, scale int) *cairo.Surface {
+	var _arg0 *C.GdkWindow       // out
+	var _arg1 C.cairo_format_t   // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+	var _arg4 C.int              // out
+	var _cret *C.cairo_surface_t // in
+
+	if window != nil {
+		_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	}
+	_arg1 = C.cairo_format_t(format)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+	_arg4 = C.int(scale)
+
+	_cret = C.gdk_window_create_similar_image_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(format)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(scale)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+	})
+
+	return _surface
+}
+
+// CreateSimilarSurface: create a new surface that is as compatible as possible
+// with the given window. For example the new surface will have the same
+// fallback resolution and font options as window. Generally, the new surface
+// will also use the same backend as window, unless that is not possible for
+// some reason. The type of the returned surface may be examined with
+// cairo_surface_get_type().
+//
+// Initially the surface contents are all 0 (transparent if contents have
+// transparency, black otherwise.).
+//
+// The function takes the following parameters:
+//
+//    - content for the new surface.
+//    - width of the new surface.
+//    - height of the new surface.
+//
+// The function returns the following values:
+//
+//    - surface: pointer to the newly allocated surface. The caller owns the
+//      surface and should call cairo_surface_destroy() when done with it.
+//
+//      This function always returns a valid pointer, but it will return a
+//      pointer to a “nil” surface if other is already in an error state or any
+//      other error occurs.
+//
+func (window *Window) CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface {
+	var _arg0 *C.GdkWindow       // out
+	var _arg1 C.cairo_content_t  // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+	var _cret *C.cairo_surface_t // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.cairo_content_t(content)
+	_arg2 = C.int(width)
+	_arg3 = C.int(height)
+
+	_cret = C.gdk_window_create_similar_surface(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(content)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
+	var _surface *cairo.Surface // out
+
+	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
+		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
+	})
+
+	return _surface
+}
+
 // Deiconify: attempt to deiconify (unminimize) window. On X11 the window
 // manager may choose to ignore the request to deiconify. When using GTK+, use
 // gtk_window_deiconify() instead of the Window variant. Or better yet, you
@@ -980,6 +1421,42 @@ func (window *Window) Destroy() {
 	runtime.KeepAlive(window)
 }
 
+// EnableSynchronizedConfigure does nothing, present only for compatiblity.
+//
+// Deprecated: this function is no longer needed.
+func (window *Window) EnableSynchronizedConfigure() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_enable_synchronized_configure(_arg0)
+	runtime.KeepAlive(window)
+}
+
+// EndDrawFrame indicates that the drawing of the contents of window started
+// with gdk_window_begin_frame() has been completed.
+//
+// This function will take care of destroying the DrawingContext.
+//
+// It is an error to call this function without a matching
+// gdk_window_begin_frame() first.
+//
+// The function takes the following parameters:
+//
+//    - context created by gdk_window_begin_draw_frame().
+//
+func (window *Window) EndDrawFrame(context *DrawingContext) {
+	var _arg0 *C.GdkWindow         // out
+	var _arg1 *C.GdkDrawingContext // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDrawingContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	C.gdk_window_end_draw_frame(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(context)
+}
+
 // EndPaint indicates that the backing store created by the most recent call to
 // gdk_window_begin_paint_region() should be copied onscreen and deleted,
 // leaving the next-most-recent backing store or no backing store at all as the
@@ -993,6 +1470,47 @@ func (window *Window) EndPaint() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	C.gdk_window_end_paint(_arg0)
+	runtime.KeepAlive(window)
+}
+
+// EnsureNative tries to ensure that there is a window-system native window for
+// this GdkWindow. This may fail in some situations, returning FALSE.
+//
+// Offscreen window and children of them can never have native windows.
+//
+// Some backends may not support native child windows.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window has a native window, FALSE otherwise.
+//
+func (window *Window) EnsureNative() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_ensure_native(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Flush: this function does nothing.
+//
+// Deprecated: since version 3.14.
+func (window *Window) Flush() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_flush(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1050,6 +1568,26 @@ func (window *Window) FreezeUpdates() {
 	runtime.KeepAlive(window)
 }
 
+// Fullscreen moves the window into fullscreen mode. This means the window
+// covers the entire screen and is above any panels or task bars.
+//
+// If the window was already fullscreen, then this function does nothing.
+//
+// On X11, asks the window manager to put window in a fullscreen state, if the
+// window manager supports this operation. Not all window managers support this,
+// and some deliberately ignore it or don’t have a concept of “fullscreen”; so
+// you can’t rely on the fullscreenification actually happening. But it will
+// happen with most standard window managers, and GDK makes a best effort to get
+// it to happen.
+func (window *Window) Fullscreen() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_fullscreen(_arg0)
+	runtime.KeepAlive(window)
+}
+
 // FullscreenOnMonitor moves the window into fullscreen mode on the given
 // monitor. This means the window covers the entire screen and is above any
 // panels or task bars.
@@ -1072,6 +1610,77 @@ func (window *Window) FullscreenOnMonitor(monitor int) {
 	runtime.KeepAlive(monitor)
 }
 
+// GeometryChanged: this function informs GDK that the geometry of an embedded
+// offscreen window has changed. This is necessary for GDK to keep track of
+// which offscreen window the pointer is in.
+func (window *Window) GeometryChanged() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_geometry_changed(_arg0)
+	runtime.KeepAlive(window)
+}
+
+// AcceptFocus determines whether or not the desktop environment shuld be hinted
+// that the window does not want to receive input focus.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not the window should receive input focus.
+//
+func (window *Window) AcceptFocus() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_accept_focus(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// BackgroundPattern gets the pattern used to clear the background on window.
+//
+// Deprecated: Don't use this function.
+//
+// The function returns the following values:
+//
+//    - pattern (optional) to use for the background or NULL if there is no
+//      background.
+//
+func (window *Window) BackgroundPattern() *cairo.Pattern {
+	var _arg0 *C.GdkWindow       // out
+	var _cret *C.cairo_pattern_t // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_background_pattern(_arg0)
+	runtime.KeepAlive(window)
+
+	var _pattern *cairo.Pattern // out
+
+	if _cret != nil {
+		{
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
+		}
+		C.cairo_pattern_reference(_cret)
+		runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
+			C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
+		})
+	}
+
+	return _pattern
+}
+
 // Children gets the list of children of window known to GDK. This function only
 // returns children created via GDK, so for example it’s useless when used with
 // the root window; it only returns windows an application created itself.
@@ -1090,6 +1699,63 @@ func (window *Window) Children() []Windower {
 
 	_cret = C.gdk_window_get_children(_arg0)
 	runtime.KeepAlive(window)
+
+	var _list []Windower // out
+
+	_list = make([]Windower, 0, gextras.ListSize(unsafe.Pointer(_cret)))
+	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GdkWindow)(v)
+		var dst Windower // out
+		{
+			objptr := unsafe.Pointer(src)
+			if objptr == nil {
+				panic("object of type gdk.Windower is nil")
+			}
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
+			rv, ok := casted.(Windower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+			}
+			dst = rv
+		}
+		_list = append(_list, dst)
+	})
+
+	return _list
+}
+
+// ChildrenWithUserData gets the list of children of window known to GDK with a
+// particular user_data set on it.
+//
+// The returned list must be freed, but the elements in the list need not be.
+//
+// The list is returned in (relative) stacking order, i.e. the lowest window is
+// first.
+//
+// The function takes the following parameters:
+//
+//    - userData (optional): user data to look for.
+//
+// The function returns the following values:
+//
+//    - list: list of child windows inside window.
+//
+func (window *Window) ChildrenWithUserData(userData unsafe.Pointer) []Windower {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gpointer   // out
+	var _cret *C.GList     // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(userData))
+
+	_cret = C.gdk_window_get_children_with_user_data(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(userData)
 
 	var _list []Windower // out
 
@@ -1151,6 +1817,77 @@ func (window *Window) ClipRegion() *cairo.Region {
 	return _region
 }
 
+// Composited determines whether window is composited.
+//
+// See gdk_window_set_composited().
+//
+// Deprecated: Compositing is an outdated technology that only ever worked on
+// X11.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window is composited.
+//
+func (window *Window) Composited() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_composited(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Cursor retrieves a Cursor pointer for the cursor currently set on the
+// specified Window, or NULL. If the return value is NULL then there is no
+// custom cursor set on the specified window, and it is using the cursor for its
+// parent window.
+//
+// The function returns the following values:
+//
+//    - cursor (optional) or NULL. The returned object is owned by the Window and
+//      should not be unreferenced directly. Use gdk_window_set_cursor() to unset
+//      the cursor of the window.
+//
+func (window *Window) Cursor() Cursorrer {
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkCursor // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_cursor(_arg0)
+	runtime.KeepAlive(window)
+
+	var _cursor Cursorrer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Cursorrer)
+				return ok
+			})
+			rv, ok := casted.(Cursorrer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Cursorrer")
+			}
+			_cursor = rv
+		}
+	}
+
+	return _cursor
+}
+
 // Decorations returns the decorations set on the GdkWindow with
 // gdk_window_set_decorations().
 //
@@ -1180,6 +1917,380 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 	return _decorations, _ok
 }
 
+// DeviceCursor retrieves a Cursor pointer for the device currently set on the
+// specified Window, or NULL. If the return value is NULL then there is no
+// custom cursor set on the specified window, and it is using the cursor for its
+// parent window.
+//
+// The function takes the following parameters:
+//
+//    - device: master, pointer Device.
+//
+// The function returns the following values:
+//
+//    - cursor (optional) or NULL. The returned object is owned by the Window and
+//      should not be unreferenced directly. Use gdk_window_set_cursor() to unset
+//      the cursor of the window.
+//
+func (window *Window) DeviceCursor(device Devicer) Cursorrer {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkDevice // out
+	var _cret *C.GdkCursor // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	_cret = C.gdk_window_get_device_cursor(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+
+	var _cursor Cursorrer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Cursorrer)
+				return ok
+			})
+			rv, ok := casted.(Cursorrer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Cursorrer")
+			}
+			_cursor = rv
+		}
+	}
+
+	return _cursor
+}
+
+// DeviceEvents returns the event mask for window corresponding to an specific
+// device.
+//
+// The function takes the following parameters:
+//
+//    - device: Device.
+//
+// The function returns the following values:
+//
+//    - eventMask: device event mask for window.
+//
+func (window *Window) DeviceEvents(device Devicer) EventMask {
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 *C.GdkDevice   // out
+	var _cret C.GdkEventMask // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	_cret = C.gdk_window_get_device_events(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+
+	var _eventMask EventMask // out
+
+	_eventMask = EventMask(_cret)
+
+	return _eventMask
+}
+
+// DevicePosition obtains the current device position and modifier state. The
+// position is given in coordinates relative to the upper left corner of window.
+//
+// Use gdk_window_get_device_position_double() if you need subpixel precision.
+//
+// The function takes the following parameters:
+//
+//    - device: pointer Device to query to.
+//
+// The function returns the following values:
+//
+//    - x (optional): return location for the X coordinate of device, or NULL.
+//    - y (optional): return location for the Y coordinate of device, or NULL.
+//    - mask (optional): return location for the modifier mask, or NULL.
+//    - ret (optional): window underneath device (as with
+//      gdk_device_get_window_at_position()), or NULL if the window is not known
+//      to GDK.
+//
+func (window *Window) DevicePosition(device Devicer) (x, y int, mask ModifierType, ret Windower) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.GdkDevice      // out
+	var _arg2 C.gint            // in
+	var _arg3 C.gint            // in
+	var _arg4 C.GdkModifierType // in
+	var _cret *C.GdkWindow      // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	_cret = C.gdk_window_get_device_position(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+
+	var _x int             // out
+	var _y int             // out
+	var _mask ModifierType // out
+	var _ret Windower      // out
+
+	_x = int(_arg2)
+	_y = int(_arg3)
+	_mask = ModifierType(_arg4)
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
+			rv, ok := casted.(Windower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+			}
+			_ret = rv
+		}
+	}
+
+	return _x, _y, _mask, _ret
+}
+
+// DevicePositionDouble obtains the current device position in doubles and
+// modifier state. The position is given in coordinates relative to the upper
+// left corner of window.
+//
+// The function takes the following parameters:
+//
+//    - device: pointer Device to query to.
+//
+// The function returns the following values:
+//
+//    - x (optional): return location for the X coordinate of device, or NULL.
+//    - y (optional): return location for the Y coordinate of device, or NULL.
+//    - mask (optional): return location for the modifier mask, or NULL.
+//    - ret (optional): window underneath device (as with
+//      gdk_device_get_window_at_position()), or NULL if the window is not known
+//      to GDK.
+//
+func (window *Window) DevicePositionDouble(device Devicer) (x, y float64, mask ModifierType, ret Windower) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.GdkDevice      // out
+	var _arg2 C.gdouble         // in
+	var _arg3 C.gdouble         // in
+	var _arg4 C.GdkModifierType // in
+	var _cret *C.GdkWindow      // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	_cret = C.gdk_window_get_device_position_double(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+
+	var _x float64         // out
+	var _y float64         // out
+	var _mask ModifierType // out
+	var _ret Windower      // out
+
+	_x = float64(_arg2)
+	_y = float64(_arg3)
+	_mask = ModifierType(_arg4)
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
+			rv, ok := casted.(Windower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+			}
+			_ret = rv
+		}
+	}
+
+	return _x, _y, _mask, _ret
+}
+
+// Display gets the Display associated with a Window.
+//
+// The function returns the following values:
+//
+//    - display associated with window.
+//
+func (window *Window) Display() *Display {
+	var _arg0 *C.GdkWindow  // out
+	var _cret *C.GdkDisplay // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_display(_arg0)
+	runtime.KeepAlive(window)
+
+	var _display *Display // out
+
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _display
+}
+
+// DragProtocol finds out the DND protocol supported by a window.
+//
+// The function returns the following values:
+//
+//    - target (optional): location of the window where the drop should happen.
+//      This may be window or a proxy window, or NULL if window does not support
+//      Drag and Drop.
+//    - dragProtocol: supported DND protocol.
+//
+func (window *Window) DragProtocol() (Windower, DragProtocol) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.GdkWindow      // in
+	var _cret C.GdkDragProtocol // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_drag_protocol(_arg0, &_arg1)
+	runtime.KeepAlive(window)
+
+	var _target Windower           // out
+	var _dragProtocol DragProtocol // out
+
+	if _arg1 != nil {
+		{
+			objptr := unsafe.Pointer(_arg1)
+
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Windower)
+				return ok
+			})
+			rv, ok := casted.(Windower)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+			}
+			_target = rv
+		}
+	}
+	_dragProtocol = DragProtocol(_cret)
+
+	return _target, _dragProtocol
+}
+
+// EffectiveParent obtains the parent of window, as known to GDK. Works like
+// gdk_window_get_parent() for normal windows, but returns the window’s embedder
+// for offscreen windows.
+//
+// See also: gdk_offscreen_window_get_embedder().
+//
+// The function returns the following values:
+//
+//    - ret: effective parent of window.
+//
+func (window *Window) EffectiveParent() Windower {
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_effective_parent(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ret Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
+		rv, ok := casted.(Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_ret = rv
+	}
+
+	return _ret
+}
+
+// EffectiveToplevel gets the toplevel window that’s an ancestor of window.
+//
+// Works like gdk_window_get_toplevel(), but treats an offscreen window's
+// embedder as its parent, using gdk_window_get_effective_parent().
+//
+// See also: gdk_offscreen_window_get_embedder().
+//
+// The function returns the following values:
+//
+//    - ret: effective toplevel window containing window.
+//
+func (window *Window) EffectiveToplevel() Windower {
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_effective_toplevel(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ret Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
+		rv, ok := casted.(Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_ret = rv
+	}
+
+	return _ret
+}
+
+// EventCompression: get the current event compression setting for this window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if motion events will be compressed.
+//
+func (window *Window) EventCompression() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_event_compression(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Events gets the event mask for window for all master input devices. See
 // gdk_window_set_events().
 //
@@ -1201,6 +2312,71 @@ func (window *Window) Events() EventMask {
 	_eventMask = EventMask(_cret)
 
 	return _eventMask
+}
+
+// FocusOnMap determines whether or not the desktop environment should be hinted
+// that the window does not want to receive input focus when it is mapped.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not the window wants to receive input focus when it is
+//      mapped.
+//
+func (window *Window) FocusOnMap() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_focus_on_map(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// FrameClock gets the frame clock for the window. The frame clock for a window
+// never changes unless the window is reparented to a new toplevel window.
+//
+// The function returns the following values:
+//
+//    - frameClock: frame clock.
+//
+func (window *Window) FrameClock() FrameClocker {
+	var _arg0 *C.GdkWindow     // out
+	var _cret *C.GdkFrameClock // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_frame_clock(_arg0)
+	runtime.KeepAlive(window)
+
+	var _frameClock FrameClocker // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.FrameClocker is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(FrameClocker)
+			return ok
+		})
+		rv, ok := casted.(FrameClocker)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.FrameClocker")
+		}
+		_frameClock = rv
+	}
+
+	return _frameClock
 }
 
 // FrameExtents obtains the bounding box of the window, including window manager
@@ -1226,6 +2402,28 @@ func (window *Window) FrameExtents() *Rectangle {
 	_rect = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
 
 	return _rect
+}
+
+// FullscreenMode obtains the FullscreenMode of the window.
+//
+// The function returns the following values:
+//
+//    - fullscreenMode applied to the window when fullscreen.
+//
+func (window *Window) FullscreenMode() FullscreenMode {
+	var _arg0 *C.GdkWindow        // out
+	var _cret C.GdkFullscreenMode // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_fullscreen_mode(_arg0)
+	runtime.KeepAlive(window)
+
+	var _fullscreenMode FullscreenMode // out
+
+	_fullscreenMode = FullscreenMode(_cret)
+
+	return _fullscreenMode
 }
 
 // Geometry: any of the return location arguments to this function may be NULL,
@@ -1280,6 +2478,95 @@ func (window *Window) Geometry() (x, y, width, height int) {
 	_height = int(_arg4)
 
 	return _x, _y, _width, _height
+}
+
+// Group returns the group leader window for window. See gdk_window_set_group().
+//
+// The function returns the following values:
+//
+//    - ret: group leader window for window.
+//
+func (window *Window) Group() Windower {
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkWindow // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_group(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ret Windower // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Windower is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Windower)
+			return ok
+		})
+		rv, ok := casted.(Windower)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Windower")
+		}
+		_ret = rv
+	}
+
+	return _ret
+}
+
+// Height returns the height of the given window.
+//
+// On the X11 platform the returned size is the size reported in the
+// most-recently-processed configure event, rather than the current size on the
+// X server.
+//
+// The function returns the following values:
+//
+//    - gint: height of window.
+//
+func (window *Window) Height() int {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.int        // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_height(_arg0)
+	runtime.KeepAlive(window)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// ModalHint determines whether or not the window manager is hinted that window
+// has modal behaviour.
+//
+// The function returns the following values:
+//
+//    - ok: whether or not the window has the modal hint set.
+//
+func (window *Window) ModalHint() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_modal_hint(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Origin obtains the position of a window in root window coordinates. (Compare
@@ -1359,6 +2646,31 @@ func (window *Window) Parent() Windower {
 	}
 
 	return _ret
+}
+
+// PassThrough returns whether input to the window is passed through to the
+// window below.
+//
+// See gdk_window_set_pass_through() for details.
+//
+// The function returns the following values:
+//
+func (window *Window) PassThrough() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_pass_through(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Pointer obtains the current pointer position and modifier state. The position
@@ -1449,6 +2761,45 @@ func (window *Window) Position() (x, y int) {
 	return _x, _y
 }
 
+// RootCoords obtains the position of a window position in root window
+// coordinates. This is similar to gdk_window_get_origin() but allows you to
+// pass in any position in the window, not just the origin.
+//
+// The function takes the following parameters:
+//
+//    - x: x coordinate in window.
+//    - y: y coordinate in window.
+//
+// The function returns the following values:
+//
+//    - rootX: return location for X coordinate.
+//    - rootY: return location for Y coordinate.
+//
+func (window *Window) RootCoords(x, y int) (rootX, rootY int) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // in
+	var _arg4 C.gint       // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+
+	C.gdk_window_get_root_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _rootX int // out
+	var _rootY int // out
+
+	_rootX = int(_arg3)
+	_rootY = int(_arg4)
+
+	return _rootX, _rootY
+}
+
 // RootOrigin obtains the top-left corner of the window manager frame in root
 // window coordinates.
 //
@@ -1474,6 +2825,60 @@ func (window *Window) RootOrigin() (x, y int) {
 	_y = int(_arg2)
 
 	return _x, _y
+}
+
+// ScaleFactor returns the internal scale factor that maps from window
+// coordiantes to the actual device pixels. On traditional systems this is 1,
+// but on very high density outputs this can be a higher value (often 2).
+//
+// A higher value means that drawing is automatically scaled up to a higher
+// resolution, so any code doing drawing will automatically look nicer. However,
+// if you are supplying pixel-based data the scale value can be used to
+// determine whether to use a pixel resource with higher resolution data.
+//
+// The scale of a window may change during runtime, if this happens a configure
+// event will be sent to the toplevel window.
+//
+// The function returns the following values:
+//
+//    - gint: scale factor.
+//
+func (window *Window) ScaleFactor() int {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_scale_factor(_arg0)
+	runtime.KeepAlive(window)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Screen gets the Screen associated with a Window.
+//
+// The function returns the following values:
+//
+//    - screen associated with window.
+//
+func (window *Window) Screen() *Screen {
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkScreen // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_screen(_arg0)
+	runtime.KeepAlive(window)
+
+	var _screen *Screen // out
+
+	_screen = wrapScreen(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _screen
 }
 
 // SourceEvents returns the event mask for window corresponding to the device
@@ -1529,6 +2934,31 @@ func (window *Window) State() WindowState {
 	return _windowState
 }
 
+// SupportMultidevice returns TRUE if the window is aware of the existence of
+// multiple devices.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window handles multidevice features.
+//
+func (window *Window) SupportMultidevice() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_support_multidevice(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Toplevel gets the toplevel window that’s an ancestor of window.
 //
 // Any window type but GDK_WINDOW_CHILD is considered a toplevel window, as is a
@@ -1573,6 +3003,28 @@ func (window *Window) Toplevel() Windower {
 	}
 
 	return _ret
+}
+
+// TypeHint: this function returns the type hint set for a window.
+//
+// The function returns the following values:
+//
+//    - windowTypeHint: type hint set for window.
+//
+func (window *Window) TypeHint() WindowTypeHint {
+	var _arg0 *C.GdkWindow        // out
+	var _cret C.GdkWindowTypeHint // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_type_hint(_arg0)
+	runtime.KeepAlive(window)
+
+	var _windowTypeHint WindowTypeHint // out
+
+	_windowTypeHint = WindowTypeHint(_cret)
+
+	return _windowTypeHint
 }
 
 // UpdateArea transfers ownership of the update area from window to the caller
@@ -1661,6 +3113,54 @@ func (window *Window) VisibleRegion() *cairo.Region {
 	return _region
 }
 
+// Visual gets the Visual describing the pixel format of window.
+//
+// The function returns the following values:
+//
+//    - visual: Visual.
+//
+func (window *Window) Visual() *Visual {
+	var _arg0 *C.GdkWindow // out
+	var _cret *C.GdkVisual // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_visual(_arg0)
+	runtime.KeepAlive(window)
+
+	var _visual *Visual // out
+
+	_visual = wrapVisual(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _visual
+}
+
+// Width returns the width of the given window.
+//
+// On the X11 platform the returned size is the size reported in the
+// most-recently-processed configure event, rather than the current size on the
+// X server.
+//
+// The function returns the following values:
+//
+//    - gint: width of window.
+//
+func (window *Window) Width() int {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.int        // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_get_width(_arg0)
+	runtime.KeepAlive(window)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
 // WindowType gets the type of the window. See WindowType.
 //
 // The function returns the following values:
@@ -1681,6 +3181,31 @@ func (window *Window) WindowType() WindowType {
 	_windowType = WindowType(_cret)
 
 	return _windowType
+}
+
+// HasNative checks whether the window has a native window or not. Note that you
+// can use gdk_window_ensure_native() if a native window is needed.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window has a native window, FALSE otherwise.
+//
+func (window *Window) HasNative() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_has_native(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Hide: for toplevel windows, withdraws them, so they will no longer be known
@@ -1707,6 +3232,44 @@ func (window *Window) Iconify() {
 
 	C.gdk_window_iconify(_arg0)
 	runtime.KeepAlive(window)
+}
+
+// InputShapeCombineRegion: like gdk_window_shape_combine_region(), but the
+// shape applies only to event handling. Mouse events which happen while the
+// pointer position corresponds to an unset bit in the mask will be passed on
+// the window below window.
+//
+// An input shape is typically used with RGBA windows. The alpha channel of the
+// window defines which pixels are invisible and allows for nicely antialiased
+// borders, and the input shape controls where the window is “clickable”.
+//
+// On the X11 platform, this requires version 1.1 of the shape extension.
+//
+// On the Win32 platform, this functionality is not present and the function
+// does nothing.
+//
+// The function takes the following parameters:
+//
+//    - shapeRegion: region of window to be non-transparent.
+//    - offsetX: x position of shape_region in window coordinates.
+//    - offsetY: y position of shape_region in window coordinates.
+//
+func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
+	_arg2 = C.gint(offsetX)
+	_arg3 = C.gint(offsetY)
+
+	C.gdk_window_input_shape_combine_region(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(shapeRegion)
+	runtime.KeepAlive(offsetX)
+	runtime.KeepAlive(offsetY)
 }
 
 // InvalidateMaybeRecurse adds region to the update area for window. The update
@@ -1818,6 +3381,78 @@ func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren 
 	runtime.KeepAlive(invalidateChildren)
 }
 
+// IsDestroyed: check to see if a window is destroyed..
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window is destroyed.
+//
+func (window *Window) IsDestroyed() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_is_destroyed(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsInputOnly determines whether or not the window is an input only window.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if window is input only.
+//
+func (window *Window) IsInputOnly() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_is_input_only(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsShaped determines whether or not the window is shaped.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if window is shaped.
+//
+func (window *Window) IsShaped() bool {
+	var _arg0 *C.GdkWindow // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	_cret = C.gdk_window_is_shaped(_arg0)
+	runtime.KeepAlive(window)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // IsViewable: check if the window and all ancestors of the window are mapped.
 // (This is not necessarily "viewable" in the X sense, since we only check as
 // far as we have GDK window parents, not to the root window.).
@@ -1888,6 +3523,32 @@ func (window *Window) Lower() {
 	runtime.KeepAlive(window)
 }
 
+// MarkPaintFromClip: if you call this during a paint (e.g. between
+// gdk_window_begin_paint_region() and gdk_window_end_paint() then GDK will mark
+// the current clip region of the window as being drawn. This is required when
+// mixing GL rendering via gdk_cairo_draw_from_gl() and cairo rendering, as
+// otherwise GDK has no way of knowing when something paints over the GL-drawn
+// regions.
+//
+// This is typically called automatically by GTK+ and you don't need to care
+// about this.
+//
+// The function takes the following parameters:
+//
+//    - cr: #cairo_t.
+//
+func (window *Window) MarkPaintFromClip(cr *cairo.Context) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.cairo_t   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+
+	C.gdk_window_mark_paint_from_clip(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(cr)
+}
+
 // Maximize maximizes the window. If the window was already maximized, then this
 // function does nothing.
 //
@@ -1904,6 +3565,22 @@ func (window *Window) Maximize() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	C.gdk_window_maximize(_arg0)
+	runtime.KeepAlive(window)
+}
+
+// MergeChildInputShapes merges the input shape masks for any child windows into
+// the input shape mask for window. i.e. the union of all input masks for window
+// and its children will become the new input mask for window. See
+// gdk_window_input_shape_combine_region().
+//
+// This function is distinct from gdk_window_set_child_input_shapes() because it
+// includes window’s input shape mask in the set of shapes to be merged.
+func (window *Window) MergeChildInputShapes() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_merge_child_input_shapes(_arg0)
 	runtime.KeepAlive(window)
 }
 
@@ -1950,6 +3627,36 @@ func (window *Window) Move(x, y int) {
 	runtime.KeepAlive(y)
 }
 
+// MoveRegion: move the part of window indicated by region by dy pixels in the Y
+// direction and dx pixels in the X direction. The portions of region that not
+// covered by the new position of region are invalidated.
+//
+// Child windows are not moved.
+//
+// The function takes the following parameters:
+//
+//    - region to move.
+//    - dx: amount to move in the X direction.
+//    - dy: amount to move in the Y direction.
+//
+func (window *Window) MoveRegion(region *cairo.Region, dx, dy int) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg2 = C.gint(dx)
+	_arg3 = C.gint(dy)
+
+	C.gdk_window_move_region(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
+	runtime.KeepAlive(dx)
+	runtime.KeepAlive(dy)
+}
+
 // MoveResize: equivalent to calling gdk_window_move() and gdk_window_resize(),
 // except that both operations are performed at once, avoiding strange visual
 // effects. (i.e. the user may be able to see the window first move, then
@@ -1981,6 +3688,59 @@ func (window *Window) MoveResize(x, y, width, height int) {
 	runtime.KeepAlive(y)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
+}
+
+// MoveToRect moves window to rect, aligning their anchor points.
+//
+// rect is relative to the top-left corner of the window that window is
+// transient for. rect_anchor and window_anchor determine anchor points on rect
+// and window to pin together. rect's anchor point can optionally be offset by
+// rect_anchor_dx and rect_anchor_dy, which is equivalent to offsetting the
+// position of window.
+//
+// anchor_hints determines how window will be moved if the anchor points cause
+// it to move off-screen. For example, GDK_ANCHOR_FLIP_X will replace
+// GDK_GRAVITY_NORTH_WEST with GDK_GRAVITY_NORTH_EAST and vice versa if window
+// extends beyond the left or right edges of the monitor.
+//
+// Connect to the Window::moved-to-rect signal to find out how it was actually
+// positioned.
+//
+// The function takes the following parameters:
+//
+//    - rect: destination Rectangle to align window with.
+//    - rectAnchor: point on rect to align with window's anchor point.
+//    - windowAnchor: point on window to align with rect's anchor point.
+//    - anchorHints: positioning hints to use when limited on space.
+//    - rectAnchorDx: horizontal offset to shift window, i.e. rect's anchor
+//      point.
+//    - rectAnchorDy: vertical offset to shift window, i.e. rect's anchor point.
+//
+func (window *Window) MoveToRect(rect *Rectangle, rectAnchor, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx, rectAnchorDy int) {
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 *C.GdkRectangle  // out
+	var _arg2 C.GdkGravity     // out
+	var _arg3 C.GdkGravity     // out
+	var _arg4 C.GdkAnchorHints // out
+	var _arg5 C.gint           // out
+	var _arg6 C.gint           // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg2 = C.GdkGravity(rectAnchor)
+	_arg3 = C.GdkGravity(windowAnchor)
+	_arg4 = C.GdkAnchorHints(anchorHints)
+	_arg5 = C.gint(rectAnchorDx)
+	_arg6 = C.gint(rectAnchorDy)
+
+	C.gdk_window_move_to_rect(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(rectAnchor)
+	runtime.KeepAlive(windowAnchor)
+	runtime.KeepAlive(anchorHints)
+	runtime.KeepAlive(rectAnchorDx)
+	runtime.KeepAlive(rectAnchorDy)
 }
 
 // PeekChildren: like gdk_window_get_children(), but does not copy the list of
@@ -2139,6 +3899,41 @@ func (window *Window) Resize(width, height int) {
 	runtime.KeepAlive(height)
 }
 
+// Restack changes the position of window in the Z-order (stacking order), so
+// that it is above sibling (if above is TRUE) or below sibling (if above is
+// FALSE).
+//
+// If sibling is NULL, then this either raises (if above is TRUE) or lowers the
+// window.
+//
+// If window is a toplevel, the window manager may choose to deny the request to
+// move the window in the Z-order, gdk_window_restack() only requests the
+// restack, does not guarantee it.
+//
+// The function takes the following parameters:
+//
+//    - sibling (optional) that is a sibling of window, or NULL.
+//    - above: boolean.
+//
+func (window *Window) Restack(sibling Windower, above bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if sibling != nil {
+		_arg1 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(sibling).Native()))
+	}
+	if above {
+		_arg2 = C.TRUE
+	}
+
+	C.gdk_window_restack(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(sibling)
+	runtime.KeepAlive(above)
+}
+
 // Scroll the contents of window, both pixels and children, by the given amount.
 // window itself does not move. Portions of the window that the scroll operation
 // brings in from offscreen areas are invalidated. The invalidated region may be
@@ -2167,6 +3962,30 @@ func (window *Window) Scroll(dx, dy int) {
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(dx)
 	runtime.KeepAlive(dy)
+}
+
+// SetAcceptFocus: setting accept_focus to FALSE hints the desktop environment
+// that the window doesn’t want to receive input focus.
+//
+// On X, it is the responsibility of the window manager to interpret this hint.
+// ICCCM-compliant window manager usually respect it.
+//
+// The function takes the following parameters:
+//
+//    - acceptFocus: TRUE if the window should receive input focus.
+//
+func (window *Window) SetAcceptFocus(acceptFocus bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if acceptFocus {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_accept_focus(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(acceptFocus)
 }
 
 // SetBackground sets the background color of window.
@@ -2244,6 +4063,19 @@ func (window *Window) SetBackgroundRGBA(rgba *RGBA) {
 	runtime.KeepAlive(rgba)
 }
 
+// SetChildInputShapes sets the input shape mask of window to the union of input
+// shape masks for all children of window, ignoring the input shape mask of
+// window itself. Contrast with gdk_window_merge_child_input_shapes() which
+// includes the input shape mask of window in the masks to be merged.
+func (window *Window) SetChildInputShapes() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_set_child_input_shapes(_arg0)
+	runtime.KeepAlive(window)
+}
+
 // SetChildShapes sets the shape mask of window to the union of shape masks for
 // all children of window, ignoring the shape mask of window itself. Contrast
 // with gdk_window_merge_child_shapes() which includes the shape mask of window
@@ -2255,6 +4087,46 @@ func (window *Window) SetChildShapes() {
 
 	C.gdk_window_set_child_shapes(_arg0)
 	runtime.KeepAlive(window)
+}
+
+// SetComposited sets a Window as composited, or unsets it. Composited windows
+// do not automatically have their contents drawn to the screen. Drawing is
+// redirected to an offscreen buffer and an expose event is emitted on the
+// parent of the composited window. It is the responsibility of the parent’s
+// expose handler to manually merge the off-screen content onto the screen in
+// whatever way it sees fit.
+//
+// It only makes sense for child windows to be composited; see
+// gdk_window_set_opacity() if you need translucent toplevel windows.
+//
+// An additional effect of this call is that the area of this window is no
+// longer clipped from regions marked for invalidation on its parent. Draws done
+// on the parent window are also no longer clipped by the child.
+//
+// This call is only supported on some systems (currently, only X11 with new
+// enough Xcomposite and Xdamage extensions). You must call
+// gdk_display_supports_composite() to check if setting a window as composited
+// is supported before attempting to do so.
+//
+// Deprecated: Compositing is an outdated technology that only ever worked on
+// X11.
+//
+// The function takes the following parameters:
+//
+//    - composited: TRUE to set the window as composited.
+//
+func (window *Window) SetComposited(composited bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if composited {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_composited(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(composited)
 }
 
 // SetCursor sets the default mouse pointer for a Window.
@@ -2314,6 +4186,88 @@ func (window *Window) SetDecorations(decorations WMDecoration) {
 	runtime.KeepAlive(decorations)
 }
 
+// SetDeviceCursor sets a specific Cursor for a given device when it gets inside
+// window. Use gdk_cursor_new_for_display() or gdk_cursor_new_from_pixbuf() to
+// create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
+// Passing NULL for the cursor argument to gdk_window_set_cursor() means that
+// window will use the cursor of its parent window. Most windows should use this
+// default.
+//
+// The function takes the following parameters:
+//
+//    - device: master, pointer Device.
+//    - cursor: Cursor.
+//
+func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkDevice // out
+	var _arg2 *C.GdkCursor // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg2 = (*C.GdkCursor)(unsafe.Pointer(coreglib.InternObject(cursor).Native()))
+
+	C.gdk_window_set_device_cursor(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(cursor)
+}
+
+// SetDeviceEvents sets the event mask for a given device (Normally a floating
+// device, not attached to any visible pointer) to window. For example, an event
+// mask including K_BUTTON_PRESS_MASK means the window should report button
+// press events. The event mask is the bitwise OR of values from the EventMask
+// enumeration.
+//
+// See the [input handling overview][event-masks] for details.
+//
+// The function takes the following parameters:
+//
+//    - device to enable events for.
+//    - eventMask: event mask for window.
+//
+func (window *Window) SetDeviceEvents(device Devicer, eventMask EventMask) {
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 *C.GdkDevice   // out
+	var _arg2 C.GdkEventMask // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+	_arg2 = C.GdkEventMask(eventMask)
+
+	C.gdk_window_set_device_events(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(device)
+	runtime.KeepAlive(eventMask)
+}
+
+// SetEventCompression determines whether or not extra unprocessed motion events
+// in the event queue can be discarded. If TRUE only the most recent event will
+// be delivered.
+//
+// Some types of applications, e.g. paint programs, need to see all motion
+// events and will benefit from turning off event compression.
+//
+// By default, event compression is enabled.
+//
+// The function takes the following parameters:
+//
+//    - eventCompression: TRUE if motion events should be compressed.
+//
+func (window *Window) SetEventCompression(eventCompression bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if eventCompression {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_event_compression(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(eventCompression)
+}
+
 // SetEvents: event mask for a window determines which events will be reported
 // for that window from all master input devices. For example, an event mask
 // including K_BUTTON_PRESS_MASK means the window should report button press
@@ -2336,6 +4290,67 @@ func (window *Window) SetEvents(eventMask EventMask) {
 	C.gdk_window_set_events(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(eventMask)
+}
+
+// SetFocusOnMap: setting focus_on_map to FALSE hints the desktop environment
+// that the window doesn’t want to receive input focus when it is mapped.
+// focus_on_map should be turned off for windows that aren’t triggered
+// interactively (such as popups from network activity).
+//
+// On X, it is the responsibility of the window manager to interpret this hint.
+// Window managers following the freedesktop.org window manager extension
+// specification should respect it.
+//
+// The function takes the following parameters:
+//
+//    - focusOnMap: TRUE if the window should receive input focus when mapped.
+//
+func (window *Window) SetFocusOnMap(focusOnMap bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if focusOnMap {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_focus_on_map(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(focusOnMap)
+}
+
+// SetFullscreenMode specifies whether the window should span over all monitors
+// (in a multi-head setup) or only the current monitor when in fullscreen mode.
+//
+// The mode argument is from the FullscreenMode enumeration. If
+// K_FULLSCREEN_ON_ALL_MONITORS is specified, the fullscreen window will span
+// over all monitors from the Screen.
+//
+// On X11, searches through the list of monitors from the Screen the ones which
+// delimit the 4 edges of the entire Screen and will ask the window manager to
+// span the window over these monitors.
+//
+// If the XINERAMA extension is not available or not usable, this function has
+// no effect.
+//
+// Not all window managers support this, so you can’t rely on the fullscreen
+// window to span over the multiple monitors when K_FULLSCREEN_ON_ALL_MONITORS
+// is specified.
+//
+// The function takes the following parameters:
+//
+//    - mode: fullscreen mode.
+//
+func (window *Window) SetFullscreenMode(mode FullscreenMode) {
+	var _arg0 *C.GdkWindow        // out
+	var _arg1 C.GdkFullscreenMode // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkFullscreenMode(mode)
+
+	C.gdk_window_set_fullscreen_mode(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(mode)
 }
 
 // SetFunctions sets hints about the window management functions to make
@@ -2497,6 +4512,60 @@ func (window *Window) SetIconName(name string) {
 	runtime.KeepAlive(name)
 }
 
+// SetKeepAbove: set if window must be kept above other windows. If the window
+// was already above, then this function does nothing.
+//
+// On X11, asks the window manager to keep window above, if the window manager
+// supports this operation. Not all window managers support this, and some
+// deliberately ignore it or don’t have a concept of “keep above”; so you can’t
+// rely on the window being kept above. But it will happen with most standard
+// window managers, and GDK makes a best effort to get it to happen.
+//
+// The function takes the following parameters:
+//
+//    - setting: whether to keep window above other windows.
+//
+func (window *Window) SetKeepAbove(setting bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if setting {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_keep_above(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
+}
+
+// SetKeepBelow: set if window must be kept below other windows. If the window
+// was already below, then this function does nothing.
+//
+// On X11, asks the window manager to keep window below, if the window manager
+// supports this operation. Not all window managers support this, and some
+// deliberately ignore it or don’t have a concept of “keep below”; so you can’t
+// rely on the window being kept below. But it will happen with most standard
+// window managers, and GDK makes a best effort to get it to happen.
+//
+// The function takes the following parameters:
+//
+//    - setting: whether to keep window below other windows.
+//
+func (window *Window) SetKeepBelow(setting bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if setting {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_keep_below(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(setting)
+}
+
 // SetModalHint: application can use this hint to tell the window manager that a
 // certain window has modal behaviour. The window manager can use this
 // information to handle modal windows in a special way.
@@ -2520,6 +4589,72 @@ func (window *Window) SetModalHint(modal bool) {
 	C.gdk_window_set_modal_hint(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(modal)
+}
+
+// SetOpacity: set window to render as partially transparent, with opacity 0
+// being fully transparent and 1 fully opaque. (Values of the opacity parameter
+// are clamped to the [0,1] range.)
+//
+// For toplevel windows this depends on support from the windowing system that
+// may not always be there. For instance, On X11, this works only on X screens
+// with a compositing manager running. On Wayland, there is no per-window
+// opacity value that the compositor would apply. Instead, use
+// gdk_window_set_opaque_region (window, NULL) to tell the compositor that the
+// entire window is (potentially) non-opaque, and draw your content with alpha,
+// or use gtk_widget_set_opacity() to set an overall opacity for your widgets.
+//
+// For child windows this function only works for non-native windows.
+//
+// For setting up per-pixel alpha topelevels, see gdk_screen_get_rgba_visual(),
+// and for non-toplevels, see gdk_window_set_composited().
+//
+// Support for non-toplevel windows was added in 3.8.
+//
+// The function takes the following parameters:
+//
+//    - opacity: opacity.
+//
+func (window *Window) SetOpacity(opacity float64) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gdouble(opacity)
+
+	C.gdk_window_set_opacity(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(opacity)
+}
+
+// SetOpaqueRegion: for optimisation purposes, compositing window managers may
+// like to not draw obscured regions of windows, or turn off blending during for
+// these regions. With RGB windows with no transparency, this is just the shape
+// of the window, but with ARGB32 windows, the compositor does not know what
+// regions of the window are transparent or not.
+//
+// This function only works for toplevel windows.
+//
+// GTK+ will update this property automatically if the window background is
+// opaque, as we know where the opaque regions are. If your window background is
+// not opaque, please update this property in your Widget::style-updated
+// handler.
+//
+// The function takes the following parameters:
+//
+//    - region (optional): region, or NULL.
+//
+func (window *Window) SetOpaqueRegion(region *cairo.Region) {
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
+
+	C.gdk_window_set_opaque_region(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(region)
 }
 
 // SetOverrideRedirect: override redirect window is not under the control of the
@@ -2549,6 +4684,42 @@ func (window *Window) SetOverrideRedirect(overrideRedirect bool) {
 	runtime.KeepAlive(overrideRedirect)
 }
 
+// SetPassThrough sets whether input to the window is passed through to the
+// window below.
+//
+// The default value of this is FALSE, which means that pointer events that
+// happen inside the window are send first to the window, but if the event is
+// not selected by the event mask then the event is sent to the parent window,
+// and so on up the hierarchy.
+//
+// If pass_through is TRUE then such pointer events happen as if the window
+// wasn't there at all, and thus will be sent first to any windows below window.
+// This is useful if the window is used in a transparent fashion. In the
+// terminology of the web this would be called "pointer-events: none".
+//
+// Note that a window with pass_through TRUE can still have a subwindow without
+// pass through, so you can get events on a subset of a window. And in that
+// cases you would get the in-between related events such as the pointer
+// enter/leave events on its way to the destination window.
+//
+// The function takes the following parameters:
+//
+//    - passThrough: boolean.
+//
+func (window *Window) SetPassThrough(passThrough bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if passThrough {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_pass_through(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(passThrough)
+}
+
 // SetRole: when using GTK+, typically you should use gtk_window_set_role()
 // instead of this low-level function.
 //
@@ -2576,6 +4747,138 @@ func (window *Window) SetRole(role string) {
 	C.gdk_window_set_role(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(role)
+}
+
+// SetShadowWidth: newer GTK+ windows using client-side decorations use extra
+// geometry around their frames for effects like shadows and invisible borders.
+// Window managers that want to maximize windows or snap to edges need to know
+// where the extents of the actual frame lie, so that users don’t feel like
+// windows are snapping against random invisible edges.
+//
+// Note that this property is automatically updated by GTK+, so this function
+// should only be used by applications which do not use GTK+ to create toplevel
+// windows.
+//
+// The function takes the following parameters:
+//
+//    - left extent.
+//    - right extent.
+//    - top extent.
+//    - bottom extent.
+//
+func (window *Window) SetShadowWidth(left, right, top, bottom int) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.gint(left)
+	_arg2 = C.gint(right)
+	_arg3 = C.gint(top)
+	_arg4 = C.gint(bottom)
+
+	C.gdk_window_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(left)
+	runtime.KeepAlive(right)
+	runtime.KeepAlive(top)
+	runtime.KeepAlive(bottom)
+}
+
+// SetSkipPagerHint toggles whether a window should appear in a pager (workspace
+// switcher, or other desktop utility program that displays a small thumbnail
+// representation of the windows on the desktop). If a window’s semantic type as
+// specified with gdk_window_set_type_hint() already fully describes the window,
+// this function should not be called in addition, instead you should allow the
+// window to be treated according to standard policy for its semantic type.
+//
+// The function takes the following parameters:
+//
+//    - skipsPager: TRUE to skip the pager.
+//
+func (window *Window) SetSkipPagerHint(skipsPager bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if skipsPager {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_skip_pager_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(skipsPager)
+}
+
+// SetSkipTaskbarHint toggles whether a window should appear in a task list or
+// window list. If a window’s semantic type as specified with
+// gdk_window_set_type_hint() already fully describes the window, this function
+// should not be called in addition, instead you should allow the window to be
+// treated according to standard policy for its semantic type.
+//
+// The function takes the following parameters:
+//
+//    - skipsTaskbar: TRUE to skip the taskbar.
+//
+func (window *Window) SetSkipTaskbarHint(skipsTaskbar bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if skipsTaskbar {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_skip_taskbar_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(skipsTaskbar)
+}
+
+// SetSourceEvents sets the event mask for any floating device (i.e. not
+// attached to any visible pointer) that has the source defined as source. This
+// event mask will be applied both to currently existing, newly added devices
+// after this call, and devices being attached/detached.
+//
+// The function takes the following parameters:
+//
+//    - source to define the source class.
+//    - eventMask: event mask for window.
+//
+func (window *Window) SetSourceEvents(source InputSource, eventMask EventMask) {
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 C.GdkInputSource // out
+	var _arg2 C.GdkEventMask   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = C.GdkInputSource(source)
+	_arg2 = C.GdkEventMask(eventMask)
+
+	C.gdk_window_set_source_events(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(eventMask)
+}
+
+// SetStartupID: when using GTK+, typically you should use
+// gtk_window_set_startup_id() instead of this low-level function.
+//
+// The function takes the following parameters:
+//
+//    - startupId: string with startup-notification identifier.
+//
+func (window *Window) SetStartupID(startupId string) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(startupId)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gdk_window_set_startup_id(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(startupId)
 }
 
 // SetStaticGravities: used to set the bit gravity of the given window to
@@ -2615,6 +4918,30 @@ func (window *Window) SetStaticGravities(useStatic bool) bool {
 	}
 
 	return _ok
+}
+
+// SetSupportMultidevice: this function will enable multidevice features in
+// window.
+//
+// Multidevice aware windows will need to handle properly multiple, per device
+// enter/leave events, device grabs and grab ownerships.
+//
+// The function takes the following parameters:
+//
+//    - supportMultidevice: TRUE to enable multidevice support in window.
+//
+func (window *Window) SetSupportMultidevice(supportMultidevice bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if supportMultidevice {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_support_multidevice(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(supportMultidevice)
 }
 
 // SetTitle sets the title of a toplevel window, to be displayed in the
@@ -2683,6 +5010,26 @@ func (window *Window) SetTypeHint(hint WindowTypeHint) {
 	C.gdk_window_set_type_hint(_arg0, _arg1)
 	runtime.KeepAlive(window)
 	runtime.KeepAlive(hint)
+}
+
+// SetUrgencyHint toggles whether a window needs the user's urgent attention.
+//
+// The function takes the following parameters:
+//
+//    - urgent: TRUE if the window is urgent.
+//
+func (window *Window) SetUrgencyHint(urgent bool) {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	if urgent {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_window_set_urgency_hint(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(urgent)
 }
 
 // SetUserData: for most purposes this function is deprecated in favor of
@@ -2780,6 +5127,41 @@ func (window *Window) ShowUnraised() {
 	runtime.KeepAlive(window)
 }
 
+// ShowWindowMenu asks the windowing system to show the window menu. The window
+// menu is the menu shown when right-clicking the titlebar on traditional
+// windows managed by the window manager. This is useful for windows using
+// client-side decorations, activating it with a right-click on the window
+// decorations.
+//
+// The function takes the following parameters:
+//
+//    - event to show the menu for.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if the window menu was shown and FALSE otherwise.
+//
+func (window *Window) ShowWindowMenu(event *Event) bool {
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkEvent  // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+	_arg1 = (*C.GdkEvent)(gextras.StructNative(unsafe.Pointer(event)))
+
+	_cret = C.gdk_window_show_window_menu(_arg0, _arg1)
+	runtime.KeepAlive(window)
+	runtime.KeepAlive(event)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Stick: “Pins” a window such that it’s on all workspaces and does not scroll
 // with viewports, for window managers that have scrollable viewports. (When
 // using Window, gtk_window_stick() may be more useful.)
@@ -2820,6 +5202,24 @@ func (window *Window) ThawUpdates() {
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
 
 	C.gdk_window_thaw_updates(_arg0)
+	runtime.KeepAlive(window)
+}
+
+// Unfullscreen moves the window out of fullscreen mode. If the window was not
+// fullscreen, does nothing.
+//
+// On X11, asks the window manager to move window out of the fullscreen state,
+// if the window manager supports this operation. Not all window managers
+// support this, and some deliberately ignore it or don’t have a concept of
+// “fullscreen”; so you can’t rely on the unfullscreenification actually
+// happening. But it will happen with most standard window managers, and GDK
+// makes a best effort to get it to happen.
+func (window *Window) Unfullscreen() {
+	var _arg0 *C.GdkWindow // out
+
+	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
+
+	C.gdk_window_unfullscreen(_arg0)
 	runtime.KeepAlive(window)
 }
 

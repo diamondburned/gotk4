@@ -9,7 +9,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gcancel"
-	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
@@ -19,131 +18,6 @@ import (
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gdkpixbuf2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 import "C"
-
-// NewPixbufAnimationFromResource creates a new pixbuf animation by loading an
-// image from an resource.
-//
-// The file format is detected automatically. If NULL is returned, then error
-// will be set.
-//
-// The function takes the following parameters:
-//
-//    - resourcePath: path of the resource file.
-//
-// The function returns the following values:
-//
-//    - pixbufAnimation (optional): newly-created animation.
-//
-func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, error) {
-	var _arg1 *C.char               // out
-	var _cret *C.GdkPixbufAnimation // in
-	var _cerr *C.GError             // in
-
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(resourcePath)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C.gdk_pixbuf_animation_new_from_resource(_arg1, &_cerr)
-	runtime.KeepAlive(resourcePath)
-
-	var _pixbufAnimation *PixbufAnimation // out
-	var _goerr error                      // out
-
-	if _cret != nil {
-		_pixbufAnimation = wrapPixbufAnimation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromStream creates a new animation by loading it from an
-// input stream.
-//
-// The file format is detected automatically.
-//
-// If NULL is returned, then error will be set.
-//
-// The cancellable can be used to abort the operation from another thread. If
-// the operation was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-// Other possible errors are in the GDK_PIXBUF_ERROR and G_IO_ERROR domains.
-//
-// The stream is not closed.
-//
-// The function takes the following parameters:
-//
-//    - ctx (optional): optional GCancellable object.
-//    - stream: GInputStream to load the pixbuf from.
-//
-// The function returns the following values:
-//
-//    - pixbufAnimation (optional): newly-created animation.
-//
-func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer) (*PixbufAnimation, error) {
-	var _arg2 *C.GCancellable       // out
-	var _arg1 *C.GInputStream       // out
-	var _cret *C.GdkPixbufAnimation // in
-	var _cerr *C.GError             // in
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-
-	_cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, &_cerr)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-
-	var _pixbufAnimation *PixbufAnimation // out
-	var _goerr error                      // out
-
-	if _cret != nil {
-		_pixbufAnimation = wrapPixbufAnimation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromStreamFinish finishes an asynchronous pixbuf animation
-// creation operation started with
-// gdkpixbuf.PixbufAnimation().NewFromStreamAsync.
-//
-// The function takes the following parameters:
-//
-//    - asyncResult: Result.
-//
-// The function returns the following values:
-//
-//    - pixbufAnimation (optional): newly created animation.
-//
-func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufAnimation, error) {
-	var _arg1 *C.GAsyncResult       // out
-	var _cret *C.GdkPixbufAnimation // in
-	var _cerr *C.GError             // in
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(asyncResult).Native()))
-
-	_cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, &_cerr)
-	runtime.KeepAlive(asyncResult)
-
-	var _pixbufAnimation *PixbufAnimation // out
-	var _goerr error                      // out
-
-	if _cret != nil {
-		_pixbufAnimation = wrapPixbufAnimation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-	}
-	if _cerr != nil {
-		_goerr = gerror.Take(unsafe.Pointer(_cerr))
-	}
-
-	return _pixbufAnimation, _goerr
-}
 
 // NewPixbufAnimationFromStreamAsync creates a new animation by asynchronously
 // loading an image from an input stream.

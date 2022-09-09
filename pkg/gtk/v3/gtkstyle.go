@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -1983,6 +1982,106 @@ func (style *Style) Detach() {
 	runtime.KeepAlive(style)
 }
 
+// StyleProperty queries the value of a style property corresponding to a widget
+// class is in the given style.
+//
+// The function takes the following parameters:
+//
+//    - widgetType of a descendant of Widget.
+//    - propertyName: name of the style property to get.
+//
+// The function returns the following values:
+//
+//    - value where the value of the property being queried will be stored.
+//
+func (style *Style) StyleProperty(widgetType coreglib.Type, propertyName string) coreglib.Value {
+	var _arg0 *C.GtkStyle // out
+	var _arg1 C.GType     // out
+	var _arg2 *C.gchar    // out
+	var _arg3 C.GValue    // in
+
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	_arg1 = C.GType(widgetType)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(propertyName)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.gtk_style_get_style_property(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(widgetType)
+	runtime.KeepAlive(propertyName)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg3)))
+
+	return _value
+}
+
+// HasContext returns whether style has an associated StyleContext.
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if style has a StyleContext.
+//
+func (style *Style) HasContext() bool {
+	var _arg0 *C.GtkStyle // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+
+	_cret = C.gtk_style_has_context(_arg0)
+	runtime.KeepAlive(style)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// LookupColor looks up color_name in the style’s logical color mappings,
+// filling in color and returning TRUE if found, otherwise returning FALSE. Do
+// not cache the found mapping, because it depends on the Style and might change
+// when a theme switch occurs.
+//
+// Deprecated: Use gtk_style_context_lookup_color() instead.
+//
+// The function takes the following parameters:
+//
+//    - colorName: name of the logical color to look up.
+//
+// The function returns the following values:
+//
+//    - color to fill in.
+//    - ok: TRUE if the mapping was found.
+//
+func (style *Style) LookupColor(colorName string) (*gdk.Color, bool) {
+	var _arg0 *C.GtkStyle // out
+	var _arg1 *C.gchar    // out
+	var _arg2 C.GdkColor  // in
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.GtkStyle)(unsafe.Pointer(coreglib.InternObject(style).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(colorName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gtk_style_lookup_color(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(style)
+	runtime.KeepAlive(colorName)
+
+	var _color *gdk.Color // out
+	var _ok bool          // out
+
+	_color = (*gdk.Color)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _color, _ok
+}
+
 // LookupIconSet looks up stock_id in the icon factories associated with style
 // and the default icon factory, returning an icon set if found, otherwise NULL.
 //
@@ -3326,476 +3425,6 @@ func (style *Style) unrealize() {
 	_arg0 = (*C.GtkStyle)(unsafe.Pointer(coreglib.InternObject(style).Native()))
 
 	C._gotk4_gtk3_Style_virtual_unrealize(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(style)
-}
-
-// ClassPath: same as gtk_widget_path(), but always uses the name of a widget’s
-// type, never uses a custom name set with gtk_widget_set_name().
-//
-// Deprecated: Use gtk_widget_get_path() instead.
-//
-// The function returns the following values:
-//
-//    - pathLength (optional): location to store the length of the class path, or
-//      NULL.
-//    - path (optional): location to store the class path as an allocated string,
-//      or NULL.
-//    - pathReversed (optional): location to store the reverse class path as an
-//      allocated string, or NULL.
-//
-func (widget *Widget) ClassPath() (pathLength uint, path, pathReversed string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.guint      // in
-	var _arg2 *C.gchar     // in
-	var _arg3 *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_widget_class_path(_arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(widget)
-
-	var _pathLength uint     // out
-	var _path string         // out
-	var _pathReversed string // out
-
-	_pathLength = uint(_arg1)
-	if _arg2 != nil {
-		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if _arg3 != nil {
-		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	return _pathLength, _path, _pathReversed
-}
-
-// EnsureStyle ensures that widget has a style (widget->style).
-//
-// Not a very useful function; most of the time, if you want the style, the
-// widget is realized, and realized widgets are guaranteed to have a style
-// already.
-//
-// Deprecated: Use StyleContext instead.
-func (widget *Widget) EnsureStyle() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_widget_ensure_style(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// ModifierStyle returns the current modifier style for the widget. (As set by
-// gtk_widget_modify_style().) If no style has previously set, a new RcStyle
-// will be created with all values unset, and set as the modifier style for the
-// widget. If you make changes to this rc style, you must call
-// gtk_widget_modify_style(), passing in the returned rc style, to make sure
-// that your changes take effect.
-//
-// Caution: passing the style back to gtk_widget_modify_style() will normally
-// end up destroying it, because gtk_widget_modify_style() copies the passed-in
-// style and sets the copy as the new modifier style, thus dropping any
-// reference to the old modifier style. Add a reference to the modifier style if
-// you want to keep it alive.
-//
-// Deprecated: Use StyleContext with a custom StyleProvider instead.
-//
-// The function returns the following values:
-//
-//    - rcStyle: modifier style for the widget. This rc style is owned by the
-//      widget. If you want to keep a pointer to value this around, you must add
-//      a refcount using g_object_ref().
-//
-func (widget *Widget) ModifierStyle() *RCStyle {
-	var _arg0 *C.GtkWidget  // out
-	var _cret *C.GtkRcStyle // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_widget_get_modifier_style(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _rcStyle *RCStyle // out
-
-	_rcStyle = wrapRCStyle(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _rcStyle
-}
-
-// Style: simply an accessor function that returns widget->style.
-//
-// Deprecated: Use StyleContext instead.
-//
-// The function returns the following values:
-//
-//    - style widget’s Style.
-//
-func (widget *Widget) Style() *Style {
-	var _arg0 *C.GtkWidget // out
-	var _cret *C.GtkStyle  // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C.gtk_widget_get_style(_arg0)
-	runtime.KeepAlive(widget)
-
-	var _style *Style // out
-
-	_style = wrapStyle(coreglib.Take(unsafe.Pointer(_cret)))
-
-	return _style
-}
-
-// ModifyBase sets the base color for a widget in a particular state. All other
-// style values are left untouched. The base color is the background color used
-// along with the text color (see gtk_widget_modify_text()) for widgets such as
-// Entry and TextView. See also gtk_widget_modify_style().
-//
-// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-// draw on their parent container’s window and thus may > not draw any
-// background themselves. This is the case for e.g. > Label. > > To modify the
-// background of such widgets, you have to set the > base color on their parent;
-// if you want to set the background > of a rectangular area around a label, try
-// placing the label in > a EventBox widget and setting the base color on that.
-//
-// Deprecated: Use gtk_widget_override_background_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the base color.
-//    - color (optional) to assign (does not need to be allocated), or NULL to
-//      undo the effect of previous calls to of gtk_widget_modify_base().
-//
-func (widget *Widget) ModifyBase(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_base(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// ModifyBg sets the background color for a widget in a particular state.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// > Note that “no window” widgets (which have the GTK_NO_WINDOW > flag set)
-// draw on their parent container’s window and thus may > not draw any
-// background themselves. This is the case for e.g. > Label. > > To modify the
-// background of such widgets, you have to set the > background color on their
-// parent; if you want to set the background > of a rectangular area around a
-// label, try placing the label in > a EventBox widget and setting the
-// background color on that.
-//
-// Deprecated: Use gtk_widget_override_background_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the background color.
-//    - color (optional) to assign (does not need to be allocated), or NULL to
-//      undo the effect of previous calls to of gtk_widget_modify_bg().
-//
-func (widget *Widget) ModifyBg(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_bg(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// ModifyFg sets the foreground color for a widget in a particular state.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the foreground color.
-//    - color (optional) to assign (does not need to be allocated), or NULL to
-//      undo the effect of previous calls to of gtk_widget_modify_fg().
-//
-func (widget *Widget) ModifyFg(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_fg(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// ModifyFont sets the font to use for a widget.
-//
-// All other style values are left untouched. See also
-// gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_font() instead.
-//
-// The function takes the following parameters:
-//
-//    - fontDesc (optional): font description to use, or NULL to undo the effect
-//      of previous calls to gtk_widget_modify_font().
-//
-func (widget *Widget) ModifyFont(fontDesc *pango.FontDescription) {
-	var _arg0 *C.GtkWidget            // out
-	var _arg1 *C.PangoFontDescription // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	if fontDesc != nil {
-		_arg1 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDesc)))
-	}
-
-	C.gtk_widget_modify_font(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(fontDesc)
-}
-
-// ModifyStyle modifies style values on the widget.
-//
-// Modifications made using this technique take precedence over style values set
-// via an RC file, however, they will be overridden if a style is explicitly set
-// on the widget using gtk_widget_set_style(). The RcStyle-struct is designed so
-// each field can either be set or unset, so it is possible, using this
-// function, to modify some style values and leave the others unchanged.
-//
-// Note that modifications made with this function are not cumulative with
-// previous calls to gtk_widget_modify_style() or with such functions as
-// gtk_widget_modify_fg(). If you wish to retain previous values, you must first
-// call gtk_widget_get_modifier_style(), make your modifications to the returned
-// style, then call gtk_widget_modify_style() with that style. On the other
-// hand, if you first call gtk_widget_modify_style(), subsequent calls to such
-// functions gtk_widget_modify_fg() will have a cumulative effect with the
-// initial modifications.
-//
-// Deprecated: Use StyleContext with a custom StyleProvider instead.
-//
-// The function takes the following parameters:
-//
-//    - style holding the style modifications.
-//
-func (widget *Widget) ModifyStyle(style *RCStyle) {
-	var _arg0 *C.GtkWidget  // out
-	var _arg1 *C.GtkRcStyle // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.GtkRcStyle)(unsafe.Pointer(coreglib.InternObject(style).Native()))
-
-	C.gtk_widget_modify_style(_arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(style)
-}
-
-// ModifyText sets the text color for a widget in a particular state.
-//
-// All other style values are left untouched. The text color is the foreground
-// color used along with the base color (see gtk_widget_modify_base()) for
-// widgets such as Entry and TextView. See also gtk_widget_modify_style().
-//
-// Deprecated: Use gtk_widget_override_color() instead.
-//
-// The function takes the following parameters:
-//
-//    - state for which to set the text color.
-//    - color (optional) to assign (does not need to be allocated), or NULL to
-//      undo the effect of previous calls to of gtk_widget_modify_text().
-//
-func (widget *Widget) ModifyText(state StateType, color *gdk.Color) {
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 C.GtkStateType // out
-	var _arg2 *C.GdkColor    // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateType(state)
-	if color != nil {
-		_arg2 = (*C.GdkColor)(gextras.StructNative(unsafe.Pointer(color)))
-	}
-
-	C.gtk_widget_modify_text(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(state)
-	runtime.KeepAlive(color)
-}
-
-// Path obtains the full path to widget. The path is simply the name of a widget
-// and all its parents in the container hierarchy, separated by periods. The
-// name of a widget comes from gtk_widget_get_name(). Paths are used to apply
-// styles to a widget in gtkrc configuration files. Widget names are the type of
-// the widget by default (e.g. “GtkButton”) or can be set to an
-// application-specific value with gtk_widget_set_name(). By setting the name of
-// a widget, you allow users or theme authors to apply styles to that specific
-// widget in their gtkrc file. path_reversed_p fills in the path in reverse
-// order, i.e. starting with widget’s name instead of starting with the name of
-// widget’s outermost ancestor.
-//
-// Deprecated: Use gtk_widget_get_path() instead.
-//
-// The function returns the following values:
-//
-//    - pathLength (optional): location to store length of the path, or NULL.
-//    - path (optional): location to store allocated path string, or NULL.
-//    - pathReversed (optional): location to store allocated reverse path string,
-//      or NULL.
-//
-func (widget *Widget) Path() (pathLength uint, path, pathReversed string) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.guint      // in
-	var _arg2 *C.gchar     // in
-	var _arg3 *C.gchar     // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_widget_path(_arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(widget)
-
-	var _pathLength uint     // out
-	var _path string         // out
-	var _pathReversed string // out
-
-	_pathLength = uint(_arg1)
-	if _arg2 != nil {
-		_path = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-		defer C.free(unsafe.Pointer(_arg2))
-	}
-	if _arg3 != nil {
-		_pathReversed = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	return _pathLength, _path, _pathReversed
-}
-
-// RenderIcon: convenience function that uses the theme settings for widget to
-// look up stock_id and render it to a pixbuf. stock_id should be a stock icon
-// ID such as K_STOCK_OPEN or K_STOCK_OK. size should be a size such as
-// K_ICON_SIZE_MENU. detail should be a string that identifies the widget or
-// code doing the rendering, so that theme engines can special-case rendering
-// for that widget or code.
-//
-// The pixels in the returned Pixbuf are shared with the rest of the application
-// and should not be modified. The pixbuf should be freed after use with
-// g_object_unref().
-//
-// Deprecated: Use gtk_widget_render_icon_pixbuf() instead.
-//
-// The function takes the following parameters:
-//
-//    - stockId: stock ID.
-//    - size: stock size (IconSize). A size of (GtkIconSize)-1 means render at
-//      the size of the source and don’t scale (if there are multiple source
-//      sizes, GTK+ picks one of the available sizes).
-//    - detail (optional): render detail to pass to theme engine.
-//
-// The function returns the following values:
-//
-//    - pixbuf (optional): new pixbuf, or NULL if the stock ID wasn’t known.
-//
-func (widget *Widget) RenderIcon(stockId string, size int, detail string) *gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkWidget  // out
-	var _arg1 *C.gchar      // out
-	var _arg2 C.GtkIconSize // out
-	var _arg3 *C.gchar      // out
-	var _cret *C.GdkPixbuf  // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stockId)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GtkIconSize(size)
-	if detail != "" {
-		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(detail)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	_cret = C.gtk_widget_render_icon(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(stockId)
-	runtime.KeepAlive(size)
-	runtime.KeepAlive(detail)
-
-	var _pixbuf *gdkpixbuf.Pixbuf // out
-
-	if _cret != nil {
-		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
-			_pixbuf = &gdkpixbuf.Pixbuf{
-				Object: obj,
-				LoadableIcon: gio.LoadableIcon{
-					Icon: gio.Icon{
-						Object: obj,
-					},
-				},
-			}
-		}
-	}
-
-	return _pixbuf
-}
-
-// ResetRCStyles: reset the styles of widget and all descendents, so when they
-// are looked up again, they get the correct values for the currently loaded RC
-// file settings.
-//
-// This function is not useful for applications.
-//
-// Deprecated: Use StyleContext instead, and gtk_widget_reset_style().
-func (widget *Widget) ResetRCStyles() {
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C.gtk_widget_reset_rc_styles(_arg0)
-	runtime.KeepAlive(widget)
-}
-
-// SetStyle: used to set the Style for a widget (widget->style). Since GTK 3,
-// this function does nothing, the passed in style is ignored.
-//
-// Deprecated: Use StyleContext instead.
-//
-// The function takes the following parameters:
-//
-//    - style (optional) or NULL to remove the effect of a previous call to
-//      gtk_widget_set_style() and go back to the default style.
-//
-func (widget *Widget) SetStyle(style *Style) {
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkStyle  // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	if style != nil {
-		_arg1 = (*C.GtkStyle)(unsafe.Pointer(coreglib.InternObject(style).Native()))
-	}
-
-	C.gtk_widget_set_style(_arg0, _arg1)
-	runtime.KeepAlive(widget)
 	runtime.KeepAlive(style)
 }
 

@@ -3,11 +3,14 @@
 package gtk
 
 import (
+	"unsafe"
+
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #include <stdlib.h>
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -46,6 +49,8 @@ func _gotk4_gtk4_DropTarget_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2
 
 	ok := f(_drop)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -76,6 +81,8 @@ func _gotk4_gtk4_DropTarget_ConnectDrop(arg0 C.gpointer, arg1 C.GValue, arg2 C.g
 
 	ok := f(_value, _x, _y)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -103,6 +110,8 @@ func _gotk4_gtk4_DropTarget_ConnectEnter(arg0 C.gpointer, arg1 C.gdouble, arg2 C
 	_y = float64(arg2)
 
 	dragAction := f(_x, _y)
+
+	var _ gdk.DragAction
 
 	cret = C.GdkDragAction(dragAction)
 
@@ -145,6 +154,8 @@ func _gotk4_gtk4_DropTarget_ConnectMotion(arg0 C.gpointer, arg1 C.gdouble, arg2 
 	_y = float64(arg2)
 
 	dragAction := f(_x, _y)
+
+	var _ gdk.DragAction
 
 	cret = C.GdkDragAction(dragAction)
 

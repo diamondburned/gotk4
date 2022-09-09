@@ -20,6 +20,9 @@ import (
 // gchar* _gotk4_atk1_StreamableContent_virtual_get_mime_type(void* fnptr, AtkStreamableContent* arg0, gint arg1) {
 //   return ((gchar* (*)(AtkStreamableContent*, gint))(fnptr))(arg0, arg1);
 // };
+// gchar* _gotk4_atk1_StreamableContent_virtual_get_uri(void* fnptr, AtkStreamableContent* arg0, gchar* arg1) {
+//   return ((gchar* (*)(AtkStreamableContent*, gchar*))(fnptr))(arg0, arg1);
+// };
 // gint _gotk4_atk1_StreamableContent_virtual_get_n_mime_types(void* fnptr, AtkStreamableContent* arg0) {
 //   return ((gint (*)(AtkStreamableContent*))(fnptr))(arg0);
 // };
@@ -180,6 +183,46 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	return _ioChannel
 }
 
+// URI: get a string representing a URI in IETF standard format (see
+// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may be
+// streamed in the specified mime-type, if one is available. If mime_type is
+// NULL, the URI for the default (and possibly only) mime-type is returned.
+//
+// Note that it is possible for get_uri to return NULL but for get_stream to
+// work nonetheless, since not all GIOChannels connect to URIs.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: gchar* representing the mime type, or NULL to request a URI for
+//      the default mime type.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) returns a string representing a URI, or NULL if no
+//      corresponding URI can be constructed.
+//
+func (streamable *StreamableContent) URI(mimeType string) string {
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 *C.gchar                // out
+	var _cret *C.gchar                // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_streamable_content_get_uri(_arg0, _arg1)
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(mimeType)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
 // mimeType gets the character string of the specified mime type. The first mime
 // type is at position 0, the second at position 1, and so on.
 //
@@ -276,6 +319,49 @@ func (streamable *StreamableContent) stream(mimeType string) *glib.IOChannel {
 	)
 
 	return _ioChannel
+}
+
+// urI: get a string representing a URI in IETF standard format (see
+// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may be
+// streamed in the specified mime-type, if one is available. If mime_type is
+// NULL, the URI for the default (and possibly only) mime-type is returned.
+//
+// Note that it is possible for get_uri to return NULL but for get_stream to
+// work nonetheless, since not all GIOChannels connect to URIs.
+//
+// The function takes the following parameters:
+//
+//    - mimeType: gchar* representing the mime type, or NULL to request a URI for
+//      the default mime type.
+//
+// The function returns the following values:
+//
+//    - utf8 (optional) returns a string representing a URI, or NULL if no
+//      corresponding URI can be constructed.
+//
+func (streamable *StreamableContent) urI(mimeType string) string {
+	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
+	fnarg := gclass.get_uri
+
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 *C.gchar                // out
+	var _cret *C.gchar                // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_atk1_StreamableContent_virtual_get_uri(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(mimeType)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
 }
 
 // StreamableContentIface: instance of this type is always passed by reference.

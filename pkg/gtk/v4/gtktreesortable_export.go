@@ -51,6 +51,8 @@ func _gotk4_gtk4_TreeIterCompareFunc(arg1 *C.GtkTreeModel, arg2 *C.GtkTreeIter, 
 
 	gint := fn(_model, _a, _b)
 
+	var _ int
+
 	cret = C.int(gint)
 
 	return cret

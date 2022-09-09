@@ -43,6 +43,8 @@ func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C
 
 	ok := fn(_value, _variant)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -68,6 +70,8 @@ func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.GValue, arg2 *C.GVariantType, ar
 	_expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 
 	variant := fn(_value, _expectedType)
+
+	var _ *glib.Variant
 
 	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
 
@@ -97,6 +101,9 @@ func _gotk4_gio2_SettingsGetMapping(arg1 *C.GVariant, arg2 *C.gpointer, arg3 C.g
 	)
 
 	result, ok := fn(_value)
+
+	var _ unsafe.Pointer
+	var _ bool
 
 	*arg2 = (C.gpointer)(unsafe.Pointer(result))
 	if ok {

@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -114,6 +113,50 @@ func (context *IMMulticontext) AppendMenuitems(menushell MenuSheller) {
 	C.gtk_im_multicontext_append_menuitems(_arg0, _arg1)
 	runtime.KeepAlive(context)
 	runtime.KeepAlive(menushell)
+}
+
+// ContextID gets the id of the currently active slave of the context.
+//
+// The function returns the following values:
+//
+//    - utf8: id of the currently active slave.
+//
+func (context *IMMulticontext) ContextID() string {
+	var _arg0 *C.GtkIMMulticontext // out
+	var _cret *C.char              // in
+
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+
+	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
+	runtime.KeepAlive(context)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// SetContextID sets the context id for context.
+//
+// This causes the currently active slave of context to be replaced by the slave
+// corresponding to the new context id.
+//
+// The function takes the following parameters:
+//
+//    - contextId: id to use.
+//
+func (context *IMMulticontext) SetContextID(contextId string) {
+	var _arg0 *C.GtkIMMulticontext // out
+	var _arg1 *C.char              // out
+
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contextId)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(contextId)
 }
 
 // IMMulticontextClass: instance of this type is always passed by reference.

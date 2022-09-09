@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"runtime"
 	"unsafe"
 
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -62,60 +61,4 @@ func (f FileChooserConfirmation) String() string {
 	default:
 		return fmt.Sprintf("FileChooserConfirmation(%d)", f)
 	}
-}
-
-// DoOverwriteConfirmation queries whether a file chooser is set to confirm for
-// overwriting when the user types a file name that already exists.
-//
-// The function returns the following values:
-//
-//    - ok: TRUE if the file chooser will present a confirmation dialog; FALSE
-//      otherwise.
-//
-func (chooser *FileChooser) DoOverwriteConfirmation() bool {
-	var _arg0 *C.GtkFileChooser // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	_cret = C.gtk_file_chooser_get_do_overwrite_confirmation(_arg0)
-	runtime.KeepAlive(chooser)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SetDoOverwriteConfirmation sets whether a file chooser in
-// GTK_FILE_CHOOSER_ACTION_SAVE mode will present a confirmation dialog if the
-// user types a file name that already exists. This is FALSE by default.
-//
-// If set to TRUE, the chooser will emit the FileChooser::confirm-overwrite
-// signal when appropriate.
-//
-// If all you need is the stock confirmation dialog, set this property to TRUE.
-// You can override the way confirmation is done by actually handling the
-// FileChooser::confirm-overwrite signal; please refer to its documentation for
-// the details.
-//
-// The function takes the following parameters:
-//
-//    - doOverwriteConfirmation: whether to confirm overwriting in save mode.
-//
-func (chooser *FileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
-	var _arg0 *C.GtkFileChooser // out
-	var _arg1 C.gboolean        // out
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	if doOverwriteConfirmation {
-		_arg1 = C.TRUE
-	}
-
-	C.gtk_file_chooser_set_do_overwrite_confirmation(_arg0, _arg1)
-	runtime.KeepAlive(chooser)
-	runtime.KeepAlive(doOverwriteConfirmation)
 }

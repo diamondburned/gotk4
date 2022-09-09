@@ -50,6 +50,8 @@ func _gotk4_gtk4_EventControllerKey_ConnectKeyPressed(arg0 C.gpointer, arg1 C.gu
 
 	ok := f(_keyval, _keycode, _state)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -99,6 +101,8 @@ func _gotk4_gtk4_EventControllerKey_ConnectModifiers(arg0 C.gpointer, arg1 C.Gdk
 	_keyval = gdk.ModifierType(arg1)
 
 	ok := f(_keyval)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

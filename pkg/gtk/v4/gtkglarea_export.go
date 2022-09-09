@@ -3,7 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #include <stdlib.h>
@@ -24,6 +27,8 @@ func _gotk4_gtk4_GLArea_ConnectCreateContext(arg0 C.gpointer, arg1 C.guintptr) (
 	}
 
 	glContext := f()
+
+	var _ gdk.GLContexter
 
 	cret = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(glContext).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(glContext).Native()))
@@ -65,6 +70,8 @@ func _gotk4_gtk4_GLArea_ConnectRender(arg0 C.gpointer, arg1 *C.GdkGLContext, arg
 	}
 
 	ok := f(_context)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

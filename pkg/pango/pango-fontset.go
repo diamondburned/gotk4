@@ -3,10 +3,10 @@
 package pango
 
 import (
-	"reflect"
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
@@ -14,6 +14,7 @@ import (
 // #include <stdlib.h>
 // #include <glib-object.h>
 // #include <pango/pango.h>
+// extern gboolean _gotk4_pango1_FontsetForEachFunc(PangoFontset*, PangoFont*, gpointer);
 // extern PangoLanguage* _gotk4_pango1_FontsetClass_get_language(PangoFontset*);
 // extern PangoFontMetrics* _gotk4_pango1_FontsetClass_get_metrics(PangoFontset*);
 // extern PangoFont* _gotk4_pango1_FontsetClass_get_font(PangoFontset*, guint);
@@ -25,6 +26,9 @@ import (
 // };
 // PangoLanguage* _gotk4_pango1_Fontset_virtual_get_language(void* fnptr, PangoFontset* arg0) {
 //   return ((PangoLanguage* (*)(PangoFontset*))(fnptr))(arg0);
+// };
+// void _gotk4_pango1_Fontset_virtual_foreach(void* fnptr, PangoFontset* arg0, PangoFontsetForeachFunc arg1, gpointer arg2) {
+//   ((void (*)(PangoFontset*, PangoFontsetForeachFunc, gpointer))(fnptr))(arg0, arg1, arg2);
 // };
 import "C"
 
@@ -153,6 +157,30 @@ func BaseFontset(obj Fontsetter) *Fontset {
 	return obj.baseFontset()
 }
 
+// ForEach iterates through all the fonts in a fontset, calling func for each
+// one.
+//
+// If func returns TRUE, that stops the iteration.
+//
+// The function takes the following parameters:
+//
+//    - fn: callback function.
+//
+func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
+	var _arg0 *C.PangoFontset           // out
+	var _arg1 C.PangoFontsetForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForEachFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
+
+	C.pango_fontset_foreach(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(fontset)
+	runtime.KeepAlive(fn)
+}
+
 // Font returns the font in the fontset that contains the best glyph for a
 // Unicode character.
 //
@@ -227,6 +255,33 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	)
 
 	return _fontMetrics
+}
+
+// forEach iterates through all the fonts in a fontset, calling func for each
+// one.
+//
+// If func returns TRUE, that stops the iteration.
+//
+// The function takes the following parameters:
+//
+//    - fn: callback function.
+//
+func (fontset *Fontset) forEach(fn FontsetForEachFunc) {
+	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
+	fnarg := gclass.foreach
+
+	var _arg0 *C.PangoFontset           // out
+	var _arg1 C.PangoFontsetForeachFunc // out
+	var _arg2 C.gpointer
+
+	_arg0 = (*C.PangoFontset)(unsafe.Pointer(coreglib.InternObject(fontset).Native()))
+	_arg1 = (*[0]byte)(C._gotk4_pango1_FontsetForEachFunc)
+	_arg2 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg2))
+
+	C._gotk4_pango1_Fontset_virtual_foreach(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(fontset)
+	runtime.KeepAlive(fn)
 }
 
 // Font returns the font in the fontset that contains the best glyph for a

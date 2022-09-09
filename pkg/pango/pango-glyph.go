@@ -198,6 +198,8 @@ func (g *GlyphGeometry) Width() GlyphUnit {
 	valptr := &g.native.width
 	var _v GlyphUnit // out
 	_v = int32(*valptr)
+	type _ = GlyphUnit
+	type _ = int32
 	return _v
 }
 
@@ -206,6 +208,8 @@ func (g *GlyphGeometry) XOffset() GlyphUnit {
 	valptr := &g.native.x_offset
 	var _v GlyphUnit // out
 	_v = int32(*valptr)
+	type _ = GlyphUnit
+	type _ = int32
 	return _v
 }
 
@@ -214,6 +218,8 @@ func (g *GlyphGeometry) YOffset() GlyphUnit {
 	valptr := &g.native.y_offset
 	var _v GlyphUnit // out
 	_v = int32(*valptr)
+	type _ = GlyphUnit
+	type _ = int32
 	return _v
 }
 
@@ -235,6 +241,8 @@ func (g *GlyphInfo) Glyph() Glyph {
 	valptr := &g.native.glyph
 	var _v Glyph // out
 	_v = uint32(*valptr)
+	type _ = Glyph
+	type _ = uint32
 	return _v
 }
 

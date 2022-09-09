@@ -4,7 +4,6 @@ package gtk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"strings"
 	"unsafe"
@@ -425,6 +424,8 @@ func (accelGroup *AccelGroup) Activate(accelQuark glib.Quark, acceleratable *cor
 
 	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
 	_arg1 = C.guint32(accelQuark)
+	type _ = glib.Quark
+	type _ = uint32
 	_arg2 = (*C.GObject)(unsafe.Pointer(acceleratable.Native()))
 	_arg3 = C.guint(accelKey)
 	_arg4 = C.GdkModifierType(accelMods)
@@ -589,6 +590,55 @@ func (accelGroup *AccelGroup) DisconnectKey(accelKey uint, accelMods gdk.Modifie
 	return _ok
 }
 
+// IsLocked locks are added and removed using gtk_accel_group_lock() and
+// gtk_accel_group_unlock().
+//
+// The function returns the following values:
+//
+//    - ok: TRUE if there are 1 or more locks on the accel_group, FALSE
+//      otherwise.
+//
+func (accelGroup *AccelGroup) IsLocked() bool {
+	var _arg0 *C.GtkAccelGroup // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
+
+	_cret = C.gtk_accel_group_get_is_locked(_arg0)
+	runtime.KeepAlive(accelGroup)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ModifierMask gets a ModifierType representing the mask for this accel_group.
+// For example, K_CONTROL_MASK, K_SHIFT_MASK, etc.
+//
+// The function returns the following values:
+//
+//    - modifierType: modifier mask for this accel group.
+//
+func (accelGroup *AccelGroup) ModifierMask() gdk.ModifierType {
+	var _arg0 *C.GtkAccelGroup  // out
+	var _cret C.GdkModifierType // in
+
+	_arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(coreglib.InternObject(accelGroup).Native()))
+
+	_cret = C.gtk_accel_group_get_modifier_mask(_arg0)
+	runtime.KeepAlive(accelGroup)
+
+	var _modifierType gdk.ModifierType // out
+
+	_modifierType = gdk.ModifierType(_cret)
+
+	return _modifierType
+}
+
 // Lock locks the given accelerator group.
 //
 // Locking an acelerator group prevents the accelerators contained within it to
@@ -718,6 +768,8 @@ func (a *AccelGroupEntry) AccelPathQuark() glib.Quark {
 	valptr := &a.native.accel_path_quark
 	var _v glib.Quark // out
 	_v = uint32(*valptr)
+	type _ = glib.Quark
+	type _ = uint32
 	return _v
 }
 

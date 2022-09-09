@@ -3,63 +3,15 @@
 package gtk
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #include <stdlib.h>
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
-// extern void callbackDelete(gpointer);
-// extern GtkWidget* _gotk4_gtk3_FlowBoxCreateWidgetFunc(gpointer, gpointer);
 import "C"
 
 // FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
 // gtk_flow_box_bind_model() for each item that gets added to the model.
 type FlowBoxCreateWidgetFunc func(item *coreglib.Object) (widget Widgetter)
-
-// BindModel binds model to box.
-//
-// If box was already bound to a model, that previous binding is destroyed.
-//
-// The contents of box are cleared and then filled with widgets that represent
-// items from model. box is updated whenever model changes. If model is NULL,
-// box is left empty.
-//
-// It is undefined to add or remove widgets directly (for example, with
-// gtk_flow_box_insert() or gtk_container_add()) while box is bound to a model.
-//
-// Note that using a model is incompatible with the filtering and sorting
-// functionality in GtkFlowBox. When using a model, filtering and sorting should
-// be implemented by the model.
-//
-// The function takes the following parameters:
-//
-//    - model (optional) to be bound to box.
-//    - createWidgetFunc: function that creates widgets for items.
-//
-func (box *FlowBox) BindModel(model gio.ListModeller, createWidgetFunc FlowBoxCreateWidgetFunc) {
-	var _arg0 *C.GtkFlowBox                // out
-	var _arg1 *C.GListModel                // out
-	var _arg2 C.GtkFlowBoxCreateWidgetFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(coreglib.InternObject(box).Native()))
-	if model != nil {
-		_arg1 = (*C.GListModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	}
-	_arg2 = (*[0]byte)(C._gotk4_gtk3_FlowBoxCreateWidgetFunc)
-	_arg3 = C.gpointer(gbox.Assign(createWidgetFunc))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C.gtk_flow_box_bind_model(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(box)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(createWidgetFunc)
-}

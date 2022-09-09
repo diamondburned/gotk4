@@ -65,6 +65,8 @@ func _gotk4_gtk4_TickCallback(arg1 *C.GtkWidget, arg2 *C.GdkFrameClock, arg3 C.g
 
 	ok := fn(_widget, _frameClock)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -143,6 +145,8 @@ func _gotk4_gtk4_Widget_ConnectKeynavFailed(arg0 C.gpointer, arg1 C.GtkDirection
 
 	ok := f(_direction)
 
+	var _ bool
+
 	if ok {
 		cret = C.TRUE
 	}
@@ -186,6 +190,8 @@ func _gotk4_gtk4_Widget_ConnectMnemonicActivate(arg0 C.gpointer, arg1 C.gboolean
 	}
 
 	ok := f(_groupCycling)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE
@@ -240,6 +246,8 @@ func _gotk4_gtk4_Widget_ConnectQueryTooltip(arg0 C.gpointer, arg1 C.gint, arg2 C
 	_tooltip = wrapTooltip(coreglib.Take(unsafe.Pointer(arg4)))
 
 	ok := f(_x, _y, _keyboardMode, _tooltip)
+
+	var _ bool
 
 	if ok {
 		cret = C.TRUE

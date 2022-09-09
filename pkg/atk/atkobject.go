@@ -4,7 +4,6 @@ package atk
 
 import (
 	"fmt"
-	"reflect"
 	"runtime"
 	"unsafe"
 
@@ -63,6 +62,9 @@ import (
 //   return ((gchar* (*)(AtkObject*))(fnptr))(arg0);
 // };
 // gchar* _gotk4_atk1_AtkObject_virtual_get_name(void* fnptr, AtkObject* arg0) {
+//   return ((gchar* (*)(AtkObject*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_AtkObject_virtual_get_object_locale(void* fnptr, AtkObject* arg0) {
 //   return ((gchar* (*)(AtkObject*))(fnptr))(arg0);
 // };
 // gint _gotk4_atk1_AtkObject_virtual_get_index_in_parent(void* fnptr, AtkObject* arg0) {
@@ -1478,6 +1480,29 @@ func (object *AtkObject) AddRelationship(relationship RelationType, target *AtkO
 	return _ok
 }
 
+// AccessibleID gets the accessible id of the accessible.
+//
+// The function returns the following values:
+//
+//    - utf8: character string representing the accessible id of the object, or
+//      NULL if no such string was set.
+//
+func (accessible *AtkObject) AccessibleID() string {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_accessible_id(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
 // Description gets the accessible description of the accessible.
 //
 // The function returns the following values:
@@ -1619,6 +1644,30 @@ func (accessible *AtkObject) Name() string {
 	return _utf8
 }
 
+// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+// locale of accessible.
+//
+// The function returns the following values:
+//
+//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+//      accessible.
+//
+func (accessible *AtkObject) ObjectLocale() string {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_object_locale(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
 // Parent gets the accessible parent of the accessible. By default this is the
 // one assigned with atk_object_set_parent(), but it is assumed that ATK
 // implementors have ways to get the parent of the object without the need of
@@ -1709,6 +1758,8 @@ func (accessible *AtkObject) NotifyStateChange(state State, value bool) {
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 	_arg1 = C.guint64(state)
+	type _ = State
+	type _ = uint64
 	if value {
 		_arg2 = C.TRUE
 	}
@@ -1878,6 +1929,29 @@ func (object *AtkObject) RemoveRelationship(relationship RelationType, target *A
 	}
 
 	return _ok
+}
+
+// SetAccessibleID sets the accessible ID of the accessible. This is not meant
+// to be presented to the user, but to be an ID which is stable over application
+// development. Typically, this is the gtkbuilder ID. Such an ID will be
+// available for instance to identify a given well-known accessible object for
+// tailored screen reading, or for automatic regression testing.
+//
+// The function takes the following parameters:
+//
+//    - name: character string to be set as the accessible id.
+//
+func (accessible *AtkObject) SetAccessibleID(name string) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.atk_object_set_accessible_id(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(name)
 }
 
 // SetDescription sets the accessible description of the accessible. You can't
@@ -2166,6 +2240,33 @@ func (accessible *AtkObject) name() string {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_cret = C._gotk4_atk1_AtkObject_virtual_get_name(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// objectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+// locale of accessible.
+//
+// The function returns the following values:
+//
+//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+//      accessible.
+//
+func (accessible *AtkObject) objectLocale() string {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_object_locale
+
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_object_locale(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out

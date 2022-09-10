@@ -452,6 +452,14 @@ func WipeAllClosures(objector Objector) {
 	closure.RegistryType.Delete(v.box)
 }
 
+// Destroy destroys the Go reference to the given object. The object must not be
+// used ever again; it is the caller's responsibility to ensure that it will
+// never be used again. Resurrecting the object again is undefined behavior.
+func Destroy(objector Objector) {
+	v := BaseObject(objector)
+	v.destroy()
+}
+
 // SignalHandle is the ID of a signal handler.
 type SignalHandle uint
 
@@ -539,7 +547,7 @@ func ConnectedGeneratedClosure(closureData uintptr) *closure.FuncStack {
 func _gotk4_removeClosure(obj *C.GObject, gclosure *C.GClosure) {
 	box := intern.TryGet(unsafe.Pointer(obj))
 	if box == nil {
-		log.Panicln("gotk4: trying to remove closure from unknown object", obj)
+		return
 	}
 
 	closures := closure.RegistryType.Get(box)
@@ -638,6 +646,10 @@ func newObject(ptr unsafe.Pointer, take bool) *Object {
 	return &Object{
 		box: intern.Get(ptr, take),
 	}
+}
+
+func (v *Object) destroy() {
+	intern.Free(v.box)
 }
 
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).

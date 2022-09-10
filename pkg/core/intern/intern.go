@@ -84,7 +84,9 @@ type Box struct {
 }
 
 // Object returns Box's C GObject pointer.
-func (b *Box) GObject() unsafe.Pointer { return b.data[0] }
+func (b *Box) GObject() unsafe.Pointer {
+	return atomic.LoadPointer(&b.data[0])
+}
 
 // Hack to force an object on the heap.
 var never bool
@@ -244,12 +246,49 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	return box
 }
 
+// Free explicitly frees the box permanently. It must not be resurrected after
+// this.
+func Free(box *Box) {
+	obj := box.GObject()
+	if obj == nil {
+		panic("bug: Free called on already freed object")
+	}
+
+	shared.mu.Lock()
+	delete(shared.strong, obj)
+	delete(shared.weak, obj)
+	for i := range box.data {
+		atomic.StorePointer(&box.data[i], nil)
+	}
+	shared.mu.Unlock()
+
+	C.g_object_remove_toggle_ref(
+		(*C.GObject)(unsafe.Pointer(obj)),
+		(*[0]byte)(C.goToggleNotify), nil,
+	)
+
+	if toggleRefs != nil {
+		toggleRefs.Println(objInfo(obj), "Free: explicitly removed toggle ref")
+	}
+
+	if objectProfile != nil {
+		objectProfile.Remove(obj)
+	}
+}
+
 // finalizeBox only delays its finalization until GLib notifies us a toggle. It
 // does so for as long as an object is stored only in the Go heap. Once the
 // object is also shared, the toggle notifier will strongly reference the Box.
 func finalizeBox(box *Box) {
+	obj := box.GObject()
+	if obj == nil {
+		return
+	}
+
+	var objInfoRes string
 	if toggleRefs != nil {
-		toggleRefs.Println(objInfo(box.GObject()), "finalizeBox: acquiring lock...")
+		objInfoRes = objInfo(obj)
+		toggleRefs.Println(objInfoRes, "finalizeBox: acquiring lock...")
 	}
 
 	shared.mu.Lock()
@@ -259,22 +298,22 @@ func finalizeBox(box *Box) {
 		runtime.SetFinalizer(box, finalizeBox)
 		shared.mu.Unlock()
 		if toggleRefs != nil {
-			toggleRefs.Println(objInfo(box.GObject()), "finalizeBox: moving finalize to next GC cycle")
+			toggleRefs.Println(objInfoRes, "finalizeBox: moving finalize to next GC cycle")
 		}
 	} else {
 		shared.mu.Unlock()
 		// Unreference the object. This will potentially free the object as
 		// well. The closures are definitely gone at this point.
 		C.g_object_remove_toggle_ref(
-			(*C.GObject)(unsafe.Pointer(box.GObject())),
+			(*C.GObject)(unsafe.Pointer(obj)),
 			(*[0]byte)(C.goToggleNotify), nil,
 		)
 		if toggleRefs != nil {
-			toggleRefs.Println(objInfo(box.GObject()), "finalizeBox: removed toggle ref during GC")
+			toggleRefs.Println(objInfoRes, "finalizeBox: removed toggle ref during GC")
 		}
 
 		if objectProfile != nil {
-			objectProfile.Remove(box.GObject())
+			objectProfile.Remove(obj)
 		}
 	}
 }
@@ -306,9 +345,9 @@ func freeBox(box *Box) bool {
 		// By setting *box to a zero-value of closures, we're nilling out the
 		// maps, which will signal to Go that these cyclical objects can be
 		// freed altogether.
-		var zero Box
-		zero.data[0] = box.GObject()
-		*box = zero
+		for i := range box.data {
+			atomic.StorePointer(&box.data[i], nil)
+		}
 	}
 
 	// We can proceed to free the object.

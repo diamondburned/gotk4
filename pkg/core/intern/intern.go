@@ -15,10 +15,11 @@ import (
 	"runtime"
 	"runtime/debug"
 	"runtime/pprof"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gdebug"
 
 	// Require a non-moving GC for heap pointers. Current GC is moving only by
 	// the stack. See https://github.com/go4org/intern.
@@ -93,28 +94,14 @@ var never bool
 var sink interface{}
 
 var (
-	traceObjects  *log.Logger
-	toggleRefs    *log.Logger
+	traceObjects  = gdebug.NewDebugLoggerNullable("trace-objects")
+	toggleRefs    = gdebug.NewDebugLoggerNullable("toggle-refs")
 	objectProfile *pprof.Profile
 )
 
 func init() {
-	debug := os.Getenv("GOTK4_DEBUG")
-	if debug == "" {
-		return
-	}
-
-	for _, flag := range strings.Split(debug, ",") {
-		switch flag {
-		case "trace-objects":
-			traceObjects = mustDebugLogger("trace-objects")
-		case "toggle-refs":
-			toggleRefs = mustDebugLogger("toggle-refs")
-		case "profile-objects":
-			objectProfile = pprof.NewProfile("gotk4-object-box")
-		default:
-			log.Panicf("unknown GOTK4_DEBUG flag %q", flag)
-		}
+	if gdebug.HasKey("profile-objects") {
+		objectProfile = pprof.NewProfile("gotk4-object-box")
 	}
 }
 

@@ -18,7 +18,7 @@ func main() {
 	// This stays ugly just because it's the main gotk4 package with exposed
 	// gendata. Don't actually do this; just make a global genmain.Data instead.
 	genmain.Run(genmain.Data{
-		Module:                "github.com/diamondburned/gotk4/pkg",
+		Module:                gendata.Module,
 		Packages:              gendata.Packages,
 		ImportOverrides:       gendata.ImportOverrides,
 		PkgExceptions:         gendata.PkgExceptions,

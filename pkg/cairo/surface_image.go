@@ -12,7 +12,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/cairo/internal/swizzle"
+	"github.com/diamondburned/gotk4/pkg/cairo/swizzle"
 )
 
 // CreatePNGSurface is a wrapper around cairo_image_surface_create_from_png().
@@ -83,11 +83,12 @@ func CreateSurfaceFromImage(img image.Image) *Surface {
 		// calculate onto the malloc'd bytes, but since we're mostly doing
 		// calculations for each pixel, it likely doesn't matter.
 		for i := 0; i < len(pix); i += 4 {
-			alpha := uint16(img.Pix[i+3])
-			pix[i+0] = uint8(uint16(img.Pix[i+2]) * alpha / 0xFF)
-			pix[i+1] = uint8(uint16(img.Pix[i+1]) * alpha / 0xFF)
-			pix[i+2] = uint8(uint16(img.Pix[i+0]) * alpha / 0xFF)
-			pix[i+3] = img.Pix[i+3]
+			alpha8 := img.Pix[i+3]
+			alpha16 := uint16(alpha8)
+			pix[i+0] = uint8(uint16(img.Pix[i+2]) * alpha16 / 0xFF)
+			pix[i+1] = uint8(uint16(img.Pix[i+1]) * alpha16 / 0xFF)
+			pix[i+2] = uint8(uint16(img.Pix[i+0]) * alpha16 / 0xFF)
+			pix[i+3] = alpha8
 		}
 
 	case *image.Alpha:

@@ -15,6 +15,8 @@ import (
 	. "github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
 )
 
+const Module = "github.com/diamondburned/gotk4/pkg"
+
 type Package struct {
 	PkgName    string   // pkg-config name
 	Namespaces []string // refer to ./cmd/gir_namespaces
@@ -996,13 +998,56 @@ func GtkLockOSThread(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
+func GdkPixbufFromImage(nsgen *girgen.NamespaceGenerator) error {
+	fg := nsgen.MakeFile("gdk-pixbuf-core-go.go")
+	fg.Header().Import("image")
+	fg.Header().Import("image/draw")
+	fg.Header().Import(Module + "/glib/v2")
+	fg.Header().Import(Module + "/cairo/swizzle")
+
+	p := fg.Pen()
+	p.Line(`
+		// NewPixbufFromImage creates a new Pixbuf from a stdlib image.Image. It
+		// contains a fast path for *image.RGBA while resorting to
+		// copying/converting the image otherwise.
+		func NewPixbufFromImage(img image.Image) *Pixbuf {
+			bounds := img.Bounds()
+			var pixbuf *Pixbuf
+
+			switch img := img.(type) {
+			case *image.RGBA:
+				bytes := glib.NewBytesWithGo(img.Pix)
+				pixbuf = NewPixbufFromBytes(bytes, ColorspaceRGB, true, 8, bounds.Dx(), bounds.Dy(), img.Stride)
+			default:
+				pixbuf = NewPixbuf(ColorspaceRGB, true, 8, bounds.Dx(), bounds.Dy())
+				pixbuf.ReadPixelBytes().Use(func(b []byte) {
+					// For information on how this works, refer to
+					// pkg/cairo/surface_image.go.
+					rgba := image.RGBA{
+						Pix:    b,
+						Stride: bounds.Dx(),
+						Rect:   bounds,
+					}
+					draw.Draw(&rgba, rgba.Rect, img, image.Point{}, draw.Over)
+					swizzle.BGRA(rgba.Pix)
+				})
+			}
+
+			return pixbuf
+		}
+	`)
+
+	return nil
+}
+
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
-	"GLib-2": {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibDateTime},
-	"Gio-2":  {ImportGError},
-	"Gtk-3":  {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
-	"Gtk-4":  {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
+	"GLib-2":      {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibDateTime},
+	"GdkPixbuf-2": {GdkPixbufFromImage},
+	"Gio-2":       {ImportGError},
+	"Gtk-3":       {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
+	"Gtk-4":       {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
 }
 
 // ExtraGoContents contains the contents of files that are appended into

@@ -213,12 +213,12 @@ func (r *RegisteredSubclass[T]) New() T {
 // NewWithProperties creates an instance of the subclass object with the given
 // properties.
 func (r *RegisteredSubclass[T]) NewWithProperties(properties map[string]any) T {
-	var names []*C.char
-	var values []C.GValue
+	var names_ **C.gchar
+	var values_ *C.GValue
 
 	if len(properties) > 0 {
-		names = make([]*C.char, 0, len(properties))
-		values = make([]C.GValue, 0, len(properties))
+		names := make([]*C.char, 0, len(properties))
+		values := make([]C.GValue, 0, len(properties))
 
 		for name, value := range properties {
 			cname := (*C.char)(C.CString(name))
@@ -230,13 +230,15 @@ func (r *RegisteredSubclass[T]) NewWithProperties(properties map[string]any) T {
 			names = append(names, cname)
 			values = append(values, *gvalue.gvalue)
 		}
+
+		names_ = &names[0]
+		values_ = &values[0]
 	}
 
 	cval := C.g_object_new_with_properties(
 		C.GType(r.gType),
 		C.guint(len(properties)),
-		&names[0],
-		&values[0],
+		names_, values_,
 	)
 
 	// So we created an instance. We have the instance in private. We can just

@@ -500,11 +500,11 @@ func transformGTypeName(rtype reflect.Type) string {
 	goType := rtype.String()
 
 	first, second, ok := strings.Cut(goType, ".")
-	if !ok {
-		return goType
+	if ok {
+		return capitalizeFirst(first) + capitalizeFirst(second)
 	}
 
-	return capitalizeFirst(first) + second
+	return capitalizeFirst(goType)
 }
 
 func capitalizeFirst(str string) string {

@@ -6,6 +6,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/fatih/color v1.10.0
 	github.com/pkg/errors v0.9.1
+	go4.org/unsafe/assume-no-moving-gc v0.0.0-20220617031537-928513b29760
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 

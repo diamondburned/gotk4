@@ -78,6 +78,10 @@ type Data struct {
 	//
 	// Not included: coreglib (gotk3/gotk3/glib).
 	ImportOverrides map[string]string
+	// ExternOverrides adds into ImportOverrides packages that were generated
+	// from the given GIR repositories, with the map key being the Go module
+	// root for those packages. It internally invokes LoadExternOverrides.
+	ExternOverrides map[string]gir.Repositories
 	// PkgExceptions contains a list of file names that won't be deleted off of
 	// pkg/.
 	PkgExceptions []string
@@ -124,7 +128,18 @@ func Run(data Data) {
 
 // Generate generates the packages based on the given data.
 func Generate(repos gir.Repositories, data Data) {
-	gen := girgen.NewGenerator(repos, ModulePath(data.Module, data.ImportOverrides))
+	overrides := data.ImportOverrides
+	if overrides == nil {
+		overrides = map[string]string{}
+	}
+
+	for mod, extern := range data.ExternOverrides {
+		for k, v := range LoadExternOverrides(mod, extern) {
+			overrides[k] = v
+		}
+	}
+
+	gen := girgen.NewGenerator(repos, ModulePath(data.Module, overrides))
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
 	gen.ApplyPreprocessors(data.Preprocessors)
 	gen.AddPostprocessors(data.Postprocessors)

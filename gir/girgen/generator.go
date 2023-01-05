@@ -40,7 +40,7 @@ func init() {
 
 // DefaultLinkMode is the default link mode to be used for all constructed
 // Generators.
-var DefaultLinkMode = types.RuntimeLinkMode
+var DefaultLinkMode = types.DynamicLinkMode // types.RuntimeLinkMode
 
 // Generator is a big generator that manages multiple repositories.
 type Generator struct {

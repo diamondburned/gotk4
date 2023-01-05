@@ -10,9 +10,9 @@ import (
 )
 
 func main() {
-	if os.Getenv("GOTK4_RUNTIME_LINK") != "1" {
+	if os.Getenv("GOTK4_RUNTIME_LINK") == "1" {
 		// TODO: remove this when RuntimeLinkMode is working.
-		girgen.DefaultLinkMode = types.DynamicLinkMode
+		girgen.DefaultLinkMode = types.RuntimeLinkMode
 	}
 
 	// This stays ugly just because it's the main gotk4 package with exposed

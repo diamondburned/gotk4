@@ -159,6 +159,7 @@ func WithOverrides[T Objector, OverridesT any](f func(T) OverridesT) RegisterOpt
 			v, _ := obj.(T)
 			return f(v)
 		}
+		opts.typeOpts[ptype] = topt
 	}
 }
 
@@ -789,7 +790,18 @@ func _gotk4_gobject_init_class(gclass, data C.gpointer) {
 	// deprecation notices because GLib is a fucking clown.
 	C.g_type_class_add_private(gclass, C.gsize(unsafe.Sizeof(privateGoInstance{})))
 
-	// Make a stack of parent types, then call its class initializers.
+	for parentType, topt := range subclass.opts.typeOpts {
+		if parentType == nil {
+			parentType = subclass.parentType
+		}
+
+		var overrides any
+		if topt.override != nil {
+			overrides = topt.override(nil)
+		}
+
+		parentType.InitClass(unsafe.Pointer(gclass), overrides, topt.classInit)
+	}
 
 	// Install properties, if any.
 	if len(subclass.opts.paramSpecs) > 0 {
@@ -804,19 +816,6 @@ func _gotk4_gobject_init_class(gclass, data C.gpointer) {
 			C.guint(len(gParamSpecs)),
 			&gParamSpecs[0],
 		)
-	}
-
-	for parentType, topt := range subclass.opts.typeOpts {
-		if parentType == nil {
-			parentType = subclass.parentType
-		}
-
-		var overrides any
-		if topt.override != nil {
-			overrides = topt.override(nil)
-		}
-
-		parentType.InitClass(unsafe.Pointer(gclass), overrides, topt.classInit)
 	}
 }
 

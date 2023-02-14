@@ -34,6 +34,10 @@ func NewDebugLoggerNullable(key string) *log.Logger {
 }
 
 func mustDebugLogger(name string) *log.Logger {
+	if HasKey("to-console") {
+		return log.Default()
+	}
+
 	f, err := os.CreateTemp(os.TempDir(), fmt.Sprintf("gotk4-%s-%d-*", name, os.Getpid()))
 	if err != nil {
 		log.Panicln("cannot create temp", name, "file:", err)

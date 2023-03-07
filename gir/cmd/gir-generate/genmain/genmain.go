@@ -73,6 +73,9 @@ type Data struct {
 	// generated. If the list of namespaces is nil, then everything is
 	// generated.
 	Packages []Package
+	// KnownPackages is similar to Packages, but no packages in this list will
+	// be used to generate code. This list automatically includes Packages.
+	KnownPackages []Package
 	// ImportOverrides is the list of imports to defer to another library,
 	// usually because it's tedious or impossible to generate.
 	//
@@ -117,6 +120,7 @@ func Run(data Data) {
 	ParseFlag()
 
 	repos := MustLoadPackages(data.Packages)
+	MustAddPackages(&repos, data.KnownPackages)
 	PrintAddedPkgs(repos)
 
 	if ListPkg {
@@ -154,8 +158,9 @@ func Generate(repos gir.Repositories, data Data) {
 		log.Fatalln("failed to clean output directory:", err)
 	}
 
-	if errors := GenerateAll(gen, Output, data.GenerateExceptions); len(errors) > 0 {
-		for _, err := range errors {
+	genErrs := GeneratePackages(gen, Output, data.Packages, data.GenerateExceptions)
+	if len(genErrs) > 0 {
+		for _, err := range genErrs {
 			log.Println("generation error:", err)
 		}
 		os.Exit(1)

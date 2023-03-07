@@ -212,11 +212,13 @@ func GenerateAll(gen *girgen.Generator, dst string, except []string) []error {
 // GeneratePackages generates the given pkgs list into the given dst directory.
 // It uses WriteNamespace to do so. The namespaces will be generated in
 // parallel. Most external GIR generators should call this.
-func GeneratePackages(gen *girgen.Generator, dst string, pkgs []Package) []error {
+func GeneratePackages(gen *girgen.Generator, dst string, pkgs []Package, except []string) []error {
 	sema := semaphore.NewWeighted(int64(runtime.GOMAXPROCS(-1)))
 
 	var wg sync.WaitGroup
 	defer wg.Wait()
+
+	exemptions := StringSet(except)
 
 	var errMut sync.Mutex
 	var errors []error
@@ -250,6 +252,11 @@ func GeneratePackages(gen *girgen.Generator, dst string, pkgs []Package) []error
 				namespace := repos.FindNamespace(wantedName)
 				if namespace == nil {
 					return []error{fmt.Errorf("namespace %q not found", wantedName)}
+				}
+
+				_, exempted := exemptions[gir.VersionedNamespace(namespace.Namespace)]
+				if exempted {
+					continue
 				}
 
 				genNamespace(namespace.Namespace)

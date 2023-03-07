@@ -440,29 +440,13 @@ func SourceRemove(src SourceHandle) bool {
 	return gobool(C.g_source_remove(C.guint(src)))
 }
 
-// WipeAllClosures wipes all the Go closures associated with the given object
-// away. BE EXTREMELY CAREFUL WHEN USING THIS FUNCTION! If not careful, your
-// program WILL crash!
-//
-// There is only one specific use case for this function: if your object has
-// closures connected to it where these closures capture the object itself, then
-// it might create a cyclic dependency on the GC, preventing its finalizer from
-// ever running. This will cause the program to leak memory. As a temporary
-// hack, this function is introduced for cases where the programmer knows for
-// sure that the object will never be used again, and it is significant enough
-// of a leak that having a workaround is better than not.
-func WipeAllClosures(objector Objector) {
-	v := BaseObject(objector)
-	closure.RegistryType.Delete(v.box)
-}
-
 // Destroy destroys the Go reference to the given object. The object must not be
 // used ever again; it is the caller's responsibility to ensure that it will
 // never be used again. Resurrecting the object again is undefined behavior.
-func Destroy(objector Objector) {
-	v := BaseObject(objector)
-	v.destroy()
-}
+// func Destroy(objector Objector) {
+// 	WipeAllClosures(objector)
+// 	// v.destroy()
+// }
 
 // SignalHandle is the ID of a signal handler.
 type SignalHandle uint
@@ -492,6 +476,7 @@ func ConnectGeneratedClosure(
 	userData := C.gpointer(gbox.Assign(data))
 
 	gclosure := C.g_cclosure_new(C.GCallback(tramp), userData, (*[0]byte)(C._gotk4_removeGeneratedClosure))
+	C.g_closure_add_finalize_notifier((*C.GClosure)(unsafe.Pointer(gclosure)), C.gpointer(v.Native()), (*[0]byte)(C._gotk4_removeClosure))
 
 	// Hold the GClosure reference.
 	data.GClosure = uintptr(unsafe.Pointer(gclosure))
@@ -500,15 +485,11 @@ func ConnectGeneratedClosure(
 	closures := closure.RegistryType.Get(v.box)
 	closures.Register(unsafe.Pointer(gclosure), fs)
 
-	// Just in case.
-	C.g_object_watch_closure(v.native(), gclosure)
-
 	// TODO: intern this.
 	csignal := (*C.gchar)(C.CString(signal))
 	defer C.free(unsafe.Pointer(csignal))
 
 	id := C.g_signal_connect_closure(C.gpointer(v.native()), csignal, gclosure, gbool(after))
-	C.g_closure_sink(gclosure)
 
 	runtime.KeepAlive(obj)
 	return SignalHandle(id)

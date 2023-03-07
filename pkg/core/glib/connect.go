@@ -7,6 +7,7 @@ package glib
 // #include "glib.go.h"
 import "C"
 import (
+	"log"
 	"runtime"
 	"unsafe"
 
@@ -71,4 +72,35 @@ func closureNew(v *Object, f interface{}) *C.GClosure {
 	C.g_closure_add_finalize_notifier(gclosure, C.gpointer(v.Native()), (*[0]byte)(C._gotk4_removeClosure))
 
 	return gclosure
+}
+
+// WipeAllClosures wipes all the Go closures associated with the given object
+// away. BE EXTREMELY CAREFUL WHEN USING THIS FUNCTION! If not careful, your
+// program WILL crash!
+//
+// There is only one specific use case for this function: if your object has
+// closures connected to it where these closures capture the object itself, then
+// it might create a cyclic dependency on the GC, preventing its finalizer from
+// ever running. This will cause the program to leak memory. As a temporary
+// hack, this function is introduced for cases where the programmer knows for
+// sure that the object will never be used again, and it is significant enough
+// of a leak that having a workaround is better than not.
+func WipeAllClosures(objector Objector) {
+	obj := BaseObject(objector)
+
+	closures := closure.RegistryType.TryGet(obj.box)
+	if closures == nil {
+		return
+	}
+
+	log.Printf("wiping all closures (%v) for %v (%s)", closures, obj, obj.Type())
+
+	closures.Range(func(gclosure unsafe.Pointer) {
+		cclosure := (*C.GClosure)(gclosure)
+		closures.Delete(gclosure)
+		C.g_closure_invalidate(cclosure)
+	})
+
+	closure.RegistryType.Delete(obj.box)
+	log.Printf("wiped all closures (%v) for %v (%s)", closures, obj, obj.Type())
 }

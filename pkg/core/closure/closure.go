@@ -39,3 +39,11 @@ func (r *Registry) Load(gclosure unsafe.Pointer) *FuncStack {
 func (r *Registry) Delete(gclosure unsafe.Pointer) {
 	r.reg.Delete(uintptr(gclosure))
 }
+
+func (r *Registry) Range(f func(gclosure unsafe.Pointer)) {
+	r.reg.Range(func(k, _ any) bool {
+		p := k.(uintptr)
+		f(unsafe.Pointer(p))
+		return true
+	})
+}

@@ -68,6 +68,15 @@ func (t *BoxedType[T]) Get(box *Box) *T {
 	panic("Load returned nil after CompareAndSwap(old = nil) failed")
 }
 
+func (t *BoxedType[T]) TryGet(box *Box) *T {
+	old := atomic.LoadPointer(&box.data[t.id])
+	if old != nil {
+		return (*T)(old)
+	}
+
+	return nil
+}
+
 func (t *BoxedType[T]) Set(box *Box, v *T) {
 	if t.ctor != nil {
 		panic("bug: Set not permitted if t.ctor != nil")
@@ -229,26 +238,17 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	return box
 }
 
-// Free explicitly frees the box permanently. It must not be resurrected after
-// this.
+// Free marks the box to be freed permanently. All its closure data will be
+// desroyed. The object must not be resurrected after this.
 func Free(box *Box) {
 	obj := box.GObject()
 	if obj == nil {
 		panic("bug: Free called on already freed object")
 	}
 
-	shared.mu.Lock()
-	delete(shared.strong, obj)
-	delete(shared.weak, obj)
-	for i := range box.data {
+	for i := 1; i < len(box.data); i++ {
 		atomic.StorePointer(&box.data[i], nil)
 	}
-	shared.mu.Unlock()
-
-	C.g_object_remove_toggle_ref(
-		(*C.GObject)(unsafe.Pointer(obj)),
-		(*[0]byte)(C.goToggleNotify), nil,
-	)
 
 	if toggleRefs != nil {
 		toggleRefs.Println(objInfo(obj), "Free: explicitly removed toggle ref")

@@ -17,6 +17,25 @@ import (
 
 const Module = "github.com/diamondburned/gotk4/pkg"
 
+// Main contains all of gendata's variables as one big genmain.Data value.
+//
+// This stays ugly just because it's the main gotk4 package with exposed
+// gendata. Don't actually do this; just make a global genmain.Data instead.
+var Main = genmain.Data{
+	Module:                Module,
+	Packages:              Packages,
+	ImportOverrides:       ImportOverrides,
+	PkgExceptions:         PkgExceptions,
+	GenerateExceptions:    GenerateExceptions,
+	PkgGenerated:          PkgGenerated,
+	Preprocessors:         Preprocessors,
+	Postprocessors:        Postprocessors,
+	ExtraGoContents:       ExtraGoContents,
+	Filters:               Filters,
+	ProcessConverters:     ConversionProcessors,
+	DynamicLinkNamespaces: DynamicLinkNamespaces,
+}
+
 type Package struct {
 	PkgName    string   // pkg-config name
 	Namespaces []string // refer to ./cmd/gir_namespaces

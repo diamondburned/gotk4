@@ -223,7 +223,12 @@ func GeneratePackages(gen *girgen.Generator, dst string, pkgs []Package, except 
 	var errMut sync.Mutex
 	var errors []error
 
-	genNamespace := func(namespace *gir.Namespace) {
+	genNamespace := func(namespace gir.Namespace) {
+		_, exempted := exemptions[gir.VersionedNamespace(&namespace)]
+		if exempted {
+			return
+		}
+
 		ng := gen.UseNamespace(namespace.Name, namespace.Version)
 		if ng == nil {
 			log.Fatalln("cannot find namespace", namespace.Name, "v"+namespace.Version)
@@ -247,34 +252,33 @@ func GeneratePackages(gen *girgen.Generator, dst string, pkgs []Package, except 
 	repos := gen.Repositories()
 
 	for _, pkg := range pkgs {
-		if pkg.Namespaces != nil {
-			for _, wantedName := range pkg.Namespaces {
-				namespace := repos.FindNamespace(wantedName)
-				if namespace == nil {
-					return []error{fmt.Errorf("namespace %q not found", wantedName)}
-				}
-
-				_, exempted := exemptions[gir.VersionedNamespace(namespace.Namespace)]
-				if exempted {
-					continue
-				}
-
-				genNamespace(namespace.Namespace)
+		if pkg.Namespaces == nil {
+			repos := repos.FromPkg(pkg.Name)
+			if repos == nil {
+				return []error{fmt.Errorf("package %q not found", pkg.Name)}
 			}
+
+			for _, repo := range repos {
+				for _, namespace := range repo.Namespaces {
+					genNamespace(namespace)
+				}
+			}
+
+			continue
 		}
 
-		repo := repos.FromPkg(pkg.Name)
-		if repo == nil {
-			return []error{fmt.Errorf("package %q not found", pkg.Name)}
-		}
+		for _, wantedName := range pkg.Namespaces {
+			namespace := repos.FindNamespace(wantedName)
+			if namespace == nil {
+				return []error{fmt.Errorf("namespace %q not found", wantedName)}
+			}
 
-		for _, namespace := range repo.Namespaces {
-			genNamespace(&namespace)
+			log.Println("generating chosen namespace", namespace.Namespace.Name, "for", pkg.Name)
+			genNamespace(*namespace.Namespace)
 		}
 	}
 
 	wg.Wait()
-
 	return errors
 }
 

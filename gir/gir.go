@@ -221,13 +221,14 @@ func (repos Repositories) FromGIRFile(girFile string) *PkgRepository {
 }
 
 // FromPkg finds the repository from the given package name.
-func (repos Repositories) FromPkg(pkg string) *PkgRepository {
+func (repos Repositories) FromPkg(pkg string) []PkgRepository {
+	var found []PkgRepository
 	for i, repo := range repos {
 		if repo.Pkg == pkg {
-			return &repos[i]
+			found = append(found, repos[i])
 		}
 	}
-	return nil
+	return found
 }
 
 // NamespaceFindResult is the result returned from FindNamespace.

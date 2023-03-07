@@ -115,6 +115,28 @@ type Data struct {
 	DynamicLinkNamespaces []string
 }
 
+// Overlay joins the given list of data into a single Data. The last Data in the
+// list will be used for generation.
+func Overlay(data ...Data) Data {
+	overlay := data[:len(data)-1]
+	last := data[len(data)-1]
+
+	for _, datum := range overlay {
+		if last.ExternOverrides == nil {
+			last.ExternOverrides = make(map[string]gir.Repositories)
+		}
+
+		last.KnownPackages = append(last.KnownPackages, datum.Packages...)
+		last.ExternOverrides[datum.Module] = MustLoadPackages(datum.Packages)
+		last.Preprocessors = append(last.Preprocessors, datum.Preprocessors...)
+		last.Filters = append(last.Filters, datum.Filters...)
+		last.ProcessConverters = append(last.ProcessConverters, datum.ProcessConverters...)
+		last.DynamicLinkNamespaces = append(last.DynamicLinkNamespaces, datum.DynamicLinkNamespaces...)
+	}
+
+	return last
+}
+
 // Run runs the application.
 func Run(data Data) {
 	ParseFlag()

@@ -372,6 +372,10 @@ func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 		// inside goMarshal while the Go object is still alive, otherwise
 		// toggleNotify would've moved it over. We don't have to worry about
 		// this being freed as long as we acquire the mutex.
+		//
+		// TODO: does this actually resurrect the value properly? We have a
+		// mutex to guard this which is also used in the finalizer, so it
+		// shouldn't explode, but still.
 		return (*Box)(unsafe.Pointer(weak)), false
 	}
 

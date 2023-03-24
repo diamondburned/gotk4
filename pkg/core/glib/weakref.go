@@ -6,7 +6,13 @@ package glib
 // extern void _gotk4_glib_weak_notify(gpointer, GObject*);
 import "C"
 
-import "github.com/diamondburned/gotk4/pkg/core/gbox"
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/intern"
+)
 
 // WeakRefObject is like SetFinalizer, except it's not thread-safe (so notify
 // SHOULD NOT REFERENCE OBJECT). It is best that you just do not use this at
@@ -23,4 +29,50 @@ func WeakRefObject(obj Objector, notify func()) {
 func _gotk4_glib_weak_notify(data C.gpointer, _ *C.GObject) {
 	notify := gbox.Get(uintptr(data)).(func())
 	notify()
+}
+
+// WeakRef wraps GWeakRef. It provides a container that allows the user to
+// obtain a weak reference to a CGo GObject. The weak reference is thread-safe
+// and will be cleared when the object is finalized.
+type WeakRef struct {
+	weak C.GWeakRef
+}
+
+// NewWeakRef creates a new weak reference on the Go heap to the given GObject's
+// C pointer. The fact that the returned WeakRef is in Go-allocated memory does
+// not actually add a reference to the object, which is the default behavior.
+func NewWeakRef(obj Objector) *WeakRef {
+	wk := new(WeakRef)
+	C.g_weak_ref_init(&wk.weak, BaseObject(obj).native())
+
+	// Unsure if calling clear is needed, but we'd rather be careful.
+	runtime.SetFinalizer(wk, (*WeakRef).clear)
+
+	return wk
+}
+
+func (r *WeakRef) clear() {
+	C.g_weak_ref_clear(&r.weak)
+}
+
+// Get acquires a strong reference to the object if the weak reference is still
+// valid. If the weak reference is no longer valid, Get returns nil.
+func (r *WeakRef) Get() Objector {
+	// The thread safetyness of this is actually debatable. I haven't confirmed
+	// this, but it should still work fine.
+	gobjectPtr := C.g_weak_ref_get(&r.weak)
+	if gobjectPtr == nil {
+		return nil
+	}
+
+	// Try to see if we have the object in our GObject intern pool. If not,
+	// don't try to construct a new one.
+	box := intern.TryGet(unsafe.Pointer(gobjectPtr))
+	if box == nil {
+		return nil
+	}
+
+	// Construct a new Object pointer from the box. Keep in mind our equality
+	// guarantees.
+	return &Object{box: box}
 }

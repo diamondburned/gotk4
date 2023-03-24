@@ -36,6 +36,7 @@ func _gotk4_glib_weak_notify(data C.gpointer, _ *C.GObject) {
 // and will be cleared when the object is finalized.
 type WeakRef struct {
 	weak C.GWeakRef
+	gtyp Type
 }
 
 // NewWeakRef creates a new weak reference on the Go heap to the given GObject's
@@ -43,10 +44,12 @@ type WeakRef struct {
 // not actually add a reference to the object, which is the default behavior.
 func NewWeakRef(obj Objector) *WeakRef {
 	wk := new(WeakRef)
+	wk.gtyp = BaseObject(obj).Type()
 	C.g_weak_ref_init(&wk.weak, C.gpointer(BaseObject(obj).native()))
 
 	// Unsure if calling clear is needed, but we'd rather be careful.
 	runtime.SetFinalizer(wk, (*WeakRef).clear)
+	runtime.KeepAlive(obj)
 
 	return wk
 }
@@ -80,5 +83,5 @@ func (r *WeakRef) Get() Objector {
 
 	// Construct a new Object pointer from the box. Keep in mind our equality
 	// guarantees.
-	return &Object{box: box}
+	return (&Object{box: box}).CastType(r.gtyp)
 }

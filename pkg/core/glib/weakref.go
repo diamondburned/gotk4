@@ -43,7 +43,7 @@ type WeakRef struct {
 // not actually add a reference to the object, which is the default behavior.
 func NewWeakRef(obj Objector) *WeakRef {
 	wk := new(WeakRef)
-	C.g_weak_ref_init(&wk.weak, BaseObject(obj).native())
+	C.g_weak_ref_init(&wk.weak, C.gpointer(BaseObject(obj).native()))
 
 	// Unsure if calling clear is needed, but we'd rather be careful.
 	runtime.SetFinalizer(wk, (*WeakRef).clear)
@@ -64,6 +64,12 @@ func (r *WeakRef) Get() Objector {
 	if gobjectPtr == nil {
 		return nil
 	}
+
+	// weak_ref_get actually takes a strong reference atomically. With the rest
+	// of this function, we either obtain a strong Go reference (mapping to the
+	// toggle reference) or we cannot get a reference at all. In either case, we
+	// can safely unref the object after this function.
+	defer C.g_object_unref(C.gpointer(gobjectPtr))
 
 	// Try to see if we have the object in our GObject intern pool. If not,
 	// don't try to construct a new one.

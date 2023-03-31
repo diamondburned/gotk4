@@ -34,7 +34,7 @@ func _gotk4_glib_weak_notify(data C.gpointer, _ *C.GObject) {
 // WeakRef wraps GWeakRef. It provides a container that allows the user to
 // obtain a weak reference to a CGo GObject. The weak reference is thread-safe
 // and will be cleared when the object is finalized.
-type WeakRef struct {
+type WeakRef[T Objector] struct {
 	weak C.GWeakRef
 	gtyp Type
 }
@@ -42,30 +42,31 @@ type WeakRef struct {
 // NewWeakRef creates a new weak reference on the Go heap to the given GObject's
 // C pointer. The fact that the returned WeakRef is in Go-allocated memory does
 // not actually add a reference to the object, which is the default behavior.
-func NewWeakRef(obj Objector) *WeakRef {
-	wk := new(WeakRef)
+func NewWeakRef[T Objector](obj T) *WeakRef[T] {
+	wk := &WeakRef[T]{}
 	wk.gtyp = BaseObject(obj).Type()
 	C.g_weak_ref_init(&wk.weak, C.gpointer(BaseObject(obj).native()))
 
 	// Unsure if calling clear is needed, but we'd rather be careful.
-	runtime.SetFinalizer(wk, (*WeakRef).clear)
+	runtime.SetFinalizer(wk, (*WeakRef[T]).clear)
 	runtime.KeepAlive(obj)
 
 	return wk
 }
 
-func (r *WeakRef) clear() {
+func (r *WeakRef[T]) clear() {
 	C.g_weak_ref_clear(&r.weak)
 }
 
 // Get acquires a strong reference to the object if the weak reference is still
 // valid. If the weak reference is no longer valid, Get returns nil.
-func (r *WeakRef) Get() Objector {
+func (r *WeakRef[T]) Get() T {
 	// The thread safetyness of this is actually debatable. I haven't confirmed
 	// this, but it should still work fine.
 	gobjectPtr := C.g_weak_ref_get(&r.weak)
 	if gobjectPtr == nil {
-		return nil
+		var z T
+		return z
 	}
 
 	// weak_ref_get actually takes a strong reference atomically. With the rest
@@ -78,10 +79,11 @@ func (r *WeakRef) Get() Objector {
 	// don't try to construct a new one.
 	box := intern.TryGet(unsafe.Pointer(gobjectPtr))
 	if box == nil {
-		return nil
+		var z T
+		return z
 	}
 
 	// Construct a new Object pointer from the box. Keep in mind our equality
 	// guarantees.
-	return (&Object{box: box}).CastType(r.gtyp)
+	return (&Object{box: box}).CastType(r.gtyp).(T)
 }

@@ -52,6 +52,16 @@ func IncludeDirs(pkgs ...string) ([]string, error) {
 	return strings.Fields(string(out)), nil
 }
 
+func findInclude(dir string) string {
+	parts := strings.Split(dir, string(filepath.Separator))
+	for i := len(parts) - 1; i >= 0; i-- {
+		if parts[i] == "include" {
+			return "/" + filepath.Join(parts[:i]...)
+		}
+	}
+	return ""
+}
+
 // FindGIRFiles finds gir files from the given list of pkgs.
 func FindGIRFiles(pkgs ...string) ([]string, error) {
 	includeDirs, err := IncludeDirs(pkgs...)
@@ -62,9 +72,9 @@ func FindGIRFiles(pkgs ...string) ([]string, error) {
 	var girFiles []string
 
 	for _, includeDir := range includeDirs {
-		baseDir, name := filepath.Split(includeDir)
-		if name != "include" {
-			return nil, fmt.Errorf("includeDir has unexpected name %q not 'include'", name)
+		baseDir := findInclude(includeDir)
+		if baseDir == "" {
+			return nil, fmt.Errorf("includedir %q has no 'include'", includeDir)
 		}
 
 		err := fs.WalkDir(os.DirFS(baseDir), ".",

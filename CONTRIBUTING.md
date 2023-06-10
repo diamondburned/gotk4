@@ -99,8 +99,10 @@ contributing to this project.
    code are changed unnecessarily. It would be a given that all contributions
    should also be formatted using `goimports` (or `go fmt` if no imports were
    changed). As a sidenote, `goimports` is included in the Nix shell.
-2. `.gitignore` files should be avoided to not clutter the repository up.
-   Developers using editors that produce scrap files should add them to
-   their own `.git/info/exclude`.
+2. `.gitignore` files should be avoided to not clutter the repository
+   up.  Developers using editors that produce scrap files should add
+   them to their own `~/.config/git/ignore` so that they are not
+   tempted to clutter up the `.gitignore` files in every repository
+   that they contribute to.
 3. Project-wide refactors are large and will consume a lot of time to review, so
    they should be avoided.

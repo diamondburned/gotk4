@@ -69,24 +69,27 @@ newly generated code doesn't break existing code.
 
 This project is divided into several parts:
 
-- cmd/ contains executable tools to generate either the whole repository or
-  provide helper tools to ease development.
-  - cmd/gir_generate/ contains the main generator program.
-    - cmd/gir_generate/config.go contains tuning variables such as what is
-	  generated and ignored.
-- gir/ contains the library that provides data structures and low-level wrappers
-  over parsing, reading and storing GIR files.
-    - gir/girgen/ contains the generator code that consumes stored GIR files and
-	  generate Go bindings appropriately.
-- internal/ contains internal libraries that the generated code can use for
-  convenience.
-- pkg/ is the directory for all generated code.
-- gotk4.go contains the `//go:generate` boilerplate.
-- [shell.nix][shell.nix] and [`.nix`][dot-nix] contain the pinned Nixpkgs that
-  ensures constant development environments.
+- [`gir/`][] contains the library that provides data structures and low-level
+  wrappers over parsing, reading and storing GIR files.
+    - [`gir/cmd/`][] contains executable tools to generate either the whole
+      repository or provide helper tools to ease development.
+      - [`cmd/gir-generate/`][] contains the main generator program.
+    - [`gir/girgen/`][] contains the generator code that consumes stored GIR
+      files and generate Go bindings appropriately.
+- [`pkg/`][] is the directory for all generated code.
+- [`gotk4.go`][] contains the `//go:generate` boilerplate.
+- [`shell.nix`][] and [`.nix/`][] contain the pinned Nixpkgs that ensures
+  constant development environments.
 
-[shell.nix]: https://github.com/diamondburned/gotk4/blob/4/shell.nix
-[dot-nix]: https://github.com/diamondburned/gotk4/tree/4/.nix/
+
+[`gir/`]:                  ./gir/
+[`gir/cmd/`]:              ./gir/cmd/
+[`gir/cmd/gir-generate/`]: ./gir/cmd/gir-generate/
+[`gir/girgen/`]:           ./gir/girgen/
+[`pkg/`]:                  ./pkg/
+[`gotk4.go`]:              ./gotk4.go
+[`shell.nix`]:             ./shell.nix
+[`.nix/`]:                 ./.nix/
 
 ## Project Guidelines
 

@@ -1,7 +1,7 @@
 // Package gir provides GIR types, as well as functions that parse GIR files.
 //
 // For reference, see
-// https://gitlab.gnome.org/GNOME/gobject-introspection/-/blob/master/docs/gir-1.2.rnc.
+// https://gitlab.gnome.org/GNOME/gobject-introspection/-/blob/HEAD/docs/gir-1.2.rnc.
 package gir
 
 import (

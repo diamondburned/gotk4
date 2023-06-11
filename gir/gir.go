@@ -15,7 +15,6 @@ import (
 	"unicode"
 
 	"github.com/diamondburned/gotk4/gir/pkgconfig"
-	"github.com/pkg/errors"
 	"golang.org/x/sync/singleflight"
 )
 
@@ -141,13 +140,13 @@ func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 
 	girs, err := pkgconfig.FindGIRFiles(pkg)
 	if err != nil {
-		return errors.Wrapf(err, "failed to get gir files for %q", pkg)
+		return fmt.Errorf("failed to get gir files for %q: %w", pkg, err)
 	}
 
 	for _, gir := range girs {
 		repo, err := ParseRepository(gir)
 		if err != nil {
-			return errors.Wrapf(err, "failed to parse file %q", gir)
+			return fmt.Errorf("failed to parse file %q: %w", gir, err)
 		}
 
 		if !filter(repo) {
@@ -155,7 +154,7 @@ func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 		}
 
 		if err := repos.add(*repo, pkg, gir); err != nil {
-			return errors.Wrapf(err, "failed to add file %q", gir)
+			return fmt.Errorf("failed to add file %q: %w", gir, err)
 		}
 	}
 
@@ -171,17 +170,17 @@ func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 func (repos *Repositories) Add(pkg string) error {
 	girs, err := pkgconfig.FindGIRFiles(pkg)
 	if err != nil {
-		return errors.Wrapf(err, "failed to get gir files for %q", pkg)
+		return fmt.Errorf("failed to get gir files for %q: %w", pkg, err)
 	}
 
 	for _, gir := range girs {
 		repo, err := ParseRepository(gir)
 		if err != nil {
-			return errors.Wrapf(err, "failed to parse file %q", gir)
+			return fmt.Errorf("failed to parse file %q: %w", gir, err)
 		}
 
 		if err := repos.add(*repo, pkg, gir); err != nil {
-			return errors.Wrapf(err, "failed to add file %q", gir)
+			return fmt.Errorf("failed to add file %q: %w", gir, err)
 		}
 	}
 

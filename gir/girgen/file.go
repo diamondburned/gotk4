@@ -14,7 +14,6 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
-	"github.com/pkg/errors"
 )
 
 // FileGenerator describes any file that can be generated.
@@ -272,7 +271,7 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 	b, err := format.Source(fpen.Bytes())
 	if err != nil {
 		f.Logln(logger.Error, "fmt error:", err)
-		return fpen.Bytes(), errors.Wrap(err, "fmt error")
+		return fpen.Bytes(), fmt.Errorf("fmt error: %w", err)
 	}
 
 	return b, nil

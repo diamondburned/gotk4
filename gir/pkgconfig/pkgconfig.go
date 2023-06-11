@@ -2,6 +2,7 @@
 package pkgconfig
 
 import (
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -9,8 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-
-	"github.com/pkg/errors"
 )
 
 var (
@@ -22,7 +21,9 @@ var (
 func ensure() error {
 	pathOnce.Do(func() {
 		path, pathErr = exec.LookPath("pkg-config")
-		pathErr = errors.Wrap(pathErr, "failed to find pkg-config")
+		if pathErr != nil {
+			pathErr = fmt.Errorf("failed to find pkg-config: %w", pathErr)
+		}
 	})
 	return pathErr
 }
@@ -40,7 +41,7 @@ func IncludeDirs(pkgs ...string) ([]string, error) {
 	if err != nil {
 		var exitErr *exec.ExitError
 		if !errors.As(err, &exitErr) {
-			return nil, errors.Wrap(err, "pkg-config failed")
+			return nil, fmt.Errorf("pkg-config failed: %w", err)
 		}
 
 		return nil, fmt.Errorf(
@@ -66,7 +67,7 @@ func findInclude(dir string) string {
 func FindGIRFiles(pkgs ...string) ([]string, error) {
 	includeDirs, err := IncludeDirs(pkgs...)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to find include dirs")
+		return nil, fmt.Errorf("failed to find include dirs: %w", err)
 	}
 
 	var girFiles []string
@@ -96,7 +97,7 @@ func FindGIRFiles(pkgs ...string) ([]string, error) {
 		)
 
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to walk %q", baseDir)
+			return nil, fmt.Errorf("failed to walk %q: %w", baseDir, err)
 		}
 	}
 

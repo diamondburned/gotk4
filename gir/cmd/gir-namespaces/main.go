@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/pkgconfig"
 )
 
 func main() {
@@ -17,9 +16,9 @@ func main() {
 		log.Fatalln("missing name; usage: gir_namespaces <pkg-config name>")
 	}
 
-	files, err := pkgconfig.FindGIRFiles(name)
+	files, err := gir.FindGIRFiles(name)
 	if err != nil {
-		log.Fatalln("failed to get gir files for", name)
+		log.Fatalf("failed to get gir files for %q: %v", name, err)
 	}
 
 	for _, file := range files {

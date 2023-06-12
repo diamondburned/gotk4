@@ -8,7 +8,9 @@ import (
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
+	"github.com/diamondburned/gotk4/gir/girgen/logger"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
+	"github.com/diamondburned/gotk4/gir/internal/tracing"
 )
 
 // TODO: refactor to add method accuracy
@@ -398,6 +400,14 @@ func Filter(gen FileGenerator, gir, c string) (omit bool) {
 
 	for _, filter := range gen.Filters() {
 		if filter.Filter(gen, gir, c) {
+			var trace string
+			if tracing.IsTraceable(filter) {
+				trace = ", trace: " + tracing.Trace(filter)
+			}
+			gen.Logln(logger.Debug, fmt.Sprintf(
+				"filtering type %s (C.%s) using filter %T%s",
+				gir, c, filter, trace,
+			))
 			return true
 		}
 	}
@@ -433,6 +443,7 @@ func FilterField(gen FileGenerator, parent string, field *gir.Field) (omit bool)
 }
 
 type absoluteFilter struct {
+	tracing.Traceable
 	namespace string
 	matcher   string
 }
@@ -444,7 +455,11 @@ func AbsoluteFilter(abs string) FilterMatcher {
 		log.Panicf("missing namespace for AbsoluteFilter %q", abs)
 	}
 
-	return absoluteFilter{parts[0], parts[1]}
+	return absoluteFilter{
+		tracing.NewTraces(1),
+		parts[0],
+		parts[1],
+	}
 }
 
 func (abs absoluteFilter) Filter(gen FileGenerator, gir, c string) (omit bool) {
@@ -457,6 +472,7 @@ func (abs absoluteFilter) Filter(gen FileGenerator, gir, c string) (omit bool) {
 }
 
 type regexFilter struct {
+	tracing.Traceable
 	namespace string
 	matcher   *regexp.Regexp
 }
@@ -473,6 +489,7 @@ func RegexFilter(matcher string) FilterMatcher {
 	regex := regexp.MustCompile(wholeMatchRegex(parts[1]))
 
 	return &regexFilter{
+		Traceable: tracing.NewTraces(1),
 		namespace: parts[0],
 		matcher:   regex,
 	}
@@ -519,12 +536,13 @@ func EqNamespace(nsp, girType string) (typ string, ok bool) {
 }
 
 type fileFilter struct {
+	tracing.Traceable
 	match string
 }
 
 // FileFilter filters based on the source position.
 func FileFilter(contains string) FilterMatcher {
-	return fileFilter{contains}
+	return fileFilter{tracing.NewTraces(1), contains}
 }
 
 func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {

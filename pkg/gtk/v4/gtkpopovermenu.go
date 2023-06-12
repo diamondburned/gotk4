@@ -84,21 +84,20 @@ func (p PopoverMenuFlags) Has(other PopoverMenuFlags) bool {
 // them. It can open submenus as traditional, nested submenus, or in a more
 // touch-friendly sliding fashion.
 //
-// GtkPopoverMenu is meant to be used primarily with menu models, using
-// gtk.PopoverMenu.NewFromModel. If you need to put other widgets such as a
-// GtkSpinButton or a GtkSwitch into a popover, you can use
+// GtkPopoverMenu is meant to be used primarily with menu models,
+// using gtk.PopoverMenu.NewFromModel. If you need to put other widgets
+// such as a GtkSpinButton or a GtkSwitch into a popover, you can use
 // gtk.PopoverMenu.AddChild().
 //
 // For more dialog-like behavior, use a plain GtkPopover.
 //
-//
-// Menu models
+// # Menu models
 //
 // The XML format understood by GtkBuilder for GMenuModel consists of a toplevel
 // <menu> element, which contains one or more <item> elements. Each <item>
 // element contains <attribute> and <link> elements with a mandatory name
-// attribute. <link> elements have the same content model as <menu>. Instead of
-// <link name="submenu> or <link name="section">, you can use <submenu> or
+// attribute. <link> elements have the same content model as <menu>. Instead
+// of <link name="submenu> or <link name="section">, you can use <submenu> or
 // <section> elements.
 //
 //    <menu id='app-menu'>
@@ -117,7 +116,6 @@ func (p PopoverMenuFlags) Has(other PopoverMenuFlags) bool {
 //        </item>
 //      </section>
 //    </menu>
-//
 //
 // Attribute values can be translated using gettext, like other GtkBuilder
 // content. <attribute> elements can be marked for translation with a
@@ -151,8 +149,8 @@ func (p PopoverMenuFlags) Has(other PopoverMenuFlags) bool {
 // - "label": a user-visible string to use as section heading
 //
 // - "display-hint": a string used to determine special formatting for the
-// section. Possible values include "horizontal-buttons", "circular-buttons" and
-// "inline-buttons". They all indicate that section should be displayed as a
+// section. Possible values include "horizontal-buttons", "circular-buttons"
+// and "inline-buttons". They all indicate that section should be displayed as a
 // horizontal row of buttons.
 //
 // - "text-direction": a string used to determine the GtkTextDirection to use
@@ -165,22 +163,20 @@ func (p PopoverMenuFlags) Has(other PopoverMenuFlags) bool {
 //
 // - "icon": icon name to display
 //
-// Menu items will also show accelerators, which are usually associated with
-// actions via gtk.Application.SetAccelsForAction(),
+// Menu items will also show accelerators, which are usually
+// associated with actions via gtk.Application.SetAccelsForAction(),
 // gtk_widget_class_add_binding_action or gtk.ShortcutController.AddShortcut().
 //
-//
-// CSS Nodes
+// # CSS Nodes
 //
 // GtkPopoverMenu is just a subclass of GtkPopover that adds custom content to
 // it, therefore it has the same CSS nodes. It is one of the cases that add a
 // .menu style class to the popover's main node.
 //
+// # Accessibility
 //
-// Accessibility
-//
-// GtkPopoverMenu uses the GTK_ACCESSIBLE_ROLE_MENU role, and its items use the
-// GTK_ACCESSIBLE_ROLE_MENU_ITEM, GTK_ACCESSIBLE_ROLE_MENU_ITEM_CHECKBOX or
+// GtkPopoverMenu uses the GTK_ACCESSIBLE_ROLE_MENU role, and its items use
+// the GTK_ACCESSIBLE_ROLE_MENU_ITEM, GTK_ACCESSIBLE_ROLE_MENU_ITEM_CHECKBOX or
 // GTK_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the action they are
 // connected to.
 type PopoverMenu struct {
@@ -256,11 +252,11 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): GMenuModel, or NULL.
+//   - model (optional): GMenuModel, or NULL.
 //
 // The function returns the following values:
 //
-//    - popoverMenu: new GtkPopoverMenu.
+//   - popoverMenu: new GtkPopoverMenu.
 //
 func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 	var _arg1 *C.GMenuModel // out
@@ -283,11 +279,11 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 // NewPopoverMenuFromModelFull creates a GtkPopoverMenu and populates it
 // according to model.
 //
-// The created buttons are connected to actions found in the action groups that
-// are accessible from the parent widget. This includes the GtkApplicationWindow
-// to which the popover belongs. Actions can also be added using
-// gtk.Widget.InsertActionGroup() on the parent widget or on any of its parent
-// widgets.
+// The created buttons are connected to actions found in the action
+// groups that are accessible from the parent widget. This includes the
+// GtkApplicationWindow to which the popover belongs. Actions can also be added
+// using gtk.Widget.InsertActionGroup() on the parent widget or on any of its
+// parent widgets.
 //
 // The only flag that is supported currently is GTK_POPOVER_MENU_NESTED, which
 // makes GTK create traditional, nested submenus instead of the default sliding
@@ -295,12 +291,12 @@ func NewPopoverMenuFromModel(model gio.MenuModeller) *PopoverMenu {
 //
 // The function takes the following parameters:
 //
-//    - model: GMenuModel.
-//    - flags that affect how the menu is created.
+//   - model: GMenuModel.
+//   - flags that affect how the menu is created.
 //
 // The function returns the following values:
 //
-//    - popoverMenu: new GtkPopoverMenu.
+//   - popoverMenu: new GtkPopoverMenu.
 //
 func NewPopoverMenuFromModelFull(model gio.MenuModeller, flags PopoverMenuFlags) *PopoverMenu {
 	var _arg1 *C.GMenuModel         // out
@@ -328,12 +324,12 @@ func NewPopoverMenuFromModelFull(model gio.MenuModeller, flags PopoverMenuFlags)
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to add.
-//    - id: ID to insert child at.
+//   - child: GtkWidget to add.
+//   - id: ID to insert child at.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if id was found and the widget added.
+//   - ok: TRUE if id was found and the widget added.
 //
 func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 	var _arg0 *C.GtkPopoverMenu // out
@@ -364,7 +360,7 @@ func (popover *PopoverMenu) AddChild(child Widgetter, id string) bool {
 //
 // The function returns the following values:
 //
-//    - menuModel: menu model of popover.
+//   - menuModel: menu model of popover.
 //
 func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 	var _arg0 *C.GtkPopoverMenu // out
@@ -403,11 +399,11 @@ func (popover *PopoverMenu) MenuModel() gio.MenuModeller {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to remove.
+//   - child: GtkWidget to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the widget was removed.
+//   - ok: TRUE if the widget was removed.
 //
 func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 	var _arg0 *C.GtkPopoverMenu // out
@@ -437,7 +433,7 @@ func (popover *PopoverMenu) RemoveChild(child Widgetter) bool {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): GMenuModel, or NULL.
+//   - model (optional): GMenuModel, or NULL.
 //
 func (popover *PopoverMenu) SetMenuModel(model gio.MenuModeller) {
 	var _arg0 *C.GtkPopoverMenu // out

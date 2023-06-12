@@ -15,16 +15,16 @@ import "C"
 // handled (but note that future GLib releases may return a more specific value
 // instead).
 //
-// As errno is global and may be modified by intermediate function calls, you
-// should save its value as soon as the call which sets it.
+// As errno is global and may be modified by intermediate function calls,
+// you should save its value as soon as the call which sets it.
 //
 // The function takes the following parameters:
 //
-//    - errNo: error number as defined in errno.h.
+//   - errNo: error number as defined in errno.h.
 //
 // The function returns the following values:
 //
-//    - ioErrorEnum value for the given errno.h error number.
+//   - ioErrorEnum value for the given errno.h error number.
 //
 func IOErrorFromErrno(errNo int) IOErrorEnum {
 	var _arg1 C.gint         // out

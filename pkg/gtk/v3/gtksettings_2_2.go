@@ -21,11 +21,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 // The function returns the following values:
 //
-//    - settings Settings object.
+//   - settings Settings object.
 //
 func SettingsGetForScreen(screen *gdk.Screen) *Settings {
 	var _arg1 *C.GdkScreen   // out

@@ -20,14 +20,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - digestType to use for the HMAC.
-//    - key to use in the HMAC.
-//    - data: binary blob to compute the HMAC of.
+//   - digestType to use for the HMAC.
+//   - key to use in the HMAC.
+//   - data: binary blob to compute the HMAC of.
 //
 // The function returns the following values:
 //
-//    - utf8: HMAC of the binary data as a string in hexadecimal. The returned
-//      string should be freed with g_free() when done using it.
+//   - utf8: HMAC of the binary data as a string in hexadecimal. The returned
+//     string should be freed with g_free() when done using it.
 //
 func ComputeHMACForBytes(digestType ChecksumType, key, data *Bytes) string {
 	var _arg1 C.GChecksumType // out

@@ -33,15 +33,15 @@ import "C"
 //
 // The domain and code of error have special semantics in the case where the
 // process has an "exit code", as opposed to being killed by a signal. On Unix,
-// this happens if WIFEXITED() would be true of exit_status. On Windows, it is
-// always the case.
+// this happens if WIFEXITED() would be true of exit_status. On Windows,
+// it is always the case.
 //
-// The special semantics are that the actual exit code will be the code set in
-// error, and the domain will be G_SPAWN_EXIT_ERROR. This allows you to
+// The special semantics are that the actual exit code will be the code set
+// in error, and the domain will be G_SPAWN_EXIT_ERROR. This allows you to
 // differentiate between different exit codes.
 //
-// If the process was terminated by some means other than an exit status, the
-// domain will be G_SPAWN_ERROR, and the code will be G_SPAWN_ERROR_FAILED.
+// If the process was terminated by some means other than an exit status,
+// the domain will be G_SPAWN_ERROR, and the code will be G_SPAWN_ERROR_FAILED.
 //
 // This function just offers convenience; you can of course also check the
 // available platform via a macro such as G_OS_UNIX, and use WIFEXITED() and
@@ -51,7 +51,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - exitStatus: exit code as returned from g_spawn_sync().
+//   - exitStatus: exit code as returned from g_spawn_sync().
 //
 func SpawnCheckExitStatus(exitStatus int) error {
 	var _arg1 C.gint    // out

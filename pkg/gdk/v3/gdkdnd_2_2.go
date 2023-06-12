@@ -21,17 +21,17 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
-//    - dragWindow: window which may be at the pointer position, but should be
-//      ignored, since it is put up by the drag source as an icon.
-//    - screen where the destination window is sought.
-//    - xRoot: x position of the pointer in root coordinates.
-//    - yRoot: y position of the pointer in root coordinates.
+//   - context: DragContext.
+//   - dragWindow: window which may be at the pointer position, but should be
+//     ignored, since it is put up by the drag source as an icon.
+//   - screen where the destination window is sought.
+//   - xRoot: x position of the pointer in root coordinates.
+//   - yRoot: y position of the pointer in root coordinates.
 //
 // The function returns the following values:
 //
-//    - destWindow: location to store the destination window in.
-//    - protocol: location to store the DND protocol in.
+//   - destWindow: location to store the destination window in.
+//   - protocol: location to store the DND protocol in.
 //
 func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *Screen, xRoot, yRoot int) (Windower, DragProtocol) {
 	var _arg1 *C.GdkDragContext // out

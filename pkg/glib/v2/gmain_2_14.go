@@ -21,16 +21,16 @@ import "C"
 // The scheduling granularity/accuracy of this timeout source will be in
 // seconds.
 //
-// The interval given is in terms of monotonic time, not wall clock time. See
-// g_get_monotonic_time().
+// The interval given is in terms of monotonic time, not wall clock time.
+// See g_get_monotonic_time().
 //
 // The function takes the following parameters:
 //
-//    - interval: timeout interval in seconds.
+//   - interval: timeout interval in seconds.
 //
 // The function returns the following values:
 //
-//    - source: newly-created timeout source.
+//   - source: newly-created timeout source.
 //
 func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _arg1 C.guint    // out

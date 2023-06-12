@@ -73,14 +73,14 @@ func (c ChecksumType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - checksumType: Type.
-//    - data: binary blob to compute the digest of.
+//   - checksumType: Type.
+//   - data: binary blob to compute the digest of.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): digest of the binary data as a string in hexadecimal, or
-//      NULL if g_checksum_new() fails for checksum_type. The returned string
-//      should be freed with g_free() when done using it.
+//   - utf8 (optional): digest of the binary data as a string in hexadecimal,
+//     or NULL if g_checksum_new() fails for checksum_type. The returned string
+//     should be freed with g_free() when done using it.
 //
 func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 	var _arg1 C.GChecksumType // out
@@ -114,15 +114,15 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 //
 // The function takes the following parameters:
 //
-//    - checksumType: Type.
-//    - str: string to compute the checksum of.
-//    - length of the string, or -1 if the string is null-terminated.
+//   - checksumType: Type.
+//   - str: string to compute the checksum of.
+//   - length of the string, or -1 if the string is null-terminated.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): checksum as a hexadecimal string, or NULL if
-//      g_checksum_new() fails for checksum_type. The returned string should be
-//      freed with g_free() when done using it.
+//   - utf8 (optional): checksum as a hexadecimal string, or NULL if
+//     g_checksum_new() fails for checksum_type. The returned string should be
+//     freed with g_free() when done using it.
 //
 func ComputeChecksumForString(checksumType ChecksumType, str string, length int) string {
 	var _arg1 C.GChecksumType // out
@@ -150,9 +150,9 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 	return _utf8
 }
 
-// Checksum: opaque structure representing a checksumming operation. To create a
-// new GChecksum, use g_checksum_new(). To free a GChecksum, use
-// g_checksum_free().
+// Checksum: opaque structure representing a checksumming operation.
+// To create a new GChecksum, use g_checksum_new(). To free a GChecksum,
+// use g_checksum_free().
 //
 // An instance of this type is always passed by reference.
 type Checksum struct {
@@ -200,8 +200,8 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 //
 // The function returns the following values:
 //
-//    - ret: copy of the passed #GChecksum. Use g_checksum_free() when finished
-//      using it.
+//   - ret: copy of the passed #GChecksum. Use g_checksum_free() when finished
+//     using it.
 //
 func (checksum *Checksum) Copy() *Checksum {
 	var _arg0 *C.GChecksum // out
@@ -234,8 +234,8 @@ func (checksum *Checksum) Copy() *Checksum {
 //
 // The function returns the following values:
 //
-//    - utf8: hexadecimal representation of the checksum. The returned string is
-//      owned by the checksum and should not be modified or freed.
+//   - utf8: hexadecimal representation of the checksum. The returned string is
+//     owned by the checksum and should not be modified or freed.
 //
 func (checksum *Checksum) String() string {
 	var _arg0 *C.GChecksum // out
@@ -269,7 +269,7 @@ func (checksum *Checksum) Reset() {
 //
 // The function takes the following parameters:
 //
-//    - data: buffer used to compute the checksum.
+//   - data: buffer used to compute the checksum.
 //
 func (checksum *Checksum) Update(data []byte) {
 	var _arg0 *C.GChecksum // out
@@ -292,11 +292,11 @@ func (checksum *Checksum) Update(data []byte) {
 //
 // The function takes the following parameters:
 //
-//    - checksumType: Type.
+//   - checksumType: Type.
 //
 // The function returns the following values:
 //
-//    - gssize: checksum length, or -1 if checksum_type is not supported.
+//   - gssize: checksum length, or -1 if checksum_type is not supported.
 //
 func ChecksumTypeGetLength(checksumType ChecksumType) int {
 	var _arg1 C.GChecksumType // out

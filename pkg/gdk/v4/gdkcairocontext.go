@@ -84,8 +84,8 @@ func BaseCairoContext(obj CairoContexter) *CairoContext {
 //
 // The function returns the following values:
 //
-//    - context (optional): cairo context to be used to draw the contents of the
-//      GdkSurface. NULL is returned when context is not drawing.
+//   - context (optional): cairo context to be used to draw the contents of the
+//     GdkSurface. NULL is returned when context is not drawing.
 //
 func (self *CairoContext) CairoCreate() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out

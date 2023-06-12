@@ -32,7 +32,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - event: valid Event.
+//   - event: valid Event.
 //
 func EventRequestMotions(event *EventMotion) {
 	var _arg1 *C.GdkEventMotion // out

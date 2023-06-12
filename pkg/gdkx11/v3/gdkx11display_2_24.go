@@ -20,8 +20,8 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - smClientId (optional): client id assigned by the session manager when the
-//      connection was opened, or NULL to remove the property.
+//   - smClientId (optional): client id assigned by the session manager when the
+//     connection was opened, or NULL to remove the property.
 //
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.gchar // out

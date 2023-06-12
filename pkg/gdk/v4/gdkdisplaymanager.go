@@ -38,7 +38,6 @@ func init() {
 //
 //    gdk_set_allowed_backends ("wayland,macos,*");
 //
-//
 // instructs GDK to try the Wayland backend first, followed by the MacOs
 // backend, and then all others.
 //
@@ -48,11 +47,11 @@ func init() {
 //
 // The possible backend names are:
 //
-//    - broadway
-//    - macos
-//    - wayland.
-//    - win32
-//    - x11
+//   - broadway
+//   - macos
+//   - wayland.
+//   - win32
+//   - x11
 //
 // You can also include a * in the list to try all remaining backends.
 //
@@ -61,7 +60,7 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - backends: comma-separated list of backends.
+//   - backends: comma-separated list of backends.
 //
 func SetAllowedBackends(backends string) {
 	var _arg1 *C.char // out
@@ -77,8 +76,8 @@ func SetAllowedBackends(backends string) {
 // appear or disappear.
 //
 // You can use gdk.DisplayManager().Get to obtain the GdkDisplayManager
-// singleton, but that should be rarely necessary. Typically, initializing GTK
-// opens a display that you can work with without ever accessing the
+// singleton, but that should be rarely necessary. Typically, initializing
+// GTK opens a display that you can work with without ever accessing the
 // GdkDisplayManager.
 //
 // The GDK library can be built with support for multiple backends. The
@@ -88,14 +87,13 @@ func SetAllowedBackends(backends string) {
 // used, you can use gdk.SetAllowedBackends(). Note that you need to call this
 // function before initializing GTK.
 //
+// # Backend-specific code
 //
-// Backend-specific code
-//
-// When writing backend-specific code that is supposed to work with multiple GDK
-// backends, you have to consider both compile time and runtime. At compile
-// time, use the K_WINDOWING_X11, K_WINDOWING_WIN32 macros, etc. to find out
-// which backends are present in the GDK library you are building your
-// application against. At runtime, use type-check macros like
+// When writing backend-specific code that is supposed to work with multiple
+// GDK backends, you have to consider both compile time and runtime.
+// At compile time, use the K_WINDOWING_X11, K_WINDOWING_WIN32 macros,
+// etc. to find out which backends are present in the GDK library you are
+// building your application against. At runtime, use type-check macros like
 // GDK_IS_X11_DISPLAY() to find out which backend is in use:
 //
 //    #ifdef GDK_WINDOWING_X11
@@ -141,7 +139,7 @@ func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) co
 //
 // The function returns the following values:
 //
-//    - display (optional): GdkDisplay, or NULL if there is no default display.
+//   - display (optional): GdkDisplay, or NULL if there is no default display.
 //
 func (manager *DisplayManager) DefaultDisplay() *Display {
 	var _arg0 *C.GdkDisplayManager // out
@@ -165,8 +163,8 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 //
 // The function returns the following values:
 //
-//    - sList: newly allocated GSList of GdkDisplay objects. Free with
-//      g_slist_free() when you are done with it.
+//   - sList: newly allocated GSList of GdkDisplay objects. Free with
+//     g_slist_free() when you are done with it.
 //
 func (manager *DisplayManager) ListDisplays() []*Display {
 	var _arg0 *C.GdkDisplayManager // out
@@ -194,12 +192,12 @@ func (manager *DisplayManager) ListDisplays() []*Display {
 //
 // The function takes the following parameters:
 //
-//    - name of the display to open.
+//   - name of the display to open.
 //
 // The function returns the following values:
 //
-//    - display (optional): GdkDisplay, or NULL if the display could not be
-//      opened.
+//   - display (optional): GdkDisplay, or NULL if the display could not be
+//     opened.
 //
 func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	var _arg0 *C.GdkDisplayManager // out
@@ -227,7 +225,7 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 //
 // The function takes the following parameters:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	var _arg0 *C.GdkDisplayManager // out
@@ -251,7 +249,7 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 //
 // The function returns the following values:
 //
-//    - displayManager: global GdkDisplayManager singleton.
+//   - displayManager: global GdkDisplayManager singleton.
 //
 func DisplayManagerGet() *DisplayManager {
 	var _cret *C.GdkDisplayManager // in

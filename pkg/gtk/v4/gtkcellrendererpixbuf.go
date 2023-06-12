@@ -30,13 +30,13 @@ func init() {
 // render either a given Pixbuf (set via the CellRendererPixbuf:pixbuf property)
 // or a named icon (set via the CellRendererPixbuf:icon-name property).
 //
-// To support the tree view, CellRendererPixbuf also supports rendering two
-// alternative pixbufs, when the CellRenderer:is-expander property is TRUE. If
-// the CellRenderer:is-expanded property is TRUE and the
-// CellRendererPixbuf:pixbuf-expander-open property is set to a pixbuf, it
-// renders that pixbuf, if the CellRenderer:is-expanded property is FALSE and
-// the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf, it
-// renders that one.
+// To support the tree view, CellRendererPixbuf also supports rendering
+// two alternative pixbufs, when the CellRenderer:is-expander property
+// is TRUE. If the CellRenderer:is-expanded property is TRUE and the
+// CellRendererPixbuf:pixbuf-expander-open property is set to a pixbuf,
+// it renders that pixbuf, if the CellRenderer:is-expanded property is FALSE and
+// the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf,
+// it renders that one.
 type CellRendererPixbuf struct {
 	_ [0]func() // equal guard
 	CellRenderer
@@ -69,7 +69,7 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - cellRendererPixbuf: new cell renderer.
+//   - cellRendererPixbuf: new cell renderer.
 //
 func NewCellRendererPixbuf() *CellRendererPixbuf {
 	var _cret *C.GtkCellRenderer // in

@@ -22,14 +22,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - priority of the timeout source. Typically this will be in the range
-//      between PRIORITY_DEFAULT_IDLE and PRIORITY_HIGH_IDLE.
-//    - interval: time between calls to the function, in seconds.
-//    - function to call.
+//   - priority of the timeout source. Typically this will be in the range
+//     between PRIORITY_DEFAULT_IDLE and PRIORITY_HIGH_IDLE.
+//   - interval: time between calls to the function, in seconds.
+//   - function to call.
 //
 // The function returns the following values:
 //
-//    - guint: ID (greater than 0) of the event source.
+//   - guint: ID (greater than 0) of the event source.
 //
 func ThreadsAddTimeoutSeconds(priority int, interval uint, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out

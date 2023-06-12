@@ -25,15 +25,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - domain (optional): translation domain to use, or NULL to use the domain
-//      set with textdomain().
-//    - msgctxtid: combined message context and message id, separated by a \004
-//      character.
-//    - msgidoffset: offset of the message id in msgctxid.
+//   - domain (optional): translation domain to use, or NULL to use the domain
+//     set with textdomain().
+//   - msgctxtid: combined message context and message id, separated by a \004
+//     character.
+//   - msgidoffset: offset of the message id in msgctxid.
 //
 // The function returns the following values:
 //
-//    - utf8: translated string.
+//   - utf8: translated string.
 //
 func Dpgettext(domain, msgctxtid string, msgidoffset uint) string {
 	var _arg1 *C.gchar // out

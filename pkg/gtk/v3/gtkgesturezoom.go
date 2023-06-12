@@ -29,8 +29,8 @@ func init() {
 }
 
 // GestureZoom is a Gesture implementation able to recognize pinch/zoom
-// gestures, whenever the distance between both tracked sequences changes, the
-// GestureZoom::scale-changed signal is emitted to report the scale factor.
+// gestures, whenever the distance between both tracked sequences changes,
+// the GestureZoom::scale-changed signal is emitted to report the scale factor.
 type GestureZoom struct {
 	_ [0]func() // equal guard
 	Gesture
@@ -65,11 +65,11 @@ func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) coreglib.
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - gestureZoom: newly created GestureZoom.
+//   - gestureZoom: newly created GestureZoom.
 //
 func NewGestureZoom(widget Widgetter) *GestureZoom {
 	var _arg1 *C.GtkWidget  // out
@@ -93,7 +93,7 @@ func NewGestureZoom(widget Widgetter) *GestureZoom {
 //
 // The function returns the following values:
 //
-//    - gdouble: scale delta.
+//   - gdouble: scale delta.
 //
 func (gesture *GestureZoom) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out

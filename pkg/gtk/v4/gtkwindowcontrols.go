@@ -36,8 +36,8 @@ func defaultWindowControlsOverrides(v *WindowControls) WindowControlsOverrides {
 
 // WindowControls: GtkWindowControls shows window frame controls.
 //
-// Typical window frame controls are minimize, maximize and close buttons, and
-// the window icon.
+// Typical window frame controls are minimize, maximize and close buttons,
+// and the window icon.
 //
 // !An example GtkWindowControls (windowcontrols.png)
 //
@@ -61,7 +61,6 @@ func defaultWindowControlsOverrides(v *WindowControls) WindowControlsOverrides {
 //      </child>
 //    </object>
 //
-//
 // CSS nodes
 //
 //    windowcontrols
@@ -70,7 +69,6 @@ func defaultWindowControlsOverrides(v *WindowControls) WindowControlsOverrides {
 //    ├── [button.maximize]
 //    ╰── [button.close]
 //
-//
 // A GtkWindowControls' CSS node is called windowcontrols. It contains subnodes
 // corresponding to each title button. Which of the title buttons exist and
 // where they are placed exactly depends on the desktop environment and
@@ -78,8 +76,7 @@ func defaultWindowControlsOverrides(v *WindowControls) WindowControlsOverrides {
 //
 // When gtk.WindowControls:empty is TRUE, it gets the .empty style class.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkWindowControls uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowControls struct {
@@ -135,11 +132,11 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - side: side.
+//   - side: side.
 //
 // The function returns the following values:
 //
-//    - windowControls: new GtkWindowControls.
+//   - windowControls: new GtkWindowControls.
 //
 func NewWindowControls(side PackType) *WindowControls {
 	var _arg1 C.GtkPackType // out
@@ -161,7 +158,7 @@ func NewWindowControls(side PackType) *WindowControls {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): decoration layout or NULL if it is unset.
+//   - utf8 (optional): decoration layout or NULL if it is unset.
 //
 func (self *WindowControls) DecorationLayout() string {
 	var _arg0 *C.GtkWindowControls // out
@@ -185,7 +182,7 @@ func (self *WindowControls) DecorationLayout() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the widget has window buttons, otherwise FALSE.
+//   - ok: TRUE if the widget has window buttons, otherwise FALSE.
 //
 func (self *WindowControls) Empty() bool {
 	var _arg0 *C.GtkWindowControls // out
@@ -209,7 +206,7 @@ func (self *WindowControls) Empty() bool {
 //
 // The function returns the following values:
 //
-//    - packType: side.
+//   - packType: side.
 //
 func (self *WindowControls) Side() PackType {
 	var _arg0 *C.GtkWindowControls // out
@@ -236,15 +233,15 @@ func (self *WindowControls) Side() PackType {
 // Recognized button names are minimize, maximize, close and icon (the window
 // icon).
 //
-// For example, “icon:minimize,maximize,close” specifies a icon on the left, and
-// minimize, maximize and close buttons on the right.
+// For example, “icon:minimize,maximize,close” specifies a icon on the left,
+// and minimize, maximize and close buttons on the right.
 //
 // If gtk.WindowControls:side value is GTK_PACK_START, self will display the
 // part before the colon, otherwise after that.
 //
 // The function takes the following parameters:
 //
-//    - layout (optional): decoration layout, or NULL to unset the layout.
+//   - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (self *WindowControls) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkWindowControls // out
@@ -268,7 +265,7 @@ func (self *WindowControls) SetDecorationLayout(layout string) {
 //
 // The function takes the following parameters:
 //
-//    - side: side.
+//   - side: side.
 //
 func (self *WindowControls) SetSide(side PackType) {
 	var _arg0 *C.GtkWindowControls // out

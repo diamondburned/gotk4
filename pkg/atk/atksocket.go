@@ -32,8 +32,8 @@ func init() {
 
 // SocketOverrides contains methods that are overridable.
 type SocketOverrides struct {
-	// Embed embeds the children of an Plug as the children of the Socket. The
-	// plug may be in the same process or in a different process.
+	// Embed embeds the children of an Plug as the children of the Socket.
+	// The plug may be in the same process or in a different process.
 	//
 	// The class item used by this function should be filled in by the IPC layer
 	// (usually at-spi2-atk). The implementor of the AtkSocket should call this
@@ -43,7 +43,7 @@ type SocketOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - plugId: ID of an Plug.
+	//   - plugId: ID of an Plug.
 	//
 	Embed func(plugId string)
 }
@@ -61,12 +61,12 @@ func defaultSocketOverrides(v *Socket) SocketOverrides {
 // to the assistive technologies as being inside the application that created
 // the Socket.
 //
-// The communication between a Socket and a Plug is done by the IPC layer of the
-// accessibility framework, normally implemented by the D-Bus based
-// implementation of AT-SPI (at-spi2). If that is the case, at-spi-atk2 is the
-// responsible to implement the abstract methods atk_plug_get_id() and
-// atk_socket_embed(), so an ATK implementor shouldn't reimplement them. The
-// process that contains the Plug is responsible to send the ID returned by
+// The communication between a Socket and a Plug is done by the IPC layer
+// of the accessibility framework, normally implemented by the D-Bus based
+// implementation of AT-SPI (at-spi2). If that is the case, at-spi-atk2 is
+// the responsible to implement the abstract methods atk_plug_get_id() and
+// atk_socket_embed(), so an ATK implementor shouldn't reimplement them.
+// The process that contains the Plug is responsible to send the ID returned by
 // atk_plug_id() to the process that contains the Socket, so it could call the
 // method atk_socket_embed() in order to embed it.
 //
@@ -128,7 +128,7 @@ func marshalSocket(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - socket: newly created Socket instance.
+//   - socket: newly created Socket instance.
 //
 func NewSocket() *Socket {
 	var _cret *C.AtkObject // in
@@ -147,13 +147,13 @@ func NewSocket() *Socket {
 //
 // The class item used by this function should be filled in by the IPC layer
 // (usually at-spi2-atk). The implementor of the AtkSocket should call this
-// function and pass the id for the plug as returned by atk_plug_get_id(). It is
-// the responsibility of the application to pass the plug id on to the process
-// implementing the Socket as needed.
+// function and pass the id for the plug as returned by atk_plug_get_id().
+// It is the responsibility of the application to pass the plug id on to the
+// process implementing the Socket as needed.
 //
 // The function takes the following parameters:
 //
-//    - plugId: ID of an Plug.
+//   - plugId: ID of an Plug.
 //
 func (obj *Socket) Embed(plugId string) {
 	var _arg0 *C.AtkSocket // out
@@ -172,7 +172,7 @@ func (obj *Socket) Embed(plugId string) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a plug is embedded in the socket.
+//   - ok: TRUE if a plug is embedded in the socket.
 //
 func (obj *Socket) IsOccupied() bool {
 	var _arg0 *C.AtkSocket // out
@@ -197,13 +197,13 @@ func (obj *Socket) IsOccupied() bool {
 //
 // The class item used by this function should be filled in by the IPC layer
 // (usually at-spi2-atk). The implementor of the AtkSocket should call this
-// function and pass the id for the plug as returned by atk_plug_get_id(). It is
-// the responsibility of the application to pass the plug id on to the process
-// implementing the Socket as needed.
+// function and pass the id for the plug as returned by atk_plug_get_id().
+// It is the responsibility of the application to pass the plug id on to the
+// process implementing the Socket as needed.
 //
 // The function takes the following parameters:
 //
-//    - plugId: ID of an Plug.
+//   - plugId: ID of an Plug.
 //
 func (obj *Socket) embed(plugId string) {
 	gclass := (*C.AtkSocketClass)(coreglib.PeekParentClass(obj))

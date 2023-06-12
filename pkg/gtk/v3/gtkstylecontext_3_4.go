@@ -22,13 +22,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: StyleContext.
-//    - cr: #cairo_t.
-//    - x: x origin.
-//    - y: y origin.
-//    - layout of the text.
-//    - index in the Layout.
-//    - direction of the text.
+//   - context: StyleContext.
+//   - cr: #cairo_t.
+//   - x: x origin.
+//   - y: y origin.
+//   - layout of the text.
+//   - index in the Layout.
+//   - direction of the text.
 //
 func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x, y float64, layout *pango.Layout, index int, direction pango.Direction) {
 	var _arg1 *C.GtkStyleContext // out

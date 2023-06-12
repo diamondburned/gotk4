@@ -26,8 +26,8 @@ func init() {
 	})
 }
 
-// Vec3: structure capable of holding a vector with three dimensions: x, y, and
-// z.
+// Vec3: structure capable of holding a vector with three dimensions: x, y,
+// and z.
 //
 // The contents of the #graphene_vec3_t structure are private and should never
 // be accessed directly.
@@ -70,11 +70,11 @@ func NewVec3Alloc() *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec3_t.
+//   - b: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec3) Add(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -99,11 +99,11 @@ func (a *Vec3) Add(b *Vec3) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec3_t.
+//   - b: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec3) Cross(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -130,11 +130,11 @@ func (a *Vec3) Cross(b *Vec3) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec3_t.
+//   - b: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec3) Divide(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -159,11 +159,11 @@ func (a *Vec3) Divide(b *Vec3) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec3_t.
+//   - b: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the dot product.
+//   - gfloat: value of the dot product.
 //
 func (a *Vec3) Dot(b *Vec3) float32 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -188,11 +188,11 @@ func (a *Vec3) Dot(b *Vec3) float32 {
 //
 // The function takes the following parameters:
 //
-//    - v2: #graphene_vec3_t.
+//   - v2: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the two vectors are equal, and false otherwise.
+//   - ok: true if the two vectors are equal, and false otherwise.
 //
 func (v1 *Vec3) Equal(v2 *Vec3) bool {
 	var _arg0 *C.graphene_vec3_t // out
@@ -219,7 +219,7 @@ func (v1 *Vec3) Equal(v2 *Vec3) bool {
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the first component of the vector.
+//   - gfloat: value of the first component of the vector.
 //
 func (v *Vec3) X() float32 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -242,7 +242,7 @@ func (v *Vec3) X() float32 {
 //
 // The function returns the following values:
 //
-//    - res: return location for a #graphene_vec2_t.
+//   - res: return location for a #graphene_vec2_t.
 //
 func (v *Vec3) XY() *Vec2 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -265,7 +265,7 @@ func (v *Vec3) XY() *Vec2 {
 //
 // The function returns the following values:
 //
-//    - res: return location for a #graphene_vec3_t.
+//   - res: return location for a #graphene_vec3_t.
 //
 func (v *Vec3) XY0() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -288,7 +288,7 @@ func (v *Vec3) XY0() *Vec3 {
 //
 // The function returns the following values:
 //
-//    - res: return location for the vector.
+//   - res: return location for the vector.
 //
 func (v *Vec3) XYZ0() *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -311,7 +311,7 @@ func (v *Vec3) XYZ0() *Vec4 {
 //
 // The function returns the following values:
 //
-//    - res: return location for the vector.
+//   - res: return location for the vector.
 //
 func (v *Vec3) XYZ1() *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -334,11 +334,11 @@ func (v *Vec3) XYZ1() *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - w: value of the W component.
+//   - w: value of the W component.
 //
 // The function returns the following values:
 //
-//    - res: return location for the vector.
+//   - res: return location for the vector.
 //
 func (v *Vec3) Xyzw(w float32) *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -363,7 +363,7 @@ func (v *Vec3) Xyzw(w float32) *Vec4 {
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the second component of the vector.
+//   - gfloat: value of the second component of the vector.
 //
 func (v *Vec3) Y() float32 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -385,7 +385,7 @@ func (v *Vec3) Y() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the third component of the vector.
+//   - gfloat: value of the third component of the vector.
 //
 func (v *Vec3) Z() float32 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -409,13 +409,13 @@ func (v *Vec3) Z() float32 {
 //
 // The function takes the following parameters:
 //
-//    - x: x field of the vector.
-//    - y: y field of the vector.
-//    - z: z field of the vector.
+//   - x: x field of the vector.
+//   - y: y field of the vector.
+//   - z: z field of the vector.
 //
 // The function returns the following values:
 //
-//    - vec3: pointer to the initialized vector.
+//   - vec3: pointer to the initialized vector.
 //
 func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -446,11 +446,11 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - src: array of 3 floating point values.
+//   - src: array of 3 floating point values.
 //
 // The function returns the following values:
 //
-//    - vec3: initialized vector.
+//   - vec3: initialized vector.
 //
 func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -476,11 +476,11 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_vec3_t.
+//   - src: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - vec3: initialized vector.
+//   - vec3: initialized vector.
 //
 func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -505,12 +505,12 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - v2: #graphene_vec3_t.
-//    - factor: interpolation factor.
+//   - v2: #graphene_vec3_t.
+//   - factor: interpolation factor.
 //
 // The function returns the following values:
 //
-//    - res: interpolated vector.
+//   - res: interpolated vector.
 //
 func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -538,7 +538,7 @@ func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) *Vec3 {
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the length of the vector.
+//   - gfloat: value of the length of the vector.
 //
 func (v *Vec3) Length() float32 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -561,11 +561,11 @@ func (v *Vec3) Length() float32 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec3_t.
+//   - b: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the result vector.
+//   - res: return location for the result vector.
 //
 func (a *Vec3) Max(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -591,11 +591,11 @@ func (a *Vec3) Max(b *Vec3) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec3_t.
+//   - b: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the result vector.
+//   - res: return location for the result vector.
 //
 func (a *Vec3) Min(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -620,11 +620,11 @@ func (a *Vec3) Min(b *Vec3) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec3_t.
+//   - b: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec3) Multiply(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -650,12 +650,12 @@ func (a *Vec3) Multiply(b *Vec3) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - v2: #graphene_vec3_t.
-//    - epsilon: threshold between the two vectors.
+//   - v2: #graphene_vec3_t.
+//   - epsilon: threshold between the two vectors.
 //
 // The function returns the following values:
 //
-//    - ok: true if the two vectors are near each other.
+//   - ok: true if the two vectors are near each other.
 //
 func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	var _arg0 *C.graphene_vec3_t // out
@@ -685,7 +685,7 @@ func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 //
 // The function returns the following values:
 //
-//    - res: return location for the result vector.
+//   - res: return location for the result vector.
 //
 func (v *Vec3) Negate() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -707,7 +707,7 @@ func (v *Vec3) Negate() *Vec3 {
 //
 // The function returns the following values:
 //
-//    - res: return location for the normalized vector.
+//   - res: return location for the normalized vector.
 //
 func (v *Vec3) Normalize() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -730,11 +730,11 @@ func (v *Vec3) Normalize() *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - factor: scalar factor.
+//   - factor: scalar factor.
 //
 // The function returns the following values:
 //
-//    - res: return location for the result vector.
+//   - res: return location for the result vector.
 //
 func (v *Vec3) Scale(factor float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -761,11 +761,11 @@ func (v *Vec3) Scale(factor float32) *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec3_t.
+//   - b: #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec3) Subtract(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
@@ -790,7 +790,7 @@ func (a *Vec3) Subtract(b *Vec3) *Vec3 {
 //
 // The function returns the following values:
 //
-//    - dest: return location for an array of floating point values.
+//   - dest: return location for an array of floating point values.
 //
 func (v *Vec3) ToFloat() [3]float32 {
 	var _arg0 *C.graphene_vec3_t // out

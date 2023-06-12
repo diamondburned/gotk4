@@ -18,8 +18,8 @@ import "C"
 
 // DragCancel cancels an ongoing drag operation on the source side.
 //
-// If you want to be able to cancel a drag operation in this way, you need to
-// keep a pointer to the drag context, either from an explicit call to
+// If you want to be able to cancel a drag operation in this way, you need
+// to keep a pointer to the drag context, either from an explicit call to
 // gtk_drag_begin_with_coordinates(), or by connecting to Widget::drag-begin.
 //
 // If context does not refer to an ongoing drag operation, this function does
@@ -30,7 +30,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context as e.g. returned by gtk_drag_begin_with_coordinates().
+//   - context as e.g. returned by gtk_drag_begin_with_coordinates().
 //
 func DragCancel(context *gdk.DragContext) {
 	var _arg1 *C.GdkDragContext // out

@@ -49,10 +49,10 @@ func init() {
 //
 // The actual widgets used for displaying those widgets is provided by you.
 //
-// When the factory needs widgets created, it will create a GtkListItem and hand
-// it to your code to set up a widget for. This list item will provide various
-// properties with information about what item to display and provide you with
-// some opportunities to configure its behavior. See the gtk.ListItem
+// When the factory needs widgets created, it will create a GtkListItem and
+// hand it to your code to set up a widget for. This list item will provide
+// various properties with information about what item to display and provide
+// you with some opportunities to configure its behavior. See the gtk.ListItem
 // documentation for further details.
 //
 // Various implementations of GtkListItemFactory exist to allow you different

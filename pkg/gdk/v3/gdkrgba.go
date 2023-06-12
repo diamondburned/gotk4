@@ -131,7 +131,7 @@ func (r *RGBA) SetAlpha(alpha float64) {
 //
 // The function returns the following values:
 //
-//    - rgbA: newly allocated RGBA, with the same contents as rgba.
+//   - rgbA: newly allocated RGBA, with the same contents as rgba.
 //
 func (rgba *RGBA) Copy() *RGBA {
 	var _arg0 *C.GdkRGBA // out
@@ -159,11 +159,11 @@ func (rgba *RGBA) Copy() *RGBA {
 //
 // The function takes the following parameters:
 //
-//    - p2: another RGBA pointer.
+//   - p2: another RGBA pointer.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two colors compare equal.
+//   - ok: TRUE if the two colors compare equal.
 //
 func (p1 *RGBA) Equal(p2 *RGBA) bool {
 	var _arg0 C.gconstpointer // out
@@ -190,7 +190,7 @@ func (p1 *RGBA) Equal(p2 *RGBA) bool {
 //
 // The function returns the following values:
 //
-//    - guint: hash value for p.
+//   - guint: hash value for p.
 //
 func (p *RGBA) Hash() uint {
 	var _arg0 C.gconstpointer // out
@@ -230,11 +230,11 @@ func (p *RGBA) Hash() uint {
 //
 // The function takes the following parameters:
 //
-//    - spec: string specifying the color.
+//   - spec: string specifying the color.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the parsing succeeded.
+//   - ok: TRUE if the parsing succeeded.
 //
 func (rgba *RGBA) Parse(spec string) bool {
 	var _arg0 *C.GdkRGBA // out
@@ -267,13 +267,13 @@ func (rgba *RGBA) Parse(spec string) bool {
 // These string forms are string forms that are supported by the CSS3 colors
 // module, and can be parsed by gdk_rgba_parse().
 //
-// Note that this string representation may lose some precision, since “r”, “g”
-// and “b” are represented as 8-bit integers. If this is a concern, you should
-// use a different representation.
+// Note that this string representation may lose some precision, since “r”,
+// “g” and “b” are represented as 8-bit integers. If this is a concern,
+// you should use a different representation.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated text string.
+//   - utf8: newly allocated text string.
 //
 func (rgba *RGBA) String() string {
 	var _arg0 *C.GdkRGBA // out

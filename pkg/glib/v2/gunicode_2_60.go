@@ -18,12 +18,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: pointer to character data.
+//   - str: pointer to character data.
 //
 // The function returns the following values:
 //
-//    - end (optional): return location for end of valid data.
-//    - ok: TRUE if the text was valid UTF-8.
+//   - end (optional): return location for end of valid data.
+//   - ok: TRUE if the text was valid UTF-8.
 //
 func UTF8ValidateLen(str string) (string, bool) {
 	var _arg1 *C.gchar // out

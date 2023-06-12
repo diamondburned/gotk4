@@ -27,45 +27,45 @@ func init() {
 	})
 }
 
-// FILE_ATTRIBUTE_ACCESS_CAN_DELETE: key in the "access" namespace for checking
-// deletion privileges. Corresponding AttributeType is
+// FILE_ATTRIBUTE_ACCESS_CAN_DELETE: key in the "access" namespace
+// for checking deletion privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to delete the file.
 const FILE_ATTRIBUTE_ACCESS_CAN_DELETE = "access::can-delete"
 
-// FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE: key in the "access" namespace for getting
-// execution privileges. Corresponding AttributeType is
+// FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE: key in the "access" namespace
+// for getting execution privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to execute the file.
 const FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE = "access::can-execute"
 
-// FILE_ATTRIBUTE_ACCESS_CAN_READ: key in the "access" namespace for getting
-// read privileges. Corresponding AttributeType is
+// FILE_ATTRIBUTE_ACCESS_CAN_READ: key in the "access" namespace
+// for getting read privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to read the file.
 const FILE_ATTRIBUTE_ACCESS_CAN_READ = "access::can-read"
 
-// FILE_ATTRIBUTE_ACCESS_CAN_RENAME: key in the "access" namespace for checking
-// renaming privileges. Corresponding AttributeType is
+// FILE_ATTRIBUTE_ACCESS_CAN_RENAME: key in the "access" namespace
+// for checking renaming privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to rename the file.
 const FILE_ATTRIBUTE_ACCESS_CAN_RENAME = "access::can-rename"
 
-// FILE_ATTRIBUTE_ACCESS_CAN_TRASH: key in the "access" namespace for checking
-// trashing privileges. Corresponding AttributeType is
+// FILE_ATTRIBUTE_ACCESS_CAN_TRASH: key in the "access" namespace
+// for checking trashing privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to move the file to the trash.
 const FILE_ATTRIBUTE_ACCESS_CAN_TRASH = "access::can-trash"
 
-// FILE_ATTRIBUTE_ACCESS_CAN_WRITE: key in the "access" namespace for getting
-// write privileges. Corresponding AttributeType is
+// FILE_ATTRIBUTE_ACCESS_CAN_WRITE: key in the "access" namespace
+// for getting write privileges. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN. This attribute will be TRUE if the user is
 // able to write to the file.
 const FILE_ATTRIBUTE_ACCESS_CAN_WRITE = "access::can-write"
 
-// FILE_ATTRIBUTE_DOS_IS_ARCHIVE: key in the "dos" namespace for checking if the
-// file's archive flag is set. This attribute is TRUE if the archive flag is
-// set. This attribute is only available for DOS file systems. Corresponding
+// FILE_ATTRIBUTE_DOS_IS_ARCHIVE: key in the "dos" namespace for checking if
+// the file's archive flag is set. This attribute is TRUE if the archive flag
+// is set. This attribute is only available for DOS file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_DOS_IS_ARCHIVE = "dos::is-archive"
 
@@ -75,8 +75,8 @@ const FILE_ATTRIBUTE_DOS_IS_ARCHIVE = "dos::is-archive"
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_DOS_IS_SYSTEM = "dos::is-system"
 
-// FILE_ATTRIBUTE_ETAG_VALUE: key in the "etag" namespace for getting the value
-// of the file's entity tag. Corresponding AttributeType is
+// FILE_ATTRIBUTE_ETAG_VALUE: key in the "etag" namespace for getting
+// the value of the file's entity tag. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_ETAG_VALUE = "etag::value"
 
@@ -95,14 +95,14 @@ const FILE_ATTRIBUTE_FILESYSTEM_READONLY = "filesystem::readonly"
 // remote. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_FILESYSTEM_REMOTE = "filesystem::remote"
 
-// FILE_ATTRIBUTE_FILESYSTEM_SIZE: key in the "filesystem" namespace for getting
-// the total size (in bytes) of the file system, used in
+// FILE_ATTRIBUTE_FILESYSTEM_SIZE: key in the "filesystem" namespace
+// for getting the total size (in bytes) of the file system, used in
 // g_file_query_filesystem_info(). Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64.
 const FILE_ATTRIBUTE_FILESYSTEM_SIZE = "filesystem::size"
 
-// FILE_ATTRIBUTE_FILESYSTEM_TYPE: key in the "filesystem" namespace for getting
-// the file system's type. Corresponding AttributeType is
+// FILE_ATTRIBUTE_FILESYSTEM_TYPE: key in the "filesystem" namespace
+// for getting the file system's type. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_FILESYSTEM_TYPE = "filesystem::type"
 
@@ -111,36 +111,36 @@ const FILE_ATTRIBUTE_FILESYSTEM_TYPE = "filesystem::type"
 // files on the file system. The value for this key contain a PreviewType.
 const FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW = "filesystem::use-preview"
 
-// FILE_ATTRIBUTE_GVFS_BACKEND: key in the "gvfs" namespace that gets the name
-// of the current GVFS backend in use. Corresponding AttributeType is
+// FILE_ATTRIBUTE_GVFS_BACKEND: key in the "gvfs" namespace that gets the
+// name of the current GVFS backend in use. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_GVFS_BACKEND = "gvfs::backend"
 
 // FILE_ATTRIBUTE_ID_FILE: key in the "id" namespace for getting a file
-// identifier. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING. An
-// example use would be during listing files, to avoid recursive directory
+// identifier. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
+// An example use would be during listing files, to avoid recursive directory
 // scanning.
 const FILE_ATTRIBUTE_ID_FILE = "id::file"
 
-// FILE_ATTRIBUTE_ID_FILESYSTEM: key in the "id" namespace for getting the file
-// system identifier. Corresponding AttributeType is
+// FILE_ATTRIBUTE_ID_FILESYSTEM: key in the "id" namespace for
+// getting the file system identifier. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING. An example use would be during drag and drop to
 // see if the source and target are on the same filesystem (default to move) or
 // not (default to copy).
 const FILE_ATTRIBUTE_ID_FILESYSTEM = "id::filesystem"
 
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be ejected.
+// FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT: key in the "mountable" namespace
+// for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be ejected.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT = "mountable::can-eject"
 
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) is mountable.
+// FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT: key in the "mountable" namespace
+// for checking if a file (of type G_FILE_TYPE_MOUNTABLE) is mountable.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT = "mountable::can-mount"
 
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) is unmountable.
+// FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT: key in the "mountable" namespace
+// for checking if a file (of type G_FILE_TYPE_MOUNTABLE) is unmountable.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT = "mountable::can-unmount"
 
@@ -149,8 +149,8 @@ const FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT = "mountable::can-unmount"
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI = "mountable::hal-udi"
 
-// FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE: key in the "mountable" namespace for
-// getting the unix device. Corresponding AttributeType is
+// FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE: key in the "mountable"
+// namespace for getting the unix device. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE = "mountable::unix-device"
 
@@ -158,24 +158,24 @@ const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE = "mountable::unix-device"
 // owner's group. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_OWNER_GROUP = "owner::group"
 
-// FILE_ATTRIBUTE_OWNER_USER: key in the "owner" namespace for getting the user
-// name of the file's owner. Corresponding AttributeType is
+// FILE_ATTRIBUTE_OWNER_USER: key in the "owner" namespace for getting
+// the user name of the file's owner. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_OWNER_USER = "owner::user"
 
-// FILE_ATTRIBUTE_OWNER_USER_REAL: key in the "owner" namespace for getting the
-// real name of the user that owns the file. Corresponding AttributeType is
+// FILE_ATTRIBUTE_OWNER_USER_REAL: key in the "owner" namespace for getting
+// the real name of the user that owns the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_OWNER_USER_REAL = "owner::user-real"
 
-// FILE_ATTRIBUTE_SELINUX_CONTEXT: key in the "selinux" namespace for getting
-// the file's SELinux context. Corresponding AttributeType is
+// FILE_ATTRIBUTE_SELINUX_CONTEXT: key in the "selinux" namespace for
+// getting the file's SELinux context. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING. Note that this attribute is only available if
 // GLib has been built with SELinux support.
 const FILE_ATTRIBUTE_SELINUX_CONTEXT = "selinux::context"
 
-// FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE: key in the "standard" namespace for
-// getting the content type of the file. Corresponding AttributeType is
+// FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE: key in the "standard" namespace
+// for getting the content type of the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING. The value for this key should contain a valid
 // content type.
 const FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE = "standard::content-type"
@@ -184,8 +184,8 @@ const FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE = "standard::content-type"
 // getting the copy name of the file. The copy name is an optional version of
 // the name. If available it's always in UTF8, and corresponds directly to the
 // original filename (only transcoded to UTF8). This is useful if you want to
-// copy the file to another filesystem that might have a different encoding. If
-// the filename is not a valid string in the encoding selected for the
+// copy the file to another filesystem that might have a different encoding.
+// If the filename is not a valid string in the encoding selected for the
 // filesystem it is in then the copy name will not be set.
 //
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
@@ -203,15 +203,15 @@ const FILE_ATTRIBUTE_STANDARD_COPY_NAME = "standard::copy-name"
 const FILE_ATTRIBUTE_STANDARD_DESCRIPTION = "standard::description"
 
 // FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME: key in the "standard" namespace for
-// getting the display name of the file. A display name is guaranteed to be in
-// UTF-8 and can thus be displayed in the UI. It is guaranteed to be set on
+// getting the display name of the file. A display name is guaranteed to be
+// in UTF-8 and can thus be displayed in the UI. It is guaranteed to be set on
 // every file. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME = "standard::display-name"
 
 // FILE_ATTRIBUTE_STANDARD_EDIT_NAME: key in the "standard" namespace for edit
 // name of the file. An edit name is similar to the display name, but it is
-// meant to be used when you want to rename the file in the UI. The display name
-// might contain information you don't want in the new filename (such as
+// meant to be used when you want to rename the file in the UI. The display
+// name might contain information you don't want in the new filename (such as
 // "(invalid unicode)" if the filename was in an invalid encoding).
 //
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
@@ -224,8 +224,8 @@ const FILE_ATTRIBUTE_STANDARD_EDIT_NAME = "standard::edit-name"
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE = "standard::fast-content-type"
 
-// FILE_ATTRIBUTE_STANDARD_ICON: key in the "standard" namespace for getting the
-// icon for the file. Corresponding AttributeType is
+// FILE_ATTRIBUTE_STANDARD_ICON: key in the "standard" namespace
+// for getting the icon for the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_OBJECT. The value for this key should contain a #GIcon.
 const FILE_ATTRIBUTE_STANDARD_ICON = "standard::icon"
 
@@ -234,8 +234,8 @@ const FILE_ATTRIBUTE_STANDARD_ICON = "standard::icon"
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_STANDARD_IS_BACKUP = "standard::is-backup"
 
-// FILE_ATTRIBUTE_STANDARD_IS_HIDDEN: key in the "standard" namespace for
-// checking if a file is hidden. Corresponding AttributeType is
+// FILE_ATTRIBUTE_STANDARD_IS_HIDDEN: key in the "standard" namespace
+// for checking if a file is hidden. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_STANDARD_IS_HIDDEN = "standard::is-hidden"
 
@@ -246,46 +246,46 @@ const FILE_ATTRIBUTE_STANDARD_IS_HIDDEN = "standard::is-hidden"
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_STANDARD_IS_SYMLINK = "standard::is-symlink"
 
-// FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL: key in the "standard" namespace for
-// checking if a file is virtual. Corresponding AttributeType is
+// FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL: key in the "standard" namespace
+// for checking if a file is virtual. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL = "standard::is-virtual"
 
-// FILE_ATTRIBUTE_STANDARD_NAME: key in the "standard" namespace for getting the
-// name of the file. The name is the on-disk filename which may not be in any
-// known encoding, and can thus not be generally displayed as is. It is
+// FILE_ATTRIBUTE_STANDARD_NAME: key in the "standard" namespace for getting
+// the name of the file. The name is the on-disk filename which may not be in
+// any known encoding, and can thus not be generally displayed as is. It is
 // guaranteed to be set on every file. Use FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
 // if you need to display the name in a user interface. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
 const FILE_ATTRIBUTE_STANDARD_NAME = "standard::name"
 
-// FILE_ATTRIBUTE_STANDARD_SIZE: key in the "standard" namespace for getting the
-// file's size (in bytes). Corresponding AttributeType is
+// FILE_ATTRIBUTE_STANDARD_SIZE: key in the "standard" namespace for
+// getting the file's size (in bytes). Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64.
 const FILE_ATTRIBUTE_STANDARD_SIZE = "standard::size"
 
-// FILE_ATTRIBUTE_STANDARD_SORT_ORDER: key in the "standard" namespace for
-// setting the sort order of a file. Corresponding AttributeType is
-// G_FILE_ATTRIBUTE_TYPE_INT32. An example use would be in file managers, which
-// would use this key to set the order files are displayed. Files with smaller
-// sort order should be sorted first, and files without sort order as if sort
-// order was zero.
+// FILE_ATTRIBUTE_STANDARD_SORT_ORDER: key in the "standard" namespace
+// for setting the sort order of a file. Corresponding AttributeType is
+// G_FILE_ATTRIBUTE_TYPE_INT32. An example use would be in file managers,
+// which would use this key to set the order files are displayed. Files with
+// smaller sort order should be sorted first, and files without sort order as if
+// sort order was zero.
 const FILE_ATTRIBUTE_STANDARD_SORT_ORDER = "standard::sort-order"
 
-// FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET: key in the "standard" namespace for
-// getting the symlink target, if the file is a symlink. Corresponding
+// FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET: key in the "standard" namespace
+// for getting the symlink target, if the file is a symlink. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
 const FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET = "standard::symlink-target"
 
 // FILE_ATTRIBUTE_STANDARD_TARGET_URI: key in the "standard" namespace for
-// getting the target URI for the file, in the case of G_FILE_TYPE_SHORTCUT or
-// G_FILE_TYPE_MOUNTABLE files. Corresponding AttributeType is
+// getting the target URI for the file, in the case of G_FILE_TYPE_SHORTCUT
+// or G_FILE_TYPE_MOUNTABLE files. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_STANDARD_TARGET_URI = "standard::target-uri"
 
 // FILE_ATTRIBUTE_STANDARD_TYPE: key in the "standard" namespace for storing
-// file types. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32. The
-// value for this key should contain a Type.
+// file types. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
+// The value for this key should contain a Type.
 const FILE_ATTRIBUTE_STANDARD_TYPE = "standard::type"
 
 // FILE_ATTRIBUTE_THUMBNAILING_FAILED: key in the "thumbnail" namespace for
@@ -293,13 +293,13 @@ const FILE_ATTRIBUTE_STANDARD_TYPE = "standard::type"
 // failed. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_THUMBNAILING_FAILED = "thumbnail::failed"
 
-// FILE_ATTRIBUTE_THUMBNAIL_PATH: key in the "thumbnail" namespace for getting
-// the path to the thumbnail image. Corresponding AttributeType is
+// FILE_ATTRIBUTE_THUMBNAIL_PATH: key in the "thumbnail" namespace for
+// getting the path to the thumbnail image. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
 const FILE_ATTRIBUTE_THUMBNAIL_PATH = "thumbnail::path"
 
-// FILE_ATTRIBUTE_TIME_ACCESS: key in the "time" namespace for getting the time
-// the file was last accessed. Corresponding AttributeType is
+// FILE_ATTRIBUTE_TIME_ACCESS: key in the "time" namespace for getting
+// the time the file was last accessed. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the time since the file was last
 // accessed, in seconds since the UNIX epoch.
 const FILE_ATTRIBUTE_TIME_ACCESS = "time::access"
@@ -310,8 +310,8 @@ const FILE_ATTRIBUTE_TIME_ACCESS = "time::access"
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_TIME_ACCESS_USEC = "time::access-usec"
 
-// FILE_ATTRIBUTE_TIME_CHANGED: key in the "time" namespace for getting the time
-// the file was last changed. Corresponding AttributeType is
+// FILE_ATTRIBUTE_TIME_CHANGED: key in the "time" namespace for getting
+// the time the file was last changed. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the time since the file was last
 // changed, in seconds since the UNIX epoch.
 //
@@ -324,8 +324,8 @@ const FILE_ATTRIBUTE_TIME_CHANGED = "time::changed"
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_TIME_CHANGED_USEC = "time::changed-usec"
 
-// FILE_ATTRIBUTE_TIME_CREATED: key in the "time" namespace for getting the time
-// the file was created. Corresponding AttributeType is
+// FILE_ATTRIBUTE_TIME_CREATED: key in the "time" namespace for getting
+// the time the file was created. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the time since the file was
 // created, in seconds since the UNIX epoch.
 //
@@ -333,14 +333,14 @@ const FILE_ATTRIBUTE_TIME_CHANGED_USEC = "time::changed-usec"
 // st_birthtime or NTFS ctime.
 const FILE_ATTRIBUTE_TIME_CREATED = "time::created"
 
-// FILE_ATTRIBUTE_TIME_CREATED_USEC: key in the "time" namespace for getting the
-// microseconds of the time the file was created. This should be used in
+// FILE_ATTRIBUTE_TIME_CREATED_USEC: key in the "time" namespace for getting
+// the microseconds of the time the file was created. This should be used in
 // conjunction with FILE_ATTRIBUTE_TIME_CREATED. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_TIME_CREATED_USEC = "time::created-usec"
 
-// FILE_ATTRIBUTE_TIME_MODIFIED: key in the "time" namespace for getting the
-// time the file was last modified. Corresponding AttributeType is
+// FILE_ATTRIBUTE_TIME_MODIFIED: key in the "time" namespace for getting
+// the time the file was last modified. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the time since the file was
 // modified, in seconds since the UNIX epoch.
 const FILE_ATTRIBUTE_TIME_MODIFIED = "time::modified"
@@ -356,9 +356,9 @@ const FILE_ATTRIBUTE_TIME_MODIFIED_USEC = "time::modified-usec"
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_TRASH_ITEM_COUNT = "trash::item-count"
 
-// FILE_ATTRIBUTE_UNIX_BLOCKS: key in the "unix" namespace for getting the
-// number of blocks allocated for the file. This attribute is only available for
-// UNIX file systems. Corresponding AttributeType is
+// FILE_ATTRIBUTE_UNIX_BLOCKS: key in the "unix" namespace for getting
+// the number of blocks allocated for the file. This attribute is only
+// available for UNIX file systems. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT64.
 const FILE_ATTRIBUTE_UNIX_BLOCKS = "unix::blocks"
 
@@ -373,51 +373,51 @@ const FILE_ATTRIBUTE_UNIX_BLOCK_SIZE = "unix::block-size"
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_UNIX_DEVICE = "unix::device"
 
-// FILE_ATTRIBUTE_UNIX_GID: key in the "unix" namespace for getting the group ID
-// for the file. This attribute is only available for UNIX file systems.
+// FILE_ATTRIBUTE_UNIX_GID: key in the "unix" namespace for getting the group
+// ID for the file. This attribute is only available for UNIX file systems.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_UNIX_GID = "unix::gid"
 
-// FILE_ATTRIBUTE_UNIX_INODE: key in the "unix" namespace for getting the inode
-// of the file. This attribute is only available for UNIX file systems.
+// FILE_ATTRIBUTE_UNIX_INODE: key in the "unix" namespace for getting the
+// inode of the file. This attribute is only available for UNIX file systems.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT64.
 const FILE_ATTRIBUTE_UNIX_INODE = "unix::inode"
 
 // FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT: key in the "unix" namespace for checking
-// if the file represents a UNIX mount point. This attribute is TRUE if the file
-// is a UNIX mount point. Since 2.58, / is considered to be a mount point. This
-// attribute is only available for UNIX file systems. Corresponding
+// if the file represents a UNIX mount point. This attribute is TRUE if the
+// file is a UNIX mount point. Since 2.58, / is considered to be a mount point.
+// This attribute is only available for UNIX file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT = "unix::is-mountpoint"
 
-// FILE_ATTRIBUTE_UNIX_MODE: key in the "unix" namespace for getting the mode of
-// the file (e.g. whether the file is a regular file, symlink, etc). See the
-// documentation for lstat(): this attribute is equivalent to the st_mode member
-// of struct stat, and includes both the file type and permissions. This
-// attribute is only available for UNIX file systems. Corresponding
+// FILE_ATTRIBUTE_UNIX_MODE: key in the "unix" namespace for getting the mode
+// of the file (e.g. whether the file is a regular file, symlink, etc). See
+// the documentation for lstat(): this attribute is equivalent to the st_mode
+// member of struct stat, and includes both the file type and permissions.
+// This attribute is only available for UNIX file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_UNIX_MODE = "unix::mode"
 
-// FILE_ATTRIBUTE_UNIX_NLINK: key in the "unix" namespace for getting the number
-// of hard links for a file. See lstat() documentation. This attribute is only
-// available for UNIX file systems. Corresponding AttributeType is
+// FILE_ATTRIBUTE_UNIX_NLINK: key in the "unix" namespace for getting the
+// number of hard links for a file. See lstat() documentation. This attribute
+// is only available for UNIX file systems. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_UNIX_NLINK = "unix::nlink"
 
 // FILE_ATTRIBUTE_UNIX_RDEV: key in the "unix" namespace for getting the device
-// ID for the file (if it is a special file). See lstat() documentation. This
-// attribute is only available for UNIX file systems. Corresponding
+// ID for the file (if it is a special file). See lstat() documentation.
+// This attribute is only available for UNIX file systems. Corresponding
 // AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_UNIX_RDEV = "unix::rdev"
 
-// FILE_ATTRIBUTE_UNIX_UID: key in the "unix" namespace for getting the user ID
-// for the file. This attribute is only available for UNIX file systems.
+// FILE_ATTRIBUTE_UNIX_UID: key in the "unix" namespace for getting the user
+// ID for the file. This attribute is only available for UNIX file systems.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_UNIX_UID = "unix::uid"
 
 // FileInfo: functionality for manipulating basic metadata for files. Info
-// implements methods for getting information that all files should contain, and
-// allows for manipulation of extended attributes.
+// implements methods for getting information that all files should contain,
+// and allows for manipulation of extended attributes.
 //
 // See [GFileAttribute][gio-GFileAttribute] for more information on how GIO
 // handles file attributes.
@@ -427,13 +427,13 @@ const FILE_ATTRIBUTE_UNIX_UID = "unix::uid"
 // g_file_input_stream_query_info() or g_file_output_stream_query_info() (or
 // their async variants).
 //
-// To change the actual attributes of a file, you should then set the attribute
-// in the Info and call g_file_set_attributes_from_info() or
+// To change the actual attributes of a file, you should then set the
+// attribute in the Info and call g_file_set_attributes_from_info() or
 // g_file_set_attributes_async() on a GFile.
 //
-// However, not all attributes can be changed in the file. For instance, the
-// actual size of a file cannot be changed via g_file_info_set_size(). You may
-// call g_file_query_settable_attributes() and
+// However, not all attributes can be changed in the file. For instance,
+// the actual size of a file cannot be changed via g_file_info_set_size().
+// You may call g_file_query_settable_attributes() and
 // g_file_query_writable_namespaces() to discover the settable attributes of a
 // particular file at runtime.
 //
@@ -461,7 +461,7 @@ func marshalFileInfo(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - fileInfo: Info.
+//   - fileInfo: Info.
 //
 func NewFileInfo() *FileInfo {
 	var _cret *C.GFileInfo // in
@@ -485,13 +485,13 @@ func (info *FileInfo) ClearStatus() {
 	runtime.KeepAlive(info)
 }
 
-// CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute] of
-// dest_info, and then copies all of the file attributes from src_info to
+// CopyInto: first clears all of the [GFileAttribute][gio-GFileAttribute]
+// of dest_info, and then copies all of the file attributes from src_info to
 // dest_info.
 //
 // The function takes the following parameters:
 //
-//    - destInfo: destination to copy attributes to.
+//   - destInfo: destination to copy attributes to.
 //
 func (srcInfo *FileInfo) CopyInto(destInfo *FileInfo) {
 	var _arg0 *C.GFileInfo // out
@@ -509,7 +509,7 @@ func (srcInfo *FileInfo) CopyInto(destInfo *FileInfo) {
 //
 // The function returns the following values:
 //
-//    - fileInfo: duplicate Info of other.
+//   - fileInfo: duplicate Info of other.
 //
 func (other *FileInfo) Dup() *FileInfo {
 	var _arg0 *C.GFileInfo // out
@@ -527,18 +527,18 @@ func (other *FileInfo) Dup() *FileInfo {
 	return _fileInfo
 }
 
-// AttributeAsString gets the value of a attribute, formatted as a string. This
-// escapes things as needed to make the string valid UTF-8.
+// AttributeAsString gets the value of a attribute, formatted as a string.
+// This escapes things as needed to make the string valid UTF-8.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): UTF-8 string associated with the given attribute, or
-//      NULL if the attribute wasn’t set. When you're done with the string it
-//      must be freed with g_free().
+//   - utf8 (optional): UTF-8 string associated with the given attribute,
+//     or NULL if the attribute wasn’t set. When you're done with the string it
+//     must be freed with g_free().
 //
 func (info *FileInfo) AttributeAsString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
@@ -568,11 +568,11 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - ok: boolean value contained within the attribute.
+//   - ok: boolean value contained within the attribute.
 //
 func (info *FileInfo) AttributeBoolean(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
@@ -601,12 +601,12 @@ func (info *FileInfo) AttributeBoolean(attribute string) bool {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) contents of the attribute value as a byte string, or NULL
-//      otherwise.
+//   - utf8 (optional) contents of the attribute value as a byte string,
+//     or NULL otherwise.
 //
 func (info *FileInfo) AttributeByteString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
@@ -634,15 +634,15 @@ func (info *FileInfo) AttributeByteString(attribute string) string {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - typ (optional): return location for the attribute type, or NULL.
-//    - valuePp (optional): return location for the attribute value, or NULL; the
-//      attribute value will not be NULL.
-//    - status (optional): return location for the attribute status, or NULL.
-//    - ok: TRUE if info has an attribute named attribute, FALSE otherwise.
+//   - typ (optional): return location for the attribute type, or NULL.
+//   - valuePp (optional): return location for the attribute value, or NULL;
+//     the attribute value will not be NULL.
+//   - status (optional): return location for the attribute status, or NULL.
+//   - ok: TRUE if info has an attribute named attribute, FALSE otherwise.
 //
 func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, unsafe.Pointer, FileAttributeStatus, bool) {
 	var _arg0 *C.GFileInfo           // out
@@ -676,16 +676,16 @@ func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, unsafe
 }
 
 // AttributeInt32 gets a signed 32-bit integer contained within the attribute.
-// If the attribute does not contain a signed 32-bit integer, or is invalid, 0
-// will be returned.
+// If the attribute does not contain a signed 32-bit integer, or is invalid,
+// 0 will be returned.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - gint32: signed 32-bit integer from the attribute.
+//   - gint32: signed 32-bit integer from the attribute.
 //
 func (info *FileInfo) AttributeInt32(attribute string) int32 {
 	var _arg0 *C.GFileInfo // out
@@ -708,16 +708,16 @@ func (info *FileInfo) AttributeInt32(attribute string) int32 {
 }
 
 // AttributeInt64 gets a signed 64-bit integer contained within the attribute.
-// If the attribute does not contain a signed 64-bit integer, or is invalid, 0
-// will be returned.
+// If the attribute does not contain a signed 64-bit integer, or is invalid,
+// 0 will be returned.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - gint64: signed 64-bit integer from the attribute.
+//   - gint64: signed 64-bit integer from the attribute.
 //
 func (info *FileInfo) AttributeInt64(attribute string) int64 {
 	var _arg0 *C.GFileInfo // out
@@ -744,11 +744,11 @@ func (info *FileInfo) AttributeInt64(attribute string) int64 {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - object (optional) associated with the given attribute, or NULL otherwise.
+//   - object (optional) associated with the given attribute, or NULL otherwise.
 //
 func (info *FileInfo) AttributeObject(attribute string) *coreglib.Object {
 	var _arg0 *C.GFileInfo // out
@@ -776,12 +776,12 @@ func (info *FileInfo) AttributeObject(attribute string) *coreglib.Object {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - fileAttributeStatus for the given attribute, or
-//      G_FILE_ATTRIBUTE_STATUS_UNSET if the key is invalid.
+//   - fileAttributeStatus for the given attribute, or
+//     G_FILE_ATTRIBUTE_STATUS_UNSET if the key is invalid.
 //
 func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 	var _arg0 *C.GFileInfo           // out
@@ -808,12 +808,12 @@ func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) contents of the attribute value as a UTF-8 string, or
-//      NULL otherwise.
+//   - utf8 (optional) contents of the attribute value as a UTF-8 string,
+//     or NULL otherwise.
 //
 func (info *FileInfo) AttributeString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
@@ -842,12 +842,12 @@ func (info *FileInfo) AttributeString(attribute string) string {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - utf8s (optional) contents of the attribute value as a stringv, or NULL
-//      otherwise. Do not free. These returned strings are UTF-8.
+//   - utf8s (optional) contents of the attribute value as a stringv, or NULL
+//     otherwise. Do not free. These returned strings are UTF-8.
 //
 func (info *FileInfo) AttributeStringv(attribute string) []string {
 	var _arg0 *C.GFileInfo // out
@@ -887,12 +887,12 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - fileAttributeType for the given attribute, or
-//      G_FILE_ATTRIBUTE_TYPE_INVALID if the key is not set.
+//   - fileAttributeType for the given attribute, or
+//     G_FILE_ATTRIBUTE_TYPE_INVALID if the key is not set.
 //
 func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
 	var _arg0 *C.GFileInfo         // out
@@ -915,16 +915,16 @@ func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
 }
 
 // AttributeUint32 gets an unsigned 32-bit integer contained within the
-// attribute. If the attribute does not contain an unsigned 32-bit integer, or
-// is invalid, 0 will be returned.
+// attribute. If the attribute does not contain an unsigned 32-bit integer,
+// or is invalid, 0 will be returned.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - guint32: unsigned 32-bit integer from the attribute.
+//   - guint32: unsigned 32-bit integer from the attribute.
 //
 func (info *FileInfo) AttributeUint32(attribute string) uint32 {
 	var _arg0 *C.GFileInfo // out
@@ -947,16 +947,16 @@ func (info *FileInfo) AttributeUint32(attribute string) uint32 {
 }
 
 // AttributeUint64 gets a unsigned 64-bit integer contained within the
-// attribute. If the attribute does not contain an unsigned 64-bit integer, or
-// is invalid, 0 will be returned.
+// attribute. If the attribute does not contain an unsigned 64-bit integer,
+// or is invalid, 0 will be returned.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - guint64: unsigned 64-bit integer from the attribute.
+//   - guint64: unsigned 64-bit integer from the attribute.
 //
 func (info *FileInfo) AttributeUint64(attribute string) uint64 {
 	var _arg0 *C.GFileInfo // out
@@ -982,8 +982,8 @@ func (info *FileInfo) AttributeUint64(attribute string) uint64 {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the file's content type, or NULL if
-//      unknown.
+//   - utf8 (optional): string containing the file's content type, or NULL if
+//     unknown.
 //
 func (info *FileInfo) ContentType() string {
 	var _arg0 *C.GFileInfo // out
@@ -1003,13 +1003,13 @@ func (info *FileInfo) ContentType() string {
 	return _utf8
 }
 
-// DeletionDate returns the Time representing the deletion date of the file, as
-// available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
+// DeletionDate returns the Time representing the deletion date of the
+// file, as available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
 // G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, NULL is returned.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional) or NULL.
+//   - dateTime (optional) or NULL.
 //
 func (info *FileInfo) DeletionDate() *glib.DateTime {
 	var _arg0 *C.GFileInfo // out
@@ -1040,7 +1040,7 @@ func (info *FileInfo) DeletionDate() *glib.DateTime {
 //
 // The function returns the following values:
 //
-//    - utf8: string containing the display name.
+//   - utf8: string containing the display name.
 //
 func (info *FileInfo) DisplayName() string {
 	var _arg0 *C.GFileInfo // out
@@ -1062,7 +1062,7 @@ func (info *FileInfo) DisplayName() string {
 //
 // The function returns the following values:
 //
-//    - utf8: string containing the edit name.
+//   - utf8: string containing the edit name.
 //
 func (info *FileInfo) EditName() string {
 	var _arg0 *C.GFileInfo // out
@@ -1085,8 +1085,8 @@ func (info *FileInfo) EditName() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the value of the "etag:value"
-//      attribute.
+//   - utf8 (optional): string containing the value of the "etag:value"
+//     attribute.
 //
 func (info *FileInfo) ETag() string {
 	var _arg0 *C.GFileInfo // out
@@ -1106,13 +1106,13 @@ func (info *FileInfo) ETag() string {
 	return _utf8
 }
 
-// FileType gets a file's type (whether it is a regular file, symlink, etc).
-// This is different from the file's content type, see
+// FileType gets a file's type (whether it is a regular file,
+// symlink, etc). This is different from the file's content type, see
 // g_file_info_get_content_type().
 //
 // The function returns the following values:
 //
-//    - fileType for the given file.
+//   - fileType for the given file.
 //
 func (info *FileInfo) FileType() FileType {
 	var _arg0 *C.GFileInfo // out
@@ -1134,7 +1134,7 @@ func (info *FileInfo) FileType() FileType {
 //
 // The function returns the following values:
 //
-//    - icon (optional) for the given info.
+//   - icon (optional) for the given info.
 //
 func (info *FileInfo) Icon() *Icon {
 	var _arg0 *C.GFileInfo // out
@@ -1158,7 +1158,7 @@ func (info *FileInfo) Icon() *Icon {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if file is a backup file, FALSE otherwise.
+//   - ok: TRUE if file is a backup file, FALSE otherwise.
 //
 func (info *FileInfo) IsBackup() bool {
 	var _arg0 *C.GFileInfo // out
@@ -1182,7 +1182,7 @@ func (info *FileInfo) IsBackup() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the file is a hidden file, FALSE otherwise.
+//   - ok: TRUE if the file is a hidden file, FALSE otherwise.
 //
 func (info *FileInfo) IsHidden() bool {
 	var _arg0 *C.GFileInfo // out
@@ -1206,7 +1206,7 @@ func (info *FileInfo) IsHidden() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the given info is a symlink.
+//   - ok: TRUE if the given info is a symlink.
 //
 func (info *FileInfo) IsSymlink() bool {
 	var _arg0 *C.GFileInfo // out
@@ -1235,7 +1235,7 @@ func (info *FileInfo) IsSymlink() bool {
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): modification time, or NULL if unknown.
+//   - dateTime (optional): modification time, or NULL if unknown.
 //
 func (info *FileInfo) ModificationDateTime() *glib.DateTime {
 	var _arg0 *C.GFileInfo // out
@@ -1269,7 +1269,7 @@ func (info *FileInfo) ModificationDateTime() *glib.DateTime {
 //
 // The function returns the following values:
 //
-//    - result: Val.
+//   - result: Val.
 //
 func (info *FileInfo) ModificationTime() *glib.TimeVal {
 	var _arg0 *C.GFileInfo // out
@@ -1291,7 +1291,7 @@ func (info *FileInfo) ModificationTime() *glib.TimeVal {
 //
 // The function returns the following values:
 //
-//    - filename: string containing the file name.
+//   - filename: string containing the file name.
 //
 func (info *FileInfo) Name() string {
 	var _arg0 *C.GFileInfo // out
@@ -1309,13 +1309,13 @@ func (info *FileInfo) Name() string {
 	return _filename
 }
 
-// Size gets the file's size (in bytes). The size is retrieved through the value
-// of the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted from
+// Size gets the file's size (in bytes). The size is retrieved through the
+// value of the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted from
 // #guint64 to #goffset before returning the result.
 //
 // The function returns the following values:
 //
-//    - gint64 containing the file's size (in bytes).
+//   - gint64 containing the file's size (in bytes).
 //
 func (info *FileInfo) Size() int64 {
 	var _arg0 *C.GFileInfo // out
@@ -1333,12 +1333,12 @@ func (info *FileInfo) Size() int64 {
 	return _gint64
 }
 
-// SortOrder gets the value of the sort_order attribute from the Info. See
-// G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
+// SortOrder gets the value of the sort_order attribute from the Info.
+// See G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
 //
 // The function returns the following values:
 //
-//    - gint32 containing the value of the "standard::sort_order" attribute.
+//   - gint32 containing the value of the "standard::sort_order" attribute.
 //
 func (info *FileInfo) SortOrder() int32 {
 	var _arg0 *C.GFileInfo // out
@@ -1360,7 +1360,7 @@ func (info *FileInfo) SortOrder() int32 {
 //
 // The function returns the following values:
 //
-//    - icon (optional) for the given info.
+//   - icon (optional) for the given info.
 //
 func (info *FileInfo) SymbolicIcon() *Icon {
 	var _arg0 *C.GFileInfo // out
@@ -1384,7 +1384,7 @@ func (info *FileInfo) SymbolicIcon() *Icon {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the symlink target.
+//   - utf8 (optional): string containing the symlink target.
 //
 func (info *FileInfo) SymlinkTarget() string {
 	var _arg0 *C.GFileInfo // out
@@ -1409,11 +1409,11 @@ func (info *FileInfo) SymlinkTarget() string {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if info has an attribute named attribute, FALSE otherwise.
+//   - ok: TRUE if info has an attribute named attribute, FALSE otherwise.
 //
 func (info *FileInfo) HasAttribute(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
@@ -1442,11 +1442,11 @@ func (info *FileInfo) HasAttribute(attribute string) bool {
 //
 // The function takes the following parameters:
 //
-//    - nameSpace: file attribute namespace.
+//   - nameSpace: file attribute namespace.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if info has an attribute in name_space, FALSE otherwise.
+//   - ok: TRUE if info has an attribute in name_space, FALSE otherwise.
 //
 func (info *FileInfo) HasNamespace(nameSpace string) bool {
 	var _arg0 *C.GFileInfo // out
@@ -1474,13 +1474,13 @@ func (info *FileInfo) HasNamespace(nameSpace string) bool {
 //
 // The function takes the following parameters:
 //
-//    - nameSpace (optional): file attribute key's namespace, or NULL to list all
-//      attributes.
+//   - nameSpace (optional): file attribute key's namespace, or NULL to list all
+//     attributes.
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): a null-terminated array of strings of all of the
-//      possible attribute types for the given name_space, or NULL on error.
+//   - utf8s (optional): a null-terminated array of strings of all of the
+//     possible attribute types for the given name_space, or NULL on error.
 //
 func (info *FileInfo) ListAttributes(nameSpace string) []string {
 	var _arg0 *C.GFileInfo // out
@@ -1524,7 +1524,7 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 func (info *FileInfo) RemoveAttribute(attribute string) {
 	var _arg0 *C.GFileInfo // out
@@ -1539,14 +1539,14 @@ func (info *FileInfo) RemoveAttribute(attribute string) {
 	runtime.KeepAlive(attribute)
 }
 
-// SetAttribute sets the attribute to contain the given value, if possible. To
-// unset the attribute, use G_FILE_ATTRIBUTE_TYPE_INVALID for type.
+// SetAttribute sets the attribute to contain the given value, if possible.
+// To unset the attribute, use G_FILE_ATTRIBUTE_TYPE_INVALID for type.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - typ: AttributeType.
-//    - valueP: pointer to the value.
+//   - attribute: file attribute key.
+//   - typ: AttributeType.
+//   - valueP: pointer to the value.
 //
 func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valueP unsafe.Pointer) {
 	var _arg0 *C.GFileInfo         // out
@@ -1567,13 +1567,13 @@ func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valu
 	runtime.KeepAlive(valueP)
 }
 
-// SetAttributeBoolean sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeBoolean sets the attribute to contain the given attr_value,
+// if possible.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - attrValue: boolean value.
+//   - attribute: file attribute key.
+//   - attrValue: boolean value.
 //
 func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	var _arg0 *C.GFileInfo // out
@@ -1593,13 +1593,13 @@ func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	runtime.KeepAlive(attrValue)
 }
 
-// SetAttributeByteString sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeByteString sets the attribute to contain the given attr_value,
+// if possible.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - attrValue: byte string.
+//   - attribute: file attribute key.
+//   - attrValue: byte string.
 //
 func (info *FileInfo) SetAttributeByteString(attribute, attrValue string) {
 	var _arg0 *C.GFileInfo // out
@@ -1618,13 +1618,13 @@ func (info *FileInfo) SetAttributeByteString(attribute, attrValue string) {
 	runtime.KeepAlive(attrValue)
 }
 
-// SetAttributeInt32 sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeInt32 sets the attribute to contain the given attr_value,
+// if possible.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - attrValue: signed 32-bit integer.
+//   - attribute: file attribute key.
+//   - attrValue: signed 32-bit integer.
 //
 func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	var _arg0 *C.GFileInfo // out
@@ -1642,13 +1642,13 @@ func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	runtime.KeepAlive(attrValue)
 }
 
-// SetAttributeInt64 sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeInt64 sets the attribute to contain the given attr_value,
+// if possible.
 //
 // The function takes the following parameters:
 //
-//    - attribute name to set.
-//    - attrValue: int64 value to set attribute to.
+//   - attribute name to set.
+//   - attrValue: int64 value to set attribute to.
 //
 func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 	var _arg0 *C.GFileInfo // out
@@ -1670,7 +1670,7 @@ func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 //
 // The function takes the following parameters:
 //
-//    - mask: AttributeMatcher.
+//   - mask: AttributeMatcher.
 //
 func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	var _arg0 *C.GFileInfo             // out
@@ -1684,13 +1684,13 @@ func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	runtime.KeepAlive(mask)
 }
 
-// SetAttributeObject sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeObject sets the attribute to contain the given attr_value,
+// if possible.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - attrValue: #GObject.
+//   - attribute: file attribute key.
+//   - attrValue: #GObject.
 //
 func (info *FileInfo) SetAttributeObject(attribute string, attrValue *coreglib.Object) {
 	var _arg0 *C.GFileInfo // out
@@ -1717,12 +1717,12 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue *coreglib.O
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - status: AttributeStatus.
+//   - attribute: file attribute key.
+//   - status: AttributeStatus.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the status was changed, FALSE if the key was not set.
+//   - ok: TRUE if the status was changed, FALSE if the key was not set.
 //
 func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
 	var _arg0 *C.GFileInfo           // out
@@ -1749,13 +1749,13 @@ func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeS
 	return _ok
 }
 
-// SetAttributeString sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeString sets the attribute to contain the given attr_value,
+// if possible.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - attrValue: UTF-8 string.
+//   - attribute: file attribute key.
+//   - attrValue: UTF-8 string.
 //
 func (info *FileInfo) SetAttributeString(attribute, attrValue string) {
 	var _arg0 *C.GFileInfo // out
@@ -1774,15 +1774,15 @@ func (info *FileInfo) SetAttributeString(attribute, attrValue string) {
 	runtime.KeepAlive(attrValue)
 }
 
-// SetAttributeStringv sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeStringv sets the attribute to contain the given attr_value,
+// if possible.
 //
 // Sinze: 2.22.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - attrValue: NULL terminated array of UTF-8 strings.
+//   - attribute: file attribute key.
+//   - attrValue: NULL terminated array of UTF-8 strings.
 //
 func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	var _arg0 *C.GFileInfo // out
@@ -1812,13 +1812,13 @@ func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) 
 	runtime.KeepAlive(attrValue)
 }
 
-// SetAttributeUint32 sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeUint32 sets the attribute to contain the given attr_value,
+// if possible.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - attrValue: unsigned 32-bit integer.
+//   - attribute: file attribute key.
+//   - attrValue: unsigned 32-bit integer.
 //
 func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	var _arg0 *C.GFileInfo // out
@@ -1836,13 +1836,13 @@ func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	runtime.KeepAlive(attrValue)
 }
 
-// SetAttributeUint64 sets the attribute to contain the given attr_value, if
-// possible.
+// SetAttributeUint64 sets the attribute to contain the given attr_value,
+// if possible.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
-//    - attrValue: unsigned 64-bit integer.
+//   - attribute: file attribute key.
+//   - attrValue: unsigned 64-bit integer.
 //
 func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 	var _arg0 *C.GFileInfo // out
@@ -1865,7 +1865,7 @@ func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type. See [GContentType][gio-GContentType].
+//   - contentType: content type. See [GContentType][gio-GContentType].
 //
 func (info *FileInfo) SetContentType(contentType string) {
 	var _arg0 *C.GFileInfo // out
@@ -1885,7 +1885,7 @@ func (info *FileInfo) SetContentType(contentType string) {
 //
 // The function takes the following parameters:
 //
-//    - displayName: string containing a display name.
+//   - displayName: string containing a display name.
 //
 func (info *FileInfo) SetDisplayName(displayName string) {
 	var _arg0 *C.GFileInfo // out
@@ -1905,7 +1905,7 @@ func (info *FileInfo) SetDisplayName(displayName string) {
 //
 // The function takes the following parameters:
 //
-//    - editName: string containing an edit name.
+//   - editName: string containing an edit name.
 //
 func (info *FileInfo) SetEditName(editName string) {
 	var _arg0 *C.GFileInfo // out
@@ -1925,7 +1925,7 @@ func (info *FileInfo) SetEditName(editName string) {
 //
 // The function takes the following parameters:
 //
-//    - typ: Type.
+//   - typ: Type.
 //
 func (info *FileInfo) SetFileType(typ FileType) {
 	var _arg0 *C.GFileInfo // out
@@ -1943,7 +1943,7 @@ func (info *FileInfo) SetFileType(typ FileType) {
 //
 // The function takes the following parameters:
 //
-//    - icon: #GIcon.
+//   - icon: #GIcon.
 //
 func (info *FileInfo) SetIcon(icon Iconner) {
 	var _arg0 *C.GFileInfo // out
@@ -1962,7 +1962,7 @@ func (info *FileInfo) SetIcon(icon Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - isHidden: #gboolean.
+//   - isHidden: #gboolean.
 //
 func (info *FileInfo) SetIsHidden(isHidden bool) {
 	var _arg0 *C.GFileInfo // out
@@ -1983,7 +1983,7 @@ func (info *FileInfo) SetIsHidden(isHidden bool) {
 //
 // The function takes the following parameters:
 //
-//    - isSymlink: #gboolean.
+//   - isSymlink: #gboolean.
 //
 func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 	var _arg0 *C.GFileInfo // out
@@ -2005,7 +2005,7 @@ func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 //
 // The function takes the following parameters:
 //
-//    - mtime: Time.
+//   - mtime: Time.
 //
 func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
 	var _arg0 *C.GFileInfo // out
@@ -2028,7 +2028,7 @@ func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
 //
 // The function takes the following parameters:
 //
-//    - mtime: Val.
+//   - mtime: Val.
 //
 func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
 	var _arg0 *C.GFileInfo // out
@@ -2047,7 +2047,7 @@ func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
 //
 // The function takes the following parameters:
 //
-//    - name: string containing a name.
+//   - name: string containing a name.
 //
 func (info *FileInfo) SetName(name string) {
 	var _arg0 *C.GFileInfo // out
@@ -2067,7 +2067,7 @@ func (info *FileInfo) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - size containing the file's size.
+//   - size containing the file's size.
 //
 func (info *FileInfo) SetSize(size int64) {
 	var _arg0 *C.GFileInfo // out
@@ -2081,12 +2081,12 @@ func (info *FileInfo) SetSize(size int64) {
 	runtime.KeepAlive(size)
 }
 
-// SetSortOrder sets the sort order attribute in the file info structure. See
-// G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
+// SetSortOrder sets the sort order attribute in the file info structure.
+// See G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
 //
 // The function takes the following parameters:
 //
-//    - sortOrder: sort order integer.
+//   - sortOrder: sort order integer.
 //
 func (info *FileInfo) SetSortOrder(sortOrder int32) {
 	var _arg0 *C.GFileInfo // out
@@ -2105,7 +2105,7 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 //
 // The function takes the following parameters:
 //
-//    - icon: #GIcon.
+//   - icon: #GIcon.
 //
 func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 	var _arg0 *C.GFileInfo // out
@@ -2124,7 +2124,7 @@ func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - symlinkTarget: static string containing a path to a symlink target.
+//   - symlinkTarget: static string containing a path to a symlink target.
 //
 func (info *FileInfo) SetSymlinkTarget(symlinkTarget string) {
 	var _arg0 *C.GFileInfo // out
@@ -2139,8 +2139,8 @@ func (info *FileInfo) SetSymlinkTarget(symlinkTarget string) {
 	runtime.KeepAlive(symlinkTarget)
 }
 
-// UnsetAttributeMask unsets a mask set by g_file_info_set_attribute_mask(), if
-// one is set.
+// UnsetAttributeMask unsets a mask set by g_file_info_set_attribute_mask(),
+// if one is set.
 func (info *FileInfo) UnsetAttributeMask() {
 	var _arg0 *C.GFileInfo // out
 

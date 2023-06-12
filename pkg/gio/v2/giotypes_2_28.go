@@ -16,7 +16,7 @@ import "C"
 // #GSource returned by g_cancellable_source_new().
 type CancellableSourceFunc func(cancellable context.Context) (ok bool)
 
-// PollableSourceFunc: this is the function type of the callback used for the
-// #GSource returned by g_pollable_input_stream_create_source() and
+// PollableSourceFunc: this is the function type of the callback used for
+// the #GSource returned by g_pollable_input_stream_create_source() and
 // g_pollable_output_stream_create_source().
 type PollableSourceFunc func(pollableStream *coreglib.Object) (ok bool)

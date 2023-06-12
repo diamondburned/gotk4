@@ -28,15 +28,15 @@ func init() {
 
 // Rect: location and size of a rectangle region.
 //
-// The width and height of a #graphene_rect_t can be negative; for instance, a
-// #graphene_rect_t with an origin of [ 0, 0 ] and a size of [ 10, 10 ] is
+// The width and height of a #graphene_rect_t can be negative; for instance,
+// a #graphene_rect_t with an origin of [ 0, 0 ] and a size of [ 10, 10 ] is
 // equivalent to a #graphene_rect_t with an origin of [ 10, 10 ] and a size of [
 // -10, -10 ].
 //
 // Application code can normalize rectangles using graphene_rect_normalize();
 // this function will ensure that the width and height of a rectangle are
-// positive values. All functions taking a #graphene_rect_t as an argument will
-// internally operate on a normalized copy; all functions returning a
+// positive values. All functions taking a #graphene_rect_t as an argument
+// will internally operate on a normalized copy; all functions returning a
 // #graphene_rect_t will always return a normalized rectangle.
 //
 // An instance of this type is always passed by reference.
@@ -75,11 +75,11 @@ func (r *Rect) Size() *Size {
 //
 // The function takes the following parameters:
 //
-//    - p: #graphene_point_t.
+//   - p: #graphene_point_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the rectangle contains the point.
+//   - ok: true if the rectangle contains the point.
 //
 func (r *Rect) ContainsPoint(p *Point) bool {
 	var _arg0 *C.graphene_rect_t  // out
@@ -107,11 +107,11 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_rect_t.
+//   - b: #graphene_rect_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the rectangle a fully contains b.
+//   - ok: true if the rectangle a fully contains b.
 //
 func (a *Rect) ContainsRect(b *Rect) bool {
 	var _arg0 *C.graphene_rect_t // out
@@ -138,11 +138,11 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_rect_t.
+//   - b: #graphene_rect_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the rectangles are equal.
+//   - ok: true if the rectangles are equal.
 //
 func (a *Rect) Equal(b *Rect) bool {
 	var _arg0 *C.graphene_rect_t // out
@@ -169,11 +169,11 @@ func (a *Rect) Equal(b *Rect) bool {
 //
 // The function takes the following parameters:
 //
-//    - p: #graphene_point_t.
+//   - p: #graphene_point_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the expanded rectangle.
+//   - res: return location for the expanded rectangle.
 //
 func (r *Rect) Expand(p *Point) *Rect {
 	var _arg0 *C.graphene_rect_t  // out
@@ -198,7 +198,7 @@ func (r *Rect) Expand(p *Point) *Rect {
 //
 // The function returns the following values:
 //
-//    - gfloat: area of the normalized rectangle.
+//   - gfloat: area of the normalized rectangle.
 //
 func (r *Rect) Area() float32 {
 	var _arg0 *C.graphene_rect_t // out
@@ -221,7 +221,7 @@ func (r *Rect) Area() float32 {
 //
 // The function returns the following values:
 //
-//    - p: return location for a #graphene_point_t.
+//   - p: return location for a #graphene_point_t.
 //
 func (r *Rect) BottomLeft() *Point {
 	var _arg0 *C.graphene_rect_t // out
@@ -244,7 +244,7 @@ func (r *Rect) BottomLeft() *Point {
 //
 // The function returns the following values:
 //
-//    - p: return location for a #graphene_point_t.
+//   - p: return location for a #graphene_point_t.
 //
 func (r *Rect) BottomRight() *Point {
 	var _arg0 *C.graphene_rect_t // out
@@ -266,7 +266,7 @@ func (r *Rect) BottomRight() *Point {
 //
 // The function returns the following values:
 //
-//    - p: return location for a #graphene_point_t.
+//   - p: return location for a #graphene_point_t.
 //
 func (r *Rect) Center() *Point {
 	var _arg0 *C.graphene_rect_t // out
@@ -288,7 +288,7 @@ func (r *Rect) Center() *Point {
 //
 // The function returns the following values:
 //
-//    - gfloat: normalized height of the rectangle.
+//   - gfloat: normalized height of the rectangle.
 //
 func (r *Rect) Height() float32 {
 	var _arg0 *C.graphene_rect_t // out
@@ -311,7 +311,7 @@ func (r *Rect) Height() float32 {
 //
 // The function returns the following values:
 //
-//    - p: return location for a #graphene_point_t.
+//   - p: return location for a #graphene_point_t.
 //
 func (r *Rect) TopLeft() *Point {
 	var _arg0 *C.graphene_rect_t // out
@@ -334,7 +334,7 @@ func (r *Rect) TopLeft() *Point {
 //
 // The function returns the following values:
 //
-//    - p: return location for a #graphene_point_t.
+//   - p: return location for a #graphene_point_t.
 //
 func (r *Rect) TopRight() *Point {
 	var _arg0 *C.graphene_rect_t // out
@@ -356,7 +356,7 @@ func (r *Rect) TopRight() *Point {
 //
 // The function returns the following values:
 //
-//    - vertices: return location for an array of 4 #graphene_vec2_t.
+//   - vertices: return location for an array of 4 #graphene_vec2_t.
 //
 func (r *Rect) Vertices() [4]Vec2 {
 	var _arg0 *C.graphene_rect_t   // out
@@ -383,7 +383,7 @@ func (r *Rect) Vertices() [4]Vec2 {
 //
 // The function returns the following values:
 //
-//    - gfloat: normalized width of the rectangle.
+//   - gfloat: normalized width of the rectangle.
 //
 func (r *Rect) Width() float32 {
 	var _arg0 *C.graphene_rect_t // out
@@ -405,7 +405,7 @@ func (r *Rect) Width() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: normalized X coordinate of the rectangle.
+//   - gfloat: normalized X coordinate of the rectangle.
 //
 func (r *Rect) X() float32 {
 	var _arg0 *C.graphene_rect_t // out
@@ -427,7 +427,7 @@ func (r *Rect) X() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: normalized Y coordinate of the rectangle.
+//   - gfloat: normalized Y coordinate of the rectangle.
 //
 func (r *Rect) Y() float32 {
 	var _arg0 *C.graphene_rect_t // out
@@ -452,14 +452,14 @@ func (r *Rect) Y() float32 {
 //
 // The function takes the following parameters:
 //
-//    - x: x coordinate of the graphene_rect_t.origin.
-//    - y: y coordinate of the graphene_rect_t.origin.
-//    - width of the graphene_rect_t.size.
-//    - height of the graphene_rect_t.size.
+//   - x: x coordinate of the graphene_rect_t.origin.
+//   - y: y coordinate of the graphene_rect_t.origin.
+//   - width of the graphene_rect_t.size.
+//   - height of the graphene_rect_t.size.
 //
 // The function returns the following values:
 //
-//    - rect: initialized rectangle.
+//   - rect: initialized rectangle.
 //
 func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -496,11 +496,11 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_rect_t.
+//   - src: #graphene_rect_t.
 //
 // The function returns the following values:
 //
-//    - rect: initialized rectangle.
+//   - rect: initialized rectangle.
 //
 func (r *Rect) InitFromRect(src *Rect) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -527,22 +527,22 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 // To create an inset rectangle, use positive d_x or d_y values; to create a
 // larger, encompassing rectangle, use negative d_x or d_y values.
 //
-// The origin of the rectangle is offset by d_x and d_y, while the size is
-// adjusted by (2 * d_x, 2 * d_y). If d_x and d_y are positive values, the size
-// of the rectangle is decreased; if d_x and d_y are negative values, the size
-// of the rectangle is increased.
+// The origin of the rectangle is offset by d_x and d_y, while the size
+// is adjusted by (2 * d_x, 2 * d_y). If d_x and d_y are positive values,
+// the size of the rectangle is decreased; if d_x and d_y are negative values,
+// the size of the rectangle is increased.
 //
 // If the size of the resulting inset rectangle has a negative width or height
 // then the size will be set to zero.
 //
 // The function takes the following parameters:
 //
-//    - dX: horizontal inset.
-//    - dY: vertical inset.
+//   - dX: horizontal inset.
+//   - dY: vertical inset.
 //
 // The function returns the following values:
 //
-//    - rect: inset rectangle.
+//   - rect: inset rectangle.
 //
 func (r *Rect) Inset(dX float32, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -572,22 +572,22 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 // To create an inset rectangle, use positive d_x or d_y values; to create a
 // larger, encompassing rectangle, use negative d_x or d_y values.
 //
-// The origin of the rectangle is offset by d_x and d_y, while the size is
-// adjusted by (2 * d_x, 2 * d_y). If d_x and d_y are positive values, the size
-// of the rectangle is decreased; if d_x and d_y are negative values, the size
-// of the rectangle is increased.
+// The origin of the rectangle is offset by d_x and d_y, while the size
+// is adjusted by (2 * d_x, 2 * d_y). If d_x and d_y are positive values,
+// the size of the rectangle is decreased; if d_x and d_y are negative values,
+// the size of the rectangle is increased.
 //
 // If the size of the resulting inset rectangle has a negative width or height
 // then the size will be set to zero.
 //
 // The function takes the following parameters:
 //
-//    - dX: horizontal inset.
-//    - dY: vertical inset.
+//   - dX: horizontal inset.
+//   - dY: vertical inset.
 //
 // The function returns the following values:
 //
-//    - res: return location for the inset rectangle.
+//   - res: return location for the inset rectangle.
 //
 func (r *Rect) InsetR(dX float32, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -616,12 +616,12 @@ func (r *Rect) InsetR(dX float32, dY float32) *Rect {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_rect_t.
-//    - factor: linear interpolation factor.
+//   - b: #graphene_rect_t.
+//   - factor: linear interpolation factor.
 //
 // The function returns the following values:
 //
-//    - res: return location for the interpolated rectangle.
+//   - res: return location for the interpolated rectangle.
 //
 func (a *Rect) Interpolate(b *Rect, factor float64) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -656,12 +656,12 @@ func (a *Rect) Interpolate(b *Rect, factor float64) *Rect {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_rect_t.
+//   - b: #graphene_rect_t.
 //
 // The function returns the following values:
 //
-//    - res (optional): return location for a #graphene_rect_t.
-//    - ok: true if the two rectangles intersect.
+//   - res (optional): return location for a #graphene_rect_t.
+//   - ok: true if the two rectangles intersect.
 //
 func (a *Rect) Intersection(b *Rect) (*Rect, bool) {
 	var _arg0 *C.graphene_rect_t // out
@@ -694,7 +694,7 @@ func (a *Rect) Intersection(b *Rect) (*Rect, bool) {
 //
 // The function returns the following values:
 //
-//    - rect: normalized rectangle.
+//   - rect: normalized rectangle.
 //
 func (r *Rect) Normalize() *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -719,7 +719,7 @@ func (r *Rect) Normalize() *Rect {
 //
 // The function returns the following values:
 //
-//    - res: return location for the normalized rectangle.
+//   - res: return location for the normalized rectangle.
 //
 func (r *Rect) NormalizeR() *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -743,12 +743,12 @@ func (r *Rect) NormalizeR() *Rect {
 //
 // The function takes the following parameters:
 //
-//    - dX: horizontal offset.
-//    - dY: vertical offset.
+//   - dX: horizontal offset.
+//   - dY: vertical offset.
 //
 // The function returns the following values:
 //
-//    - rect: offset rectangle.
+//   - rect: offset rectangle.
 //
 func (r *Rect) Offset(dX float32, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -778,12 +778,12 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 //
 // The function takes the following parameters:
 //
-//    - dX: horizontal offset.
-//    - dY: vertical offset.
+//   - dX: horizontal offset.
+//   - dY: vertical offset.
 //
 // The function returns the following values:
 //
-//    - res: return location for the offset rectangle.
+//   - res: return location for the offset rectangle.
 //
 func (r *Rect) OffsetR(dX float32, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -820,7 +820,7 @@ func (r *Rect) OffsetR(dX float32, dY float32) *Rect {
 //
 // The function returns the following values:
 //
-//    - res: return location for the rounded rectangle.
+//   - res: return location for the rounded rectangle.
 //
 func (r *Rect) Round() *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -842,23 +842,23 @@ func (r *Rect) Round() *Rect {
 // value and and recompute the size so that the rectangle is large enough to
 // contain all the conrners of the original rectangle.
 //
-// This function is the equivalent of calling floor on the coordinates of the
-// origin, and recomputing the size calling ceil on the bottom-right
+// This function is the equivalent of calling floor on the coordinates of
+// the origin, and recomputing the size calling ceil on the bottom-right
 // coordinates.
 //
-// If you want to be sure that the rounded rectangle completely covers the area
-// that was covered by the original rectangle — i.e. you want to cover the area
-// including all its corners — this function will make sure that the size is
-// recomputed taking into account the ceiling of the coordinates of the
-// bottom-right corner. If the difference between the original coordinates and
-// the coordinates of the rounded rectangle is greater than the difference
+// If you want to be sure that the rounded rectangle completely covers the
+// area that was covered by the original rectangle — i.e. you want to cover
+// the area including all its corners — this function will make sure that the
+// size is recomputed taking into account the ceiling of the coordinates of
+// the bottom-right corner. If the difference between the original coordinates
+// and the coordinates of the rounded rectangle is greater than the difference
 // between the original size and and the rounded size, then the move of the
 // origin would not be compensated by a move in the anti-origin, leaving the
 // corners of the original rectangle outside the rounded one.
 //
 // The function returns the following values:
 //
-//    - res: return location for the rectangle with rounded extents.
+//   - res: return location for the rectangle with rounded extents.
 //
 func (r *Rect) RoundExtents() *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -884,7 +884,7 @@ func (r *Rect) RoundExtents() *Rect {
 //
 // The function returns the following values:
 //
-//    - rect: pixel-aligned rectangle.
+//   - rect: pixel-aligned rectangle.
 //
 func (r *Rect) RoundToPixel() *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -907,12 +907,12 @@ func (r *Rect) RoundToPixel() *Rect {
 //
 // The function takes the following parameters:
 //
-//    - sH: horizontal scale factor.
-//    - sV: vertical scale factor.
+//   - sH: horizontal scale factor.
+//   - sV: vertical scale factor.
 //
 // The function returns the following values:
 //
-//    - res: return location for the scaled rectangle.
+//   - res: return location for the scaled rectangle.
 //
 func (r *Rect) Scale(sH float32, sV float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -944,11 +944,11 @@ func (r *Rect) Scale(sH float32, sV float32) *Rect {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_rect_t.
+//   - b: #graphene_rect_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for a #graphene_rect_t.
+//   - res: return location for a #graphene_rect_t.
 //
 func (a *Rect) Union(b *Rect) *Rect {
 	var _arg0 *C.graphene_rect_t // out
@@ -975,7 +975,7 @@ func (a *Rect) Union(b *Rect) *Rect {
 //
 // The function returns the following values:
 //
-//    - rect: newly allocated rectangle.
+//   - rect: newly allocated rectangle.
 //
 func RectAlloc() *Rect {
 	var _cret *C.graphene_rect_t // in

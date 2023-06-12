@@ -53,17 +53,17 @@ type PixbufLoaderOverrides struct {
 	AreaPrepared func()
 	// The function takes the following parameters:
 	//
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	AreaUpdated func(x, y, width, height int)
 	Closed      func()
 	// The function takes the following parameters:
 	//
-	//    - width
-	//    - height
+	//   - width
+	//   - height
 	//
 	SizePrepared func(width, height int)
 }
@@ -79,42 +79,38 @@ func defaultPixbufLoaderOverrides(v *PixbufLoader) PixbufLoaderOverrides {
 
 // PixbufLoader: incremental image loader.
 //
-// GdkPixbufLoader provides a way for applications to drive the process of
-// loading an image, by letting them send the image data directly to the loader
-// instead of having the loader read the data from a file. Applications can use
-// this functionality instead of gdk_pixbuf_new_from_file() or
-// gdk_pixbuf_animation_new_from_file() when they need to parse image data in
-// small chunks. For example, it should be used when reading an image from a
-// (potentially) slow network connection, or when loading an extremely large
+// GdkPixbufLoader provides a way for applications to drive the process
+// of loading an image, by letting them send the image data directly to
+// the loader instead of having the loader read the data from a file.
+// Applications can use this functionality instead of gdk_pixbuf_new_from_file()
+// or gdk_pixbuf_animation_new_from_file() when they need to parse image data
+// in small chunks. For example, it should be used when reading an image from
+// a (potentially) slow network connection, or when loading an extremely large
 // file.
 //
-// To use GdkPixbufLoader to load an image, create a new instance, and call
-// gdkpixbuf.PixbufLoader.Write() to send the data to it. When done,
+// To use GdkPixbufLoader to load an image, create a new instance,
+// and call gdkpixbuf.PixbufLoader.Write() to send the data to it. When done,
 // gdkpixbuf.PixbufLoader.Close() should be called to end the stream and
 // finalize everything.
 //
 // The loader will emit three important signals throughout the process:
 //
-//    - gdkpixbuf.PixbufLoader::size-prepared will be emitted as
-//      soon as the image has enough information to determine the size of
-//      the image to be used. If you want to scale the image while loading
-//      it, you can call gdkpixbuf.PixbufLoader.SetSize() in
-//      response to this signal.
-//    - gdkpixbuf.PixbufLoader::area-prepared will be emitted as
-//      soon as the pixbuf of the desired has been allocated. You can obtain
-//      the GdkPixbuf instance by calling gdkpixbuf.PixbufLoader.GetPixbuf().
-//      If you want to use it, simply acquire a reference to it. You can
-//      also call gdk_pixbuf_loader_get_pixbuf() later to get the same
-//      pixbuf.
-//    - gdkpixbuf.PixbufLoader::area-updated will be emitted every
-//      time a region is updated. This way you can update a partially
-//      completed image. Note that you do not know anything about the
-//      completeness of an image from the updated area. For example, in an
-//      interlaced image you will need to make several passes before the
-//      image is done loading.
+//   - gdkpixbuf.PixbufLoader::size-prepared will be emitted as soon as the
+//     image has enough information to determine the size of the image to be
+//     used. If you want to scale the image while loading it, you can call
+//     gdkpixbuf.PixbufLoader.SetSize() in response to this signal.
+//   - gdkpixbuf.PixbufLoader::area-prepared will be emitted as soon as
+//     the pixbuf of the desired has been allocated. You can obtain the
+//     GdkPixbuf instance by calling gdkpixbuf.PixbufLoader.GetPixbuf().
+//     If you want to use it, simply acquire a reference to it. You can also
+//     call gdk_pixbuf_loader_get_pixbuf() later to get the same pixbuf.
+//   - gdkpixbuf.PixbufLoader::area-updated will be emitted every time a region
+//     is updated. This way you can update a partially completed image. Note
+//     that you do not know anything about the completeness of an image from the
+//     updated area. For example, in an interlaced image you will need to make
+//     several passes before the image is done loading.
 //
-//
-// Loading an animation
+// # Loading an animation
 //
 // Loading an animation is almost as easy as loading an image. Once the first
 // gdkpixbuf.PixbufLoader::area-prepared signal has been emitted, you can call
@@ -219,7 +215,7 @@ func (loader *PixbufLoader) ConnectSizePrepared(f func(width, height int)) coreg
 //
 // The function returns the following values:
 //
-//    - pixbufLoader: newly-created pixbuf loader.
+//   - pixbufLoader: newly-created pixbuf loader.
 //
 func NewPixbufLoader() *PixbufLoader {
 	var _cret *C.GdkPixbufLoader // in
@@ -249,11 +245,11 @@ func NewPixbufLoader() *PixbufLoader {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: mime type to be loaded.
+//   - mimeType: mime type to be loaded.
 //
 // The function returns the following values:
 //
-//    - pixbufLoader: newly-created pixbuf loader.
+//   - pixbufLoader: newly-created pixbuf loader.
 //
 func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
@@ -293,11 +289,11 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 //
 // The function takes the following parameters:
 //
-//    - imageType: name of the image format to be loaded with the image.
+//   - imageType: name of the image format to be loaded with the image.
 //
 // The function returns the following values:
 //
-//    - pixbufLoader: newly-created pixbuf loader.
+//   - pixbufLoader: newly-created pixbuf loader.
 //
 func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
@@ -325,8 +321,8 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 // gdk_pixbuf_loader_write() will occur, so that it can free its internal
 // loading structures.
 //
-// This function also tries to parse any data that hasn't yet been parsed; if
-// the remaining data is partial or corrupt, an error will be returned.
+// This function also tries to parse any data that hasn't yet been parsed;
+// if the remaining data is partial or corrupt, an error will be returned.
 //
 // If FALSE is returned, error will be set to an error from the GDK_PIXBUF_ERROR
 // or G_FILE_ERROR domains.
@@ -334,8 +330,8 @@ func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 // If you're just cancelling a load rather than expecting it to be finished,
 // passing NULL for error to ignore it is reasonable.
 //
-// Remember that this function does not release a reference on the loader, so
-// you will need to explicitly release any reference you hold.
+// Remember that this function does not release a reference on the loader,
+// so you will need to explicitly release any reference you hold.
 func (loader *PixbufLoader) Close() error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cerr *C.GError          // in
@@ -365,8 +361,8 @@ func (loader *PixbufLoader) Close() error {
 //
 // The function returns the following values:
 //
-//    - pixbufAnimation (optional): animation that the loader is currently
-//      loading.
+//   - pixbufAnimation (optional): animation that the loader is currently
+//     loading.
 //
 func (loader *PixbufLoader) Animation() *PixbufAnimation {
 	var _arg0 *C.GdkPixbufLoader    // out
@@ -391,7 +387,7 @@ func (loader *PixbufLoader) Animation() *PixbufAnimation {
 //
 // The function returns the following values:
 //
-//    - pixbufFormat (optional): PixbufFormat.
+//   - pixbufFormat (optional): PixbufFormat.
 //
 func (loader *PixbufLoader) Format() *PixbufFormat {
 	var _arg0 *C.GdkPixbufLoader // out
@@ -421,15 +417,15 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 // If the loader has not received enough data via gdk_pixbuf_loader_write(),
 // then this function returns NULL.
 //
-// The returned pixbuf will be the same in all future calls to the loader, so if
-// you want to keep using it, you should acquire a reference to it.
+// The returned pixbuf will be the same in all future calls to the loader,
+// so if you want to keep using it, you should acquire a reference to it.
 //
 // Additionally, if the loader is an animation, it will return the "static
 // image" of the animation (see gdk_pixbuf_animation_get_static_image()).
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional) that the loader is creating.
+//   - pixbuf (optional) that the loader is creating.
 //
 func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufLoader // out
@@ -460,8 +456,8 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 //
 // The function takes the following parameters:
 //
-//    - width: desired width of the image being loaded.
-//    - height: desired height of the image being loaded.
+//   - width: desired width of the image being loaded.
+//   - height: desired height of the image being loaded.
 //
 func (loader *PixbufLoader) SetSize(width, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
@@ -482,7 +478,7 @@ func (loader *PixbufLoader) SetSize(width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - buf: pointer to image data.
+//   - buf: pointer to image data.
 //
 func (loader *PixbufLoader) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
@@ -513,7 +509,7 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 //
 // The function takes the following parameters:
 //
-//    - buffer: image data as a GBytes buffer.
+//   - buffer: image data as a GBytes buffer.
 //
 func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	var _arg0 *C.GdkPixbufLoader // out
@@ -550,10 +546,10 @@ func (loader *PixbufLoader) areaPrepared() {
 
 // The function takes the following parameters:
 //
-//    - x
-//    - y
-//    - width
-//    - height
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (loader *PixbufLoader) areaUpdated(x, y, width, height int) {
 	gclass := (*C.GdkPixbufLoaderClass)(coreglib.PeekParentClass(loader))
@@ -593,8 +589,8 @@ func (loader *PixbufLoader) closed() {
 
 // The function takes the following parameters:
 //
-//    - width
-//    - height
+//   - width
+//   - height
 //
 func (loader *PixbufLoader) sizePrepared(width, height int) {
 	gclass := (*C.GdkPixbufLoaderClass)(coreglib.PeekParentClass(loader))

@@ -50,15 +50,15 @@ func init() {
 // ::accept signal accepts the drop if it finds a compatible data format and an
 // action that is supported on both sides.
 //
-// If it is, and the widget becomes a target, you will receive a
-// gtk.DropTargetAsync::drag-enter signal, followed by
-// gtk.DropTargetAsync::drag-motion signals as the pointer moves, optionally a
-// gtk.DropTargetAsync::drop signal when a drop happens, and finally a
+// If it is, and the widget becomes a target, you will receive
+// a gtk.DropTargetAsync::drag-enter signal, followed by
+// gtk.DropTargetAsync::drag-motion signals as the pointer moves, optionally
+// a gtk.DropTargetAsync::drop signal when a drop happens, and finally a
 // gtk.DropTargetAsync::drag-leave signal when the pointer moves off the widget.
 //
 // The ::drag-enter and ::drag-motion handler return a GdkDragAction to update
-// the status of the ongoing operation. The ::drop handler should decide if it
-// ultimately accepts the drop and if it does, it should initiate the data
+// the status of the ongoing operation. The ::drop handler should decide if
+// it ultimately accepts the drop and if it does, it should initiate the data
 // transfer and finish the operation by calling gdk.Drop.Finish().
 //
 // Between the ::drag-enter and ::drag-leave signals the widget is a current
@@ -148,12 +148,12 @@ func (self *DropTargetAsync) ConnectDrop(f func(drop gdk.Dropper, x, y float64) 
 //
 // The function takes the following parameters:
 //
-//    - formats (optional): supported data formats.
-//    - actions: supported actions.
+//   - formats (optional): supported data formats.
+//   - actions: supported actions.
 //
 // The function returns the following values:
 //
-//    - dropTargetAsync: new GtkDropTargetAsync.
+//   - dropTargetAsync: new GtkDropTargetAsync.
 //
 func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *DropTargetAsync {
 	var _arg1 *C.GdkContentFormats  // out
@@ -180,7 +180,7 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *Dr
 //
 // The function returns the following values:
 //
-//    - dragAction actions that this drop target supports.
+//   - dragAction actions that this drop target supports.
 //
 func (self *DropTargetAsync) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTargetAsync // out
@@ -204,7 +204,7 @@ func (self *DropTargetAsync) Actions() gdk.DragAction {
 //
 // The function returns the following values:
 //
-//    - contentFormats (optional): supported data formats.
+//   - contentFormats (optional): supported data formats.
 //
 func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTargetAsync // out
@@ -237,7 +237,7 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 //
 // The function takes the following parameters:
 //
-//    - drop of an ongoing drag operation.
+//   - drop of an ongoing drag operation.
 //
 func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 	var _arg0 *C.GtkDropTargetAsync // out
@@ -255,7 +255,7 @@ func (self *DropTargetAsync) RejectDrop(drop gdk.Dropper) {
 //
 // The function takes the following parameters:
 //
-//    - actions: supported actions.
+//   - actions: supported actions.
 //
 func (self *DropTargetAsync) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDropTargetAsync // out
@@ -273,7 +273,7 @@ func (self *DropTargetAsync) SetActions(actions gdk.DragAction) {
 //
 // The function takes the following parameters:
 //
-//    - formats (optional): supported data formats or NULL for any format.
+//   - formats (optional): supported data formats or NULL for any format.
 //
 func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	var _arg0 *C.GtkDropTargetAsync // out

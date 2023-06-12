@@ -19,19 +19,19 @@ import (
 import "C"
 
 // PollableSourceNewFull: utility method for InputStream and OutputStream
-// implementations. Creates a new #GSource, as with g_pollable_source_new(), but
-// also attaching child_source (with a dummy callback), and cancellable, if they
-// are non-NULL.
+// implementations. Creates a new #GSource, as with g_pollable_source_new(),
+// but also attaching child_source (with a dummy callback), and cancellable,
+// if they are non-NULL.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable to attach.
-//    - pollableStream: stream associated with the new source.
-//    - childSource (optional): optional child source to attach.
+//   - ctx (optional): optional #GCancellable to attach.
+//   - pollableStream: stream associated with the new source.
+//   - childSource (optional): optional child source to attach.
 //
 // The function returns the following values:
 //
-//    - source: new #GSource.
+//   - source: new #GSource.
 //
 func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object, childSource *glib.Source) *glib.Source {
 	var _arg3 *C.GCancellable // out
@@ -73,20 +73,20 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object,
 // blocking and non-blocking implementations of a method.
 //
 // If blocking is FALSE, then stream must be a InputStream for which
-// g_pollable_input_stream_can_poll() returns TRUE, or else the behavior is
-// undefined. If blocking is TRUE, then stream does not need to be a
+// g_pollable_input_stream_can_poll() returns TRUE, or else the behavior
+// is undefined. If blocking is TRUE, then stream does not need to be a
 // InputStream.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stream: Stream.
-//    - buffer to read data into.
-//    - blocking: whether to do blocking I/O.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stream: Stream.
+//   - buffer to read data into.
+//   - blocking: whether to do blocking I/O.
 //
 // The function returns the following values:
 //
-//    - gssize: number of bytes read, or -1 on error.
+//   - gssize: number of bytes read, or -1 on error.
 //
 func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte, blocking bool) (int, error) {
 	var _arg5 *C.GCancellable // out
@@ -134,20 +134,20 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 // blocking and non-blocking implementations of a method.
 //
 // If blocking is FALSE, then stream must be a OutputStream for which
-// g_pollable_output_stream_can_poll() returns TRUE or else the behavior is
-// undefined. If blocking is TRUE, then stream does not need to be a
+// g_pollable_output_stream_can_poll() returns TRUE or else the behavior
+// is undefined. If blocking is TRUE, then stream does not need to be a
 // OutputStream.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stream: Stream.
-//    - buffer: buffer containing the data to write.
-//    - blocking: whether to do blocking I/O.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stream: Stream.
+//   - buffer: buffer containing the data to write.
+//   - blocking: whether to do blocking I/O.
 //
 // The function returns the following values:
 //
-//    - gssize: number of bytes written, or -1 on error.
+//   - gssize: number of bytes written, or -1 on error.
 //
 func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (int, error) {
 	var _arg5 *C.GCancellable  // out
@@ -202,21 +202,21 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 // into the stream before the error occurred.
 //
 // As with g_pollable_stream_write(), if blocking is FALSE, then stream must be
-// a OutputStream for which g_pollable_output_stream_can_poll() returns TRUE or
-// else the behavior is undefined. If blocking is TRUE, then stream does not
+// a OutputStream for which g_pollable_output_stream_can_poll() returns TRUE
+// or else the behavior is undefined. If blocking is TRUE, then stream does not
 // need to be a OutputStream.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stream: Stream.
-//    - buffer: buffer containing the data to write.
-//    - blocking: whether to do blocking I/O.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stream: Stream.
+//   - buffer: buffer containing the data to write.
+//   - blocking: whether to do blocking I/O.
 //
 // The function returns the following values:
 //
-//    - bytesWritten: location to store the number of bytes that was written to
-//      the stream.
+//   - bytesWritten: location to store the number of bytes that was written to
+//     the stream.
 //
 func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (uint, error) {
 	var _arg6 *C.GCancellable  // out

@@ -18,7 +18,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - enable: TRUE to enable interactive debugging.
+//   - enable: TRUE to enable interactive debugging.
 //
 func WindowSetInteractiveDebugging(enable bool) {
 	var _arg1 C.gboolean // out

@@ -128,22 +128,22 @@ type RendererOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - x: x coordinate of underline, in Pango units in user coordinate
-	//      system.
-	//    - y: y coordinate of underline, in Pango units in user coordinate
-	//      system.
-	//    - width of underline, in Pango units in user coordinate system.
-	//    - height of underline, in Pango units in user coordinate system.
+	//   - x: x coordinate of underline, in Pango units in user coordinate
+	//     system.
+	//   - y: y coordinate of underline, in Pango units in user coordinate
+	//     system.
+	//   - width of underline, in Pango units in user coordinate system.
+	//   - height of underline, in Pango units in user coordinate system.
 	//
 	DrawErrorUnderline func(x, y, width, height int)
 	// DrawGlyph draws a single glyph with coordinates in device space.
 	//
 	// The function takes the following parameters:
 	//
-	//    - font: Font.
-	//    - glyph index of a single glyph.
-	//    - x: x coordinate of left edge of baseline of glyph.
-	//    - y: y coordinate of left edge of baseline of glyph.
+	//   - font: Font.
+	//   - glyph index of a single glyph.
+	//   - x: x coordinate of left edge of baseline of glyph.
+	//   - y: y coordinate of left edge of baseline of glyph.
 	//
 	DrawGlyph func(font Fonter, glyph Glyph, x, y float64)
 	// DrawGlyphItem draws the glyphs in glyph_item with the specified
@@ -162,24 +162,24 @@ type RendererOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - text (optional): UTF-8 text that glyph_item refers to, or NULL.
-	//    - glyphItem: PangoGlyphItem.
-	//    - x: x position of left edge of baseline, in user space coordinates in
-	//      Pango units.
-	//    - y: y position of left edge of baseline, in user space coordinates in
-	//      Pango units.
+	//   - text (optional): UTF-8 text that glyph_item refers to, or NULL.
+	//   - glyphItem: PangoGlyphItem.
+	//   - x: x position of left edge of baseline, in user space coordinates in
+	//     Pango units.
+	//   - y: y position of left edge of baseline, in user space coordinates in
+	//     Pango units.
 	//
 	DrawGlyphItem func(text string, glyphItem *GlyphItem, x, y int)
 	// DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
 	//
 	// The function takes the following parameters:
 	//
-	//    - font: PangoFont.
-	//    - glyphs: PangoGlyphString.
-	//    - x: x position of left edge of baseline, in user space coordinates in
-	//      Pango units.
-	//    - y: y position of left edge of baseline, in user space coordinates in
-	//      Pango units.
+	//   - font: PangoFont.
+	//   - glyphs: PangoGlyphString.
+	//   - x: x position of left edge of baseline, in user space coordinates in
+	//     Pango units.
+	//   - y: y position of left edge of baseline, in user space coordinates in
+	//     Pango units.
 	//
 	DrawGlyphs func(font Fonter, glyphs *GlyphString, x, y int)
 	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
@@ -190,20 +190,20 @@ type RendererOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - part: type of object this rectangle is part of.
-	//    - x: x position at which to draw rectangle, in user space coordinates
-	//      in Pango units.
-	//    - y: y position at which to draw rectangle, in user space coordinates
-	//      in Pango units.
-	//    - width of rectangle in Pango units.
-	//    - height of rectangle in Pango units.
+	//   - part: type of object this rectangle is part of.
+	//   - x: x position at which to draw rectangle, in user space coordinates
+	//     in Pango units.
+	//   - y: y position at which to draw rectangle, in user space coordinates
+	//     in Pango units.
+	//   - width of rectangle in Pango units.
+	//   - height of rectangle in Pango units.
 	//
 	DrawRectangle func(part RenderPart, x, y, width, height int)
 	// The function takes the following parameters:
 	//
-	//    - attr
-	//    - x
-	//    - y
+	//   - attr
+	//   - x
+	//   - y
 	//
 	DrawShape func(attr *AttrShape, x, y int)
 	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
@@ -211,13 +211,13 @@ type RendererOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - part: type of object this trapezoid is part of.
-	//    - y1: y coordinate of top of trapezoid.
-	//    - x11: x coordinate of left end of top of trapezoid.
-	//    - x21: x coordinate of right end of top of trapezoid.
-	//    - y2: y coordinate of bottom of trapezoid.
-	//    - x12: x coordinate of left end of bottom of trapezoid.
-	//    - x22: x coordinate of right end of bottom of trapezoid.
+	//   - part: type of object this trapezoid is part of.
+	//   - y1: y coordinate of top of trapezoid.
+	//   - x11: x coordinate of left end of top of trapezoid.
+	//   - x21: x coordinate of right end of top of trapezoid.
+	//   - y2: y coordinate of bottom of trapezoid.
+	//   - x12: x coordinate of left end of bottom of trapezoid.
+	//   - x22: x coordinate of right end of bottom of trapezoid.
 	//
 	DrawTrapezoid func(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
 	End           func()
@@ -225,12 +225,11 @@ type RendererOverrides struct {
 	// part has changed.
 	//
 	// This should be called if the rendering changes in a way that would
-	// prevent multiple pieces being joined together into one drawing call. For
-	// instance, if a subclass of PangoRenderer was to add a stipple option for
-	// drawing underlines, it needs to call
+	// prevent multiple pieces being joined together into one drawing call.
+	// For instance, if a subclass of PangoRenderer was to add a stipple option
+	// for drawing underlines, it needs to call
 	//
 	//    pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
-	//
 	//
 	// When the stipple changes or underlines with different stipples might be
 	// joined together. Pango automatically calls this for changes to colors.
@@ -238,7 +237,7 @@ type RendererOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - part for which rendering has changed.
+	//   - part for which rendering has changed.
 	//
 	PartChanged func(part RenderPart)
 	// The function takes the following parameters:
@@ -407,10 +406,10 @@ func (renderer *Renderer) Deactivate() {
 //
 // The function takes the following parameters:
 //
-//    - x: x coordinate of underline, in Pango units in user coordinate system.
-//    - y: y coordinate of underline, in Pango units in user coordinate system.
-//    - width of underline, in Pango units in user coordinate system.
-//    - height of underline, in Pango units in user coordinate system.
+//   - x: x coordinate of underline, in Pango units in user coordinate system.
+//   - y: y coordinate of underline, in Pango units in user coordinate system.
+//   - width of underline, in Pango units in user coordinate system.
+//   - height of underline, in Pango units in user coordinate system.
 //
 func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 	var _arg0 *C.PangoRenderer // out
@@ -437,10 +436,10 @@ func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - font: Font.
-//    - glyph index of a single glyph.
-//    - x: x coordinate of left edge of baseline of glyph.
-//    - y: y coordinate of left edge of baseline of glyph.
+//   - font: Font.
+//   - glyph index of a single glyph.
+//   - x: x coordinate of left edge of baseline of glyph.
+//   - y: y coordinate of left edge of baseline of glyph.
 //
 func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	var _arg0 *C.PangoRenderer // out
@@ -481,12 +480,12 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 //
 // The function takes the following parameters:
 //
-//    - text (optional): UTF-8 text that glyph_item refers to, or NULL.
-//    - glyphItem: PangoGlyphItem.
-//    - x: x position of left edge of baseline, in user space coordinates in
-//      Pango units.
-//    - y: y position of left edge of baseline, in user space coordinates in
-//      Pango units.
+//   - text (optional): UTF-8 text that glyph_item refers to, or NULL.
+//   - glyphItem: PangoGlyphItem.
+//   - x: x position of left edge of baseline, in user space coordinates in
+//     Pango units.
+//   - y: y position of left edge of baseline, in user space coordinates in
+//     Pango units.
 //
 func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {
 	var _arg0 *C.PangoRenderer  // out
@@ -516,12 +515,12 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 //
 // The function takes the following parameters:
 //
-//    - font: PangoFont.
-//    - glyphs: PangoGlyphString.
-//    - x: x position of left edge of baseline, in user space coordinates in
-//      Pango units.
-//    - y: y position of left edge of baseline, in user space coordinates in
-//      Pango units.
+//   - font: PangoFont.
+//   - glyphs: PangoGlyphString.
+//   - x: x position of left edge of baseline, in user space coordinates in
+//     Pango units.
+//   - y: y position of left edge of baseline, in user space coordinates in
+//     Pango units.
 //
 func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {
 	var _arg0 *C.PangoRenderer    // out
@@ -548,11 +547,11 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 //
 // The function takes the following parameters:
 //
-//    - layout: PangoLayout.
-//    - x: x position of left edge of baseline, in user space coordinates in
-//      Pango units.
-//    - y: y position of left edge of baseline, in user space coordinates in
-//      Pango units.
+//   - layout: PangoLayout.
+//   - x: x position of left edge of baseline, in user space coordinates in
+//     Pango units.
+//   - y: y position of left edge of baseline, in user space coordinates in
+//     Pango units.
 //
 func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 	var _arg0 *C.PangoRenderer // out
@@ -576,11 +575,11 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - line: PangoLayoutLine.
-//    - x: x position of left edge of baseline, in user space coordinates in
-//      Pango units.
-//    - y: y position of left edge of baseline, in user space coordinates in
-//      Pango units.
+//   - line: PangoLayoutLine.
+//   - x: x position of left edge of baseline, in user space coordinates in
+//     Pango units.
+//   - y: y position of left edge of baseline, in user space coordinates in
+//     Pango units.
 //
 func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 	var _arg0 *C.PangoRenderer   // out
@@ -608,13 +607,13 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - part: type of object this rectangle is part of.
-//    - x: x position at which to draw rectangle, in user space coordinates in
-//      Pango units.
-//    - y: y position at which to draw rectangle, in user space coordinates in
-//      Pango units.
-//    - width of rectangle in Pango units.
-//    - height of rectangle in Pango units.
+//   - part: type of object this rectangle is part of.
+//   - x: x position at which to draw rectangle, in user space coordinates in
+//     Pango units.
+//   - y: y position at which to draw rectangle, in user space coordinates in
+//     Pango units.
+//   - width of rectangle in Pango units.
+//   - height of rectangle in Pango units.
 //
 func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int) {
 	var _arg0 *C.PangoRenderer  // out
@@ -645,13 +644,13 @@ func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int
 //
 // The function takes the following parameters:
 //
-//    - part: type of object this trapezoid is part of.
-//    - y1: y coordinate of top of trapezoid.
-//    - x11: x coordinate of left end of top of trapezoid.
-//    - x21: x coordinate of right end of top of trapezoid.
-//    - y2: y coordinate of bottom of trapezoid.
-//    - x12: x coordinate of left end of bottom of trapezoid.
-//    - x22: x coordinate of right end of bottom of trapezoid.
+//   - part: type of object this trapezoid is part of.
+//   - y1: y coordinate of top of trapezoid.
+//   - x11: x coordinate of left end of top of trapezoid.
+//   - x21: x coordinate of right end of top of trapezoid.
+//   - y2: y coordinate of bottom of trapezoid.
+//   - x12: x coordinate of left end of bottom of trapezoid.
+//   - x22: x coordinate of right end of bottom of trapezoid.
 //
 func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64) {
 	var _arg0 *C.PangoRenderer  // out
@@ -687,12 +686,12 @@ func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, 
 //
 // The function takes the following parameters:
 //
-//    - part to get the alpha for.
+//   - part to get the alpha for.
 //
 // The function returns the following values:
 //
-//    - guint16: alpha for the specified part, or 0 if it hasn't been set and
-//      should be inherited from the environment.
+//   - guint16: alpha for the specified part, or 0 if it hasn't been set and
+//     should be inherited from the environment.
 //
 func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 	var _arg0 *C.PangoRenderer  // out
@@ -717,12 +716,12 @@ func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 //
 // The function takes the following parameters:
 //
-//    - part to get the color for.
+//   - part to get the color for.
 //
 // The function returns the following values:
 //
-//    - color (optional) for the specified part, or NULL if it hasn't been set
-//      and should be inherited from the environment.
+//   - color (optional) for the specified part, or NULL if it hasn't been set
+//     and should be inherited from the environment.
 //
 func (renderer *Renderer) Color(part RenderPart) *Color {
 	var _arg0 *C.PangoRenderer  // out
@@ -747,15 +746,15 @@ func (renderer *Renderer) Color(part RenderPart) *Color {
 
 // Layout gets the layout currently being rendered using renderer.
 //
-// Calling this function only makes sense from inside a subclass's methods, like
-// in its draw_shape vfunc, for example.
+// Calling this function only makes sense from inside a subclass's methods,
+// like in its draw_shape vfunc, for example.
 //
 // The returned layout should not be modified while still being rendered.
 //
 // The function returns the following values:
 //
-//    - layout (optional): layout, or NULL if no layout is being rendered using
-//      renderer at this time.
+//   - layout (optional): layout, or NULL if no layout is being rendered using
+//     renderer at this time.
 //
 func (renderer *Renderer) Layout() *Layout {
 	var _arg0 *C.PangoRenderer // out
@@ -777,15 +776,15 @@ func (renderer *Renderer) Layout() *Layout {
 
 // LayoutLine gets the layout line currently being rendered using renderer.
 //
-// Calling this function only makes sense from inside a subclass's methods, like
-// in its draw_shape vfunc, for example.
+// Calling this function only makes sense from inside a subclass's methods,
+// like in its draw_shape vfunc, for example.
 //
 // The returned layout line should not be modified while still being rendered.
 //
 // The function returns the following values:
 //
-//    - layoutLine (optional): layout line, or NULL if no layout line is being
-//      rendered using renderer at this time.
+//   - layoutLine (optional): layout line, or NULL if no layout line is being
+//     rendered using renderer at this time.
 //
 func (renderer *Renderer) LayoutLine() *LayoutLine {
 	var _arg0 *C.PangoRenderer   // out
@@ -818,9 +817,9 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 //
 // The function returns the following values:
 //
-//    - matrix (optional): matrix, or NULL if no matrix has been set (which is
-//      the same as the identity matrix). The returned matrix is owned by Pango
-//      and must not be modified or freed.
+//   - matrix (optional): matrix, or NULL if no matrix has been set (which is
+//     the same as the identity matrix). The returned matrix is owned by Pango
+//     and must not be modified or freed.
 //
 func (renderer *Renderer) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
@@ -844,20 +843,19 @@ func (renderer *Renderer) Matrix() *Matrix {
 // has changed.
 //
 // This should be called if the rendering changes in a way that would prevent
-// multiple pieces being joined together into one drawing call. For instance, if
-// a subclass of PangoRenderer was to add a stipple option for drawing
+// multiple pieces being joined together into one drawing call. For instance,
+// if a subclass of PangoRenderer was to add a stipple option for drawing
 // underlines, it needs to call
 //
 //    pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
 //
-//
 // When the stipple changes or underlines with different stipples might be
-// joined together. Pango automatically calls this for changes to colors. (See
-// pango.Renderer.SetColor()).
+// joined together. Pango automatically calls this for changes to colors.
+// (See pango.Renderer.SetColor()).
 //
 // The function takes the following parameters:
 //
-//    - part for which rendering has changed.
+//   - part for which rendering has changed.
 //
 func (renderer *Renderer) PartChanged(part RenderPart) {
 	var _arg0 *C.PangoRenderer  // out
@@ -878,8 +876,8 @@ func (renderer *Renderer) PartChanged(part RenderPart) {
 //
 // The function takes the following parameters:
 //
-//    - part to set the alpha for.
-//    - alpha value between 1 and 65536, or 0 to unset the alpha.
+//   - part to set the alpha for.
+//   - alpha value between 1 and 65536, or 0 to unset the alpha.
 //
 func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 	var _arg0 *C.PangoRenderer  // out
@@ -902,8 +900,8 @@ func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 //
 // The function takes the following parameters:
 //
-//    - part to change the color of.
-//    - color (optional): new color or NULL to unset the current color.
+//   - part to change the color of.
+//   - color (optional): new color or NULL to unset the current color.
 //
 func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 	var _arg0 *C.PangoRenderer  // out
@@ -926,8 +924,8 @@ func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 //
 // The function takes the following parameters:
 //
-//    - matrix (optional): PangoMatrix, or NULL to unset any existing matrix. (No
-//      matrix set is the same as setting the identity matrix.).
+//   - matrix (optional): PangoMatrix, or NULL to unset any existing matrix.
+//     (No matrix set is the same as setting the identity matrix.).
 //
 func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
@@ -966,10 +964,10 @@ func (renderer *Renderer) begin() {
 //
 // The function takes the following parameters:
 //
-//    - x: x coordinate of underline, in Pango units in user coordinate system.
-//    - y: y coordinate of underline, in Pango units in user coordinate system.
-//    - width of underline, in Pango units in user coordinate system.
-//    - height of underline, in Pango units in user coordinate system.
+//   - x: x coordinate of underline, in Pango units in user coordinate system.
+//   - y: y coordinate of underline, in Pango units in user coordinate system.
+//   - width of underline, in Pango units in user coordinate system.
+//   - height of underline, in Pango units in user coordinate system.
 //
 func (renderer *Renderer) drawErrorUnderline(x, y, width, height int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
@@ -999,10 +997,10 @@ func (renderer *Renderer) drawErrorUnderline(x, y, width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - font: Font.
-//    - glyph index of a single glyph.
-//    - x: x coordinate of left edge of baseline of glyph.
-//    - y: y coordinate of left edge of baseline of glyph.
+//   - font: Font.
+//   - glyph index of a single glyph.
+//   - x: x coordinate of left edge of baseline of glyph.
+//   - y: y coordinate of left edge of baseline of glyph.
 //
 func (renderer *Renderer) drawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
@@ -1046,12 +1044,12 @@ func (renderer *Renderer) drawGlyph(font Fonter, glyph Glyph, x, y float64) {
 //
 // The function takes the following parameters:
 //
-//    - text (optional): UTF-8 text that glyph_item refers to, or NULL.
-//    - glyphItem: PangoGlyphItem.
-//    - x: x position of left edge of baseline, in user space coordinates in
-//      Pango units.
-//    - y: y position of left edge of baseline, in user space coordinates in
-//      Pango units.
+//   - text (optional): UTF-8 text that glyph_item refers to, or NULL.
+//   - glyphItem: PangoGlyphItem.
+//   - x: x position of left edge of baseline, in user space coordinates in
+//     Pango units.
+//   - y: y position of left edge of baseline, in user space coordinates in
+//     Pango units.
 //
 func (renderer *Renderer) drawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
@@ -1084,12 +1082,12 @@ func (renderer *Renderer) drawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 //
 // The function takes the following parameters:
 //
-//    - font: PangoFont.
-//    - glyphs: PangoGlyphString.
-//    - x: x position of left edge of baseline, in user space coordinates in
-//      Pango units.
-//    - y: y position of left edge of baseline, in user space coordinates in
-//      Pango units.
+//   - font: PangoFont.
+//   - glyphs: PangoGlyphString.
+//   - x: x position of left edge of baseline, in user space coordinates in
+//     Pango units.
+//   - y: y position of left edge of baseline, in user space coordinates in
+//     Pango units.
 //
 func (renderer *Renderer) drawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
@@ -1123,13 +1121,13 @@ func (renderer *Renderer) drawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 //
 // The function takes the following parameters:
 //
-//    - part: type of object this rectangle is part of.
-//    - x: x position at which to draw rectangle, in user space coordinates in
-//      Pango units.
-//    - y: y position at which to draw rectangle, in user space coordinates in
-//      Pango units.
-//    - width of rectangle in Pango units.
-//    - height of rectangle in Pango units.
+//   - part: type of object this rectangle is part of.
+//   - x: x position at which to draw rectangle, in user space coordinates in
+//     Pango units.
+//   - y: y position at which to draw rectangle, in user space coordinates in
+//     Pango units.
+//   - width of rectangle in Pango units.
+//   - height of rectangle in Pango units.
 //
 func (renderer *Renderer) drawRectangle(part RenderPart, x, y, width, height int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
@@ -1160,9 +1158,9 @@ func (renderer *Renderer) drawRectangle(part RenderPart, x, y, width, height int
 
 // The function takes the following parameters:
 //
-//    - attr
-//    - x
-//    - y
+//   - attr
+//   - x
+//   - y
 //
 func (renderer *Renderer) drawShape(attr *AttrShape, x, y int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
@@ -1190,13 +1188,13 @@ func (renderer *Renderer) drawShape(attr *AttrShape, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - part: type of object this trapezoid is part of.
-//    - y1: y coordinate of top of trapezoid.
-//    - x11: x coordinate of left end of top of trapezoid.
-//    - x21: x coordinate of right end of top of trapezoid.
-//    - y2: y coordinate of bottom of trapezoid.
-//    - x12: x coordinate of left end of bottom of trapezoid.
-//    - x22: x coordinate of right end of bottom of trapezoid.
+//   - part: type of object this trapezoid is part of.
+//   - y1: y coordinate of top of trapezoid.
+//   - x11: x coordinate of left end of top of trapezoid.
+//   - x21: x coordinate of right end of top of trapezoid.
+//   - y2: y coordinate of bottom of trapezoid.
+//   - x12: x coordinate of left end of bottom of trapezoid.
+//   - x22: x coordinate of right end of bottom of trapezoid.
 //
 func (renderer *Renderer) drawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
@@ -1247,20 +1245,19 @@ func (renderer *Renderer) end() {
 // has changed.
 //
 // This should be called if the rendering changes in a way that would prevent
-// multiple pieces being joined together into one drawing call. For instance, if
-// a subclass of PangoRenderer was to add a stipple option for drawing
+// multiple pieces being joined together into one drawing call. For instance,
+// if a subclass of PangoRenderer was to add a stipple option for drawing
 // underlines, it needs to call
 //
 //    pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
 //
-//
 // When the stipple changes or underlines with different stipples might be
-// joined together. Pango automatically calls this for changes to colors. (See
-// pango.Renderer.SetColor()).
+// joined together. Pango automatically calls this for changes to colors.
+// (See pango.Renderer.SetColor()).
 //
 // The function takes the following parameters:
 //
-//    - part for which rendering has changed.
+//   - part for which rendering has changed.
 //
 func (renderer *Renderer) partChanged(part RenderPart) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))

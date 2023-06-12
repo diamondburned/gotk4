@@ -23,11 +23,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: drag context.
-//    - success: flag indicating whether the drop was successful.
-//    - del: flag indicating whether the source should delete the original data.
-//      (This should be TRUE for a move).
-//    - time_: timestamp from the Widget::drag-drop signal.
+//   - context: drag context.
+//   - success: flag indicating whether the drop was successful.
+//   - del: flag indicating whether the source should delete the original data.
+//     (This should be TRUE for a move).
+//   - time_: timestamp from the Widget::drag-drop signal.
 //
 func DragFinish(context *gdk.DragContext, success, del bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
@@ -55,12 +55,12 @@ func DragFinish(context *gdk.DragContext, success, del bool, time_ uint32) {
 //
 // The function takes the following parameters:
 //
-//    - context: (destination side) drag context.
+//   - context: (destination side) drag context.
 //
 // The function returns the following values:
 //
-//    - widget (optional): if the drag is occurring within a single application,
-//      a pointer to the source widget. Otherwise, NULL.
+//   - widget (optional): if the drag is occurring within a single application,
+//     a pointer to the source widget. Otherwise, NULL.
 //
 func DragGetSourceWidget(context *gdk.DragContext) Widgetter {
 	var _arg1 *C.GdkDragContext // out
@@ -97,8 +97,8 @@ func DragGetSourceWidget(context *gdk.DragContext) Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - context for a drag (This must be called with a context for the source
-//      side of a drag).
+//   - context for a drag (This must be called with a context for the source
+//     side of a drag).
 //
 func DragSetIconDefault(context *gdk.DragContext) {
 	var _arg1 *C.GdkDragContext // out
@@ -113,11 +113,11 @@ func DragSetIconDefault(context *gdk.DragContext) {
 //
 // The function takes the following parameters:
 //
-//    - context for a drag (This must be called with a context for the source
-//      side of a drag).
-//    - pixbuf to use as the drag icon.
-//    - hotX: x offset within widget of the hotspot.
-//    - hotY: y offset within widget of the hotspot.
+//   - context for a drag (This must be called with a context for the source
+//     side of a drag).
+//   - pixbuf to use as the drag icon.
+//   - hotX: x offset within widget of the hotspot.
+//   - hotY: y offset within widget of the hotspot.
 //
 func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
@@ -143,11 +143,11 @@ func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX,
 //
 // The function takes the following parameters:
 //
-//    - context for a drag (This must be called with a context for the source
-//      side of a drag).
-//    - stockId: ID of the stock icon to use for the drag.
-//    - hotX: x offset within the icon of the hotspot.
-//    - hotY: y offset within the icon of the hotspot.
+//   - context for a drag (This must be called with a context for the source
+//     side of a drag).
+//   - stockId: ID of the stock icon to use for the drag.
+//   - hotX: x offset within the icon of the hotspot.
+//   - hotY: y offset within the icon of the hotspot.
 //
 func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out
@@ -178,9 +178,9 @@ func DragSetIconStock(context *gdk.DragContext, stockId string, hotX, hotY int) 
 //
 // The function takes the following parameters:
 //
-//    - context for a drag (This must be called with a context for the source
-//      side of a drag).
-//    - surface to use as icon.
+//   - context for a drag (This must be called with a context for the source
+//     side of a drag).
+//   - surface to use as icon.
 //
 func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 	var _arg1 *C.GdkDragContext  // out
@@ -194,17 +194,17 @@ func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface) {
 	runtime.KeepAlive(surface)
 }
 
-// DragSetIconWidget changes the icon for drag operation to a given widget. GTK+
-// will not destroy the widget, so if you don’t want it to persist, you should
-// connect to the “drag-end” signal and destroy it yourself.
+// DragSetIconWidget changes the icon for drag operation to a given widget.
+// GTK+ will not destroy the widget, so if you don’t want it to persist,
+// you should connect to the “drag-end” signal and destroy it yourself.
 //
 // The function takes the following parameters:
 //
-//    - context for a drag. (This must be called with a context for the source
-//      side of a drag).
-//    - widget to use as an icon.
-//    - hotX: x offset within widget of the hotspot.
-//    - hotY: y offset within widget of the hotspot.
+//   - context for a drag. (This must be called with a context for the source
+//     side of a drag).
+//   - widget to use as an icon.
+//   - hotX: x offset within widget of the hotspot.
+//   - hotY: y offset within widget of the hotspot.
 //
 func DragSetIconWidget(context *gdk.DragContext, widget Widgetter, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out

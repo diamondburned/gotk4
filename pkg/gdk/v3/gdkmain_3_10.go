@@ -37,7 +37,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - backends: comma-separated list of backends.
+//   - backends: comma-separated list of backends.
 //
 func SetAllowedBackends(backends string) {
 	var _arg1 *C.gchar // out

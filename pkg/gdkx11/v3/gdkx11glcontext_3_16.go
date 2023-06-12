@@ -18,13 +18,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - display: Display.
+//   - display: Display.
 //
 // The function returns the following values:
 //
-//    - major: return location for the GLX major version.
-//    - minor: return location for the GLX minor version.
-//    - ok: TRUE if GLX is available.
+//   - major: return location for the GLX major version.
+//   - minor: return location for the GLX minor version.
+//   - ok: TRUE if GLX is available.
 //
 func X11DisplayGetGLXVersion(display *gdk.Display) (major, minor int, ok bool) {
 	var _arg1 *C.GdkDisplay // out

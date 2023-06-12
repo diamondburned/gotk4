@@ -86,13 +86,13 @@ func (self *ATContext) ConnectStateChange(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - accessibleRole: accessible role used by the GtkATContext.
-//    - accessible: GtkAccessible implementation using the GtkATContext.
-//    - display: GdkDisplay used by the GtkATContext.
+//   - accessibleRole: accessible role used by the GtkATContext.
+//   - accessible: GtkAccessible implementation using the GtkATContext.
+//   - display: GdkDisplay used by the GtkATContext.
 //
 // The function returns the following values:
 //
-//    - atContext (optional): GtkATContext.
+//   - atContext (optional): GtkATContext.
 //
 func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, display *gdk.Display) *ATContext {
 	var _arg1 C.GtkAccessibleRole // out
@@ -122,7 +122,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessibler, d
 //
 // The function returns the following values:
 //
-//    - accessible: GtkAccessible.
+//   - accessible: GtkAccessible.
 //
 func (self *ATContext) Accessible() *Accessible {
 	var _arg0 *C.GtkATContext  // out
@@ -144,7 +144,7 @@ func (self *ATContext) Accessible() *Accessible {
 //
 // The function returns the following values:
 //
-//    - accessibleRole: GtkAccessibleRole.
+//   - accessibleRole: GtkAccessibleRole.
 //
 func (self *ATContext) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkATContext     // out

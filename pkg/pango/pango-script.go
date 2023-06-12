@@ -31,13 +31,13 @@ func init() {
 
 // Script: PangoScript enumeration identifies different writing systems.
 //
-// The values correspond to the names as defined in the Unicode standard. See
-// Unicode Standard Annex 24: Script names
+// The values correspond to the names as defined in the Unicode
+// standard. See Unicode Standard Annex 24: Script names
 // (http://www.unicode.org/reports/tr24/)
 //
 // Note that this enumeration is deprecated and will not be updated to include
-// values in newer versions of the Unicode standard. Applications should use the
-// GUnicodeScript enumeration instead, whose values are interchangeable with
+// values in newer versions of the Unicode standard. Applications should use
+// the GUnicodeScript enumeration instead, whose values are interchangeable with
 // PangoScript.
 type Script C.gint
 
@@ -574,9 +574,9 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	return _scriptIter
 }
 
-// Range gets information about the range to which iter currently points. The
-// range is the set of locations p where *start <= p < *end. (That is, it
-// doesn't include the character stored at *end)
+// Range gets information about the range to which iter currently points.
+// The range is the set of locations p where *start <= p < *end. (That is,
+// it doesn't include the character stored at *end)
 //
 // Note that while the type of the script argument is declared as PangoScript,
 // as of Pango 1.18, this function simply returns GUnicodeScript values. Callers
@@ -584,9 +584,9 @@ func NewScriptIter(text string, length int) *ScriptIter {
 //
 // The function returns the following values:
 //
-//    - start (optional): location to store start position of the range, or NULL.
-//    - end (optional): location to store end position of the range, or NULL.
-//    - script (optional): location to store script for range, or NULL.
+//   - start (optional): location to store start position of the range, or NULL.
+//   - end (optional): location to store end position of the range, or NULL.
+//   - script (optional): location to store script for range, or NULL.
 //
 func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	var _arg0 *C.PangoScriptIter // out
@@ -621,7 +621,7 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if iter was successfully advanced.
+//   - ok: TRUE if iter was successfully advanced.
 //
 func (iter *ScriptIter) Next() bool {
 	var _arg0 *C.PangoScriptIter // out

@@ -143,8 +143,8 @@ func (document *Document) ConnectPageChanged(f func(pageNumber int)) coreglib.Si
 	return coreglib.ConnectGeneratedClosure(document, "page-changed", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectPageChanged), f)
 }
 
-// ConnectReload: 'reload' signal is emitted when the contents of a document is
-// refreshed from its source. Once 'reload' has been emitted, a matching
+// ConnectReload: 'reload' signal is emitted when the contents of a document
+// is refreshed from its source. Once 'reload' has been emitted, a matching
 // 'load-complete' or 'load-stopped' signal should follow, which clients may
 // await before interrogating ATK for the latest document content.
 func (document *Document) ConnectReload(f func()) coreglib.SignalHandle {
@@ -156,14 +156,14 @@ func (document *Document) ConnectReload(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - attributeName: character string representing the name of the attribute
-//      whose value is being queried.
+//   - attributeName: character string representing the name of the attribute
+//     whose value is being queried.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string value associated with the named attribute for
-//      this document, or NULL if a value for attribute_name has not been
-//      specified for this document.
+//   - utf8 (optional): string value associated with the named attribute
+//     for this document, or NULL if a value for attribute_name has not been
+//     specified for this document.
 //
 func (document *Document) AttributeValue(attributeName string) string {
 	var _arg0 *C.AtkDocument // out
@@ -191,8 +191,8 @@ func (document *Document) AttributeValue(attributeName string) string {
 //
 // The function returns the following values:
 //
-//    - gint: current page number inside document, or -1 if not implemented, not
-//      know by the implementor, or irrelevant.
+//   - gint: current page number inside document, or -1 if not implemented,
+//     not know by the implementor, or irrelevant.
 //
 func (document *Document) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
@@ -210,8 +210,8 @@ func (document *Document) CurrentPageNumber() int {
 	return _gint
 }
 
-// Document gets a gpointer that points to an instance of the DOM. It is up to
-// the caller to check atk_document_get_type to determine how to cast this
+// Document gets a gpointer that points to an instance of the DOM. It is up
+// to the caller to check atk_document_get_type to determine how to cast this
 // pointer.
 //
 // Deprecated: Since 2.12. document is already a representation of the document.
@@ -219,7 +219,7 @@ func (document *Document) CurrentPageNumber() int {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional) that points to an instance of the DOM.
+//   - gpointer (optional) that points to an instance of the DOM.
 //
 func (document *Document) Document() unsafe.Pointer {
 	var _arg0 *C.AtkDocument // out
@@ -244,7 +244,7 @@ func (document *Document) Document() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - utf8: string indicating the document type.
+//   - utf8: string indicating the document type.
 //
 func (document *Document) DocumentType() string {
 	var _arg0 *C.AtkDocument // out
@@ -271,9 +271,9 @@ func (document *Document) DocumentType() string {
 //
 // The function returns the following values:
 //
-//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the
-//      document content as a whole, or NULL if the document content does not
-//      specify a locale.
+//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the
+//     document content as a whole, or NULL if the document content does not
+//     specify a locale.
 //
 func (document *Document) Locale() string {
 	var _arg0 *C.AtkDocument // out
@@ -295,8 +295,8 @@ func (document *Document) Locale() string {
 //
 // The function returns the following values:
 //
-//    - gint: total page count of document, or -1 if not implemented, not know by
-//      the implementor or irrelevant.
+//   - gint: total page count of document, or -1 if not implemented, not know by
+//     the implementor or irrelevant.
 //
 func (document *Document) PageCount() int {
 	var _arg0 *C.AtkDocument // out
@@ -319,15 +319,15 @@ func (document *Document) PageCount() int {
 //
 // The function takes the following parameters:
 //
-//    - attributeName: character string representing the name of the attribute
-//      whose value is being set.
-//    - attributeValue: string value to be associated with attribute_name.
+//   - attributeName: character string representing the name of the attribute
+//     whose value is being set.
+//   - attributeValue: string value to be associated with attribute_name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if attribute_value is successfully associated with
-//      attribute_name for this document, and FALSE if if the document does not
-//      allow the attribute to be modified.
+//   - ok: TRUE if attribute_value is successfully associated with
+//     attribute_name for this document, and FALSE if if the document does not
+//     allow the attribute to be modified.
 //
 func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
 	var _arg0 *C.AtkDocument // out
@@ -359,8 +359,8 @@ func (document *Document) SetAttributeValue(attributeName, attributeValue string
 //
 // The function returns the following values:
 //
-//    - gint: current page number inside document, or -1 if not implemented, not
-//      know by the implementor, or irrelevant.
+//   - gint: current page number inside document, or -1 if not implemented,
+//     not know by the implementor, or irrelevant.
 //
 func (document *Document) currentPageNumber() int {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
@@ -381,8 +381,8 @@ func (document *Document) currentPageNumber() int {
 	return _gint
 }
 
-// Document gets a gpointer that points to an instance of the DOM. It is up to
-// the caller to check atk_document_get_type to determine how to cast this
+// Document gets a gpointer that points to an instance of the DOM. It is up
+// to the caller to check atk_document_get_type to determine how to cast this
 // pointer.
 //
 // Deprecated: Since 2.12. document is already a representation of the document.
@@ -390,7 +390,7 @@ func (document *Document) currentPageNumber() int {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional) that points to an instance of the DOM.
+//   - gpointer (optional) that points to an instance of the DOM.
 //
 func (document *Document) document() unsafe.Pointer {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
@@ -416,14 +416,14 @@ func (document *Document) document() unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - attributeName: character string representing the name of the attribute
-//      whose value is being queried.
+//   - attributeName: character string representing the name of the attribute
+//     whose value is being queried.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string value associated with the named attribute for
-//      this document, or NULL if a value for attribute_name has not been
-//      specified for this document.
+//   - utf8 (optional): string value associated with the named attribute
+//     for this document, or NULL if a value for attribute_name has not been
+//     specified for this document.
 //
 func (document *Document) documentAttributeValue(attributeName string) string {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
@@ -451,17 +451,17 @@ func (document *Document) documentAttributeValue(attributeName string) string {
 }
 
 // documentLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
-// locale of the content of this document instance. Individual text substrings
-// or images within this document may have a different locale, see
-// atk_text_get_attributes and atk_image_get_image_locale.
+// locale of the content of this document instance. Individual text
+// substrings or images within this document may have a different locale,
+// see atk_text_get_attributes and atk_image_get_image_locale.
 //
 // Deprecated: Please use atk_object_get_object_locale() instead.
 //
 // The function returns the following values:
 //
-//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the
-//      document content as a whole, or NULL if the document content does not
-//      specify a locale.
+//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the
+//     document content as a whole, or NULL if the document content does not
+//     specify a locale.
 //
 func (document *Document) documentLocale() string {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
@@ -489,7 +489,7 @@ func (document *Document) documentLocale() string {
 //
 // The function returns the following values:
 //
-//    - utf8: string indicating the document type.
+//   - utf8: string indicating the document type.
 //
 func (document *Document) documentType() string {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
@@ -514,8 +514,8 @@ func (document *Document) documentType() string {
 //
 // The function returns the following values:
 //
-//    - gint: total page count of document, or -1 if not implemented, not know by
-//      the implementor or irrelevant.
+//   - gint: total page count of document, or -1 if not implemented, not know by
+//     the implementor or irrelevant.
 //
 func (document *Document) pageCount() int {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
@@ -541,15 +541,15 @@ func (document *Document) pageCount() int {
 //
 // The function takes the following parameters:
 //
-//    - attributeName: character string representing the name of the attribute
-//      whose value is being set.
-//    - attributeValue: string value to be associated with attribute_name.
+//   - attributeName: character string representing the name of the attribute
+//     whose value is being set.
+//   - attributeValue: string value to be associated with attribute_name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if attribute_value is successfully associated with
-//      attribute_name for this document, and FALSE if if the document does not
-//      allow the attribute to be modified.
+//   - ok: TRUE if attribute_value is successfully associated with
+//     attribute_name for this document, and FALSE if if the document does not
+//     allow the attribute to be modified.
 //
 func (document *Document) setDocumentAttribute(attributeName, attributeValue string) bool {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))

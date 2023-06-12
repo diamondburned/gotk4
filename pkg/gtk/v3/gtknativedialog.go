@@ -43,8 +43,8 @@ func init() {
 
 // NativeDialogOverrides contains methods that are overridable.
 type NativeDialogOverrides struct {
-	// Hide hides the dialog if it is visilbe, aborting any interaction. Once
-	// this is called the NativeDialog::response signal will not be emitted
+	// Hide hides the dialog if it is visilbe, aborting any interaction.
+	// Once this is called the NativeDialog::response signal will not be emitted
 	// until after the next call to gtk_native_dialog_show().
 	//
 	// If the dialog is not visible this does nothing.
@@ -52,9 +52,9 @@ type NativeDialogOverrides struct {
 	// The function takes the following parameters:
 	//
 	Response func(responseId int)
-	// Show shows the dialog on the display, allowing the user to interact with
-	// it. When the user accepts the state of the dialog the dialog will be
-	// automatically hidden and the NativeDialog::response signal will be
+	// Show shows the dialog on the display, allowing the user to interact
+	// with it. When the user accepts the state of the dialog the dialog will
+	// be automatically hidden and the NativeDialog::response signal will be
 	// emitted.
 	//
 	// Multiple calls while the dialog is visible will be ignored.
@@ -69,19 +69,19 @@ func defaultNativeDialogOverrides(v *NativeDialog) NativeDialogOverrides {
 	}
 }
 
-// NativeDialog: native dialogs are platform dialogs that don't use Dialog or
-// Window. They are used in order to integrate better with a platform, by
-// looking the same as other native applications and supporting platform
+// NativeDialog: native dialogs are platform dialogs that don't use Dialog
+// or Window. They are used in order to integrate better with a platform,
+// by looking the same as other native applications and supporting platform
 // specific features.
 //
 // The Dialog functions cannot be used on such objects, but we need a similar
 // API in order to drive them. The NativeDialog object is an API that allows you
-// to do this. It allows you to set various common properties on the dialog, as
-// well as show and hide it and get a NativeDialog::response signal when the
+// to do this. It allows you to set various common properties on the dialog,
+// as well as show and hide it and get a NativeDialog::response signal when the
 // user finished with the dialog.
 //
-// There is also a gtk_native_dialog_run() helper that makes it easy to run any
-// native dialog in a modal way with a recursive mainloop, similar to
+// There is also a gtk_native_dialog_run() helper that makes it easy to run
+// any native dialog in a modal way with a recursive mainloop, similar to
 // gtk_dialog_run().
 type NativeDialog struct {
 	_ [0]func() // equal guard
@@ -184,7 +184,7 @@ func (self *NativeDialog) Destroy() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the dialog is set to be modal.
+//   - ok: TRUE if the dialog is set to be modal.
 //
 func (self *NativeDialog) Modal() bool {
 	var _arg0 *C.GtkNativeDialog // out
@@ -208,9 +208,9 @@ func (self *NativeDialog) Modal() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): title of the dialog, or NULL if none has been set
-//      explicitly. The returned string is owned by the widget and must not be
-//      modified or freed.
+//   - utf8 (optional): title of the dialog, or NULL if none has been set
+//     explicitly. The returned string is owned by the widget and must not be
+//     modified or freed.
 //
 func (self *NativeDialog) Title() string {
 	var _arg0 *C.GtkNativeDialog // out
@@ -235,8 +235,8 @@ func (self *NativeDialog) Title() string {
 //
 // The function returns the following values:
 //
-//    - window (optional): transient parent for this window, or NULL if no
-//      transient parent has been set.
+//   - window (optional): transient parent for this window, or NULL if no
+//     transient parent has been set.
 //
 func (self *NativeDialog) TransientFor() *Window {
 	var _arg0 *C.GtkNativeDialog // out
@@ -260,7 +260,7 @@ func (self *NativeDialog) TransientFor() *Window {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the dialog is visible.
+//   - ok: TRUE if the dialog is visible.
 //
 func (self *NativeDialog) Visible() bool {
 	var _arg0 *C.GtkNativeDialog // out
@@ -325,7 +325,7 @@ func (self *NativeDialog) Hide() {
 //
 // The function returns the following values:
 //
-//    - gint: response ID.
+//   - gint: response ID.
 //
 func (self *NativeDialog) Run() int {
 	var _arg0 *C.GtkNativeDialog // out
@@ -351,7 +351,7 @@ func (self *NativeDialog) Run() int {
 //
 // The function takes the following parameters:
 //
-//    - modal: whether the window is modal.
+//   - modal: whether the window is modal.
 //
 func (self *NativeDialog) SetModal(modal bool) {
 	var _arg0 *C.GtkNativeDialog // out
@@ -371,7 +371,7 @@ func (self *NativeDialog) SetModal(modal bool) {
 //
 // The function takes the following parameters:
 //
-//    - title of the dialog.
+//   - title of the dialog.
 //
 func (self *NativeDialog) SetTitle(title string) {
 	var _arg0 *C.GtkNativeDialog // out
@@ -386,16 +386,16 @@ func (self *NativeDialog) SetTitle(title string) {
 	runtime.KeepAlive(title)
 }
 
-// SetTransientFor: dialog windows should be set transient for the main
-// application window they were spawned from. This allows [window
-// managers][gtk-X11-arch] to e.g. keep the dialog on top of the main window, or
-// center the dialog over the main window.
+// SetTransientFor: dialog windows should be set transient for the
+// main application window they were spawned from. This allows [window
+// managers][gtk-X11-arch] to e.g. keep the dialog on top of the main window,
+// or center the dialog over the main window.
 //
 // Passing NULL for parent unsets the current transient window.
 //
 // The function takes the following parameters:
 //
-//    - parent (optional) window, or NULL.
+//   - parent (optional) window, or NULL.
 //
 func (self *NativeDialog) SetTransientFor(parent *Window) {
 	var _arg0 *C.GtkNativeDialog // out

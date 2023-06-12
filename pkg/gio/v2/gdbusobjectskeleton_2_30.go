@@ -35,8 +35,8 @@ func init() {
 type DBusObjectSkeletonOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - interface_
-	//    - invocation
+	//   - interface_
+	//   - invocation
 	//
 	// The function returns the following values:
 	//
@@ -49,8 +49,8 @@ func defaultDBusObjectSkeletonOverrides(v *DBusObjectSkeleton) DBusObjectSkeleto
 	}
 }
 
-// DBusObjectSkeleton instance is essentially a group of D-Bus interfaces. The
-// set of exported interfaces on the object may be dynamic and change at
+// DBusObjectSkeleton instance is essentially a group of D-Bus interfaces.
+// The set of exported interfaces on the object may be dynamic and change at
 // runtime.
 //
 // This type is intended to be used with BusObjectManager.
@@ -116,11 +116,11 @@ func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterf
 //
 // The function takes the following parameters:
 //
-//    - objectPath: object path.
+//   - objectPath: object path.
 //
 // The function returns the following values:
 //
-//    - dBusObjectSkeleton Free with g_object_unref().
+//   - dBusObjectSkeleton Free with g_object_unref().
 //
 func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	var _arg1 *C.gchar               // out
@@ -149,7 +149,7 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 //
 // The function takes the following parameters:
 //
-//    - interface_: BusInterfaceSkeleton.
+//   - interface_: BusInterfaceSkeleton.
 //
 func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
@@ -178,7 +178,7 @@ func (object *DBusObjectSkeleton) Flush() {
 //
 // The function takes the following parameters:
 //
-//    - interface_: BusInterfaceSkeleton.
+//   - interface_: BusInterfaceSkeleton.
 //
 func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
@@ -200,7 +200,7 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 //
 // The function takes the following parameters:
 //
-//    - interfaceName d-Bus interface name.
+//   - interfaceName d-Bus interface name.
 //
 func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
@@ -219,7 +219,7 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 //
 // The function takes the following parameters:
 //
-//    - objectPath: valid D-Bus object path.
+//   - objectPath: valid D-Bus object path.
 //
 func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
@@ -236,8 +236,8 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 
 // The function takes the following parameters:
 //
-//    - interface_
-//    - invocation
+//   - interface_
+//   - invocation
 //
 // The function returns the following values:
 //

@@ -28,8 +28,8 @@ func init() {
 // SimpleIOStream creates a OStream from an arbitrary Stream and Stream. This
 // allows any pair of input and output streams to be used with OStream methods.
 //
-// This is useful when you obtained a Stream and a Stream by other means, for
-// instance creating them with platform specific methods as
+// This is useful when you obtained a Stream and a Stream by other means,
+// for instance creating them with platform specific methods as
 // g_unix_input_stream_new() or g_win32_input_stream_new(), and you want to take
 // advantage of the methods provided by OStream.
 type SimpleIOStream struct {
@@ -58,12 +58,12 @@ func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - inputStream: Stream.
-//    - outputStream: Stream.
+//   - inputStream: Stream.
+//   - outputStream: Stream.
 //
 // The function returns the following values:
 //
-//    - simpleIOStream: new IOStream instance.
+//   - simpleIOStream: new IOStream instance.
 //
 func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *SimpleIOStream {
 	var _arg1 *C.GInputStream  // out

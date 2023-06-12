@@ -84,7 +84,7 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - simpleActionGroup: new ActionGroup.
+//   - simpleActionGroup: new ActionGroup.
 //
 func NewSimpleActionGroup() *SimpleActionGroup {
 	var _cret *C.GSimpleActionGroup // in
@@ -105,8 +105,8 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 //
 // The function takes the following parameters:
 //
-//    - entries: pointer to the first item in an array of Entry structs.
-//    - userData (optional): user data for signal connections.
+//   - entries: pointer to the first item in an array of Entry structs.
+//   - userData (optional): user data for signal connections.
 //
 func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData unsafe.Pointer) {
 	var _arg0 *C.GSimpleActionGroup // out
@@ -143,7 +143,7 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData unsa
 //
 // The function takes the following parameters:
 //
-//    - action: #GAction.
+//   - action: #GAction.
 //
 func (simple *SimpleActionGroup) Insert(action Actioner) {
 	var _arg0 *C.GSimpleActionGroup // out
@@ -165,11 +165,11 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of an action.
+//   - actionName: name of an action.
 //
 // The function returns the following values:
 //
-//    - action or NULL.
+//   - action or NULL.
 //
 func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 	var _arg0 *C.GSimpleActionGroup // out
@@ -199,7 +199,7 @@ func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action.
+//   - actionName: name of the action.
 //
 func (simple *SimpleActionGroup) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out

@@ -101,18 +101,18 @@ func (e EventControllerScrollFlags) Has(other EventControllerScrollFlags) bool {
 // EventControllerScroll: GtkEventControllerScroll is an event controller that
 // handles scroll events.
 //
-// It is capable of handling both discrete and continuous scroll events from
-// mice or touchpads, abstracting them both with the
+// It is capable of handling both discrete and continuous scroll
+// events from mice or touchpads, abstracting them both with the
 // gtk.EventControllerScroll::scroll signal. Deltas in the discrete case are
 // multiples of 1.
 //
-// In the case of continuous scroll events, GtkEventControllerScroll encloses
-// all gtk.EventControllerScroll::scroll emissions between two
-// gtk.EventControllerScroll::scroll-begin and
+// In the case of continuous scroll events, GtkEventControllerScroll
+// encloses all gtk.EventControllerScroll::scroll emissions
+// between two gtk.EventControllerScroll::scroll-begin and
 // gtk.EventControllerScroll::scroll-end signals.
 //
-// The behavior of the event controller can be modified by the flags given at
-// creation time, or modified at a later point through
+// The behavior of the event controller can be modified by the flags
+// given at creation time, or modified at a later point through
 // gtk.EventControllerScroll.SetFlags() (e.g. because the scrolling conditions
 // of the widget changed).
 //
@@ -188,11 +188,11 @@ func (scroll *EventControllerScroll) ConnectScrollEnd(f func()) coreglib.SignalH
 //
 // The function takes the following parameters:
 //
-//    - flags affecting the controller behavior.
+//   - flags affecting the controller behavior.
 //
 // The function returns the following values:
 //
-//    - eventControllerScroll: new GtkEventControllerScroll.
+//   - eventControllerScroll: new GtkEventControllerScroll.
 //
 func NewEventControllerScroll(flags EventControllerScrollFlags) *EventControllerScroll {
 	var _arg1 C.GtkEventControllerScrollFlags // out
@@ -214,7 +214,7 @@ func NewEventControllerScroll(flags EventControllerScrollFlags) *EventController
 //
 // The function returns the following values:
 //
-//    - eventControllerScrollFlags: controller flags.
+//   - eventControllerScrollFlags: controller flags.
 //
 func (scroll *EventControllerScroll) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
@@ -236,7 +236,7 @@ func (scroll *EventControllerScroll) Flags() EventControllerScrollFlags {
 //
 // The function takes the following parameters:
 //
-//    - flags affecting the controller behavior.
+//   - flags affecting the controller behavior.
 //
 func (scroll *EventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
 	var _arg0 *C.GtkEventControllerScroll     // out

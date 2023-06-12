@@ -40,23 +40,23 @@ func defaultTextMarkOverrides(v *TextMark) TextMarkOverrides {
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
 //
-// A TextMark is like a bookmark in a text buffer; it preserves a position in
-// the text. You can convert the mark to an iterator using
+// A TextMark is like a bookmark in a text buffer; it preserves a
+// position in the text. You can convert the mark to an iterator using
 // gtk_text_buffer_get_iter_at_mark(). Unlike iterators, marks remain valid
 // across buffer mutations, because their behavior is defined when text is
-// inserted or deleted. When text containing a mark is deleted, the mark remains
-// in the position originally occupied by the deleted text. When text is
+// inserted or deleted. When text containing a mark is deleted, the mark
+// remains in the position originally occupied by the deleted text. When text is
 // inserted at a mark, a mark with “left gravity” will be moved to the beginning
 // of the newly-inserted text, and a mark with “right gravity” will be moved to
 // the end.
 //
-// Note that “left” and “right” here refer to logical direction (left is the
-// toward the start of the buffer); in some languages such as Hebrew the
+// Note that “left” and “right” here refer to logical direction (left is
+// the toward the start of the buffer); in some languages such as Hebrew the
 // logically-leftmost text is not actually on the left when displayed.
 //
 // Marks are reference counted, but the reference count only controls the
-// validity of the memory; marks can be deleted from the buffer at any time with
-// gtk_text_buffer_delete_mark(). Once deleted from the buffer, a mark is
+// validity of the memory; marks can be deleted from the buffer at any time
+// with gtk_text_buffer_delete_mark(). Once deleted from the buffer, a mark is
 // essentially useless.
 //
 // Marks optionally have names; these can be convenient to avoid passing the
@@ -99,8 +99,8 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 }
 
 // NewTextMark creates a text mark. Add it to a buffer using
-// gtk_text_buffer_add_mark(). If name is NULL, the mark is anonymous;
-// otherwise, the mark can be retrieved by name using
+// gtk_text_buffer_add_mark(). If name is NULL, the mark is
+// anonymous; otherwise, the mark can be retrieved by name using
 // gtk_text_buffer_get_mark(). If a mark has left gravity, and text is inserted
 // at the mark’s current location, the mark will be moved to the left of the
 // newly-inserted text. If the mark has right gravity (left_gravity = FALSE),
@@ -110,12 +110,12 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional): mark name or NULL.
-//    - leftGravity: whether the mark should have left gravity.
+//   - name (optional): mark name or NULL.
+//   - leftGravity: whether the mark should have left gravity.
 //
 // The function returns the following values:
 //
-//    - textMark: new TextMark.
+//   - textMark: new TextMark.
 //
 func NewTextMark(name string, leftGravity bool) *TextMark {
 	var _arg1 *C.gchar       // out
@@ -146,7 +146,7 @@ func NewTextMark(name string, leftGravity bool) *TextMark {
 //
 // The function returns the following values:
 //
-//    - textBuffer mark’s TextBuffer.
+//   - textBuffer mark’s TextBuffer.
 //
 func (mark *TextMark) Buffer() *TextBuffer {
 	var _arg0 *C.GtkTextMark   // out
@@ -170,7 +170,7 @@ func (mark *TextMark) Buffer() *TextBuffer {
 //
 // The function returns the following values:
 //
-//    - ok: whether the mark is deleted.
+//   - ok: whether the mark is deleted.
 //
 func (mark *TextMark) Deleted() bool {
 	var _arg0 *C.GtkTextMark // out
@@ -194,7 +194,7 @@ func (mark *TextMark) Deleted() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the mark has left gravity, FALSE otherwise.
+//   - ok: TRUE if the mark has left gravity, FALSE otherwise.
 //
 func (mark *TextMark) LeftGravity() bool {
 	var _arg0 *C.GtkTextMark // out
@@ -218,7 +218,7 @@ func (mark *TextMark) LeftGravity() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): mark name.
+//   - utf8 (optional): mark name.
 //
 func (mark *TextMark) Name() string {
 	var _arg0 *C.GtkTextMark // out
@@ -243,7 +243,7 @@ func (mark *TextMark) Name() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if visible.
+//   - ok: TRUE if visible.
 //
 func (mark *TextMark) Visible() bool {
 	var _arg0 *C.GtkTextMark // out
@@ -270,7 +270,7 @@ func (mark *TextMark) Visible() bool {
 //
 // The function takes the following parameters:
 //
-//    - setting: visibility of mark.
+//   - setting: visibility of mark.
 //
 func (mark *TextMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out

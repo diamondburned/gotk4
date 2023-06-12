@@ -49,8 +49,7 @@ func defaultStackSwitcherOverrides(v *StackSwitcher) StackSwitcherOverrides {
 //
 // The GtkStackSwitcher widget was added in 3.10.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkStackSwitcher has a single CSS node named stackswitcher and style class
 // .stack-switcher.
@@ -116,7 +115,7 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - stackSwitcher: new StackSwitcher.
+//   - stackSwitcher: new StackSwitcher.
 //
 func NewStackSwitcher() *StackSwitcher {
 	var _cret *C.GtkWidget // in
@@ -134,7 +133,7 @@ func NewStackSwitcher() *StackSwitcher {
 //
 // The function returns the following values:
 //
-//    - stack (optional): stack, or NULL if none has been set explicitly.
+//   - stack (optional): stack, or NULL if none has been set explicitly.
 //
 func (switcher *StackSwitcher) Stack() *Stack {
 	var _arg0 *C.GtkStackSwitcher // out
@@ -158,7 +157,7 @@ func (switcher *StackSwitcher) Stack() *Stack {
 //
 // The function takes the following parameters:
 //
-//    - stack (optional): Stack.
+//   - stack (optional): Stack.
 //
 func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSwitcher // out

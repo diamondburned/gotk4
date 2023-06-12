@@ -55,8 +55,8 @@ const (
 	// items that it used to return TRUE for still return TRUE, others now may,
 	// too.
 	FilterChangeLessStrict
-	// FilterChangeMoreStrict: filter is more strict than it was before: All
-	// items that it used to return FALSE for still return FALSE, others now
+	// FilterChangeMoreStrict: filter is more strict than it was before:
+	// All items that it used to return FALSE for still return FALSE, others now
 	// may, too.
 	FilterChangeMoreStrict
 )
@@ -128,19 +128,19 @@ type FilterOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - filterMatch strictness of self.
+	//   - filterMatch strictness of self.
 	//
 	Strictness func() FilterMatch
 	// Match checks if the given item is matched by the filter or not.
 	//
 	// The function takes the following parameters:
 	//
-	//    - item (optional) to check.
+	//   - item (optional) to check.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the filter matches the item and a filter model should
-	//      keep it, FALSE if not.
+	//   - ok: TRUE if the filter matches the item and a filter model should
+	//     keep it, FALSE if not.
 	//
 	Match func(item *coreglib.Object) bool
 }
@@ -239,7 +239,7 @@ func (self *Filter) ConnectChanged(f func(change FilterChange)) coreglib.SignalH
 //
 // The function takes the following parameters:
 //
-//    - change: how the filter changed.
+//   - change: how the filter changed.
 //
 func (self *Filter) Changed(change FilterChange) {
 	var _arg0 *C.GtkFilter      // out
@@ -263,7 +263,7 @@ func (self *Filter) Changed(change FilterChange) {
 //
 // The function returns the following values:
 //
-//    - filterMatch strictness of self.
+//   - filterMatch strictness of self.
 //
 func (self *Filter) Strictness() FilterMatch {
 	var _arg0 *C.GtkFilter     // out
@@ -285,12 +285,12 @@ func (self *Filter) Strictness() FilterMatch {
 //
 // The function takes the following parameters:
 //
-//    - item to check.
+//   - item to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the filter matches the item and a filter model should keep
-//      it, FALSE if not.
+//   - ok: TRUE if the filter matches the item and a filter model should keep
+//     it, FALSE if not.
 //
 func (self *Filter) Match(item *coreglib.Object) bool {
 	var _arg0 *C.GtkFilter // out
@@ -323,7 +323,7 @@ func (self *Filter) Match(item *coreglib.Object) bool {
 //
 // The function returns the following values:
 //
-//    - filterMatch strictness of self.
+//   - filterMatch strictness of self.
 //
 func (self *Filter) strictness() FilterMatch {
 	gclass := (*C.GtkFilterClass)(coreglib.PeekParentClass(self))
@@ -348,12 +348,12 @@ func (self *Filter) strictness() FilterMatch {
 //
 // The function takes the following parameters:
 //
-//    - item (optional) to check.
+//   - item (optional) to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the filter matches the item and a filter model should keep
-//      it, FALSE if not.
+//   - ok: TRUE if the filter matches the item and a filter model should keep
+//     it, FALSE if not.
 //
 func (self *Filter) match(item *coreglib.Object) bool {
 	gclass := (*C.GtkFilterClass)(coreglib.PeekParentClass(self))

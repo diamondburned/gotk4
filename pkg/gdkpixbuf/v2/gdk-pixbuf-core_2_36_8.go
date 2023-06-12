@@ -18,15 +18,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - colorspace: color space for image.
-//    - hasAlpha: whether the image should have transparency information.
-//    - bitsPerSample: number of bits per color sample.
-//    - width: width of image in pixels, must be > 0.
-//    - height: height of image in pixels, must be > 0.
+//   - colorspace: color space for image.
+//   - hasAlpha: whether the image should have transparency information.
+//   - bitsPerSample: number of bits per color sample.
+//   - width: width of image in pixels, must be > 0.
+//   - height: height of image in pixels, must be > 0.
 //
 // The function returns the following values:
 //
-//    - gint: rowstride for the given values, or -1 in case of error.
+//   - gint: rowstride for the given values, or -1 in case of error.
 //
 func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int) int {
 	var _arg1 C.GdkColorspace // out

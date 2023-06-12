@@ -41,12 +41,11 @@ func defaultActionBarOverrides(v *ActionBar) ActionBarOverrides {
 // displayed below the content and expand horizontally to fill the area.
 //
 // It allows placing children at the start or the end. In addition, it contains
-// an internal centered box which is centered with respect to the full width of
-// the box, even if the children at either side take up different amounts of
+// an internal centered box which is centered with respect to the full width
+// of the box, even if the children at either side take up different amounts of
 // space.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkActionBar has a single CSS node with name actionbar.
 type ActionBar struct {
@@ -103,7 +102,7 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - actionBar: new ActionBar.
+//   - actionBar: new ActionBar.
 //
 func NewActionBar() *ActionBar {
 	var _cret *C.GtkWidget // in
@@ -121,7 +120,7 @@ func NewActionBar() *ActionBar {
 //
 // The function returns the following values:
 //
-//    - widget (optional): center Widget or NULL.
+//   - widget (optional): center Widget or NULL.
 //
 func (actionBar *ActionBar) CenterWidget() Widgetter {
 	var _arg0 *C.GtkActionBar // out
@@ -159,7 +158,7 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - child to be added to action_bar.
+//   - child to be added to action_bar.
 //
 func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
@@ -178,7 +177,7 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child to be added to action_bar.
+//   - child to be added to action_bar.
 //
 func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
@@ -196,7 +195,7 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - centerWidget (optional): widget to use for the center.
+//   - centerWidget (optional): widget to use for the center.
 //
 func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg0 *C.GtkActionBar // out

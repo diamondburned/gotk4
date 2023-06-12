@@ -115,7 +115,7 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - ret: new Pango context for context.
+//   - ret: new Pango context for context.
 //
 func (context *PrintContext) CreatePangoContext() *pango.Context {
 	var _arg0 *C.GtkPrintContext // out
@@ -143,7 +143,7 @@ func (context *PrintContext) CreatePangoContext() *pango.Context {
 //
 // The function returns the following values:
 //
-//    - layout: new Pango layout for context.
+//   - layout: new Pango layout for context.
 //
 func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 	var _arg0 *C.GtkPrintContext // out
@@ -171,7 +171,7 @@ func (context *PrintContext) CreatePangoLayout() *pango.Layout {
 //
 // The function returns the following values:
 //
-//    - ret: cairo context of context.
+//   - ret: cairo context of context.
 //
 func (context *PrintContext) CairoContext() *cairo.Context {
 	var _arg0 *C.GtkPrintContext // out
@@ -198,7 +198,7 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 //
 // The function returns the following values:
 //
-//    - gdouble: horizontal resolution of context.
+//   - gdouble: horizontal resolution of context.
 //
 func (context *PrintContext) DPIX() float64 {
 	var _arg0 *C.GtkPrintContext // out
@@ -221,7 +221,7 @@ func (context *PrintContext) DPIX() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: vertical resolution of context.
+//   - gdouble: vertical resolution of context.
 //
 func (context *PrintContext) DPIY() float64 {
 	var _arg0 *C.GtkPrintContext // out
@@ -239,16 +239,16 @@ func (context *PrintContext) DPIY() float64 {
 	return _gdouble
 }
 
-// HardMargins obtains the hardware printer margins of the GtkPrintContext, in
-// units.
+// HardMargins obtains the hardware printer margins of the GtkPrintContext,
+// in units.
 //
 // The function returns the following values:
 //
-//    - top hardware printer margin.
-//    - bottom hardware printer margin.
-//    - left hardware printer margin.
-//    - right hardware printer margin.
-//    - ok: TRUE if the hard margins were retrieved.
+//   - top hardware printer margin.
+//   - bottom hardware printer margin.
+//   - left hardware printer margin.
+//   - right hardware printer margin.
+//   - ok: TRUE if the hard margins were retrieved.
 //
 func (context *PrintContext) HardMargins() (top, bottom, left, right float64, ok bool) {
 	var _arg0 *C.GtkPrintContext // out
@@ -284,7 +284,7 @@ func (context *PrintContext) HardMargins() (top, bottom, left, right float64, ok
 //
 // The function returns the following values:
 //
-//    - gdouble: height of context.
+//   - gdouble: height of context.
 //
 func (context *PrintContext) Height() float64 {
 	var _arg0 *C.GtkPrintContext // out
@@ -307,7 +307,7 @@ func (context *PrintContext) Height() float64 {
 //
 // The function returns the following values:
 //
-//    - pageSetup: page setup of context.
+//   - pageSetup: page setup of context.
 //
 func (context *PrintContext) PageSetup() *PageSetup {
 	var _arg0 *C.GtkPrintContext // out
@@ -330,7 +330,7 @@ func (context *PrintContext) PageSetup() *PageSetup {
 //
 // The function returns the following values:
 //
-//    - fontMap: font map of context.
+//   - fontMap: font map of context.
 //
 func (context *PrintContext) PangoFontmap() pango.FontMapper {
 	var _arg0 *C.GtkPrintContext // out
@@ -368,7 +368,7 @@ func (context *PrintContext) PangoFontmap() pango.FontMapper {
 //
 // The function returns the following values:
 //
-//    - gdouble: width of context.
+//   - gdouble: width of context.
 //
 func (context *PrintContext) Width() float64 {
 	var _arg0 *C.GtkPrintContext // out
@@ -394,9 +394,9 @@ func (context *PrintContext) Width() float64 {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - dpiX: horizontal resolution to use with cr.
-//    - dpiY: vertical resolution to use with cr.
+//   - cr: cairo context.
+//   - dpiX: horizontal resolution to use with cr.
+//   - dpiY: vertical resolution to use with cr.
 //
 func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float64) {
 	var _arg0 *C.GtkPrintContext // out

@@ -48,30 +48,30 @@ type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string)
 // processes or between different widgets in the same process. Each clipboard is
 // identified by a name encoded as a Atom. (Conversion to and from strings can
 // be done with gdk_atom_intern() and gdk_atom_name().) The default clipboard
-// corresponds to the “CLIPBOARD” atom; another commonly used clipboard is the
-// “PRIMARY” clipboard, which, in X, traditionally contains the currently
+// corresponds to the “CLIPBOARD” atom; another commonly used clipboard is
+// the “PRIMARY” clipboard, which, in X, traditionally contains the currently
 // selected text.
 //
-// To support having a number of different formats on the clipboard at the same
-// time, the clipboard mechanism allows providing callbacks instead of the
-// actual data. When you set the contents of the clipboard, you can either
-// supply the data directly (via functions like gtk_clipboard_set_text()), or
-// you can supply a callback to be called at a later time when the data is
+// To support having a number of different formats on the clipboard at the
+// same time, the clipboard mechanism allows providing callbacks instead of
+// the actual data. When you set the contents of the clipboard, you can either
+// supply the data directly (via functions like gtk_clipboard_set_text()),
+// or you can supply a callback to be called at a later time when the data is
 // needed (via gtk_clipboard_set_with_data() or gtk_clipboard_set_with_owner().)
 // Providing a callback also avoids having to make copies of the data when it is
 // not needed.
 //
-// gtk_clipboard_set_with_data() and gtk_clipboard_set_with_owner() are quite
-// similar; the choice between the two depends mostly on which is more
-// convenient in a particular situation. The former is most useful when you want
-// to have a blob of data with callbacks to convert it into the various data
-// types that you advertise. When the clear_func you provided is called, you
-// simply free the data blob. The latter is more useful when the contents of
-// clipboard reflect the internal state of a #GObject (As an example, for the
-// PRIMARY clipboard, when an entry widget provides the clipboard’s contents the
-// contents are simply the text within the selected region.) If the contents
-// change, the entry widget can call gtk_clipboard_set_with_owner() to update
-// the timestamp for clipboard ownership, without having to worry about
+// gtk_clipboard_set_with_data() and gtk_clipboard_set_with_owner() are
+// quite similar; the choice between the two depends mostly on which is more
+// convenient in a particular situation. The former is most useful when you
+// want to have a blob of data with callbacks to convert it into the various
+// data types that you advertise. When the clear_func you provided is called,
+// you simply free the data blob. The latter is more useful when the contents
+// of clipboard reflect the internal state of a #GObject (As an example,
+// for the PRIMARY clipboard, when an entry widget provides the clipboard’s
+// contents the contents are simply the text within the selected region.) If the
+// contents change, the entry widget can call gtk_clipboard_set_with_owner() to
+// update the timestamp for clipboard ownership, without having to worry about
 // clear_func being called.
 //
 // Requesting the data from the clipboard is essentially asynchronous. If the
@@ -80,19 +80,19 @@ type ClipboardTextReceivedFunc func(clipboard *Clipboard, text string)
 // another process, then the data needs to be retrieved from the other process,
 // which may take some time. To avoid blocking the user interface, the call to
 // request the selection, gtk_clipboard_request_contents() takes a callback that
-// will be called when the contents are received (or when the request fails.) If
-// you don’t want to deal with providing a separate callback, you can also use
-// gtk_clipboard_wait_for_contents(). What this does is run the GLib main loop
-// recursively waiting for the contents. This can simplify the code flow, but
-// you still have to be aware that other callbacks in your program can be called
-// while this recursive mainloop is running.
+// will be called when the contents are received (or when the request fails.)
+// If you don’t want to deal with providing a separate callback, you can also
+// use gtk_clipboard_wait_for_contents(). What this does is run the GLib main
+// loop recursively waiting for the contents. This can simplify the code flow,
+// but you still have to be aware that other callbacks in your program can be
+// called while this recursive mainloop is running.
 //
-// Along with the functions to get the clipboard contents as an arbitrary data
-// chunk, there are also functions to retrieve it as text,
+// Along with the functions to get the clipboard contents as an
+// arbitrary data chunk, there are also functions to retrieve it as text,
 // gtk_clipboard_request_text() and gtk_clipboard_wait_for_text(). These
 // functions take care of determining which formats are advertised by the
-// clipboard provider, asking for the clipboard in the best available format and
-// converting the results into the UTF-8 encoding. (The standard form for
+// clipboard provider, asking for the clipboard in the best available format
+// and converting the results into the UTF-8 encoding. (The standard form for
 // representing strings in GTK+.).
 type Clipboard struct {
 	_ [0]func() // equal guard
@@ -120,8 +120,8 @@ func (clipboard *Clipboard) ConnectOwnerChange(f func(event *gdk.EventOwnerChang
 	return coreglib.ConnectGeneratedClosure(clipboard, "owner-change", false, unsafe.Pointer(C._gotk4_gtk3_Clipboard_ConnectOwnerChange), f)
 }
 
-// Clear clears the contents of the clipboard. Generally this should only be
-// called between the time you call gtk_clipboard_set_with_owner() or
+// Clear clears the contents of the clipboard. Generally this should only
+// be called between the time you call gtk_clipboard_set_with_owner() or
 // gtk_clipboard_set_with_data(), and when the clear_func you supplied is
 // called. Otherwise, the clipboard may be owned by someone else.
 func (clipboard *Clipboard) Clear() {
@@ -137,7 +137,7 @@ func (clipboard *Clipboard) Clear() {
 //
 // The function returns the following values:
 //
-//    - display associated with clipboard.
+//   - display associated with clipboard.
 //
 func (clipboard *Clipboard) Display() *gdk.Display {
 	var _arg0 *C.GtkClipboard // out
@@ -167,7 +167,7 @@ func (clipboard *Clipboard) Display() *gdk.Display {
 //
 // The function returns the following values:
 //
-//    - object (optional): owner of the clipboard, if any; otherwise NULL.
+//   - object (optional): owner of the clipboard, if any; otherwise NULL.
 //
 func (clipboard *Clipboard) Owner() *coreglib.Object {
 	var _arg0 *C.GtkClipboard // out
@@ -198,8 +198,8 @@ func (clipboard *Clipboard) Owner() *coreglib.Object {
 //
 // The function takes the following parameters:
 //
-//    - callback: function to call when the image is received, or the retrieval
-//      fails. (It will always be called one way or the other.).
+//   - callback: function to call when the image is received, or the retrieval
+//     fails. (It will always be called one way or the other.).
 //
 func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 	var _arg0 *C.GtkClipboard                 // out
@@ -220,14 +220,14 @@ func (clipboard *Clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 // be called.
 //
 // The text parameter to callback will contain the resulting text if the request
-// succeeded, or NULL if it failed. This could happen for various reasons, in
-// particular if the clipboard was empty or if the contents of the clipboard
+// succeeded, or NULL if it failed. This could happen for various reasons,
+// in particular if the clipboard was empty or if the contents of the clipboard
 // could not be converted into text form.
 //
 // The function takes the following parameters:
 //
-//    - callback: function to call when the text is received, or the retrieval
-//      fails. (It will always be called one way or the other.).
+//   - callback: function to call when the text is received, or the retrieval
+//     fails. (It will always be called one way or the other.).
 //
 func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 	var _arg0 *C.GtkClipboard                // out
@@ -253,8 +253,8 @@ func (clipboard *Clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 //
 // The function takes the following parameters:
 //
-//    - callback: function to call when the URIs are received, or the retrieval
-//      fails. (It will always be called one way or the other.).
+//   - callback: function to call when the URIs are received, or the retrieval
+//     fails. (It will always be called one way or the other.).
 //
 func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
 	var _arg0 *C.GtkClipboard               // out
@@ -279,8 +279,8 @@ func (clipboard *Clipboard) RequestURIs(callback ClipboardURIReceivedFunc) {
 //
 // The function takes the following parameters:
 //
-//    - targets (optional): array containing information about which forms should
-//      be stored or NULL to indicate that all forms should be stored.
+//   - targets (optional): array containing information about which forms should
+//     be stored or NULL to indicate that all forms should be stored.
 //
 func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 	var _arg0 *C.GtkClipboard   // out
@@ -309,7 +309,7 @@ func (clipboard *Clipboard) SetCanStore(targets []TargetEntry) {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: Pixbuf.
+//   - pixbuf: Pixbuf.
 //
 func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkClipboard // out
@@ -323,15 +323,15 @@ func (clipboard *Clipboard) SetImage(pixbuf *gdkpixbuf.Pixbuf) {
 	runtime.KeepAlive(pixbuf)
 }
 
-// SetText sets the contents of the clipboard to the given UTF-8 string. GTK+
-// will make a copy of the text and take responsibility for responding for
+// SetText sets the contents of the clipboard to the given UTF-8 string.
+// GTK+ will make a copy of the text and take responsibility for responding for
 // requests for the text, and for converting the text into the requested format.
 //
 // The function takes the following parameters:
 //
-//    - text: UTF-8 string.
-//    - len: length of text, in bytes, or -1, in which case the length will be
-//      determined with strlen().
+//   - text: UTF-8 string.
+//   - len: length of text, in bytes, or -1, in which case the length will be
+//     determined with strlen().
 //
 func (clipboard *Clipboard) SetText(text string, len int) {
 	var _arg0 *C.GtkClipboard // out
@@ -366,11 +366,11 @@ func (clipboard *Clipboard) Store() {
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-allocated Pixbuf object which must be disposed
-//      with g_object_unref(), or NULL if retrieving the selection data failed.
-//      (This could happen for various reasons, in particular if the clipboard
-//      was empty or if the contents of the clipboard could not be converted into
-//      an image.).
+//   - pixbuf (optional): newly-allocated Pixbuf object which must be disposed
+//     with g_object_unref(), or NULL if retrieving the selection data failed.
+//     (This could happen for various reasons, in particular if the clipboard
+//     was empty or if the contents of the clipboard could not be converted into
+//     an image.).
 //
 func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkClipboard // out
@@ -407,10 +407,10 @@ func (clipboard *Clipboard) WaitForImage() *gdkpixbuf.Pixbuf {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly-allocated UTF-8 string which must be freed with
-//      g_free(), or NULL if retrieving the selection data failed. (This could
-//      happen for various reasons, in particular if the clipboard was empty or
-//      if the contents of the clipboard could not be converted into text form.).
+//   - utf8 (optional): newly-allocated UTF-8 string which must be freed with
+//     g_free(), or NULL if retrieving the selection data failed. (This could
+//     happen for various reasons, in particular if the clipboard was empty or
+//     if the contents of the clipboard could not be converted into text form.).
 //
 func (clipboard *Clipboard) WaitForText() string {
 	var _arg0 *C.GtkClipboard // out
@@ -437,11 +437,11 @@ func (clipboard *Clipboard) WaitForText() string {
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): a newly-allocated NULL-terminated array of strings
-//      which must be freed with g_strfreev(), or NULL if retrieving the
-//      selection data failed. (This could happen for various reasons, in
-//      particular if the clipboard was empty or if the contents of the clipboard
-//      could not be converted into URI form.).
+//   - utf8s (optional): a newly-allocated NULL-terminated array of strings
+//     which must be freed with g_strfreev(), or NULL if retrieving the
+//     selection data failed. (This could happen for various reasons, in
+//     particular if the clipboard was empty or if the contents of the clipboard
+//     could not be converted into URI form.).
 //
 func (clipboard *Clipboard) WaitForURIs() []string {
 	var _arg0 *C.GtkClipboard // out
@@ -476,8 +476,8 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 }
 
 // WaitIsImageAvailable: test to see if there is an image available to be pasted
-// This is done by requesting the TARGETS atom and checking if it contains any
-// of the supported image targets. This function waits for the data to be
+// This is done by requesting the TARGETS atom and checking if it contains
+// any of the supported image targets. This function waits for the data to be
 // received using the main loop, so events, timeouts, etc, may be dispatched
 // during the wait.
 //
@@ -486,7 +486,7 @@ func (clipboard *Clipboard) WaitForURIs() []string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is there is an image available, FALSE otherwise.
+//   - ok: TRUE is there is an image available, FALSE otherwise.
 //
 func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
@@ -506,11 +506,11 @@ func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 	return _ok
 }
 
-// WaitIsRichTextAvailable: test to see if there is rich text available to be
-// pasted This is done by requesting the TARGETS atom and checking if it
-// contains any of the supported rich text targets. This function waits for the
-// data to be received using the main loop, so events, timeouts, etc, may be
-// dispatched during the wait.
+// WaitIsRichTextAvailable: test to see if there is rich text available to
+// be pasted This is done by requesting the TARGETS atom and checking if it
+// contains any of the supported rich text targets. This function waits for
+// the data to be received using the main loop, so events, timeouts, etc,
+// may be dispatched during the wait.
 //
 // This function is a little faster than calling
 // gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
@@ -518,11 +518,11 @@ func (clipboard *Clipboard) WaitIsImageAvailable() bool {
 //
 // The function takes the following parameters:
 //
-//    - buffer: TextBuffer.
+//   - buffer: TextBuffer.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is there is rich text available, FALSE otherwise.
+//   - ok: TRUE is there is rich text available, FALSE otherwise.
 //
 func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
 	var _arg0 *C.GtkClipboard  // out
@@ -555,7 +555,7 @@ func (clipboard *Clipboard) WaitIsRichTextAvailable(buffer *TextBuffer) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is there is text available, FALSE otherwise.
+//   - ok: TRUE is there is text available, FALSE otherwise.
 //
 func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 	var _arg0 *C.GtkClipboard // out
@@ -575,8 +575,8 @@ func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 	return _ok
 }
 
-// WaitIsURIsAvailable: test to see if there is a list of URIs available to be
-// pasted This is done by requesting the TARGETS atom and checking if it
+// WaitIsURIsAvailable: test to see if there is a list of URIs available to
+// be pasted This is done by requesting the TARGETS atom and checking if it
 // contains the URI targets. This function waits for the data to be received
 // using the main loop, so events, timeouts, etc, may be dispatched during the
 // wait.
@@ -586,7 +586,7 @@ func (clipboard *Clipboard) WaitIsTextAvailable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE is there is an URI list available, FALSE otherwise.
+//   - ok: TRUE is there is an URI list available, FALSE otherwise.
 //
 func (clipboard *Clipboard) WaitIsURIsAvailable() bool {
 	var _arg0 *C.GtkClipboard // out

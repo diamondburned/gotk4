@@ -16,7 +16,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - object: currently focused object for the current application.
+//   - object: currently focused object for the current application.
 //
 func GetFocusObject() *AtkObject {
 	var _cret *C.AtkObject // in

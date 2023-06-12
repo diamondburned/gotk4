@@ -86,11 +86,11 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): GListModel to manage, or NULL.
+//   - model (optional): GListModel to manage, or NULL.
 //
 // The function returns the following values:
 //
-//    - noSelection: new GtkNoSelection.
+//   - noSelection: new GtkNoSelection.
 //
 func NewNoSelection(model gio.ListModeller) *NoSelection {
 	var _arg1 *C.GListModel     // out
@@ -115,7 +115,7 @@ func NewNoSelection(model gio.ListModeller) *NoSelection {
 //
 // The function returns the following values:
 //
-//    - listModel: model being wrapped.
+//   - listModel: model being wrapped.
 //
 func (self *NoSelection) Model() *gio.ListModel {
 	var _arg0 *C.GtkNoSelection // out
@@ -144,7 +144,7 @@ func (self *NoSelection) Model() *gio.ListModel {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): GListModel to wrap.
+//   - model (optional): GListModel to wrap.
 //
 func (self *NoSelection) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkNoSelection // out

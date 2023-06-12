@@ -25,8 +25,8 @@ import "C"
 // of the toolkit; this should be avoided, as it breaks various assumptions and
 // optimizations.
 //
-// If you are drawing on a native Window in response to a GDK_EXPOSE event you
-// should use gdk_window_begin_draw_frame() and
+// If you are drawing on a native Window in response to a
+// GDK_EXPOSE event you should use gdk_window_begin_draw_frame() and
 // gdk_drawing_context_get_cairo_context() instead. GTK will automatically do
 // this for you when drawing a widget.
 //
@@ -35,12 +35,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - window: Window.
+//   - window: Window.
 //
 // The function returns the following values:
 //
-//    - context: newly created Cairo context. Free with cairo_destroy() when you
-//      are done drawing.
+//   - context: newly created Cairo context. Free with cairo_destroy() when you
+//     are done drawing.
 //
 func CairoCreate(window Windower) *cairo.Context {
 	var _arg1 *C.GdkWindow // out
@@ -65,8 +65,8 @@ func CairoCreate(window Windower) *cairo.Context {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - rectangle: Rectangle.
+//   - cr: cairo context.
+//   - rectangle: Rectangle.
 //
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg1 *C.cairo_t      // out
@@ -84,8 +84,8 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - region: #cairo_region_t.
+//   - cr: cairo context.
+//   - region: #cairo_region_t.
 //
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _arg1 *C.cairo_t        // out
@@ -105,8 +105,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - color: Color.
+//   - cr: cairo context.
+//   - color: Color.
 //
 func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 	var _arg1 *C.cairo_t  // out
@@ -127,10 +127,10 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - pixbuf: Pixbuf.
-//    - pixbufX: x coordinate of location to place upper left corner of pixbuf.
-//    - pixbufY: y coordinate of location to place upper left corner of pixbuf.
+//   - cr: cairo context.
+//   - pixbuf: Pixbuf.
+//   - pixbufX: x coordinate of location to place upper left corner of pixbuf.
+//   - pixbufY: y coordinate of location to place upper left corner of pixbuf.
 //
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out

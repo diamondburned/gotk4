@@ -70,7 +70,7 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - appLaunchContext: new AppLaunchContext.
+//   - appLaunchContext: new AppLaunchContext.
 //
 func NewAppLaunchContext() *AppLaunchContext {
 	var _cret *C.GdkAppLaunchContext // in
@@ -85,8 +85,8 @@ func NewAppLaunchContext() *AppLaunchContext {
 }
 
 // SetDesktop sets the workspace on which applications will be launched when
-// using this context when running under a window manager that supports multiple
-// workspaces, as described in the Extended Window Manager Hints
+// using this context when running under a window manager that supports
+// multiple workspaces, as described in the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec).
 //
 // When the workspace is not specified or desktop is set to -1, it is up to the
@@ -94,7 +94,7 @@ func NewAppLaunchContext() *AppLaunchContext {
 //
 // The function takes the following parameters:
 //
-//    - desktop: number of a workspace, or -1.
+//   - desktop: number of a workspace, or -1.
 //
 func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -115,7 +115,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 //
 // The function takes the following parameters:
 //
-//    - display: Display.
+//   - display: Display.
 //
 func (context *AppLaunchContext) SetDisplay(display *Display) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -138,7 +138,7 @@ func (context *AppLaunchContext) SetDisplay(display *Display) {
 //
 // The function takes the following parameters:
 //
-//    - icon (optional) or NULL.
+//   - icon (optional) or NULL.
 //
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -165,7 +165,7 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name, or NULL.
+//   - iconName (optional): icon name, or NULL.
 //
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -190,7 +190,7 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 func (context *AppLaunchContext) SetScreen(screen *Screen) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -213,7 +213,7 @@ func (context *AppLaunchContext) SetScreen(screen *Screen) {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: timestamp.
+//   - timestamp: timestamp.
 //
 func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GdkAppLaunchContext // out

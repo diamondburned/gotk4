@@ -70,11 +70,11 @@ func NewFrustumAlloc() *Frustum {
 //
 // The function takes the following parameters:
 //
-//    - point: #graphene_point3d_t.
+//   - point: #graphene_point3d_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the point is inside the frustum.
+//   - ok: true if the point is inside the frustum.
 //
 func (f *Frustum) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_frustum_t // out
@@ -101,11 +101,11 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_frustum_t.
+//   - b: #graphene_frustum_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the given frustums are equal.
+//   - ok: true if the given frustums are equal.
 //
 func (a *Frustum) Equal(b *Frustum) bool {
 	var _arg0 *C.graphene_frustum_t // out
@@ -132,7 +132,7 @@ func (a *Frustum) Equal(b *Frustum) bool {
 //
 // The function returns the following values:
 //
-//    - planes: return location for an array of 6 #graphene_plane_t.
+//   - planes: return location for an array of 6 #graphene_plane_t.
 //
 func (f *Frustum) Planes() [6]Plane {
 	var _arg0 *C.graphene_frustum_t // out
@@ -160,16 +160,16 @@ func (f *Frustum) Planes() [6]Plane {
 //
 // The function takes the following parameters:
 //
-//    - p0: clipping plane.
-//    - p1: clipping plane.
-//    - p2: clipping plane.
-//    - p3: clipping plane.
-//    - p4: clipping plane.
-//    - p5: clipping plane.
+//   - p0: clipping plane.
+//   - p1: clipping plane.
+//   - p2: clipping plane.
+//   - p3: clipping plane.
+//   - p4: clipping plane.
+//   - p5: clipping plane.
 //
 // The function returns the following values:
 //
-//    - frustum: initialized frustum.
+//   - frustum: initialized frustum.
 //
 func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5 *Plane) *Frustum {
 	var _arg0 *C.graphene_frustum_t // out
@@ -210,11 +210,11 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_frustum_t.
+//   - src: #graphene_frustum_t.
 //
 // The function returns the following values:
 //
-//    - frustum: initialized frustum.
+//   - frustum: initialized frustum.
 //
 func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 	var _arg0 *C.graphene_frustum_t // out
@@ -239,11 +239,11 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 //
 // The function takes the following parameters:
 //
-//    - matrix: #graphene_matrix_t.
+//   - matrix: #graphene_matrix_t.
 //
 // The function returns the following values:
 //
-//    - frustum: initialized frustum.
+//   - frustum: initialized frustum.
 //
 func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 	var _arg0 *C.graphene_frustum_t // out
@@ -269,11 +269,11 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 //
 // The function takes the following parameters:
 //
-//    - box: #graphene_box_t.
+//   - box: #graphene_box_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the box intersects the frustum.
+//   - ok: true if the box intersects the frustum.
 //
 func (f *Frustum) IntersectsBox(box *Box) bool {
 	var _arg0 *C.graphene_frustum_t // out
@@ -301,11 +301,11 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 //
 // The function takes the following parameters:
 //
-//    - sphere: #graphene_sphere_t.
+//   - sphere: #graphene_sphere_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the sphere intersects the frustum.
+//   - ok: true if the sphere intersects the frustum.
 //
 func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 	var _arg0 *C.graphene_frustum_t // out

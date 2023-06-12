@@ -43,8 +43,8 @@ func defaultTearoffMenuItemOverrides(v *TearoffMenuItem) TearoffMenuItemOverride
 // line indicating that the menu can be torn off. Activating it causes its menu
 // to be torn off and displayed in its own window as a tearoff menu.
 //
-// When its menu is shown as a tearoff menu, the TearoffMenuItem is drawn as a
-// dotted line which has a left pointing arrow graphic indicating that the
+// When its menu is shown as a tearoff menu, the TearoffMenuItem is drawn as
+// a dotted line which has a left pointing arrow graphic indicating that the
 // tearoff menu can be reattached. Activating it will erase the tearoff menu
 // window.
 //
@@ -128,7 +128,7 @@ func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - tearoffMenuItem: new TearoffMenuItem.
+//   - tearoffMenuItem: new TearoffMenuItem.
 //
 func NewTearoffMenuItem() *TearoffMenuItem {
 	var _cret *C.GtkWidget // in

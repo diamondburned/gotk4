@@ -34,8 +34,8 @@ func init() {
 //
 // To create a GtkColorChooserDialog, use gtk.ColorChooserDialog.New.
 //
-// To change the initially selected color, use gtk.ColorChooser.SetRGBA(). To
-// get the selected color use gtk.ColorChooser.GetRGBA().
+// To change the initially selected color, use gtk.ColorChooser.SetRGBA().
+// To get the selected color use gtk.ColorChooser.GetRGBA().
 type ColorChooserDialog struct {
 	_ [0]func() // equal guard
 	Dialog
@@ -108,12 +108,12 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title (optional): title of the dialog, or NULL.
-//    - parent (optional): transient parent of the dialog, or NULL.
+//   - title (optional): title of the dialog, or NULL.
+//   - parent (optional): transient parent of the dialog, or NULL.
 //
 // The function returns the following values:
 //
-//    - colorChooserDialog: new GtkColorChooserDialog.
+//   - colorChooserDialog: new GtkColorChooserDialog.
 //
 func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	var _arg1 *C.char      // out

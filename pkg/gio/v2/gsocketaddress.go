@@ -45,7 +45,7 @@ type SocketAddressOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - socketFamily: socket family type of address.
+	//   - socketFamily: socket family type of address.
 	//
 	Family func() SocketFamily
 	// NativeSize gets the size of address's native struct sockaddr. You can use
@@ -53,7 +53,7 @@ type SocketAddressOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - gssize: size of the native struct sockaddr that address represents.
+	//   - gssize: size of the native struct sockaddr that address represents.
 	//
 	NativeSize func() int
 	// ToNative converts a Address to a native struct sockaddr, which can be
@@ -65,10 +65,10 @@ type SocketAddressOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - dest (optional): pointer to a memory location that will contain the
-	//      native struct sockaddr.
-	//    - destlen: size of dest. Must be at least as large as
-	//      g_socket_address_get_native_size().
+	//   - dest (optional): pointer to a memory location that will contain the
+	//     native struct sockaddr.
+	//   - destlen: size of dest. Must be at least as large as
+	//     g_socket_address_get_native_size().
 	//
 	ToNative func(dest unsafe.Pointer, destlen uint) error
 }
@@ -82,8 +82,8 @@ func defaultSocketAddressOverrides(v *SocketAddress) SocketAddressOverrides {
 }
 
 // SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
-// This is an abstract class; use SocketAddress for internet sockets, or
-// SocketAddress for UNIX domain sockets.
+// This is an abstract class; use SocketAddress for internet sockets,
+// or SocketAddress for UNIX domain sockets.
 type SocketAddress struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -163,13 +163,13 @@ func BaseSocketAddress(obj SocketAddresser) *SocketAddress {
 //
 // The function takes the following parameters:
 //
-//    - native: pointer to a struct sockaddr.
-//    - len: size of the memory location pointed to by native.
+//   - native: pointer to a struct sockaddr.
+//   - len: size of the memory location pointed to by native.
 //
 // The function returns the following values:
 //
-//    - socketAddress: new Address if native could successfully be converted,
-//      otherwise NULL.
+//   - socketAddress: new Address if native could successfully be converted,
+//     otherwise NULL.
 //
 func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress {
 	var _arg1 C.gpointer        // out
@@ -194,7 +194,7 @@ func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress 
 //
 // The function returns the following values:
 //
-//    - socketFamily: socket family type of address.
+//   - socketFamily: socket family type of address.
 //
 func (address *SocketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
@@ -217,7 +217,7 @@ func (address *SocketAddress) Family() SocketFamily {
 //
 // The function returns the following values:
 //
-//    - gssize: size of the native struct sockaddr that address represents.
+//   - gssize: size of the native struct sockaddr that address represents.
 //
 func (address *SocketAddress) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
@@ -244,10 +244,10 @@ func (address *SocketAddress) NativeSize() int {
 //
 // The function takes the following parameters:
 //
-//    - dest (optional): pointer to a memory location that will contain the
-//      native struct sockaddr.
-//    - destlen: size of dest. Must be at least as large as
-//      g_socket_address_get_native_size().
+//   - dest (optional): pointer to a memory location that will contain the
+//     native struct sockaddr.
+//   - destlen: size of dest. Must be at least as large as
+//     g_socket_address_get_native_size().
 //
 func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error {
 	var _arg0 *C.GSocketAddress // out
@@ -277,7 +277,7 @@ func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error 
 //
 // The function returns the following values:
 //
-//    - socketFamily: socket family type of address.
+//   - socketFamily: socket family type of address.
 //
 func (address *SocketAddress) family() SocketFamily {
 	gclass := (*C.GSocketAddressClass)(coreglib.PeekParentClass(address))
@@ -303,7 +303,7 @@ func (address *SocketAddress) family() SocketFamily {
 //
 // The function returns the following values:
 //
-//    - gssize: size of the native struct sockaddr that address represents.
+//   - gssize: size of the native struct sockaddr that address represents.
 //
 func (address *SocketAddress) nativeSize() int {
 	gclass := (*C.GSocketAddressClass)(coreglib.PeekParentClass(address))
@@ -333,10 +333,10 @@ func (address *SocketAddress) nativeSize() int {
 //
 // The function takes the following parameters:
 //
-//    - dest (optional): pointer to a memory location that will contain the
-//      native struct sockaddr.
-//    - destlen: size of dest. Must be at least as large as
-//      g_socket_address_get_native_size().
+//   - dest (optional): pointer to a memory location that will contain the
+//     native struct sockaddr.
+//   - destlen: size of dest. Must be at least as large as
+//     g_socket_address_get_native_size().
 //
 func (address *SocketAddress) toNative(dest unsafe.Pointer, destlen uint) error {
 	gclass := (*C.GSocketAddressClass)(coreglib.PeekParentClass(address))

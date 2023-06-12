@@ -22,10 +22,10 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - text to process. Must be valid UTF-8.
-//    - length of text in bytes (may be -1 if text is nul-terminated).
-//    - analysis structure from pango_itemize().
-//    - attrs: array to store character information in.
+//   - text to process. Must be valid UTF-8.
+//   - length of text in bytes (may be -1 if text is nul-terminated).
+//   - analysis structure from pango_itemize().
+//   - attrs: array to store character information in.
 //
 func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	var _arg1 *C.gchar         // out
@@ -64,11 +64,11 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 //
 // The function takes the following parameters:
 //
-//    - text to break. Must be valid UTF-8.
-//    - length of text in bytes (may be -1 if text is nul-terminated).
-//    - analysis (optional) for the text.
-//    - attrs: logical attributes to fill in.
-//    - attrsLen: size of the array passed as attrs.
+//   - text to break. Must be valid UTF-8.
+//   - length of text in bytes (may be -1 if text is nul-terminated).
+//   - analysis (optional) for the text.
+//   - attrs: logical attributes to fill in.
+//   - attrsLen: size of the array passed as attrs.
 //
 func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
 	var _arg1 *C.gchar         // out
@@ -96,9 +96,9 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 
 // FindParagraphBoundary locates a paragraph boundary in text.
 //
-// A boundary is caused by delimiter characters, such as a newline, carriage
-// return, carriage return-newline pair, or Unicode paragraph separator
-// character. The index of the run of delimiters is returned in
+// A boundary is caused by delimiter characters, such as a newline,
+// carriage return, carriage return-newline pair, or Unicode paragraph
+// separator character. The index of the run of delimiters is returned in
 // paragraph_delimiter_index. The index of the start of the paragrap (index
 // after all delimiters) is stored in next_paragraph_start.
 //
@@ -108,13 +108,13 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 //
 // The function takes the following parameters:
 //
-//    - text: UTF-8 text.
-//    - length of text in bytes, or -1 if nul-terminated.
+//   - text: UTF-8 text.
+//   - length of text in bytes, or -1 if nul-terminated.
 //
 // The function returns the following values:
 //
-//    - paragraphDelimiterIndex: return location for index of delimiter.
-//    - nextParagraphStart: return location for start of next paragraph.
+//   - paragraphDelimiterIndex: return location for index of delimiter.
+//   - nextParagraphStart: return location for start of next paragraph.
 //
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
@@ -141,20 +141,20 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex, ne
 
 // GetLogAttrs computes a PangoLogAttr for each character in text.
 //
-// The log_attrs array must have one PangoLogAttr for each position in text; if
-// text contains N characters, it has N+1 positions, including the last position
-// at the end of the text. text should be an entire paragraph; logical
+// The log_attrs array must have one PangoLogAttr for each position in text;
+// if text contains N characters, it has N+1 positions, including the last
+// position at the end of the text. text should be an entire paragraph; logical
 // attributes can't be computed without context (for example you need to see
 // spaces on either side of a word to know the word is a word).
 //
 // The function takes the following parameters:
 //
-//    - text to process. Must be valid UTF-8.
-//    - length in bytes of text.
-//    - level: embedding level, or -1 if unknown.
-//    - language tag.
-//    - logAttrs: array with one PangoLogAttr per character in text, plus one
-//      extra, to be filled in.
+//   - text to process. Must be valid UTF-8.
+//   - length in bytes of text.
+//   - level: embedding level, or -1 if unknown.
+//   - language tag.
+//   - logAttrs: array with one PangoLogAttr per character in text, plus one
+//     extra, to be filled in.
 //
 func GetLogAttrs(text string, length, level int, language *Language, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out

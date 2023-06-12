@@ -41,9 +41,9 @@ const (
 	MemoryMonitorWarningLevelLow MemoryMonitorWarningLevel = 50
 	// MemoryMonitorWarningLevelMedium: same as
 	// G_MEMORY_MONITOR_WARNING_LEVEL_LOW but the device has even less free
-	// memory, so processes should try harder to free up unneeded resources. If
-	// your process does not need to stay running, it is a good time for it to
-	// quit.
+	// memory, so processes should try harder to free up unneeded resources.
+	// If your process does not need to stay running, it is a good time for it
+	// to quit.
 	MemoryMonitorWarningLevelMedium MemoryMonitorWarningLevel = 100
 	// MemoryMonitorWarningLevelCritical: system will soon start terminating
 	// processes to reclaim memory, including background processes.

@@ -11,10 +11,10 @@ import (
 // #include <glib.h>
 import "C"
 
-// UnicharGetMirrorChar: in Unicode, some characters are "mirrored". This means
-// that their images are mirrored horizontally in text that is laid out from
-// right to left. For instance, "(" would become its mirror image, ")", in
-// right-to-left text.
+// UnicharGetMirrorChar: in Unicode, some characters are "mirrored". This
+// means that their images are mirrored horizontally in text that is laid out
+// from right to left. For instance, "(" would become its mirror image, ")",
+// in right-to-left text.
 //
 // If ch has the Unicode mirrored property and there is another unicode
 // character that typically has a glyph that is the mirror image of ch's glyph
@@ -23,12 +23,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
-//    - mirroredCh: location to store the mirrored character.
+//   - ch: unicode character.
+//   - mirroredCh: location to store the mirrored character.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if ch has a mirrored character, FALSE otherwise.
+//   - ok: TRUE if ch has a mirrored character, FALSE otherwise.
 //
 func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out

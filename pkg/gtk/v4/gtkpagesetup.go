@@ -35,13 +35,12 @@ func init() {
 // out of the GtkPrintSettings is that these affect the actual layout of the
 // page, and thus need to be set long before user prints.
 //
+// # Margins
 //
-// Margins
-//
-// The margins specified in this object are the “print margins”, i.e. the parts
-// of the page that the printer cannot print on. These are different from the
-// layout margins that a word processor uses; they are typically used to
-// determine the minimal size for the layout margins.
+// The margins specified in this object are the “print margins”, i.e.
+// the parts of the page that the printer cannot print on. These are different
+// from the layout margins that a word processor uses; they are typically used
+// to determine the minimal size for the layout margins.
 //
 // To obtain a GtkPageSetup use gtk.PageSetup.New to get the defaults, or use
 // gtk.PrintRunPageSetupDialog() to show the page setup dialog and receive the
@@ -91,7 +90,7 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - pageSetup: new GtkPageSetup.
+//   - pageSetup: new GtkPageSetup.
 //
 func NewPageSetup() *PageSetup {
 	var _cret *C.GtkPageSetup // in
@@ -112,11 +111,11 @@ func NewPageSetup() *PageSetup {
 //
 // The function takes the following parameters:
 //
-//    - fileName: filename to read the page setup from.
+//   - fileName: filename to read the page setup from.
 //
 // The function returns the following values:
 //
-//    - pageSetup: restored GtkPageSetup.
+//   - pageSetup: restored GtkPageSetup.
 //
 func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 	var _arg1 *C.char         // out
@@ -146,11 +145,11 @@ func NewPageSetupFromFile(fileName string) (*PageSetup, error) {
 //
 // The function takes the following parameters:
 //
-//    - variant: a{sv} GVariant.
+//   - variant: a{sv} GVariant.
 //
 // The function returns the following values:
 //
-//    - pageSetup: new GtkPageSetup object.
+//   - pageSetup: new GtkPageSetup object.
 //
 func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 	var _arg1 *C.GVariant     // out
@@ -176,13 +175,13 @@ func NewPageSetupFromGVariant(variant *glib.Variant) *PageSetup {
 //
 // The function takes the following parameters:
 //
-//    - keyFile: GKeyFile to retrieve the page_setup from.
-//    - groupName (optional): name of the group in the key_file to read, or NULL
-//      to use the default name “Page Setup”.
+//   - keyFile: GKeyFile to retrieve the page_setup from.
+//   - groupName (optional): name of the group in the key_file to read, or NULL
+//     to use the default name “Page Setup”.
 //
 // The function returns the following values:
 //
-//    - pageSetup: restored GtkPageSetup.
+//   - pageSetup: restored GtkPageSetup.
 //
 func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetup, error) {
 	var _arg1 *C.GKeyFile     // out
@@ -215,7 +214,7 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PageSetu
 //
 // The function returns the following values:
 //
-//    - pageSetup: copy of other.
+//   - pageSetup: copy of other.
 //
 func (other *PageSetup) Copy() *PageSetup {
 	var _arg0 *C.GtkPageSetup // out
@@ -237,11 +236,11 @@ func (other *PageSetup) Copy() *PageSetup {
 //
 // The function takes the following parameters:
 //
-//    - unit for the return value.
+//   - unit for the return value.
 //
 // The function returns the following values:
 //
-//    - gdouble: bottom margin.
+//   - gdouble: bottom margin.
 //
 func (setup *PageSetup) BottomMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup // out
@@ -266,11 +265,11 @@ func (setup *PageSetup) BottomMargin(unit Unit) float64 {
 //
 // The function takes the following parameters:
 //
-//    - unit for the return value.
+//   - unit for the return value.
 //
 // The function returns the following values:
 //
-//    - gdouble: left margin.
+//   - gdouble: left margin.
 //
 func (setup *PageSetup) LeftMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup // out
@@ -295,7 +294,7 @@ func (setup *PageSetup) LeftMargin(unit Unit) float64 {
 //
 // The function returns the following values:
 //
-//    - pageOrientation: page orientation.
+//   - pageOrientation: page orientation.
 //
 func (setup *PageSetup) Orientation() PageOrientation {
 	var _arg0 *C.GtkPageSetup      // out
@@ -315,16 +314,16 @@ func (setup *PageSetup) Orientation() PageOrientation {
 
 // PageHeight returns the page height in units of unit.
 //
-// Note that this function takes orientation and margins into consideration. See
-// gtk.PageSetup.GetPaperHeight().
+// Note that this function takes orientation and margins into consideration.
+// See gtk.PageSetup.GetPaperHeight().
 //
 // The function takes the following parameters:
 //
-//    - unit for the return value.
+//   - unit for the return value.
 //
 // The function returns the following values:
 //
-//    - gdouble: page height.
+//   - gdouble: page height.
 //
 func (setup *PageSetup) PageHeight(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup // out
@@ -347,16 +346,16 @@ func (setup *PageSetup) PageHeight(unit Unit) float64 {
 
 // PageWidth returns the page width in units of unit.
 //
-// Note that this function takes orientation and margins into consideration. See
-// gtk.PageSetup.GetPaperWidth().
+// Note that this function takes orientation and margins into consideration.
+// See gtk.PageSetup.GetPaperWidth().
 //
 // The function takes the following parameters:
 //
-//    - unit for the return value.
+//   - unit for the return value.
 //
 // The function returns the following values:
 //
-//    - gdouble: page width.
+//   - gdouble: page width.
 //
 func (setup *PageSetup) PageWidth(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup // out
@@ -384,11 +383,11 @@ func (setup *PageSetup) PageWidth(unit Unit) float64 {
 //
 // The function takes the following parameters:
 //
-//    - unit for the return value.
+//   - unit for the return value.
 //
 // The function returns the following values:
 //
-//    - gdouble: paper height.
+//   - gdouble: paper height.
 //
 func (setup *PageSetup) PaperHeight(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup // out
@@ -413,7 +412,7 @@ func (setup *PageSetup) PaperHeight(unit Unit) float64 {
 //
 // The function returns the following values:
 //
-//    - paperSize: paper size.
+//   - paperSize: paper size.
 //
 func (setup *PageSetup) PaperSize() *PaperSize {
 	var _arg0 *C.GtkPageSetup // out
@@ -438,11 +437,11 @@ func (setup *PageSetup) PaperSize() *PaperSize {
 //
 // The function takes the following parameters:
 //
-//    - unit for the return value.
+//   - unit for the return value.
 //
 // The function returns the following values:
 //
-//    - gdouble: paper width.
+//   - gdouble: paper width.
 //
 func (setup *PageSetup) PaperWidth(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup // out
@@ -467,11 +466,11 @@ func (setup *PageSetup) PaperWidth(unit Unit) float64 {
 //
 // The function takes the following parameters:
 //
-//    - unit for the return value.
+//   - unit for the return value.
 //
 // The function returns the following values:
 //
-//    - gdouble: right margin.
+//   - gdouble: right margin.
 //
 func (setup *PageSetup) RightMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup // out
@@ -496,11 +495,11 @@ func (setup *PageSetup) RightMargin(unit Unit) float64 {
 //
 // The function takes the following parameters:
 //
-//    - unit for the return value.
+//   - unit for the return value.
 //
 // The function returns the following values:
 //
-//    - gdouble: top margin.
+//   - gdouble: top margin.
 //
 func (setup *PageSetup) TopMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup // out
@@ -527,7 +526,7 @@ func (setup *PageSetup) TopMargin(unit Unit) float64 {
 //
 // The function takes the following parameters:
 //
-//    - fileName: filename to read the page setup from.
+//   - fileName: filename to read the page setup from.
 //
 func (setup *PageSetup) LoadFile(fileName string) error {
 	var _arg0 *C.GtkPageSetup // out
@@ -556,9 +555,9 @@ func (setup *PageSetup) LoadFile(fileName string) error {
 //
 // The function takes the following parameters:
 //
-//    - keyFile: GKeyFile to retrieve the page_setup from.
-//    - groupName (optional): name of the group in the key_file to read, or NULL
-//      to use the default name “Page Setup”.
+//   - keyFile: GKeyFile to retrieve the page_setup from.
+//   - groupName (optional): name of the group in the key_file to read, or NULL
+//     to use the default name “Page Setup”.
 //
 func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var _arg0 *C.GtkPageSetup // out
@@ -591,8 +590,8 @@ func (setup *PageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) err
 //
 // The function takes the following parameters:
 //
-//    - margin: new bottom margin in units of unit.
-//    - unit units for margin.
+//   - margin: new bottom margin in units of unit.
+//   - unit units for margin.
 //
 func (setup *PageSetup) SetBottomMargin(margin float64, unit Unit) {
 	var _arg0 *C.GtkPageSetup // out
@@ -613,8 +612,8 @@ func (setup *PageSetup) SetBottomMargin(margin float64, unit Unit) {
 //
 // The function takes the following parameters:
 //
-//    - margin: new left margin in units of unit.
-//    - unit units for margin.
+//   - margin: new left margin in units of unit.
+//   - unit units for margin.
 //
 func (setup *PageSetup) SetLeftMargin(margin float64, unit Unit) {
 	var _arg0 *C.GtkPageSetup // out
@@ -635,7 +634,7 @@ func (setup *PageSetup) SetLeftMargin(margin float64, unit Unit) {
 //
 // The function takes the following parameters:
 //
-//    - orientation: PageOrientation value.
+//   - orientation: PageOrientation value.
 //
 func (setup *PageSetup) SetOrientation(orientation PageOrientation) {
 	var _arg0 *C.GtkPageSetup      // out
@@ -656,7 +655,7 @@ func (setup *PageSetup) SetOrientation(orientation PageOrientation) {
 //
 // The function takes the following parameters:
 //
-//    - size: PaperSize.
+//   - size: PaperSize.
 //
 func (setup *PageSetup) SetPaperSize(size *PaperSize) {
 	var _arg0 *C.GtkPageSetup // out
@@ -675,7 +674,7 @@ func (setup *PageSetup) SetPaperSize(size *PaperSize) {
 //
 // The function takes the following parameters:
 //
-//    - size: PaperSize.
+//   - size: PaperSize.
 //
 func (setup *PageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 	var _arg0 *C.GtkPageSetup // out
@@ -693,8 +692,8 @@ func (setup *PageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 //
 // The function takes the following parameters:
 //
-//    - margin: new right margin in units of unit.
-//    - unit units for margin.
+//   - margin: new right margin in units of unit.
+//   - unit units for margin.
 //
 func (setup *PageSetup) SetRightMargin(margin float64, unit Unit) {
 	var _arg0 *C.GtkPageSetup // out
@@ -715,8 +714,8 @@ func (setup *PageSetup) SetRightMargin(margin float64, unit Unit) {
 //
 // The function takes the following parameters:
 //
-//    - margin: new top margin in units of unit.
-//    - unit units for margin.
+//   - margin: new top margin in units of unit.
+//   - unit units for margin.
 //
 func (setup *PageSetup) SetTopMargin(margin float64, unit Unit) {
 	var _arg0 *C.GtkPageSetup // out
@@ -737,7 +736,7 @@ func (setup *PageSetup) SetTopMargin(margin float64, unit Unit) {
 //
 // The function takes the following parameters:
 //
-//    - fileName: file to save to.
+//   - fileName: file to save to.
 //
 func (setup *PageSetup) ToFile(fileName string) error {
 	var _arg0 *C.GtkPageSetup // out
@@ -765,7 +764,7 @@ func (setup *PageSetup) ToFile(fileName string) error {
 //
 // The function returns the following values:
 //
-//    - variant: new, floating, #GVariant.
+//   - variant: new, floating, #GVariant.
 //
 func (setup *PageSetup) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPageSetup // out
@@ -794,9 +793,9 @@ func (setup *PageSetup) ToGVariant() *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - keyFile: GKeyFile to save the page setup to.
-//    - groupName (optional): group to add the settings to in key_file, or NULL
-//      to use the default name “Page Setup”.
+//   - keyFile: GKeyFile to save the page setup to.
+//   - groupName (optional): group to add the settings to in key_file, or NULL
+//     to use the default name “Page Setup”.
 //
 func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _arg0 *C.GtkPageSetup // out

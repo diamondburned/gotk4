@@ -30,11 +30,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - screen for which the context is to be created.
+//   - screen for which the context is to be created.
 //
 // The function returns the following values:
 //
-//    - context: new Context for screen.
+//   - context: new Context for screen.
 //
 func PangoContextGetForScreen(screen *Screen) *pango.Context {
 	var _arg1 *C.GdkScreen    // out

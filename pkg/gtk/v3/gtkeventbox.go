@@ -94,7 +94,7 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - eventBox: new EventBox.
+//   - eventBox: new EventBox.
 //
 func NewEventBox() *EventBox {
 	var _cret *C.GtkWidget // in
@@ -113,7 +113,7 @@ func NewEventBox() *EventBox {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event box window is above the window of its child.
+//   - ok: TRUE if the event box window is above the window of its child.
 //
 func (eventBox *EventBox) AboveChild() bool {
 	var _arg0 *C.GtkEventBox // out
@@ -138,7 +138,7 @@ func (eventBox *EventBox) AboveChild() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event box window is visible.
+//   - ok: TRUE if the event box window is visible.
 //
 func (eventBox *EventBox) VisibleWindow() bool {
 	var _arg0 *C.GtkEventBox // out
@@ -168,7 +168,7 @@ func (eventBox *EventBox) VisibleWindow() bool {
 //
 // The function takes the following parameters:
 //
-//    - aboveChild: TRUE if the event box window is above its child.
+//   - aboveChild: TRUE if the event box window is above its child.
 //
 func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 	var _arg0 *C.GtkEventBox // out
@@ -187,8 +187,8 @@ func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 // SetVisibleWindow: set whether the event box uses a visible or invisible child
 // window. The default is to use visible windows.
 //
-// In an invisible window event box, the window that the event box creates is a
-// GDK_INPUT_ONLY window, which means that it is invisible and only serves to
+// In an invisible window event box, the window that the event box creates is
+// a GDK_INPUT_ONLY window, which means that it is invisible and only serves to
 // receive events.
 //
 // A visible window event box creates a visible (GDK_INPUT_OUTPUT) window that
@@ -201,21 +201,21 @@ func (eventBox *EventBox) SetAboveChild(aboveChild bool) {
 // The main reason to create a non input-only event box is if you want to set
 // the background to a different color or draw on it.
 //
-// There is one unexpected issue for an invisible event box that has its window
-// below the child. (See gtk_event_box_set_above_child().) Since the input-only
-// window is not an ancestor window of any windows that descendent widgets of
-// the event box create, events on these windows aren’t propagated up by the
-// windowing system, but only by GTK+. The practical effect of this is if an
-// event isn’t in the event mask for the descendant window (see
+// There is one unexpected issue for an invisible event box that has its
+// window below the child. (See gtk_event_box_set_above_child().) Since the
+// input-only window is not an ancestor window of any windows that descendent
+// widgets of the event box create, events on these windows aren’t propagated
+// up by the windowing system, but only by GTK+. The practical effect of
+// this is if an event isn’t in the event mask for the descendant window (see
 // gtk_widget_add_events()), it won’t be received by the event box.
 //
-// This problem doesn’t occur for visible event boxes, because in that case, the
-// event box window is actually the ancestor of the descendant windows, not just
-// at the same place on the screen.
+// This problem doesn’t occur for visible event boxes, because in that case,
+// the event box window is actually the ancestor of the descendant windows,
+// not just at the same place on the screen.
 //
 // The function takes the following parameters:
 //
-//    - visibleWindow: TRUE to make the event box have a visible window.
+//   - visibleWindow: TRUE to make the event box have a visible window.
 //
 func (eventBox *EventBox) SetVisibleWindow(visibleWindow bool) {
 	var _arg0 *C.GtkEventBox // out

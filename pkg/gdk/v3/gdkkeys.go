@@ -35,12 +35,12 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - symbol: keyval.
+//   - symbol: keyval.
 //
 // The function returns the following values:
 //
-//    - lower: return location for lowercase version of symbol.
-//    - upper: return location for uppercase version of symbol.
+//   - lower: return location for lowercase version of symbol.
+//   - upper: return location for uppercase version of symbol.
 //
 func KeyvalConvertCase(symbol uint) (lower, upper uint) {
 	var _arg1 C.guint // out
@@ -68,12 +68,12 @@ func KeyvalConvertCase(symbol uint) (lower, upper uint) {
 //
 // The function takes the following parameters:
 //
-//    - keyvalName: key name.
+//   - keyvalName: key name.
 //
 // The function returns the following values:
 //
-//    - guint: corresponding key value, or GDK_KEY_VoidSymbol if the key name is
-//      not a valid key.
+//   - guint: corresponding key value, or GDK_KEY_VoidSymbol if the key name is
+//     not a valid key.
 //
 func KeyvalFromName(keyvalName string) uint {
 	var _arg1 *C.gchar // out
@@ -96,12 +96,12 @@ func KeyvalFromName(keyvalName string) uint {
 //
 // The function takes the following parameters:
 //
-//    - keyval: key value.
+//   - keyval: key value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if keyval is in lower case, or if keyval is not subject to case
-//      conversion.
+//   - ok: TRUE if keyval is in lower case, or if keyval is not subject to case
+//     conversion.
 //
 func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
@@ -125,12 +125,12 @@ func KeyvalIsLower(keyval uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - keyval: key value.
+//   - keyval: key value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if keyval is in upper case, or if keyval is not subject to case
-//      conversion.
+//   - ok: TRUE if keyval is in upper case, or if keyval is not subject to case
+//     conversion.
 //
 func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
@@ -157,12 +157,12 @@ func KeyvalIsUpper(keyval uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - keyval: key value.
+//   - keyval: key value.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the name of the key, or NULL if keyval
-//      is not a valid key. The string should not be modified.
+//   - utf8 (optional): string containing the name of the key, or NULL if keyval
+//     is not a valid key. The string should not be modified.
 //
 func KeyvalName(keyval uint) string {
 	var _arg1 C.guint  // out
@@ -186,12 +186,12 @@ func KeyvalName(keyval uint) string {
 //
 // The function takes the following parameters:
 //
-//    - keyval: key value.
+//   - keyval: key value.
 //
 // The function returns the following values:
 //
-//    - guint: lower case form of keyval, or keyval itself if it is already in
-//      lower case or it is not subject to case conversion.
+//   - guint: lower case form of keyval, or keyval itself if it is already in
+//     lower case or it is not subject to case conversion.
 //
 func KeyvalToLower(keyval uint) uint {
 	var _arg1 C.guint // out
@@ -214,12 +214,12 @@ func KeyvalToLower(keyval uint) uint {
 //
 // The function takes the following parameters:
 //
-//    - keyval: GDK key symbol.
+//   - keyval: GDK key symbol.
 //
 // The function returns the following values:
 //
-//    - guint32: corresponding unicode character, or 0 if there is no
-//      corresponding character.
+//   - guint32: corresponding unicode character, or 0 if there is no
+//     corresponding character.
 //
 func KeyvalToUnicode(keyval uint) uint32 {
 	var _arg1 C.guint   // out
@@ -241,12 +241,12 @@ func KeyvalToUnicode(keyval uint) uint32 {
 //
 // The function takes the following parameters:
 //
-//    - keyval: key value.
+//   - keyval: key value.
 //
 // The function returns the following values:
 //
-//    - guint: upper case form of keyval, or keyval itself if it is already in
-//      upper case or it is not subject to case conversion.
+//   - guint: upper case form of keyval, or keyval itself if it is already in
+//     upper case or it is not subject to case conversion.
 //
 func KeyvalToUpper(keyval uint) uint {
 	var _arg1 C.guint // out
@@ -268,12 +268,12 @@ func KeyvalToUpper(keyval uint) uint {
 //
 // The function takes the following parameters:
 //
-//    - wc: ISO10646 encoded character.
+//   - wc: ISO10646 encoded character.
 //
 // The function returns the following values:
 //
-//    - guint: corresponding GDK key symbol, if one exists. or, if there is no
-//      corresponding symbol, wc | 0x01000000.
+//   - guint: corresponding GDK key symbol, if one exists. or, if there is no
+//     corresponding symbol, wc | 0x01000000.
 //
 func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out
@@ -292,9 +292,9 @@ func UnicodeToKeyval(wc uint32) uint {
 }
 
 // Keymap defines the translation from keyboard state (including a hardware key,
-// a modifier mask, and active keyboard group) to a keyval. This translation has
-// two phases. The first phase is to determine the effective keyboard group and
-// level for the keyboard state; the second phase is to look up the
+// a modifier mask, and active keyboard group) to a keyval. This translation
+// has two phases. The first phase is to determine the effective keyboard
+// group and level for the keyboard state; the second phase is to look up the
 // keycode/group/level triplet in the keymap and see what keyval it corresponds
 // to.
 type Keymap struct {
@@ -338,7 +338,7 @@ func (keymap *Keymap) ConnectStateChanged(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if Caps Lock is on.
+//   - ok: TRUE if Caps Lock is on.
 //
 func (keymap *Keymap) CapsLockState() bool {
 	var _arg0 *C.GdkKeymap // out
@@ -362,8 +362,8 @@ func (keymap *Keymap) CapsLockState() bool {
 //
 // The function returns the following values:
 //
-//    - direction: PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL if it can determine
-//      the direction. PANGO_DIRECTION_NEUTRAL otherwise.
+//   - direction: PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL if it can determine
+//     the direction. PANGO_DIRECTION_NEUTRAL otherwise.
 //
 func (keymap *Keymap) Direction() pango.Direction {
 	var _arg0 *C.GdkKeymap     // out
@@ -389,13 +389,13 @@ func (keymap *Keymap) Direction() pango.Direction {
 //
 // The function takes the following parameters:
 //
-//    - hardwareKeycode: keycode.
+//   - hardwareKeycode: keycode.
 //
 // The function returns the following values:
 //
-//    - keys (optional): return location for array of KeymapKey, or NULL.
-//    - keyvals (optional): return location for array of keyvals, or NULL.
-//    - ok: TRUE if there were any entries.
+//   - keys (optional): return location for array of KeymapKey, or NULL.
+//   - keyvals (optional): return location for array of keyvals, or NULL.
+//   - ok: TRUE if there were any entries.
 //
 func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkKeymap    // out
@@ -449,11 +449,11 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 	return _keys, _keyvals, _ok
 }
 
-// EntriesForKeyval obtains a list of keycode/group/level combinations that will
-// generate keyval. Groups and levels are two kinds of keyboard mode; in
-// general, the level determines whether the top or bottom symbol on a key is
-// used, and the group determines whether the left or right symbol is used. On
-// US keyboards, the shift key changes the keyboard level, and there are no
+// EntriesForKeyval obtains a list of keycode/group/level combinations that
+// will generate keyval. Groups and levels are two kinds of keyboard mode;
+// in general, the level determines whether the top or bottom symbol on a key
+// is used, and the group determines whether the left or right symbol is used.
+// On US keyboards, the shift key changes the keyboard level, and there are no
 // groups. A group switch key might convert a keyboard between Hebrew to English
 // modes, for example. EventKey contains a group field that indicates the active
 // keyboard group. The level is computed from the modifier mask. The returned
@@ -461,12 +461,12 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 //
 // The function takes the following parameters:
 //
-//    - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
+//   - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
 //
 // The function returns the following values:
 //
-//    - keys: return location for an array of KeymapKey.
-//    - ok: TRUE if keys were found and returned.
+//   - keys: return location for an array of KeymapKey.
+//   - ok: TRUE if keys were found and returned.
 //
 func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkKeymap    // out
@@ -517,11 +517,11 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 //
 // The function takes the following parameters:
 //
-//    - intent: use case for the modifier mask.
+//   - intent: use case for the modifier mask.
 //
 // The function returns the following values:
 //
-//    - modifierType: modifier mask used for intent.
+//   - modifierType: modifier mask used for intent.
 //
 func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
 	var _arg0 *C.GdkKeymap        // out
@@ -546,7 +546,7 @@ func (keymap *Keymap) ModifierMask(intent ModifierIntent) ModifierType {
 //
 // The function returns the following values:
 //
-//    - guint: current modifier state.
+//   - guint: current modifier state.
 //
 func (keymap *Keymap) ModifierState() uint {
 	var _arg0 *C.GdkKeymap // out
@@ -568,7 +568,7 @@ func (keymap *Keymap) ModifierState() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if Num Lock is on.
+//   - ok: TRUE if Num Lock is on.
 //
 func (keymap *Keymap) NumLockState() bool {
 	var _arg0 *C.GdkKeymap // out
@@ -592,7 +592,7 @@ func (keymap *Keymap) NumLockState() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if Scroll Lock is on.
+//   - ok: TRUE if Scroll Lock is on.
 //
 func (keymap *Keymap) ScrollLockState() bool {
 	var _arg0 *C.GdkKeymap // out
@@ -617,7 +617,7 @@ func (keymap *Keymap) ScrollLockState() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there are layouts in both directions, FALSE otherwise.
+//   - ok: TRUE if there are layouts in both directions, FALSE otherwise.
 //
 func (keymap *Keymap) HaveBidiLayouts() bool {
 	var _arg0 *C.GdkKeymap // out
@@ -637,18 +637,18 @@ func (keymap *Keymap) HaveBidiLayouts() bool {
 	return _ok
 }
 
-// LookupKey looks up the keyval mapped to a keycode/group/level triplet. If no
-// keyval is bound to key, returns 0. For normal user input, you want to use
-// gdk_keymap_translate_keyboard_state() instead of this function, since the
+// LookupKey looks up the keyval mapped to a keycode/group/level triplet.
+// If no keyval is bound to key, returns 0. For normal user input, you want to
+// use gdk_keymap_translate_keyboard_state() instead of this function, since the
 // effective group/level may not be the same as the current keyboard state.
 //
 // The function takes the following parameters:
 //
-//    - key with keycode, group, and level initialized.
+//   - key with keycode, group, and level initialized.
 //
 // The function returns the following values:
 //
-//    - guint: keyval, or 0 if none was mapped to the given key.
+//   - guint: keyval, or 0 if none was mapped to the given key.
 //
 func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 	var _arg0 *C.GdkKeymap    // out
@@ -671,16 +671,16 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 
 // TranslateKeyboardState translates the contents of a EventKey into a keyval,
 // effective group, and level. Modifiers that affected the translation and are
-// thus unavailable for application use are returned in consumed_modifiers. See
-// [Groups][key-group-explanation] for an explanation of groups and levels. The
-// effective_group is the group that was actually used for the translation; some
-// keys such as Enter are not affected by the active keyboard group. The level
-// is derived from state. For convenience, EventKey already contains the
-// translated keyval, so this function isn’t as useful as you might think.
+// thus unavailable for application use are returned in consumed_modifiers.
+// See [Groups][key-group-explanation] for an explanation of groups and levels.
+// The effective_group is the group that was actually used for the translation;
+// some keys such as Enter are not affected by the active keyboard group.
+// The level is derived from state. For convenience, EventKey already contains
+// the translated keyval, so this function isn’t as useful as you might think.
 //
 // consumed_modifiers gives modifiers that should be masked outfrom state when
-// comparing this key press to a hot key. For instance, on a US keyboard, the
-// plus symbol is shifted, so when comparing a key press to a <Control>plus
+// comparing this key press to a hot key. For instance, on a US keyboard,
+// the plus symbol is shifted, so when comparing a key press to a <Control>plus
 // accelerator <Shift> should be masked out.
 //
 //    // XXX Don’t do this XXX
@@ -691,26 +691,26 @@ func (keymap *Keymap) LookupKey(key *KeymapKey) uint {
 // However, this did not work if multi-modifier combinations were used in the
 // keymap, since, for instance, <Control> would be masked out even if only
 // <Control><Alt> was used in the keymap. To support this usage as well as well
-// as possible, all single modifier combinations that could affect the key for
-// any combination of modifiers will be returned in consumed_modifiers;
+// as possible, all single modifier combinations that could affect the key
+// for any combination of modifiers will be returned in consumed_modifiers;
 // multi-modifier combinations are returned only when actually found in state.
 // When you store accelerators, you should always store them with consumed
 // modifiers removed. Store <Control>plus, not <Control><Shift>plus,.
 //
 // The function takes the following parameters:
 //
-//    - hardwareKeycode: keycode.
-//    - state: modifier state.
-//    - group: active keyboard group.
+//   - hardwareKeycode: keycode.
+//   - state: modifier state.
+//   - group: active keyboard group.
 //
 // The function returns the following values:
 //
-//    - keyval (optional): return location for keyval, or NULL.
-//    - effectiveGroup (optional): return location for effective group, or NULL.
-//    - level (optional): return location for level, or NULL.
-//    - consumedModifiers (optional): return location for modifiers that were
-//      used to determine the group or level, or NULL.
-//    - ok: TRUE if there was a keyval bound to the keycode/state/group.
+//   - keyval (optional): return location for keyval, or NULL.
+//   - effectiveGroup (optional): return location for effective group, or NULL.
+//   - level (optional): return location for level, or NULL.
+//   - consumedModifiers (optional): return location for modifiers that were
+//     used to determine the group or level, or NULL.
+//   - ok: TRUE if there was a keyval bound to the keycode/state/group.
 //
 func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup, level int, consumedModifiers ModifierType, ok bool) {
 	var _arg0 *C.GdkKeymap      // out
@@ -757,7 +757,7 @@ func (keymap *Keymap) TranslateKeyboardState(hardwareKeycode uint, state Modifie
 //
 // The function returns the following values:
 //
-//    - keymap attached to the default display.
+//   - keymap attached to the default display.
 //
 func KeymapGetDefault() *Keymap {
 	var _cret *C.GdkKeymap // in
@@ -811,8 +811,8 @@ func (k *KeymapKey) Keycode() uint {
 	return _v
 }
 
-// Group indicates movement in a horizontal direction. Usually groups are used
-// for two different languages. In group 0, a key might have two English
+// Group indicates movement in a horizontal direction. Usually groups are
+// used for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) Group() int {
@@ -825,8 +825,8 @@ func (k *KeymapKey) Group() int {
 // Level indicates which symbol on the key will be used, in a vertical
 // direction. So on a standard US keyboard, the key with the number “1” on it
 // also has the exclamation point ("!") character on it. The level indicates
-// whether to use the “1” or the “!” symbol. The letter keys are considered to
-// have a lowercase letter at level 0, and an uppercase letter at level 1,
+// whether to use the “1” or the “!” symbol. The letter keys are considered
+// to have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
 func (k *KeymapKey) Level() int {
 	valptr := &k.native.level
@@ -841,8 +841,8 @@ func (k *KeymapKey) SetKeycode(keycode uint) {
 	*valptr = C.guint(keycode)
 }
 
-// Group indicates movement in a horizontal direction. Usually groups are used
-// for two different languages. In group 0, a key might have two English
+// Group indicates movement in a horizontal direction. Usually groups are
+// used for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) SetGroup(group int) {
@@ -853,8 +853,8 @@ func (k *KeymapKey) SetGroup(group int) {
 // Level indicates which symbol on the key will be used, in a vertical
 // direction. So on a standard US keyboard, the key with the number “1” on it
 // also has the exclamation point ("!") character on it. The level indicates
-// whether to use the “1” or the “!” symbol. The letter keys are considered to
-// have a lowercase letter at level 0, and an uppercase letter at level 1,
+// whether to use the “1” or the “!” symbol. The letter keys are considered
+// to have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
 func (k *KeymapKey) SetLevel(level int) {
 	valptr := &k.native.level

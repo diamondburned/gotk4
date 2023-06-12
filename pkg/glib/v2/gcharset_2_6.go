@@ -10,9 +10,9 @@ import (
 // #include <glib.h>
 import "C"
 
-// GetLanguageNames computes a list of applicable locale names, which can be
-// used to e.g. construct locale-dependent filenames or search paths. The
-// returned list is sorted from most desirable to least desirable and always
+// GetLanguageNames computes a list of applicable locale names, which can
+// be used to e.g. construct locale-dependent filenames or search paths.
+// The returned list is sorted from most desirable to least desirable and always
 // contains the default locale "C".
 //
 // For example, if LANGUAGE=de:en_US, then the returned list is "de", "en_US",
@@ -23,8 +23,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings owned by GLib that must not be
-//      modified or freed.
+//   - utf8s: NULL-terminated array of strings owned by GLib that must not be
+//     modified or freed.
 //
 func GetLanguageNames() []string {
 	var _cret **C.gchar // in

@@ -56,11 +56,11 @@ func init() {
 	})
 }
 
-// EntryCompletionMatchFunc: function which decides whether the row indicated by
-// iter matches a given key, and should be displayed as a possible completion
+// EntryCompletionMatchFunc: function which decides whether the row indicated
+// by iter matches a given key, and should be displayed as a possible completion
 // for key. Note that key is normalized and case-folded (see g_utf8_normalize()
-// and g_utf8_casefold()). If this is not appropriate, match functions have
-// access to the unmodified key via gtk_entry_get_text (GTK_ENTRY
+// and g_utf8_casefold()). If this is not appropriate, match functions
+// have access to the unmodified key via gtk_entry_get_text (GTK_ENTRY
 // (gtk_entry_completion_get_entry ())).
 type EntryCompletionMatchFunc func(completion *EntryCompletion, key string, iter *TreeIter) (ok bool)
 
@@ -71,8 +71,8 @@ type EntryCompletionOverrides struct {
 	ActionActivated func(index_ int)
 	// The function takes the following parameters:
 	//
-	//    - model
-	//    - iter
+	//   - model
+	//   - iter
 	//
 	// The function returns the following values:
 	//
@@ -84,8 +84,8 @@ type EntryCompletionOverrides struct {
 	InsertPrefix func(prefix string) bool
 	// The function takes the following parameters:
 	//
-	//    - model
-	//    - iter
+	//   - model
+	//   - iter
 	//
 	// The function returns the following values:
 	//
@@ -108,27 +108,27 @@ func defaultEntryCompletionOverrides(v *EntryCompletion) EntryCompletionOverride
 // interface, to allow the user to add extra cells to the TreeView with
 // completion matches.
 //
-// “Completion functionality” means that when the user modifies the text in the
-// entry, EntryCompletion checks which rows in the model match the current
-// content of the entry, and displays a list of matches. By default, the
-// matching is done by comparing the entry text case-insensitively against the
-// text column of the model (see gtk_entry_completion_set_text_column()), but
-// this can be overridden with a custom match function (see
+// “Completion functionality” means that when the user modifies the text
+// in the entry, EntryCompletion checks which rows in the model match the
+// current content of the entry, and displays a list of matches. By default,
+// the matching is done by comparing the entry text case-insensitively against
+// the text column of the model (see gtk_entry_completion_set_text_column()),
+// but this can be overridden with a custom match function (see
 // gtk_entry_completion_set_match_func()).
 //
-// When the user selects a completion, the content of the entry is updated. By
-// default, the content of the entry is replaced by the text column of the
-// model, but this can be overridden by connecting to the
+// When the user selects a completion, the content of the entry is updated.
+// By default, the content of the entry is replaced by the text column
+// of the model, but this can be overridden by connecting to the
 // EntryCompletion::match-selected signal and updating the entry in the signal
 // handler. Note that you should return TRUE from the signal handler to suppress
 // the default behaviour.
 //
 // To add completion functionality to an entry, use gtk_entry_set_completion().
 //
-// In addition to regular completion matches, which will be inserted into the
-// entry when they are selected, EntryCompletion also allows to display
-// “actions” in the popup window. Their appearance is similar to menuitems, to
-// differentiate them clearly from completion strings. When an action is
+// In addition to regular completion matches, which will be inserted into
+// the entry when they are selected, EntryCompletion also allows to display
+// “actions” in the popup window. Their appearance is similar to menuitems,
+// to differentiate them clearly from completion strings. When an action is
 // selected, the EntryCompletion::action-activated signal is emitted.
 //
 // GtkEntryCompletion uses a TreeModelFilter model to represent the subset of
@@ -136,10 +136,10 @@ func defaultEntryCompletionOverrides(v *EntryCompletion) EntryCompletionOverride
 // signals EntryCompletion::match-selected and EntryCompletion::cursor-on-match
 // take the original model and an iter pointing to that model as arguments,
 // other callbacks and signals (such as CellLayoutDataFuncs or
-// CellArea::apply-attributes) will generally take the filter model as argument.
-// As long as you are only calling gtk_tree_model_get(), this will make no
-// difference to you. If for some reason, you need the original model, use
-// gtk_tree_model_filter_get_model(). Don’t forget to use
+// CellArea::apply-attributes) will generally take the filter model
+// as argument. As long as you are only calling gtk_tree_model_get(),
+// this will make no difference to you. If for some reason, you need the
+// original model, use gtk_tree_model_filter_get_model(). Don’t forget to use
 // gtk_tree_model_filter_convert_iter_to_child_iter() to obtain a matching iter.
 type EntryCompletion struct {
 	_ [0]func() // equal guard
@@ -233,9 +233,9 @@ func (completion *EntryCompletion) ConnectInsertPrefix(f func(prefix string) (ok
 	return coreglib.ConnectGeneratedClosure(completion, "insert-prefix", false, unsafe.Pointer(C._gotk4_gtk3_EntryCompletion_ConnectInsertPrefix), f)
 }
 
-// ConnectMatchSelected gets emitted when a match from the list is selected. The
-// default behaviour is to replace the contents of the entry with the contents
-// of the text column in the row pointed to by iter.
+// ConnectMatchSelected gets emitted when a match from the list is selected.
+// The default behaviour is to replace the contents of the entry with the
+// contents of the text column in the row pointed to by iter.
 //
 // Note that model is the model that was passed to
 // gtk_entry_completion_set_model().
@@ -254,7 +254,7 @@ func (completion *EntryCompletion) ConnectNoMatches(f func()) coreglib.SignalHan
 //
 // The function returns the following values:
 //
-//    - entryCompletion: newly created EntryCompletion object.
+//   - entryCompletion: newly created EntryCompletion object.
 //
 func NewEntryCompletion() *EntryCompletion {
 	var _cret *C.GtkEntryCompletion // in
@@ -274,11 +274,11 @@ func NewEntryCompletion() *EntryCompletion {
 //
 // The function takes the following parameters:
 //
-//    - area used to layout cells.
+//   - area used to layout cells.
 //
 // The function returns the following values:
 //
-//    - entryCompletion: newly created EntryCompletion object.
+//   - entryCompletion: newly created EntryCompletion object.
 //
 func NewEntryCompletionWithArea(area CellAreaer) *EntryCompletion {
 	var _arg1 *C.GtkCellArea        // out
@@ -310,17 +310,17 @@ func (completion *EntryCompletion) Complete() {
 
 // ComputePrefix computes the common prefix that is shared by all rows in
 // completion that start with key. If no row matches key, NULL will be returned.
-// Note that a text column must have been set for this function to work, see
-// gtk_entry_completion_set_text_column() for details.
+// Note that a text column must have been set for this function to work,
+// see gtk_entry_completion_set_text_column() for details.
 //
 // The function takes the following parameters:
 //
-//    - key: text to complete for.
+//   - key: text to complete for.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): common prefix all rows starting with key or NULL if no
-//      row matches key.
+//   - utf8 (optional): common prefix all rows starting with key or NULL if no
+//     row matches key.
 //
 func (completion *EntryCompletion) ComputePrefix(key string) string {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -352,7 +352,7 @@ func (completion *EntryCompletion) ComputePrefix(key string) string {
 //
 // The function takes the following parameters:
 //
-//    - index_: index of the item to delete.
+//   - index_: index of the item to delete.
 //
 func (completion *EntryCompletion) DeleteAction(index_ int) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -371,7 +371,7 @@ func (completion *EntryCompletion) DeleteAction(index_ int) {
 //
 // The function returns the following values:
 //
-//    - utf8: prefix for the current completion.
+//   - utf8: prefix for the current completion.
 //
 func (completion *EntryCompletion) CompletionPrefix() string {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -393,7 +393,7 @@ func (completion *EntryCompletion) CompletionPrefix() string {
 //
 // The function returns the following values:
 //
-//    - widget: entry completion has been attached to.
+//   - widget: entry completion has been attached to.
 //
 func (completion *EntryCompletion) Entry() Widgetter {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -432,7 +432,7 @@ func (completion *EntryCompletion) Entry() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if inline completion is turned on.
+//   - ok: TRUE if inline completion is turned on.
 //
 func (completion *EntryCompletion) InlineCompletion() bool {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -456,7 +456,7 @@ func (completion *EntryCompletion) InlineCompletion() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if inline-selection mode is on.
+//   - ok: TRUE if inline-selection mode is on.
 //
 func (completion *EntryCompletion) InlineSelection() bool {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -480,7 +480,7 @@ func (completion *EntryCompletion) InlineSelection() bool {
 //
 // The function returns the following values:
 //
-//    - gint: currently used minimum key length.
+//   - gint: currently used minimum key length.
 //
 func (completion *EntryCompletion) MinimumKeyLength() int {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -503,7 +503,7 @@ func (completion *EntryCompletion) MinimumKeyLength() int {
 //
 // The function returns the following values:
 //
-//    - treeModel (optional) or NULL if none is currently being used.
+//   - treeModel (optional) or NULL if none is currently being used.
 //
 func (completion *EntryCompletion) Model() *TreeModel {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -528,7 +528,7 @@ func (completion *EntryCompletion) Model() *TreeModel {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if popup completion is turned on.
+//   - ok: TRUE if popup completion is turned on.
 //
 func (completion *EntryCompletion) PopupCompletion() bool {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -553,7 +553,7 @@ func (completion *EntryCompletion) PopupCompletion() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the popup window will be resized to the width of the entry.
+//   - ok: TRUE if the popup window will be resized to the width of the entry.
 //
 func (completion *EntryCompletion) PopupSetWidth() bool {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -578,8 +578,8 @@ func (completion *EntryCompletion) PopupSetWidth() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the popup window will appear regardless of the number of
-//      matches.
+//   - ok: TRUE if the popup window will appear regardless of the number of
+//     matches.
 //
 func (completion *EntryCompletion) PopupSingleMatch() bool {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -603,7 +603,7 @@ func (completion *EntryCompletion) PopupSingleMatch() bool {
 //
 // The function returns the following values:
 //
-//    - gint: column containing the strings.
+//   - gint: column containing the strings.
 //
 func (completion *EntryCompletion) TextColumn() int {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -626,8 +626,8 @@ func (completion *EntryCompletion) TextColumn() int {
 //
 // The function takes the following parameters:
 //
-//    - index_: index of the item to insert.
-//    - markup of the item to insert.
+//   - index_: index of the item to insert.
+//   - markup of the item to insert.
 //
 func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -654,8 +654,8 @@ func (completion *EntryCompletion) InsertActionMarkup(index_ int, markup string)
 //
 // The function takes the following parameters:
 //
-//    - index_: index of the item to insert.
-//    - text of the item to insert.
+//   - index_: index of the item to insert.
+//   - text of the item to insert.
 //
 func (completion *EntryCompletion) InsertActionText(index_ int, text string) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -688,7 +688,7 @@ func (completion *EntryCompletion) InsertPrefix() {
 //
 // The function takes the following parameters:
 //
-//    - inlineCompletion: TRUE to do inline completion.
+//   - inlineCompletion: TRUE to do inline completion.
 //
 func (completion *EntryCompletion) SetInlineCompletion(inlineCompletion bool) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -709,7 +709,7 @@ func (completion *EntryCompletion) SetInlineCompletion(inlineCompletion bool) {
 //
 // The function takes the following parameters:
 //
-//    - inlineSelection: TRUE to do inline selection.
+//   - inlineSelection: TRUE to do inline selection.
 //
 func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -731,7 +731,7 @@ func (completion *EntryCompletion) SetInlineSelection(inlineSelection bool) {
 //
 // The function takes the following parameters:
 //
-//    - fn to use.
+//   - fn to use.
 //
 func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 	var _arg0 *C.GtkEntryCompletion         // out
@@ -750,13 +750,13 @@ func (completion *EntryCompletion) SetMatchFunc(fn EntryCompletionMatchFunc) {
 }
 
 // SetMinimumKeyLength requires the length of the search key for completion to
-// be at least length. This is useful for long lists, where completing using a
-// small key takes a lot of time and will come up with meaningless results
+// be at least length. This is useful for long lists, where completing using
+// a small key takes a lot of time and will come up with meaningless results
 // anyway (ie, a too large dataset).
 //
 // The function takes the following parameters:
 //
-//    - length: minimum length of the key in order to start completing.
+//   - length: minimum length of the key in order to start completing.
 //
 func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -776,7 +776,7 @@ func (completion *EntryCompletion) SetMinimumKeyLength(length int) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): TreeModel.
+//   - model (optional): TreeModel.
 //
 func (completion *EntryCompletion) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -797,7 +797,7 @@ func (completion *EntryCompletion) SetModel(model TreeModeller) {
 //
 // The function takes the following parameters:
 //
-//    - popupCompletion: TRUE to do popup completion.
+//   - popupCompletion: TRUE to do popup completion.
 //
 func (completion *EntryCompletion) SetPopupCompletion(popupCompletion bool) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -818,7 +818,7 @@ func (completion *EntryCompletion) SetPopupCompletion(popupCompletion bool) {
 //
 // The function takes the following parameters:
 //
-//    - popupSetWidth: TRUE to make the width of the popup the same as the entry.
+//   - popupSetWidth: TRUE to make the width of the popup the same as the entry.
 //
 func (completion *EntryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -840,8 +840,8 @@ func (completion *EntryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 //
 // The function takes the following parameters:
 //
-//    - popupSingleMatch: TRUE if the popup should appear even for a single
-//      match.
+//   - popupSingleMatch: TRUE if the popup should appear even for a single
+//     match.
 //
 func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -857,18 +857,18 @@ func (completion *EntryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 	runtime.KeepAlive(popupSingleMatch)
 }
 
-// SetTextColumn: convenience function for setting up the most used case of this
-// code: a completion list with just strings. This function will set up
+// SetTextColumn: convenience function for setting up the most used case of
+// this code: a completion list with just strings. This function will set up
 // completion to have a list displaying all (and just) strings in the completion
 // list, and to get those strings from column in the model of completion.
 //
 // This functions creates and adds a CellRendererText for the selected column.
-// If you need to set the text column, but don't want the cell renderer, use
-// g_object_set() to set the EntryCompletion:text-column property directly.
+// If you need to set the text column, but don't want the cell renderer,
+// use g_object_set() to set the EntryCompletion:text-column property directly.
 //
 // The function takes the following parameters:
 //
-//    - column in the model of completion to get strings from.
+//   - column in the model of completion to get strings from.
 //
 func (completion *EntryCompletion) SetTextColumn(column int) {
 	var _arg0 *C.GtkEntryCompletion // out
@@ -901,8 +901,8 @@ func (completion *EntryCompletion) actionActivated(index_ int) {
 
 // The function takes the following parameters:
 //
-//    - model
-//    - iter
+//   - model
+//   - iter
 //
 // The function returns the following values:
 //
@@ -964,8 +964,8 @@ func (completion *EntryCompletion) insertPrefix(prefix string) bool {
 
 // The function takes the following parameters:
 //
-//    - model
-//    - iter
+//   - model
+//   - iter
 //
 // The function returns the following values:
 //

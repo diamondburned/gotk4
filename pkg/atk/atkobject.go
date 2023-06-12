@@ -131,8 +131,8 @@ func init() {
 	})
 }
 
-// AttributeSet: this is a singly-linked list (a List) of Attribute. It is used
-// by atk_text_get_run_attributes(), atk_text_get_default_attributes(),
+// AttributeSet: this is a singly-linked list (a List) of Attribute. It is
+// used by atk_text_get_run_attributes(), atk_text_get_default_attributes(),
 // atk_editable_text_set_run_attributes(), atk_document_get_attributes() and
 // atk_object_get_attributes().
 type AttributeSet = coreglib.SList
@@ -297,8 +297,8 @@ const (
 	// RolePasswordText: text object uses for passwords, or other places where
 	// the text content is not shown visibly to the user.
 	RolePasswordText
-	// RolePopupMenu: temporary window that is usually used to offer the user a
-	// list of choices, and then hides when the user selects one of those
+	// RolePopupMenu: temporary window that is usually used to offer the user
+	// a list of choices, and then hides when the user selects one of those
 	// choices.
 	RolePopupMenu
 	// RoleProgressBar: object used to indicate how much of a task has been
@@ -355,9 +355,9 @@ const (
 	// RoleText: interactive widget that supports multiple lines of text and
 	// optionally accepts user input, but whose purpose is not to solicit user
 	// input. Thus ATK_ROLE_TEXT is appropriate for the text view in a plain
-	// text editor but inappropriate for an input field in a dialog box or web
-	// form. For widgets whose purpose is to solicit input from the user, see
-	// ATK_ROLE_ENTRY and ATK_ROLE_PASSWORD_TEXT. For generic objects which
+	// text editor but inappropriate for an input field in a dialog box or
+	// web form. For widgets whose purpose is to solicit input from the user,
+	// see ATK_ROLE_ENTRY and ATK_ROLE_PASSWORD_TEXT. For generic objects which
 	// display a brief amount of textual information, see ATK_ROLE_STATIC.
 	RoleText
 	// RoleToggleButton: specialized push button that can be checked or
@@ -408,30 +408,30 @@ const (
 	// This role is a grouping "hint" indicating that the contained objects
 	// share a context. (Since: 1.7.2).
 	RoleEmbedded
-	// RoleEntry: object is a component whose textual content may be entered or
-	// modified by the user, provided ATK_STATE_EDITABLE is present. (Since:
+	// RoleEntry: object is a component whose textual content may be entered
+	// or modified by the user, provided ATK_STATE_EDITABLE is present. (Since:
 	// 1.11).
 	RoleEntry
-	// RoleChart: object is a graphical depiction of quantitative data. It may
-	// contain multiple subelements whose attributes and/or description may be
-	// queried to obtain both the quantitative data and information about how
-	// the data is being presented. The LABELLED_BY relation is particularly
-	// important in interpreting objects of this type, as is the
+	// RoleChart: object is a graphical depiction of quantitative data.
+	// It may contain multiple subelements whose attributes and/or description
+	// may be queried to obtain both the quantitative data and information
+	// about how the data is being presented. The LABELLED_BY relation is
+	// particularly important in interpreting objects of this type, as is the
 	// accessible-description property. (Since: 1.11).
 	RoleChart
 	// RoleCaption: object contains descriptive information, usually textual,
 	// about another user interface element such as a table, chart, or image.
 	// (Since: 1.11).
 	RoleCaption
-	// RoleDocumentFrame: object is a visual frame or container which contains a
-	// view of document content. Document frames may occur within another
-	// Document instance, in which case the second document may be said to be
-	// embedded in the containing instance. HTML frames are often
+	// RoleDocumentFrame: object is a visual frame or container which
+	// contains a view of document content. Document frames may occur within
+	// another Document instance, in which case the second document may be
+	// said to be embedded in the containing instance. HTML frames are often
 	// ROLE_DOCUMENT_FRAME. Either this object, or a singleton descendant,
 	// should implement the Document interface. (Since: 1.11).
 	RoleDocumentFrame
-	// RoleHeading: object serves as a heading for content which follows it in a
-	// document. The 'heading level' of the heading, if availabe, may be
+	// RoleHeading: object serves as a heading for content which follows it
+	// in a document. The 'heading level' of the heading, if availabe, may be
 	// obtained by querying the object's attributes.
 	RoleHeading
 	// RolePage: object is a containing instance which encapsulates a page of
@@ -448,9 +448,9 @@ const (
 	// hierarchy, and is exposed for purely technical reasons. Objects of this
 	// role should normally be ignored by clients. (Since: 1.11).
 	RoleRedundantObject
-	// RoleForm: object is a container for form controls, for instance as part
-	// of a web form or user-input form within a document. This role is
-	// primarily a tag/convenience for clients when navigating complex
+	// RoleForm: object is a container for form controls, for instance as
+	// part of a web form or user-input form within a document. This role
+	// is primarily a tag/convenience for clients when navigating complex
 	// documents, it is not expected that ordinary GUI containers will always
 	// have ATK_ROLE_FORM. (Since: 1.12.0).
 	RoleForm
@@ -530,8 +530,8 @@ const (
 	RoleLandmark
 	// RoleLog: text widget or container holding log content, such as chat
 	// history and error logs. In this role there is a relationship between the
-	// arrival of new items in the log and the reading order. The log contains a
-	// meaningful sequence and new information is added only to the end of the
+	// arrival of new items in the log and the reading order. The log contains
+	// a meaningful sequence and new information is added only to the end of the
 	// log, not at arbitrary points. (Since: 2.12).
 	RoleLog
 	// RoleMarquee: container where non-essential information changes
@@ -563,15 +563,15 @@ const (
 	// RoleDescriptionValue: object that represents the description, definition
 	// or value of a term. (Since: 2.12).
 	RoleDescriptionValue
-	// RoleStatic: generic non-container object whose purpose is to display a
-	// brief amount of information to the user and whose role is known by the
-	// implementor but lacks semantic value for the user. Examples in which
-	// ATK_ROLE_STATIC is appropriate include the message displayed in a message
-	// box and an image used as an alternative means to display text.
+	// RoleStatic: generic non-container object whose purpose is to display
+	// a brief amount of information to the user and whose role is known by
+	// the implementor but lacks semantic value for the user. Examples in
+	// which ATK_ROLE_STATIC is appropriate include the message displayed in a
+	// message box and an image used as an alternative means to display text.
 	// ATK_ROLE_STATIC should not be applied to widgets which are traditionally
-	// interactive, objects which display a significant amount of content, or
-	// any object which has an accessible relation pointing to another object.
-	// Implementors should expose the displayed information through the
+	// interactive, objects which display a significant amount of content,
+	// or any object which has an accessible relation pointing to another
+	// object. Implementors should expose the displayed information through the
 	// accessible name of the object. If doing so seems inappropriate, it may
 	// indicate that a different role should be used. For labels which describe
 	// another widget, see ATK_ROLE_LABEL. For text views, see ATK_ROLE_TEXT.
@@ -596,17 +596,17 @@ const (
 	// deleted, e.g. in revision history or a content view providing suggestions
 	// from reviewers. (Since: 2.34).
 	RoleContentDeletion
-	// RoleContentInsertion: content previously inserted or proposed to be
-	// inserted, e.g. in revision history or a content view providing
+	// RoleContentInsertion: content previously inserted or proposed to
+	// be inserted, e.g. in revision history or a content view providing
 	// suggestions from reviewers. (Since: 2.34).
 	RoleContentInsertion
 	// RoleMark: run of content that is marked or highlighted, such as for
-	// reference purposes, or to call it out as having a special purpose. If the
-	// marked content has an associated section in the document elaborating on
-	// the reason for the mark, then ATK_RELATION_DETAILS should be used on the
-	// mark to point to that associated section. In addition, the reciprocal
-	// relation ATK_RELATION_DETAILS_FOR should be used on the associated
-	// content section to point back to the mark. (Since: 2.36).
+	// reference purposes, or to call it out as having a special purpose.
+	// If the marked content has an associated section in the document
+	// elaborating on the reason for the mark, then ATK_RELATION_DETAILS should
+	// be used on the mark to point to that associated section. In addition,
+	// the reciprocal relation ATK_RELATION_DETAILS_FOR should be used on the
+	// associated content section to point back to the mark. (Since: 2.36).
 	RoleMark
 	// RoleSuggestion: container for content that is called out as a proposed
 	// change from the current version of the document, such as by a reviewer of
@@ -891,12 +891,12 @@ func (r Role) String() string {
 //
 // The function takes the following parameters:
 //
-//    - name: string which is the (non-localized) name of an ATK role.
+//   - name: string which is the (non-localized) name of an ATK role.
 //
 // The function returns the following values:
 //
-//    - role enumerated type corresponding to the specified name, or
-//      K_ROLE_INVALID if no matching role is found.
+//   - role enumerated type corresponding to the specified name, or
+//     K_ROLE_INVALID if no matching role is found.
 //
 func RoleForName(name string) Role {
 	var _arg1 *C.gchar  // out
@@ -920,11 +920,11 @@ func RoleForName(name string) Role {
 //
 // The function takes the following parameters:
 //
-//    - role whose localized name is required.
+//   - role whose localized name is required.
 //
 // The function returns the following values:
 //
-//    - utf8: localized string describing the AtkRole.
+//   - utf8: localized string describing the AtkRole.
 //
 func RoleGetLocalizedName(role Role) string {
 	var _arg1 C.AtkRole // out
@@ -946,11 +946,11 @@ func RoleGetLocalizedName(role Role) string {
 //
 // The function takes the following parameters:
 //
-//    - role whose name is required.
+//   - role whose name is required.
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the AtkRole.
+//   - utf8: string describing the AtkRole.
 //
 func RoleGetName(role Role) string {
 	var _arg1 C.AtkRole // out
@@ -977,12 +977,12 @@ func RoleGetName(role Role) string {
 //
 // The function takes the following parameters:
 //
-//    - name: character string describing the new role.
+//   - name: character string describing the new role.
 //
 // The function returns the following values:
 //
-//    - role for the new role if added properly. ATK_ROLE_INVALID in case of
-//      error.
+//   - role for the new role if added properly. ATK_ROLE_INVALID in case of
+//     error.
 //
 func RoleRegister(name string) Role {
 	var _arg1 *C.gchar  // out
@@ -1005,8 +1005,8 @@ func RoleRegister(name string) Role {
 // class and interface structures to allow for expansion in the future.
 type Function func() (ok bool)
 
-// ImplementorIface: atkImplementor interface is implemented by objects for
-// which AtkObject peers may be obtained via calls to
+// ImplementorIface: atkImplementor interface is implemented by
+// objects for which AtkObject peers may be obtained via calls to
 // iface->(ref_accessible)(implementor);.
 //
 // ImplementorIface wraps an interface. This means the user can get the
@@ -1055,8 +1055,8 @@ type AtkObjectOverrides struct {
 	ActiveDescendantChanged func(child *unsafe.Pointer)
 	// The function takes the following parameters:
 	//
-	//    - changeIndex
-	//    - changedChild (optional)
+	//   - changeIndex
+	//   - changedChild (optional)
 	//
 	ChildrenChanged func(changeIndex uint, changedChild unsafe.Pointer)
 	// The function takes the following parameters:
@@ -1066,8 +1066,8 @@ type AtkObjectOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - utf8: character string representing the accessible description of the
-	//      accessible.
+	//   - utf8: character string representing the accessible description of the
+	//     accessible.
 	//
 	Description func() string
 	// IndexInParent gets the 0-based index of this accessible in its parent;
@@ -1075,7 +1075,7 @@ type AtkObjectOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - gint: integer which is the index of the accessible in its parent.
+	//   - gint: integer which is the index of the accessible in its parent.
 	//
 	IndexInParent func() int
 	// Layer gets the layer of the accessible.
@@ -1084,7 +1084,7 @@ type AtkObjectOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - layer which is the layer of the accessible.
+	//   - layer which is the layer of the accessible.
 	//
 	Layer func() Layer
 	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
@@ -1094,9 +1094,9 @@ type AtkObjectOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - gint which is the zorder of the accessible, i.e. the depth at which
-	//      the component is shown in relation to other components in the same
-	//      container.
+	//   - gint which is the zorder of the accessible, i.e. the depth at which
+	//     the component is shown in relation to other components in the same
+	//     container.
 	//
 	MDIZOrder func() int
 	// The function returns the following values:
@@ -1106,8 +1106,8 @@ type AtkObjectOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - utf8: character string representing the accessible name of the
-	//      object.
+	//   - utf8: character string representing the accessible name of the
+	//     object.
 	//
 	Name func() string
 	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
@@ -1115,8 +1115,8 @@ type AtkObjectOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
-	//      accessible.
+	//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+	//     accessible.
 	//
 	ObjectLocale func() string
 	// Parent gets the accessible parent of the accessible. By default this is
@@ -1130,14 +1130,14 @@ type AtkObjectOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - object representing the accessible parent of the accessible.
+	//   - object representing the accessible parent of the accessible.
 	//
 	Parent func() *AtkObject
 	// Role gets the role of the accessible.
 	//
 	// The function returns the following values:
 	//
-	//    - role which is the role of the accessible.
+	//   - role which is the role of the accessible.
 	//
 	Role func() Role
 	// Initialize: this function is called when implementing subclasses of
@@ -1147,8 +1147,8 @@ type AtkObjectOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - data (optional) which identifies the object for which the AtkObject
-	//      was created.
+	//   - data (optional) which identifies the object for which the AtkObject
+	//     was created.
 	//
 	Initialize func(data unsafe.Pointer)
 	// The function takes the following parameters:
@@ -1158,16 +1158,16 @@ type AtkObjectOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - relationSet representing the relation set of the object.
+	//   - relationSet representing the relation set of the object.
 	//
 	RefRelationSet func() *RelationSet
-	// RefStateSet gets a reference to the state set of the accessible; the
-	// caller must unreference it when it is no longer needed.
+	// RefStateSet gets a reference to the state set of the accessible;
+	// the caller must unreference it when it is no longer needed.
 	//
 	// The function returns the following values:
 	//
-	//    - stateSet: reference to an StateSet which is the state set of the
-	//      accessible.
+	//   - stateSet: reference to an StateSet which is the state set of the
+	//     accessible.
 	//
 	RefStateSet func() *StateSet
 	// RemovePropertyChangeHandler removes a property change handler.
@@ -1176,18 +1176,18 @@ type AtkObjectOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - handlerId: guint which identifies the handler to be removed.
+	//   - handlerId: guint which identifies the handler to be removed.
 	//
 	RemovePropertyChangeHandler func(handlerId uint)
-	// SetDescription sets the accessible description of the accessible. You
-	// can't set the description to NULL. This is reserved for the initial
+	// SetDescription sets the accessible description of the accessible.
+	// You can't set the description to NULL. This is reserved for the initial
 	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
 	// set the name to a empty value you can use "".
 	//
 	// The function takes the following parameters:
 	//
-	//    - description: character string to be set as the accessible
-	//      description.
+	//   - description: character string to be set as the accessible
+	//     description.
 	//
 	SetDescription func(description string)
 	// SetName sets the accessible name of the accessible. You can't set the
@@ -1197,7 +1197,7 @@ type AtkObjectOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - name: character string to be set as the accessible name.
+	//   - name: character string to be set as the accessible name.
 	//
 	SetName func(name string)
 	// SetParent sets the accessible parent of the accessible. parent can be
@@ -1205,20 +1205,20 @@ type AtkObjectOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - parent to be set as the accessible parent.
+	//   - parent to be set as the accessible parent.
 	//
 	SetParent func(parent *AtkObject)
 	// SetRole sets the role of the accessible.
 	//
 	// The function takes the following parameters:
 	//
-	//    - role to be set as the role.
+	//   - role to be set as the role.
 	//
 	SetRole func(role Role)
 	// The function takes the following parameters:
 	//
-	//    - name
-	//    - stateSet
+	//   - name
+	//   - stateSet
 	//
 	StateChange        func(name string, stateSet bool)
 	VisibleDataChanged func()
@@ -1252,10 +1252,10 @@ func defaultAtkObjectOverrides(v *AtkObject) AtkObjectOverrides {
 	}
 }
 
-// AtkObject: this class is the primary class for accessibility support via the
-// Accessibility ToolKit (ATK). Objects which are instances of Object (or
-// instances of AtkObject-derived types) are queried for properties which relate
-// basic (and generic) properties of a UI component such as name and
+// AtkObject: this class is the primary class for accessibility support via
+// the Accessibility ToolKit (ATK). Objects which are instances of Object (or
+// instances of AtkObject-derived types) are queried for properties which
+// relate basic (and generic) properties of a UI component such as name and
 // description. Instances of Object may also be queried as to whether they
 // implement other ATK interfaces (e.g. Action, Component, etc.), as appropriate
 // to the role which a given UI component plays in a user interface.
@@ -1449,12 +1449,12 @@ func (object *AtkObject) ConnectVisibleDataChanged(f func()) coreglib.SignalHand
 //
 // The function takes the following parameters:
 //
-//    - relationship of the relation.
-//    - target which is to be the target of the relation.
+//   - relationship of the relation.
+//   - target which is to be the target of the relation.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the relationship is added.
+//   - ok: TRUE if the relationship is added.
 //
 func (object *AtkObject) AddRelationship(relationship RelationType, target *AtkObject) bool {
 	var _arg0 *C.AtkObject      // out
@@ -1484,8 +1484,8 @@ func (object *AtkObject) AddRelationship(relationship RelationType, target *AtkO
 //
 // The function returns the following values:
 //
-//    - utf8: character string representing the accessible id of the object, or
-//      NULL if no such string was set.
+//   - utf8: character string representing the accessible id of the object,
+//     or NULL if no such string was set.
 //
 func (accessible *AtkObject) AccessibleID() string {
 	var _arg0 *C.AtkObject // out
@@ -1507,8 +1507,8 @@ func (accessible *AtkObject) AccessibleID() string {
 //
 // The function returns the following values:
 //
-//    - utf8: character string representing the accessible description of the
-//      accessible.
+//   - utf8: character string representing the accessible description of the
+//     accessible.
 //
 func (accessible *AtkObject) Description() string {
 	var _arg0 *C.AtkObject // out
@@ -1531,7 +1531,7 @@ func (accessible *AtkObject) Description() string {
 //
 // The function returns the following values:
 //
-//    - gint: integer which is the index of the accessible in its parent.
+//   - gint: integer which is the index of the accessible in its parent.
 //
 func (accessible *AtkObject) IndexInParent() int {
 	var _arg0 *C.AtkObject // out
@@ -1555,7 +1555,7 @@ func (accessible *AtkObject) IndexInParent() int {
 //
 // The function returns the following values:
 //
-//    - layer which is the layer of the accessible.
+//   - layer which is the layer of the accessible.
 //
 func (accessible *AtkObject) Layer() Layer {
 	var _arg0 *C.AtkObject // out
@@ -1580,8 +1580,8 @@ func (accessible *AtkObject) Layer() Layer {
 //
 // The function returns the following values:
 //
-//    - gint which is the zorder of the accessible, i.e. the depth at which the
-//      component is shown in relation to other components in the same container.
+//   - gint which is the zorder of the accessible, i.e. the depth at which the
+//     component is shown in relation to other components in the same container.
 //
 func (accessible *AtkObject) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
@@ -1603,8 +1603,8 @@ func (accessible *AtkObject) MDIZOrder() int {
 //
 // The function returns the following values:
 //
-//    - gint: integer representing the number of accessible children of the
-//      accessible.
+//   - gint: integer representing the number of accessible children of the
+//     accessible.
 //
 func (accessible *AtkObject) NAccessibleChildren() int {
 	var _arg0 *C.AtkObject // out
@@ -1626,7 +1626,7 @@ func (accessible *AtkObject) NAccessibleChildren() int {
 //
 // The function returns the following values:
 //
-//    - utf8: character string representing the accessible name of the object.
+//   - utf8: character string representing the accessible name of the object.
 //
 func (accessible *AtkObject) Name() string {
 	var _arg0 *C.AtkObject // out
@@ -1649,8 +1649,8 @@ func (accessible *AtkObject) Name() string {
 //
 // The function returns the following values:
 //
-//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
-//      accessible.
+//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+//     accessible.
 //
 func (accessible *AtkObject) ObjectLocale() string {
 	var _arg0 *C.AtkObject // out
@@ -1668,8 +1668,8 @@ func (accessible *AtkObject) ObjectLocale() string {
 	return _utf8
 }
 
-// Parent gets the accessible parent of the accessible. By default this is the
-// one assigned with atk_object_set_parent(), but it is assumed that ATK
+// Parent gets the accessible parent of the accessible. By default this is
+// the one assigned with atk_object_set_parent(), but it is assumed that ATK
 // implementors have ways to get the parent of the object without the need of
 // assigning it manually with atk_object_set_parent(), and will return it with
 // this method.
@@ -1679,7 +1679,7 @@ func (accessible *AtkObject) ObjectLocale() string {
 //
 // The function returns the following values:
 //
-//    - object representing the accessible parent of the accessible.
+//   - object representing the accessible parent of the accessible.
 //
 func (accessible *AtkObject) Parent() *AtkObject {
 	var _arg0 *C.AtkObject // out
@@ -1701,7 +1701,7 @@ func (accessible *AtkObject) Parent() *AtkObject {
 //
 // The function returns the following values:
 //
-//    - role which is the role of the accessible.
+//   - role which is the role of the accessible.
 //
 func (accessible *AtkObject) Role() Role {
 	var _arg0 *C.AtkObject // out
@@ -1726,8 +1726,8 @@ func (accessible *AtkObject) Role() Role {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) which identifies the object for which the AtkObject was
-//      created.
+//   - data (optional) which identifies the object for which the AtkObject was
+//     created.
 //
 func (accessible *AtkObject) Initialize(data unsafe.Pointer) {
 	var _arg0 *C.AtkObject // out
@@ -1748,8 +1748,8 @@ func (accessible *AtkObject) Initialize(data unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - state whose state is changed.
-//    - value: gboolean which indicates whether the state is being set on or off.
+//   - state whose state is changed.
+//   - value: gboolean which indicates whether the state is being set on or off.
 //
 func (accessible *AtkObject) NotifyStateChange(state State, value bool) {
 	var _arg0 *C.AtkObject // out
@@ -1774,13 +1774,13 @@ func (accessible *AtkObject) NotifyStateChange(state State, value bool) {
 // manually assigned with atk_object_set_parent. Otherwise, this function
 // returns NULL.
 //
-// This method is intended as an utility for ATK implementors, and not to be
-// exposed to accessible tools. See atk_object_get_parent() for further
+// This method is intended as an utility for ATK implementors, and not to
+// be exposed to accessible tools. See atk_object_get_parent() for further
 // reference.
 //
 // The function returns the following values:
 //
-//    - object representing the accessible parent of the accessible if assigned.
+//   - object representing the accessible parent of the accessible if assigned.
 //
 func (accessible *AtkObject) PeekParent() *AtkObject {
 	var _arg0 *C.AtkObject // out
@@ -1804,11 +1804,11 @@ func (accessible *AtkObject) PeekParent() *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - i: gint representing the position of the child, starting from 0.
+//   - i: gint representing the position of the child, starting from 0.
 //
 // The function returns the following values:
 //
-//    - object representing the specified accessible child of the accessible.
+//   - object representing the specified accessible child of the accessible.
 //
 func (accessible *AtkObject) RefAccessibleChild(i int) *AtkObject {
 	var _arg0 *C.AtkObject // out
@@ -1833,7 +1833,7 @@ func (accessible *AtkObject) RefAccessibleChild(i int) *AtkObject {
 //
 // The function returns the following values:
 //
-//    - relationSet representing the relation set of the object.
+//   - relationSet representing the relation set of the object.
 //
 func (accessible *AtkObject) RefRelationSet() *RelationSet {
 	var _arg0 *C.AtkObject      // out
@@ -1856,8 +1856,8 @@ func (accessible *AtkObject) RefRelationSet() *RelationSet {
 //
 // The function returns the following values:
 //
-//    - stateSet: reference to an StateSet which is the state set of the
-//      accessible.
+//   - stateSet: reference to an StateSet which is the state set of the
+//     accessible.
 //
 func (accessible *AtkObject) RefStateSet() *StateSet {
 	var _arg0 *C.AtkObject   // out
@@ -1881,7 +1881,7 @@ func (accessible *AtkObject) RefStateSet() *StateSet {
 //
 // The function takes the following parameters:
 //
-//    - handlerId: guint which identifies the handler to be removed.
+//   - handlerId: guint which identifies the handler to be removed.
 //
 func (accessible *AtkObject) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
@@ -1900,12 +1900,12 @@ func (accessible *AtkObject) RemovePropertyChangeHandler(handlerId uint) {
 //
 // The function takes the following parameters:
 //
-//    - relationship of the relation.
-//    - target which is the target of the relation to be removed.
+//   - relationship of the relation.
+//   - target which is the target of the relation to be removed.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the relationship is removed.
+//   - ok: TRUE if the relationship is removed.
 //
 func (object *AtkObject) RemoveRelationship(relationship RelationType, target *AtkObject) bool {
 	var _arg0 *C.AtkObject      // out
@@ -1939,7 +1939,7 @@ func (object *AtkObject) RemoveRelationship(relationship RelationType, target *A
 //
 // The function takes the following parameters:
 //
-//    - name: character string to be set as the accessible id.
+//   - name: character string to be set as the accessible id.
 //
 func (accessible *AtkObject) SetAccessibleID(name string) {
 	var _arg0 *C.AtkObject // out
@@ -1961,7 +1961,7 @@ func (accessible *AtkObject) SetAccessibleID(name string) {
 //
 // The function takes the following parameters:
 //
-//    - description: character string to be set as the accessible description.
+//   - description: character string to be set as the accessible description.
 //
 func (accessible *AtkObject) SetDescription(description string) {
 	var _arg0 *C.AtkObject // out
@@ -1983,7 +1983,7 @@ func (accessible *AtkObject) SetDescription(description string) {
 //
 // The function takes the following parameters:
 //
-//    - name: character string to be set as the accessible name.
+//   - name: character string to be set as the accessible name.
 //
 func (accessible *AtkObject) SetName(name string) {
 	var _arg0 *C.AtkObject // out
@@ -2002,7 +2002,7 @@ func (accessible *AtkObject) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - parent to be set as the accessible parent.
+//   - parent to be set as the accessible parent.
 //
 func (accessible *AtkObject) SetParent(parent *AtkObject) {
 	var _arg0 *C.AtkObject // out
@@ -2020,7 +2020,7 @@ func (accessible *AtkObject) SetParent(parent *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - role to be set as the role.
+//   - role to be set as the role.
 //
 func (accessible *AtkObject) SetRole(role Role) {
 	var _arg0 *C.AtkObject // out
@@ -2055,8 +2055,8 @@ func (accessible *AtkObject) activeDescendantChanged(child *unsafe.Pointer) {
 
 // The function takes the following parameters:
 //
-//    - changeIndex
-//    - changedChild (optional)
+//   - changeIndex
+//   - changedChild (optional)
 //
 func (accessible *AtkObject) childrenChanged(changeIndex uint, changedChild unsafe.Pointer) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2099,8 +2099,8 @@ func (accessible *AtkObject) focusEvent(focusIn bool) {
 //
 // The function returns the following values:
 //
-//    - utf8: character string representing the accessible description of the
-//      accessible.
+//   - utf8: character string representing the accessible description of the
+//     accessible.
 //
 func (accessible *AtkObject) description() string {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2126,7 +2126,7 @@ func (accessible *AtkObject) description() string {
 //
 // The function returns the following values:
 //
-//    - gint: integer which is the index of the accessible in its parent.
+//   - gint: integer which is the index of the accessible in its parent.
 //
 func (accessible *AtkObject) indexInParent() int {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2153,7 +2153,7 @@ func (accessible *AtkObject) indexInParent() int {
 //
 // The function returns the following values:
 //
-//    - layer which is the layer of the accessible.
+//   - layer which is the layer of the accessible.
 //
 func (accessible *AtkObject) layer() Layer {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2181,8 +2181,8 @@ func (accessible *AtkObject) layer() Layer {
 //
 // The function returns the following values:
 //
-//    - gint which is the zorder of the accessible, i.e. the depth at which the
-//      component is shown in relation to other components in the same container.
+//   - gint which is the zorder of the accessible, i.e. the depth at which the
+//     component is shown in relation to other components in the same container.
 //
 func (accessible *AtkObject) mdizOrder() int {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2228,7 +2228,7 @@ func (accessible *AtkObject) nChildren() int {
 //
 // The function returns the following values:
 //
-//    - utf8: character string representing the accessible name of the object.
+//   - utf8: character string representing the accessible name of the object.
 //
 func (accessible *AtkObject) name() string {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2254,8 +2254,8 @@ func (accessible *AtkObject) name() string {
 //
 // The function returns the following values:
 //
-//    - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
-//      accessible.
+//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+//     accessible.
 //
 func (accessible *AtkObject) objectLocale() string {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2276,8 +2276,8 @@ func (accessible *AtkObject) objectLocale() string {
 	return _utf8
 }
 
-// Parent gets the accessible parent of the accessible. By default this is the
-// one assigned with atk_object_set_parent(), but it is assumed that ATK
+// Parent gets the accessible parent of the accessible. By default this is
+// the one assigned with atk_object_set_parent(), but it is assumed that ATK
 // implementors have ways to get the parent of the object without the need of
 // assigning it manually with atk_object_set_parent(), and will return it with
 // this method.
@@ -2287,7 +2287,7 @@ func (accessible *AtkObject) objectLocale() string {
 //
 // The function returns the following values:
 //
-//    - object representing the accessible parent of the accessible.
+//   - object representing the accessible parent of the accessible.
 //
 func (accessible *AtkObject) parent() *AtkObject {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2312,7 +2312,7 @@ func (accessible *AtkObject) parent() *AtkObject {
 //
 // The function returns the following values:
 //
-//    - role which is the role of the accessible.
+//   - role which is the role of the accessible.
 //
 func (accessible *AtkObject) role() Role {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2340,8 +2340,8 @@ func (accessible *AtkObject) role() Role {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) which identifies the object for which the AtkObject was
-//      created.
+//   - data (optional) which identifies the object for which the AtkObject was
+//     created.
 //
 func (accessible *AtkObject) initialize(data unsafe.Pointer) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2379,7 +2379,7 @@ func (accessible *AtkObject) propertyChange(values *PropertyValues) {
 //
 // The function returns the following values:
 //
-//    - relationSet representing the relation set of the object.
+//   - relationSet representing the relation set of the object.
 //
 func (accessible *AtkObject) refRelationSet() *RelationSet {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2405,8 +2405,8 @@ func (accessible *AtkObject) refRelationSet() *RelationSet {
 //
 // The function returns the following values:
 //
-//    - stateSet: reference to an StateSet which is the state set of the
-//      accessible.
+//   - stateSet: reference to an StateSet which is the state set of the
+//     accessible.
 //
 func (accessible *AtkObject) refStateSet() *StateSet {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2433,7 +2433,7 @@ func (accessible *AtkObject) refStateSet() *StateSet {
 //
 // The function takes the following parameters:
 //
-//    - handlerId: guint which identifies the handler to be removed.
+//   - handlerId: guint which identifies the handler to be removed.
 //
 func (accessible *AtkObject) removePropertyChangeHandler(handlerId uint) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2457,7 +2457,7 @@ func (accessible *AtkObject) removePropertyChangeHandler(handlerId uint) {
 //
 // The function takes the following parameters:
 //
-//    - description: character string to be set as the accessible description.
+//   - description: character string to be set as the accessible description.
 //
 func (accessible *AtkObject) setDescription(description string) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2482,7 +2482,7 @@ func (accessible *AtkObject) setDescription(description string) {
 //
 // The function takes the following parameters:
 //
-//    - name: character string to be set as the accessible name.
+//   - name: character string to be set as the accessible name.
 //
 func (accessible *AtkObject) setName(name string) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2504,7 +2504,7 @@ func (accessible *AtkObject) setName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - parent to be set as the accessible parent.
+//   - parent to be set as the accessible parent.
 //
 func (accessible *AtkObject) setParent(parent *AtkObject) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2525,7 +2525,7 @@ func (accessible *AtkObject) setParent(parent *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - role to be set as the role.
+//   - role to be set as the role.
 //
 func (accessible *AtkObject) setRole(role Role) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2544,8 +2544,8 @@ func (accessible *AtkObject) setRole(role Role) {
 
 // The function takes the following parameters:
 //
-//    - name
-//    - stateSet
+//   - name
+//   - stateSet
 //
 func (accessible *AtkObject) stateChange(name string, stateSet bool) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
@@ -2580,15 +2580,15 @@ func (accessible *AtkObject) visibleDataChanged() {
 	runtime.KeepAlive(accessible)
 }
 
-// Attribute is a string name/value pair representing a generic attribute. This
-// can be used to expose additional information from an accessible object as a
-// whole (see atk_object_get_attributes()) or an document (see
-// atk_document_get_attributes()). In the case of text attributes (see
-// atk_text_get_default_attributes()), TextAttribute enum defines all the
-// possible text attribute names. You can use atk_text_attribute_get_name() to
-// get the string name from the enum value. See also
-// atk_text_attribute_for_name() and atk_text_attribute_get_value() for more
-// information.
+// Attribute is a string name/value pair representing a generic
+// attribute. This can be used to expose additional information from an
+// accessible object as a whole (see atk_object_get_attributes()) or an
+// document (see atk_document_get_attributes()). In the case of text
+// attributes (see atk_text_get_default_attributes()), TextAttribute
+// enum defines all the possible text attribute names. You can use
+// atk_text_attribute_get_name() to get the string name from the enum value.
+// See also atk_text_attribute_for_name() and atk_text_attribute_get_value() for
+// more information.
 //
 // A string name/value pair representing a generic attribute.
 //

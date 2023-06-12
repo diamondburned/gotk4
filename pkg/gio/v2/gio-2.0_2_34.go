@@ -28,13 +28,12 @@ func init() {
 // TestDBus: helper class for testing code which uses D-Bus without touching the
 // user's session bus.
 //
-// Note that DBus modifies the user’s environment, calling setenv(). This is not
-// thread-safe, so all DBus calls should be completed before threads are
+// Note that DBus modifies the user’s environment, calling setenv(). This is
+// not thread-safe, so all DBus calls should be completed before threads are
 // spawned, or should have appropriate locking to ensure no access conflicts to
 // environment variables shared between DBus and other threads.
 //
-//
-// Creating unit tests using GTestDBus
+// # Creating unit tests using GTestDBus
 //
 // Testing of D-Bus services can be tricky because normally we only ever run
 // D-Bus services over an existing instance of the D-Bus daemon thus we usually
@@ -67,8 +66,8 @@ func init() {
 //
 // you can proceed to set up a GTest fixture using the DBus scaffolding.
 //
-// An example of a test fixture for D-Bus services can be found here:
-// gdbus-test-fixture.c
+// An example of a test fixture for D-Bus services
+// can be found here: gdbus-test-fixture.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-test-fixture.c)
 //
 // Note that these examples only deal with isolating the D-Bus aspect of your
@@ -80,22 +79,22 @@ func init() {
 // is an older version of the schema file sitting in the install location).
 //
 // Most of the time we can work around these obstacles using the environment.
-// Since the environment is inherited by the D-Bus daemon created by DBus and
-// then in turn inherited by any services the D-Bus daemon activates, using the
-// setup routine for your fixture is a practical place to help sandbox your
-// runtime environment. For the rather typical GSettings case we can work around
-// this by setting GSETTINGS_SCHEMA_DIR to the in tree directory holding your
-// schemas in the above fixture_setup() routine.
+// Since the environment is inherited by the D-Bus daemon created by DBus
+// and then in turn inherited by any services the D-Bus daemon activates,
+// using the setup routine for your fixture is a practical place to help sandbox
+// your runtime environment. For the rather typical GSettings case we can work
+// around this by setting GSETTINGS_SCHEMA_DIR to the in tree directory holding
+// your schemas in the above fixture_setup() routine.
 //
 // The GSettings schemas need to be locally pre-compiled for this to work. This
 // can be achieved by compiling the schemas locally as a step before running
 // test cases, an autotools setup might do the following in the directory
 // holding schemas:
 //
-//        all-am:
-//                $(GLIB_COMPILE_SCHEMAS) .
+//    all-am:
+//            $(GLIB_COMPILE_SCHEMAS) .
 //
-//        CLEANFILES += gschemas.compiled.
+//    CLEANFILES += gschemas.compiled.
 type TestDBus struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -119,11 +118,11 @@ func marshalTestDBus(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - flags: DBusFlags.
+//   - flags: DBusFlags.
 //
 // The function returns the following values:
 //
-//    - testDBus: new DBus.
+//   - testDBus: new DBus.
 //
 func NewTestDBus(flags TestDBusFlags) *TestDBus {
 	var _arg1 C.GTestDBusFlags // out
@@ -141,12 +140,12 @@ func NewTestDBus(flags TestDBusFlags) *TestDBus {
 	return _testDBus
 }
 
-// AddServiceDir: add a path where dbus-daemon will look up .service files. This
-// can't be called after g_test_dbus_up().
+// AddServiceDir: add a path where dbus-daemon will look up .service files.
+// This can't be called after g_test_dbus_up().
 //
 // The function takes the following parameters:
 //
-//    - path to a directory containing .service files.
+//   - path to a directory containing .service files.
 //
 func (self *TestDBus) AddServiceDir(path string) {
 	var _arg0 *C.GTestDBus // out
@@ -181,7 +180,7 @@ func (self *TestDBus) Down() {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) address of the bus, or NULL.
+//   - utf8 (optional) address of the bus, or NULL.
 //
 func (self *TestDBus) BusAddress() string {
 	var _arg0 *C.GTestDBus // out
@@ -205,7 +204,7 @@ func (self *TestDBus) BusAddress() string {
 //
 // The function returns the following values:
 //
-//    - testDBusFlags: value of DBus:flags property.
+//   - testDBusFlags: value of DBus:flags property.
 //
 func (self *TestDBus) Flags() TestDBusFlags {
 	var _arg0 *C.GTestDBus     // out

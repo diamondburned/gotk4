@@ -83,7 +83,7 @@ func (gesture *GestureLongPress) ConnectPressed(f func(x, y float64)) coreglib.S
 //
 // The function returns the following values:
 //
-//    - gestureLongPress: newly created GtkGestureLongPress.
+//   - gestureLongPress: newly created GtkGestureLongPress.
 //
 func NewGestureLongPress() *GestureLongPress {
 	var _cret *C.GtkGesture // in
@@ -101,7 +101,7 @@ func NewGestureLongPress() *GestureLongPress {
 //
 // The function returns the following values:
 //
-//    - gdouble: delay factor.
+//   - gdouble: delay factor.
 //
 func (gesture *GestureLongPress) DelayFactor() float64 {
 	var _arg0 *C.GtkGestureLongPress // out
@@ -126,7 +126,7 @@ func (gesture *GestureLongPress) DelayFactor() float64 {
 //
 // The function takes the following parameters:
 //
-//    - delayFactor: delay factor to apply.
+//   - delayFactor: delay factor to apply.
 //
 func (gesture *GestureLongPress) SetDelayFactor(delayFactor float64) {
 	var _arg0 *C.GtkGestureLongPress // out

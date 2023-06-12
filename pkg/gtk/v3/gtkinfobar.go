@@ -46,7 +46,7 @@ type InfoBarOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - responseId: response ID.
+	//   - responseId: response ID.
 	//
 	Response func(responseId int)
 }
@@ -63,15 +63,15 @@ func defaultInfoBarOverrides(v *InfoBar) InfoBarOverrides {
 // document. In contrast to Dialog, which has a action area at the bottom,
 // InfoBar has an action area at the side.
 //
-// The API of InfoBar is very similar to Dialog, allowing you to add buttons to
-// the action area with gtk_info_bar_add_button() or
+// The API of InfoBar is very similar to Dialog, allowing you to
+// add buttons to the action area with gtk_info_bar_add_button() or
 // gtk_info_bar_new_with_buttons(). The sensitivity of action widgets can be
 // controlled with gtk_info_bar_set_response_sensitive(). To add widgets to the
 // main content area of a InfoBar, use gtk_info_bar_get_content_area() and add
 // your widgets to the container.
 //
-// Similar to MessageDialog, the contents of a InfoBar can by classified as
-// error message, warning, informational message, etc, by using
+// Similar to MessageDialog, the contents of a InfoBar can by classified
+// as error message, warning, informational message, etc, by using
 // gtk_info_bar_set_message_type(). GTK+ may use the message type to determine
 // how the message is displayed.
 //
@@ -110,11 +110,10 @@ func defaultInfoBarOverrides(v *InfoBar) InfoBarOverrides {
 //                                   GTK_MESSAGE_ERROR);
 //    gtk_widget_show (bar);
 //
+// # GtkInfoBar as GtkBuildable
 //
-// GtkInfoBar as GtkBuildable
-//
-// The GtkInfoBar implementation of the GtkBuildable interface exposes the
-// content area and action area as internal children with the names
+// The GtkInfoBar implementation of the GtkBuildable interface exposes
+// the content area and action area as internal children with the names
 // “content_area” and “action_area”.
 //
 // GtkInfoBar supports a custom <action-widgets> element, which can contain
@@ -122,11 +121,10 @@ func defaultInfoBarOverrides(v *InfoBar) InfoBarOverrides {
 // numeric response, and the content of the element is the id of widget (which
 // should be a child of the dialogs action_area).
 //
+// # CSS nodes
 //
-// CSS nodes
-//
-// GtkInfoBar has a single CSS node with name infobar. The node may get one of
-// the style classes .info, .warning, .error or .question, depending on the
+// GtkInfoBar has a single CSS node with name infobar. The node may get one
+// of the style classes .info, .warning, .error or .question, depending on the
 // message type.
 type InfoBar struct {
 	_ [0]func() // equal guard
@@ -212,7 +210,7 @@ func (infoBar *InfoBar) ConnectResponse(f func(responseId int)) coreglib.SignalH
 //
 // The function returns the following values:
 //
-//    - infoBar: new InfoBar object.
+//   - infoBar: new InfoBar object.
 //
 func NewInfoBar() *InfoBar {
 	var _cret *C.GtkWidget // in
@@ -233,8 +231,8 @@ func NewInfoBar() *InfoBar {
 //
 // The function takes the following parameters:
 //
-//    - child: activatable widget.
-//    - responseId: response ID for child.
+//   - child: activatable widget.
+//   - responseId: response ID for child.
 //
 func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkInfoBar // out
@@ -258,12 +256,12 @@ func (infoBar *InfoBar) AddActionWidget(child Widgetter, responseId int) {
 //
 // The function takes the following parameters:
 //
-//    - buttonText: text of button.
-//    - responseId: response ID for the button.
+//   - buttonText: text of button.
+//   - responseId: response ID for the button.
 //
 // The function returns the following values:
 //
-//    - button widget that was added.
+//   - button widget that was added.
 //
 func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 	var _arg0 *C.GtkInfoBar // out
@@ -292,7 +290,7 @@ func (infoBar *InfoBar) AddButton(buttonText string, responseId int) *Button {
 //
 // The function returns the following values:
 //
-//    - box: action area.
+//   - box: action area.
 //
 func (infoBar *InfoBar) ActionArea() *Box {
 	var _arg0 *C.GtkInfoBar // out
@@ -314,7 +312,7 @@ func (infoBar *InfoBar) ActionArea() *Box {
 //
 // The function returns the following values:
 //
-//    - box: content area.
+//   - box: content area.
 //
 func (infoBar *InfoBar) ContentArea() *Box {
 	var _arg0 *C.GtkInfoBar // out
@@ -336,7 +334,7 @@ func (infoBar *InfoBar) ContentArea() *Box {
 //
 // The function returns the following values:
 //
-//    - messageType: message type of the message area.
+//   - messageType: message type of the message area.
 //
 func (infoBar *InfoBar) MessageType() MessageType {
 	var _arg0 *C.GtkInfoBar    // out
@@ -356,7 +354,7 @@ func (infoBar *InfoBar) MessageType() MessageType {
 
 // The function returns the following values:
 //
-//    - ok: current value of the GtkInfoBar:revealed property.
+//   - ok: current value of the GtkInfoBar:revealed property.
 //
 func (infoBar *InfoBar) Revealed() bool {
 	var _arg0 *C.GtkInfoBar // out
@@ -381,7 +379,7 @@ func (infoBar *InfoBar) Revealed() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the widget displays standard close button.
+//   - ok: TRUE if the widget displays standard close button.
 //
 func (infoBar *InfoBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkInfoBar // out
@@ -405,7 +403,7 @@ func (infoBar *InfoBar) ShowCloseButton() bool {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (infoBar *InfoBar) Response(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
@@ -428,7 +426,7 @@ func (infoBar *InfoBar) Response(responseId int) {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkInfoBar // out
@@ -448,7 +446,7 @@ func (infoBar *InfoBar) SetDefaultResponse(responseId int) {
 //
 // The function takes the following parameters:
 //
-//    - messageType: MessageType.
+//   - messageType: MessageType.
 //
 func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 	var _arg0 *C.GtkInfoBar    // out
@@ -463,13 +461,13 @@ func (infoBar *InfoBar) SetMessageType(messageType MessageType) {
 }
 
 // SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
-// each widget in the info bars’s action area with the given response_id. A
-// convenient way to sensitize/desensitize dialog buttons.
+// each widget in the info bars’s action area with the given response_id.
+// A convenient way to sensitize/desensitize dialog buttons.
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
-//    - setting: TRUE for sensitive.
+//   - responseId: response ID.
+//   - setting: TRUE for sensitive.
 //
 func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkInfoBar // out
@@ -496,7 +494,7 @@ func (infoBar *InfoBar) SetResponseSensitive(responseId int, setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - revealed: new value of the property.
+//   - revealed: new value of the property.
 //
 func (infoBar *InfoBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkInfoBar // out
@@ -517,7 +515,7 @@ func (infoBar *InfoBar) SetRevealed(revealed bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: TRUE to include a close button.
+//   - setting: TRUE to include a close button.
 //
 func (infoBar *InfoBar) SetShowCloseButton(setting bool) {
 	var _arg0 *C.GtkInfoBar // out
@@ -549,7 +547,7 @@ func (infoBar *InfoBar) close() {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (infoBar *InfoBar) response(responseId int) {
 	gclass := (*C.GtkInfoBarClass)(coreglib.PeekParentClass(infoBar))

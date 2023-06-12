@@ -20,13 +20,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
+//   - cr: cairo context.
 //
 // The function returns the following values:
 //
-//    - rect (optional): return location for the clip, or NULL.
-//    - ok: TRUE if a clip rectangle exists, FALSE if all of cr is clipped and
-//      all drawing can be skipped.
+//   - rect (optional): return location for the clip, or NULL.
+//   - ok: TRUE if a clip rectangle exists, FALSE if all of cr is clipped and
+//     all drawing can be skipped.
 //
 func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 	var _arg1 *C.cairo_t     // out
@@ -57,11 +57,11 @@ func CairoGetClipRectangle(cr *cairo.Context) (*Rectangle, bool) {
 //
 // The function takes the following parameters:
 //
-//    - surface: cairo surface.
+//   - surface: cairo surface.
 //
 // The function returns the following values:
 //
-//    - region must be freed with cairo_region_destroy().
+//   - region must be freed with cairo_region_destroy().
 //
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out

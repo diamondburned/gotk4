@@ -15,14 +15,14 @@ import "C"
 
 // The function takes the following parameters:
 //
-//    - domain
-//    - file
-//    - line
-//    - fn
-//    - expr
-//    - accessible
-//    - expectedRole
-//    - actualRole
+//   - domain
+//   - file
+//   - line
+//   - fn
+//   - expr
+//   - accessible
+//   - expectedRole
+//   - actualRole
 //
 func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr string, accessible Accessibler, expectedRole, actualRole AccessibleRole) {
 	var _arg1 *C.char             // out
@@ -62,12 +62,12 @@ func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr 
 //
 // The function takes the following parameters:
 //
-//    - accessible: Accessible.
-//    - property: AccessibleProperty.
+//   - accessible: Accessible.
+//   - property: AccessibleProperty.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the property is set in the accessible.
+//   - ok: TRUE if the property is set in the accessible.
 //
 func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProperty) bool {
 	var _arg1 *C.GtkAccessible        // out
@@ -94,12 +94,12 @@ func TestAccessibleHasProperty(accessible Accessibler, property AccessibleProper
 //
 // The function takes the following parameters:
 //
-//    - accessible: Accessible.
-//    - relation: AccessibleRelation.
+//   - accessible: Accessible.
+//   - relation: AccessibleRelation.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the relation is set in the accessible.
+//   - ok: TRUE if the relation is set in the accessible.
 //
 func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelation) bool {
 	var _arg1 *C.GtkAccessible        // out
@@ -127,12 +127,12 @@ func TestAccessibleHasRelation(accessible Accessibler, relation AccessibleRelati
 //
 // The function takes the following parameters:
 //
-//    - accessible: Accessible.
-//    - role: AccessibleRole.
+//   - accessible: Accessible.
+//   - role: AccessibleRole.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the role matches.
+//   - ok: TRUE if the role matches.
 //
 func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 	var _arg1 *C.GtkAccessible    // out
@@ -159,12 +159,12 @@ func TestAccessibleHasRole(accessible Accessibler, role AccessibleRole) bool {
 //
 // The function takes the following parameters:
 //
-//    - accessible: Accessible.
-//    - state: AccessibleState.
+//   - accessible: Accessible.
+//   - state: AccessibleState.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the state is set in the accessible.
+//   - ok: TRUE if the state is set in the accessible.
 //
 func TestAccessibleHasState(accessible Accessibler, state AccessibleState) bool {
 	var _arg1 *C.GtkAccessible     // out

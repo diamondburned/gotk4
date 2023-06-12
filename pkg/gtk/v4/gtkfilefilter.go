@@ -29,9 +29,9 @@ func init() {
 
 // FileFilter: GtkFileFilter filters files by name or mime type.
 //
-// GtkFileFilter can be used to restrict the files being shown in a
-// GtkFileChooser. Files can be filtered based on their name (with
-// gtk.FileFilter.AddPattern()) or on their mime type (with
+// GtkFileFilter can be used to restrict the files being shown
+// in a GtkFileChooser. Files can be filtered based on their name
+// (with gtk.FileFilter.AddPattern()) or on their mime type (with
 // gtk.FileFilter.AddMIMEType()).
 //
 // Filtering by mime types handles aliasing and subclassing of mime types; e.g.
@@ -44,8 +44,7 @@ func init() {
 // gtk.FileChooser.AddFilter()), but it is also possible to manually use a file
 // filter on any gtk.FilterListModel containing GFileInfo objects.
 //
-//
-// GtkFileFilter as GtkBuildable
+// # GtkFileFilter as GtkBuildable
 //
 // The GtkFileFilter implementation of the GtkBuildable interface supports
 // adding rules using the <mime-types> and <patterns> elements and listing the
@@ -106,7 +105,7 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - fileFilter: new GtkFileFilter.
+//   - fileFilter: new GtkFileFilter.
 //
 func NewFileFilter() *FileFilter {
 	var _cret *C.GtkFileFilter // in
@@ -126,11 +125,11 @@ func NewFileFilter() *FileFilter {
 //
 // The function takes the following parameters:
 //
-//    - variant: a{sv} GVariant.
+//   - variant: a{sv} GVariant.
 //
 // The function returns the following values:
 //
-//    - fileFilter: new GtkFileFilter object.
+//   - fileFilter: new GtkFileFilter object.
 //
 func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 	var _arg1 *C.GVariant      // out
@@ -152,7 +151,7 @@ func NewFileFilterFromGVariant(variant *glib.Variant) *FileFilter {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: name of a MIME type.
+//   - mimeType: name of a MIME type.
 //
 func (filter *FileFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkFileFilter // out
@@ -171,7 +170,7 @@ func (filter *FileFilter) AddMIMEType(mimeType string) {
 //
 // The function takes the following parameters:
 //
-//    - pattern: shell style glob.
+//   - pattern: shell style glob.
 //
 func (filter *FileFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkFileFilter // out
@@ -208,7 +207,7 @@ func (filter *FileFilter) AddPixbufFormats() {
 //
 // The function returns the following values:
 //
-//    - utf8s: attributes.
+//   - utf8s: attributes.
 //
 func (filter *FileFilter) Attributes() []string {
 	var _arg0 *C.GtkFileFilter // out
@@ -244,8 +243,8 @@ func (filter *FileFilter) Attributes() []string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): human-readable name of the filter, or NULL. This value
-//      is owned by GTK and must not be modified or freed.
+//   - utf8 (optional): human-readable name of the filter, or NULL. This value
+//     is owned by GTK and must not be modified or freed.
 //
 func (filter *FileFilter) Name() string {
 	var _arg0 *C.GtkFileFilter // out
@@ -272,7 +271,7 @@ func (filter *FileFilter) Name() string {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) for the filter, or NULL to remove any existing name.
+//   - name (optional) for the filter, or NULL to remove any existing name.
 //
 func (filter *FileFilter) SetName(name string) {
 	var _arg0 *C.GtkFileFilter // out
@@ -293,7 +292,7 @@ func (filter *FileFilter) SetName(name string) {
 //
 // The function returns the following values:
 //
-//    - variant: new, floating, GVariant.
+//   - variant: new, floating, GVariant.
 //
 func (filter *FileFilter) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkFileFilter // out

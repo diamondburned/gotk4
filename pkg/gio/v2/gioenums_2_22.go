@@ -54,8 +54,8 @@ const (
 	// DriveStartStopTypeMultidisk: start/stop methods will assemble/disassemble
 	// a virtual drive from several physical drives.
 	DriveStartStopTypeMultidisk
-	// DriveStartStopTypePassword: start/stop methods will unlock/lock the disk
-	// (for example using the ATA <quote>SECURITY UNLOCK DEVICE</quote>
+	// DriveStartStopTypePassword: start/stop methods will unlock/lock the
+	// disk (for example using the ATA <quote>SECURITY UNLOCK DEVICE</quote>
 	// command).
 	DriveStartStopTypePassword
 )

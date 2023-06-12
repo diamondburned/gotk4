@@ -231,12 +231,12 @@ func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) coreglib.Sign
 // If device is of type GDK_DEVICE_TYPE_SLAVE, it will return the master device
 // to which device is attached to.
 //
-// If device is of type GDK_DEVICE_TYPE_FLOATING, NULL will be returned, as
-// there is no associated device.
+// If device is of type GDK_DEVICE_TYPE_FLOATING, NULL will be returned,
+// as there is no associated device.
 //
 // The function returns the following values:
 //
-//    - ret (optional): associated device, or NULL.
+//   - ret (optional): associated device, or NULL.
 //
 func (device *Device) AssociatedDevice() Devicer {
 	var _arg0 *C.GdkDevice // out
@@ -293,11 +293,11 @@ func (device *Device) Axes() AxisFlags {
 //
 // The function takes the following parameters:
 //
-//    - index_: index of the axis.
+//   - index_: index of the axis.
 //
 // The function returns the following values:
 //
-//    - axisUse specifying how the axis is used.
+//   - axisUse specifying how the axis is used.
 //
 func (device *Device) AxisUse(index_ uint) AxisUse {
 	var _arg0 *C.GdkDevice // out
@@ -322,7 +322,7 @@ func (device *Device) AxisUse(index_ uint) AxisUse {
 //
 // The function returns the following values:
 //
-//    - deviceType for device.
+//   - deviceType for device.
 //
 func (device *Device) DeviceType() DeviceType {
 	var _arg0 *C.GdkDevice    // out
@@ -344,7 +344,7 @@ func (device *Device) DeviceType() DeviceType {
 //
 // The function returns the following values:
 //
-//    - display This memory is owned by GTK+, and must not be freed or unreffed.
+//   - display This memory is owned by GTK+, and must not be freed or unreffed.
 //
 func (device *Device) Display() *Display {
 	var _arg0 *C.GdkDevice  // out
@@ -367,7 +367,7 @@ func (device *Device) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pointer follows device motion.
+//   - ok: TRUE if the pointer follows device motion.
 //
 func (device *Device) HasCursor() bool {
 	var _arg0 *C.GdkDevice // out
@@ -392,13 +392,13 @@ func (device *Device) HasCursor() bool {
 //
 // The function takes the following parameters:
 //
-//    - index_: index of the macro button to get.
+//   - index_: index of the macro button to get.
 //
 // The function returns the following values:
 //
-//    - keyval: return value for the keyval.
-//    - modifiers: return value for modifiers.
-//    - ok: TRUE if keyval is set for index.
+//   - keyval: return value for the keyval.
+//   - modifiers: return value for modifiers.
+//   - ok: TRUE if keyval is set for index.
 //
 func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 	var _arg0 *C.GdkDevice      // out
@@ -435,7 +435,7 @@ func (device *Device) Key(index_ uint) (uint, ModifierType, bool) {
 //
 // The function returns the following values:
 //
-//    - window (optional): last window the device.
+//   - window (optional): last window the device.
 //
 func (device *Device) LastEventWindow() Windower {
 	var _arg0 *C.GdkDevice // out
@@ -472,7 +472,7 @@ func (device *Device) LastEventWindow() Windower {
 //
 // The function returns the following values:
 //
-//    - inputMode: InputSource.
+//   - inputMode: InputSource.
 //
 func (device *Device) Mode() InputMode {
 	var _arg0 *C.GdkDevice   // out
@@ -494,7 +494,7 @@ func (device *Device) Mode() InputMode {
 //
 // The function returns the following values:
 //
-//    - gint: number of axes.
+//   - gint: number of axes.
 //
 func (device *Device) NAxes() int {
 	var _arg0 *C.GdkDevice // out
@@ -516,7 +516,7 @@ func (device *Device) NAxes() int {
 //
 // The function returns the following values:
 //
-//    - gint: number of keys.
+//   - gint: number of keys.
 //
 func (device *Device) NKeys() int {
 	var _arg0 *C.GdkDevice // out
@@ -538,7 +538,7 @@ func (device *Device) NKeys() int {
 //
 // The function returns the following values:
 //
-//    - utf8: name.
+//   - utf8: name.
 //
 func (device *Device) Name() string {
 	var _arg0 *C.GdkDevice // out
@@ -558,17 +558,17 @@ func (device *Device) Name() string {
 
 // Position gets the current location of device. As a slave device coordinates
 // are those of its master pointer, This function may not be called on devices
-// of type GDK_DEVICE_TYPE_SLAVE, unless there is an ongoing grab on them, see
-// gdk_device_grab().
+// of type GDK_DEVICE_TYPE_SLAVE, unless there is an ongoing grab on them,
+// see gdk_device_grab().
 //
 // The function returns the following values:
 //
-//    - screen (optional): location to store the Screen the device is on, or
-//      NULL.
-//    - x (optional): location to store root window X coordinate of device, or
-//      NULL.
-//    - y (optional): location to store root window Y coordinate of device, or
-//      NULL.
+//   - screen (optional): location to store the Screen the device is on,
+//     or NULL.
+//   - x (optional): location to store root window X coordinate of device,
+//     or NULL.
+//   - y (optional): location to store root window Y coordinate of device,
+//     or NULL.
 //
 func (device *Device) Position() (screen *Screen, x, y int) {
 	var _arg0 *C.GdkDevice // out
@@ -601,12 +601,12 @@ func (device *Device) Position() (screen *Screen, x, y int) {
 //
 // The function returns the following values:
 //
-//    - screen (optional): location to store the Screen the device is on, or
-//      NULL.
-//    - x (optional): location to store root window X coordinate of device, or
-//      NULL.
-//    - y (optional): location to store root window Y coordinate of device, or
-//      NULL.
+//   - screen (optional): location to store the Screen the device is on,
+//     or NULL.
+//   - x (optional): location to store root window X coordinate of device,
+//     or NULL.
+//   - y (optional): location to store root window Y coordinate of device,
+//     or NULL.
 //
 func (device *Device) PositionDouble() (screen *Screen, x, y float64) {
 	var _arg0 *C.GdkDevice // out
@@ -638,7 +638,7 @@ func (device *Device) PositionDouble() (screen *Screen, x, y float64) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): product ID, or NULL.
+//   - utf8 (optional): product ID, or NULL.
 //
 func (device *Device) ProductID() string {
 	var _arg0 *C.GdkDevice // out
@@ -662,7 +662,7 @@ func (device *Device) ProductID() string {
 //
 // The function returns the following values:
 //
-//    - seat This memory is owned by GTK+ and must not be freed.
+//   - seat This memory is owned by GTK+ and must not be freed.
 //
 func (device *Device) Seat() Seater {
 	var _arg0 *C.GdkDevice // out
@@ -700,7 +700,7 @@ func (device *Device) Seat() Seater {
 //
 // The function returns the following values:
 //
-//    - inputSource: InputSource.
+//   - inputSource: InputSource.
 //
 func (device *Device) Source() InputSource {
 	var _arg0 *C.GdkDevice     // out
@@ -725,27 +725,27 @@ func (device *Device) Source() InputSource {
 // This function, together with gdk_device_get_product_id(), can be used to eg.
 // compose #GSettings paths to store settings for this device.
 //
-//     static GSettings *
-//     get_device_settings (GdkDevice *device)
-//     {
-//       const gchar *vendor, *product;
-//       GSettings *settings;
-//       GdkDevice *device;
-//       gchar *path;
+//    static GSettings *
+//    get_device_settings (GdkDevice *device)
+//    {
+//      const gchar *vendor, *product;
+//      GSettings *settings;
+//      GdkDevice *device;
+//      gchar *path;
 //
-//       vendor = gdk_device_get_vendor_id (device);
-//       product = gdk_device_get_product_id (device);
+//      vendor = gdk_device_get_vendor_id (device);
+//      product = gdk_device_get_product_id (device);
 //
-//       path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
-//       settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
-//       g_free (path);
+//      path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+//      settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+//      g_free (path);
 //
-//       return settings;
-//     }.
+//      return settings;
+//    }.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): vendor ID, or NULL.
+//   - utf8 (optional): vendor ID, or NULL.
 //
 func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
@@ -775,11 +775,11 @@ func (device *Device) VendorID() string {
 //
 // The function returns the following values:
 //
-//    - winX (optional): return location for the X coordinate of the device
-//      location, relative to the window origin, or NULL.
-//    - winY (optional): return location for the Y coordinate of the device
-//      location, relative to the window origin, or NULL.
-//    - window (optional) under the device position, or NULL.
+//   - winX (optional): return location for the X coordinate of the device
+//     location, relative to the window origin, or NULL.
+//   - winY (optional): return location for the Y coordinate of the device
+//     location, relative to the window origin, or NULL.
+//   - window (optional) under the device position, or NULL.
 //
 func (device *Device) WindowAtPosition() (winX, winY int, window Windower) {
 	var _arg0 *C.GdkDevice // out
@@ -829,11 +829,11 @@ func (device *Device) WindowAtPosition() (winX, winY int, window Windower) {
 //
 // The function returns the following values:
 //
-//    - winX (optional): return location for the X coordinate of the device
-//      location, relative to the window origin, or NULL.
-//    - winY (optional): return location for the Y coordinate of the device
-//      location, relative to the window origin, or NULL.
-//    - window (optional) under the device position, or NULL.
+//   - winX (optional): return location for the X coordinate of the device
+//     location, relative to the window origin, or NULL.
+//   - winY (optional): return location for the Y coordinate of the device
+//     location, relative to the window origin, or NULL.
+//   - window (optional) under the device position, or NULL.
 //
 func (device *Device) WindowAtPositionDouble() (winX, winY float64, window Windower) {
 	var _arg0 *C.GdkDevice // out
@@ -883,8 +883,8 @@ func (device *Device) WindowAtPositionDouble() (winX, winY float64, window Windo
 // given device events (either pointer or keyboard). For example in GTK+ this is
 // used for Drag and Drop operations, popup menus and such.
 //
-// Note that if the event mask of an X window has selected both button press and
-// button release events, then a button press event will cause an automatic
+// Note that if the event mask of an X window has selected both button press
+// and button release events, then a button press event will cause an automatic
 // pointer grab until the button is released. X does this automatically since
 // most applications expect to receive button press and release events in pairs.
 // It is equivalent to a pointer grab on the window with owner_events set to
@@ -898,26 +898,26 @@ func (device *Device) WindowAtPositionDouble() (winX, winY float64, window Windo
 //
 // The function takes the following parameters:
 //
-//    - window which will own the grab (the grab window).
-//    - grabOwnership specifies the grab ownership.
-//    - ownerEvents: if FALSE then all device events are reported with respect to
-//      window and are only reported if selected by event_mask. If TRUE then
-//      pointer events for this application are reported as normal, but pointer
-//      events outside this application are reported with respect to window and
-//      only if selected by event_mask. In either mode, unreported events are
-//      discarded.
-//    - eventMask specifies the event mask, which is used in accordance with
-//      owner_events.
-//    - cursor (optional) to display while the grab is active if the device is a
-//      pointer. If this is NULL then the normal cursors are used for window and
-//      its descendants, and the cursor for window is used elsewhere.
-//    - time_: timestamp of the event which led to this pointer grab. This
-//      usually comes from the Event struct, though GDK_CURRENT_TIME can be used
-//      if the time isn’t known.
+//   - window which will own the grab (the grab window).
+//   - grabOwnership specifies the grab ownership.
+//   - ownerEvents: if FALSE then all device events are reported with respect
+//     to window and are only reported if selected by event_mask. If TRUE then
+//     pointer events for this application are reported as normal, but pointer
+//     events outside this application are reported with respect to window and
+//     only if selected by event_mask. In either mode, unreported events are
+//     discarded.
+//   - eventMask specifies the event mask, which is used in accordance with
+//     owner_events.
+//   - cursor (optional) to display while the grab is active if the device is a
+//     pointer. If this is NULL then the normal cursors are used for window and
+//     its descendants, and the cursor for window is used elsewhere.
+//   - time_: timestamp of the event which led to this pointer grab. This
+//     usually comes from the Event struct, though GDK_CURRENT_TIME can be used
+//     if the time isn’t known.
 //
 // The function returns the following values:
 //
-//    - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
+//   - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
 //
 func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursorrer, time_ uint32) GrabStatus {
 	var _arg0 *C.GdkDevice       // out
@@ -963,9 +963,9 @@ func (device *Device) Grab(window Windower, grabOwnership GrabOwnership, ownerEv
 //
 // The function returns the following values:
 //
-//    - list (optional): the list of slave devices, or NULL. The list must be
-//      freed with g_list_free(), the contents of the list are owned by GTK+ and
-//      should not be freed.
+//   - list (optional): the list of slave devices, or NULL. The list must be
+//     freed with g_list_free(), the contents of the list are owned by GTK+ and
+//     should not be freed.
 //
 func (device *Device) ListSlaveDevices() []Devicer {
 	var _arg0 *C.GdkDevice // out
@@ -1011,8 +1011,8 @@ func (device *Device) ListSlaveDevices() []Devicer {
 //
 // The function takes the following parameters:
 //
-//    - index_: index of the axis.
-//    - use specifies how the axis is used.
+//   - index_: index of the axis.
+//   - use specifies how the axis is used.
 //
 func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
 	var _arg0 *C.GdkDevice // out
@@ -1034,9 +1034,9 @@ func (device *Device) SetAxisUse(index_ uint, use AxisUse) {
 //
 // The function takes the following parameters:
 //
-//    - index_: index of the macro button to set.
-//    - keyval to generate.
-//    - modifiers to set.
+//   - index_: index of the macro button to set.
+//   - keyval to generate.
+//   - modifiers to set.
 //
 func (device *Device) SetKey(index_, keyval uint, modifiers ModifierType) {
 	var _arg0 *C.GdkDevice      // out
@@ -1066,11 +1066,11 @@ func (device *Device) SetKey(index_, keyval uint, modifiers ModifierType) {
 //
 // The function takes the following parameters:
 //
-//    - mode: input mode.
+//   - mode: input mode.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the mode was successfully changed.
+//   - ok: TRUE if the mode was successfully changed.
 //
 func (device *Device) SetMode(mode InputMode) bool {
 	var _arg0 *C.GdkDevice   // out
@@ -1099,7 +1099,7 @@ func (device *Device) SetMode(mode InputMode) bool {
 //
 // The function takes the following parameters:
 //
-//    - time_: timestap (e.g. GDK_CURRENT_TIME).
+//   - time_: timestap (e.g. GDK_CURRENT_TIME).
 //
 func (device *Device) Ungrab(time_ uint32) {
 	var _arg0 *C.GdkDevice // out
@@ -1118,15 +1118,15 @@ func (device *Device) Ungrab(time_ uint32) {
 // as far as allowed by the grab. Warping the pointer creates events as if the
 // user had moved the mouse instantaneously to the destination.
 //
-// Note that the pointer should normally be under the control of the user. This
-// function was added to cover some rare use cases like keyboard navigation
+// Note that the pointer should normally be under the control of the user.
+// This function was added to cover some rare use cases like keyboard navigation
 // support for the color picker in the ColorSelectionDialog.
 //
 // The function takes the following parameters:
 //
-//    - screen to warp device to.
-//    - x: x coordinate of the destination.
-//    - y: y coordinate of the destination.
+//   - screen to warp device to.
+//   - x: x coordinate of the destination.
+//   - y: y coordinate of the destination.
 //
 func (device *Device) Warp(screen *Screen, x, y int) {
 	var _arg0 *C.GdkDevice // out
@@ -1153,15 +1153,15 @@ func (device *Device) Warp(screen *Screen, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - display for which to get the grab information.
-//    - device to get the grab information from.
+//   - display for which to get the grab information.
+//   - device to get the grab information from.
 //
 // The function returns the following values:
 //
-//    - grabWindow: location to store current grab window.
-//    - ownerEvents: location to store boolean indicating whether the
-//      owner_events flag to gdk_keyboard_grab() or gdk_pointer_grab() was TRUE.
-//    - ok: TRUE if this application currently has the keyboard grabbed.
+//   - grabWindow: location to store current grab window.
+//   - ownerEvents: location to store boolean indicating whether the
+//     owner_events flag to gdk_keyboard_grab() or gdk_pointer_grab() was TRUE.
+//   - ok: TRUE if this application currently has the keyboard grabbed.
 //
 func DeviceGrabInfoLibgtkOnly(display *Display, device Devicer) (grabWindow Windower, ownerEvents, ok bool) {
 	var _arg1 *C.GdkDisplay // out

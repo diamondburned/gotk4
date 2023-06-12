@@ -15,14 +15,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - msgid: string.
-//    - msgval: another string.
+//   - msgid: string.
+//   - msgval: another string.
 //
 // The function returns the following values:
 //
-//    - utf8: msgval, unless msgval is identical to msgid and contains a '|'
-//      character, in which case a pointer to the substring of msgid after the
-//      first '|' character is returned.
+//   - utf8: msgval, unless msgval is identical to msgid and contains a '|'
+//     character, in which case a pointer to the substring of msgid after the
+//     first '|' character is returned.
 //
 func StripContext(msgid, msgval string) string {
 	var _arg1 *C.gchar // out

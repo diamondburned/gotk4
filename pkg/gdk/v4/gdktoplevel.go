@@ -304,11 +304,11 @@ func marshalToplevel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - device used for the operation.
-//    - button being used to drag, or 0 for a keyboard-initiated drag.
-//    - x: surface X coordinate of mouse click that began the drag.
-//    - y: surface Y coordinate of mouse click that began the drag.
-//    - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
+//   - device used for the operation.
+//   - button being used to drag, or 0 for a keyboard-initiated drag.
+//   - x: surface X coordinate of mouse click that began the drag.
+//   - y: surface Y coordinate of mouse click that began the drag.
+//   - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
 //
 func (toplevel *Toplevel) BeginMove(device Devicer, button int, x, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
@@ -340,12 +340,12 @@ func (toplevel *Toplevel) BeginMove(device Devicer, button int, x, y float64, ti
 //
 // The function takes the following parameters:
 //
-//    - edge or corner from which the drag is started.
-//    - device (optional) used for the operation.
-//    - button being used to drag, or 0 for a keyboard-initiated drag.
-//    - x: surface X coordinate of mouse click that began the drag.
-//    - y: surface Y coordinate of mouse click that began the drag.
-//    - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
+//   - edge or corner from which the drag is started.
+//   - device (optional) used for the operation.
+//   - button being used to drag, or 0 for a keyboard-initiated drag.
+//   - x: surface X coordinate of mouse click that began the drag.
+//   - y: surface Y coordinate of mouse click that began the drag.
+//   - timestamp of mouse click that began the drag (use gdk.Event.GetTime()).
 //
 func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button int, x, y float64, timestamp uint32) {
 	var _arg0 *C.GdkToplevel   // out
@@ -383,7 +383,7 @@ func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button i
 //
 // The function takes the following parameters:
 //
-//    - timestamp of the event triggering the surface focus.
+//   - timestamp of the event triggering the surface focus.
 //
 func (toplevel *Toplevel) Focus(timestamp uint32) {
 	var _arg0 *C.GdkToplevel // out
@@ -397,12 +397,12 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 	runtime.KeepAlive(timestamp)
 }
 
-// State gets the bitwise or of the currently active surface state flags, from
-// the GdkToplevelState enumeration.
+// State gets the bitwise or of the currently active surface state flags,
+// from the GdkToplevelState enumeration.
 //
 // The function returns the following values:
 //
-//    - toplevelState: surface state bitfield.
+//   - toplevelState: surface state bitfield.
 //
 func (toplevel *Toplevel) State() ToplevelState {
 	var _arg0 *C.GdkToplevel     // out
@@ -443,8 +443,8 @@ func (toplevel *Toplevel) State() ToplevelState {
 //
 // The function takes the following parameters:
 //
-//    - event (optional): GdkEvent that is triggering the inhibit request, or
-//      NULL if none is available.
+//   - event (optional): GdkEvent that is triggering the inhibit request,
+//     or NULL if none is available.
 //
 func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 	var _arg0 *C.GdkToplevel // out
@@ -466,7 +466,7 @@ func (toplevel *Toplevel) InhibitSystemShortcuts(event Eventer) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the surface was lowered.
+//   - ok: TRUE if the surface was lowered.
 //
 func (toplevel *Toplevel) Lower() bool {
 	var _arg0 *C.GdkToplevel // out
@@ -492,7 +492,7 @@ func (toplevel *Toplevel) Lower() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the surface was minimized.
+//   - ok: TRUE if the surface was minimized.
 //
 func (toplevel *Toplevel) Minimize() bool {
 	var _arg0 *C.GdkToplevel // out
@@ -525,7 +525,7 @@ func (toplevel *Toplevel) Minimize() bool {
 //
 // The function takes the following parameters:
 //
-//    - layout: GdkToplevelLayout object used to layout.
+//   - layout: GdkToplevelLayout object used to layout.
 //
 func (toplevel *Toplevel) Present(layout *ToplevelLayout) {
 	var _arg0 *C.GdkToplevel       // out
@@ -560,7 +560,7 @@ func (toplevel *Toplevel) RestoreSystemShortcuts() {
 //
 // The function takes the following parameters:
 //
-//    - decorated: TRUE to request decorations.
+//   - decorated: TRUE to request decorations.
 //
 func (toplevel *Toplevel) SetDecorated(decorated bool) {
 	var _arg0 *C.GdkToplevel // out
@@ -583,7 +583,7 @@ func (toplevel *Toplevel) SetDecorated(decorated bool) {
 //
 // The function takes the following parameters:
 //
-//    - deletable: TRUE to request a delete button.
+//   - deletable: TRUE to request a delete button.
 //
 func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	var _arg0 *C.GdkToplevel // out
@@ -610,7 +610,7 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 //
 // The function takes the following parameters:
 //
-//    - surfaces: A list of textures to use as icon, of different sizes.
+//   - surfaces: A list of textures to use as icon, of different sizes.
 //
 func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 	var _arg0 *C.GdkToplevel // out
@@ -641,7 +641,7 @@ func (toplevel *Toplevel) SetIconList(surfaces []Texturer) {
 //
 // The function takes the following parameters:
 //
-//    - modal: TRUE if the surface is modal, FALSE otherwise.
+//   - modal: TRUE if the surface is modal, FALSE otherwise.
 //
 func (toplevel *Toplevel) SetModal(modal bool) {
 	var _arg0 *C.GdkToplevel // out
@@ -664,7 +664,7 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 //
 // The function takes the following parameters:
 //
-//    - startupId: string with startup-notification identifier.
+//   - startupId: string with startup-notification identifier.
 //
 func (toplevel *Toplevel) SetStartupID(startupId string) {
 	var _arg0 *C.GdkToplevel // out
@@ -685,7 +685,7 @@ func (toplevel *Toplevel) SetStartupID(startupId string) {
 //
 // The function takes the following parameters:
 //
-//    - title of surface.
+//   - title of surface.
 //
 func (toplevel *Toplevel) SetTitle(title string) {
 	var _arg0 *C.GdkToplevel // out
@@ -710,7 +710,7 @@ func (toplevel *Toplevel) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - parent: another toplevel GdkSurface.
+//   - parent: another toplevel GdkSurface.
 //
 func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 	var _arg0 *C.GdkToplevel // out
@@ -733,11 +733,11 @@ func (toplevel *Toplevel) SetTransientFor(parent Surfacer) {
 //
 // The function takes the following parameters:
 //
-//    - event: GdkEvent to show the menu for.
+//   - event: GdkEvent to show the menu for.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window menu was shown and FALSE otherwise.
+//   - ok: TRUE if the window menu was shown and FALSE otherwise.
 //
 func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 	var _arg0 *C.GdkToplevel // out
@@ -765,7 +765,7 @@ func (toplevel *Toplevel) ShowWindowMenu(event Eventer) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the desktop environment supports tiled window states.
+//   - ok: TRUE if the desktop environment supports tiled window states.
 //
 func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	var _arg0 *C.GdkToplevel // out

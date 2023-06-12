@@ -19,7 +19,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - name of the themed icon.
+//   - name of the themed icon.
 //
 func WindowSetDefaultIconName(name string) {
 	var _arg1 *C.gchar // out

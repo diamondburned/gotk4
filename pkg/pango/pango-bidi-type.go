@@ -20,13 +20,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
-//    - mirroredCh: location to store the mirrored character.
+//   - ch: unicode character.
+//   - mirroredCh: location to store the mirrored character.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if ch has a mirrored character and mirrored_ch is filled in,
-//      FALSE otherwise.
+//   - ok: TRUE if ch has a mirrored character and mirrored_ch is filled in,
+//     FALSE otherwise.
 //
 func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out
@@ -51,8 +51,8 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 
 // UnicharDirection determines the inherent direction of a character.
 //
-// The inherent direction is either PANGO_DIRECTION_LTR, PANGO_DIRECTION_RTL, or
-// PANGO_DIRECTION_NEUTRAL.
+// The inherent direction is either PANGO_DIRECTION_LTR, PANGO_DIRECTION_RTL,
+// or PANGO_DIRECTION_NEUTRAL.
 //
 // This function is useful to categorize characters into left-to-right letters,
 // right-to-left letters, and everything else. If full Unicode bidirectional
@@ -60,11 +60,11 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
+//   - ch: unicode character.
 //
 // The function returns the following values:
 //
-//    - direction of the character.
+//   - direction of the character.
 //
 func UnicharDirection(ch uint32) Direction {
 	var _arg1 C.gunichar       // out

@@ -52,8 +52,7 @@ func defaultViewportOverrides(v *Viewport) ViewportOverrides {
 // The GtkViewport will start scrolling content only if allocated less than the
 // child widget’s minimum size in a given orientation.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkViewport has a single CSS node with name viewport.
 type Viewport struct {
@@ -119,12 +118,12 @@ func marshalViewport(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - hadjustment (optional): horizontal adjustment.
-//    - vadjustment (optional): vertical adjustment.
+//   - hadjustment (optional): horizontal adjustment.
+//   - vadjustment (optional): vertical adjustment.
 //
 // The function returns the following values:
 //
-//    - viewport: new Viewport.
+//   - viewport: new Viewport.
 //
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	var _arg1 *C.GtkAdjustment // out
@@ -153,7 +152,7 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 //
 // The function returns the following values:
 //
-//    - window: Window.
+//   - window: Window.
 //
 func (viewport *Viewport) BinWindow() gdk.Windower {
 	var _arg0 *C.GtkViewport // out
@@ -193,7 +192,7 @@ func (viewport *Viewport) BinWindow() gdk.Windower {
 //
 // The function returns the following values:
 //
-//    - adjustment: horizontal adjustment of viewport.
+//   - adjustment: horizontal adjustment of viewport.
 //
 func (viewport *Viewport) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkViewport   // out
@@ -216,7 +215,7 @@ func (viewport *Viewport) HAdjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - shadowType: shadow type.
+//   - shadowType: shadow type.
 //
 func (viewport *Viewport) ShadowType() ShadowType {
 	var _arg0 *C.GtkViewport  // out
@@ -240,7 +239,7 @@ func (viewport *Viewport) ShadowType() ShadowType {
 //
 // The function returns the following values:
 //
-//    - adjustment: vertical adjustment of viewport.
+//   - adjustment: vertical adjustment of viewport.
 //
 func (viewport *Viewport) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkViewport   // out
@@ -262,7 +261,7 @@ func (viewport *Viewport) VAdjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - window: Window.
+//   - window: Window.
 //
 func (viewport *Viewport) ViewWindow() gdk.Windower {
 	var _arg0 *C.GtkViewport // out
@@ -302,7 +301,7 @@ func (viewport *Viewport) ViewWindow() gdk.Windower {
 //
 // The function takes the following parameters:
 //
-//    - adjustment (optional): Adjustment.
+//   - adjustment (optional): Adjustment.
 //
 func (viewport *Viewport) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkViewport   // out
@@ -322,7 +321,7 @@ func (viewport *Viewport) SetHAdjustment(adjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - typ: new shadow type.
+//   - typ: new shadow type.
 //
 func (viewport *Viewport) SetShadowType(typ ShadowType) {
 	var _arg0 *C.GtkViewport  // out
@@ -342,7 +341,7 @@ func (viewport *Viewport) SetShadowType(typ ShadowType) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment (optional): Adjustment.
+//   - adjustment (optional): Adjustment.
 //
 func (viewport *Viewport) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkViewport   // out

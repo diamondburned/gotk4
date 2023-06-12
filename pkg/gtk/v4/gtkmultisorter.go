@@ -95,7 +95,7 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - multiSorter: new GtkMultiSorter.
+//   - multiSorter: new GtkMultiSorter.
 //
 func NewMultiSorter() *MultiSorter {
 	var _cret *C.GtkMultiSorter // in
@@ -116,7 +116,7 @@ func NewMultiSorter() *MultiSorter {
 //
 // The function takes the following parameters:
 //
-//    - sorter to add.
+//   - sorter to add.
 //
 func (self *MultiSorter) Append(sorter *Sorter) {
 	var _arg0 *C.GtkMultiSorter // out
@@ -138,7 +138,7 @@ func (self *MultiSorter) Append(sorter *Sorter) {
 //
 // The function takes the following parameters:
 //
-//    - position of sorter to remove.
+//   - position of sorter to remove.
 //
 func (self *MultiSorter) Remove(position uint) {
 	var _arg0 *C.GtkMultiSorter // out

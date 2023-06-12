@@ -44,13 +44,13 @@ func init() {
 
 // SocketAddressEnumeratorOverrides contains methods that are overridable.
 type SocketAddressEnumeratorOverrides struct {
-	// Next retrieves the next Address from enumerator. Note that this may block
-	// for some amount of time. (Eg, a Address may need to do a DNS lookup
-	// before it can return an address.) Use
+	// Next retrieves the next Address from enumerator. Note that
+	// this may block for some amount of time. (Eg, a Address may
+	// need to do a DNS lookup before it can return an address.) Use
 	// g_socket_address_enumerator_next_async() if you need to avoid blocking.
 	//
-	// If enumerator is expected to yield addresses, but for some reason is
-	// unable to (eg, because of a DNS error), then the first call to
+	// If enumerator is expected to yield addresses, but for some reason
+	// is unable to (eg, because of a DNS error), then the first call to
 	// g_socket_address_enumerator_next() will return an appropriate error in
 	// *error. However, if the first call to g_socket_address_enumerator_next()
 	// succeeds, then any further internal errors (other than cancellable being
@@ -58,27 +58,27 @@ type SocketAddressEnumeratorOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 	//
 	// The function returns the following values:
 	//
-	//    - socketAddress (owned by the caller), or NULL on error (in which case
-	//      *error will be set) or if there are no more addresses.
+	//   - socketAddress (owned by the caller), or NULL on error (in which case
+	//     *error will be set) or if there are no more addresses.
 	//
 	Next func(ctx context.Context) (SocketAddresser, error)
-	// NextFinish retrieves the result of a completed call to
-	// g_socket_address_enumerator_next_async(). See
+	// NextFinish retrieves the result of a completed call
+	// to g_socket_address_enumerator_next_async(). See
 	// g_socket_address_enumerator_next() for more information about error
 	// handling.
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - socketAddress (owned by the caller), or NULL on error (in which case
-	//      *error will be set) or if there are no more addresses.
+	//   - socketAddress (owned by the caller), or NULL on error (in which case
+	//     *error will be set) or if there are no more addresses.
 	//
 	NextFinish func(result AsyncResulter) (SocketAddresser, error)
 }
@@ -95,8 +95,8 @@ func defaultSocketAddressEnumeratorOverrides(v *SocketAddressEnumerator) SocketA
 // which returns a AddressEnumerator to list each Address which could be used to
 // connect to that Connectable.
 //
-// Enumeration is typically a blocking operation, so the asynchronous methods
-// g_socket_address_enumerator_next_async() and
+// Enumeration is typically a blocking operation, so the
+// asynchronous methods g_socket_address_enumerator_next_async() and
 // g_socket_address_enumerator_next_finish() should be used where possible.
 //
 // Each AddressEnumerator can only be enumerated once. Once
@@ -172,8 +172,8 @@ func BaseSocketAddressEnumerator(obj SocketAddressEnumeratorrer) *SocketAddressE
 // return an address.) Use g_socket_address_enumerator_next_async() if you need
 // to avoid blocking.
 //
-// If enumerator is expected to yield addresses, but for some reason is unable
-// to (eg, because of a DNS error), then the first call to
+// If enumerator is expected to yield addresses, but for some reason
+// is unable to (eg, because of a DNS error), then the first call to
 // g_socket_address_enumerator_next() will return an appropriate error in
 // *error. However, if the first call to g_socket_address_enumerator_next()
 // succeeds, then any further internal errors (other than cancellable being
@@ -181,12 +181,12 @@ func BaseSocketAddressEnumerator(obj SocketAddressEnumeratorrer) *SocketAddressE
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - socketAddress (owned by the caller), or NULL on error (in which case
-//      *error will be set) or if there are no more addresses.
+//   - socketAddress (owned by the caller), or NULL on error (in which case
+//     *error will be set) or if there are no more addresses.
 //
 func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
@@ -241,8 +241,8 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketAddressEnumerator // out
@@ -267,18 +267,18 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 	runtime.KeepAlive(callback)
 }
 
-// NextFinish retrieves the result of a completed call to
-// g_socket_address_enumerator_next_async(). See
+// NextFinish retrieves the result of a completed call
+// to g_socket_address_enumerator_next_async(). See
 // g_socket_address_enumerator_next() for more information about error handling.
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - socketAddress (owned by the caller), or NULL on error (in which case
-//      *error will be set) or if there are no more addresses.
+//   - socketAddress (owned by the caller), or NULL on error (in which case
+//     *error will be set) or if there are no more addresses.
 //
 func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
@@ -325,8 +325,8 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 // return an address.) Use g_socket_address_enumerator_next_async() if you need
 // to avoid blocking.
 //
-// If enumerator is expected to yield addresses, but for some reason is unable
-// to (eg, because of a DNS error), then the first call to
+// If enumerator is expected to yield addresses, but for some reason
+// is unable to (eg, because of a DNS error), then the first call to
 // g_socket_address_enumerator_next() will return an appropriate error in
 // *error. However, if the first call to g_socket_address_enumerator_next()
 // succeeds, then any further internal errors (other than cancellable being
@@ -334,12 +334,12 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - socketAddress (owned by the caller), or NULL on error (in which case
-//      *error will be set) or if there are no more addresses.
+//   - socketAddress (owned by the caller), or NULL on error (in which case
+//     *error will be set) or if there are no more addresses.
 //
 func (enumerator *SocketAddressEnumerator) next(ctx context.Context) (SocketAddresser, error) {
 	gclass := (*C.GSocketAddressEnumeratorClass)(coreglib.PeekParentClass(enumerator))
@@ -397,8 +397,8 @@ func (enumerator *SocketAddressEnumerator) next(ctx context.Context) (SocketAddr
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (enumerator *SocketAddressEnumerator) nextAsync(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GSocketAddressEnumeratorClass)(coreglib.PeekParentClass(enumerator))
@@ -426,18 +426,18 @@ func (enumerator *SocketAddressEnumerator) nextAsync(ctx context.Context, callba
 	runtime.KeepAlive(callback)
 }
 
-// nextFinish retrieves the result of a completed call to
-// g_socket_address_enumerator_next_async(). See
+// nextFinish retrieves the result of a completed call
+// to g_socket_address_enumerator_next_async(). See
 // g_socket_address_enumerator_next() for more information about error handling.
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - socketAddress (owned by the caller), or NULL on error (in which case
-//      *error will be set) or if there are no more addresses.
+//   - socketAddress (owned by the caller), or NULL on error (in which case
+//     *error will be set) or if there are no more addresses.
 //
 func (enumerator *SocketAddressEnumerator) nextFinish(result AsyncResulter) (SocketAddresser, error) {
 	gclass := (*C.GSocketAddressEnumeratorClass)(coreglib.PeekParentClass(enumerator))

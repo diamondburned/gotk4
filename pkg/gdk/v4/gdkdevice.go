@@ -81,8 +81,8 @@ func (i InputSource) String() string {
 	}
 }
 
-// Device: GdkDevice object represents an input device, such as a keyboard, a
-// mouse, or a touchpad.
+// Device: GdkDevice object represents an input device, such as a keyboard,
+// a mouse, or a touchpad.
 //
 // See the gdk.Seat documentation for more information about the various kinds
 // of devices, and their relationships.
@@ -149,7 +149,7 @@ func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) coreglib.Sign
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if Caps Lock is on for device.
+//   - ok: TRUE if Caps Lock is on for device.
 //
 func (device *Device) CapsLockState() bool {
 	var _arg0 *C.GdkDevice // out
@@ -173,7 +173,7 @@ func (device *Device) CapsLockState() bool {
 //
 // The function returns the following values:
 //
-//    - deviceTool: GdkDeviceTool, or NULL.
+//   - deviceTool: GdkDeviceTool, or NULL.
 //
 func (device *Device) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkDevice     // out
@@ -200,8 +200,8 @@ func (device *Device) DeviceTool() *DeviceTool {
 //
 // The function returns the following values:
 //
-//    - direction: PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL if it can determine
-//      the direction. PANGO_DIRECTION_NEUTRAL otherwise.
+//   - direction: PANGO_DIRECTION_LTR or PANGO_DIRECTION_RTL if it can determine
+//     the direction. PANGO_DIRECTION_NEUTRAL otherwise.
 //
 func (device *Device) Direction() pango.Direction {
 	var _arg0 *C.GdkDevice     // out
@@ -223,7 +223,7 @@ func (device *Device) Direction() pango.Direction {
 //
 // The function returns the following values:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 func (device *Device) Display() *Display {
 	var _arg0 *C.GdkDevice  // out
@@ -247,7 +247,7 @@ func (device *Device) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the pointer follows device motion.
+//   - ok: TRUE if the pointer follows device motion.
 //
 func (device *Device) HasCursor() bool {
 	var _arg0 *C.GdkDevice // out
@@ -273,7 +273,7 @@ func (device *Device) HasCursor() bool {
 //
 // The function returns the following values:
 //
-//    - modifierType: current modifier state.
+//   - modifierType: current modifier state.
 //
 func (device *Device) ModifierState() ModifierType {
 	var _arg0 *C.GdkDevice      // out
@@ -295,7 +295,7 @@ func (device *Device) ModifierState() ModifierType {
 //
 // The function returns the following values:
 //
-//    - utf8: name.
+//   - utf8: name.
 //
 func (device *Device) Name() string {
 	var _arg0 *C.GdkDevice // out
@@ -320,7 +320,7 @@ func (device *Device) Name() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if Num Lock is on for device.
+//   - ok: TRUE if Num Lock is on for device.
 //
 func (device *Device) NumLockState() bool {
 	var _arg0 *C.GdkDevice // out
@@ -344,7 +344,7 @@ func (device *Device) NumLockState() bool {
 //
 // The function returns the following values:
 //
-//    - guint: number of touch points.
+//   - guint: number of touch points.
 //
 func (device *Device) NumTouches() uint {
 	var _arg0 *C.GdkDevice // out
@@ -369,7 +369,7 @@ func (device *Device) NumTouches() uint {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): product ID, or NULL.
+//   - utf8 (optional): product ID, or NULL.
 //
 func (device *Device) ProductID() string {
 	var _arg0 *C.GdkDevice // out
@@ -396,7 +396,7 @@ func (device *Device) ProductID() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if Scroll Lock is on for device.
+//   - ok: TRUE if Scroll Lock is on for device.
 //
 func (device *Device) ScrollLockState() bool {
 	var _arg0 *C.GdkDevice // out
@@ -420,7 +420,7 @@ func (device *Device) ScrollLockState() bool {
 //
 // The function returns the following values:
 //
-//    - seat: GdkSeat.
+//   - seat: GdkSeat.
 //
 func (device *Device) Seat() Seater {
 	var _arg0 *C.GdkDevice // out
@@ -458,7 +458,7 @@ func (device *Device) Seat() Seater {
 //
 // The function returns the following values:
 //
-//    - inputSource: GdkInputSource.
+//   - inputSource: GdkInputSource.
 //
 func (device *Device) Source() InputSource {
 	var _arg0 *C.GdkDevice     // out
@@ -484,11 +484,11 @@ func (device *Device) Source() InputSource {
 //
 // The function returns the following values:
 //
-//    - winX (optional): return location for the X coordinate of the device
-//      location, relative to the surface origin, or NULL.
-//    - winY (optional): return location for the Y coordinate of the device
-//      location, relative to the surface origin, or NULL.
-//    - surface (optional): GdkSurface under the device position, or NULL.
+//   - winX (optional): return location for the X coordinate of the device
+//     location, relative to the surface origin, or NULL.
+//   - winY (optional): return location for the Y coordinate of the device
+//     location, relative to the surface origin, or NULL.
+//   - surface (optional): GdkSurface under the device position, or NULL.
 //
 func (device *Device) SurfaceAtPosition() (winX, winY float64, surface Surfacer) {
 	var _arg0 *C.GdkDevice  // out
@@ -535,7 +535,7 @@ func (device *Device) SurfaceAtPosition() (winX, winY float64, surface Surfacer)
 //
 // The function returns the following values:
 //
-//    - guint32: timestamp of the last activity for this device.
+//   - guint32: timestamp of the last activity for this device.
 //
 func (device *Device) Timestamp() uint32 {
 	var _arg0 *C.GdkDevice // out
@@ -560,27 +560,27 @@ func (device *Device) Timestamp() uint32 {
 // This function, together with gdk.Device.GetProductID(), can be used to eg.
 // compose GSettings paths to store settings for this device.
 //
-//     static GSettings *
-//     get_device_settings (GdkDevice *device)
-//     {
-//       const char *vendor, *product;
-//       GSettings *settings;
-//       GdkDevice *device;
-//       char *path;
+//    static GSettings *
+//    get_device_settings (GdkDevice *device)
+//    {
+//      const char *vendor, *product;
+//      GSettings *settings;
+//      GdkDevice *device;
+//      char *path;
 //
-//       vendor = gdk_device_get_vendor_id (device);
-//       product = gdk_device_get_product_id (device);
+//      vendor = gdk_device_get_vendor_id (device);
+//      product = gdk_device_get_product_id (device);
 //
-//       path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
-//       settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
-//       g_free (path);
+//      path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+//      settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+//      g_free (path);
 //
-//       return settings;
-//     }.
+//      return settings;
+//    }.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): vendor ID, or NULL.
+//   - utf8 (optional): vendor ID, or NULL.
 //
 func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
@@ -607,7 +607,7 @@ func (device *Device) VendorID() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there are layouts with both directions, FALSE otherwise.
+//   - ok: TRUE if there are layouts with both directions, FALSE otherwise.
 //
 func (device *Device) HasBidiLayouts() bool {
 	var _arg0 *C.GdkDevice // out

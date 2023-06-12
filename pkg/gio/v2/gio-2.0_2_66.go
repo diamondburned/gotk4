@@ -14,7 +14,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - quark: #GQuark.
+//   - quark: #GQuark.
 //
 func TLSChannelBindingErrorQuark() glib.Quark {
 	var _cret C.GQuark // in

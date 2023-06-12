@@ -23,7 +23,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - display: Display.
+//   - display: Display.
 //
 func TooltipTriggerTooltipQuery(display *gdk.Display) {
 	var _arg1 *C.GdkDisplay // out

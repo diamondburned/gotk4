@@ -35,8 +35,8 @@ func defaultGObjectAccessibleOverrides(v *GObjectAccessible) GObjectAccessibleOv
 }
 
 // GObjectAccessible: this object class is derived from AtkObject. It can be
-// used as a basis for implementing accessible objects for GObjects which are
-// not derived from GtkWidget. One example of its use is in providing an
+// used as a basis for implementing accessible objects for GObjects which
+// are not derived from GtkWidget. One example of its use is in providing an
 // accessible object for GnomeCanvasItem in the GAIL library.
 type GObjectAccessible struct {
 	_ [0]func() // equal guard
@@ -79,7 +79,7 @@ func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - object which is the object for which obj is the accessible object.
+//   - object which is the object for which obj is the accessible object.
 //
 func (obj *GObjectAccessible) Object() *coreglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
@@ -101,11 +101,11 @@ func (obj *GObjectAccessible) Object() *coreglib.Object {
 //
 // The function takes the following parameters:
 //
-//    - obj: #GObject.
+//   - obj: #GObject.
 //
 // The function returns the following values:
 //
-//    - object which is the accessible object for the obj.
+//   - object which is the accessible object for the obj.
 //
 func GObjectAccessibleForObject(obj *coreglib.Object) *AtkObject {
 	var _arg1 *C.GObject   // out

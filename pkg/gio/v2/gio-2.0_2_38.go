@@ -64,11 +64,11 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - bytes: #GBytes.
+//   - bytes: #GBytes.
 //
 // The function returns the following values:
 //
-//    - bytesIcon for the given bytes.
+//   - bytesIcon for the given bytes.
 //
 func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 	var _arg1 *C.GBytes // out
@@ -90,7 +90,7 @@ func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 //
 // The function returns the following values:
 //
-//    - bytes: #GBytes.
+//   - bytes: #GBytes.
 //
 func (icon *BytesIcon) Bytes() *glib.Bytes {
 	var _arg0 *C.GBytesIcon // out
@@ -145,24 +145,24 @@ func (icon *BytesIcon) Bytes() *glib.Bytes {
 // property.
 //
 // The general idea here is to reduce the number of locations where a particular
-// piece of state is kept (and therefore has to be synchronised between). Action
-// does not have a separate state that is kept in sync with the property value
-// -- its state is the property value.
+// piece of state is kept (and therefore has to be synchronised between).
+// Action does not have a separate state that is kept in sync with the property
+// value -- its state is the property value.
 //
 // For example, it might be useful to create a #GAction corresponding to the
 // "visible-child-name" property of a Stack so that the current page can be
 // switched from a menu. The active radio indication in the menu is then
 // directly determined from the active page of the Stack.
 //
-// An anti-example would be binding the "active-id" property on a ComboBox. This
-// is because the state of the combobox itself is probably uninteresting and is
-// actually being used to control something else.
+// An anti-example would be binding the "active-id" property on a ComboBox.
+// This is because the state of the combobox itself is probably uninteresting
+// and is actually being used to control something else.
 //
-// Another anti-example would be to bind to the "visible-child-name" property of
-// a Stack if this value is actually stored in #GSettings. In that case, the
-// real source of the value is #GSettings. If you want a #GAction to control a
-// setting stored in #GSettings, see g_settings_create_action() instead, and
-// possibly combine its use with g_settings_bind().
+// Another anti-example would be to bind to the "visible-child-name" property
+// of a Stack if this value is actually stored in #GSettings. In that case,
+// the real source of the value is #GSettings. If you want a #GAction to control
+// a setting stored in #GSettings, see g_settings_create_action() instead,
+// and possibly combine its use with g_settings_bind().
 type PropertyAction struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -198,13 +198,13 @@ func marshalPropertyAction(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name of the action to create.
-//    - object that has the property to wrap.
-//    - propertyName: name of the property.
+//   - name of the action to create.
+//   - object that has the property to wrap.
+//   - propertyName: name of the property.
 //
 // The function returns the following values:
 //
-//    - propertyAction: new Action.
+//   - propertyAction: new Action.
 //
 func NewPropertyAction(name string, object *coreglib.Object, propertyName string) *PropertyAction {
 	var _arg1 *C.gchar           // out

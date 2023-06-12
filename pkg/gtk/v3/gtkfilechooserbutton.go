@@ -47,8 +47,8 @@ func defaultFileChooserButtonOverrides(v *FileChooserButton) FileChooserButtonOv
 
 // FileChooserButton is a widget that lets the user select a file. It implements
 // the FileChooser interface. Visually, it is a file name with a button to bring
-// up a FileChooserDialog. The user can then use that dialog to change the file
-// associated with that button. This widget does not support setting the
+// up a FileChooserDialog. The user can then use that dialog to change the
+// file associated with that button. This widget does not support setting the
 // FileChooser:select-multiple property to TRUE.
 //
 // Create a button to let the user select a file in /etc
@@ -71,8 +71,7 @@ func defaultFileChooserButtonOverrides(v *FileChooserButton) FileChooserButtonOv
 // or pack the button in > such a way that other interface elements give space
 // to the > widget.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkFileChooserButton has a CSS node with name “filechooserbutton”, containing
 // a subnode for the internal button with name “button” and style class “.file”.
@@ -155,12 +154,12 @@ func (button *FileChooserButton) ConnectFileSet(f func()) coreglib.SignalHandle 
 //
 // The function takes the following parameters:
 //
-//    - title of the browse dialog.
-//    - action: open mode for the widget.
+//   - title of the browse dialog.
+//   - action: open mode for the widget.
 //
 // The function returns the following values:
 //
-//    - fileChooserButton: new button widget.
+//   - fileChooserButton: new button widget.
 //
 func NewFileChooserButton(title string, action FileChooserAction) *FileChooserButton {
 	var _arg1 *C.gchar               // out
@@ -194,11 +193,11 @@ func NewFileChooserButton(title string, action FileChooserAction) *FileChooserBu
 //
 // The function takes the following parameters:
 //
-//    - dialog: widget to use as dialog.
+//   - dialog: widget to use as dialog.
 //
 // The function returns the following values:
 //
-//    - fileChooserButton: new button widget.
+//   - fileChooserButton: new button widget.
 //
 func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 	var _arg1 *C.GtkWidget // out
@@ -223,7 +222,7 @@ func NewFileChooserButtonWithDialog(dialog *Dialog) *FileChooserButton {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the button grabs focus when it is clicked with the mouse.
+//   - ok: TRUE if the button grabs focus when it is clicked with the mouse.
 //
 func (button *FileChooserButton) FocusOnClick() bool {
 	var _arg0 *C.GtkFileChooserButton // out
@@ -248,7 +247,7 @@ func (button *FileChooserButton) FocusOnClick() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to the browse dialog’s title.
+//   - utf8: pointer to the browse dialog’s title.
 //
 func (button *FileChooserButton) Title() string {
 	var _arg0 *C.GtkFileChooserButton // out
@@ -271,8 +270,8 @@ func (button *FileChooserButton) Title() string {
 //
 // The function returns the following values:
 //
-//    - gint: integer width (in characters) that the button will use to size
-//      itself.
+//   - gint: integer width (in characters) that the button will use to size
+//     itself.
 //
 func (button *FileChooserButton) WidthChars() int {
 	var _arg0 *C.GtkFileChooserButton // out
@@ -299,7 +298,7 @@ func (button *FileChooserButton) WidthChars() int {
 //
 // The function takes the following parameters:
 //
-//    - focusOnClick: whether the button grabs focus when clicked with the mouse.
+//   - focusOnClick: whether the button grabs focus when clicked with the mouse.
 //
 func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkFileChooserButton // out
@@ -319,7 +318,7 @@ func (button *FileChooserButton) SetFocusOnClick(focusOnClick bool) {
 //
 // The function takes the following parameters:
 //
-//    - title: new browse dialog title.
+//   - title: new browse dialog title.
 //
 func (button *FileChooserButton) SetTitle(title string) {
 	var _arg0 *C.GtkFileChooserButton // out
@@ -338,7 +337,7 @@ func (button *FileChooserButton) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - nChars: new width, in characters.
+//   - nChars: new width, in characters.
 //
 func (button *FileChooserButton) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkFileChooserButton // out

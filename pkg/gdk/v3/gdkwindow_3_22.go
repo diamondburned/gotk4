@@ -35,8 +35,8 @@ func init() {
 // GDK_GRAVITY_NORTH_EAST and vice versa if the window extends beyond the left
 // or right edges of the monitor.
 //
-// If GDK_ANCHOR_SLIDE_X is set, the window can be shifted horizontally to fit
-// on-screen. If GDK_ANCHOR_RESIZE_X is set, the window can be shrunken
+// If GDK_ANCHOR_SLIDE_X is set, the window can be shifted horizontally to
+// fit on-screen. If GDK_ANCHOR_RESIZE_X is set, the window can be shrunken
 // horizontally to fit.
 //
 // In general, when multiple flags are set, flipping should take precedence over

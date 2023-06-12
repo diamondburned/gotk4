@@ -22,11 +22,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - x: x coordinate of one corner of the rectangle.
-//    - y: y coordinate of one corner of the rectangle.
-//    - width: non-negative width of the rectangle.
-//    - height: non-negative height of the rectangle.
+//   - cr: cairo context.
+//   - x: x coordinate of one corner of the rectangle.
+//   - y: y coordinate of one corner of the rectangle.
+//   - width: non-negative width of the rectangle.
+//   - height: non-negative height of the rectangle.
 //
 func ErrorUnderlinePath(cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.cairo_t // out
@@ -58,11 +58,11 @@ func ErrorUnderlinePath(cr *cairo.Context, x, y, width, height float64) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - x: x coordinate of one corner of the rectangle.
-//    - y: y coordinate of one corner of the rectangle.
-//    - width: non-negative width of the rectangle.
-//    - height: non-negative height of the rectangle.
+//   - cr: cairo context.
+//   - x: x coordinate of one corner of the rectangle.
+//   - y: y coordinate of one corner of the rectangle.
+//   - width: non-negative width of the rectangle.
+//   - height: non-negative height of the rectangle.
 //
 func ShowErrorUnderline(cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.cairo_t // out

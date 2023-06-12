@@ -16,11 +16,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - s: string to escape.
+//   - s: string to escape.
 //
 // The function returns the following values:
 //
-//    - utf8: escaped version of s. Free with g_free().
+//   - utf8: escaped version of s. Free with g_free().
 //
 func DBusEscapeObjectPath(s string) string {
 	var _arg1 *C.gchar // out
@@ -57,11 +57,11 @@ func DBusEscapeObjectPath(s string) string {
 //
 // The function takes the following parameters:
 //
-//    - bytes: string of bytes to escape.
+//   - bytes: string of bytes to escape.
 //
 // The function returns the following values:
 //
-//    - utf8: escaped version of bytes. Free with g_free().
+//   - utf8: escaped version of bytes. Free with g_free().
 //
 func DBusEscapeObjectPathBytestring(bytes []byte) string {
 	var _arg1 *C.guint8 // out
@@ -93,12 +93,12 @@ func DBusEscapeObjectPathBytestring(bytes []byte) string {
 //
 // The function takes the following parameters:
 //
-//    - s: string to unescape.
+//   - s: string to unescape.
 //
 // The function returns the following values:
 //
-//    - guint8s (optional): an unescaped version of s, or NULL if s is not a
-//      string returned from g_dbus_escape_object_path(). Free with g_free().
+//   - guint8s (optional): an unescaped version of s, or NULL if s is not a
+//     string returned from g_dbus_escape_object_path(). Free with g_free().
 //
 func DBusUnescapeObjectPath(s string) []byte {
 	var _arg1 *C.gchar  // out

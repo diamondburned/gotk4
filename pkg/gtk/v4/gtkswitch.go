@@ -44,13 +44,11 @@ func init() {
 //    ├── label
 //    ╰── slider
 //
-//
 // GtkSwitch has four css nodes, the main node with the name switch and subnodes
 // for the slider and the on and off labels. Neither of them is using any style
 // classes.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkSwitch uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
 type Switch struct {
@@ -138,7 +136,7 @@ func (self *Switch) ConnectStateSet(f func(state bool) (ok bool)) coreglib.Signa
 //
 // The function returns the following values:
 //
-//    - _switch: newly created GtkSwitch instance.
+//   - _switch: newly created GtkSwitch instance.
 //
 func NewSwitch() *Switch {
 	var _cret *C.GtkWidget // in
@@ -156,7 +154,7 @@ func NewSwitch() *Switch {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GtkSwitch is active, and FALSE otherwise.
+//   - ok: TRUE if the GtkSwitch is active, and FALSE otherwise.
 //
 func (self *Switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out
@@ -180,7 +178,7 @@ func (self *Switch) Active() bool {
 //
 // The function returns the following values:
 //
-//    - ok: underlying state.
+//   - ok: underlying state.
 //
 func (self *Switch) State() bool {
 	var _arg0 *C.GtkSwitch // out
@@ -204,7 +202,7 @@ func (self *Switch) State() bool {
 //
 // The function takes the following parameters:
 //
-//    - isActive: TRUE if self should be active, and FALSE otherwise.
+//   - isActive: TRUE if self should be active, and FALSE otherwise.
 //
 func (self *Switch) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
@@ -222,15 +220,15 @@ func (self *Switch) SetActive(isActive bool) {
 
 // SetState sets the underlying state of the GtkSwitch.
 //
-// Normally, this is the same as gtk.Switch:active, unless the switch is set up
-// for delayed state changes. This function is typically called from a
+// Normally, this is the same as gtk.Switch:active, unless the switch is set
+// up for delayed state changes. This function is typically called from a
 // gtk.Switch`::state-set signal handler.
 //
 // See gtk.Switch::state-set for details.
 //
 // The function takes the following parameters:
 //
-//    - state: new state.
+//   - state: new state.
 //
 func (self *Switch) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out

@@ -48,18 +48,18 @@ func init() {
 // The format of the message may change in a future version.
 //
 // error must have come from a failed attempt to g_variant_parse() and
-// source_str must be exactly the same string that caused the error. If
-// source_str was not nul-terminated when you passed it to g_variant_parse()
+// source_str must be exactly the same string that caused the error.
+// If source_str was not nul-terminated when you passed it to g_variant_parse()
 // then you must add nul termination before using this function.
 //
 // The function takes the following parameters:
 //
-//    - err from the ParseError domain.
-//    - sourceStr: string that was given to the parser.
+//   - err from the ParseError domain.
+//   - sourceStr: string that was given to the parser.
 //
 // The function returns the following values:
 //
-//    - utf8: printed message.
+//   - utf8: printed message.
 //
 func VariantParseErrorPrintContext(err error, sourceStr string) string {
 	var _arg1 *C.GError // out
@@ -86,8 +86,8 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 
 // VariantDict is a mutable interface to #GVariant dictionaries.
 //
-// It can be used for doing a sequence of dictionary lookups in an efficient way
-// on an existing #GVariant dictionary or it can be used to construct new
+// It can be used for doing a sequence of dictionary lookups in an efficient
+// way on an existing #GVariant dictionary or it can be used to construct new
 // dictionaries with a hashtable-like interface. It can also be used for taking
 // existing dictionaries and modifying them in order to create new ones.
 //
@@ -110,37 +110,37 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 // convenient.
 //
 // Consider the following two examples that do the same thing in each style:
-// take an existing dictionary and look up the "count" uint32 key, adding 1 to
-// it if it is found, or returning an error if the key is not found. Each
-// returns the new dictionary as a floating #GVariant.
+// take an existing dictionary and look up the "count" uint32 key, adding
+// 1 to it if it is found, or returning an error if the key is not found.
+// Each returns the new dictionary as a floating #GVariant.
 //
 // Using a stack-allocated GVariantDict
 //
-//      GVariant *
-//      add_to_count (GVariant  *orig,
-//                    GError   **error)
-//      {
-//        GVariantDict *dict;
-//        GVariant *result;
-//        guint32 count;
+//    GVariant *
+//    add_to_count (GVariant  *orig,
+//                  GError   **error)
+//    {
+//      GVariantDict *dict;
+//      GVariant *result;
+//      guint32 count;
 //
-//        dict = g_variant_dict_new (orig);
+//      dict = g_variant_dict_new (orig);
 //
-//        if (g_variant_dict_lookup (dict, "count", "u", &count))
-//          {
-//            g_variant_dict_insert (dict, "count", "u", count + 1);
-//            result = g_variant_dict_end (dict);
-//          }
-//        else
-//          {
-//            g_set_error (...);
-//            result = NULL;
-//          }
+//      if (g_variant_dict_lookup (dict, "count", "u", &count))
+//        {
+//          g_variant_dict_insert (dict, "count", "u", count + 1);
+//          result = g_variant_dict_end (dict);
+//        }
+//      else
+//        {
+//          g_set_error (...);
+//          result = NULL;
+//        }
 //
-//        g_variant_dict_unref (dict);
+//      g_variant_dict_unref (dict);
 //
-//        return result;
-//      }
+//      return result;
+//    }
 //
 // An instance of this type is always passed by reference.
 type VariantDict struct {
@@ -207,11 +207,11 @@ func (dict *VariantDict) Clear() {
 //
 // The function takes the following parameters:
 //
-//    - key to look up in the dictionary.
+//   - key to look up in the dictionary.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if key is in dict.
+//   - ok: TRUE if key is in dict.
 //
 func (dict *VariantDict) Contains(key string) bool {
 	var _arg0 *C.GVariantDict // out
@@ -239,13 +239,13 @@ func (dict *VariantDict) Contains(key string) bool {
 // G_VARIANT_TYPE_VARDICT, clearing it in the process.
 //
 // It is not permissible to use dict in any way after this call except for
-// reference counting operations (in the case of a heap-allocated Dict) or by
-// reinitialising it with g_variant_dict_init() (in the case of
+// reference counting operations (in the case of a heap-allocated Dict)
+// or by reinitialising it with g_variant_dict_init() (in the case of
 // stack-allocated).
 //
 // The function returns the following values:
 //
-//    - variant: new, floating, #GVariant.
+//   - variant: new, floating, #GVariant.
 //
 func (dict *VariantDict) End() *Variant {
 	var _arg0 *C.GVariantDict // out
@@ -276,8 +276,8 @@ func (dict *VariantDict) End() *Variant {
 //
 // The function takes the following parameters:
 //
-//    - key to insert a value for.
-//    - value to insert.
+//   - key to insert a value for.
+//   - value to insert.
 //
 func (dict *VariantDict) InsertValue(key string, value *Variant) {
 	var _arg0 *C.GVariantDict // out
@@ -302,18 +302,18 @@ func (dict *VariantDict) InsertValue(key string, value *Variant) {
 // The expected_type string specifies what type of value is expected. If the
 // value associated with key has a different type then NULL is returned.
 //
-// If the key is found and the value has the correct type, it is returned. If
-// expected_type was specified then any non-NULL return value will have this
+// If the key is found and the value has the correct type, it is returned.
+// If expected_type was specified then any non-NULL return value will have this
 // type.
 //
 // The function takes the following parameters:
 //
-//    - key to look up in the dictionary.
-//    - expectedType (optional) or NULL.
+//   - key to look up in the dictionary.
+//   - expectedType (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - variant: value of the dictionary key, or NULL.
+//   - variant: value of the dictionary key, or NULL.
 //
 func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Variant {
 	var _arg0 *C.GVariantDict // out
@@ -350,11 +350,11 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 //
 // The function takes the following parameters:
 //
-//    - key to remove.
+//   - key to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key was found and removed.
+//   - ok: TRUE if the key was found and removed.
 //
 func (dict *VariantDict) Remove(key string) bool {
 	var _arg0 *C.GVariantDict // out

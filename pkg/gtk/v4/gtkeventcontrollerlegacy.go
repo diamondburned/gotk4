@@ -61,7 +61,7 @@ func (v *EventControllerLegacy) ConnectEvent(f func(event gdk.Eventer) (ok bool)
 //
 // The function returns the following values:
 //
-//    - eventControllerLegacy: newly created event controller.
+//   - eventControllerLegacy: newly created event controller.
 //
 func NewEventControllerLegacy() *EventControllerLegacy {
 	var _cret *C.GtkEventController // in

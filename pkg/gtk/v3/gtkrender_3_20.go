@@ -22,15 +22,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: StyleContext.
-//    - x: x origin of the rectangle.
-//    - y: y origin of the rectangle.
-//    - width: rectangle width.
-//    - height: rectangle height.
+//   - context: StyleContext.
+//   - x: x origin of the rectangle.
+//   - y: y origin of the rectangle.
+//   - width: rectangle width.
+//   - height: rectangle height.
 //
 // The function returns the following values:
 //
-//    - outClip: return location for the clip.
+//   - outClip: return location for the clip.
 //
 func RenderBackgroundGetClip(context *StyleContext, x, y, width, height float64) *gdk.Rectangle {
 	var _arg1 *C.GtkStyleContext // out

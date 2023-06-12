@@ -39,15 +39,15 @@ func defaultProgressBarOverrides(v *ProgressBar) ProgressBarOverrides {
 }
 
 // ProgressBar is typically used to display the progress of a long running
-// operation. It provides a visual clue that processing is underway. The
-// GtkProgressBar can be used in two different modes: percentage mode and
+// operation. It provides a visual clue that processing is underway.
+// The GtkProgressBar can be used in two different modes: percentage mode and
 // activity mode.
 //
 // When an application can determine how much work needs to take place (e.g.
-// read a fixed number of bytes from a file) and can monitor its progress, it
-// can use the GtkProgressBar in percentage mode and the user sees a growing bar
-// indicating the percentage of the work that has been completed. In this mode,
-// the application is required to call gtk_progress_bar_set_fraction()
+// read a fixed number of bytes from a file) and can monitor its progress,
+// it can use the GtkProgressBar in percentage mode and the user sees a growing
+// bar indicating the percentage of the work that has been completed. In this
+// mode, the application is required to call gtk_progress_bar_set_fraction()
 // periodically to update the progress bar.
 //
 // When an application has no accurate way of knowing the amount of work to do,
@@ -133,7 +133,7 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - progressBar: ProgressBar.
+//   - progressBar: ProgressBar.
 //
 func NewProgressBar() *ProgressBar {
 	var _cret *C.GtkWidget // in
@@ -152,7 +152,7 @@ func NewProgressBar() *ProgressBar {
 //
 // The function returns the following values:
 //
-//    - ellipsizeMode: EllipsizeMode.
+//   - ellipsizeMode: EllipsizeMode.
 //
 func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkProgressBar    // out
@@ -174,7 +174,7 @@ func (pbar *ProgressBar) Ellipsize() pango.EllipsizeMode {
 //
 // The function returns the following values:
 //
-//    - gdouble: fraction from 0.0 to 1.0.
+//   - gdouble: fraction from 0.0 to 1.0.
 //
 func (pbar *ProgressBar) Fraction() float64 {
 	var _arg0 *C.GtkProgressBar // out
@@ -196,7 +196,7 @@ func (pbar *ProgressBar) Fraction() float64 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the progress bar is inverted.
+//   - ok: TRUE if the progress bar is inverted.
 //
 func (pbar *ProgressBar) Inverted() bool {
 	var _arg0 *C.GtkProgressBar // out
@@ -221,7 +221,7 @@ func (pbar *ProgressBar) Inverted() bool {
 //
 // The function returns the following values:
 //
-//    - gdouble: fraction from 0.0 to 1.0.
+//   - gdouble: fraction from 0.0 to 1.0.
 //
 func (pbar *ProgressBar) PulseStep() float64 {
 	var _arg0 *C.GtkProgressBar // out
@@ -244,7 +244,7 @@ func (pbar *ProgressBar) PulseStep() float64 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if text is shown in the progress bar.
+//   - ok: TRUE if text is shown in the progress bar.
 //
 func (pbar *ProgressBar) ShowText() bool {
 	var _arg0 *C.GtkProgressBar // out
@@ -270,8 +270,8 @@ func (pbar *ProgressBar) ShowText() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): text, or NULL; this string is owned by the widget and
-//      should not be modified or freed.
+//   - utf8 (optional): text, or NULL; this string is owned by the widget and
+//     should not be modified or freed.
 //
 func (pbar *ProgressBar) Text() string {
 	var _arg0 *C.GtkProgressBar // out
@@ -310,7 +310,7 @@ func (pbar *ProgressBar) Pulse() {
 //
 // The function takes the following parameters:
 //
-//    - mode: EllipsizeMode.
+//   - mode: EllipsizeMode.
 //
 func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
 	var _arg0 *C.GtkProgressBar    // out
@@ -329,7 +329,7 @@ func (pbar *ProgressBar) SetEllipsize(mode pango.EllipsizeMode) {
 //
 // The function takes the following parameters:
 //
-//    - fraction of the task that’s been completed.
+//   - fraction of the task that’s been completed.
 //
 func (pbar *ProgressBar) SetFraction(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
@@ -348,7 +348,7 @@ func (pbar *ProgressBar) SetFraction(fraction float64) {
 //
 // The function takes the following parameters:
 //
-//    - inverted: TRUE to invert the progress bar.
+//   - inverted: TRUE to invert the progress bar.
 //
 func (pbar *ProgressBar) SetInverted(inverted bool) {
 	var _arg0 *C.GtkProgressBar // out
@@ -369,7 +369,7 @@ func (pbar *ProgressBar) SetInverted(inverted bool) {
 //
 // The function takes the following parameters:
 //
-//    - fraction between 0.0 and 1.0.
+//   - fraction between 0.0 and 1.0.
 //
 func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 	var _arg0 *C.GtkProgressBar // out
@@ -383,9 +383,9 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 	runtime.KeepAlive(fraction)
 }
 
-// SetShowText sets whether the progress bar will show text next to the bar. The
-// shown text is either the value of the ProgressBar:text property or, if that
-// is NULL, the ProgressBar:fraction value, as a percentage.
+// SetShowText sets whether the progress bar will show text next to the bar.
+// The shown text is either the value of the ProgressBar:text property or,
+// if that is NULL, the ProgressBar:fraction value, as a percentage.
 //
 // To make a progress bar that is styled and sized suitably for containing text
 // (even if the actual text is blank), set ProgressBar:show-text to TRUE and
@@ -393,7 +393,7 @@ func (pbar *ProgressBar) SetPulseStep(fraction float64) {
 //
 // The function takes the following parameters:
 //
-//    - showText: whether to show text.
+//   - showText: whether to show text.
 //
 func (pbar *ProgressBar) SetShowText(showText bool) {
 	var _arg0 *C.GtkProgressBar // out
@@ -421,7 +421,7 @@ func (pbar *ProgressBar) SetShowText(showText bool) {
 //
 // The function takes the following parameters:
 //
-//    - text (optional): UTF-8 string, or NULL.
+//   - text (optional): UTF-8 string, or NULL.
 //
 func (pbar *ProgressBar) SetText(text string) {
 	var _arg0 *C.GtkProgressBar // out

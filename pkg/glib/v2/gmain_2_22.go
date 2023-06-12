@@ -13,9 +13,9 @@ import (
 // #include <glib.h>
 import "C"
 
-// MainContextGetThreadDefault gets the thread-default Context for this thread.
-// Asynchronous operations that want to be able to be run in contexts other than
-// the default one should call this method or
+// MainContextGetThreadDefault gets the thread-default Context for
+// this thread. Asynchronous operations that want to be able to be run
+// in contexts other than the default one should call this method or
 // g_main_context_ref_thread_default() to get a Context to add their #GSources
 // to. (Note that even in single-threaded programs applications may sometimes
 // want to temporarily push a non-default context, so it is not safe to assume
@@ -26,8 +26,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - mainContext (optional): thread-default Context, or NULL if the
-//      thread-default context is the global default context.
+//   - mainContext (optional): thread-default Context, or NULL if the
+//     thread-default context is the global default context.
 //
 func MainContextGetThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in

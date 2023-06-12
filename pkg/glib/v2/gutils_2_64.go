@@ -13,22 +13,22 @@ import "C"
 
 // GetOsInfo: get information about the operating system.
 //
-// On Linux this comes from the /etc/os-release file. On other systems, it may
-// come from a variety of sources. You can either use the standard key names
-// like G_OS_INFO_KEY_NAME or pass any UTF-8 string key name. For example,
+// On Linux this comes from the /etc/os-release file. On other systems,
+// it may come from a variety of sources. You can either use the standard key
+// names like G_OS_INFO_KEY_NAME or pass any UTF-8 string key name. For example,
 // /etc/os-release provides a number of other less commonly used values that may
 // be useful. No key is guaranteed to be provided, so the caller should always
 // check if the result is NULL.
 //
 // The function takes the following parameters:
 //
-//    - keyName: key for the OS info being requested, for example
-//      G_OS_INFO_KEY_NAME.
+//   - keyName: key for the OS info being requested, for example
+//     G_OS_INFO_KEY_NAME.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): associated value for the requested key or NULL if this
-//      information is not provided.
+//   - utf8 (optional): associated value for the requested key or NULL if this
+//     information is not provided.
 //
 func GetOsInfo(keyName string) string {
 	var _arg1 *C.gchar // out

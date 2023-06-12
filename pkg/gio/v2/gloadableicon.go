@@ -83,14 +83,14 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - size: integer.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - size: integer.
 //
 // The function returns the following values:
 //
-//    - typ (optional): location to store the type of the loaded icon, NULL to
-//      ignore.
-//    - inputStream to read the icon from.
+//   - typ (optional): location to store the type of the loaded icon, NULL to
+//     ignore.
+//   - inputStream to read the icon from.
 //
 func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
@@ -151,9 +151,9 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - size: integer.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - size: integer.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
 	var _arg0 *C.GLoadableIcon      // out
@@ -186,13 +186,13 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback Asyn
 //
 // The function takes the following parameters:
 //
-//    - res: Result.
+//   - res: Result.
 //
 // The function returns the following values:
 //
-//    - typ (optional): location to store the type of the loaded icon, NULL to
-//      ignore.
-//    - inputStream to read the icon from.
+//   - typ (optional): location to store the type of the loaded icon, NULL to
+//     ignore.
+//   - inputStream to read the icon from.
 //
 func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
@@ -245,14 +245,14 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - size: integer.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - size: integer.
 //
 // The function returns the following values:
 //
-//    - typ (optional): location to store the type of the loaded icon, NULL to
-//      ignore.
-//    - inputStream to read the icon from.
+//   - typ (optional): location to store the type of the loaded icon, NULL to
+//     ignore.
+//   - inputStream to read the icon from.
 //
 func (icon *LoadableIcon) load(ctx context.Context, size int) (string, InputStreamer, error) {
 	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
@@ -316,9 +316,9 @@ func (icon *LoadableIcon) load(ctx context.Context, size int) (string, InputStre
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - size: integer.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - size: integer.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (icon *LoadableIcon) loadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
 	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
@@ -354,13 +354,13 @@ func (icon *LoadableIcon) loadAsync(ctx context.Context, size int, callback Asyn
 //
 // The function takes the following parameters:
 //
-//    - res: Result.
+//   - res: Result.
 //
 // The function returns the following values:
 //
-//    - typ (optional): location to store the type of the loaded icon, NULL to
-//      ignore.
-//    - inputStream to read the icon from.
+//   - typ (optional): location to store the type of the loaded icon, NULL to
+//     ignore.
+//   - inputStream to read the icon from.
 //
 func (icon *LoadableIcon) loadFinish(res AsyncResulter) (string, InputStreamer, error) {
 	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))

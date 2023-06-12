@@ -130,13 +130,13 @@ const (
 	// OptionFlagReverse: for options of the G_OPTION_ARG_NONE kind, this flag
 	// indicates that the sense of the option is reversed.
 	OptionFlagReverse OptionFlags = 0b100
-	// OptionFlagNoArg: for options of the G_OPTION_ARG_CALLBACK kind, this flag
-	// indicates that the callback does not take any argument (like a
+	// OptionFlagNoArg: for options of the G_OPTION_ARG_CALLBACK kind,
+	// this flag indicates that the callback does not take any argument (like a
 	// G_OPTION_ARG_NONE option). Since 2.8.
 	OptionFlagNoArg OptionFlags = 0b1000
-	// OptionFlagFilename: for options of the G_OPTION_ARG_CALLBACK kind, this
-	// flag indicates that the argument should be passed to the callback in the
-	// GLib filename encoding rather than UTF-8. Since 2.8.
+	// OptionFlagFilename: for options of the G_OPTION_ARG_CALLBACK kind,
+	// this flag indicates that the argument should be passed to the callback in
+	// the GLib filename encoding rather than UTF-8. Since 2.8.
 	OptionFlagFilename OptionFlags = 0b10000
 	// OptionFlagOptionalArg: for options of the G_OPTION_ARG_CALLBACK kind,
 	// this flag indicates that the argument supply is optional. If no argument
@@ -145,9 +145,9 @@ const (
 	// OptionFlagNoalias: this flag turns off the automatic conflict resolution
 	// which prefixes long option names with groupname- if there is a conflict.
 	// This option should only be used in situations where aliasing is necessary
-	// to model some legacy commandline interface. It is not safe to use this
-	// option, unless all option groups are under your direct control. Since
-	// 2.8.
+	// to model some legacy commandline interface. It is not safe to use
+	// this option, unless all option groups are under your direct control.
+	// Since 2.8.
 	OptionFlagNoalias OptionFlags = 0b1000000
 )
 
@@ -196,8 +196,8 @@ func (o OptionFlags) Has(other OptionFlags) bool {
 	return (o & other) == other
 }
 
-// OptionEntry struct defines a single option. To have an effect, they must be
-// added to a Group with g_option_context_add_main_entries() or
+// OptionEntry struct defines a single option. To have an effect,
+// they must be added to a Group with g_option_context_add_main_entries() or
 // g_option_group_add_entries().
 //
 // An instance of this type is always passed by reference.
@@ -247,18 +247,18 @@ func (o *OptionEntry) Arg() OptionArg {
 	return _v
 }
 
-// ArgData: if the arg type is G_OPTION_ARG_CALLBACK, then arg_data must point
-// to a ArgFunc callback function, which will be called to handle the extra
-// argument. Otherwise, arg_data is a pointer to a location to store the value,
-// the required type of the location depends on the arg type: -
+// ArgData: if the arg type is G_OPTION_ARG_CALLBACK, then arg_data must
+// point to a ArgFunc callback function, which will be called to handle the
+// extra argument. Otherwise, arg_data is a pointer to a location to store
+// the value, the required type of the location depends on the arg type: -
 // G_OPTION_ARG_NONE: gboolean - G_OPTION_ARG_STRING: gchar* - G_OPTION_ARG_INT:
-// gint - G_OPTION_ARG_FILENAME: gchar* - G_OPTION_ARG_STRING_ARRAY: gchar** -
-// G_OPTION_ARG_FILENAME_ARRAY: gchar** - G_OPTION_ARG_DOUBLE: gdouble If arg
-// type is G_OPTION_ARG_STRING or G_OPTION_ARG_FILENAME, the location will
-// contain a newly allocated string if the option was given. That string needs
-// to be freed by the callee using g_free(). Likewise if arg type is
-// G_OPTION_ARG_STRING_ARRAY or G_OPTION_ARG_FILENAME_ARRAY, the data should be
-// freed using g_strfreev().
+// gint - G_OPTION_ARG_FILENAME: gchar* - G_OPTION_ARG_STRING_ARRAY:
+// gchar** - G_OPTION_ARG_FILENAME_ARRAY: gchar** - G_OPTION_ARG_DOUBLE:
+// gdouble If arg type is G_OPTION_ARG_STRING or G_OPTION_ARG_FILENAME,
+// the location will contain a newly allocated string if the option was given.
+// That string needs to be freed by the callee using g_free(). Likewise if arg
+// type is G_OPTION_ARG_STRING_ARRAY or G_OPTION_ARG_FILENAME_ARRAY, the data
+// should be freed using g_strfreev().
 func (o *OptionEntry) ArgData() unsafe.Pointer {
 	valptr := &o.native.arg_data
 	var _v unsafe.Pointer // out
@@ -266,8 +266,8 @@ func (o *OptionEntry) ArgData() unsafe.Pointer {
 	return _v
 }
 
-// Description: description for the option in --help output. The description is
-// translated using the translate_func of the group, see
+// Description: description for the option in --help output. The
+// description is translated using the translate_func of the group, see
 // g_option_group_set_translation_domain().
 func (o *OptionEntry) Description() string {
 	valptr := &o.native.description
@@ -300,8 +300,8 @@ func (o *OptionEntry) SetFlags(flags int) {
 	*valptr = C.gint(flags)
 }
 
-// OptionGroup: GOptionGroup struct defines the options in a single group. The
-// struct has only private fields and should not be directly accessed.
+// OptionGroup: GOptionGroup struct defines the options in a single group.
+// The struct has only private fields and should not be directly accessed.
 //
 // All options in a group share the same translation function. Libraries which
 // need to parse commandline options are expected to provide a function for
@@ -327,7 +327,7 @@ func marshalOptionGroup(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - entries: NULL-terminated array of Entrys.
+//   - entries: NULL-terminated array of Entrys.
 //
 func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg0 *C.GOptionGroup // out
@@ -357,7 +357,7 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 //
 // The function takes the following parameters:
 //
-//    - domain to use.
+//   - domain to use.
 //
 func (group *OptionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GOptionGroup // out

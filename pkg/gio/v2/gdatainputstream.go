@@ -89,11 +89,11 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - baseStream: Stream.
+//   - baseStream: Stream.
 //
 // The function returns the following values:
 //
-//    - dataInputStream: new InputStream.
+//   - dataInputStream: new InputStream.
 //
 func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 	var _arg1 *C.GInputStream     // out
@@ -115,7 +115,7 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 //
 // The function returns the following values:
 //
-//    - dataStreamByteOrder stream's current StreamByteOrder.
+//   - dataStreamByteOrder stream's current StreamByteOrder.
 //
 func (stream *DataInputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataInputStream    // out
@@ -137,7 +137,7 @@ func (stream *DataInputStream) ByteOrder() DataStreamByteOrder {
 //
 // The function returns the following values:
 //
-//    - dataStreamNewlineType for the given stream.
+//   - dataStreamNewlineType for the given stream.
 //
 func (stream *DataInputStream) NewlineType() DataStreamNewlineType {
 	var _arg0 *C.GDataInputStream      // out
@@ -159,12 +159,12 @@ func (stream *DataInputStream) NewlineType() DataStreamNewlineType {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - guint8: unsigned 8-bit/1-byte value read from the stream or 0 if an error
-//      occurred.
+//   - guint8: unsigned 8-bit/1-byte value read from the stream or 0 if an error
+//     occurred.
 //
 func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -196,18 +196,18 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 
 // ReadInt16 reads a 16-bit/2-byte value from stream.
 //
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
+// In order to get the correct byte order for this read
+// operation, see g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - gint16: signed 16-bit/2-byte value read from stream or 0 if an error
-//      occurred.
+//   - gint16: signed 16-bit/2-byte value read from stream or 0 if an error
+//     occurred.
 //
 func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -239,8 +239,8 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 
 // ReadInt32 reads a signed 32-bit/4-byte value from stream.
 //
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
+// In order to get the correct byte order for this read
+// operation, see g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
@@ -249,12 +249,12 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - gint32: signed 32-bit/4-byte value read from the stream or 0 if an error
-//      occurred.
+//   - gint32: signed 32-bit/4-byte value read from the stream or 0 if an error
+//     occurred.
 //
 func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -286,8 +286,8 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 
 // ReadInt64 reads a 64-bit/8-byte value from stream.
 //
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
+// In order to get the correct byte order for this read
+// operation, see g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
@@ -296,12 +296,12 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - gint64: signed 64-bit/8-byte value read from stream or 0 if an error
-//      occurred.
+//   - gint64: signed 64-bit/8-byte value read from stream or 0 if an error
+//     occurred.
 //
 func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -341,16 +341,16 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - length (optional) to get the length of the data read in.
-//    - guint8s (optional): a NUL terminated byte array with the line that was
-//      read in (without the newlines). Set length to a #gsize to get the length
-//      of the read line. On an error, it will return NULL and error will be set.
-//      If there's no content to read, it will still return NULL, but error won't
-//      be set.
+//   - length (optional) to get the length of the data read in.
+//   - guint8s (optional): a NUL terminated byte array with the line that was
+//     read in (without the newlines). Set length to a #gsize to get the length
+//     of the read line. On an error, it will return NULL and error will be set.
+//     If there's no content to read, it will still return NULL, but error won't
+//     be set.
 //
 func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -398,17 +398,17 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 	return _length, _guint8s, _goerr
 }
 
-// ReadLineAsync asynchronous version of g_data_input_stream_read_line(). It is
-// an error to have two outstanding calls to this function.
+// ReadLineAsync asynchronous version of g_data_input_stream_read_line().
+// It is an error to have two outstanding calls to this function.
 //
 // When the operation is finished, callback will be called. You can then call
 // g_data_input_stream_read_line_finish() to get the result of the operation.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
@@ -442,16 +442,16 @@ func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int
 //
 // The function takes the following parameters:
 //
-//    - result that was provided to the callback.
+//   - result that was provided to the callback.
 //
 // The function returns the following values:
 //
-//    - length (optional) to get the length of the data read in.
-//    - guint8s (optional): a NUL-terminated byte array with the line that was
-//      read in (without the newlines). Set length to a #gsize to get the length
-//      of the read line. On an error, it will return NULL and error will be set.
-//      If there's no content to read, it will still return NULL, but error won't
-//      be set.
+//   - length (optional) to get the length of the data read in.
+//   - guint8s (optional): a NUL-terminated byte array with the line that was
+//     read in (without the newlines). Set length to a #gsize to get the length
+//     of the read line. On an error, it will return NULL and error will be set.
+//     If there's no content to read, it will still return NULL, but error won't
+//     be set.
 //
 func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -500,16 +500,16 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 //
 // The function takes the following parameters:
 //
-//    - result that was provided to the callback.
+//   - result that was provided to the callback.
 //
 // The function returns the following values:
 //
-//    - length (optional) to get the length of the data read in.
-//    - utf8 (optional): string with the line that was read in (without the
-//      newlines). Set length to a #gsize to get the length of the read line. On
-//      an error, it will return NULL and error will be set. For UTF-8 conversion
-//      errors, the set error domain is G_CONVERT_ERROR. If there's no content to
-//      read, it will still return NULL, but error won't be set.
+//   - length (optional) to get the length of the data read in.
+//   - utf8 (optional): string with the line that was read in (without the
+//     newlines). Set length to a #gsize to get the length of the read line. On
+//     an error, it will return NULL and error will be set. For UTF-8 conversion
+//     errors, the set error domain is G_CONVERT_ERROR. If there's no content to
+//     read, it will still return NULL, but error won't be set.
 //
 func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -549,17 +549,17 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - length (optional) to get the length of the data read in.
-//    - utf8 (optional): NUL terminated UTF-8 string with the line that was read
-//      in (without the newlines). Set length to a #gsize to get the length of
-//      the read line. On an error, it will return NULL and error will be set.
-//      For UTF-8 conversion errors, the set error domain is G_CONVERT_ERROR. If
-//      there's no content to read, it will still return NULL, but error won't be
-//      set.
+//   - length (optional) to get the length of the data read in.
+//   - utf8 (optional): NUL terminated UTF-8 string with the line that was read
+//     in (without the newlines). Set length to a #gsize to get the length of
+//     the read line. On an error, it will return NULL and error will be set.
+//     For UTF-8 conversion errors, the set error domain is G_CONVERT_ERROR.
+//     If there's no content to read, it will still return NULL, but error won't
+//     be set.
 //
 func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -597,18 +597,18 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 
 // ReadUint16 reads an unsigned 16-bit/2-byte value from stream.
 //
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
+// In order to get the correct byte order for this read
+// operation, see g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - guint16: unsigned 16-bit/2-byte value read from the stream or 0 if an
-//      error occurred.
+//   - guint16: unsigned 16-bit/2-byte value read from the stream or 0 if an
+//     error occurred.
 //
 func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -640,8 +640,8 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 
 // ReadUint32 reads an unsigned 32-bit/4-byte value from stream.
 //
-// In order to get the correct byte order for this read operation, see
-// g_data_input_stream_get_byte_order() and
+// In order to get the correct byte order for this read
+// operation, see g_data_input_stream_get_byte_order() and
 // g_data_input_stream_set_byte_order().
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
@@ -650,12 +650,12 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - guint32: unsigned 32-bit/4-byte value read from the stream or 0 if an
-//      error occurred.
+//   - guint32: unsigned 32-bit/4-byte value read from the stream or 0 if an
+//     error occurred.
 //
 func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -696,12 +696,12 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - guint64: unsigned 64-bit/8-byte read from stream or 0 if an error
-//      occurred.
+//   - guint64: unsigned 64-bit/8-byte read from stream or 0 if an error
+//     occurred.
 //
 func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -747,15 +747,15 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stopChars characters to terminate the read.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stopChars characters to terminate the read.
 //
 // The function returns the following values:
 //
-//    - length (optional) to get the length of the data read in.
-//    - utf8: string with the data that was read before encountering any of the
-//      stop characters. Set length to a #gsize to get the length of the string.
-//      This function will return NULL on an error.
+//   - length (optional) to get the length of the data read in.
+//   - utf8: string with the data that was read before encountering any of the
+//     stop characters. Set length to a #gsize to get the length of the string.
+//     This function will return NULL on an error.
 //
 func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -793,8 +793,8 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 	return _length, _utf8, _goerr
 }
 
-// ReadUntilAsync asynchronous version of g_data_input_stream_read_until(). It
-// is an error to have two outstanding calls to this function.
+// ReadUntilAsync asynchronous version of g_data_input_stream_read_until().
+// It is an error to have two outstanding calls to this function.
 //
 // Note that, in contrast to g_data_input_stream_read_until(), this function
 // does not consume the stop character that it finds. You must read it for
@@ -812,10 +812,10 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stopChars characters to terminate the read.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stopChars characters to terminate the read.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
@@ -855,14 +855,14 @@ func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars str
 //
 // The function takes the following parameters:
 //
-//    - result that was provided to the callback.
+//   - result that was provided to the callback.
 //
 // The function returns the following values:
 //
-//    - length (optional) to get the length of the data read in.
-//    - utf8: string with the data that was read before encountering any of the
-//      stop characters. Set length to a #gsize to get the length of the string.
-//      This function will return NULL on an error.
+//   - length (optional) to get the length of the data read in.
+//   - utf8: string with the data that was read before encountering any of the
+//     stop characters. Set length to a #gsize to get the length of the string.
+//     This function will return NULL on an error.
 //
 func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -905,17 +905,17 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stopChars characters to terminate the read.
-//    - stopCharsLen: length of stop_chars. May be -1 if stop_chars is
-//      nul-terminated.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stopChars characters to terminate the read.
+//   - stopCharsLen: length of stop_chars. May be -1 if stop_chars is
+//     nul-terminated.
 //
 // The function returns the following values:
 //
-//    - length (optional) to get the length of the data read in.
-//    - utf8: string with the data that was read before encountering any of the
-//      stop characters. Set length to a #gsize to get the length of the string.
-//      This function will return NULL on an error.
+//   - length (optional) to get the length of the data read in.
+//   - utf8: string with the data that was read before encountering any of the
+//     stop characters. Set length to a #gsize to get the length of the string.
+//     This function will return NULL on an error.
 //
 func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, stopCharsLen int) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -956,8 +956,8 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 	return _length, _utf8, _goerr
 }
 
-// ReadUptoAsync asynchronous version of g_data_input_stream_read_upto(). It is
-// an error to have two outstanding calls to this function.
+// ReadUptoAsync asynchronous version of g_data_input_stream_read_upto().
+// It is an error to have two outstanding calls to this function.
 //
 // In contrast to g_data_input_stream_read_until(), this function does not
 // consume the stop character. You have to use g_data_input_stream_read_byte()
@@ -970,12 +970,12 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stopChars characters to terminate the read.
-//    - stopCharsLen: length of stop_chars. May be -1 if stop_chars is
-//      nul-terminated.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stopChars characters to terminate the read.
+//   - stopCharsLen: length of stop_chars. May be -1 if stop_chars is
+//     nul-terminated.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
@@ -1013,22 +1013,22 @@ func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars stri
 // ReadUptoFinish: finish an asynchronous call started by
 // g_data_input_stream_read_upto_async().
 //
-// Note that this function does not consume the stop character. You have to use
-// g_data_input_stream_read_byte() to get it before calling
+// Note that this function does not consume the stop character.
+// You have to use g_data_input_stream_read_byte() to get it before calling
 // g_data_input_stream_read_upto_async() again.
 //
 // The returned string will always be nul-terminated on success.
 //
 // The function takes the following parameters:
 //
-//    - result that was provided to the callback.
+//   - result that was provided to the callback.
 //
 // The function returns the following values:
 //
-//    - length (optional) to get the length of the data read in.
-//    - utf8: string with the data that was read before encountering any of the
-//      stop characters. Set length to a #gsize to get the length of the string.
-//      This function will return NULL on an error.
+//   - length (optional) to get the length of the data read in.
+//   - utf8: string with the data that was read before encountering any of the
+//     stop characters. Set length to a #gsize to get the length of the string.
+//     This function will return NULL on an error.
 //
 func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
@@ -1058,12 +1058,12 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 	return _length, _utf8, _goerr
 }
 
-// SetByteOrder: this function sets the byte order for the given stream. All
-// subsequent reads from the stream will be read in the given order.
+// SetByteOrder: this function sets the byte order for the given stream.
+// All subsequent reads from the stream will be read in the given order.
 //
 // The function takes the following parameters:
 //
-//    - order to set.
+//   - order to set.
 //
 func (stream *DataInputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataInputStream    // out
@@ -1085,7 +1085,7 @@ func (stream *DataInputStream) SetByteOrder(order DataStreamByteOrder) {
 //
 // The function takes the following parameters:
 //
-//    - typ: type of new line return as StreamNewlineType.
+//   - typ: type of new line return as StreamNewlineType.
 //
 func (stream *DataInputStream) SetNewlineType(typ DataStreamNewlineType) {
 	var _arg0 *C.GDataInputStream      // out

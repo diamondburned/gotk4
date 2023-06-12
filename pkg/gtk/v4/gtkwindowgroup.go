@@ -91,7 +91,7 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - windowGroup: new GtkWindowGroup.
+//   - windowGroup: new GtkWindowGroup.
 //
 func NewWindowGroup() *WindowGroup {
 	var _cret *C.GtkWindowGroup // in
@@ -109,7 +109,7 @@ func NewWindowGroup() *WindowGroup {
 //
 // The function takes the following parameters:
 //
-//    - window: GtkWindow to add.
+//   - window: GtkWindow to add.
 //
 func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
@@ -127,7 +127,7 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 //
 // The function returns the following values:
 //
-//    - list: a newly-allocated list of windows inside the group.
+//   - list: a newly-allocated list of windows inside the group.
 //
 func (windowGroup *WindowGroup) ListWindows() []*Window {
 	var _arg0 *C.GtkWindowGroup // out
@@ -155,7 +155,7 @@ func (windowGroup *WindowGroup) ListWindows() []*Window {
 //
 // The function takes the following parameters:
 //
-//    - window: GtkWindow to remove.
+//   - window: GtkWindow to remove.
 //
 func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out

@@ -15,8 +15,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): display name, if specified explicitly, otherwise NULL
-//      this string is owned by GTK+ and must not be modified or freed.
+//   - utf8 (optional): display name, if specified explicitly, otherwise NULL
+//     this string is owned by GTK+ and must not be modified or freed.
 //
 func GetDisplayArgName() string {
 	var _cret *C.gchar // in

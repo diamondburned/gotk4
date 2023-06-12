@@ -28,10 +28,10 @@ func init() {
 	})
 }
 
-// ShortcutsSection collects all the keyboard shortcuts and gestures for a major
-// application mode. If your application needs multiple sections, you should
-// give each section a unique ShortcutsSection:section-name and a
-// ShortcutsSection:title that can be shown in the section selector of the
+// ShortcutsSection collects all the keyboard shortcuts and gestures for
+// a major application mode. If your application needs multiple sections,
+// you should give each section a unique ShortcutsSection:section-name and
+// a ShortcutsSection:title that can be shown in the section selector of the
 // GtkShortcutsWindow.
 //
 // The ShortcutsSection:max-height property can be used to influence how the

@@ -152,7 +152,7 @@ func (controller *EventControllerKey) Group() uint {
 //
 // The function returns the following values:
 //
-//    - imContext: IM context.
+//   - imContext: IM context.
 //
 func (controller *EventControllerKey) IMContext() IMContexter {
 	var _arg0 *C.GtkEventControllerKey // out

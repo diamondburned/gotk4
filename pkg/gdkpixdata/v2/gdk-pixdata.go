@@ -28,8 +28,8 @@ const PIXBUF_MAGIC_NUMBER = 1197763408
 // Deprecated: since version 2.32.
 const PIXDATA_HEADER_LENGTH = 24
 
-// PixdataDumpType: enumeration which is used by gdk_pixdata_to_csource() to
-// determine the form of C source to be generated. The three values
+// PixdataDumpType: enumeration which is used by gdk_pixdata_to_csource()
+// to determine the form of C source to be generated. The three values
 // GDK_PIXDATA_DUMP_PIXDATA_STREAM, GDK_PIXDATA_DUMP_PIXDATA_STRUCT and
 // GDK_PIXDATA_DUMP_MACROS are mutually exclusive, as are GDK_PIXBUF_DUMP_GTYPES
 // and GDK_PIXBUF_DUMP_CTYPES. The remaining elements are optional flags that
@@ -195,13 +195,13 @@ func (p PixdataType) Has(other PixdataType) bool {
 //
 // The function takes the following parameters:
 //
-//    - pixdata to convert into a GdkPixbuf.
-//    - copyPixels: whether to copy raw pixel data; run-length encoded pixel data
-//      is always copied.
+//   - pixdata to convert into a GdkPixbuf.
+//   - copyPixels: whether to copy raw pixel data; run-length encoded pixel data
+//     is always copied.
 //
 // The function returns the following values:
 //
-//    - pixbuf: new pixbuf.
+//   - pixbuf: new pixbuf.
 //
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata // out
@@ -244,10 +244,10 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, er
 // Using GdkPixdata, images can be compiled into an application, making it
 // unnecessary to refer to external image files at runtime.
 //
-// GdkPixbuf includes a utility named gdk-pixbuf-csource, which can be used to
-// convert image files into GdkPixdata structures suitable for inclusion in C
-// sources. To convert the GdkPixdata structures back into a GdkPixbuf, use
-// gdk_pixbuf_from_pixdata().
+// GdkPixbuf includes a utility named gdk-pixbuf-csource, which can be used
+// to convert image files into GdkPixdata structures suitable for inclusion
+// in C sources. To convert the GdkPixdata structures back into a GdkPixbuf,
+// use gdk_pixbuf_from_pixdata().
 //
 // Deprecated: GdkPixdata should not be used any more. GResource should be used
 // to save the original compressed images inside the program's binary.
@@ -279,7 +279,7 @@ type pixdata struct {
 //
 // The function takes the following parameters:
 //
-//    - stream of bytes containing a serialized Pixdata structure.
+//   - stream of bytes containing a serialized Pixdata structure.
 //
 func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _arg0 *C.GdkPixdata // out
@@ -314,8 +314,8 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 //
 // The function returns the following values:
 //
-//    - guint8s: a newly-allocated string containing the serialized Pixdata
-//      structure.
+//   - guint8s: a newly-allocated string containing the serialized Pixdata
+//     structure.
 //
 func (pixdata *Pixdata) Serialize() []byte {
 	var _arg0 *C.GdkPixdata // out

@@ -120,13 +120,13 @@ func (d *DBusAnnotationInfo) SetRefCount(refCount int) {
 //
 // The function takes the following parameters:
 //
-//    - annotations (optional): NULL-terminated array of annotations or NULL.
-//    - name of the annotation to look up.
+//   - annotations (optional): NULL-terminated array of annotations or NULL.
+//   - name of the annotation to look up.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value or NULL if not found. Do not free, it is owned by
-//      annotations.
+//   - utf8 (optional): value or NULL if not found. Do not free, it is owned by
+//     annotations.
 //
 func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
 	var _arg1 **C.GDBusAnnotationInfo // out
@@ -426,12 +426,12 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 //
 // The function takes the following parameters:
 //
-//    - name d-Bus method name (typically in CamelCase).
+//   - name d-Bus method name (typically in CamelCase).
 //
 // The function returns the following values:
 //
-//    - dBusMethodInfo (optional) or NULL if not found. Do not free, it is owned
-//      by info.
+//   - dBusMethodInfo (optional) or NULL if not found. Do not free, it is owned
+//     by info.
 //
 func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
@@ -469,12 +469,12 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 //
 // The function takes the following parameters:
 //
-//    - name d-Bus property name (typically in CamelCase).
+//   - name d-Bus property name (typically in CamelCase).
 //
 // The function returns the following values:
 //
-//    - dBusPropertyInfo (optional) or NULL if not found. Do not free, it is
-//      owned by info.
+//   - dBusPropertyInfo (optional) or NULL if not found. Do not free, it is
+//     owned by info.
 //
 func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
@@ -512,12 +512,12 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 //
 // The function takes the following parameters:
 //
-//    - name d-Bus signal name (typically in CamelCase).
+//   - name d-Bus signal name (typically in CamelCase).
 //
 // The function returns the following values:
 //
-//    - dBusSignalInfo (optional) or NULL if not found. Do not free, it is owned
-//      by info.
+//   - dBusSignalInfo (optional) or NULL if not found. Do not free, it is owned
+//     by info.
 //
 func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
@@ -830,12 +830,12 @@ func (d *DBusNodeInfo) SetRefCount(refCount int) {
 //
 // The function takes the following parameters:
 //
-//    - name d-Bus interface name.
+//   - name d-Bus interface name.
 //
 // The function returns the following values:
 //
-//    - dBusInterfaceInfo (optional) or NULL if not found. Do not free, it is
-//      owned by info.
+//   - dBusInterfaceInfo (optional) or NULL if not found. Do not free, it is
+//     owned by info.
 //
 func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _arg0 *C.GDBusNodeInfo      // out

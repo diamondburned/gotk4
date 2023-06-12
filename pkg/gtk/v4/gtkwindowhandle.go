@@ -39,13 +39,11 @@ func defaultWindowHandleOverrides(v *WindowHandle) WindowHandleOverrides {
 // When added into a window, it can be dragged to move the window, and handles
 // right click, double click and middle click as expected of a titlebar.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkWindowHandle has a single CSS node with the name windowhandle.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowHandle struct {
@@ -101,7 +99,7 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - windowHandle: new GtkWindowHandle.
+//   - windowHandle: new GtkWindowHandle.
 //
 func NewWindowHandle() *WindowHandle {
 	var _cret *C.GtkWidget // in
@@ -119,7 +117,7 @@ func NewWindowHandle() *WindowHandle {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of self.
+//   - widget (optional): child widget of self.
 //
 func (self *WindowHandle) Child() Widgetter {
 	var _arg0 *C.GtkWindowHandle // out
@@ -156,7 +154,7 @@ func (self *WindowHandle) Child() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (self *WindowHandle) SetChild(child Widgetter) {
 	var _arg0 *C.GtkWindowHandle // out

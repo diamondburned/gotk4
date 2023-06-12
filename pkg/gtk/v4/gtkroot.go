@@ -94,7 +94,7 @@ func marshalRoot(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - display of root.
+//   - display of root.
 //
 func (self *Root) Display() *gdk.Display {
 	var _arg0 *C.GtkRoot    // out
@@ -125,7 +125,7 @@ func (self *Root) Display() *gdk.Display {
 //
 // The function returns the following values:
 //
-//    - widget (optional): currently focused widget, or NULL if there is none.
+//   - widget (optional): currently focused widget, or NULL if there is none.
 //
 func (self *Root) Focus() Widgetter {
 	var _arg0 *C.GtkRoot   // out
@@ -168,8 +168,8 @@ func (self *Root) Focus() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - focus (optional): widget to be the new focus widget, or NULL to unset the
-//      focus widget.
+//   - focus (optional): widget to be the new focus widget, or NULL to unset the
+//     focus widget.
 //
 func (self *Root) SetFocus(focus Widgetter) {
 	var _arg0 *C.GtkRoot   // out

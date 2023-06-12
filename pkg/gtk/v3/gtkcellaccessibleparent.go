@@ -167,15 +167,15 @@ func (parent *CellAccessibleParent) CellArea(cell *CellAccessible) *gdk.Rectangl
 
 // The function takes the following parameters:
 //
-//    - cell
-//    - coordType
+//   - cell
+//   - coordType
 //
 // The function returns the following values:
 //
-//    - x
-//    - y
-//    - width
-//    - height
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
@@ -212,8 +212,8 @@ func (parent *CellAccessibleParent) CellExtents(cell *CellAccessible, coordType 
 //
 // The function returns the following values:
 //
-//    - row
-//    - column
+//   - row
+//   - column
 //
 func (parent *CellAccessibleParent) CellPosition(cell *CellAccessible) (row, column int) {
 	var _arg0 *C.GtkCellAccessibleParent // out
@@ -310,8 +310,8 @@ func (parent *CellAccessibleParent) GrabFocus(cell *CellAccessible) bool {
 
 // The function takes the following parameters:
 //
-//    - cell
-//    - relationset
+//   - cell
+//   - relationset
 //
 func (parent *CellAccessibleParent) UpdateRelationset(cell *CellAccessible, relationset *atk.RelationSet) {
 	var _arg0 *C.GtkCellAccessibleParent // out
@@ -407,15 +407,15 @@ func (parent *CellAccessibleParent) cellArea(cell *CellAccessible) *gdk.Rectangl
 
 // The function takes the following parameters:
 //
-//    - cell
-//    - coordType
+//   - cell
+//   - coordType
 //
 // The function returns the following values:
 //
-//    - x
-//    - y
-//    - width
-//    - height
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (parent *CellAccessibleParent) cellExtents(cell *CellAccessible, coordType atk.CoordType) (x, y, width, height int) {
 	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
@@ -455,8 +455,8 @@ func (parent *CellAccessibleParent) cellExtents(cell *CellAccessible, coordType 
 //
 // The function returns the following values:
 //
-//    - row
-//    - column
+//   - row
+//   - column
 //
 func (parent *CellAccessibleParent) cellPosition(cell *CellAccessible) (row, column int) {
 	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))
@@ -565,8 +565,8 @@ func (parent *CellAccessibleParent) grabFocus(cell *CellAccessible) bool {
 
 // The function takes the following parameters:
 //
-//    - cell
-//    - relationset
+//   - cell
+//   - relationset
 //
 func (parent *CellAccessibleParent) updateRelationset(cell *CellAccessible, relationset *atk.RelationSet) {
 	gclass := (*C.GtkCellAccessibleParentIface)(coreglib.PeekParentClass(parent))

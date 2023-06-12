@@ -82,12 +82,12 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - connection: BusConnection.
-//    - objectPath: object path.
+//   - connection: BusConnection.
+//   - objectPath: object path.
 //
 // The function returns the following values:
 //
-//    - dBusObjectProxy: new BusObjectProxy.
+//   - dBusObjectProxy: new BusObjectProxy.
 //
 func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
 	var _arg1 *C.GDBusConnection  // out
@@ -113,7 +113,7 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 //
 // The function returns the following values:
 //
-//    - dBusConnection Do not free, the object is owned by proxy.
+//   - dBusConnection Do not free, the object is owned by proxy.
 //
 func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectProxy // out

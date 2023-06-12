@@ -170,7 +170,7 @@ type DialogOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - responseId: response ID.
+	//   - responseId: response ID.
 	//
 	Response func(responseId int)
 }
@@ -190,15 +190,15 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 // Typical uses are to display a message, ask a question, or anything else that
 // does not require extensive effort on the user’s part.
 //
-// The main area of a GtkDialog is called the "content area", and is yours to
-// populate with widgets such a GtkLabel or GtkEntry, to present your
+// The main area of a GtkDialog is called the "content area", and is yours
+// to populate with widgets such a GtkLabel or GtkEntry, to present your
 // information, questions, or tasks to the user.
 //
-// In addition, dialogs allow you to add "action widgets". Most commonly, action
-// widgets are buttons. Depending on the platform, action widgets may be
-// presented in the header bar at the top of the window, or at the bottom of the
-// window. To add action widgets, create your GtkDialog using
-// gtk.Dialog.NewWithButtons, or use gtk.Dialog.AddButton(),
+// In addition, dialogs allow you to add "action widgets". Most commonly,
+// action widgets are buttons. Depending on the platform, action
+// widgets may be presented in the header bar at the top of the window,
+// or at the bottom of the window. To add action widgets, create your
+// GtkDialog using gtk.Dialog.NewWithButtons, or use gtk.Dialog.AddButton(),
 // gtk.Dialog.AddButtons(), or gtk.Dialog.AddActionWidget().
 //
 // GtkDialogs uses some heuristics to decide whether to add a close button to
@@ -206,11 +206,11 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 // GTK_RESPONSE_CLOSE or GTK_RESPONSE_CANCEL, the close button is omitted.
 //
 // Clicking a button that was added as an action widget will emit the
-// gtk.Dialog::response signal with a response ID that you specified. GTK will
-// never assign a meaning to positive response IDs; these are entirely
-// user-defined. But for convenience, you can use the response IDs in the
-// gtk.ResponseType enumeration (these all have values less than zero). If a
-// dialog receives a delete event, the gtk.Dialog::response signal will be
+// gtk.Dialog::response signal with a response ID that you specified.
+// GTK will never assign a meaning to positive response IDs; these are
+// entirely user-defined. But for convenience, you can use the response IDs in
+// the gtk.ResponseType enumeration (these all have values less than zero).
+// If a dialog receives a delete event, the gtk.Dialog::response signal will be
 // emitted with the GTK_RESPONSE_DELETE_EVENT response ID.
 //
 // Dialogs are created with a call to gtk.Dialog.New or
@@ -259,9 +259,7 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 //     gtk_widget_show (dialog);
 //    }
 //
-//
-//
-// GtkDialog as GtkBuildable
+// # GtkDialog as GtkBuildable
 //
 // The GtkDialog implementation of the GtkBuildable interface exposes the
 // content_area as an internal child with the name “content_area”.
@@ -294,9 +292,7 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 //      </action-widgets>
 //    </object>
 //
-//
-//
-// Accessibility
+// # Accessibility
 //
 // GtkDialog uses the GTK_ACCESSIBLE_ROLE_DIALOG role.
 type Dialog struct {
@@ -395,8 +391,8 @@ func (dialog *Dialog) ConnectClose(f func()) coreglib.SignalHandle {
 
 // ConnectResponse is emitted when an action widget is clicked.
 //
-// The signal is also emitted when the dialog receives a delete event, and when
-// gtk.Dialog.Response() is called. On a delete event, the response ID is
+// The signal is also emitted when the dialog receives a delete event, and
+// when gtk.Dialog.Response() is called. On a delete event, the response ID is
 // GTK_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
 // clicked.
 func (dialog *Dialog) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
@@ -410,7 +406,7 @@ func (dialog *Dialog) ConnectResponse(f func(responseId int)) coreglib.SignalHan
 //
 // The function returns the following values:
 //
-//    - dialog: new dialog as a GtkWidget.
+//   - dialog: new dialog as a GtkWidget.
 //
 func NewDialog() *Dialog {
 	var _cret *C.GtkWidget // in
@@ -435,8 +431,8 @@ func NewDialog() *Dialog {
 //
 // The function takes the following parameters:
 //
-//    - child: activatable widget.
-//    - responseId: response ID for child.
+//   - child: activatable widget.
+//   - responseId: response ID for child.
 //
 func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkDialog // out
@@ -462,12 +458,12 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 //
 // The function takes the following parameters:
 //
-//    - buttonText: text of button.
-//    - responseId: response ID for the button.
+//   - buttonText: text of button.
+//   - responseId: response ID for the button.
 //
 // The function returns the following values:
 //
-//    - widget: GtkButton widget that was added.
+//   - widget: GtkButton widget that was added.
 //
 func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
@@ -512,7 +508,7 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 //
 // The function returns the following values:
 //
-//    - box: content area Box.
+//   - box: content area Box.
 //
 func (dialog *Dialog) ContentArea() *Box {
 	var _arg0 *C.GtkDialog // out
@@ -537,7 +533,7 @@ func (dialog *Dialog) ContentArea() *Box {
 //
 // The function returns the following values:
 //
-//    - headerBar: header bar.
+//   - headerBar: header bar.
 //
 func (dialog *Dialog) HeaderBar() *HeaderBar {
 	var _arg0 *C.GtkDialog // out
@@ -560,12 +556,12 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 //
 // The function takes the following parameters:
 //
-//    - widget in the action area of dialog.
+//   - widget in the action area of dialog.
 //
 // The function returns the following values:
 //
-//    - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
-//      a response id set.
+//   - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
+//     a response id set.
 //
 func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
@@ -591,11 +587,11 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID used by the dialog widget.
+//   - responseId: response ID used by the dialog widget.
 //
 // The function returns the following values:
 //
-//    - widget (optional) button that uses the given response_id, or NULL.
+//   - widget (optional) button that uses the given response_id, or NULL.
 //
 func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
@@ -637,7 +633,7 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (dialog *Dialog) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
@@ -658,7 +654,7 @@ func (dialog *Dialog) Response(responseId int) {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
@@ -679,8 +675,8 @@ func (dialog *Dialog) SetDefaultResponse(responseId int) {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
-//    - setting: TRUE for sensitive.
+//   - responseId: response ID.
+//   - setting: TRUE for sensitive.
 //
 func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out
@@ -717,7 +713,7 @@ func (dialog *Dialog) close() {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (dialog *Dialog) response(responseId int) {
 	gclass := (*C.GtkDialogClass)(coreglib.PeekParentClass(dialog))

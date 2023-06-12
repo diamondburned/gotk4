@@ -27,10 +27,10 @@ func init() {
 	})
 }
 
-// Monitor objects represent the individual outputs that are associated with a
-// Display. GdkDisplay has APIs to enumerate monitors with
-// gdk_display_get_n_monitors() and gdk_display_get_monitor(), and to find
-// particular monitors with gdk_display_get_primary_monitor() or
+// Monitor objects represent the individual outputs that are associated
+// with a Display. GdkDisplay has APIs to enumerate monitors with
+// gdk_display_get_n_monitors() and gdk_display_get_monitor(), and to
+// find particular monitors with gdk_display_get_primary_monitor() or
 // gdk_display_get_monitor_at_window().
 //
 // GdkMonitor was introduced in GTK+ 3.22 and supersedes earlier APIs in
@@ -62,7 +62,7 @@ func (monitor *Monitor) ConnectInvalidate(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - display: display.
+//   - display: display.
 //
 func (monitor *Monitor) Display() *Display {
 	var _arg0 *C.GdkMonitor // out
@@ -86,7 +86,7 @@ func (monitor *Monitor) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - geometry to be filled with the monitor geometry.
+//   - geometry to be filled with the monitor geometry.
 //
 func (monitor *Monitor) Geometry() *Rectangle {
 	var _arg0 *C.GdkMonitor  // out
@@ -108,7 +108,7 @@ func (monitor *Monitor) Geometry() *Rectangle {
 //
 // The function returns the following values:
 //
-//    - gint: physical height of the monitor.
+//   - gint: physical height of the monitor.
 //
 func (monitor *Monitor) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
@@ -126,8 +126,8 @@ func (monitor *Monitor) HeightMm() int {
 	return _gint
 }
 
-// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
-// available.
+// Manufacturer gets the name or PNP ID of the monitor's manufacturer,
+// if available.
 //
 // Note that this value might also vary depending on actual display backend.
 //
@@ -135,7 +135,7 @@ func (monitor *Monitor) HeightMm() int {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the manufacturer, or NULL.
+//   - utf8 (optional): name of the manufacturer, or NULL.
 //
 func (monitor *Monitor) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
@@ -159,7 +159,7 @@ func (monitor *Monitor) Manufacturer() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): monitor model, or NULL.
+//   - utf8 (optional): monitor model, or NULL.
 //
 func (monitor *Monitor) Model() string {
 	var _arg0 *C.GdkMonitor // out
@@ -185,7 +185,7 @@ func (monitor *Monitor) Model() string {
 //
 // The function returns the following values:
 //
-//    - gint: refresh rate in milli-Hertz, or 0.
+//   - gint: refresh rate in milli-Hertz, or 0.
 //
 func (monitor *Monitor) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
@@ -213,7 +213,7 @@ func (monitor *Monitor) RefreshRate() int {
 //
 // The function returns the following values:
 //
-//    - gint: scale factor.
+//   - gint: scale factor.
 //
 func (monitor *Monitor) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
@@ -236,7 +236,7 @@ func (monitor *Monitor) ScaleFactor() int {
 //
 // The function returns the following values:
 //
-//    - subpixelLayout: subpixel layout.
+//   - subpixelLayout: subpixel layout.
 //
 func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 	var _arg0 *C.GdkMonitor       // out
@@ -258,7 +258,7 @@ func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 //
 // The function returns the following values:
 //
-//    - gint: physical width of the monitor.
+//   - gint: physical width of the monitor.
 //
 func (monitor *Monitor) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
@@ -283,13 +283,13 @@ func (monitor *Monitor) WidthMm() int {
 // The work area should be considered when positioning menus and similar popups,
 // to avoid placing them below panels, docks or other desktop components.
 //
-// Note that not all backends may have a concept of workarea. This function will
-// return the monitor geometry if a workarea is not available, or does not
+// Note that not all backends may have a concept of workarea. This function
+// will return the monitor geometry if a workarea is not available, or does not
 // apply.
 //
 // The function returns the following values:
 //
-//    - workarea to be filled with the monitor workarea.
+//   - workarea to be filled with the monitor workarea.
 //
 func (monitor *Monitor) Workarea() *Rectangle {
 	var _arg0 *C.GdkMonitor  // out
@@ -312,7 +312,7 @@ func (monitor *Monitor) Workarea() *Rectangle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if monitor is primary.
+//   - ok: TRUE if monitor is primary.
 //
 func (monitor *Monitor) IsPrimary() bool {
 	var _arg0 *C.GdkMonitor // out

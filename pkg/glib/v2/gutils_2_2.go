@@ -11,16 +11,16 @@ import (
 // #include <glib.h>
 import "C"
 
-// GetApplicationName gets a human-readable name for the application, as set by
-// g_set_application_name(). This name should be localized if possible, and is
-// intended for display to the user. Contrast with g_get_prgname(), which gets a
-// non-localized name. If g_set_application_name() has not been called, returns
-// the result of g_get_prgname() (which may be NULL if g_set_prgname() has also
-// not been called).
+// GetApplicationName gets a human-readable name for the application, as set
+// by g_set_application_name(). This name should be localized if possible,
+// and is intended for display to the user. Contrast with g_get_prgname(), which
+// gets a non-localized name. If g_set_application_name() has not been called,
+// returns the result of g_get_prgname() (which may be NULL if g_set_prgname()
+// has also not been called).
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): human-readable application name. May return NULL.
+//   - utf8 (optional): human-readable application name. May return NULL.
 //
 func GetApplicationName() string {
 	var _cret *C.gchar // in
@@ -36,10 +36,10 @@ func GetApplicationName() string {
 	return _utf8
 }
 
-// SetApplicationName sets a human-readable name for the application. This name
-// should be localized if possible, and is intended for display to the user.
-// Contrast with g_set_prgname(), which sets a non-localized name.
-// g_set_prgname() will be called automatically by gtk_init(), but
+// SetApplicationName sets a human-readable name for the application.
+// This name should be localized if possible, and is intended for display
+// to the user. Contrast with g_set_prgname(), which sets a non-localized
+// name. g_set_prgname() will be called automatically by gtk_init(), but
 // g_set_application_name() will not.
 //
 // Note that for thread safety reasons, this function can only be called once.
@@ -49,7 +49,7 @@ func GetApplicationName() string {
 //
 // The function takes the following parameters:
 //
-//    - applicationName: localized name of the application.
+//   - applicationName: localized name of the application.
 //
 func SetApplicationName(applicationName string) {
 	var _arg1 *C.gchar // out

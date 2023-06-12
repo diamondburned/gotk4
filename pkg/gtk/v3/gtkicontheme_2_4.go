@@ -17,11 +17,11 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// IconThemeAddBuiltinIcon registers a built-in icon for icon theme lookups. The
-// idea of built-in icons is to allow an application or library that uses themed
-// icons to function requiring files to be present in the file system. For
-// instance, the default images for all of GTK+’s stock icons are registered as
-// built-icons.
+// IconThemeAddBuiltinIcon registers a built-in icon for icon theme lookups.
+// The idea of built-in icons is to allow an application or library that uses
+// themed icons to function requiring files to be present in the file system.
+// For instance, the default images for all of GTK+’s stock icons are registered
+// as built-icons.
 //
 // In general, if you use gtk_icon_theme_add_builtin_icon() you should also
 // install the icon in the icon theme, so that the icon is generally available.
@@ -34,10 +34,10 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - iconName: name of the icon to register.
-//    - size in pixels at which to register the icon (different images can be
-//      registered for the same icon name at different sizes.).
-//    - pixbuf that contains the image to use for icon_name.
+//   - iconName: name of the icon to register.
+//   - size in pixels at which to register the icon (different images can be
+//     registered for the same icon name at different sizes.).
+//   - pixbuf that contains the image to use for icon_name.
 //
 func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.gchar     // out
@@ -60,9 +60,9 @@ func IconThemeAddBuiltinIcon(iconName string, size int, pixbuf *gdkpixbuf.Pixbuf
 //
 // The function returns the following values:
 //
-//    - iconTheme: unique IconTheme associated with the default screen. This icon
-//      theme is associated with the screen and can be used as long as the screen
-//      is open. Do not ref or unref it.
+//   - iconTheme: unique IconTheme associated with the default screen. This icon
+//     theme is associated with the screen and can be used as long as the screen
+//     is open. Do not ref or unref it.
 //
 func IconThemeGetDefault() *IconTheme {
 	var _cret *C.GtkIconTheme // in
@@ -76,23 +76,23 @@ func IconThemeGetDefault() *IconTheme {
 	return _iconTheme
 }
 
-// IconThemeGetForScreen gets the icon theme object associated with screen; if
-// this function has not previously been called for the given screen, a new icon
-// theme object will be created and associated with the screen. Icon theme
-// objects are fairly expensive to create, so using this function is usually a
-// better choice than calling than gtk_icon_theme_new() and setting the screen
-// yourself; by using this function a single icon theme object will be shared
-// between users.
+// IconThemeGetForScreen gets the icon theme object associated with screen;
+// if this function has not previously been called for the given screen,
+// a new icon theme object will be created and associated with the screen.
+// Icon theme objects are fairly expensive to create, so using this function is
+// usually a better choice than calling than gtk_icon_theme_new() and setting
+// the screen yourself; by using this function a single icon theme object will
+// be shared between users.
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 // The function returns the following values:
 //
-//    - iconTheme: unique IconTheme associated with the given screen. This icon
-//      theme is associated with the screen and can be used as long as the screen
-//      is open. Do not ref or unref it.
+//   - iconTheme: unique IconTheme associated with the given screen. This icon
+//     theme is associated with the screen and can be used as long as the screen
+//     is open. Do not ref or unref it.
 //
 func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
 	var _arg1 *C.GdkScreen    // out

@@ -57,8 +57,8 @@ const (
 	BuilderErrorVersionMismatch
 	// BuilderErrorDuplicateID: object id occurred twice.
 	BuilderErrorDuplicateID
-	// BuilderErrorObjectTypeRefused: specified object type is of the same type
-	// or derived from the type of the composite class being extended with
+	// BuilderErrorObjectTypeRefused: specified object type is of the same
+	// type or derived from the type of the composite class being extended with
 	// builder XML.
 	BuilderErrorObjectTypeRefused
 	// BuilderErrorTemplateMismatch: wrong type was specified in a composite
@@ -124,14 +124,14 @@ func (b BuilderError) String() string {
 // Builder: GtkBuilder reads XML descriptions of a user interface and
 // instantiates the described objects.
 //
-// To create a GtkBuilder from a user interface description, call
-// gtk.Builder.NewFromFile, gtk.Builder.NewFromResource or
+// To create a GtkBuilder from a user interface description,
+// call gtk.Builder.NewFromFile, gtk.Builder.NewFromResource or
 // gtk.Builder.NewFromString.
 //
-// In the (unusual) case that you want to add user interface descriptions from
-// multiple sources to the same GtkBuilder you can call gtk.Builder.New to get
-// an empty builder and populate it by (multiple) calls to
-// gtk.Builder.AddFromFile(), gtk.Builder.AddFromResource() or
+// In the (unusual) case that you want to add user interface descriptions
+// from multiple sources to the same GtkBuilder you can call
+// gtk.Builder.New to get an empty builder and populate it by (multiple)
+// calls to gtk.Builder.AddFromFile(), gtk.Builder.AddFromResource() or
 // gtk.Builder.AddFromString().
 //
 // A GtkBuilder holds a reference to all objects that it has constructed and
@@ -141,18 +141,17 @@ func (b BuilderError) String() string {
 // responsibility of the user to call gtk.Window.Destroy() to get rid of them
 // and all the widgets they contain.
 //
-// The functions gtk.Builder.GetObject() and gtk.Builder.GetObjects() can be
-// used to access the widgets in the interface by the names assigned to them
-// inside the UI description. Toplevel windows returned by these functions will
-// stay around until the user explicitly destroys them with
+// The functions gtk.Builder.GetObject() and gtk.Builder.GetObjects() can
+// be used to access the widgets in the interface by the names assigned
+// to them inside the UI description. Toplevel windows returned by these
+// functions will stay around until the user explicitly destroys them with
 // gtk.Window.Destroy(). Other widgets will either be part of a larger hierarchy
 // constructed by the builder (in which case you should not have to worry about
 // their lifecycle), or without a parent, in which case they have to be added to
 // some container to make use of them. Non-widget objects need to be reffed with
 // g_object_ref() to keep them beyond the lifespan of the builder.
 //
-//
-// GtkBuilder UI Definitions
+// # GtkBuilder UI Definitions
 //
 // GtkBuilder parses textual descriptions of user interfaces which are specified
 // in XML format. We refer to these descriptions as “GtkBuilder UI definitions”
@@ -166,27 +165,27 @@ func (b BuilderError) String() string {
 // Objects are described by <object> elements, which can contain <property>
 // elements to set properties, <signal> elements which connect signals to
 // handlers, and <child> elements, which describe child objects (most often
-// widgets inside a container, but also e.g. actions in an action group, or
-// columns in a tree model). A <child> element contains an <object> element
+// widgets inside a container, but also e.g. actions in an action group,
+// or columns in a tree model). A <child> element contains an <object> element
 // which describes the child object.
 //
-// The target toolkit version(s) are described by <requires> elements, the “lib”
-// attribute specifies the widget library in question (currently the only
-// supported value is “gtk”) and the “version” attribute specifies the target
-// version in the form “<major>.<minor>”. GtkBuilder will error out if the
-// version requirements are not met.
+// The target toolkit version(s) are described by <requires> elements,
+// the “lib” attribute specifies the widget library in question (currently the
+// only supported value is “gtk”) and the “version” attribute specifies the
+// target version in the form “<major>.<minor>”. GtkBuilder will error out if
+// the version requirements are not met.
 //
-// Typically, the specific kind of object represented by an <object> element is
-// specified by the “class” attribute. If the type has not been loaded yet, GTK
-// tries to find the get_type() function from the class name by applying
+// Typically, the specific kind of object represented by an <object> element
+// is specified by the “class” attribute. If the type has not been loaded yet,
+// GTK tries to find the get_type() function from the class name by applying
 // heuristics. This works in most cases, but if necessary, it is possible to
 // specify the name of the get_type() function explicitly with the "type-func"
 // attribute.
 //
 // Objects may be given a name with the “id” attribute, which allows the
 // application to retrieve them from the builder with gtk.Builder.GetObject().
-// An id is also necessary to use the object as property value in other parts of
-// the UI definition. GTK reserves ids starting and ending with ___ (three
+// An id is also necessary to use the object as property value in other parts
+// of the UI definition. GTK reserves ids starting and ending with ___ (three
 // consecutive underscores) for its own purposes.
 //
 // Setting properties of objects is pretty straightforward with the <property>
@@ -194,8 +193,8 @@ func (b BuilderError) String() string {
 // content of the element specifies the value. If the “translatable” attribute
 // is set to a true value, GTK uses gettext() (or dgettext() if the builder has
 // a translation domain set) to find a translation for the value. This happens
-// before the value is parsed, so it can be used for properties of any type, but
-// it is probably most useful for string properties. It is also possible to
+// before the value is parsed, so it can be used for properties of any type,
+// but it is probably most useful for string properties. It is also possible to
 // specify a context to disambiguate short strings, and comments which may help
 // the translators.
 //
@@ -208,22 +207,22 @@ func (b BuilderError) String() string {
 // e.g. “GTK_INPUT_HINT_EMOJI|GTK_INPUT_HINT_LOWERCASE”) and colors (in a format
 // understood by gdk.RGBA.Parse()).
 //
-// GVariants can be specified in the format understood by g_variant_parse(), and
-// pixbufs can be specified as a filename of an image file to load.
+// GVariants can be specified in the format understood by g_variant_parse(),
+// and pixbufs can be specified as a filename of an image file to load.
 //
-// Objects can be referred to by their name and by default refer to objects
-// declared in the local XML fragment and objects exposed via
+// Objects can be referred to by their name and by default refer to
+// objects declared in the local XML fragment and objects exposed via
 // gtk.Builder.ExposeObject(). In general, GtkBuilder allows forward references
 // to objects — declared in the local XML; an object doesn’t have to be
-// constructed before it can be referred to. The exception to this rule is that
-// an object has to be constructed before it can be used as the value of a
+// constructed before it can be referred to. The exception to this rule is
+// that an object has to be constructed before it can be used as the value of a
 // construct-only property.
 //
 // It is also possible to bind a property value to another object's property
-// value using the attributes "bind-source" to specify the source object of the
-// binding, and optionally, "bind-property" and "bind-flags" to specify the
-// source property and source binding flags respectively. Internally, GtkBuilder
-// implements this using GBinding objects. For more information see
+// value using the attributes "bind-source" to specify the source object of
+// the binding, and optionally, "bind-property" and "bind-flags" to specify
+// the source property and source binding flags respectively. Internally,
+// GtkBuilder implements this using GBinding objects. For more information see
 // g_object_bind_property().
 //
 // Sometimes it is necessary to refer to widgets which have implicitly been
@@ -239,19 +238,18 @@ func (b BuilderError) String() string {
 // “type” attribute are described in the sections describing the widget-specific
 // portions of UI definitions.
 //
-//
-// Signal handlers and function pointers
+// # Signal handlers and function pointers
 //
 // Signal handlers are set up with the <signal> element. The “name” attribute
-// specifies the name of the signal, and the “handler” attribute specifies the
-// function to connect to the signal. The remaining attributes, “after”,
+// specifies the name of the signal, and the “handler” attribute specifies
+// the function to connect to the signal. The remaining attributes, “after”,
 // “swapped” and “object”, have the same meaning as the corresponding parameters
-// of the g_signal_connect_object() or g_signal_connect_data() functions. A
-// “last_modification_time” attribute is also allowed, but it does not have a
+// of the g_signal_connect_object() or g_signal_connect_data() functions.
+// A “last_modification_time” attribute is also allowed, but it does not have a
 // meaning to the builder.
 //
-// If you rely on GModule support to lookup callbacks in the symbol table, the
-// following details should be noted:
+// If you rely on GModule support to lookup callbacks in the symbol table,
+// the following details should be noted:
 //
 // When compiling applications for Windows, you must declare signal callbacks
 // with G_MODULE_EXPORT, or they will not be put in the symbol table. On Linux
@@ -279,18 +277,17 @@ func (b BuilderError) String() string {
 //      </object>
 //    </interface>
 //
-//
-// Beyond this general structure, several object classes define their own XML
-// DTD fragments for filling in the ANY placeholders in the DTD above. Note that
-// a custom element in a <child> element gets parsed by the custom tag handler
-// of the parent object, while a custom element in an <object> element gets
-// parsed by the custom tag handler of the object.
+// Beyond this general structure, several object classes define their own
+// XML DTD fragments for filling in the ANY placeholders in the DTD above.
+// Note that a custom element in a <child> element gets parsed by the custom tag
+// handler of the parent object, while a custom element in an <object> element
+// gets parsed by the custom tag handler of the object.
 //
 // These XML fragments are explained in the documentation of the respective
 // objects.
 //
-// A <template> tag can be used to define a widget class’s components. See the
-// GtkWidget documentation
+// A <template> tag can be used to define a widget
+// class’s components. See the GtkWidget documentation
 // (class.Widget.html#building-composite-widgets-from-template-xml) for details.
 type Builder struct {
 	_ [0]func() // equal guard
@@ -313,14 +310,14 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 
 // NewBuilder creates a new empty builder object.
 //
-// This function is only useful if you intend to make multiple calls to
-// gtk.Builder.AddFromFile(), gtk.Builder.AddFromResource() or
+// This function is only useful if you intend to make multiple calls
+// to gtk.Builder.AddFromFile(), gtk.Builder.AddFromResource() or
 // gtk.Builder.AddFromString() in order to merge multiple UI descriptions into a
 // single builder.
 //
 // The function returns the following values:
 //
-//    - builder: new (empty) GtkBuilder object.
+//   - builder: new (empty) GtkBuilder object.
 //
 func NewBuilder() *Builder {
 	var _cret *C.GtkBuilder // in
@@ -342,11 +339,11 @@ func NewBuilder() *Builder {
 //
 // The function takes the following parameters:
 //
-//    - filename of user interface description file.
+//   - filename of user interface description file.
 //
 // The function returns the following values:
 //
-//    - builder: GtkBuilder containing the described interface.
+//   - builder: GtkBuilder containing the described interface.
 //
 func NewBuilderFromFile(filename string) *Builder {
 	var _arg1 *C.char       // out
@@ -367,16 +364,16 @@ func NewBuilderFromFile(filename string) *Builder {
 
 // NewBuilderFromResource parses the UI definition at resource_path.
 //
-// If there is an error locating the resource or parsing the description, then
-// the program will be aborted.
+// If there is an error locating the resource or parsing the description,
+// then the program will be aborted.
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: GResource resource path.
+//   - resourcePath: GResource resource path.
 //
 // The function returns the following values:
 //
-//    - builder: GtkBuilder containing the described interface.
+//   - builder: GtkBuilder containing the described interface.
 //
 func NewBuilderFromResource(resourcePath string) *Builder {
 	var _arg1 *C.char       // out
@@ -400,18 +397,18 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 // If string is NULL-terminated, then length should be -1. If length is not -1,
 // then it is the length of string.
 //
-// If there is an error parsing string then the program will be aborted. You
-// should not attempt to parse user interface description from untrusted
+// If there is an error parsing string then the program will be aborted.
+// You should not attempt to parse user interface description from untrusted
 // sources.
 //
 // The function takes the following parameters:
 //
-//    - str: user interface (XML) description.
-//    - length of string, or -1.
+//   - str: user interface (XML) description.
+//   - length of string, or -1.
 //
 // The function returns the following values:
 //
-//    - builder: GtkBuilder containing the interface described by string.
+//   - builder: GtkBuilder containing the interface described by string.
 //
 func NewBuilderFromString(str string, length int) *Builder {
 	var _arg1 *C.char       // out
@@ -437,22 +434,22 @@ func NewBuilderFromString(str string, length int) *Builder {
 // current contents of builder.
 //
 // This function is useful if you need to call gtk.Builder.SetCurrentObject())
-// to add user data to callbacks before loading GtkBuilder UI. Otherwise, you
-// probably want gtk.Builder.NewFromFile instead.
+// to add user data to callbacks before loading GtkBuilder UI. Otherwise,
+// you probably want gtk.Builder.NewFromFile instead.
 //
 // If an error occurs, 0 will be returned and error will be assigned a GError
 // from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_FILE_ERROR domains.
 //
-// It’s not really reasonable to attempt to handle failures of this call. You
-// should not use this function with untrusted files (ie: files that are not
-// part of your application). Broken GtkBuilder files can easily crash your
+// It’s not really reasonable to attempt to handle failures of this call.
+// You should not use this function with untrusted files (ie: files that are
+// not part of your application). Broken GtkBuilder files can easily crash your
 // program, and it’s possible that memory was leaked leading up to the reported
 // failure. The only reasonable thing to do when an error is detected is to call
 // g_error().
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file to parse.
+//   - filename: name of the file to parse.
 //
 func (builder *Builder) AddFromFile(filename string) error {
 	var _arg0 *C.GtkBuilder // out
@@ -479,9 +476,9 @@ func (builder *Builder) AddFromFile(filename string) error {
 // AddFromResource parses a resource file containing a UI definition and merges
 // it with the current contents of builder.
 //
-// This function is useful if you need to call gtk.Builder.SetCurrentObject() to
-// add user data to callbacks before loading GtkBuilder UI. Otherwise, you
-// probably want gtk.Builder.NewFromResource instead.
+// This function is useful if you need to call gtk.Builder.SetCurrentObject()
+// to add user data to callbacks before loading GtkBuilder UI. Otherwise,
+// you probably want gtk.Builder.NewFromResource instead.
 //
 // If an error occurs, 0 will be returned and error will be assigned a GError
 // from the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_RESOURCE_ERROR domain.
@@ -491,7 +488,7 @@ func (builder *Builder) AddFromFile(filename string) error {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path of the resource file to parse.
+//   - resourcePath: path of the resource file to parse.
 //
 func (builder *Builder) AddFromResource(resourcePath string) error {
 	var _arg0 *C.GtkBuilder // out
@@ -518,9 +515,9 @@ func (builder *Builder) AddFromResource(resourcePath string) error {
 // AddFromString parses a string containing a UI definition and merges it with
 // the current contents of builder.
 //
-// This function is useful if you need to call gtk.Builder.SetCurrentObject() to
-// add user data to callbacks before loading GtkBuilder UI. Otherwise, you
-// probably want gtk.Builder.NewFromString instead.
+// This function is useful if you need to call gtk.Builder.SetCurrentObject()
+// to add user data to callbacks before loading GtkBuilder UI. Otherwise,
+// you probably want gtk.Builder.NewFromString instead.
 //
 // Upon errors FALSE will be returned and error will be assigned a GError from
 // the GTK_BUILDER_ERROR, G_MARKUP_ERROR or G_VARIANT_PARSE_ERROR domain.
@@ -530,8 +527,8 @@ func (builder *Builder) AddFromResource(resourcePath string) error {
 //
 // The function takes the following parameters:
 //
-//    - buffer: string to parse.
-//    - length of buffer (may be -1 if buffer is nul-terminated).
+//   - buffer: string to parse.
+//   - length of buffer (may be -1 if buffer is nul-terminated).
 //
 func (builder *Builder) AddFromString(buffer string, length int) error {
 	var _arg0 *C.GtkBuilder // out
@@ -570,8 +567,8 @@ func (builder *Builder) AddFromString(buffer string, length int) error {
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file to parse.
-//    - objectIds: nul-terminated array of objects to build.
+//   - filename: name of the file to parse.
+//   - objectIds: nul-terminated array of objects to build.
 //
 func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) error {
 	var _arg0 *C.GtkBuilder // out
@@ -623,8 +620,8 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path of the resource file to parse.
-//    - objectIds: nul-terminated array of objects to build.
+//   - resourcePath: path of the resource file to parse.
+//   - objectIds: nul-terminated array of objects to build.
 //
 func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) error {
 	var _arg0 *C.GtkBuilder // out
@@ -676,9 +673,9 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 //
 // The function takes the following parameters:
 //
-//    - buffer: string to parse.
-//    - length of buffer (may be -1 if buffer is nul-terminated).
-//    - objectIds: nul-terminated array of objects to build.
+//   - buffer: string to parse.
+//   - length of buffer (may be -1 if buffer is nul-terminated).
+//   - objectIds: nul-terminated array of objects to build.
 //
 func (builder *Builder) AddObjectsFromString(buffer string, length int, objectIds []string) error {
 	var _arg0 *C.GtkBuilder // out
@@ -725,8 +722,8 @@ func (builder *Builder) AddObjectsFromString(buffer string, length int, objectId
 //
 // The function takes the following parameters:
 //
-//    - name of the object exposed to the builder.
-//    - object to expose.
+//   - name of the object exposed to the builder.
+//   - object to expose.
 //
 func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 	var _arg0 *C.GtkBuilder // out
@@ -752,10 +749,10 @@ func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 //
 // The function takes the following parameters:
 //
-//    - object that is being extended.
-//    - templateType: type that the template is for.
-//    - buffer: string to parse.
-//    - length of buffer (may be -1 if buffer is nul-terminated).
+//   - object that is being extended.
+//   - templateType: type that the template is for.
+//   - buffer: string to parse.
+//   - length of buffer (may be -1 if buffer is nul-terminated).
 //
 func (builder *Builder) ExtendWithTemplate(object *coreglib.Object, templateType coreglib.Type, buffer string, length int) error {
 	var _arg0 *C.GtkBuilder // out
@@ -793,7 +790,7 @@ func (builder *Builder) ExtendWithTemplate(object *coreglib.Object, templateType
 //
 // The function returns the following values:
 //
-//    - object (optional): current object.
+//   - object (optional): current object.
 //
 func (builder *Builder) CurrentObject() *coreglib.Object {
 	var _arg0 *C.GtkBuilder // out
@@ -820,12 +817,12 @@ func (builder *Builder) CurrentObject() *coreglib.Object {
 //
 // The function takes the following parameters:
 //
-//    - name of object to get.
+//   - name of object to get.
 //
 // The function returns the following values:
 //
-//    - object (optional) named name or NULL if it could not be found in the
-//      object tree.
+//   - object (optional) named name or NULL if it could not be found in the
+//     object tree.
 //
 func (builder *Builder) GetObject(name string) *coreglib.Object {
 	var _arg0 *C.GtkBuilder // out
@@ -856,8 +853,8 @@ func (builder *Builder) GetObject(name string) *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - sList: a newly-allocated GSList containing all the objects constructed by
-//      the GtkBuilder instance. It should be freed by g_slist_free().
+//   - sList: a newly-allocated GSList containing all the objects constructed by
+//     the GtkBuilder instance. It should be freed by g_slist_free().
 //
 func (builder *Builder) Objects() []*coreglib.Object {
 	var _arg0 *C.GtkBuilder // out
@@ -885,7 +882,7 @@ func (builder *Builder) Objects() []*coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - builderScope: current scope.
+//   - builderScope: current scope.
 //
 func (builder *Builder) Scope() *BuilderScope {
 	var _arg0 *C.GtkBuilder      // out
@@ -907,8 +904,8 @@ func (builder *Builder) Scope() *BuilderScope {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): translation domain or NULL. This string is owned by the
-//      builder object and must not be modified or freed.
+//   - utf8 (optional): translation domain or NULL. This string is owned by the
+//     builder object and must not be modified or freed.
 //
 func (builder *Builder) TranslationDomain() string {
 	var _arg0 *C.GtkBuilder // out
@@ -930,16 +927,16 @@ func (builder *Builder) TranslationDomain() string {
 
 // TypeFromName looks up a type by name.
 //
-// This is using the virtual function that GtkBuilder has for that purpose. This
-// is mainly used when implementing the GtkBuildable interface on a type.
+// This is using the virtual function that GtkBuilder has for that purpose.
+// This is mainly used when implementing the GtkBuildable interface on a type.
 //
 // The function takes the following parameters:
 //
-//    - typeName: type name to lookup.
+//   - typeName: type name to lookup.
 //
 // The function returns the following values:
 //
-//    - gType: GType found for type_name or G_TYPE_INVALID if no type was found.
+//   - gType: GType found for type_name or G_TYPE_INVALID if no type was found.
 //
 func (builder *Builder) TypeFromName(typeName string) coreglib.Type {
 	var _arg0 *C.GtkBuilder // out
@@ -967,13 +964,13 @@ func (builder *Builder) TypeFromName(typeName string) coreglib.Type {
 // working for and will often be used as the default object when an object is
 // optional.
 //
-// gtk.Widget.InitTemplate() for example will set the current object to the
-// widget the template is inited for. For functions like
+// gtk.Widget.InitTemplate() for example will set the current object
+// to the widget the template is inited for. For functions like
 // gtk.Builder.NewFromResource, the current object will be NULL.
 //
 // The function takes the following parameters:
 //
-//    - currentObject (optional): new current object or NULL for none.
+//   - currentObject (optional): new current object or NULL for none.
 //
 func (builder *Builder) SetCurrentObject(currentObject *coreglib.Object) {
 	var _arg0 *C.GtkBuilder // out
@@ -995,7 +992,7 @@ func (builder *Builder) SetCurrentObject(currentObject *coreglib.Object) {
 //
 // The function takes the following parameters:
 //
-//    - scope (optional) to use or NULL for the default.
+//   - scope (optional) to use or NULL for the default.
 //
 func (builder *Builder) SetScope(scope BuilderScoper) {
 	var _arg0 *C.GtkBuilder      // out
@@ -1015,7 +1012,7 @@ func (builder *Builder) SetScope(scope BuilderScoper) {
 //
 // The function takes the following parameters:
 //
-//    - domain (optional): translation domain or NULL.
+//   - domain (optional): translation domain or NULL.
 //
 func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkBuilder // out
@@ -1045,12 +1042,12 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 //
 // The function takes the following parameters:
 //
-//    - typ: GType of the value.
-//    - str: string representation of the value.
+//   - typ: GType of the value.
+//   - str: string representation of the value.
 //
 // The function returns the following values:
 //
-//    - value to store the result in.
+//   - value to store the result in.
 //
 func (builder *Builder) ValueFromStringType(typ coreglib.Type, str string) (coreglib.Value, error) {
 	var _arg0 *C.GtkBuilder // out

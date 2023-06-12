@@ -402,15 +402,15 @@ type TranslateFunc func(path string) (utf8 string)
 
 // StockAdd registers each of the stock items in items. If an item already
 // exists with the same stock ID as one of the items, the old item gets
-// replaced. The stock items are copied, so GTK+ does not hold any pointer into
-// items and items can be freed. Use gtk_stock_add_static() if items is
+// replaced. The stock items are copied, so GTK+ does not hold any pointer
+// into items and items can be freed. Use gtk_stock_add_static() if items is
 // persistent and GTK+ need not copy the array.
 //
 // Deprecated: since version 3.10.
 //
 // The function takes the following parameters:
 //
-//    - items or array of items.
+//   - items or array of items.
 //
 func StockAdd(items []StockItem) {
 	var _arg1 *C.GtkStockItem // out
@@ -437,7 +437,7 @@ func StockAdd(items []StockItem) {
 //
 // The function takes the following parameters:
 //
-//    - items or array of StockItem.
+//   - items or array of StockItem.
 //
 func StockAddStatic(items []StockItem) {
 	var _arg1 *C.GtkStockItem // out
@@ -457,15 +457,15 @@ func StockAddStatic(items []StockItem) {
 	runtime.KeepAlive(items)
 }
 
-// StockListIDs retrieves a list of all known stock IDs added to a IconFactory
-// or registered with gtk_stock_add(). The list must be freed with
+// StockListIDs retrieves a list of all known stock IDs added to a
+// IconFactory or registered with gtk_stock_add(). The list must be freed with
 // g_slist_free(), and each string in the list must be freed with g_free().
 //
 // Deprecated: since version 3.10.
 //
 // The function returns the following values:
 //
-//    - sList: list of known stock IDs.
+//   - sList: list of known stock IDs.
 //
 func StockListIDs() []string {
 	var _cret *C.GSList // in
@@ -493,12 +493,12 @@ func StockListIDs() []string {
 //
 // The function takes the following parameters:
 //
-//    - stockId: stock item name.
+//   - stockId: stock item name.
 //
 // The function returns the following values:
 //
-//    - item: stock item to initialize with values.
-//    - ok: TRUE if item was initialized.
+//   - item: stock item to initialize with values.
+//   - ok: TRUE if item was initialized.
 //
 func StockLookup(stockId string) (*StockItem, bool) {
 	var _arg1 *C.gchar       // out

@@ -24,16 +24,16 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: valid parse context that was returned from markup_parser_new.
+//   - context: valid parse context that was returned from markup_parser_new.
 //
 // The function returns the following values:
 //
-//    - attrList (optional) address of return location for a PangoAttrList, or
-//      NULL.
-//    - text (optional) address of return location for text with tags stripped,
-//      or NULL.
-//    - accelChar (optional) address of return location for accelerator char, or
-//      NULL.
+//   - attrList (optional) address of return location for a PangoAttrList,
+//     or NULL.
+//   - text (optional) address of return location for text with tags stripped,
+//     or NULL.
+//   - accelChar (optional) address of return location for accelerator char,
+//     or NULL.
 //
 func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
 	var _arg1 *C.GMarkupParseContext // out
@@ -98,12 +98,12 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 //
 // The function takes the following parameters:
 //
-//    - accelMarker: character that precedes an accelerator, or 0 for none.
+//   - accelMarker: character that precedes an accelerator, or 0 for none.
 //
 // The function returns the following values:
 //
-//    - markupParseContext: GMarkupParseContext that should be destroyed with
-//      g_markup_parse_context_free().
+//   - markupParseContext: GMarkupParseContext that should be destroyed with
+//     g_markup_parse_context_free().
 //
 func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var _arg1 C.gunichar             // out

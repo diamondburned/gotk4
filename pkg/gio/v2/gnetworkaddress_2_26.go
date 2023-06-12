@@ -22,12 +22,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - uri: hostname and optionally a port.
-//    - defaultPort: default port if none is found in the URI.
+//   - uri: hostname and optionally a port.
+//   - defaultPort: default port if none is found in the URI.
 //
 // The function returns the following values:
 //
-//    - networkAddress: new Address, or NULL on error.
+//   - networkAddress: new Address, or NULL on error.
 //
 func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out

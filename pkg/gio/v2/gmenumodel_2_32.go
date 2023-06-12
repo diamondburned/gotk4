@@ -107,11 +107,11 @@ type MenuAttributeIterOverrides struct {
 	// Next: this function combines g_menu_attribute_iter_next() with
 	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
 	//
-	// First the iterator is advanced to the next (possibly first) attribute. If
-	// that fails, then FALSE is returned and there are no other effects.
+	// First the iterator is advanced to the next (possibly first) attribute.
+	// If that fails, then FALSE is returned and there are no other effects.
 	//
-	// If successful, name and value are set to the name and value of the
-	// attribute that has just been advanced to. At this point,
+	// If successful, name and value are set to the name and value of
+	// the attribute that has just been advanced to. At this point,
 	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value()
 	// will return the same values again.
 	//
@@ -121,9 +121,9 @@ type MenuAttributeIterOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - outName (optional): type of the attribute.
-	//    - value (optional): attribute value.
-	//    - ok: TRUE on success, or FALSE if there is no additional attribute.
+	//   - outName (optional): type of the attribute.
+	//   - value (optional): attribute value.
+	//   - ok: TRUE on success, or FALSE if there is no additional attribute.
 	//
 	Next func() (string, *glib.Variant, bool)
 }
@@ -197,14 +197,14 @@ func BaseMenuAttributeIter(obj MenuAttributeIterer) *MenuAttributeIter {
 	return obj.baseMenuAttributeIter()
 }
 
-// Name gets the name of the attribute at the current iterator position, as a
-// string.
+// Name gets the name of the attribute at the current iterator position,
+// as a string.
 //
 // The iterator is not advanced.
 //
 // The function returns the following values:
 //
-//    - utf8: name of the attribute.
+//   - utf8: name of the attribute.
 //
 func (iter *MenuAttributeIter) Name() string {
 	var _arg0 *C.GMenuAttributeIter // out
@@ -225,11 +225,11 @@ func (iter *MenuAttributeIter) Name() string {
 // GetNext: this function combines g_menu_attribute_iter_next() with
 // g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
 //
-// First the iterator is advanced to the next (possibly first) attribute. If
-// that fails, then FALSE is returned and there are no other effects.
+// First the iterator is advanced to the next (possibly first) attribute.
+// If that fails, then FALSE is returned and there are no other effects.
 //
-// If successful, name and value are set to the name and value of the attribute
-// that has just been advanced to. At this point,
+// If successful, name and value are set to the name and value of
+// the attribute that has just been advanced to. At this point,
 // g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value() will
 // return the same values again.
 //
@@ -239,9 +239,9 @@ func (iter *MenuAttributeIter) Name() string {
 //
 // The function returns the following values:
 //
-//    - outName (optional): type of the attribute.
-//    - value (optional): attribute value.
-//    - ok: TRUE on success, or FALSE if there is no additional attribute.
+//   - outName (optional): type of the attribute.
+//   - value (optional): attribute value.
+//   - ok: TRUE on success, or FALSE if there is no additional attribute.
 //
 func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
@@ -283,7 +283,7 @@ func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 //
 // The function returns the following values:
 //
-//    - variant: value of the current attribute.
+//   - variant: value of the current attribute.
 //
 func (iter *MenuAttributeIter) Value() *glib.Variant {
 	var _arg0 *C.GMenuAttributeIter // out
@@ -316,7 +316,7 @@ func (iter *MenuAttributeIter) Value() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success, or FALSE when there are no more attributes.
+//   - ok: TRUE on success, or FALSE when there are no more attributes.
 //
 func (iter *MenuAttributeIter) Next() bool {
 	var _arg0 *C.GMenuAttributeIter // out
@@ -339,11 +339,11 @@ func (iter *MenuAttributeIter) Next() bool {
 // Next: this function combines g_menu_attribute_iter_next() with
 // g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
 //
-// First the iterator is advanced to the next (possibly first) attribute. If
-// that fails, then FALSE is returned and there are no other effects.
+// First the iterator is advanced to the next (possibly first) attribute.
+// If that fails, then FALSE is returned and there are no other effects.
 //
-// If successful, name and value are set to the name and value of the attribute
-// that has just been advanced to. At this point,
+// If successful, name and value are set to the name and value of
+// the attribute that has just been advanced to. At this point,
 // g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value() will
 // return the same values again.
 //
@@ -353,9 +353,9 @@ func (iter *MenuAttributeIter) Next() bool {
 //
 // The function returns the following values:
 //
-//    - outName (optional): type of the attribute.
-//    - value (optional): attribute value.
-//    - ok: TRUE on success, or FALSE if there is no additional attribute.
+//   - outName (optional): type of the attribute.
+//   - value (optional): attribute value.
+//   - ok: TRUE on success, or FALSE if there is no additional attribute.
 //
 func (iter *MenuAttributeIter) next() (string, *glib.Variant, bool) {
 	gclass := (*C.GMenuAttributeIterClass)(coreglib.PeekParentClass(iter))
@@ -399,11 +399,11 @@ type MenuLinkIterOverrides struct {
 	// Next: this function combines g_menu_link_iter_next() with
 	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
 	//
-	// First the iterator is advanced to the next (possibly first) link. If that
-	// fails, then FALSE is returned and there are no other effects.
+	// First the iterator is advanced to the next (possibly first) link.
+	// If that fails, then FALSE is returned and there are no other effects.
 	//
-	// If successful, out_link and value are set to the name and Model of the
-	// link that has just been advanced to. At this point,
+	// If successful, out_link and value are set to the name and Model
+	// of the link that has just been advanced to. At this point,
 	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value() will return
 	// the same values again.
 	//
@@ -413,9 +413,9 @@ type MenuLinkIterOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - outLink (optional): name of the link.
-	//    - value (optional): linked Model.
-	//    - ok: TRUE on success, or FALSE if there is no additional link.
+	//   - outLink (optional): name of the link.
+	//   - value (optional): linked Model.
+	//   - ok: TRUE on success, or FALSE if there is no additional link.
 	//
 	Next func() (string, MenuModeller, bool)
 }
@@ -495,7 +495,7 @@ func BaseMenuLinkIter(obj MenuLinkIterer) *MenuLinkIter {
 //
 // The function returns the following values:
 //
-//    - utf8: type of the link.
+//   - utf8: type of the link.
 //
 func (iter *MenuLinkIter) Name() string {
 	var _arg0 *C.GMenuLinkIter // out
@@ -529,9 +529,9 @@ func (iter *MenuLinkIter) Name() string {
 //
 // The function returns the following values:
 //
-//    - outLink (optional): name of the link.
-//    - value (optional): linked Model.
-//    - ok: TRUE on success, or FALSE if there is no additional link.
+//   - outLink (optional): name of the link.
+//   - value (optional): linked Model.
+//   - ok: TRUE on success, or FALSE if there is no additional link.
 //
 func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 	var _arg0 *C.GMenuLinkIter // out
@@ -580,7 +580,7 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 //
 // The function returns the following values:
 //
-//    - menuModel that is linked to.
+//   - menuModel that is linked to.
 //
 func (iter *MenuLinkIter) Value() MenuModeller {
 	var _arg0 *C.GMenuLinkIter // out
@@ -623,7 +623,7 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success, or FALSE when there are no more links.
+//   - ok: TRUE on success, or FALSE when there are no more links.
 //
 func (iter *MenuLinkIter) Next() bool {
 	var _arg0 *C.GMenuLinkIter // out
@@ -659,9 +659,9 @@ func (iter *MenuLinkIter) Next() bool {
 //
 // The function returns the following values:
 //
-//    - outLink (optional): name of the link.
-//    - value (optional): linked Model.
-//    - ok: TRUE on success, or FALSE if there is no additional link.
+//   - outLink (optional): name of the link.
+//   - value (optional): linked Model.
+//   - ok: TRUE on success, or FALSE if there is no additional link.
 //
 func (iter *MenuLinkIter) next() (string, MenuModeller, bool) {
 	gclass := (*C.GMenuLinkIterClass)(coreglib.PeekParentClass(iter))
@@ -723,13 +723,13 @@ type MenuModelOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - itemIndex: index of the item.
-	//    - attribute to query.
-	//    - expectedType (optional): expected type of the attribute, or NULL.
+	//   - itemIndex: index of the item.
+	//   - attribute to query.
+	//   - expectedType (optional): expected type of the attribute, or NULL.
 	//
 	// The function returns the following values:
 	//
-	//    - variant (optional): value of the attribute.
+	//   - variant (optional): value of the attribute.
 	//
 	ItemAttributeValue func(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemAttributes gets all the attributes associated with the item in the
@@ -737,11 +737,11 @@ type MenuModelOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - itemIndex to query.
+	//   - itemIndex to query.
 	//
 	// The function returns the following values:
 	//
-	//    - attributes attributes on the item.
+	//   - attributes attributes on the item.
 	//
 	ItemAttributes func(itemIndex int) map[string]*glib.Variant
 	// ItemLink queries the item at position item_index in model for the link
@@ -752,30 +752,30 @@ type MenuModelOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - itemIndex: index of the item.
-	//    - link to query.
+	//   - itemIndex: index of the item.
+	//   - link to query.
 	//
 	// The function returns the following values:
 	//
-	//    - menuModel (optional): linked Model, or NULL.
+	//   - menuModel (optional): linked Model, or NULL.
 	//
 	ItemLink func(itemIndex int, link string) MenuModeller
 	// ItemLinks gets all the links associated with the item in the menu model.
 	//
 	// The function takes the following parameters:
 	//
-	//    - itemIndex to query.
+	//   - itemIndex to query.
 	//
 	// The function returns the following values:
 	//
-	//    - links links from the item.
+	//   - links links from the item.
 	//
 	ItemLinks func(itemIndex int) map[string]MenuModeller
 	// NItems: query the number of items in model.
 	//
 	// The function returns the following values:
 	//
-	//    - gint: number of items.
+	//   - gint: number of items.
 	//
 	NItems func() int
 	// IsMutable queries if model is mutable.
@@ -785,8 +785,8 @@ type MenuModelOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the model is mutable (ie: "items-changed" may be
-	//      emitted).
+	//   - ok: TRUE if the model is mutable (ie: "items-changed" may be
+	//     emitted).
 	//
 	IsMutable func() bool
 	// IterateItemAttributes creates a AttributeIter to iterate over the
@@ -796,11 +796,11 @@ type MenuModelOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - itemIndex: index of the item.
+	//   - itemIndex: index of the item.
 	//
 	// The function returns the following values:
 	//
-	//    - menuAttributeIter: new AttributeIter.
+	//   - menuAttributeIter: new AttributeIter.
 	//
 	IterateItemAttributes func(itemIndex int) MenuAttributeIterer
 	// IterateItemLinks creates a LinkIter to iterate over the links of the item
@@ -810,11 +810,11 @@ type MenuModelOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - itemIndex: index of the item.
+	//   - itemIndex: index of the item.
 	//
 	// The function returns the following values:
 	//
-	//    - menuLinkIter: new LinkIter.
+	//   - menuLinkIter: new LinkIter.
 	//
 	IterateItemLinks func(itemIndex int) MenuLinkIterer
 }
@@ -836,8 +836,8 @@ func defaultMenuModelOverrides(v *MenuModel) MenuModelOverrides {
 // The items are associated with actions, which can be activated through them.
 // Items can be grouped in sections, and may have submenus associated with them.
 // Both items and sections usually have some representation data, such as labels
-// or icons. The type of the associated action (ie whether it is stateful, and
-// what kind of state it has) can influence the representation of the item.
+// or icons. The type of the associated action (ie whether it is stateful,
+// and what kind of state it has) can influence the representation of the item.
 //
 // The conceptual model of menus in Model is hierarchical: sections and submenus
 // are again represented by Models. Menus themselves do not define their own
@@ -847,8 +847,7 @@ func defaultMenuModelOverrides(v *MenuModel) MenuModelOverrides {
 //
 // As an example, consider the visible portions of this menu:
 //
-//
-// An example menu
+// # An example menu
 //
 // ! (menu-example.png)
 //
@@ -876,8 +875,7 @@ func defaultMenuModelOverrides(v *MenuModel) MenuModelOverrides {
 // blocks within the large block represent items in that menu. Some items
 // contain references to other menus.
 //
-//
-// A menu example
+// # A menu example
 //
 // ! (menu-model.png)
 //
@@ -888,18 +886,18 @@ func defaultMenuModelOverrides(v *MenuModel) MenuModelOverrides {
 // just like any other item. In that case, a display system may show a section
 // header instead of a separator.
 //
-// The motivation for this abstract model of application controls is that modern
-// user interfaces tend to make these controls available outside the
-// application. Examples include global menus, jumplists, dash boards, etc. To
-// support such uses, it is necessary to 'export' information about actions and
-// their representation in menus, which is exactly what the [GActionGroup
-// exporter][gio-GActionGroup-exporter] and the [GMenuModel
+// The motivation for this abstract model of application controls is that
+// modern user interfaces tend to make these controls available outside
+// the application. Examples include global menus, jumplists, dash boards,
+// etc. To support such uses, it is necessary to 'export' information about
+// actions and their representation in menus, which is exactly what the
+// [GActionGroup exporter][gio-GActionGroup-exporter] and the [GMenuModel
 // exporter][gio-GMenuModel-exporter] do for Group and Model. The client-side
 // counterparts to make use of the exported information are BusActionGroup and
 // BusMenuModel.
 //
-// The API of Model is very generic, with iterators for the attributes and links
-// of an item, see g_menu_model_iterate_item_attributes() and
+// The API of Model is very generic, with iterators for the attributes
+// and links of an item, see g_menu_model_iterate_item_attributes() and
 // g_menu_model_iterate_item_links(). The 'standard' attributes and link types
 // have predefined names: G_MENU_ATTRIBUTE_LABEL, G_MENU_ATTRIBUTE_ACTION,
 // G_MENU_ATTRIBUTE_TARGET, G_MENU_LINK_SECTION and G_MENU_LINK_SUBMENU.
@@ -909,14 +907,14 @@ func defaultMenuModelOverrides(v *MenuModel) MenuModelOverrides {
 // to the action is encoded by the string id in the G_MENU_ATTRIBUTE_ACTION
 // attribute. An action id uniquely identifies an action in an action group.
 // Which action group(s) provide actions depends on the context in which the
-// menu model is used. E.g. when the model is exported as the application menu
-// of a Application, actions can be application-wide or window-specific (and
-// thus come from two different action groups). By convention, the
+// menu model is used. E.g. when the model is exported as the application
+// menu of a Application, actions can be application-wide or window-specific
+// (and thus come from two different action groups). By convention, the
 // application-wide actions have names that start with "app.", while the names
 // of window-specific actions start with "win.".
 //
-// While a wide variety of stateful actions is possible, the following is the
-// minimum that is expected to be supported by all users of exported menu
+// While a wide variety of stateful actions is possible, the following is
+// the minimum that is expected to be supported by all users of exported menu
 // information:
 //
 // - an action with no parameter type and no state
@@ -925,15 +923,13 @@ func defaultMenuModelOverrides(v *MenuModel) MenuModelOverrides {
 //
 // - an action with string parameter type and string state
 //
-//
-// Stateless
+// # Stateless
 //
 // A stateless action typically corresponds to an ordinary menu item.
 //
 // Selecting such a menu item will activate the action (with no parameter).
 //
-//
-// Boolean State
+// # Boolean State
 //
 // An action with a boolean state will most typically be used with a "toggle" or
 // "switch" menu item. The state can be set directly, but activating the action
@@ -942,17 +938,16 @@ func defaultMenuModelOverrides(v *MenuModel) MenuModelOverrides {
 // Selecting a toggle menu item will activate the action. The menu item should
 // be rendered as "checked" when the state is true.
 //
-//
-// String Parameter and State
+// # String Parameter and State
 //
 // Actions with string parameters and state will most typically be used to
 // represent an enumerated choice over the items available for a group of radio
 // menu items. Activating the action with a string parameter is equivalent to
 // setting that parameter as the state.
 //
-// Radio menu items, in addition to being associated with the action, will have
-// a target value. Selecting that menu item will result in activation of the
-// action with the target value as the parameter. The menu item should be
+// Radio menu items, in addition to being associated with the action, will
+// have a target value. Selecting that menu item will result in activation of
+// the action with the target value as the parameter. The menu item should be
 // rendered as "selected" when the state of the action is equal to the target
 // value of the menu item.
 type MenuModel struct {
@@ -1080,13 +1075,13 @@ func (model *MenuModel) ConnectItemsChanged(f func(position, removed, added int)
 //
 // The function takes the following parameters:
 //
-//    - itemIndex: index of the item.
-//    - attribute to query.
-//    - expectedType (optional): expected type of the attribute, or NULL.
+//   - itemIndex: index of the item.
+//   - attribute to query.
+//   - expectedType (optional): expected type of the attribute, or NULL.
 //
 // The function returns the following values:
 //
-//    - variant (optional): value of the attribute.
+//   - variant (optional): value of the attribute.
 //
 func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
@@ -1132,12 +1127,12 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 //
 // The function takes the following parameters:
 //
-//    - itemIndex: index of the item.
-//    - link to query.
+//   - itemIndex: index of the item.
+//   - link to query.
 //
 // The function returns the following values:
 //
-//    - menuModel (optional): linked Model, or NULL.
+//   - menuModel (optional): linked Model, or NULL.
 //
 func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 	var _arg0 *C.GMenuModel // out
@@ -1181,7 +1176,7 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 //
 // The function returns the following values:
 //
-//    - gint: number of items.
+//   - gint: number of items.
 //
 func (model *MenuModel) NItems() int {
 	var _arg0 *C.GMenuModel // out
@@ -1206,7 +1201,7 @@ func (model *MenuModel) NItems() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the model is mutable (ie: "items-changed" may be emitted).
+//   - ok: TRUE if the model is mutable (ie: "items-changed" may be emitted).
 //
 func (model *MenuModel) IsMutable() bool {
 	var _arg0 *C.GMenuModel // out
@@ -1237,16 +1232,16 @@ func (model *MenuModel) IsMutable() bool {
 // receive queries about the new state of the menu (and particularly added menu
 // items) while signal handlers are running.
 //
-// The implementation must dispatch this call directly from a mainloop entry and
-// not in response to calls -- particularly those from the Model API. Said
-// another way: the menu must not change while user code is running without
+// The implementation must dispatch this call directly from a mainloop entry
+// and not in response to calls -- particularly those from the Model API.
+// Said another way: the menu must not change while user code is running without
 // returning to the mainloop.
 //
 // The function takes the following parameters:
 //
-//    - position of the change.
-//    - removed: number of items removed.
-//    - added: number of items added.
+//   - position of the change.
+//   - removed: number of items removed.
+//   - added: number of items added.
 //
 func (model *MenuModel) ItemsChanged(position, removed, added int) {
 	var _arg0 *C.GMenuModel // out
@@ -1273,11 +1268,11 @@ func (model *MenuModel) ItemsChanged(position, removed, added int) {
 //
 // The function takes the following parameters:
 //
-//    - itemIndex: index of the item.
+//   - itemIndex: index of the item.
 //
 // The function returns the following values:
 //
-//    - menuAttributeIter: new AttributeIter.
+//   - menuAttributeIter: new AttributeIter.
 //
 func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer {
 	var _arg0 *C.GMenuModel         // out
@@ -1321,11 +1316,11 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 //
 // The function takes the following parameters:
 //
-//    - itemIndex: index of the item.
+//   - itemIndex: index of the item.
 //
 // The function returns the following values:
 //
-//    - menuLinkIter: new LinkIter.
+//   - menuLinkIter: new LinkIter.
 //
 func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	var _arg0 *C.GMenuModel    // out
@@ -1376,13 +1371,13 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 //
 // The function takes the following parameters:
 //
-//    - itemIndex: index of the item.
-//    - attribute to query.
-//    - expectedType (optional): expected type of the attribute, or NULL.
+//   - itemIndex: index of the item.
+//   - attribute to query.
+//   - expectedType (optional): expected type of the attribute, or NULL.
 //
 // The function returns the following values:
 //
-//    - variant (optional): value of the attribute.
+//   - variant (optional): value of the attribute.
 //
 func (model *MenuModel) itemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
@@ -1428,11 +1423,11 @@ func (model *MenuModel) itemAttributeValue(itemIndex int, attribute string, expe
 //
 // The function takes the following parameters:
 //
-//    - itemIndex to query.
+//   - itemIndex to query.
 //
 // The function returns the following values:
 //
-//    - attributes attributes on the item.
+//   - attributes attributes on the item.
 //
 func (model *MenuModel) itemAttributes(itemIndex int) map[string]*glib.Variant {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
@@ -1480,12 +1475,12 @@ func (model *MenuModel) itemAttributes(itemIndex int) map[string]*glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - itemIndex: index of the item.
-//    - link to query.
+//   - itemIndex: index of the item.
+//   - link to query.
 //
 // The function returns the following values:
 //
-//    - menuModel (optional): linked Model, or NULL.
+//   - menuModel (optional): linked Model, or NULL.
 //
 func (model *MenuModel) itemLink(itemIndex int, link string) MenuModeller {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
@@ -1532,11 +1527,11 @@ func (model *MenuModel) itemLink(itemIndex int, link string) MenuModeller {
 //
 // The function takes the following parameters:
 //
-//    - itemIndex to query.
+//   - itemIndex to query.
 //
 // The function returns the following values:
 //
-//    - links links from the item.
+//   - links links from the item.
 //
 func (model *MenuModel) itemLinks(itemIndex int) map[string]MenuModeller {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
@@ -1589,7 +1584,7 @@ func (model *MenuModel) itemLinks(itemIndex int) map[string]MenuModeller {
 //
 // The function returns the following values:
 //
-//    - gint: number of items.
+//   - gint: number of items.
 //
 func (model *MenuModel) nItems() int {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
@@ -1617,7 +1612,7 @@ func (model *MenuModel) nItems() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the model is mutable (ie: "items-changed" may be emitted).
+//   - ok: TRUE if the model is mutable (ie: "items-changed" may be emitted).
 //
 func (model *MenuModel) isMutable() bool {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
@@ -1647,11 +1642,11 @@ func (model *MenuModel) isMutable() bool {
 //
 // The function takes the following parameters:
 //
-//    - itemIndex: index of the item.
+//   - itemIndex: index of the item.
 //
 // The function returns the following values:
 //
-//    - menuAttributeIter: new AttributeIter.
+//   - menuAttributeIter: new AttributeIter.
 //
 func (model *MenuModel) iterateItemAttributes(itemIndex int) MenuAttributeIterer {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
@@ -1698,11 +1693,11 @@ func (model *MenuModel) iterateItemAttributes(itemIndex int) MenuAttributeIterer
 //
 // The function takes the following parameters:
 //
-//    - itemIndex: index of the item.
+//   - itemIndex: index of the item.
 //
 // The function returns the following values:
 //
-//    - menuLinkIter: new LinkIter.
+//   - menuLinkIter: new LinkIter.
 //
 func (model *MenuModel) iterateItemLinks(itemIndex int) MenuLinkIterer {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))

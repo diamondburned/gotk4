@@ -80,7 +80,7 @@ func marshalTCPConnection(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if graceful disconnect is used on close, FALSE otherwise.
+//   - ok: TRUE if graceful disconnect is used on close, FALSE otherwise.
 //
 func (connection *TCPConnection) GracefulDisconnect() bool {
 	var _arg0 *C.GTcpConnection // out
@@ -101,19 +101,19 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 }
 
 // SetGracefulDisconnect: this enables graceful disconnects on close. A graceful
-// disconnect means that we signal the receiving end that the connection is
-// terminated and wait for it to close the connection before closing the
+// disconnect means that we signal the receiving end that the connection
+// is terminated and wait for it to close the connection before closing the
 // connection.
 //
 // A graceful disconnect means that we can be sure that we successfully sent all
-// the outstanding data to the other end, or get an error reported. However, it
-// also means we have to wait for all the data to reach the other side and for
-// it to acknowledge this by closing the socket, which may take a while. For
-// this reason it is disabled by default.
+// the outstanding data to the other end, or get an error reported. However,
+// it also means we have to wait for all the data to reach the other side and
+// for it to acknowledge this by closing the socket, which may take a while.
+// For this reason it is disabled by default.
 //
 // The function takes the following parameters:
 //
-//    - gracefulDisconnect: whether to do graceful disconnects or not.
+//   - gracefulDisconnect: whether to do graceful disconnects or not.
 //
 func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	var _arg0 *C.GTcpConnection // out

@@ -15,8 +15,8 @@ import "C"
 
 // ScriptForUnichar looks up the script for a particular character.
 //
-// The script of a character is defined by Unicode Standard Annex \#24. No check
-// is made for ch being a valid Unicode character; if you pass in invalid
+// The script of a character is defined by Unicode Standard Annex \#24. No
+// check is made for ch being a valid Unicode character; if you pass in invalid
 // character, the result is undefined.
 //
 // Note that while the return type of this function is declared as PangoScript,
@@ -27,11 +27,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
+//   - ch: unicode character.
 //
 // The function returns the following values:
 //
-//    - script: PangoScript for the character.
+//   - script: PangoScript for the character.
 //
 func ScriptForUnichar(ch uint32) Script {
 	var _arg1 C.gunichar    // out
@@ -63,10 +63,10 @@ func ScriptForUnichar(ch uint32) Script {
 // and forms of shared characters. No sample language can be provided for many
 // historical scripts as well.
 //
-// As of 1.18, this function checks the environment variables PANGO_LANGUAGE and
-// LANGUAGE (checked in that order) first. If one of them is set, it is parsed
-// as a list of language tags separated by colons or other separators. This
-// function will return the first language in the parsed list that Pango
+// As of 1.18, this function checks the environment variables PANGO_LANGUAGE
+// and LANGUAGE (checked in that order) first. If one of them is set, it is
+// parsed as a list of language tags separated by colons or other separators.
+// This function will return the first language in the parsed list that Pango
 // believes may use script for writing. This last predicate is tested using
 // pango.Language.IncludesScript(). This can be used to control Pango's font
 // selection for non-primary languages. For example, a PANGO_LANGUAGE enviroment
@@ -77,12 +77,12 @@ func ScriptForUnichar(ch uint32) Script {
 //
 // The function takes the following parameters:
 //
-//    - script: PangoScript.
+//   - script: PangoScript.
 //
 // The function returns the following values:
 //
-//    - language (optional): PangoLanguage that is representative of the script,
-//      or NULL if no such language exists.
+//   - language (optional): PangoLanguage that is representative of the script,
+//     or NULL if no such language exists.
 //
 func ScriptGetSampleLanguage(script Script) *Language {
 	var _arg1 C.PangoScript    // out

@@ -11,14 +11,14 @@ import (
 // #include <gio/gio.h>
 import "C"
 
-// AppInfoResetTypeAssociations removes all changes to the type associations
-// done by g_app_info_set_as_default_for_type(),
+// AppInfoResetTypeAssociations removes all changes to the type
+// associations done by g_app_info_set_as_default_for_type(),
 // g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
 // g_app_info_remove_supports_type().
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type.
+//   - contentType: content type.
 //
 func AppInfoResetTypeAssociations(contentType string) {
 	var _arg1 *C.char // out

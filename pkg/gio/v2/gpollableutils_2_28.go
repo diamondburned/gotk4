@@ -17,17 +17,17 @@ import "C"
 
 // NewPollableSource: utility method for InputStream and OutputStream
 // implementations. Creates a new #GSource that expects a callback of type
-// SourceFunc. The new source does not actually do anything on its own; use
-// g_source_add_child_source() to add other sources to it to cause it to
+// SourceFunc. The new source does not actually do anything on its own;
+// use g_source_add_child_source() to add other sources to it to cause it to
 // trigger.
 //
 // The function takes the following parameters:
 //
-//    - pollableStream: stream associated with the new source.
+//   - pollableStream: stream associated with the new source.
 //
 // The function returns the following values:
 //
-//    - source: new #GSource.
+//   - source: new #GSource.
 //
 func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 	var _arg1 *C.GObject // out

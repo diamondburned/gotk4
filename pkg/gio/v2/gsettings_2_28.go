@@ -16,8 +16,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8s: list of relocatable #GSettings schemas that are available, in no
-//      defined order. The list must not be modified or freed.
+//   - utf8s: list of relocatable #GSettings schemas that are available,
+//     in no defined order. The list must not be modified or freed.
 //
 func SettingsListRelocatableSchemas() []string {
 	var _cret **C.gchar // in

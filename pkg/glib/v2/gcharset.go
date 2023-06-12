@@ -10,9 +10,9 @@ import (
 // #include <glib.h>
 import "C"
 
-// GetCharset obtains the character set for the [current locale][setlocale]; you
-// might use this character set as an argument to g_convert(), to convert from
-// the current locale's encoding to some other encoding. (Frequently
+// GetCharset obtains the character set for the [current locale][setlocale];
+// you might use this character set as an argument to g_convert(), to convert
+// from the current locale's encoding to some other encoding. (Frequently
 // g_locale_to_utf8() and g_locale_from_utf8() are nice shortcuts, though.)
 //
 // On Windows the character set returned by this function is the so-called
@@ -31,8 +31,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - charset (optional): return location for character set name, or NULL.
-//    - ok: TRUE if the returned charset is UTF-8.
+//   - charset (optional): return location for character set name, or NULL.
+//   - ok: TRUE if the returned charset is UTF-8.
 //
 func GetCharset() (string, bool) {
 	var _arg1 *C.char    // in
@@ -57,8 +57,8 @@ func GetCharset() (string, bool) {
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string containing the name of the character set.
-//      This string must be freed with g_free().
+//   - utf8: newly allocated string containing the name of the character set.
+//     This string must be freed with g_free().
 //
 func GetCodeset() string {
 	var _cret *C.gchar // in

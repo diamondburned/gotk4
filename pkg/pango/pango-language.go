@@ -49,8 +49,8 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 // SampleString: get a string that is representative of the characters needed to
 // render a particular language.
 //
-// The sample text may be a pangram, but is not necessarily. It is chosen to be
-// demonstrative of normal text in the language, as well as exposing font
+// The sample text may be a pangram, but is not necessarily. It is chosen to
+// be demonstrative of normal text in the language, as well as exposing font
 // feature requirements unique to the language. It is suitable for use as sample
 // text in a font selection dialog.
 //
@@ -59,15 +59,15 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 //
 // If Pango does not have a sample string for language, the classic "The quick
 // brown fox..." is returned. This can be detected by comparing the returned
-// pointer value to that returned for (non-existent) language code "xx". That
-// is, compare to:
+// pointer value to that returned for (non-existent) language code "xx".
+// That is, compare to:
 //
 //    pango_language_get_sample_string (pango_language_from_string ("xx")).
 //
 // The function returns the following values:
 //
-//    - utf8: sample string. This value is owned by Pango and should not be
-//      freed.
+//   - utf8: sample string. This value is owned by Pango and should not be
+//     freed.
 //
 func (language *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
@@ -96,8 +96,8 @@ func (language *Language) SampleString() string {
 // The value num_script points at will be set to the number of scripts in the
 // returned array (or zero if NULL is returned).
 //
-// Most languages use only one script for writing, but there are some that use
-// two (Latin and Cyrillic for example), and a few use three (Japanese for
+// Most languages use only one script for writing, but there are some that
+// use two (Latin and Cyrillic for example), and a few use three (Japanese for
 // example). Applications should not make any assumptions on the maximum number
 // of scripts returned though, except that it is positive if the return value is
 // not NULL, and it is a small number.
@@ -110,11 +110,11 @@ func (language *Language) SampleString() string {
 //
 // The function returns the following values:
 //
-//    - scripts (optional): array of PangoScript values, with the number of
-//      entries in the array stored in num_scripts, or NULL if Pango does not
-//      have any information about this particular language tag (also the case if
-//      language is NULL). The returned array is owned by Pango and should not be
-//      modified or freed.
+//   - scripts (optional): array of PangoScript values, with the number of
+//     entries in the array stored in num_scripts, or NULL if Pango does not
+//     have any information about this particular language tag (also the case if
+//     language is NULL). The returned array is owned by Pango and should not be
+//     modified or freed.
 //
 func (language *Language) Scripts() []Script {
 	var _arg0 *C.PangoLanguage // out
@@ -143,21 +143,21 @@ func (language *Language) Scripts() []Script {
 // language tag language, TRUE will be returned, since, as far as Pango knows,
 // script might be used to write language.
 //
-// This routine is used in Pango's itemization process when determining if a
-// supplied language tag is relevant to a particular section of text. It
-// probably is not useful for applications in most circumstances.
+// This routine is used in Pango's itemization process when determining if
+// a supplied language tag is relevant to a particular section of text.
+// It probably is not useful for applications in most circumstances.
 //
 // This function uses pango.Language.GetScripts() internally.
 //
 // The function takes the following parameters:
 //
-//    - script: PangoScript.
+//   - script: PangoScript.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if script is one of the scripts used to write language or if
-//      nothing is known about language (including the case that language is
-//      NULL), FALSE otherwise.
+//   - ok: TRUE if script is one of the scripts used to write language or if
+//     nothing is known about language (including the case that language is
+//     NULL), FALSE otherwise.
 //
 func (language *Language) IncludesScript(script Script) bool {
 	var _arg0 *C.PangoLanguage // out
@@ -186,18 +186,18 @@ func (language *Language) IncludesScript(script Script) bool {
 // language ranges.
 //
 // A language tag is considered to match a range in the list if the range is
-// '*', the range is exactly the tag, or the range is a prefix of the tag, and
-// the character after it in the tag is '-'.
+// '*', the range is exactly the tag, or the range is a prefix of the tag,
+// and the character after it in the tag is '-'.
 //
 // The function takes the following parameters:
 //
-//    - rangeList: list of language ranges, separated by ';', ':', ',', or space
-//      characters. Each element must either be '*', or a RFC 3066 language range
-//      canonicalized as by pango.Language.FromString.
+//   - rangeList: list of language ranges, separated by ';', ':', ',', or space
+//     characters. Each element must either be '*', or a RFC 3066 language range
+//     canonicalized as by pango.Language.FromString.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a match was found.
+//   - ok: TRUE if a match was found.
 //
 func (language *Language) Matches(rangeList string) bool {
 	var _arg0 *C.PangoLanguage // out
@@ -227,8 +227,8 @@ func (language *Language) Matches(rangeList string) bool {
 //
 // The function returns the following values:
 //
-//    - utf8: string representing the language tag. This is owned by Pango and
-//      should not be freed.
+//   - utf8: string representing the language tag. This is owned by Pango and
+//     should not be freed.
 //
 func (language *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
@@ -260,13 +260,13 @@ func (language *Language) String() string {
 //
 // The function takes the following parameters:
 //
-//    - language (optional): string representing a language tag, or NULL.
+//   - language (optional): string representing a language tag, or NULL.
 //
 // The function returns the following values:
 //
-//    - ret (optional): opaque pointer to a PangoLanguage structure, or NULL if
-//      language was NULL. The returned pointer will be valid forever after, and
-//      should not be freed.
+//   - ret (optional): opaque pointer to a PangoLanguage structure, or NULL if
+//     language was NULL. The returned pointer will be valid forever after,
+//     and should not be freed.
 //
 func LanguageFromString(language string) *Language {
 	var _arg1 *C.char          // out

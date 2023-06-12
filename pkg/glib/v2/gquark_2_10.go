@@ -11,10 +11,10 @@ import (
 // #include <glib.h>
 import "C"
 
-// InternStaticString returns a canonical representation for string. Interned
-// strings can be compared for equality by comparing the pointers, instead of
-// using strcmp(). g_intern_static_string() does not copy the string, therefore
-// string must not be freed or modified.
+// InternStaticString returns a canonical representation for string.
+// Interned strings can be compared for equality by comparing the pointers,
+// instead of using strcmp(). g_intern_static_string() does not copy the string,
+// therefore string must not be freed or modified.
 //
 // This function must not be used before library constructors have finished
 // running. In particular, this means it cannot be used to initialize global
@@ -22,11 +22,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str (optional): static string.
+//   - str (optional): static string.
 //
 // The function returns the following values:
 //
-//    - utf8: canonical representation for the string.
+//   - utf8: canonical representation for the string.
 //
 func InternStaticString(str string) string {
 	var _arg1 *C.gchar // out
@@ -57,11 +57,11 @@ func InternStaticString(str string) string {
 //
 // The function takes the following parameters:
 //
-//    - str (optional): string.
+//   - str (optional): string.
 //
 // The function returns the following values:
 //
-//    - utf8: canonical representation for the string.
+//   - utf8: canonical representation for the string.
 //
 func InternString(str string) string {
 	var _arg1 *C.gchar // out

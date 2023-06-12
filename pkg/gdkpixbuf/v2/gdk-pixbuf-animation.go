@@ -39,9 +39,9 @@ func init() {
 // animations. An animation is conceptually a series of frames to be displayed
 // over time.
 //
-// The animation may not be represented as a series of frames internally; for
-// example, it may be stored as a sprite and instructions for moving the sprite
-// around a background.
+// The animation may not be represented as a series of frames internally;
+// for example, it may be stored as a sprite and instructions for moving the
+// sprite around a background.
 //
 // To display an animation you don't need to understand its representation,
 // however; you just ask GdkPixbuf what should be displayed at a given point in
@@ -76,11 +76,11 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - filename: name of file to load, in the GLib file name encoding.
+//   - filename: name of file to load, in the GLib file name encoding.
 //
 // The function returns the following values:
 //
-//    - pixbufAnimation (optional): newly-created animation.
+//   - pixbufAnimation (optional): newly-created animation.
 //
 func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _arg1 *C.char               // out
@@ -114,11 +114,11 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path of the resource file.
+//   - resourcePath: path of the resource file.
 //
 // The function returns the following values:
 //
-//    - pixbufAnimation (optional): newly-created animation.
+//   - pixbufAnimation (optional): newly-created animation.
 //
 func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, error) {
 	var _arg1 *C.char               // out
@@ -159,12 +159,12 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object.
-//    - stream: GInputStream to load the pixbuf from.
+//   - ctx (optional): optional GCancellable object.
+//   - stream: GInputStream to load the pixbuf from.
 //
 // The function returns the following values:
 //
-//    - pixbufAnimation (optional): newly-created animation.
+//   - pixbufAnimation (optional): newly-created animation.
 //
 func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer) (*PixbufAnimation, error) {
 	var _arg2 *C.GCancellable       // out
@@ -196,17 +196,17 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 	return _pixbufAnimation, _goerr
 }
 
-// NewPixbufAnimationFromStreamFinish finishes an asynchronous pixbuf animation
-// creation operation started with
+// NewPixbufAnimationFromStreamFinish finishes an asynchronous
+// pixbuf animation creation operation started with
 // gdkpixbuf.PixbufAnimation().NewFromStreamAsync.
 //
 // The function takes the following parameters:
 //
-//    - asyncResult: Result.
+//   - asyncResult: Result.
 //
 // The function returns the following values:
 //
-//    - pixbufAnimation (optional): newly created animation.
+//   - pixbufAnimation (optional): newly created animation.
 //
 func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufAnimation, error) {
 	var _arg1 *C.GAsyncResult       // out
@@ -235,7 +235,7 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 //
 // The function returns the following values:
 //
-//    - gint: height of the bounding box of the animation.
+//   - gint: height of the bounding box of the animation.
 //
 func (animation *PixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
@@ -257,9 +257,9 @@ func (animation *PixbufAnimation) Height() int {
 //
 // The iterator provides the frames that should be displayed at a given time.
 //
-// start_time would normally come from g_get_current_time(), and marks the
-// beginning of animation playback. After creating an iterator, you should
-// immediately display the pixbuf returned by
+// start_time would normally come from g_get_current_time(),
+// and marks the beginning of animation playback. After creating an
+// iterator, you should immediately display the pixbuf returned by
 // gdk_pixbuf_animation_iter_get_pixbuf(). Then, you should install a timeout
 // (with g_timeout_add()) or by some other mechanism ensure that you'll update
 // the image after gdk_pixbuf_animation_iter_get_delay_time() milliseconds. Each
@@ -270,8 +270,8 @@ func (animation *PixbufAnimation) Height() int {
 // be used automatically.
 //
 // To update the image (i.e. possibly change the result of
-// gdk_pixbuf_animation_iter_get_pixbuf() to a new frame of the animation), call
-// gdk_pixbuf_animation_iter_advance().
+// gdk_pixbuf_animation_iter_get_pixbuf() to a new frame of the animation),
+// call gdk_pixbuf_animation_iter_advance().
 //
 // If you're using PixbufLoader, in addition to updating the image after the
 // delay time, you should also update it whenever you receive the area_updated
@@ -286,11 +286,11 @@ func (animation *PixbufAnimation) Height() int {
 //
 // The function takes the following parameters:
 //
-//    - startTime (optional): time when the animation starts playing.
+//   - startTime (optional): time when the animation starts playing.
 //
 // The function returns the following values:
 //
-//    - pixbufAnimationIter: iterator to move over the animation.
+//   - pixbufAnimationIter: iterator to move over the animation.
 //
 func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimationIter {
 	var _arg0 *C.GdkPixbufAnimation     // out
@@ -318,15 +318,15 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 // If an animation is really just a plain image (has only one frame), this
 // function returns that image.
 //
-// If the animation is an animation, this function returns a reasonable image to
-// use as a static unanimated image, which might be the first frame, or
-// something more sophisticated depending on the file format.
+// If the animation is an animation, this function returns a reasonable image
+// to use as a static unanimated image, which might be the first frame,
+// or something more sophisticated depending on the file format.
 //
 // If an animation hasn't loaded any frames yet, this function will return NULL.
 //
 // The function returns the following values:
 //
-//    - pixbuf: unanimated image representing the animation.
+//   - pixbuf: unanimated image representing the animation.
 //
 func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimation // out
@@ -348,7 +348,7 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 //
 // The function returns the following values:
 //
-//    - gint: width of the bounding box of the animation.
+//   - gint: width of the bounding box of the animation.
 //
 func (animation *PixbufAnimation) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
@@ -368,13 +368,13 @@ func (animation *PixbufAnimation) Width() int {
 
 // IsStaticImage checks whether the animation is a static image.
 //
-// If you load a file with gdk_pixbuf_animation_new_from_file() and it turns out
-// to be a plain, unanimated image, then this function will return TRUE. Use
-// gdk_pixbuf_animation_get_static_image() to retrieve the image.
+// If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
+// out to be a plain, unanimated image, then this function will return TRUE.
+// Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the "animation" was really just an image.
+//   - ok: TRUE if the "animation" was really just an image.
 //
 func (animation *PixbufAnimation) IsStaticImage() bool {
 	var _arg0 *C.GdkPixbufAnimation // out
@@ -420,10 +420,10 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 // Chooses the frame based on the start time passed to
 // gdk_pixbuf_animation_get_iter().
 //
-// current_time would normally come from g_get_current_time(), and must be
-// greater than or equal to the time passed to gdk_pixbuf_animation_get_iter(),
-// and must increase or remain unchanged each time
-// gdk_pixbuf_animation_iter_get_pixbuf() is called. That is, you can't go
+// current_time would normally come from g_get_current_time(),
+// and must be greater than or equal to the time passed to
+// gdk_pixbuf_animation_get_iter(), and must increase or remain unchanged each
+// time gdk_pixbuf_animation_iter_get_pixbuf() is called. That is, you can't go
 // backward in time; animations only play forward.
 //
 // As a shortcut, pass NULL for the current time and g_get_current_time() will
@@ -437,11 +437,11 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - currentTime (optional): current time.
+//   - currentTime (optional): current time.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the image may need updating.
+//   - ok: TRUE if the image may need updating.
 //
 func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
@@ -469,8 +469,8 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 // DelayTime gets the number of milliseconds the current pixbuf should be
 // displayed, or -1 if the current pixbuf should be displayed forever.
 //
-// The g_timeout_add() function conveniently takes a timeout in milliseconds, so
-// you can use a timeout to schedule the next update.
+// The g_timeout_add() function conveniently takes a timeout in milliseconds,
+// so you can use a timeout to schedule the next update.
 //
 // Note that some formats, like GIF, might clamp the timeout values in the image
 // file to avoid updates that are just too quick. The minimum timeout for GIF
@@ -478,7 +478,7 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 //
 // The function returns the following values:
 //
-//    - gint: delay time in milliseconds (thousandths of a second).
+//   - gint: delay time in milliseconds (thousandths of a second).
 //
 func (iter *PixbufAnimationIter) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
@@ -504,9 +504,9 @@ func (iter *PixbufAnimationIter) DelayTime() int {
 // This pixbuf should be displayed for
 // gdk_pixbuf_animation_iter_get_delay_time() milliseconds.
 //
-// The caller of this function does not own a reference to the returned pixbuf;
-// the returned pixbuf will become invalid when the iterator advances to the
-// next frame, which may happen anytime you call
+// The caller of this function does not own a reference to the returned
+// pixbuf; the returned pixbuf will become invalid when the iterator
+// advances to the next frame, which may happen anytime you call
 // gdk_pixbuf_animation_iter_advance().
 //
 // Copy the pixbuf to keep it (don't just add a reference), as it may get
@@ -514,7 +514,7 @@ func (iter *PixbufAnimationIter) DelayTime() int {
 //
 // The function returns the following values:
 //
-//    - pixbuf to be displayed.
+//   - pixbuf to be displayed.
 //
 func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimationIter // out
@@ -536,12 +536,12 @@ func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 // signal on PixbufLoader when loading an animation.
 //
 // The ::area_updated signal is emitted for an area of the frame currently
-// streaming in to the loader. So if you're on the currently loading frame, you
-// will need to redraw the screen for the updated area.
+// streaming in to the loader. So if you're on the currently loading frame,
+// you will need to redraw the screen for the updated area.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the frame we're on is partially loaded, or the last frame.
+//   - ok: TRUE if the frame we're on is partially loaded, or the last frame.
 //
 func (iter *PixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out

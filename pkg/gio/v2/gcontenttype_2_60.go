@@ -16,9 +16,9 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated list of directories to load MIME data from,
-//      including any mime/ subdirectory, and with the first directory to try
-//      listed first.
+//   - utf8s: NULL-terminated list of directories to load MIME data from,
+//     including any mime/ subdirectory, and with the first directory to try
+//     listed first.
 //
 func ContentTypeGetMIMEDirs() []string {
 	var _cret **C.gchar // in
@@ -47,8 +47,8 @@ func ContentTypeGetMIMEDirs() []string {
 // ContentTypeSetMIMEDirs: set the list of directories used by GIO to load the
 // MIME database. If dirs is NULL, the directories used are the default:
 //
-//    - the mime subdirectory of the directory in $XDG_DATA_HOME
-//    - the mime subdirectory of every directory in $XDG_DATA_DIRS
+//   - the mime subdirectory of the directory in $XDG_DATA_HOME
+//   - the mime subdirectory of every directory in $XDG_DATA_DIRS
 //
 // This function is intended to be used when writing tests that depend on
 // information stored in the MIME database, in order to control the data.
@@ -57,20 +57,20 @@ func ContentTypeGetMIMEDirs() []string {
 // on the system’s MIME database, you should call this function with dirs set to
 // NULL before calling g_test_init(), for instance:
 //
-//      // Load MIME data from the system
-//      g_content_type_set_mime_dirs (NULL);
-//      // Isolate the environment
-//      g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+//    // Load MIME data from the system
+//    g_content_type_set_mime_dirs (NULL);
+//    // Isolate the environment
+//    g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 //
-//      …
+//    …
 //
-//      return g_test_run ();.
+//    return g_test_run ();.
 //
 // The function takes the following parameters:
 //
-//    - dirs (optional): NULL-terminated list of directories to load MIME data
-//      from, including any mime/ subdirectory, and with the first directory to
-//      try listed first.
+//   - dirs (optional): NULL-terminated list of directories to load MIME data
+//     from, including any mime/ subdirectory, and with the first directory to
+//     try listed first.
 //
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var _arg1 **C.gchar // out

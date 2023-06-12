@@ -36,13 +36,13 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - context: PangoContext, from a pangocairo font map.
+//   - context: PangoContext, from a pangocairo font map.
 //
 // The function returns the following values:
 //
-//    - fontOptions (optional): font options previously set on the context, or
-//      NULL if no options have been set. This value is owned by the context and
-//      must not be modified or freed.
+//   - fontOptions (optional): font options previously set on the context,
+//     or NULL if no options have been set. This value is owned by the context
+//     and must not be modified or freed.
 //
 func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 	var _arg1 *C.PangoContext         // out
@@ -67,12 +67,12 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 //
 // The function takes the following parameters:
 //
-//    - context: PangoContext, from a pangocairo font map.
+//   - context: PangoContext, from a pangocairo font map.
 //
 // The function returns the following values:
 //
-//    - gdouble: resolution in "dots per inch". A negative value will be returned
-//      if no resolution has previously been set.
+//   - gdouble: resolution in "dots per inch". A negative value will be returned
+//     if no resolution has previously been set.
 //
 func ContextGetResolution(context *pango.Context) float64 {
 	var _arg1 *C.PangoContext // out
@@ -98,9 +98,9 @@ func ContextGetResolution(context *pango.Context) float64 {
 //
 // The function takes the following parameters:
 //
-//    - context: PangoContext, from a pangocairo font map.
-//    - options (optional): cairo_font_options_t, or NULL to unset any previously
-//      set options. A copy is made.
+//   - context: PangoContext, from a pangocairo font map.
+//   - options (optional): cairo_font_options_t, or NULL to unset any previously
+//     set options. A copy is made.
 //
 func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 	var _arg1 *C.PangoContext         // out
@@ -124,10 +124,10 @@ func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 //
 // The function takes the following parameters:
 //
-//    - context: PangoContext, from a pangocairo font map.
-//    - dpi: resolution in "dots per inch". (Physical inches aren't actually
-//      involved; the terminology is conventional.) A 0 or negative value means
-//      to use the resolution from the font map.
+//   - context: PangoContext, from a pangocairo font map.
+//   - dpi: resolution in "dots per inch". (Physical inches aren't actually
+//     involved; the terminology is conventional.) A 0 or negative value means
+//     to use the resolution from the font map.
 //
 func ContextSetResolution(context *pango.Context, dpi float64) {
 	var _arg1 *C.PangoContext // out
@@ -145,8 +145,8 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 // transformation and target surface of the Cairo context.
 //
 // This layout can then be used for text measurement with functions like
-// pango.Layout.GetSize() or drawing with functions like show_layout. If you
-// change the transformation or target surface for cr, you need to call
+// pango.Layout.GetSize() or drawing with functions like show_layout.
+// If you change the transformation or target surface for cr, you need to call
 // update_layout.
 //
 // This function is the most convenient way to use Cairo with Pango, however it
@@ -156,11 +156,11 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
+//   - cr: cairo context.
 //
 // The function returns the following values:
 //
-//    - layout: newly created PangoLayout. Free with g_object_unref().
+//   - layout: newly created PangoLayout. Free with g_object_unref().
 //
 func CreateLayout(cr *cairo.Context) *pango.Layout {
 	var _arg1 *C.cairo_t     // out
@@ -191,9 +191,9 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - font: PangoFont from a PangoCairoFontMap.
-//    - glyphs: PangoGlyphString.
+//   - cr: cairo context.
+//   - font: PangoFont from a PangoCairoFontMap.
+//   - glyphs: PangoGlyphString.
 //
 func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphString) {
 	var _arg1 *C.cairo_t          // out
@@ -218,8 +218,8 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - line: PangoLayoutLine.
+//   - cr: cairo context.
+//   - line: PangoLayoutLine.
 //
 func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 	var _arg1 *C.cairo_t         // out
@@ -241,8 +241,8 @@ func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - layout: pango layout.
+//   - cr: cairo context.
+//   - layout: pango layout.
 //
 func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
@@ -263,9 +263,9 @@ func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - font: PangoFont from a PangoCairoFontMap.
-//    - glyphs: PangoGlyphString.
+//   - cr: cairo context.
+//   - font: PangoFont from a PangoCairoFontMap.
+//   - glyphs: PangoGlyphString.
 //
 func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphString) {
 	var _arg1 *C.cairo_t          // out
@@ -289,8 +289,8 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - layout: pango layout.
+//   - cr: cairo context.
+//   - layout: pango layout.
 //
 func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
@@ -311,8 +311,8 @@ func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - line: PangoLayoutLine.
+//   - cr: cairo context.
+//   - line: PangoLayoutLine.
 //
 func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 	var _arg1 *C.cairo_t         // out
@@ -334,8 +334,8 @@ func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - context: PangoContext, from a pangocairo font map.
+//   - cr: cairo context.
+//   - context: PangoContext, from a pangocairo font map.
 //
 func UpdateContext(cr *cairo.Context, context *pango.Context) {
 	var _arg1 *C.cairo_t      // out
@@ -355,8 +355,8 @@ func UpdateContext(cr *cairo.Context, context *pango.Context) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - layout: PangoLayout, from create_layout.
+//   - cr: cairo context.
+//   - layout: PangoLayout, from create_layout.
 //
 func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
@@ -412,7 +412,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gdouble: resolution in "dots per inch".
+//   - gdouble: resolution in "dots per inch".
 //
 func (fontmap *FontMap) Resolution() float64 {
 	var _arg0 *C.PangoCairoFontMap // out
@@ -436,13 +436,13 @@ func (fontmap *FontMap) Resolution() float64 {
 // uses for example. The old default font map is unreffed and the new font map
 // referenced.
 //
-// Note that since Pango 1.32.6, the default fontmap is per-thread. This
-// function only changes the default fontmap for the current thread. Default
-// fontmaps of existing threads are not changed. Default fontmaps of any new
-// threads will still be created using pangocairo.FontMap.New.
+// Note that since Pango 1.32.6, the default fontmap is per-thread.
+// This function only changes the default fontmap for the current thread.
+// Default fontmaps of existing threads are not changed. Default fontmaps of any
+// new threads will still be created using pangocairo.FontMap.New.
 //
-// A value of NULL for fontmap will cause the current default font map to be
-// released and a new default font map to be created on demand, using
+// A value of NULL for fontmap will cause the current default font map to
+// be released and a new default font map to be created on demand, using
 // pangocairo.FontMap.New.
 func (fontmap *FontMap) SetDefault() {
 	var _arg0 *C.PangoCairoFontMap // out
@@ -463,8 +463,8 @@ func (fontmap *FontMap) SetDefault() {
 //
 // The function takes the following parameters:
 //
-//    - dpi: resolution in "dots per inch". (Physical inches aren't actually
-//      involved; the terminology is conventional.).
+//   - dpi: resolution in "dots per inch". (Physical inches aren't actually
+//     involved; the terminology is conventional.).
 //
 func (fontmap *FontMap) SetResolution(dpi float64) {
 	var _arg0 *C.PangoCairoFontMap // out
@@ -480,8 +480,8 @@ func (fontmap *FontMap) SetResolution(dpi float64) {
 
 // FontMapGetDefault gets a default PangoCairoFontMap to use with Cairo.
 //
-// Note that the type of the returned object will depend on the particular font
-// backend Cairo was compiled to use; you generally should only use the
+// Note that the type of the returned object will depend on the particular
+// font backend Cairo was compiled to use; you generally should only use the
 // PangoFontMap and PangoCairoFontMap interfaces on the returned object.
 //
 // The default Cairo fontmap can be changed by using
@@ -494,8 +494,8 @@ func (fontmap *FontMap) SetResolution(dpi float64) {
 //
 // The function returns the following values:
 //
-//    - fontMap: default PangoCairo fontmap for the current thread. This object
-//      is owned by Pango and must not be freed.
+//   - fontMap: default PangoCairo fontmap for the current thread. This object
+//     is owned by Pango and must not be freed.
 //
 func FontMapGetDefault() pango.FontMapper {
 	var _cret *C.PangoFontMap // in
@@ -531,20 +531,20 @@ func FontMapGetDefault() pango.FontMapper {
 // certain global parameters such as the resolution. In most cases, you can use
 // `funcPangoCairo.font_map_get_default] instead.
 //
-// Note that the type of the returned object will depend on the particular font
-// backend Cairo was compiled to use; You generally should only use the
+// Note that the type of the returned object will depend on the particular
+// font backend Cairo was compiled to use; You generally should only use the
 // PangoFontMap and PangoCairoFontMap interfaces on the returned object.
 //
 // You can override the type of backend returned by using an environment
-// variable PANGOCAIRO_BACKEND. Supported types, based on your build, are fc
-// (fontconfig), win32, and coretext. If requested type is not available, NULL
-// is returned. Ie. this is only useful for testing, when at least two backends
-// are compiled in.
+// variable PANGOCAIRO_BACKEND. Supported types, based on your build,
+// are fc (fontconfig), win32, and coretext. If requested type is not available,
+// NULL is returned. Ie. this is only useful for testing, when at least two
+// backends are compiled in.
 //
 // The function returns the following values:
 //
-//    - fontMap: newly allocated PangoFontMap, which should be freed with
-//      g_object_unref().
+//   - fontMap: newly allocated PangoFontMap, which should be freed with
+//     g_object_unref().
 //
 func NewFontMap() pango.FontMapper {
 	var _cret *C.PangoFontMap // in

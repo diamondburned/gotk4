@@ -83,8 +83,8 @@ func marshalNotebookPageAccessible(p uintptr) (interface{}, error) {
 
 // The function takes the following parameters:
 //
-//    - notebook
-//    - child
+//   - notebook
+//   - child
 //
 // The function returns the following values:
 //

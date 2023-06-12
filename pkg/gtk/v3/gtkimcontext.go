@@ -105,16 +105,16 @@ type IMContextOverrides struct {
 	// The function takes the following parameters:
 	//
 	Commit func(str string)
-	// DeleteSurrounding asks the widget that the input context is attached to
-	// to delete characters around the cursor position by emitting the
+	// DeleteSurrounding asks the widget that the input context is attached
+	// to to delete characters around the cursor position by emitting the
 	// GtkIMContext::delete_surrounding signal. Note that offset and n_chars are
 	// in characters not in bytes which differs from the usage other places in
 	// IMContext.
 	//
 	// In order to use this function, you should first call
 	// gtk_im_context_get_surrounding() to get the current context, and call
-	// this function immediately afterwards to make sure that you know what you
-	// are deleting. You should also account for the fact that even if the
+	// this function immediately afterwards to make sure that you know what
+	// you are deleting. You should also account for the fact that even if the
 	// signal was handled, the input context might not have deleted all the
 	// characters that were requested to be deleted.
 	//
@@ -124,13 +124,13 @@ type IMContextOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - offset from cursor position in chars; a negative value means start
-	//      before the cursor.
-	//    - nChars: number of characters to delete.
+	//   - offset from cursor position in chars; a negative value means start
+	//     before the cursor.
+	//   - nChars: number of characters to delete.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the signal was handled.
+	//   - ok: TRUE if the signal was handled.
 	//
 	DeleteSurrounding func(offset, nChars int) bool
 	// FilterKeypress: allow an input method to internally handle key press and
@@ -139,11 +139,11 @@ type IMContextOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - event: key event.
+	//   - event: key event.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the input method handled the key event.
+	//   - ok: TRUE if the input method handled the key event.
 	//
 	FilterKeypress func(event *gdk.EventKey) bool
 	// FocusIn: notify the input method that the widget to which this input
@@ -161,13 +161,13 @@ type IMContextOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - str: location to store the retrieved string. The string retrieved
-	//      must be freed with g_free().
-	//    - attrs: location to store the retrieved attribute list. When you are
-	//      done with this list, you must unreference it with
-	//      pango_attr_list_unref().
-	//    - cursorPos: location to store position of cursor (in characters)
-	//      within the preedit string.
+	//   - str: location to store the retrieved string. The string retrieved
+	//     must be freed with g_free().
+	//   - attrs: location to store the retrieved attribute list.
+	//     When you are done with this list, you must unreference it with
+	//     pango_attr_list_unref().
+	//   - cursorPos: location to store position of cursor (in characters)
+	//     within the preedit string.
 	//
 	PreeditString func() (string, *pango.AttrList, int)
 	// Surrounding retrieves context around the insertion point. Input methods
@@ -176,22 +176,22 @@ type IMContextOverrides struct {
 	// sequences of characters are allowed.
 	//
 	// This function is implemented by emitting the
-	// GtkIMContext::retrieve_surrounding signal on the input method; in
-	// response to this signal, a widget should provide as much context as is
-	// available, up to an entire paragraph, by calling
+	// GtkIMContext::retrieve_surrounding signal on the input method;
+	// in response to this signal, a widget should provide as much
+	// context as is available, up to an entire paragraph, by calling
 	// gtk_im_context_set_surrounding(). Note that there is no obligation for a
 	// widget to respond to the ::retrieve_surrounding signal, so input methods
 	// must be prepared to function without context.
 	//
 	// The function returns the following values:
 	//
-	//    - text: location to store a UTF-8 encoded string of text holding
-	//      context around the insertion point. If the function returns TRUE,
-	//      then you must free the result stored in this location with g_free().
-	//    - cursorIndex: location to store byte index of the insertion cursor
-	//      within text.
-	//    - ok: TRUE if surrounding text was provided; in this case you must free
-	//      the result stored in *text.
+	//   - text: location to store a UTF-8 encoded string of text holding
+	//     context around the insertion point. If the function returns TRUE,
+	//     then you must free the result stored in this location with g_free().
+	//   - cursorIndex: location to store byte index of the insertion cursor
+	//     within text.
+	//   - ok: TRUE if surrounding text was provided; in this case you must free
+	//     the result stored in *text.
 	//
 	Surrounding    func() (string, int, bool)
 	PreeditChanged func()
@@ -204,15 +204,15 @@ type IMContextOverrides struct {
 	// The function returns the following values:
 	//
 	RetrieveSurrounding func() bool
-	// SetClientWindow: set the client window for the input context; this is the
-	// Window in which the input appears. This window is used in order to
+	// SetClientWindow: set the client window for the input context; this is
+	// the Window in which the input appears. This window is used in order to
 	// correctly position status windows, and may also be used for purposes
 	// internal to the input method.
 	//
 	// The function takes the following parameters:
 	//
-	//    - window (optional): client window. This may be NULL to indicate that
-	//      the previous client window no longer exists.
+	//   - window (optional): client window. This may be NULL to indicate that
+	//     the previous client window no longer exists.
 	//
 	SetClientWindow func(window gdk.Windower)
 	// SetCursorLocation: notify the input method that a change in cursor
@@ -220,7 +220,7 @@ type IMContextOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - area: new location.
+	//   - area: new location.
 	//
 	SetCursorLocation func(area *gdk.Rectangle)
 	// SetSurrounding sets surrounding context around the insertion point and
@@ -230,20 +230,20 @@ type IMContextOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - text surrounding the insertion point, as UTF-8. the preedit string
-	//      should not be included within text.
-	//    - len: length of text, or -1 if text is nul-terminated.
-	//    - cursorIndex: byte index of the insertion cursor within text.
+	//   - text surrounding the insertion point, as UTF-8. the preedit string
+	//     should not be included within text.
+	//   - len: length of text, or -1 if text is nul-terminated.
+	//   - cursorIndex: byte index of the insertion cursor within text.
 	//
 	SetSurrounding func(text string, len, cursorIndex int)
-	// SetUsePreedit sets whether the IM context should use the preedit string
-	// to display feedback. If use_preedit is FALSE (default is TRUE), then the
-	// IM context may use some other method to display feedback, such as
-	// displaying it in a child of the root window.
+	// SetUsePreedit sets whether the IM context should use the preedit
+	// string to display feedback. If use_preedit is FALSE (default is TRUE),
+	// then the IM context may use some other method to display feedback,
+	// such as displaying it in a child of the root window.
 	//
 	// The function takes the following parameters:
 	//
-	//    - usePreedit: whether the IM context should use the preedit string.
+	//   - usePreedit: whether the IM context should use the preedit string.
 	//
 	SetUsePreedit func(usePreedit bool)
 }
@@ -274,13 +274,13 @@ func defaultIMContextOverrides(v *IMContext) IMContextOverrides {
 // character strings.
 //
 // The default input method can be set programmatically via the
-// Settings:gtk-im-module GtkSettings property. Alternatively, you may set the
-// GTK_IM_MODULE environment variable as documented in [Running GTK+
+// Settings:gtk-im-module GtkSettings property. Alternatively, you may set
+// the GTK_IM_MODULE environment variable as documented in [Running GTK+
 // Applications][gtk-running].
 //
 // The Entry Entry:im-module and TextView TextView:im-module properties may also
-// be used to set input methods for specific widget instances. For instance, a
-// certain entry widget might be expected to contain certain characters which
+// be used to set input methods for specific widget instances. For instance,
+// a certain entry widget might be expected to contain certain characters which
 // would be easier to input with a certain input method.
 //
 // An input method may consume multiple key events in sequence and finally
@@ -468,10 +468,10 @@ func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) coregli
 	return coreglib.ConnectGeneratedClosure(context, "retrieve-surrounding", false, unsafe.Pointer(C._gotk4_gtk3_IMContext_ConnectRetrieveSurrounding), f)
 }
 
-// DeleteSurrounding asks the widget that the input context is attached to to
-// delete characters around the cursor position by emitting the
-// GtkIMContext::delete_surrounding signal. Note that offset and n_chars are in
-// characters not in bytes which differs from the usage other places in
+// DeleteSurrounding asks the widget that the input context is attached
+// to to delete characters around the cursor position by emitting the
+// GtkIMContext::delete_surrounding signal. Note that offset and n_chars are
+// in characters not in bytes which differs from the usage other places in
 // IMContext.
 //
 // In order to use this function, you should first call
@@ -481,19 +481,19 @@ func (context *IMContext) ConnectRetrieveSurrounding(f func() (ok bool)) coregli
 // handled, the input context might not have deleted all the characters that
 // were requested to be deleted.
 //
-// This function is used by an input method that wants to make subsitutions in
-// the existing text in response to new input. It is not useful for
+// This function is used by an input method that wants to make subsitutions
+// in the existing text in response to new input. It is not useful for
 // applications.
 //
 // The function takes the following parameters:
 //
-//    - offset from cursor position in chars; a negative value means start before
-//      the cursor.
-//    - nChars: number of characters to delete.
+//   - offset from cursor position in chars; a negative value means start before
+//     the cursor.
+//   - nChars: number of characters to delete.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the signal was handled.
+//   - ok: TRUE if the signal was handled.
 //
 func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 	var _arg0 *C.GtkIMContext // out
@@ -525,11 +525,11 @@ func (context *IMContext) DeleteSurrounding(offset, nChars int) bool {
 //
 // The function takes the following parameters:
 //
-//    - event: key event.
+//   - event: key event.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the input method handled the key event.
+//   - ok: TRUE if the input method handled the key event.
 //
 func (context *IMContext) FilterKeypress(event *gdk.EventKey) bool {
 	var _arg0 *C.GtkIMContext // out
@@ -582,12 +582,12 @@ func (context *IMContext) FocusOut() {
 //
 // The function returns the following values:
 //
-//    - str: location to store the retrieved string. The string retrieved must be
-//      freed with g_free().
-//    - attrs: location to store the retrieved attribute list. When you are done
-//      with this list, you must unreference it with pango_attr_list_unref().
-//    - cursorPos: location to store position of cursor (in characters) within
-//      the preedit string.
+//   - str: location to store the retrieved string. The string retrieved must be
+//     freed with g_free().
+//   - attrs: location to store the retrieved attribute list. When you are done
+//     with this list, you must unreference it with pango_attr_list_unref().
+//   - cursorPos: location to store position of cursor (in characters) within
+//     the preedit string.
 //
 func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 	var _arg0 *C.GtkIMContext  // out
@@ -632,13 +632,13 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 //
 // The function returns the following values:
 //
-//    - text: location to store a UTF-8 encoded string of text holding context
-//      around the insertion point. If the function returns TRUE, then you must
-//      free the result stored in this location with g_free().
-//    - cursorIndex: location to store byte index of the insertion cursor within
-//      text.
-//    - ok: TRUE if surrounding text was provided; in this case you must free the
-//      result stored in *text.
+//   - text: location to store a UTF-8 encoded string of text holding context
+//     around the insertion point. If the function returns TRUE, then you must
+//     free the result stored in this location with g_free().
+//   - cursorIndex: location to store byte index of the insertion cursor within
+//     text.
+//   - ok: TRUE if surrounding text was provided; in this case you must free the
+//     result stored in *text.
 //
 func (context *IMContext) Surrounding() (string, int, bool) {
 	var _arg0 *C.GtkIMContext // out
@@ -684,8 +684,8 @@ func (context *IMContext) Reset() {
 //
 // The function takes the following parameters:
 //
-//    - window (optional): client window. This may be NULL to indicate that the
-//      previous client window no longer exists.
+//   - window (optional): client window. This may be NULL to indicate that the
+//     previous client window no longer exists.
 //
 func (context *IMContext) SetClientWindow(window gdk.Windower) {
 	var _arg0 *C.GtkIMContext // out
@@ -706,7 +706,7 @@ func (context *IMContext) SetClientWindow(window gdk.Windower) {
 //
 // The function takes the following parameters:
 //
-//    - area: new location.
+//   - area: new location.
 //
 func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 	var _arg0 *C.GtkIMContext // out
@@ -727,10 +727,10 @@ func (context *IMContext) SetCursorLocation(area *gdk.Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - text surrounding the insertion point, as UTF-8. the preedit string should
-//      not be included within text.
-//    - len: length of text, or -1 if text is nul-terminated.
-//    - cursorIndex: byte index of the insertion cursor within text.
+//   - text surrounding the insertion point, as UTF-8. the preedit string should
+//     not be included within text.
+//   - len: length of text, or -1 if text is nul-terminated.
+//   - cursorIndex: byte index of the insertion cursor within text.
 //
 func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 	var _arg0 *C.GtkIMContext // out
@@ -758,7 +758,7 @@ func (context *IMContext) SetSurrounding(text string, len, cursorIndex int) {
 //
 // The function takes the following parameters:
 //
-//    - usePreedit: whether the IM context should use the preedit string.
+//   - usePreedit: whether the IM context should use the preedit string.
 //
 func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	var _arg0 *C.GtkIMContext // out
@@ -792,10 +792,10 @@ func (context *IMContext) commit(str string) {
 	runtime.KeepAlive(str)
 }
 
-// deleteSurrounding asks the widget that the input context is attached to to
-// delete characters around the cursor position by emitting the
-// GtkIMContext::delete_surrounding signal. Note that offset and n_chars are in
-// characters not in bytes which differs from the usage other places in
+// deleteSurrounding asks the widget that the input context is attached
+// to to delete characters around the cursor position by emitting the
+// GtkIMContext::delete_surrounding signal. Note that offset and n_chars are
+// in characters not in bytes which differs from the usage other places in
 // IMContext.
 //
 // In order to use this function, you should first call
@@ -805,19 +805,19 @@ func (context *IMContext) commit(str string) {
 // handled, the input context might not have deleted all the characters that
 // were requested to be deleted.
 //
-// This function is used by an input method that wants to make subsitutions in
-// the existing text in response to new input. It is not useful for
+// This function is used by an input method that wants to make subsitutions
+// in the existing text in response to new input. It is not useful for
 // applications.
 //
 // The function takes the following parameters:
 //
-//    - offset from cursor position in chars; a negative value means start before
-//      the cursor.
-//    - nChars: number of characters to delete.
+//   - offset from cursor position in chars; a negative value means start before
+//     the cursor.
+//   - nChars: number of characters to delete.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the signal was handled.
+//   - ok: TRUE if the signal was handled.
 //
 func (context *IMContext) deleteSurrounding(offset, nChars int) bool {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
@@ -852,11 +852,11 @@ func (context *IMContext) deleteSurrounding(offset, nChars int) bool {
 //
 // The function takes the following parameters:
 //
-//    - event: key event.
+//   - event: key event.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the input method handled the key event.
+//   - ok: TRUE if the input method handled the key event.
 //
 func (context *IMContext) filterKeypress(event *gdk.EventKey) bool {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
@@ -918,12 +918,12 @@ func (context *IMContext) focusOut() {
 //
 // The function returns the following values:
 //
-//    - str: location to store the retrieved string. The string retrieved must be
-//      freed with g_free().
-//    - attrs: location to store the retrieved attribute list. When you are done
-//      with this list, you must unreference it with pango_attr_list_unref().
-//    - cursorPos: location to store position of cursor (in characters) within
-//      the preedit string.
+//   - str: location to store the retrieved string. The string retrieved must be
+//     freed with g_free().
+//   - attrs: location to store the retrieved attribute list. When you are done
+//     with this list, you must unreference it with pango_attr_list_unref().
+//   - cursorPos: location to store position of cursor (in characters) within
+//     the preedit string.
 //
 func (context *IMContext) preeditString() (string, *pango.AttrList, int) {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
@@ -971,13 +971,13 @@ func (context *IMContext) preeditString() (string, *pango.AttrList, int) {
 //
 // The function returns the following values:
 //
-//    - text: location to store a UTF-8 encoded string of text holding context
-//      around the insertion point. If the function returns TRUE, then you must
-//      free the result stored in this location with g_free().
-//    - cursorIndex: location to store byte index of the insertion cursor within
-//      text.
-//    - ok: TRUE if surrounding text was provided; in this case you must free the
-//      result stored in *text.
+//   - text: location to store a UTF-8 encoded string of text holding context
+//     around the insertion point. If the function returns TRUE, then you must
+//     free the result stored in this location with g_free().
+//   - cursorIndex: location to store byte index of the insertion cursor within
+//     text.
+//   - ok: TRUE if surrounding text was provided; in this case you must free the
+//     result stored in *text.
 //
 func (context *IMContext) surrounding() (string, int, bool) {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
@@ -1088,8 +1088,8 @@ func (context *IMContext) retrieveSurrounding() bool {
 //
 // The function takes the following parameters:
 //
-//    - window (optional): client window. This may be NULL to indicate that the
-//      previous client window no longer exists.
+//   - window (optional): client window. This may be NULL to indicate that the
+//     previous client window no longer exists.
 //
 func (context *IMContext) setClientWindow(window gdk.Windower) {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
@@ -1113,7 +1113,7 @@ func (context *IMContext) setClientWindow(window gdk.Windower) {
 //
 // The function takes the following parameters:
 //
-//    - area: new location.
+//   - area: new location.
 //
 func (context *IMContext) setCursorLocation(area *gdk.Rectangle) {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
@@ -1137,10 +1137,10 @@ func (context *IMContext) setCursorLocation(area *gdk.Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - text surrounding the insertion point, as UTF-8. the preedit string should
-//      not be included within text.
-//    - len: length of text, or -1 if text is nul-terminated.
-//    - cursorIndex: byte index of the insertion cursor within text.
+//   - text surrounding the insertion point, as UTF-8. the preedit string should
+//     not be included within text.
+//   - len: length of text, or -1 if text is nul-terminated.
+//   - cursorIndex: byte index of the insertion cursor within text.
 //
 func (context *IMContext) setSurrounding(text string, len, cursorIndex int) {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
@@ -1171,7 +1171,7 @@ func (context *IMContext) setSurrounding(text string, len, cursorIndex int) {
 //
 // The function takes the following parameters:
 //
-//    - usePreedit: whether the IM context should use the preedit string.
+//   - usePreedit: whether the IM context should use the preedit string.
 //
 func (context *IMContext) setUsePreedit(usePreedit bool) {
 	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))

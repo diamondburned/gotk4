@@ -21,7 +21,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - window: mapped Window.
+//   - window: mapped Window.
 //
 func TestRenderSync(window Windower) {
 	var _arg1 *C.GdkWindow // out
@@ -34,29 +34,29 @@ func TestRenderSync(window Windower) {
 
 // TestSimulateButton: this function is intended to be used in GTK+ test
 // programs. It will warp the mouse pointer to the given (x,y) coordinates
-// within window and simulate a button press or release event. Because the mouse
-// pointer needs to be warped to the target location, use of this function
+// within window and simulate a button press or release event. Because the
+// mouse pointer needs to be warped to the target location, use of this function
 // outside of test programs that run in their own virtual windowing system (e.g.
 // Xvfb) is not recommended.
 //
 // Also, gdk_test_simulate_button() is a fairly low level function, for most
-// testing purposes, gtk_test_widget_click() is the right function to call which
-// will generate a button press event followed by its accompanying button
+// testing purposes, gtk_test_widget_click() is the right function to call
+// which will generate a button press event followed by its accompanying button
 // release event.
 //
 // The function takes the following parameters:
 //
-//    - window to simulate a button event for.
-//    - x coordinate within window for the button event.
-//    - y coordinate within window for the button event.
-//    - button: number of the pointer button for the event, usually 1, 2 or 3.
-//    - modifiers: keyboard modifiers the event is setup with.
-//    - buttonPressrelease: either GDK_BUTTON_PRESS or GDK_BUTTON_RELEASE.
+//   - window to simulate a button event for.
+//   - x coordinate within window for the button event.
+//   - y coordinate within window for the button event.
+//   - button: number of the pointer button for the event, usually 1, 2 or 3.
+//   - modifiers: keyboard modifiers the event is setup with.
+//   - buttonPressrelease: either GDK_BUTTON_PRESS or GDK_BUTTON_RELEASE.
 //
 // The function returns the following values:
 //
-//    - ok: whether all actions necessary for a button event simulation were
-//      carried out successfully.
+//   - ok: whether all actions necessary for a button event simulation were
+//     carried out successfully.
 //
 func TestSimulateButton(window Windower, x, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out
@@ -108,17 +108,17 @@ func TestSimulateButton(window Windower, x, y int, button uint, modifiers Modifi
 //
 // The function takes the following parameters:
 //
-//    - window to simulate a key event for.
-//    - x coordinate within window for the key event.
-//    - y coordinate within window for the key event.
-//    - keyval: GDK keyboard value.
-//    - modifiers: keyboard modifiers the event is setup with.
-//    - keyPressrelease: either GDK_KEY_PRESS or GDK_KEY_RELEASE.
+//   - window to simulate a key event for.
+//   - x coordinate within window for the key event.
+//   - y coordinate within window for the key event.
+//   - keyval: GDK keyboard value.
+//   - modifiers: keyboard modifiers the event is setup with.
+//   - keyPressrelease: either GDK_KEY_PRESS or GDK_KEY_RELEASE.
 //
 // The function returns the following values:
 //
-//    - ok: whether all actions necessary for a key event simulation were carried
-//      out successfully.
+//   - ok: whether all actions necessary for a key event simulation were carried
+//     out successfully.
 //
 func TestSimulateKey(window Windower, x, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool {
 	var _arg1 *C.GdkWindow      // out

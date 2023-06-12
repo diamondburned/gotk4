@@ -55,10 +55,10 @@ func defaultSocketOverrides(v *Socket) SocketOverrides {
 	}
 }
 
-// Socket: together with Plug, Socket provides the ability to embed widgets from
-// one process into another process in a fashion that is transparent to the
-// user. One process creates a Socket widget and passes that widget’s window ID
-// to the other process, which then creates a Plug with that window ID. Any
+// Socket: together with Plug, Socket provides the ability to embed widgets
+// from one process into another process in a fashion that is transparent to the
+// user. One process creates a Socket widget and passes that widget’s window
+// ID to the other process, which then creates a Plug with that window ID. Any
 // widgets contained in the Plug then will appear inside the first application’s
 // window.
 //
@@ -82,14 +82,14 @@ func defaultSocketOverrides(v *Socket) SocketOverrides {
 // will create a plug in the socket, you must make sure that the socket widget
 // is not destroyed until that plug is created. Violating this rule will cause
 // unpredictable consequences, the most likely consequence being that the plug
-// will appear as a separate toplevel window. You can check if the plug has been
-// created by using gtk_socket_get_plug_window(). If it returns a non-NULL
+// will appear as a separate toplevel window. You can check if the plug has
+// been created by using gtk_socket_get_plug_window(). If it returns a non-NULL
 // value, then the plug has been successfully created inside of the socket.
 //
-// When GTK+ is notified that the embedded window has been destroyed, then it
-// will destroy the socket as well. You should always, therefore, be prepared
-// for your sockets to be destroyed at any time when the main event loop is
-// running. To prevent this from happening, you can connect to the
+// When GTK+ is notified that the embedded window has been destroyed,
+// then it will destroy the socket as well. You should always, therefore,
+// be prepared for your sockets to be destroyed at any time when the main event
+// loop is running. To prevent this from happening, you can connect to the
 // Socket::plug-removed signal.
 //
 // The communication between a Socket and a Plug follows the XEmbed Protocol
@@ -97,9 +97,9 @@ func defaultSocketOverrides(v *Socket) SocketOverrides {
 // been implemented in other toolkits, e.g. Qt, allowing the same level of
 // integration when embedding a Qt widget in GTK or vice versa.
 //
-// The Plug and Socket widgets are only available when GTK+ is compiled for the
-// X11 platform and GDK_WINDOWING_X11 is defined. They can only be used on a
-// X11Display. To use Plug and Socket, you need to include the gtk/gtkx.h
+// The Plug and Socket widgets are only available when GTK+ is compiled for
+// the X11 platform and GDK_WINDOWING_X11 is defined. They can only be used on
+// a X11Display. To use Plug and Socket, you need to include the gtk/gtkx.h
 // header.
 type Socket struct {
 	_ [0]func() // equal guard
@@ -176,7 +176,7 @@ func (socket_ *Socket) ConnectPlugRemoved(f func() (ok bool)) coreglib.SignalHan
 //
 // The function returns the following values:
 //
-//    - socket: new Socket.
+//   - socket: new Socket.
 //
 func NewSocket() *Socket {
 	var _cret *C.GtkWidget // in
@@ -195,7 +195,7 @@ func NewSocket() *Socket {
 //
 // The function returns the following values:
 //
-//    - window (optional) of the plug if available, or NULL.
+//   - window (optional) of the plug if available, or NULL.
 //
 func (socket_ *Socket) PlugWindow() gdk.Windower {
 	var _arg0 *C.GtkSocket // out

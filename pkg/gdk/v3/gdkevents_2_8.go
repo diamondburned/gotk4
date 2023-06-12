@@ -13,9 +13,9 @@ import (
 import "C"
 
 // EventGrabBroken: generated when a pointer or keyboard grab is broken. On X11,
-// this happens when the grab window becomes unviewable (i.e. it or one of its
-// ancestors is unmapped), or if the same application grabs the pointer or
-// keyboard again. Note that implicit grabs (which are initiated by button
+// this happens when the grab window becomes unviewable (i.e. it or one of
+// its ancestors is unmapped), or if the same application grabs the pointer
+// or keyboard again. Note that implicit grabs (which are initiated by button
 // presses) can also cause EventGrabBroken events.
 //
 // An instance of this type is always passed by reference.

@@ -22,13 +22,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - text to process. Must be valid UTF-8.
-//    - length in bytes of text.
-//    - analysis: PangoAnalysis structure from itemize for text.
-//    - offset: byte offset of text from the beginning of the paragraph, or -1 to
-//      ignore attributes from analysis.
-//    - logAttrs: array with one PangoLogAttr per character in text, plus one
-//      extra, to be filled in.
+//   - text to process. Must be valid UTF-8.
+//   - length in bytes of text.
+//   - analysis: PangoAnalysis structure from itemize for text.
+//   - offset: byte offset of text from the beginning of the paragraph, or -1 to
+//     ignore attributes from analysis.
+//   - logAttrs: array with one PangoLogAttr per character in text, plus one
+//     extra, to be filled in.
 //
 func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out

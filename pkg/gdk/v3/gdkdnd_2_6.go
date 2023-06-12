@@ -19,11 +19,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
+//   - context: DragContext.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drop was successful.
+//   - ok: TRUE if the drop was successful.
 //
 func DragDropSucceeded(context *DragContext) bool {
 	var _arg1 *C.GdkDragContext // out

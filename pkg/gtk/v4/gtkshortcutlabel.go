@@ -66,11 +66,11 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - accelerator: initial accelerator.
+//   - accelerator: initial accelerator.
 //
 // The function returns the following values:
 //
-//    - shortcutLabel: newly-allocated GtkShortcutLabel.
+//   - shortcutLabel: newly-allocated GtkShortcutLabel.
 //
 func NewShortcutLabel(accelerator string) *ShortcutLabel {
 	var _arg1 *C.char      // out
@@ -93,7 +93,7 @@ func NewShortcutLabel(accelerator string) *ShortcutLabel {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): current accelerator.
+//   - utf8 (optional): current accelerator.
 //
 func (self *ShortcutLabel) Accelerator() string {
 	var _arg0 *C.GtkShortcutLabel // out
@@ -117,7 +117,7 @@ func (self *ShortcutLabel) Accelerator() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): current text displayed when no accelerator is set.
+//   - utf8 (optional): current text displayed when no accelerator is set.
 //
 func (self *ShortcutLabel) DisabledText() string {
 	var _arg0 *C.GtkShortcutLabel // out
@@ -141,7 +141,7 @@ func (self *ShortcutLabel) DisabledText() string {
 //
 // The function takes the following parameters:
 //
-//    - accelerator: new accelerator.
+//   - accelerator: new accelerator.
 //
 func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 	var _arg0 *C.GtkShortcutLabel // out
@@ -161,7 +161,7 @@ func (self *ShortcutLabel) SetAccelerator(accelerator string) {
 //
 // The function takes the following parameters:
 //
-//    - disabledText: text to be displayed when no accelerator is set.
+//   - disabledText: text to be displayed when no accelerator is set.
 //
 func (self *ShortcutLabel) SetDisabledText(disabledText string) {
 	var _arg0 *C.GtkShortcutLabel // out

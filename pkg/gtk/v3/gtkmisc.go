@@ -50,8 +50,8 @@ func defaultMiscOverrides(v *Misc) MiscOverrides {
 //
 // Note that the desired effect can in most cases be achieved by using the
 // Widget:halign, Widget:valign and Widget:margin properties on the child
-// widget, so GtkMisc should not be used in new code. To reflect this fact, all
-// Misc API has been deprecated.
+// widget, so GtkMisc should not be used in new code. To reflect this fact,
+// all Misc API has been deprecated.
 type Misc struct {
 	_ [0]func() // equal guard
 	Widget
@@ -118,15 +118,15 @@ func BaseMisc(obj Miscer) *Misc {
 	return obj.baseMisc()
 }
 
-// Alignment gets the X and Y alignment of the widget within its allocation. See
-// gtk_misc_set_alignment().
+// Alignment gets the X and Y alignment of the widget within its allocation.
+// See gtk_misc_set_alignment().
 //
 // Deprecated: Use Widget alignment and margin properties.
 //
 // The function returns the following values:
 //
-//    - xalign (optional): location to store X alignment of misc, or NULL.
-//    - yalign (optional): location to store Y alignment of misc, or NULL.
+//   - xalign (optional): location to store X alignment of misc, or NULL.
+//   - yalign (optional): location to store Y alignment of misc, or NULL.
 //
 func (misc *Misc) Alignment() (xalign, yalign float32) {
 	var _arg0 *C.GtkMisc // out
@@ -154,8 +154,8 @@ func (misc *Misc) Alignment() (xalign, yalign float32) {
 //
 // The function returns the following values:
 //
-//    - xpad (optional): location to store padding in the X direction, or NULL.
-//    - ypad (optional): location to store padding in the Y direction, or NULL.
+//   - xpad (optional): location to store padding in the X direction, or NULL.
+//   - ypad (optional): location to store padding in the Y direction, or NULL.
 //
 func (misc *Misc) Padding() (xpad, ypad int) {
 	var _arg0 *C.GtkMisc // out
@@ -183,8 +183,8 @@ func (misc *Misc) Padding() (xpad, ypad int) {
 //
 // The function takes the following parameters:
 //
-//    - xalign: horizontal alignment, from 0 (left) to 1 (right).
-//    - yalign: vertical alignment, from 0 (top) to 1 (bottom).
+//   - xalign: horizontal alignment, from 0 (left) to 1 (right).
+//   - yalign: vertical alignment, from 0 (top) to 1 (bottom).
 //
 func (misc *Misc) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkMisc // out
@@ -207,10 +207,10 @@ func (misc *Misc) SetAlignment(xalign, yalign float32) {
 //
 // The function takes the following parameters:
 //
-//    - xpad: amount of space to add on the left and right of the widget, in
-//      pixels.
-//    - ypad: amount of space to add on the top and bottom of the widget, in
-//      pixels.
+//   - xpad: amount of space to add on the left and right of the widget,
+//     in pixels.
+//   - ypad: amount of space to add on the top and bottom of the widget,
+//     in pixels.
 //
 func (misc *Misc) SetPadding(xpad, ypad int) {
 	var _arg0 *C.GtkMisc // out

@@ -28,8 +28,8 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - tag: #GSource ID.
-//    - name: debug name for the source.
+//   - tag: #GSource ID.
+//   - name: debug name for the source.
 //
 func SourceSetNameByID(tag uint, name string) {
 	var _arg1 C.guint // out

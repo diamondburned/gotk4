@@ -58,7 +58,7 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - cairoRenderer: new Cairo renderer.
+//   - cairoRenderer: new Cairo renderer.
 //
 func NewCairoRenderer() *CairoRenderer {
 	var _cret *C.GskRenderer // in

@@ -18,9 +18,9 @@ import "C"
 // FileError values corresponding to errno codes returned from file operations
 // on UNIX. Unlike errno codes, GFileError values are available on all systems,
 // even Windows. The exact meaning of each code depends on what sort of file
-// operation you were performing; the UNIX documentation gives more details. The
-// following error code descriptions come from the GNU C Library manual, and are
-// under the copyright of that manual.
+// operation you were performing; the UNIX documentation gives more details.
+// The following error code descriptions come from the GNU C Library manual,
+// and are under the copyright of that manual.
 //
 // It's not very portable to make detailed assumptions about exactly which
 // errors will be returned from a given operation. Some errors don't occur on
@@ -50,8 +50,8 @@ const (
 	FileErrorNotdir
 	// FileErrorNxio: no such device or address. The system tried to use the
 	// device represented by a file you specified, and it couldn't find the
-	// device. This can mean that the device file was installed incorrectly, or
-	// that the physical device is missing or not correctly attached to the
+	// device. This can mean that the device file was installed incorrectly,
+	// or that the physical device is missing or not correctly attached to the
 	// computer.
 	FileErrorNxio
 	// FileErrorNodev: underlying file system of the specified file does not
@@ -242,11 +242,11 @@ func (f FileTest) Has(other FileTest) bool {
 //
 // The function takes the following parameters:
 //
-//    - fileName: name of the file.
+//   - fileName: name of the file.
 //
 // The function returns the following values:
 //
-//    - filename: name of the file without any leading directory components.
+//   - filename: name of the file without any leading directory components.
 //
 func Basename(fileName string) string {
 	var _arg1 *C.gchar // out
@@ -269,17 +269,17 @@ func Basename(fileName string) string {
 // example, if you pass in EEXIST this function returns FILE_ERROR_EXIST. Unlike
 // errno values, you can portably assume that all Error values will exist.
 //
-// Normally a Error value goes into a #GError returned from a function that
-// manipulates files. So you would use g_file_error_from_errno() when
+// Normally a Error value goes into a #GError returned from a function
+// that manipulates files. So you would use g_file_error_from_errno() when
 // constructing a #GError.
 //
 // The function takes the following parameters:
 //
-//    - errNo: "errno" value.
+//   - errNo: "errno" value.
 //
 // The function returns the following values:
 //
-//    - fileError corresponding to the given errno.
+//   - fileError corresponding to the given errno.
 //
 func FileErrorFromErrno(errNo int) FileError {
 	var _arg1 C.gint       // out
@@ -300,23 +300,23 @@ func FileErrorFromErrno(errNo int) FileError {
 // FileGetContents reads an entire file into allocated memory, with good error
 // checking.
 //
-// If the call was successful, it returns TRUE and sets contents to the file
-// contents and length to the length of the file contents in bytes. The string
-// stored in contents will be nul-terminated, so for text files you can pass
-// NULL for the length argument. If the call was not successful, it returns
-// FALSE and sets error. The error domain is FILE_ERROR. Possible error codes
-// are those in the Error enumeration. In the error case, contents is set to
-// NULL and length is set to zero.
+// If the call was successful, it returns TRUE and sets contents to the
+// file contents and length to the length of the file contents in bytes.
+// The string stored in contents will be nul-terminated, so for text files
+// you can pass NULL for the length argument. If the call was not successful,
+// it returns FALSE and sets error. The error domain is FILE_ERROR. Possible
+// error codes are those in the Error enumeration. In the error case, contents
+// is set to NULL and length is set to zero.
 //
 // The function takes the following parameters:
 //
-//    - filename: name of a file to read contents from, in the GLib file name
-//      encoding.
+//   - filename: name of a file to read contents from, in the GLib file name
+//     encoding.
 //
 // The function returns the following values:
 //
-//    - contents: location to store an allocated string, use g_free() to free the
-//      returned string.
+//   - contents: location to store an allocated string, use g_free() to free the
+//     returned string.
 //
 func FileGetContents(filename string) ([]byte, error) {
 	var _arg1 *C.gchar  // out
@@ -360,16 +360,16 @@ func FileGetContents(filename string) ([]byte, error) {
 //
 // The function takes the following parameters:
 //
-//    - tmpl (optional): template for file name, as in g_mkstemp(), basename
-//      only, or NULL for a default template.
+//   - tmpl (optional): template for file name, as in g_mkstemp(), basename
+//     only, or NULL for a default template.
 //
 // The function returns the following values:
 //
-//    - nameUsed: location to store actual name used, or NULL.
-//    - gint: file handle (as from open()) to the file opened for reading and
-//      writing. The file is opened in binary mode on platforms where there is a
-//      difference. The file handle should be closed with close(). In case of
-//      errors, -1 is returned and error will be set.
+//   - nameUsed: location to store actual name used, or NULL.
+//   - gint: file handle (as from open()) to the file opened for reading and
+//     writing. The file is opened in binary mode on platforms where there is
+//     a difference. The file handle should be closed with close(). In case of
+//     errors, -1 is returned and error will be set.
 //
 func FileOpenTmp(tmpl string) (string, int, error) {
 	var _arg1 *C.gchar  // out
@@ -399,14 +399,14 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 	return _nameUsed, _gint, _goerr
 }
 
-// TestFile returns TRUE if any of the tests in the bitfield test are TRUE. For
-// example, (G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR) will return TRUE if the
-// file exists; the check whether it's a directory doesn't matter since the
+// TestFile returns TRUE if any of the tests in the bitfield test are TRUE.
+// For example, (G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR) will return TRUE if
+// the file exists; the check whether it's a directory doesn't matter since the
 // existence test is TRUE. With the current set of available tests, there's no
 // point passing in more than one test at a time.
 //
-// Apart from G_FILE_TEST_IS_SYMLINK all tests follow symbolic links, so for a
-// symbolic link to a regular file g_file_test() will return TRUE for both
+// Apart from G_FILE_TEST_IS_SYMLINK all tests follow symbolic links, so for
+// a symbolic link to a regular file g_file_test() will return TRUE for both
 // G_FILE_TEST_IS_SYMLINK and G_FILE_TEST_IS_REGULAR.
 //
 // Note, that for a dangling symbolic link g_file_test() will return TRUE for
@@ -442,12 +442,12 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 //
 // The function takes the following parameters:
 //
-//    - filename to test in the GLib file name encoding.
-//    - test: bitfield of Test flags.
+//   - filename to test in the GLib file name encoding.
+//   - test: bitfield of Test flags.
 //
 // The function returns the following values:
 //
-//    - ok: whether a test was TRUE.
+//   - ok: whether a test was TRUE.
 //
 func TestFile(filename string, test FileTest) bool {
 	var _arg1 *C.gchar    // out
@@ -483,7 +483,7 @@ func TestFile(filename string, test FileTest) bool {
 //
 // The function returns the following values:
 //
-//    - filename: current directory.
+//   - filename: current directory.
 //
 func GetCurrentDir() string {
 	var _cret *C.gchar // in
@@ -500,19 +500,19 @@ func GetCurrentDir() string {
 
 // PathGetBasename gets the last component of the filename.
 //
-// If file_name ends with a directory separator it gets the component before the
-// last slash. If file_name consists only of directory separators (and on
-// Windows, possibly a drive letter), a single separator is returned. If
-// file_name is empty, it gets ".".
+// If file_name ends with a directory separator it gets the component before
+// the last slash. If file_name consists only of directory separators (and
+// on Windows, possibly a drive letter), a single separator is returned.
+// If file_name is empty, it gets ".".
 //
 // The function takes the following parameters:
 //
-//    - fileName: name of the file.
+//   - fileName: name of the file.
 //
 // The function returns the following values:
 //
-//    - filename: newly allocated string containing the last component of the
-//      filename.
+//   - filename: newly allocated string containing the last component of the
+//     filename.
 //
 func PathGetBasename(fileName string) string {
 	var _arg1 *C.gchar // out
@@ -532,20 +532,20 @@ func PathGetBasename(fileName string) string {
 	return _filename
 }
 
-// PathGetDirname gets the directory components of a file name. For example, the
-// directory component of /usr/bin/test is /usr/bin. The directory component of
-// / is /.
+// PathGetDirname gets the directory components of a file name. For example,
+// the directory component of /usr/bin/test is /usr/bin. The directory component
+// of / is /.
 //
 // If the file name has no directory components "." is returned. The returned
 // string should be freed when no longer needed.
 //
 // The function takes the following parameters:
 //
-//    - fileName: name of the file.
+//   - fileName: name of the file.
 //
 // The function returns the following values:
 //
-//    - filename: directory components of the file.
+//   - filename: directory components of the file.
 //
 func PathGetDirname(fileName string) string {
 	var _arg1 *C.gchar // out
@@ -574,27 +574,27 @@ func PathGetDirname(fileName string) string {
 // On Windows, the concepts of current drive and drive-specific current
 // directory introduce vagueness. This function interprets as an absolute file
 // name one that either begins with a directory separator such as "\Users\tml"
-// or begins with the root on a drive, for example "C:\Windows". The first case
-// also includes UNC paths such as "\\\\myserver\docs\foo". In all cases, either
-// slashes or backslashes are accepted.
+// or begins with the root on a drive, for example "C:\Windows". The first
+// case also includes UNC paths such as "\\\\myserver\docs\foo". In all cases,
+// either slashes or backslashes are accepted.
 //
 // Note that a file name relative to the current drive root does not truly
 // specify a file uniquely over time and across processes, as the current drive
 // is a per-process value and can be changed.
 //
-// File names relative the current directory on some specific drive, such as
-// "D:foo/bar", are not interpreted as absolute by this function, but they
-// obviously are not relative to the normal current directory as returned by
-// getcwd() or g_get_current_dir() either. Such paths should be avoided, or need
-// to be handled using Windows-specific code.
+// File names relative the current directory on some specific drive,
+// such as "D:foo/bar", are not interpreted as absolute by this function, but
+// they obviously are not relative to the normal current directory as returned
+// by getcwd() or g_get_current_dir() either. Such paths should be avoided,
+// or need to be handled using Windows-specific code.
 //
 // The function takes the following parameters:
 //
-//    - fileName: file name.
+//   - fileName: file name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if file_name is absolute.
+//   - ok: TRUE if file_name is absolute.
 //
 func PathIsAbsolute(fileName string) bool {
 	var _arg1 *C.gchar   // out
@@ -621,11 +621,11 @@ func PathIsAbsolute(fileName string) bool {
 //
 // The function takes the following parameters:
 //
-//    - fileName: file name.
+//   - fileName: file name.
 //
 // The function returns the following values:
 //
-//    - filename (optional): pointer into file_name after the root component.
+//   - filename (optional): pointer into file_name after the root component.
 //
 func PathSkipRoot(fileName string) string {
 	var _arg1 *C.gchar // out

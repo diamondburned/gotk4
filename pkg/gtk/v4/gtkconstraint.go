@@ -85,8 +85,7 @@ func defaultConstraintOverrides(v *Constraint) ConstraintOverrides {
 //
 // The typical equation for a constraint is:
 //
-//      target.target_attr = source.source_attr × multiplier + constant
-//
+//    target.target_attr = source.source_attr × multiplier + constant
 //
 // Each GtkConstraint is part of a system that will be solved by a
 // gtk.ConstraintLayout in order to allocate and position each child widget or
@@ -134,18 +133,18 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - target (optional) of the constraint.
-//    - targetAttribute: attribute of target to be set.
-//    - relation equivalence between target_attribute and source_attribute.
-//    - source (optional) of the constraint.
-//    - sourceAttribute: attribute of source to be read.
-//    - multiplier: multiplication factor to be applied to source_attribute.
-//    - constant factor to be added to source_attribute.
-//    - strength of the constraint.
+//   - target (optional) of the constraint.
+//   - targetAttribute: attribute of target to be set.
+//   - relation equivalence between target_attribute and source_attribute.
+//   - source (optional) of the constraint.
+//   - sourceAttribute: attribute of source to be read.
+//   - multiplier: multiplication factor to be applied to source_attribute.
+//   - constant factor to be added to source_attribute.
+//   - strength of the constraint.
 //
 // The function returns the following values:
 //
-//    - constraint: newly created constraint.
+//   - constraint: newly created constraint.
 //
 func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTargetter, sourceAttribute ConstraintAttribute, multiplier, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
@@ -193,15 +192,15 @@ func NewConstraint(target ConstraintTargetter, targetAttribute ConstraintAttribu
 //
 // The function takes the following parameters:
 //
-//    - target (optional): the target of the constraint.
-//    - targetAttribute: attribute of target to be set.
-//    - relation equivalence between target_attribute and constant.
-//    - constant factor to be set on target_attribute.
-//    - strength of the constraint.
+//   - target (optional): the target of the constraint.
+//   - targetAttribute: attribute of target to be set.
+//   - relation equivalence between target_attribute and constant.
+//   - constant factor to be set on target_attribute.
+//   - strength of the constraint.
 //
 // The function returns the following values:
 //
-//    - constraint: newly created constraint.
+//   - constraint: newly created constraint.
 //
 func NewConstraintConstant(target ConstraintTargetter, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint {
 	var _arg1 C.gpointer               // out
@@ -237,7 +236,7 @@ func NewConstraintConstant(target ConstraintTargetter, targetAttribute Constrain
 //
 // The function returns the following values:
 //
-//    - gdouble: constant factor.
+//   - gdouble: constant factor.
 //
 func (constraint *Constraint) Constant() float64 {
 	var _arg0 *C.GtkConstraint // out
@@ -260,7 +259,7 @@ func (constraint *Constraint) Constant() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: multiplication factor.
+//   - gdouble: multiplication factor.
 //
 func (constraint *Constraint) Multiplier() float64 {
 	var _arg0 *C.GtkConstraint // out
@@ -282,7 +281,7 @@ func (constraint *Constraint) Multiplier() float64 {
 //
 // The function returns the following values:
 //
-//    - constraintRelation: relation type.
+//   - constraintRelation: relation type.
 //
 func (constraint *Constraint) Relation() ConstraintRelation {
 	var _arg0 *C.GtkConstraint        // out
@@ -308,7 +307,7 @@ func (constraint *Constraint) Relation() ConstraintRelation {
 //
 // The function returns the following values:
 //
-//    - constraintTarget (optional): source of the constraint.
+//   - constraintTarget (optional): source of the constraint.
 //
 func (constraint *Constraint) Source() *ConstraintTarget {
 	var _arg0 *C.GtkConstraint       // out
@@ -333,7 +332,7 @@ func (constraint *Constraint) Source() *ConstraintTarget {
 //
 // The function returns the following values:
 //
-//    - constraintAttribute source's attribute.
+//   - constraintAttribute source's attribute.
 //
 func (constraint *Constraint) SourceAttribute() ConstraintAttribute {
 	var _arg0 *C.GtkConstraint         // out
@@ -355,7 +354,7 @@ func (constraint *Constraint) SourceAttribute() ConstraintAttribute {
 //
 // The function returns the following values:
 //
-//    - gint: strength value.
+//   - gint: strength value.
 //
 func (constraint *Constraint) Strength() int {
 	var _arg0 *C.GtkConstraint // out
@@ -381,7 +380,7 @@ func (constraint *Constraint) Strength() int {
 //
 // The function returns the following values:
 //
-//    - constraintTarget (optional): ConstraintTarget.
+//   - constraintTarget (optional): ConstraintTarget.
 //
 func (constraint *Constraint) Target() *ConstraintTarget {
 	var _arg0 *C.GtkConstraint       // out
@@ -406,7 +405,7 @@ func (constraint *Constraint) Target() *ConstraintTarget {
 //
 // The function returns the following values:
 //
-//    - constraintAttribute target's attribute.
+//   - constraintAttribute target's attribute.
 //
 func (constraint *Constraint) TargetAttribute() ConstraintAttribute {
 	var _arg0 *C.GtkConstraint         // out
@@ -429,7 +428,7 @@ func (constraint *Constraint) TargetAttribute() ConstraintAttribute {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the constraint is attached.
+//   - ok: TRUE if the constraint is attached.
 //
 func (constraint *Constraint) IsAttached() bool {
 	var _arg0 *C.GtkConstraint // out
@@ -454,7 +453,7 @@ func (constraint *Constraint) IsAttached() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the constraint is a constant relation.
+//   - ok: TRUE if the constraint is a constant relation.
 //
 func (constraint *Constraint) IsConstant() bool {
 	var _arg0 *C.GtkConstraint // out
@@ -479,7 +478,7 @@ func (constraint *Constraint) IsConstant() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the constraint is required.
+//   - ok: TRUE if the constraint is required.
 //
 func (constraint *Constraint) IsRequired() bool {
 	var _arg0 *C.GtkConstraint // out

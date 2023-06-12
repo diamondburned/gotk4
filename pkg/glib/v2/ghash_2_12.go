@@ -19,7 +19,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
+//   - hashTable: Table.
 //
 func HashTableRemoveAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	var _arg1 *C.GHashTable // out
@@ -43,7 +43,7 @@ func HashTableRemoveAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
+//   - hashTable: Table.
 //
 func HashTableStealAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	var _arg1 *C.GHashTable // out

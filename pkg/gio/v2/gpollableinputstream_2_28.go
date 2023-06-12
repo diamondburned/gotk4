@@ -63,8 +63,8 @@ type PollableInputStreamer interface {
 
 	// CanPoll checks if stream is actually pollable.
 	CanPoll() bool
-	// CreateSource creates a #GSource that triggers when stream can be read, or
-	// cancellable is triggered or an error occurs.
+	// CreateSource creates a #GSource that triggers when stream can be read,
+	// or cancellable is triggered or an error occurs.
 	CreateSource(ctx context.Context) *glib.Source
 	// IsReadable checks if stream can be read.
 	IsReadable() bool
@@ -88,16 +88,16 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 }
 
 // CanPoll checks if stream is actually pollable. Some classes may implement
-// InputStream but have only certain instances of that class be pollable. If
-// this method returns FALSE, then the behavior of other InputStream methods is
-// undefined.
+// InputStream but have only certain instances of that class be pollable.
+// If this method returns FALSE, then the behavior of other InputStream methods
+// is undefined.
 //
 // For any given stream, the value returned by this method is constant; a stream
 // cannot switch from pollable to non-pollable or vice versa.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if stream is pollable, FALSE if not.
+//   - ok: TRUE if stream is pollable, FALSE if not.
 //
 func (stream *PollableInputStream) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
@@ -117,22 +117,22 @@ func (stream *PollableInputStream) CanPoll() bool {
 	return _ok
 }
 
-// CreateSource creates a #GSource that triggers when stream can be read, or
-// cancellable is triggered or an error occurs. The callback on the source is of
-// the SourceFunc type.
+// CreateSource creates a #GSource that triggers when stream can be read,
+// or cancellable is triggered or an error occurs. The callback on the source is
+// of the SourceFunc type.
 //
-// As with g_pollable_input_stream_is_readable(), it is possible that the stream
-// may not actually be readable even after the source triggers, so you should
-// use g_pollable_input_stream_read_nonblocking() rather than
+// As with g_pollable_input_stream_is_readable(), it is possible that the
+// stream may not actually be readable even after the source triggers,
+// so you should use g_pollable_input_stream_read_nonblocking() rather than
 // g_input_stream_read() from the callback.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - source: new #GSource.
+//   - source: new #GSource.
 //
 func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Source {
 	var _arg0 *C.GPollableInputStream // out
@@ -167,15 +167,15 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 //
 // Note that some stream types may not be able to implement this 100% reliably,
 // and it is possible that a call to g_input_stream_read() after this returns
-// TRUE would still block. To guarantee non-blocking behavior, you should always
-// use g_pollable_input_stream_read_nonblocking(), which will return a
+// TRUE would still block. To guarantee non-blocking behavior, you should
+// always use g_pollable_input_stream_read_nonblocking(), which will return a
 // G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if stream is readable, FALSE if not. If an error has occurred on
-//      stream, this will result in g_pollable_input_stream_is_readable()
-//      returning TRUE, and the next attempt to read will return the error.
+//   - ok: TRUE if stream is readable, FALSE if not. If an error has occurred
+//     on stream, this will result in g_pollable_input_stream_is_readable()
+//     returning TRUE, and the next attempt to read will return the error.
 //
 func (stream *PollableInputStream) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
@@ -196,8 +196,8 @@ func (stream *PollableInputStream) IsReadable() bool {
 }
 
 // ReadNonblocking attempts to read up to count bytes from stream into buffer,
-// as with g_input_stream_read(). If stream is not currently readable, this will
-// immediately return G_IO_ERROR_WOULD_BLOCK, and you can use
+// as with g_input_stream_read(). If stream is not currently readable,
+// this will immediately return G_IO_ERROR_WOULD_BLOCK, and you can use
 // g_pollable_input_stream_create_source() to create a #GSource that will be
 // triggered when stream is readable.
 //
@@ -208,13 +208,13 @@ func (stream *PollableInputStream) IsReadable() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - buffer to read data into (which should be at least count bytes long).
+//   - ctx (optional) or NULL.
+//   - buffer to read data into (which should be at least count bytes long).
 //
 // The function returns the following values:
 //
-//    - gssize: number of bytes read, or -1 on error (including
-//      G_IO_ERROR_WOULD_BLOCK).
+//   - gssize: number of bytes read, or -1 on error (including
+//     G_IO_ERROR_WOULD_BLOCK).
 //
 func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableInputStream // out
@@ -252,16 +252,16 @@ func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer [
 }
 
 // canPoll checks if stream is actually pollable. Some classes may implement
-// InputStream but have only certain instances of that class be pollable. If
-// this method returns FALSE, then the behavior of other InputStream methods is
-// undefined.
+// InputStream but have only certain instances of that class be pollable.
+// If this method returns FALSE, then the behavior of other InputStream methods
+// is undefined.
 //
 // For any given stream, the value returned by this method is constant; a stream
 // cannot switch from pollable to non-pollable or vice versa.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if stream is pollable, FALSE if not.
+//   - ok: TRUE if stream is pollable, FALSE if not.
 //
 func (stream *PollableInputStream) canPoll() bool {
 	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))
@@ -284,22 +284,22 @@ func (stream *PollableInputStream) canPoll() bool {
 	return _ok
 }
 
-// createSource creates a #GSource that triggers when stream can be read, or
-// cancellable is triggered or an error occurs. The callback on the source is of
-// the SourceFunc type.
+// createSource creates a #GSource that triggers when stream can be read,
+// or cancellable is triggered or an error occurs. The callback on the source is
+// of the SourceFunc type.
 //
-// As with g_pollable_input_stream_is_readable(), it is possible that the stream
-// may not actually be readable even after the source triggers, so you should
-// use g_pollable_input_stream_read_nonblocking() rather than
+// As with g_pollable_input_stream_is_readable(), it is possible that the
+// stream may not actually be readable even after the source triggers,
+// so you should use g_pollable_input_stream_read_nonblocking() rather than
 // g_input_stream_read() from the callback.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - source: new #GSource.
+//   - source: new #GSource.
 //
 func (stream *PollableInputStream) createSource(ctx context.Context) *glib.Source {
 	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))
@@ -337,15 +337,15 @@ func (stream *PollableInputStream) createSource(ctx context.Context) *glib.Sourc
 //
 // Note that some stream types may not be able to implement this 100% reliably,
 // and it is possible that a call to g_input_stream_read() after this returns
-// TRUE would still block. To guarantee non-blocking behavior, you should always
-// use g_pollable_input_stream_read_nonblocking(), which will return a
+// TRUE would still block. To guarantee non-blocking behavior, you should
+// always use g_pollable_input_stream_read_nonblocking(), which will return a
 // G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if stream is readable, FALSE if not. If an error has occurred on
-//      stream, this will result in g_pollable_input_stream_is_readable()
-//      returning TRUE, and the next attempt to read will return the error.
+//   - ok: TRUE if stream is readable, FALSE if not. If an error has occurred
+//     on stream, this will result in g_pollable_input_stream_is_readable()
+//     returning TRUE, and the next attempt to read will return the error.
 //
 func (stream *PollableInputStream) isReadable() bool {
 	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))
@@ -369,8 +369,8 @@ func (stream *PollableInputStream) isReadable() bool {
 }
 
 // readNonblocking attempts to read up to count bytes from stream into buffer,
-// as with g_input_stream_read(). If stream is not currently readable, this will
-// immediately return G_IO_ERROR_WOULD_BLOCK, and you can use
+// as with g_input_stream_read(). If stream is not currently readable,
+// this will immediately return G_IO_ERROR_WOULD_BLOCK, and you can use
 // g_pollable_input_stream_create_source() to create a #GSource that will be
 // triggered when stream is readable.
 //
@@ -381,13 +381,13 @@ func (stream *PollableInputStream) isReadable() bool {
 //
 // The function takes the following parameters:
 //
-//    - buffer (optional) to read data into (which should be at least count bytes
-//      long).
+//   - buffer (optional) to read data into (which should be at least count bytes
+//     long).
 //
 // The function returns the following values:
 //
-//    - gssize: number of bytes read, or -1 on error (including
-//      G_IO_ERROR_WOULD_BLOCK).
+//   - gssize: number of bytes read, or -1 on error (including
+//     G_IO_ERROR_WOULD_BLOCK).
 //
 func (stream *PollableInputStream) readNonblocking(buffer []byte) (int, error) {
 	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))

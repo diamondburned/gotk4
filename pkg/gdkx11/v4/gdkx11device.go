@@ -17,11 +17,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - device: Device.
+//   - device: Device.
 //
 // The function returns the following values:
 //
-//    - gint: XInput2 device ID.
+//   - gint: XInput2 device ID.
 //
 func X11DeviceGetID(device *X11DeviceXI2) int {
 	var _arg1 *C.GdkDevice // out

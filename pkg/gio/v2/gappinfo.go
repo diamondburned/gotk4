@@ -133,19 +133,19 @@ func init() {
 // As of GLib 2.20, URIs will always be converted to POSIX paths (using
 // g_file_get_path()) when using g_app_info_launch() even if the application
 // requested an URI and not a POSIX path. For example for a desktop-file based
-// application with Exec key totem U and a single URI, sftp://foo/file.avi, then
-// /home/user/.gvfs/sftp on foo/file.avi will be passed. This will only work if
-// a set of suitable GIO extensions (such as gvfs 2.26 compiled with FUSE
-// support), is available and operational; if this is not the case, the URI will
-// be passed unmodified to the application. Some URIs, such as mailto:, of
-// course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for
+// application with Exec key totem U and a single URI, sftp://foo/file.avi,
+// then /home/user/.gvfs/sftp on foo/file.avi will be passed. This will only
+// work if a set of suitable GIO extensions (such as gvfs 2.26 compiled with
+// FUSE support), is available and operational; if this is not the case, the URI
+// will be passed unmodified to the application. Some URIs, such as mailto:,
+// of course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for
 // it); such URIs will be passed unmodified to the application.
 //
-// Specifically for gvfs 2.26 and later, the POSIX URI will be mapped back to
-// the GIO URI in the #GFile constructors (since gvfs implements the #GVfs
-// extension point). As such, if the application needs to examine the URI, it
-// needs to use g_file_get_uri() or similar on #GFile. In other words, an
-// application cannot assume that the URI passed to e.g.
+// Specifically for gvfs 2.26 and later, the POSIX URI will be mapped
+// back to the GIO URI in the #GFile constructors (since gvfs implements
+// the #GVfs extension point). As such, if the application needs to
+// examine the URI, it needs to use g_file_get_uri() or similar on #GFile.
+// In other words, an application cannot assume that the URI passed to e.g.
 // g_file_new_for_commandline_arg() is equal to the result of g_file_get_uri().
 // The following snippet illustrates this:
 //
@@ -165,10 +165,10 @@ func init() {
 //    g_object_unref (file);
 //
 // This code will work when both cdda://sr0/Track 1.wav and
-// /home/user/.gvfs/cdda on sr0/Track 1.wav is passed to the application. It
-// should be noted that it's generally not safe for applications to rely on the
-// format of a particular URIs. Different launcher applications (e.g. file
-// managers) may have different ideas of what a given URI means.
+// /home/user/.gvfs/cdda on sr0/Track 1.wav is passed to the application.
+// It should be noted that it's generally not safe for applications to rely
+// on the format of a particular URIs. Different launcher applications (e.g.
+// file managers) may have different ideas of what a given URI means.
 //
 // AppInfo wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -227,8 +227,8 @@ type AppInfor interface {
 	LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback)
 	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
 	LaunchURIsFinish(result AsyncResulter) error
-	// RemoveSupportsType removes a supported type from an application, if
-	// possible.
+	// RemoveSupportsType removes a supported type from an application,
+	// if possible.
 	RemoveSupportsType(contentType string) error
 	// SetAsDefaultForExtension sets the application as the default handler for
 	// the given file extension.
@@ -267,7 +267,7 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - contentType: string.
+//   - contentType: string.
 //
 func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
@@ -296,7 +296,7 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if appinfo can be deleted.
+//   - ok: TRUE if appinfo can be deleted.
 //
 func (appinfo *AppInfo) CanDelete() bool {
 	var _arg0 *C.GAppInfo // out
@@ -321,8 +321,8 @@ func (appinfo *AppInfo) CanDelete() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if it is possible to remove supported content types from a given
-//      appinfo, FALSE if not.
+//   - ok: TRUE if it is possible to remove supported content types from a given
+//     appinfo, FALSE if not.
 //
 func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 	var _arg0 *C.GAppInfo // out
@@ -344,13 +344,13 @@ func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 
 // Delete tries to delete a Info.
 //
-// On some platforms, there may be a difference between user-defined Infos which
-// can be deleted, and system-wide ones which cannot. See
+// On some platforms, there may be a difference between user-defined
+// Infos which can be deleted, and system-wide ones which cannot. See
 // g_app_info_can_delete().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if appinfo has been deleted.
+//   - ok: TRUE if appinfo has been deleted.
 //
 func (appinfo *AppInfo) Delete() bool {
 	var _arg0 *C.GAppInfo // out
@@ -374,7 +374,7 @@ func (appinfo *AppInfo) Delete() bool {
 //
 // The function returns the following values:
 //
-//    - appInfo: duplicate of appinfo.
+//   - appInfo: duplicate of appinfo.
 //
 func (appinfo *AppInfo) Dup() *AppInfo {
 	var _arg0 *C.GAppInfo // out
@@ -394,17 +394,17 @@ func (appinfo *AppInfo) Dup() *AppInfo {
 
 // Equal checks if two Infos are equal.
 //
-// Note that the check *may not* compare each individual field, and only does an
-// identity check. In case detecting changes in the contents is needed, program
-// code must additionally compare relevant fields.
+// Note that the check *may not* compare each individual field, and only does
+// an identity check. In case detecting changes in the contents is needed,
+// program code must additionally compare relevant fields.
 //
 // The function takes the following parameters:
 //
-//    - appinfo2: second Info.
+//   - appinfo2: second Info.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
+//   - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
 //
 func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	var _arg0 *C.GAppInfo // out
@@ -431,8 +431,8 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 //
 // The function returns the following values:
 //
-//    - filename (optional): string containing the appinfo's commandline, or NULL
-//      if this information is not available.
+//   - filename (optional): string containing the appinfo's commandline, or NULL
+//     if this information is not available.
 //
 func (appinfo *AppInfo) Commandline() string {
 	var _arg0 *C.GAppInfo // out
@@ -456,8 +456,8 @@ func (appinfo *AppInfo) Commandline() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing a description of the application
-//      appinfo, or NULL if none.
+//   - utf8 (optional): string containing a description of the application
+//     appinfo, or NULL if none.
 //
 func (appinfo *AppInfo) Description() string {
 	var _arg0 *C.GAppInfo // out
@@ -482,8 +482,8 @@ func (appinfo *AppInfo) Description() string {
 //
 // The function returns the following values:
 //
-//    - utf8: display name of the application for appinfo, or the name if no
-//      display name is available.
+//   - utf8: display name of the application for appinfo, or the name if no
+//     display name is available.
 //
 func (appinfo *AppInfo) DisplayName() string {
 	var _arg0 *C.GAppInfo // out
@@ -505,7 +505,7 @@ func (appinfo *AppInfo) DisplayName() string {
 //
 // The function returns the following values:
 //
-//    - filename: string containing the appinfo's application binaries name.
+//   - filename: string containing the appinfo's application binaries name.
 //
 func (appinfo *AppInfo) Executable() string {
 	var _arg0 *C.GAppInfo // out
@@ -527,8 +527,8 @@ func (appinfo *AppInfo) Executable() string {
 //
 // The function returns the following values:
 //
-//    - icon (optional): default #GIcon for appinfo or NULL if there is no
-//      default icon.
+//   - icon (optional): default #GIcon for appinfo or NULL if there is no
+//     default icon.
 //
 func (appinfo *AppInfo) Icon() *Icon {
 	var _arg0 *C.GAppInfo // out
@@ -557,7 +557,7 @@ func (appinfo *AppInfo) Icon() *Icon {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the application's ID.
+//   - utf8 (optional): string containing the application's ID.
 //
 func (appinfo *AppInfo) ID() string {
 	var _arg0 *C.GAppInfo // out
@@ -581,7 +581,7 @@ func (appinfo *AppInfo) ID() string {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the application for appinfo.
+//   - utf8: name of the application for appinfo.
 //
 func (appinfo *AppInfo) Name() string {
 	var _arg0 *C.GAppInfo // out
@@ -599,15 +599,15 @@ func (appinfo *AppInfo) Name() string {
 	return _utf8
 }
 
-// SupportedTypes retrieves the list of content types that app_info claims to
-// support. If this information is not provided by the environment, this
-// function will return NULL. This function does not take in consideration
+// SupportedTypes retrieves the list of content types that app_info claims
+// to support. If this information is not provided by the environment,
+// this function will return NULL. This function does not take in consideration
 // associations added with g_app_info_add_supports_type(), but only those
 // exported directly by the application.
 //
 // The function returns the following values:
 //
-//    - utf8s: a list of content types.
+//   - utf8s: a list of content types.
 //
 func (appinfo *AppInfo) SupportedTypes() []string {
 	var _arg0 *C.GAppInfo // out
@@ -638,8 +638,8 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 }
 
 // Launch launches the application. Passes files to the launched application as
-// arguments, using the optional context to get information about the details of
-// the launcher (like what screen it is on). On error, error will be set
+// arguments, using the optional context to get information about the details
+// of the launcher (like what screen it is on). On error, error will be set
 // accordingly.
 //
 // To launch the application without arguments pass a NULL files list.
@@ -653,12 +653,12 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 // URI you want to pass in as argument, consider using g_app_info_launch_uris()
 // instead.
 //
-// The launched application inherits the environment of the launching process,
-// but it can be modified with g_app_launch_context_setenv() and
+// The launched application inherits the environment of the launching
+// process, but it can be modified with g_app_launch_context_setenv() and
 // g_app_launch_context_unsetenv().
 //
-// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE environment
-// variable with the path of the launched desktop file and
+// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE
+// environment variable with the path of the launched desktop file and
 // GIO_LAUNCHED_DESKTOP_FILE_PID to the process id of the launched process. This
 // can be used to ignore GIO_LAUNCHED_DESKTOP_FILE, should it be inherited by
 // further processes. The DISPLAY and DESKTOP_STARTUP_ID environment variables
@@ -666,8 +666,8 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 //
 // The function takes the following parameters:
 //
-//    - files (optional) of #GFile objects.
-//    - context (optional) or NULL.
+//   - files (optional) of #GFile objects.
+//   - context (optional) or NULL.
 //
 func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 	var _arg0 *C.GAppInfo          // out
@@ -704,9 +704,9 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 }
 
 // LaunchURIs launches the application. This passes the uris to the launched
-// application as arguments, using the optional context to get information about
-// the details of the launcher (like what screen it is on). On error, error will
-// be set accordingly.
+// application as arguments, using the optional context to get information
+// about the details of the launcher (like what screen it is on). On error,
+// error will be set accordingly.
 //
 // To launch the application without arguments pass a NULL uris list.
 //
@@ -716,8 +716,8 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 //
 // The function takes the following parameters:
 //
-//    - uris (optional) containing URIs to launch.
-//    - context (optional) or NULL.
+//   - uris (optional) containing URIs to launch.
+//   - context (optional) or NULL.
 //
 func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) error {
 	var _arg0 *C.GAppInfo          // out
@@ -756,17 +756,17 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 
 // LaunchURIsAsync: async version of g_app_info_launch_uris().
 //
-// The callback is invoked immediately after the application launch, but it
-// waits for activation in case of D-Bus–activated applications and also
+// The callback is invoked immediately after the application launch,
+// but it waits for activation in case of D-Bus–activated applications and also
 // provides extended error information for sandboxed applications, see notes for
 // g_app_info_launch_default_for_uri_async().
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): #GCancellable.
-//    - uris (optional) containing URIs to launch.
-//    - context (optional) or NULL.
-//    - callback (optional) to call when the request is done.
+//   - ctx (optional): #GCancellable.
+//   - uris (optional) containing URIs to launch.
+//   - context (optional) or NULL.
+//   - callback (optional) to call when the request is done.
 //
 func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
 	var _arg0 *C.GAppInfo           // out
@@ -812,7 +812,7 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 	var _arg0 *C.GAppInfo     // out
@@ -839,7 +839,7 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - contentType: string.
+//   - contentType: string.
 //
 func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
@@ -868,7 +868,7 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 //
 // The function takes the following parameters:
 //
-//    - extension: string containing the file extension (without the dot).
+//   - extension: string containing the file extension (without the dot).
 //
 func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg0 *C.GAppInfo // out
@@ -897,7 +897,7 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type.
+//   - contentType: content type.
 //
 func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
@@ -921,14 +921,14 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	return _goerr
 }
 
-// SetAsLastUsedForType sets the application as the last used application for a
-// given type. This will make the application appear as first in the list
+// SetAsLastUsedForType sets the application as the last used application for
+// a given type. This will make the application appear as first in the list
 // returned by g_app_info_get_recommended_for_type(), regardless of the default
 // application for that content type.
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type.
+//   - contentType: content type.
 //
 func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
@@ -957,7 +957,7 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the appinfo should be shown, FALSE otherwise.
+//   - ok: TRUE if the appinfo should be shown, FALSE otherwise.
 //
 func (appinfo *AppInfo) ShouldShow() bool {
 	var _arg0 *C.GAppInfo // out
@@ -981,7 +981,7 @@ func (appinfo *AppInfo) ShouldShow() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the appinfo supports files.
+//   - ok: TRUE if the appinfo supports files.
 //
 func (appinfo *AppInfo) SupportsFiles() bool {
 	var _arg0 *C.GAppInfo // out
@@ -1006,7 +1006,7 @@ func (appinfo *AppInfo) SupportsFiles() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the appinfo supports URIs.
+//   - ok: TRUE if the appinfo supports URIs.
 //
 func (appinfo *AppInfo) SupportsURIs() bool {
 	var _arg0 *C.GAppInfo // out
@@ -1032,7 +1032,7 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 //
 // The function takes the following parameters:
 //
-//    - contentType: string.
+//   - contentType: string.
 //
 func (appinfo *AppInfo) addSupportsType(contentType string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1064,7 +1064,7 @@ func (appinfo *AppInfo) addSupportsType(contentType string) error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if appinfo can be deleted.
+//   - ok: TRUE if appinfo can be deleted.
 //
 func (appinfo *AppInfo) canDelete() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1092,8 +1092,8 @@ func (appinfo *AppInfo) canDelete() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if it is possible to remove supported content types from a given
-//      appinfo, FALSE if not.
+//   - ok: TRUE if it is possible to remove supported content types from a given
+//     appinfo, FALSE if not.
 //
 func (appinfo *AppInfo) canRemoveSupportsType() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1118,13 +1118,13 @@ func (appinfo *AppInfo) canRemoveSupportsType() bool {
 
 // doDelete tries to delete a Info.
 //
-// On some platforms, there may be a difference between user-defined Infos which
-// can be deleted, and system-wide ones which cannot. See
+// On some platforms, there may be a difference between user-defined
+// Infos which can be deleted, and system-wide ones which cannot. See
 // g_app_info_can_delete().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if appinfo has been deleted.
+//   - ok: TRUE if appinfo has been deleted.
 //
 func (appinfo *AppInfo) doDelete() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1151,7 +1151,7 @@ func (appinfo *AppInfo) doDelete() bool {
 //
 // The function returns the following values:
 //
-//    - appInfo: duplicate of appinfo.
+//   - appInfo: duplicate of appinfo.
 //
 func (appinfo *AppInfo) dup() *AppInfo {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1174,17 +1174,17 @@ func (appinfo *AppInfo) dup() *AppInfo {
 
 // Equal checks if two Infos are equal.
 //
-// Note that the check *may not* compare each individual field, and only does an
-// identity check. In case detecting changes in the contents is needed, program
-// code must additionally compare relevant fields.
+// Note that the check *may not* compare each individual field, and only does
+// an identity check. In case detecting changes in the contents is needed,
+// program code must additionally compare relevant fields.
 //
 // The function takes the following parameters:
 //
-//    - appinfo2: second Info.
+//   - appinfo2: second Info.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
+//   - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
 //
 func (appinfo1 *AppInfo) equal(appinfo2 AppInfor) bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo1))
@@ -1214,8 +1214,8 @@ func (appinfo1 *AppInfo) equal(appinfo2 AppInfor) bool {
 //
 // The function returns the following values:
 //
-//    - filename (optional): string containing the appinfo's commandline, or NULL
-//      if this information is not available.
+//   - filename (optional): string containing the appinfo's commandline, or NULL
+//     if this information is not available.
 //
 func (appinfo *AppInfo) commandline() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1242,8 +1242,8 @@ func (appinfo *AppInfo) commandline() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing a description of the application
-//      appinfo, or NULL if none.
+//   - utf8 (optional): string containing a description of the application
+//     appinfo, or NULL if none.
 //
 func (appinfo *AppInfo) description() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1271,8 +1271,8 @@ func (appinfo *AppInfo) description() string {
 //
 // The function returns the following values:
 //
-//    - utf8: display name of the application for appinfo, or the name if no
-//      display name is available.
+//   - utf8: display name of the application for appinfo, or the name if no
+//     display name is available.
 //
 func (appinfo *AppInfo) displayName() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1297,7 +1297,7 @@ func (appinfo *AppInfo) displayName() string {
 //
 // The function returns the following values:
 //
-//    - filename: string containing the appinfo's application binaries name.
+//   - filename: string containing the appinfo's application binaries name.
 //
 func (appinfo *AppInfo) executable() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1322,8 +1322,8 @@ func (appinfo *AppInfo) executable() string {
 //
 // The function returns the following values:
 //
-//    - icon (optional): default #GIcon for appinfo or NULL if there is no
-//      default icon.
+//   - icon (optional): default #GIcon for appinfo or NULL if there is no
+//     default icon.
 //
 func (appinfo *AppInfo) icon() *Icon {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1355,7 +1355,7 @@ func (appinfo *AppInfo) icon() *Icon {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the application's ID.
+//   - utf8 (optional): string containing the application's ID.
 //
 func (appinfo *AppInfo) iD() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1382,7 +1382,7 @@ func (appinfo *AppInfo) iD() string {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the application for appinfo.
+//   - utf8: name of the application for appinfo.
 //
 func (appinfo *AppInfo) name() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1403,15 +1403,15 @@ func (appinfo *AppInfo) name() string {
 	return _utf8
 }
 
-// supportedTypes retrieves the list of content types that app_info claims to
-// support. If this information is not provided by the environment, this
-// function will return NULL. This function does not take in consideration
+// supportedTypes retrieves the list of content types that app_info claims
+// to support. If this information is not provided by the environment,
+// this function will return NULL. This function does not take in consideration
 // associations added with g_app_info_add_supports_type(), but only those
 // exported directly by the application.
 //
 // The function returns the following values:
 //
-//    - utf8s: a list of content types.
+//   - utf8s: a list of content types.
 //
 func (appinfo *AppInfo) supportedTypes() []string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1445,8 +1445,8 @@ func (appinfo *AppInfo) supportedTypes() []string {
 }
 
 // Launch launches the application. Passes files to the launched application as
-// arguments, using the optional context to get information about the details of
-// the launcher (like what screen it is on). On error, error will be set
+// arguments, using the optional context to get information about the details
+// of the launcher (like what screen it is on). On error, error will be set
 // accordingly.
 //
 // To launch the application without arguments pass a NULL files list.
@@ -1460,12 +1460,12 @@ func (appinfo *AppInfo) supportedTypes() []string {
 // URI you want to pass in as argument, consider using g_app_info_launch_uris()
 // instead.
 //
-// The launched application inherits the environment of the launching process,
-// but it can be modified with g_app_launch_context_setenv() and
+// The launched application inherits the environment of the launching
+// process, but it can be modified with g_app_launch_context_setenv() and
 // g_app_launch_context_unsetenv().
 //
-// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE environment
-// variable with the path of the launched desktop file and
+// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE
+// environment variable with the path of the launched desktop file and
 // GIO_LAUNCHED_DESKTOP_FILE_PID to the process id of the launched process. This
 // can be used to ignore GIO_LAUNCHED_DESKTOP_FILE, should it be inherited by
 // further processes. The DISPLAY and DESKTOP_STARTUP_ID environment variables
@@ -1473,8 +1473,8 @@ func (appinfo *AppInfo) supportedTypes() []string {
 //
 // The function takes the following parameters:
 //
-//    - files (optional) of #GFile objects.
-//    - context (optional) or NULL.
+//   - files (optional) of #GFile objects.
+//   - context (optional) or NULL.
 //
 func (appinfo *AppInfo) launch(files []Filer, context *AppLaunchContext) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1514,9 +1514,9 @@ func (appinfo *AppInfo) launch(files []Filer, context *AppLaunchContext) error {
 }
 
 // launchURIs launches the application. This passes the uris to the launched
-// application as arguments, using the optional context to get information about
-// the details of the launcher (like what screen it is on). On error, error will
-// be set accordingly.
+// application as arguments, using the optional context to get information
+// about the details of the launcher (like what screen it is on). On error,
+// error will be set accordingly.
 //
 // To launch the application without arguments pass a NULL uris list.
 //
@@ -1526,8 +1526,8 @@ func (appinfo *AppInfo) launch(files []Filer, context *AppLaunchContext) error {
 //
 // The function takes the following parameters:
 //
-//    - uris (optional) containing URIs to launch.
-//    - context (optional) or NULL.
+//   - uris (optional) containing URIs to launch.
+//   - context (optional) or NULL.
 //
 func (appinfo *AppInfo) launchURIs(uris []string, context *AppLaunchContext) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1569,17 +1569,17 @@ func (appinfo *AppInfo) launchURIs(uris []string, context *AppLaunchContext) err
 
 // launchURIsAsync: async version of g_app_info_launch_uris().
 //
-// The callback is invoked immediately after the application launch, but it
-// waits for activation in case of D-Bus–activated applications and also
+// The callback is invoked immediately after the application launch,
+// but it waits for activation in case of D-Bus–activated applications and also
 // provides extended error information for sandboxed applications, see notes for
 // g_app_info_launch_default_for_uri_async().
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): #GCancellable.
-//    - uris (optional) containing URIs to launch.
-//    - context (optional) or NULL.
-//    - callback (optional) to call when the request is done.
+//   - ctx (optional): #GCancellable.
+//   - uris (optional) containing URIs to launch.
+//   - context (optional) or NULL.
+//   - callback (optional) to call when the request is done.
 //
 func (appinfo *AppInfo) launchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1628,7 +1628,7 @@ func (appinfo *AppInfo) launchURIsAsync(ctx context.Context, uris []string, cont
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (appinfo *AppInfo) launchURIsFinish(result AsyncResulter) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1658,7 +1658,7 @@ func (appinfo *AppInfo) launchURIsFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - contentType: string.
+//   - contentType: string.
 //
 func (appinfo *AppInfo) removeSupportsType(contentType string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1690,7 +1690,7 @@ func (appinfo *AppInfo) removeSupportsType(contentType string) error {
 //
 // The function takes the following parameters:
 //
-//    - extension: string containing the file extension (without the dot).
+//   - extension: string containing the file extension (without the dot).
 //
 func (appinfo *AppInfo) setAsDefaultForExtension(extension string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1722,7 +1722,7 @@ func (appinfo *AppInfo) setAsDefaultForExtension(extension string) error {
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type.
+//   - contentType: content type.
 //
 func (appinfo *AppInfo) setAsDefaultForType(contentType string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1749,14 +1749,14 @@ func (appinfo *AppInfo) setAsDefaultForType(contentType string) error {
 	return _goerr
 }
 
-// setAsLastUsedForType sets the application as the last used application for a
-// given type. This will make the application appear as first in the list
+// setAsLastUsedForType sets the application as the last used application for
+// a given type. This will make the application appear as first in the list
 // returned by g_app_info_get_recommended_for_type(), regardless of the default
 // application for that content type.
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type.
+//   - contentType: content type.
 //
 func (appinfo *AppInfo) setAsLastUsedForType(contentType string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1788,7 +1788,7 @@ func (appinfo *AppInfo) setAsLastUsedForType(contentType string) error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the appinfo should be shown, FALSE otherwise.
+//   - ok: TRUE if the appinfo should be shown, FALSE otherwise.
 //
 func (appinfo *AppInfo) shouldShow() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1815,7 +1815,7 @@ func (appinfo *AppInfo) shouldShow() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the appinfo supports files.
+//   - ok: TRUE if the appinfo supports files.
 //
 func (appinfo *AppInfo) supportsFiles() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1843,7 +1843,7 @@ func (appinfo *AppInfo) supportsFiles() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the appinfo supports URIs.
+//   - ok: TRUE if the appinfo supports URIs.
 //
 func (appinfo *AppInfo) supportsURIs() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
@@ -1868,22 +1868,22 @@ func (appinfo *AppInfo) supportsURIs() bool {
 
 // AppInfoCreateFromCommandline creates a new Info from the given information.
 //
-// Note that for commandline, the quoting rules of the Exec key of the
-// freedesktop.org Desktop Entry Specification
-// (http://freedesktop.org/Standards/desktop-entry-spec) are applied. For
-// example, if the commandline contains percent-encoded URIs, the
+// Note that for commandline, the quoting rules of the Exec
+// key of the freedesktop.org Desktop Entry Specification
+// (http://freedesktop.org/Standards/desktop-entry-spec) are applied.
+// For example, if the commandline contains percent-encoded URIs, the
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
 //
 // The function takes the following parameters:
 //
-//    - commandline to use.
-//    - applicationName (optional): application name, or NULL to use commandline.
-//    - flags that can specify details of the created Info.
+//   - commandline to use.
+//   - applicationName (optional): application name, or NULL to use commandline.
+//   - flags that can specify details of the created Info.
 //
 // The function returns the following values:
 //
-//    - appInfo: new Info for given command.
+//   - appInfo: new Info for given command.
 //
 func AppInfoCreateFromCommandline(commandline, applicationName string, flags AppInfoCreateFlags) (*AppInfo, error) {
 	var _arg1 *C.char               // out
@@ -1919,14 +1919,14 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 // AppInfoGetAll gets a list of all of the applications currently registered on
 // this system.
 //
-// For desktop files, this includes applications that have NoDisplay=true set or
-// are excluded from display by means of OnlyShowIn or NotShowIn. See
-// g_app_info_should_show(). The returned list does not include applications
+// For desktop files, this includes applications that have NoDisplay=true
+// set or are excluded from display by means of OnlyShowIn or NotShowIn.
+// See g_app_info_should_show(). The returned list does not include applications
 // which have the Hidden key set.
 //
 // The function returns the following values:
 //
-//    - list: newly allocated #GList of references to Infos.
+//   - list: newly allocated #GList of references to Infos.
 //
 func AppInfoGetAll() []*AppInfo {
 	var _cret *C.GList // in
@@ -1946,17 +1946,17 @@ func AppInfoGetAll() []*AppInfo {
 	return _list
 }
 
-// AppInfoGetAllForType gets a list of all Infos for a given content type,
-// including the recommended and fallback Infos. See
+// AppInfoGetAllForType gets a list of all Infos for a given
+// content type, including the recommended and fallback Infos. See
 // g_app_info_get_recommended_for_type() and g_app_info_get_fallback_for_type().
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type to find a Info for.
+//   - contentType: content type to find a Info for.
 //
 // The function returns the following values:
 //
-//    - list of Infos for given content_type or NULL on error.
+//   - list of Infos for given content_type or NULL on error.
 //
 func AppInfoGetAllForType(contentType string) []*AppInfo {
 	var _arg1 *C.char  // out
@@ -1985,12 +1985,12 @@ func AppInfoGetAllForType(contentType string) []*AppInfo {
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type to find a Info for.
-//    - mustSupportUris: if TRUE, the Info is expected to support URIs.
+//   - contentType: content type to find a Info for.
+//   - mustSupportUris: if TRUE, the Info is expected to support URIs.
 //
 // The function returns the following values:
 //
-//    - appInfo (optional) for given content_type or NULL on error.
+//   - appInfo (optional) for given content_type or NULL on error.
 //
 func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo {
 	var _arg1 *C.char     // out
@@ -2017,16 +2017,16 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 }
 
 // AppInfoGetDefaultForURIScheme gets the default application for handling URIs
-// with the given URI scheme. A URI scheme is the initial part of the URI, up to
-// but not including the ':', e.g. "http", "ftp" or "sip".
+// with the given URI scheme. A URI scheme is the initial part of the URI,
+// up to but not including the ':', e.g. "http", "ftp" or "sip".
 //
 // The function takes the following parameters:
 //
-//    - uriScheme: string containing a URI scheme.
+//   - uriScheme: string containing a URI scheme.
 //
 // The function returns the following values:
 //
-//    - appInfo (optional) for given uri_scheme or NULL on error.
+//   - appInfo (optional) for given uri_scheme or NULL on error.
 //
 func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 	var _arg1 *C.char     // out
@@ -2051,14 +2051,14 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 // application registered to handle the specified uri. Synchronous I/O is done
 // on the uri to detect the type of the file if required.
 //
-// The D-Bus–activated applications don't have to be started if your application
-// terminates too soon after this function. To prevent this, use
-// g_app_info_launch_default_for_uri_async() instead.
+// The D-Bus–activated applications don't have to be started if your
+// application terminates too soon after this function. To prevent this,
+// use g_app_info_launch_default_for_uri_async() instead.
 //
 // The function takes the following parameters:
 //
-//    - uri to show.
-//    - context (optional): optional LaunchContext.
+//   - uri to show.
+//   - context (optional): optional LaunchContext.
 //
 func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	var _arg1 *C.char              // out
@@ -2092,46 +2092,46 @@ type AppLaunchContextOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - info: Info.
-	//    - files of #GFile objects.
+	//   - info: Info.
+	//   - files of #GFile objects.
 	//
 	// The function returns the following values:
 	//
-	//    - utf8 (optional): display string for the display.
+	//   - utf8 (optional): display string for the display.
 	//
 	Display func(info AppInfor, files []Filer) string
 	// StartupNotifyID initiates startup notification for the application and
 	// returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
 	//
-	// Startup notification IDs are defined in the FreeDesktop.Org Startup
-	// Notifications standard
+	// Startup notification IDs are defined in the
+	// FreeDesktop.Org Startup Notifications standard
 	// (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
 	//
 	// The function takes the following parameters:
 	//
-	//    - info: Info.
-	//    - files of of #GFile objects.
+	//   - info: Info.
+	//   - files of of #GFile objects.
 	//
 	// The function returns the following values:
 	//
-	//    - utf8 (optional): startup notification ID for the application, or NULL
-	//      if not supported.
+	//   - utf8 (optional): startup notification ID for the application, or NULL
+	//     if not supported.
 	//
 	StartupNotifyID func(info AppInfor, files []Filer) string
-	// LaunchFailed: called when an application has failed to launch, so that it
-	// can cancel the application startup notification started in
+	// LaunchFailed: called when an application has failed to launch,
+	// so that it can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
 	//
 	// The function takes the following parameters:
 	//
-	//    - startupNotifyId: startup notification id that was returned by
-	//      g_app_launch_context_get_startup_notify_id().
+	//   - startupNotifyId: startup notification id that was returned by
+	//     g_app_launch_context_get_startup_notify_id().
 	//
 	LaunchFailed func(startupNotifyId string)
 	// The function takes the following parameters:
 	//
-	//    - info
-	//    - platformData
+	//   - info
+	//   - platformData
 	//
 	Launched func(info AppInfor, platformData *glib.Variant)
 }
@@ -2145,9 +2145,9 @@ func defaultAppLaunchContextOverrides(v *AppLaunchContext) AppLaunchContextOverr
 	}
 }
 
-// AppLaunchContext: integrating the launch with the launching application. This
-// is used to handle for instance startup notification and launching the new
-// application on the same screen as the launching window.
+// AppLaunchContext: integrating the launch with the launching application.
+// This is used to handle for instance startup notification and launching the
+// new application on the same screen as the launching window.
 type AppLaunchContext struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -2208,8 +2208,8 @@ func (context *AppLaunchContext) ConnectLaunchFailed(f func(startupNotifyId stri
 	return coreglib.ConnectGeneratedClosure(context, "launch-failed", false, unsafe.Pointer(C._gotk4_gio2_AppLaunchContext_ConnectLaunchFailed), f)
 }
 
-// ConnectLaunched signal is emitted when a Info is successfully launched. The
-// platform_data is an GVariant dictionary mapping strings to variants (ie
+// ConnectLaunched signal is emitted when a Info is successfully launched.
+// The platform_data is an GVariant dictionary mapping strings to variants (ie
 // a{sv}), which contains additional, platform-specific data about this launch.
 // On UNIX, at least the "pid" and "startup-notification-id" keys will be
 // present.
@@ -2217,13 +2217,13 @@ func (context *AppLaunchContext) ConnectLaunched(f func(info AppInfor, platformD
 	return coreglib.ConnectGeneratedClosure(context, "launched", false, unsafe.Pointer(C._gotk4_gio2_AppLaunchContext_ConnectLaunched), f)
 }
 
-// NewAppLaunchContext creates a new application launch context. This is not
-// normally used, instead you instantiate a subclass of this, such as
+// NewAppLaunchContext creates a new application launch context. This is
+// not normally used, instead you instantiate a subclass of this, such as
 // AppLaunchContext.
 //
 // The function returns the following values:
 //
-//    - appLaunchContext: LaunchContext.
+//   - appLaunchContext: LaunchContext.
 //
 func NewAppLaunchContext() *AppLaunchContext {
 	var _cret *C.GAppLaunchContext // in
@@ -2238,17 +2238,17 @@ func NewAppLaunchContext() *AppLaunchContext {
 }
 
 // Display gets the display string for the context. This is used to ensure new
-// applications are started on the same display as the launching application, by
-// setting the DISPLAY environment variable.
+// applications are started on the same display as the launching application,
+// by setting the DISPLAY environment variable.
 //
 // The function takes the following parameters:
 //
-//    - info: Info.
-//    - files of #GFile objects.
+//   - info: Info.
+//   - files of #GFile objects.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): display string for the display.
+//   - utf8 (optional): display string for the display.
 //
 func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	var _arg0 *C.GAppLaunchContext // out
@@ -2281,13 +2281,13 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	return _utf8
 }
 
-// Environment gets the complete environment variable list to be passed to the
-// child process when context is used to launch an application. This is a
+// Environment gets the complete environment variable list to be passed to
+// the child process when context is used to launch an application. This is a
 // NULL-terminated array of strings, where each string has the form KEY=VALUE.
 //
 // The function returns the following values:
 //
-//    - filenames: the child's environment.
+//   - filenames: the child's environment.
 //
 func (context *AppLaunchContext) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
@@ -2322,19 +2322,19 @@ func (context *AppLaunchContext) Environment() []string {
 // StartupNotifyID initiates startup notification for the application and
 // returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
 //
-// Startup notification IDs are defined in the FreeDesktop.Org Startup
-// Notifications standard
+// Startup notification IDs are defined in the
+// FreeDesktop.Org Startup Notifications standard
 // (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
 //
 // The function takes the following parameters:
 //
-//    - info: Info.
-//    - files of of #GFile objects.
+//   - info: Info.
+//   - files of of #GFile objects.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): startup notification ID for the application, or NULL if
-//      not supported.
+//   - utf8 (optional): startup notification ID for the application, or NULL if
+//     not supported.
 //
 func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) string {
 	var _arg0 *C.GAppLaunchContext // out
@@ -2367,14 +2367,14 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 	return _utf8
 }
 
-// LaunchFailed: called when an application has failed to launch, so that it can
-// cancel the application startup notification started in
+// LaunchFailed: called when an application has failed to launch,
+// so that it can cancel the application startup notification started in
 // g_app_launch_context_get_startup_notify_id().
 //
 // The function takes the following parameters:
 //
-//    - startupNotifyId: startup notification id that was returned by
-//      g_app_launch_context_get_startup_notify_id().
+//   - startupNotifyId: startup notification id that was returned by
+//     g_app_launch_context_get_startup_notify_id().
 //
 func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
@@ -2394,8 +2394,8 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 //
 // The function takes the following parameters:
 //
-//    - variable: environment variable to set.
-//    - value for to set the variable to.
+//   - variable: environment variable to set.
+//   - value for to set the variable to.
 //
 func (context *AppLaunchContext) Setenv(variable, value string) {
 	var _arg0 *C.GAppLaunchContext // out
@@ -2419,7 +2419,7 @@ func (context *AppLaunchContext) Setenv(variable, value string) {
 //
 // The function takes the following parameters:
 //
-//    - variable: environment variable to remove.
+//   - variable: environment variable to remove.
 //
 func (context *AppLaunchContext) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
@@ -2435,17 +2435,17 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 }
 
 // Display gets the display string for the context. This is used to ensure new
-// applications are started on the same display as the launching application, by
-// setting the DISPLAY environment variable.
+// applications are started on the same display as the launching application,
+// by setting the DISPLAY environment variable.
 //
 // The function takes the following parameters:
 //
-//    - info: Info.
-//    - files of #GFile objects.
+//   - info: Info.
+//   - files of #GFile objects.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): display string for the display.
+//   - utf8 (optional): display string for the display.
 //
 func (context *AppLaunchContext) display(info AppInfor, files []Filer) string {
 	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
@@ -2484,19 +2484,19 @@ func (context *AppLaunchContext) display(info AppInfor, files []Filer) string {
 // startupNotifyID initiates startup notification for the application and
 // returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
 //
-// Startup notification IDs are defined in the FreeDesktop.Org Startup
-// Notifications standard
+// Startup notification IDs are defined in the
+// FreeDesktop.Org Startup Notifications standard
 // (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
 //
 // The function takes the following parameters:
 //
-//    - info: Info.
-//    - files of of #GFile objects.
+//   - info: Info.
+//   - files of of #GFile objects.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): startup notification ID for the application, or NULL if
-//      not supported.
+//   - utf8 (optional): startup notification ID for the application, or NULL if
+//     not supported.
 //
 func (context *AppLaunchContext) startupNotifyID(info AppInfor, files []Filer) string {
 	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
@@ -2532,14 +2532,14 @@ func (context *AppLaunchContext) startupNotifyID(info AppInfor, files []Filer) s
 	return _utf8
 }
 
-// launchFailed: called when an application has failed to launch, so that it can
-// cancel the application startup notification started in
+// launchFailed: called when an application has failed to launch,
+// so that it can cancel the application startup notification started in
 // g_app_launch_context_get_startup_notify_id().
 //
 // The function takes the following parameters:
 //
-//    - startupNotifyId: startup notification id that was returned by
-//      g_app_launch_context_get_startup_notify_id().
+//   - startupNotifyId: startup notification id that was returned by
+//     g_app_launch_context_get_startup_notify_id().
 //
 func (context *AppLaunchContext) launchFailed(startupNotifyId string) {
 	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
@@ -2559,8 +2559,8 @@ func (context *AppLaunchContext) launchFailed(startupNotifyId string) {
 
 // The function takes the following parameters:
 //
-//    - info
-//    - platformData
+//   - info
+//   - platformData
 //
 func (context *AppLaunchContext) launched(info AppInfor, platformData *glib.Variant) {
 	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))

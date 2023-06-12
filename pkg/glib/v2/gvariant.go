@@ -188,7 +188,7 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 //
 // The function takes the following parameters:
 //
-//    - value: #GVariant.
+//   - value: #GVariant.
 //
 func (builder *VariantBuilder) AddValue(value *Variant) {
 	var _arg0 *C.GVariantBuilder // out
@@ -219,11 +219,11 @@ func (builder *VariantBuilder) Close() {
 
 // End ends the builder process and returns the constructed value.
 //
-// It is not permissible to use builder in any way after this call except for
-// reference counting operations (in the case of a heap-allocated Builder) or by
-// reinitialising it with g_variant_builder_init() (in the case of
-// stack-allocated). This means that for the stack-allocated builders there is
-// no need to call g_variant_builder_clear() after the call to
+// It is not permissible to use builder in any way after this call except
+// for reference counting operations (in the case of a heap-allocated
+// Builder) or by reinitialising it with g_variant_builder_init() (in the
+// case of stack-allocated). This means that for the stack-allocated builders
+// there is no need to call g_variant_builder_clear() after the call to
 // g_variant_builder_end().
 //
 // It is an error to call this function in any way that would create an
@@ -235,7 +235,7 @@ func (builder *VariantBuilder) Close() {
 //
 // The function returns the following values:
 //
-//    - variant: new, floating, #GVariant.
+//   - variant: new, floating, #GVariant.
 //
 func (builder *VariantBuilder) End() *Variant {
 	var _arg0 *C.GVariantBuilder // out
@@ -298,7 +298,7 @@ func (builder *VariantBuilder) End() *Variant {
 //
 // The function takes the following parameters:
 //
-//    - typ of the container.
+//   - typ of the container.
 //
 func (builder *VariantBuilder) Open(typ *VariantType) {
 	var _arg0 *C.GVariantBuilder // out

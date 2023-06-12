@@ -27,8 +27,8 @@ type Glyph = uint32
 
 // Rectangle: PangoRectangle structure represents a rectangle.
 //
-// PangoRectangle is frequently used to represent the logical or ink extents of
-// a single glyph or section of text. (See, for instance,
+// PangoRectangle is frequently used to represent the logical or ink
+// extents of a single glyph or section of text. (See, for instance,
 // pango.Font.GetGlyphExtents().)
 //
 // An instance of this type is always passed by reference.

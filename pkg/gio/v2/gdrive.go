@@ -131,8 +131,8 @@ func init() {
 	})
 }
 
-// Drive - this represent a piece of hardware connected to the machine. It's
-// generally only created for removable hardware or hardware with removable
+// Drive - this represent a piece of hardware connected to the machine.
+// It's generally only created for removable hardware or hardware with removable
 // media.
 //
 // #GDrive is a container class for #GVolume objects that stem from the same
@@ -145,9 +145,9 @@ func init() {
 // for media; typically one should not do this periodically as a poll for media
 // operation is potentially expensive and may spin up the drive creating noise.
 //
-// #GDrive supports starting and stopping drives with authentication support for
-// the former. This can be used to support a diverse set of use cases including
-// connecting/disconnecting iSCSI devices, powering down external disk
+// #GDrive supports starting and stopping drives with authentication support
+// for the former. This can be used to support a diverse set of use cases
+// including connecting/disconnecting iSCSI devices, powering down external disk
 // enclosures and starting/stopping multi-disk devices such as RAID devices.
 // Note that the actual semantics and side-effects of starting/stopping a
 // #GDrive may vary according to implementation. To choose the correct verbs in
@@ -285,7 +285,7 @@ func (drive *Drive) ConnectStopButton(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be ejected, FALSE otherwise.
+//   - ok: TRUE if the drive can be ejected, FALSE otherwise.
 //
 func (drive *Drive) CanEject() bool {
 	var _arg0 *C.GDrive  // out
@@ -309,7 +309,7 @@ func (drive *Drive) CanEject() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be polled for media changes, FALSE otherwise.
+//   - ok: TRUE if the drive can be polled for media changes, FALSE otherwise.
 //
 func (drive *Drive) CanPollForMedia() bool {
 	var _arg0 *C.GDrive  // out
@@ -333,7 +333,7 @@ func (drive *Drive) CanPollForMedia() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be started, FALSE otherwise.
+//   - ok: TRUE if the drive can be started, FALSE otherwise.
 //
 func (drive *Drive) CanStart() bool {
 	var _arg0 *C.GDrive  // out
@@ -357,7 +357,7 @@ func (drive *Drive) CanStart() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
+//   - ok: TRUE if the drive can be started degraded, FALSE otherwise.
 //
 func (drive *Drive) CanStartDegraded() bool {
 	var _arg0 *C.GDrive  // out
@@ -381,7 +381,7 @@ func (drive *Drive) CanStartDegraded() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be stopped, FALSE otherwise.
+//   - ok: TRUE if the drive can be stopped, FALSE otherwise.
 //
 func (drive *Drive) CanStop() bool {
 	var _arg0 *C.GDrive  // out
@@ -410,9 +410,9 @@ func (drive *Drive) CanStop() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -446,7 +446,7 @@ func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
@@ -475,10 +475,10 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -517,7 +517,7 @@ func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
@@ -545,8 +545,8 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings containing kinds of identifiers.
-//      Use g_strfreev() to free.
+//   - utf8s: NULL-terminated array of strings containing kinds of identifiers.
+//     Use g_strfreev() to free.
 //
 func (drive *Drive) EnumerateIdentifiers() []string {
 	var _arg0 *C.GDrive // out
@@ -582,7 +582,7 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 //
 // The function returns the following values:
 //
-//    - icon for the drive. Free the returned object with g_object_unref().
+//   - icon for the drive. Free the returned object with g_object_unref().
 //
 func (drive *Drive) Icon() *Icon {
 	var _arg0 *C.GDrive // out
@@ -605,12 +605,12 @@ func (drive *Drive) Icon() *Icon {
 //
 // The function takes the following parameters:
 //
-//    - kind of identifier to return.
+//   - kind of identifier to return.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string containing the requested
-//      identifier, or NULL if the #GDrive doesn't have this kind of identifier.
+//   - utf8 (optional): newly allocated string containing the requested
+//     identifier, or NULL if the #GDrive doesn't have this kind of identifier.
 //
 func (drive *Drive) Identifier(kind string) string {
 	var _arg0 *C.GDrive // out
@@ -639,8 +639,8 @@ func (drive *Drive) Identifier(kind string) string {
 //
 // The function returns the following values:
 //
-//    - utf8: string containing drive's name. The returned string should be freed
-//      when no longer needed.
+//   - utf8: string containing drive's name. The returned string should be freed
+//     when no longer needed.
 //
 func (drive *Drive) Name() string {
 	var _arg0 *C.GDrive // out
@@ -663,8 +663,8 @@ func (drive *Drive) Name() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): sorting key for drive or NULL if no such key is
-//      available.
+//   - utf8 (optional): sorting key for drive or NULL if no such key is
+//     available.
 //
 func (drive *Drive) SortKey() string {
 	var _arg0 *C.GDrive // out
@@ -688,7 +688,7 @@ func (drive *Drive) SortKey() string {
 //
 // The function returns the following values:
 //
-//    - driveStartStopType: value from the StartStopType enumeration.
+//   - driveStartStopType: value from the StartStopType enumeration.
 //
 func (drive *Drive) StartStopType() DriveStartStopType {
 	var _arg0 *C.GDrive             // out
@@ -710,8 +710,8 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 //
 // The function returns the following values:
 //
-//    - icon: symbolic #GIcon for the drive. Free the returned object with
-//      g_object_unref().
+//   - icon: symbolic #GIcon for the drive. Free the returned object with
+//     g_object_unref().
 //
 func (drive *Drive) SymbolicIcon() *Icon {
 	var _arg0 *C.GDrive // out
@@ -736,7 +736,7 @@ func (drive *Drive) SymbolicIcon() *Icon {
 //
 // The function returns the following values:
 //
-//    - list containing any #GVolume objects on the given drive.
+//   - list containing any #GVolume objects on the given drive.
 //
 func (drive *Drive) Volumes() []*Volume {
 	var _arg0 *C.GDrive // out
@@ -766,7 +766,7 @@ func (drive *Drive) Volumes() []*Volume {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if drive has media, FALSE otherwise.
+//   - ok: TRUE if drive has media, FALSE otherwise.
 //
 func (drive *Drive) HasMedia() bool {
 	var _arg0 *C.GDrive  // out
@@ -790,7 +790,7 @@ func (drive *Drive) HasMedia() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive contains volumes, FALSE otherwise.
+//   - ok: TRUE if the drive contains volumes, FALSE otherwise.
 //
 func (drive *Drive) HasVolumes() bool {
 	var _arg0 *C.GDrive  // out
@@ -815,8 +815,8 @@ func (drive *Drive) HasVolumes() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive is capable of automatically detecting media
-//      changes, FALSE otherwise.
+//   - ok: TRUE if the drive is capable of automatically detecting media
+//     changes, FALSE otherwise.
 //
 func (drive *Drive) IsMediaCheckAutomatic() bool {
 	var _arg0 *C.GDrive  // out
@@ -840,7 +840,7 @@ func (drive *Drive) IsMediaCheckAutomatic() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if drive supports removable media, FALSE otherwise.
+//   - ok: TRUE if drive supports removable media, FALSE otherwise.
 //
 func (drive *Drive) IsMediaRemovable() bool {
 	var _arg0 *C.GDrive  // out
@@ -865,8 +865,8 @@ func (drive *Drive) IsMediaRemovable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if drive and/or its media is considered removable, FALSE
-//      otherwise.
+//   - ok: TRUE if drive and/or its media is considered removable, FALSE
+//     otherwise.
 //
 func (drive *Drive) IsRemovable() bool {
 	var _arg0 *C.GDrive  // out
@@ -894,8 +894,8 @@ func (drive *Drive) IsRemovable() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -925,7 +925,7 @@ func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallbac
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
@@ -955,10 +955,10 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the start operation.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the start operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -995,7 +995,7 @@ func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOpera
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) StartFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
@@ -1025,10 +1025,10 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for stopping.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for stopping.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
@@ -1065,7 +1065,7 @@ func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOper
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) StopFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
@@ -1092,7 +1092,7 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be ejected, FALSE otherwise.
+//   - ok: TRUE if the drive can be ejected, FALSE otherwise.
 //
 func (drive *Drive) canEject() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1119,7 +1119,7 @@ func (drive *Drive) canEject() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be polled for media changes, FALSE otherwise.
+//   - ok: TRUE if the drive can be polled for media changes, FALSE otherwise.
 //
 func (drive *Drive) canPollForMedia() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1146,7 +1146,7 @@ func (drive *Drive) canPollForMedia() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be started, FALSE otherwise.
+//   - ok: TRUE if the drive can be started, FALSE otherwise.
 //
 func (drive *Drive) canStart() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1173,7 +1173,7 @@ func (drive *Drive) canStart() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be started degraded, FALSE otherwise.
+//   - ok: TRUE if the drive can be started degraded, FALSE otherwise.
 //
 func (drive *Drive) canStartDegraded() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1200,7 +1200,7 @@ func (drive *Drive) canStartDegraded() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive can be stopped, FALSE otherwise.
+//   - ok: TRUE if the drive can be stopped, FALSE otherwise.
 //
 func (drive *Drive) canStop() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1256,9 +1256,9 @@ func (drive *Drive) disconnected() {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1307,7 +1307,7 @@ func (drive *Drive) ejectButton() {
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) ejectFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1339,10 +1339,10 @@ func (drive *Drive) ejectFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1384,7 +1384,7 @@ func (drive *Drive) ejectWithOperation(ctx context.Context, flags MountUnmountFl
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) ejectWithOperationFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1415,8 +1415,8 @@ func (drive *Drive) ejectWithOperationFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings containing kinds of identifiers.
-//      Use g_strfreev() to free.
+//   - utf8s: NULL-terminated array of strings containing kinds of identifiers.
+//     Use g_strfreev() to free.
 //
 func (drive *Drive) enumerateIdentifiers() []string {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1455,7 +1455,7 @@ func (drive *Drive) enumerateIdentifiers() []string {
 //
 // The function returns the following values:
 //
-//    - icon for the drive. Free the returned object with g_object_unref().
+//   - icon for the drive. Free the returned object with g_object_unref().
 //
 func (drive *Drive) icon() *Icon {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1481,12 +1481,12 @@ func (drive *Drive) icon() *Icon {
 //
 // The function takes the following parameters:
 //
-//    - kind of identifier to return.
+//   - kind of identifier to return.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string containing the requested
-//      identifier, or NULL if the #GDrive doesn't have this kind of identifier.
+//   - utf8 (optional): newly allocated string containing the requested
+//     identifier, or NULL if the #GDrive doesn't have this kind of identifier.
 //
 func (drive *Drive) identifier(kind string) string {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1518,8 +1518,8 @@ func (drive *Drive) identifier(kind string) string {
 //
 // The function returns the following values:
 //
-//    - utf8: string containing drive's name. The returned string should be freed
-//      when no longer needed.
+//   - utf8: string containing drive's name. The returned string should be freed
+//     when no longer needed.
 //
 func (drive *Drive) name() string {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1545,8 +1545,8 @@ func (drive *Drive) name() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): sorting key for drive or NULL if no such key is
-//      available.
+//   - utf8 (optional): sorting key for drive or NULL if no such key is
+//     available.
 //
 func (drive *Drive) sortKey() string {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1573,7 +1573,7 @@ func (drive *Drive) sortKey() string {
 //
 // The function returns the following values:
 //
-//    - driveStartStopType: value from the StartStopType enumeration.
+//   - driveStartStopType: value from the StartStopType enumeration.
 //
 func (drive *Drive) startStopType() DriveStartStopType {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1598,8 +1598,8 @@ func (drive *Drive) startStopType() DriveStartStopType {
 //
 // The function returns the following values:
 //
-//    - icon: symbolic #GIcon for the drive. Free the returned object with
-//      g_object_unref().
+//   - icon: symbolic #GIcon for the drive. Free the returned object with
+//     g_object_unref().
 //
 func (drive *Drive) symbolicIcon() *Icon {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1627,7 +1627,7 @@ func (drive *Drive) symbolicIcon() *Icon {
 //
 // The function returns the following values:
 //
-//    - list containing any #GVolume objects on the given drive.
+//   - list containing any #GVolume objects on the given drive.
 //
 func (drive *Drive) volumes() []*Volume {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1660,7 +1660,7 @@ func (drive *Drive) volumes() []*Volume {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if drive has media, FALSE otherwise.
+//   - ok: TRUE if drive has media, FALSE otherwise.
 //
 func (drive *Drive) hasMedia() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1687,7 +1687,7 @@ func (drive *Drive) hasMedia() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive contains volumes, FALSE otherwise.
+//   - ok: TRUE if the drive contains volumes, FALSE otherwise.
 //
 func (drive *Drive) hasVolumes() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1715,8 +1715,8 @@ func (drive *Drive) hasVolumes() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the drive is capable of automatically detecting media
-//      changes, FALSE otherwise.
+//   - ok: TRUE if the drive is capable of automatically detecting media
+//     changes, FALSE otherwise.
 //
 func (drive *Drive) isMediaCheckAutomatic() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1743,7 +1743,7 @@ func (drive *Drive) isMediaCheckAutomatic() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if drive supports removable media, FALSE otherwise.
+//   - ok: TRUE if drive supports removable media, FALSE otherwise.
 //
 func (drive *Drive) isMediaRemovable() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1771,8 +1771,8 @@ func (drive *Drive) isMediaRemovable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if drive and/or its media is considered removable, FALSE
-//      otherwise.
+//   - ok: TRUE if drive and/or its media is considered removable, FALSE
+//     otherwise.
 //
 func (drive *Drive) isRemovable() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1803,8 +1803,8 @@ func (drive *Drive) isRemovable() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) pollForMedia(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1837,7 +1837,7 @@ func (drive *Drive) pollForMedia(ctx context.Context, callback AsyncReadyCallbac
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) pollForMediaFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1870,10 +1870,10 @@ func (drive *Drive) pollForMediaFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the start operation.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the start operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1913,7 +1913,7 @@ func (drive *Drive) start(ctx context.Context, flags DriveStartFlags, mountOpera
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) startFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -1946,10 +1946,10 @@ func (drive *Drive) startFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for stopping.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for stopping.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (drive *Drive) stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
@@ -2001,7 +2001,7 @@ func (drive *Drive) stopButton() {
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (drive *Drive) stopFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))

@@ -41,18 +41,17 @@ func init() {
 // bits per sample, width and height, and the rowstride (the number of bytes
 // between the start of one row and the start of the next).
 //
+// # Creating new GdkPixbuf
 //
-// Creating new GdkPixbuf
-//
-// The most basic way to create a pixbuf is to wrap an existing pixel buffer
-// with a gdkpixbuf.Pixbuf instance. You can use the
+// The most basic way to create a pixbuf is to wrap an existing
+// pixel buffer with a gdkpixbuf.Pixbuf instance. You can use the
 // gdkpixbuf.Pixbuf.NewFromData function to do this.
 //
-// Every time you create a new GdkPixbuf instance for some data, you will need
-// to specify the destroy notification function that will be called when the
-// data buffer needs to be freed; this will happen when a GdkPixbuf is finalized
-// by the reference counting functions. If you have a chunk of static data
-// compiled into your application, you can pass in NULL as the destroy
+// Every time you create a new GdkPixbuf instance for some data, you will
+// need to specify the destroy notification function that will be called when
+// the data buffer needs to be freed; this will happen when a GdkPixbuf is
+// finalized by the reference counting functions. If you have a chunk of static
+// data compiled into your application, you can pass in NULL as the destroy
 // notification function so that the data will not be freed.
 //
 // The gdkpixbuf.Pixbuf.New constructor function can be used as a convenience to
@@ -64,13 +63,12 @@ func init() {
 // As a special case, you can use the gdkpixbuf.Pixbuf.NewFromXPMData function
 // to create a pixbuf from inline XPM image data.
 //
-// You can also copy an existing pixbuf with the pixbuf.Copy function. This is
-// not the same as just acquiring a reference to the old pixbuf instance: the
-// copy function will actually duplicate the pixel data in memory and create a
-// new pixbuf instance for it.
+// You can also copy an existing pixbuf with the pixbuf.Copy function. This
+// is not the same as just acquiring a reference to the old pixbuf instance:
+// the copy function will actually duplicate the pixel data in memory and create
+// a new pixbuf instance for it.
 //
-//
-// Reference counting
+// # Reference counting
 //
 // GdkPixbuf structures are reference counted. This means that an application
 // can share a single pixbuf among many parts of the code. When a piece of the
@@ -80,8 +78,7 @@ func init() {
 // with a GdkPixbuf will be freed when its reference count drops to zero.
 // Newly-created GdkPixbuf instances start with a reference count of one.
 //
-//
-// Image Data
+// # Image Data
 //
 // Image data in a pixbuf is stored in memory in an uncompressed, packed format.
 // Rows in the image are stored top to bottom, and in each row pixels are stored
@@ -92,15 +89,14 @@ func init() {
 // The "rowstride" value of a pixbuf, as returned by
 // gdkpixbuf.Pixbuf.GetRowstride(), indicates the number of bytes between rows.
 //
-// **NOTE**: If you are copying raw pixbuf data with memcpy() note that the last
-// row in the pixbuf may not be as wide as the full rowstride, but rather just
-// as wide as the pixel data needs to be; that is: it is unsafe to do memcpy
-// (dest, pixels, rowstride * height) to copy a whole pixbuf. Use
-// gdkpixbuf.Pixbuf.Copy() instead, or compute the width in bytes of the last
-// row as:
+// **NOTE**: If you are copying raw pixbuf data with memcpy() note that
+// the last row in the pixbuf may not be as wide as the full rowstride,
+// but rather just as wide as the pixel data needs to be; that is: it is unsafe
+// to do memcpy (dest, pixels, rowstride * height) to copy a whole pixbuf.
+// Use gdkpixbuf.Pixbuf.Copy() instead, or compute the width in bytes of the
+// last row as:
 //
 //    last_row = width * ((n_channels * bits_per_sample + 7) / 8);
-//
 //
 // The same rule applies when iterating over each row of a GdkPixbuf pixels
 // array.
@@ -145,9 +141,7 @@ func init() {
 //      p[3] = alpha;
 //    }
 //
-//
-//
-// Loading images
+// # Loading images
 //
 // The GdkPixBuf class provides a simple mechanism for loading an image from a
 // file in synchronous and asynchronous fashion.
@@ -158,8 +152,7 @@ func init() {
 // Additionally, GdkPixbuf provides the gdkpixbuf.PixbufLoader` API for
 // progressive image loading.
 //
-//
-// Saving images
+// # Saving images
 //
 // The GdkPixbuf class provides methods for saving image data in a number of
 // file formats. The formatted data can be written to a file or to a memory
@@ -195,20 +188,20 @@ func marshalPixbuf(p uintptr) (interface{}, error) {
 //
 // If the allocation of the buffer failed, this function will return NULL.
 //
-// The buffer has an optimal rowstride. Note that the buffer is not cleared; you
-// will have to fill it completely yourself.
+// The buffer has an optimal rowstride. Note that the buffer is not cleared;
+// you will have to fill it completely yourself.
 //
 // The function takes the following parameters:
 //
-//    - colorspace: color space for image.
-//    - hasAlpha: whether the image should have transparency information.
-//    - bitsPerSample: number of bits per color sample.
-//    - width: width of image in pixels, must be > 0.
-//    - height: height of image in pixels, must be > 0.
+//   - colorspace: color space for image.
+//   - hasAlpha: whether the image should have transparency information.
+//   - bitsPerSample: number of bits per color sample.
+//   - width: width of image in pixels, must be > 0.
+//   - height: height of image in pixels, must be > 0.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixel buffer.
+//   - pixbuf (optional): newly-created pixel buffer.
 //
 func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int) *Pixbuf {
 	var _arg1 C.GdkColorspace // out
@@ -251,17 +244,17 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, heigh
 //
 // The function takes the following parameters:
 //
-//    - data: image data in 8-bit/sample packed format inside a #GBytes.
-//    - colorspace: colorspace for the image data.
-//    - hasAlpha: whether the data has an opacity channel.
-//    - bitsPerSample: number of bits per sample.
-//    - width: width of the image in pixels, must be > 0.
-//    - height: height of the image in pixels, must be > 0.
-//    - rowstride: distance in bytes between row starts.
+//   - data: image data in 8-bit/sample packed format inside a #GBytes.
+//   - colorspace: colorspace for the image data.
+//   - hasAlpha: whether the data has an opacity channel.
+//   - bitsPerSample: number of bits per sample.
+//   - width: width of the image in pixels, must be > 0.
+//   - height: height of the image in pixels, must be > 0.
+//   - rowstride: distance in bytes between row starts.
 //
 // The function returns the following values:
 //
-//    - pixbuf: newly-created pixbuf.
+//   - pixbuf: newly-created pixbuf.
 //
 func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height, rowstride int) *Pixbuf {
 	var _arg1 *C.GBytes       // out
@@ -305,20 +298,20 @@ func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, 
 //
 // If NULL is returned, then error will be set. Possible errors are:
 //
-//    - the file could not be opened
-//    - there is no loader for the file's format
-//    - there is not enough memory to allocate the image buffer
-//    - the image buffer contains invalid data
+//   - the file could not be opened
+//   - there is no loader for the file's format
+//   - there is not enough memory to allocate the image buffer
+//   - the image buffer contains invalid data
 //
 // The error domains are GDK_PIXBUF_ERROR and G_FILE_ERROR.
 //
 // The function takes the following parameters:
 //
-//    - filename: name of file to load, in the GLib file name encoding.
+//   - filename: name of file to load, in the GLib file name encoding.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 //
 func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
@@ -351,10 +344,10 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 //
 // If NULL is returned, then error will be set. Possible errors are:
 //
-//    - the file could not be opened
-//    - there is no loader for the file's format
-//    - there is not enough memory to allocate the image buffer
-//    - the image buffer contains invalid data
+//   - the file could not be opened
+//   - there is no loader for the file's format
+//   - there is not enough memory to allocate the image buffer
+//   - the image buffer contains invalid data
 //
 // The error domains are GDK_PIXBUF_ERROR and G_FILE_ERROR.
 //
@@ -362,21 +355,21 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 // the image's aspect ratio.
 //
 // When preserving the aspect ratio, a width of -1 will cause the image to be
-// scaled to the exact given height, and a height of -1 will cause the image to
-// be scaled to the exact given width. When not preserving aspect ratio, a width
-// or height of -1 means to not scale the image at all in that dimension.
+// scaled to the exact given height, and a height of -1 will cause the image
+// to be scaled to the exact given width. When not preserving aspect ratio, a
+// width or height of -1 means to not scale the image at all in that dimension.
 // Negative values for width and height are allowed since 2.8.
 //
 // The function takes the following parameters:
 //
-//    - filename: name of file to load, in the GLib file name encoding.
-//    - width the image should have or -1 to not constrain the width.
-//    - height the image should have or -1 to not constrain the height.
-//    - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
+//   - filename: name of file to load, in the GLib file name encoding.
+//   - width the image should have or -1 to not constrain the width.
+//   - height the image should have or -1 to not constrain the height.
+//   - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 //
 func NewPixbufFromFileAtScale(filename string, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
@@ -419,10 +412,10 @@ func NewPixbufFromFileAtScale(filename string, width, height int, preserveAspect
 //
 // If NULL is returned, then error will be set. Possible errors are:
 //
-//    - the file could not be opened
-//    - there is no loader for the file's format
-//    - there is not enough memory to allocate the image buffer
-//    - the image buffer contains invalid data
+//   - the file could not be opened
+//   - there is no loader for the file's format
+//   - there is not enough memory to allocate the image buffer
+//   - the image buffer contains invalid data
 //
 // The error domains are GDK_PIXBUF_ERROR and G_FILE_ERROR.
 //
@@ -433,13 +426,13 @@ func NewPixbufFromFileAtScale(filename string, width, height int, preserveAspect
 //
 // The function takes the following parameters:
 //
-//    - filename: name of file to load, in the GLib file name encoding.
-//    - width the image should have or -1 to not constrain the width.
-//    - height the image should have or -1 to not constrain the height.
+//   - filename: name of file to load, in the GLib file name encoding.
+//   - width the image should have or -1 to not constrain the width.
+//   - height the image should have or -1 to not constrain the height.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 //
 func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
@@ -485,11 +478,10 @@ func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error
 //
 //    gdk-pixbuf-csource --raw --name=myimage_inline myimage.png
 //
-//
-// For the typical case where the inline pixbuf is read-only static data, you
-// don't need to copy the pixel data unless you intend to write to it, so you
-// can pass FALSE for copy_pixels. If you pass --rle to gdk-pixbuf-csource, a
-// copy will be made even if copy_pixels is FALSE, so using this option is
+// For the typical case where the inline pixbuf is read-only static data,
+// you don't need to copy the pixel data unless you intend to write to it, so
+// you can pass FALSE for copy_pixels. If you pass --rle to gdk-pixbuf-csource,
+// a copy will be made even if copy_pixels is FALSE, so using this option is
 // generally a bad idea.
 //
 // If you create a pixbuf from const inline data compiled into your program,
@@ -498,7 +490,6 @@ func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error
 //
 //    pixbuf = gdk_pixbuf_new_from_inline (-1, myimage_inline, FALSE, NULL);
 //
-//
 // For non-const inline data, you could get out of memory. For untrusted inline
 // data located at runtime, you could have corrupt inline data in addition.
 //
@@ -506,13 +497,13 @@ func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error
 //
 // The function takes the following parameters:
 //
-//    - data: byte data containing a serialized GdkPixdata structure.
-//    - copyPixels: whether to copy the pixel data, or use direct pointers data
-//      for the resulting pixbuf.
+//   - data: byte data containing a serialized GdkPixdata structure.
+//   - copyPixels: whether to copy the pixel data, or use direct pointers data
+//     for the resulting pixbuf.
 //
 // The function returns the following values:
 //
-//    - pixbuf: newly-created pixbuf.
+//   - pixbuf: newly-created pixbuf.
 //
 func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 	var _arg2 *C.guint8 // out
@@ -552,11 +543,11 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path of the resource file.
+//   - resourcePath: path of the resource file.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 //
 func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
@@ -590,8 +581,8 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 //
 // The image will be scaled to fit in the requested size, optionally preserving
 // the image's aspect ratio. When preserving the aspect ratio, a width of -1
-// will cause the image to be scaled to the exact given height, and a height of
-// -1 will cause the image to be scaled to the exact given width. When not
+// will cause the image to be scaled to the exact given height, and a height
+// of -1 will cause the image to be scaled to the exact given width. When not
 // preserving aspect ratio, a width or height of -1 means to not scale the image
 // at all in that dimension.
 //
@@ -599,14 +590,14 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path of the resource file.
-//    - width the image should have or -1 to not constrain the width.
-//    - height the image should have or -1 to not constrain the height.
-//    - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
+//   - resourcePath: path of the resource file.
+//   - width the image should have or -1 to not constrain the width.
+//   - height the image should have or -1 to not constrain the height.
+//   - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 //
 func NewPixbufFromResourceAtScale(resourcePath string, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
@@ -658,12 +649,12 @@ func NewPixbufFromResourceAtScale(resourcePath string, width, height int, preser
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - stream: GInputStream to load the pixbuf from.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - stream: GInputStream to load the pixbuf from.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 //
 func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf, error) {
 	var _arg2 *C.GCancellable // out
@@ -719,15 +710,15 @@ func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - stream: GInputStream to load the pixbuf from.
-//    - width the image should have or -1 to not constrain the width.
-//    - height the image should have or -1 to not constrain the height.
-//    - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - stream: GInputStream to load the pixbuf from.
+//   - width the image should have or -1 to not constrain the width.
+//   - height the image should have or -1 to not constrain the height.
+//   - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 //
 func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg5 *C.GCancellable // out
@@ -775,11 +766,11 @@ func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, w
 //
 // The function takes the following parameters:
 //
-//    - asyncResult: GAsyncResult.
+//   - asyncResult: GAsyncResult.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly created pixbuf.
+//   - pixbuf (optional): newly created pixbuf.
 //
 func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 	var _arg1 *C.GAsyncResult // out
@@ -811,11 +802,11 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 //
 // The function takes the following parameters:
 //
-//    - data: pointer to inline XPM data.
+//   - data: pointer to inline XPM data.
 //
 // The function returns the following values:
 //
-//    - pixbuf: newly-created pixbuf.
+//   - pixbuf: newly-created pixbuf.
 //
 func NewPixbufFromXPMData(data []string) *Pixbuf {
 	var _arg1 **C.char     // out
@@ -859,14 +850,14 @@ func NewPixbufFromXPMData(data []string) *Pixbuf {
 //
 // The function takes the following parameters:
 //
-//    - substituteColor: whether to set a color to zero opacity.
-//    - r: red value to substitute.
-//    - g: green value to substitute.
-//    - b: blue value to substitute.
+//   - substituteColor: whether to set a color to zero opacity.
+//   - r: red value to substitute.
+//   - g: green value to substitute.
+//   - b: blue value to substitute.
 //
 // The function returns the following values:
 //
-//    - ret: newly-created pixbuf.
+//   - ret: newly-created pixbuf.
 //
 func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r, g, b byte) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
@@ -910,7 +901,7 @@ func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r, g, b byte) *Pixbuf {
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 //
 func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
@@ -933,28 +924,28 @@ func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 // Composite creates a transformation of the source image src by scaling by
 // scale_x and scale_y then translating by offset_x and offset_y.
 //
-// This gives an image in the coordinates of the destination pixbuf. The
-// rectangle (dest_x, dest_y, dest_width, dest_height) is then alpha blended
+// This gives an image in the coordinates of the destination pixbuf.
+// The rectangle (dest_x, dest_y, dest_width, dest_height) is then alpha blended
 // onto the corresponding rectangle of the original destination image.
 //
-// When the destination rectangle contains parts not in the source image, the
-// data at the edges of the source image is replicated to infinity.
+// When the destination rectangle contains parts not in the source image,
+// the data at the edges of the source image is replicated to infinity.
 //
 // ! (composite.png).
 //
 // The function takes the following parameters:
 //
-//    - dest into which to render the results.
-//    - destX: left coordinate for region to render.
-//    - destY: top coordinate for region to render.
-//    - destWidth: width of the region to render.
-//    - destHeight: height of the region to render.
-//    - offsetX: offset in the X direction (currently rounded to an integer).
-//    - offsetY: offset in the Y direction (currently rounded to an integer).
-//    - scaleX: scale factor in the X direction.
-//    - scaleY: scale factor in the Y direction.
-//    - interpType: interpolation type for the transformation.
-//    - overallAlpha: overall alpha for source image (0..255).
+//   - dest into which to render the results.
+//   - destX: left coordinate for region to render.
+//   - destY: top coordinate for region to render.
+//   - destWidth: width of the region to render.
+//   - destHeight: height of the region to render.
+//   - offsetX: offset in the X direction (currently rounded to an integer).
+//   - offsetY: offset in the Y direction (currently rounded to an integer).
+//   - scaleX: scale factor in the X direction.
+//   - scaleY: scale factor in the Y direction.
+//   - interpType: interpolation type for the transformation.
+//   - overallAlpha: overall alpha for source image (0..255).
 //
 func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha int) {
 	var _arg0 *C.GdkPixbuf     // out
@@ -998,9 +989,9 @@ func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight i
 	runtime.KeepAlive(overallAlpha)
 }
 
-// CompositeColor creates a transformation of the source image src by scaling by
-// scale_x and scale_y then translating by offset_x and offset_y, then alpha
-// blends the rectangle (dest_x ,dest_y, dest_width, dest_height) of the
+// CompositeColor creates a transformation of the source image src by scaling
+// by scale_x and scale_y then translating by offset_x and offset_y, then
+// alpha blends the rectangle (dest_x ,dest_y, dest_width, dest_height) of the
 // resulting image with a checkboard of the colors color1 and color2 and renders
 // it onto the destination image.
 //
@@ -1012,23 +1003,23 @@ func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight i
 //
 // The function takes the following parameters:
 //
-//    - dest into which to render the results.
-//    - destX: left coordinate for region to render.
-//    - destY: top coordinate for region to render.
-//    - destWidth: width of the region to render.
-//    - destHeight: height of the region to render.
-//    - offsetX: offset in the X direction (currently rounded to an integer).
-//    - offsetY: offset in the Y direction (currently rounded to an integer).
-//    - scaleX: scale factor in the X direction.
-//    - scaleY: scale factor in the Y direction.
-//    - interpType: interpolation type for the transformation.
-//    - overallAlpha: overall alpha for source image (0..255).
-//    - checkX: x offset for the checkboard (origin of checkboard is at -check_x,
-//      -check_y).
-//    - checkY: y offset for the checkboard.
-//    - checkSize: size of checks in the checkboard (must be a power of two).
-//    - color1: color of check at upper left.
-//    - color2: color of the other check.
+//   - dest into which to render the results.
+//   - destX: left coordinate for region to render.
+//   - destY: top coordinate for region to render.
+//   - destWidth: width of the region to render.
+//   - destHeight: height of the region to render.
+//   - offsetX: offset in the X direction (currently rounded to an integer).
+//   - offsetY: offset in the Y direction (currently rounded to an integer).
+//   - scaleX: scale factor in the X direction.
+//   - scaleY: scale factor in the Y direction.
+//   - interpType: interpolation type for the transformation.
+//   - overallAlpha: overall alpha for source image (0..255).
+//   - checkX: x offset for the checkboard (origin of checkboard is at -check_x,
+//     -check_y).
+//   - checkY: y offset for the checkboard.
+//   - checkSize: size of checks in the checkboard (must be a power of two).
+//   - color1: color of check at upper left.
+//   - color2: color of the other check.
 //
 func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha, checkX, checkY, checkSize int, color1, color2 uint32) {
 	var _arg0 *C.GdkPixbuf     // out
@@ -1093,17 +1084,17 @@ func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHei
 //
 // The function takes the following parameters:
 //
-//    - destWidth: width of destination image.
-//    - destHeight: height of destination image.
-//    - interpType: interpolation type for the transformation.
-//    - overallAlpha: overall alpha for source image (0..255).
-//    - checkSize: size of checks in the checkboard (must be a power of two).
-//    - color1: color of check at upper left.
-//    - color2: color of the other check.
+//   - destWidth: width of destination image.
+//   - destHeight: height of destination image.
+//   - interpType: interpolation type for the transformation.
+//   - overallAlpha: overall alpha for source image (0..255).
+//   - checkSize: size of checks in the checkboard (must be a power of two).
+//   - color1: color of check at upper left.
+//   - color2: color of the other check.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): new pixbuf.
+//   - pixbuf (optional): new pixbuf.
 //
 func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType InterpType, overallAlpha, checkSize int, color1, color2 uint32) *Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
@@ -1147,12 +1138,12 @@ func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType In
 // Copy creates a new GdkPixbuf with a copy of the information in the specified
 // pixbuf.
 //
-// Note that this does not copy the options set on the original GdkPixbuf, use
-// gdk_pixbuf_copy_options() for this.
+// Note that this does not copy the options set on the original GdkPixbuf,
+// use gdk_pixbuf_copy_options() for this.
 //
 // The function returns the following values:
 //
-//    - ret (optional): newly-created pixbuf.
+//   - ret (optional): newly-created pixbuf.
 //
 func (pixbuf *Pixbuf) Copy() *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
@@ -1182,13 +1173,13 @@ func (pixbuf *Pixbuf) Copy() *Pixbuf {
 //
 // The function takes the following parameters:
 //
-//    - srcX: source X coordinate within src_pixbuf.
-//    - srcY: source Y coordinate within src_pixbuf.
-//    - width: width of the area to copy.
-//    - height: height of the area to copy.
-//    - destPixbuf: destination pixbuf.
-//    - destX: x coordinate within dest_pixbuf.
-//    - destY: y coordinate within dest_pixbuf.
+//   - srcX: source X coordinate within src_pixbuf.
+//   - srcY: source Y coordinate within src_pixbuf.
+//   - width: width of the area to copy.
+//   - height: height of the area to copy.
+//   - destPixbuf: destination pixbuf.
+//   - destX: x coordinate within dest_pixbuf.
+//   - destY: y coordinate within dest_pixbuf.
 //
 func (srcPixbuf *Pixbuf) CopyArea(srcX, srcY, width, height int, destPixbuf *Pixbuf, destX, destY int) {
 	var _arg0 *C.GdkPixbuf // out
@@ -1229,11 +1220,11 @@ func (srcPixbuf *Pixbuf) CopyArea(srcX, srcY, width, height int, destPixbuf *Pix
 //
 // The function takes the following parameters:
 //
-//    - destPixbuf: destination pixbuf.
+//   - destPixbuf: destination pixbuf.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success.
+//   - ok: TRUE on success.
 //
 func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf *Pixbuf) bool {
 	var _arg0 *C.GdkPixbuf // out
@@ -1264,8 +1255,8 @@ func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf *Pixbuf) bool {
 //
 // The function takes the following parameters:
 //
-//    - pixel: RGBA pixel to used to clear (0xffffffff is opaque white,
-//      0x00000000 transparent black).
+//   - pixel: RGBA pixel to used to clear (0xffffffff is opaque white,
+//     0x00000000 transparent black).
 //
 func (pixbuf *Pixbuf) Fill(pixel uint32) {
 	var _arg0 *C.GdkPixbuf // out
@@ -1284,11 +1275,11 @@ func (pixbuf *Pixbuf) Fill(pixel uint32) {
 //
 // The function takes the following parameters:
 //
-//    - horizontal: TRUE to flip horizontally, FALSE to flip vertically.
+//   - horizontal: TRUE to flip horizontally, FALSE to flip vertically.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): new pixbuf.
+//   - pixbuf (optional): new pixbuf.
 //
 func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
@@ -1317,7 +1308,7 @@ func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 //
 // The function returns the following values:
 //
-//    - gint: number of bits per color sample.
+//   - gint: number of bits per color sample.
 //
 func (pixbuf *Pixbuf) BitsPerSample() int {
 	var _arg0 *C.GdkPixbuf // out
@@ -1339,7 +1330,7 @@ func (pixbuf *Pixbuf) BitsPerSample() int {
 //
 // The function returns the following values:
 //
-//    - gsize: length of the pixel data.
+//   - gsize: length of the pixel data.
 //
 func (pixbuf *Pixbuf) ByteLength() uint {
 	var _arg0 *C.GdkPixbuf // out
@@ -1361,7 +1352,7 @@ func (pixbuf *Pixbuf) ByteLength() uint {
 //
 // The function returns the following values:
 //
-//    - colorspace: color space.
+//   - colorspace: color space.
 //
 func (pixbuf *Pixbuf) Colorspace() Colorspace {
 	var _arg0 *C.GdkPixbuf    // out
@@ -1383,7 +1374,7 @@ func (pixbuf *Pixbuf) Colorspace() Colorspace {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if it has an alpha channel, FALSE otherwise.
+//   - ok: TRUE if it has an alpha channel, FALSE otherwise.
 //
 func (pixbuf *Pixbuf) HasAlpha() bool {
 	var _arg0 *C.GdkPixbuf // out
@@ -1407,7 +1398,7 @@ func (pixbuf *Pixbuf) HasAlpha() bool {
 //
 // The function returns the following values:
 //
-//    - gint: height in pixels.
+//   - gint: height in pixels.
 //
 func (pixbuf *Pixbuf) Height() int {
 	var _arg0 *C.GdkPixbuf // out
@@ -1429,7 +1420,7 @@ func (pixbuf *Pixbuf) Height() int {
 //
 // The function returns the following values:
 //
-//    - gint: number of channels.
+//   - gint: number of channels.
 //
 func (pixbuf *Pixbuf) NChannels() int {
 	var _arg0 *C.GdkPixbuf // out
@@ -1464,11 +1455,11 @@ func (pixbuf *Pixbuf) NChannels() int {
 //
 // The function takes the following parameters:
 //
-//    - key: nul-terminated string.
+//   - key: nul-terminated string.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value associated with key.
+//   - utf8 (optional): value associated with key.
 //
 func (pixbuf *Pixbuf) Option(key string) string {
 	var _arg0 *C.GdkPixbuf // out
@@ -1498,7 +1489,7 @@ func (pixbuf *Pixbuf) Option(key string) string {
 //
 // The function returns the following values:
 //
-//    - hashTable: Table of key/values pairs.
+//   - hashTable: Table of key/values pairs.
 //
 func (pixbuf *Pixbuf) Options() map[string]string {
 	var _arg0 *C.GdkPixbuf  // out
@@ -1535,7 +1526,7 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 //
 // The function returns the following values:
 //
-//    - guint8s: pointer to the pixbuf's pixel data.
+//   - guint8s: pointer to the pixbuf's pixel data.
 //
 func (pixbuf *Pixbuf) Pixels() []byte {
 	var _arg0 *C.GdkPixbuf // out
@@ -1560,7 +1551,7 @@ func (pixbuf *Pixbuf) Pixels() []byte {
 //
 // The function returns the following values:
 //
-//    - gint: distance between row starts.
+//   - gint: distance between row starts.
 //
 func (pixbuf *Pixbuf) Rowstride() int {
 	var _arg0 *C.GdkPixbuf // out
@@ -1582,7 +1573,7 @@ func (pixbuf *Pixbuf) Rowstride() int {
 //
 // The function returns the following values:
 //
-//    - gint: width in pixels.
+//   - gint: width in pixels.
 //
 func (pixbuf *Pixbuf) Width() int {
 	var _arg0 *C.GdkPixbuf // out
@@ -1612,14 +1603,14 @@ func (pixbuf *Pixbuf) Width() int {
 //
 // The function takes the following parameters:
 //
-//    - srcX: x coord in src_pixbuf.
-//    - srcY: y coord in src_pixbuf.
-//    - width of region in src_pixbuf.
-//    - height of region in src_pixbuf.
+//   - srcX: x coord in src_pixbuf.
+//   - srcY: y coord in src_pixbuf.
+//   - width of region in src_pixbuf.
+//   - height of region in src_pixbuf.
 //
 // The function returns the following values:
 //
-//    - pixbuf: new pixbuf.
+//   - pixbuf: new pixbuf.
 //
 func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX, srcY, width, height int) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
@@ -1649,17 +1640,17 @@ func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX, srcY, width, height int) *Pixbuf {
 	return _pixbuf
 }
 
-// ReadPixelBytes provides a #GBytes buffer containing the raw pixel data; the
-// data must not be modified.
+// ReadPixelBytes provides a #GBytes buffer containing the raw pixel data;
+// the data must not be modified.
 //
 // This function allows skipping the implicit copy that must be made if
 // gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
 //
 // The function returns the following values:
 //
-//    - bytes: new reference to a read-only copy of the pixel data. Note that for
-//      mutable pixbufs, this function will incur a one-time copy of the pixel
-//      data for conversion into the returned #GBytes.
+//   - bytes: new reference to a read-only copy of the pixel data. Note that for
+//     mutable pixbufs, this function will incur a one-time copy of the pixel
+//     data for conversion into the returned #GBytes.
 //
 func (pixbuf *Pixbuf) ReadPixelBytes() *glib.Bytes {
 	var _arg0 *C.GdkPixbuf // out
@@ -1690,7 +1681,7 @@ func (pixbuf *Pixbuf) ReadPixelBytes() *glib.Bytes {
 //
 // The function returns the following values:
 //
-//    - guint8: read-only pointer to the raw pixel data.
+//   - guint8: read-only pointer to the raw pixel data.
 //
 func (pixbuf *Pixbuf) ReadPixels() *byte {
 	var _arg0 *C.GdkPixbuf // out
@@ -1712,11 +1703,11 @@ func (pixbuf *Pixbuf) ReadPixels() *byte {
 //
 // The function takes the following parameters:
 //
-//    - key: nul-terminated string representing the key to remove.
+//   - key: nul-terminated string representing the key to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if an option was removed, FALSE if not.
+//   - ok: TRUE if an option was removed, FALSE if not.
 //
 func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 	var _arg0 *C.GdkPixbuf // out
@@ -1747,11 +1738,11 @@ func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 //
 // The function takes the following parameters:
 //
-//    - angle to rotate by.
+//   - angle to rotate by.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): new pixbuf.
+//   - pixbuf (optional): new pixbuf.
 //
 func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 	var _arg0 *C.GdkPixbuf        // out
@@ -1791,9 +1782,9 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 //
 // The function takes the following parameters:
 //
-//    - dest: place to write modified version of src.
-//    - saturation factor.
-//    - pixelate: whether to pixelate.
+//   - dest: place to write modified version of src.
+//   - saturation factor.
+//   - pixelate: whether to pixelate.
 //
 func (src *Pixbuf) SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelate bool) {
 	var _arg0 *C.GdkPixbuf // out
@@ -1824,13 +1815,13 @@ func (src *Pixbuf) SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelat
 //
 // The function takes the following parameters:
 //
-//    - typ: name of file format.
-//    - optionKeys (optional): name of options to set.
-//    - optionValues (optional) values for named options.
+//   - typ: name of file format.
+//   - optionKeys (optional): name of options to set.
+//   - optionValues (optional) values for named options.
 //
 // The function returns the following values:
 //
-//    - buffer: location to receive a pointer to the new buffer.
+//   - buffer: location to receive a pointer to the new buffer.
 //
 func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys, optionValues []string) ([]byte, error) {
 	var _arg0 *C.GdkPixbuf // out
@@ -1901,11 +1892,11 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys, optionValues []strin
 //
 // The function takes the following parameters:
 //
-//    - saveFunc: function that is called to save each block of data that the
-//      save routine generates.
-//    - typ: name of file format.
-//    - optionKeys (optional): name of options to set.
-//    - optionValues (optional) values for named options.
+//   - saveFunc: function that is called to save each block of data that the
+//     save routine generates.
+//   - typ: name of file format.
+//   - optionKeys (optional): name of options to set.
+//   - optionValues (optional) values for named options.
 //
 func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf        // out
@@ -1973,11 +1964,11 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - stream: GOutputStream to save the pixbuf to.
-//    - typ: name of file format.
-//    - optionKeys (optional): name of options to set.
-//    - optionValues (optional) values for named options.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - stream: GOutputStream to save the pixbuf to.
+//   - typ: name of file format.
+//   - optionKeys (optional): name of options to set.
+//   - optionValues (optional) values for named options.
 //
 func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf     // out
@@ -2053,13 +2044,13 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - stream: GOutputStream to which to save the pixbuf.
-//    - typ: name of file format.
-//    - optionKeys (optional): name of options to set.
-//    - optionValues (optional) values for named options.
-//    - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//      saved.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - stream: GOutputStream to which to save the pixbuf.
+//   - typ: name of file format.
+//   - optionKeys (optional): name of options to set.
+//   - optionValues (optional) values for named options.
+//   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
+//     saved.
 //
 func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys, optionValues []string, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkPixbuf          // out
@@ -2132,10 +2123,10 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputS
 //
 // The function takes the following parameters:
 //
-//    - filename: name of file to save.
-//    - typ: name of file format.
-//    - optionKeys (optional): name of options to set.
-//    - optionValues (optional) values for named options.
+//   - filename: name of file to save.
+//   - typ: name of file format.
+//   - optionKeys (optional): name of options to set.
+//   - optionValues (optional) values for named options.
 //
 func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf // out
@@ -2198,8 +2189,8 @@ func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []str
 // rectangle (dest_x, dest_y, dest_width, dest_height) of the resulting image
 // onto the destination image replacing the previous contents.
 //
-// Try to use gdk_pixbuf_scale_simple() first; this function is the
-// industrial-strength power tool you can fall back to, if
+// Try to use gdk_pixbuf_scale_simple() first; this function is
+// the industrial-strength power tool you can fall back to, if
 // gdk_pixbuf_scale_simple() isn't powerful enough.
 //
 // If the source rectangle overlaps the destination rectangle on the same
@@ -2208,16 +2199,16 @@ func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []str
 //
 // The function takes the following parameters:
 //
-//    - dest into which to render the results.
-//    - destX: left coordinate for region to render.
-//    - destY: top coordinate for region to render.
-//    - destWidth: width of the region to render.
-//    - destHeight: height of the region to render.
-//    - offsetX: offset in the X direction (currently rounded to an integer).
-//    - offsetY: offset in the Y direction (currently rounded to an integer).
-//    - scaleX: scale factor in the X direction.
-//    - scaleY: scale factor in the Y direction.
-//    - interpType: interpolation type for the transformation.
+//   - dest into which to render the results.
+//   - destX: left coordinate for region to render.
+//   - destY: top coordinate for region to render.
+//   - destWidth: width of the region to render.
+//   - destHeight: height of the region to render.
+//   - offsetX: offset in the X direction (currently rounded to an integer).
+//   - offsetY: offset in the Y direction (currently rounded to an integer).
+//   - scaleX: scale factor in the X direction.
+//   - scaleY: scale factor in the Y direction.
+//   - interpType: interpolation type for the transformation.
 //
 func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType) {
 	var _arg0 *C.GdkPixbuf     // out
@@ -2271,21 +2262,21 @@ func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, 
 // You can scale a sub-portion of src by creating a sub-pixbuf pointing into
 // src; see gdkpixbuf.Pixbuf.NewSubpixbuf().
 //
-// If dest_width and dest_height are equal to the width and height of src, this
-// function will return an unscaled copy of src.
+// If dest_width and dest_height are equal to the width and height of src,
+// this function will return an unscaled copy of src.
 //
 // For more complicated scaling/alpha blending see gdkpixbuf.Pixbuf.Scale() and
 // gdkpixbuf.Pixbuf.Composite().
 //
 // The function takes the following parameters:
 //
-//    - destWidth: width of destination image.
-//    - destHeight: height of destination image.
-//    - interpType: interpolation type for the transformation.
+//   - destWidth: width of destination image.
+//   - destHeight: height of destination image.
+//   - interpType: interpolation type for the transformation.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): new pixbuf.
+//   - pixbuf (optional): new pixbuf.
 //
 func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType) *Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
@@ -2321,12 +2312,12 @@ func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType)
 //
 // The function takes the following parameters:
 //
-//    - key: nul-terminated string.
-//    - value: nul-terminated string.
+//   - key: nul-terminated string.
+//   - value: nul-terminated string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success.
+//   - ok: TRUE on success.
 //
 func (pixbuf *Pixbuf) SetOption(key, value string) bool {
 	var _arg0 *C.GdkPixbuf // out

@@ -39,19 +39,17 @@ func init() {
 // The URI bound to a GtkLinkButton can be set specifically using
 // gtk.LinkButton.SetURI().
 //
-// By default, GtkLinkButton calls gtk.ShowURI() when the button is clicked.
-// This behaviour can be overridden by connecting to the
+// By default, GtkLinkButton calls gtk.ShowURI() when the button is
+// clicked. This behaviour can be overridden by connecting to the
 // gtk.LinkButton::activate-link signal and returning TRUE from the signal
 // handler.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkLinkButton has a single CSS node with name button. To differentiate it
 // from a plain GtkButton, it gets the .link style class.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkLinkButton uses the K_ACCESSIBLE_ROLE_LINK role.
 type LinkButton struct {
@@ -124,11 +122,11 @@ func (linkButton *LinkButton) ConnectActivateLink(f func() (ok bool)) coreglib.S
 //
 // The function takes the following parameters:
 //
-//    - uri: valid URI.
+//   - uri: valid URI.
 //
 // The function returns the following values:
 //
-//    - linkButton: new link button widget.
+//   - linkButton: new link button widget.
 //
 func NewLinkButton(uri string) *LinkButton {
 	var _arg1 *C.char      // out
@@ -151,12 +149,12 @@ func NewLinkButton(uri string) *LinkButton {
 //
 // The function takes the following parameters:
 //
-//    - uri: valid URI.
-//    - label (optional): text of the button.
+//   - uri: valid URI.
+//   - label (optional): text of the button.
 //
 // The function returns the following values:
 //
-//    - linkButton: new link button widget.
+//   - linkButton: new link button widget.
 //
 func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 	var _arg1 *C.char      // out
@@ -185,8 +183,8 @@ func NewLinkButtonWithLabel(uri, label string) *LinkButton {
 //
 // The function returns the following values:
 //
-//    - utf8: valid URI. The returned string is owned by the link button and
-//      should not be modified or freed.
+//   - utf8: valid URI. The returned string is owned by the link button and
+//     should not be modified or freed.
 //
 func (linkButton *LinkButton) URI() string {
 	var _arg0 *C.GtkLinkButton // out
@@ -213,7 +211,7 @@ func (linkButton *LinkButton) URI() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the link has been visited, FALSE otherwise.
+//   - ok: TRUE if the link has been visited, FALSE otherwise.
 //
 func (linkButton *LinkButton) Visited() bool {
 	var _arg0 *C.GtkLinkButton // out
@@ -239,7 +237,7 @@ func (linkButton *LinkButton) Visited() bool {
 //
 // The function takes the following parameters:
 //
-//    - uri: valid URI.
+//   - uri: valid URI.
 //
 func (linkButton *LinkButton) SetURI(uri string) {
 	var _arg0 *C.GtkLinkButton // out
@@ -260,7 +258,7 @@ func (linkButton *LinkButton) SetURI(uri string) {
 //
 // The function takes the following parameters:
 //
-//    - visited: new “visited” state.
+//   - visited: new “visited” state.
 //
 func (linkButton *LinkButton) SetVisited(visited bool) {
 	var _arg0 *C.GtkLinkButton // out

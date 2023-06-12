@@ -87,11 +87,11 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - baseStream: Stream.
+//   - baseStream: Stream.
 //
 // The function returns the following values:
 //
-//    - dataOutputStream: OutputStream.
+//   - dataOutputStream: OutputStream.
 //
 func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 	var _arg1 *C.GOutputStream     // out
@@ -113,7 +113,7 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 //
 // The function returns the following values:
 //
-//    - dataStreamByteOrder for the stream.
+//   - dataStreamByteOrder for the stream.
 //
 func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataOutputStream   // out
@@ -135,8 +135,8 @@ func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - data: #guchar.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - data: #guchar.
 //
 func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 	var _arg0 *C.GDataOutputStream // out
@@ -170,8 +170,8 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - data: #gint16.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - data: #gint16.
 //
 func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error {
 	var _arg0 *C.GDataOutputStream // out
@@ -205,8 +205,8 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - data: #gint32.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - data: #gint32.
 //
 func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error {
 	var _arg0 *C.GDataOutputStream // out
@@ -240,8 +240,8 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - data: #gint64.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - data: #gint64.
 //
 func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error {
 	var _arg0 *C.GDataOutputStream // out
@@ -275,8 +275,8 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - str: string.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - str: string.
 //
 func (stream *DataOutputStream) PutString(ctx context.Context, str string) error {
 	var _arg0 *C.GDataOutputStream // out
@@ -311,8 +311,8 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - data: #guint16.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - data: #guint16.
 //
 func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) error {
 	var _arg0 *C.GDataOutputStream // out
@@ -346,8 +346,8 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - data: #guint32.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - data: #guint32.
 //
 func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) error {
 	var _arg0 *C.GDataOutputStream // out
@@ -381,8 +381,8 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - data: #guint64.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - data: #guint64.
 //
 func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) error {
 	var _arg0 *C.GDataOutputStream // out
@@ -416,7 +416,7 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 //
 // The function takes the following parameters:
 //
-//    - order: GDataStreamByteOrder.
+//   - order: GDataStreamByteOrder.
 //
 func (stream *DataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataOutputStream   // out

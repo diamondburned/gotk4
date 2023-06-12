@@ -17,7 +17,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - debugFlags: GTK debug flags.
+//   - debugFlags: GTK debug flags.
 //
 func GetDebugFlags() DebugFlags {
 	var _cret C.GtkDebugFlags // in
@@ -35,7 +35,7 @@ func GetDebugFlags() DebugFlags {
 //
 // The function takes the following parameters:
 //
-//    - flags: debug flags to set.
+//   - flags: debug flags to set.
 //
 func SetDebugFlags(flags DebugFlags) {
 	var _arg1 C.GtkDebugFlags // out

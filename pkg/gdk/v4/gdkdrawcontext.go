@@ -78,12 +78,12 @@ func BaseDrawContext(obj DrawContexter) *DrawContext {
 // on the context's surface.
 //
 // Calling this function begins a drawing operation using context on the surface
-// that context was created from. The actual requirements and guarantees for the
-// drawing operation vary for different implementations of drawing, so a
-// gdk.CairoContext and a gdk.GLContext need to be treated differently.
+// that context was created from. The actual requirements and guarantees
+// for the drawing operation vary for different implementations of drawing,
+// so a gdk.CairoContext and a gdk.GLContext need to be treated differently.
 //
-// A call to this function is a requirement for drawing and must be followed by
-// a call to gdk.DrawContext.EndFrame(), which will complete the drawing
+// A call to this function is a requirement for drawing and must be followed
+// by a call to gdk.DrawContext.EndFrame(), which will complete the drawing
 // operation and ensure the contents become visible on screen.
 //
 // Note that the region passed to this function is the minimum region that needs
@@ -99,7 +99,7 @@ func BaseDrawContext(obj DrawContexter) *DrawContext {
 //
 // The function takes the following parameters:
 //
-//    - region: minimum region that should be drawn.
+//   - region: minimum region that should be drawn.
 //
 func (context *DrawContext) BeginFrame(region *cairo.Region) {
 	var _arg0 *C.GdkDrawContext // out
@@ -135,7 +135,7 @@ func (context *DrawContext) EndFrame() {
 //
 // The function returns the following values:
 //
-//    - display (optional): GdkDisplay or NULL.
+//   - display (optional): GdkDisplay or NULL.
 //
 func (context *DrawContext) Display() *Display {
 	var _arg0 *C.GdkDrawContext // out
@@ -166,7 +166,7 @@ func (context *DrawContext) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - region (optional): cairo region or NULL if not drawing a frame.
+//   - region (optional): cairo region or NULL if not drawing a frame.
 //
 func (context *DrawContext) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
@@ -197,7 +197,7 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 //
 // The function returns the following values:
 //
-//    - surface (optional) or NULL.
+//   - surface (optional) or NULL.
 //
 func (context *DrawContext) Surface() Surfacer {
 	var _arg0 *C.GdkDrawContext // out
@@ -239,8 +239,8 @@ func (context *DrawContext) Surface() Surfacer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the context is between gdk.DrawContext.BeginFrame() and
-//      gdk.DrawContext.EndFrame() calls.
+//   - ok: TRUE if the context is between gdk.DrawContext.BeginFrame() and
+//     gdk.DrawContext.EndFrame() calls.
 //
 func (context *DrawContext) IsInFrame() bool {
 	var _arg0 *C.GdkDrawContext // out

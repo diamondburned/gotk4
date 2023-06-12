@@ -38,11 +38,10 @@ func defaultMenuBarOverrides(v *MenuBar) MenuBarOverrides {
 	return MenuBarOverrides{}
 }
 
-// MenuBar is a subclass of MenuShell which contains one or more MenuItems. The
-// result is a standard menu bar which can hold many menu items.
+// MenuBar is a subclass of MenuShell which contains one or more MenuItems.
+// The result is a standard menu bar which can hold many menu items.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkMenuBar has a single CSS node with name menubar.
 type MenuBar struct {
@@ -99,7 +98,7 @@ func marshalMenuBar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - menuBar: new menu bar, as a Widget.
+//   - menuBar: new menu bar, as a Widget.
 //
 func NewMenuBar() *MenuBar {
 	var _cret *C.GtkWidget // in
@@ -122,11 +121,11 @@ func NewMenuBar() *MenuBar {
 //
 // The function takes the following parameters:
 //
-//    - model: Model.
+//   - model: Model.
 //
 // The function returns the following values:
 //
-//    - menuBar: new MenuBar.
+//   - menuBar: new MenuBar.
 //
 func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 	var _arg1 *C.GMenuModel // out
@@ -149,7 +148,7 @@ func NewMenuBarFromModel(model gio.MenuModeller) *MenuBar {
 //
 // The function returns the following values:
 //
-//    - packDirection: child pack direction.
+//   - packDirection: child pack direction.
 //
 func (menubar *MenuBar) ChildPackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
@@ -172,7 +171,7 @@ func (menubar *MenuBar) ChildPackDirection() PackDirection {
 //
 // The function returns the following values:
 //
-//    - packDirection: pack direction.
+//   - packDirection: pack direction.
 //
 func (menubar *MenuBar) PackDirection() PackDirection {
 	var _arg0 *C.GtkMenuBar      // out
@@ -195,7 +194,7 @@ func (menubar *MenuBar) PackDirection() PackDirection {
 //
 // The function takes the following parameters:
 //
-//    - childPackDir: new PackDirection.
+//   - childPackDir: new PackDirection.
 //
 func (menubar *MenuBar) SetChildPackDirection(childPackDir PackDirection) {
 	var _arg0 *C.GtkMenuBar      // out
@@ -213,7 +212,7 @@ func (menubar *MenuBar) SetChildPackDirection(childPackDir PackDirection) {
 //
 // The function takes the following parameters:
 //
-//    - packDir: new PackDirection.
+//   - packDir: new PackDirection.
 //
 func (menubar *MenuBar) SetPackDirection(packDir PackDirection) {
 	var _arg0 *C.GtkMenuBar      // out

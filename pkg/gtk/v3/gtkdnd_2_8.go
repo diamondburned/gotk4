@@ -16,18 +16,18 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// DragSetIconName sets the icon for a given drag from a named themed icon. See
-// the docs for IconTheme for more details. Note that the size of the icon
-// depends on the icon theme (the icon is loaded at the symbolic size
+// DragSetIconName sets the icon for a given drag from a named themed icon.
+// See the docs for IconTheme for more details. Note that the size of the
+// icon depends on the icon theme (the icon is loaded at the symbolic size
 // K_ICON_SIZE_DND), thus hot_x and hot_y have to be used with care.
 //
 // The function takes the following parameters:
 //
-//    - context for a drag (This must be called with a context for the source
-//      side of a drag).
-//    - iconName: name of icon to use.
-//    - hotX: x offset of the hotspot within the icon.
-//    - hotY: y offset of the hotspot within the icon.
+//   - context for a drag (This must be called with a context for the source
+//     side of a drag).
+//   - iconName: name of icon to use.
+//   - hotX: x offset of the hotspot within the icon.
+//   - hotY: y offset of the hotspot within the icon.
 //
 func DragSetIconName(context *gdk.DragContext, iconName string, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out

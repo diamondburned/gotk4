@@ -50,10 +50,10 @@ func init() {
 
 // Editable: GtkEditable is an interface for text editing widgets.
 //
-// Typical examples of editable widgets are gtk.Entry and gtk.SpinButton. It
-// contains functions for generically manipulating an editable widget, a large
-// number of action signals used for key bindings, and several signals that an
-// application can connect to modify the behavior of a widget.
+// Typical examples of editable widgets are gtk.Entry and gtk.SpinButton.
+// It contains functions for generically manipulating an editable widget,
+// a large number of action signals used for key bindings, and several signals
+// that an application can connect to modify the behavior of a widget.
 //
 // As an example of the latter usage, by connecting the following handler to
 // gtk.Editable::insert-text, an application can convert all entry into a widget
@@ -83,9 +83,7 @@ func init() {
 //      g_free (result);
 //    }
 //
-//
-//
-// Implementing GtkEditable
+// # Implementing GtkEditable
 //
 // The most likely scenario for implementing GtkEditable on your own widget is
 // that you will embed a Text inside a complex widget, and want to delegate the
@@ -104,7 +102,6 @@ func init() {
 //      ...
 //    }
 //
-//
 // In your interface_init function for the GtkEditable interface, provide an
 // implementation for the get_delegate vfunc that returns your text widget:
 //
@@ -119,7 +116,6 @@ func init() {
 //    {
 //      iface->get_delegate = get_editable_delegate;
 //    }
-//
 //
 // You don't need to provide any other vfuncs. The default implementations work
 // by forwarding to the delegate that the GtkEditableInterface.get_delegate()
@@ -137,7 +133,6 @@ func init() {
 //      ...
 //    }
 //
-//
 // In your dispose function, call gtk.Editable.FinishDelegate() before
 // destroying your text widget:
 //
@@ -150,24 +145,22 @@ func init() {
 //      ...
 //    }
 //
-//
 // Finally, use gtk.Editable().DelegateSetProperty in your set_property function
 // (and similar for get_property), to set the editable properties:
 //
-//      ...
-//      if (gtk_editable_delegate_set_property (object, prop_id, value, pspec))
-//        return;
+//    ...
+//    if (gtk_editable_delegate_set_property (object, prop_id, value, pspec))
+//      return;
 //
-//      switch (prop_id)
-//      ...
+//    switch (prop_id)
+//    ...
 //
-//
-// It is important to note that if you create a GtkEditable that uses a
-// delegate, the low level gtk.Editable::insert-text and
+// It is important to note that if you create a GtkEditable that
+// uses a delegate, the low level gtk.Editable::insert-text and
 // gtk.Editable::delete-text signals will be propagated from the "wrapper"
-// editable to the delegate, but they will not be propagated from the delegate
-// to the "wrapper" editable, as they would cause an infinite recursion. If you
-// wish to connect to the gtk.Editable::insert-text and
+// editable to the delegate, but they will not be propagated from the
+// delegate to the "wrapper" editable, as they would cause an infinite
+// recursion. If you wish to connect to the gtk.Editable::insert-text and
 // gtk.Editable::delete-text signals, you will need to connect to them on the
 // delegate obtained via gtk.Editable.GetDelegate().
 //
@@ -203,8 +196,8 @@ type Editabler interface {
 	Editable() bool
 	// EnableUndo gets if undo/redo actions are enabled for editable.
 	EnableUndo() bool
-	// MaxWidthChars retrieves the desired maximum width of editable, in
-	// characters.
+	// MaxWidthChars retrieves the desired maximum width of editable,
+	// in characters.
 	MaxWidthChars() int
 	// Position retrieves the current position of the cursor relative to the
 	// start of the content of the editable.
@@ -319,8 +312,8 @@ func (editable *Editable) DeleteSelection() {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (editable *Editable) DeleteText(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
@@ -354,7 +347,7 @@ func (editable *Editable) FinishDelegate() {
 //
 // The function returns the following values:
 //
-//    - gfloat: alignment.
+//   - gfloat: alignment.
 //
 func (editable *Editable) Alignment() float32 {
 	var _arg0 *C.GtkEditable // out
@@ -383,14 +376,14 @@ func (editable *Editable) Alignment() float32 {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start of text.
-//    - endPos: end of text.
+//   - startPos: start of text.
+//   - endPos: end of text.
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to the contents of the widget as a string. This string is
-//      allocated by the GtkEditable implementation and should be freed by the
-//      caller.
+//   - utf8: pointer to the contents of the widget as a string. This string is
+//     allocated by the GtkEditable implementation and should be freed by the
+//     caller.
 //
 func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
@@ -422,7 +415,7 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 //
 // The function returns the following values:
 //
-//    - ret (optional): delegate GtkEditable.
+//   - ret (optional): delegate GtkEditable.
 //
 func (editable *Editable) Delegate() *Editable {
 	var _arg0 *C.GtkEditable // out
@@ -446,7 +439,7 @@ func (editable *Editable) Delegate() *Editable {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if editable is editable.
+//   - ok: TRUE if editable is editable.
 //
 func (editable *Editable) Editable() bool {
 	var _arg0 *C.GtkEditable // out
@@ -470,7 +463,7 @@ func (editable *Editable) Editable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if undo is enabled.
+//   - ok: TRUE if undo is enabled.
 //
 func (editable *Editable) EnableUndo() bool {
 	var _arg0 *C.GtkEditable // out
@@ -494,7 +487,7 @@ func (editable *Editable) EnableUndo() bool {
 //
 // The function returns the following values:
 //
-//    - gint: maximum width of the entry, in characters.
+//   - gint: maximum width of the entry, in characters.
 //
 func (editable *Editable) MaxWidthChars() int {
 	var _arg0 *C.GtkEditable // out
@@ -519,7 +512,7 @@ func (editable *Editable) MaxWidthChars() int {
 //
 // The function returns the following values:
 //
-//    - gint: cursor position.
+//   - gint: cursor position.
 //
 func (editable *Editable) Position() int {
 	var _arg0 *C.GtkEditable // out
@@ -547,9 +540,9 @@ func (editable *Editable) Position() int {
 //
 // The function returns the following values:
 //
-//    - startPos (optional): location to store the starting position, or NULL.
-//    - endPos (optional): location to store the end position, or NULL.
-//    - ok: TRUE if there is a non-empty selection, FALSE otherwise.
+//   - startPos (optional): location to store the starting position, or NULL.
+//   - endPos (optional): location to store the end position, or NULL.
+//   - ok: TRUE if there is a non-empty selection, FALSE otherwise.
 //
 func (editable *Editable) SelectionBounds() (startPos, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
@@ -581,7 +574,7 @@ func (editable *Editable) SelectionBounds() (startPos, endPos int, ok bool) {
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to the contents of the editable.
+//   - utf8: pointer to the contents of the editable.
 //
 func (editable *Editable) Text() string {
 	var _arg0 *C.GtkEditable // out
@@ -604,7 +597,7 @@ func (editable *Editable) Text() string {
 //
 // The function returns the following values:
 //
-//    - gint: number of chars to request space for, or negative if unset.
+//   - gint: number of chars to request space for, or negative if unset.
 //
 func (editable *Editable) WidthChars() int {
 	var _arg0 *C.GtkEditable // out
@@ -649,8 +642,8 @@ func (editable *Editable) InitDelegate() {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start of region.
-//    - endPos: end of region.
+//   - startPos: start of region.
+//   - endPos: end of region.
 //
 func (editable *Editable) SelectRegion(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
@@ -674,8 +667,8 @@ func (editable *Editable) SelectRegion(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - xalign: horizontal alignment, from 0 (left) to 1 (right). Reversed for
-//      RTL layouts.
+//   - xalign: horizontal alignment, from 0 (left) to 1 (right). Reversed for
+//     RTL layouts.
 //
 func (editable *Editable) SetAlignment(xalign float32) {
 	var _arg0 *C.GtkEditable // out
@@ -693,7 +686,7 @@ func (editable *Editable) SetAlignment(xalign float32) {
 //
 // The function takes the following parameters:
 //
-//    - isEditable: TRUE if the user is allowed to edit the text in the widget.
+//   - isEditable: TRUE if the user is allowed to edit the text in the widget.
 //
 func (editable *Editable) SetEditable(isEditable bool) {
 	var _arg0 *C.GtkEditable // out
@@ -718,7 +711,7 @@ func (editable *Editable) SetEditable(isEditable bool) {
 //
 // The function takes the following parameters:
 //
-//    - enableUndo: if undo/redo should be enabled.
+//   - enableUndo: if undo/redo should be enabled.
 //
 func (editable *Editable) SetEnableUndo(enableUndo bool) {
 	var _arg0 *C.GtkEditable // out
@@ -738,7 +731,7 @@ func (editable *Editable) SetEnableUndo(enableUndo bool) {
 //
 // The function takes the following parameters:
 //
-//    - nChars: new desired maximum width, in characters.
+//   - nChars: new desired maximum width, in characters.
 //
 func (editable *Editable) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkEditable // out
@@ -754,15 +747,15 @@ func (editable *Editable) SetMaxWidthChars(nChars int) {
 
 // SetPosition sets the cursor position in the editable to the given value.
 //
-// The cursor is displayed before the character with the given (base 0) index in
-// the contents of the editable. The value must be less than or equal to the
-// number of characters in the editable. A value of -1 indicates that the
+// The cursor is displayed before the character with the given (base 0) index
+// in the contents of the editable. The value must be less than or equal to
+// the number of characters in the editable. A value of -1 indicates that the
 // position should be set after the last character of the editable. Note that
 // position is in characters, not in bytes.
 //
 // The function takes the following parameters:
 //
-//    - position of the cursor.
+//   - position of the cursor.
 //
 func (editable *Editable) SetPosition(position int) {
 	var _arg0 *C.GtkEditable // out
@@ -782,7 +775,7 @@ func (editable *Editable) SetPosition(position int) {
 //
 // The function takes the following parameters:
 //
-//    - text to set.
+//   - text to set.
 //
 func (editable *Editable) SetText(text string) {
 	var _arg0 *C.GtkEditable // out
@@ -806,7 +799,7 @@ func (editable *Editable) SetText(text string) {
 //
 // The function takes the following parameters:
 //
-//    - nChars: width in chars.
+//   - nChars: width in chars.
 //
 func (editable *Editable) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkEditable // out
@@ -842,8 +835,8 @@ func (editable *Editable) changed() {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (editable *Editable) deleteText(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -873,8 +866,8 @@ func (editable *Editable) deleteText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (editable *Editable) doDeleteText(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -901,7 +894,7 @@ func (editable *Editable) doDeleteText(startPos, endPos int) {
 //
 // The function returns the following values:
 //
-//    - ret (optional): delegate GtkEditable.
+//   - ret (optional): delegate GtkEditable.
 //
 func (editable *Editable) delegate() *Editable {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -934,9 +927,9 @@ func (editable *Editable) delegate() *Editable {
 //
 // The function returns the following values:
 //
-//    - startPos (optional): location to store the starting position, or NULL.
-//    - endPos (optional): location to store the end position, or NULL.
-//    - ok: TRUE if there is a non-empty selection, FALSE otherwise.
+//   - startPos (optional): location to store the starting position, or NULL.
+//   - endPos (optional): location to store the end position, or NULL.
+//   - ok: TRUE if there is a non-empty selection, FALSE otherwise.
 //
 func (editable *Editable) selectionBounds() (startPos, endPos int, ok bool) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -971,7 +964,7 @@ func (editable *Editable) selectionBounds() (startPos, endPos int, ok bool) {
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to the contents of the editable.
+//   - utf8: pointer to the contents of the editable.
 //
 func (editable *Editable) text() string {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -1003,8 +996,8 @@ func (editable *Editable) text() string {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start of region.
-//    - endPos: end of region.
+//   - startPos: start of region.
+//   - endPos: end of region.
 //
 func (editable *Editable) setSelectionBounds(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))

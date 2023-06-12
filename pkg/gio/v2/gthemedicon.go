@@ -59,11 +59,11 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - iconname: string containing an icon name.
+//   - iconname: string containing an icon name.
 //
 // The function returns the following values:
 //
-//    - themedIcon: new Icon.
+//   - themedIcon: new Icon.
 //
 func NewThemedIcon(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
@@ -86,11 +86,11 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 //
 // The function takes the following parameters:
 //
-//    - iconnames: array of strings containing icon names.
+//   - iconnames: array of strings containing icon names.
 //
 // The function returns the following values:
 //
-//    - themedIcon: new Icon.
+//   - themedIcon: new Icon.
 //
 func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	var _arg1 **C.char // out
@@ -135,11 +135,11 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 //
 // The function takes the following parameters:
 //
-//    - iconname: string containing an icon name.
+//   - iconname: string containing an icon name.
 //
 // The function returns the following values:
 //
-//    - themedIcon: new Icon.
+//   - themedIcon: new Icon.
 //
 func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
@@ -165,7 +165,7 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 //
 // The function takes the following parameters:
 //
-//    - iconname: name of icon to append to list of icons from within icon.
+//   - iconname: name of icon to append to list of icons from within icon.
 //
 func (icon *ThemedIcon) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
@@ -184,7 +184,7 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 //
 // The function returns the following values:
 //
-//    - utf8s: list of icon names.
+//   - utf8s: list of icon names.
 //
 func (icon *ThemedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
@@ -221,7 +221,7 @@ func (icon *ThemedIcon) Names() []string {
 //
 // The function takes the following parameters:
 //
-//    - iconname: name of icon to prepend to list of icons from within icon.
+//   - iconname: name of icon to prepend to list of icons from within icon.
 //
 func (icon *ThemedIcon) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out

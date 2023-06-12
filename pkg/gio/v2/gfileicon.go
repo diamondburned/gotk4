@@ -56,11 +56,11 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - file: #GFile.
+//   - file: #GFile.
 //
 // The function returns the following values:
 //
-//    - fileIcon for the given file, or NULL on error.
+//   - fileIcon for the given file, or NULL on error.
 //
 func NewFileIcon(file Filer) *FileIcon {
 	var _arg1 *C.GFile // out
@@ -82,7 +82,7 @@ func NewFileIcon(file Filer) *FileIcon {
 //
 // The function returns the following values:
 //
-//    - file: #GFile.
+//   - file: #GFile.
 //
 func (icon *FileIcon) File() *File {
 	var _arg0 *C.GFileIcon // out

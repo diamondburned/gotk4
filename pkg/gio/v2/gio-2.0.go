@@ -39,7 +39,7 @@ func init() {
 //
 // The function returns the following values:
 //
-//    - quark: #GQuark.
+//   - quark: #GQuark.
 //
 func IOErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -55,8 +55,8 @@ func IOErrorQuark() glib.Quark {
 	return _quark
 }
 
-// DBusActionGroup is an implementation of the Group interface that can be used
-// as a proxy for an action group that is exported over D-Bus with
+// DBusActionGroup is an implementation of the Group interface that can
+// be used as a proxy for an action group that is exported over D-Bus with
 // g_dbus_connection_export_action_group().
 type DBusActionGroup struct {
 	_ [0]func() // equal guard
@@ -84,8 +84,8 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 	return wrapDBusActionGroup(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// DBusMenuModel is an implementation of Model that can be used as a proxy for a
-// menu model that is exported over D-Bus with
+// DBusMenuModel is an implementation of Model that can be used
+// as a proxy for a menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
 type DBusMenuModel struct {
 	_ [0]func() // equal guard
@@ -161,9 +161,9 @@ func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) cor
 // when requesting to change the state, this signal is not emitted.
 //
 // If no handler is connected to this signal then the default behaviour is to
-// call g_simple_action_set_state() to set the state to the requested value. If
-// you connect a signal handler then no default action is taken. If the state
-// should change then you must call g_simple_action_set_state() from the
+// call g_simple_action_set_state() to set the state to the requested value.
+// If you connect a signal handler then no default action is taken. If the
+// state should change then you must call g_simple_action_set_state() from the
 // handler.
 //
 // An example of a 'change-state' handler:
@@ -195,13 +195,13 @@ func (simple *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) core
 //
 // The function takes the following parameters:
 //
-//    - name of the action.
-//    - parameterType (optional): type of parameter that will be passed to
-//      handlers for the Action::activate signal, or NULL for no parameter.
+//   - name of the action.
+//   - parameterType (optional): type of parameter that will be passed to
+//     handlers for the Action::activate signal, or NULL for no parameter.
 //
 // The function returns the following values:
 //
-//    - simpleAction: new Action.
+//   - simpleAction: new Action.
 //
 func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction {
 	var _arg1 *C.gchar         // out
@@ -233,14 +233,14 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 //
 // The function takes the following parameters:
 //
-//    - name of the action.
-//    - parameterType (optional): type of the parameter that will be passed to
-//      handlers for the Action::activate signal, or NULL for no parameter.
-//    - state: initial state of the action.
+//   - name of the action.
+//   - parameterType (optional): type of the parameter that will be passed to
+//     handlers for the Action::activate signal, or NULL for no parameter.
+//   - state: initial state of the action.
 //
 // The function returns the following values:
 //
-//    - simpleAction: new Action.
+//   - simpleAction: new Action.
 //
 func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) *SimpleAction {
 	var _arg1 *C.gchar         // out
@@ -277,7 +277,7 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 //
 // The function takes the following parameters:
 //
-//    - enabled: whether the action is enabled.
+//   - enabled: whether the action is enabled.
 //
 func (simple *SimpleAction) SetEnabled(enabled bool) {
 	var _arg0 *C.GSimpleAction // out
@@ -305,7 +305,7 @@ func (simple *SimpleAction) SetEnabled(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - value: new #GVariant for the state.
+//   - value: new #GVariant for the state.
 //
 func (simple *SimpleAction) SetState(value *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
@@ -325,7 +325,7 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 //
 // The function takes the following parameters:
 //
-//    - stateHint (optional) representing the state hint.
+//   - stateHint (optional) representing the state hint.
 //
 func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
@@ -372,11 +372,11 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - allowed: TRUE if the action is allowed.
+//   - allowed: TRUE if the action is allowed.
 //
 // The function returns the following values:
 //
-//    - simplePermission as a #GPermission.
+//   - simplePermission as a #GPermission.
 //
 func NewSimplePermission(allowed bool) *SimplePermission {
 	var _arg1 C.gboolean     // out

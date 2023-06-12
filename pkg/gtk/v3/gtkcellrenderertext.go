@@ -37,8 +37,8 @@ func init() {
 type CellRendererTextOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - path
-	//    - newText
+	//   - path
+	//   - newText
 	//
 	Edited func(path, newText string)
 }
@@ -108,8 +108,8 @@ func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) co
 	return coreglib.ConnectGeneratedClosure(renderer, "edited", false, unsafe.Pointer(C._gotk4_gtk3_CellRendererText_ConnectEdited), f)
 }
 
-// NewCellRendererText creates a new CellRendererText. Adjust how text is drawn
-// using object properties. Object properties can be set globally (with
+// NewCellRendererText creates a new CellRendererText. Adjust how text is
+// drawn using object properties. Object properties can be set globally (with
 // g_object_set()). Also, with TreeViewColumn, you can bind a property to a
 // value in a TreeModel. For example, you can bind the “text” property on the
 // cell renderer to a string value in the model, thus rendering a different
@@ -117,7 +117,7 @@ func (renderer *CellRendererText) ConnectEdited(f func(path, newText string)) co
 //
 // The function returns the following values:
 //
-//    - cellRendererText: new cell renderer.
+//   - cellRendererText: new cell renderer.
 //
 func NewCellRendererText() *CellRendererText {
 	var _cret *C.GtkCellRenderer // in
@@ -133,16 +133,16 @@ func NewCellRendererText() *CellRendererText {
 
 // SetFixedHeightFromFont sets the height of a renderer to explicitly be
 // determined by the “font” and “y_pad” property set on it. Further changes in
-// these properties do not affect the height, so they must be accompanied by a
-// subsequent call to this function. Using this function is unflexible, and
+// these properties do not affect the height, so they must be accompanied by
+// a subsequent call to this function. Using this function is unflexible, and
 // should really only be used if calculating the size of a cell is too slow (ie,
 // a massive number of cells displayed). If number_of_rows is -1, then the fixed
 // height is unset, and the height is determined by the properties again.
 //
 // The function takes the following parameters:
 //
-//    - numberOfRows: number of rows of text each cell renderer is allocated, or
-//      -1.
+//   - numberOfRows: number of rows of text each cell renderer is allocated,
+//     or -1.
 //
 func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	var _arg0 *C.GtkCellRendererText // out
@@ -158,8 +158,8 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 
 // The function takes the following parameters:
 //
-//    - path
-//    - newText
+//   - path
+//   - newText
 //
 func (cellRendererText *CellRendererText) edited(path, newText string) {
 	gclass := (*C.GtkCellRendererTextClass)(coreglib.PeekParentClass(cellRendererText))

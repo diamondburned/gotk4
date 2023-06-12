@@ -32,8 +32,8 @@ func init() {
 //
 // The drag operation itself can be tracked throughout the
 // gtk.GestureDrag::drag-begin, gtk.GestureDrag::drag-update and
-// gtk.GestureDrag::drag-end signals, and the relevant coordinates can be
-// extracted through gtk.GestureDrag.GetOffset() and
+// gtk.GestureDrag::drag-end signals, and the relevant coordinates
+// can be extracted through gtk.GestureDrag.GetOffset() and
 // gtk.GestureDrag.GetStartPoint().
 type GestureDrag struct {
 	_ [0]func() // equal guard
@@ -79,7 +79,7 @@ func (gesture *GestureDrag) ConnectDragUpdate(f func(offsetX, offsetY float64)) 
 //
 // The function returns the following values:
 //
-//    - gestureDrag: newly created GtkGestureDrag.
+//   - gestureDrag: newly created GtkGestureDrag.
 //
 func NewGestureDrag() *GestureDrag {
 	var _cret *C.GtkGesture // in
@@ -101,9 +101,9 @@ func NewGestureDrag() *GestureDrag {
 //
 // The function returns the following values:
 //
-//    - x (optional): x offset for the current point.
-//    - y (optional): y offset for the current point.
-//    - ok: TRUE if the gesture is active.
+//   - x (optional): x offset for the current point.
+//   - y (optional): y offset for the current point.
+//   - ok: TRUE if the gesture is active.
 //
 func (gesture *GestureDrag) Offset() (x, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out
@@ -136,9 +136,9 @@ func (gesture *GestureDrag) Offset() (x, y float64, ok bool) {
 //
 // The function returns the following values:
 //
-//    - x (optional): x coordinate for the drag start point.
-//    - y (optional): y coordinate for the drag start point.
-//    - ok: TRUE if the gesture is active.
+//   - x (optional): x coordinate for the drag start point.
+//   - y (optional): y coordinate for the drag start point.
+//   - ok: TRUE if the gesture is active.
 //
 func (gesture *GestureDrag) StartPoint() (x, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag // out

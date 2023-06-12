@@ -34,8 +34,8 @@ func defaultEmblemedIconOverrides(v *EmblemedIcon) EmblemedIconOverrides {
 	return EmblemedIconOverrides{}
 }
 
-// EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
-// an icon. Adding multiple emblems to an icon is ensured via
+// EmblemedIcon is an implementation of #GIcon that supports adding an
+// emblem to an icon. Adding multiple emblems to an icon is ensured via
 // g_emblemed_icon_add_emblem().
 //
 // Note that Icon allows no control over the position of the emblems. See also
@@ -84,12 +84,12 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - icon: #GIcon.
-//    - emblem (optional) or NULL.
+//   - icon: #GIcon.
+//   - emblem (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - emblemedIcon: new #GIcon.
+//   - emblemedIcon: new #GIcon.
 //
 func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
@@ -116,7 +116,7 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 //
 // The function takes the following parameters:
 //
-//    - emblem: #GEmblem.
+//   - emblem: #GEmblem.
 //
 func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
@@ -144,7 +144,7 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 //
 // The function returns the following values:
 //
-//    - list of #GEmblems that is owned by emblemed.
+//   - list of #GEmblems that is owned by emblemed.
 //
 func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 	var _arg0 *C.GEmblemedIcon // out
@@ -172,7 +172,7 @@ func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 //
 // The function returns the following values:
 //
-//    - icon that is owned by emblemed.
+//   - icon that is owned by emblemed.
 //
 func (emblemed *EmblemedIcon) GetIcon() *Icon {
 	var _arg0 *C.GEmblemedIcon // out

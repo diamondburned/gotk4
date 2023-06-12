@@ -44,21 +44,21 @@ func init() {
 // keyboard/pointer pairs and multitouch devices. This behavior can be changed
 // by calling gdk_disable_multidevice() before gdk_display_open(). There should
 // rarely be a need to do that though, since GDK defaults to a compatibility
-// mode in which it will emit just one enter/leave event pair for all devices on
-// a window. To enable per-device enter/leave events and other multi-pointer
+// mode in which it will emit just one enter/leave event pair for all devices
+// on a window. To enable per-device enter/leave events and other multi-pointer
 // interaction features, gdk_window_set_support_multidevice() must be called on
 // Windows (or gtk_widget_set_support_multidevice() on widgets). window. See the
 // gdk_window_set_support_multidevice() documentation for more information.
 //
-// On X11, multi-device support is implemented through XInput 2. Unless
-// gdk_disable_multidevice() is called, the XInput 2 DeviceManager
+// On X11, multi-device support is implemented through XInput 2.
+// Unless gdk_disable_multidevice() is called, the XInput 2 DeviceManager
 // implementation will be used as the input source. Otherwise either the core or
 // XInput 1 implementations will be used.
 //
-// For simple applications that don’t have any special interest in input
-// devices, the so-called “client pointer” provides a reasonable approximation
-// to a simple setup with a single pointer and keyboard. The device that has
-// been set as the client pointer can be accessed via
+// For simple applications that don’t have any special interest in
+// input devices, the so-called “client pointer” provides a reasonable
+// approximation to a simple setup with a single pointer and keyboard.
+// The device that has been set as the client pointer can be accessed via
 // gdk_device_manager_get_client_pointer().
 //
 // Conceptually, in multidevice mode there are 2 device types. Virtual devices
@@ -71,8 +71,8 @@ func init() {
 // pointer device. Associations between devices may be inspected through
 // gdk_device_get_associated_device().
 //
-// There may be several virtual devices, and several physical devices could be
-// controlling each of these virtual devices. Physical devices may also be
+// There may be several virtual devices, and several physical devices could
+// be controlling each of these virtual devices. Physical devices may also be
 // “floating”, which means they are not attached to any virtual device.
 //
 // Master and slave devices
@@ -95,8 +95,8 @@ func init() {
 //        ↳ ThinkPad Extra Buttons                    id=15   [slave  keyboard (3)]
 //
 // By default, GDK will automatically listen for events coming from all master
-// devices, setting the Device for all events coming from input devices. Events
-// containing device information are K_MOTION_NOTIFY, K_BUTTON_PRESS,
+// devices, setting the Device for all events coming from input devices.
+// Events containing device information are K_MOTION_NOTIFY, K_BUTTON_PRESS,
 // K_2BUTTON_PRESS, K_3BUTTON_PRESS, K_BUTTON_RELEASE, K_SCROLL, K_KEY_PRESS,
 // K_KEY_RELEASE, K_ENTER_NOTIFY, K_LEAVE_NOTIFY, K_FOCUS_CHANGE,
 // K_PROXIMITY_IN, K_PROXIMITY_OUT, K_DRAG_ENTER, K_DRAG_LEAVE, K_DRAG_MOTION,
@@ -107,8 +107,8 @@ func init() {
 // On a standard session, all physical devices are connected by default to the
 // "Virtual Core Pointer/Keyboard" master devices, hence routing all events
 // through these. This behavior is only modified by device grabs, where the
-// slave device is temporarily detached for as long as the grab is held, and
-// more permanently by user modifications to the device hierarchy.
+// slave device is temporarily detached for as long as the grab is held,
+// and more permanently by user modifications to the device hierarchy.
 //
 // On certain application specific setups, it may make sense to detach a
 // physical device from its master pointer, and mapping it to an specific
@@ -119,9 +119,9 @@ func init() {
 // device, gdk_window_set_device_events() must be called. Generally, this
 // function can be used to modify the event mask for any given device.
 //
-// Input devices may also provide additional information besides X/Y. For
-// example, graphics tablets may also provide pressure and X/Y tilt information.
-// This information is device-dependent, and may be queried through
+// Input devices may also provide additional information besides X/Y.
+// For example, graphics tablets may also provide pressure and X/Y tilt
+// information. This information is device-dependent, and may be queried through
 // gdk_device_get_axis(). In multidevice mode, virtual devices will change axes
 // in order to always represent the physical device that is routing events
 // through it. Whenever the physical device changes, the Device:n-axes property
@@ -184,8 +184,8 @@ func (deviceManager *DeviceManager) ConnectDeviceAdded(f func(device Devicer)) c
 // device.
 //
 // If a slave device is detached from all master devices
-// (gdk_device_get_associated_device() returns NULL), its DeviceType will change
-// to GDK_DEVICE_TYPE_FLOATING, if it's attached, it will change to
+// (gdk_device_get_associated_device() returns NULL), its DeviceType will
+// change to GDK_DEVICE_TYPE_FLOATING, if it's attached, it will change to
 // GDK_DEVICE_TYPE_SLAVE.
 func (deviceManager *DeviceManager) ConnectDeviceChanged(f func(device Devicer)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(deviceManager, "device-changed", false, unsafe.Pointer(C._gotk4_gdk3_DeviceManager_ConnectDeviceChanged), f)
@@ -198,8 +198,8 @@ func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer))
 }
 
 // ClientPointer returns the client pointer, that is, the master pointer that
-// acts as the core pointer for this application. In X11, window managers may
-// change this depending on the interaction pattern under the presence of
+// acts as the core pointer for this application. In X11, window managers
+// may change this depending on the interaction pattern under the presence of
 // several pointers.
 //
 // You should use this function seldomly, only in code that isn’t triggered by a
@@ -209,8 +209,8 @@ func (deviceManager *DeviceManager) ConnectDeviceRemoved(f func(device Devicer))
 //
 // The function returns the following values:
 //
-//    - device: client pointer. This memory is owned by GDK and must not be freed
-//      or unreferenced.
+//   - device: client pointer. This memory is owned by GDK and must not be freed
+//     or unreferenced.
 //
 func (deviceManager *DeviceManager) ClientPointer() Devicer {
 	var _arg0 *C.GdkDeviceManager // out
@@ -248,8 +248,8 @@ func (deviceManager *DeviceManager) ClientPointer() Devicer {
 //
 // The function returns the following values:
 //
-//    - display (optional) to which device_manager is associated to, or NULL.
-//      This memory is owned by GDK and must not be freed or unreferenced.
+//   - display (optional) to which device_manager is associated to, or NULL.
+//     This memory is owned by GDK and must not be freed or unreferenced.
 //
 func (deviceManager *DeviceManager) Display() *Display {
 	var _arg0 *C.GdkDeviceManager // out
@@ -277,12 +277,12 @@ func (deviceManager *DeviceManager) Display() *Display {
 //
 // The function takes the following parameters:
 //
-//    - typ: device type to get.
+//   - typ: device type to get.
 //
 // The function returns the following values:
 //
-//    - list of Devices. The returned list must be freed with g_list_free (). The
-//      list elements are owned by GTK+ and must not be freed or unreffed.
+//   - list of Devices. The returned list must be freed with g_list_free ().
+//     The list elements are owned by GTK+ and must not be freed or unreffed.
 //
 func (deviceManager *DeviceManager) ListDevices(typ DeviceType) []Devicer {
 	var _arg0 *C.GdkDeviceManager // out

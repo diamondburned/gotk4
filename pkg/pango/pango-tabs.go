@@ -104,8 +104,8 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 //
 // The function returns the following values:
 //
-//    - tabArray: newly allocated PangoTabArray, which should be freed with
-//      pango.TabArray.Free().
+//   - tabArray: newly allocated PangoTabArray, which should be freed with
+//     pango.TabArray.Free().
 //
 func (src *TabArray) Copy() *TabArray {
 	var _arg0 *C.PangoTabArray // out
@@ -134,7 +134,7 @@ func (src *TabArray) Copy() *TabArray {
 //
 // The function returns the following values:
 //
-//    - ok: whether positions are in pixels.
+//   - ok: whether positions are in pixels.
 //
 func (tabArray *TabArray) PositionsInPixels() bool {
 	var _arg0 *C.PangoTabArray // out
@@ -158,7 +158,7 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 //
 // The function returns the following values:
 //
-//    - gint: number of tab stops in the array.
+//   - gint: number of tab stops in the array.
 //
 func (tabArray *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
@@ -180,12 +180,12 @@ func (tabArray *TabArray) Size() int {
 //
 // The function takes the following parameters:
 //
-//    - tabIndex: tab stop index.
+//   - tabIndex: tab stop index.
 //
 // The function returns the following values:
 //
-//    - alignment (optional): location to store alignment, or NULL.
-//    - location (optional) to store tab position, or NULL.
+//   - alignment (optional): location to store alignment, or NULL.
+//   - location (optional) to store tab position, or NULL.
 //
 func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg0 *C.PangoTabArray // out
@@ -216,7 +216,7 @@ func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 //
 // The function takes the following parameters:
 //
-//    - newSize: new size of the array.
+//   - newSize: new size of the array.
 //
 func (tabArray *TabArray) Resize(newSize int) {
 	var _arg0 *C.PangoTabArray // out
@@ -236,9 +236,9 @@ func (tabArray *TabArray) Resize(newSize int) {
 //
 // The function takes the following parameters:
 //
-//    - tabIndex: index of a tab stop.
-//    - alignment: tab alignment.
-//    - location: tab location in Pango units.
+//   - tabIndex: index of a tab stop.
+//   - alignment: tab alignment.
+//   - location: tab location in Pango units.
 //
 func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
 	var _arg0 *C.PangoTabArray // out

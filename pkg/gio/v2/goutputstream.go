@@ -91,7 +91,7 @@ type OutputStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	CloseFinish func(result AsyncResulter) error
 	// The function takes the following parameters:
@@ -109,66 +109,66 @@ type OutputStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional): optional cancellable object.
+	//   - ctx (optional): optional cancellable object.
 	//
 	Flush func(ctx context.Context) error
 	// FlushFinish finishes flushing an output stream.
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: GAsyncResult.
+	//   - result: GAsyncResult.
 	//
 	FlushFinish func(result AsyncResulter) error
 	// Splice splices an input stream into an output stream.
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - source: Stream.
-	//    - flags: set of StreamSpliceFlags.
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - source: Stream.
+	//   - flags: set of StreamSpliceFlags.
 	//
 	// The function returns the following values:
 	//
-	//    - gssize containing the size of the data spliced, or -1 if an error
-	//      occurred. Note that if the number of bytes spliced is greater than
-	//      G_MAXSSIZE, then that will be returned, and there is no way to
-	//      determine the actual number of bytes spliced.
+	//   - gssize containing the size of the data spliced, or -1 if an error
+	//     occurred. Note that if the number of bytes spliced is greater than
+	//     G_MAXSSIZE, then that will be returned, and there is no way to
+	//     determine the actual number of bytes spliced.
 	//
 	Splice func(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
 	// SpliceFinish finishes an asynchronous stream splice operation.
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - gssize of the number of bytes spliced. Note that if the number of
-	//      bytes spliced is greater than G_MAXSSIZE, then that will be returned,
-	//      and there is no way to determine the actual number of bytes spliced.
+	//   - gssize of the number of bytes spliced. Note that if the number of
+	//     bytes spliced is greater than G_MAXSSIZE, then that will be returned,
+	//     and there is no way to determine the actual number of bytes spliced.
 	//
 	SpliceFinish func(result AsyncResulter) (int, error)
 	// WriteFinish finishes a stream write operation.
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - gssize containing the number of bytes written to the stream.
+	//   - gssize containing the number of bytes written to the stream.
 	//
 	WriteFinish func(result AsyncResulter) (int, error)
 	// WritevFinish finishes a stream writev operation.
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - bytesWritten (optional): location to store the number of bytes that
-	//      were written to the stream.
+	//   - bytesWritten (optional): location to store the number of bytes that
+	//     were written to the stream.
 	//
 	WritevFinish func(result AsyncResulter) (uint, error)
 }
@@ -186,8 +186,8 @@ func defaultOutputStreamOverrides(v *OutputStream) OutputStreamOverrides {
 	}
 }
 
-// OutputStream has functions to write to a stream (g_output_stream_write()), to
-// close a stream (g_output_stream_close()) and to flush pending writes
+// OutputStream has functions to write to a stream (g_output_stream_write()),
+// to close a stream (g_output_stream_close()) and to flush pending writes
 // (g_output_stream_flush()).
 //
 // To copy the content of an input stream to an output stream without manually
@@ -304,9 +304,9 @@ func (stream *OutputStream) ClearPending() {
 // Closing a stream will automatically flush any outstanding buffers in the
 // stream.
 //
-// Streams will be automatically closed when the last reference is dropped, but
-// you might want to call this function to make sure resources are released as
-// early as possible.
+// Streams will be automatically closed when the last reference is dropped,
+// but you might want to call this function to make sure resources are released
+// as early as possible.
 //
 // Some streams might keep the backing store of the stream (e.g. a file
 // descriptor) open after the stream is closed. See the documentation for the
@@ -327,7 +327,7 @@ func (stream *OutputStream) ClearPending() {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
+//   - ctx (optional): optional cancellable object.
 //
 func (stream *OutputStream) Close(ctx context.Context) error {
 	var _arg0 *C.GOutputStream // out
@@ -355,8 +355,8 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 }
 
 // CloseAsync requests an asynchronous close of the stream, releasing resources
-// related to it. When the operation is finished callback will be called. You
-// can then call g_output_stream_close_finish() to get the result of the
+// related to it. When the operation is finished callback will be called.
+// You can then call g_output_stream_close_finish() to get the result of the
 // operation.
 //
 // For behaviour details see g_output_stream_close().
@@ -367,9 +367,9 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
@@ -401,7 +401,7 @@ func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, call
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GOutputStream // out
@@ -436,7 +436,7 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
+//   - ctx (optional): optional cancellable object.
 //
 func (stream *OutputStream) Flush(ctx context.Context) error {
 	var _arg0 *C.GOutputStream // out
@@ -471,9 +471,9 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
@@ -505,7 +505,7 @@ func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, call
 //
 // The function takes the following parameters:
 //
-//    - result: GAsyncResult.
+//   - result: GAsyncResult.
 //
 func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 	var _arg0 *C.GOutputStream // out
@@ -532,7 +532,7 @@ func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if stream has pending actions.
+//   - ok: TRUE if stream has pending actions.
 //
 func (stream *OutputStream) HasPending() bool {
 	var _arg0 *C.GOutputStream // out
@@ -556,7 +556,7 @@ func (stream *OutputStream) HasPending() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if stream is closed. FALSE otherwise.
+//   - ok: TRUE if stream is closed. FALSE otherwise.
 //
 func (stream *OutputStream) IsClosed() bool {
 	var _arg0 *C.GOutputStream // out
@@ -582,7 +582,7 @@ func (stream *OutputStream) IsClosed() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if stream is being closed. FALSE otherwise.
+//   - ok: TRUE if stream is being closed. FALSE otherwise.
 //
 func (stream *OutputStream) IsClosing() bool {
 	var _arg0 *C.GOutputStream // out
@@ -626,16 +626,16 @@ func (stream *OutputStream) SetPending() error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - source: Stream.
-//    - flags: set of StreamSpliceFlags.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - source: Stream.
+//   - flags: set of StreamSpliceFlags.
 //
 // The function returns the following values:
 //
-//    - gssize containing the size of the data spliced, or -1 if an error
-//      occurred. Note that if the number of bytes spliced is greater than
-//      G_MAXSSIZE, then that will be returned, and there is no way to determine
-//      the actual number of bytes spliced.
+//   - gssize containing the size of the data spliced, or -1 if an error
+//     occurred. Note that if the number of bytes spliced is greater than
+//     G_MAXSSIZE, then that will be returned, and there is no way to determine
+//     the actual number of bytes spliced.
 //
 func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error) {
 	var _arg0 *C.GOutputStream           // out
@@ -680,11 +680,11 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - source: Stream.
-//    - flags: set of StreamSpliceFlags.
-//    - ioPriority: io priority of the request.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - source: Stream.
+//   - flags: set of StreamSpliceFlags.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback.
 //
 func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream           // out
@@ -722,13 +722,13 @@ func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreame
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - gssize of the number of bytes spliced. Note that if the number of bytes
-//      spliced is greater than G_MAXSSIZE, then that will be returned, and there
-//      is no way to determine the actual number of bytes spliced.
+//   - gssize of the number of bytes spliced. Note that if the number of bytes
+//     spliced is greater than G_MAXSSIZE, then that will be returned, and there
+//     is no way to determine the actual number of bytes spliced.
 //
 func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GOutputStream // out
@@ -762,9 +762,9 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 //
 // On success, the number of bytes written to the stream is returned. It is not
 // an error if this is not the same as the requested size, as it can happen e.g.
-// on a partial I/O error, or if there is not enough storage in the stream. All
-// writes block until at least one byte is written or an error occurs; 0 is
-// never returned (unless count is 0).
+// on a partial I/O error, or if there is not enough storage in the stream.
+// All writes block until at least one byte is written or an error occurs;
+// 0 is never returned (unless count is 0).
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
@@ -776,12 +776,12 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - buffer containing the data to write.
+//   - ctx (optional): optional cancellable object.
+//   - buffer containing the data to write.
 //
 // The function returns the following values:
 //
-//    - gssize: number of bytes written, or -1 on error.
+//   - gssize: number of bytes written, or -1 on error.
 //
 func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GOutputStream // out
@@ -832,20 +832,20 @@ func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, erro
 //
 // As a special exception to the normal conventions for functions that use
 // #GError, if this function returns FALSE (and sets error) then bytes_written
-// will be set to the number of bytes that were successfully written before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
+// will be set to the number of bytes that were successfully written before
+// the error was encountered. This functionality is only available from C.
+// If you need it from another language then you must write your own loop around
 // g_output_stream_write().
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - buffer containing the data to write.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer containing the data to write.
 //
 // The function returns the following values:
 //
-//    - bytesWritten (optional): location to store the number of bytes that was
-//      written to the stream.
+//   - bytesWritten (optional): location to store the number of bytes that was
+//     written to the stream.
 //
 func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, error) {
 	var _arg0 *C.GOutputStream // out
@@ -882,17 +882,17 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 	return _bytesWritten, _goerr
 }
 
-// WriteAllAsync: request an asynchronous write of count bytes from buffer into
-// the stream. When the operation is finished callback will be called. You can
-// then call g_output_stream_write_all_finish() to get the result of the
+// WriteAllAsync: request an asynchronous write of count bytes from buffer
+// into the stream. When the operation is finished callback will be called.
+// You can then call g_output_stream_write_all_finish() to get the result of the
 // operation.
 //
 // This is the asynchronous version of g_output_stream_write_all().
 //
 // Call g_output_stream_write_all_finish() to collect the result.
 //
-// Any outstanding I/O request with higher priority (lower numerical value) will
-// be executed before an outstanding request with lower priority. Default
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
 //
 // Note that no copy of buffer will be made, so it must stay valid until
@@ -900,10 +900,10 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - buffer containing the data to write.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer containing the data to write.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
@@ -943,19 +943,19 @@ func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, io
 //
 // As a special exception to the normal conventions for functions that use
 // #GError, if this function returns FALSE (and sets error) then bytes_written
-// will be set to the number of bytes that were successfully written before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
+// will be set to the number of bytes that were successfully written before
+// the error was encountered. This functionality is only available from C.
+// If you need it from another language then you must write your own loop around
 // g_output_stream_write_async().
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - bytesWritten (optional): location to store the number of bytes that was
-//      written to the stream.
+//   - bytesWritten (optional): location to store the number of bytes that was
+//     written to the stream.
 //
 func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	var _arg0 *C.GOutputStream // out
@@ -991,17 +991,17 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 // A value of count larger than G_MAXSSIZE will cause a
 // G_IO_ERROR_INVALID_ARGUMENT error.
 //
-// On success, the number of bytes written will be passed to the callback. It is
-// not an error if this is not the same as the requested size, as it can happen
-// e.g. on a partial I/O error, but generally we try to write as many bytes as
-// requested.
+// On success, the number of bytes written will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
 //
 // You are guaranteed that this method will never fail with
 // G_IO_ERROR_WOULD_BLOCK - if stream can't accept more data, the method will
 // just wait until this changes.
 //
-// Any outstanding I/O request with higher priority (lower numerical value) will
-// be executed before an outstanding request with lower priority. Default
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
 //
 // The asynchronous methods have a default fallback that uses threads to
@@ -1018,10 +1018,10 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - buffer containing the data to write.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer containing the data to write.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
@@ -1061,20 +1061,20 @@ func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPri
 // in other cases where the refcounted nature of #GBytes is helpful over a bare
 // pointer interface.
 //
-// However, note that this function may still perform partial writes, just like
-// g_output_stream_write(). If that occurs, to continue writing, you will need
-// to create a new #GBytes containing just the remaining bytes, using
-// g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple times
-// potentially can result in duplicated data in the output stream.
+// However, note that this function may still perform partial writes,
+// just like g_output_stream_write(). If that occurs, to continue writing,
+// you will need to create a new #GBytes containing just the remaining bytes,
+// using g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple
+// times potentially can result in duplicated data in the output stream.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - bytes to write.
+//   - ctx (optional): optional cancellable object.
+//   - bytes to write.
 //
 // The function returns the following values:
 //
-//    - gssize: number of bytes written, or -1 on error.
+//   - gssize: number of bytes written, or -1 on error.
 //
 func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (int, error) {
 	var _arg0 *C.GOutputStream // out
@@ -1108,24 +1108,24 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (
 }
 
 // WriteBytesAsync: this function is similar to g_output_stream_write_async(),
-// but takes a #GBytes as input. Due to the refcounted nature of #GBytes, this
-// allows the stream to avoid taking a copy of the data.
+// but takes a #GBytes as input. Due to the refcounted nature of #GBytes,
+// this allows the stream to avoid taking a copy of the data.
 //
-// However, note that this function may still perform partial writes, just like
-// g_output_stream_write_async(). If that occurs, to continue writing, you will
-// need to create a new #GBytes containing just the remaining bytes, using
-// g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple times
-// potentially can result in duplicated data in the output stream.
+// However, note that this function may still perform partial writes,
+// just like g_output_stream_write_async(). If that occurs, to continue writing,
+// you will need to create a new #GBytes containing just the remaining bytes,
+// using g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple
+// times potentially can result in duplicated data in the output stream.
 //
 // For the synchronous, blocking version of this function, see
 // g_output_stream_write_bytes().
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - bytes to write.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - bytes to write.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Bytes, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
@@ -1160,11 +1160,11 @@ func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Byt
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - gssize containing the number of bytes written to the stream.
+//   - gssize containing the number of bytes written to the stream.
 //
 func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GOutputStream // out
@@ -1194,11 +1194,11 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - gssize containing the number of bytes written to the stream.
+//   - gssize containing the number of bytes written to the stream.
 //
 func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GOutputStream // out
@@ -1232,10 +1232,10 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 //
 // On success, the number of bytes written to the stream is returned. It is not
 // an error if this is not the same as the requested size, as it can happen e.g.
-// on a partial I/O error, or if there is not enough storage in the stream. All
-// writes block until at least one byte is written or an error occurs; 0 is
-// never returned (unless n_vectors is 0 or the sum of all bytes in vectors is
-// 0).
+// on a partial I/O error, or if there is not enough storage in the stream.
+// All writes block until at least one byte is written or an error occurs;
+// 0 is never returned (unless n_vectors is 0 or the sum of all bytes in vectors
+// is 0).
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
@@ -1250,13 +1250,13 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - vectors: buffer containing the Vectors to write.
+//   - ctx (optional): optional cancellable object.
+//   - vectors: buffer containing the Vectors to write.
 //
 // The function returns the following values:
 //
-//    - bytesWritten (optional): location to store the number of bytes that were
-//      written to the stream.
+//   - bytesWritten (optional): location to store the number of bytes that were
+//     written to the stream.
 //
 func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) (uint, error) {
 	var _arg0 *C.GOutputStream // out
@@ -1312,9 +1312,9 @@ func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) 
 //
 // As a special exception to the normal conventions for functions that use
 // #GError, if this function returns FALSE (and sets error) then bytes_written
-// will be set to the number of bytes that were successfully written before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
+// will be set to the number of bytes that were successfully written before
+// the error was encountered. This functionality is only available from C.
+// If you need it from another language then you must write your own loop around
 // g_output_stream_write().
 //
 // The content of the individual elements of vectors might be changed by this
@@ -1322,13 +1322,13 @@ func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - vectors: buffer containing the Vectors to write.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - vectors: buffer containing the Vectors to write.
 //
 // The function returns the following values:
 //
-//    - bytesWritten (optional): location to store the number of bytes that were
-//      written to the stream.
+//   - bytesWritten (optional): location to store the number of bytes that were
+//     written to the stream.
 //
 func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVector) (uint, error) {
 	var _arg0 *C.GOutputStream // out
@@ -1379,8 +1379,8 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 //
 // Call g_output_stream_writev_all_finish() to collect the result.
 //
-// Any outstanding I/O request with higher priority (lower numerical value) will
-// be executed before an outstanding request with lower priority. Default
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
 //
 // Note that no copy of vectors will be made, so it must stay valid until
@@ -1389,10 +1389,10 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - vectors: buffer containing the Vectors to write.
-//    - ioPriority: i/O priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - vectors: buffer containing the Vectors to write.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
@@ -1437,19 +1437,19 @@ func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []Output
 //
 // As a special exception to the normal conventions for functions that use
 // #GError, if this function returns FALSE (and sets error) then bytes_written
-// will be set to the number of bytes that were successfully written before the
-// error was encountered. This functionality is only available from C. If you
-// need it from another language then you must write your own loop around
+// will be set to the number of bytes that were successfully written before
+// the error was encountered. This functionality is only available from C.
+// If you need it from another language then you must write your own loop around
 // g_output_stream_writev_async().
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - bytesWritten (optional): location to store the number of bytes that were
-//      written to the stream.
+//   - bytesWritten (optional): location to store the number of bytes that were
+//     written to the stream.
 //
 func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) {
 	var _arg0 *C.GOutputStream // out
@@ -1483,17 +1483,17 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 // During an async request no other sync and async calls are allowed, and will
 // result in G_IO_ERROR_PENDING errors.
 //
-// On success, the number of bytes written will be passed to the callback. It is
-// not an error if this is not the same as the requested size, as it can happen
-// e.g. on a partial I/O error, but generally we try to write as many bytes as
-// requested.
+// On success, the number of bytes written will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
 //
 // You are guaranteed that this method will never fail with
 // G_IO_ERROR_WOULD_BLOCK — if stream can't accept more data, the method will
 // just wait until this changes.
 //
-// Any outstanding I/O request with higher priority (lower numerical value) will
-// be executed before an outstanding request with lower priority. Default
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
 //
 // The asynchronous methods have a default fallback that uses threads to
@@ -1508,10 +1508,10 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - vectors: buffer containing the Vectors to write.
-//    - ioPriority: i/O priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - vectors: buffer containing the Vectors to write.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
@@ -1555,12 +1555,12 @@ func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVec
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - bytesWritten (optional): location to store the number of bytes that were
-//      written to the stream.
+//   - bytesWritten (optional): location to store the number of bytes that were
+//     written to the stream.
 //
 func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	var _arg0 *C.GOutputStream // out
@@ -1587,8 +1587,8 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 }
 
 // closeAsync requests an asynchronous close of the stream, releasing resources
-// related to it. When the operation is finished callback will be called. You
-// can then call g_output_stream_close_finish() to get the result of the
+// related to it. When the operation is finished callback will be called.
+// You can then call g_output_stream_close_finish() to get the result of the
 // operation.
 //
 // For behaviour details see g_output_stream_close().
@@ -1599,9 +1599,9 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -1636,7 +1636,7 @@ func (stream *OutputStream) closeAsync(ctx context.Context, ioPriority int, call
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (stream *OutputStream) closeFinish(result AsyncResulter) error {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -1704,7 +1704,7 @@ func (stream *OutputStream) closeFn(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
+//   - ctx (optional): optional cancellable object.
 //
 func (stream *OutputStream) flush(ctx context.Context) error {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -1742,9 +1742,9 @@ func (stream *OutputStream) flush(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) flushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -1779,7 +1779,7 @@ func (stream *OutputStream) flushAsync(ctx context.Context, ioPriority int, call
 //
 // The function takes the following parameters:
 //
-//    - result: GAsyncResult.
+//   - result: GAsyncResult.
 //
 func (stream *OutputStream) flushFinish(result AsyncResulter) error {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -1809,16 +1809,16 @@ func (stream *OutputStream) flushFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - source: Stream.
-//    - flags: set of StreamSpliceFlags.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - source: Stream.
+//   - flags: set of StreamSpliceFlags.
 //
 // The function returns the following values:
 //
-//    - gssize containing the size of the data spliced, or -1 if an error
-//      occurred. Note that if the number of bytes spliced is greater than
-//      G_MAXSSIZE, then that will be returned, and there is no way to determine
-//      the actual number of bytes spliced.
+//   - gssize containing the size of the data spliced, or -1 if an error
+//     occurred. Note that if the number of bytes spliced is greater than
+//     G_MAXSSIZE, then that will be returned, and there is no way to determine
+//     the actual number of bytes spliced.
 //
 func (stream *OutputStream) splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -1866,11 +1866,11 @@ func (stream *OutputStream) splice(ctx context.Context, source InputStreamer, fl
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - source: Stream.
-//    - flags: set of StreamSpliceFlags.
-//    - ioPriority: io priority of the request.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - source: Stream.
+//   - flags: set of StreamSpliceFlags.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback.
 //
 func (stream *OutputStream) spliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -1911,13 +1911,13 @@ func (stream *OutputStream) spliceAsync(ctx context.Context, source InputStreame
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - gssize of the number of bytes spliced. Note that if the number of bytes
-//      spliced is greater than G_MAXSSIZE, then that will be returned, and there
-//      is no way to determine the actual number of bytes spliced.
+//   - gssize of the number of bytes spliced. Note that if the number of bytes
+//     spliced is greater than G_MAXSSIZE, then that will be returned, and there
+//     is no way to determine the actual number of bytes spliced.
 //
 func (stream *OutputStream) spliceFinish(result AsyncResulter) (int, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -1956,17 +1956,17 @@ func (stream *OutputStream) spliceFinish(result AsyncResulter) (int, error) {
 // A value of count larger than G_MAXSSIZE will cause a
 // G_IO_ERROR_INVALID_ARGUMENT error.
 //
-// On success, the number of bytes written will be passed to the callback. It is
-// not an error if this is not the same as the requested size, as it can happen
-// e.g. on a partial I/O error, but generally we try to write as many bytes as
-// requested.
+// On success, the number of bytes written will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
 //
 // You are guaranteed that this method will never fail with
 // G_IO_ERROR_WOULD_BLOCK - if stream can't accept more data, the method will
 // just wait until this changes.
 //
-// Any outstanding I/O request with higher priority (lower numerical value) will
-// be executed before an outstanding request with lower priority. Default
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
 //
 // The asynchronous methods have a default fallback that uses threads to
@@ -1983,10 +1983,10 @@ func (stream *OutputStream) spliceFinish(result AsyncResulter) (int, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - buffer (optional) containing the data to write.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer (optional) containing the data to write.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) writeAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -2028,11 +2028,11 @@ func (stream *OutputStream) writeAsync(ctx context.Context, buffer []byte, ioPri
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - gssize containing the number of bytes written to the stream.
+//   - gssize containing the number of bytes written to the stream.
 //
 func (stream *OutputStream) writeFinish(result AsyncResulter) (int, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -2069,9 +2069,9 @@ func (stream *OutputStream) writeFinish(result AsyncResulter) (int, error) {
 //
 // On success, the number of bytes written to the stream is returned. It is not
 // an error if this is not the same as the requested size, as it can happen e.g.
-// on a partial I/O error, or if there is not enough storage in the stream. All
-// writes block until at least one byte is written or an error occurs; 0 is
-// never returned (unless count is 0).
+// on a partial I/O error, or if there is not enough storage in the stream.
+// All writes block until at least one byte is written or an error occurs;
+// 0 is never returned (unless count is 0).
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
@@ -2083,12 +2083,12 @@ func (stream *OutputStream) writeFinish(result AsyncResulter) (int, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - buffer (optional) containing the data to write.
+//   - ctx (optional): optional cancellable object.
+//   - buffer (optional) containing the data to write.
 //
 // The function returns the following values:
 //
-//    - gssize: number of bytes written, or -1 on error.
+//   - gssize: number of bytes written, or -1 on error.
 //
 func (stream *OutputStream) writeFn(ctx context.Context, buffer []byte) (int, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -2136,17 +2136,17 @@ func (stream *OutputStream) writeFn(ctx context.Context, buffer []byte) (int, er
 // During an async request no other sync and async calls are allowed, and will
 // result in G_IO_ERROR_PENDING errors.
 //
-// On success, the number of bytes written will be passed to the callback. It is
-// not an error if this is not the same as the requested size, as it can happen
-// e.g. on a partial I/O error, but generally we try to write as many bytes as
-// requested.
+// On success, the number of bytes written will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
 //
 // You are guaranteed that this method will never fail with
 // G_IO_ERROR_WOULD_BLOCK — if stream can't accept more data, the method will
 // just wait until this changes.
 //
-// Any outstanding I/O request with higher priority (lower numerical value) will
-// be executed before an outstanding request with lower priority. Default
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
 // priority is G_PRIORITY_DEFAULT.
 //
 // The asynchronous methods have a default fallback that uses threads to
@@ -2161,10 +2161,10 @@ func (stream *OutputStream) writeFn(ctx context.Context, buffer []byte) (int, er
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - vectors: buffer containing the Vectors to write.
-//    - ioPriority: i/O priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - vectors: buffer containing the Vectors to write.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *OutputStream) writevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -2211,12 +2211,12 @@ func (stream *OutputStream) writevAsync(ctx context.Context, vectors []OutputVec
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - bytesWritten (optional): location to store the number of bytes that were
-//      written to the stream.
+//   - bytesWritten (optional): location to store the number of bytes that were
+//     written to the stream.
 //
 func (stream *OutputStream) writevFinish(result AsyncResulter) (uint, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -2253,10 +2253,10 @@ func (stream *OutputStream) writevFinish(result AsyncResulter) (uint, error) {
 //
 // On success, the number of bytes written to the stream is returned. It is not
 // an error if this is not the same as the requested size, as it can happen e.g.
-// on a partial I/O error, or if there is not enough storage in the stream. All
-// writes block until at least one byte is written or an error occurs; 0 is
-// never returned (unless n_vectors is 0 or the sum of all bytes in vectors is
-// 0).
+// on a partial I/O error, or if there is not enough storage in the stream.
+// All writes block until at least one byte is written or an error occurs;
+// 0 is never returned (unless n_vectors is 0 or the sum of all bytes in vectors
+// is 0).
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
@@ -2271,13 +2271,13 @@ func (stream *OutputStream) writevFinish(result AsyncResulter) (uint, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - vectors: buffer containing the Vectors to write.
+//   - ctx (optional): optional cancellable object.
+//   - vectors: buffer containing the Vectors to write.
 //
 // The function returns the following values:
 //
-//    - bytesWritten (optional): location to store the number of bytes that were
-//      written to the stream.
+//   - bytesWritten (optional): location to store the number of bytes that were
+//     written to the stream.
 //
 func (stream *OutputStream) writevFn(ctx context.Context, vectors []OutputVector) (uint, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))

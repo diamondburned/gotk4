@@ -38,8 +38,8 @@ func defaultSliceListModelOverrides(v *SliceListModel) SliceListModelOverrides {
 // SliceListModel: GtkSliceListModel is a list model that presents a slice of
 // another model.
 //
-// This is useful when implementing paging by setting the size to the number of
-// elements per page and updating the offset whenever a different page is
+// This is useful when implementing paging by setting the size to the number
+// of elements per page and updating the offset whenever a different page is
 // opened.
 type SliceListModel struct {
 	_ [0]func() // equal guard
@@ -87,13 +87,13 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to use, or NULL.
-//    - offset of the slice.
-//    - size: maximum size of the slice.
+//   - model (optional) to use, or NULL.
+//   - offset of the slice.
+//   - size: maximum size of the slice.
 //
 // The function returns the following values:
 //
-//    - sliceListModel: new GtkSliceListModel.
+//   - sliceListModel: new GtkSliceListModel.
 //
 func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListModel {
 	var _arg1 *C.GListModel        // out
@@ -124,7 +124,7 @@ func NewSliceListModel(model gio.ListModeller, offset, size uint) *SliceListMode
 //
 // The function returns the following values:
 //
-//    - listModel (optional): model in use.
+//   - listModel (optional): model in use.
 //
 func (self *SliceListModel) Model() *gio.ListModel {
 	var _arg0 *C.GtkSliceListModel // out
@@ -153,7 +153,7 @@ func (self *SliceListModel) Model() *gio.ListModel {
 //
 // The function returns the following values:
 //
-//    - guint: offset.
+//   - guint: offset.
 //
 func (self *SliceListModel) Offset() uint {
 	var _arg0 *C.GtkSliceListModel // out
@@ -175,7 +175,7 @@ func (self *SliceListModel) Offset() uint {
 //
 // The function returns the following values:
 //
-//    - guint: size.
+//   - guint: size.
 //
 func (self *SliceListModel) Size() uint {
 	var _arg0 *C.GtkSliceListModel // out
@@ -199,7 +199,7 @@ func (self *SliceListModel) Size() uint {
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to be sliced.
+//   - model (optional) to be sliced.
 //
 func (self *SliceListModel) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkSliceListModel // out
@@ -221,7 +221,7 @@ func (self *SliceListModel) SetModel(model gio.ListModeller) {
 //
 // The function takes the following parameters:
 //
-//    - offset: new offset to use.
+//   - offset: new offset to use.
 //
 func (self *SliceListModel) SetOffset(offset uint) {
 	var _arg0 *C.GtkSliceListModel // out
@@ -242,7 +242,7 @@ func (self *SliceListModel) SetOffset(offset uint) {
 //
 // The function takes the following parameters:
 //
-//    - size: maximum size.
+//   - size: maximum size.
 //
 func (self *SliceListModel) SetSize(size uint) {
 	var _arg0 *C.GtkSliceListModel // out

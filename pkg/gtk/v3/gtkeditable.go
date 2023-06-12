@@ -165,10 +165,10 @@ func (editable *Editable) ConnectChanged(f func()) coreglib.SignalHandle {
 
 // ConnectDeleteText: this signal is emitted when text is deleted from the
 // widget by the user. The default handler for this signal will normally be
-// responsible for deleting the text, so by connecting to this signal and then
-// stopping the signal with g_signal_stop_emission(), it is possible to modify
-// the range of deleted text, or prevent it from being deleted entirely. The
-// start_pos and end_pos parameters are interpreted as for
+// responsible for deleting the text, so by connecting to this signal and
+// then stopping the signal with g_signal_stop_emission(), it is possible
+// to modify the range of deleted text, or prevent it from being deleted
+// entirely. The start_pos and end_pos parameters are interpreted as for
 // gtk_editable_delete_text().
 func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(editable, "delete-text", false, unsafe.Pointer(C._gotk4_gtk3_Editable_ConnectDeleteText), f)
@@ -216,8 +216,8 @@ func (editable *Editable) DeleteSelection() {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (editable *Editable) DeleteText(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
@@ -243,14 +243,14 @@ func (editable *Editable) DeleteText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start of text.
-//    - endPos: end of text.
+//   - startPos: start of text.
+//   - endPos: end of text.
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to the contents of the widget as a string. This string is
-//      allocated by the Editable implementation and should be freed by the
-//      caller.
+//   - utf8: pointer to the contents of the widget as a string. This string
+//     is allocated by the Editable implementation and should be freed by the
+//     caller.
 //
 func (editable *Editable) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
@@ -280,7 +280,7 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if editable is editable.
+//   - ok: TRUE if editable is editable.
 //
 func (editable *Editable) Editable() bool {
 	var _arg0 *C.GtkEditable // out
@@ -307,7 +307,7 @@ func (editable *Editable) Editable() bool {
 //
 // The function returns the following values:
 //
-//    - gint: cursor position.
+//   - gint: cursor position.
 //
 func (editable *Editable) Position() int {
 	var _arg0 *C.GtkEditable // out
@@ -333,9 +333,9 @@ func (editable *Editable) Position() int {
 //
 // The function returns the following values:
 //
-//    - startPos (optional): location to store the starting position, or NULL.
-//    - endPos (optional): location to store the end position, or NULL.
-//    - ok: TRUE if an area is selected, FALSE otherwise.
+//   - startPos (optional): location to store the starting position, or NULL.
+//   - endPos (optional): location to store the end position, or NULL.
+//   - ok: TRUE if an area is selected, FALSE otherwise.
 //
 func (editable *Editable) SelectionBounds() (startPos, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
@@ -372,8 +372,8 @@ func (editable *Editable) PasteClipboard() {
 	runtime.KeepAlive(editable)
 }
 
-// SelectRegion selects a region of text. The characters that are selected are
-// those characters at positions from start_pos up to, but not including
+// SelectRegion selects a region of text. The characters that are selected
+// are those characters at positions from start_pos up to, but not including
 // end_pos. If end_pos is negative, then the characters selected are those
 // characters from start_pos to the end of the text.
 //
@@ -381,8 +381,8 @@ func (editable *Editable) PasteClipboard() {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start of region.
-//    - endPos: end of region.
+//   - startPos: start of region.
+//   - endPos: end of region.
 //
 func (editable *Editable) SelectRegion(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
@@ -404,7 +404,7 @@ func (editable *Editable) SelectRegion(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - isEditable: TRUE if the user is allowed to edit the text in the widget.
+//   - isEditable: TRUE if the user is allowed to edit the text in the widget.
 //
 func (editable *Editable) SetEditable(isEditable bool) {
 	var _arg0 *C.GtkEditable // out
@@ -422,15 +422,15 @@ func (editable *Editable) SetEditable(isEditable bool) {
 
 // SetPosition sets the cursor position in the editable to the given value.
 //
-// The cursor is displayed before the character with the given (base 0) index in
-// the contents of the editable. The value must be less than or equal to the
-// number of characters in the editable. A value of -1 indicates that the
+// The cursor is displayed before the character with the given (base 0) index
+// in the contents of the editable. The value must be less than or equal to
+// the number of characters in the editable. A value of -1 indicates that the
 // position should be set after the last character of the editable. Note that
 // position is in characters, not in bytes.
 //
 // The function takes the following parameters:
 //
-//    - position of the cursor.
+//   - position of the cursor.
 //
 func (editable *Editable) SetPosition(position int) {
 	var _arg0 *C.GtkEditable // out
@@ -465,8 +465,8 @@ func (editable *Editable) changed() {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (editable *Editable) deleteText(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -495,8 +495,8 @@ func (editable *Editable) deleteText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (editable *Editable) doDeleteText(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -525,14 +525,14 @@ func (editable *Editable) doDeleteText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start of text.
-//    - endPos: end of text.
+//   - startPos: start of text.
+//   - endPos: end of text.
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to the contents of the widget as a string. This string is
-//      allocated by the Editable implementation and should be freed by the
-//      caller.
+//   - utf8: pointer to the contents of the widget as a string. This string
+//     is allocated by the Editable implementation and should be freed by the
+//     caller.
 //
 func (editable *Editable) chars(startPos, endPos int) string {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -567,7 +567,7 @@ func (editable *Editable) chars(startPos, endPos int) string {
 //
 // The function returns the following values:
 //
-//    - gint: cursor position.
+//   - gint: cursor position.
 //
 func (editable *Editable) position() int {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -596,9 +596,9 @@ func (editable *Editable) position() int {
 //
 // The function returns the following values:
 //
-//    - startPos (optional): location to store the starting position, or NULL.
-//    - endPos (optional): location to store the end position, or NULL.
-//    - ok: TRUE if an area is selected, FALSE otherwise.
+//   - startPos (optional): location to store the starting position, or NULL.
+//   - endPos (optional): location to store the end position, or NULL.
+//   - ok: TRUE if an area is selected, FALSE otherwise.
 //
 func (editable *Editable) selectionBounds() (startPos, endPos int, ok bool) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -629,15 +629,15 @@ func (editable *Editable) selectionBounds() (startPos, endPos int, ok bool) {
 
 // setPosition sets the cursor position in the editable to the given value.
 //
-// The cursor is displayed before the character with the given (base 0) index in
-// the contents of the editable. The value must be less than or equal to the
-// number of characters in the editable. A value of -1 indicates that the
+// The cursor is displayed before the character with the given (base 0) index
+// in the contents of the editable. The value must be less than or equal to
+// the number of characters in the editable. A value of -1 indicates that the
 // position should be set after the last character of the editable. Note that
 // position is in characters, not in bytes.
 //
 // The function takes the following parameters:
 //
-//    - position of the cursor.
+//   - position of the cursor.
 //
 func (editable *Editable) setPosition(position int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
@@ -663,8 +663,8 @@ func (editable *Editable) setPosition(position int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start of region.
-//    - endPos: end of region.
+//   - startPos: start of region.
+//   - endPos: end of region.
 //
 func (editable *Editable) setSelectionBounds(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))

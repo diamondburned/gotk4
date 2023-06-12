@@ -38,9 +38,9 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - object (optional) or NULL.
-//    - callback (optional): ReadyCallback.
-//    - err to report.
+//   - object (optional) or NULL.
+//   - callback (optional): ReadyCallback.
+//   - err to report.
 //
 func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyCallback, err error) {
 	var _arg1 *C.GObject            // out
@@ -92,11 +92,11 @@ func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyC
 // To create a new AsyncResult, call g_simple_async_result_new(). If the result
 // needs to be created for a #GError, use g_simple_async_result_new_from_error()
 // or g_simple_async_result_new_take_error(). If a #GError is not available
-// (e.g. the asynchronous operation's doesn't take a #GError argument), but the
-// result still needs to be created for an error condition, use
-// g_simple_async_result_new_error() (or g_simple_async_result_set_error_va() if
-// your application or binding requires passing a variable argument list
-// directly), and the error can then be propagated through the use of
+// (e.g. the asynchronous operation's doesn't take a #GError argument),
+// but the result still needs to be created for an error condition, use
+// g_simple_async_result_new_error() (or g_simple_async_result_set_error_va()
+// if your application or binding requires passing a variable argument
+// list directly), and the error can then be propagated through the use of
 // g_simple_async_result_propagate_error().
 //
 // An asynchronous operation can be made to ignore a cancellation event by
@@ -126,8 +126,8 @@ func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyC
 // g_simple_async_result_get_op_res_gssize() are provided, getting the
 // operation's result as a gpointer, gboolean, and gssize, respectively.
 //
-// For the details of the requirements implementations must respect, see Result.
-// A typical implementation of an asynchronous operation using
+// For the details of the requirements implementations must respect,
+// see Result. A typical implementation of an asynchronous operation using
 // GSimpleAsyncResult looks something like this:
 //
 //    static void
@@ -252,8 +252,8 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 // starts the asynchronous operation and use that same function as the
 // source_tag.
 //
-// If your operation supports cancellation with #GCancellable (which it probably
-// should) then you should provide the user's cancellable to
+// If your operation supports cancellation with #GCancellable (which it
+// probably should) then you should provide the user's cancellable to
 // g_simple_async_result_set_check_cancellable() immediately after this function
 // returns.
 //
@@ -261,13 +261,13 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - sourceObject (optional) or NULL.
-//    - callback (optional): ReadyCallback.
-//    - sourceTag (optional) asynchronous function.
+//   - sourceObject (optional) or NULL.
+//   - callback (optional): ReadyCallback.
+//   - sourceTag (optional) asynchronous function.
 //
 // The function returns the following values:
 //
-//    - simpleAsyncResult: AsyncResult.
+//   - simpleAsyncResult: AsyncResult.
 //
 func NewSimpleAsyncResult(sourceObject *coreglib.Object, callback AsyncReadyCallback, sourceTag unsafe.Pointer) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
@@ -303,13 +303,13 @@ func NewSimpleAsyncResult(sourceObject *coreglib.Object, callback AsyncReadyCall
 //
 // The function takes the following parameters:
 //
-//    - sourceObject (optional) or NULL.
-//    - callback (optional): ReadyCallback.
-//    - err: #GError.
+//   - sourceObject (optional) or NULL.
+//   - callback (optional): ReadyCallback.
+//   - err: #GError.
 //
 // The function returns the following values:
 //
-//    - simpleAsyncResult: AsyncResult.
+//   - simpleAsyncResult: AsyncResult.
 //
 func NewSimpleAsyncResultFromError(sourceObject *coreglib.Object, callback AsyncReadyCallback, err error) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
@@ -341,9 +341,9 @@ func NewSimpleAsyncResultFromError(sourceObject *coreglib.Object, callback Async
 	return _simpleAsyncResult
 }
 
-// Complete completes an asynchronous I/O job immediately. Must be called in the
-// thread where the asynchronous result was to be delivered, as it invokes the
-// callback directly. If you are in a different thread use
+// Complete completes an asynchronous I/O job immediately. Must be called
+// in the thread where the asynchronous result was to be delivered,
+// as it invokes the callback directly. If you are in a different thread use
 // g_simple_async_result_complete_in_idle().
 //
 // Calling this function takes a reference to simple for as long as is needed to
@@ -384,8 +384,8 @@ func (simple *SimpleAsyncResult) CompleteInIdle() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the operation's result was TRUE, FALSE if the operation's
-//      result was FALSE.
+//   - ok: TRUE if the operation's result was TRUE, FALSE if the operation's
+//     result was FALSE.
 //
 func (simple *SimpleAsyncResult) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
@@ -411,7 +411,7 @@ func (simple *SimpleAsyncResult) OpResGboolean() bool {
 //
 // The function returns the following values:
 //
-//    - gssize returned from the asynchronous function.
+//   - gssize returned from the asynchronous function.
 //
 func (simple *SimpleAsyncResult) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
@@ -464,8 +464,8 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 //
 // Implementors of cancellable asynchronous functions should use this in order
 // to provide a guarantee to their callers that cancelling an async operation
-// will reliably result in an error being returned for that operation (even if a
-// positive result for the operation has already been sent as an idle to the
+// will reliably result in an error being returned for that operation (even if
+// a positive result for the operation has already been sent as an idle to the
 // main context to be dispatched).
 //
 // The checking described above is done regardless of any call to the unrelated
@@ -475,7 +475,7 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) to check, or NULL to unset.
+//   - ctx (optional) to check, or NULL to unset.
 //
 func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 	var _arg0 *C.GSimpleAsyncResult // out
@@ -499,7 +499,7 @@ func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 //
 // The function takes the following parameters:
 //
-//    - err: #GError.
+//   - err: #GError.
 //
 func (simple *SimpleAsyncResult) SetFromError(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
@@ -526,7 +526,7 @@ func (simple *SimpleAsyncResult) SetFromError(err error) {
 //
 // The function takes the following parameters:
 //
-//    - handleCancellation: #gboolean.
+//   - handleCancellation: #gboolean.
 //
 func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
@@ -549,7 +549,7 @@ func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) 
 //
 // The function takes the following parameters:
 //
-//    - opRes: #gboolean.
+//   - opRes: #gboolean.
 //
 func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
@@ -572,7 +572,7 @@ func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 //
 // The function takes the following parameters:
 //
-//    - opRes: #gssize.
+//   - opRes: #gssize.
 //
 func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out

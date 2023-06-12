@@ -21,8 +21,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8s: list of #GSettings schemas that are available, in no defined
-//      order. The list must not be modified or freed.
+//   - utf8s: list of #GSettings schemas that are available, in no defined
+//     order. The list must not be modified or freed.
 //
 func SettingsListSchemas() []string {
 	var _cret **C.gchar // in
@@ -50,13 +50,13 @@ func SettingsListSchemas() []string {
 
 // SettingsUnbind removes an existing binding for property on object.
 //
-// Note that bindings are automatically removed when the object is finalized, so
-// it is rarely necessary to call this function.
+// Note that bindings are automatically removed when the object is finalized,
+// so it is rarely necessary to call this function.
 //
 // The function takes the following parameters:
 //
-//    - object: object.
-//    - property whose binding is removed.
+//   - object: object.
+//   - property whose binding is removed.
 //
 func SettingsUnbind(object *coreglib.Object, property string) {
 	var _arg1 C.gpointer // out

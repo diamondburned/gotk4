@@ -27,14 +27,14 @@ func init() {
 
 // CellRendererCombo renders a combobox in a cell
 //
-// CellRendererCombo renders text in a cell like CellRendererText from which it
-// is derived. But while CellRendererText offers a simple entry to edit the
+// CellRendererCombo renders text in a cell like CellRendererText from which
+// it is derived. But while CellRendererText offers a simple entry to edit the
 // text, CellRendererCombo offers a ComboBox widget to edit the text. The values
 // to display in the combo box are taken from the tree model specified in the
 // CellRendererCombo:model property.
 //
-// The combo cell renderer takes care of adding a text cell renderer to the
-// combo box and sets it to display the column specified by its
+// The combo cell renderer takes care of adding a text cell renderer
+// to the combo box and sets it to display the column specified by its
 // CellRendererCombo:text-column property. Further properties of the combo box
 // can be set in a handler for the CellRenderer::editing-started signal.
 type CellRendererCombo struct {
@@ -69,10 +69,10 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 // newly selected item in the combo box and it is relative to the GtkTreeModel
 // set via the model property on GtkCellRendererCombo.
 //
-// Note that as soon as you change the model displayed in the tree view, the
-// tree view will immediately cease the editing operating. This means that you
-// most probably want to refrain from changing the model until the combo cell
-// renderer emits the edited or editing_canceled signal.
+// Note that as soon as you change the model displayed in the tree view,
+// the tree view will immediately cease the editing operating. This means that
+// you most probably want to refrain from changing the model until the combo
+// cell renderer emits the edited or editing_canceled signal.
 func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *TreeIter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gtk4_CellRendererCombo_ConnectChanged), f)
 }
@@ -86,7 +86,7 @@ func (v *CellRendererCombo) ConnectChanged(f func(pathString string, newIter *Tr
 //
 // The function returns the following values:
 //
-//    - cellRendererCombo: new cell renderer.
+//   - cellRendererCombo: new cell renderer.
 //
 func NewCellRendererCombo() *CellRendererCombo {
 	var _cret *C.GtkCellRenderer // in

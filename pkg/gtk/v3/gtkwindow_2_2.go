@@ -27,7 +27,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - setting: TRUE to automatically do startup notification.
+//   - setting: TRUE to automatically do startup notification.
 //
 func WindowSetAutoStartupNotification(setting bool) {
 	var _arg1 C.gboolean // out
@@ -46,7 +46,7 @@ func WindowSetAutoStartupNotification(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - filename: location of icon file.
+//   - filename: location of icon file.
 //
 func WindowSetDefaultIconFromFile(filename string) error {
 	var _arg1 *C.gchar  // out

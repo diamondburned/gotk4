@@ -21,8 +21,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - displayManager: global DisplayManager singleton; gdk_parse_args(),
-//      gdk_init(), or gdk_init_check() must have been called first.
+//   - displayManager: global DisplayManager singleton; gdk_parse_args(),
+//     gdk_init(), or gdk_init_check() must have been called first.
 //
 func DisplayManagerGet() *DisplayManager {
 	var _cret *C.GdkDisplayManager // in

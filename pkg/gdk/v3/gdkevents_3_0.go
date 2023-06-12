@@ -14,19 +14,19 @@ import (
 import "C"
 
 // EventsGetAngle: if both events contain X/Y information, this function will
-// return TRUE and return in angle the relative angle from event1 to event2. The
-// rotation direction for positive angles is from the positive X axis towards
-// the positive Y axis.
+// return TRUE and return in angle the relative angle from event1 to event2.
+// The rotation direction for positive angles is from the positive X axis
+// towards the positive Y axis.
 //
 // The function takes the following parameters:
 //
-//    - event1: first Event.
-//    - event2: second Event.
+//   - event1: first Event.
+//   - event2: second Event.
 //
 // The function returns the following values:
 //
-//    - angle: return location for the relative angle between both events.
-//    - ok: TRUE if the angle could be calculated.
+//   - angle: return location for the relative angle between both events.
+//   - ok: TRUE if the angle could be calculated.
 //
 func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out
@@ -57,14 +57,14 @@ func EventsGetAngle(event1, event2 *Event) (float64, bool) {
 //
 // The function takes the following parameters:
 //
-//    - event1: first Event.
-//    - event2: second Event.
+//   - event1: first Event.
+//   - event2: second Event.
 //
 // The function returns the following values:
 //
-//    - x: return location for the X coordinate of the center.
-//    - y: return location for the Y coordinate of the center.
-//    - ok: TRUE if the center could be calculated.
+//   - x: return location for the X coordinate of the center.
+//   - y: return location for the Y coordinate of the center.
+//   - ok: TRUE if the center could be calculated.
 //
 func EventsGetCenter(event1, event2 *Event) (x, y float64, ok bool) {
 	var _arg1 *C.GdkEvent // out
@@ -99,13 +99,13 @@ func EventsGetCenter(event1, event2 *Event) (x, y float64, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - event1: first Event.
-//    - event2: second Event.
+//   - event1: first Event.
+//   - event2: second Event.
 //
 // The function returns the following values:
 //
-//    - distance: return location for the distance.
-//    - ok: TRUE if the distance could be calculated.
+//   - distance: return location for the distance.
+//   - ok: TRUE if the distance could be calculated.
 //
 func EventsGetDistance(event1, event2 *Event) (float64, bool) {
 	var _arg1 *C.GdkEvent // out

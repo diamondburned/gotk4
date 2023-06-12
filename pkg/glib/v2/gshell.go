@@ -51,11 +51,11 @@ func (s ShellError) String() string {
 //
 // The function takes the following parameters:
 //
-//    - commandLine: command line to parse.
+//   - commandLine: command line to parse.
 //
 // The function returns the following values:
 //
-//    - argvp (optional): return location for array of args.
+//   - argvp (optional): return location for array of args.
 //
 func ShellParseArgv(commandLine string) ([]string, error) {
 	var _arg1 *C.gchar  // out
@@ -98,11 +98,11 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 //
 // The function takes the following parameters:
 //
-//    - unquotedString: literal string.
+//   - unquotedString: literal string.
 //
 // The function returns the following values:
 //
-//    - filename: quoted string.
+//   - filename: quoted string.
 //
 func ShellQuote(unquotedString string) string {
 	var _arg1 *C.gchar // out
@@ -128,26 +128,26 @@ func ShellQuote(unquotedString string) string {
 // will be different from the result a real shell would produce (the variables,
 // backticks, etc. will be passed through literally instead of being expanded).
 // This function is guaranteed to succeed if applied to the result of
-// g_shell_quote(). If it fails, it returns NULL and sets the error. The
-// quoted_string need not actually contain quoted or escaped text;
+// g_shell_quote(). If it fails, it returns NULL and sets the error.
+// The quoted_string need not actually contain quoted or escaped text;
 // g_shell_unquote() simply goes through the string and unquotes/unescapes
-// anything that the shell would. Both single and double quotes are handled, as
-// are escapes including escaped newlines. The return value must be freed with
-// g_free(). Possible errors are in the SHELL_ERROR domain.
+// anything that the shell would. Both single and double quotes are handled,
+// as are escapes including escaped newlines. The return value must be freed
+// with g_free(). Possible errors are in the SHELL_ERROR domain.
 //
 // Shell quoting rules are a bit strange. Single quotes preserve the literal
-// string exactly. escape sequences are not allowed; not even \' - if you want a
-// ' in the quoted text, you have to do something like 'foo'\”bar'. Double
-// quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
-// double quotes preserve things literally.
+// string exactly. escape sequences are not allowed; not even \' - if you
+// want a ' in the quoted text, you have to do something like 'foo'\”bar'.
+// Double quotes allow $, `, ", \, and newline to be escaped with backslash.
+// Otherwise double quotes preserve things literally.
 //
 // The function takes the following parameters:
 //
-//    - quotedString: shell-quoted string.
+//   - quotedString: shell-quoted string.
 //
 // The function returns the following values:
 //
-//    - filename: unquoted string.
+//   - filename: unquoted string.
 //
 func ShellUnquote(quotedString string) (string, error) {
 	var _arg1 *C.gchar  // out

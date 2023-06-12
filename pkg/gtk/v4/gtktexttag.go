@@ -90,11 +90,11 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional): tag name, or NULL.
+//   - name (optional): tag name, or NULL.
 //
 // The function returns the following values:
 //
-//    - textTag: new GtkTextTag.
+//   - textTag: new GtkTextTag.
 //
 func NewTextTag(name string) *TextTag {
 	var _arg1 *C.char       // out
@@ -123,7 +123,7 @@ func NewTextTag(name string) *TextTag {
 //
 // The function takes the following parameters:
 //
-//    - sizeChanged: whether the change affects the GtkTextView layout.
+//   - sizeChanged: whether the change affects the GtkTextView layout.
 //
 func (tag *TextTag) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
@@ -143,7 +143,7 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 //
 // The function returns the following values:
 //
-//    - gint tag’s priority.
+//   - gint tag’s priority.
 //
 func (tag *TextTag) Priority() int {
 	var _arg0 *C.GtkTextTag // out
@@ -168,16 +168,16 @@ func (tag *TextTag) Priority() int {
 // setting the priority of one tag shifts the priorities of all the other tags
 // in the table to maintain a unique priority for each tag.
 //
-// Higher priority tags “win” if two tags both set the same text attribute. When
-// adding a tag to a tag table, it will be assigned the highest priority in the
-// table by default; so normally the precedence of a set of tags is the order in
-// which they were added to the table, or created with
+// Higher priority tags “win” if two tags both set the same text attribute.
+// When adding a tag to a tag table, it will be assigned the highest priority
+// in the table by default; so normally the precedence of a set of tags
+// is the order in which they were added to the table, or created with
 // gtk.TextBuffer.CreateTag(), which adds the tag to the buffer’s table
 // automatically.
 //
 // The function takes the following parameters:
 //
-//    - priority: new priority.
+//   - priority: new priority.
 //
 func (tag *TextTag) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out

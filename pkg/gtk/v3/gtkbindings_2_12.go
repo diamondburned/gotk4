@@ -21,9 +21,9 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - bindingSet to skip an entry of.
-//    - keyval: key value of binding to skip.
-//    - modifiers: key modifier of binding to skip.
+//   - bindingSet to skip an entry of.
+//   - keyval: key value of binding to skip.
+//   - modifiers: key modifier of binding to skip.
 //
 func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out

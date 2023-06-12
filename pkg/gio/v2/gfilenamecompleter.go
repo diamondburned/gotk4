@@ -96,7 +96,7 @@ func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) coreglib.
 //
 // The function returns the following values:
 //
-//    - filenameCompleter: Completer.
+//   - filenameCompleter: Completer.
 //
 func NewFilenameCompleter() *FilenameCompleter {
 	var _cret *C.GFilenameCompleter // in
@@ -114,12 +114,12 @@ func NewFilenameCompleter() *FilenameCompleter {
 //
 // The function takes the following parameters:
 //
-//    - initialText: text to be completed.
+//   - initialText: text to be completed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): completed string, or NULL if no completion exists. This
-//      string is not owned by GIO, so remember to g_free() it when finished.
+//   - utf8 (optional): completed string, or NULL if no completion exists. This
+//     string is not owned by GIO, so remember to g_free() it when finished.
 //
 func (completer *FilenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
@@ -148,12 +148,12 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 //
 // The function takes the following parameters:
 //
-//    - initialText: text to be completed.
+//   - initialText: text to be completed.
 //
 // The function returns the following values:
 //
-//    - utf8s: array of strings with possible completions for initial_text. This
-//      array must be freed by g_strfreev() when finished.
+//   - utf8s: array of strings with possible completions for initial_text.
+//     This array must be freed by g_strfreev() when finished.
 //
 func (completer *FilenameCompleter) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
@@ -194,7 +194,7 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 //
 // The function takes the following parameters:
 //
-//    - dirsOnly: #gboolean.
+//   - dirsOnly: #gboolean.
 //
 func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out

@@ -56,7 +56,7 @@ type IOStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	CloseFinish func(result AsyncResulter) error
 	// The function takes the following parameters:
@@ -67,7 +67,7 @@ type IOStreamOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - inputStream owned by the OStream. Do not free.
+	//   - inputStream owned by the OStream. Do not free.
 	//
 	InputStream func() InputStreamer
 	// OutputStream gets the output stream for this object. This is used for
@@ -75,7 +75,7 @@ type IOStreamOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - outputStream owned by the OStream. Do not free.
+	//   - outputStream owned by the OStream. Do not free.
 	//
 	OutputStream func() OutputStreamer
 }
@@ -89,10 +89,10 @@ func defaultIOStreamOverrides(v *IOStream) IOStreamOverrides {
 	}
 }
 
-// IOStream represents an object that has both read and write streams. Generally
-// the two streams act as separate input and output streams, but they share some
-// common resources and state. For instance, for seekable streams, both streams
-// may use the same position.
+// IOStream represents an object that has both read and write streams.
+// Generally the two streams act as separate input and output streams, but they
+// share some common resources and state. For instance, for seekable streams,
+// both streams may use the same position.
 //
 // Examples of OStream objects are Connection, which represents a two-way
 // network connection; and IOStream, which represents a file handle opened in
@@ -107,31 +107,31 @@ func defaultIOStreamOverrides(v *IOStream) IOStreamOverrides {
 // substreams, so even if the substreams stay alive they will always return
 // G_IO_ERROR_CLOSED for all operations.
 //
-// To close a stream use g_io_stream_close() which will close the common stream
-// object and also the individual substreams. You can also close the substreams
-// themselves. In most cases this only marks the substream as closed, so further
-// I/O on it fails but common state in the OStream may still be open. However,
-// some streams may support "half-closed" states where one direction of the
-// stream is actually shut down.
+// To close a stream use g_io_stream_close() which will close the common
+// stream object and also the individual substreams. You can also close the
+// substreams themselves. In most cases this only marks the substream as closed,
+// so further I/O on it fails but common state in the OStream may still be open.
+// However, some streams may support "half-closed" states where one direction of
+// the stream is actually shut down.
 //
 // Operations on OStreams cannot be started while another operation on the
-// OStream or its substreams is in progress. Specifically, an application can
-// read from the Stream and write to the Stream simultaneously (either in
+// OStream or its substreams is in progress. Specifically, an application
+// can read from the Stream and write to the Stream simultaneously (either in
 // separate threads, or as asynchronous operations in the same thread), but an
 // application cannot start any OStream operation while there is a OStream,
 // Stream or Stream operation in progress, and an application can’t start any
 // Stream or Stream operation while there is a OStream operation in progress.
 //
-// This is a product of individual stream operations being associated with a
-// given Context (the thread-default context at the time the operation was
+// This is a product of individual stream operations being associated with
+// a given Context (the thread-default context at the time the operation was
 // started), rather than entire streams being associated with a single Context.
 //
 // GIO may run operations on OStreams from other (worker) threads, and this may
 // be exposed to application code in the behaviour of wrapper streams, such as
 // InputStream or Connection. With such wrapper APIs, application code may only
 // run operations on the base (wrapped) stream when the wrapper stream is idle.
-// Note that the semantics of such operations may not be well-defined due to the
-// state the wrapper stream leaves the base stream in (though they are
+// Note that the semantics of such operations may not be well-defined due to
+// the state the wrapper stream leaves the base stream in (though they are
 // guaranteed not to crash).
 type IOStream struct {
 	_ [0]func() // equal guard
@@ -226,9 +226,9 @@ func (stream *IOStream) ClearPending() {
 // Closing a stream will automatically flush any outstanding buffers in the
 // stream.
 //
-// Streams will be automatically closed when the last reference is dropped, but
-// you might want to call this function to make sure resources are released as
-// early as possible.
+// Streams will be automatically closed when the last reference is dropped,
+// but you might want to call this function to make sure resources are released
+// as early as possible.
 //
 // Some streams might keep the backing store of the stream (e.g. a file
 // descriptor) open after the stream is closed. See the documentation for the
@@ -251,7 +251,7 @@ func (stream *IOStream) ClearPending() {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (stream *IOStream) Close(ctx context.Context) error {
 	var _arg0 *C.GIOStream    // out
@@ -290,9 +290,9 @@ func (stream *IOStream) Close(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream          // out
@@ -324,7 +324,7 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GIOStream    // out
@@ -351,7 +351,7 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - inputStream owned by the OStream. Do not free.
+//   - inputStream owned by the OStream. Do not free.
 //
 func (stream *IOStream) InputStream() InputStreamer {
 	var _arg0 *C.GIOStream    // out
@@ -390,7 +390,7 @@ func (stream *IOStream) InputStream() InputStreamer {
 //
 // The function returns the following values:
 //
-//    - outputStream owned by the OStream. Do not free.
+//   - outputStream owned by the OStream. Do not free.
 //
 func (stream *IOStream) OutputStream() OutputStreamer {
 	var _arg0 *C.GIOStream     // out
@@ -428,7 +428,7 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if stream has pending actions.
+//   - ok: TRUE if stream has pending actions.
 //
 func (stream *IOStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
@@ -452,7 +452,7 @@ func (stream *IOStream) HasPending() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream is closed.
+//   - ok: TRUE if the stream is closed.
 //
 func (stream *IOStream) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
@@ -501,11 +501,11 @@ func (stream *IOStream) SetPending() error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - stream2: OStream.
-//    - flags: set of OStreamSpliceFlags.
-//    - ioPriority: io priority of the request.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stream2: OStream.
+//   - flags: set of OStreamSpliceFlags.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback.
 //
 func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream           // out
@@ -551,9 +551,9 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional cancellable object.
-//    - ioPriority: io priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: io priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *IOStream) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
@@ -588,7 +588,7 @@ func (stream *IOStream) closeAsync(ctx context.Context, ioPriority int, callback
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (stream *IOStream) closeFinish(result AsyncResulter) error {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
@@ -648,7 +648,7 @@ func (stream *IOStream) closeFn(ctx context.Context) error {
 //
 // The function returns the following values:
 //
-//    - inputStream owned by the OStream. Do not free.
+//   - inputStream owned by the OStream. Do not free.
 //
 func (stream *IOStream) inputStream() InputStreamer {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
@@ -690,7 +690,7 @@ func (stream *IOStream) inputStream() InputStreamer {
 //
 // The function returns the following values:
 //
-//    - outputStream owned by the OStream. Do not free.
+//   - outputStream owned by the OStream. Do not free.
 //
 func (stream *IOStream) outputStream() OutputStreamer {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))

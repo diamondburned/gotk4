@@ -103,25 +103,25 @@ func (action *RadioAction) ConnectChanged(f func(current *RadioAction)) coreglib
 	return coreglib.ConnectGeneratedClosure(action, "changed", false, unsafe.Pointer(C._gotk4_gtk3_RadioAction_ConnectChanged), f)
 }
 
-// NewRadioAction creates a new RadioAction object. To add the action to a
-// ActionGroup and set the accelerator for the action, call
+// NewRadioAction creates a new RadioAction object. To add the action
+// to a ActionGroup and set the accelerator for the action, call
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
 //
 // The function takes the following parameters:
 //
-//    - name: unique name for the action.
-//    - label (optional) displayed in menu items and on buttons, or NULL.
-//    - tooltip (optional) for this action, or NULL.
-//    - stockId (optional): stock icon to display in widgets representing this
-//      action, or NULL.
-//    - value which gtk_radio_action_get_current_value() should return if this
-//      action is selected.
+//   - name: unique name for the action.
+//   - label (optional) displayed in menu items and on buttons, or NULL.
+//   - tooltip (optional) for this action, or NULL.
+//   - stockId (optional): stock icon to display in widgets representing this
+//     action, or NULL.
+//   - value which gtk_radio_action_get_current_value() should return if this
+//     action is selected.
 //
 // The function returns the following values:
 //
-//    - radioAction: new RadioAction.
+//   - radioAction: new RadioAction.
 //
 func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioAction {
 	var _arg1 *C.gchar          // out
@@ -168,7 +168,7 @@ func NewRadioAction(name, label, tooltip, stockId string, value int) *RadioActio
 //
 // The function returns the following values:
 //
-//    - gint: value of the currently active group member.
+//   - gint: value of the currently active group member.
 //
 func (action *RadioAction) CurrentValue() int {
 	var _arg0 *C.GtkRadioAction // out
@@ -191,22 +191,22 @@ func (action *RadioAction) CurrentValue() int {
 //
 // A common way to set up a group of radio group is the following:
 //
-//     GSList *group = NULL;
-//     GtkRadioAction *action;
+//    GSList *group = NULL;
+//    GtkRadioAction *action;
 //
-//     while ( ...more actions to add... /)
-//       {
-//          action = gtk_radio_action_new (...);
+//    while ( ...more actions to add... /)
+//      {
+//         action = gtk_radio_action_new (...);
 //
-//          gtk_radio_action_set_group (action, group);
-//          group = gtk_radio_action_get_group (action);
-//       }
+//         gtk_radio_action_set_group (action, group);
+//         group = gtk_radio_action_get_group (action);
+//      }
 //
 // Deprecated: since version 3.10.
 //
 // The function returns the following values:
 //
-//    - sList: list representing the radio group for this object.
+//   - sList: list representing the radio group for this object.
 //
 func (action *RadioAction) Group() []*RadioAction {
 	var _arg0 *C.GtkRadioAction // out
@@ -238,23 +238,23 @@ func (action *RadioAction) Group() []*RadioAction {
 //
 // A common way to set up a group of radio actions is the following:
 //
-//     GtkRadioAction *action;
-//     GtkRadioAction *last_action;
+//    GtkRadioAction *action;
+//    GtkRadioAction *last_action;
 //
-//     while ( ...more actions to add... /)
-//       {
-//          action = gtk_radio_action_new (...);
+//    while ( ...more actions to add... /)
+//      {
+//         action = gtk_radio_action_new (...);
 //
-//          gtk_radio_action_join_group (action, last_action);
-//          last_action = action;
-//       }
+//         gtk_radio_action_join_group (action, last_action);
+//         last_action = action;
+//      }
 //
 // Deprecated: since version 3.10.
 //
 // The function takes the following parameters:
 //
-//    - groupSource (optional): radio action object whos group we are joining, or
-//      NULL to remove the radio action from its group.
+//   - groupSource (optional): radio action object whos group we are joining,
+//     or NULL to remove the radio action from its group.
 //
 func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 	var _arg0 *C.GtkRadioAction // out
@@ -277,7 +277,7 @@ func (action *RadioAction) JoinGroup(groupSource *RadioAction) {
 //
 // The function takes the following parameters:
 //
-//    - currentValue: new value.
+//   - currentValue: new value.
 //
 func (action *RadioAction) SetCurrentValue(currentValue int) {
 	var _arg0 *C.GtkRadioAction // out
@@ -297,7 +297,7 @@ func (action *RadioAction) SetCurrentValue(currentValue int) {
 //
 // The function takes the following parameters:
 //
-//    - group (optional): list representing a radio group, or NULL.
+//   - group (optional): list representing a radio group, or NULL.
 //
 func (action *RadioAction) SetGroup(group []*RadioAction) {
 	var _arg0 *C.GtkRadioAction // out

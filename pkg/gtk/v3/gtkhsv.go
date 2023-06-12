@@ -128,7 +128,7 @@ func (hsv *HSV) ConnectMove(f func(object DirectionType)) coreglib.SignalHandle 
 //
 // The function returns the following values:
 //
-//    - hsV: newly-created HSV color selector.
+//   - hsV: newly-created HSV color selector.
 //
 func NewHSV() *HSV {
 	var _cret *C.GtkWidget // in
@@ -147,9 +147,9 @@ func NewHSV() *HSV {
 //
 // The function returns the following values:
 //
-//    - h: return value for the hue.
-//    - s: return value for the saturation.
-//    - v: return value for the value.
+//   - h: return value for the hue.
+//   - s: return value for the saturation.
+//   - v: return value for the value.
 //
 func (hsv *HSV) Color() (h, s, v float64) {
 	var _arg0 *C.GtkHSV // out
@@ -177,8 +177,8 @@ func (hsv *HSV) Color() (h, s, v float64) {
 //
 // The function returns the following values:
 //
-//    - size: return value for the diameter of the hue ring.
-//    - ringWidth: return value for the width of the hue ring.
+//   - size: return value for the diameter of the hue ring.
+//   - ringWidth: return value for the width of the hue ring.
 //
 func (hsv *HSV) Metrics() (size, ringWidth int) {
 	var _arg0 *C.GtkHSV // out
@@ -206,9 +206,9 @@ func (hsv *HSV) Metrics() (size, ringWidth int) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if clients can ignore changes to the color value, since they may
-//      be transitory, or FALSE if they should consider the color value status to
-//      be final.
+//   - ok: TRUE if clients can ignore changes to the color value, since they may
+//     be transitory, or FALSE if they should consider the color value status to
+//     be final.
 //
 func (hsv *HSV) IsAdjusting() bool {
 	var _arg0 *C.GtkHSV  // out
@@ -233,9 +233,9 @@ func (hsv *HSV) IsAdjusting() bool {
 //
 // The function takes the following parameters:
 //
-//    - h: hue.
-//    - s: saturation.
-//    - v: value.
+//   - h: hue.
+//   - s: saturation.
+//   - v: value.
 //
 func (hsv *HSV) SetColor(h, s, v float64) {
 	var _arg0 *C.GtkHSV // out
@@ -259,8 +259,8 @@ func (hsv *HSV) SetColor(h, s, v float64) {
 //
 // The function takes the following parameters:
 //
-//    - size: diameter for the hue ring.
-//    - ringWidth: width of the hue ring.
+//   - size: diameter for the hue ring.
+//   - ringWidth: width of the hue ring.
 //
 func (hsv *HSV) SetMetrics(size, ringWidth int) {
 	var _arg0 *C.GtkHSV // out

@@ -43,8 +43,8 @@ func init() {
 	})
 }
 
-// EditableText should be implemented by UI components which contain text which
-// the user can edit, via the Object corresponding to that component (see
+// EditableText should be implemented by UI components which contain text
+// which the user can edit, via the Object corresponding to that component (see
 // Object).
 //
 // EditableText is a subclass of Text, and as such, an object which implements
@@ -100,8 +100,8 @@ func marshalEditableText(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (text *EditableText) CopyText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
@@ -123,8 +123,8 @@ func (text *EditableText) CopyText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (text *EditableText) CutText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
@@ -145,8 +145,8 @@ func (text *EditableText) CutText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (text *EditableText) DeleteText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
@@ -167,11 +167,11 @@ func (text *EditableText) DeleteText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - str: text to insert.
-//    - length of text to insert, in bytes.
-//    - position: caller initializes this to the position at which to insert the
-//      text. After the call it points at the position after the newly inserted
-//      text.
+//   - str: text to insert.
+//   - length of text to insert, in bytes.
+//   - position: caller initializes this to the position at which to insert the
+//     text. After the call it points at the position after the newly inserted
+//     text.
 //
 func (text *EditableText) InsertText(str string, length int, position *int) {
 	var _arg0 *C.AtkEditableText // out
@@ -196,7 +196,7 @@ func (text *EditableText) InsertText(str string, length int, position *int) {
 //
 // The function takes the following parameters:
 //
-//    - position to paste.
+//   - position to paste.
 //
 func (text *EditableText) PasteText(position int) {
 	var _arg0 *C.AtkEditableText // out
@@ -214,7 +214,7 @@ func (text *EditableText) PasteText(position int) {
 //
 // The function takes the following parameters:
 //
-//    - str: string to set for text contents of text.
+//   - str: string to set for text contents of text.
 //
 func (text *EditableText) SetTextContents(str string) {
 	var _arg0 *C.AtkEditableText // out
@@ -234,8 +234,8 @@ func (text *EditableText) SetTextContents(str string) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (text *EditableText) copyText(startPos, endPos int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
@@ -260,8 +260,8 @@ func (text *EditableText) copyText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (text *EditableText) cutText(startPos, endPos int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
@@ -285,8 +285,8 @@ func (text *EditableText) cutText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - startPos: start position.
-//    - endPos: end position.
+//   - startPos: start position.
+//   - endPos: end position.
 //
 func (text *EditableText) deleteText(startPos, endPos int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
@@ -310,11 +310,11 @@ func (text *EditableText) deleteText(startPos, endPos int) {
 //
 // The function takes the following parameters:
 //
-//    - str: text to insert.
-//    - length of text to insert, in bytes.
-//    - position: caller initializes this to the position at which to insert the
-//      text. After the call it points at the position after the newly inserted
-//      text.
+//   - str: text to insert.
+//   - length of text to insert, in bytes.
+//   - position: caller initializes this to the position at which to insert the
+//     text. After the call it points at the position after the newly inserted
+//     text.
 //
 func (text *EditableText) insertText(str string, length int, position *int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
@@ -342,7 +342,7 @@ func (text *EditableText) insertText(str string, length int, position *int) {
 //
 // The function takes the following parameters:
 //
-//    - position to paste.
+//   - position to paste.
 //
 func (text *EditableText) pasteText(position int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
@@ -363,7 +363,7 @@ func (text *EditableText) pasteText(position int) {
 //
 // The function takes the following parameters:
 //
-//    - str: string to set for text contents of text.
+//   - str: string to set for text contents of text.
 //
 func (text *EditableText) setTextContents(str string) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))

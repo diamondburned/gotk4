@@ -28,12 +28,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - window to check. window may not be an input-only window.
+//   - cr: cairo context.
+//   - window to check. window may not be an input-only window.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window should be drawn.
+//   - ok: TRUE if window should be drawn.
 //
 func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 	var _arg1 *C.cairo_t   // out
@@ -67,9 +67,9 @@ func CairoShouldDrawWindow(cr *cairo.Context, window gdk.Windower) bool {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context to transform.
-//    - widget the context is currently centered for.
-//    - window to transform the context to.
+//   - cr: cairo context to transform.
+//   - widget the context is currently centered for.
+//   - window to transform the context to.
 //
 func CairoTransformToWindow(cr *cairo.Context, widget Widgetter, window gdk.Windower) {
 	var _arg1 *C.cairo_t   // out

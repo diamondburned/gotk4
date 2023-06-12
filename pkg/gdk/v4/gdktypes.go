@@ -502,24 +502,24 @@ func (m ModifierType) Has(other ModifierType) bool {
 // controlling operations that pass data between different widgets, window or
 // application, like gdk.Drag, gdk.Drop, gdk.Clipboard or gdk.ContentProvider.
 //
-// GDK supports content in 2 forms: GType and mime type. Using GTypes is meant
-// only for in-process content transfers. Mime types are meant to be used for
-// data passing both in-process and out-of-process. The details of how data is
-// passed is described in the documentation of the actual implementations. To
-// transform between the two forms, gdk.ContentSerializer and
-// gdk.ContentDeserializer are used.
+// GDK supports content in 2 forms: GType and mime type. Using GTypes is
+// meant only for in-process content transfers. Mime types are meant to be
+// used for data passing both in-process and out-of-process. The details
+// of how data is passed is described in the documentation of the actual
+// implementations. To transform between the two forms, gdk.ContentSerializer
+// and gdk.ContentDeserializer are used.
 //
 // A GdkContentFormats describes a set of possible formats content can be
 // exchanged in. It is assumed that this set is ordered. GTypes are more
 // important than mime types. Order between different GTypes or mime types is
-// the order they were added in, most important first. Functions that care about
-// order, such as gdk.ContentFormats.Union(), will describe in their
+// the order they were added in, most important first. Functions that care
+// about order, such as gdk.ContentFormats.Union(), will describe in their
 // documentation how they interpret that order, though in general the order of
 // the first argument is considered the primary order of the result, followed by
 // the order of further arguments.
 //
-// For debugging purposes, the function gdk.ContentFormats.ToString() exists. It
-// will print a comma-separated list of formats from most important to least
+// For debugging purposes, the function gdk.ContentFormats.ToString() exists.
+// It will print a comma-separated list of formats from most important to least
 // important.
 //
 // GdkContentFormats is an immutable struct. After creation, you cannot change
@@ -601,11 +601,11 @@ func NewContentFormatsForGType(typ coreglib.Type) *ContentFormats {
 //
 // The function takes the following parameters:
 //
-//    - typ: GType to search for.
+//   - typ: GType to search for.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the #GType was found.
+//   - ok: TRUE if the #GType was found.
 //
 func (formats *ContentFormats) ContainGType(typ coreglib.Type) bool {
 	var _arg0 *C.GdkContentFormats // out
@@ -632,11 +632,11 @@ func (formats *ContentFormats) ContainGType(typ coreglib.Type) bool {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: mime type to search for.
+//   - mimeType: mime type to search for.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the mime_type was found.
+//   - ok: TRUE if the mime_type was found.
 //
 func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 	var _arg0 *C.GdkContentFormats // out
@@ -667,8 +667,8 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 //
 // The function returns the following values:
 //
-//    - gTypes (optional): G_TYPE_INVALID-terminated array of types included in
-//      formats or NULL if none.
+//   - gTypes (optional): G_TYPE_INVALID-terminated array of types included in
+//     formats or NULL if none.
 //
 func (formats *ContentFormats) GTypes() []coreglib.Type {
 	var _arg0 *C.GdkContentFormats // out
@@ -702,8 +702,8 @@ func (formats *ContentFormats) GTypes() []coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): NULL-terminated array of interned strings of mime types
-//      included in formats or NULL if none.
+//   - utf8s (optional): NULL-terminated array of interned strings of mime types
+//     included in formats or NULL if none.
 //
 func (formats *ContentFormats) MIMETypes() []string {
 	var _arg0 *C.GdkContentFormats // out
@@ -734,11 +734,11 @@ func (formats *ContentFormats) MIMETypes() []string {
 //
 // The function takes the following parameters:
 //
-//    - second: GdkContentFormats to intersect with.
+//   - second: GdkContentFormats to intersect with.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a matching format was found.
+//   - ok: TRUE if a matching format was found.
 //
 func (first *ContentFormats) Match(second *ContentFormats) bool {
 	var _arg0 *C.GdkContentFormats // out
@@ -767,11 +767,11 @@ func (first *ContentFormats) Match(second *ContentFormats) bool {
 //
 // The function takes the following parameters:
 //
-//    - second: GdkContentFormats to intersect with.
+//   - second: GdkContentFormats to intersect with.
 //
 // The function returns the following values:
 //
-//    - gType: first common GType or G_TYPE_INVALID if none.
+//   - gType: first common GType or G_TYPE_INVALID if none.
 //
 func (first *ContentFormats) MatchGType(second *ContentFormats) coreglib.Type {
 	var _arg0 *C.GdkContentFormats // out
@@ -799,11 +799,11 @@ func (first *ContentFormats) MatchGType(second *ContentFormats) coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - second: GdkContentFormats to intersect with.
+//   - second: GdkContentFormats to intersect with.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): first common mime type or NULL if none.
+//   - utf8 (optional): first common mime type or NULL if none.
 //
 func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	var _arg0 *C.GdkContentFormats // out
@@ -833,7 +833,7 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 //
 // The function returns the following values:
 //
-//    - utf8: new string.
+//   - utf8: new string.
 //
 func (formats *ContentFormats) String() string {
 	var _arg0 *C.GdkContentFormats // out
@@ -857,11 +857,11 @@ func (formats *ContentFormats) String() string {
 //
 // The function takes the following parameters:
 //
-//    - second: GdkContentFormats to merge from.
+//   - second: GdkContentFormats to merge from.
 //
 // The function returns the following values:
 //
-//    - contentFormats: new GdkContentFormats.
+//   - contentFormats: new GdkContentFormats.
 //
 func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
@@ -893,7 +893,7 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 //
 // The function returns the following values:
 //
-//    - contentFormats: new GdkContentFormats.
+//   - contentFormats: new GdkContentFormats.
 //
 func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
@@ -922,7 +922,7 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 //
 // The function returns the following values:
 //
-//    - contentFormats: new GdkContentFormats.
+//   - contentFormats: new GdkContentFormats.
 //
 func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
@@ -951,7 +951,7 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 //
 // The function returns the following values:
 //
-//    - contentFormats: new GdkContentFormats.
+//   - contentFormats: new GdkContentFormats.
 //
 func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
@@ -980,7 +980,7 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 //
 // The function returns the following values:
 //
-//    - contentFormats: new GdkContentFormats.
+//   - contentFormats: new GdkContentFormats.
 //
 func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var _arg0 *C.GdkContentFormats // out
@@ -1044,8 +1044,8 @@ func (k *KeymapKey) Keycode() uint {
 	return _v
 }
 
-// Group indicates movement in a horizontal direction. Usually groups are used
-// for two different languages. In group 0, a key might have two English
+// Group indicates movement in a horizontal direction. Usually groups are
+// used for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) Group() int {
@@ -1058,8 +1058,8 @@ func (k *KeymapKey) Group() int {
 // Level indicates which symbol on the key will be used, in a vertical
 // direction. So on a standard US keyboard, the key with the number “1” on it
 // also has the exclamation point ("!") character on it. The level indicates
-// whether to use the “1” or the “!” symbol. The letter keys are considered to
-// have a lowercase letter at level 0, and an uppercase letter at level 1,
+// whether to use the “1” or the “!” symbol. The letter keys are considered
+// to have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
 func (k *KeymapKey) Level() int {
 	valptr := &k.native.level
@@ -1074,8 +1074,8 @@ func (k *KeymapKey) SetKeycode(keycode uint) {
 	*valptr = C.guint(keycode)
 }
 
-// Group indicates movement in a horizontal direction. Usually groups are used
-// for two different languages. In group 0, a key might have two English
+// Group indicates movement in a horizontal direction. Usually groups are
+// used for two different languages. In group 0, a key might have two English
 // characters, and in group 1 it might have two Hebrew characters. The Hebrew
 // characters will be printed on the key next to the English characters.
 func (k *KeymapKey) SetGroup(group int) {
@@ -1086,8 +1086,8 @@ func (k *KeymapKey) SetGroup(group int) {
 // Level indicates which symbol on the key will be used, in a vertical
 // direction. So on a standard US keyboard, the key with the number “1” on it
 // also has the exclamation point ("!") character on it. The level indicates
-// whether to use the “1” or the “!” symbol. The letter keys are considered to
-// have a lowercase letter at level 0, and an uppercase letter at level 1,
+// whether to use the “1” or the “!” symbol. The letter keys are considered
+// to have a lowercase letter at level 0, and an uppercase letter at level 1,
 // though only the uppercase letter is printed.
 func (k *KeymapKey) SetLevel(level int) {
 	valptr := &k.native.level
@@ -1208,12 +1208,12 @@ func (r *Rectangle) SetHeight(height int) {
 //
 // The function takes the following parameters:
 //
-//    - x: x coordinate.
-//    - y: y coordinate.
+//   - x: x coordinate.
+//   - y: y coordinate.
 //
 // The function returns the following values:
 //
-//    - ok if rect contains the point.
+//   - ok if rect contains the point.
 //
 func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 	var _arg0 *C.GdkRectangle // out
@@ -1243,11 +1243,11 @@ func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 //
 // The function takes the following parameters:
 //
-//    - rect2: GdkRectangle.
+//   - rect2: GdkRectangle.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the rectangles are equal.
+//   - ok: TRUE if the rectangles are equal.
 //
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
@@ -1273,20 +1273,20 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 // Intersect calculates the intersection of two rectangles.
 //
 // It is allowed for dest to be the same as either src1 or src2. If the
-// rectangles do not intersect, dest’s width and height is set to 0 and its x
-// and y values are undefined. If you are only interested in whether the
+// rectangles do not intersect, dest’s width and height is set to 0 and its
+// x and y values are undefined. If you are only interested in whether the
 // rectangles intersect, but not in the intersecting area itself, pass NULL for
 // dest.
 //
 // The function takes the following parameters:
 //
-//    - src2: GdkRectangle.
+//   - src2: GdkRectangle.
 //
 // The function returns the following values:
 //
-//    - dest (optional): return location for the intersection of src1 and src2,
-//      or NULL.
-//    - ok: TRUE if the rectangles intersect.
+//   - dest (optional): return location for the intersection of src1 and src2,
+//     or NULL.
+//   - ok: TRUE if the rectangles intersect.
 //
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
@@ -1323,11 +1323,11 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 //
 // The function takes the following parameters:
 //
-//    - src2: GdkRectangle.
+//   - src2: GdkRectangle.
 //
 // The function returns the following values:
 //
-//    - dest: return location for the union of src1 and src2.
+//   - dest: return location for the union of src1 and src2.
 //
 func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var _arg0 *C.GdkRectangle // out

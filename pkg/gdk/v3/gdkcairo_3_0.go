@@ -18,8 +18,8 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - rgba: RGBA.
+//   - cr: cairo context.
+//   - rgba: RGBA.
 //
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg1 *C.cairo_t // out

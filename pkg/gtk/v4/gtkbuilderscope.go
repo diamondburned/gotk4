@@ -97,8 +97,8 @@ func (b BuilderClosureFlags) Has(other BuilderClosureFlags) bool {
 // The primary intended audience is bindings that want to provide deeper
 // integration of GtkBuilder into the language.
 //
-// A GtkBuilderScope instance may be used with multiple GtkBuilder objects, even
-// at once.
+// A GtkBuilderScope instance may be used with multiple GtkBuilder objects,
+// even at once.
 //
 // By default, GTK will use its own implementation of GtkBuilderScope for the C
 // language which can be created via gtk.BuilderCScope.New.
@@ -144,8 +144,8 @@ func BaseBuilderScope(obj BuilderScoper) *BuilderScope {
 
 // The function takes the following parameters:
 //
-//    - builder
-//    - functionName
+//   - builder
+//   - functionName
 //
 // The function returns the following values:
 //
@@ -177,8 +177,8 @@ func (self *BuilderScope) typeFromFunction(builder *Builder, functionName string
 
 // The function takes the following parameters:
 //
-//    - builder
-//    - typeName
+//   - builder
+//   - typeName
 //
 // The function returns the following values:
 //
@@ -278,7 +278,7 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - builderCScope: new GtkBuilderCScope.
+//   - builderCScope: new GtkBuilderCScope.
 //
 func NewBuilderCScope() *BuilderCScope {
 	var _cret *C.GtkBuilderScope // in

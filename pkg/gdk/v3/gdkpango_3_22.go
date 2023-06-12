@@ -23,18 +23,18 @@ import "C"
 // intend to render text onto.
 //
 // The newly created context will have the default font options (see
-// #cairo_font_options_t) for the display; if these options change it will not
-// be updated. Using gtk_widget_get_pango_context() is more convenient if you
-// want to keep a context around and track changes to the font rendering
+// #cairo_font_options_t) for the display; if these options change it will
+// not be updated. Using gtk_widget_get_pango_context() is more convenient if
+// you want to keep a context around and track changes to the font rendering
 // settings.
 //
 // The function takes the following parameters:
 //
-//    - display for which the context is to be created.
+//   - display for which the context is to be created.
 //
 // The function returns the following values:
 //
-//    - context: new Context for display.
+//   - context: new Context for display.
 //
 func PangoContextGetForDisplay(display *Display) *pango.Context {
 	var _arg1 *C.GdkDisplay   // out

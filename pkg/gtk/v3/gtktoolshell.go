@@ -119,13 +119,13 @@ func marshalToolShell(p uintptr) (interface{}, error) {
 	return wrapToolShell(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// EllipsizeMode retrieves the current ellipsize mode for the tool shell. Tool
-// items must not call this function directly, but rely on
+// EllipsizeMode retrieves the current ellipsize mode for the tool shell.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_ellipsize_mode() instead.
 //
 // The function returns the following values:
 //
-//    - ellipsizeMode: current ellipsize mode of shell.
+//   - ellipsizeMode: current ellipsize mode of shell.
 //
 func (shell *ToolShell) EllipsizeMode() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolShell      // out
@@ -148,7 +148,7 @@ func (shell *ToolShell) EllipsizeMode() pango.EllipsizeMode {
 //
 // The function returns the following values:
 //
-//    - gint: current size (IconSize) for icons of shell.
+//   - gint: current size (IconSize) for icons of shell.
 //
 func (shell *ToolShell) IconSize() int {
 	var _arg0 *C.GtkToolShell // out
@@ -166,13 +166,13 @@ func (shell *ToolShell) IconSize() int {
 	return _gint
 }
 
-// Orientation retrieves the current orientation for the tool shell. Tool items
-// must not call this function directly, but rely on
+// Orientation retrieves the current orientation for the tool shell.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_orientation() instead.
 //
 // The function returns the following values:
 //
-//    - orientation: current orientation of shell.
+//   - orientation: current orientation of shell.
 //
 func (shell *ToolShell) Orientation() Orientation {
 	var _arg0 *C.GtkToolShell  // out
@@ -196,7 +196,7 @@ func (shell *ToolShell) Orientation() Orientation {
 //
 // The function returns the following values:
 //
-//    - reliefStyle: relief style of buttons on shell.
+//   - reliefStyle: relief style of buttons on shell.
 //
 func (shell *ToolShell) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolShell  // out
@@ -214,13 +214,13 @@ func (shell *ToolShell) ReliefStyle() ReliefStyle {
 	return _reliefStyle
 }
 
-// Style retrieves whether the tool shell has text, icons, or both. Tool items
-// must not call this function directly, but rely on
+// Style retrieves whether the tool shell has text, icons, or both.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_toolbar_style() instead.
 //
 // The function returns the following values:
 //
-//    - toolbarStyle: current style of shell.
+//   - toolbarStyle: current style of shell.
 //
 func (shell *ToolShell) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolShell   // out
@@ -238,13 +238,13 @@ func (shell *ToolShell) Style() ToolbarStyle {
 	return _toolbarStyle
 }
 
-// TextAlignment retrieves the current text alignment for the tool shell. Tool
-// items must not call this function directly, but rely on
+// TextAlignment retrieves the current text alignment for the tool shell.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_alignment() instead.
 //
 // The function returns the following values:
 //
-//    - gfloat: current text alignment of shell.
+//   - gfloat: current text alignment of shell.
 //
 func (shell *ToolShell) TextAlignment() float32 {
 	var _arg0 *C.GtkToolShell // out
@@ -262,13 +262,13 @@ func (shell *ToolShell) TextAlignment() float32 {
 	return _gfloat
 }
 
-// TextOrientation retrieves the current text orientation for the tool shell.
-// Tool items must not call this function directly, but rely on
+// TextOrientation retrieves the current text orientation for the tool
+// shell. Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_orientation() instead.
 //
 // The function returns the following values:
 //
-//    - orientation: current text orientation of shell.
+//   - orientation: current text orientation of shell.
 //
 func (shell *ToolShell) TextOrientation() Orientation {
 	var _arg0 *C.GtkToolShell  // out
@@ -286,13 +286,13 @@ func (shell *ToolShell) TextOrientation() Orientation {
 	return _orientation
 }
 
-// TextSizeGroup retrieves the current text size group for the tool shell. Tool
-// items must not call this function directly, but rely on
+// TextSizeGroup retrieves the current text size group for the tool shell.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_size_group() instead.
 //
 // The function returns the following values:
 //
-//    - sizeGroup: current text size group of shell.
+//   - sizeGroup: current text size group of shell.
 //
 func (shell *ToolShell) TextSizeGroup() *SizeGroup {
 	var _arg0 *C.GtkToolShell // out
@@ -325,13 +325,13 @@ func (shell *ToolShell) RebuildMenu() {
 	runtime.KeepAlive(shell)
 }
 
-// ellipsizeMode retrieves the current ellipsize mode for the tool shell. Tool
-// items must not call this function directly, but rely on
+// ellipsizeMode retrieves the current ellipsize mode for the tool shell.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_ellipsize_mode() instead.
 //
 // The function returns the following values:
 //
-//    - ellipsizeMode: current ellipsize mode of shell.
+//   - ellipsizeMode: current ellipsize mode of shell.
 //
 func (shell *ToolShell) ellipsizeMode() pango.EllipsizeMode {
 	gclass := (*C.GtkToolShellIface)(coreglib.PeekParentClass(shell))
@@ -373,13 +373,13 @@ func (shell *ToolShell) iconSize() IconSize {
 	return _iconSize
 }
 
-// Orientation retrieves the current orientation for the tool shell. Tool items
-// must not call this function directly, but rely on
+// Orientation retrieves the current orientation for the tool shell.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_orientation() instead.
 //
 // The function returns the following values:
 //
-//    - orientation: current orientation of shell.
+//   - orientation: current orientation of shell.
 //
 func (shell *ToolShell) orientation() Orientation {
 	gclass := (*C.GtkToolShellIface)(coreglib.PeekParentClass(shell))
@@ -406,7 +406,7 @@ func (shell *ToolShell) orientation() Orientation {
 //
 // The function returns the following values:
 //
-//    - reliefStyle: relief style of buttons on shell.
+//   - reliefStyle: relief style of buttons on shell.
 //
 func (shell *ToolShell) reliefStyle() ReliefStyle {
 	gclass := (*C.GtkToolShellIface)(coreglib.PeekParentClass(shell))
@@ -427,13 +427,13 @@ func (shell *ToolShell) reliefStyle() ReliefStyle {
 	return _reliefStyle
 }
 
-// Style retrieves whether the tool shell has text, icons, or both. Tool items
-// must not call this function directly, but rely on
+// Style retrieves whether the tool shell has text, icons, or both.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_toolbar_style() instead.
 //
 // The function returns the following values:
 //
-//    - toolbarStyle: current style of shell.
+//   - toolbarStyle: current style of shell.
 //
 func (shell *ToolShell) style() ToolbarStyle {
 	gclass := (*C.GtkToolShellIface)(coreglib.PeekParentClass(shell))
@@ -454,13 +454,13 @@ func (shell *ToolShell) style() ToolbarStyle {
 	return _toolbarStyle
 }
 
-// textAlignment retrieves the current text alignment for the tool shell. Tool
-// items must not call this function directly, but rely on
+// textAlignment retrieves the current text alignment for the tool shell.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_alignment() instead.
 //
 // The function returns the following values:
 //
-//    - gfloat: current text alignment of shell.
+//   - gfloat: current text alignment of shell.
 //
 func (shell *ToolShell) textAlignment() float32 {
 	gclass := (*C.GtkToolShellIface)(coreglib.PeekParentClass(shell))
@@ -481,13 +481,13 @@ func (shell *ToolShell) textAlignment() float32 {
 	return _gfloat
 }
 
-// textOrientation retrieves the current text orientation for the tool shell.
-// Tool items must not call this function directly, but rely on
+// textOrientation retrieves the current text orientation for the tool
+// shell. Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_orientation() instead.
 //
 // The function returns the following values:
 //
-//    - orientation: current text orientation of shell.
+//   - orientation: current text orientation of shell.
 //
 func (shell *ToolShell) textOrientation() Orientation {
 	gclass := (*C.GtkToolShellIface)(coreglib.PeekParentClass(shell))
@@ -508,13 +508,13 @@ func (shell *ToolShell) textOrientation() Orientation {
 	return _orientation
 }
 
-// textSizeGroup retrieves the current text size group for the tool shell. Tool
-// items must not call this function directly, but rely on
+// textSizeGroup retrieves the current text size group for the tool shell.
+// Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_size_group() instead.
 //
 // The function returns the following values:
 //
-//    - sizeGroup: current text size group of shell.
+//   - sizeGroup: current text size group of shell.
 //
 func (shell *ToolShell) textSizeGroup() *SizeGroup {
 	gclass := (*C.GtkToolShellIface)(coreglib.PeekParentClass(shell))

@@ -71,8 +71,7 @@ type TLSBackender interface {
 	// implementation.
 	ServerConnectionType() coreglib.Type
 	// SetDefaultDatabase: set the default Database used to verify TLS
-	// connections Any subsequent call to g_tls_backend_get_default_database()
-	// will return the database set in this call.
+	// connections.
 	SetDefaultDatabase(database TLSDatabaser)
 	// SupportsDTLS checks if DTLS is supported.
 	SupportsDTLS() bool
@@ -97,7 +96,7 @@ func marshalTLSBackend(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gType of backend's Certificate implementation.
+//   - gType of backend's Certificate implementation.
 //
 func (backend *TLSBackend) CertificateType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -120,7 +119,7 @@ func (backend *TLSBackend) CertificateType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - gType of backend's ClientConnection implementation.
+//   - gType of backend's ClientConnection implementation.
 //
 func (backend *TLSBackend) ClientConnectionType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -142,7 +141,7 @@ func (backend *TLSBackend) ClientConnectionType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - tlsDatabase: default database, which should be unreffed when done.
+//   - tlsDatabase: default database, which should be unreffed when done.
 //
 func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 	var _arg0 *C.GTlsBackend  // out
@@ -181,8 +180,8 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 //
 // The function returns the following values:
 //
-//    - gType of backend’s ClientConnection implementation, or G_TYPE_INVALID if
-//      this backend doesn’t support DTLS.
+//   - gType of backend’s ClientConnection implementation, or G_TYPE_INVALID if
+//     this backend doesn’t support DTLS.
 //
 func (backend *TLSBackend) DTLSClientConnectionType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -205,8 +204,8 @@ func (backend *TLSBackend) DTLSClientConnectionType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - gType of backend’s ServerConnection implementation, or G_TYPE_INVALID if
-//      this backend doesn’t support DTLS.
+//   - gType of backend’s ServerConnection implementation, or G_TYPE_INVALID if
+//     this backend doesn’t support DTLS.
 //
 func (backend *TLSBackend) DTLSServerConnectionType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -228,7 +227,7 @@ func (backend *TLSBackend) DTLSServerConnectionType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - gType of backend's FileDatabase implementation.
+//   - gType of backend's FileDatabase implementation.
 //
 func (backend *TLSBackend) FileDatabaseType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -251,7 +250,7 @@ func (backend *TLSBackend) FileDatabaseType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - gType of backend's ServerConnection implementation.
+//   - gType of backend's ServerConnection implementation.
 //
 func (backend *TLSBackend) ServerConnectionType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
@@ -271,8 +270,8 @@ func (backend *TLSBackend) ServerConnectionType() coreglib.Type {
 
 // SetDefaultDatabase: set the default Database used to verify TLS connections
 //
-// Any subsequent call to g_tls_backend_get_default_database() will return the
-// database set in this call. Existing databases and connections are not
+// Any subsequent call to g_tls_backend_get_default_database() will return
+// the database set in this call. Existing databases and connections are not
 // modified.
 //
 // Setting a NULL default database will reset to using the system default
@@ -280,7 +279,7 @@ func (backend *TLSBackend) ServerConnectionType() coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - database (optional): Database.
+//   - database (optional): Database.
 //
 func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	var _arg0 *C.GTlsBackend  // out
@@ -301,7 +300,7 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 //
 // The function returns the following values:
 //
-//    - ok: whether DTLS is supported.
+//   - ok: whether DTLS is supported.
 //
 func (backend *TLSBackend) SupportsDTLS() bool {
 	var _arg0 *C.GTlsBackend // out
@@ -326,7 +325,7 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether or not TLS is supported.
+//   - ok: whether or not TLS is supported.
 //
 func (backend *TLSBackend) SupportsTLS() bool {
 	var _arg0 *C.GTlsBackend // out
@@ -350,7 +349,7 @@ func (backend *TLSBackend) SupportsTLS() bool {
 //
 // The function returns the following values:
 //
-//    - tlsDatabase: default database, which should be unreffed when done.
+//   - tlsDatabase: default database, which should be unreffed when done.
 //
 func (backend *TLSBackend) defaultDatabase() TLSDatabaser {
 	gclass := (*C.GTlsBackendInterface)(coreglib.PeekParentClass(backend))
@@ -392,7 +391,7 @@ func (backend *TLSBackend) defaultDatabase() TLSDatabaser {
 //
 // The function returns the following values:
 //
-//    - ok: whether DTLS is supported.
+//   - ok: whether DTLS is supported.
 //
 func (backend *TLSBackend) supportsDTLS() bool {
 	gclass := (*C.GTlsBackendInterface)(coreglib.PeekParentClass(backend))
@@ -420,7 +419,7 @@ func (backend *TLSBackend) supportsDTLS() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether or not TLS is supported.
+//   - ok: whether or not TLS is supported.
 //
 func (backend *TLSBackend) supportsTLS() bool {
 	gclass := (*C.GTlsBackendInterface)(coreglib.PeekParentClass(backend))
@@ -447,7 +446,7 @@ func (backend *TLSBackend) supportsTLS() bool {
 //
 // The function returns the following values:
 //
-//    - tlsBackend which will be a dummy object if no TLS backend is available.
+//   - tlsBackend which will be a dummy object if no TLS backend is available.
 //
 func TLSBackendGetDefault() *TLSBackend {
 	var _cret *C.GTlsBackend // in

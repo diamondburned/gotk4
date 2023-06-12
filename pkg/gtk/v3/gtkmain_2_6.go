@@ -25,12 +25,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - openDefaultDisplay: whether to open the default display when parsing the
-//      commandline arguments.
+//   - openDefaultDisplay: whether to open the default display when parsing the
+//     commandline arguments.
 //
 // The function returns the following values:
 //
-//    - optionGroup for the commandline arguments recognized by GTK+.
+//   - optionGroup for the commandline arguments recognized by GTK+.
 //
 func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var _arg1 C.gboolean      // out

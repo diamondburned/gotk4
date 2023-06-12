@@ -44,7 +44,6 @@ func init() {
 }
 
 // The function returns the following values:
-//
 func BuilderErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -60,7 +59,6 @@ func BuilderErrorQuark() glib.Quark {
 }
 
 // The function returns the following values:
-//
 func CSSProviderErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -76,7 +74,6 @@ func CSSProviderErrorQuark() glib.Quark {
 }
 
 // The function returns the following values:
-//
 func IconThemeErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -172,7 +169,6 @@ func (n NotebookTab) String() string {
 }
 
 // The function returns the following values:
-//
 func RecentChooserErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -188,7 +184,6 @@ func RecentChooserErrorQuark() glib.Quark {
 }
 
 // The function returns the following values:
-//
 func RecentManagerErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 

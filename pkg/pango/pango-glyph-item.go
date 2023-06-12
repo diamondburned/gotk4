@@ -67,15 +67,15 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 // ApplyAttrs splits a shaped item (PangoGlyphItem) into multiple items based on
 // an attribute list.
 //
-// The idea is that if you have attributes that don't affect shaping, such as
-// color or underline, to avoid affecting shaping, you filter them out
+// The idea is that if you have attributes that don't affect shaping,
+// such as color or underline, to avoid affecting shaping, you filter them out
 // (pango.AttrList.Filter()), apply the shaping process and then reapply them to
 // the result using this function.
 //
-// All attributes that start or end inside a cluster are applied to that
-// cluster; for instance, if half of a cluster is underlined and the other-half
-// strikethrough, then the cluster will end up with both underline and
-// strikethrough attributes. In these cases, it may happen that
+// All attributes that start or end inside a cluster are applied to
+// that cluster; for instance, if half of a cluster is underlined and
+// the other-half strikethrough, then the cluster will end up with both
+// underline and strikethrough attributes. In these cases, it may happen that
 // item->extra_attrs for some of the result items can have multiple attributes
 // of the same type.
 //
@@ -84,13 +84,13 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 //
 // The function takes the following parameters:
 //
-//    - text that list applies to.
-//    - list: PangoAttrList.
+//   - text that list applies to.
+//   - list: PangoAttrList.
 //
 // The function returns the following values:
 //
-//    - sList: a list of glyph items resulting from splitting glyph_item. Free
-//      the elements using pango.GlyphItem.Free(), the list using g_slist_free().
+//   - sList: a list of glyph items resulting from splitting glyph_item. Free
+//     the elements using pango.GlyphItem.Free(), the list using g_slist_free().
 //
 func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
@@ -131,8 +131,8 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 //
 // The function returns the following values:
 //
-//    - glyphItem (optional): newly allocated PangoGlyphItem, which should be
-//      freed with pango_glyph_item_free(), or NULL if orig was NULL.
+//   - glyphItem (optional): newly allocated PangoGlyphItem, which should be
+//     freed with pango_glyph_item_free(), or NULL if orig was NULL.
 //
 func (orig *GlyphItem) Copy() *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
@@ -173,14 +173,14 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 //
 // The function takes the following parameters:
 //
-//    - text to which positions in orig apply.
-//    - splitIndex: byte index of position to split item, relative to the start
-//      of the item.
+//   - text to which positions in orig apply.
+//   - splitIndex: byte index of position to split item, relative to the start
+//     of the item.
 //
 // The function returns the following values:
 //
-//    - glyphItem: newly allocated item representing text before split_index,
-//      which should be freed with pango_glyph_item_free().
+//   - glyphItem: newly allocated item representing text before split_index,
+//     which should be freed with pango_glyph_item_free().
 //
 func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out

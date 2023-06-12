@@ -125,7 +125,7 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - activateAction: activate action.
+//   - activateAction: activate action.
 //
 func ActivateActionGet() *ActivateAction {
 	var _cret *C.GtkShortcutAction // in
@@ -166,11 +166,11 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - callback (optional) to call.
+//   - callback (optional) to call.
 //
 // The function returns the following values:
 //
-//    - callbackAction: new shortcut action.
+//   - callbackAction: new shortcut action.
 //
 func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	var _arg1 C.GtkShortcutFunc // out
@@ -223,7 +223,7 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - mnemonicAction: mnemonic action.
+//   - mnemonicAction: mnemonic action.
 //
 func MnemonicActionGet() *MnemonicAction {
 	var _cret *C.GtkShortcutAction // in
@@ -268,11 +268,11 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name: detailed name of the action.
+//   - name: detailed name of the action.
 //
 // The function returns the following values:
 //
-//    - namedAction: new GtkShortcutAction.
+//   - namedAction: new GtkShortcutAction.
 //
 func NewNamedAction(name string) *NamedAction {
 	var _arg1 *C.char              // out
@@ -295,7 +295,7 @@ func NewNamedAction(name string) *NamedAction {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the action to activate.
+//   - utf8: name of the action to activate.
 //
 func (self *NamedAction) ActionName() string {
 	var _arg0 *C.GtkNamedAction // out
@@ -341,7 +341,7 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - nothingAction: nothing action.
+//   - nothingAction: nothing action.
 //
 func NothingActionGet() *NothingAction {
 	var _cret *C.GtkShortcutAction // in
@@ -362,8 +362,8 @@ func NothingActionGet() *NothingAction {
 // users as well as being printed for debugging.
 //
 // All GtkShortcutActions are immutable, you can only specify their properties
-// during construction. If you want to change a action, you have to replace it
-// with a new one. If you need to pass arguments to an action, these are
+// during construction. If you want to change a action, you have to replace
+// it with a new one. If you need to pass arguments to an action, these are
 // specified by the higher-level GtkShortcut object.
 //
 // To activate a GtkShortcutAction manually, gtk.ShortcutAction.Activate() can
@@ -371,17 +371,14 @@ func NothingActionGet() *NothingAction {
 //
 // GTK provides various actions:
 //
-//    - gtk.MnemonicAction: a shortcut action that calls
-//      gtk_widget_mnemonic_activate()
-//    - gtk.CallbackAction: a shortcut action that invokes
-//      a given callback
-//    - gtk.SignalAction: a shortcut action that emits a
-//      given signal
-//    - gtk.ActivateAction: a shortcut action that calls
-//      gtk_widget_activate()
-//    - gtk.NamedAction: a shortcut action that calls
-//      gtk_widget_activate_action()
-//    - gtk.NothingAction: a shortcut action that does nothing.
+//   - gtk.MnemonicAction: a shortcut action that calls
+//     gtk_widget_mnemonic_activate()
+//   - gtk.CallbackAction: a shortcut action that invokes a given callback
+//   - gtk.SignalAction: a shortcut action that emits a given signal
+//   - gtk.ActivateAction: a shortcut action that calls gtk_widget_activate()
+//   - gtk.NamedAction: a shortcut action that calls
+//     gtk_widget_activate_action()
+//   - gtk.NothingAction: a shortcut action that does nothing.
 type ShortcutAction struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -440,11 +437,11 @@ func BaseShortcutAction(obj ShortcutActioner) *ShortcutAction {
 //
 // The function takes the following parameters:
 //
-//    - str: string to parse.
+//   - str: string to parse.
 //
 // The function returns the following values:
 //
-//    - shortcutAction (optional): new GtkShortcutAction or NULL on error.
+//   - shortcutAction (optional): new GtkShortcutAction or NULL on error.
 //
 func NewShortcutActionParseString(str string) *ShortcutAction {
 	var _arg1 *C.char              // out
@@ -469,19 +466,19 @@ func NewShortcutActionParseString(str string) *ShortcutAction {
 //
 // Note that some actions ignore the passed in flags, widget or args.
 //
-// Activation of an action can fail for various reasons. If the action is not
-// supported by the widget, if the args don't match the action or if the
+// Activation of an action can fail for various reasons. If the action is
+// not supported by the widget, if the args don't match the action or if the
 // activation otherwise had no effect, FALSE will be returned.
 //
 // The function takes the following parameters:
 //
-//    - flags to activate with.
-//    - widget: target of the activation.
-//    - args (optional) arguments to pass.
+//   - flags to activate with.
+//   - widget: target of the activation.
+//   - args (optional) arguments to pass.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if this action was activated successfully.
+//   - ok: TRUE if this action was activated successfully.
 //
 func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter, args *glib.Variant) bool {
 	var _arg0 *C.GtkShortcutAction     // out
@@ -519,7 +516,7 @@ func (self *ShortcutAction) Activate(flags ShortcutActionFlags, widget Widgetter
 //
 // The function returns the following values:
 //
-//    - utf8: new string.
+//   - utf8: new string.
 //
 func (self *ShortcutAction) String() string {
 	var _arg0 *C.GtkShortcutAction // out
@@ -540,8 +537,8 @@ func (self *ShortcutAction) String() string {
 
 // SignalAction: GtkShortcutAction that emits a signal.
 //
-// Signals that are used in this way are referred to as keybinding signals, and
-// they are expected to be defined with the G_SIGNAL_ACTION flag.
+// Signals that are used in this way are referred to as keybinding signals,
+// and they are expected to be defined with the G_SIGNAL_ACTION flag.
 type SignalAction struct {
 	_ [0]func() // equal guard
 	ShortcutAction
@@ -570,11 +567,11 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - signalName: name of the signal to emit.
+//   - signalName: name of the signal to emit.
 //
 // The function returns the following values:
 //
-//    - signalAction: new GtkShortcutAction.
+//   - signalAction: new GtkShortcutAction.
 //
 func NewSignalAction(signalName string) *SignalAction {
 	var _arg1 *C.char              // out
@@ -597,7 +594,7 @@ func NewSignalAction(signalName string) *SignalAction {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the signal to emit.
+//   - utf8: name of the signal to emit.
 //
 func (self *SignalAction) SignalName() string {
 	var _arg0 *C.GtkSignalAction // out

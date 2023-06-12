@@ -22,7 +22,7 @@ const USEC_PER_SEC = 1000000
 //
 // The function takes the following parameters:
 //
-//    - microseconds: number of microseconds to pause.
+//   - microseconds: number of microseconds to pause.
 //
 func Usleep(microseconds uint32) {
 	var _arg1 C.gulong // out

@@ -43,8 +43,8 @@ const (
 	// failed to provide the binding data. For example, some implementations do
 	// not provide a peer certificate for resumed connections.
 	TLSChannelBindingErrorNotAvailable
-	// TLSChannelBindingErrorNotSupported: binding type is not supported on the
-	// current connection. This error could be triggered when requesting
+	// TLSChannelBindingErrorNotSupported: binding type is not supported on
+	// the current connection. This error could be triggered when requesting
 	// tls-server-end-point binding data for a certificate which has no hash
 	// function or uses multiple hash functions.
 	TLSChannelBindingErrorNotSupported
@@ -75,8 +75,8 @@ func (t TLSChannelBindingError) String() string {
 	}
 }
 
-// TLSChannelBindingType: type of TLS channel binding data to retrieve from
-// Connection or Connection, as documented by RFC 5929. The
+// TLSChannelBindingType: type of TLS channel binding data to retrieve
+// from Connection or Connection, as documented by RFC 5929. The
 // tls-unique-for-telnet (https://tools.ietf.org/html/rfc5929#section-5) binding
 // type is not currently implemented.
 type TLSChannelBindingType C.gint

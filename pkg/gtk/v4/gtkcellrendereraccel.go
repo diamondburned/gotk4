@@ -103,7 +103,7 @@ func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKe
 //
 // The function returns the following values:
 //
-//    - cellRendererAccel: new cell renderer.
+//   - cellRendererAccel: new cell renderer.
 //
 func NewCellRendererAccel() *CellRendererAccel {
 	var _cret *C.GtkCellRenderer // in

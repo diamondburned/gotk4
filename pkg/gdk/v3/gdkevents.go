@@ -83,9 +83,9 @@ const (
 	// CrossingTouchEnd: crossing because a touch sequence has ended, this event
 	// is synthetic as the pointer might have not left the window.
 	CrossingTouchEnd
-	// CrossingDeviceSwitch: crossing because of a device switch (i.e. a mouse
-	// taking control of the pointer after a touch device), this event is
-	// synthetic as the pointer didn’t leave the window.
+	// CrossingDeviceSwitch: crossing because of a device switch (i.e.
+	// a mouse taking control of the pointer after a touch device), this event
+	// is synthetic as the pointer didn’t leave the window.
 	CrossingDeviceSwitch
 )
 
@@ -121,14 +121,14 @@ func (c CrossingMode) String() string {
 
 // EventType specifies the type of the event.
 //
-// Do not confuse these events with the signals that GTK+ widgets emit. Although
-// many of these events result in corresponding signals being emitted, the
-// events are often transformed or filtered along the way.
+// Do not confuse these events with the signals that GTK+ widgets emit.
+// Although many of these events result in corresponding signals being emitted,
+// the events are often transformed or filtered along the way.
 //
-// In some language bindings, the values GDK_2BUTTON_PRESS and GDK_3BUTTON_PRESS
-// would translate into something syntactically invalid (eg
-// Gdk.EventType.2ButtonPress, where a symbol is not allowed to start with a
-// number). In that case, the aliases GDK_DOUBLE_BUTTON_PRESS and
+// In some language bindings, the values GDK_2BUTTON_PRESS and
+// GDK_3BUTTON_PRESS would translate into something syntactically invalid
+// (eg Gdk.EventType.2ButtonPress, where a symbol is not allowed to start
+// with a number). In that case, the aliases GDK_DOUBLE_BUTTON_PRESS and
 // GDK_TRIPLE_BUTTON_PRESS can be used instead.
 type EventType C.gint
 
@@ -584,8 +584,8 @@ func (s SettingAction) String() string {
 	}
 }
 
-// TouchpadGesturePhase specifies the current state of a touchpad gesture. All
-// gestures are guaranteed to begin with an event with phase
+// TouchpadGesturePhase specifies the current state of a touchpad gesture.
+// All gestures are guaranteed to begin with an event with phase
 // GDK_TOUCHPAD_GESTURE_PHASE_BEGIN, followed by 0 or several events with phase
 // GDK_TOUCHPAD_GESTURE_PHASE_UPDATE.
 //
@@ -593,12 +593,12 @@ func (s SettingAction) String() string {
 // GDK_TOUCHPAD_GESTURE_PHASE_END will be emitted when the gesture is considered
 // successful, this should be used as the hint to perform any permanent changes.
 //
-// Cancelled gestures may be so for a variety of reasons, due to hardware or the
-// compositor, or due to the gesture recognition layers hinting the gesture did
-// not finish resolutely (eg. a 3rd finger being added during a pinch gesture).
-// In these cases, the last event will report the phase
-// GDK_TOUCHPAD_GESTURE_PHASE_CANCEL, this should be used as a hint to undo any
-// visible/permanent changes that were done throughout the progress of the
+// Cancelled gestures may be so for a variety of reasons, due to hardware
+// or the compositor, or due to the gesture recognition layers hinting the
+// gesture did not finish resolutely (eg. a 3rd finger being added during
+// a pinch gesture). In these cases, the last event will report the phase
+// GDK_TOUCHPAD_GESTURE_PHASE_CANCEL, this should be used as a hint to undo
+// any visible/permanent changes that were done throughout the progress of the
 // gesture.
 //
 // See also EventTouchpadSwipe and EventTouchpadPinch.
@@ -704,8 +704,8 @@ const (
 	WindowStateRightResizable WindowState = 0b1000000000000
 	// WindowStateBottomTiled: whether the bottom edge is tiled, Since 3.22.23.
 	WindowStateBottomTiled WindowState = 0b10000000000000
-	// WindowStateBottomResizable: whether the bottom edge is resizable, Since
-	// 3.22.23.
+	// WindowStateBottomResizable: whether the bottom edge is resizable,
+	// Since 3.22.23.
 	WindowStateBottomResizable WindowState = 0b100000000000000
 	// WindowStateLeftTiled: whether the left edge is tiled, Since 3.22.23.
 	WindowStateLeftTiled WindowState = 0b1000000000000000
@@ -789,7 +789,7 @@ type EventFunc func(event *Event)
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if any events are pending.
+//   - ok: TRUE if any events are pending.
 //
 func EventsPending() bool {
 	var _cret C.gboolean // in
@@ -809,7 +809,7 @@ func EventsPending() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if event debugging output is enabled.
+//   - ok: TRUE if event debugging output is enabled.
 //
 func GetShowEvents() bool {
 	var _cret C.gboolean // in
@@ -825,13 +825,13 @@ func GetShowEvents() bool {
 	return _ok
 }
 
-// SetShowEvents sets whether a trace of received events is output. Note that
-// GTK+ must be compiled with debugging (that is, configured using the
+// SetShowEvents sets whether a trace of received events is output. Note
+// that GTK+ must be compiled with debugging (that is, configured using the
 // --enable-debug option) to use this option.
 //
 // The function takes the following parameters:
 //
-//    - showEvents: TRUE to output event debugging information.
+//   - showEvents: TRUE to output event debugging information.
 //
 func SetShowEvents(showEvents bool) {
 	var _arg1 C.gboolean // out
@@ -844,18 +844,18 @@ func SetShowEvents(showEvents bool) {
 	runtime.KeepAlive(showEvents)
 }
 
-// SettingGet obtains a desktop-wide setting, such as the double-click time, for
-// the default screen. See gdk_screen_get_setting().
+// SettingGet obtains a desktop-wide setting, such as the double-click time,
+// for the default screen. See gdk_screen_get_setting().
 //
 // The function takes the following parameters:
 //
-//    - name of the setting.
-//    - value: location to store the value of the setting.
+//   - name of the setting.
+//   - value: location to store the value of the setting.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the setting existed and a value was stored in value, FALSE
-//      otherwise.
+//   - ok: TRUE if the setting existed and a value was stored in value, FALSE
+//     otherwise.
 //
 func SettingGet(name string, value *coreglib.Value) bool {
 	var _arg1 *C.gchar   // out
@@ -942,8 +942,8 @@ func (e *EventAny) SetSendEvent(sendEvent int8) {
 // will be one of GDK_BUTTON_PRESS, GDK_2BUTTON_PRESS, GDK_3BUTTON_PRESS or
 // GDK_BUTTON_RELEASE,
 //
-// Double and triple-clicks result in a sequence of events being received. For
-// double-clicks the order of events will be:
+// Double and triple-clicks result in a sequence of events being received.
+// For double-clicks the order of events will be:
 //
 // - GDK_BUTTON_PRESS
 //
@@ -955,9 +955,9 @@ func (e *EventAny) SetSendEvent(sendEvent int8) {
 //
 // - GDK_BUTTON_RELEASE
 //
-// Note that the first click is received just like a normal button press, while
-// the second click results in a GDK_2BUTTON_PRESS being received just after the
-// GDK_BUTTON_PRESS.
+// Note that the first click is received just like a normal button press,
+// while the second click results in a GDK_2BUTTON_PRESS being received just
+// after the GDK_BUTTON_PRESS.
 //
 // Triple-clicks are very similar to double-clicks, except that
 // GDK_3BUTTON_PRESS is inserted after the third click. The order of the events
@@ -979,8 +979,8 @@ func (e *EventAny) SetSendEvent(sendEvent int8) {
 //
 // - GDK_BUTTON_RELEASE
 //
-// For a double click to occur, the second button press must occur within 1/4 of
-// a second of the first. For a triple click to occur, the third button press
+// For a double click to occur, the second button press must occur within 1/4
+// of a second of the first. For a triple click to occur, the third button press
 // must also occur within 1/2 second of the first button press.
 //
 // An instance of this type is always passed by reference.
@@ -1075,10 +1075,10 @@ func (e *EventButton) State() ModifierType {
 	return _v
 }
 
-// Button: button which was pressed or released, numbered from 1 to 5. Normally
-// button 1 is the left mouse button, 2 is the middle button, and 3 is the right
-// button. On 2-button mice, the middle button can often be simulated by
-// pressing both mouse buttons together.
+// Button: button which was pressed or released, numbered from 1 to 5.
+// Normally button 1 is the left mouse button, 2 is the middle button, and 3 is
+// the right button. On 2-button mice, the middle button can often be simulated
+// by pressing both mouse buttons together.
 func (e *EventButton) Button() uint {
 	valptr := &e.native.button
 	var _v uint // out
@@ -1151,10 +1151,10 @@ func (e *EventButton) SetY(y float64) {
 	*valptr = C.gdouble(y)
 }
 
-// Button: button which was pressed or released, numbered from 1 to 5. Normally
-// button 1 is the left mouse button, 2 is the middle button, and 3 is the right
-// button. On 2-button mice, the middle button can often be simulated by
-// pressing both mouse buttons together.
+// Button: button which was pressed or released, numbered from 1 to 5.
+// Normally button 1 is the left mouse button, 2 is the middle button, and 3 is
+// the right button. On 2-button mice, the middle button can often be simulated
+// by pressing both mouse buttons together.
 func (e *EventButton) SetButton(button uint) {
 	valptr := &e.native.button
 	*valptr = C.guint(button)
@@ -1556,8 +1556,8 @@ func (e *EventDND) Time() uint32 {
 	return _v
 }
 
-// XRoot: x coordinate of the pointer relative to the root of the screen, only
-// set for GDK_DRAG_MOTION and GDK_DROP_START.
+// XRoot: x coordinate of the pointer relative to the root of the screen,
+// only set for GDK_DRAG_MOTION and GDK_DROP_START.
 func (e *EventDND) XRoot() int16 {
 	valptr := &e.native.x_root
 	var _v int16 // out
@@ -1565,8 +1565,8 @@ func (e *EventDND) XRoot() int16 {
 	return _v
 }
 
-// YRoot: y coordinate of the pointer relative to the root of the screen, only
-// set for GDK_DRAG_MOTION and GDK_DROP_START.
+// YRoot: y coordinate of the pointer relative to the root of the screen,
+// only set for GDK_DRAG_MOTION and GDK_DROP_START.
 func (e *EventDND) YRoot() int16 {
 	valptr := &e.native.y_root
 	var _v int16 // out
@@ -1586,15 +1586,15 @@ func (e *EventDND) SetTime(time uint32) {
 	*valptr = C.guint32(time)
 }
 
-// XRoot: x coordinate of the pointer relative to the root of the screen, only
-// set for GDK_DRAG_MOTION and GDK_DROP_START.
+// XRoot: x coordinate of the pointer relative to the root of the screen,
+// only set for GDK_DRAG_MOTION and GDK_DROP_START.
 func (e *EventDND) SetXRoot(xRoot int16) {
 	valptr := &e.native.x_root
 	*valptr = C.gshort(xRoot)
 }
 
-// YRoot: y coordinate of the pointer relative to the root of the screen, only
-// set for GDK_DRAG_MOTION and GDK_DROP_START.
+// YRoot: y coordinate of the pointer relative to the root of the screen,
+// only set for GDK_DRAG_MOTION and GDK_DROP_START.
 func (e *EventDND) SetYRoot(yRoot int16) {
 	valptr := &e.native.y_root
 	*valptr = C.gshort(yRoot)
@@ -1676,8 +1676,8 @@ func (e *EventExpose) Region() *cairo.Region {
 	return _v
 }
 
-// Count: number of contiguous GDK_EXPOSE events following this one. The only
-// use for this is “exposure compression”, i.e. handling all contiguous
+// Count: number of contiguous GDK_EXPOSE events following this one.
+// The only use for this is “exposure compression”, i.e. handling all contiguous
 // GDK_EXPOSE events in one go, though GDK performs some exposure compression so
 // this is not normally needed.
 func (e *EventExpose) Count() int {
@@ -1693,8 +1693,8 @@ func (e *EventExpose) SetSendEvent(sendEvent int8) {
 	*valptr = C.gint8(sendEvent)
 }
 
-// Count: number of contiguous GDK_EXPOSE events following this one. The only
-// use for this is “exposure compression”, i.e. handling all contiguous
+// Count: number of contiguous GDK_EXPOSE events following this one.
+// The only use for this is “exposure compression”, i.e. handling all contiguous
 // GDK_EXPOSE events in one go, though GDK performs some exposure compression so
 // this is not normally needed.
 func (e *EventExpose) SetCount(count int) {
@@ -1865,10 +1865,10 @@ func (e *EventKey) Length() int {
 // String: string containing an approximation of the text that would result from
 // this keypress. The only correct way to handle text input of text is using
 // input methods (see IMContext), so this field is deprecated and should never
-// be used. (gdk_unicode_to_keyval() provides a non-deprecated way of getting an
-// approximate translation for a key.) The string is encoded in the encoding of
-// the current locale (Note: this for backwards compatibility: strings in GTK+
-// and GDK are typically in UTF-8.) and NUL-terminated. In some cases, the
+// be used. (gdk_unicode_to_keyval() provides a non-deprecated way of getting
+// an approximate translation for a key.) The string is encoded in the encoding
+// of the current locale (Note: this for backwards compatibility: strings in
+// GTK+ and GDK are typically in UTF-8.) and NUL-terminated. In some cases, the
 // translation of the key code will be a single NUL byte, in which case looking
 // at length is necessary to distinguish it from the an empty translation.
 func (e *EventKey) String() string {
@@ -2545,9 +2545,9 @@ func (e *EventSetting) SetSendEvent(sendEvent int8) {
 // EventTouch: used for touch events. type field will be one of GDK_TOUCH_BEGIN,
 // GDK_TOUCH_UPDATE, GDK_TOUCH_END or GDK_TOUCH_CANCEL.
 //
-// Touch events are grouped into sequences by means of the sequence field, which
-// can also be obtained with gdk_event_get_event_sequence(). Each sequence
-// begins with a GDK_TOUCH_BEGIN event, followed by any number of
+// Touch events are grouped into sequences by means of the sequence field,
+// which can also be obtained with gdk_event_get_event_sequence(). Each
+// sequence begins with a GDK_TOUCH_BEGIN event, followed by any number of
 // GDK_TOUCH_UPDATE events, and ends with a GDK_TOUCH_END (or GDK_TOUCH_CANCEL)
 // event. With multitouch devices, there may be several active sequences at the
 // same time.
@@ -3319,10 +3319,10 @@ func (e *EventWindowState) SetSendEvent(sendEvent int8) {
 // always be accessed with the following code, no matter what type of event it
 // is:
 //
-//      GdkEvent *event;
-//      gdouble x;
+//    GdkEvent *event;
+//    gdouble x;
 //
-//      x = event->button.x;.
+//    x = event->button.x;.
 type Event struct {
 	*event
 }
@@ -3929,14 +3929,14 @@ func (e *Event) AsPadGroupMode() *EventPadGroupMode {
 	return dst
 }
 
-// EventGet checks all open displays for a Event to process,to be processed on,
-// fetching events from the windowing system if necessary. See
+// EventGet checks all open displays for a Event to process,to be processed
+// on, fetching events from the windowing system if necessary. See
 // gdk_display_get_event().
 //
 // The function returns the following values:
 //
-//    - event (optional): next Event to be processed, or NULL if no events are
-//      pending. The returned Event should be freed with gdk_event_free().
+//   - event (optional): next Event to be processed, or NULL if no events are
+//     pending. The returned Event should be freed with gdk_event_free().
 //
 func EventGet() *Event {
 	var _cret *C.GdkEvent // in
@@ -3963,7 +3963,7 @@ func EventGet() *Event {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call to handle events from GDK.
+//   - fn: function to call to handle events from GDK.
 //
 func EventHandlerSet(fn EventFunc) {
 	var _arg1 C.GdkEventFunc // out
@@ -3983,9 +3983,9 @@ func EventHandlerSet(fn EventFunc) {
 //
 // The function returns the following values:
 //
-//    - event (optional): copy of the first Event on some event queue, or NULL if
-//      no events are in any queues. The returned Event should be freed with
-//      gdk_event_free().
+//   - event (optional): copy of the first Event on some event queue, or NULL
+//     if no events are in any queues. The returned Event should be freed with
+//     gdk_event_free().
 //
 func EventPeek() *Event {
 	var _cret *C.GdkEvent // in

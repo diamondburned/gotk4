@@ -20,12 +20,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - acceleratorKey: accelerator keyval.
-//    - acceleratorMods: accelerator modifier mask.
+//   - acceleratorKey: accelerator keyval.
+//   - acceleratorMods: accelerator modifier mask.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string representing the accelerator.
+//   - utf8: newly-allocated string representing the accelerator.
 //
 func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 C.guint           // out

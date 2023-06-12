@@ -75,8 +75,8 @@ func defaultStringFilterOverrides(v *StringFilter) StringFilterOverrides {
 // with gtk.StringFilter.SetExpression(), and they are compared against a search
 // term set with gtk.StringFilter.SetSearch().
 //
-// GtkStringFilter has several different modes of comparison - it can match the
-// whole string, just a prefix, or any substring. Use
+// GtkStringFilter has several different modes of comparison - it
+// can match the whole string, just a prefix, or any substring. Use
 // gtk.StringFilter.SetMatchMode() choose a mode.
 //
 // It is also possible to make case-insensitive comparisons, with
@@ -125,11 +125,11 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - expression (optional) to evaluate or NULL for none.
+//   - expression (optional) to evaluate or NULL for none.
 //
 // The function returns the following values:
 //
-//    - stringFilter: new GtkStringFilter.
+//   - stringFilter: new GtkStringFilter.
 //
 func NewStringFilter(expression Expressioner) *StringFilter {
 	var _arg1 *C.GtkExpression   // out
@@ -155,7 +155,7 @@ func NewStringFilter(expression Expressioner) *StringFilter {
 //
 // The function returns the following values:
 //
-//    - expression (optional): GtkExpression.
+//   - expression (optional): GtkExpression.
 //
 func (self *StringFilter) Expression() Expressioner {
 	var _arg0 *C.GtkStringFilter // out
@@ -192,7 +192,7 @@ func (self *StringFilter) Expression() Expressioner {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the filter ignores case.
+//   - ok: TRUE if the filter ignores case.
 //
 func (self *StringFilter) IgnoreCase() bool {
 	var _arg0 *C.GtkStringFilter // out
@@ -216,7 +216,7 @@ func (self *StringFilter) IgnoreCase() bool {
 //
 // The function returns the following values:
 //
-//    - stringFilterMatchMode: match mode of the filter.
+//   - stringFilterMatchMode: match mode of the filter.
 //
 func (self *StringFilter) MatchMode() StringFilterMatchMode {
 	var _arg0 *C.GtkStringFilter         // out
@@ -238,7 +238,7 @@ func (self *StringFilter) MatchMode() StringFilterMatchMode {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): search term.
+//   - utf8 (optional): search term.
 //
 func (self *StringFilter) Search() string {
 	var _arg0 *C.GtkStringFilter // out
@@ -265,7 +265,7 @@ func (self *StringFilter) Search() string {
 //
 // The function takes the following parameters:
 //
-//    - expression (optional): GtkExpression.
+//   - expression (optional): GtkExpression.
 //
 func (self *StringFilter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkStringFilter // out
@@ -285,7 +285,7 @@ func (self *StringFilter) SetExpression(expression Expressioner) {
 //
 // The function takes the following parameters:
 //
-//    - ignoreCase: TRUE to ignore case.
+//   - ignoreCase: TRUE to ignore case.
 //
 func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringFilter // out
@@ -305,7 +305,7 @@ func (self *StringFilter) SetIgnoreCase(ignoreCase bool) {
 //
 // The function takes the following parameters:
 //
-//    - mode: new match mode.
+//   - mode: new match mode.
 //
 func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
 	var _arg0 *C.GtkStringFilter         // out
@@ -323,7 +323,7 @@ func (self *StringFilter) SetMatchMode(mode StringFilterMatchMode) {
 //
 // The function takes the following parameters:
 //
-//    - search (optional): string to search for or NULL to clear the search.
+//   - search (optional): string to search for or NULL to clear the search.
 //
 func (self *StringFilter) SetSearch(search string) {
 	var _arg0 *C.GtkStringFilter // out

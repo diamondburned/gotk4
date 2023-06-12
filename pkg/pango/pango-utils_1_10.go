@@ -12,17 +12,17 @@ import "C"
 
 // IsZeroWidth checks if a character that should not be normally rendered.
 //
-// This includes all Unicode characters with "ZERO WIDTH" in their name, as well
-// as *bidi* formatting characters, and a few other ones. This is totally
+// This includes all Unicode characters with "ZERO WIDTH" in their name, as
+// well as *bidi* formatting characters, and a few other ones. This is totally
 // different from g_unichar_iszerowidth() and is at best misnamed.
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
+//   - ch: unicode character.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if ch is a zero-width character, FALSE otherwise.
+//   - ok: TRUE if ch is a zero-width character, FALSE otherwise.
 //
 func IsZeroWidth(ch uint32) bool {
 	var _arg1 C.gunichar // out

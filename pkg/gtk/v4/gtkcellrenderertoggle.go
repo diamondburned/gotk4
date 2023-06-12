@@ -65,14 +65,14 @@ func (toggle *CellRendererToggle) ConnectToggled(f func(path string)) coreglib.S
 
 // NewCellRendererToggle creates a new CellRendererToggle. Adjust rendering
 // parameters using object properties. Object properties can be set globally
-// (with g_object_set()). Also, with TreeViewColumn, you can bind a property to
-// a value in a TreeModel. For example, you can bind the “active” property on
-// the cell renderer to a boolean value in the model, thus causing the check
+// (with g_object_set()). Also, with TreeViewColumn, you can bind a property
+// to a value in a TreeModel. For example, you can bind the “active” property
+// on the cell renderer to a boolean value in the model, thus causing the check
 // button to reflect the state of the model.
 //
 // The function returns the following values:
 //
-//    - cellRendererToggle: new cell renderer.
+//   - cellRendererToggle: new cell renderer.
 //
 func NewCellRendererToggle() *CellRendererToggle {
 	var _cret *C.GtkCellRenderer // in
@@ -91,7 +91,7 @@ func NewCellRendererToggle() *CellRendererToggle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the cell renderer is activatable.
+//   - ok: TRUE if the cell renderer is activatable.
 //
 func (toggle *CellRendererToggle) Activatable() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
@@ -116,7 +116,7 @@ func (toggle *CellRendererToggle) Activatable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the cell renderer is active.
+//   - ok: TRUE if the cell renderer is active.
 //
 func (toggle *CellRendererToggle) Active() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
@@ -140,7 +140,7 @@ func (toggle *CellRendererToggle) Active() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if we’re rendering radio toggles rather than checkboxes.
+//   - ok: TRUE if we’re rendering radio toggles rather than checkboxes.
 //
 func (toggle *CellRendererToggle) Radio() bool {
 	var _arg0 *C.GtkCellRendererToggle // out
@@ -164,7 +164,7 @@ func (toggle *CellRendererToggle) Radio() bool {
 //
 // The function takes the following parameters:
 //
-//    - setting: value to set.
+//   - setting: value to set.
 //
 func (toggle *CellRendererToggle) SetActivatable(setting bool) {
 	var _arg0 *C.GtkCellRendererToggle // out
@@ -184,7 +184,7 @@ func (toggle *CellRendererToggle) SetActivatable(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: value to set.
+//   - setting: value to set.
 //
 func (toggle *CellRendererToggle) SetActive(setting bool) {
 	var _arg0 *C.GtkCellRendererToggle // out
@@ -200,8 +200,8 @@ func (toggle *CellRendererToggle) SetActive(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// SetRadio: if radio is TRUE, the cell renderer renders a radio toggle (i.e. a
-// toggle in a group of mutually-exclusive toggles). If FALSE, it renders a
+// SetRadio: if radio is TRUE, the cell renderer renders a radio toggle (i.e.
+// a toggle in a group of mutually-exclusive toggles). If FALSE, it renders a
 // check toggle (a standalone boolean option). This can be set globally for the
 // cell renderer, or changed just before rendering each cell in the model (for
 // TreeView, you set up a per-row setting using TreeViewColumn to associate
@@ -209,7 +209,7 @@ func (toggle *CellRendererToggle) SetActive(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - radio: TRUE to make the toggle look like a radio button.
+//   - radio: TRUE to make the toggle look like a radio button.
 //
 func (toggle *CellRendererToggle) SetRadio(radio bool) {
 	var _arg0 *C.GtkCellRendererToggle // out

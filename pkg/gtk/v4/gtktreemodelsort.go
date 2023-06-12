@@ -36,19 +36,19 @@ func defaultTreeModelSortOverrides(v *TreeModelSort) TreeModelSortOverrides {
 
 // TreeModelSort: gtkTreeModel which makes an underlying tree model sortable
 //
-// The TreeModelSort is a model which implements the TreeSortable interface. It
-// does not hold any data itself, but rather is created with a child model and
-// proxies its data. It has identical column types to this child model, and the
-// changes in the child are propagated. The primary purpose of this model is to
-// provide a way to sort a different model without modifying it. Note that the
-// sort function used by TreeModelSort is not guaranteed to be stable.
+// The TreeModelSort is a model which implements the TreeSortable interface.
+// It does not hold any data itself, but rather is created with a child model
+// and proxies its data. It has identical column types to this child model, and
+// the changes in the child are propagated. The primary purpose of this model
+// is to provide a way to sort a different model without modifying it. Note that
+// the sort function used by TreeModelSort is not guaranteed to be stable.
 //
 // The use of this is best demonstrated through an example. In the following
 // sample code we create two TreeView widgets each with a view of the same data.
-// As the model is wrapped here by a TreeModelSort, the two TreeViews can each
-// sort their view of the data without affecting the other. By contrast, if we
-// simply put the same model in each widget, then sorting the first would sort
-// the second.
+// As the model is wrapped here by a TreeModelSort, the two TreeViews can
+// each sort their view of the data without affecting the other. By contrast,
+// if we simply put the same model in each widget, then sorting the first would
+// sort the second.
 //
 // Using a TreeModelSort
 //
@@ -142,11 +142,11 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - childModel: TreeModel.
+//   - childModel: TreeModel.
 //
 // The function returns the following values:
 //
-//    - treeModelSort: new TreeModelSort.
+//   - treeModelSort: new TreeModelSort.
 //
 func NewTreeModelSortWithModel(childModel TreeModeller) *TreeModelSort {
 	var _arg1 *C.GtkTreeModel // out
@@ -185,13 +185,13 @@ func (treeModelSort *TreeModelSort) ClearCache() {
 //
 // The function takes the following parameters:
 //
-//    - childIter: valid TreeIter pointing to a row on the child model.
+//   - childIter: valid TreeIter pointing to a row on the child model.
 //
 // The function returns the following values:
 //
-//    - sortIter: uninitialized TreeIter.
-//    - ok: TRUE, if sort_iter was set, i.e. if sort_iter is a valid iterator
-//      pointer to a visible row in the child model.
+//   - sortIter: uninitialized TreeIter.
+//   - ok: TRUE, if sort_iter was set, i.e. if sort_iter is a valid iterator
+//     pointer to a visible row in the child model.
 //
 func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) (*TreeIter, bool) {
 	var _arg0 *C.GtkTreeModelSort // out
@@ -224,11 +224,11 @@ func (treeModelSort *TreeModelSort) ConvertChildIterToIter(childIter *TreeIter) 
 //
 // The function takes the following parameters:
 //
-//    - childPath to convert.
+//   - childPath to convert.
 //
 // The function returns the following values:
 //
-//    - treePath (optional): newly allocated TreePath, or NULL.
+//   - treePath (optional): newly allocated TreePath, or NULL.
 //
 func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
@@ -262,11 +262,11 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 //
 // The function takes the following parameters:
 //
-//    - sortedIter: valid TreeIter pointing to a row on tree_model_sort.
+//   - sortedIter: valid TreeIter pointing to a row on tree_model_sort.
 //
 // The function returns the following values:
 //
-//    - childIter: uninitialized TreeIter.
+//   - childIter: uninitialized TreeIter.
 //
 func (treeModelSort *TreeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) *TreeIter {
 	var _arg0 *C.GtkTreeModelSort // out
@@ -287,19 +287,19 @@ func (treeModelSort *TreeModelSort) ConvertIterToChildIter(sortedIter *TreeIter)
 	return _childIter
 }
 
-// ConvertPathToChildPath converts sorted_path to a path on the child model of
-// tree_model_sort. That is, sorted_path points to a location in
+// ConvertPathToChildPath converts sorted_path to a path on the child
+// model of tree_model_sort. That is, sorted_path points to a location in
 // tree_model_sort. The returned path will point to the same location in the
 // model not being sorted. If sorted_path does not point to a location in the
 // child model, NULL is returned.
 //
 // The function takes the following parameters:
 //
-//    - sortedPath to convert.
+//   - sortedPath to convert.
 //
 // The function returns the following values:
 //
-//    - treePath (optional): newly allocated TreePath, or NULL.
+//   - treePath (optional): newly allocated TreePath, or NULL.
 //
 func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath) *TreePath {
 	var _arg0 *C.GtkTreeModelSort // out
@@ -332,7 +332,7 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 //
 // The function returns the following values:
 //
-//    - treeModel: "child model" being sorted.
+//   - treeModel: "child model" being sorted.
 //
 func (treeModel *TreeModelSort) Model() *TreeModel {
 	var _arg0 *C.GtkTreeModelSort // out
@@ -357,11 +357,11 @@ func (treeModel *TreeModelSort) Model() *TreeModel {
 //
 // The function takes the following parameters:
 //
-//    - iter: TreeIter.
+//   - iter: TreeIter.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the iter is valid, FALSE if the iter is invalid.
+//   - ok: TRUE if the iter is valid, FALSE if the iter is invalid.
 //
 func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
 	var _arg0 *C.GtkTreeModelSort // out
@@ -385,9 +385,9 @@ func (treeModelSort *TreeModelSort) IterIsValid(iter *TreeIter) bool {
 }
 
 // ResetDefaultSortFunc: this resets the default sort function to be in the
-// “unsorted” state. That is, it is in the same order as the child model. It
-// will re-sort the model to be in the same order as the child model only if the
-// TreeModelSort is in “unsorted” state.
+// “unsorted” state. That is, it is in the same order as the child model.
+// It will re-sort the model to be in the same order as the child model only if
+// the TreeModelSort is in “unsorted” state.
 func (treeModelSort *TreeModelSort) ResetDefaultSortFunc() {
 	var _arg0 *C.GtkTreeModelSort // out
 

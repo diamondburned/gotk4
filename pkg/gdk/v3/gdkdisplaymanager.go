@@ -38,11 +38,11 @@ func init() {
 // The GDK library can be built with support for multiple backends. The
 // DisplayManager object determines which backend is used at runtime.
 //
-// When writing backend-specific code that is supposed to work with multiple GDK
-// backends, you have to consider both compile time and runtime. At compile
-// time, use the K_WINDOWING_X11, K_WINDOWING_WIN32 macros, etc. to find out
-// which backends are present in the GDK library you are building your
-// application against. At runtime, use type-check macros like
+// When writing backend-specific code that is supposed to work with multiple
+// GDK backends, you have to consider both compile time and runtime.
+// At compile time, use the K_WINDOWING_X11, K_WINDOWING_WIN32 macros,
+// etc. to find out which backends are present in the GDK library you are
+// building your application against. At runtime, use type-check macros like
 // GDK_IS_X11_DISPLAY() to find out which backend is in use:
 //
 // Backend-specific code
@@ -90,7 +90,7 @@ func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) co
 //
 // The function returns the following values:
 //
-//    - display (optional) or NULL if there is no default display.
+//   - display (optional) or NULL if there is no default display.
 //
 func (manager *DisplayManager) DefaultDisplay() *Display {
 	var _arg0 *C.GdkDisplayManager // out
@@ -114,8 +114,8 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 //
 // The function returns the following values:
 //
-//    - sList: newly allocated List of Display objects. Free with g_slist_free()
-//      when you are done with it.
+//   - sList: newly allocated List of Display objects. Free with g_slist_free()
+//     when you are done with it.
 //
 func (manager *DisplayManager) ListDisplays() []*Display {
 	var _arg0 *C.GdkDisplayManager // out
@@ -143,11 +143,11 @@ func (manager *DisplayManager) ListDisplays() []*Display {
 //
 // The function takes the following parameters:
 //
-//    - name of the display to open.
+//   - name of the display to open.
 //
 // The function returns the following values:
 //
-//    - display (optional) or NULL if the display could not be opened.
+//   - display (optional) or NULL if the display could not be opened.
 //
 func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	var _arg0 *C.GdkDisplayManager // out
@@ -175,7 +175,7 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 //
 // The function takes the following parameters:
 //
-//    - display: Display.
+//   - display: Display.
 //
 func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 	var _arg0 *C.GdkDisplayManager // out

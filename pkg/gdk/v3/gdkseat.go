@@ -103,7 +103,7 @@ func (seat *Seat) ConnectToolRemoved(f func(tool *DeviceTool)) coreglib.SignalHa
 //
 // The function returns the following values:
 //
-//    - seatCapabilities: seat capabilities.
+//   - seatCapabilities: seat capabilities.
 //
 func (seat *Seat) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
@@ -125,7 +125,7 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 //
 // The function returns the following values:
 //
-//    - display This object is owned by GTK+ and must not be freed.
+//   - display This object is owned by GTK+ and must not be freed.
 //
 func (seat *Seat) Display() *Display {
 	var _arg0 *C.GdkSeat    // out
@@ -147,8 +147,8 @@ func (seat *Seat) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - device (optional): master Device with keyboard capabilities. This object
-//      is owned by GTK+ and must not be freed.
+//   - device (optional): master Device with keyboard capabilities. This object
+//     is owned by GTK+ and must not be freed.
 //
 func (seat *Seat) Keyboard() Devicer {
 	var _arg0 *C.GdkSeat   // out
@@ -185,8 +185,8 @@ func (seat *Seat) Keyboard() Devicer {
 //
 // The function returns the following values:
 //
-//    - device (optional): master Device with pointer capabilities. This object
-//      is owned by GTK+ and must not be freed.
+//   - device (optional): master Device with pointer capabilities. This object
+//     is owned by GTK+ and must not be freed.
 //
 func (seat *Seat) Pointer() Devicer {
 	var _arg0 *C.GdkSeat   // out
@@ -223,12 +223,12 @@ func (seat *Seat) Pointer() Devicer {
 //
 // The function takes the following parameters:
 //
-//    - capabilities to get devices for.
+//   - capabilities to get devices for.
 //
 // The function returns the following values:
 //
-//    - list of Devices. The list must be freed with g_list_free(), the elements
-//      are owned by GDK and must not be freed.
+//   - list of Devices. The list must be freed with g_list_free(), the elements
+//     are owned by GDK and must not be freed.
 //
 func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 	var _arg0 *C.GdkSeat            // out
@@ -286,9 +286,9 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 // Drag and Drop operations, popup menus and such.
 //
 // Note that if the event mask of a Window has selected both button press and
-// button release events, or touch begin and touch end, then a press event will
-// cause an automatic grab until the button is released, equivalent to a grab on
-// the window with owner_events set to TRUE. This is done because most
+// button release events, or touch begin and touch end, then a press event
+// will cause an automatic grab until the button is released, equivalent to a
+// grab on the window with owner_events set to TRUE. This is done because most
 // applications expect to receive paired press and release events.
 //
 // If you set up anything at the time you take the grab that needs to be cleaned
@@ -297,25 +297,25 @@ func (seat *Seat) Slaves(capabilities SeatCapabilities) []Devicer {
 //
 // The function takes the following parameters:
 //
-//    - window which will own the grab.
-//    - capabilities that will be grabbed.
-//    - ownerEvents: if FALSE then all device events are reported with respect to
-//      window and are only reported if selected by event_mask. If TRUE then
-//      pointer events for this application are reported as normal, but pointer
-//      events outside this application are reported with respect to window and
-//      only if selected by event_mask. In either mode, unreported events are
-//      discarded.
-//    - cursor (optional) to display while the grab is active. If this is NULL
-//      then the normal cursors are used for window and its descendants, and the
-//      cursor for window is used elsewhere.
-//    - event (optional) that is triggering the grab, or NULL if none is
-//      available.
-//    - prepareFunc (optional): function to prepare the window to be grabbed, it
-//      can be NULL if window is visible before this call.
+//   - window which will own the grab.
+//   - capabilities that will be grabbed.
+//   - ownerEvents: if FALSE then all device events are reported with respect
+//     to window and are only reported if selected by event_mask. If TRUE then
+//     pointer events for this application are reported as normal, but pointer
+//     events outside this application are reported with respect to window and
+//     only if selected by event_mask. In either mode, unreported events are
+//     discarded.
+//   - cursor (optional) to display while the grab is active. If this is NULL
+//     then the normal cursors are used for window and its descendants, and the
+//     cursor for window is used elsewhere.
+//   - event (optional) that is triggering the grab, or NULL if none is
+//     available.
+//   - prepareFunc (optional): function to prepare the window to be grabbed,
+//     it can be NULL if window is visible before this call.
 //
 // The function returns the following values:
 //
-//    - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
+//   - grabStatus: GDK_GRAB_SUCCESS if the grab was successful.
 //
 func (seat *Seat) Grab(window Windower, capabilities SeatCapabilities, ownerEvents bool, cursor Cursorrer, event *Event, prepareFunc SeatGrabPrepareFunc) GrabStatus {
 	var _arg0 *C.GdkSeat               // out

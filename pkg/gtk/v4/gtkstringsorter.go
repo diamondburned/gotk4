@@ -86,11 +86,11 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - expression (optional) to evaluate.
+//   - expression (optional) to evaluate.
 //
 // The function returns the following values:
 //
-//    - stringSorter: new GtkStringSorter.
+//   - stringSorter: new GtkStringSorter.
 //
 func NewStringSorter(expression Expressioner) *StringSorter {
 	var _arg1 *C.GtkExpression   // out
@@ -116,7 +116,7 @@ func NewStringSorter(expression Expressioner) *StringSorter {
 //
 // The function returns the following values:
 //
-//    - expression (optional): GtkExpression, or NULL.
+//   - expression (optional): GtkExpression, or NULL.
 //
 func (self *StringSorter) Expression() Expressioner {
 	var _arg0 *C.GtkStringSorter // out
@@ -153,7 +153,7 @@ func (self *StringSorter) Expression() Expressioner {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self is ignoring case differences.
+//   - ok: TRUE if self is ignoring case differences.
 //
 func (self *StringSorter) IgnoreCase() bool {
 	var _arg0 *C.GtkStringSorter // out
@@ -180,7 +180,7 @@ func (self *StringSorter) IgnoreCase() bool {
 //
 // The function takes the following parameters:
 //
-//    - expression (optional): GtkExpression, or NULL.
+//   - expression (optional): GtkExpression, or NULL.
 //
 func (self *StringSorter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkStringSorter // out
@@ -200,7 +200,7 @@ func (self *StringSorter) SetExpression(expression Expressioner) {
 //
 // The function takes the following parameters:
 //
-//    - ignoreCase: TRUE to ignore case differences.
+//   - ignoreCase: TRUE to ignore case differences.
 //
 func (self *StringSorter) SetIgnoreCase(ignoreCase bool) {
 	var _arg0 *C.GtkStringSorter // out

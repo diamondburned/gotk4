@@ -81,8 +81,8 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 	return wrapSimpleProxyResolver(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// SetDefaultProxy sets the default proxy on resolver, to be used for any URIs
-// that don't match ProxyResolver:ignore-hosts or a proxy set via
+// SetDefaultProxy sets the default proxy on resolver, to be used for any
+// URIs that don't match ProxyResolver:ignore-hosts or a proxy set via
 // g_simple_proxy_resolver_set_uri_proxy().
 //
 // If default_proxy starts with "socks://", ProxyResolver will treat it as
@@ -90,7 +90,7 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - defaultProxy: default proxy to use.
+//   - defaultProxy: default proxy to use.
 //
 func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
@@ -115,8 +115,8 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 //
 // The function takes the following parameters:
 //
-//    - uriScheme: URI scheme to add a proxy for.
-//    - proxy to use for uri_scheme.
+//   - uriScheme: URI scheme to add a proxy for.
+//   - proxy to use for uri_scheme.
 //
 func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out

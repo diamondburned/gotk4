@@ -33,9 +33,9 @@ func defaultNoOpObjectFactoryOverrides(v *NoOpObjectFactory) NoOpObjectFactoryOv
 	return NoOpObjectFactoryOverrides{}
 }
 
-// NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject. An
-// instance of this is created by an AtkRegistry if no factory type has not been
-// specified to create an accessible object of a particular type.
+// NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject.
+// An instance of this is created by an AtkRegistry if no factory type has not
+// been specified to create an accessible object of a particular type.
 type NoOpObjectFactory struct {
 	_ [0]func() // equal guard
 	ObjectFactory
@@ -78,7 +78,7 @@ func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - noOpObjectFactory: instance of an ObjectFactory.
+//   - noOpObjectFactory: instance of an ObjectFactory.
 //
 func NewNoOpObjectFactory() *NoOpObjectFactory {
 	var _cret *C.AtkObjectFactory // in

@@ -58,14 +58,13 @@ func defaultButtonOverrides(v *Button) ButtonOverrides {
 // almost any other standard GtkWidget. The most commonly used child is the
 // GtkLabel.
 //
+// # CSS nodes
 //
-// CSS nodes
-//
-// GtkButton has a single CSS node with name button. The node will get the style
-// classes .image-button or .text-button, if the content is just an image or
-// label, respectively. It may also receive the .flat style class. When
-// activating a button via the keyboard, the button will temporarily gain the
-// .keyboard-activating style class.
+// GtkButton has a single CSS node with name button. The node will get the
+// style classes .image-button or .text-button, if the content is just an
+// image or label, respectively. It may also receive the .flat style class.
+// When activating a button via the keyboard, the button will temporarily gain
+// the .keyboard-activating style class.
 //
 // Other style classes that are commonly used with GtkButton include
 // .suggested-action and .destructive-action. In special cases, buttons can be
@@ -76,8 +75,7 @@ func defaultButtonOverrides(v *Button) ButtonOverrides {
 // .toggle, .popup, .scale, .lock, .color on the button node to differentiate
 // themselves from a plain GtkButton.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkButton uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Button struct {
@@ -181,7 +179,7 @@ func (button *Button) ConnectClicked(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - button: newly created GtkButton widget.
+//   - button: newly created GtkButton widget.
 //
 func NewButton() *Button {
 	var _cret *C.GtkWidget // in
@@ -204,11 +202,11 @@ func NewButton() *Button {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name or NULL.
+//   - iconName (optional): icon name or NULL.
 //
 // The function returns the following values:
 //
-//    - button: new GtkButton displaying the themed icon.
+//   - button: new GtkButton displaying the themed icon.
 //
 func NewButtonFromIconName(iconName string) *Button {
 	var _arg1 *C.char      // out
@@ -233,11 +231,11 @@ func NewButtonFromIconName(iconName string) *Button {
 //
 // The function takes the following parameters:
 //
-//    - label: text you want the GtkLabel to hold.
+//   - label: text you want the GtkLabel to hold.
 //
 // The function returns the following values:
 //
-//    - button: newly created GtkButton widget.
+//   - button: newly created GtkButton widget.
 //
 func NewButtonWithLabel(label string) *Button {
 	var _arg1 *C.char      // out
@@ -258,20 +256,20 @@ func NewButtonWithLabel(label string) *Button {
 
 // NewButtonWithMnemonic creates a new GtkButton containing a label.
 //
-// If characters in label are preceded by an underscore, they are underlined. If
-// you need a literal underscore character in a label, use “__” (two
+// If characters in label are preceded by an underscore, they are underlined.
+// If you need a literal underscore character in a label, use “__” (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic. Pressing Alt and that key activates the
 // button.
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the mnemonic
-//      character.
+//   - label: text of the button, with an underscore in front of the mnemonic
+//     character.
 //
 // The function returns the following values:
 //
-//    - button: new GtkButton.
+//   - button: new GtkButton.
 //
 func NewButtonWithMnemonic(label string) *Button {
 	var _arg1 *C.char      // out
@@ -294,7 +292,7 @@ func NewButtonWithMnemonic(label string) *Button {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of button.
+//   - widget (optional): child widget of button.
 //
 func (button *Button) Child() Widgetter {
 	var _arg0 *C.GtkButton // out
@@ -331,7 +329,7 @@ func (button *Button) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the button has a frame.
+//   - ok: TRUE if the button has a frame.
 //
 func (button *Button) HasFrame() bool {
 	var _arg0 *C.GtkButton // out
@@ -359,7 +357,7 @@ func (button *Button) HasFrame() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name set via gtk.Button.SetIconName().
+//   - utf8 (optional): icon name set via gtk.Button.SetIconName().
 //
 func (button *Button) IconName() string {
 	var _arg0 *C.GtkButton // out
@@ -387,8 +385,8 @@ func (button *Button) IconName() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): text of the label widget. This string is owned by the
-//      widget and must not be modified or freed.
+//   - utf8 (optional): text of the label widget. This string is owned by the
+//     widget and must not be modified or freed.
 //
 func (button *Button) Label() string {
 	var _arg0 *C.GtkButton // out
@@ -414,8 +412,8 @@ func (button *Button) Label() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if an embedded underline in the button label indicates the
-//      mnemonic accelerator keys.
+//   - ok: TRUE if an embedded underline in the button label indicates the
+//     mnemonic accelerator keys.
 //
 func (button *Button) UseUnderline() bool {
 	var _arg0 *C.GtkButton // out
@@ -439,7 +437,7 @@ func (button *Button) UseUnderline() bool {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (button *Button) SetChild(child Widgetter) {
 	var _arg0 *C.GtkButton // out
@@ -461,7 +459,7 @@ func (button *Button) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - hasFrame: whether the button should have a visible frame.
+//   - hasFrame: whether the button should have a visible frame.
 //
 func (button *Button) SetHasFrame(hasFrame bool) {
 	var _arg0 *C.GtkButton // out
@@ -484,7 +482,7 @@ func (button *Button) SetHasFrame(hasFrame bool) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//   - iconName: icon name.
 //
 func (button *Button) SetIconName(iconName string) {
 	var _arg0 *C.GtkButton // out
@@ -505,7 +503,7 @@ func (button *Button) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - label: string.
+//   - label: string.
 //
 func (button *Button) SetLabel(label string) {
 	var _arg0 *C.GtkButton // out
@@ -527,7 +525,7 @@ func (button *Button) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//   - useUnderline: TRUE if underlines in the text indicate mnemonics.
 //
 func (button *Button) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkButton // out

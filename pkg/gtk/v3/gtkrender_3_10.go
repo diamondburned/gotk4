@@ -21,11 +21,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: StyleContext.
-//    - cr: #cairo_t.
-//    - surface containing the icon to draw.
-//    - x: x position for the icon.
-//    - y: y position for the incon.
+//   - context: StyleContext.
+//   - cr: #cairo_t.
+//   - surface containing the icon to draw.
+//   - x: x position for the icon.
+//   - y: y position for the incon.
 //
 func RenderIconSurface(context *StyleContext, cr *cairo.Context, surface *cairo.Surface, x, y float64) {
 	var _arg1 *C.GtkStyleContext // out

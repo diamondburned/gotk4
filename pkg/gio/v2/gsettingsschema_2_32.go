@@ -38,9 +38,9 @@ func init() {
 // and it won't be installed into the standard system directories for schemas.
 //
 // SchemaSource provides a mechanism for dealing with this by allowing the
-// creation of a new 'schema source' from which schemas can be acquired. This
-// schema source can then become part of the metadata associated with the plugin
-// and queried whenever the plugin requires access to some settings.
+// creation of a new 'schema source' from which schemas can be acquired.
+// This schema source can then become part of the metadata associated with the
+// plugin and queried whenever the plugin requires access to some settings.
 //
 // Consider the following example:
 //
@@ -77,7 +77,7 @@ func marshalSettingsSchema(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - utf8: ID.
+//   - utf8: ID.
 //
 func (schema *SettingsSchema) ID() string {
 	var _arg0 *C.GSettingsSchema // out
@@ -102,11 +102,11 @@ func (schema *SettingsSchema) ID() string {
 //
 // The function takes the following parameters:
 //
-//    - name of a key.
+//   - name of a key.
 //
 // The function returns the following values:
 //
-//    - settingsSchemaKey for name.
+//   - settingsSchemaKey for name.
 //
 func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var _arg0 *C.GSettingsSchema    // out
@@ -146,7 +146,7 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): path of the schema, or NULL.
+//   - utf8 (optional): path of the schema, or NULL.
 //
 func (schema *SettingsSchema) Path() string {
 	var _arg0 *C.GSettingsSchema // out
@@ -170,11 +170,11 @@ func (schema *SettingsSchema) Path() string {
 //
 // The function takes the following parameters:
 //
-//    - name of a key.
+//   - name of a key.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if such a key exists.
+//   - ok: TRUE if such a key exists.
 //
 func (schema *SettingsSchema) HasKey(name string) bool {
 	var _arg0 *C.GSettingsSchema // out
@@ -204,7 +204,7 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 //
 // The function returns the following values:
 //
-//    - utf8s: list of the children on settings, in no defined order.
+//   - utf8s: list of the children on settings, in no defined order.
 //
 func (schema *SettingsSchema) ListChildren() []string {
 	var _arg0 *C.GSettingsSchema // out
@@ -244,7 +244,7 @@ func (schema *SettingsSchema) ListChildren() []string {
 //
 // The function returns the following values:
 //
-//    - utf8s: list of the keys on schema, in no defined order.
+//   - utf8s: list of the keys on schema, in no defined order.
 //
 func (schema *SettingsSchema) ListKeys() []string {
 	var _arg0 *C.GSettingsSchema // out
@@ -338,8 +338,8 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 // If recursive is TRUE then include parent sources. If FALSE then only include
 // the schemas from one source (ie: one directory). You probably want TRUE.
 //
-// Non-relocatable schemas are those for which you can call g_settings_new().
-// Relocatable schemas are those for which you must use
+// Non-relocatable schemas are those for which you can call
+// g_settings_new(). Relocatable schemas are those for which you must use
 // g_settings_new_with_path().
 //
 // Do not call this function from normal programs. This is designed for use by
@@ -347,12 +347,12 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 //
 // The function takes the following parameters:
 //
-//    - recursive: if we should recurse.
+//   - recursive: if we should recurse.
 //
 // The function returns the following values:
 //
-//    - nonRelocatable: the list of non-relocatable schemas, in no defined order.
-//    - relocatable: list of relocatable schemas, in no defined order.
+//   - nonRelocatable: the list of non-relocatable schemas, in no defined order.
+//   - relocatable: list of relocatable schemas, in no defined order.
 //
 func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []string, relocatable []string) {
 	var _arg0 *C.GSettingsSchemaSource // out
@@ -408,8 +408,8 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 
 // Lookup looks up a schema with the identifier schema_id in source.
 //
-// This function is not required for normal uses of #GSettings but it may be
-// useful to authors of plugin management systems or to those who want to
+// This function is not required for normal uses of #GSettings but it may
+// be useful to authors of plugin management systems or to those who want to
 // introspect the content of schemas.
 //
 // If the schema isn't found directly in source and recursive is TRUE then the
@@ -419,12 +419,12 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 //
 // The function takes the following parameters:
 //
-//    - schemaId: schema ID.
-//    - recursive: TRUE if the lookup should be recursive.
+//   - schemaId: schema ID.
+//   - recursive: TRUE if the lookup should be recursive.
 //
 // The function returns the following values:
 //
-//    - settingsSchema (optional): new Schema.
+//   - settingsSchema (optional): new Schema.
 //
 func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *SettingsSchema {
 	var _arg0 *C.GSettingsSchemaSource // out
@@ -461,20 +461,20 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 
 // SettingsSchemaSourceGetDefault gets the default system schema source.
 //
-// This function is not required for normal uses of #GSettings but it may be
-// useful to authors of plugin management systems or to those who want to
+// This function is not required for normal uses of #GSettings but it may
+// be useful to authors of plugin management systems or to those who want to
 // introspect the content of schemas.
 //
 // If no schemas are installed, NULL will be returned.
 //
-// The returned source may actually consist of multiple schema sources from
-// different directories, depending on which directories were given in
-// XDG_DATA_DIRS and GSETTINGS_SCHEMA_DIR. For this reason, all lookups
+// The returned source may actually consist of multiple schema sources
+// from different directories, depending on which directories were given
+// in XDG_DATA_DIRS and GSETTINGS_SCHEMA_DIR. For this reason, all lookups
 // performed against the default source should probably be done recursively.
 //
 // The function returns the following values:
 //
-//    - settingsSchemaSource (optional): default schema source.
+//   - settingsSchemaSource (optional): default schema source.
 //
 func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 	var _cret *C.GSettingsSchemaSource // in

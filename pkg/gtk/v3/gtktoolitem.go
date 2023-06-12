@@ -58,9 +58,9 @@ func defaultToolItemOverrides(v *ToolItem) ToolItemOverrides {
 	}
 }
 
-// ToolItem are widgets that can appear on a toolbar. To create a toolbar item
-// that contain something else than a button, use gtk_tool_item_new(). Use
-// gtk_container_add() to add a child widget to the tool item.
+// ToolItem are widgets that can appear on a toolbar. To create a toolbar
+// item that contain something else than a button, use gtk_tool_item_new().
+// Use gtk_container_add() to add a child widget to the tool item.
 //
 // For toolbar items that contain buttons, see the ToolButton, ToggleToolButton
 // and RadioToolButton classes.
@@ -145,8 +145,8 @@ func marshalToolItem(p uintptr) (interface{}, error) {
 // - call gtk_tool_item_set_proxy_menu_item() with a new menu item and return
 // TRUE, or
 //
-// - return FALSE to indicate that the signal was not handled by the item. This
-// means that the item will not appear in the overflow menu unless a later
+// - return FALSE to indicate that the signal was not handled by the item.
+// This means that the item will not appear in the overflow menu unless a later
 // handler installs a menu item.
 //
 // The toolbar may cache the result of this signal. When the tool item changes
@@ -157,8 +157,8 @@ func (toolItem *ToolItem) ConnectCreateMenuProxy(f func() (ok bool)) coreglib.Si
 	return coreglib.ConnectGeneratedClosure(toolItem, "create-menu-proxy", false, unsafe.Pointer(C._gotk4_gtk3_ToolItem_ConnectCreateMenuProxy), f)
 }
 
-// ConnectToolbarReconfigured: this signal is emitted when some property of the
-// toolbar that the item is a child of changes. For custom subclasses of
+// ConnectToolbarReconfigured: this signal is emitted when some property of
+// the toolbar that the item is a child of changes. For custom subclasses of
 // ToolItem, the default handler of this signal use the functions
 //
 // - gtk_tool_shell_get_orientation()
@@ -177,7 +177,7 @@ func (toolItem *ToolItem) ConnectToolbarReconfigured(f func()) coreglib.SignalHa
 //
 // The function returns the following values:
 //
-//    - toolItem: new ToolItem.
+//   - toolItem: new ToolItem.
 //
 func NewToolItem() *ToolItem {
 	var _cret *C.GtkToolItem // in
@@ -197,7 +197,7 @@ func NewToolItem() *ToolItem {
 //
 // The function returns the following values:
 //
-//    - ellipsizeMode indicating how text in tool_item should be ellipsized.
+//   - ellipsizeMode indicating how text in tool_item should be ellipsized.
 //
 func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolItem       // out
@@ -220,7 +220,7 @@ func (toolItem *ToolItem) EllipsizeMode() pango.EllipsizeMode {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if tool_item is allocated extra space.
+//   - ok: TRUE if tool_item is allocated extra space.
 //
 func (toolItem *ToolItem) Expand() bool {
 	var _arg0 *C.GtkToolItem // out
@@ -245,7 +245,7 @@ func (toolItem *ToolItem) Expand() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the item is the same size as other homogeneous items.
+//   - ok: TRUE if the item is the same size as other homogeneous items.
 //
 func (toolItem *ToolItem) Homogeneous() bool {
 	var _arg0 *C.GtkToolItem // out
@@ -271,7 +271,7 @@ func (toolItem *ToolItem) Homogeneous() bool {
 //
 // The function returns the following values:
 //
-//    - gint indicating the icon size used for tool_item.
+//   - gint indicating the icon size used for tool_item.
 //
 func (toolItem *ToolItem) IconSize() int {
 	var _arg0 *C.GtkToolItem // out
@@ -294,7 +294,7 @@ func (toolItem *ToolItem) IconSize() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if tool_item is considered important.
+//   - ok: TRUE if tool_item is considered important.
 //
 func (toolItem *ToolItem) IsImportant() bool {
 	var _arg0 *C.GtkToolItem // out
@@ -320,7 +320,7 @@ func (toolItem *ToolItem) IsImportant() bool {
 //
 // The function returns the following values:
 //
-//    - orientation indicating the orientation used for tool_item.
+//   - orientation indicating the orientation used for tool_item.
 //
 func (toolItem *ToolItem) Orientation() Orientation {
 	var _arg0 *C.GtkToolItem   // out
@@ -348,12 +348,12 @@ func (toolItem *ToolItem) Orientation() Orientation {
 //
 // The function takes the following parameters:
 //
-//    - menuItemId: string used to identify the menu item.
+//   - menuItemId: string used to identify the menu item.
 //
 // The function returns the following values:
 //
-//    - widget (optional) passed to gtk_tool_item_set_proxy_menu_item(), if the
-//      menu_item_ids match.
+//   - widget (optional) passed to gtk_tool_item_set_proxy_menu_item(), if the
+//     menu_item_ids match.
 //
 func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 	var _arg0 *C.GtkToolItem // out
@@ -397,7 +397,7 @@ func (toolItem *ToolItem) ProxyMenuItem(menuItemId string) Widgetter {
 //
 // The function returns the following values:
 //
-//    - reliefStyle indicating the relief style used for tool_item.
+//   - reliefStyle indicating the relief style used for tool_item.
 //
 func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolItem   // out
@@ -421,7 +421,7 @@ func (toolItem *ToolItem) ReliefStyle() ReliefStyle {
 //
 // The function returns the following values:
 //
-//    - gfloat indicating the horizontal text alignment used for tool_item.
+//   - gfloat indicating the horizontal text alignment used for tool_item.
 //
 func (toolItem *ToolItem) TextAlignment() float32 {
 	var _arg0 *C.GtkToolItem // out
@@ -445,7 +445,7 @@ func (toolItem *ToolItem) TextAlignment() float32 {
 //
 // The function returns the following values:
 //
-//    - orientation indicating the text orientation used for tool_item.
+//   - orientation indicating the text orientation used for tool_item.
 //
 func (toolItem *ToolItem) TextOrientation() Orientation {
 	var _arg0 *C.GtkToolItem   // out
@@ -469,7 +469,7 @@ func (toolItem *ToolItem) TextOrientation() Orientation {
 //
 // The function returns the following values:
 //
-//    - sizeGroup: SizeGroup.
+//   - sizeGroup: SizeGroup.
 //
 func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 	var _arg0 *C.GtkToolItem  // out
@@ -487,8 +487,8 @@ func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 	return _sizeGroup
 }
 
-// ToolbarStyle returns the toolbar style used for tool_item. Custom subclasses
-// of ToolItem should call this function in the handler of the
+// ToolbarStyle returns the toolbar style used for tool_item. Custom
+// subclasses of ToolItem should call this function in the handler of the
 // GtkToolItem::toolbar_reconfigured signal to find out in what style the
 // toolbar is displayed and change themselves accordingly
 //
@@ -506,7 +506,7 @@ func (toolItem *ToolItem) TextSizeGroup() *SizeGroup {
 //
 // The function returns the following values:
 //
-//    - toolbarStyle indicating the toolbar style used for tool_item.
+//   - toolbarStyle indicating the toolbar style used for tool_item.
 //
 func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 	var _arg0 *C.GtkToolItem    // out
@@ -529,7 +529,7 @@ func (toolItem *ToolItem) ToolbarStyle() ToolbarStyle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if tool_item uses a drag window.
+//   - ok: TRUE if tool_item uses a drag window.
 //
 func (toolItem *ToolItem) UseDragWindow() bool {
 	var _arg0 *C.GtkToolItem // out
@@ -554,8 +554,8 @@ func (toolItem *ToolItem) UseDragWindow() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if tool_item is visible on toolbars that are docked
-//      horizontally.
+//   - ok: TRUE if tool_item is visible on toolbars that are docked
+//     horizontally.
 //
 func (toolItem *ToolItem) VisibleHorizontal() bool {
 	var _arg0 *C.GtkToolItem // out
@@ -580,7 +580,7 @@ func (toolItem *ToolItem) VisibleHorizontal() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether tool_item is visible when the toolbar is docked vertically.
+//   - ok: whether tool_item is visible when the toolbar is docked vertically.
 //
 func (toolItem *ToolItem) VisibleVertical() bool {
 	var _arg0 *C.GtkToolItem // out
@@ -621,7 +621,7 @@ func (toolItem *ToolItem) RebuildMenu() {
 //
 // The function returns the following values:
 //
-//    - widget that is going to appear in the overflow menu for tool_item.
+//   - widget that is going to appear in the overflow menu for tool_item.
 //
 func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 	var _arg0 *C.GtkToolItem // out
@@ -662,7 +662,7 @@ func (toolItem *ToolItem) RetrieveProxyMenuItem() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - expand: whether tool_item is allocated extra space.
+//   - expand: whether tool_item is allocated extra space.
 //
 func (toolItem *ToolItem) SetExpand(expand bool) {
 	var _arg0 *C.GtkToolItem // out
@@ -684,8 +684,8 @@ func (toolItem *ToolItem) SetExpand(expand bool) {
 //
 // The function takes the following parameters:
 //
-//    - homogeneous: whether tool_item is the same size as other homogeneous
-//      items.
+//   - homogeneous: whether tool_item is the same size as other homogeneous
+//     items.
 //
 func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkToolItem // out
@@ -701,15 +701,15 @@ func (toolItem *ToolItem) SetHomogeneous(homogeneous bool) {
 	runtime.KeepAlive(homogeneous)
 }
 
-// SetIsImportant sets whether tool_item should be considered important. The
-// ToolButton class uses this property to determine whether to show or hide its
-// label when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ. The result is that
-// only tool buttons with the “is_important” property set have labels, an effect
-// known as “priority text”.
+// SetIsImportant sets whether tool_item should be considered important.
+// The ToolButton class uses this property to determine whether to show or hide
+// its label when the toolbar style is GTK_TOOLBAR_BOTH_HORIZ. The result is
+// that only tool buttons with the “is_important” property set have labels,
+// an effect known as “priority text”.
 //
 // The function takes the following parameters:
 //
-//    - isImportant: whether the tool item should be considered important.
+//   - isImportant: whether the tool item should be considered important.
 //
 func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkToolItem // out
@@ -725,16 +725,16 @@ func (toolItem *ToolItem) SetIsImportant(isImportant bool) {
 	runtime.KeepAlive(isImportant)
 }
 
-// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu. The
-// menu_item_id is used to identify the caller of this function and should also
-// be used with gtk_tool_item_get_proxy_menu_item().
+// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu.
+// The menu_item_id is used to identify the caller of this function and should
+// also be used with gtk_tool_item_get_proxy_menu_item().
 //
 // See also ToolItem::create-menu-proxy.
 //
 // The function takes the following parameters:
 //
-//    - menuItemId: string used to identify menu_item.
-//    - menuItem (optional) to use in the overflow menu, or NULL.
+//   - menuItemId: string used to identify menu_item.
+//   - menuItem (optional) to use in the overflow menu, or NULL.
 //
 func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter) {
 	var _arg0 *C.GtkToolItem // out
@@ -759,7 +759,7 @@ func (toolItem *ToolItem) SetProxyMenuItem(menuItemId string, menuItem Widgetter
 //
 // The function takes the following parameters:
 //
-//    - markup text to be used as tooltip for tool_item.
+//   - markup text to be used as tooltip for tool_item.
 //
 func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkToolItem // out
@@ -774,12 +774,12 @@ func (toolItem *ToolItem) SetTooltipMarkup(markup string) {
 	runtime.KeepAlive(markup)
 }
 
-// SetTooltipText sets the text to be displayed as tooltip on the item. See
-// gtk_widget_set_tooltip_text().
+// SetTooltipText sets the text to be displayed as tooltip on the item.
+// See gtk_widget_set_tooltip_text().
 //
 // The function takes the following parameters:
 //
-//    - text to be used as tooltip for tool_item.
+//   - text to be used as tooltip for tool_item.
 //
 func (toolItem *ToolItem) SetTooltipText(text string) {
 	var _arg0 *C.GtkToolItem // out
@@ -801,7 +801,7 @@ func (toolItem *ToolItem) SetTooltipText(text string) {
 //
 // The function takes the following parameters:
 //
-//    - useDragWindow: whether tool_item has a drag window.
+//   - useDragWindow: whether tool_item has a drag window.
 //
 func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
 	var _arg0 *C.GtkToolItem // out
@@ -822,7 +822,7 @@ func (toolItem *ToolItem) SetUseDragWindow(useDragWindow bool) {
 //
 // The function takes the following parameters:
 //
-//    - visibleHorizontal: whether tool_item is visible when in horizontal mode.
+//   - visibleHorizontal: whether tool_item is visible when in horizontal mode.
 //
 func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkToolItem // out
@@ -845,8 +845,8 @@ func (toolItem *ToolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 //
 // The function takes the following parameters:
 //
-//    - visibleVertical: whether tool_item is visible when the toolbar is in
-//      vertical mode.
+//   - visibleVertical: whether tool_item is visible when the toolbar is in
+//     vertical mode.
 //
 func (toolItem *ToolItem) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkToolItem // out

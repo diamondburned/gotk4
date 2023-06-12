@@ -257,9 +257,9 @@ func (w WindowWindowClass) String() string {
 	}
 }
 
-// WMDecoration: these are hints originally defined by the Motif toolkit. The
-// window manager can use them when determining how to decorate the window. The
-// hint must be set before mapping the window.
+// WMDecoration: these are hints originally defined by the Motif toolkit.
+// The window manager can use them when determining how to decorate the window.
+// The hint must be set before mapping the window.
 type WMDecoration C.guint
 
 const (
@@ -326,9 +326,9 @@ func (w WMDecoration) Has(other WMDecoration) bool {
 	return (w & other) == other
 }
 
-// WMFunction: these are hints originally defined by the Motif toolkit. The
-// window manager can use them when determining the functions to offer for the
-// window. The hint must be set before mapping the window.
+// WMFunction: these are hints originally defined by the Motif toolkit.
+// The window manager can use them when determining the functions to offer for
+// the window. The hint must be set before mapping the window.
 type WMFunction C.guint
 
 const (
@@ -393,9 +393,9 @@ func (w WMFunction) Has(other WMFunction) bool {
 
 // WindowAttributesType: used to indicate which fields in the WindowAttr struct
 // should be honored. For example, if you filled in the “cursor” and “x” fields
-// of WindowAttr, pass “GDK_WA_X | GDK_WA_CURSOR” to gdk_window_new(). Fields in
-// WindowAttr not covered by a bit in this enum are required; for example, the
-// width/height, wclass, and window_type fields are required, they have no
+// of WindowAttr, pass “GDK_WA_X | GDK_WA_CURSOR” to gdk_window_new(). Fields
+// in WindowAttr not covered by a bit in this enum are required; for example,
+// the width/height, wclass, and window_type fields are required, they have no
 // corresponding flag in WindowAttributesType.
 type WindowAttributesType C.guint
 
@@ -467,10 +467,10 @@ func (w WindowAttributesType) Has(other WindowAttributesType) bool {
 	return (w & other) == other
 }
 
-// WindowHints: used to indicate which fields of a Geometry struct should be
-// paid attention to. Also, the presence/absence of GDK_HINT_POS,
-// GDK_HINT_USER_POS, and GDK_HINT_USER_SIZE is significant, though they don't
-// directly refer to Geometry fields. GDK_HINT_USER_POS will be set
+// WindowHints: used to indicate which fields of a Geometry struct should
+// be paid attention to. Also, the presence/absence of GDK_HINT_POS,
+// GDK_HINT_USER_POS, and GDK_HINT_USER_SIZE is significant, though they
+// don't directly refer to Geometry fields. GDK_HINT_USER_POS will be set
 // automatically by Window if you call gtk_window_move(). GDK_HINT_USER_POS and
 // GDK_HINT_USER_SIZE should be set if the user specified a size/position using
 // a --geometry command-line argument; gtk_window_parse_geometry() automatically
@@ -561,7 +561,7 @@ type WindowChildFunc func(window Windower) (ok bool)
 //
 // The function returns the following values:
 //
-//    - window: default root window.
+//   - window: default root window.
 //
 func GetDefaultRootWindow() Windower {
 	var _cret *C.GdkWindow // in
@@ -591,17 +591,17 @@ func GetDefaultRootWindow() Windower {
 	return _window
 }
 
-// OffscreenWindowGetSurface gets the offscreen surface that an offscreen window
-// renders into. If you need to keep this around over window resizes, you need
-// to add a reference to it.
+// OffscreenWindowGetSurface gets the offscreen surface that an offscreen
+// window renders into. If you need to keep this around over window resizes,
+// you need to add a reference to it.
 //
 // The function takes the following parameters:
 //
-//    - window: Window.
+//   - window: Window.
 //
 // The function returns the following values:
 //
-//    - surface (optional): offscreen surface, or NULL if not offscreen.
+//   - surface (optional): offscreen surface, or NULL if not offscreen.
 //
 func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	var _arg1 *C.GdkWindow       // out
@@ -629,26 +629,26 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 type WindowOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - width
-	//    - height
+	//   - width
+	//   - height
 	//
 	// The function returns the following values:
 	//
 	CreateSurface func(width, height int) *cairo.Surface
 	// The function takes the following parameters:
 	//
-	//    - embedderX
-	//    - embedderY
-	//    - offscreenX
-	//    - offscreenY
+	//   - embedderX
+	//   - embedderY
+	//   - offscreenX
+	//   - offscreenY
 	//
 	FromEmbedder func(embedderX, embedderY float64, offscreenX, offscreenY *float64)
 	// The function takes the following parameters:
 	//
-	//    - offscreenX
-	//    - offscreenY
-	//    - embedderX
-	//    - embedderY
+	//   - offscreenX
+	//   - offscreenY
+	//   - embedderX
+	//   - embedderY
 	//
 	ToEmbedder func(offscreenX, offscreenY float64, embedderX, embedderY *float64)
 }
@@ -736,8 +736,8 @@ func BaseWindow(obj Windower) *Window {
 // non-NULL surface will stop any further signal emission, and its surface will
 // be used.
 //
-// Note that it is not possible to access the window's previous surface from
-// within any callback of this signal. Calling
+// Note that it is not possible to access the window's previous
+// surface from within any callback of this signal. Calling
 // gdk_offscreen_window_get_surface() will lead to a crash.
 func (window *Window) ConnectCreateSurface(f func(width, height int) (surface *cairo.Surface)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "create-surface", false, unsafe.Pointer(C._gotk4_gdk3_Window_ConnectCreateSurface), f)
@@ -746,12 +746,12 @@ func (window *Window) ConnectCreateSurface(f func(width, height int) (surface *c
 // ConnectMovedToRect is emitted when the position of window is finalized after
 // being moved to a destination rectangle.
 //
-// window might be flipped over the destination rectangle in order to keep it
-// on-screen, in which case flipped_x and flipped_y will be set to TRUE
+// window might be flipped over the destination rectangle in order to keep
+// it on-screen, in which case flipped_x and flipped_y will be set to TRUE
 // accordingly.
 //
-// flipped_rect is the ideal position of window after any possible flipping, but
-// before any possible sliding. final_rect is flipped_rect, but possibly
+// flipped_rect is the ideal position of window after any possible flipping,
+// but before any possible sliding. final_rect is flipped_rect, but possibly
 // translated in the case that flipping is still ineffective in keeping window
 // on-screen.
 func (window *Window) ConnectMovedToRect(f func(flippedRect, finalRect unsafe.Pointer, flippedX, flippedY bool)) coreglib.SignalHandle {
@@ -764,20 +764,20 @@ func (window *Window) ConnectPickEmbeddedChild(f func(x, y float64) (window Wind
 	return coreglib.ConnectGeneratedClosure(window, "pick-embedded-child", false, unsafe.Pointer(C._gotk4_gdk3_Window_ConnectPickEmbeddedChild), f)
 }
 
-// NewWindow creates a new Window using the attributes from attributes. See
-// WindowAttr and WindowAttributesType for more details. Note: to use this on
-// displays other than the default display, parent must be specified.
+// NewWindow creates a new Window using the attributes from attributes.
+// See WindowAttr and WindowAttributesType for more details. Note: to use this
+// on displays other than the default display, parent must be specified.
 //
 // The function takes the following parameters:
 //
-//    - parent (optional) or NULL to create the window as a child of the default
-//      root window for the default display.
-//    - attributes of the new window.
-//    - attributesMask: mask indicating which fields in attributes are valid.
+//   - parent (optional) or NULL to create the window as a child of the default
+//     root window for the default display.
+//   - attributes of the new window.
+//   - attributesMask: mask indicating which fields in attributes are valid.
 //
 // The function returns the following values:
 //
-//    - window: new Window.
+//   - window: new Window.
 //
 func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAttributesType) *Window {
 	var _arg1 *C.GdkWindow     // out
@@ -803,8 +803,8 @@ func NewWindow(parent Windower, attributes *WindowAttr, attributesMask WindowAtt
 	return _window
 }
 
-// Beep emits a short beep associated to window in the appropriate display, if
-// supported. Otherwise, emits a short beep on the display just as
+// Beep emits a short beep associated to window in the appropriate display,
+// if supported. Otherwise, emits a short beep on the display just as
 // gdk_display_beep().
 func (window *Window) Beep() {
 	var _arg0 *C.GdkWindow // out
@@ -818,17 +818,17 @@ func (window *Window) Beep() {
 // BeginDrawFrame indicates that you are beginning the process of redrawing
 // region on window, and provides you with a DrawingContext.
 //
-// If window is a top level Window, backed by a native window implementation, a
-// backing store (offscreen buffer) large enough to contain region will be
-// created. The backing store will be initialized with the background color or
-// background surface for window. Then, all drawing operations performed on
-// window will be diverted to the backing store. When you call
+// If window is a top level Window, backed by a native window implementation,
+// a backing store (offscreen buffer) large enough to contain region will
+// be created. The backing store will be initialized with the background
+// color or background surface for window. Then, all drawing operations
+// performed on window will be diverted to the backing store. When you call
 // gdk_window_end_frame(), the contents of the backing store will be copied to
 // window, making it visible on screen. Only the part of window contained in
 // region will be modified; that is, drawing operations are clipped to region.
 //
-// The net result of all this is to remove flicker, because the user sees the
-// finished product appear all at once when you call
+// The net result of all this is to remove flicker, because the
+// user sees the finished product appear all at once when you call
 // gdk_window_end_draw_frame(). If you draw to window directly without calling
 // gdk_window_begin_draw_frame(), the user may see flicker as individual drawing
 // operations are performed in sequence.
@@ -843,12 +843,12 @@ func (window *Window) Beep() {
 //
 // The function takes the following parameters:
 //
-//    - region: cairo region.
+//   - region: cairo region.
 //
 // The function returns the following values:
 //
-//    - drawingContext context that should be used to draw the contents of the
-//      window; the returned context is owned by GDK.
+//   - drawingContext context that should be used to draw the contents of the
+//     window; the returned context is owned by GDK.
 //
 func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 	var _arg0 *C.GdkWindow         // out
@@ -877,10 +877,10 @@ func (window *Window) BeginDrawFrame(region *cairo.Region) *DrawingContext {
 //
 // The function takes the following parameters:
 //
-//    - button being used to drag, or 0 for a keyboard-initiated drag.
-//    - rootX: root window X coordinate of mouse click that began the drag.
-//    - rootY: root window Y coordinate of mouse click that began the drag.
-//    - timestamp of mouse click that began the drag.
+//   - button being used to drag, or 0 for a keyboard-initiated drag.
+//   - rootX: root window X coordinate of mouse click that began the drag.
+//   - rootY: root window Y coordinate of mouse click that began the drag.
+//   - timestamp of mouse click that began the drag.
 //
 func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
@@ -904,18 +904,18 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) 
 }
 
 // BeginMoveDragForDevice begins a window move operation (for a toplevel
-// window). You might use this function to implement a “window move grip,” for
-// example. The function works best with window managers that support the
+// window). You might use this function to implement a “window move grip,”
+// for example. The function works best with window managers that support the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // but has a fallback implementation for other window managers.
 //
 // The function takes the following parameters:
 //
-//    - device used for the operation.
-//    - button being used to drag, or 0 for a keyboard-initiated drag.
-//    - rootX: root window X coordinate of mouse click that began the drag.
-//    - rootY: root window Y coordinate of mouse click that began the drag.
-//    - timestamp of mouse click that began the drag.
+//   - device used for the operation.
+//   - button being used to drag, or 0 for a keyboard-initiated drag.
+//   - rootX: root window X coordinate of mouse click that began the drag.
+//   - rootY: root window Y coordinate of mouse click that began the drag.
+//   - timestamp of mouse click that began the drag.
 //
 func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, rootY int, timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
@@ -949,7 +949,7 @@ func (window *Window) BeginMoveDragForDevice(device Devicer, button, rootX, root
 //
 // The function takes the following parameters:
 //
-//    - rectangle you intend to draw to.
+//   - rectangle you intend to draw to.
 //
 func (window *Window) BeginPaintRect(rectangle *Rectangle) {
 	var _arg0 *C.GdkWindow    // out
@@ -968,26 +968,26 @@ func (window *Window) BeginPaintRect(rectangle *Rectangle) {
 // will be created. The backing store will be initialized with the background
 // color or background surface for window. Then, all drawing operations
 // performed on window will be diverted to the backing store. When you call
-// gdk_window_end_paint(), the backing store will be copied to window, making it
-// visible onscreen. Only the part of window contained in region will be
+// gdk_window_end_paint(), the backing store will be copied to window, making
+// it visible onscreen. Only the part of window contained in region will be
 // modified; that is, drawing operations are clipped to region.
 //
 // The net result of all this is to remove flicker, because the user sees the
 // finished product appear all at once when you call gdk_window_end_paint(). If
 // you draw to window directly without calling gdk_window_begin_paint_region(),
-// the user may see flicker as individual drawing operations are performed in
-// sequence. The clipping and background-initializing features of
+// the user may see flicker as individual drawing operations are performed
+// in sequence. The clipping and background-initializing features of
 // gdk_window_begin_paint_region() are conveniences for the programmer, so you
 // can avoid doing that work yourself.
 //
 // When using GTK+, the widget system automatically places calls to
 // gdk_window_begin_paint_region() and gdk_window_end_paint() around emissions
 // of the expose_event signal. That is, if you’re writing an expose event
-// handler, you can assume that the exposed area in EventExpose has already been
-// cleared to the window background, is already set as the clip region, and
-// already has a backing store. Therefore in most cases, application code need
-// not call gdk_window_begin_paint_region(). (You can disable the automatic
-// calls around expose events on a widget-by-widget basis by calling
+// handler, you can assume that the exposed area in EventExpose has already
+// been cleared to the window background, is already set as the clip region,
+// and already has a backing store. Therefore in most cases, application
+// code need not call gdk_window_begin_paint_region(). (You can disable the
+// automatic calls around expose events on a widget-by-widget basis by calling
 // gtk_widget_set_double_buffered().)
 //
 // If you call this function multiple times before calling the matching
@@ -1002,7 +1002,7 @@ func (window *Window) BeginPaintRect(rectangle *Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - region you intend to draw to.
+//   - region you intend to draw to.
 //
 func (window *Window) BeginPaintRegion(region *cairo.Region) {
 	var _arg0 *C.GdkWindow      // out
@@ -1024,11 +1024,11 @@ func (window *Window) BeginPaintRegion(region *cairo.Region) {
 //
 // The function takes the following parameters:
 //
-//    - edge or corner from which the drag is started.
-//    - button being used to drag, or 0 for a keyboard-initiated drag.
-//    - rootX: root window X coordinate of mouse click that began the drag.
-//    - rootY: root window Y coordinate of mouse click that began the drag.
-//    - timestamp of mouse click that began the drag (use gdk_event_get_time()).
+//   - edge or corner from which the drag is started.
+//   - button being used to drag, or 0 for a keyboard-initiated drag.
+//   - rootX: root window X coordinate of mouse click that began the drag.
+//   - rootY: root window Y coordinate of mouse click that began the drag.
+//   - timestamp of mouse click that began the drag (use gdk_event_get_time()).
 //
 func (window *Window) BeginResizeDrag(edge WindowEdge, button, rootX, rootY int, timestamp uint32) {
 	var _arg0 *C.GdkWindow    // out
@@ -1055,20 +1055,20 @@ func (window *Window) BeginResizeDrag(edge WindowEdge, button, rootX, rootY int,
 }
 
 // BeginResizeDragForDevice begins a window resize operation (for a toplevel
-// window). You might use this function to implement a “window resize grip,” for
-// example; in fact Statusbar uses it. The function works best with window
-// managers that support the Extended Window Manager Hints
+// window). You might use this function to implement a “window resize
+// grip,” for example; in fact Statusbar uses it. The function works best
+// with window managers that support the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) but has a fallback
 // implementation for other window managers.
 //
 // The function takes the following parameters:
 //
-//    - edge or corner from which the drag is started.
-//    - device used for the operation.
-//    - button being used to drag, or 0 for a keyboard-initiated drag.
-//    - rootX: root window X coordinate of mouse click that began the drag.
-//    - rootY: root window Y coordinate of mouse click that began the drag.
-//    - timestamp of mouse click that began the drag (use gdk_event_get_time()).
+//   - edge or corner from which the drag is started.
+//   - device used for the operation.
+//   - button being used to drag, or 0 for a keyboard-initiated drag.
+//   - rootX: root window X coordinate of mouse click that began the drag.
+//   - rootY: root window Y coordinate of mouse click that began the drag.
+//   - timestamp of mouse click that began the drag (use gdk_event_get_time()).
 //
 func (window *Window) BeginResizeDragForDevice(edge WindowEdge, device Devicer, button, rootX, rootY int, timestamp uint32) {
 	var _arg0 *C.GdkWindow    // out
@@ -1115,9 +1115,9 @@ func (window *Window) ConfigureFinished() {
 // returned by gdk_offscreen_window_get_embedder() for offscreen windows.
 //
 // For normal windows, calling this function is equivalent to subtracting the
-// return values of gdk_window_get_position() from the parent coordinates. For
-// offscreen windows however (which can be arbitrarily transformed), this
-// function calls the GdkWindow::from-embedder: signal to translate the
+// return values of gdk_window_get_position() from the parent coordinates.
+// For offscreen windows however (which can be arbitrarily transformed),
+// this function calls the GdkWindow::from-embedder: signal to translate the
 // coordinates.
 //
 // You should always use this function when writing generic code that walks down
@@ -1127,15 +1127,15 @@ func (window *Window) ConfigureFinished() {
 //
 // The function takes the following parameters:
 //
-//    - parentX: x coordinate in parent’s coordinate system.
-//    - parentY: y coordinate in parent’s coordinate system.
+//   - parentX: x coordinate in parent’s coordinate system.
+//   - parentY: y coordinate in parent’s coordinate system.
 //
 // The function returns the following values:
 //
-//    - x (optional): return location for X coordinate in child’s coordinate
-//      system.
-//    - y (optional): return location for Y coordinate in child’s coordinate
-//      system.
+//   - x (optional): return location for X coordinate in child’s coordinate
+//     system.
+//   - y (optional): return location for Y coordinate in child’s coordinate
+//     system.
 //
 func (window *Window) CoordsFromParent(parentX, parentY float64) (x, y float64) {
 	var _arg0 *C.GdkWindow // out
@@ -1179,15 +1179,15 @@ func (window *Window) CoordsFromParent(parentX, parentY float64) (x, y float64) 
 //
 // The function takes the following parameters:
 //
-//    - x: x coordinate in child’s coordinate system.
-//    - y: y coordinate in child’s coordinate system.
+//   - x: x coordinate in child’s coordinate system.
+//   - y: y coordinate in child’s coordinate system.
 //
 // The function returns the following values:
 //
-//    - parentX (optional): return location for X coordinate in parent’s
-//      coordinate system, or NULL.
-//    - parentY (optional): return location for Y coordinate in parent’s
-//      coordinate system, or NULL.
+//   - parentX (optional): return location for X coordinate in parent’s
+//     coordinate system, or NULL.
+//   - parentY (optional): return location for Y coordinate in parent’s
+//     coordinate system, or NULL.
 //
 func (window *Window) CoordsToParent(x, y float64) (parentX, parentY float64) {
 	var _arg0 *C.GdkWindow // out
@@ -1225,7 +1225,7 @@ func (window *Window) CoordsToParent(x, y float64) (parentX, parentY float64) {
 //
 // The function returns the following values:
 //
-//    - glContext: newly created GLContext, or NULL on error.
+//   - glContext: newly created GLContext, or NULL on error.
 //
 func (window *Window) CreateGLContext() (GLContexter, error) {
 	var _arg0 *C.GdkWindow    // out
@@ -1275,35 +1275,35 @@ func (window *Window) CreateGLContext() (GLContexter, error) {
 // surface in device pixels. If you wish to create an image surface capable of
 // holding the contents of window you can use:
 //
-//      int scale = gdk_window_get_scale_factor (window);
-//      int width = gdk_window_get_width (window) * scale;
-//      int height = gdk_window_get_height (window) * scale;
+//    int scale = gdk_window_get_scale_factor (window);
+//    int width = gdk_window_get_width (window) * scale;
+//    int height = gdk_window_get_height (window) * scale;
 //
-//      // format is set elsewhere
-//      cairo_surface_t *surface =
-//        gdk_window_create_similar_image_surface (window,
-//                                                 format,
-//                                                 width, height,
-//                                                 scale);
+//    // format is set elsewhere
+//    cairo_surface_t *surface =
+//      gdk_window_create_similar_image_surface (window,
+//                                               format,
+//                                               width, height,
+//                                               scale);
 //
 // Note that unlike cairo_surface_create_similar_image(), the new surface's
 // device scale is set to scale, or to the scale factor of window if scale is 0.
 //
 // The function takes the following parameters:
 //
-//    - format for the new surface.
-//    - width of the new surface.
-//    - height of the new surface.
-//    - scale of the new surface, or 0 to use same as window.
+//   - format for the new surface.
+//   - width of the new surface.
+//   - height of the new surface.
+//   - scale of the new surface, or 0 to use same as window.
 //
 // The function returns the following values:
 //
-//    - surface: pointer to the newly allocated surface. The caller owns the
-//      surface and should call cairo_surface_destroy() when done with it.
+//   - surface: pointer to the newly allocated surface. The caller owns the
+//     surface and should call cairo_surface_destroy() when done with it.
 //
-//      This function always returns a valid pointer, but it will return a
-//      pointer to a “nil” surface if other is already in an error state or any
-//      other error occurs.
+//     This function always returns a valid pointer, but it will return a
+//     pointer to a “nil” surface if other is already in an error state or any
+//     other error occurs.
 //
 func (window *Window) CreateSimilarImageSurface(format cairo.Format, width, height, scale int) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
@@ -1341,8 +1341,8 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width, heig
 // CreateSimilarSurface: create a new surface that is as compatible as possible
 // with the given window. For example the new surface will have the same
 // fallback resolution and font options as window. Generally, the new surface
-// will also use the same backend as window, unless that is not possible for
-// some reason. The type of the returned surface may be examined with
+// will also use the same backend as window, unless that is not possible
+// for some reason. The type of the returned surface may be examined with
 // cairo_surface_get_type().
 //
 // Initially the surface contents are all 0 (transparent if contents have
@@ -1350,18 +1350,18 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width, heig
 //
 // The function takes the following parameters:
 //
-//    - content for the new surface.
-//    - width of the new surface.
-//    - height of the new surface.
+//   - content for the new surface.
+//   - width of the new surface.
+//   - height of the new surface.
 //
 // The function returns the following values:
 //
-//    - surface: pointer to the newly allocated surface. The caller owns the
-//      surface and should call cairo_surface_destroy() when done with it.
+//   - surface: pointer to the newly allocated surface. The caller owns the
+//     surface and should call cairo_surface_destroy() when done with it.
 //
-//      This function always returns a valid pointer, but it will return a
-//      pointer to a “nil” surface if other is already in an error state or any
-//      other error occurs.
+//     This function always returns a valid pointer, but it will return a
+//     pointer to a “nil” surface if other is already in an error state or any
+//     other error occurs.
 //
 func (window *Window) CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface {
 	var _arg0 *C.GdkWindow       // out
@@ -1392,8 +1392,8 @@ func (window *Window) CreateSimilarSurface(content cairo.Content, width, height 
 }
 
 // Deiconify: attempt to deiconify (unminimize) window. On X11 the window
-// manager may choose to ignore the request to deiconify. When using GTK+, use
-// gtk_window_deiconify() instead of the Window variant. Or better yet, you
+// manager may choose to ignore the request to deiconify. When using GTK+,
+// use gtk_window_deiconify() instead of the Window variant. Or better yet, you
 // probably want to use gtk_window_present_with_time(), which raises the window,
 // focuses it, unminimizes it, and puts it on the current desktop.
 func (window *Window) Deiconify() {
@@ -1443,7 +1443,7 @@ func (window *Window) EnableSynchronizedConfigure() {
 //
 // The function takes the following parameters:
 //
-//    - context created by gdk_window_begin_draw_frame().
+//   - context created by gdk_window_begin_draw_frame().
 //
 func (window *Window) EndDrawFrame(context *DrawingContext) {
 	var _arg0 *C.GdkWindow         // out
@@ -1457,8 +1457,8 @@ func (window *Window) EndDrawFrame(context *DrawingContext) {
 	runtime.KeepAlive(context)
 }
 
-// EndPaint indicates that the backing store created by the most recent call to
-// gdk_window_begin_paint_region() should be copied onscreen and deleted,
+// EndPaint indicates that the backing store created by the most recent call
+// to gdk_window_begin_paint_region() should be copied onscreen and deleted,
 // leaving the next-most-recent backing store or no backing store at all as the
 // active paint region. See gdk_window_begin_paint_region() for full details.
 //
@@ -1482,7 +1482,7 @@ func (window *Window) EndPaint() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window has a native window, FALSE otherwise.
+//   - ok: TRUE if the window has a native window, FALSE otherwise.
 //
 func (window *Window) EnsureNative() bool {
 	var _arg0 *C.GdkWindow // out
@@ -1520,7 +1520,7 @@ func (window *Window) Flush() {
 //
 // The function takes the following parameters:
 //
-//    - timestamp of the event triggering the window focus.
+//   - timestamp of the event triggering the window focus.
 //
 func (window *Window) Focus(timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
@@ -1534,9 +1534,9 @@ func (window *Window) Focus(timestamp uint32) {
 	runtime.KeepAlive(timestamp)
 }
 
-// FreezeToplevelUpdatesLibgtkOnly: temporarily freezes a window and all its
-// descendants such that it won't receive expose events. The window will begin
-// receiving expose events again when
+// FreezeToplevelUpdatesLibgtkOnly: temporarily freezes a window and
+// all its descendants such that it won't receive expose events.
+// The window will begin receiving expose events again when
 // gdk_window_thaw_toplevel_updates_libgtk_only() is called. If
 // gdk_window_freeze_toplevel_updates_libgtk_only() has been called more than
 // once, gdk_window_thaw_toplevel_updates_libgtk_only() must be called an equal
@@ -1554,8 +1554,8 @@ func (window *Window) FreezeToplevelUpdatesLibgtkOnly() {
 	runtime.KeepAlive(window)
 }
 
-// FreezeUpdates: temporarily freezes a window such that it won’t receive expose
-// events. The window will begin receiving expose events again when
+// FreezeUpdates: temporarily freezes a window such that it won’t receive
+// expose events. The window will begin receiving expose events again when
 // gdk_window_thaw_updates() is called. If gdk_window_freeze_updates() has been
 // called more than once, gdk_window_thaw_updates() must be called an equal
 // number of times to begin processing exposes.
@@ -1575,8 +1575,8 @@ func (window *Window) FreezeUpdates() {
 //
 // On X11, asks the window manager to put window in a fullscreen state, if the
 // window manager supports this operation. Not all window managers support this,
-// and some deliberately ignore it or don’t have a concept of “fullscreen”; so
-// you can’t rely on the fullscreenification actually happening. But it will
+// and some deliberately ignore it or don’t have a concept of “fullscreen”;
+// so you can’t rely on the fullscreenification actually happening. But it will
 // happen with most standard window managers, and GDK makes a best effort to get
 // it to happen.
 func (window *Window) Fullscreen() {
@@ -1596,7 +1596,7 @@ func (window *Window) Fullscreen() {
 //
 // The function takes the following parameters:
 //
-//    - monitor: which monitor to display fullscreen on.
+//   - monitor: which monitor to display fullscreen on.
 //
 func (window *Window) FullscreenOnMonitor(monitor int) {
 	var _arg0 *C.GdkWindow // out
@@ -1627,7 +1627,7 @@ func (window *Window) GeometryChanged() {
 //
 // The function returns the following values:
 //
-//    - ok: whether or not the window should receive input focus.
+//   - ok: whether or not the window should receive input focus.
 //
 func (window *Window) AcceptFocus() bool {
 	var _arg0 *C.GdkWindow // out
@@ -1653,8 +1653,8 @@ func (window *Window) AcceptFocus() bool {
 //
 // The function returns the following values:
 //
-//    - pattern (optional) to use for the background or NULL if there is no
-//      background.
+//   - pattern (optional) to use for the background or NULL if there is no
+//     background.
 //
 func (window *Window) BackgroundPattern() *cairo.Pattern {
 	var _arg0 *C.GdkWindow       // out
@@ -1689,7 +1689,7 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 //
 // The function returns the following values:
 //
-//    - list: list of child windows inside window.
+//   - list: list of child windows inside window.
 //
 func (window *Window) Children() []Windower {
 	var _arg0 *C.GdkWindow // out
@@ -1739,11 +1739,11 @@ func (window *Window) Children() []Windower {
 //
 // The function takes the following parameters:
 //
-//    - userData (optional): user data to look for.
+//   - userData (optional): user data to look for.
 //
 // The function returns the following values:
 //
-//    - list: list of child windows inside window.
+//   - list: list of child windows inside window.
 //
 func (window *Window) ChildrenWithUserData(userData unsafe.Pointer) []Windower {
 	var _arg0 *C.GdkWindow // out
@@ -1786,14 +1786,14 @@ func (window *Window) ChildrenWithUserData(userData unsafe.Pointer) []Windower {
 	return _list
 }
 
-// ClipRegion computes the region of a window that potentially can be written to
-// by drawing primitives. This region may not take into account other factors
+// ClipRegion computes the region of a window that potentially can be written
+// to by drawing primitives. This region may not take into account other factors
 // such as if the window is obscured by other windows, but no area outside of
 // this region will be affected by drawing primitives.
 //
 // The function returns the following values:
 //
-//    - region This must be freed with cairo_region_destroy() when you are done.
+//   - region This must be freed with cairo_region_destroy() when you are done.
 //
 func (window *Window) ClipRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
@@ -1826,7 +1826,7 @@ func (window *Window) ClipRegion() *cairo.Region {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window is composited.
+//   - ok: TRUE if the window is composited.
 //
 func (window *Window) Composited() bool {
 	var _arg0 *C.GdkWindow // out
@@ -1853,9 +1853,9 @@ func (window *Window) Composited() bool {
 //
 // The function returns the following values:
 //
-//    - cursor (optional) or NULL. The returned object is owned by the Window and
-//      should not be unreferenced directly. Use gdk_window_set_cursor() to unset
-//      the cursor of the window.
+//   - cursor (optional) or NULL. The returned object is owned by the Window and
+//     should not be unreferenced directly. Use gdk_window_set_cursor() to unset
+//     the cursor of the window.
 //
 func (window *Window) Cursor() Cursorrer {
 	var _arg0 *C.GdkWindow // out
@@ -1893,8 +1893,8 @@ func (window *Window) Cursor() Cursorrer {
 //
 // The function returns the following values:
 //
-//    - decorations: window decorations will be written here.
-//    - ok: TRUE if the window has decorations set, FALSE otherwise.
+//   - decorations: window decorations will be written here.
+//   - ok: TRUE if the window has decorations set, FALSE otherwise.
 //
 func (window *Window) Decorations() (WMDecoration, bool) {
 	var _arg0 *C.GdkWindow      // out
@@ -1917,20 +1917,20 @@ func (window *Window) Decorations() (WMDecoration, bool) {
 	return _decorations, _ok
 }
 
-// DeviceCursor retrieves a Cursor pointer for the device currently set on the
-// specified Window, or NULL. If the return value is NULL then there is no
+// DeviceCursor retrieves a Cursor pointer for the device currently set on
+// the specified Window, or NULL. If the return value is NULL then there is no
 // custom cursor set on the specified window, and it is using the cursor for its
 // parent window.
 //
 // The function takes the following parameters:
 //
-//    - device: master, pointer Device.
+//   - device: master, pointer Device.
 //
 // The function returns the following values:
 //
-//    - cursor (optional) or NULL. The returned object is owned by the Window and
-//      should not be unreferenced directly. Use gdk_window_set_cursor() to unset
-//      the cursor of the window.
+//   - cursor (optional) or NULL. The returned object is owned by the Window and
+//     should not be unreferenced directly. Use gdk_window_set_cursor() to unset
+//     the cursor of the window.
 //
 func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 	var _arg0 *C.GdkWindow // out
@@ -1971,11 +1971,11 @@ func (window *Window) DeviceCursor(device Devicer) Cursorrer {
 //
 // The function takes the following parameters:
 //
-//    - device: Device.
+//   - device: Device.
 //
 // The function returns the following values:
 //
-//    - eventMask: device event mask for window.
+//   - eventMask: device event mask for window.
 //
 func (window *Window) DeviceEvents(device Devicer) EventMask {
 	var _arg0 *C.GdkWindow   // out
@@ -2003,16 +2003,16 @@ func (window *Window) DeviceEvents(device Devicer) EventMask {
 //
 // The function takes the following parameters:
 //
-//    - device: pointer Device to query to.
+//   - device: pointer Device to query to.
 //
 // The function returns the following values:
 //
-//    - x (optional): return location for the X coordinate of device, or NULL.
-//    - y (optional): return location for the Y coordinate of device, or NULL.
-//    - mask (optional): return location for the modifier mask, or NULL.
-//    - ret (optional): window underneath device (as with
-//      gdk_device_get_window_at_position()), or NULL if the window is not known
-//      to GDK.
+//   - x (optional): return location for the X coordinate of device, or NULL.
+//   - y (optional): return location for the Y coordinate of device, or NULL.
+//   - mask (optional): return location for the modifier mask, or NULL.
+//   - ret (optional): window underneath device (as with
+//     gdk_device_get_window_at_position()), or NULL if the window is not known
+//     to GDK.
 //
 func (window *Window) DevicePosition(device Devicer) (x, y int, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
@@ -2063,16 +2063,16 @@ func (window *Window) DevicePosition(device Devicer) (x, y int, mask ModifierTyp
 //
 // The function takes the following parameters:
 //
-//    - device: pointer Device to query to.
+//   - device: pointer Device to query to.
 //
 // The function returns the following values:
 //
-//    - x (optional): return location for the X coordinate of device, or NULL.
-//    - y (optional): return location for the Y coordinate of device, or NULL.
-//    - mask (optional): return location for the modifier mask, or NULL.
-//    - ret (optional): window underneath device (as with
-//      gdk_device_get_window_at_position()), or NULL if the window is not known
-//      to GDK.
+//   - x (optional): return location for the X coordinate of device, or NULL.
+//   - y (optional): return location for the Y coordinate of device, or NULL.
+//   - mask (optional): return location for the modifier mask, or NULL.
+//   - ret (optional): window underneath device (as with
+//     gdk_device_get_window_at_position()), or NULL if the window is not known
+//     to GDK.
 //
 func (window *Window) DevicePositionDouble(device Devicer) (x, y float64, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
@@ -2121,7 +2121,7 @@ func (window *Window) DevicePositionDouble(device Devicer) (x, y float64, mask M
 //
 // The function returns the following values:
 //
-//    - display associated with window.
+//   - display associated with window.
 //
 func (window *Window) Display() *Display {
 	var _arg0 *C.GdkWindow  // out
@@ -2143,10 +2143,10 @@ func (window *Window) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - target (optional): location of the window where the drop should happen.
-//      This may be window or a proxy window, or NULL if window does not support
-//      Drag and Drop.
-//    - dragProtocol: supported DND protocol.
+//   - target (optional): location of the window where the drop should happen.
+//     This may be window or a proxy window, or NULL if window does not support
+//     Drag and Drop.
+//   - dragProtocol: supported DND protocol.
 //
 func (window *Window) DragProtocol() (Windower, DragProtocol) {
 	var _arg0 *C.GdkWindow      // out
@@ -2190,7 +2190,7 @@ func (window *Window) DragProtocol() (Windower, DragProtocol) {
 //
 // The function returns the following values:
 //
-//    - ret: effective parent of window.
+//   - ret: effective parent of window.
 //
 func (window *Window) EffectiveParent() Windower {
 	var _arg0 *C.GdkWindow // out
@@ -2233,7 +2233,7 @@ func (window *Window) EffectiveParent() Windower {
 //
 // The function returns the following values:
 //
-//    - ret: effective toplevel window containing window.
+//   - ret: effective toplevel window containing window.
 //
 func (window *Window) EffectiveToplevel() Windower {
 	var _arg0 *C.GdkWindow // out
@@ -2271,7 +2271,7 @@ func (window *Window) EffectiveToplevel() Windower {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if motion events will be compressed.
+//   - ok: TRUE if motion events will be compressed.
 //
 func (window *Window) EventCompression() bool {
 	var _arg0 *C.GdkWindow // out
@@ -2291,12 +2291,12 @@ func (window *Window) EventCompression() bool {
 	return _ok
 }
 
-// Events gets the event mask for window for all master input devices. See
-// gdk_window_set_events().
+// Events gets the event mask for window for all master input devices.
+// See gdk_window_set_events().
 //
 // The function returns the following values:
 //
-//    - eventMask: event mask for window.
+//   - eventMask: event mask for window.
 //
 func (window *Window) Events() EventMask {
 	var _arg0 *C.GdkWindow   // out
@@ -2319,8 +2319,8 @@ func (window *Window) Events() EventMask {
 //
 // The function returns the following values:
 //
-//    - ok: whether or not the window wants to receive input focus when it is
-//      mapped.
+//   - ok: whether or not the window wants to receive input focus when it is
+//     mapped.
 //
 func (window *Window) FocusOnMap() bool {
 	var _arg0 *C.GdkWindow // out
@@ -2345,7 +2345,7 @@ func (window *Window) FocusOnMap() bool {
 //
 // The function returns the following values:
 //
-//    - frameClock: frame clock.
+//   - frameClock: frame clock.
 //
 func (window *Window) FrameClock() FrameClocker {
 	var _arg0 *C.GdkWindow     // out
@@ -2379,14 +2379,14 @@ func (window *Window) FrameClock() FrameClocker {
 	return _frameClock
 }
 
-// FrameExtents obtains the bounding box of the window, including window manager
-// titlebar/borders if any. The frame position is given in root window
+// FrameExtents obtains the bounding box of the window, including window
+// manager titlebar/borders if any. The frame position is given in root window
 // coordinates. To get the position of the window itself (rather than the frame)
 // in root window coordinates, use gdk_window_get_origin().
 //
 // The function returns the following values:
 //
-//    - rect: rectangle to fill with bounding box of the window frame.
+//   - rect: rectangle to fill with bounding box of the window frame.
 //
 func (window *Window) FrameExtents() *Rectangle {
 	var _arg0 *C.GdkWindow   // out
@@ -2408,7 +2408,7 @@ func (window *Window) FrameExtents() *Rectangle {
 //
 // The function returns the following values:
 //
-//    - fullscreenMode applied to the window when fullscreen.
+//   - fullscreenMode applied to the window when fullscreen.
 //
 func (window *Window) FullscreenMode() FullscreenMode {
 	var _arg0 *C.GdkWindow        // out
@@ -2434,26 +2434,26 @@ func (window *Window) FullscreenMode() FullscreenMode {
 // (titlebar, etc.) rather than relative to the root window (screen-size
 // background window).
 //
-// On the X11 platform, the geometry is obtained from the X server, so reflects
-// the latest position of window; this may be out-of-sync with the position of
-// window delivered in the most-recently-processed EventConfigure.
+// On the X11 platform, the geometry is obtained from the X server,
+// so reflects the latest position of window; this may be out-of-sync with the
+// position of window delivered in the most-recently-processed EventConfigure.
 // gdk_window_get_position() in contrast gets the position from the most recent
 // configure event.
 //
 // Note: If window is not a toplevel, it is much better to call
 // gdk_window_get_position(), gdk_window_get_width() and gdk_window_get_height()
-// instead, because it avoids the roundtrip to the X server and because these
-// functions support the full 32-bit coordinate space, whereas
+// instead, because it avoids the roundtrip to the X server and because
+// these functions support the full 32-bit coordinate space, whereas
 // gdk_window_get_geometry() is restricted to the 16-bit coordinates of X11.
 //
 // The function returns the following values:
 //
-//    - x (optional): return location for X coordinate of window (relative to its
-//      parent).
-//    - y (optional): return location for Y coordinate of window (relative to its
-//      parent).
-//    - width (optional): return location for width of window.
-//    - height (optional): return location for height of window.
+//   - x (optional): return location for X coordinate of window (relative to its
+//     parent).
+//   - y (optional): return location for Y coordinate of window (relative to its
+//     parent).
+//   - width (optional): return location for width of window.
+//   - height (optional): return location for height of window.
 //
 func (window *Window) Geometry() (x, y, width, height int) {
 	var _arg0 *C.GdkWindow // out
@@ -2484,7 +2484,7 @@ func (window *Window) Geometry() (x, y, width, height int) {
 //
 // The function returns the following values:
 //
-//    - ret: group leader window for window.
+//   - ret: group leader window for window.
 //
 func (window *Window) Group() Windower {
 	var _arg0 *C.GdkWindow // out
@@ -2526,7 +2526,7 @@ func (window *Window) Group() Windower {
 //
 // The function returns the following values:
 //
-//    - gint: height of window.
+//   - gint: height of window.
 //
 func (window *Window) Height() int {
 	var _arg0 *C.GdkWindow // out
@@ -2549,7 +2549,7 @@ func (window *Window) Height() int {
 //
 // The function returns the following values:
 //
-//    - ok: whether or not the window has the modal hint set.
+//   - ok: whether or not the window has the modal hint set.
 //
 func (window *Window) ModalHint() bool {
 	var _arg0 *C.GdkWindow // out
@@ -2575,9 +2575,9 @@ func (window *Window) ModalHint() bool {
 //
 // The function returns the following values:
 //
-//    - x (optional): return location for X coordinate.
-//    - y (optional): return location for Y coordinate.
-//    - gint: not meaningful, ignore.
+//   - x (optional): return location for X coordinate.
+//   - y (optional): return location for Y coordinate.
+//   - gint: not meaningful, ignore.
 //
 func (window *Window) Origin() (x, y, gint int) {
 	var _arg0 *C.GdkWindow // out
@@ -2607,14 +2607,14 @@ func (window *Window) Origin() (x, y, gint int) {
 // with GDK calls on the X11 platform. It may also matter for toplevel windows,
 // because the window manager may choose to reparent them.
 //
-// Note that you should use gdk_window_get_effective_parent() when writing
-// generic code that walks up a window hierarchy, because
+// Note that you should use gdk_window_get_effective_parent() when
+// writing generic code that walks up a window hierarchy, because
 // gdk_window_get_parent() will most likely not do what you expect if there are
 // offscreen windows in the hierarchy.
 //
 // The function returns the following values:
 //
-//    - ret: parent of window.
+//   - ret: parent of window.
 //
 func (window *Window) Parent() Windower {
 	var _arg0 *C.GdkWindow // out
@@ -2680,15 +2680,15 @@ func (window *Window) PassThrough() bool {
 //
 // The function returns the following values:
 //
-//    - x (optional): return location for X coordinate of pointer or NULL to not
-//      return the X coordinate.
-//    - y (optional): return location for Y coordinate of pointer or NULL to not
-//      return the Y coordinate.
-//    - mask (optional): return location for modifier mask or NULL to not return
-//      the modifier mask.
-//    - ret (optional): window containing the pointer (as with
-//      gdk_window_at_pointer()), or NULL if the window containing the pointer
-//      isn’t known to GDK.
+//   - x (optional): return location for X coordinate of pointer or NULL to not
+//     return the X coordinate.
+//   - y (optional): return location for Y coordinate of pointer or NULL to not
+//     return the Y coordinate.
+//   - mask (optional): return location for modifier mask or NULL to not return
+//     the modifier mask.
+//   - ret (optional): window containing the pointer (as with
+//     gdk_window_at_pointer()), or NULL if the window containing the pointer
+//     isn’t known to GDK.
 //
 func (window *Window) Pointer() (x, y int, mask ModifierType, ret Windower) {
 	var _arg0 *C.GdkWindow      // out
@@ -2730,8 +2730,8 @@ func (window *Window) Pointer() (x, y int, mask ModifierType, ret Windower) {
 	return _x, _y, _mask, _ret
 }
 
-// Position obtains the position of the window as reported in the
-// most-recently-processed EventConfigure. Contrast with
+// Position obtains the position of the window as reported in
+// the most-recently-processed EventConfigure. Contrast with
 // gdk_window_get_geometry() which queries the X server for the current window
 // position, regardless of which events have been received or processed.
 //
@@ -2739,8 +2739,8 @@ func (window *Window) Pointer() (x, y int, mask ModifierType, ret Windower) {
 //
 // The function returns the following values:
 //
-//    - x (optional): x coordinate of window.
-//    - y (optional): y coordinate of window.
+//   - x (optional): x coordinate of window.
+//   - y (optional): y coordinate of window.
 //
 func (window *Window) Position() (x, y int) {
 	var _arg0 *C.GdkWindow // out
@@ -2767,13 +2767,13 @@ func (window *Window) Position() (x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - x: x coordinate in window.
-//    - y: y coordinate in window.
+//   - x: x coordinate in window.
+//   - y: y coordinate in window.
 //
 // The function returns the following values:
 //
-//    - rootX: return location for X coordinate.
-//    - rootY: return location for Y coordinate.
+//   - rootX: return location for X coordinate.
+//   - rootY: return location for Y coordinate.
 //
 func (window *Window) RootCoords(x, y int) (rootX, rootY int) {
 	var _arg0 *C.GdkWindow // out
@@ -2805,8 +2805,8 @@ func (window *Window) RootCoords(x, y int) (rootX, rootY int) {
 //
 // The function returns the following values:
 //
-//    - x: return location for X position of window frame.
-//    - y: return location for Y position of window frame.
+//   - x: return location for X position of window frame.
+//   - y: return location for Y position of window frame.
 //
 func (window *Window) RootOrigin() (x, y int) {
 	var _arg0 *C.GdkWindow // out
@@ -2832,8 +2832,8 @@ func (window *Window) RootOrigin() (x, y int) {
 // but on very high density outputs this can be a higher value (often 2).
 //
 // A higher value means that drawing is automatically scaled up to a higher
-// resolution, so any code doing drawing will automatically look nicer. However,
-// if you are supplying pixel-based data the scale value can be used to
+// resolution, so any code doing drawing will automatically look nicer.
+// However, if you are supplying pixel-based data the scale value can be used to
 // determine whether to use a pixel resource with higher resolution data.
 //
 // The scale of a window may change during runtime, if this happens a configure
@@ -2841,7 +2841,7 @@ func (window *Window) RootOrigin() (x, y int) {
 //
 // The function returns the following values:
 //
-//    - gint: scale factor.
+//   - gint: scale factor.
 //
 func (window *Window) ScaleFactor() int {
 	var _arg0 *C.GdkWindow // out
@@ -2863,7 +2863,7 @@ func (window *Window) ScaleFactor() int {
 //
 // The function returns the following values:
 //
-//    - screen associated with window.
+//   - screen associated with window.
 //
 func (window *Window) Screen() *Screen {
 	var _arg0 *C.GdkWindow // out
@@ -2886,11 +2886,11 @@ func (window *Window) Screen() *Screen {
 //
 // The function takes the following parameters:
 //
-//    - source to define the source class.
+//   - source to define the source class.
 //
 // The function returns the following values:
 //
-//    - eventMask: source event mask for window.
+//   - eventMask: source event mask for window.
 //
 func (window *Window) SourceEvents(source InputSource) EventMask {
 	var _arg0 *C.GdkWindow     // out
@@ -2911,12 +2911,12 @@ func (window *Window) SourceEvents(source InputSource) EventMask {
 	return _eventMask
 }
 
-// State gets the bitwise OR of the currently active window state flags, from
-// the WindowState enumeration.
+// State gets the bitwise OR of the currently active window state flags,
+// from the WindowState enumeration.
 //
 // The function returns the following values:
 //
-//    - windowState: window state bitfield.
+//   - windowState: window state bitfield.
 //
 func (window *Window) State() WindowState {
 	var _arg0 *C.GdkWindow     // out
@@ -2939,7 +2939,7 @@ func (window *Window) State() WindowState {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window handles multidevice features.
+//   - ok: TRUE if the window handles multidevice features.
 //
 func (window *Window) SupportMultidevice() bool {
 	var _arg0 *C.GdkWindow // out
@@ -2964,14 +2964,14 @@ func (window *Window) SupportMultidevice() bool {
 // Any window type but GDK_WINDOW_CHILD is considered a toplevel window, as is a
 // GDK_WINDOW_CHILD window that has a root window as parent.
 //
-// Note that you should use gdk_window_get_effective_toplevel() when you want to
-// get to a window’s toplevel as seen on screen, because
+// Note that you should use gdk_window_get_effective_toplevel() when
+// you want to get to a window’s toplevel as seen on screen, because
 // gdk_window_get_toplevel() will most likely not do what you expect if there
 // are offscreen windows in the hierarchy.
 //
 // The function returns the following values:
 //
-//    - ret: toplevel window containing window.
+//   - ret: toplevel window containing window.
 //
 func (window *Window) Toplevel() Windower {
 	var _arg0 *C.GdkWindow // out
@@ -3009,7 +3009,7 @@ func (window *Window) Toplevel() Windower {
 //
 // The function returns the following values:
 //
-//    - windowTypeHint: type hint set for window.
+//   - windowTypeHint: type hint set for window.
 //
 func (window *Window) TypeHint() WindowTypeHint {
 	var _arg0 *C.GdkWindow        // out
@@ -3036,7 +3036,7 @@ func (window *Window) TypeHint() WindowTypeHint {
 //
 // The function returns the following values:
 //
-//    - region: update area for window.
+//   - region: update area for window.
 //
 func (window *Window) UpdateArea() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
@@ -3065,7 +3065,7 @@ func (window *Window) UpdateArea() *cairo.Region {
 //
 // The function returns the following values:
 //
-//    - data (optional): return location for user data.
+//   - data (optional): return location for user data.
 //
 func (window *Window) UserData() unsafe.Pointer {
 	var _arg0 *C.GdkWindow // out
@@ -3089,7 +3089,7 @@ func (window *Window) UserData() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - region This must be freed with cairo_region_destroy() when you are done.
+//   - region This must be freed with cairo_region_destroy() when you are done.
 //
 func (window *Window) VisibleRegion() *cairo.Region {
 	var _arg0 *C.GdkWindow      // out
@@ -3117,7 +3117,7 @@ func (window *Window) VisibleRegion() *cairo.Region {
 //
 // The function returns the following values:
 //
-//    - visual: Visual.
+//   - visual: Visual.
 //
 func (window *Window) Visual() *Visual {
 	var _arg0 *C.GdkWindow // out
@@ -3143,7 +3143,7 @@ func (window *Window) Visual() *Visual {
 //
 // The function returns the following values:
 //
-//    - gint: width of window.
+//   - gint: width of window.
 //
 func (window *Window) Width() int {
 	var _arg0 *C.GdkWindow // out
@@ -3165,7 +3165,7 @@ func (window *Window) Width() int {
 //
 // The function returns the following values:
 //
-//    - windowType: type of window.
+//   - windowType: type of window.
 //
 func (window *Window) WindowType() WindowType {
 	var _arg0 *C.GdkWindow    // out
@@ -3188,7 +3188,7 @@ func (window *Window) WindowType() WindowType {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window has a native window, FALSE otherwise.
+//   - ok: TRUE if the window has a native window, FALSE otherwise.
 //
 func (window *Window) HasNative() bool {
 	var _arg0 *C.GdkWindow // out
@@ -3208,8 +3208,8 @@ func (window *Window) HasNative() bool {
 	return _ok
 }
 
-// Hide: for toplevel windows, withdraws them, so they will no longer be known
-// to the window manager; for all windows, unmaps them, so they won’t be
+// Hide: for toplevel windows, withdraws them, so they will no longer be
+// known to the window manager; for all windows, unmaps them, so they won’t be
 // displayed. Normally done automatically as part of gtk_widget_hide().
 func (window *Window) Hide() {
 	var _arg0 *C.GdkWindow // out
@@ -3250,9 +3250,9 @@ func (window *Window) Iconify() {
 //
 // The function takes the following parameters:
 //
-//    - shapeRegion: region of window to be non-transparent.
-//    - offsetX: x position of shape_region in window coordinates.
-//    - offsetY: y position of shape_region in window coordinates.
+//   - shapeRegion: region of window to be non-transparent.
+//   - offsetX: x position of shape_region in window coordinates.
+//   - offsetY: y position of shape_region in window coordinates.
 //
 func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int) {
 	var _arg0 *C.GdkWindow      // out
@@ -3289,9 +3289,9 @@ func (window *Window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX
 //
 // The function takes the following parameters:
 //
-//    - region: #cairo_region_t.
-//    - childFunc (optional): function to use to decide if to recurse to a child,
-//      NULL means never recurse.
+//   - region: #cairo_region_t.
+//   - childFunc (optional): function to use to decide if to recurse to a child,
+//     NULL means never recurse.
 //
 func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc WindowChildFunc) {
 	var _arg0 *C.GdkWindow         // out
@@ -3319,9 +3319,9 @@ func (window *Window) InvalidateMaybeRecurse(region *cairo.Region, childFunc Win
 //
 // The function takes the following parameters:
 //
-//    - rect (optional): rectangle to invalidate or NULL to invalidate the whole
-//      window.
-//    - invalidateChildren: whether to also invalidate child windows.
+//   - rect (optional): rectangle to invalidate or NULL to invalidate the whole
+//     window.
+//   - invalidateChildren: whether to also invalidate child windows.
 //
 func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 	var _arg0 *C.GdkWindow    // out
@@ -3342,8 +3342,8 @@ func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 	runtime.KeepAlive(invalidateChildren)
 }
 
-// InvalidateRegion adds region to the update area for window. The update area
-// is the region that needs to be redrawn, or “dirty region.” The call
+// InvalidateRegion adds region to the update area for window. The update
+// area is the region that needs to be redrawn, or “dirty region.” The call
 // gdk_window_process_updates() sends one or more expose events to the window,
 // which together cover the entire update area. An application would normally
 // redraw the contents of window in response to those expose events.
@@ -3353,16 +3353,16 @@ func (window *Window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 // need to do that manually, you just need to invalidate regions that you know
 // should be redrawn.
 //
-// The invalidate_children parameter controls whether the region of each child
-// window that intersects region will also be invalidated. If FALSE, then the
-// update area for child windows will remain unaffected. See
+// The invalidate_children parameter controls whether the region of each
+// child window that intersects region will also be invalidated. If FALSE,
+// then the update area for child windows will remain unaffected. See
 // gdk_window_invalidate_maybe_recurse if you need fine grained control over
 // which children are invalidated.
 //
 // The function takes the following parameters:
 //
-//    - region: #cairo_region_t.
-//    - invalidateChildren: TRUE to also invalidate child windows.
+//   - region: #cairo_region_t.
+//   - invalidateChildren: TRUE to also invalidate child windows.
 //
 func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren bool) {
 	var _arg0 *C.GdkWindow      // out
@@ -3385,7 +3385,7 @@ func (window *Window) InvalidateRegion(region *cairo.Region, invalidateChildren 
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window is destroyed.
+//   - ok: TRUE if the window is destroyed.
 //
 func (window *Window) IsDestroyed() bool {
 	var _arg0 *C.GdkWindow // out
@@ -3409,7 +3409,7 @@ func (window *Window) IsDestroyed() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window is input only.
+//   - ok: TRUE if window is input only.
 //
 func (window *Window) IsInputOnly() bool {
 	var _arg0 *C.GdkWindow // out
@@ -3433,7 +3433,7 @@ func (window *Window) IsInputOnly() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window is shaped.
+//   - ok: TRUE if window is shaped.
 //
 func (window *Window) IsShaped() bool {
 	var _arg0 *C.GdkWindow // out
@@ -3459,7 +3459,7 @@ func (window *Window) IsShaped() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window is viewable.
+//   - ok: TRUE if the window is viewable.
 //
 func (window *Window) IsViewable() bool {
 	var _arg0 *C.GdkWindow // out
@@ -3484,7 +3484,7 @@ func (window *Window) IsViewable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window is mapped.
+//   - ok: TRUE if the window is mapped.
 //
 func (window *Window) IsVisible() bool {
 	var _arg0 *C.GdkWindow // out
@@ -3524,9 +3524,9 @@ func (window *Window) Lower() {
 }
 
 // MarkPaintFromClip: if you call this during a paint (e.g. between
-// gdk_window_begin_paint_region() and gdk_window_end_paint() then GDK will mark
-// the current clip region of the window as being drawn. This is required when
-// mixing GL rendering via gdk_cairo_draw_from_gl() and cairo rendering, as
+// gdk_window_begin_paint_region() and gdk_window_end_paint() then GDK will
+// mark the current clip region of the window as being drawn. This is required
+// when mixing GL rendering via gdk_cairo_draw_from_gl() and cairo rendering, as
 // otherwise GDK has no way of knowing when something paints over the GL-drawn
 // regions.
 //
@@ -3535,7 +3535,7 @@ func (window *Window) Lower() {
 //
 // The function takes the following parameters:
 //
-//    - cr: #cairo_t.
+//   - cr: #cairo_t.
 //
 func (window *Window) MarkPaintFromClip(cr *cairo.Context) {
 	var _arg0 *C.GdkWindow // out
@@ -3568,10 +3568,10 @@ func (window *Window) Maximize() {
 	runtime.KeepAlive(window)
 }
 
-// MergeChildInputShapes merges the input shape masks for any child windows into
-// the input shape mask for window. i.e. the union of all input masks for window
-// and its children will become the new input mask for window. See
-// gdk_window_input_shape_combine_region().
+// MergeChildInputShapes merges the input shape masks for any child windows
+// into the input shape mask for window. i.e. the union of all input masks
+// for window and its children will become the new input mask for window.
+// See gdk_window_input_shape_combine_region().
 //
 // This function is distinct from gdk_window_set_child_input_shapes() because it
 // includes window’s input shape mask in the set of shapes to be merged.
@@ -3609,8 +3609,8 @@ func (window *Window) MergeChildShapes() {
 //
 // The function takes the following parameters:
 //
-//    - x: x coordinate relative to window’s parent.
-//    - y: y coordinate relative to window’s parent.
+//   - x: x coordinate relative to window’s parent.
+//   - y: y coordinate relative to window’s parent.
 //
 func (window *Window) Move(x, y int) {
 	var _arg0 *C.GdkWindow // out
@@ -3627,17 +3627,17 @@ func (window *Window) Move(x, y int) {
 	runtime.KeepAlive(y)
 }
 
-// MoveRegion: move the part of window indicated by region by dy pixels in the Y
-// direction and dx pixels in the X direction. The portions of region that not
+// MoveRegion: move the part of window indicated by region by dy pixels in the
+// Y direction and dx pixels in the X direction. The portions of region that not
 // covered by the new position of region are invalidated.
 //
 // Child windows are not moved.
 //
 // The function takes the following parameters:
 //
-//    - region to move.
-//    - dx: amount to move in the X direction.
-//    - dy: amount to move in the Y direction.
+//   - region to move.
+//   - dx: amount to move in the X direction.
+//   - dy: amount to move in the Y direction.
 //
 func (window *Window) MoveRegion(region *cairo.Region, dx, dy int) {
 	var _arg0 *C.GdkWindow      // out
@@ -3664,10 +3664,10 @@ func (window *Window) MoveRegion(region *cairo.Region, dx, dy int) {
 //
 // The function takes the following parameters:
 //
-//    - x: new X position relative to window’s parent.
-//    - y: new Y position relative to window’s parent.
-//    - width: new width.
-//    - height: new height.
+//   - x: new X position relative to window’s parent.
+//   - y: new Y position relative to window’s parent.
+//   - width: new width.
+//   - height: new height.
 //
 func (window *Window) MoveResize(x, y, width, height int) {
 	var _arg0 *C.GdkWindow // out
@@ -3694,12 +3694,12 @@ func (window *Window) MoveResize(x, y, width, height int) {
 //
 // rect is relative to the top-left corner of the window that window is
 // transient for. rect_anchor and window_anchor determine anchor points on rect
-// and window to pin together. rect's anchor point can optionally be offset by
-// rect_anchor_dx and rect_anchor_dy, which is equivalent to offsetting the
+// and window to pin together. rect's anchor point can optionally be offset
+// by rect_anchor_dx and rect_anchor_dy, which is equivalent to offsetting the
 // position of window.
 //
-// anchor_hints determines how window will be moved if the anchor points cause
-// it to move off-screen. For example, GDK_ANCHOR_FLIP_X will replace
+// anchor_hints determines how window will be moved if the anchor points
+// cause it to move off-screen. For example, GDK_ANCHOR_FLIP_X will replace
 // GDK_GRAVITY_NORTH_WEST with GDK_GRAVITY_NORTH_EAST and vice versa if window
 // extends beyond the left or right edges of the monitor.
 //
@@ -3708,13 +3708,13 @@ func (window *Window) MoveResize(x, y, width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - rect: destination Rectangle to align window with.
-//    - rectAnchor: point on rect to align with window's anchor point.
-//    - windowAnchor: point on window to align with rect's anchor point.
-//    - anchorHints: positioning hints to use when limited on space.
-//    - rectAnchorDx: horizontal offset to shift window, i.e. rect's anchor
-//      point.
-//    - rectAnchorDy: vertical offset to shift window, i.e. rect's anchor point.
+//   - rect: destination Rectangle to align window with.
+//   - rectAnchor: point on rect to align with window's anchor point.
+//   - windowAnchor: point on window to align with rect's anchor point.
+//   - anchorHints: positioning hints to use when limited on space.
+//   - rectAnchorDx: horizontal offset to shift window, i.e. rect's anchor
+//     point.
+//   - rectAnchorDy: vertical offset to shift window, i.e. rect's anchor point.
 //
 func (window *Window) MoveToRect(rect *Rectangle, rectAnchor, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx, rectAnchorDy int) {
 	var _arg0 *C.GdkWindow     // out
@@ -3748,7 +3748,7 @@ func (window *Window) MoveToRect(rect *Rectangle, rectAnchor, windowAnchor Gravi
 //
 // The function returns the following values:
 //
-//    - list: a reference to the list of child windows in window.
+//   - list: a reference to the list of child windows in window.
 //
 func (window *Window) PeekChildren() []Windower {
 	var _arg0 *C.GdkWindow // out
@@ -3788,20 +3788,20 @@ func (window *Window) PeekChildren() []Windower {
 	return _list
 }
 
-// ProcessUpdates sends one or more expose events to window. The areas in each
-// expose event will cover the entire update area for the window (see
-// gdk_window_invalidate_region() for details). Normally GDK calls
-// gdk_window_process_all_updates() on your behalf, so there’s no need to call
-// this function unless you want to force expose events to be delivered
-// immediately and synchronously (vs. the usual case, where GDK delivers them in
-// an idle handler). Occasionally this is useful to produce nicer scrolling
+// ProcessUpdates sends one or more expose events to window. The areas
+// in each expose event will cover the entire update area for the window
+// (see gdk_window_invalidate_region() for details). Normally GDK calls
+// gdk_window_process_all_updates() on your behalf, so there’s no need to
+// call this function unless you want to force expose events to be delivered
+// immediately and synchronously (vs. the usual case, where GDK delivers them
+// in an idle handler). Occasionally this is useful to produce nicer scrolling
 // behavior, for example.
 //
 // Deprecated: since version 3.22.
 //
 // The function takes the following parameters:
 //
-//    - updateChildren: whether to also process updates for child windows.
+//   - updateChildren: whether to also process updates for child windows.
 //
 func (window *Window) ProcessUpdates(updateChildren bool) {
 	var _arg0 *C.GdkWindow // out
@@ -3848,9 +3848,9 @@ func (window *Window) RegisterDND() {
 //
 // The function takes the following parameters:
 //
-//    - newParent: new parent to move window into.
-//    - x: x location inside the new parent.
-//    - y: y location inside the new parent.
+//   - newParent: new parent to move window into.
+//   - x: x location inside the new parent.
+//   - y: y location inside the new parent.
 //
 func (window *Window) Reparent(newParent Windower, x, y int) {
 	var _arg0 *C.GdkWindow // out
@@ -3881,8 +3881,8 @@ func (window *Window) Reparent(newParent Windower, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - width: new width of the window.
-//    - height: new height of the window.
+//   - width: new width of the window.
+//   - height: new height of the window.
 //
 func (window *Window) Resize(width, height int) {
 	var _arg0 *C.GdkWindow // out
@@ -3899,21 +3899,21 @@ func (window *Window) Resize(width, height int) {
 	runtime.KeepAlive(height)
 }
 
-// Restack changes the position of window in the Z-order (stacking order), so
-// that it is above sibling (if above is TRUE) or below sibling (if above is
+// Restack changes the position of window in the Z-order (stacking order),
+// so that it is above sibling (if above is TRUE) or below sibling (if above is
 // FALSE).
 //
 // If sibling is NULL, then this either raises (if above is TRUE) or lowers the
 // window.
 //
-// If window is a toplevel, the window manager may choose to deny the request to
-// move the window in the Z-order, gdk_window_restack() only requests the
+// If window is a toplevel, the window manager may choose to deny the request
+// to move the window in the Z-order, gdk_window_restack() only requests the
 // restack, does not guarantee it.
 //
 // The function takes the following parameters:
 //
-//    - sibling (optional) that is a sibling of window, or NULL.
-//    - above: boolean.
+//   - sibling (optional) that is a sibling of window, or NULL.
+//   - above: boolean.
 //
 func (window *Window) Restack(sibling Windower, above bool) {
 	var _arg0 *C.GdkWindow // out
@@ -3946,8 +3946,8 @@ func (window *Window) Restack(sibling Windower, above bool) {
 //
 // The function takes the following parameters:
 //
-//    - dx: amount to scroll in the X direction.
-//    - dy: amount to scroll in the Y direction.
+//   - dx: amount to scroll in the X direction.
+//   - dy: amount to scroll in the Y direction.
 //
 func (window *Window) Scroll(dx, dy int) {
 	var _arg0 *C.GdkWindow // out
@@ -3972,7 +3972,7 @@ func (window *Window) Scroll(dx, dy int) {
 //
 // The function takes the following parameters:
 //
-//    - acceptFocus: TRUE if the window should receive input focus.
+//   - acceptFocus: TRUE if the window should receive input focus.
 //
 func (window *Window) SetAcceptFocus(acceptFocus bool) {
 	var _arg0 *C.GdkWindow // out
@@ -3990,15 +3990,15 @@ func (window *Window) SetAcceptFocus(acceptFocus bool) {
 
 // SetBackground sets the background color of window.
 //
-// However, when using GTK+, influence the background of a widget using a style
-// class or CSS — if you’re an application — or with
+// However, when using GTK+, influence the background of a widget
+// using a style class or CSS — if you’re an application — or with
 // gtk_style_context_set_background() — if you're implementing a custom widget.
 //
 // Deprecated: Don't use this function.
 //
 // The function takes the following parameters:
 //
-//    - color: Color.
+//   - color: Color.
 //
 func (window *Window) SetBackground(color *Color) {
 	var _arg0 *C.GdkWindow // out
@@ -4014,9 +4014,9 @@ func (window *Window) SetBackground(color *Color) {
 
 // SetBackgroundPattern sets the background of window.
 //
-// A background of NULL means that the window won't have any background. On the
-// X11 backend it's also possible to inherit the background from the parent
-// window using gdk_x11_get_parent_relative_pattern().
+// A background of NULL means that the window won't have any background.
+// On the X11 backend it's also possible to inherit the background from the
+// parent window using gdk_x11_get_parent_relative_pattern().
 //
 // The windowing system will normally fill a window with its background when the
 // window is obscured then exposed.
@@ -4025,7 +4025,7 @@ func (window *Window) SetBackground(color *Color) {
 //
 // The function takes the following parameters:
 //
-//    - pattern (optional) to use, or NULL.
+//   - pattern (optional) to use, or NULL.
 //
 func (window *Window) SetBackgroundPattern(pattern *cairo.Pattern) {
 	var _arg0 *C.GdkWindow       // out
@@ -4049,7 +4049,7 @@ func (window *Window) SetBackgroundPattern(pattern *cairo.Pattern) {
 //
 // The function takes the following parameters:
 //
-//    - rgba: RGBA color.
+//   - rgba: RGBA color.
 //
 func (window *Window) SetBackgroundRGBA(rgba *RGBA) {
 	var _arg0 *C.GdkWindow // out
@@ -4063,9 +4063,9 @@ func (window *Window) SetBackgroundRGBA(rgba *RGBA) {
 	runtime.KeepAlive(rgba)
 }
 
-// SetChildInputShapes sets the input shape mask of window to the union of input
-// shape masks for all children of window, ignoring the input shape mask of
-// window itself. Contrast with gdk_window_merge_child_input_shapes() which
+// SetChildInputShapes sets the input shape mask of window to the union of
+// input shape masks for all children of window, ignoring the input shape mask
+// of window itself. Contrast with gdk_window_merge_child_input_shapes() which
 // includes the input shape mask of window in the masks to be merged.
 func (window *Window) SetChildInputShapes() {
 	var _arg0 *C.GdkWindow // out
@@ -4103,8 +4103,8 @@ func (window *Window) SetChildShapes() {
 // longer clipped from regions marked for invalidation on its parent. Draws done
 // on the parent window are also no longer clipped by the child.
 //
-// This call is only supported on some systems (currently, only X11 with new
-// enough Xcomposite and Xdamage extensions). You must call
+// This call is only supported on some systems (currently, only X11
+// with new enough Xcomposite and Xdamage extensions). You must call
 // gdk_display_supports_composite() to check if setting a window as composited
 // is supported before attempting to do so.
 //
@@ -4113,7 +4113,7 @@ func (window *Window) SetChildShapes() {
 //
 // The function takes the following parameters:
 //
-//    - composited: TRUE to set the window as composited.
+//   - composited: TRUE to set the window as composited.
 //
 func (window *Window) SetComposited(composited bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4140,7 +4140,7 @@ func (window *Window) SetComposited(composited bool) {
 //
 // The function takes the following parameters:
 //
-//    - cursor (optional): cursor.
+//   - cursor (optional): cursor.
 //
 func (window *Window) SetCursor(cursor Cursorrer) {
 	var _arg0 *C.GdkWindow // out
@@ -4156,23 +4156,23 @@ func (window *Window) SetCursor(cursor Cursorrer) {
 	runtime.KeepAlive(cursor)
 }
 
-// SetDecorations: “Decorations” are the features the window manager adds to a
-// toplevel Window. This function sets the traditional Motif window manager
+// SetDecorations: “Decorations” are the features the window manager adds to
+// a toplevel Window. This function sets the traditional Motif window manager
 // hints that tell the window manager which decorations you would like your
 // window to have. Usually you should use gtk_window_set_decorated() on a Window
 // instead of using the GDK function directly.
 //
 // The decorations argument is the logical OR of the fields in the WMDecoration
 // enumeration. If K_DECOR_ALL is included in the mask, the other bits indicate
-// which decorations should be turned off. If K_DECOR_ALL is not included, then
-// the other bits indicate which decorations should be turned on.
+// which decorations should be turned off. If K_DECOR_ALL is not included,
+// then the other bits indicate which decorations should be turned on.
 //
 // Most window managers honor a decorations hint of 0 to disable all
 // decorations, but very few honor all possible combinations of bits.
 //
 // The function takes the following parameters:
 //
-//    - decorations: decoration hint mask.
+//   - decorations: decoration hint mask.
 //
 func (window *Window) SetDecorations(decorations WMDecoration) {
 	var _arg0 *C.GdkWindow      // out
@@ -4187,16 +4187,16 @@ func (window *Window) SetDecorations(decorations WMDecoration) {
 }
 
 // SetDeviceCursor sets a specific Cursor for a given device when it gets inside
-// window. Use gdk_cursor_new_for_display() or gdk_cursor_new_from_pixbuf() to
-// create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
+// window. Use gdk_cursor_new_for_display() or gdk_cursor_new_from_pixbuf()
+// to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
 // Passing NULL for the cursor argument to gdk_window_set_cursor() means that
 // window will use the cursor of its parent window. Most windows should use this
 // default.
 //
 // The function takes the following parameters:
 //
-//    - device: master, pointer Device.
-//    - cursor: Cursor.
+//   - device: master, pointer Device.
+//   - cursor: Cursor.
 //
 func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
 	var _arg0 *C.GdkWindow // out
@@ -4223,8 +4223,8 @@ func (window *Window) SetDeviceCursor(device Devicer, cursor Cursorrer) {
 //
 // The function takes the following parameters:
 //
-//    - device to enable events for.
-//    - eventMask: event mask for window.
+//   - device to enable events for.
+//   - eventMask: event mask for window.
 //
 func (window *Window) SetDeviceEvents(device Devicer, eventMask EventMask) {
 	var _arg0 *C.GdkWindow   // out
@@ -4252,7 +4252,7 @@ func (window *Window) SetDeviceEvents(device Devicer, eventMask EventMask) {
 //
 // The function takes the following parameters:
 //
-//    - eventCompression: TRUE if motion events should be compressed.
+//   - eventCompression: TRUE if motion events should be compressed.
 //
 func (window *Window) SetEventCompression(eventCompression bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4278,7 +4278,7 @@ func (window *Window) SetEventCompression(eventCompression bool) {
 //
 // The function takes the following parameters:
 //
-//    - eventMask: event mask for window.
+//   - eventMask: event mask for window.
 //
 func (window *Window) SetEvents(eventMask EventMask) {
 	var _arg0 *C.GdkWindow   // out
@@ -4303,7 +4303,7 @@ func (window *Window) SetEvents(eventMask EventMask) {
 //
 // The function takes the following parameters:
 //
-//    - focusOnMap: TRUE if the window should receive input focus when mapped.
+//   - focusOnMap: TRUE if the window should receive input focus when mapped.
 //
 func (window *Window) SetFocusOnMap(focusOnMap bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4339,7 +4339,7 @@ func (window *Window) SetFocusOnMap(focusOnMap bool) {
 //
 // The function takes the following parameters:
 //
-//    - mode: fullscreen mode.
+//   - mode: fullscreen mode.
 //
 func (window *Window) SetFullscreenMode(mode FullscreenMode) {
 	var _arg0 *C.GdkWindow        // out
@@ -4367,7 +4367,7 @@ func (window *Window) SetFullscreenMode(mode FullscreenMode) {
 //
 // The function takes the following parameters:
 //
-//    - functions: bitmask of operations to allow on window.
+//   - functions: bitmask of operations to allow on window.
 //
 func (window *Window) SetFunctions(functions WMFunction) {
 	var _arg0 *C.GdkWindow    // out
@@ -4386,9 +4386,9 @@ func (window *Window) SetFunctions(functions WMFunction) {
 // hints, use a geom_mask of 0 and a geometry of NULL.
 //
 // This function provides hints to the windowing system about acceptable sizes
-// for a toplevel window. The purpose of this is to constrain user resizing, but
-// the windowing system will typically (but is not required to) also constrain
-// the current size of the window to the provided values and constrain
+// for a toplevel window. The purpose of this is to constrain user resizing,
+// but the windowing system will typically (but is not required to) also
+// constrain the current size of the window to the provided values and constrain
 // programatic resizing via gdk_window_resize() or gdk_window_move_resize().
 //
 // Note that on X11, this effect has no effect on windows of type
@@ -4402,8 +4402,8 @@ func (window *Window) SetFunctions(functions WMFunction) {
 //
 // The function takes the following parameters:
 //
-//    - geometry hints.
-//    - geomMask: bitmask indicating fields of geometry to pay attention to.
+//   - geometry hints.
+//   - geomMask: bitmask indicating fields of geometry to pay attention to.
 //
 func (window *Window) SetGeometryHints(geometry *Geometry, geomMask WindowHints) {
 	var _arg0 *C.GdkWindow     // out
@@ -4424,16 +4424,16 @@ func (window *Window) SetGeometryHints(geometry *Geometry, geomMask WindowHints)
 // group leader for all toplevel windows to a global window implicitly created
 // by GDK. With this function you can override this default.
 //
-// The group leader window allows the window manager to distinguish all windows
-// that belong to a single application. It may for example allow users to
-// minimize/unminimize all windows belonging to an application at once. You
-// should only set a non-default group window if your application pretends to be
-// multiple applications.
+// The group leader window allows the window manager to distinguish all
+// windows that belong to a single application. It may for example allow users
+// to minimize/unminimize all windows belonging to an application at once.
+// You should only set a non-default group window if your application pretends
+// to be multiple applications.
 //
 // The function takes the following parameters:
 //
-//    - leader (optional): group leader window, or NULL to restore the default
-//      group leader window.
+//   - leader (optional): group leader window, or NULL to restore the default
+//     group leader window.
 //
 func (window *Window) SetGroup(leader Windower) {
 	var _arg0 *C.GdkWindow // out
@@ -4450,9 +4450,9 @@ func (window *Window) SetGroup(leader Windower) {
 }
 
 // SetIconList sets a list of icons for the window. One of these will be used to
-// represent the window when it has been iconified. The icon is usually shown in
-// an icon box or some sort of task bar. Which icon size is shown depends on the
-// window manager. The window manager can scale the icon but setting several
+// represent the window when it has been iconified. The icon is usually shown
+// in an icon box or some sort of task bar. Which icon size is shown depends on
+// the window manager. The window manager can scale the icon but setting several
 // size icons can give better image quality since the window manager may only
 // need to scale the icon by a small amount or not at all.
 //
@@ -4460,7 +4460,7 @@ func (window *Window) SetGroup(leader Windower) {
 //
 // The function takes the following parameters:
 //
-//    - pixbufs: A list of pixbufs, of different sizes.
+//   - pixbufs: A list of pixbufs, of different sizes.
 //
 func (window *Window) SetIconList(pixbufs []*gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GdkWindow // out
@@ -4495,7 +4495,7 @@ func (window *Window) SetIconList(pixbufs []*gdkpixbuf.Pixbuf) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of window while iconified (minimized).
+//   - name (optional) of window while iconified (minimized).
 //
 func (window *Window) SetIconName(name string) {
 	var _arg0 *C.GdkWindow // out
@@ -4523,7 +4523,7 @@ func (window *Window) SetIconName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - setting: whether to keep window above other windows.
+//   - setting: whether to keep window above other windows.
 //
 func (window *Window) SetKeepAbove(setting bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4550,7 +4550,7 @@ func (window *Window) SetKeepAbove(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: whether to keep window below other windows.
+//   - setting: whether to keep window below other windows.
 //
 func (window *Window) SetKeepBelow(setting bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4566,8 +4566,8 @@ func (window *Window) SetKeepBelow(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// SetModalHint: application can use this hint to tell the window manager that a
-// certain window has modal behaviour. The window manager can use this
+// SetModalHint: application can use this hint to tell the window manager
+// that a certain window has modal behaviour. The window manager can use this
 // information to handle modal windows in a special way.
 //
 // You should only use this on windows for which you have previously called
@@ -4575,7 +4575,7 @@ func (window *Window) SetKeepBelow(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - modal: TRUE if the window is modal, FALSE otherwise.
+//   - modal: TRUE if the window is modal, FALSE otherwise.
 //
 func (window *Window) SetModalHint(modal bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4595,10 +4595,10 @@ func (window *Window) SetModalHint(modal bool) {
 // being fully transparent and 1 fully opaque. (Values of the opacity parameter
 // are clamped to the [0,1] range.)
 //
-// For toplevel windows this depends on support from the windowing system that
-// may not always be there. For instance, On X11, this works only on X screens
-// with a compositing manager running. On Wayland, there is no per-window
-// opacity value that the compositor would apply. Instead, use
+// For toplevel windows this depends on support from the windowing system
+// that may not always be there. For instance, On X11, this works only on
+// X screens with a compositing manager running. On Wayland, there is no
+// per-window opacity value that the compositor would apply. Instead, use
 // gdk_window_set_opaque_region (window, NULL) to tell the compositor that the
 // entire window is (potentially) non-opaque, and draw your content with alpha,
 // or use gtk_widget_set_opacity() to set an overall opacity for your widgets.
@@ -4612,7 +4612,7 @@ func (window *Window) SetModalHint(modal bool) {
 //
 // The function takes the following parameters:
 //
-//    - opacity: opacity.
+//   - opacity: opacity.
 //
 func (window *Window) SetOpacity(opacity float64) {
 	var _arg0 *C.GdkWindow // out
@@ -4635,13 +4635,13 @@ func (window *Window) SetOpacity(opacity float64) {
 // This function only works for toplevel windows.
 //
 // GTK+ will update this property automatically if the window background is
-// opaque, as we know where the opaque regions are. If your window background is
-// not opaque, please update this property in your Widget::style-updated
+// opaque, as we know where the opaque regions are. If your window background
+// is not opaque, please update this property in your Widget::style-updated
 // handler.
 //
 // The function takes the following parameters:
 //
-//    - region (optional): region, or NULL.
+//   - region (optional): region, or NULL.
 //
 func (window *Window) SetOpaqueRegion(region *cairo.Region) {
 	var _arg0 *C.GdkWindow      // out
@@ -4668,7 +4668,7 @@ func (window *Window) SetOpaqueRegion(region *cairo.Region) {
 //
 // The function takes the following parameters:
 //
-//    - overrideRedirect: TRUE if window should be override redirect.
+//   - overrideRedirect: TRUE if window should be override redirect.
 //
 func (window *Window) SetOverrideRedirect(overrideRedirect bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4704,7 +4704,7 @@ func (window *Window) SetOverrideRedirect(overrideRedirect bool) {
 //
 // The function takes the following parameters:
 //
-//    - passThrough: boolean.
+//   - passThrough: boolean.
 //
 func (window *Window) SetPassThrough(passThrough bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4734,7 +4734,7 @@ func (window *Window) SetPassThrough(passThrough bool) {
 //
 // The function takes the following parameters:
 //
-//    - role: string indicating its role.
+//   - role: string indicating its role.
 //
 func (window *Window) SetRole(role string) {
 	var _arg0 *C.GdkWindow // out
@@ -4761,10 +4761,10 @@ func (window *Window) SetRole(role string) {
 //
 // The function takes the following parameters:
 //
-//    - left extent.
-//    - right extent.
-//    - top extent.
-//    - bottom extent.
+//   - left extent.
+//   - right extent.
+//   - top extent.
+//   - bottom extent.
 //
 func (window *Window) SetShadowWidth(left, right, top, bottom int) {
 	var _arg0 *C.GdkWindow // out
@@ -4796,7 +4796,7 @@ func (window *Window) SetShadowWidth(left, right, top, bottom int) {
 //
 // The function takes the following parameters:
 //
-//    - skipsPager: TRUE to skip the pager.
+//   - skipsPager: TRUE to skip the pager.
 //
 func (window *Window) SetSkipPagerHint(skipsPager bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4812,15 +4812,15 @@ func (window *Window) SetSkipPagerHint(skipsPager bool) {
 	runtime.KeepAlive(skipsPager)
 }
 
-// SetSkipTaskbarHint toggles whether a window should appear in a task list or
-// window list. If a window’s semantic type as specified with
+// SetSkipTaskbarHint toggles whether a window should appear in a task
+// list or window list. If a window’s semantic type as specified with
 // gdk_window_set_type_hint() already fully describes the window, this function
 // should not be called in addition, instead you should allow the window to be
 // treated according to standard policy for its semantic type.
 //
 // The function takes the following parameters:
 //
-//    - skipsTaskbar: TRUE to skip the taskbar.
+//   - skipsTaskbar: TRUE to skip the taskbar.
 //
 func (window *Window) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4836,15 +4836,15 @@ func (window *Window) SetSkipTaskbarHint(skipsTaskbar bool) {
 	runtime.KeepAlive(skipsTaskbar)
 }
 
-// SetSourceEvents sets the event mask for any floating device (i.e. not
-// attached to any visible pointer) that has the source defined as source. This
-// event mask will be applied both to currently existing, newly added devices
-// after this call, and devices being attached/detached.
+// SetSourceEvents sets the event mask for any floating device (i.e.
+// not attached to any visible pointer) that has the source defined as source.
+// This event mask will be applied both to currently existing, newly added
+// devices after this call, and devices being attached/detached.
 //
 // The function takes the following parameters:
 //
-//    - source to define the source class.
-//    - eventMask: event mask for window.
+//   - source to define the source class.
+//   - eventMask: event mask for window.
 //
 func (window *Window) SetSourceEvents(source InputSource, eventMask EventMask) {
 	var _arg0 *C.GdkWindow     // out
@@ -4866,7 +4866,7 @@ func (window *Window) SetSourceEvents(source InputSource, eventMask EventMask) {
 //
 // The function takes the following parameters:
 //
-//    - startupId: string with startup-notification identifier.
+//   - startupId: string with startup-notification identifier.
 //
 func (window *Window) SetStartupID(startupId string) {
 	var _arg0 *C.GdkWindow // out
@@ -4891,11 +4891,11 @@ func (window *Window) SetStartupID(startupId string) {
 //
 // The function takes the following parameters:
 //
-//    - useStatic: TRUE to turn on static gravity.
+//   - useStatic: TRUE to turn on static gravity.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE.
+//   - ok: FALSE.
 //
 func (window *Window) SetStaticGravities(useStatic bool) bool {
 	var _arg0 *C.GdkWindow // out
@@ -4928,7 +4928,7 @@ func (window *Window) SetStaticGravities(useStatic bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - supportMultidevice: TRUE to enable multidevice support in window.
+//   - supportMultidevice: TRUE to enable multidevice support in window.
 //
 func (window *Window) SetSupportMultidevice(supportMultidevice bool) {
 	var _arg0 *C.GdkWindow // out
@@ -4952,7 +4952,7 @@ func (window *Window) SetSupportMultidevice(supportMultidevice bool) {
 //
 // The function takes the following parameters:
 //
-//    - title of window.
+//   - title of window.
 //
 func (window *Window) SetTitle(title string) {
 	var _arg0 *C.GdkWindow // out
@@ -4976,7 +4976,7 @@ func (window *Window) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - parent: another toplevel Window.
+//   - parent: another toplevel Window.
 //
 func (window *Window) SetTransientFor(parent Windower) {
 	var _arg0 *C.GdkWindow // out
@@ -4998,7 +4998,7 @@ func (window *Window) SetTransientFor(parent Windower) {
 //
 // The function takes the following parameters:
 //
-//    - hint of the function this window will have.
+//   - hint of the function this window will have.
 //
 func (window *Window) SetTypeHint(hint WindowTypeHint) {
 	var _arg0 *C.GdkWindow        // out
@@ -5016,7 +5016,7 @@ func (window *Window) SetTypeHint(hint WindowTypeHint) {
 //
 // The function takes the following parameters:
 //
-//    - urgent: TRUE if the window is urgent.
+//   - urgent: TRUE if the window is urgent.
 //
 func (window *Window) SetUrgencyHint(urgent bool) {
 	var _arg0 *C.GdkWindow // out
@@ -5033,15 +5033,15 @@ func (window *Window) SetUrgencyHint(urgent bool) {
 }
 
 // SetUserData: for most purposes this function is deprecated in favor of
-// g_object_set_data(). However, for historical reasons GTK+ stores the Widget
-// that owns a Window as user data on the Window. So, custom widget
+// g_object_set_data(). However, for historical reasons GTK+ stores the
+// Widget that owns a Window as user data on the Window. So, custom widget
 // implementations should use this function for that. If GTK+ receives an event
 // for a Window, and the user data for the window is non-NULL, GTK+ will assume
 // the user data is a Widget, and forward the event to that widget.
 //
 // The function takes the following parameters:
 //
-//    - userData (optional): user data.
+//   - userData (optional): user data.
 //
 func (window *Window) SetUserData(userData *coreglib.Object) {
 	var _arg0 *C.GdkWindow // out
@@ -5070,9 +5070,9 @@ func (window *Window) SetUserData(userData *coreglib.Object) {
 //
 // The function takes the following parameters:
 //
-//    - shapeRegion (optional): region of window to be non-transparent.
-//    - offsetX: x position of shape_region in window coordinates.
-//    - offsetY: y position of shape_region in window coordinates.
+//   - shapeRegion (optional): region of window to be non-transparent.
+//   - offsetX: x position of shape_region in window coordinates.
+//   - offsetY: y position of shape_region in window coordinates.
 //
 func (window *Window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX, offsetY int) {
 	var _arg0 *C.GdkWindow      // out
@@ -5115,8 +5115,8 @@ func (window *Window) Show() {
 // In contrast, gdk_window_show() will raise the window to the top of the window
 // stack.
 //
-// On the X11 platform, in Xlib terms, this function calls XMapWindow() (it also
-// updates some internal GDK state, which means that you can’t really use
+// On the X11 platform, in Xlib terms, this function calls XMapWindow() (it
+// also updates some internal GDK state, which means that you can’t really use
 // XMapWindow() directly on a GDK window).
 func (window *Window) ShowUnraised() {
 	var _arg0 *C.GdkWindow // out
@@ -5135,11 +5135,11 @@ func (window *Window) ShowUnraised() {
 //
 // The function takes the following parameters:
 //
-//    - event to show the menu for.
+//   - event to show the menu for.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window menu was shown and FALSE otherwise.
+//   - ok: TRUE if the window menu was shown and FALSE otherwise.
 //
 func (window *Window) ShowWindowMenu(event *Event) bool {
 	var _arg0 *C.GdkWindow // out
@@ -5253,8 +5253,8 @@ func (window *Window) Unstick() {
 	runtime.KeepAlive(window)
 }
 
-// Withdraw withdraws a window (unmaps it and asks the window manager to forget
-// about it). This function is not really useful as gdk_window_hide()
+// Withdraw withdraws a window (unmaps it and asks the window manager to
+// forget about it). This function is not really useful as gdk_window_hide()
 // automatically withdraws toplevel windows before hiding them.
 func (window *Window) Withdraw() {
 	var _arg0 *C.GdkWindow // out
@@ -5267,8 +5267,8 @@ func (window *Window) Withdraw() {
 
 // The function takes the following parameters:
 //
-//    - width
-//    - height
+//   - width
+//   - height
 //
 // The function returns the following values:
 //
@@ -5302,10 +5302,10 @@ func (window *Window) createSurface(width, height int) *cairo.Surface {
 
 // The function takes the following parameters:
 //
-//    - embedderX
-//    - embedderY
-//    - offscreenX
-//    - offscreenY
+//   - embedderX
+//   - embedderY
+//   - offscreenX
+//   - offscreenY
 //
 func (window *Window) fromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64) {
 	gclass := (*C.GdkWindowClass)(coreglib.PeekParentClass(window))
@@ -5333,10 +5333,10 @@ func (window *Window) fromEmbedder(embedderX, embedderY float64, offscreenX, off
 
 // The function takes the following parameters:
 //
-//    - offscreenX
-//    - offscreenY
-//    - embedderX
-//    - embedderY
+//   - offscreenX
+//   - offscreenY
+//   - embedderX
+//   - embedderY
 //
 func (window *Window) toEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64) {
 	gclass := (*C.GdkWindowClass)(coreglib.PeekParentClass(window))
@@ -5362,10 +5362,10 @@ func (window *Window) toEmbedder(offscreenX, offscreenY float64, embedderX, embe
 	runtime.KeepAlive(embedderY)
 }
 
-// WindowAtPointer obtains the window underneath the mouse pointer, returning
-// the location of that window in win_x, win_y. Returns NULL if the window under
-// the mouse pointer is not known to GDK (if the window belongs to another
-// application and a Window hasn’t been created for it with
+// WindowAtPointer obtains the window underneath the mouse pointer,
+// returning the location of that window in win_x, win_y. Returns NULL if
+// the window under the mouse pointer is not known to GDK (if the window
+// belongs to another application and a Window hasn’t been created for it with
 // gdk_window_foreign_new())
 //
 // NOTE: For multihead-aware widgets or applications use
@@ -5375,11 +5375,11 @@ func (window *Window) toEmbedder(offscreenX, offscreenY float64, embedderX, embe
 //
 // The function returns the following values:
 //
-//    - winX (optional): return location for origin of the window under the
-//      pointer.
-//    - winY (optional): return location for origin of the window under the
-//      pointer.
-//    - window under the mouse pointer.
+//   - winX (optional): return location for origin of the window under the
+//     pointer.
+//   - winY (optional): return location for origin of the window under the
+//     pointer.
+//   - window under the mouse pointer.
 //
 func WindowAtPointer() (winX, winY int, window Windower) {
 	var _arg1 C.gint       // in
@@ -5420,15 +5420,15 @@ func WindowAtPointer() (winX, winY int, window Windower) {
 //
 // The function takes the following parameters:
 //
-//    - geometry: Geometry structure.
-//    - flags: mask indicating what portions of geometry are set.
-//    - width: desired width of window.
-//    - height: desired height of the window.
+//   - geometry: Geometry structure.
+//   - flags: mask indicating what portions of geometry are set.
+//   - width: desired width of window.
+//   - height: desired height of the window.
 //
 // The function returns the following values:
 //
-//    - newWidth: location to store resulting width.
-//    - newHeight: location to store resulting height.
+//   - newWidth: location to store resulting width.
+//   - newHeight: location to store resulting height.
 //
 func WindowConstrainSize(geometry *Geometry, flags WindowHints, width, height int) (newWidth, newHeight int) {
 	var _arg1 *C.GdkGeometry   // out
@@ -5468,10 +5468,10 @@ func WindowProcessAllUpdates() {
 
 // WindowSetDebugUpdates: with update debugging enabled, calls to
 // gdk_window_invalidate_region() clear the invalidated region of the screen to
-// a noticeable color, and GDK pauses for a short time before sending exposes to
-// windows during gdk_window_process_updates(). The net effect is that you can
-// see the invalid region for each window and watch redraws as they occur. This
-// allows you to diagnose inefficiencies in your application.
+// a noticeable color, and GDK pauses for a short time before sending exposes
+// to windows during gdk_window_process_updates(). The net effect is that you
+// can see the invalid region for each window and watch redraws as they occur.
+// This allows you to diagnose inefficiencies in your application.
 //
 // In essence, because the GDK rendering model prevents all flicker, if you are
 // redrawing the same region 400 times you may never notice, aside from noticing
@@ -5488,7 +5488,7 @@ func WindowProcessAllUpdates() {
 //
 // The function takes the following parameters:
 //
-//    - setting: TRUE to turn on update debugging.
+//   - setting: TRUE to turn on update debugging.
 //
 func WindowSetDebugUpdates(setting bool) {
 	var _arg1 C.gboolean // out
@@ -5506,22 +5506,22 @@ func WindowSetDebugUpdates(setting bool) {
 // gtk_window_set_geometry_hints(). Window then sets the hints on the Window it
 // creates.
 //
-// gdk_window_set_geometry_hints() expects the hints to be fully valid already
-// and simply passes them to the window manager; in contrast,
-// gtk_window_set_geometry_hints() performs some interpretation. For example,
-// Window will apply the hints to the geometry widget instead of the toplevel
-// window, if you set a geometry widget. Also, the
-// min_width/min_height/max_width/max_height fields may be set to -1, and Window
-// will substitute the size request of the window or geometry widget. If the
-// minimum size hint is not provided, Window will use its requisition as the
-// minimum size. If the minimum size is provided and a geometry widget is set,
-// Window will take the minimum size as the minimum size of the geometry widget
-// rather than the entire window. The base size is treated similarly.
+// gdk_window_set_geometry_hints() expects the hints to be fully valid
+// already and simply passes them to the window manager; in contrast,
+// gtk_window_set_geometry_hints() performs some interpretation.
+// For example, Window will apply the hints to the geometry widget
+// instead of the toplevel window, if you set a geometry widget. Also,
+// the min_width/min_height/max_width/max_height fields may be set to -1,
+// and Window will substitute the size request of the window or geometry widget.
+// If the minimum size hint is not provided, Window will use its requisition as
+// the minimum size. If the minimum size is provided and a geometry widget is
+// set, Window will take the minimum size as the minimum size of the geometry
+// widget rather than the entire window. The base size is treated similarly.
 //
 // The canonical use-case for gtk_window_set_geometry_hints() is to get a
 // terminal widget to resize properly. Here, the terminal text area should be
-// the geometry widget; Window will then automatically set the base size to the
-// size of other widgets in the terminal window, such as the menubar and
+// the geometry widget; Window will then automatically set the base size to
+// the size of other widgets in the terminal window, such as the menubar and
 // scrollbar. Then, the width_inc and height_inc fields should be set to the
 // size of one character in the terminal. Finally, the base size should be set
 // to the size of one character. The net effect is that the minimum size of the
@@ -5550,8 +5550,8 @@ func WindowSetDebugUpdates(setting bool) {
 // The other useful fields are the min_aspect and max_aspect fields; these
 // contain a width/height ratio as a floating point number. If a geometry widget
 // is set, the aspect applies to the geometry widget rather than the entire
-// window. The most common use of these hints is probably to set min_aspect and
-// max_aspect to the same value, thus forcing the window to keep a constant
+// window. The most common use of these hints is probably to set min_aspect
+// and max_aspect to the same value, thus forcing the window to keep a constant
 // aspect ratio.
 //
 // An instance of this type is always passed by reference.

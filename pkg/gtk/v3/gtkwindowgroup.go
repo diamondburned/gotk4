@@ -90,7 +90,7 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - windowGroup: new WindowGroup.
+//   - windowGroup: new WindowGroup.
 //
 func NewWindowGroup() *WindowGroup {
 	var _cret *C.GtkWindowGroup // in
@@ -108,7 +108,7 @@ func NewWindowGroup() *WindowGroup {
 //
 // The function takes the following parameters:
 //
-//    - window to add.
+//   - window to add.
 //
 func (windowGroup *WindowGroup) AddWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out
@@ -127,11 +127,11 @@ func (windowGroup *WindowGroup) AddWindow(window *Window) {
 //
 // The function takes the following parameters:
 //
-//    - device: Device.
+//   - device: Device.
 //
 // The function returns the following values:
 //
-//    - widget (optional): grab widget, or NULL.
+//   - widget (optional): grab widget, or NULL.
 //
 func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter {
 	var _arg0 *C.GtkWindowGroup // out
@@ -172,7 +172,7 @@ func (windowGroup *WindowGroup) CurrentDeviceGrab(device gdk.Devicer) Widgetter 
 //
 // The function returns the following values:
 //
-//    - widget: current grab widget of the group.
+//   - widget: current grab widget of the group.
 //
 func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 	var _arg0 *C.GtkWindowGroup // out
@@ -210,7 +210,7 @@ func (windowGroup *WindowGroup) CurrentGrab() Widgetter {
 //
 // The function returns the following values:
 //
-//    - list: a newly-allocated list of windows inside the group.
+//   - list: a newly-allocated list of windows inside the group.
 //
 func (windowGroup *WindowGroup) ListWindows() []*Window {
 	var _arg0 *C.GtkWindowGroup // out
@@ -238,7 +238,7 @@ func (windowGroup *WindowGroup) ListWindows() []*Window {
 //
 // The function takes the following parameters:
 //
-//    - window to remove.
+//   - window to remove.
 //
 func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	var _arg0 *C.GtkWindowGroup // out

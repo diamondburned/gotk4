@@ -34,7 +34,6 @@ func init() {
 //    x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
 //    y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
 //
-//
 // An instance of this type is always passed by reference.
 type Matrix struct {
 	*matrix
@@ -169,7 +168,7 @@ func (m *Matrix) SetY0(y0 float64) {
 //
 // The function takes the following parameters:
 //
-//    - newMatrix: PangoMatrix.
+//   - newMatrix: PangoMatrix.
 //
 func (matrix *Matrix) Concat(newMatrix *Matrix) {
 	var _arg0 *C.PangoMatrix // out
@@ -187,8 +186,8 @@ func (matrix *Matrix) Concat(newMatrix *Matrix) {
 //
 // The function returns the following values:
 //
-//    - ret (optional): newly allocated PangoMatrix, which should be freed with
-//      pango.Matrix.Free(), or NULL if matrix was NULL.
+//   - ret (optional): newly allocated PangoMatrix, which should be freed with
+//     pango.Matrix.Free(), or NULL if matrix was NULL.
 //
 func (matrix *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
@@ -225,8 +224,8 @@ func (matrix *Matrix) Copy() *Matrix {
 //
 // The function returns the following values:
 //
-//    - gdouble: scale factor of matrix on the height of the font, or 1.0 if
-//      matrix is NULL.
+//   - gdouble: scale factor of matrix on the height of the font, or 1.0 if
+//     matrix is NULL.
 //
 func (matrix *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
@@ -249,17 +248,17 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 // FontScaleFactors calculates the scale factor of a matrix on the width and
 // height of the font.
 //
-// That is, xscale is the scale factor in the direction of the X coordinate, and
-// yscale is the scale factor in the direction perpendicular to the vector that
-// the X coordinate is mapped to.
+// That is, xscale is the scale factor in the direction of the X coordinate,
+// and yscale is the scale factor in the direction perpendicular to the vector
+// that the X coordinate is mapped to.
 //
 // Note that output numbers will always be non-negative.
 //
 // The function returns the following values:
 //
-//    - xscale (optional): output scale factor in the x direction, or NULL.
-//    - yscale (optional): output scale factor perpendicular to the x direction,
-//      or NULL.
+//   - xscale (optional): output scale factor in the x direction, or NULL.
+//   - yscale (optional): output scale factor perpendicular to the x direction,
+//     or NULL.
 //
 func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg0 *C.PangoMatrix // out
@@ -288,7 +287,7 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 //
 // The function takes the following parameters:
 //
-//    - degrees to rotate counter-clockwise.
+//   - degrees to rotate counter-clockwise.
 //
 func (matrix *Matrix) Rotate(degrees float64) {
 	var _arg0 *C.PangoMatrix // out
@@ -308,8 +307,8 @@ func (matrix *Matrix) Rotate(degrees float64) {
 //
 // The function takes the following parameters:
 //
-//    - scaleX: amount to scale by in X direction.
-//    - scaleY: amount to scale by in Y direction.
+//   - scaleX: amount to scale by in X direction.
+//   - scaleY: amount to scale by in Y direction.
 //
 func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg0 *C.PangoMatrix // out
@@ -332,8 +331,8 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 //
 // The function takes the following parameters:
 //
-//    - tx: amount to translate in the X direction.
-//    - ty: amount to translate in the Y direction.
+//   - tx: amount to translate in the X direction.
+//   - ty: amount to translate in the Y direction.
 //
 func (matrix *Matrix) Translate(tx float64, ty float64) {
 	var _arg0 *C.PangoMatrix // out

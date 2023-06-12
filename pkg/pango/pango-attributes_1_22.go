@@ -21,12 +21,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - typ: attribute type ID to fetch the name for.
+//   - typ: attribute type ID to fetch the name for.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): type ID name (which may be NULL), or NULL if type is a
-//      built-in Pango attribute type or invalid.
+//   - utf8 (optional): type ID name (which may be NULL), or NULL if type is a
+//     built-in Pango attribute type or invalid.
 //
 func AttrTypeGetName(typ AttrType) string {
 	var _arg1 C.PangoAttrType // out

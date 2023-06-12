@@ -103,7 +103,7 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - axisFlags axes of tool.
+//   - axisFlags axes of tool.
 //
 func (tool *DeviceTool) Axes() AxisFlags {
 	var _arg0 *C.GdkDeviceTool // out
@@ -123,9 +123,9 @@ func (tool *DeviceTool) Axes() AxisFlags {
 
 // HardwareID gets the hardware ID of this tool, or 0 if it's not known.
 //
-// When non-zero, the identificator is unique for the given tool model, meaning
-// that two identical tools will share the same hardware_id, but will have
-// different serial numbers (see gdk.DeviceTool.GetSerial()).
+// When non-zero, the identificator is unique for the given tool model,
+// meaning that two identical tools will share the same hardware_id, but will
+// have different serial numbers (see gdk.DeviceTool.GetSerial()).
 //
 // This is a more concrete (and device specific) method to identify a
 // GdkDeviceTool than gdk.DeviceTool.GetToolType(), as a tablet may support
@@ -134,7 +134,7 @@ func (tool *DeviceTool) Axes() AxisFlags {
 //
 // The function returns the following values:
 //
-//    - guint64: hardware identificator of this tool.
+//   - guint64: hardware identificator of this tool.
 //
 func (tool *DeviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
@@ -159,7 +159,7 @@ func (tool *DeviceTool) HardwareID() uint64 {
 //
 // The function returns the following values:
 //
-//    - guint64: serial ID for this tool.
+//   - guint64: serial ID for this tool.
 //
 func (tool *DeviceTool) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
@@ -181,8 +181,8 @@ func (tool *DeviceTool) Serial() uint64 {
 //
 // The function returns the following values:
 //
-//    - deviceToolType: physical type for this tool. This can be used to figure
-//      out what sort of pen is being used, such as an airbrush or a pencil.
+//   - deviceToolType: physical type for this tool. This can be used to figure
+//     out what sort of pen is being used, such as an airbrush or a pencil.
 //
 func (tool *DeviceTool) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out

@@ -88,12 +88,12 @@ func BaseTLSServerConnection(obj TLSServerConnectioner) *TLSServerConnection {
 //
 // The function takes the following parameters:
 //
-//    - baseIoStream to wrap.
-//    - certificate (optional): default server certificate, or NULL.
+//   - baseIoStream to wrap.
+//   - certificate (optional): default server certificate, or NULL.
 //
 // The function returns the following values:
 //
-//    - tlsServerConnection: new ServerConnection, or NULL on error.
+//   - tlsServerConnection: new ServerConnection, or NULL on error.
 //
 func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (*TLSServerConnection, error) {
 	var _arg1 *C.GIOStream       // out

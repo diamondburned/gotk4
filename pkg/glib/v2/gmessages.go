@@ -23,20 +23,20 @@ import "C"
 // LOG_DOMAIN defines the log domain. See Log Domains (#log-domains).
 //
 // Libraries should define this so that any messages which they log can be
-// differentiated from messages from other libraries and application code. But
-// be careful not to define it in any public header files.
+// differentiated from messages from other libraries and application code.
+// But be careful not to define it in any public header files.
 //
 // Log domains must be unique, and it is recommended that they are the
 // application or library name, optionally followed by a hyphen and a sub-domain
 // name. For example, bloatpad or bloatpad-io.
 //
-// If undefined, it defaults to the default NULL (or "") log domain; this is not
-// advisable, as it cannot be filtered against using the G_MESSAGES_DEBUG
+// If undefined, it defaults to the default NULL (or "") log domain; this is
+// not advisable, as it cannot be filtered against using the G_MESSAGES_DEBUG
 // environment variable.
 //
 // For example, GTK+ uses this in its Makefile.am:
 //
-//    AM_CPPFLAGS = -DG_LOG_DOMAIN=\"Gtk\"
+//	AM_CPPFLAGS = -DG_LOG_DOMAIN=\"Gtk\"
 //
 // Applications can choose to leave it as the default NULL (or "") domain.
 // However, defining the domain offers the same advantages as above.
@@ -66,8 +66,8 @@ const (
 	// LogLevelError: log level for errors, see g_error(). This level is also
 	// used for messages produced by g_assert().
 	LogLevelError LogLevelFlags = 0b100
-	// LogLevelCritical: log level for critical warning messages, see
-	// g_critical(). This level is also used for messages produced by
+	// LogLevelCritical: log level for critical warning messages,
+	// see g_critical(). This level is also used for messages produced by
 	// g_return_if_fail() and g_return_val_if_fail().
 	LogLevelCritical LogLevelFlags = 0b1000
 	// LogLevelWarning: log level for warnings, see g_warning().
@@ -129,8 +129,8 @@ func (l LogLevelFlags) Has(other LogLevelFlags) bool {
 //
 // The default log handler, g_log_default_handler(), automatically appends a
 // new-line character to message when printing it. It is advised that any custom
-// log handler functions behave similarly, so that logging calls in user code do
-// not need modifying to add a new-line character to the message if the log
+// log handler functions behave similarly, so that logging calls in user code
+// do not need modifying to add a new-line character to the message if the log
 // handler is changed.
 //
 // This is not used if structured logging is enabled; see [Using Structured
@@ -139,11 +139,11 @@ type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
 
 // The function takes the following parameters:
 //
-//    - logDomain
-//    - file
-//    - line
-//    - prettyFunction
-//    - expression
+//   - logDomain
+//   - file
+//   - line
+//   - prettyFunction
+//   - expression
 //
 func AssertWarning(logDomain, file string, line int, prettyFunction, expression string) {
 	var _arg1 *C.char // out
@@ -184,8 +184,8 @@ func AssertWarning(logDomain, file string, line int, prettyFunction, expression 
 // - G_MESSAGES_PREFIXED: A :-separated list of log levels for which messages
 // should be prefixed by the program name and PID of the application.
 //
-// - G_MESSAGES_DEBUG: A space-separated list of log domains for which debug and
-// informational messages are printed. By default these messages are not
+// - G_MESSAGES_DEBUG: A space-separated list of log domains for which debug
+// and informational messages are printed. By default these messages are not
 // printed.
 //
 // stderr is used for levels G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
@@ -197,11 +197,11 @@ func AssertWarning(logDomain, file string, line int, prettyFunction, expression 
 //
 // The function takes the following parameters:
 //
-//    - logDomain (optional): log domain of the message, or NULL for the default
-//      "" application domain.
-//    - logLevel: level of the message.
-//    - message (optional): message.
-//    - unusedData (optional): data passed from g_log() which is unused.
+//   - logDomain (optional): log domain of the message, or NULL for the default
+//     "" application domain.
+//   - logLevel: level of the message.
+//   - message (optional): message.
+//   - unusedData (optional): data passed from g_log() which is unused.
 //
 func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData unsafe.Pointer) {
 	var _arg1 *C.gchar         // out
@@ -234,8 +234,8 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 //
 // The function takes the following parameters:
 //
-//    - logDomain: log domain.
-//    - handlerId: id of the handler, which was returned in g_log_set_handler().
+//   - logDomain: log domain.
+//   - handlerId: id of the handler, which was returned in g_log_set_handler().
 //
 func LogRemoveHandler(logDomain string, handlerId uint) {
 	var _arg1 *C.gchar // out
@@ -250,9 +250,9 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 	runtime.KeepAlive(handlerId)
 }
 
-// LogSetAlwaysFatal sets the message levels which are always fatal, in any log
-// domain. When a message with any of these levels is logged the program
-// terminates. You can only set the levels defined by GLib to be fatal.
+// LogSetAlwaysFatal sets the message levels which are always fatal,
+// in any log domain. When a message with any of these levels is logged the
+// program terminates. You can only set the levels defined by GLib to be fatal.
 // G_LOG_LEVEL_ERROR is always fatal.
 //
 // You can also make some message levels fatal at runtime by setting the G_DEBUG
@@ -268,12 +268,12 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 //
 // The function takes the following parameters:
 //
-//    - fatalMask: mask containing bits set for each level of error which is to
-//      be fatal.
+//   - fatalMask: mask containing bits set for each level of error which is to
+//     be fatal.
 //
 // The function returns the following values:
 //
-//    - logLevelFlags: old fatal mask.
+//   - logLevelFlags: old fatal mask.
 //
 func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 C.GLogLevelFlags // out
@@ -294,25 +294,25 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 // LogSetFatalMask sets the log levels which are fatal in the given domain.
 // G_LOG_LEVEL_ERROR is always fatal.
 //
-// This has no effect on structured log messages (using g_log_structured() or
-// g_log_structured_array()). To change the fatal behaviour for specific log
-// messages, programs must install a custom log writer function using
-// g_log_set_writer_func(). See [Using Structured
+// This has no effect on structured log messages (using g_log_structured()
+// or g_log_structured_array()). To change the fatal behaviour for
+// specific log messages, programs must install a custom log writer
+// function using g_log_set_writer_func(). See [Using Structured
 // Logging][using-structured-logging].
 //
-// This function is mostly intended to be used with G_LOG_LEVEL_CRITICAL. You
-// should typically not set G_LOG_LEVEL_WARNING, G_LOG_LEVEL_MESSAGE,
+// This function is mostly intended to be used with G_LOG_LEVEL_CRITICAL.
+// You should typically not set G_LOG_LEVEL_WARNING, G_LOG_LEVEL_MESSAGE,
 // G_LOG_LEVEL_INFO or G_LOG_LEVEL_DEBUG as fatal except inside of test
 // programs.
 //
 // The function takes the following parameters:
 //
-//    - logDomain: log domain.
-//    - fatalMask: new fatal mask.
+//   - logDomain: log domain.
+//   - fatalMask: new fatal mask.
 //
 // The function returns the following values:
 //
-//    - logLevelFlags: old fatal mask for the log domain.
+//   - logLevelFlags: old fatal mask for the log domain.
 //
 func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 *C.gchar         // out

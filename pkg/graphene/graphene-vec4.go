@@ -70,11 +70,11 @@ func NewVec4Alloc() *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec4_t.
+//   - b: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec4) Add(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -101,11 +101,11 @@ func (a *Vec4) Add(b *Vec4) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec4_t.
+//   - b: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec4) Divide(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -130,11 +130,11 @@ func (a *Vec4) Divide(b *Vec4) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec4_t.
+//   - b: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the dot product.
+//   - gfloat: value of the dot product.
 //
 func (a *Vec4) Dot(b *Vec4) float32 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -159,11 +159,11 @@ func (a *Vec4) Dot(b *Vec4) float32 {
 //
 // The function takes the following parameters:
 //
-//    - v2: #graphene_vec4_t.
+//   - v2: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the two vectors are equal, and false otherwise.
+//   - ok: true if the two vectors are equal, and false otherwise.
 //
 func (v1 *Vec4) Equal(v2 *Vec4) bool {
 	var _arg0 *C.graphene_vec4_t // out
@@ -190,7 +190,7 @@ func (v1 *Vec4) Equal(v2 *Vec4) bool {
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the fourth component.
+//   - gfloat: value of the fourth component.
 //
 func (v *Vec4) W() float32 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -212,7 +212,7 @@ func (v *Vec4) W() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the first component.
+//   - gfloat: value of the first component.
 //
 func (v *Vec4) X() float32 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -235,7 +235,7 @@ func (v *Vec4) X() float32 {
 //
 // The function returns the following values:
 //
-//    - res: return location for a #graphene_vec2_t.
+//   - res: return location for a #graphene_vec2_t.
 //
 func (v *Vec4) XY() *Vec2 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -258,7 +258,7 @@ func (v *Vec4) XY() *Vec2 {
 //
 // The function returns the following values:
 //
-//    - res: return location for a graphene_vec3_t.
+//   - res: return location for a graphene_vec3_t.
 //
 func (v *Vec4) XYZ() *Vec3 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -280,7 +280,7 @@ func (v *Vec4) XYZ() *Vec3 {
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the second component.
+//   - gfloat: value of the second component.
 //
 func (v *Vec4) Y() float32 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -302,7 +302,7 @@ func (v *Vec4) Y() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the third component.
+//   - gfloat: value of the third component.
 //
 func (v *Vec4) Z() float32 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -326,14 +326,14 @@ func (v *Vec4) Z() float32 {
 //
 // The function takes the following parameters:
 //
-//    - x: x field of the vector.
-//    - y: y field of the vector.
-//    - z: z field of the vector.
-//    - w: w field of the vector.
+//   - x: x field of the vector.
+//   - y: y field of the vector.
+//   - z: z field of the vector.
+//   - w: w field of the vector.
 //
 // The function returns the following values:
 //
-//    - vec4: pointer to the initialized vector.
+//   - vec4: pointer to the initialized vector.
 //
 func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -368,11 +368,11 @@ func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - src: array of four floating point values.
+//   - src: array of four floating point values.
 //
 // The function returns the following values:
 //
-//    - vec4: initialized vector.
+//   - vec4: initialized vector.
 //
 func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -398,13 +398,13 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_vec2_t.
-//    - z: value for the third component of v.
-//    - w: value for the fourth component of v.
+//   - src: #graphene_vec2_t.
+//   - z: value for the third component of v.
+//   - w: value for the fourth component of v.
 //
 // The function returns the following values:
 //
-//    - vec4: initialized vector.
+//   - vec4: initialized vector.
 //
 func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -436,12 +436,12 @@ func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_vec3_t.
-//    - w: value for the fourth component of v.
+//   - src: #graphene_vec3_t.
+//   - w: value for the fourth component of v.
 //
 // The function returns the following values:
 //
-//    - vec4: initialized vector.
+//   - vec4: initialized vector.
 //
 func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -470,11 +470,11 @@ func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_vec4_t.
+//   - src: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - vec4: initialized vector.
+//   - vec4: initialized vector.
 //
 func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -499,12 +499,12 @@ func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - v2: #graphene_vec4_t.
-//    - factor: interpolation factor.
+//   - v2: #graphene_vec4_t.
+//   - factor: interpolation factor.
 //
 // The function returns the following values:
 //
-//    - res: interpolated vector.
+//   - res: interpolated vector.
 //
 func (v1 *Vec4) Interpolate(v2 *Vec4, factor float64) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -532,7 +532,7 @@ func (v1 *Vec4) Interpolate(v2 *Vec4, factor float64) *Vec4 {
 //
 // The function returns the following values:
 //
-//    - gfloat: length of the vector.
+//   - gfloat: length of the vector.
 //
 func (v *Vec4) Length() float32 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -555,11 +555,11 @@ func (v *Vec4) Length() float32 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec4_t.
+//   - b: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the result vector.
+//   - res: return location for the result vector.
 //
 func (a *Vec4) Max(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -585,11 +585,11 @@ func (a *Vec4) Max(b *Vec4) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec4_t.
+//   - b: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the result vector.
+//   - res: return location for the result vector.
 //
 func (a *Vec4) Min(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -614,11 +614,11 @@ func (a *Vec4) Min(b *Vec4) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec4_t.
+//   - b: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec4) Multiply(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -644,12 +644,12 @@ func (a *Vec4) Multiply(b *Vec4) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - v2: #graphene_vec4_t.
-//    - epsilon: threshold between the two vectors.
+//   - v2: #graphene_vec4_t.
+//   - epsilon: threshold between the two vectors.
 //
 // The function returns the following values:
 //
-//    - ok: true if the two vectors are near each other.
+//   - ok: true if the two vectors are near each other.
 //
 func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 	var _arg0 *C.graphene_vec4_t // out
@@ -679,7 +679,7 @@ func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 //
 // The function returns the following values:
 //
-//    - res: return location for the result vector.
+//   - res: return location for the result vector.
 //
 func (v *Vec4) Negate() *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -701,7 +701,7 @@ func (v *Vec4) Negate() *Vec4 {
 //
 // The function returns the following values:
 //
-//    - res: return location for the normalized vector.
+//   - res: return location for the normalized vector.
 //
 func (v *Vec4) Normalize() *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -724,11 +724,11 @@ func (v *Vec4) Normalize() *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - factor: scalar factor.
+//   - factor: scalar factor.
 //
 // The function returns the following values:
 //
-//    - res: return location for the result vector.
+//   - res: return location for the result vector.
 //
 func (v *Vec4) Scale(factor float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -755,11 +755,11 @@ func (v *Vec4) Scale(factor float32) *Vec4 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_vec4_t.
+//   - b: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the resulting vector.
+//   - res: return location for the resulting vector.
 //
 func (a *Vec4) Subtract(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
@@ -785,7 +785,7 @@ func (a *Vec4) Subtract(b *Vec4) *Vec4 {
 //
 // The function returns the following values:
 //
-//    - dest: return location for an array of floating point values.
+//   - dest: return location for an array of floating point values.
 //
 func (v *Vec4) ToFloat() [4]float32 {
 	var _arg0 *C.graphene_vec4_t // out

@@ -22,7 +22,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - quark: error quark used for PrintOperation errors.
+//   - quark: error quark used for PrintOperation errors.
 //
 func PrintErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -38,8 +38,8 @@ func PrintErrorQuark() glib.Quark {
 	return _quark
 }
 
-// PrintRunPageSetupDialog runs a page setup dialog, letting the user modify the
-// values from page_setup. If the user cancels the dialog, the returned
+// PrintRunPageSetupDialog runs a page setup dialog, letting the user modify
+// the values from page_setup. If the user cancels the dialog, the returned
 // PageSetup is identical to the passed in page_setup, otherwise it contains the
 // modifications done in the dialog.
 //
@@ -48,13 +48,13 @@ func PrintErrorQuark() glib.Quark {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): transient parent.
-//    - pageSetup (optional): existing PageSetup.
-//    - settings: PrintSettings.
+//   - parent (optional): transient parent.
+//   - pageSetup (optional): existing PageSetup.
+//   - settings: PrintSettings.
 //
 // The function returns the following values:
 //
-//    - pageSetup: new PageSetup.
+//   - pageSetup: new PageSetup.
 //
 func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *PrintSettings) *PageSetup {
 	var _arg1 *C.GtkWindow        // out
@@ -85,16 +85,16 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 // PrintRunPageSetupDialogAsync runs a page setup dialog, letting the user
 // modify the values from page_setup.
 //
-// In contrast to gtk_print_run_page_setup_dialog(), this function returns after
-// showing the page setup dialog on platforms that support this, and calls
+// In contrast to gtk_print_run_page_setup_dialog(), this function returns
+// after showing the page setup dialog on platforms that support this, and calls
 // done_cb from a signal handler for the ::response signal of the dialog.
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): transient parent, or NULL.
-//    - pageSetup (optional): existing PageSetup, or NULL.
-//    - settings: PrintSettings.
-//    - doneCb: function to call when the user saves the modified page setup.
+//   - parent (optional): transient parent, or NULL.
+//   - pageSetup (optional): existing PageSetup, or NULL.
+//   - settings: PrintSettings.
+//   - doneCb: function to call when the user saves the modified page setup.
 //
 func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings *PrintSettings, doneCb PageSetupDoneFunc) {
 	var _arg1 *C.GtkWindow           // out

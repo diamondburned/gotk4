@@ -32,10 +32,10 @@ func init() {
 //
 // !An example GtkPasswordEntry (password-entry.png)
 //
-// It does not show its contents in clear text, does not allow to copy it to the
-// clipboard, and it shows a warning when Caps Lock is engaged. If the
-// underlying platform allows it, GtkPasswordEntry will also place the text in a
-// non-pageable memory area, to avoid it being written out to disk by the
+// It does not show its contents in clear text, does not allow to copy it to
+// the clipboard, and it shows a warning when Caps Lock is engaged. If the
+// underlying platform allows it, GtkPasswordEntry will also place the text in
+// a non-pageable memory area, to avoid it being written out to disk by the
 // operating system.
 //
 // Optionally, it can offer a way to reveal the contents in clear text.
@@ -50,14 +50,12 @@ func init() {
 //        ├── image.caps-lock-indicator
 //        ┊
 //
-//
 // GtkPasswordEntry has a single CSS node with name entry that carries a
 // .passwordstyle class. The text Css node below it has a child with name image
 // and style class .caps-lock-indicator for the Caps Lock icon, and possibly
 // other children.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkPasswordEntry uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type PasswordEntry struct {
@@ -126,7 +124,7 @@ func (entry *PasswordEntry) ConnectActivate(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - passwordEntry: new GtkPasswordEntry.
+//   - passwordEntry: new GtkPasswordEntry.
 //
 func NewPasswordEntry() *PasswordEntry {
 	var _cret *C.GtkWidget // in
@@ -144,7 +142,7 @@ func NewPasswordEntry() *PasswordEntry {
 //
 // The function returns the following values:
 //
-//    - menuModel: (nullable): the menu model.
+//   - menuModel: (nullable): the menu model.
 //
 func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkPasswordEntry // out
@@ -183,7 +181,7 @@ func (entry *PasswordEntry) ExtraMenu() gio.MenuModeller {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if an icon is shown.
+//   - ok: TRUE if an icon is shown.
 //
 func (entry *PasswordEntry) ShowPeekIcon() bool {
 	var _arg0 *C.GtkPasswordEntry // out
@@ -208,7 +206,7 @@ func (entry *PasswordEntry) ShowPeekIcon() bool {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): GMenuModel.
+//   - model (optional): GMenuModel.
 //
 func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkPasswordEntry // out
@@ -231,7 +229,7 @@ func (entry *PasswordEntry) SetExtraMenu(model gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - showPeekIcon: whether to show the peek icon.
+//   - showPeekIcon: whether to show the peek icon.
 //
 func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	var _arg0 *C.GtkPasswordEntry // out

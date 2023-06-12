@@ -45,21 +45,21 @@ const (
 	// ModifierIntentExtendSelection: modifier used to extend selections using
 	// modifier-click or modifier-cursor-key.
 	ModifierIntentExtendSelection
-	// ModifierIntentModifySelection: modifier used to modify selections, which
-	// in most cases means toggling the clicked item into or out of the
+	// ModifierIntentModifySelection: modifier used to modify selections,
+	// which in most cases means toggling the clicked item into or out of the
 	// selection.
 	ModifierIntentModifySelection
-	// ModifierIntentNoTextInput: when any of these modifiers is pressed, the
-	// key event cannot produce a symbol directly. This is meant to be used for
-	// input methods, and for use cases like typeahead search.
+	// ModifierIntentNoTextInput: when any of these modifiers is pressed,
+	// the key event cannot produce a symbol directly. This is meant to be used
+	// for input methods, and for use cases like typeahead search.
 	ModifierIntentNoTextInput
 	// ModifierIntentShiftGroup: modifier that switches between keyboard groups
 	// (AltGr on X11/Windows and Option/Alt on OS X).
 	ModifierIntentShiftGroup
-	// ModifierIntentDefaultModMask: set of modifier masks accepted as modifiers
-	// in accelerators. Needed because Command is mapped to MOD2 on OSX, which
-	// is widely used, but on X11 MOD2 is NumLock and using that for a mod key
-	// is problematic at best. Ref:
+	// ModifierIntentDefaultModMask: set of modifier masks accepted as
+	// modifiers in accelerators. Needed because Command is mapped to
+	// MOD2 on OSX, which is widely used, but on X11 MOD2 is NumLock
+	// and using that for a mod key is problematic at best. Ref:
 	// https://bugzilla.gnome.org/show_bug.cgi?id=736125.
 	ModifierIntentDefaultModMask
 )

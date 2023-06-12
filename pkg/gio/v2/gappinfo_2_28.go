@@ -20,11 +20,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type to find a Info for.
+//   - contentType: content type to find a Info for.
 //
 // The function returns the following values:
 //
-//    - list of Infos for given content_type or NULL on error.
+//   - list of Infos for given content_type or NULL on error.
 //
 func AppInfoGetFallbackForType(contentType string) []*AppInfo {
 	var _arg1 *C.gchar // out
@@ -57,11 +57,11 @@ func AppInfoGetFallbackForType(contentType string) []*AppInfo {
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type to find a Info for.
+//   - contentType: content type to find a Info for.
 //
 // The function returns the following values:
 //
-//    - list of Infos for given content_type or NULL on error.
+//   - list of Infos for given content_type or NULL on error.
 //
 func AppInfoGetRecommendedForType(contentType string) []*AppInfo {
 	var _arg1 *C.gchar // out

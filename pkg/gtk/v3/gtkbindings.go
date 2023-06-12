@@ -23,13 +23,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - object to activate when binding found.
-//    - keyval: key value of the binding.
-//    - modifiers: key modifier of the binding.
+//   - object to activate when binding found.
+//   - keyval: key value of the binding.
+//   - modifiers: key modifier of the binding.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a binding was found and activated.
+//   - ok: TRUE if a binding was found and activated.
 //
 func BindingsActivate(object *coreglib.Object, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GObject        // out
@@ -148,11 +148,11 @@ func (b *BindingEntry) SetKeyval(keyval uint) {
 //
 // The function takes the following parameters:
 //
-//    - bindingSet to add a signal to.
-//    - keyval: key value.
-//    - modifiers: key modifier.
-//    - signalName: signal name to be bound.
-//    - bindingArgs: list of BindingArg signal arguments.
+//   - bindingSet to add a signal to.
+//   - keyval: key value.
+//   - modifiers: key modifier.
+//   - signalName: signal name to be bound.
+//   - bindingArgs: list of BindingArg signal arguments.
 //
 func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType, signalName string, bindingArgs []*BindingArg) {
 	var _arg1 *C.GtkBindingSet  // out
@@ -187,9 +187,9 @@ func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.M
 //
 // The function takes the following parameters:
 //
-//    - bindingSet to remove an entry of.
-//    - keyval: key value of binding to remove.
-//    - modifiers: key modifier of binding to remove.
+//   - bindingSet to remove an entry of.
+//   - keyval: key value of binding to remove.
+//   - modifiers: key modifier of binding to remove.
 //
 func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType) {
 	var _arg1 *C.GtkBindingSet  // out
@@ -206,9 +206,9 @@ func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.Modif
 	runtime.KeepAlive(modifiers)
 }
 
-// BindingSet: binding set maintains a list of activatable key bindings. A
-// single binding set can match multiple types of widgets. Similar to style
-// contexts, can be matched by any information contained in a widgets
+// BindingSet: binding set maintains a list of activatable key bindings.
+// A single binding set can match multiple types of widgets. Similar to
+// style contexts, can be matched by any information contained in a widgets
 // WidgetPath. When a binding within a set is matched upon activation, an action
 // signal is emitted on the target widget to carry out the actual activation.
 //
@@ -265,13 +265,13 @@ func (b *BindingSet) SetPriority(priority int) {
 //
 // The function takes the following parameters:
 //
-//    - keyval: key value of the binding.
-//    - modifiers: key modifier of the binding.
-//    - object to activate when binding found.
+//   - keyval: key value of the binding.
+//   - modifiers: key modifier of the binding.
+//   - object to activate when binding found.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a binding was found and activated.
+//   - ok: TRUE if a binding was found and activated.
 //
 func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object *coreglib.Object) bool {
 	var _arg0 *C.GtkBindingSet  // out
@@ -309,9 +309,9 @@ func (bindingSet *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, 
 //
 // The function takes the following parameters:
 //
-//    - pathType: path type the pattern applies to.
-//    - pathPattern: actual match pattern.
-//    - priority: binding priority.
+//   - pathType: path type the pattern applies to.
+//   - pathPattern: actual match pattern.
+//   - priority: binding priority.
 //
 func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, priority PathPriorityType) {
 	var _arg0 *C.GtkBindingSet      // out
@@ -339,11 +339,11 @@ func (bindingSet *BindingSet) AddPath(pathType PathType, pathPattern string, pri
 //
 // The function takes the following parameters:
 //
-//    - setName: unique binding set name.
+//   - setName: unique binding set name.
 //
 // The function returns the following values:
 //
-//    - bindingSet (optional): NULL or the specified binding set.
+//   - bindingSet (optional): NULL or the specified binding set.
 //
 func BindingSetFind(setName string) *BindingSet {
 	var _arg1 *C.gchar         // out

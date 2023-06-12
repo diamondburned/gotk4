@@ -6,8 +6,8 @@ package atk
 // #include <atk/atk.h>
 import "C"
 
-// VERSION_MIN_REQUIRED: macro that should be defined by the user prior to
-// including the atk/atk.h header. The definition should be one of the
+// VERSION_MIN_REQUIRED: macro that should be defined by the user prior
+// to including the atk/atk.h header. The definition should be one of the
 // predefined ATK version macros: ATK_VERSION_2_12, ATK_VERSION_2_14,...
 //
 // This macro defines the earliest version of ATK that the package is required

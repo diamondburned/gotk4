@@ -100,148 +100,148 @@ func init() {
 type ThemingEngineOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	RenderActivity func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - angle
-	//    - x
-	//    - y
-	//    - size
+	//   - cr
+	//   - angle
+	//   - x
+	//   - y
+	//   - size
 	//
 	RenderArrow func(cr *cairo.Context, angle, x, y, size float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	RenderBackground func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	RenderCheck func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	RenderExpander func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//    - gapSide
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
+	//   - gapSide
 	//
 	RenderExtension func(cr *cairo.Context, x, y, width, height float64, gapSide PositionType)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	RenderFocus func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	RenderFrame func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//    - gapSide
-	//    - xy0Gap
-	//    - xy1Gap
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
+	//   - gapSide
+	//   - xy0Gap
+	//   - xy1Gap
 	//
 	RenderFrameGap func(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	RenderHandle func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - pixbuf
-	//    - x
-	//    - y
+	//   - cr
+	//   - pixbuf
+	//   - x
+	//   - y
 	//
 	RenderIcon func(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - surface
-	//    - x
-	//    - y
+	//   - cr
+	//   - surface
+	//   - x
+	//   - y
 	//
 	RenderIconSurface func(cr *cairo.Context, surface *cairo.Surface, x, y float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - layout
+	//   - cr
+	//   - x
+	//   - y
+	//   - layout
 	//
 	RenderLayout func(cr *cairo.Context, x, y float64, layout *pango.Layout)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x0
-	//    - y0
-	//    - x1
-	//    - y1
+	//   - cr
+	//   - x0
+	//   - y0
+	//   - x1
+	//   - y1
 	//
 	RenderLine func(cr *cairo.Context, x0, y0, x1, y1 float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
 	//
 	RenderOption func(cr *cairo.Context, x, y, width, height float64)
 	// The function takes the following parameters:
 	//
-	//    - cr
-	//    - x
-	//    - y
-	//    - width
-	//    - height
-	//    - orientation
+	//   - cr
+	//   - x
+	//   - y
+	//   - width
+	//   - height
+	//   - orientation
 	//
 	RenderSlider func(cr *cairo.Context, x, y, width, height float64, orientation Orientation)
 }
@@ -381,11 +381,11 @@ func marshalThemingEngine(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the color for.
+//   - state to retrieve the color for.
 //
 // The function returns the following values:
 //
-//    - color: return value for the background color.
+//   - color: return value for the background color.
 //
 func (engine *ThemingEngine) BackgroundColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
@@ -412,11 +412,11 @@ func (engine *ThemingEngine) BackgroundColor(state StateFlags) *gdk.RGBA {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the border for.
+//   - state to retrieve the border for.
 //
 // The function returns the following values:
 //
-//    - border: return value for the border settings.
+//   - border: return value for the border settings.
 //
 func (engine *ThemingEngine) Border(state StateFlags) *Border {
 	var _arg0 *C.GtkThemingEngine // out
@@ -443,11 +443,11 @@ func (engine *ThemingEngine) Border(state StateFlags) *Border {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the color for.
+//   - state to retrieve the color for.
 //
 // The function returns the following values:
 //
-//    - color: return value for the border color.
+//   - color: return value for the border color.
 //
 func (engine *ThemingEngine) BorderColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
@@ -474,11 +474,11 @@ func (engine *ThemingEngine) BorderColor(state StateFlags) *gdk.RGBA {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the color for.
+//   - state to retrieve the color for.
 //
 // The function returns the following values:
 //
-//    - color: return value for the foreground color.
+//   - color: return value for the foreground color.
 //
 func (engine *ThemingEngine) Color(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkThemingEngine // out
@@ -506,7 +506,7 @@ func (engine *ThemingEngine) Color(state StateFlags) *gdk.RGBA {
 //
 // The function returns the following values:
 //
-//    - textDirection: widget direction.
+//   - textDirection: widget direction.
 //
 func (engine *ThemingEngine) Direction() TextDirection {
 	var _arg0 *C.GtkThemingEngine // out
@@ -530,12 +530,12 @@ func (engine *ThemingEngine) Direction() TextDirection {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the font for.
+//   - state to retrieve the font for.
 //
 // The function returns the following values:
 //
-//    - fontDescription for the given state. This object is owned by GTK+ and
-//      should not be freed.
+//   - fontDescription for the given state. This object is owned by GTK+ and
+//     should not be freed.
 //
 func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
 	var _arg0 *C.GtkThemingEngine     // out
@@ -562,7 +562,7 @@ func (engine *ThemingEngine) Font(state StateFlags) *pango.FontDescription {
 //
 // The function returns the following values:
 //
-//    - junctionSides: widget direction.
+//   - junctionSides: widget direction.
 //
 func (engine *ThemingEngine) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkThemingEngine // out
@@ -586,11 +586,11 @@ func (engine *ThemingEngine) JunctionSides() JunctionSides {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the border for.
+//   - state to retrieve the border for.
 //
 // The function returns the following values:
 //
-//    - margin: return value for the margin settings.
+//   - margin: return value for the margin settings.
 //
 func (engine *ThemingEngine) Margin(state StateFlags) *Border {
 	var _arg0 *C.GtkThemingEngine // out
@@ -617,11 +617,11 @@ func (engine *ThemingEngine) Margin(state StateFlags) *Border {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the padding for.
+//   - state to retrieve the padding for.
 //
 // The function returns the following values:
 //
-//    - padding: return value for the padding settings.
+//   - padding: return value for the padding settings.
 //
 func (engine *ThemingEngine) Padding(state StateFlags) *Border {
 	var _arg0 *C.GtkThemingEngine // out
@@ -648,7 +648,7 @@ func (engine *ThemingEngine) Padding(state StateFlags) *Border {
 //
 // The function returns the following values:
 //
-//    - widgetPath: WidgetPath.
+//   - widgetPath: WidgetPath.
 //
 func (engine *ThemingEngine) Path() *WidgetPath {
 	var _arg0 *C.GtkThemingEngine // out
@@ -680,13 +680,13 @@ func (engine *ThemingEngine) Path() *WidgetPath {
 //
 // The function takes the following parameters:
 //
-//    - property name.
-//    - state to retrieve the value for.
+//   - property name.
+//   - state to retrieve the value for.
 //
 // The function returns the following values:
 //
-//    - value: return location for the property value, you must free this memory
-//      using g_value_unset() once you are done with it.
+//   - value: return location for the property value, you must free this memory
+//     using g_value_unset() once you are done with it.
 //
 func (engine *ThemingEngine) Property(property string, state StateFlags) coreglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
@@ -720,7 +720,7 @@ func (engine *ThemingEngine) Property(property string, state StateFlags) coregli
 //
 // The function returns the following values:
 //
-//    - screen (optional) or NULL.
+//   - screen (optional) or NULL.
 //
 func (engine *ThemingEngine) Screen() *gdk.Screen {
 	var _arg0 *C.GtkThemingEngine // out
@@ -751,7 +751,7 @@ func (engine *ThemingEngine) Screen() *gdk.Screen {
 //
 // The function returns the following values:
 //
-//    - stateFlags: state flags.
+//   - stateFlags: state flags.
 //
 func (engine *ThemingEngine) State() StateFlags {
 	var _arg0 *C.GtkThemingEngine // out
@@ -775,12 +775,12 @@ func (engine *ThemingEngine) State() StateFlags {
 //
 // The function takes the following parameters:
 //
-//    - propertyName: name of the widget style property.
+//   - propertyName: name of the widget style property.
 //
 // The function returns the following values:
 //
-//    - value: return location for the property value, free with g_value_unset()
-//      after use.
+//   - value: return location for the property value, free with g_value_unset()
+//     after use.
 //
 func (engine *ThemingEngine) StyleProperty(propertyName string) coreglib.Value {
 	var _arg0 *C.GtkThemingEngine // out
@@ -809,11 +809,11 @@ func (engine *ThemingEngine) StyleProperty(propertyName string) coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - styleClass class name to look up.
+//   - styleClass class name to look up.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if engine has class_name defined.
+//   - ok: TRUE if engine has class_name defined.
 //
 func (engine *ThemingEngine) HasClass(styleClass string) bool {
 	var _arg0 *C.GtkThemingEngine // out
@@ -845,12 +845,12 @@ func (engine *ThemingEngine) HasClass(styleClass string) bool {
 //
 // The function takes the following parameters:
 //
-//    - styleRegion: region name.
+//   - styleRegion: region name.
 //
 // The function returns the following values:
 //
-//    - flags (optional): return location for region flags.
-//    - ok: TRUE if region is defined.
+//   - flags (optional): return location for region flags.
+//   - ok: TRUE if region is defined.
 //
 func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 	var _arg0 *C.GtkThemingEngine // out
@@ -884,12 +884,12 @@ func (engine *ThemingEngine) HasRegion(styleRegion string) (RegionFlags, bool) {
 //
 // The function takes the following parameters:
 //
-//    - colorName: color name to lookup.
+//   - colorName: color name to lookup.
 //
 // The function returns the following values:
 //
-//    - color: return location for the looked up color.
-//    - ok: TRUE if color_name was found and resolved, FALSE otherwise.
+//   - color: return location for the looked up color.
+//   - ok: TRUE if color_name was found and resolved, FALSE otherwise.
 //
 func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkThemingEngine // out
@@ -919,21 +919,21 @@ func (engine *ThemingEngine) LookupColor(colorName string) (*gdk.RGBA, bool) {
 // StateIsRunning returns TRUE if there is a transition animation running for
 // the current region (see gtk_style_context_push_animatable_region()).
 //
-// If progress is not NULL, the animation progress will be returned there, 0.0
-// means the state is closest to being FALSE, while 1.0 means it’s closest to
-// being TRUE. This means transition animations will run from 0 to 1 when state
-// is being set to TRUE and from 1 to 0 when it’s being set to FALSE.
+// If progress is not NULL, the animation progress will be returned there,
+// 0.0 means the state is closest to being FALSE, while 1.0 means it’s closest
+// to being TRUE. This means transition animations will run from 0 to 1 when
+// state is being set to TRUE and from 1 to 0 when it’s being set to FALSE.
 //
 // Deprecated: Always returns FALSE.
 //
 // The function takes the following parameters:
 //
-//    - state: widget state.
+//   - state: widget state.
 //
 // The function returns the following values:
 //
-//    - progress: return location for the transition progress.
-//    - ok: TRUE if there is a running transition animation for state.
+//   - progress: return location for the transition progress.
+//   - ok: TRUE if there is a running transition animation for state.
 //
 func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 	var _arg0 *C.GtkThemingEngine // out
@@ -961,11 +961,11 @@ func (engine *ThemingEngine) StateIsRunning(state StateType) (float64, bool) {
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (engine *ThemingEngine) renderActivity(cr *cairo.Context, x, y, width, height float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -996,11 +996,11 @@ func (engine *ThemingEngine) renderActivity(cr *cairo.Context, x, y, width, heig
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - angle
-//    - x
-//    - y
-//    - size
+//   - cr
+//   - angle
+//   - x
+//   - y
+//   - size
 //
 func (engine *ThemingEngine) renderArrow(cr *cairo.Context, angle, x, y, size float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1031,11 +1031,11 @@ func (engine *ThemingEngine) renderArrow(cr *cairo.Context, angle, x, y, size fl
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (engine *ThemingEngine) renderBackground(cr *cairo.Context, x, y, width, height float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1066,11 +1066,11 @@ func (engine *ThemingEngine) renderBackground(cr *cairo.Context, x, y, width, he
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (engine *ThemingEngine) renderCheck(cr *cairo.Context, x, y, width, height float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1101,11 +1101,11 @@ func (engine *ThemingEngine) renderCheck(cr *cairo.Context, x, y, width, height 
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (engine *ThemingEngine) renderExpander(cr *cairo.Context, x, y, width, height float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1136,12 +1136,12 @@ func (engine *ThemingEngine) renderExpander(cr *cairo.Context, x, y, width, heig
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
-//    - gapSide
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
+//   - gapSide
 //
 func (engine *ThemingEngine) renderExtension(cr *cairo.Context, x, y, width, height float64, gapSide PositionType) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1175,11 +1175,11 @@ func (engine *ThemingEngine) renderExtension(cr *cairo.Context, x, y, width, hei
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (engine *ThemingEngine) renderFocus(cr *cairo.Context, x, y, width, height float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1210,11 +1210,11 @@ func (engine *ThemingEngine) renderFocus(cr *cairo.Context, x, y, width, height 
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (engine *ThemingEngine) renderFrame(cr *cairo.Context, x, y, width, height float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1245,14 +1245,14 @@ func (engine *ThemingEngine) renderFrame(cr *cairo.Context, x, y, width, height 
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
-//    - gapSide
-//    - xy0Gap
-//    - xy1Gap
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
+//   - gapSide
+//   - xy0Gap
+//   - xy1Gap
 //
 func (engine *ThemingEngine) renderFrameGap(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1292,11 +1292,11 @@ func (engine *ThemingEngine) renderFrameGap(cr *cairo.Context, x, y, width, heig
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (engine *ThemingEngine) renderHandle(cr *cairo.Context, x, y, width, height float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1327,10 +1327,10 @@ func (engine *ThemingEngine) renderHandle(cr *cairo.Context, x, y, width, height
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - pixbuf
-//    - x
-//    - y
+//   - cr
+//   - pixbuf
+//   - x
+//   - y
 //
 func (engine *ThemingEngine) renderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1358,10 +1358,10 @@ func (engine *ThemingEngine) renderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pix
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - surface
-//    - x
-//    - y
+//   - cr
+//   - surface
+//   - x
+//   - y
 //
 func (engine *ThemingEngine) renderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1389,10 +1389,10 @@ func (engine *ThemingEngine) renderIconSurface(cr *cairo.Context, surface *cairo
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - layout
+//   - cr
+//   - x
+//   - y
+//   - layout
 //
 func (engine *ThemingEngine) renderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1420,11 +1420,11 @@ func (engine *ThemingEngine) renderLayout(cr *cairo.Context, x, y float64, layou
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x0
-//    - y0
-//    - x1
-//    - y1
+//   - cr
+//   - x0
+//   - y0
+//   - x1
+//   - y1
 //
 func (engine *ThemingEngine) renderLine(cr *cairo.Context, x0, y0, x1, y1 float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1455,11 +1455,11 @@ func (engine *ThemingEngine) renderLine(cr *cairo.Context, x0, y0, x1, y1 float6
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
 //
 func (engine *ThemingEngine) renderOption(cr *cairo.Context, x, y, width, height float64) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1490,12 +1490,12 @@ func (engine *ThemingEngine) renderOption(cr *cairo.Context, x, y, width, height
 
 // The function takes the following parameters:
 //
-//    - cr
-//    - x
-//    - y
-//    - width
-//    - height
-//    - orientation
+//   - cr
+//   - x
+//   - y
+//   - width
+//   - height
+//   - orientation
 //
 func (engine *ThemingEngine) renderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation) {
 	gclass := (*C.GtkThemingEngineClass)(coreglib.PeekParentClass(engine))
@@ -1534,12 +1534,12 @@ func (engine *ThemingEngine) renderSlider(cr *cairo.Context, x, y, width, height
 //
 // The function takes the following parameters:
 //
-//    - name: theme engine name to load.
+//   - name: theme engine name to load.
 //
 // The function returns the following values:
 //
-//    - themingEngine (optional): theming engine, or NULL if the engine name
-//      doesn’t exist.
+//   - themingEngine (optional): theming engine, or NULL if the engine name
+//     doesn’t exist.
 //
 func ThemingEngineLoad(name string) *ThemingEngine {
 	var _arg1 *C.gchar            // out

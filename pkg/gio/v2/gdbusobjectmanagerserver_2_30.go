@@ -34,25 +34,25 @@ func defaultDBusObjectManagerServerOverrides(v *DBusObjectManagerServer) DBusObj
 	return DBusObjectManagerServerOverrides{}
 }
 
-// DBusObjectManagerServer is used to export BusObject instances using the
-// standardized org.freedesktop.DBus.ObjectManager
+// DBusObjectManagerServer is used to export BusObject instances
+// using the standardized org.freedesktop.DBus.ObjectManager
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // interface. For example, remote D-Bus clients can get all objects and
 // properties in a single call. Additionally, any change in the object hierarchy
 // is broadcast using signals. This means that D-Bus clients can keep caches up
 // to date by only listening to D-Bus signals.
 //
-// The recommended path to export an object manager at is the path form of the
-// well-known name of a D-Bus service, or below. For example, if a D-Bus service
-// is available at the well-known name net.example.ExampleService1, the object
-// manager should typically be exported at /net/example/ExampleService1, or
-// below (to allow for multiple object managers in a service).
+// The recommended path to export an object manager at is the path form of
+// the well-known name of a D-Bus service, or below. For example, if a D-Bus
+// service is available at the well-known name net.example.ExampleService1, the
+// object manager should typically be exported at /net/example/ExampleService1,
+// or below (to allow for multiple object managers in a service).
 //
 // It is supported, but not recommended, to export an object manager at the root
 // path, /.
 //
-// See BusObjectManagerClient for the client-side code that is intended to be
-// used with BusObjectManagerServer or any D-Bus object implementing the
+// See BusObjectManagerClient for the client-side code that is intended to
+// be used with BusObjectManagerServer or any D-Bus object implementing the
 // org.freedesktop.DBus.ObjectManager interface.
 type DBusObjectManagerServer struct {
 	_ [0]func() // equal guard
@@ -96,19 +96,19 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 
 // NewDBusObjectManagerServer creates a new BusObjectManagerServer object.
 //
-// The returned server isn't yet exported on any connection. To do so, use
-// g_dbus_object_manager_server_set_connection(). Normally you want to export
-// all of your objects before doing so to avoid InterfacesAdded
+// The returned server isn't yet exported on any connection. To do so,
+// use g_dbus_object_manager_server_set_connection(). Normally you want
+// to export all of your objects before doing so to avoid InterfacesAdded
 // (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // signals being emitted.
 //
 // The function takes the following parameters:
 //
-//    - objectPath: object path to export the manager object at.
+//   - objectPath: object path to export the manager object at.
 //
 // The function returns the following values:
 //
-//    - dBusObjectManagerServer object. Free with g_object_unref().
+//   - dBusObjectManagerServer object. Free with g_object_unref().
 //
 func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	var _arg1 *C.gchar                    // out
@@ -140,7 +140,7 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 //
 // The function takes the following parameters:
 //
-//    - object: BusObjectSkeleton.
+//   - object: BusObjectSkeleton.
 //
 func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
@@ -154,14 +154,14 @@ func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 	runtime.KeepAlive(object)
 }
 
-// ExportUniquely: like g_dbus_object_manager_server_export() but appends a
-// string of the form _N (with N being a natural number) to object's object path
-// if an object with the given path already exists. As such, the
-// BusObjectProxy:g-object-path property of object may be modified.
+// ExportUniquely: like g_dbus_object_manager_server_export() but appends
+// a string of the form _N (with N being a natural number) to object's
+// object path if an object with the given path already exists. As such,
+// the BusObjectProxy:g-object-path property of object may be modified.
 //
 // The function takes the following parameters:
 //
-//    - object: object.
+//   - object: object.
 //
 func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
@@ -179,8 +179,8 @@ func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleto
 //
 // The function returns the following values:
 //
-//    - dBusConnection object or NULL if manager isn't exported on a connection.
-//      The returned object should be freed with g_object_unref().
+//   - dBusConnection object or NULL if manager isn't exported on a connection.
+//     The returned object should be freed with g_object_unref().
 //
 func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectManagerServer // out
@@ -202,11 +202,11 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 //
 // The function takes the following parameters:
 //
-//    - object: object.
+//   - object: object.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if object is exported.
+//   - ok: TRUE if object is exported.
 //
 func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
@@ -229,12 +229,12 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 	return _ok
 }
 
-// SetConnection exports all objects managed by manager on connection. If
-// connection is NULL, stops exporting objects.
+// SetConnection exports all objects managed by manager on connection.
+// If connection is NULL, stops exporting objects.
 //
 // The function takes the following parameters:
 //
-//    - connection (optional) or NULL.
+//   - connection (optional) or NULL.
 //
 func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
@@ -258,11 +258,11 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 //
 // The function takes the following parameters:
 //
-//    - objectPath: object path.
+//   - objectPath: object path.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if object at object_path was removed, FALSE otherwise.
+//   - ok: TRUE if object at object_path was removed, FALSE otherwise.
 //
 func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out

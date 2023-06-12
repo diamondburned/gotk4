@@ -15,10 +15,10 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// RCResetStyles: this function recomputes the styles for all widgets that use a
-// particular Settings object. (There is one Settings object per Screen, see
-// gtk_settings_get_for_screen()); It is useful when some global parameter has
-// changed that affects the appearance of all widgets, because when a widget
+// RCResetStyles: this function recomputes the styles for all widgets that use
+// a particular Settings object. (There is one Settings object per Screen,
+// see gtk_settings_get_for_screen()); It is useful when some global parameter
+// has changed that affects the appearance of all widgets, because when a widget
 // gets a new style, it will both redraw and recompute any cached information
 // about its appearance. As an example, it is used when the default font size
 // set by the operating system changes. Note that this function doesn’t affect
@@ -28,7 +28,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - settings: Settings.
+//   - settings: Settings.
 //
 func RCResetStyles(settings *Settings) {
 	var _arg1 *C.GtkSettings // out

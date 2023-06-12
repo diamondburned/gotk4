@@ -118,14 +118,14 @@ type ApplicationOverrides struct {
 	CommandLine func(commandLine *ApplicationCommandLine) int
 	// The function takes the following parameters:
 	//
-	//    - connection
-	//    - objectPath
+	//   - connection
+	//   - objectPath
 	//
 	DBusRegister func(connection *DBusConnection, objectPath string) error
 	// The function takes the following parameters:
 	//
-	//    - connection
-	//    - objectPath
+	//   - connection
+	//   - objectPath
 	//
 	DBusUnregister func(connection *DBusConnection, objectPath string)
 	// The function takes the following parameters:
@@ -143,8 +143,8 @@ type ApplicationOverrides struct {
 	//
 	// n_files must be greater than zero.
 	//
-	// hint is simply passed through to the ::open signal. It is intended to be
-	// used by applications that have multiple modes for opening files (eg:
+	// hint is simply passed through to the ::open signal. It is intended to
+	// be used by applications that have multiple modes for opening files (eg:
 	// "view" vs "edit", etc). Unless you have a need for this functionality,
 	// you should use "".
 	//
@@ -153,8 +153,8 @@ type ApplicationOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - files: array of #GFiles to open.
-	//    - hint (or ""), but never NULL.
+	//   - files: array of #GFiles to open.
+	//   - hint (or ""), but never NULL.
 	//
 	Open         func(files []Filer, hint string)
 	QuitMainloop func()
@@ -197,9 +197,9 @@ func defaultApplicationOverrides(v *Application) ApplicationOverrides {
 // Another feature that GApplication (optionally) provides is process
 // uniqueness. Applications can make use of this functionality by providing a
 // unique application ID. If given, only one application with this ID can be
-// running at a time per session. The session concept is platform-dependent, but
-// corresponds roughly to a graphical desktop login. When your application is
-// launched again, its arguments are passed through platform communication to
+// running at a time per session. The session concept is platform-dependent,
+// but corresponds roughly to a graphical desktop login. When your application
+// is launched again, its arguments are passed through platform communication to
 // the already running program. The already running instance of the program is
 // called the "primary instance"; for non-unique applications this is always the
 // current instance. On Linux, the D-Bus session bus is used for communication.
@@ -209,27 +209,27 @@ func defaultApplicationOverrides(v *Application) ApplicationOverrides {
 // expected to manually register itself and check if it is the primary instance.
 // Instead, the main() function of a #GApplication should do very little more
 // than instantiating the application instance, possibly connecting signal
-// handlers, then calling g_application_run(). All checks for uniqueness are
-// done internally. If the application is the primary instance then the startup
-// signal is emitted and the mainloop runs. If the application is not the
-// primary instance then a signal is sent to the primary instance and
+// handlers, then calling g_application_run(). All checks for uniqueness
+// are done internally. If the application is the primary instance then the
+// startup signal is emitted and the mainloop runs. If the application is
+// not the primary instance then a signal is sent to the primary instance and
 // g_application_run() promptly returns. See the code examples below.
 //
-// If used, the expected form of an application identifier is the same as that
-// of of a D-Bus well-known bus name
+// If used, the expected form of an application identifier
+// is the same as that of of a D-Bus well-known bus name
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
 // Examples include: com.example.MyApp, org.example.internal_apps.Calculator,
 // org._7_zip.Archiver. For details on valid application identifiers, see
 // g_application_id_is_valid().
 //
 // On Linux, the application identifier is claimed as a well-known bus name on
-// the user's session bus. This means that the uniqueness of your application is
-// scoped to the current session. It also means that your application may
+// the user's session bus. This means that the uniqueness of your application
+// is scoped to the current session. It also means that your application may
 // provide additional services (through registration of other object paths) at
-// that bus name. The registration of these object paths should be done with the
-// shared GDBus session bus. Note that due to the internal architecture of
-// GDBus, method calls can be dispatched at any time (even if a main loop is not
-// running). For this reason, you must ensure that any object paths that you
+// that bus name. The registration of these object paths should be done with
+// the shared GDBus session bus. Note that due to the internal architecture of
+// GDBus, method calls can be dispatched at any time (even if a main loop is
+// not running). For this reason, you must ensure that any object paths that you
 // wish to register are registered before #GApplication attempts to acquire the
 // bus name of your application (which happens in g_application_register()).
 // Unfortunately, this means that you cannot use g_application_get_is_remote()
@@ -257,18 +257,18 @@ func defaultApplicationOverrides(v *Application) ApplicationOverrides {
 // initialization for all of these in a single place.
 //
 // Regardless of which of these entry points is used to start the application,
-// GApplication passes some ‘platform data’ from the launching instance to the
-// primary instance, in the form of a #GVariant dictionary mapping strings to
-// variants. To use platform data, override the before_emit or after_emit
-// virtual functions in your #GApplication subclass. When dealing with
-// CommandLine objects, the platform data is directly available via
-// g_application_command_line_get_cwd(),
+// GApplication passes some ‘platform data’ from the launching instance
+// to the primary instance, in the form of a #GVariant dictionary
+// mapping strings to variants. To use platform data, override the
+// before_emit or after_emit virtual functions in your #GApplication
+// subclass. When dealing with CommandLine objects, the platform data
+// is directly available via g_application_command_line_get_cwd(),
 // g_application_command_line_get_environ() and
 // g_application_command_line_get_platform_data().
 //
-// As the name indicates, the platform data may vary depending on the operating
-// system, but it always includes the current directory (key "cwd"), and
-// optionally the environment (ie the set of environment variables and their
+// As the name indicates, the platform data may vary depending on the
+// operating system, but it always includes the current directory (key "cwd"),
+// and optionally the environment (ie the set of environment variables and their
 // values) of the calling process (key "environ"). The environment is only added
 // to the platform data if the G_APPLICATION_SEND_ENVIRONMENT flag is set.
 // #GApplication subclasses can add their own platform data by overriding the
@@ -279,16 +279,16 @@ func defaultApplicationOverrides(v *Application) ApplicationOverrides {
 // signal or override the local_command_line() vfunc, to parse them in either
 // the primary instance or the local instance, respectively.
 //
-// For an example of opening files with a GApplication, see
-// gapplication-example-open.c
+// For an example of opening files with a
+// GApplication, see gapplication-example-open.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-open.c).
 //
-// For an example of using actions with GApplication, see
-// gapplication-example-actions.c
+// For an example of using actions with GApplication,
+// see gapplication-example-actions.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-actions.c).
 //
-// For an example of using extra D-Bus hooks with GApplication, see
-// gapplication-example-dbushooks.c
+// For an example of using extra D-Bus hooks with
+// GApplication, see gapplication-example-dbushooks.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
 type Application struct {
 	_ [0]func() // equal guard
@@ -411,25 +411,25 @@ func (application *Application) ConnectCommandLine(f func(commandLine *Applicati
 // You can add options to be recognised during commandline option parsing using
 // g_application_add_main_option_entries() and g_application_add_option_group().
 //
-// Signal handlers can inspect options (along with values pointed to from the
-// arg_data of an installed Entrys) in order to decide to perform certain
+// Signal handlers can inspect options (along with values pointed to from
+// the arg_data of an installed Entrys) in order to decide to perform certain
 // actions, including direct local handling (which may be useful for options
 // like --version).
 //
 // In the event that the application is marked
-// G_APPLICATION_HANDLES_COMMAND_LINE the "normal processing" will send the
-// options dictionary to the primary instance where it can be read with
+// G_APPLICATION_HANDLES_COMMAND_LINE the "normal processing" will send
+// the options dictionary to the primary instance where it can be read with
 // g_application_command_line_get_options_dict(). The signal handler can modify
 // the dictionary before returning, and the modified dictionary will be sent.
 //
 // In the event that G_APPLICATION_HANDLES_COMMAND_LINE is not set, "normal
 // processing" will treat the remaining uncollected command line arguments as
-// filenames or URIs. If there are no arguments, the application is activated by
-// g_application_activate(). One or more arguments results in a call to
+// filenames or URIs. If there are no arguments, the application is activated
+// by g_application_activate(). One or more arguments results in a call to
 // g_application_open().
 //
-// If you want to handle the local commandline arguments for yourself by
-// converting them to calls to g_application_open() or
+// If you want to handle the local commandline arguments for
+// yourself by converting them to calls to g_application_open() or
 // g_action_group_activate_action() then you must be sure to register the
 // application first. You should probably not call g_application_activate() for
 // yourself, however: just return -1 and allow the default handler to do it for
@@ -483,12 +483,12 @@ func (application *Application) ConnectStartup(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - applicationId (optional): application id.
-//    - flags: application flags.
+//   - applicationId (optional): application id.
+//   - flags: application flags.
 //
 // The function returns the following values:
 //
-//    - application: new #GApplication instance.
+//   - application: new #GApplication instance.
 //
 func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 	var _arg1 *C.gchar            // out
@@ -534,21 +534,21 @@ func (application *Application) Activate() {
 // arg_data member set to NULL.
 //
 // The parsed arguments will be packed into a Dict which is passed to
-// #GApplication::handle-local-options. If G_APPLICATION_HANDLES_COMMAND_LINE is
-// set, then it will also be sent to the primary instance. See
+// #GApplication::handle-local-options. If G_APPLICATION_HANDLES_COMMAND_LINE
+// is set, then it will also be sent to the primary instance. See
 // g_application_add_main_option_entries() for more details.
 //
 // See Entry for more documentation of the arguments.
 //
 // The function takes the following parameters:
 //
-//    - longName: long name of an option used to specify it in a commandline.
-//    - shortName: short name of an option.
-//    - flags from Flags.
-//    - arg: type of the option, as a Arg.
-//    - description for the option in --help output.
-//    - argDescription (optional): placeholder to use for the extra argument
-//      parsed by the option in --help output.
+//   - longName: long name of an option used to specify it in a commandline.
+//   - shortName: short name of an option.
+//   - flags from Flags.
+//   - arg: type of the option, as a Arg.
+//   - description for the option in --help output.
+//   - argDescription (optional): placeholder to use for the extra argument
+//     parsed by the option in --help output.
 //
 func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description, argDescription string) {
 	var _arg0 *C.GApplication // out
@@ -603,24 +603,24 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 // a flag is missing).
 //
 // In general, it is recommended that all commandline arguments are parsed
-// locally. The options dictionary should then be used to transmit the result of
-// the parsing to the primary instance, where g_variant_dict_lookup() can be
-// used. For local options, it is possible to either use arg_data in the usual
-// way, or to consult (and potentially remove) the option from the options
+// locally. The options dictionary should then be used to transmit the result
+// of the parsing to the primary instance, where g_variant_dict_lookup() can
+// be used. For local options, it is possible to either use arg_data in the
+// usual way, or to consult (and potentially remove) the option from the options
 // dictionary.
 //
-// This function is new in GLib 2.40. Before then, the only real choice was to
-// send all of the commandline arguments (options and all) to the primary
-// instance for handling. #GApplication ignored them completely on the local
-// side. Calling this function "opts in" to the new behaviour, and in
-// particular, means that unrecognised options will be treated as errors.
-// Unrecognised options have never been ignored when
+// This function is new in GLib 2.40. Before then, the only real choice
+// was to send all of the commandline arguments (options and all) to the
+// primary instance for handling. #GApplication ignored them completely on
+// the local side. Calling this function "opts in" to the new behaviour,
+// and in particular, means that unrecognised options will be treated
+// as errors. Unrecognised options have never been ignored when
 // G_APPLICATION_HANDLES_COMMAND_LINE is unset.
 //
 // If #GApplication::handle-local-options needs to see the list of filenames,
-// then the use of G_OPTION_REMAINING is recommended. If arg_data is NULL then
-// G_OPTION_REMAINING can be used as a key into the options dictionary. If you
-// do use G_OPTION_REMAINING then you need to handle these arguments for
+// then the use of G_OPTION_REMAINING is recommended. If arg_data is NULL
+// then G_OPTION_REMAINING can be used as a key into the options dictionary.
+// If you do use G_OPTION_REMAINING then you need to handle these arguments for
 // yourself because once they are consumed, they will no longer be visible to
 // the default handling (which treats them as filenames to be opened).
 //
@@ -645,7 +645,7 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 //
 // The function takes the following parameters:
 //
-//    - entries: a NULL-terminated list of Entrys.
+//   - entries: a NULL-terminated list of Entrys.
 //
 func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg0 *C.GApplication // out
@@ -689,14 +689,14 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 // options like --display= or --gdk-debug= on future runs will have no effect on
 // the existing primary instance.
 //
-// Calling this function will cause the options in the supplied option group to
-// be parsed, but it does not cause you to be "opted in" to the new
-// functionality whereby unrecognised options are rejected even if
+// Calling this function will cause the options in the supplied option
+// group to be parsed, but it does not cause you to be "opted in" to the
+// new functionality whereby unrecognised options are rejected even if
 // G_APPLICATION_HANDLES_COMMAND_LINE was given.
 //
 // The function takes the following parameters:
 //
-//    - group: Group.
+//   - group: Group.
 //
 func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 	var _arg0 *C.GApplication // out
@@ -718,8 +718,8 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 //
 // The function takes the following parameters:
 //
-//    - object: #GObject.
-//    - property: name of a boolean property of object.
+//   - object: #GObject.
+//   - property: name of a boolean property of object.
 //
 func (application *Application) BindBusyProperty(object *coreglib.Object, property string) {
 	var _arg0 *C.GApplication // out
@@ -741,7 +741,7 @@ func (application *Application) BindBusyProperty(object *coreglib.Object, proper
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): identifier for application, owned by application.
+//   - utf8 (optional): identifier for application, owned by application.
 //
 func (application *Application) ApplicationID() string {
 	var _arg0 *C.GApplication // out
@@ -767,16 +767,16 @@ func (application *Application) ApplicationID() string {
 // the BusConnection being used for uniqueness and communication with the
 // desktop environment and other instances of the application.
 //
-// If #GApplication is not using D-Bus then this function will return NULL. This
-// includes the situation where the D-Bus backend would normally be in use but
-// we were unable to connect to the bus.
+// If #GApplication is not using D-Bus then this function will return NULL.
+// This includes the situation where the D-Bus backend would normally be in use
+// but we were unable to connect to the bus.
 //
 // This function must not be called before the application has been registered.
 // See g_application_get_is_registered().
 //
 // The function returns the following values:
 //
-//    - dBusConnection (optional) or NULL.
+//   - dBusConnection (optional) or NULL.
 //
 func (application *Application) DBusConnection() *DBusConnection {
 	var _arg0 *C.GApplication    // out
@@ -796,25 +796,25 @@ func (application *Application) DBusConnection() *DBusConnection {
 	return _dBusConnection
 }
 
-// DBusObjectPath gets the D-Bus object path being used by the application, or
-// NULL.
+// DBusObjectPath gets the D-Bus object path being used by the application,
+// or NULL.
 //
 // If #GApplication is using its D-Bus backend then this function will return
-// the D-Bus object path that #GApplication is using. If the application is the
-// primary instance then there is an object published at this path. If the
+// the D-Bus object path that #GApplication is using. If the application is
+// the primary instance then there is an object published at this path. If the
 // application is not the primary instance then the result of this function is
 // undefined.
 //
-// If #GApplication is not using D-Bus then this function will return NULL. This
-// includes the situation where the D-Bus backend would normally be in use but
-// we were unable to connect to the bus.
+// If #GApplication is not using D-Bus then this function will return NULL.
+// This includes the situation where the D-Bus backend would normally be in use
+// but we were unable to connect to the bus.
 //
 // This function must not be called before the application has been registered.
 // See g_application_get_is_registered().
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): object path, or NULL.
+//   - utf8 (optional): object path, or NULL.
 //
 func (application *Application) DBusObjectPath() string {
 	var _arg0 *C.GApplication // out
@@ -840,7 +840,7 @@ func (application *Application) DBusObjectPath() string {
 //
 // The function returns the following values:
 //
-//    - applicationFlags flags for application.
+//   - applicationFlags flags for application.
 //
 func (application *Application) Flags() ApplicationFlags {
 	var _arg0 *C.GApplication     // out
@@ -865,7 +865,7 @@ func (application *Application) Flags() ApplicationFlags {
 //
 // The function returns the following values:
 //
-//    - guint: timeout, in milliseconds.
+//   - guint: timeout, in milliseconds.
 //
 func (application *Application) InactivityTimeout() uint {
 	var _arg0 *C.GApplication // out
@@ -888,7 +888,7 @@ func (application *Application) InactivityTimeout() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if application is currently marked as busy.
+//   - ok: TRUE if application is currently marked as busy.
 //
 func (application *Application) IsBusy() bool {
 	var _arg0 *C.GApplication // out
@@ -915,7 +915,7 @@ func (application *Application) IsBusy() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if application is registered.
+//   - ok: TRUE if application is registered.
 //
 func (application *Application) IsRegistered() bool {
 	var _arg0 *C.GApplication // out
@@ -947,7 +947,7 @@ func (application *Application) IsRegistered() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if application is remote.
+//   - ok: TRUE if application is remote.
 //
 func (application *Application) IsRemote() bool {
 	var _arg0 *C.GApplication // out
@@ -973,7 +973,7 @@ func (application *Application) IsRemote() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): base resource path, if one is set.
+//   - utf8 (optional): base resource path, if one is set.
 //
 func (application *Application) ResourceBasePath() string {
 	var _arg0 *C.GApplication // out
@@ -1044,8 +1044,8 @@ func (application *Application) MarkBusy() {
 //
 // The function takes the following parameters:
 //
-//    - files: array of #GFiles to open.
-//    - hint (or ""), but never NULL.
+//   - files: array of #GFiles to open.
+//   - hint (or ""), but never NULL.
 //
 func (application *Application) Open(files []Filer, hint string) {
 	var _arg0 *C.GApplication // out
@@ -1079,8 +1079,8 @@ func (application *Application) Open(files []Filer, hint string) {
 //
 // The hold count is ignored. Take care if your code has called
 // g_application_hold() on the application and is therefore still expecting it
-// to exist. (Note that you may have called g_application_hold() indirectly, for
-// example through gtk_application_add_window().)
+// to exist. (Note that you may have called g_application_hold() indirectly,
+// for example through gtk_application_add_window().)
 //
 // The result of calling g_application_run() again after it returns is
 // unspecified.
@@ -1100,11 +1100,11 @@ func (application *Application) Quit() {
 // instance. This is implemented by attempting to acquire the application
 // identifier as a unique bus name on the session bus using GDBus.
 //
-// If there is no application ID or if G_APPLICATION_NON_UNIQUE was given, then
-// this process will always become the primary instance.
+// If there is no application ID or if G_APPLICATION_NON_UNIQUE was given,
+// then this process will always become the primary instance.
 //
-// Due to the internal architecture of GDBus, method calls can be dispatched at
-// any time (even if a main loop is not running). For this reason, you must
+// Due to the internal architecture of GDBus, method calls can be dispatched
+// at any time (even if a main loop is not running). For this reason, you must
 // ensure that any object paths that you wish to register are registered before
 // calling this function.
 //
@@ -1114,8 +1114,8 @@ func (application *Application) Quit() {
 // The #GApplication::startup signal is emitted if registration succeeds and
 // application is the primary instance (including the non-unique case).
 //
-// In the event of an error (such as cancellable being cancelled, or a failure
-// to connect to the session bus), FALSE is returned and error is set
+// In the event of an error (such as cancellable being cancelled, or a
+// failure to connect to the session bus), FALSE is returned and error is set
 // appropriately.
 //
 // Note: the return value of this function is not an indicator that this
@@ -1124,7 +1124,7 @@ func (application *Application) Quit() {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (application *Application) Register(ctx context.Context) error {
 	var _arg0 *C.GApplication // out
@@ -1175,49 +1175,49 @@ func (application *Application) Release() {
 // that on Windows, argc and argv are ignored, and g_win32_get_command_line() is
 // called internally (for proper support of Unicode commandline arguments).
 //
-// #GApplication will attempt to parse the commandline arguments. You can add
-// commandline flags to the list of recognised options by way of
-// g_application_add_main_option_entries(). After this, the
-// #GApplication::handle-local-options signal is emitted, from which the
+// #GApplication will attempt to parse the commandline arguments.
+// You can add commandline flags to the list of recognised options
+// by way of g_application_add_main_option_entries(). After this,
+// the #GApplication::handle-local-options signal is emitted, from which the
 // application can inspect the values of its Entrys.
 //
-// #GApplication::handle-local-options is a good place to handle options such as
-// --version, where an immediate reply from the local process is desired
-// (instead of communicating with an already-running instance). A
-// #GApplication::handle-local-options handler can stop further processing by
-// returning a non-negative value, which then becomes the exit status of the
+// #GApplication::handle-local-options is a good place to handle options
+// such as --version, where an immediate reply from the local process is
+// desired (instead of communicating with an already-running instance).
+// A #GApplication::handle-local-options handler can stop further processing
+// by returning a non-negative value, which then becomes the exit status of the
 // process.
 //
 // What happens next depends on the flags: if G_APPLICATION_HANDLES_COMMAND_LINE
 // was specified then the remaining commandline arguments are sent to the
 // primary instance, where a #GApplication::command-line signal is emitted.
-// Otherwise, the remaining commandline arguments are assumed to be a list of
-// files. If there are no files listed, the application is activated via the
-// #GApplication::activate signal. If there are one or more files, and
-// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via the
-// #GApplication::open signal.
+// Otherwise, the remaining commandline arguments are assumed to be a list
+// of files. If there are no files listed, the application is activated
+// via the #GApplication::activate signal. If there are one or more files,
+// and G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
+// the #GApplication::open signal.
 //
-// If you are interested in doing more complicated local handling of the
-// commandline then you should implement your own #GApplication subclass and
-// override local_command_line(). In this case, you most likely want to return
-// TRUE from your local_command_line() implementation to suppress the default
-// handling. See
+// If you are interested in doing more complicated local handling of
+// the commandline then you should implement your own #GApplication
+// subclass and override local_command_line(). In this case,
+// you most likely want to return TRUE from your local_command_line()
+// implementation to suppress the default handling. See
 // [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
 // example.
 //
 // If, after the above is done, the use count of the application is zero then
 // the exit status is returned immediately. If the use count is non-zero then
-// the default main context is iterated until the use count falls to zero, at
-// which point 0 is returned.
+// the default main context is iterated until the use count falls to zero,
+// at which point 0 is returned.
 //
-// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run for as
-// much as 10 seconds with a use count of zero while waiting for the message
-// that caused the activation to arrive. After that, if the use count falls to
-// zero the application will exit immediately, except in the case that
+// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
+// for as much as 10 seconds with a use count of zero while waiting for the
+// message that caused the activation to arrive. After that, if the use count
+// falls to zero the application will exit immediately, except in the case that
 // g_application_set_inactivity_timeout() is in use.
 //
-// This function sets the prgname (g_set_prgname()), if not already set, to the
-// basename of argv[0].
+// This function sets the prgname (g_set_prgname()), if not already set,
+// to the basename of argv[0].
 //
 // Much like g_main_loop_run(), this function will acquire the main context for
 // the duration that the application is running.
@@ -1227,23 +1227,23 @@ func (application *Application) Release() {
 // are given as flags) will check (from the default handler for
 // local_command_line) if "--gapplication-service" was given in the command
 // line. If this flag is present then normal commandline processing is
-// interrupted and the G_APPLICATION_IS_SERVICE flag is set. This provides a
-// "compromise" solution whereby running an application directly from the
+// interrupted and the G_APPLICATION_IS_SERVICE flag is set. This provides
+// a "compromise" solution whereby running an application directly from the
 // commandline will invoke it in the normal way (which can be useful for
-// debugging) while still allowing applications to be D-Bus activated in service
-// mode. The D-Bus service file should invoke the executable with
-// "--gapplication-service" as the sole commandline argument. This approach is
-// suitable for use by most graphical applications but should not be used from
-// applications like editors that need precise control over when processes
+// debugging) while still allowing applications to be D-Bus activated in
+// service mode. The D-Bus service file should invoke the executable with
+// "--gapplication-service" as the sole commandline argument. This approach
+// is suitable for use by most graphical applications but should not be used
+// from applications like editors that need precise control over when processes
 // invoked via the commandline will exit and what their exit status will be.
 //
 // The function takes the following parameters:
 //
-//    - argv (optional): the argv from main(), or NULL.
+//   - argv (optional): the argv from main(), or NULL.
 //
 // The function returns the following values:
 //
-//    - gint: exit status.
+//   - gint: exit status.
 //
 func (application *Application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
@@ -1290,8 +1290,8 @@ func (application *Application) Run(argv []string) int {
 //
 // If a previous notification was sent with the same id, it will be replaced
 // with notification and shown again as if it was a new notification. This works
-// even for notifications sent from a previous execution of the application, as
-// long as id is the same string.
+// even for notifications sent from a previous execution of the application,
+// as long as id is the same string.
 //
 // id may be NULL, but it is impossible to replace or withdraw notifications
 // without an id.
@@ -1301,8 +1301,8 @@ func (application *Application) Run(argv []string) int {
 //
 // The function takes the following parameters:
 //
-//    - id (optional) of the notification, or NULL.
-//    - notification to send.
+//   - id (optional) of the notification, or NULL.
+//   - notification to send.
 //
 func (application *Application) SendNotification(id string, notification *Notification) {
 	var _arg0 *C.GApplication  // out
@@ -1332,7 +1332,7 @@ func (application *Application) SendNotification(id string, notification *Notifi
 //
 // The function takes the following parameters:
 //
-//    - actionGroup (optional) or NULL.
+//   - actionGroup (optional) or NULL.
 //
 func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	var _arg0 *C.GApplication // out
@@ -1358,7 +1358,7 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 //
 // The function takes the following parameters:
 //
-//    - applicationId (optional): identifier for application.
+//   - applicationId (optional): identifier for application.
 //
 func (application *Application) SetApplicationID(applicationId string) {
 	var _arg0 *C.GApplication // out
@@ -1375,8 +1375,8 @@ func (application *Application) SetApplicationID(applicationId string) {
 	runtime.KeepAlive(applicationId)
 }
 
-// SetDefault sets or unsets the default application for the process, as
-// returned by g_application_get_default().
+// SetDefault sets or unsets the default application for the process,
+// as returned by g_application_get_default().
 //
 // This function does not take its own reference on application. If application
 // is destroyed then the default application will revert back to NULL.
@@ -1399,7 +1399,7 @@ func (application *Application) SetDefault() {
 //
 // The function takes the following parameters:
 //
-//    - flags for application.
+//   - flags for application.
 //
 func (application *Application) SetFlags(flags ApplicationFlags) {
 	var _arg0 *C.GApplication     // out
@@ -1424,7 +1424,7 @@ func (application *Application) SetFlags(flags ApplicationFlags) {
 //
 // The function takes the following parameters:
 //
-//    - inactivityTimeout: timeout, in milliseconds.
+//   - inactivityTimeout: timeout, in milliseconds.
 //
 func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 	var _arg0 *C.GApplication // out
@@ -1445,8 +1445,8 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 //
 // The function takes the following parameters:
 //
-//    - description (optional): string to be shown in --help output after the
-//      list of options, or NULL.
+//   - description (optional): string to be shown in --help output after the
+//     list of options, or NULL.
 //
 func (application *Application) SetOptionContextDescription(description string) {
 	var _arg0 *C.GApplication // out
@@ -1473,8 +1473,8 @@ func (application *Application) SetOptionContextDescription(description string) 
 //
 // The function takes the following parameters:
 //
-//    - parameterString (optional): string which is displayed in the first line
-//      of --help output, after the usage summary programname [OPTION...].
+//   - parameterString (optional): string which is displayed in the first line
+//     of --help output, after the usage summary programname [OPTION...].
 //
 func (application *Application) SetOptionContextParameterString(parameterString string) {
 	var _arg0 *C.GApplication // out
@@ -1497,8 +1497,8 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 //
 // The function takes the following parameters:
 //
-//    - summary (optional): string to be shown in --help output before the list
-//      of options, or NULL.
+//   - summary (optional): string to be shown in --help output before the list
+//     of options, or NULL.
 //
 func (application *Application) SetOptionContextSummary(summary string) {
 	var _arg0 *C.GApplication // out
@@ -1527,8 +1527,8 @@ func (application *Application) SetOptionContextSummary(summary string) {
 // the #GApplication object is constructed. Changes to the application ID after
 // that point will not have an impact on the resource base path.
 //
-// As an example, if the application has an ID of "org.example.app" then the
-// default resource base path will be "/org/example/app". If this is a
+// As an example, if the application has an ID of "org.example.app" then
+// the default resource base path will be "/org/example/app". If this is a
 // Application (and you have not manually changed the path) then Gtk will then
 // search for the menus of the application at "/org/example/app/gtk/menus.ui".
 //
@@ -1542,14 +1542,14 @@ func (application *Application) SetOptionContextSummary(summary string) {
 // recommended. The point at which the resource path is consulted for forming
 // paths for various purposes is unspecified. When writing a sub-class of
 // #GApplication you should either set the #GApplication:resource-base-path
-// property at construction time, or call this function during the instance
-// initialization. Alternatively, you can call this function in the
-// Class.startup virtual function, before chaining up to the parent
+// property at construction time, or call this function during the
+// instance initialization. Alternatively, you can call this function in
+// the Class.startup virtual function, before chaining up to the parent
 // implementation.
 //
 // The function takes the following parameters:
 //
-//    - resourcePath (optional): resource path to use.
+//   - resourcePath (optional): resource path to use.
 //
 func (application *Application) SetResourceBasePath(resourcePath string) {
 	var _arg0 *C.GApplication // out
@@ -1566,14 +1566,14 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 	runtime.KeepAlive(resourcePath)
 }
 
-// UnbindBusyProperty destroys a binding between property and the busy state of
-// application that was previously created with
+// UnbindBusyProperty destroys a binding between property and
+// the busy state of application that was previously created with
 // g_application_bind_busy_property().
 //
 // The function takes the following parameters:
 //
-//    - object: #GObject.
-//    - property: name of a boolean property of object.
+//   - object: #GObject.
+//   - property: name of a boolean property of object.
 //
 func (application *Application) UnbindBusyProperty(object *coreglib.Object, property string) {
 	var _arg0 *C.GApplication // out
@@ -1622,7 +1622,7 @@ func (application *Application) UnmarkBusy() {
 //
 // The function takes the following parameters:
 //
-//    - id of a previously sent notification.
+//   - id of a previously sent notification.
 //
 func (application *Application) WithdrawNotification(id string) {
 	var _arg0 *C.GApplication // out
@@ -1734,8 +1734,8 @@ func (application *Application) commandLine(commandLine *ApplicationCommandLine)
 
 // The function takes the following parameters:
 //
-//    - connection
-//    - objectPath
+//   - connection
+//   - objectPath
 //
 func (application *Application) dBusRegister(connection *DBusConnection, objectPath string) error {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
@@ -1767,8 +1767,8 @@ func (application *Application) dBusRegister(connection *DBusConnection, objectP
 
 // The function takes the following parameters:
 //
-//    - connection
-//    - objectPath
+//   - connection
+//   - objectPath
 //
 func (application *Application) dBusUnregister(connection *DBusConnection, objectPath string) {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
@@ -1855,8 +1855,8 @@ func (application *Application) nameLost() bool {
 //
 // The function takes the following parameters:
 //
-//    - files: array of #GFiles to open.
-//    - hint (or ""), but never NULL.
+//   - files: array of #GFiles to open.
+//   - hint (or ""), but never NULL.
 //
 func (application *Application) open(files []Filer, hint string) {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))

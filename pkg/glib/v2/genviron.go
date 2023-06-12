@@ -14,19 +14,19 @@ import "C"
 // Getenv returns the value of an environment variable.
 //
 // On UNIX, the name and value are byte strings which might or might not be in
-// some consistent character set and encoding. On Windows, they are in UTF-8. On
-// Windows, in case the environment variable's value contains references to
+// some consistent character set and encoding. On Windows, they are in UTF-8.
+// On Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
 //
 // The function takes the following parameters:
 //
-//    - variable: environment variable to get.
+//   - variable: environment variable to get.
 //
 // The function returns the following values:
 //
-//    - filename: value of the environment variable, or NULL if the environment
-//      variable is not found. The returned string may be overwritten by the next
-//      call to g_getenv(), g_setenv() or g_unsetenv().
+//   - filename: value of the environment variable, or NULL if the environment
+//     variable is not found. The returned string may be overwritten by the next
+//     call to g_getenv(), g_setenv() or g_unsetenv().
 //
 func Getenv(variable string) string {
 	var _arg1 *C.gchar // out

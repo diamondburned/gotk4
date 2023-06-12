@@ -186,8 +186,8 @@ const STYLE_CLASS_INSERTION_CURSOR = "insertion-cursor"
 // Refer to individual widget documentation for used style classes.
 const STYLE_CLASS_LEFT = "left"
 
-// STYLE_CLASS_LEVEL_BAR: CSS class used when rendering a level indicator, such
-// as a battery charge level, or a password strength.
+// STYLE_CLASS_LEVEL_BAR: CSS class used when rendering a level indicator,
+// such as a battery charge level, or a password strength.
 //
 // Refer to individual widget documentation for used style classes.
 const STYLE_CLASS_LEVEL_BAR = "level-bar"
@@ -388,8 +388,8 @@ const STYLE_CLASS_VERTICAL = "vertical"
 // Refer to individual widget documentation for used style classes.
 const STYLE_CLASS_VIEW = "view"
 
-// STYLE_CLASS_WARNING: CSS class for an area displaying a warning message, such
-// as those in infobars.
+// STYLE_CLASS_WARNING: CSS class for an area displaying a warning message,
+// such as those in infobars.
 //
 // Refer to individual widget documentation for used style classes.
 const STYLE_CLASS_WARNING = "warning"
@@ -418,8 +418,8 @@ const STYLE_PROPERTY_BORDER_STYLE = "border-style"
 // width in pixels as a Border. The border is the intermediary spacing property
 // of the padding/border/margin series.
 //
-// gtk_render_frame() uses this property to find out the frame line width, so
-// Widgets rendering frames may need to add up this padding when requesting
+// gtk_render_frame() uses this property to find out the frame line width,
+// so Widgets rendering frames may need to add up this padding when requesting
 // size.
 const STYLE_PROPERTY_BORDER_WIDTH = "border-width"
 
@@ -431,16 +431,16 @@ const STYLE_PROPERTY_COLOR = "color"
 // text as a FontDescription.
 const STYLE_PROPERTY_FONT = "font"
 
-// STYLE_PROPERTY_MARGIN: property holding the rendered element’s margin as a
-// Border. The margin is defined as the spacing between the border of the
-// element and its surrounding elements. It is external to Widget's size
-// allocations, and the most external spacing property of the
+// STYLE_PROPERTY_MARGIN: property holding the rendered element’s margin
+// as a Border. The margin is defined as the spacing between the border of
+// the element and its surrounding elements. It is external to Widget's
+// size allocations, and the most external spacing property of the
 // padding/border/margin series.
 const STYLE_PROPERTY_MARGIN = "margin"
 
-// STYLE_PROPERTY_PADDING: property holding the rendered element’s padding as a
-// Border. The padding is defined as the spacing between the inner part of the
-// element border and its child. It’s the innermost spacing property of the
+// STYLE_PROPERTY_PADDING: property holding the rendered element’s padding as
+// a Border. The padding is defined as the spacing between the inner part of
+// the element border and its child. It’s the innermost spacing property of the
 // padding/border/margin series.
 const STYLE_PROPERTY_PADDING = "padding"
 
@@ -540,17 +540,16 @@ func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
 // order.
 //
 // For GTK+ widgets, any StyleContext returned by gtk_widget_get_style_context()
-// will already have a WidgetPath, a Screen and RTL/LTR information set. The
-// style context will also be updated automatically if any of these settings
+// will already have a WidgetPath, a Screen and RTL/LTR information set.
+// The style context will also be updated automatically if any of these settings
 // change on the widget.
 //
-// If you are using the theming layer standalone, you will need to set a widget
-// path and a screen yourself to the created style context through
-// gtk_style_context_set_path() and possibly gtk_style_context_set_screen(). See
-// the “Foreign drawing“ example in gtk3-demo.
+// If you are using the theming layer standalone, you will need to set a
+// widget path and a screen yourself to the created style context through
+// gtk_style_context_set_path() and possibly gtk_style_context_set_screen().
+// See the “Foreign drawing“ example in gtk3-demo.
 //
-//
-// Style Classes
+// # Style Classes
 //
 // Widgets can add style classes to their context, which can be used to
 // associate different styles by class. The documentation for individual widgets
@@ -559,8 +558,7 @@ func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
 //
 // GTK+ defines macros for a number of style classes.
 //
-//
-// Style Regions
+// # Style Regions
 //
 // Widgets can also add regions with flags to their context. This feature is
 // deprecated and will be removed in a future GTK+ update. Please use style
@@ -568,8 +566,7 @@ func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
 //
 // GTK+ defines macros for a number of style regions.
 //
-//
-// Custom styling in UI libraries and applications
+// # Custom styling in UI libraries and applications
 //
 // If you are developing a library with custom Widgets that render differently
 // than standard components, you may need to add a StyleProvider yourself with
@@ -577,11 +574,11 @@ func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
 // custom object implementing the StyleProvider interface. This way themes may
 // still attempt to style your UI elements in a different way if needed so.
 //
-// If you are using custom styling on an applications, you probably want then to
-// make your style information prevail to the theme’s, so you must use a
-// StyleProvider with the GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority, keep
-// in mind that the user settings in XDG_CONFIG_HOME/gtk-3.0/gtk.css will still
-// take precedence over your changes, as it uses the
+// If you are using custom styling on an applications, you probably want then
+// to make your style information prevail to the theme’s, so you must use a
+// StyleProvider with the GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority,
+// keep in mind that the user settings in XDG_CONFIG_HOME/gtk-3.0/gtk.css
+// will still take precedence over your changes, as it uses the
 // GTK_STYLE_PROVIDER_PRIORITY_USER priority.
 type StyleContext struct {
 	_ [0]func() // equal guard
@@ -634,18 +631,18 @@ func (context *StyleContext) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(context, "changed", false, unsafe.Pointer(C._gotk4_gtk3_StyleContext_ConnectChanged), f)
 }
 
-// NewStyleContext creates a standalone StyleContext, this style context won’t
-// be attached to any widget, so you may want to call
+// NewStyleContext creates a standalone StyleContext, this style
+// context won’t be attached to any widget, so you may want to call
 // gtk_style_context_set_path() yourself.
 //
-// This function is only useful when using the theming layer separated from
-// GTK+, if you are using StyleContext to theme Widgets, use
+// This function is only useful when using the theming layer separated
+// from GTK+, if you are using StyleContext to theme Widgets, use
 // gtk_widget_get_style_context() in order to get a style context ready to theme
 // the widget.
 //
 // The function returns the following values:
 //
-//    - styleContext: newly created StyleContext.
+//   - styleContext: newly created StyleContext.
 //
 func NewStyleContext() *StyleContext {
 	var _cret *C.GtkStyleContext // in
@@ -673,7 +670,7 @@ func NewStyleContext() *StyleContext {
 //
 // The function takes the following parameters:
 //
-//    - className class name to use in styling.
+//   - className class name to use in styling.
 //
 func (context *StyleContext) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
@@ -693,17 +690,17 @@ func (context *StyleContext) AddClass(className string) {
 // the style of the widget to which context belongs. If you want to affect the
 // style of all widgets, use gtk_style_context_add_provider_for_screen().
 //
-// Note: If both priorities are the same, a StyleProvider added through this
-// function takes precedence over another added through
+// Note: If both priorities are the same, a StyleProvider added
+// through this function takes precedence over another added through
 // gtk_style_context_add_provider_for_screen().
 //
 // The function takes the following parameters:
 //
-//    - provider: StyleProvider.
-//    - priority of the style provider. The lower it is, the earlier it will be
-//      used in the style construction. Typically this will be in the range
-//      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
-//      GTK_STYLE_PROVIDER_PRIORITY_USER.
+//   - provider: StyleProvider.
+//   - priority of the style provider. The lower it is, the earlier it
+//     will be used in the style construction. Typically this will be
+//     in the range between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//     GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
@@ -729,8 +726,8 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 //
 // |[ <!-- language="CSS" --> treeview row { ... } ]|
 //
-// Pseudo-classes are used for matching flags, so the two following rules: |[
-// <!-- language="CSS" --> treeview row:nth-child(even) { ... } treeview
+// Pseudo-classes are used for matching flags, so the two following rules:
+// |[ <!-- language="CSS" --> treeview row:nth-child(even) { ... } treeview
 // row:nth-child(odd) { ... } ]|
 //
 // would apply to even and odd rows, respectively.
@@ -742,8 +739,8 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 //
 // The function takes the following parameters:
 //
-//    - regionName: region name to use in styling.
-//    - flags that apply to the region.
+//   - regionName: region name to use in styling.
+//   - flags that apply to the region.
 //
 func (context *StyleContext) AddRegion(regionName string, flags RegionFlags) {
 	var _arg0 *C.GtkStyleContext // out
@@ -766,16 +763,16 @@ func (context *StyleContext) AddRegion(regionName string, flags RegionFlags) {
 //
 // A NULL region_id will stop all ongoing animations in context, when dealing
 // with a StyleContext obtained through gtk_widget_get_style_context(), this is
-// normally done for you in all circumstances you would expect all widget to be
-// stopped, so this should be only used in complex widgets with different
+// normally done for you in all circumstances you would expect all widget to
+// be stopped, so this should be only used in complex widgets with different
 // animatable regions.
 //
 // Deprecated: This function does nothing.
 //
 // The function takes the following parameters:
 //
-//    - regionId (optional): animatable region to stop, or NULL. See
-//      gtk_style_context_push_animatable_region().
+//   - regionId (optional): animatable region to stop, or NULL. See
+//     gtk_style_context_push_animatable_region().
 //
 func (context *StyleContext) CancelAnimations(regionId unsafe.Pointer) {
 	var _arg0 *C.GtkStyleContext // out
@@ -804,11 +801,11 @@ func (context *StyleContext) CancelAnimations(regionId unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the color for.
+//   - state to retrieve the color for.
 //
 // The function returns the following values:
 //
-//    - color: return value for the background color.
+//   - color: return value for the background color.
 //
 func (context *StyleContext) BackgroundColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
@@ -836,11 +833,11 @@ func (context *StyleContext) BackgroundColor(state StateFlags) *gdk.RGBA {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the border for.
+//   - state to retrieve the border for.
 //
 // The function returns the following values:
 //
-//    - border: return value for the border settings.
+//   - border: return value for the border settings.
 //
 func (context *StyleContext) Border(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
@@ -867,11 +864,11 @@ func (context *StyleContext) Border(state StateFlags) *Border {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the color for.
+//   - state to retrieve the color for.
 //
 // The function returns the following values:
 //
-//    - color: return value for the border color.
+//   - color: return value for the border color.
 //
 func (context *StyleContext) BorderColor(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
@@ -898,11 +895,11 @@ func (context *StyleContext) BorderColor(state StateFlags) *gdk.RGBA {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the color for.
+//   - state to retrieve the color for.
 //
 // The function returns the following values:
 //
-//    - color: return value for the foreground color.
+//   - color: return value for the foreground color.
 //
 func (context *StyleContext) Color(state StateFlags) *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
@@ -930,7 +927,7 @@ func (context *StyleContext) Color(state StateFlags) *gdk.RGBA {
 //
 // The function returns the following values:
 //
-//    - textDirection: widget direction.
+//   - textDirection: widget direction.
 //
 func (context *StyleContext) Direction() TextDirection {
 	var _arg0 *C.GtkStyleContext // out
@@ -955,12 +952,12 @@ func (context *StyleContext) Direction() TextDirection {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the font for.
+//   - state to retrieve the font for.
 //
 // The function returns the following values:
 //
-//    - fontDescription for the given state. This object is owned by GTK+ and
-//      should not be freed.
+//   - fontDescription for the given state. This object is owned by GTK+ and
+//     should not be freed.
 //
 func (context *StyleContext) Font(state StateFlags) *pango.FontDescription {
 	var _arg0 *C.GtkStyleContext      // out
@@ -985,8 +982,8 @@ func (context *StyleContext) Font(state StateFlags) *pango.FontDescription {
 //
 // The function returns the following values:
 //
-//    - frameClock (optional) or NULL if context does not have an attached frame
-//      clock.
+//   - frameClock (optional) or NULL if context does not have an attached frame
+//     clock.
 //
 func (context *StyleContext) FrameClock() gdk.FrameClocker {
 	var _arg0 *C.GtkStyleContext // out
@@ -1024,7 +1021,7 @@ func (context *StyleContext) FrameClock() gdk.FrameClocker {
 //
 // The function returns the following values:
 //
-//    - junctionSides: junction sides.
+//   - junctionSides: junction sides.
 //
 func (context *StyleContext) JunctionSides() JunctionSides {
 	var _arg0 *C.GtkStyleContext // out
@@ -1047,11 +1044,11 @@ func (context *StyleContext) JunctionSides() JunctionSides {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the border for.
+//   - state to retrieve the border for.
 //
 // The function returns the following values:
 //
-//    - margin: return value for the margin settings.
+//   - margin: return value for the margin settings.
 //
 func (context *StyleContext) Margin(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
@@ -1077,11 +1074,11 @@ func (context *StyleContext) Margin(state StateFlags) *Border {
 //
 // The function takes the following parameters:
 //
-//    - state to retrieve the padding for.
+//   - state to retrieve the padding for.
 //
 // The function returns the following values:
 //
-//    - padding: return value for the padding settings.
+//   - padding: return value for the padding settings.
 //
 func (context *StyleContext) Padding(state StateFlags) *Border {
 	var _arg0 *C.GtkStyleContext // out
@@ -1102,12 +1099,12 @@ func (context *StyleContext) Padding(state StateFlags) *Border {
 	return _padding
 }
 
-// Parent gets the parent context set via gtk_style_context_set_parent(). See
-// that function for details.
+// Parent gets the parent context set via gtk_style_context_set_parent().
+// See that function for details.
 //
 // The function returns the following values:
 //
-//    - styleContext (optional): parent context or NULL.
+//   - styleContext (optional): parent context or NULL.
 //
 func (context *StyleContext) Parent() *StyleContext {
 	var _arg0 *C.GtkStyleContext // out
@@ -1131,7 +1128,7 @@ func (context *StyleContext) Parent() *StyleContext {
 //
 // The function returns the following values:
 //
-//    - widgetPath: WidgetPath.
+//   - widgetPath: WidgetPath.
 //
 func (context *StyleContext) Path() *WidgetPath {
 	var _arg0 *C.GtkStyleContext // out
@@ -1162,8 +1159,8 @@ func (context *StyleContext) Path() *WidgetPath {
 // in this way, since they may not be representable as #GValue. GTK+ defines
 // macros for a number of properties that can be used with this function.
 //
-// Note that passing a state other than the current state of context is not
-// recommended unless the style context has been saved with
+// Note that passing a state other than the current state of context
+// is not recommended unless the style context has been saved with
 // gtk_style_context_save().
 //
 // When value is no longer needed, g_value_unset() must be called to free any
@@ -1171,12 +1168,12 @@ func (context *StyleContext) Path() *WidgetPath {
 //
 // The function takes the following parameters:
 //
-//    - property: style property name.
-//    - state to retrieve the property value for.
+//   - property: style property name.
+//   - state to retrieve the property value for.
 //
 // The function returns the following values:
 //
-//    - value: return location for the style property value.
+//   - value: return location for the style property value.
 //
 func (context *StyleContext) Property(property string, state StateFlags) coreglib.Value {
 	var _arg0 *C.GtkStyleContext // out
@@ -1208,7 +1205,7 @@ func (context *StyleContext) Property(property string, state StateFlags) coregli
 //
 // The function returns the following values:
 //
-//    - gint: scale.
+//   - gint: scale.
 //
 func (context *StyleContext) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
@@ -1230,7 +1227,7 @@ func (context *StyleContext) Scale() int {
 //
 // The function returns the following values:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 func (context *StyleContext) Screen() *gdk.Screen {
 	var _arg0 *C.GtkStyleContext // out
@@ -1253,8 +1250,8 @@ func (context *StyleContext) Screen() *gdk.Screen {
 	return _screen
 }
 
-// Section queries the location in the CSS where property was defined for the
-// current context. Note that the state to be queried is taken from
+// Section queries the location in the CSS where property was defined for
+// the current context. Note that the state to be queried is taken from
 // gtk_style_context_get_state().
 //
 // If the location is not available, NULL will be returned. The location might
@@ -1267,12 +1264,12 @@ func (context *StyleContext) Screen() *gdk.Screen {
 //
 // The function takes the following parameters:
 //
-//    - property: style property name.
+//   - property: style property name.
 //
 // The function returns the following values:
 //
-//    - cssSection (optional): NULL or the section where a value for property was
-//      defined.
+//   - cssSection (optional): NULL or the section where a value for property was
+//     defined.
 //
 func (context *StyleContext) Section(property string) *CSSSection {
 	var _arg0 *C.GtkStyleContext // out
@@ -1311,7 +1308,7 @@ func (context *StyleContext) Section(property string) *CSSSection {
 //
 // The function returns the following values:
 //
-//    - stateFlags: state flags.
+//   - stateFlags: state flags.
 //
 func (context *StyleContext) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
@@ -1336,11 +1333,11 @@ func (context *StyleContext) State() StateFlags {
 //
 // The function takes the following parameters:
 //
-//    - propertyName: name of the widget style property.
+//   - propertyName: name of the widget style property.
 //
 // The function returns the following values:
 //
-//    - value: return location for the property value.
+//   - value: return location for the property value.
 //
 func (context *StyleContext) StyleProperty(propertyName string) coreglib.Value {
 	var _arg0 *C.GtkStyleContext // out
@@ -1366,11 +1363,11 @@ func (context *StyleContext) StyleProperty(propertyName string) coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - className class name.
+//   - className class name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if context has class_name defined.
+//   - ok: TRUE if context has class_name defined.
 //
 func (context *StyleContext) HasClass(className string) bool {
 	var _arg0 *C.GtkStyleContext // out
@@ -1401,12 +1398,12 @@ func (context *StyleContext) HasClass(className string) bool {
 //
 // The function takes the following parameters:
 //
-//    - regionName: region name.
+//   - regionName: region name.
 //
 // The function returns the following values:
 //
-//    - flagsReturn (optional): return location for region flags.
-//    - ok: TRUE if region is defined.
+//   - flagsReturn (optional): return location for region flags.
+//   - ok: TRUE if region is defined.
 //
 func (context *StyleContext) HasRegion(regionName string) (RegionFlags, bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1451,9 +1448,9 @@ func (context *StyleContext) Invalidate() {
 //
 // The function returns the following values:
 //
-//    - list of strings with the currently defined classes. The contents of the
-//      list are owned by GTK+, but you must free the list itself with
-//      g_list_free() when you are done with it.
+//   - list of strings with the currently defined classes. The contents of
+//     the list are owned by GTK+, but you must free the list itself with
+//     g_list_free() when you are done with it.
 //
 func (context *StyleContext) ListClasses() []string {
 	var _arg0 *C.GtkStyleContext // out
@@ -1483,9 +1480,9 @@ func (context *StyleContext) ListClasses() []string {
 //
 // The function returns the following values:
 //
-//    - list of strings with the currently defined regions. The contents of the
-//      list are owned by GTK+, but you must free the list itself with
-//      g_list_free() when you are done with it.
+//   - list of strings with the currently defined regions. The contents of
+//     the list are owned by GTK+, but you must free the list itself with
+//     g_list_free() when you are done with it.
 //
 func (context *StyleContext) ListRegions() []string {
 	var _arg0 *C.GtkStyleContext // out
@@ -1513,12 +1510,12 @@ func (context *StyleContext) ListRegions() []string {
 //
 // The function takes the following parameters:
 //
-//    - colorName: color name to lookup.
+//   - colorName: color name to lookup.
 //
 // The function returns the following values:
 //
-//    - color: return location for the looked up color.
-//    - ok: TRUE if color_name was found and resolved, FALSE otherwise.
+//   - color: return location for the looked up color.
+//   - ok: TRUE if color_name was found and resolved, FALSE otherwise.
 //
 func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1552,11 +1549,11 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 //
 // The function takes the following parameters:
 //
-//    - stockId: icon name.
+//   - stockId: icon name.
 //
 // The function returns the following values:
 //
-//    - iconSet (optional): looked up GtkIconSet, or NULL.
+//   - iconSet (optional): looked up GtkIconSet, or NULL.
 //
 func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	var _arg0 *C.GtkStyleContext // out
@@ -1587,8 +1584,8 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 	return _iconSet
 }
 
-// NotifyStateChange notifies a state change on context, so if the current style
-// makes use of transition animations, one will be started so all rendered
+// NotifyStateChange notifies a state change on context, so if the current
+// style makes use of transition animations, one will be started so all rendered
 // elements under region_id are animated for state state being set to value
 // state_value.
 //
@@ -1619,12 +1616,12 @@ func (context *StyleContext) LookupIconSet(stockId string) *IconSet {
 //
 // The function takes the following parameters:
 //
-//    - window: Window.
-//    - regionId (optional): animatable region to notify on, or NULL. See
-//      gtk_style_context_push_animatable_region().
-//    - state to trigger transition for.
-//    - stateValue: TRUE if state is the state we are changing to, FALSE if we
-//      are changing away from it.
+//   - window: Window.
+//   - regionId (optional): animatable region to notify on, or NULL. See
+//     gtk_style_context_push_animatable_region().
+//   - state to trigger transition for.
+//   - stateValue: TRUE if state is the state we are changing to, FALSE if we
+//     are changing away from it.
 //
 func (context *StyleContext) NotifyStateChange(window gdk.Windower, regionId unsafe.Pointer, state StateType, stateValue bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1662,8 +1659,8 @@ func (context *StyleContext) PopAnimatableRegion() {
 	runtime.KeepAlive(context)
 }
 
-// PushAnimatableRegion pushes an animatable region, so all further
-// gtk_render_*() calls between this call and the following
+// PushAnimatableRegion pushes an animatable region, so all
+// further gtk_render_*() calls between this call and the following
 // gtk_style_context_pop_animatable_region() will potentially show transition
 // animations for this region if gtk_style_context_notify_state_change() is
 // called for a given state, and the current theme/style defines transition
@@ -1676,7 +1673,7 @@ func (context *StyleContext) PopAnimatableRegion() {
 //
 // The function takes the following parameters:
 //
-//    - regionId (optional): unique identifier for the animatable region.
+//   - regionId (optional): unique identifier for the animatable region.
 //
 func (context *StyleContext) PushAnimatableRegion(regionId unsafe.Pointer) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1694,7 +1691,7 @@ func (context *StyleContext) PushAnimatableRegion(regionId unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - className class name to remove.
+//   - className class name to remove.
 //
 func (context *StyleContext) RemoveClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1713,7 +1710,7 @@ func (context *StyleContext) RemoveClass(className string) {
 //
 // The function takes the following parameters:
 //
-//    - provider: StyleProvider.
+//   - provider: StyleProvider.
 //
 func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _arg0 *C.GtkStyleContext  // out
@@ -1733,7 +1730,7 @@ func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 //
 // The function takes the following parameters:
 //
-//    - regionName: region name to unset.
+//   - regionName: region name to unset.
 //
 func (context *StyleContext) RemoveRegion(regionName string) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1783,9 +1780,9 @@ func (context *StyleContext) Save() {
 //
 // The function takes the following parameters:
 //
-//    - window used previously in gtk_style_context_notify_state_change().
-//    - dx: amount to scroll in the X axis.
-//    - dy: amount to scroll in the Y axis.
+//   - window used previously in gtk_style_context_notify_state_change().
+//   - dx: amount to scroll in the X axis.
+//   - dy: amount to scroll in the Y axis.
 //
 func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx, dy int) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1814,7 +1811,7 @@ func (context *StyleContext) ScrollAnimations(window gdk.Windower, dx, dy int) {
 //
 // The function takes the following parameters:
 //
-//    - window: Window.
+//   - window: Window.
 //
 func (context *StyleContext) SetBackground(window gdk.Windower) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1838,7 +1835,7 @@ func (context *StyleContext) SetBackground(window gdk.Windower) {
 //
 // The function takes the following parameters:
 //
-//    - direction: new direction.
+//   - direction: new direction.
 //
 func (context *StyleContext) SetDirection(direction TextDirection) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1861,7 +1858,7 @@ func (context *StyleContext) SetDirection(direction TextDirection) {
 //
 // The function takes the following parameters:
 //
-//    - frameClock: FrameClock.
+//   - frameClock: FrameClock.
 //
 func (context *StyleContext) SetFrameClock(frameClock gdk.FrameClocker) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1880,13 +1877,13 @@ func (context *StyleContext) SetFrameClock(frameClock gdk.FrameClocker) {
 //
 // This is merely a hint that may or may not be honored by themes.
 //
-// Container widgets are expected to set junction hints as appropriate for their
-// children, so it should not normally be necessary to call this function
+// Container widgets are expected to set junction hints as appropriate for
+// their children, so it should not normally be necessary to call this function
 // manually.
 //
 // The function takes the following parameters:
 //
-//    - sides where rendered elements are visually connected to other elements.
+//   - sides where rendered elements are visually connected to other elements.
 //
 func (context *StyleContext) SetJunctionSides(sides JunctionSides) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1900,8 +1897,8 @@ func (context *StyleContext) SetJunctionSides(sides JunctionSides) {
 	runtime.KeepAlive(sides)
 }
 
-// SetParent sets the parent style context for context. The parent style context
-// is used to implement inheritance
+// SetParent sets the parent style context for context.
+// The parent style context is used to implement inheritance
 // (http://www.w3.org/TR/css3-cascade/#inheritance) of properties.
 //
 // If you are using a StyleContext returned from gtk_widget_get_style_context(),
@@ -1909,7 +1906,7 @@ func (context *StyleContext) SetJunctionSides(sides JunctionSides) {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): new parent or NULL.
+//   - parent (optional): new parent or NULL.
 //
 func (context *StyleContext) SetParent(parent *StyleContext) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1925,15 +1922,15 @@ func (context *StyleContext) SetParent(parent *StyleContext) {
 	runtime.KeepAlive(parent)
 }
 
-// SetPath sets the WidgetPath used for style matching. As a consequence, the
-// style will be regenerated to match the new given path.
+// SetPath sets the WidgetPath used for style matching. As a consequence,
+// the style will be regenerated to match the new given path.
 //
 // If you are using a StyleContext returned from gtk_widget_get_style_context(),
 // you do not need to call this yourself.
 //
 // The function takes the following parameters:
 //
-//    - path: WidgetPath.
+//   - path: WidgetPath.
 //
 func (context *StyleContext) SetPath(path *WidgetPath) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1951,7 +1948,7 @@ func (context *StyleContext) SetPath(path *WidgetPath) {
 //
 // The function takes the following parameters:
 //
-//    - scale: scale.
+//   - scale: scale.
 //
 func (context *StyleContext) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1975,7 +1972,7 @@ func (context *StyleContext) SetScale(scale int) {
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 func (context *StyleContext) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkStyleContext // out
@@ -1993,7 +1990,7 @@ func (context *StyleContext) SetScreen(screen *gdk.Screen) {
 //
 // The function takes the following parameters:
 //
-//    - flags: state to represent.
+//   - flags: state to represent.
 //
 func (context *StyleContext) SetState(flags StateFlags) {
 	var _arg0 *C.GtkStyleContext // out
@@ -2010,21 +2007,21 @@ func (context *StyleContext) SetState(flags StateFlags) {
 // StateIsRunning returns TRUE if there is a transition animation running for
 // the current region (see gtk_style_context_push_animatable_region()).
 //
-// If progress is not NULL, the animation progress will be returned there, 0.0
-// means the state is closest to being unset, while 1.0 means it’s closest to
-// being set. This means transition animation will run from 0 to 1 when state is
-// being set and from 1 to 0 when it’s being unset.
+// If progress is not NULL, the animation progress will be returned there,
+// 0.0 means the state is closest to being unset, while 1.0 means it’s closest
+// to being set. This means transition animation will run from 0 to 1 when state
+// is being set and from 1 to 0 when it’s being unset.
 //
 // Deprecated: This function always returns FALSE.
 //
 // The function takes the following parameters:
 //
-//    - state: widget state.
+//   - state: widget state.
 //
 // The function returns the following values:
 //
-//    - progress: return location for the transition progress.
-//    - ok: TRUE if there is a running transition animation for state.
+//   - progress: return location for the transition progress.
+//   - ok: TRUE if there is a running transition animation for state.
 //
 func (context *StyleContext) StateIsRunning(state StateType) (float64, bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -2057,16 +2054,16 @@ func (context *StyleContext) StateIsRunning(state StateType) (float64, bool) {
 // Depending on the flags, more information may be included.
 //
 // This function is intended for testing and debugging of the CSS implementation
-// in GTK+. There are no guarantees about the format of the returned string, it
-// may change.
+// in GTK+. There are no guarantees about the format of the returned string,
+// it may change.
 //
 // The function takes the following parameters:
 //
-//    - flags flags that determine what to print.
+//   - flags flags that determine what to print.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string representing context.
+//   - utf8: newly allocated string representing context.
 //
 func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	var _arg0 *C.GtkStyleContext          // out

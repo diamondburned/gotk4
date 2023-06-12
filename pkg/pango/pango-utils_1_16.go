@@ -17,26 +17,26 @@ import "C"
 // ParseEnum parses an enum type and stores the result in value.
 //
 // If str does not match the nick name of any of the possible values for the
-// enum and is not an integer, FALSE is returned, a warning is issued if warn is
-// TRUE, and a string representing the list of possible values is stored in
-// possible_values. The list is slash-separated, eg. "none/start/middle/end". If
-// failed and possible_values is not NULL, returned string should be freed using
-// g_free().
+// enum and is not an integer, FALSE is returned, a warning is issued if warn
+// is TRUE, and a string representing the list of possible values is stored in
+// possible_values. The list is slash-separated, eg. "none/start/middle/end".
+// If failed and possible_values is not NULL, returned string should be freed
+// using g_free().
 //
 // Deprecated: since version 1.38.
 //
 // The function takes the following parameters:
 //
-//    - typ: enum type to parse, eg. PANGO_TYPE_ELLIPSIZE_MODE.
-//    - str (optional): string to parse. May be NULL.
-//    - warn: if TRUE, issue a g_warning() on bad input.
+//   - typ: enum type to parse, eg. PANGO_TYPE_ELLIPSIZE_MODE.
+//   - str (optional): string to parse. May be NULL.
+//   - warn: if TRUE, issue a g_warning() on bad input.
 //
 // The function returns the following values:
 //
-//    - value (optional): integer to store the result in, or NULL.
-//    - possibleValues (optional): place to store list of possible values on
-//      failure, or NULL.
-//    - ok: TRUE if str was successfully parsed.
+//   - value (optional): integer to store the result in, or NULL.
+//   - possibleValues (optional): place to store list of possible values on
+//     failure, or NULL.
+//   - ok: TRUE if str was successfully parsed.
 //
 func ParseEnum(typ coreglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg1 C.GType    // out
@@ -84,7 +84,7 @@ func ParseEnum(typ coreglib.Type, str string, warn bool) (int, string, bool) {
 //
 // The function returns the following values:
 //
-//    - gint: encoded version of Pango library available at run time.
+//   - gint: encoded version of Pango library available at run time.
 //
 func Version() int {
 	var _cret C.int // in
@@ -107,25 +107,25 @@ func Version() int {
 // compatible with the version of Pango the application or module was compiled
 // against.
 //
-// Compatibility is defined by two things: first the version of the running
-// library is newer than the version
-// required_major.required_minor.required_micro. Second the running library must
-// be binary compatible with the version
+// Compatibility is defined by two things: first the
+// version of the running library is newer than the version
+// required_major.required_minor.required_micro. Second the
+// running library must be binary compatible with the version
 // required_major.required_minor.required_micro (same major version.)
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
 //
 // The function takes the following parameters:
 //
-//    - requiredMajor: required major version.
-//    - requiredMinor: required minor version.
-//    - requiredMicro: required major version.
+//   - requiredMajor: required major version.
+//   - requiredMinor: required minor version.
+//   - requiredMicro: required major version.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): NULL if the Pango library is compatible with the given
-//      version, or a string describing the version mismatch. The returned string
-//      is owned by Pango and should not be modified or freed.
+//   - utf8 (optional): NULL if the Pango library is compatible with the given
+//     version, or a string describing the version mismatch. The returned string
+//     is owned by Pango and should not be modified or freed.
 //
 func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 	var _arg1 C.int   // out
@@ -158,9 +158,9 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 //
 // The function returns the following values:
 //
-//    - utf8: string containing the version of Pango library available at run
-//      time. The returned string is owned by Pango and should not be modified or
-//      freed.
+//   - utf8: string containing the version of Pango library available at run
+//     time. The returned string is owned by Pango and should not be modified or
+//     freed.
 //
 func VersionString() string {
 	var _cret *C.char // in

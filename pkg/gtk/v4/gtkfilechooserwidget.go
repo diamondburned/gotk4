@@ -42,8 +42,7 @@ func init() {
 // It exposes the gtk.FileChooser interface, and you should use the methods of
 // this interface to interact with the widget.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkFileChooserWidget has a single CSS node with name filechooser.
 type FileChooserWidget struct {
@@ -103,9 +102,9 @@ func (v *FileChooserWidget) ConnectDesktopFolder(f func()) coreglib.SignalHandle
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
-// This is used to make the file chooser go to a child of the current folder in
-// the file hierarchy. The subfolder that will be used is displayed in the path
-// bar widget of the file chooser. For example, if the path bar is showing
+// This is used to make the file chooser go to a child of the current folder
+// in the file hierarchy. The subfolder that will be used is displayed in the
+// path bar widget of the file chooser. For example, if the path bar is showing
 // "/foo/bar/baz", with bar currently displayed, then this will cause the file
 // chooser to switch to the "baz" subfolder.
 //
@@ -181,9 +180,9 @@ func (v *FileChooserWidget) ConnectPlacesShortcut(f func()) coreglib.SignalHandl
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
-// This is used to make the file chooser switch to the bookmark specified in the
-// bookmark_index parameter. For example, if you have three bookmarks, you can
-// pass 0, 1, 2 to this signal to switch to each of them, respectively.
+// This is used to make the file chooser switch to the bookmark specified in
+// the bookmark_index parameter. For example, if you have three bookmarks,
+// you can pass 0, 1, 2 to this signal to switch to each of them, respectively.
 //
 // The default binding for this signal is <kbd>Alt</kbd>-<kbd>1</kbd>,
 // <kbd>Alt</kbd>-<kbd>2</kbd>, etc. until <kbd>Alt</kbd>-<kbd>0</kbd>. Note
@@ -240,16 +239,16 @@ func (v *FileChooserWidget) ConnectUpFolder(f func()) coreglib.SignalHandle {
 
 // NewFileChooserWidget creates a new GtkFileChooserWidget.
 //
-// This is a file chooser widget that can be embedded in custom windows, and it
-// is the same widget that is used by GtkFileChooserDialog.
+// This is a file chooser widget that can be embedded in custom windows,
+// and it is the same widget that is used by GtkFileChooserDialog.
 //
 // The function takes the following parameters:
 //
-//    - action: open or save mode for the widget.
+//   - action: open or save mode for the widget.
 //
 // The function returns the following values:
 //
-//    - fileChooserWidget: new GtkFileChooserWidget.
+//   - fileChooserWidget: new GtkFileChooserWidget.
 //
 func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	var _arg1 C.GtkFileChooserAction // out

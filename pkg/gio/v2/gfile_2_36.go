@@ -27,12 +27,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - arg: command line string.
-//    - cwd: current working directory of the commandline.
+//   - arg: command line string.
+//   - cwd: current working directory of the commandline.
 //
 // The function returns the following values:
 //
-//    - file: new #GFile.
+//   - file: new #GFile.
 //
 func NewFileForCommandlineArgAndCwd(arg, cwd string) *File {
 	var _arg1 *C.gchar // out

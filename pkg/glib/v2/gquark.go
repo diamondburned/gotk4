@@ -11,8 +11,8 @@ import (
 // #include <glib.h>
 import "C"
 
-// Quark is a non-zero integer which uniquely identifies a particular string. A
-// GQuark value of zero is associated to NULL.
+// Quark is a non-zero integer which uniquely identifies a particular string.
+// A GQuark value of zero is associated to NULL.
 type Quark = uint32
 
 // QuarkFromStaticString gets the #GQuark identifying the given (static) string.
@@ -33,11 +33,11 @@ type Quark = uint32
 //
 // The function takes the following parameters:
 //
-//    - str (optional): string.
+//   - str (optional): string.
 //
 // The function returns the following values:
 //
-//    - quark identifying the string, or 0 if string is NULL.
+//   - quark identifying the string, or 0 if string is NULL.
 //
 func QuarkFromStaticString(str string) Quark {
 	var _arg1 *C.gchar // out
@@ -70,11 +70,11 @@ func QuarkFromStaticString(str string) Quark {
 //
 // The function takes the following parameters:
 //
-//    - str (optional): string.
+//   - str (optional): string.
 //
 // The function returns the following values:
 //
-//    - quark identifying the string, or 0 if string is NULL.
+//   - quark identifying the string, or 0 if string is NULL.
 //
 func QuarkFromString(str string) Quark {
 	var _arg1 *C.gchar // out
@@ -101,11 +101,11 @@ func QuarkFromString(str string) Quark {
 //
 // The function takes the following parameters:
 //
-//    - quark: #GQuark.
+//   - quark: #GQuark.
 //
 // The function returns the following values:
 //
-//    - utf8: string associated with the #GQuark.
+//   - utf8: string associated with the #GQuark.
 //
 func QuarkToString(quark Quark) string {
 	var _arg1 C.GQuark // out
@@ -136,12 +136,12 @@ func QuarkToString(quark Quark) string {
 //
 // The function takes the following parameters:
 //
-//    - str (optional): string.
+//   - str (optional): string.
 //
 // The function returns the following values:
 //
-//    - quark associated with the string, or 0 if string is NULL or there is no
-//      #GQuark associated with it.
+//   - quark associated with the string, or 0 if string is NULL or there is no
+//     #GQuark associated with it.
 //
 func QuarkTryString(str string) Quark {
 	var _arg1 *C.gchar // out

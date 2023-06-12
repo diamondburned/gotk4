@@ -257,8 +257,8 @@ const (
 	WindowTypeHintDesktop
 	// WindowTypeHintDropdownMenu: menu that belongs to a menubar.
 	WindowTypeHintDropdownMenu
-	// WindowTypeHintPopupMenu: menu that does not belong to a menubar, e.g. a
-	// context menu.
+	// WindowTypeHintPopupMenu: menu that does not belong to a menubar, e.g.
+	// a context menu.
 	WindowTypeHintPopupMenu
 	// WindowTypeHintTooltip: tooltip.
 	WindowTypeHintTooltip
@@ -317,23 +317,23 @@ func (w WindowTypeHint) String() string {
 // See the [input handling overview][chap-input-handling] for details of [event
 // masks][event-masks] and [event propagation][event-propagation].
 //
-// GDK_POINTER_MOTION_HINT_MASK is deprecated. It is a special mask to reduce
-// the number of GDK_MOTION_NOTIFY events received. When using
+// GDK_POINTER_MOTION_HINT_MASK is deprecated. It is a special mask to
+// reduce the number of GDK_MOTION_NOTIFY events received. When using
 // GDK_POINTER_MOTION_HINT_MASK, fewer GDK_MOTION_NOTIFY events will be sent,
 // some of which are marked as a hint (the is_hint member is TRUE). To receive
 // more motion events after a motion hint event, the application needs to asks
 // for more, by calling gdk_event_request_motions().
 //
-// Since GTK 3.8, motion events are already compressed by default, independent
-// of this mechanism. This compression can be disabled with
+// Since GTK 3.8, motion events are already compressed by default,
+// independent of this mechanism. This compression can be disabled with
 // gdk_window_set_event_compression(). See the documentation of that function
 // for details.
 //
 // If GDK_TOUCH_MASK is enabled, the window will receive touch events from
-// touch-enabled devices. Those will come as sequences of EventTouch with type
-// GDK_TOUCH_UPDATE, enclosed by two events with type GDK_TOUCH_BEGIN and
-// GDK_TOUCH_END (or GDK_TOUCH_CANCEL). gdk_event_get_event_sequence() returns
-// the event sequence for these events, so different sequences may be
+// touch-enabled devices. Those will come as sequences of EventTouch with
+// type GDK_TOUCH_UPDATE, enclosed by two events with type GDK_TOUCH_BEGIN
+// and GDK_TOUCH_END (or GDK_TOUCH_CANCEL). gdk_event_get_event_sequence()
+// returns the event sequence for these events, so different sequences may be
 // distinguished.
 type EventMask C.guint
 
@@ -823,11 +823,11 @@ func (r *Rectangle) SetHeight(height int) {
 //
 // The function takes the following parameters:
 //
-//    - rect2: Rectangle.
+//   - rect2: Rectangle.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the rectangles are equal.
+//   - ok: TRUE if the rectangles are equal.
 //
 func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	var _arg0 *C.GdkRectangle // out
@@ -850,21 +850,21 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 	return _ok
 }
 
-// Intersect calculates the intersection of two rectangles. It is allowed for
-// dest to be the same as either src1 or src2. If the rectangles do not
+// Intersect calculates the intersection of two rectangles. It is allowed
+// for dest to be the same as either src1 or src2. If the rectangles do not
 // intersect, dest’s width and height is set to 0 and its x and y values are
 // undefined. If you are only interested in whether the rectangles intersect,
 // but not in the intersecting area itself, pass NULL for dest.
 //
 // The function takes the following parameters:
 //
-//    - src2: Rectangle.
+//   - src2: Rectangle.
 //
 // The function returns the following values:
 //
-//    - dest (optional): return location for the intersection of src1 and src2,
-//      or NULL.
-//    - ok: TRUE if the rectangles intersect.
+//   - dest (optional): return location for the intersection of src1 and src2,
+//     or NULL.
+//   - ok: TRUE if the rectangles intersect.
 //
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
@@ -899,11 +899,11 @@ func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 //
 // The function takes the following parameters:
 //
-//    - src2: Rectangle.
+//   - src2: Rectangle.
 //
 // The function returns the following values:
 //
-//    - dest: return location for the union of src1 and src2.
+//   - dest: return location for the union of src1 and src2.
 //
 func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var _arg0 *C.GdkRectangle // out

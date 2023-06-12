@@ -67,9 +67,9 @@ func (v *GestureClick) ConnectPressed(f func(nPress int, x, y float64)) coreglib
 
 // ConnectReleased is emitted when a button or touch is released.
 //
-// n_press will report the number of press that is paired to this event, note
-// that gtk.GestureClick::stopped may have been emitted between the press and
-// its release, n_press will only start over at the next press.
+// n_press will report the number of press that is paired to this event,
+// note that gtk.GestureClick::stopped may have been emitted between the press
+// and its release, n_press will only start over at the next press.
 func (v *GestureClick) ConnectReleased(f func(nPress int, x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "released", false, unsafe.Pointer(C._gotk4_gtk4_GestureClick_ConnectReleased), f)
 }
@@ -95,7 +95,7 @@ func (v *GestureClick) ConnectUnpairedRelease(f func(x, y float64, button uint, 
 //
 // The function returns the following values:
 //
-//    - gestureClick: newly created GtkGestureClick.
+//   - gestureClick: newly created GtkGestureClick.
 //
 func NewGestureClick() *GestureClick {
 	var _cret *C.GtkGesture // in

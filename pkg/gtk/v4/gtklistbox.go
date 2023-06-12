@@ -79,14 +79,14 @@ type ListBoxUpdateHeaderFunc func(row, before *ListBoxRow)
 // depending on the row content. It also allows keyboard and mouse navigation
 // and selection like a typical list.
 //
-// Using GtkListBox is often an alternative to GtkTreeView, especially when the
-// list contents has a more complicated layout than what is allowed by a
+// Using GtkListBox is often an alternative to GtkTreeView, especially when
+// the list contents has a more complicated layout than what is allowed by a
 // GtkCellRenderer, or when the contents is interactive (i.e. has a button in
 // it).
 //
-// Although a GtkListBox must have only GtkListBoxRow children, you can add any
-// kind of widget to it via gtk.ListBox.Prepend(), gtk.ListBox.Append() and
-// gtk.ListBox.Insert() and a GtkListBoxRow widget will automatically be
+// Although a GtkListBox must have only GtkListBoxRow children, you can add
+// any kind of widget to it via gtk.ListBox.Prepend(), gtk.ListBox.Append()
+// and gtk.ListBox.Insert() and a GtkListBoxRow widget will automatically be
 // inserted between the list and the widget.
 //
 // GtkListBoxRows can be marked as activatable or selectable. If a row is
@@ -94,11 +94,10 @@ type ListBoxUpdateHeaderFunc func(row, before *ListBoxRow)
 // tries to activate it. If it is selectable, the row will be marked as selected
 // when the user tries to select it.
 //
+// # GtkListBox as GtkBuildable
 //
-// GtkListBox as GtkBuildable
-//
-// The GtkListBox implementation of the GtkBuildable interface supports setting
-// a child as the placeholder by specifying “placeholder” as the “type”
+// The GtkListBox implementation of the GtkBuildable interface supports
+// setting a child as the placeholder by specifying “placeholder” as the “type”
 // attribute of a <child> element. See gtk.ListBox.SetPlaceholder() for info.
 //
 // CSS nodes
@@ -107,16 +106,15 @@ type ListBoxUpdateHeaderFunc func(row, before *ListBoxRow)
 //    ╰── row[.activatable]
 //
 // GtkListBox uses a single CSS node named list. It may carry the .separators
-// style class, when the gtk.ListBox:show-separators property is set. Each
-// GtkListBoxRow uses a single CSS node named row. The row nodes get the
+// style class, when the gtk.ListBox:show-separators property is set.
+// Each GtkListBoxRow uses a single CSS node named row. The row nodes get the
 // .activatable style class added when appropriate.
 //
-// The main list node may also carry style classes to select the style of list
-// presentation (section-list-widget.html#list-styles): .rich-list,
+// The main list node may also carry style classes to select the style of
+// list presentation (section-list-widget.html#list-styles): .rich-list,
 // .navigation-sidebar or .data-table.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkListBox uses the GTK_ACCESSIBLE_ROLE_LIST role and GtkListBoxRow uses the
 // GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
@@ -169,8 +167,8 @@ func (box *ListBox) ConnectRowActivated(f func(row *ListBoxRow)) coreglib.Signal
 // ConnectRowSelected is emitted when a new row is selected, or (with a NULL
 // row) when the selection is cleared.
 //
-// When the box is using GTK_SELECTION_MULTIPLE, this signal will not give you
-// the full picture of selection changes, and you should use the
+// When the box is using GTK_SELECTION_MULTIPLE, this signal will not
+// give you the full picture of selection changes, and you should use the
 // gtk.ListBox::selected-rows-changed signal instead.
 func (box *ListBox) ConnectRowSelected(f func(row *ListBoxRow)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "row-selected", false, unsafe.Pointer(C._gotk4_gtk4_ListBox_ConnectRowSelected), f)
@@ -210,7 +208,7 @@ func (box *ListBox) ConnectUnselectAll(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - listBox: new GtkListBox.
+//   - listBox: new GtkListBox.
 //
 func NewListBox() *ListBox {
 	var _cret *C.GtkWidget // in
@@ -231,7 +229,7 @@ func NewListBox() *ListBox {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to add.
+//   - child: GtkWidget to add.
 //
 func (box *ListBox) Append(child Widgetter) {
 	var _arg0 *C.GtkListBox // out
@@ -262,9 +260,9 @@ func (box *ListBox) Append(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): GListModel to be bound to box.
-//    - createWidgetFunc (optional): function that creates widgets for items or
-//      NULL in case you also passed NULL as model.
+//   - model (optional): GListModel to be bound to box.
+//   - createWidgetFunc (optional): function that creates widgets for items or
+//     NULL in case you also passed NULL as model.
 //
 func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCreateWidgetFunc) {
 	var _arg0 *C.GtkListBox                // out
@@ -299,7 +297,7 @@ func (box *ListBox) BindModel(model gio.ListModeller, createWidgetFunc ListBoxCr
 //
 // The function takes the following parameters:
 //
-//    - row: GtkListBoxRow.
+//   - row: GtkListBoxRow.
 //
 func (box *ListBox) DragHighlightRow(row *ListBoxRow) {
 	var _arg0 *C.GtkListBox    // out
@@ -328,7 +326,7 @@ func (box *ListBox) DragUnhighlightRow() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if rows are activated on single click, FALSE otherwise.
+//   - ok: TRUE if rows are activated on single click, FALSE otherwise.
 //
 func (box *ListBox) ActivateOnSingleClick() bool {
 	var _arg0 *C.GtkListBox // out
@@ -353,7 +351,7 @@ func (box *ListBox) ActivateOnSingleClick() bool {
 //
 // The function returns the following values:
 //
-//    - adjustment: adjustment.
+//   - adjustment: adjustment.
 //
 func (box *ListBox) Adjustment() *Adjustment {
 	var _arg0 *C.GtkListBox    // out
@@ -373,16 +371,16 @@ func (box *ListBox) Adjustment() *Adjustment {
 
 // RowAtIndex gets the n-th child in the list (not counting headers).
 //
-// If index_ is negative or larger than the number of items in the list, NULL is
-// returned.
+// If index_ is negative or larger than the number of items in the list,
+// NULL is returned.
 //
 // The function takes the following parameters:
 //
-//    - index_: index of the row.
+//   - index_: index of the row.
 //
 // The function returns the following values:
 //
-//    - listBoxRow (optional): child GtkWidget or NULL.
+//   - listBoxRow (optional): child GtkWidget or NULL.
 //
 func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 	var _arg0 *C.GtkListBox    // out
@@ -409,12 +407,12 @@ func (box *ListBox) RowAtIndex(index_ int) *ListBoxRow {
 //
 // The function takes the following parameters:
 //
-//    - y: position.
+//   - y: position.
 //
 // The function returns the following values:
 //
-//    - listBoxRow (optional): row or NULL in case no row exists for the given y
-//      coordinate.
+//   - listBoxRow (optional): row or NULL in case no row exists for the given y
+//     coordinate.
 //
 func (box *ListBox) RowAtY(y int) *ListBoxRow {
 	var _arg0 *C.GtkListBox    // out
@@ -444,7 +442,7 @@ func (box *ListBox) RowAtY(y int) *ListBoxRow {
 //
 // The function returns the following values:
 //
-//    - listBoxRow (optional): selected row or NULL.
+//   - listBoxRow (optional): selected row or NULL.
 //
 func (box *ListBox) SelectedRow() *ListBoxRow {
 	var _arg0 *C.GtkListBox    // out
@@ -468,8 +466,8 @@ func (box *ListBox) SelectedRow() *ListBoxRow {
 //
 // The function returns the following values:
 //
-//    - list: A GList containing the GtkWidget for each selected child. Free with
-//      g_list_free() when done.
+//   - list: A GList containing the GtkWidget for each selected child. Free with
+//     g_list_free() when done.
 //
 func (box *ListBox) SelectedRows() []*ListBoxRow {
 	var _arg0 *C.GtkListBox // out
@@ -497,7 +495,7 @@ func (box *ListBox) SelectedRows() []*ListBoxRow {
 //
 // The function returns the following values:
 //
-//    - selectionMode: GtkSelectionMode.
+//   - selectionMode: GtkSelectionMode.
 //
 func (box *ListBox) SelectionMode() SelectionMode {
 	var _arg0 *C.GtkListBox      // out
@@ -520,7 +518,7 @@ func (box *ListBox) SelectionMode() SelectionMode {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the list box shows separators.
+//   - ok: TRUE if the list box shows separators.
 //
 func (box *ListBox) ShowSeparators() bool {
 	var _arg0 *C.GtkListBox // out
@@ -545,13 +543,13 @@ func (box *ListBox) ShowSeparators() bool {
 // If a sort function is set, the widget will actually be inserted at the
 // calculated position.
 //
-// If position is -1, or larger than the total number of items in the box, then
-// the child will be appended to the end.
+// If position is -1, or larger than the total number of items in the box,
+// then the child will be appended to the end.
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to add.
-//    - position to insert child in.
+//   - child: GtkWidget to add.
+//   - position to insert child in.
 //
 func (box *ListBox) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkListBox // out
@@ -616,7 +614,7 @@ func (box *ListBox) InvalidateSort() {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to add.
+//   - child: GtkWidget to add.
 //
 func (box *ListBox) Prepend(child Widgetter) {
 	var _arg0 *C.GtkListBox // out
@@ -634,7 +632,7 @@ func (box *ListBox) Prepend(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child to remove.
+//   - child to remove.
 //
 func (box *ListBox) Remove(child Widgetter) {
 	var _arg0 *C.GtkListBox // out
@@ -662,7 +660,7 @@ func (box *ListBox) SelectAll() {
 //
 // The function takes the following parameters:
 //
-//    - row (optional) to select or NULL.
+//   - row (optional) to select or NULL.
 //
 func (box *ListBox) SelectRow(row *ListBoxRow) {
 	var _arg0 *C.GtkListBox    // out
@@ -684,7 +682,7 @@ func (box *ListBox) SelectRow(row *ListBoxRow) {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call for each selected child.
+//   - fn: function to call for each selected child.
 //
 func (box *ListBox) SelectedForEach(fn ListBoxForEachFunc) {
 	var _arg0 *C.GtkListBox           // out
@@ -706,7 +704,7 @@ func (box *ListBox) SelectedForEach(fn ListBoxForEachFunc) {
 //
 // The function takes the following parameters:
 //
-//    - single: boolean.
+//   - single: boolean.
 //
 func (box *ListBox) SetActivateOnSingleClick(single bool) {
 	var _arg0 *C.GtkListBox // out
@@ -733,7 +731,7 @@ func (box *ListBox) SetActivateOnSingleClick(single bool) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment (optional): adjustment, or NULL.
+//   - adjustment (optional): adjustment, or NULL.
 //
 func (box *ListBox) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkListBox    // out
@@ -764,7 +762,7 @@ func (box *ListBox) SetAdjustment(adjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - filterFunc (optional): callback that lets you filter which rows to show.
+//   - filterFunc (optional): callback that lets you filter which rows to show.
 //
 func (box *ListBox) SetFilterFunc(filterFunc ListBoxFilterFunc) {
 	var _arg0 *C.GtkListBox          // out
@@ -803,16 +801,16 @@ func (box *ListBox) SetFilterFunc(filterFunc ListBoxFilterFunc) {
 // important for performance to not blindly replace an existing header with an
 // identical one.
 //
-// The update_header function will be called for each row after the call, and it
-// will continue to be called each time a row changes (via
+// The update_header function will be called for each row after the call,
+// and it will continue to be called each time a row changes (via
 // gtk.ListBoxRow.Changed()) and when the row before changes (either by
-// gtk.ListBoxRow.Changed() on the previous row, or when the previous row
-// becomes a different row). It is also called for all rows when
+// gtk.ListBoxRow.Changed() on the previous row, or when the previous
+// row becomes a different row). It is also called for all rows when
 // gtk.ListBox.InvalidateHeaders() is called.
 //
 // The function takes the following parameters:
 //
-//    - updateHeader (optional): callback that lets you add row headers.
+//   - updateHeader (optional): callback that lets you add row headers.
 //
 func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
 	var _arg0 *C.GtkListBox                // out
@@ -837,7 +835,7 @@ func (box *ListBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc) {
 //
 // The function takes the following parameters:
 //
-//    - placeholder (optional) or NULL.
+//   - placeholder (optional) or NULL.
 //
 func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
 	var _arg0 *C.GtkListBox // out
@@ -857,7 +855,7 @@ func (box *ListBox) SetPlaceholder(placeholder Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - mode: GtkSelectionMode.
+//   - mode: GtkSelectionMode.
 //
 func (box *ListBox) SetSelectionMode(mode SelectionMode) {
 	var _arg0 *C.GtkListBox      // out
@@ -876,7 +874,7 @@ func (box *ListBox) SetSelectionMode(mode SelectionMode) {
 //
 // The function takes the following parameters:
 //
-//    - showSeparators: TRUE to show separators.
+//   - showSeparators: TRUE to show separators.
 //
 func (box *ListBox) SetShowSeparators(showSeparators bool) {
 	var _arg0 *C.GtkListBox // out
@@ -906,7 +904,7 @@ func (box *ListBox) SetShowSeparators(showSeparators bool) {
 //
 // The function takes the following parameters:
 //
-//    - sortFunc (optional): sort function.
+//   - sortFunc (optional): sort function.
 //
 func (box *ListBox) SetSortFunc(sortFunc ListBoxSortFunc) {
 	var _arg0 *C.GtkListBox        // out
@@ -940,7 +938,7 @@ func (box *ListBox) UnselectAll() {
 //
 // The function takes the following parameters:
 //
-//    - row to unselected.
+//   - row to unselected.
 //
 func (box *ListBox) UnselectRow(row *ListBoxRow) {
 	var _arg0 *C.GtkListBox    // out
@@ -1047,8 +1045,8 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 // ConnectActivate: this is a keybinding signal, which will cause this row to be
 // activated.
 //
-// If you want to be notified when the user activates a row (by key or not), use
-// the gtk.ListBox::row-activated signal on the row’s parent GtkListBox.
+// If you want to be notified when the user activates a row (by key or not),
+// use the gtk.ListBox::row-activated signal on the row’s parent GtkListBox.
 func (row *ListBoxRow) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(row, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ListBoxRow_ConnectActivate), f)
 }
@@ -1057,7 +1055,7 @@ func (row *ListBoxRow) ConnectActivate(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - listBoxRow: new GtkListBoxRow.
+//   - listBoxRow: new GtkListBoxRow.
 //
 func NewListBoxRow() *ListBoxRow {
 	var _cret *C.GtkWidget // in
@@ -1077,15 +1075,15 @@ func NewListBoxRow() *ListBoxRow {
 // This affects sorting, filtering and headers.
 //
 // Note that calls to this method must be in sync with the data used for the row
-// functions. For instance, if the list is mirroring some external data set, and
-// *two* rows changed in the external data set then when you call
+// functions. For instance, if the list is mirroring some external data set,
+// and *two* rows changed in the external data set then when you call
 // gtk_list_box_row_changed() on the first row the sort function must only read
 // the new data for the first of the two changed rows, otherwise the resorting
 // of the rows will be wrong.
 //
-// This generally means that if you don’t fully control the data model you have
-// to duplicate the data that affects the listbox row functions into the row
-// widgets themselves. Another alternative is to call
+// This generally means that if you don’t fully control the data model
+// you have to duplicate the data that affects the listbox row functions
+// into the row widgets themselves. Another alternative is to call
 // gtk.ListBox.InvalidateSort() on any model change, but that is more expensive.
 func (row *ListBoxRow) Changed() {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1100,7 +1098,7 @@ func (row *ListBoxRow) Changed() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the row is activatable.
+//   - ok: TRUE if the row is activatable.
 //
 func (row *ListBoxRow) Activatable() bool {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1124,7 +1122,7 @@ func (row *ListBoxRow) Activatable() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of row.
+//   - widget (optional): child widget of row.
 //
 func (row *ListBoxRow) Child() Widgetter {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1164,7 +1162,7 @@ func (row *ListBoxRow) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget (optional): current header, or NULL if none.
+//   - widget (optional): current header, or NULL if none.
 //
 func (row *ListBoxRow) Header() Widgetter {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1201,7 +1199,7 @@ func (row *ListBoxRow) Header() Widgetter {
 //
 // The function returns the following values:
 //
-//    - gint: index of the row, or -1 if the row is not in a listbox.
+//   - gint: index of the row, or -1 if the row is not in a listbox.
 //
 func (row *ListBoxRow) Index() int {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1223,7 +1221,7 @@ func (row *ListBoxRow) Index() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the row is selectable.
+//   - ok: TRUE if the row is selectable.
 //
 func (row *ListBoxRow) Selectable() bool {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1248,7 +1246,7 @@ func (row *ListBoxRow) Selectable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if row is selected.
+//   - ok: TRUE if row is selected.
 //
 func (row *ListBoxRow) IsSelected() bool {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1272,7 +1270,7 @@ func (row *ListBoxRow) IsSelected() bool {
 //
 // The function takes the following parameters:
 //
-//    - activatable: TRUE to mark the row as activatable.
+//   - activatable: TRUE to mark the row as activatable.
 //
 func (row *ListBoxRow) SetActivatable(activatable bool) {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1292,7 +1290,7 @@ func (row *ListBoxRow) SetActivatable(activatable bool) {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (row *ListBoxRow) SetChild(child Widgetter) {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1310,13 +1308,13 @@ func (row *ListBoxRow) SetChild(child Widgetter) {
 
 // SetHeader sets the current header of the row.
 //
-// This is only allowed to be called from a gtk.ListBoxUpdateHeaderFunc. It will
-// replace any existing header in the row, and be shown in front of the row in
-// the listbox.
+// This is only allowed to be called from a gtk.ListBoxUpdateHeaderFunc.
+// It will replace any existing header in the row, and be shown in front of the
+// row in the listbox.
 //
 // The function takes the following parameters:
 //
-//    - header (optional): header, or NULL.
+//   - header (optional): header, or NULL.
 //
 func (row *ListBoxRow) SetHeader(header Widgetter) {
 	var _arg0 *C.GtkListBoxRow // out
@@ -1336,7 +1334,7 @@ func (row *ListBoxRow) SetHeader(header Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - selectable: TRUE to mark the row as selectable.
+//   - selectable: TRUE to mark the row as selectable.
 //
 func (row *ListBoxRow) SetSelectable(selectable bool) {
 	var _arg0 *C.GtkListBoxRow // out

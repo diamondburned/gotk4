@@ -28,8 +28,8 @@ func init() {
 
 // WaylandDisplay: wayland implementation of GdkDisplay.
 //
-// Beyond the regular gdk.Display API, the Wayland implementation provides
-// access to Wayland objects such as the wl_display with
+// Beyond the regular gdk.Display API, the Wayland implementation
+// provides access to Wayland objects such as the wl_display with
 // gdkwayland.WaylandDisplay.GetWlDisplay(), the wl_compositor with
 // gdkwayland.WaylandDisplay.GetWlCompositor().
 //
@@ -61,7 +61,7 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): startup notification ID for display, or NULL.
+//   - utf8 (optional): startup notification ID for display, or NULL.
 //
 func (display *WaylandDisplay) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
@@ -86,11 +86,11 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 //
 // The function takes the following parameters:
 //
-//    - global interface to query in the registry.
+//   - global interface to query in the registry.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the global is offered by the compositor.
+//   - ok: TRUE if the global is offered by the compositor.
 //
 func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
@@ -118,8 +118,8 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name: new cursor theme.
-//    - size to use for cursors.
+//   - name: new cursor theme.
+//   - size to use for cursors.
 //
 func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 	var _arg0 *C.GdkDisplay // out
@@ -143,13 +143,13 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 // variable, but in some cases (such as the application not being launched using
 // exec()) it can come from other sources.
 //
-// The startup ID is also what is used to signal that the startup is complete
-// (for example, when opening a window or when calling
+// The startup ID is also what is used to signal that the startup
+// is complete (for example, when opening a window or when calling
 // gdk.Display.NotifyStartupComplete()).
 //
 // The function takes the following parameters:
 //
-//    - startupId: startup notification ID (must be valid utf8).
+//   - startupId: startup notification ID (must be valid utf8).
 //
 func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out

@@ -39,8 +39,8 @@ func init() {
 
 // CellEditable: interface for widgets that can be used for editing cells
 //
-// The CellEditable interface must be implemented for widgets to be usable to
-// edit the contents of a TreeView cell. It provides a way to specify how
+// The CellEditable interface must be implemented for widgets to be usable
+// to edit the contents of a TreeView cell. It provides a way to specify how
 // temporary widgets should be configured for editing, get the new value, etc.
 //
 // CellEditable wraps an interface. This means the user can get the
@@ -68,8 +68,8 @@ type CellEditabler interface {
 	// Editing-done: this signal is a sign for the cell renderer to update its
 	// value from the cell_editable.
 	ConnectEditingDone(func()) coreglib.SignalHandle
-	// Remove-widget: this signal is meant to indicate that the cell is finished
-	// editing, and the cell_editable widget is being removed and may
+	// Remove-widget: this signal is meant to indicate that the cell is
+	// finished editing, and the cell_editable widget is being removed and may
 	// subsequently be destroyed.
 	ConnectRemoveWidget(func()) coreglib.SignalHandle
 }
@@ -103,10 +103,10 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 // ConnectEditingDone: this signal is a sign for the cell renderer to update its
 // value from the cell_editable.
 //
-// Implementations of CellEditable are responsible for emitting this signal when
-// they are done editing, e.g. Entry emits this signal when the user presses
-// Enter. Typical things to do in a handler for ::editing-done are to capture
-// the edited value, disconnect the cell_editable from signals on the
+// Implementations of CellEditable are responsible for emitting this signal
+// when they are done editing, e.g. Entry emits this signal when the user
+// presses Enter. Typical things to do in a handler for ::editing-done are to
+// capture the edited value, disconnect the cell_editable from signals on the
 // CellRenderer, etc.
 //
 // gtk_cell_editable_editing_done() is a convenience method for emitting
@@ -119,8 +119,8 @@ func (cellEditable *CellEditable) ConnectEditingDone(f func()) coreglib.SignalHa
 // finished editing, and the cell_editable widget is being removed and may
 // subsequently be destroyed.
 //
-// Implementations of CellEditable are responsible for emitting this signal when
-// they are done editing. It must be emitted after the
+// Implementations of CellEditable are responsible for emitting this
+// signal when they are done editing. It must be emitted after the
 // CellEditable::editing-done signal, to give the cell renderer a chance to
 // update the cell's value before the widget is removed.
 //
@@ -163,8 +163,8 @@ func (cellEditable *CellEditable) RemoveWidget() {
 //
 // The function takes the following parameters:
 //
-//    - event (optional) that began the editing process, or NULL if editing was
-//      initiated programmatically.
+//   - event (optional) that began the editing process, or NULL if editing was
+//     initiated programmatically.
 //
 func (cellEditable *CellEditable) StartEditing(event gdk.Eventer) {
 	var _arg0 *C.GtkCellEditable // out
@@ -219,8 +219,8 @@ func (cellEditable *CellEditable) removeWidget() {
 //
 // The function takes the following parameters:
 //
-//    - event (optional) that began the editing process, or NULL if editing was
-//      initiated programmatically.
+//   - event (optional) that began the editing process, or NULL if editing was
+//     initiated programmatically.
 //
 func (cellEditable *CellEditable) startEditing(event gdk.Eventer) {
 	gclass := (*C.GtkCellEditableIface)(coreglib.PeekParentClass(cellEditable))

@@ -85,11 +85,11 @@ func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 //
 // The function takes the following parameters:
 //
-//    - anchors: filename of anchor certificate authorities.
+//   - anchors: filename of anchor certificate authorities.
 //
 // The function returns the following values:
 //
-//    - tlsFileDatabase: new FileDatabase, or NULL on error.
+//   - tlsFileDatabase: new FileDatabase, or NULL on error.
 //
 func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
 	var _arg1 *C.gchar        // out

@@ -76,7 +76,7 @@ func BaseEventController(obj EventControllerer) *EventController {
 //
 // The function returns the following values:
 //
-//    - propagationPhase: propagation phase.
+//   - propagationPhase: propagation phase.
 //
 func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
@@ -98,7 +98,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 //
 // The function returns the following values:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 func (controller *EventController) Widget() Widgetter {
 	var _arg0 *C.GtkEventController // out
@@ -137,12 +137,12 @@ func (controller *EventController) Widget() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - event: Event.
+//   - event: Event.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the event was potentially useful to trigger the controller
-//      action.
+//   - ok: TRUE if the event was potentially useful to trigger the controller
+//     action.
 //
 func (controller *EventController) HandleEvent(event *gdk.Event) bool {
 	var _arg0 *C.GtkEventController // out
@@ -186,7 +186,7 @@ func (controller *EventController) Reset() {
 //
 // The function takes the following parameters:
 //
-//    - phase: propagation phase.
+//   - phase: propagation phase.
 //
 func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController // out

@@ -96,11 +96,11 @@ func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) coreglib.Signa
 //
 // The function takes the following parameters:
 //
-//    - linkIndex: integer specifying the desired link.
+//   - linkIndex: integer specifying the desired link.
 //
 // The function returns the following values:
 //
-//    - hyperlink: link in this hypertext document at index link_index.
+//   - hyperlink: link in this hypertext document at index link_index.
 //
 func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg0 *C.AtkHypertext // out
@@ -126,12 +126,12 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 //
 // The function takes the following parameters:
 //
-//    - charIndex: character index.
+//   - charIndex: character index.
 //
 // The function returns the following values:
 //
-//    - gint: index into the array of hyperlinks in hypertext, or -1 if there is
-//      no hyperlink associated with this character.
+//   - gint: index into the array of hyperlinks in hypertext, or -1 if there is
+//     no hyperlink associated with this character.
 //
 func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
@@ -156,7 +156,7 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 //
 // The function returns the following values:
 //
-//    - gint: number of links within this hypertext document.
+//   - gint: number of links within this hypertext document.
 //
 func (hypertext *Hypertext) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
@@ -178,11 +178,11 @@ func (hypertext *Hypertext) NLinks() int {
 //
 // The function takes the following parameters:
 //
-//    - linkIndex: integer specifying the desired link.
+//   - linkIndex: integer specifying the desired link.
 //
 // The function returns the following values:
 //
-//    - hyperlink: link in this hypertext document at index link_index.
+//   - hyperlink: link in this hypertext document at index link_index.
 //
 func (hypertext *Hypertext) link(linkIndex int) *Hyperlink {
 	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
@@ -211,12 +211,12 @@ func (hypertext *Hypertext) link(linkIndex int) *Hyperlink {
 //
 // The function takes the following parameters:
 //
-//    - charIndex: character index.
+//   - charIndex: character index.
 //
 // The function returns the following values:
 //
-//    - gint: index into the array of hyperlinks in hypertext, or -1 if there is
-//      no hyperlink associated with this character.
+//   - gint: index into the array of hyperlinks in hypertext, or -1 if there is
+//     no hyperlink associated with this character.
 //
 func (hypertext *Hypertext) linkIndex(charIndex int) int {
 	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
@@ -244,7 +244,7 @@ func (hypertext *Hypertext) linkIndex(charIndex int) int {
 //
 // The function returns the following values:
 //
-//    - gint: number of links within this hypertext document.
+//   - gint: number of links within this hypertext document.
 //
 func (hypertext *Hypertext) nLinks() int {
 	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))

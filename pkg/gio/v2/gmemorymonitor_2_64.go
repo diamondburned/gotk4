@@ -33,9 +33,9 @@ func init() {
 // monitoring functionality. See [Extending GIO][extending-gio].
 const MEMORY_MONITOR_EXTENSION_POINT_NAME = "gio-memory-monitor"
 
-// MemoryMonitor will monitor system memory and suggest to the application when
-// to free memory so as to leave more room for other applications. It is
-// implemented on Linux using the Low Memory Monitor
+// MemoryMonitor will monitor system memory and suggest to the
+// application when to free memory so as to leave more room for other
+// applications. It is implemented on Linux using the Low Memory Monitor
 // (https://gitlab.freedesktop.org/hadess/low-memory-monitor/) (API
 // documentation (https://hadess.pages.freedesktop.org/low-memory-monitor/)).
 //
@@ -57,10 +57,10 @@ const MEMORY_MONITOR_EXTENSION_POINT_NAME = "gio-memory-monitor"
 // - Call malloc_trim(3) (man:malloc_trim) to return cached heap pages to the
 // kernel (if supported by your libc)
 //
-// Note that some actions may not always improve system performance, and so
-// should be profiled for your application. malloc_trim(), for example, may make
-// future heap allocations slower (due to releasing cached heap pages back to
-// the kernel).
+// Note that some actions may not always improve system performance,
+// and so should be profiled for your application. malloc_trim(), for example,
+// may make future heap allocations slower (due to releasing cached heap pages
+// back to the kernel).
 //
 // See MonitorWarningLevel for details on the various warning levels.
 //
@@ -153,7 +153,7 @@ func (monitor *MemoryMonitor) lowMemoryWarning(level MemoryMonitorWarningLevel) 
 //
 // The function returns the following values:
 //
-//    - memoryMonitor: new reference to the default Monitor.
+//   - memoryMonitor: new reference to the default Monitor.
 //
 func MemoryMonitorDupDefault() *MemoryMonitor {
 	var _cret *C.GMemoryMonitor // in

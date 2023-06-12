@@ -17,12 +17,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - window: Window.
+//   - window: Window.
 //
 // The function returns the following values:
 //
-//    - ret (optional): embedding Window, or NULL if window is not an mbedded
-//      offscreen window.
+//   - ret (optional): embedding Window, or NULL if window is not an mbedded
+//     offscreen window.
 //
 func OffscreenWindowGetEmbedder(window Windower) Windower {
 	var _arg1 *C.GdkWindow // out
@@ -57,15 +57,15 @@ func OffscreenWindowGetEmbedder(window Windower) Windower {
 
 // OffscreenWindowSetEmbedder sets window to be embedded in embedder.
 //
-// To fully embed an offscreen window, in addition to calling this function, it
-// is also necessary to handle the Window::pick-embedded-child signal on the
+// To fully embed an offscreen window, in addition to calling this function,
+// it is also necessary to handle the Window::pick-embedded-child signal on the
 // embedder and the Window::to-embedder and Window::from-embedder signals on
 // window.
 //
 // The function takes the following parameters:
 //
-//    - window: Window.
-//    - embedder that window gets embedded in.
+//   - window: Window.
+//   - embedder that window gets embedded in.
 //
 func OffscreenWindowSetEmbedder(window, embedder Windower) {
 	var _arg1 *C.GdkWindow // out

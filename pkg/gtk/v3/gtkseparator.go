@@ -42,8 +42,7 @@ func defaultSeparatorOverrides(v *Separator) SeparatorOverrides {
 // within a window. It displays a line with a shadow to make it appear sunken
 // into the interface.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkSeparator has a single CSS node with name separator. The node gets one of
 // the .horizontal or .vertical style classes.
@@ -105,11 +104,11 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - orientation separator’s orientation.
+//   - orientation separator’s orientation.
 //
 // The function returns the following values:
 //
-//    - separator: new Separator.
+//   - separator: new Separator.
 //
 func NewSeparator(orientation Orientation) *Separator {
 	var _arg1 C.GtkOrientation // out

@@ -33,9 +33,9 @@ func init() {
 // was constructed, and allows inspecting them. It is modeled after the way CSS
 // describes transforms.
 //
-// GskTransform objects are immutable and cannot be changed after creation. This
-// means code can safely expose them as properties of objects without having to
-// worry about others changing them.
+// GskTransform objects are immutable and cannot be changed after creation.
+// This means code can safely expose them as properties of objects without
+// having to worry about others changing them.
 //
 // An instance of this type is always passed by reference.
 type Transform struct {
@@ -75,11 +75,11 @@ func NewTransform() *Transform {
 //
 // The function takes the following parameters:
 //
-//    - second (optional) transform.
+//   - second (optional) transform.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two transforms perform the same operation.
+//   - ok: TRUE if the two transforms perform the same operation.
 //
 func (first *Transform) Equal(second *Transform) bool {
 	var _arg0 *C.GskTransform // out
@@ -110,7 +110,7 @@ func (first *Transform) Equal(second *Transform) bool {
 //
 // The function returns the following values:
 //
-//    - transformCategory: category of the transform.
+//   - transformCategory: category of the transform.
 //
 func (self *Transform) Category() TransformCategory {
 	var _arg0 *C.GskTransform        // out
@@ -132,15 +132,15 @@ func (self *Transform) Category() TransformCategory {
 
 // Invert inverts the given transform.
 //
-// If self is not invertible, NULL is returned. Note that inverting NULL also
-// returns NULL, which is the correct inverse of NULL. If you need to
+// If self is not invertible, NULL is returned. Note that inverting NULL
+// also returns NULL, which is the correct inverse of NULL. If you need to
 // differentiate between those cases, you should check self is not NULL before
 // calling this function.
 //
 // The function returns the following values:
 //
-//    - transform (optional): inverted transform or NULL if the transform cannot
-//      be inverted.
+//   - transform (optional): inverted transform or NULL if the transform cannot
+//     be inverted.
 //
 func (self *Transform) Invert() *Transform {
 	var _arg0 *C.GskTransform // out
@@ -172,11 +172,11 @@ func (self *Transform) Invert() *Transform {
 //
 // The function takes the following parameters:
 //
-//    - matrix to multiply next with.
+//   - matrix to multiply next with.
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var _arg0 *C.GskTransform      // out
@@ -213,12 +213,12 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 //
 // The function takes the following parameters:
 //
-//    - depth: distance of the z=0 plane. Lower values give a more flattened
-//      pyramid and therefore a more pronounced perspective effect.
+//   - depth: distance of the z=0 plane. Lower values give a more flattened
+//     pyramid and therefore a more pronounced perspective effect.
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Perspective(depth float32) *Transform {
 	var _arg0 *C.GskTransform // out
@@ -251,11 +251,11 @@ func (next *Transform) Perspective(depth float32) *Transform {
 //
 // The function takes the following parameters:
 //
-//    - angle: rotation angle, in degrees (clockwise).
+//   - angle: rotation angle, in degrees (clockwise).
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Rotate(angle float32) *Transform {
 	var _arg0 *C.GskTransform // out
@@ -290,12 +290,12 @@ func (next *Transform) Rotate(angle float32) *Transform {
 //
 // The function takes the following parameters:
 //
-//    - angle: rotation angle, in degrees (clockwise).
-//    - axis: rotation axis.
+//   - angle: rotation angle, in degrees (clockwise).
+//   - axis: rotation axis.
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _arg0 *C.GskTransform    // out
@@ -333,12 +333,12 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 //
 // The function takes the following parameters:
 //
-//    - factorX: scaling factor on the X axis.
-//    - factorY: scaling factor on the Y axis.
+//   - factorX: scaling factor on the X axis.
+//   - factorY: scaling factor on the Y axis.
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _arg0 *C.GskTransform // out
@@ -374,13 +374,13 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 //
 // The function takes the following parameters:
 //
-//    - factorX: scaling factor on the X axis.
-//    - factorY: scaling factor on the Y axis.
-//    - factorZ: scaling factor on the Z axis.
+//   - factorX: scaling factor on the X axis.
+//   - factorY: scaling factor on the Y axis.
+//   - factorZ: scaling factor on the Z axis.
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
 	var _arg0 *C.GskTransform // out
@@ -422,22 +422,21 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 //
 // The returned values have the following layout:
 //
-//      | xx yx |   |  a  b  0 |
-//      | xy yy | = |  c  d  0 |
-//      | dx dy |   | tx ty  1 |
-//
+//    | xx yx |   |  a  b  0 |
+//    | xy yy | = |  c  d  0 |
+//    | dx dy |   | tx ty  1 |
 //
 // This function can be used to convert between a GskTransform and a matrix type
 // from other 2D drawing libraries, in particular Cairo.
 //
 // The function returns the following values:
 //
-//    - outXx: return location for the xx member.
-//    - outYx: return location for the yx member.
-//    - outXy: return location for the xy member.
-//    - outYy: return location for the yy member.
-//    - outDx: return location for the x0 member.
-//    - outDy: return location for the y0 member.
+//   - outXx: return location for the xx member.
+//   - outYx: return location for the yx member.
+//   - outXy: return location for the xy member.
+//   - outYy: return location for the yy member.
+//   - outDx: return location for the x0 member.
+//   - outDy: return location for the y0 member.
 //
 func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
@@ -477,10 +476,10 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 //
 // The function returns the following values:
 //
-//    - outScaleX: return location for the scale factor in the x direction.
-//    - outScaleY: return location for the scale factor in the y direction.
-//    - outDx: return location for the translation in the x direction.
-//    - outDy: return location for the translation in the y direction.
+//   - outScaleX: return location for the scale factor in the x direction.
+//   - outScaleY: return location for the scale factor in the y direction.
+//   - outDx: return location for the translation in the x direction.
+//   - outDy: return location for the translation in the y direction.
 //
 func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
@@ -513,7 +512,7 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 //
 // The function returns the following values:
 //
-//    - outMatrix: matrix to set.
+//   - outMatrix: matrix to set.
 //
 func (self *Transform) ToMatrix() *graphene.Matrix {
 	var _arg0 *C.GskTransform     // out
@@ -541,7 +540,7 @@ func (self *Transform) ToMatrix() *graphene.Matrix {
 //
 // The function returns the following values:
 //
-//    - utf8: new string for self.
+//   - utf8: new string for self.
 //
 func (self *Transform) String() string {
 	var _arg0 *C.GskTransform // out
@@ -569,8 +568,8 @@ func (self *Transform) String() string {
 //
 // The function returns the following values:
 //
-//    - outDx: return location for the translation in the x direction.
-//    - outDy: return location for the translation in the y direction.
+//   - outDx: return location for the translation in the x direction.
+//   - outDy: return location for the translation in the y direction.
 //
 func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
@@ -595,11 +594,11 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 //
 // The function takes the following parameters:
 //
-//    - other (optional): transform to apply.
+//   - other (optional): transform to apply.
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Transform(other *Transform) *Transform {
 	var _arg0 *C.GskTransform // out
@@ -636,11 +635,11 @@ func (next *Transform) Transform(other *Transform) *Transform {
 //
 // The function takes the following parameters:
 //
-//    - rect: graphene_rect_t.
+//   - rect: graphene_rect_t.
 //
 // The function returns the following values:
 //
-//    - outRect: return location for the bounds of the transformed rectangle.
+//   - outRect: return location for the bounds of the transformed rectangle.
 //
 func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 	var _arg0 *C.GskTransform    // out
@@ -665,11 +664,11 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 //
 // The function takes the following parameters:
 //
-//    - point: graphene_point_t.
+//   - point: graphene_point_t.
 //
 // The function returns the following values:
 //
-//    - outPoint: return location for the transformed point.
+//   - outPoint: return location for the transformed point.
 //
 func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 	var _arg0 *C.GskTransform     // out
@@ -694,11 +693,11 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 //
 // The function takes the following parameters:
 //
-//    - point to translate the transform by.
+//   - point to translate the transform by.
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Translate(point *graphene.Point) *Transform {
 	var _arg0 *C.GskTransform     // out
@@ -731,11 +730,11 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 //
 // The function takes the following parameters:
 //
-//    - point to translate the transform by.
+//   - point to translate the transform by.
 //
 // The function returns the following values:
 //
-//    - transform: new transform.
+//   - transform: new transform.
 //
 func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var _arg0 *C.GskTransform       // out

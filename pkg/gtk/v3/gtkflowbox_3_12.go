@@ -14,8 +14,8 @@ import "C"
 // is added. It lets you control if the child should be visible or not.
 type FlowBoxFilterFunc func(child *FlowBoxChild) (ok bool)
 
-// FlowBoxForEachFunc: function used by gtk_flow_box_selected_foreach(). It will
-// be called on every selected child of the box.
+// FlowBoxForEachFunc: function used by gtk_flow_box_selected_foreach().
+// It will be called on every selected child of the box.
 type FlowBoxForEachFunc func(box *FlowBox, child *FlowBoxChild)
 
 // FlowBoxSortFunc: function to compare two children to determine which should

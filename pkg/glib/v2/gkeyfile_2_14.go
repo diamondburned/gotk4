@@ -6,8 +6,8 @@ package glib
 // #include <glib.h>
 import "C"
 
-// KEY_FILE_DESKTOP_GROUP: name of the main group of a desktop entry file, as
-// defined in the Desktop Entry Specification
+// KEY_FILE_DESKTOP_GROUP: name of the main group of a desktop
+// entry file, as defined in the Desktop Entry Specification
 // (http://freedesktop.org/Standards/desktop-entry-spec). Consult the
 // specification for more details about the meanings of the keys below.
 const KEY_FILE_DESKTOP_GROUP = "Desktop Entry"
@@ -21,8 +21,8 @@ const KEY_FILE_DESKTOP_KEY_CATEGORIES = "Categories"
 // is a localized string giving the tooltip for the desktop entry.
 const KEY_FILE_DESKTOP_KEY_COMMENT = "Comment"
 
-// KEY_FILE_DESKTOP_KEY_EXEC: key under KEY_FILE_DESKTOP_GROUP, whose value is a
-// string giving the command line to execute. It is only valid for desktop
+// KEY_FILE_DESKTOP_KEY_EXEC: key under KEY_FILE_DESKTOP_GROUP, whose value is
+// a string giving the command line to execute. It is only valid for desktop
 // entries with the Application type.
 const KEY_FILE_DESKTOP_KEY_EXEC = "Exec"
 
@@ -47,13 +47,13 @@ const KEY_FILE_DESKTOP_KEY_MIME_TYPE = "MimeType"
 // localized string giving the specific name of the desktop entry.
 const KEY_FILE_DESKTOP_KEY_NAME = "Name"
 
-// KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: key under KEY_FILE_DESKTOP_GROUP, whose
-// value is a list of strings identifying the environments that should not
+// KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: key under KEY_FILE_DESKTOP_GROUP,
+// whose value is a list of strings identifying the environments that should not
 // display the desktop entry.
 const KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN = "NotShowIn"
 
-// KEY_FILE_DESKTOP_KEY_NO_DISPLAY: key under KEY_FILE_DESKTOP_GROUP, whose
-// value is a boolean stating whether the desktop entry should be shown in
+// KEY_FILE_DESKTOP_KEY_NO_DISPLAY: key under KEY_FILE_DESKTOP_GROUP,
+// whose value is a boolean stating whether the desktop entry should be shown in
 // menus.
 const KEY_FILE_DESKTOP_KEY_NO_DISPLAY = "NoDisplay"
 
@@ -62,20 +62,20 @@ const KEY_FILE_DESKTOP_KEY_NO_DISPLAY = "NoDisplay"
 // the desktop entry.
 const KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN = "OnlyShowIn"
 
-// KEY_FILE_DESKTOP_KEY_PATH: key under KEY_FILE_DESKTOP_GROUP, whose value is a
-// string containing the working directory to run the program in. It is only
+// KEY_FILE_DESKTOP_KEY_PATH: key under KEY_FILE_DESKTOP_GROUP, whose value is
+// a string containing the working directory to run the program in. It is only
 // valid for desktop entries with the Application type.
 const KEY_FILE_DESKTOP_KEY_PATH = "Path"
 
-// KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY: key under KEY_FILE_DESKTOP_GROUP, whose
-// value is a boolean stating whether the application supports the Startup
-// Notification Protocol Specification
+// KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY: key under KEY_FILE_DESKTOP_GROUP,
+// whose value is a boolean stating whether the application
+// supports the Startup Notification Protocol Specification
 // (http://www.freedesktop.org/Standards/startup-notification-spec).
 const KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY = "StartupNotify"
 
 // KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS: key under KEY_FILE_DESKTOP_GROUP,
-// whose value is string identifying the WM class or name hint of a window that
-// the application will create, which can be used to emulate Startup
+// whose value is string identifying the WM class or name hint of a window
+// that the application will create, which can be used to emulate Startup
 // Notification with older applications.
 const KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS = "StartupWMClass"
 
@@ -90,10 +90,10 @@ const KEY_FILE_DESKTOP_KEY_TERMINAL = "Terminal"
 // Application type.
 const KEY_FILE_DESKTOP_KEY_TRY_EXEC = "TryExec"
 
-// KEY_FILE_DESKTOP_KEY_TYPE: key under KEY_FILE_DESKTOP_GROUP, whose value is a
-// string giving the type of the desktop entry. Usually
-// KEY_FILE_DESKTOP_TYPE_APPLICATION, KEY_FILE_DESKTOP_TYPE_LINK, or
-// KEY_FILE_DESKTOP_TYPE_DIRECTORY.
+// KEY_FILE_DESKTOP_KEY_TYPE: key under KEY_FILE_DESKTOP_GROUP,
+// whose value is a string giving the type of the desktop entry.
+// Usually KEY_FILE_DESKTOP_TYPE_APPLICATION, KEY_FILE_DESKTOP_TYPE_LINK,
+// or KEY_FILE_DESKTOP_TYPE_DIRECTORY.
 const KEY_FILE_DESKTOP_KEY_TYPE = "Type"
 
 // KEY_FILE_DESKTOP_KEY_URL: key under KEY_FILE_DESKTOP_GROUP, whose value is a
@@ -110,8 +110,8 @@ const KEY_FILE_DESKTOP_KEY_VERSION = "Version"
 // key for desktop entries representing applications.
 const KEY_FILE_DESKTOP_TYPE_APPLICATION = "Application"
 
-// KEY_FILE_DESKTOP_TYPE_DIRECTORY: value of the KEY_FILE_DESKTOP_KEY_TYPE, key
-// for desktop entries representing directories.
+// KEY_FILE_DESKTOP_TYPE_DIRECTORY: value of the KEY_FILE_DESKTOP_KEY_TYPE,
+// key for desktop entries representing directories.
 const KEY_FILE_DESKTOP_TYPE_DIRECTORY = "Directory"
 
 // KEY_FILE_DESKTOP_TYPE_LINK: value of the KEY_FILE_DESKTOP_KEY_TYPE, key for

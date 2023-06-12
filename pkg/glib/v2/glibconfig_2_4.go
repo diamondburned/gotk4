@@ -7,15 +7,15 @@ package glib
 import "C"
 
 // GINT16_MODIFIER: platform dependent length modifier for conversion specifiers
-// for scanning and printing values of type #gint16 or #guint16. It is a string
-// literal, but doesn't include the percent-sign, such that you can add
+// for scanning and printing values of type #gint16 or #guint16. It is a
+// string literal, but doesn't include the percent-sign, such that you can add
 // precision and length modifiers between percent-sign and conversion specifier
 // and append a conversion specifier.
 //
 // The following example prints "0x7b";
 //
-//    gint16 value = 123;
-//    g_print ("%#" G_GINT16_MODIFIER "x", value);.
+//	gint16 value = 123;
+//	g_print ("%#" G_GINT16_MODIFIER "x", value);.
 const GINT16_MODIFIER = "h"
 
 // GINT32_MODIFIER: platform dependent length modifier for conversion specifiers

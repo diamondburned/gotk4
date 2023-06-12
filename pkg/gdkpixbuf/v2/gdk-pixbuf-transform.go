@@ -45,13 +45,13 @@ const (
 	// InterpTiles: this is an accurate simulation of the PostScript image
 	// operator without any interpolation enabled. Each pixel is rendered as a
 	// tiny parallelogram of solid color, the edges of which are implemented
-	// with antialiasing. It resembles nearest neighbor for enlargement, and
-	// bilinear for reduction.
+	// with antialiasing. It resembles nearest neighbor for enlargement,
+	// and bilinear for reduction.
 	InterpTiles
 	// InterpBilinear: best quality/speed balance; use this mode by default.
 	// Bilinear interpolation. For enlargement, it is equivalent to
-	// point-sampling the ideal bilinear-interpolated image. For reduction, it
-	// is equivalent to laying down small tiles and integrating over the
+	// point-sampling the ideal bilinear-interpolated image. For reduction,
+	// it is equivalent to laying down small tiles and integrating over the
 	// coverage area.
 	InterpBilinear
 	// InterpHyper: this is the slowest and highest quality reconstruction

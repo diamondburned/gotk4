@@ -14,14 +14,14 @@ import "C"
 // NotifyStartupCompleteWithID indicates to the GUI environment that the
 // application has finished loading, using a given identifier.
 //
-// GTK+ will call this function automatically for Window with custom
-// startup-notification identifier unless
+// GTK+ will call this function automatically for Window
+// with custom startup-notification identifier unless
 // gtk_window_set_auto_startup_notification() is called to disable that feature.
 //
 // The function takes the following parameters:
 //
-//    - startupId: startup-notification identifier, for which notification
-//      process should be completed.
+//   - startupId: startup-notification identifier, for which notification
+//     process should be completed.
 //
 func NotifyStartupCompleteWithID(startupId string) {
 	var _arg1 *C.gchar // out

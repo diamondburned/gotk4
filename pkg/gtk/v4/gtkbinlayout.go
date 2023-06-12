@@ -36,10 +36,10 @@ func defaultBinLayoutOverrides(v *BinLayout) BinLayoutOverrides {
 // BinLayout: GtkBinLayout is a GtkLayoutManager subclass useful for create
 // "bins" of widgets.
 //
-// GtkBinLayout will stack each child of a widget on top of each other, using
-// the gtk.Widget:hexpand, gtk.Widget:vexpand, gtk.Widget:halign, and
-// gtk.Widget:valign properties of each child to determine where they should be
-// positioned.
+// GtkBinLayout will stack each child of a widget on top of each other,
+// using the gtk.Widget:hexpand, gtk.Widget:vexpand, gtk.Widget:halign,
+// and gtk.Widget:valign properties of each child to determine where they should
+// be positioned.
 type BinLayout struct {
 	_ [0]func() // equal guard
 	LayoutManager
@@ -81,7 +81,7 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - binLayout: newly created GtkBinLayout.
+//   - binLayout: newly created GtkBinLayout.
 //
 func NewBinLayout() *BinLayout {
 	var _cret *C.GtkLayoutManager // in

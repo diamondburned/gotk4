@@ -50,11 +50,11 @@ type ExpressionNotify func()
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//   - value: GValue initialized with type GTK_TYPE_EXPRESSION.
 //
 // The function returns the following values:
 //
-//    - expression (optional): GtkExpression.
+//   - expression (optional): GtkExpression.
 //
 func ValueDupExpression(value *coreglib.Value) Expressioner {
 	var _arg1 *C.GValue        // out
@@ -91,11 +91,11 @@ func ValueDupExpression(value *coreglib.Value) Expressioner {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//   - value: GValue initialized with type GTK_TYPE_EXPRESSION.
 //
 // The function returns the following values:
 //
-//    - expression (optional): GtkExpression.
+//   - expression (optional): GtkExpression.
 //
 func ValueGetExpression(value *coreglib.Value) Expressioner {
 	var _arg1 *C.GValue        // out
@@ -134,8 +134,8 @@ func ValueGetExpression(value *coreglib.Value) Expressioner {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
-//    - expression: GtkExpression.
+//   - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//   - expression: GtkExpression.
 //
 func ValueSetExpression(value *coreglib.Value, expression Expressioner) {
 	var _arg1 *C.GValue        // out
@@ -155,8 +155,8 @@ func ValueSetExpression(value *coreglib.Value, expression Expressioner) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue initialized with type GTK_TYPE_EXPRESSION.
-//    - expression (optional): GtkExpression.
+//   - value: GValue initialized with type GTK_TYPE_EXPRESSION.
+//   - expression (optional): GtkExpression.
 //
 func ValueTakeExpression(value *coreglib.Value, expression Expressioner) {
 	var _arg1 *C.GValue        // out
@@ -245,11 +245,11 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue.
+//   - value: GValue.
 //
 // The function returns the following values:
 //
-//    - constantExpression: new GtkExpression.
+//   - constantExpression: new GtkExpression.
 //
 func NewConstantExpressionForValue(value *coreglib.Value) *ConstantExpression {
 	var _arg1 *C.GValue        // out
@@ -271,7 +271,7 @@ func NewConstantExpressionForValue(value *coreglib.Value) *ConstantExpression {
 //
 // The function returns the following values:
 //
-//    - value: value.
+//   - value: value.
 //
 func (expression *ConstantExpression) Value() *coreglib.Value {
 	var _arg0 *C.GtkExpression // out
@@ -301,8 +301,8 @@ func (expression *ConstantExpression) Value() *coreglib.Value {
 //
 // An expression needs to be "evaluated" to obtain the value that it currently
 // refers to. An evaluation always happens in the context of a current object
-// called this (it mirrors the behavior of object-oriented languages), which may
-// or may not influence the result of the evaluation. Use
+// called this (it mirrors the behavior of object-oriented languages),
+// which may or may not influence the result of the evaluation. Use
 // gtk.Expression.Evaluate() for evaluating an expression.
 //
 // Various methods for defining expressions exist, from simple constants via
@@ -312,11 +312,10 @@ func (expression *ConstantExpression) Value() *coreglib.Value {
 //
 // Here is an example of a complex expression:
 //
-//      color_expr = gtk_property_expression_new (GTK_TYPE_LIST_ITEM,
-//                                                NULL, "item");
-//      expression = gtk_property_expression_new (GTK_TYPE_COLOR,
-//                                                color_expr, "name");
-//
+//    color_expr = gtk_property_expression_new (GTK_TYPE_LIST_ITEM,
+//                                              NULL, "item");
+//    expression = gtk_property_expression_new (GTK_TYPE_COLOR,
+//                                              color_expr, "name");
 //
 // when evaluated with this being a GtkListItem, it will obtain the "item"
 // property from the GtkListItem, and then obtain the "name" property from the
@@ -324,27 +323,25 @@ func (expression *ConstantExpression) Value() *coreglib.Value {
 //
 // A more concise way to describe this would be
 //
-//      this->item->name
-//
+//    this->item->name
 //
 // The most likely place where you will encounter expressions is in the context
 // of list models and list widgets using them. For example, GtkDropDown is
-// evaluating a GtkExpression to obtain strings from the items in its model that
-// it can then use to match against the contents of its search entry.
+// evaluating a GtkExpression to obtain strings from the items in its model
+// that it can then use to match against the contents of its search entry.
 // GtkStringFilter is using a GtkExpression for similar reasons.
 //
-// By default, expressions are not paying attention to changes and evaluation is
-// just a snapshot of the current state at a given time. To get informed about
-// changes, an expression needs to be "watched" via a gtk.ExpressionWatch, which
-// will cause a callback to be called whenever the value of the expression may
-// have changed; gtk.Expression.Watch() starts watching an expression, and
-// gtk.ExpressionWatch.Unwatch() stops.
+// By default, expressions are not paying attention to changes and evaluation
+// is just a snapshot of the current state at a given time. To get informed
+// about changes, an expression needs to be "watched" via a gtk.ExpressionWatch,
+// which will cause a callback to be called whenever the value of the expression
+// may have changed; gtk.Expression.Watch() starts watching an expression,
+// and gtk.ExpressionWatch.Unwatch() stops.
 //
 // Watches can be created for automatically updating the property of an object,
 // similar to GObject's GBinding mechanism, by using gtk.Expression.Bind().
 //
-//
-// GtkExpression in GObject properties
+// # GtkExpression in GObject properties
 //
 // In order to use a GtkExpression as a GObject property, you must use the
 // gtk_param_spec_expression when creating a GParamSpec to install in the
@@ -358,29 +355,26 @@ func (expression *ConstantExpression) Value() *coreglib.Value {
 //                                 G_PARAM_STATIC_STRINGS |
 //                                 G_PARAM_EXPLICIT_NOTIFY);
 //
-//
 // When implementing the GObjectClass.set_property and GObjectClass.get_property
 // virtual functions, you must use gtk_value_get_expression, to retrieve the
 // stored GtkExpression from the GValue container, and gtk_value_set_expression,
 // to store the GtkExpression into the GValue; for instance:
 //
-//      // in set_property()...
-//      case PROP_EXPRESSION:
-//        foo_widget_set_expression (foo, gtk_value_get_expression (value));
-//        break;
+//    // in set_property()...
+//    case PROP_EXPRESSION:
+//      foo_widget_set_expression (foo, gtk_value_get_expression (value));
+//      break;
 //
-//      // in get_property()...
-//      case PROP_EXPRESSION:
-//        gtk_value_set_expression (value, foo->expression);
-//        break;
+//    // in get_property()...
+//    case PROP_EXPRESSION:
+//      gtk_value_set_expression (value, foo->expression);
+//      break;
 //
+// # GtkExpression in .ui files
 //
-//
-// GtkExpression in .ui files
-//
-// GtkBuilder has support for creating expressions. The syntax here can be used
-// where a GtkExpression object is needed like in a <property> tag for an
-// expression property, or in a <binding> tag to bind a property to an
+// GtkBuilder has support for creating expressions. The syntax here can be
+// used where a GtkExpression object is needed like in a <property> tag for
+// an expression property, or in a <binding> tag to bind a property to an
 // expression.
 //
 // To create an property expression, use the <lookup> element. It can have a
@@ -391,16 +385,14 @@ func (expression *ConstantExpression) Value() *coreglib.Value {
 //
 // Example:
 //
-//      <lookup name='search'>string_filter</lookup>
-//
+//    <lookup name='search'>string_filter</lookup>
 //
 // To create a constant expression, use the <constant> element. If the type
 // attribute is specified, the element content is interpreted as a value of that
 // type. Otherwise, it is assumed to be an object. For instance:
 //
-//      <constant>string_filter</constant>
-//      <constant type='gchararray'>Hello, world</constant>
-//
+//    <constant>string_filter</constant>
+//    <constant type='gchararray'>Hello, world</constant>
 //
 // To create a closure expression, use the <closure> element. The type and
 // function attributes specify what function to use for the closure, the content
@@ -451,9 +443,9 @@ func BaseExpression(obj Expressioner) *Expression {
 
 // Bind target's property named property to self.
 //
-// The value that self evaluates to is set via g_object_set() on target. This is
-// repeated whenever self changes to ensure that the object's property stays
-// synchronized with self.
+// The value that self evaluates to is set via g_object_set() on target.
+// This is repeated whenever self changes to ensure that the object's property
+// stays synchronized with self.
 //
 // If self's evaluation fails, target's property is not updated. You can ensure
 // that this doesn't happen by using a fallback expression.
@@ -463,13 +455,13 @@ func BaseExpression(obj Expressioner) *Expression {
 //
 // The function takes the following parameters:
 //
-//    - target object to bind to.
-//    - property: name of the property on target to bind to.
-//    - this_ (optional): argument for the evaluation of self.
+//   - target object to bind to.
+//   - property: name of the property on target to bind to.
+//   - this_ (optional): argument for the evaluation of self.
 //
 // The function returns the following values:
 //
-//    - expressionWatch: GtkExpressionWatch.
+//   - expressionWatch: GtkExpressionWatch.
 //
 func (self *Expression) Bind(target *coreglib.Object, property string, this_ *coreglib.Object) *ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
@@ -511,17 +503,17 @@ func (self *Expression) Bind(target *coreglib.Object, property string, this_ *co
 // The GType of value will be the type given by gtk.Expression.GetValueType().
 //
 // It is possible that expressions cannot be evaluated - for example when the
-// expression references objects that have been destroyed or set to NULL. In
-// that case value will remain empty and FALSE will be returned.
+// expression references objects that have been destroyed or set to NULL.
+// In that case value will remain empty and FALSE will be returned.
 //
 // The function takes the following parameters:
 //
-//    - this_ (optional): argument for the evaluation.
-//    - value: empty GValue.
+//   - this_ (optional): argument for the evaluation.
+//   - value: empty GValue.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the expression could be evaluated.
+//   - ok: TRUE if the expression could be evaluated.
 //
 func (self *Expression) Evaluate(this_ *coreglib.Object, value *coreglib.Value) bool {
 	var _arg0 *C.GtkExpression // out
@@ -554,7 +546,7 @@ func (self *Expression) Evaluate(this_ *coreglib.Object, value *coreglib.Value) 
 //
 // The function returns the following values:
 //
-//    - gType: type returned from gtk.Expression.Evaluate().
+//   - gType: type returned from gtk.Expression.Evaluate().
 //
 func (self *Expression) ValueType() coreglib.Type {
 	var _arg0 *C.GtkExpression // out
@@ -582,7 +574,7 @@ func (self *Expression) ValueType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the expression is static.
+//   - ok: TRUE if the expression is static.
 //
 func (self *Expression) IsStatic() bool {
 	var _arg0 *C.GtkExpression // out
@@ -606,21 +598,21 @@ func (self *Expression) IsStatic() bool {
 // function whenever the evaluation of self may have changed.
 //
 // GTK cannot guarantee that the evaluation did indeed change when the notify
-// gets invoked, but it guarantees the opposite: When it did in fact change, the
-// notify will be invoked.
+// gets invoked, but it guarantees the opposite: When it did in fact change,
+// the notify will be invoked.
 //
 // The function takes the following parameters:
 //
-//    - this_ (optional): this argument to watch.
-//    - notify: callback to invoke when the expression changes.
+//   - this_ (optional): this argument to watch.
+//   - notify: callback to invoke when the expression changes.
 //
 // The function returns the following values:
 //
-//    - expressionWatch: newly installed watch. Note that the only reference held
-//      to the watch will be released when the watch is unwatched which can
-//      happen automatically, and not just via gtk.ExpressionWatch.Unwatch(). You
-//      should call gtk.ExpressionWatch.Ref() if you want to keep the watch
-//      around.
+//   - expressionWatch: newly installed watch. Note that the only reference
+//     held to the watch will be released when the watch is unwatched which can
+//     happen automatically, and not just via gtk.ExpressionWatch.Unwatch().
+//     You should call gtk.ExpressionWatch.Ref() if you want to keep the watch
+//     around.
 //
 func (self *Expression) Watch(this_ *coreglib.Object, notify ExpressionNotify) *ExpressionWatch {
 	var _arg0 *C.GtkExpression      // out
@@ -688,11 +680,11 @@ func marshalObjectExpression(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - object to watch.
+//   - object to watch.
 //
 // The function returns the following values:
 //
-//    - objectExpression: new GtkExpression.
+//   - objectExpression: new GtkExpression.
 //
 func NewObjectExpression(object *coreglib.Object) *ObjectExpression {
 	var _arg1 *C.GObject       // out
@@ -714,7 +706,7 @@ func NewObjectExpression(object *coreglib.Object) *ObjectExpression {
 //
 // The function returns the following values:
 //
-//    - object (optional): object, or NULL.
+//   - object (optional): object, or NULL.
 //
 func (expression *ObjectExpression) Object() *coreglib.Object {
 	var _arg0 *C.GtkExpression // out
@@ -767,14 +759,14 @@ func marshalPropertyExpression(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - thisType: type to expect for the this type.
-//    - expression (optional): expression to evaluate to get the object to query
-//      or NULL to query the this object.
-//    - propertyName: name of the property.
+//   - thisType: type to expect for the this type.
+//   - expression (optional): expression to evaluate to get the object to query
+//     or NULL to query the this object.
+//   - propertyName: name of the property.
 //
 // The function returns the following values:
 //
-//    - propertyExpression: new GtkExpression.
+//   - propertyExpression: new GtkExpression.
 //
 func NewPropertyExpression(thisType coreglib.Type, expression Expressioner, propertyName string) *PropertyExpression {
 	var _arg1 C.GType          // out
@@ -807,7 +799,7 @@ func NewPropertyExpression(thisType coreglib.Type, expression Expressioner, prop
 //
 // The function returns the following values:
 //
-//    - ret: object expression.
+//   - ret: object expression.
 //
 func (expression *PropertyExpression) GetExpression() Expressioner {
 	var _arg0 *C.GtkExpression // out
@@ -869,11 +861,11 @@ func marshalExpressionWatch(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - value: empty GValue to be set.
+//   - value: empty GValue to be set.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the expression could be evaluated and value was set.
+//   - ok: TRUE if the expression could be evaluated and value was set.
 //
 func (watch *ExpressionWatch) Evaluate(value *coreglib.Value) bool {
 	var _arg0 *C.GtkExpressionWatch // out

@@ -32,8 +32,8 @@ func init() {
 // MenuButtonCreatePopupFunc: user-provided callback function to create a popup
 // for a GtkMenuButton on demand.
 //
-// This function is called when the popup of menu_button is shown, but none has
-// been provided via gtk.MenuButton.SetPopover() or
+// This function is called when the popup of menu_button is shown,
+// but none has been provided via gtk.MenuButton.SetPopover() or
 // gtk.MenuButton.SetMenuModel().
 type MenuButtonCreatePopupFunc func(menuButton *MenuButton)
 
@@ -46,26 +46,26 @@ type MenuButtonCreatePopupFunc func(menuButton *MenuButton)
 //
 // The GtkMenuButton widget can show either an icon (set with the
 // gtk.MenuButton:icon-name property) or a label (set with the
-// gtk.MenuButton:label property). If neither is explicitly set, a gtk.Image is
-// automatically created, using an arrow image oriented according to
+// gtk.MenuButton:label property). If neither is explicitly set, a gtk.Image
+// is automatically created, using an arrow image oriented according to
 // gtk.MenuButton:direction or the generic “open-menu-symbolic” icon if the
 // direction is not set.
 //
 // The positioning of the popup is determined by the gtk.MenuButton:direction
 // property of the menu button.
 //
-// For menus, the gtk.Widget:halign and gtk.Widget:valign properties of the menu
-// are also taken into account. For example, when the direction is
+// For menus, the gtk.Widget:halign and gtk.Widget:valign properties of
+// the menu are also taken into account. For example, when the direction is
 // GTK_ARROW_DOWN and the horizontal alignment is GTK_ALIGN_START, the menu will
-// be positioned below the button, with the starting edge (depending on the text
-// direction) of the menu aligned with the starting edge of the button. If there
-// is not enough space below the button, the menu is popped up above the button
-// instead. If the alignment would move part of the menu offscreen, it is
-// “pushed in”.
+// be positioned below the button, with the starting edge (depending on the
+// text direction) of the menu aligned with the starting edge of the button.
+// If there is not enough space below the button, the menu is popped up above
+// the button instead. If the alignment would move part of the menu offscreen,
+// it is “pushed in”.
 //
 // | | start | center | end | | - | --- | --- | --- | | **down** | !
-// (down-start.png) | ! (down-center.png) | ! (down-end.png) | | **up** | !
-// (up-start.png) | ! (up-center.png) | ! (up-end.png) | | **left** | !
+// (down-start.png) | ! (down-center.png) | ! (down-end.png) | | **up** |
+// ! (up-start.png) | ! (up-center.png) | ! (up-end.png) | | **left** | !
 // (left-start.png) | ! (left-center.png) | ! (left-end.png) | | **right** | !
 // (right-start.png) | ! (right-center.png) | ! (right-end.png) |
 //
@@ -76,21 +76,19 @@ type MenuButtonCreatePopupFunc func(menuButton *MenuButton)
 //        ╰── <content>
 //             ╰── [arrow]
 //
-//
 // GtkMenuButton has a single CSS node with name menubutton which contains a
 // button node with a .toggle style class.
 //
 // Inside the toggle button content, there is an arrow node for the indicator,
-// which will carry one of the .none, .up, .down, .left or .right style classes
-// to indicate the direction that the menu will appear in. The CSS is expected
-// to provide a suitable image for each of these cases using the
+// which will carry one of the .none, .up, .down, .left or .right style
+// classes to indicate the direction that the menu will appear in. The CSS
+// is expected to provide a suitable image for each of these cases using the
 // -gtk-icon-source property.
 //
 // Optionally, the menubutton node can carry the .circular style class to
 // request a round appearance.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkMenuButton uses the K_ACCESSIBLE_ROLE_BUTTON role.
 type MenuButton struct {
@@ -133,7 +131,7 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - menuButton: newly created GtkMenuButton.
+//   - menuButton: newly created GtkMenuButton.
 //
 func NewMenuButton() *MenuButton {
 	var _cret *C.GtkWidget // in
@@ -151,7 +149,7 @@ func NewMenuButton() *MenuButton {
 //
 // The function returns the following values:
 //
-//    - arrowType: GtkArrowType value.
+//   - arrowType: GtkArrowType value.
 //
 func (menuButton *MenuButton) Direction() ArrowType {
 	var _arg0 *C.GtkMenuButton // out
@@ -173,7 +171,7 @@ func (menuButton *MenuButton) Direction() ArrowType {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the button has a frame.
+//   - ok: TRUE if the button has a frame.
 //
 func (menuButton *MenuButton) HasFrame() bool {
 	var _arg0 *C.GtkMenuButton // out
@@ -197,7 +195,7 @@ func (menuButton *MenuButton) HasFrame() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the icon shown in the button.
+//   - utf8: name of the icon shown in the button.
 //
 func (menuButton *MenuButton) IconName() string {
 	var _arg0 *C.GtkMenuButton // out
@@ -219,7 +217,7 @@ func (menuButton *MenuButton) IconName() string {
 //
 // The function returns the following values:
 //
-//    - utf8: label shown in the button.
+//   - utf8: label shown in the button.
 //
 func (menuButton *MenuButton) Label() string {
 	var _arg0 *C.GtkMenuButton // out
@@ -241,7 +239,7 @@ func (menuButton *MenuButton) Label() string {
 //
 // The function returns the following values:
 //
-//    - menuModel (optional): GMenuModel or NULL.
+//   - menuModel (optional): GMenuModel or NULL.
 //
 func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 	var _arg0 *C.GtkMenuButton // out
@@ -280,7 +278,7 @@ func (menuButton *MenuButton) MenuModel() gio.MenuModeller {
 //
 // The function returns the following values:
 //
-//    - popover (optional): GtkPopover or NULL.
+//   - popover (optional): GtkPopover or NULL.
 //
 func (menuButton *MenuButton) Popover() *Popover {
 	var _arg0 *C.GtkMenuButton // out
@@ -305,8 +303,8 @@ func (menuButton *MenuButton) Popover() *Popover {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE whether an embedded underline in the text indicates the mnemonic
-//      accelerator keys.
+//   - ok: TRUE whether an embedded underline in the text indicates the mnemonic
+//     accelerator keys.
 //
 func (menuButton *MenuButton) UseUnderline() bool {
 	var _arg0 *C.GtkMenuButton // out
@@ -350,8 +348,8 @@ func (menuButton *MenuButton) Popup() {
 //
 // func should use one of
 //
-//    - gtk.MenuButton.SetPopover()
-//    - gtk.MenuButton.SetMenuModel()
+//   - gtk.MenuButton.SetPopover()
+//   - gtk.MenuButton.SetMenuModel()
 //
 // to set a popup for menu_button. If func is non-NULL, menu_button will always
 // be sensitive.
@@ -361,9 +359,9 @@ func (menuButton *MenuButton) Popup() {
 //
 // The function takes the following parameters:
 //
-//    - fn (optional): function to call when a popup is about to be shown, but
-//      none has been provided via other means, or NULL to reset to default
-//      behavior.
+//   - fn (optional): function to call when a popup is about to be shown,
+//     but none has been provided via other means, or NULL to reset to default
+//     behavior.
 //
 func (menuButton *MenuButton) SetCreatePopupFunc(fn MenuButtonCreatePopupFunc) {
 	var _arg0 *C.GtkMenuButton               // out
@@ -396,7 +394,7 @@ func (menuButton *MenuButton) SetCreatePopupFunc(fn MenuButtonCreatePopupFunc) {
 //
 // The function takes the following parameters:
 //
-//    - direction: GtkArrowType.
+//   - direction: GtkArrowType.
 //
 func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 	var _arg0 *C.GtkMenuButton // out
@@ -414,7 +412,7 @@ func (menuButton *MenuButton) SetDirection(direction ArrowType) {
 //
 // The function takes the following parameters:
 //
-//    - hasFrame: whether the button should have a visible frame.
+//   - hasFrame: whether the button should have a visible frame.
 //
 func (menuButton *MenuButton) SetHasFrame(hasFrame bool) {
 	var _arg0 *C.GtkMenuButton // out
@@ -434,7 +432,7 @@ func (menuButton *MenuButton) SetHasFrame(hasFrame bool) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//   - iconName: icon name.
 //
 func (menuButton *MenuButton) SetIconName(iconName string) {
 	var _arg0 *C.GtkMenuButton // out
@@ -453,7 +451,7 @@ func (menuButton *MenuButton) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - label: label.
+//   - label: label.
 //
 func (menuButton *MenuButton) SetLabel(label string) {
 	var _arg0 *C.GtkMenuButton // out
@@ -481,8 +479,8 @@ func (menuButton *MenuButton) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - menuModel (optional): GMenuModel, or NULL to unset and disable the
-//      button.
+//   - menuModel (optional): GMenuModel, or NULL to unset and disable the
+//     button.
 //
 func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 	var _arg0 *C.GtkMenuButton // out
@@ -508,7 +506,7 @@ func (menuButton *MenuButton) SetMenuModel(menuModel gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - popover (optional): GtkPopover, or NULL to unset and disable the button.
+//   - popover (optional): GtkPopover, or NULL to unset and disable the button.
 //
 func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 	var _arg0 *C.GtkMenuButton // out
@@ -528,7 +526,7 @@ func (menuButton *MenuButton) SetPopover(popover Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//   - useUnderline: TRUE if underlines in the text indicate mnemonics.
 //
 func (menuButton *MenuButton) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkMenuButton // out

@@ -97,12 +97,12 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - baseStream: Stream.
-//    - converter: #GConverter.
+//   - baseStream: Stream.
+//   - converter: #GConverter.
 //
 // The function returns the following values:
 //
-//    - converterInputStream: new Stream.
+//   - converterInputStream: new Stream.
 //
 func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *ConverterInputStream {
 	var _arg1 *C.GInputStream // out
@@ -127,7 +127,7 @@ func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *C
 //
 // The function returns the following values:
 //
-//    - converter of the converter input stream.
+//   - converter of the converter input stream.
 //
 func (converterStream *ConverterInputStream) Converter() *Converter {
 	var _arg0 *C.GConverterInputStream // out

@@ -17,26 +17,26 @@ import "C"
 // ItemizeWithBaseDir: like pango_itemize(), but with an explicitly specified
 // base direction.
 //
-// The base direction is used when computing bidirectional levels. (see
-// pango.Context.SetBaseDir()). itemize gets the base direction from the
+// The base direction is used when computing bidirectional levels.
+// (see pango.Context.SetBaseDir()). itemize gets the base direction from the
 // PangoContext.
 //
 // The function takes the following parameters:
 //
-//    - context: structure holding information that affects the itemization
-//      process.
-//    - baseDir: base direction to use for bidirectional processing.
-//    - text to itemize.
-//    - startIndex: first byte in text to process.
-//    - length: number of bytes (not characters) to process after start_index.
-//      This must be >= 0.
-//    - attrs: set of attributes that apply to text.
-//    - cachedIter (optional): cached attribute iterator, or NULL.
+//   - context: structure holding information that affects the itemization
+//     process.
+//   - baseDir: base direction to use for bidirectional processing.
+//   - text to itemize.
+//   - startIndex: first byte in text to process.
+//   - length: number of bytes (not characters) to process after start_index.
+//     This must be >= 0.
+//   - attrs: set of attributes that apply to text.
+//   - cachedIter (optional): cached attribute iterator, or NULL.
 //
 // The function returns the following values:
 //
-//    - list: GList of pango.Item structures. The items should be freed using
-//      pango.Item.Free() probably in combination with g_list_free_full().
+//   - list: GList of pango.Item structures. The items should be freed using
+//     pango.Item.Free() probably in combination with g_list_free_full().
 //
 func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
 	var _arg1 *C.PangoContext      // out

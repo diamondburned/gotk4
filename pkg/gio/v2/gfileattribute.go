@@ -125,9 +125,9 @@ func (f *FileAttributeInfoList) SetNInfos(nInfos int) {
 //
 // The function takes the following parameters:
 //
-//    - name of the attribute to add.
-//    - typ for the attribute.
-//    - flags for the attribute.
+//   - name of the attribute to add.
+//   - typ for the attribute.
+//   - flags for the attribute.
 //
 func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
 	var _arg0 *C.GFileAttributeInfoList // out
@@ -152,7 +152,7 @@ func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags
 //
 // The function returns the following values:
 //
-//    - fileAttributeInfoList: copy of the given list.
+//   - fileAttributeInfoList: copy of the given list.
 //
 func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
@@ -180,11 +180,11 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 //
 // The function takes the following parameters:
 //
-//    - name of the attribute to look up.
+//   - name of the attribute to look up.
 //
 // The function returns the following values:
 //
-//    - fileAttributeInfo for the name, or NULL if an attribute isn't found.
+//   - fileAttributeInfo for the name, or NULL if an attribute isn't found.
 //
 func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _arg0 *C.GFileAttributeInfoList // out

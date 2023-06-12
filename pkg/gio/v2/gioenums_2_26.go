@@ -64,8 +64,8 @@ func init() {
 type BusType C.gint
 
 const (
-	// BusTypeStarter alias for the message bus that activated the process, if
-	// any.
+	// BusTypeStarter alias for the message bus that activated the process,
+	// if any.
 	BusTypeStarter BusType = -1
 	// BusTypeNone: not a message bus.
 	BusTypeNone BusType = 0
@@ -110,8 +110,8 @@ const (
 	// CredentialsTypeOpenbsdSockpeercred: native credentials type is a struct
 	// sockpeercred. Added in 2.30.
 	CredentialsTypeOpenbsdSockpeercred
-	// CredentialsTypeSolarisUcred: native credentials type is a ucred_t. Added
-	// in 2.40.
+	// CredentialsTypeSolarisUcred: native credentials type is a ucred_t.
+	// Added in 2.40.
 	CredentialsTypeSolarisUcred
 	// CredentialsTypeNetbsdUnpcbid: native credentials type is a struct
 	// unpcbid. Added in 2.42.
@@ -159,8 +159,8 @@ const (
 	// DBusErrorServiceUnknown bus doesn't know how to launch a service to
 	// supply the bus name you wanted.
 	DBusErrorServiceUnknown
-	// DBusErrorNameHasNoOwner bus name you referenced doesn't exist (i.e. no
-	// application owns it).
+	// DBusErrorNameHasNoOwner bus name you referenced doesn't exist (i.e.
+	// no application owns it).
 	DBusErrorNameHasNoOwner
 	// DBusErrorNoReply: no reply to a message expecting one, usually means a
 	// timeout occurred.
@@ -265,8 +265,8 @@ const (
 	// DBusErrorObjectPathInUse there's already an object with the requested
 	// object path.
 	DBusErrorObjectPathInUse
-	// DBusErrorUnknownObject: object you invoked a method on isn't known. Since
-	// 2.42.
+	// DBusErrorUnknownObject: object you invoked a method on isn't known.
+	// Since 2.42.
 	DBusErrorUnknownObject
 	// DBusErrorUnknownInterface: interface you invoked a method on isn't known
 	// by the object. Since 2.42.
@@ -274,8 +274,8 @@ const (
 	// DBusErrorUnknownProperty: property you tried to access isn't known by the
 	// object. Since 2.42.
 	DBusErrorUnknownProperty
-	// DBusErrorPropertyReadOnly: property you tried to set is read-only. Since
-	// 2.42.
+	// DBusErrorPropertyReadOnly: property you tried to set is read-only.
+	// Since 2.42.
 	DBusErrorPropertyReadOnly
 )
 
@@ -520,8 +520,8 @@ const (
 	// and have specified BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT, then take the
 	// name from the other connection.
 	BusNameOwnerFlagsReplace BusNameOwnerFlags = 0b10
-	// BusNameOwnerFlagsDoNotQueue: if another message bus connection owns the
-	// name, immediately return an error from g_bus_own_name() rather than
+	// BusNameOwnerFlagsDoNotQueue: if another message bus connection owns
+	// the name, immediately return an error from g_bus_own_name() rather than
 	// entering the waiting queue for that name. (Since 2.54).
 	BusNameOwnerFlagsDoNotQueue BusNameOwnerFlags = 0b100
 )
@@ -731,8 +731,8 @@ const (
 	// DBusConnectionFlagsAuthenticationAllowAnonymous: when authenticating as a
 	// server, allow the anonymous authentication method.
 	DBusConnectionFlagsAuthenticationAllowAnonymous DBusConnectionFlags = 0b100
-	// DBusConnectionFlagsMessageBusConnection pass this flag if connecting to a
-	// peer that is a message bus. This means that the Hello() method will be
+	// DBusConnectionFlagsMessageBusConnection pass this flag if connecting to
+	// a peer that is a message bus. This means that the Hello() method will be
 	// invoked as part of the connection setup.
 	DBusConnectionFlagsMessageBusConnection DBusConnectionFlags = 0b1000
 	// DBusConnectionFlagsDelayMessageProcessing: if set, processing of D-Bus
@@ -914,14 +914,14 @@ const (
 	// DBusProxyFlagsDoNotConnectSignals: don't connect to signals on the remote
 	// object.
 	DBusProxyFlagsDoNotConnectSignals DBusProxyFlags = 0b10
-	// DBusProxyFlagsDoNotAutoStart: if the proxy is for a well-known name, do
-	// not ask the bus to launch an owner during proxy initialization or a
-	// method call. This flag is only meaningful in proxies for well-known
+	// DBusProxyFlagsDoNotAutoStart: if the proxy is for a well-known name,
+	// do not ask the bus to launch an owner during proxy initialization or
+	// a method call. This flag is only meaningful in proxies for well-known
 	// names.
 	DBusProxyFlagsDoNotAutoStart DBusProxyFlags = 0b100
-	// DBusProxyFlagsGetInvalidatedProperties: if set, the property value for
-	// any __invalidated property__ will be (asynchronously) retrieved upon
-	// receiving the PropertiesChanged
+	// DBusProxyFlagsGetInvalidatedProperties: if set,
+	// the property value for any __invalidated property__ will be
+	// (asynchronously) retrieved upon receiving the PropertiesChanged
 	// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
 	// D-Bus signal and the property will not cause emission of the
 	// BusProxy::g-properties-changed signal. When the value is received the
@@ -930,8 +930,8 @@ const (
 	DBusProxyFlagsGetInvalidatedProperties DBusProxyFlags = 0b1000
 	// DBusProxyFlagsDoNotAutoStartAtConstruction: if the proxy is for a
 	// well-known name, do not ask the bus to launch an owner during proxy
-	// initialization, but allow it to be autostarted by a method call. This
-	// flag is only meaningful in proxies for well-known names, and only if
+	// initialization, but allow it to be autostarted by a method call.
+	// This flag is only meaningful in proxies for well-known names, and only if
 	// G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is not also specified.
 	DBusProxyFlagsDoNotAutoStartAtConstruction DBusProxyFlags = 0b10000
 )
@@ -1041,8 +1041,8 @@ const (
 	// DBusServerFlagsAuthenticationAllowAnonymous: allow the anonymous
 	// authentication method.
 	DBusServerFlagsAuthenticationAllowAnonymous DBusServerFlags = 0b10
-	// DBusServerFlagsAuthenticationRequireSameUser: require the UID of the peer
-	// to be the same as the UID of the server when authenticating. (Since:
+	// DBusServerFlagsAuthenticationRequireSameUser: require the UID of the
+	// peer to be the same as the UID of the server when authenticating. (Since:
 	// 2.68).
 	DBusServerFlagsAuthenticationRequireSameUser DBusServerFlags = 0b100
 )

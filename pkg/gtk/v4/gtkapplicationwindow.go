@@ -40,8 +40,8 @@ func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOv
 //
 // Notably, GtkApplicationWindow can handle an application menubar.
 //
-// This class implements the GActionGroup and GActionMap interfaces, to let you
-// add window-specific actions that will be exported by the associated
+// This class implements the GActionGroup and GActionMap interfaces, to let
+// you add window-specific actions that will be exported by the associated
 // gtk.Application, together with its application-wide actions. Window-specific
 // actions are prefixed with the “win.” prefix and application-wide actions are
 // prefixed with the “app.” prefix. Actions must be addressed with the prefixed
@@ -52,15 +52,15 @@ func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOv
 //
 // The settings gtk.Settings:gtk-shell-shows-app-menu and
 // gtk.Settings:gtk-shell-shows-menubar tell GTK whether the desktop environment
-// is showing the application menu and menubar models outside the application as
-// part of the desktop shell. For instance, on OS X, both menus will be
+// is showing the application menu and menubar models outside the application
+// as part of the desktop shell. For instance, on OS X, both menus will be
 // displayed remotely; on Windows neither will be.
 //
 // If the desktop environment does not display the menubar, then
 // GtkApplicationWindow will automatically show a menubar for it. This behaviour
-// can be overridden with the gtk.ApplicationWindow:show-menubar property. If
-// the desktop environment does not display the application menu, then it will
-// automatically be included in the menubar or in the windows client-side
+// can be overridden with the gtk.ApplicationWindow:show-menubar property.
+// If the desktop environment does not display the application menu, then it
+// will automatically be included in the menubar or in the windows client-side
 // decorations.
 //
 // See gtk.PopoverMenu for information about the XML language used by GtkBuilder
@@ -68,8 +68,7 @@ func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOv
 //
 // See also: gtk.Application.SetMenubar().
 //
-//
-// A GtkApplicationWindow with a menubar
+// # A GtkApplicationWindow with a menubar
 //
 // The code sample below shows how to set up a GtkApplicationWindow with a menu
 // bar defined on the gtk.Application:
@@ -191,11 +190,11 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - application: GtkApplication.
+//   - application: GtkApplication.
 //
 // The function returns the following values:
 //
-//    - applicationWindow: newly created GtkApplicationWindow.
+//   - applicationWindow: newly created GtkApplicationWindow.
 //
 func NewApplicationWindow(application *Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
@@ -219,7 +218,7 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 //
 // The function returns the following values:
 //
-//    - shortcutsWindow (optional): help overlay associated with window, or NULL.
+//   - shortcutsWindow (optional): help overlay associated with window, or NULL.
 //
 func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 	var _arg0 *C.GtkApplicationWindow // out
@@ -245,8 +244,8 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 //
 // The function returns the following values:
 //
-//    - guint: unique ID for window, or 0 if the window has not yet been added to
-//      a GtkApplication.
+//   - guint: unique ID for window, or 0 if the window has not yet been added to
+//     a GtkApplication.
 //
 func (window *ApplicationWindow) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
@@ -269,7 +268,7 @@ func (window *ApplicationWindow) ID() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window will display a menubar when needed.
+//   - ok: TRUE if window will display a menubar when needed.
 //
 func (window *ApplicationWindow) ShowMenubar() bool {
 	var _arg0 *C.GtkApplicationWindow // out
@@ -298,7 +297,7 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 //
 // The function takes the following parameters:
 //
-//    - helpOverlay (optional): GtkShortcutsWindow.
+//   - helpOverlay (optional): GtkShortcutsWindow.
 //
 func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 	var _arg0 *C.GtkApplicationWindow // out
@@ -319,7 +318,7 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 //
 // The function takes the following parameters:
 //
-//    - showMenubar: whether to show a menubar when needed.
+//   - showMenubar: whether to show a menubar when needed.
 //
 func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
 	var _arg0 *C.GtkApplicationWindow // out

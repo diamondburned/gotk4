@@ -537,12 +537,25 @@ func EqNamespace(nsp, girType string) (typ string, ok bool) {
 
 type fileFilter struct {
 	tracing.Traceable
-	match string
+	contains  string
+	namespace string
 }
 
-// FileFilter filters based on the source position.
+// FileFilter filters based on the source position. It filters out types
+// that have a source position that contains the given string.
 func FileFilter(contains string) FilterMatcher {
-	return fileFilter{tracing.NewTraces(1), contains}
+	return fileFilter{Traceable: tracing.NewTraces(1), contains: contains}
+}
+
+// FileFilterNamespace filters based on the source position and namespace. It
+// filters out types that have a source position that contains the given string
+// and are in the given namespace.
+func FileFilterNamespace(namespace, contains string) FilterMatcher {
+	return fileFilter{
+		Traceable: tracing.NewTraces(1),
+		contains:  contains,
+		namespace: namespace,
+	}
 }
 
 func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
@@ -551,7 +564,15 @@ func (ff fileFilter) Filter(gen FileGenerator, girT, cT string) (omit bool) {
 		return false
 	}
 
-	return TypeIsInFile(res.Type, ff.match)
+	if ff.namespace != "" {
+		if res.Namespace.Name != ff.namespace &&
+			gir.VersionedNamespace(res.Namespace) != ff.namespace {
+			return false
+		}
+	}
+
+	file := TypeFile(res.Type)
+	return strings.Contains(file, ff.contains)
 }
 
 // TypeIsInFile returns true if the given type was declared in the given
@@ -575,4 +596,23 @@ func TypeIsInFile(typ interface{}, file string) bool {
 	}
 
 	return false
+}
+
+// TypeFile returns the filename of the given type. The filename shouldn't
+// contain the file extension.
+func TypeFile(typ any) string {
+	info := cmt.GetInfoFields(typ)
+	if info.Elements == nil {
+		return ""
+	}
+
+	if info.Elements.SourcePosition != nil && info.Elements.SourcePosition.Filename != "" {
+		return info.Elements.SourcePosition.Filename
+	}
+
+	if info.Elements.Doc != nil && info.Elements.Doc.Filename != "" {
+		return info.Elements.Doc.Filename
+	}
+
+	return ""
 }

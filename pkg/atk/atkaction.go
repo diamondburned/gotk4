@@ -46,18 +46,18 @@ func init() {
 	})
 }
 
-// Action should be implemented by instances of Object classes with which the
-// user can interact directly, i.e. buttons, checkboxes, scrollbars, e.g.
+// Action should be implemented by instances of Object classes with which
+// the user can interact directly, i.e. buttons, checkboxes, scrollbars, e.g.
 // components which are not "passive" providers of UI information.
 //
 // Exceptions: when the user interaction is already covered by another
 // appropriate interface such as EditableText (insert/delete text, etc.) or
 // Value (set value) then these actions should not be exposed by Action as well.
 //
-// Though most UI interactions on components should be invocable via keyboard as
-// well as mouse, there will generally be a close mapping between "mouse
-// actions" that are possible on a component and the AtkActions. Where mouse and
-// keyboard actions are redundant in effect, Action should expose only one
+// Though most UI interactions on components should be invocable via keyboard
+// as well as mouse, there will generally be a close mapping between "mouse
+// actions" that are possible on a component and the AtkActions. Where mouse
+// and keyboard actions are redundant in effect, Action should expose only one
 // action rather than exposing redundant actions if possible. By convention we
 // have been using "mouse centric" terminology for Action names.
 //
@@ -111,11 +111,11 @@ func marshalAction(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if success, FALSE otherwise.
+//   - ok: TRUE if success, FALSE otherwise.
 //
 func (action *Action) DoAction(i int) bool {
 	var _arg0 *C.AtkAction // out
@@ -142,12 +142,12 @@ func (action *Action) DoAction(i int) bool {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): description string, or NULL if action does not implement
-//      this interface.
+//   - utf8 (optional): description string, or NULL if action does not implement
+//     this interface.
 //
 func (action *Action) Description(i int) string {
 	var _arg0 *C.AtkAction // out
@@ -170,10 +170,10 @@ func (action *Action) Description(i int) string {
 	return _utf8
 }
 
-// Keybinding gets the keybinding which can be used to activate this action, if
-// one exists. The string returned should contain localized, human-readable, key
-// sequences as they would appear when displayed on screen. It must be in the
-// format "mnemonic;sequence;shortcut".
+// Keybinding gets the keybinding which can be used to activate this action,
+// if one exists. The string returned should contain localized, human-readable,
+// key sequences as they would appear when displayed on screen. It must be in
+// the format "mnemonic;sequence;shortcut".
 //
 // - The mnemonic key activates the object if it is presently enabled onscreen.
 // This typically corresponds to the underlined letter within the widget.
@@ -186,8 +186,8 @@ func (action *Action) Description(i int) string {
 // invoking. The sequence string is colon-delimited. Example: "Alt+F:N" in a
 // traditional "New..." menu item.
 //
-// - The shortcut, if it exists, will invoke the same action without showing the
-// component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+// - The shortcut, if it exists, will invoke the same action without showing
+// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
 // traditional "New..." menu item.
 //
 // Example: For a traditional "New..." menu item, the expected return value
@@ -197,12 +197,12 @@ func (action *Action) Description(i int) string {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): keybinding which can be used to activate this action, or
-//      NULL if there is no keybinding for this action.
+//   - utf8 (optional): keybinding which can be used to activate this action,
+//     or NULL if there is no keybinding for this action.
 //
 func (action *Action) Keybinding(i int) string {
 	var _arg0 *C.AtkAction // out
@@ -230,12 +230,12 @@ func (action *Action) Keybinding(i int) string {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name string, or NULL if action does not implement this
-//      interface.
+//   - utf8 (optional): name string, or NULL if action does not implement this
+//     interface.
 //
 func (action *Action) LocalizedName(i int) string {
 	var _arg0 *C.AtkAction // out
@@ -258,14 +258,14 @@ func (action *Action) LocalizedName(i int) string {
 	return _utf8
 }
 
-// NActions gets the number of accessible actions available on the object. If
-// there are more than one, the first one is considered the "default" action of
-// the object.
+// NActions gets the number of accessible actions available on the object.
+// If there are more than one, the first one is considered the "default" action
+// of the object.
 //
 // The function returns the following values:
 //
-//    - gint: the number of actions, or 0 if action does not implement this
-//      interface.
+//   - gint: the number of actions, or 0 if action does not implement this
+//     interface.
 //
 func (action *Action) NActions() int {
 	var _arg0 *C.AtkAction // out
@@ -289,8 +289,8 @@ func (action *Action) NActions() int {
 // By convention, the above strings should be used to represent the actions
 // which correspond to the common point-and-click interaction techniques of the
 // same name: i.e. "click", "press", "release", "drag", "drop", "popup", etc.
-// The "popup" action should be used to pop up a context menu for the object, if
-// one exists.
+// The "popup" action should be used to pop up a context menu for the object,
+// if one exists.
 //
 // For technical reasons, some toolkits cannot guarantee that the reported
 // action is actually 'bound' to a nontrivial user event; i.e. the result of
@@ -298,12 +298,12 @@ func (action *Action) NActions() int {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name string, or NULL if action does not implement this
-//      interface.
+//   - utf8 (optional): name string, or NULL if action does not implement this
+//     interface.
 //
 func (action *Action) Name(i int) string {
 	var _arg0 *C.AtkAction // out
@@ -330,12 +330,12 @@ func (action *Action) Name(i int) string {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
-//    - desc: description to be assigned to this action.
+//   - i: action index corresponding to the action to be performed.
+//   - desc: description to be assigned to this action.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the description was successfully set;.
+//   - ok: gboolean representing if the description was successfully set;.
 //
 func (action *Action) SetDescription(i int, desc string) bool {
 	var _arg0 *C.AtkAction // out
@@ -366,11 +366,11 @@ func (action *Action) SetDescription(i int, desc string) bool {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if success, FALSE otherwise.
+//   - ok: TRUE if success, FALSE otherwise.
 //
 func (action *Action) doAction(i int) bool {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
@@ -400,12 +400,12 @@ func (action *Action) doAction(i int) bool {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): description string, or NULL if action does not implement
-//      this interface.
+//   - utf8 (optional): description string, or NULL if action does not implement
+//     this interface.
 //
 func (action *Action) description(i int) string {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
@@ -431,10 +431,10 @@ func (action *Action) description(i int) string {
 	return _utf8
 }
 
-// Keybinding gets the keybinding which can be used to activate this action, if
-// one exists. The string returned should contain localized, human-readable, key
-// sequences as they would appear when displayed on screen. It must be in the
-// format "mnemonic;sequence;shortcut".
+// Keybinding gets the keybinding which can be used to activate this action,
+// if one exists. The string returned should contain localized, human-readable,
+// key sequences as they would appear when displayed on screen. It must be in
+// the format "mnemonic;sequence;shortcut".
 //
 // - The mnemonic key activates the object if it is presently enabled onscreen.
 // This typically corresponds to the underlined letter within the widget.
@@ -447,8 +447,8 @@ func (action *Action) description(i int) string {
 // invoking. The sequence string is colon-delimited. Example: "Alt+F:N" in a
 // traditional "New..." menu item.
 //
-// - The shortcut, if it exists, will invoke the same action without showing the
-// component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+// - The shortcut, if it exists, will invoke the same action without showing
+// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
 // traditional "New..." menu item.
 //
 // Example: For a traditional "New..." menu item, the expected return value
@@ -458,12 +458,12 @@ func (action *Action) description(i int) string {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): keybinding which can be used to activate this action, or
-//      NULL if there is no keybinding for this action.
+//   - utf8 (optional): keybinding which can be used to activate this action,
+//     or NULL if there is no keybinding for this action.
 //
 func (action *Action) keybinding(i int) string {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
@@ -494,12 +494,12 @@ func (action *Action) keybinding(i int) string {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name string, or NULL if action does not implement this
-//      interface.
+//   - utf8 (optional): name string, or NULL if action does not implement this
+//     interface.
 //
 func (action *Action) localizedName(i int) string {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
@@ -525,14 +525,14 @@ func (action *Action) localizedName(i int) string {
 	return _utf8
 }
 
-// nActions gets the number of accessible actions available on the object. If
-// there are more than one, the first one is considered the "default" action of
-// the object.
+// nActions gets the number of accessible actions available on the object.
+// If there are more than one, the first one is considered the "default" action
+// of the object.
 //
 // The function returns the following values:
 //
-//    - gint: the number of actions, or 0 if action does not implement this
-//      interface.
+//   - gint: the number of actions, or 0 if action does not implement this
+//     interface.
 //
 func (action *Action) nActions() int {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
@@ -559,8 +559,8 @@ func (action *Action) nActions() int {
 // By convention, the above strings should be used to represent the actions
 // which correspond to the common point-and-click interaction techniques of the
 // same name: i.e. "click", "press", "release", "drag", "drop", "popup", etc.
-// The "popup" action should be used to pop up a context menu for the object, if
-// one exists.
+// The "popup" action should be used to pop up a context menu for the object,
+// if one exists.
 //
 // For technical reasons, some toolkits cannot guarantee that the reported
 // action is actually 'bound' to a nontrivial user event; i.e. the result of
@@ -568,12 +568,12 @@ func (action *Action) nActions() int {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
+//   - i: action index corresponding to the action to be performed.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name string, or NULL if action does not implement this
-//      interface.
+//   - utf8 (optional): name string, or NULL if action does not implement this
+//     interface.
 //
 func (action *Action) name(i int) string {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
@@ -603,12 +603,12 @@ func (action *Action) name(i int) string {
 //
 // The function takes the following parameters:
 //
-//    - i: action index corresponding to the action to be performed.
-//    - desc: description to be assigned to this action.
+//   - i: action index corresponding to the action to be performed.
+//   - desc: description to be assigned to this action.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the description was successfully set;.
+//   - ok: gboolean representing if the description was successfully set;.
 //
 func (action *Action) setDescription(i int, desc string) bool {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
@@ -638,8 +638,8 @@ func (action *Action) setDescription(i int, desc string) bool {
 	return _ok
 }
 
-// ActionIface interface should be supported by any object that can perform one
-// or more actions. The interface provides the standard mechanism for an
+// ActionIface interface should be supported by any object that can perform
+// one or more actions. The interface provides the standard mechanism for an
 // assistive technology to determine what those actions are as well as tell the
 // object to perform them. Any object that can be manipulated should support
 // this interface.

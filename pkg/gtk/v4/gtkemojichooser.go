@@ -43,12 +43,11 @@ func init() {
 //        ├── ...
 //        ╰── button.image-button.emoji-section
 //
-//
-// Every GtkEmojiChooser consists of a main node called popover. The contents of
-// the popover are largely implementation defined and supposed to inherit
-// general styles. The top searchbar used to search emoji and gets the
-// .emoji-searchbar style class itself. The bottom toolbar used to switch
-// between different emoji categories consists of buttons with the
+// Every GtkEmojiChooser consists of a main node called popover. The
+// contents of the popover are largely implementation defined and supposed
+// to inherit general styles. The top searchbar used to search emoji and
+// gets the .emoji-searchbar style class itself. The bottom toolbar used to
+// switch between different emoji categories consists of buttons with the
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
 type EmojiChooser struct {
 	_ [0]func() // equal guard
@@ -116,7 +115,7 @@ func (v *EmojiChooser) ConnectEmojiPicked(f func(text string)) coreglib.SignalHa
 //
 // The function returns the following values:
 //
-//    - emojiChooser: new GtkEmojiChooser.
+//   - emojiChooser: new GtkEmojiChooser.
 //
 func NewEmojiChooser() *EmojiChooser {
 	var _cret *C.GtkWidget // in

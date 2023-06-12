@@ -94,8 +94,8 @@ const (
 	// PolicyAlways: scrollbar is always visible. The view size is independent
 	// of the content.
 	PolicyAlways PolicyType = iota
-	// PolicyAutomatic: scrollbar will appear and disappear as necessary. For
-	// example, when all of a TreeView can not be seen.
+	// PolicyAutomatic: scrollbar will appear and disappear as necessary.
+	// For example, when all of a TreeView can not be seen.
 	PolicyAutomatic
 	// PolicyNever: scrollbar should never appear. In this mode the content
 	// determines the size.
@@ -133,8 +133,8 @@ type ScrolledWindowOverrides struct {
 	MoveFocusOut func(direction DirectionType)
 	// The function takes the following parameters:
 	//
-	//    - scroll
-	//    - horizontal
+	//   - scroll
+	//   - horizontal
 	//
 	// The function returns the following values:
 	//
@@ -152,16 +152,16 @@ func defaultScrolledWindowOverrides(v *ScrolledWindow) ScrolledWindowOverrides {
 // child scrollable using either internally added scrollbars or externally
 // associated adjustments, and optionally draws a frame around the child.
 //
-// Widgets with native scrolling support, i.e. those whose classes implement the
-// Scrollable interface, are added directly. For other types of widget, the
-// class Viewport acts as an adaptor, giving scrollability to other widgets.
+// Widgets with native scrolling support, i.e. those whose classes implement
+// the Scrollable interface, are added directly. For other types of widget,
+// the class Viewport acts as an adaptor, giving scrollability to other widgets.
 // GtkScrolledWindow’s implementation of gtk_container_add() intelligently
 // accounts for whether or not the added child is a Scrollable. If it isn’t,
 // ScrolledWindow wraps the child in a Viewport and adds that for you.
 // Therefore, you can just add any child widget and not worry about the details.
 //
-// If gtk_container_add() has added a Viewport for you, you can remove both your
-// added child widget from the Viewport, and the Viewport from the
+// If gtk_container_add() has added a Viewport for you, you can remove both
+// your added child widget from the Viewport, and the Viewport from the
 // GtkScrolledWindow, like this:
 //
 //    GtkWidget *scrolled_window = gtk_scrolled_window_new (NULL, NULL);
@@ -191,8 +191,7 @@ func defaultScrolledWindowOverrides(v *ScrolledWindow) ScrolledWindowOverrides {
 // have exactly the right layout, it’s very possible to set up your own
 // scrolling with Scrollbar and for example a Grid.
 //
-//
-// Touch support
+// # Touch support
 //
 // GtkScrolledWindow has built-in support for touch devices. When a touchscreen
 // is used, swiping will move the scrolled window, and will expose 'kinetic'
@@ -208,17 +207,16 @@ func defaultScrolledWindowOverrides(v *ScrolledWindow) ScrolledWindowOverrides {
 // desired although no mouse is present, this behaviour can be turned off with
 // the ScrolledWindow:overlay-scrolling property.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkScrolledWindow has a main CSS node with name scrolledwindow.
 //
-// It uses subnodes with names overshoot and undershoot to draw the overflow and
-// underflow indications. These nodes get the .left, .right, .top or .bottom
+// It uses subnodes with names overshoot and undershoot to draw the overflow
+// and underflow indications. These nodes get the .left, .right, .top or .bottom
 // style class added depending on where the indication is drawn.
 //
-// GtkScrolledWindow also sets the positional style classes (.left, .right,
-// .top, .bottom) and style classes related to overlay scrolling
+// GtkScrolledWindow also sets the positional style classes (.left,
+// .right, .top, .bottom) and style classes related to overlay scrolling
 // (.overlay-indicator, .dragging, .hovering) on its scrollbars.
 //
 // If both scrollbars are visible, the area where they meet is drawn with a
@@ -309,12 +307,12 @@ func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType
 	return coreglib.ConnectGeneratedClosure(scrolledWindow, "edge-reached", false, unsafe.Pointer(C._gotk4_gtk3_ScrolledWindow_ConnectEdgeReached), f)
 }
 
-// ConnectMoveFocusOut signal is a [keybinding signal][GtkBindingSignal] which
-// gets emitted when focus is moved away from the scrolled window by a
-// keybinding. The Widget::move-focus signal is emitted with direction_type on
-// this scrolled window’s toplevel parent in the container hierarchy. The
-// default bindings for this signal are Ctrl + Tab to move forward and Ctrl +
-// Shift + Tab to move backward.
+// ConnectMoveFocusOut signal is a [keybinding signal][GtkBindingSignal]
+// which gets emitted when focus is moved away from the scrolled window by a
+// keybinding. The Widget::move-focus signal is emitted with direction_type
+// on this scrolled window’s toplevel parent in the container hierarchy.
+// The default bindings for this signal are Ctrl + Tab to move forward and Ctrl
+// + Shift + Tab to move backward.
 func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(scrolledWindow, "move-focus-out", false, unsafe.Pointer(C._gotk4_gtk3_ScrolledWindow_ConnectMoveFocusOut), f)
 }
@@ -336,12 +334,12 @@ func (scrolledWindow *ScrolledWindow) ConnectScrollChild(f func(scroll ScrollTyp
 //
 // The function takes the following parameters:
 //
-//    - hadjustment (optional): horizontal adjustment.
-//    - vadjustment (optional): vertical adjustment.
+//   - hadjustment (optional): horizontal adjustment.
+//   - vadjustment (optional): vertical adjustment.
 //
 // The function returns the following values:
 //
-//    - scrolledWindow: new scrolled window.
+//   - scrolledWindow: new scrolled window.
 //
 func NewScrolledWindow(hadjustment, vadjustment *Adjustment) *ScrolledWindow {
 	var _arg1 *C.GtkAdjustment // out
@@ -387,7 +385,7 @@ func NewScrolledWindow(hadjustment, vadjustment *Adjustment) *ScrolledWindow {
 //
 // The function takes the following parameters:
 //
-//    - child: widget you want to scroll.
+//   - child: widget you want to scroll.
 //
 func (scrolledWindow *ScrolledWindow) AddWithViewport(child Widgetter) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -406,7 +404,7 @@ func (scrolledWindow *ScrolledWindow) AddWithViewport(child Widgetter) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if button presses are captured during kinetic scrolling.
+//   - ok: TRUE if button presses are captured during kinetic scrolling.
 //
 func (scrolledWindow *ScrolledWindow) CaptureButtonPress() bool {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -426,13 +424,13 @@ func (scrolledWindow *ScrolledWindow) CaptureButtonPress() bool {
 	return _ok
 }
 
-// HAdjustment returns the horizontal scrollbar’s adjustment, used to connect
-// the horizontal scrollbar to the child widget’s horizontal scroll
+// HAdjustment returns the horizontal scrollbar’s adjustment, used to
+// connect the horizontal scrollbar to the child widget’s horizontal scroll
 // functionality.
 //
 // The function returns the following values:
 //
-//    - adjustment: horizontal Adjustment.
+//   - adjustment: horizontal Adjustment.
 //
 func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -454,7 +452,7 @@ func (scrolledWindow *ScrolledWindow) HAdjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - widget: horizontal scrollbar of the scrolled window.
+//   - widget: horizontal scrollbar of the scrolled window.
 //
 func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -492,7 +490,7 @@ func (scrolledWindow *ScrolledWindow) HScrollbar() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: scrolling behavior flags.
+//   - ok: scrolling behavior flags.
 //
 func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -516,7 +514,7 @@ func (scrolledWindow *ScrolledWindow) KineticScrolling() bool {
 //
 // The function returns the following values:
 //
-//    - gint: maximum content height, or -1.
+//   - gint: maximum content height, or -1.
 //
 func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -538,7 +536,7 @@ func (scrolledWindow *ScrolledWindow) MaxContentHeight() int {
 //
 // The function returns the following values:
 //
-//    - gint: maximum content width, or -1.
+//   - gint: maximum content width, or -1.
 //
 func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -561,7 +559,7 @@ func (scrolledWindow *ScrolledWindow) MaxContentWidth() int {
 //
 // The function returns the following values:
 //
-//    - gint: minimal content height.
+//   - gint: minimal content height.
 //
 func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -584,7 +582,7 @@ func (scrolledWindow *ScrolledWindow) MinContentHeight() int {
 //
 // The function returns the following values:
 //
-//    - gint: minimum content width.
+//   - gint: minimum content width.
 //
 func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -607,7 +605,7 @@ func (scrolledWindow *ScrolledWindow) MinContentWidth() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if overlay scrolling is enabled.
+//   - ok: TRUE if overlay scrolling is enabled.
 //
 func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -632,10 +630,10 @@ func (scrolledWindow *ScrolledWindow) OverlayScrolling() bool {
 //
 // The function returns the following values:
 //
-//    - cornerType: current placement value.
+//   - cornerType: current placement value.
 //
-//      See also gtk_scrolled_window_set_placement() and
-//      gtk_scrolled_window_unset_placement().
+//     See also gtk_scrolled_window_set_placement() and
+//     gtk_scrolled_window_unset_placement().
 //
 func (scrolledWindow *ScrolledWindow) Placement() CornerType {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -658,10 +656,10 @@ func (scrolledWindow *ScrolledWindow) Placement() CornerType {
 //
 // The function returns the following values:
 //
-//    - hscrollbarPolicy (optional): location to store the policy for the
-//      horizontal scrollbar, or NULL.
-//    - vscrollbarPolicy (optional): location to store the policy for the
-//      vertical scrollbar, or NULL.
+//   - hscrollbarPolicy (optional): location to store the policy for the
+//     horizontal scrollbar, or NULL.
+//   - vscrollbarPolicy (optional): location to store the policy for the
+//     vertical scrollbar, or NULL.
 //
 func (scrolledWindow *ScrolledWindow) Policy() (hscrollbarPolicy, vscrollbarPolicy PolicyType) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -688,7 +686,7 @@ func (scrolledWindow *ScrolledWindow) Policy() (hscrollbarPolicy, vscrollbarPoli
 //
 // The function returns the following values:
 //
-//    - ok: whether natural height propagation is enabled.
+//   - ok: whether natural height propagation is enabled.
 //
 func (scrolledWindow *ScrolledWindow) PropagateNaturalHeight() bool {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -714,7 +712,7 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalHeight() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether natural width propagation is enabled.
+//   - ok: whether natural width propagation is enabled.
 //
 func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -739,7 +737,7 @@ func (scrolledWindow *ScrolledWindow) PropagateNaturalWidth() bool {
 //
 // The function returns the following values:
 //
-//    - shadowType: current shadow type.
+//   - shadowType: current shadow type.
 //
 func (scrolledWindow *ScrolledWindow) ShadowType() ShadowType {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -762,7 +760,7 @@ func (scrolledWindow *ScrolledWindow) ShadowType() ShadowType {
 //
 // The function returns the following values:
 //
-//    - adjustment: vertical Adjustment.
+//   - adjustment: vertical Adjustment.
 //
 func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -784,7 +782,7 @@ func (scrolledWindow *ScrolledWindow) VAdjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - widget: vertical scrollbar of the scrolled window.
+//   - widget: vertical scrollbar of the scrolled window.
 //
 func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -818,13 +816,13 @@ func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 	return _widget
 }
 
-// SetCaptureButtonPress changes the behaviour of scrolled_window with regard to
-// the initial event that possibly starts kinetic scrolling. When
+// SetCaptureButtonPress changes the behaviour of scrolled_window with
+// regard to the initial event that possibly starts kinetic scrolling. When
 // capture_button_press is set to TRUE, the event is captured by the scrolled
 // window, and then later replayed if it is meant to go to the child widget.
 //
-// This should be enabled if any child widgets perform non-reversible actions on
-// Widget::button-press-event. If they don't, and handle additionally handle
+// This should be enabled if any child widgets perform non-reversible actions
+// on Widget::button-press-event. If they don't, and handle additionally handle
 // Widget::grab-broken-event, it might be better to set capture_button_press to
 // FALSE.
 //
@@ -832,7 +830,7 @@ func (scrolledWindow *ScrolledWindow) VScrollbar() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - captureButtonPress: TRUE to capture button presses.
+//   - captureButtonPress: TRUE to capture button presses.
 //
 func (scrolledWindow *ScrolledWindow) SetCaptureButtonPress(captureButtonPress bool) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -852,7 +850,7 @@ func (scrolledWindow *ScrolledWindow) SetCaptureButtonPress(captureButtonPress b
 //
 // The function takes the following parameters:
 //
-//    - hadjustment (optional) to use, or NULL to create a new one.
+//   - hadjustment (optional) to use, or NULL to create a new one.
 //
 func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -873,7 +871,7 @@ func (scrolledWindow *ScrolledWindow) SetHAdjustment(hadjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - kineticScrolling: TRUE to enable kinetic scrolling.
+//   - kineticScrolling: TRUE to enable kinetic scrolling.
 //
 func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -898,7 +896,7 @@ func (scrolledWindow *ScrolledWindow) SetKineticScrolling(kineticScrolling bool)
 //
 // The function takes the following parameters:
 //
-//    - height: maximum content height.
+//   - height: maximum content height.
 //
 func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -921,7 +919,7 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentHeight(height int) {
 //
 // The function takes the following parameters:
 //
-//    - width: maximum content width.
+//   - width: maximum content width.
 //
 func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -944,7 +942,7 @@ func (scrolledWindow *ScrolledWindow) SetMaxContentWidth(width int) {
 //
 // The function takes the following parameters:
 //
-//    - height: minimal content height.
+//   - height: minimal content height.
 //
 func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -967,7 +965,7 @@ func (scrolledWindow *ScrolledWindow) SetMinContentHeight(height int) {
 //
 // The function takes the following parameters:
 //
-//    - width: minimal content width.
+//   - width: minimal content width.
 //
 func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -986,7 +984,7 @@ func (scrolledWindow *ScrolledWindow) SetMinContentWidth(width int) {
 //
 // The function takes the following parameters:
 //
-//    - overlayScrolling: whether to enable overlay scrolling.
+//   - overlayScrolling: whether to enable overlay scrolling.
 //
 func (scrolledWindow *ScrolledWindow) SetOverlayScrolling(overlayScrolling bool) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -1006,8 +1004,8 @@ func (scrolledWindow *ScrolledWindow) SetOverlayScrolling(overlayScrolling bool)
 // scrollbars for the scrolled window.
 //
 // The default is GTK_CORNER_TOP_LEFT, meaning the child is in the top left,
-// with the scrollbars underneath and to the right. Other values in CornerType
-// are GTK_CORNER_TOP_RIGHT, GTK_CORNER_BOTTOM_LEFT, and
+// with the scrollbars underneath and to the right. Other values in
+// CornerType are GTK_CORNER_TOP_RIGHT, GTK_CORNER_BOTTOM_LEFT, and
 // GTK_CORNER_BOTTOM_RIGHT.
 //
 // See also gtk_scrolled_window_get_placement() and
@@ -1015,7 +1013,7 @@ func (scrolledWindow *ScrolledWindow) SetOverlayScrolling(overlayScrolling bool)
 //
 // The function takes the following parameters:
 //
-//    - windowPlacement: position of the child window.
+//   - windowPlacement: position of the child window.
 //
 func (scrolledWindow *ScrolledWindow) SetPlacement(windowPlacement CornerType) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -1032,17 +1030,17 @@ func (scrolledWindow *ScrolledWindow) SetPlacement(windowPlacement CornerType) {
 // SetPolicy sets the scrollbar policy for the horizontal and vertical
 // scrollbars.
 //
-// The policy determines when the scrollbar should appear; it is a value from
-// the PolicyType enumeration. If GTK_POLICY_ALWAYS, the scrollbar is always
-// present; if GTK_POLICY_NEVER, the scrollbar is never present; if
-// GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is, if
-// the slider part of the bar would be smaller than the trough — the display is
-// larger than the page size).
+// The policy determines when the scrollbar should appear; it is a value
+// from the PolicyType enumeration. If GTK_POLICY_ALWAYS, the scrollbar is
+// always present; if GTK_POLICY_NEVER, the scrollbar is never present;
+// if GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is,
+// if the slider part of the bar would be smaller than the trough — the display
+// is larger than the page size).
 //
 // The function takes the following parameters:
 //
-//    - hscrollbarPolicy: policy for horizontal bar.
-//    - vscrollbarPolicy: policy for vertical bar.
+//   - hscrollbarPolicy: policy for horizontal bar.
+//   - vscrollbarPolicy: policy for vertical bar.
 //
 func (scrolledWindow *ScrolledWindow) SetPolicy(hscrollbarPolicy, vscrollbarPolicy PolicyType) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -1065,7 +1063,7 @@ func (scrolledWindow *ScrolledWindow) SetPolicy(hscrollbarPolicy, vscrollbarPoli
 //
 // The function takes the following parameters:
 //
-//    - propagate: whether to propagate natural height.
+//   - propagate: whether to propagate natural height.
 //
 func (scrolledWindow *ScrolledWindow) SetPropagateNaturalHeight(propagate bool) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -1087,7 +1085,7 @@ func (scrolledWindow *ScrolledWindow) SetPropagateNaturalHeight(propagate bool) 
 //
 // The function takes the following parameters:
 //
-//    - propagate: whether to propagate natural width.
+//   - propagate: whether to propagate natural width.
 //
 func (scrolledWindow *ScrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -1108,7 +1106,7 @@ func (scrolledWindow *ScrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 //
 // The function takes the following parameters:
 //
-//    - typ: kind of shadow to draw around scrolled window contents.
+//   - typ: kind of shadow to draw around scrolled window contents.
 //
 func (scrolledWindow *ScrolledWindow) SetShadowType(typ ShadowType) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -1126,7 +1124,7 @@ func (scrolledWindow *ScrolledWindow) SetShadowType(typ ShadowType) {
 //
 // The function takes the following parameters:
 //
-//    - vadjustment (optional) to use, or NULL to create a new one.
+//   - vadjustment (optional) to use, or NULL to create a new one.
 //
 func (scrolledWindow *ScrolledWindow) SetVAdjustment(vadjustment *Adjustment) {
 	var _arg0 *C.GtkScrolledWindow // out
@@ -1176,8 +1174,8 @@ func (scrolledWindow *ScrolledWindow) moveFocusOut(direction DirectionType) {
 
 // The function takes the following parameters:
 //
-//    - scroll
-//    - horizontal
+//   - scroll
+//   - horizontal
 //
 // The function returns the following values:
 //

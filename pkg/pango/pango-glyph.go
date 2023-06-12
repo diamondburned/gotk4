@@ -32,9 +32,9 @@ func init() {
 
 // GlyphUnit: PangoGlyphUnit type is used to store dimensions within Pango.
 //
-// Dimensions are stored in 1/PANGO_SCALE of a device unit. (A device unit might
-// be a pixel for screen display, or a point on a printer.) PANGO_SCALE is
-// currently 1024, and may change in the future (unlikely though), but you
+// Dimensions are stored in 1/PANGO_SCALE of a device unit. (A device unit
+// might be a pixel for screen display, or a point on a printer.) PANGO_SCALE
+// is currently 1024, and may change in the future (unlikely though), but you
 // should not depend on its exact value. The PANGO_PIXELS() macro can be used to
 // convert from glyph units into device units with correct rounding.
 type GlyphUnit = int32
@@ -97,15 +97,15 @@ func (s ShapeFlags) Has(other ShapeFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - logicalItems: GList of PangoItem in logical order.
+//   - logicalItems: GList of PangoItem in logical order.
 //
 // The function returns the following values:
 //
-//    - list: #GList of Item structures in visual order.
+//   - list: #GList of Item structures in visual order.
 //
-//      (Please open a bug if you use this function. It is not a particularly
-//      convenient interface, and the code is duplicated elsewhere in Pango for
-//      that reason.).
+//     (Please open a bug if you use this function. It is not a particularly
+//     convenient interface, and the code is duplicated elsewhere in Pango for
+//     that reason.).
 //
 func ReorderItems(logicalItems []*Item) []*Item {
 	var _arg1 *C.GList // out
@@ -156,10 +156,10 @@ func ReorderItems(logicalItems []*Item) []*Item {
 //
 // The function takes the following parameters:
 //
-//    - text to process.
-//    - length (in bytes) of text.
-//    - analysis: PangoAnalysis structure from itemize.
-//    - glyphs: glyph string in which to store results.
+//   - text to process.
+//   - length (in bytes) of text.
+//   - analysis: PangoAnalysis structure from itemize.
+//   - glyphs: glyph string in which to store results.
 //
 func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
@@ -306,8 +306,8 @@ func NewGlyphString() *GlyphString {
 //
 // The function returns the following values:
 //
-//    - glyphString (optional): newly allocated PangoGlyphString, which should be
-//      freed with pango.GlyphString.Free(), or NULL if string was NULL.
+//   - glyphString (optional): newly allocated PangoGlyphString, which should be
+//     freed with pango.GlyphString.Free(), or NULL if string was NULL.
 //
 func (str *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
@@ -346,14 +346,14 @@ func (str *GlyphString) Copy() *GlyphString {
 //
 // The function takes the following parameters:
 //
-//    - font: PangoFont.
+//   - font: PangoFont.
 //
 // The function returns the following values:
 //
-//    - inkRect (optional): rectangle used to store the extents of the glyph
-//      string as drawn or NULL to indicate that the result is not needed.
-//    - logicalRect (optional): rectangle used to store the logical extents of
-//      the glyph string or NULL to indicate that the result is not needed.
+//   - inkRect (optional): rectangle used to store the extents of the glyph
+//     string as drawn or NULL to indicate that the result is not needed.
+//   - logicalRect (optional): rectangle used to store the logical extents of
+//     the glyph string or NULL to indicate that the result is not needed.
 //
 func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
@@ -385,17 +385,17 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect
 //
 // The function takes the following parameters:
 //
-//    - start index.
-//    - end index (the range is the set of bytes with indices such that start <=
-//      index < end).
-//    - font: PangoFont.
+//   - start index.
+//   - end index (the range is the set of bytes with indices such that start <=
+//     index < end).
+//   - font: PangoFont.
 //
 // The function returns the following values:
 //
-//    - inkRect (optional): rectangle used to store the extents of the glyph
-//      string range as drawn or NULL to indicate that the result is not needed.
-//    - logicalRect (optional): rectangle used to store the logical extents of
-//      the glyph string range or NULL to indicate that the result is not needed.
+//   - inkRect (optional): rectangle used to store the extents of the glyph
+//     string range as drawn or NULL to indicate that the result is not needed.
+//   - logicalRect (optional): rectangle used to store the logical extents of
+//     the glyph string range or NULL to indicate that the result is not needed.
 //
 func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
@@ -427,14 +427,14 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 
 // Width computes the logical width of the glyph string.
 //
-// This can also be computed using pango.GlyphString.Extents(). However, since
-// this only computes the width, it's much faster. This is in fact only a
+// This can also be computed using pango.GlyphString.Extents(). However,
+// since this only computes the width, it's much faster. This is in fact only a
 // convenience function that computes the sum of geometry.width for each glyph
 // in the glyphs.
 //
 // The function returns the following values:
 //
-//    - gint: logical width of the glyph string.
+//   - gint: logical width of the glyph string.
 //
 func (glyphs *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
@@ -459,16 +459,16 @@ func (glyphs *GlyphString) Width() int {
 //
 // The function takes the following parameters:
 //
-//    - text for the run.
-//    - length: number of bytes (not characters) in text.
-//    - analysis information return from itemize.
-//    - index_: byte index within text.
-//    - trailing: whether we should compute the result for the beginning (FALSE)
-//      or end (TRUE) of the character.
+//   - text for the run.
+//   - length: number of bytes (not characters) in text.
+//   - analysis information return from itemize.
+//   - index_: byte index within text.
+//   - trailing: whether we should compute the result for the beginning (FALSE)
+//     or end (TRUE) of the character.
 //
 // The function returns the following values:
 //
-//    - xPos: location to store result.
+//   - xPos: location to store result.
 //
 func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis, index_ int, trailing bool) int {
 	var _arg0 *C.PangoGlyphString // out
@@ -508,7 +508,7 @@ func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis,
 //
 // The function takes the following parameters:
 //
-//    - newLen: new length of the string.
+//   - newLen: new length of the string.
 //
 func (str *GlyphString) SetSize(newLen int) {
 	var _arg0 *C.PangoGlyphString // out
@@ -532,16 +532,16 @@ func (str *GlyphString) SetSize(newLen int) {
 //
 // The function takes the following parameters:
 //
-//    - text for the run.
-//    - length: number of bytes (not characters) in text.
-//    - analysis information return from itemize.
-//    - xPos: x offset (in Pango units).
+//   - text for the run.
+//   - length: number of bytes (not characters) in text.
+//   - analysis information return from itemize.
+//   - xPos: x offset (in Pango units).
 //
 // The function returns the following values:
 //
-//    - index_: location to store calculated byte index within text.
-//    - trailing: location to store a boolean indicating whether the user clicked
-//      on the leading or trailing edge of the character.
+//   - index_: location to store calculated byte index within text.
+//   - trailing: location to store a boolean indicating whether the user clicked
+//     on the leading or trailing edge of the character.
 //
 func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos int) (index_ int, trailing int) {
 	var _arg0 *C.PangoGlyphString // out

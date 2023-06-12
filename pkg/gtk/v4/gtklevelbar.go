@@ -47,8 +47,8 @@ const LEVEL_BAR_OFFSET_LOW = "low"
 //
 // Use gtk.LevelBar.SetValue() to set the current value, and
 // gtk.LevelBar.AddOffsetValue() to set the value offsets at which the bar will
-// be considered in a different state. GTK will add a few offsets by default on
-// the level bar: GTK_LEVEL_BAR_OFFSET_LOW, GTK_LEVEL_BAR_OFFSET_HIGH and
+// be considered in a different state. GTK will add a few offsets by default
+// on the level bar: GTK_LEVEL_BAR_OFFSET_LOW, GTK_LEVEL_BAR_OFFSET_HIGH and
 // GTK_LEVEL_BAR_OFFSET_FULL, with values 0.25, 0.75 and 1.0 respectively.
 //
 // Note that it is your responsibility to update preexisting offsets when
@@ -87,9 +87,8 @@ const LEVEL_BAR_OFFSET_LOW = "low"
 //      return widget;
 //    }
 //
-//
-// The default interval of values is between zero and one, but it’s possible to
-// modify the interval using gtk.LevelBar.SetMinValue() and
+// The default interval of values is between zero and one, but it’s
+// possible to modify the interval using gtk.LevelBar.SetMinValue() and
 // gtk.LevelBar.SetMaxValue(). The value will be always drawn in proportion to
 // the admissible interval, i.e. a value of 15 with a specified interval between
 // 10 and 20 is equivalent to a value of 0.5 with an interval between 0 and 1.
@@ -102,8 +101,7 @@ const LEVEL_BAR_OFFSET_LOW = "low"
 // set the minimum value to 0 and the maximum value to 5 after changing the
 // indicator mode to discrete.
 //
-//
-// GtkLevelBar as GtkBuildable
+// # GtkLevelBar as GtkBuildable
 //
 // The GtkLevelBar implementation of the GtkBuildable interface supports a
 // custom <offsets> element, which can contain any number of <offset> elements,
@@ -118,20 +116,18 @@ const LEVEL_BAR_OFFSET_LOW = "low"
 //        ├── block.empty
 //        ┊
 //
-//
-// GtkLevelBar has a main CSS node with name levelbar and one of the style
-// classes .discrete or .continuous and a subnode with name trough. Below the
-// trough node are a number of nodes with name block and style class .filled or
-// .empty. In continuous mode, there is exactly one node of each, in discrete
-// mode, the number of filled and unfilled nodes corresponds to blocks that are
-// drawn. The block.filled nodes also get a style class .level-name
+// GtkLevelBar has a main CSS node with name levelbar and one of the
+// style classes .discrete or .continuous and a subnode with name trough.
+// Below the trough node are a number of nodes with name block and style class
+// .filled or .empty. In continuous mode, there is exactly one node of each, in
+// discrete mode, the number of filled and unfilled nodes corresponds to blocks
+// that are drawn. The block.filled nodes also get a style class .level-name
 // corresponding to the level for the current value.
 //
 // In horizontal orientation, the nodes are always arranged from left to right,
 // regardless of text direction.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkLevelBar uses the K_ACCESSIBLE_ROLE_METER role.
 type LevelBar struct {
@@ -191,7 +187,7 @@ func (self *LevelBar) ConnectOffsetChanged(f func(name string)) coreglib.SignalH
 //
 // The function returns the following values:
 //
-//    - levelBar: GtkLevelBar.
+//   - levelBar: GtkLevelBar.
 //
 func NewLevelBar() *LevelBar {
 	var _cret *C.GtkWidget // in
@@ -209,12 +205,12 @@ func NewLevelBar() *LevelBar {
 //
 // The function takes the following parameters:
 //
-//    - minValue: positive value.
-//    - maxValue: positive value.
+//   - minValue: positive value.
+//   - maxValue: positive value.
 //
 // The function returns the following values:
 //
-//    - levelBar: GtkLevelBar.
+//   - levelBar: GtkLevelBar.
 //
 func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 	var _arg1 C.double     // out
@@ -247,8 +243,8 @@ func NewLevelBarForInterval(minValue, maxValue float64) *LevelBar {
 //
 // The function takes the following parameters:
 //
-//    - name of the new offset.
-//    - value for the new offset.
+//   - name of the new offset.
+//   - value for the new offset.
 //
 func (self *LevelBar) AddOffsetValue(name string, value float64) {
 	var _arg0 *C.GtkLevelBar // out
@@ -270,7 +266,7 @@ func (self *LevelBar) AddOffsetValue(name string, value float64) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the level bar is inverted.
+//   - ok: TRUE if the level bar is inverted.
 //
 func (self *LevelBar) Inverted() bool {
 	var _arg0 *C.GtkLevelBar // out
@@ -294,7 +290,7 @@ func (self *LevelBar) Inverted() bool {
 //
 // The function returns the following values:
 //
-//    - gdouble: positive value.
+//   - gdouble: positive value.
 //
 func (self *LevelBar) MaxValue() float64 {
 	var _arg0 *C.GtkLevelBar // out
@@ -316,7 +312,7 @@ func (self *LevelBar) MaxValue() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: positive value.
+//   - gdouble: positive value.
 //
 func (self *LevelBar) MinValue() float64 {
 	var _arg0 *C.GtkLevelBar // out
@@ -338,7 +334,7 @@ func (self *LevelBar) MinValue() float64 {
 //
 // The function returns the following values:
 //
-//    - levelBarMode: GtkLevelBarMode.
+//   - levelBarMode: GtkLevelBarMode.
 //
 func (self *LevelBar) Mode() LevelBarMode {
 	var _arg0 *C.GtkLevelBar    // out
@@ -360,12 +356,12 @@ func (self *LevelBar) Mode() LevelBarMode {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of an offset in the bar.
+//   - name (optional) of an offset in the bar.
 //
 // The function returns the following values:
 //
-//    - value: location where to store the value.
-//    - ok: TRUE if the specified offset is found.
+//   - value: location where to store the value.
+//   - ok: TRUE if the specified offset is found.
 //
 func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 	var _arg0 *C.GtkLevelBar // out
@@ -398,8 +394,8 @@ func (self *LevelBar) OffsetValue(name string) (float64, bool) {
 //
 // The function returns the following values:
 //
-//    - gdouble: value in the interval between GtkLevelBar:min-value and
-//      GtkLevelBar:max-value.
+//   - gdouble: value in the interval between GtkLevelBar:min-value and
+//     GtkLevelBar:max-value.
 //
 func (self *LevelBar) Value() float64 {
 	var _arg0 *C.GtkLevelBar // out
@@ -424,7 +420,7 @@ func (self *LevelBar) Value() float64 {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of an offset in the bar.
+//   - name (optional) of an offset in the bar.
 //
 func (self *LevelBar) RemoveOffsetValue(name string) {
 	var _arg0 *C.GtkLevelBar // out
@@ -445,7 +441,7 @@ func (self *LevelBar) RemoveOffsetValue(name string) {
 //
 // The function takes the following parameters:
 //
-//    - inverted: TRUE to invert the level bar.
+//   - inverted: TRUE to invert the level bar.
 //
 func (self *LevelBar) SetInverted(inverted bool) {
 	var _arg0 *C.GtkLevelBar // out
@@ -468,7 +464,7 @@ func (self *LevelBar) SetInverted(inverted bool) {
 //
 // The function takes the following parameters:
 //
-//    - value: positive value.
+//   - value: positive value.
 //
 func (self *LevelBar) SetMaxValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
@@ -489,7 +485,7 @@ func (self *LevelBar) SetMaxValue(value float64) {
 //
 // The function takes the following parameters:
 //
-//    - value: positive value.
+//   - value: positive value.
 //
 func (self *LevelBar) SetMinValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out
@@ -507,7 +503,7 @@ func (self *LevelBar) SetMinValue(value float64) {
 //
 // The function takes the following parameters:
 //
-//    - mode: GtkLevelBarMode.
+//   - mode: GtkLevelBarMode.
 //
 func (self *LevelBar) SetMode(mode LevelBarMode) {
 	var _arg0 *C.GtkLevelBar    // out
@@ -525,8 +521,8 @@ func (self *LevelBar) SetMode(mode LevelBarMode) {
 //
 // The function takes the following parameters:
 //
-//    - value in the interval between gtk.LevelBar:min-value and
-//      gtk.LevelBar:max-value.
+//   - value in the interval between gtk.LevelBar:min-value and
+//     gtk.LevelBar:max-value.
 //
 func (self *LevelBar) SetValue(value float64) {
 	var _arg0 *C.GtkLevelBar // out

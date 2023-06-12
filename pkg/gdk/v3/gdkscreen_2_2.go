@@ -17,7 +17,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - screen (optional) or NULL if there is no default display.
+//   - screen (optional) or NULL if there is no default display.
 //
 func ScreenGetDefault() *Screen {
 	var _cret *C.GdkScreen // in

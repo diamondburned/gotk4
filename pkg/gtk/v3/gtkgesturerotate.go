@@ -29,8 +29,8 @@ func init() {
 }
 
 // GestureRotate is a Gesture implementation able to recognize 2-finger
-// rotations, whenever the angle between both handled sequences changes, the
-// GestureRotate::angle-changed signal is emitted.
+// rotations, whenever the angle between both handled sequences changes,
+// the GestureRotate::angle-changed signal is emitted.
 type GestureRotate struct {
 	_ [0]func() // equal guard
 	Gesture
@@ -65,11 +65,11 @@ func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - gestureRotate: newly created GestureRotate.
+//   - gestureRotate: newly created GestureRotate.
 //
 func NewGestureRotate(widget Widgetter) *GestureRotate {
 	var _arg1 *C.GtkWidget  // out
@@ -93,7 +93,7 @@ func NewGestureRotate(widget Widgetter) *GestureRotate {
 //
 // The function returns the following values:
 //
-//    - gdouble: angle delta in radians.
+//   - gdouble: angle delta in radians.
 //
 func (gesture *GestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out

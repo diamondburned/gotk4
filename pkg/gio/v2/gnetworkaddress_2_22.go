@@ -19,8 +19,8 @@ import "C"
 // fails.
 //
 // host_and_port may be in any of a number of recognised formats; an IPv6
-// address, an IPv4 address, or a domain name (in which case a DNS lookup is
-// performed). Quoting with [] is supported for all address types. A port
+// address, an IPv4 address, or a domain name (in which case a DNS lookup
+// is performed). Quoting with [] is supported for all address types. A port
 // override may be specified in the usual way with a colon.
 //
 // If no port is specified in host_and_port then default_port will be used as
@@ -30,19 +30,19 @@ import "C"
 // them to give the hostname, and a port override if necessary) and default_port
 // is expected to be provided by the application.
 //
-// (The port component of host_and_port can also be specified as a service name
-// rather than as a numeric port, but this functionality is deprecated, because
-// it depends on the contents of /etc/services, which is generally quite sparse
-// on platforms other than Linux.).
+// (The port component of host_and_port can also be specified as a service
+// name rather than as a numeric port, but this functionality is deprecated,
+// because it depends on the contents of /etc/services, which is generally quite
+// sparse on platforms other than Linux.).
 //
 // The function takes the following parameters:
 //
-//    - hostAndPort: hostname and optionally a port.
-//    - defaultPort: default port if not in host_and_port.
+//   - hostAndPort: hostname and optionally a port.
+//   - defaultPort: default port if not in host_and_port.
 //
 // The function returns the following values:
 //
-//    - networkAddress: new Address, or NULL on error.
+//   - networkAddress: new Address, or NULL on error.
 //
 func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out

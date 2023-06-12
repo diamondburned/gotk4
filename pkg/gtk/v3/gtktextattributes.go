@@ -71,8 +71,8 @@ func (t *TextAppearance) SetRise(rise int) {
 }
 
 // TextAttributes: using TextAttributes directly should rarely be necessary.
-// It’s primarily useful with gtk_text_iter_get_attributes(). As with most GTK+
-// structs, the fields in this struct should only be read, never modified
+// It’s primarily useful with gtk_text_iter_get_attributes(). As with most
+// GTK+ structs, the fields in this struct should only be read, never modified
 // directly.
 //
 // An instance of this type is always passed by reference.
@@ -281,7 +281,7 @@ func (t *TextAttributes) SetLetterSpacing(letterSpacing int) {
 //
 // The function returns the following values:
 //
-//    - textAttributes: copy of src, free with gtk_text_attributes_unref().
+//   - textAttributes: copy of src, free with gtk_text_attributes_unref().
 //
 func (src *TextAttributes) Copy() *TextAttributes {
 	var _arg0 *C.GtkTextAttributes // out
@@ -310,7 +310,7 @@ func (src *TextAttributes) Copy() *TextAttributes {
 //
 // The function takes the following parameters:
 //
-//    - dest: another TextAttributes.
+//   - dest: another TextAttributes.
 //
 func (src *TextAttributes) CopyValues(dest *TextAttributes) {
 	var _arg0 *C.GtkTextAttributes // out

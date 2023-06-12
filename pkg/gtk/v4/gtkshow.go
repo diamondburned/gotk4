@@ -25,9 +25,9 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - parent (optional) window.
-//    - uri to show.
-//    - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
+//   - parent (optional) window.
+//   - uri to show.
+//   - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
 //
 func ShowURI(parent *Window, uri string, timestamp uint32) {
 	var _arg1 *C.GtkWindow // out
@@ -58,11 +58,11 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) to cancel the launch.
-//    - parent (optional) window.
-//    - uri to show.
-//    - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
-//    - callback (optional) to call when the action is complete.
+//   - ctx (optional) to cancel the launch.
+//   - parent (optional) window.
+//   - uri to show.
+//   - timestamp from the event that triggered this call, or GDK_CURRENT_TIME.
+//   - callback (optional) to call when the action is complete.
 //
 func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint32, callback gio.AsyncReadyCallback) {
 	var _arg4 *C.GCancellable       // out
@@ -101,8 +101,8 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 //
 // The function takes the following parameters:
 //
-//    - parent passed to gtk_show_uri().
-//    - result that was passed to callback.
+//   - parent passed to gtk_show_uri().
+//   - result that was passed to callback.
 //
 func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	var _arg1 *C.GtkWindow    // out

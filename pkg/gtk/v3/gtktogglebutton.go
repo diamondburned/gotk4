@@ -36,8 +36,8 @@ func init() {
 
 // ToggleButtonOverrides contains methods that are overridable.
 type ToggleButtonOverrides struct {
-	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
-	// is no good reason for an application ever to call this function.
+	// Toggled emits the ToggleButton::toggled signal on the ToggleButton.
+	// There is no good reason for an application ever to call this function.
 	Toggled func()
 }
 
@@ -55,15 +55,14 @@ func defaultToggleButtonOverrides(v *ToggleButton) ToggleButtonOverrides {
 // pack a widget, (such as a Label and/or a Image), into the toggle button’s
 // container. (See Button for more information).
 //
-// The state of a ToggleButton can be set specifically using
-// gtk_toggle_button_set_active(), and retrieved using
+// The state of a ToggleButton can be set specifically
+// using gtk_toggle_button_set_active(), and retrieved using
 // gtk_toggle_button_get_active().
 //
 // To simply switch the state of a toggle button, use
 // gtk_toggle_button_toggled().
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkToggleButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .toggle style class.
@@ -194,7 +193,7 @@ func (toggleButton *ToggleButton) ConnectToggled(f func()) coreglib.SignalHandle
 //
 // The function returns the following values:
 //
-//    - toggleButton: new toggle button.
+//   - toggleButton: new toggle button.
 //
 func NewToggleButton() *ToggleButton {
 	var _cret *C.GtkWidget // in
@@ -212,11 +211,11 @@ func NewToggleButton() *ToggleButton {
 //
 // The function takes the following parameters:
 //
-//    - label: string containing the message to be placed in the toggle button.
+//   - label: string containing the message to be placed in the toggle button.
 //
 // The function returns the following values:
 //
-//    - toggleButton: new toggle button.
+//   - toggleButton: new toggle button.
 //
 func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _arg1 *C.gchar     // out
@@ -241,12 +240,12 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the mnemonic
-//      character.
+//   - label: text of the button, with an underscore in front of the mnemonic
+//     character.
 //
 // The function returns the following values:
 //
-//    - toggleButton: new ToggleButton.
+//   - toggleButton: new ToggleButton.
 //
 func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _arg1 *C.gchar     // out
@@ -270,7 +269,7 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 //
 // The function returns the following values:
 //
-//    - ok: #gboolean value.
+//   - ok: #gboolean value.
 //
 func (toggleButton *ToggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
@@ -294,7 +293,7 @@ func (toggleButton *ToggleButton) Active() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the button is displayed as inconsistent, FALSE otherwise.
+//   - ok: TRUE if the button is displayed as inconsistent, FALSE otherwise.
 //
 func (toggleButton *ToggleButton) Inconsistent() bool {
 	var _arg0 *C.GtkToggleButton // out
@@ -319,7 +318,7 @@ func (toggleButton *ToggleButton) Inconsistent() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the togglebutton is drawn as a separate indicator and label.
+//   - ok: TRUE if the togglebutton is drawn as a separate indicator and label.
 //
 func (toggleButton *ToggleButton) Mode() bool {
 	var _arg0 *C.GtkToggleButton // out
@@ -339,14 +338,14 @@ func (toggleButton *ToggleButton) Mode() bool {
 	return _ok
 }
 
-// SetActive sets the status of the toggle button. Set to TRUE if you want the
-// GtkToggleButton to be “pressed in”, and FALSE to raise it. This action causes
-// the ToggleButton::toggled signal and the Button::clicked signal to be
+// SetActive sets the status of the toggle button. Set to TRUE if you want
+// the GtkToggleButton to be “pressed in”, and FALSE to raise it. This action
+// causes the ToggleButton::toggled signal and the Button::clicked signal to be
 // emitted.
 //
 // The function takes the following parameters:
 //
-//    - isActive: TRUE or FALSE.
+//   - isActive: TRUE or FALSE.
 //
 func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
@@ -362,18 +361,18 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	runtime.KeepAlive(isActive)
 }
 
-// SetInconsistent: if the user has selected a range of elements (such as some
-// text or spreadsheet cells) that are affected by a toggle button, and the
-// current values in that range are inconsistent, you may want to display the
-// toggle in an “in between” state. This function turns on “in between” display.
-// Normally you would turn off the inconsistent state again if the user toggles
-// the toggle button. This has to be done manually,
-// gtk_toggle_button_set_inconsistent() only affects visual appearance, it
-// doesn’t affect the semantics of the button.
+// SetInconsistent: if the user has selected a range of elements (such as
+// some text or spreadsheet cells) that are affected by a toggle button,
+// and the current values in that range are inconsistent, you may want to
+// display the toggle in an “in between” state. This function turns on “in
+// between” display. Normally you would turn off the inconsistent state again
+// if the user toggles the toggle button. This has to be done manually,
+// gtk_toggle_button_set_inconsistent() only affects visual appearance,
+// it doesn’t affect the semantics of the button.
 //
 // The function takes the following parameters:
 //
-//    - setting: TRUE if state is inconsistent.
+//   - setting: TRUE if state is inconsistent.
 //
 func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkToggleButton // out
@@ -402,8 +401,8 @@ func (toggleButton *ToggleButton) SetInconsistent(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - drawIndicator: if TRUE, draw the button as a separate indicator and
-//      label; if FALSE, draw the button like a normal button.
+//   - drawIndicator: if TRUE, draw the button as a separate indicator and
+//     label; if FALSE, draw the button like a normal button.
 //
 func (toggleButton *ToggleButton) SetMode(drawIndicator bool) {
 	var _arg0 *C.GtkToggleButton // out

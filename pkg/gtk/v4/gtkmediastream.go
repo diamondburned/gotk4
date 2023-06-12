@@ -80,7 +80,7 @@ type MediaStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - surface: GdkSurface.
+	//   - surface: GdkSurface.
 	//
 	Realize func(surface gdk.Surfacer)
 	// Seek: start a seek operation on self to timestamp.
@@ -95,7 +95,7 @@ type MediaStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - timestamp to seek to.
+	//   - timestamp to seek to.
 	//
 	Seek func(timestamp int64)
 	// Unrealize undoes a previous call to gtk_media_stream_realize().
@@ -105,13 +105,13 @@ type MediaStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - surface: GdkSurface the stream was realized with.
+	//   - surface: GdkSurface the stream was realized with.
 	//
 	Unrealize func(surface gdk.Surfacer)
 	// The function takes the following parameters:
 	//
-	//    - muted
-	//    - volume
+	//   - muted
+	//   - volume
 	//
 	UpdateAudio func(muted bool, volume float64)
 }
@@ -133,9 +133,9 @@ func defaultMediaStreamOverrides(v *MediaStream) MediaStreamOverrides {
 // GTK provides an implementation of the GtkMediaStream interface that is called
 // gtk.MediaFile.
 //
-// Apart from application-facing API for stream playback, GtkMediaStream has a
-// number of APIs that are only useful for implementations and should not be
-// used in applications: gtk.MediaStream.Prepared(),
+// Apart from application-facing API for stream playback, GtkMediaStream
+// has a number of APIs that are only useful for implementations and
+// should not be used in applications: gtk.MediaStream.Prepared(),
 // gtk.MediaStream.Unprepared(), gtk.MediaStream.Update(),
 // gtk.MediaStream.Ended(), gtk.MediaStream.SeekSuccess(),
 // gtk.MediaStream.SeekFailed(), gtk.MediaStream.GError(),
@@ -254,7 +254,7 @@ func (self *MediaStream) Ended() {
 //
 // The function takes the following parameters:
 //
-//    - err: GError to set.
+//   - err: GError to set.
 //
 func (self *MediaStream) GError(err error) {
 	var _arg0 *C.GtkMediaStream // out
@@ -276,7 +276,7 @@ func (self *MediaStream) GError(err error) {
 //
 // The function returns the following values:
 //
-//    - gint64: duration of the stream or 0 if not known.
+//   - gint64: duration of the stream or 0 if not known.
 //
 func (self *MediaStream) Duration() int64 {
 	var _arg0 *C.GtkMediaStream // out
@@ -298,7 +298,7 @@ func (self *MediaStream) Duration() int64 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if playback is finished.
+//   - ok: TRUE if playback is finished.
 //
 func (self *MediaStream) GetEnded() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -333,8 +333,8 @@ func (self *MediaStream) GetEnded() bool {
 //
 // The function returns the following values:
 //
-//    - err (optional): NULL if not in an error state or the GError of the
-//      stream.
+//   - err (optional): NULL if not in an error state or the GError of the
+//     stream.
 //
 func (self *MediaStream) Error() error {
 	var _arg0 *C.GtkMediaStream // out
@@ -360,7 +360,7 @@ func (self *MediaStream) Error() error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream should loop.
+//   - ok: TRUE if the stream should loop.
 //
 func (self *MediaStream) Loop() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -386,7 +386,7 @@ func (self *MediaStream) Loop() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream is muted.
+//   - ok: TRUE if the stream is muted.
 //
 func (self *MediaStream) Muted() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -410,7 +410,7 @@ func (self *MediaStream) Muted() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream is playing.
+//   - ok: TRUE if the stream is playing.
 //
 func (self *MediaStream) Playing() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -434,7 +434,7 @@ func (self *MediaStream) Playing() bool {
 //
 // The function returns the following values:
 //
-//    - gint64: timestamp in microseconds.
+//   - gint64: timestamp in microseconds.
 //
 func (self *MediaStream) Timestamp() int64 {
 	var _arg0 *C.GtkMediaStream // out
@@ -458,7 +458,7 @@ func (self *MediaStream) Timestamp() int64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: volume of the stream from 0.0 to 1.0.
+//   - gdouble: volume of the stream from 0.0 to 1.0.
 //
 func (self *MediaStream) Volume() float64 {
 	var _arg0 *C.GtkMediaStream // out
@@ -480,7 +480,7 @@ func (self *MediaStream) Volume() float64 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream has audio.
+//   - ok: TRUE if the stream has audio.
 //
 func (self *MediaStream) HasAudio() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -504,7 +504,7 @@ func (self *MediaStream) HasAudio() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream has video.
+//   - ok: TRUE if the stream has video.
 //
 func (self *MediaStream) HasVideo() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -530,7 +530,7 @@ func (self *MediaStream) HasVideo() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream is prepared.
+//   - ok: TRUE if the stream is prepared.
 //
 func (self *MediaStream) IsPrepared() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -557,12 +557,12 @@ func (self *MediaStream) IsPrepared() bool {
 // guaranteed to not be seekable and user interfaces may hide controls that
 // allow seeking.
 //
-// It is allowed to call gtk.MediaStream.Seek() on a non-seekable stream, though
-// it will not do anything.
+// It is allowed to call gtk.MediaStream.Seek() on a non-seekable stream,
+// though it will not do anything.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream may support seeking.
+//   - ok: TRUE if the stream may support seeking.
 //
 func (self *MediaStream) IsSeekable() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -586,7 +586,7 @@ func (self *MediaStream) IsSeekable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a seek operation is ongoing.
+//   - ok: TRUE if a seek operation is ongoing.
 //
 func (self *MediaStream) IsSeeking() bool {
 	var _arg0 *C.GtkMediaStream // out
@@ -643,10 +643,10 @@ func (self *MediaStream) Play() {
 //
 // The function takes the following parameters:
 //
-//    - hasAudio: TRUE if the stream should advertise audio support.
-//    - hasVideo: TRUE if the stream should advertise video support.
-//    - seekable: TRUE if the stream should advertise seekability.
-//    - duration of the stream or 0 if unknown.
+//   - hasAudio: TRUE if the stream should advertise audio support.
+//   - hasVideo: TRUE if the stream should advertise video support.
+//   - seekable: TRUE if the stream should advertise seekability.
+//   - duration of the stream or 0 if unknown.
 //
 func (self *MediaStream) Prepared(hasAudio, hasVideo, seekable bool, duration int64) {
 	var _arg0 *C.GtkMediaStream // out
@@ -694,7 +694,7 @@ func (self *MediaStream) Prepared(hasAudio, hasVideo, seekable bool, duration in
 //
 // The function takes the following parameters:
 //
-//    - surface: GdkSurface.
+//   - surface: GdkSurface.
 //
 func (self *MediaStream) Realize(surface gdk.Surfacer) {
 	var _arg0 *C.GtkMediaStream // out
@@ -715,12 +715,12 @@ func (self *MediaStream) Realize(surface gdk.Surfacer) {
 // Seek operations may not finish instantly. While a seek operation is in
 // process, the gtk.MediaStream:seeking property will be set.
 //
-// When calling gtk_media_stream_seek() during an ongoing seek operation, the
-// new seek will override any pending seek.
+// When calling gtk_media_stream_seek() during an ongoing seek operation,
+// the new seek will override any pending seek.
 //
 // The function takes the following parameters:
 //
-//    - timestamp to seek to.
+//   - timestamp to seek to.
 //
 func (self *MediaStream) Seek(timestamp int64) {
 	var _arg0 *C.GtkMediaStream // out
@@ -775,7 +775,7 @@ func (self *MediaStream) SeekSuccess() {
 //
 // The function takes the following parameters:
 //
-//    - loop: TRUE if the stream should loop.
+//   - loop: TRUE if the stream should loop.
 //
 func (self *MediaStream) SetLoop(loop bool) {
 	var _arg0 *C.GtkMediaStream // out
@@ -802,7 +802,7 @@ func (self *MediaStream) SetLoop(loop bool) {
 //
 // The function takes the following parameters:
 //
-//    - muted: TRUE if the stream should be muted.
+//   - muted: TRUE if the stream should be muted.
 //
 func (self *MediaStream) SetMuted(muted bool) {
 	var _arg0 *C.GtkMediaStream // out
@@ -822,7 +822,7 @@ func (self *MediaStream) SetMuted(muted bool) {
 //
 // The function takes the following parameters:
 //
-//    - playing: whether to start or pause playback.
+//   - playing: whether to start or pause playback.
 //
 func (self *MediaStream) SetPlaying(playing bool) {
 	var _arg0 *C.GtkMediaStream // out
@@ -851,7 +851,7 @@ func (self *MediaStream) SetPlaying(playing bool) {
 //
 // The function takes the following parameters:
 //
-//    - volume: new volume of the stream from 0.0 to 1.0.
+//   - volume: new volume of the stream from 0.0 to 1.0.
 //
 func (self *MediaStream) SetVolume(volume float64) {
 	var _arg0 *C.GtkMediaStream // out
@@ -886,7 +886,7 @@ func (self *MediaStream) Unprepared() {
 //
 // The function takes the following parameters:
 //
-//    - surface: GdkSurface the stream was realized with.
+//   - surface: GdkSurface the stream was realized with.
 //
 func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 	var _arg0 *C.GtkMediaStream // out
@@ -910,7 +910,7 @@ func (self *MediaStream) Unrealize(surface gdk.Surfacer) {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: new timestamp.
+//   - timestamp: new timestamp.
 //
 func (self *MediaStream) Update(timestamp int64) {
 	var _arg0 *C.GtkMediaStream // out
@@ -981,7 +981,7 @@ func (self *MediaStream) play() bool {
 //
 // The function takes the following parameters:
 //
-//    - surface: GdkSurface.
+//   - surface: GdkSurface.
 //
 func (self *MediaStream) realize(surface gdk.Surfacer) {
 	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
@@ -1005,12 +1005,12 @@ func (self *MediaStream) realize(surface gdk.Surfacer) {
 // Seek operations may not finish instantly. While a seek operation is in
 // process, the gtk.MediaStream:seeking property will be set.
 //
-// When calling gtk_media_stream_seek() during an ongoing seek operation, the
-// new seek will override any pending seek.
+// When calling gtk_media_stream_seek() during an ongoing seek operation,
+// the new seek will override any pending seek.
 //
 // The function takes the following parameters:
 //
-//    - timestamp to seek to.
+//   - timestamp to seek to.
 //
 func (self *MediaStream) seek(timestamp int64) {
 	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
@@ -1034,7 +1034,7 @@ func (self *MediaStream) seek(timestamp int64) {
 //
 // The function takes the following parameters:
 //
-//    - surface: GdkSurface the stream was realized with.
+//   - surface: GdkSurface the stream was realized with.
 //
 func (self *MediaStream) unrealize(surface gdk.Surfacer) {
 	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
@@ -1053,8 +1053,8 @@ func (self *MediaStream) unrealize(surface gdk.Surfacer) {
 
 // The function takes the following parameters:
 //
-//    - muted
-//    - volume
+//   - muted
+//   - volume
 //
 func (self *MediaStream) updateAudio(muted bool, volume float64) {
 	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))

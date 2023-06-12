@@ -52,12 +52,12 @@ type FontsetOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - wc: unicode character.
+	//   - wc: unicode character.
 	//
 	// The function returns the following values:
 	//
-	//    - font: PangoFont. The caller must call g_object_unref() when finished
-	//      with the font.
+	//   - font: PangoFont. The caller must call g_object_unref() when finished
+	//     with the font.
 	//
 	Font func(wc uint) Fonter
 	// The function returns the following values:
@@ -67,8 +67,8 @@ type FontsetOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - fontMetrics object. The caller must call pango_font_metrics_unref()
-	//      when finished using the object.
+	//   - fontMetrics object. The caller must call pango_font_metrics_unref()
+	//     when finished using the object.
 	//
 	Metrics func() *FontMetrics
 }
@@ -164,7 +164,7 @@ func BaseFontset(obj Fontsetter) *Fontset {
 //
 // The function takes the following parameters:
 //
-//    - fn: callback function.
+//   - fn: callback function.
 //
 func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
 	var _arg0 *C.PangoFontset           // out
@@ -186,12 +186,12 @@ func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
 //
 // The function takes the following parameters:
 //
-//    - wc: unicode character.
+//   - wc: unicode character.
 //
 // The function returns the following values:
 //
-//    - font: PangoFont. The caller must call g_object_unref() when finished with
-//      the font.
+//   - font: PangoFont. The caller must call g_object_unref() when finished with
+//     the font.
 //
 func (fontset *Fontset) Font(wc uint) Fonter {
 	var _arg0 *C.PangoFontset // out
@@ -232,8 +232,8 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 //
 // The function returns the following values:
 //
-//    - fontMetrics object. The caller must call pango_font_metrics_unref() when
-//      finished using the object.
+//   - fontMetrics object. The caller must call pango_font_metrics_unref() when
+//     finished using the object.
 //
 func (fontset *Fontset) Metrics() *FontMetrics {
 	var _arg0 *C.PangoFontset     // out
@@ -264,7 +264,7 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 //
 // The function takes the following parameters:
 //
-//    - fn: callback function.
+//   - fn: callback function.
 //
 func (fontset *Fontset) forEach(fn FontsetForEachFunc) {
 	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
@@ -289,12 +289,12 @@ func (fontset *Fontset) forEach(fn FontsetForEachFunc) {
 //
 // The function takes the following parameters:
 //
-//    - wc: unicode character.
+//   - wc: unicode character.
 //
 // The function returns the following values:
 //
-//    - font: PangoFont. The caller must call g_object_unref() when finished with
-//      the font.
+//   - font: PangoFont. The caller must call g_object_unref() when finished with
+//     the font.
 //
 func (fontset *Fontset) font(wc uint) Fonter {
 	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
@@ -365,8 +365,8 @@ func (fontset *Fontset) language() *Language {
 //
 // The function returns the following values:
 //
-//    - fontMetrics object. The caller must call pango_font_metrics_unref() when
-//      finished using the object.
+//   - fontMetrics object. The caller must call pango_font_metrics_unref() when
+//     finished using the object.
 //
 func (fontset *Fontset) metrics() *FontMetrics {
 	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
@@ -423,12 +423,12 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - language: PangoLanguage tag.
+//   - language: PangoLanguage tag.
 //
 // The function returns the following values:
 //
-//    - fontsetSimple: newly allocated PangoFontsetSimple, which should be freed
-//      with g_object_unref().
+//   - fontsetSimple: newly allocated PangoFontsetSimple, which should be freed
+//     with g_object_unref().
 //
 func NewFontsetSimple(language *Language) *FontsetSimple {
 	var _arg1 *C.PangoLanguage      // out
@@ -450,7 +450,7 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 //
 // The function takes the following parameters:
 //
-//    - font: PangoFont.
+//   - font: PangoFont.
 //
 func (fontset *FontsetSimple) Append(font Fonter) {
 	var _arg0 *C.PangoFontsetSimple // out
@@ -468,7 +468,7 @@ func (fontset *FontsetSimple) Append(font Fonter) {
 //
 // The function returns the following values:
 //
-//    - gint: size of fontset.
+//   - gint: size of fontset.
 //
 func (fontset *FontsetSimple) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out

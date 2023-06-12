@@ -60,8 +60,8 @@ func (b ButtonRole) String() string {
 	}
 }
 
-// ModelButton is a button class that can use a #GAction as its model. In
-// contrast to ToggleButton or RadioButton, which can also be backed by a
+// ModelButton is a button class that can use a #GAction as its model.
+// In contrast to ToggleButton or RadioButton, which can also be backed by a
 // #GAction via the Actionable:action-name property, GtkModelButton will adapt
 // its appearance according to the kind of action it is backed by, and appear
 // either as a plain, check or radio button.
@@ -71,9 +71,9 @@ func (b ButtonRole) String() string {
 // PopoverMenu.
 //
 // When the action is specified via the Actionable:action-name and
-// Actionable:action-target properties, the role of the button (i.e. whether it
-// is a plain, check or radio button) is determined by the type of the action
-// and doesn't have to be explicitly specified with the ModelButton:role
+// Actionable:action-target properties, the role of the button (i.e. whether
+// it is a plain, check or radio button) is determined by the type of the
+// action and doesn't have to be explicitly specified with the ModelButton:role
 // property.
 //
 // The content of the button is specified by the ModelButton:text and
@@ -82,8 +82,8 @@ func (b ButtonRole) String() string {
 // The appearance of model buttons can be influenced with the
 // ModelButton:centered and ModelButton:iconic properties.
 //
-// Model buttons have built-in support for submenus in PopoverMenu. To make a
-// GtkModelButton that opens a submenu when activated, set the
+// Model buttons have built-in support for submenus in PopoverMenu.
+// To make a GtkModelButton that opens a submenu when activated, set the
 // ModelButton:menu-name property. To make a button that goes back to the parent
 // menu, you should set the ModelButton:inverted property to place the submenu
 // indicator at the opposite side.
@@ -188,7 +188,7 @@ func marshalModelButton(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - modelButton: newly created ModelButton widget.
+//   - modelButton: newly created ModelButton widget.
 //
 func NewModelButton() *ModelButton {
 	var _cret *C.GtkWidget // in

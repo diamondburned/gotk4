@@ -12,20 +12,20 @@ import "C"
 
 // GetHostName: return a name for the machine.
 //
-// The returned name is not necessarily a fully-qualified domain name, or even
-// present in DNS or some other name service at all. It need not even be unique
-// on your local network or site, but usually it is. Callers should not rely on
-// the return value having any specific properties like uniqueness for security
-// purposes. Even if the name of the machine is changed while an application is
-// running, the return value from this function does not change. The returned
-// string is owned by GLib and should not be modified or freed. If no name can
-// be determined, a default fixed string "localhost" is returned.
+// The returned name is not necessarily a fully-qualified domain name,
+// or even present in DNS or some other name service at all. It need not even
+// be unique on your local network or site, but usually it is. Callers should
+// not rely on the return value having any specific properties like uniqueness
+// for security purposes. Even if the name of the machine is changed while an
+// application is running, the return value from this function does not change.
+// The returned string is owned by GLib and should not be modified or freed.
+// If no name can be determined, a default fixed string "localhost" is returned.
 //
 // The encoding of the returned string is UTF-8.
 //
 // The function returns the following values:
 //
-//    - utf8: host name of the machine.
+//   - utf8: host name of the machine.
 //
 func GetHostName() string {
 	var _cret *C.gchar // in

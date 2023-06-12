@@ -178,7 +178,7 @@ func (seat *Seat) ConnectToolRemoved(f func(tool *DeviceTool)) coreglib.SignalHa
 //
 // The function returns the following values:
 //
-//    - seatCapabilities: seat capabilities.
+//   - seatCapabilities: seat capabilities.
 //
 func (seat *Seat) Capabilities() SeatCapabilities {
 	var _arg0 *C.GdkSeat            // out
@@ -200,12 +200,12 @@ func (seat *Seat) Capabilities() SeatCapabilities {
 //
 // The function takes the following parameters:
 //
-//    - capabilities to get devices for.
+//   - capabilities to get devices for.
 //
 // The function returns the following values:
 //
-//    - list: list of GdkDevices. The list must be freed with g_list_free(), the
-//      elements are owned by GTK and must not be freed.
+//   - list: list of GdkDevices. The list must be freed with g_list_free(),
+//     the elements are owned by GTK and must not be freed.
 //
 func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 	var _arg0 *C.GdkSeat            // out
@@ -252,7 +252,7 @@ func (seat *Seat) Devices(capabilities SeatCapabilities) []Devicer {
 //
 // The function returns the following values:
 //
-//    - display: GdkDisplay. This object is owned by GTK and must not be freed.
+//   - display: GdkDisplay. This object is owned by GTK and must not be freed.
 //
 func (seat *Seat) Display() *Display {
 	var _arg0 *C.GdkSeat    // out
@@ -274,8 +274,8 @@ func (seat *Seat) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - device (optional): GdkDevice with keyboard capabilities. This object is
-//      owned by GTK and must not be freed.
+//   - device (optional): GdkDevice with keyboard capabilities. This object is
+//     owned by GTK and must not be freed.
 //
 func (seat *Seat) Keyboard() Devicer {
 	var _arg0 *C.GdkSeat   // out
@@ -312,8 +312,8 @@ func (seat *Seat) Keyboard() Devicer {
 //
 // The function returns the following values:
 //
-//    - device (optional): GdkDevice with pointer capabilities. This object is
-//      owned by GTK and must not be freed.
+//   - device (optional): GdkDevice with pointer capabilities. This object is
+//     owned by GTK and must not be freed.
 //
 func (seat *Seat) Pointer() Devicer {
 	var _arg0 *C.GdkSeat   // out
@@ -350,7 +350,7 @@ func (seat *Seat) Pointer() Devicer {
 //
 // The function returns the following values:
 //
-//    - list: A list of tools. Free with g_list_free().
+//   - list: A list of tools. Free with g_list_free().
 //
 func (seat *Seat) Tools() []*DeviceTool {
 	var _arg0 *C.GdkSeat // out

@@ -30,36 +30,36 @@ const PRIORITY_RESIZE = 110
 // They can be used to implement custom key event handling.
 type KeySnoopFunc func(grabWidget Widgetter, event *gdk.EventKey) (gint int)
 
-// CheckVersion checks that the GTK+ library in use is compatible with the given
-// version. Generally you would pass in the constants K_MAJOR_VERSION,
+// CheckVersion checks that the GTK+ library in use is compatible with the
+// given version. Generally you would pass in the constants K_MAJOR_VERSION,
 // K_MINOR_VERSION, K_MICRO_VERSION as the three arguments to this function;
 // that produces a check that the library in use is compatible with the version
 // of GTK+ the application or module was compiled against.
 //
-// Compatibility is defined by two things: first the version of the running
-// library is newer than the version
-// required_major.required_minor.required_micro. Second the running library must
-// be binary compatible with the version
+// Compatibility is defined by two things: first the
+// version of the running library is newer than the version
+// required_major.required_minor.required_micro. Second the
+// running library must be binary compatible with the version
 // required_major.required_minor.required_micro (same major version.)
 //
 // This function is primarily for GTK+ modules; the module can call this
 // function to check that it wasn’t loaded into an incompatible version of GTK+.
-// However, such a check isn’t completely reliable, since the module may be
-// linked against an old version of GTK+ and calling the old version of
+// However, such a check isn’t completely reliable, since the module may
+// be linked against an old version of GTK+ and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK+.
 //
 // The function takes the following parameters:
 //
-//    - requiredMajor: required major version.
-//    - requiredMinor: required minor version.
-//    - requiredMicro: required micro version.
+//   - requiredMajor: required major version.
+//   - requiredMinor: required minor version.
+//   - requiredMicro: required micro version.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): NULL if the GTK+ library is compatible with the given
-//      version, or a string describing the version mismatch. The returned string
-//      is owned by GTK+ and should not be modified or freed.
+//   - utf8 (optional): NULL if the GTK+ library is compatible with the given
+//     version, or a string describing the version mismatch. The returned string
+//     is owned by GTK+ and should not be modified or freed.
 //
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint  // out
@@ -86,8 +86,8 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 }
 
 // DisableSetlocale prevents gtk_init(), gtk_init_check(), gtk_init_with_args()
-// and gtk_parse_args() from automatically calling setlocale (LC_ALL, ""). You
-// would want to use this function if you wanted to set the locale for your
+// and gtk_parse_args() from automatically calling setlocale (LC_ALL, "").
+// You would want to use this function if you wanted to set the locale for your
 // program to something other than the user’s locale, or if you wanted to set
 // different values for different locale categories.
 //
@@ -103,16 +103,16 @@ func DisableSetlocale() {
 //
 // Updating the UI during a long computation
 //
-//     // computation going on...
+//    // computation going on...
 //
-//     while (gtk_events_pending ())
-//       gtk_main_iteration ();
+//    while (gtk_events_pending ())
+//      gtk_main_iteration ();
 //
-//     // ...computation continued.
+//    // ...computation continued.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if any events are pending, FALSE otherwise.
+//   - ok: TRUE if any events are pending, FALSE otherwise.
 //
 func EventsPending() bool {
 	var _cret C.gboolean // in
@@ -133,7 +133,7 @@ func EventsPending() bool {
 //
 // The function returns the following values:
 //
-//    - ok: FALSE.
+//   - ok: FALSE.
 //
 func False() bool {
 	var _cret C.gboolean // in
@@ -157,8 +157,8 @@ func False() bool {
 //
 // The function returns the following values:
 //
-//    - event (optional): copy of the current event, or NULL if there is no
-//      current event. The returned event must be freed with gdk_event_free().
+//   - event (optional): copy of the current event, or NULL if there is no
+//     current event. The returned event must be freed with gdk_event_free().
 //
 func GetCurrentEvent() *gdk.Event {
 	var _cret *C.GdkEvent // in
@@ -182,7 +182,7 @@ func GetCurrentEvent() *gdk.Event {
 //
 // The function returns the following values:
 //
-//    - device (optional) or NULL.
+//   - device (optional) or NULL.
 //
 func GetCurrentEventDevice() gdk.Devicer {
 	var _cret *C.GdkDevice // in
@@ -216,8 +216,8 @@ func GetCurrentEventDevice() gdk.Devicer {
 //
 // The function returns the following values:
 //
-//    - state: location to store the state of the current event.
-//    - ok: TRUE if there was a current event and it had a state field.
+//   - state: location to store the state of the current event.
+//   - ok: TRUE if there was a current event and it had a state field.
 //
 func GetCurrentEventState() (gdk.ModifierType, bool) {
 	var _arg1 C.GdkModifierType // in
@@ -241,7 +241,7 @@ func GetCurrentEventState() (gdk.ModifierType, bool) {
 //
 // The function returns the following values:
 //
-//    - guint32: timestamp from the current event, or GDK_CURRENT_TIME.
+//   - guint32: timestamp from the current event, or GDK_CURRENT_TIME.
 //
 func GetCurrentEventTime() uint32 {
 	var _cret C.guint32 // in
@@ -255,9 +255,9 @@ func GetCurrentEventTime() uint32 {
 	return _guint32
 }
 
-// GetDefaultLanguage returns the Language for the default language currently in
-// effect. (Note that this can change over the life of an application.) The
-// default language is derived from the current locale. It determines, for
+// GetDefaultLanguage returns the Language for the default language currently
+// in effect. (Note that this can change over the life of an application.)
+// The default language is derived from the current locale. It determines, for
 // example, whether GTK+ uses the right-to-left or left-to-right text direction.
 //
 // This function is equivalent to pango_language_get_default(). See that
@@ -265,7 +265,7 @@ func GetCurrentEventTime() uint32 {
 //
 // The function returns the following values:
 //
-//    - language: default language as a Language, must not be freed.
+//   - language: default language as a Language, must not be freed.
 //
 func GetDefaultLanguage() *pango.Language {
 	var _cret *C.PangoLanguage // in
@@ -285,11 +285,11 @@ func GetDefaultLanguage() *pango.Language {
 //
 // The function takes the following parameters:
 //
-//    - event: Event.
+//   - event: Event.
 //
 // The function returns the following values:
 //
-//    - widget (optional) that originally received event, or NULL.
+//   - widget (optional) that originally received event, or NULL.
 //
 func GetEventWidget(event *gdk.Event) Widgetter {
 	var _arg1 *C.GdkEvent  // out
@@ -326,8 +326,8 @@ func GetEventWidget(event *gdk.Event) Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget (optional) which currently has the grab or NULL if no grab is
-//      active.
+//   - widget (optional) which currently has the grab or NULL if no grab is
+//     active.
 //
 func GrabGetCurrent() Widgetter {
 	var _cret *C.GtkWidget // in
@@ -363,7 +363,7 @@ func GrabGetCurrent() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - snooperHandlerId identifies the key snooper to remove.
+//   - snooperHandlerId identifies the key snooper to remove.
 //
 func KeySnooperRemove(snooperHandlerId uint) {
 	var _arg1 C.guint // out
@@ -384,11 +384,11 @@ func Main() {
 
 // MainDoEvent processes a single GDK event.
 //
-// This is public only to allow filtering of events between GDK and GTK+. You
-// will not usually need to call this function directly.
+// This is public only to allow filtering of events between GDK and GTK+.
+// You will not usually need to call this function directly.
 //
-// While you should not call this function directly, you might want to know how
-// exactly events are handled. So here is what this function does with the
+// While you should not call this function directly, you might want to know
+// how exactly events are handled. So here is what this function does with the
 // event:
 //
 // 1. Compress enter/leave notify events. If the event passed build an
@@ -403,9 +403,9 @@ func Main() {
 // handled event with gtk_get_current_event().
 //
 // 4. The event is sent to a widget. If a grab is active all events for widgets
-// that are not in the contained in the grab widget are sent to the latter with
-// a few exceptions: - Deletion and destruction events are still sent to the
-// event widget for obvious reasons. - Events which directly relate to the
+// that are not in the contained in the grab widget are sent to the latter
+// with a few exceptions: - Deletion and destruction events are still sent to
+// the event widget for obvious reasons. - Events which directly relate to the
 // visual representation of the event widget. - Leave events are delivered to
 // the event widget if there was an enter event delivered to it before without
 // the paired leave event. - Drag events are not redirected because it is
@@ -418,7 +418,7 @@ func Main() {
 //
 // The function takes the following parameters:
 //
-//    - event to process (normally passed by GDK).
+//   - event to process (normally passed by GDK).
 //
 func MainDoEvent(event *gdk.Event) {
 	var _arg1 *C.GdkEvent // out
@@ -437,7 +437,7 @@ func MainDoEvent(event *gdk.Event) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if gtk_main_quit() has been called for the innermost mainloop.
+//   - ok: TRUE if gtk_main_quit() has been called for the innermost mainloop.
 //
 func MainIteration() bool {
 	var _cret C.gboolean // in
@@ -458,11 +458,11 @@ func MainIteration() bool {
 //
 // The function takes the following parameters:
 //
-//    - blocking: TRUE if you want GTK+ to block if no events are pending.
+//   - blocking: TRUE if you want GTK+ to block if no events are pending.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if gtk_main_quit() has been called for the innermost mainloop.
+//   - ok: TRUE if gtk_main_quit() has been called for the innermost mainloop.
 //
 func MainIterationDo(blocking bool) bool {
 	var _arg1 C.gboolean // out
@@ -488,7 +488,7 @@ func MainIterationDo(blocking bool) bool {
 //
 // The function returns the following values:
 //
-//    - guint: nesting level of the current invocation of the main loop.
+//   - guint: nesting level of the current invocation of the main loop.
 //
 func MainLevel() uint {
 	var _cret C.guint // in
@@ -512,24 +512,24 @@ func MainQuit() {
 // widgets if the event remains unhandled.
 //
 // Events received by GTK+ from GDK normally begin in gtk_main_do_event().
-// Depending on the type of event, existence of modal dialogs, grabs, etc., the
-// event may be propagated; if so, this function is used.
+// Depending on the type of event, existence of modal dialogs, grabs, etc.,
+// the event may be propagated; if so, this function is used.
 //
-// gtk_propagate_event() calls gtk_widget_event() on each widget it decides to
-// send the event to. So gtk_widget_event() is the lowest-level function; it
-// simply emits the Widget::event and possibly an event-specific signal on a
+// gtk_propagate_event() calls gtk_widget_event() on each widget it decides
+// to send the event to. So gtk_widget_event() is the lowest-level function;
+// it simply emits the Widget::event and possibly an event-specific signal on a
 // widget. gtk_propagate_event() is a bit higher-level, and gtk_main_do_event()
 // is the highest level.
 //
 // All that said, you most likely don’t want to use any of these functions;
-// synthesizing events is rarely needed. There are almost certainly better ways
-// to achieve your goals. For example, use gdk_window_invalidate_rect() or
+// synthesizing events is rarely needed. There are almost certainly better
+// ways to achieve your goals. For example, use gdk_window_invalidate_rect() or
 // gtk_widget_queue_draw() instead of making up expose events.
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
-//    - event: event.
+//   - widget: Widget.
+//   - event: event.
 //
 func PropagateEvent(widget Widgetter, event *gdk.Event) {
 	var _arg1 *C.GtkWidget // out
@@ -585,7 +585,7 @@ func PropagateEvent(widget Widgetter, event *gdk.Event) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE.
+//   - ok: TRUE.
 //
 func True() bool {
 	var _cret C.gboolean // in

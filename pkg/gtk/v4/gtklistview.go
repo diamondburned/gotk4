@@ -35,8 +35,8 @@ func init() {
 // separators between the rows.
 //
 // GtkListView allows the user to select items according to the selection
-// characteristics of the model. For models that allow multiple selected items,
-// it is possible to turn on _rubberband selection_, using
+// characteristics of the model. For models that allow multiple selected
+// items, it is possible to turn on _rubberband selection_, using
 // gtk.ListView:enable-rubberband.
 //
 // If you need multiple columns with headers, see gtk.ColumnView.
@@ -95,7 +95,6 @@ func init() {
 //
 //      gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (sw), list);
 //
-//
 // CSS nodes
 //
 //    listview[.separators][.rich-list][.navigation-sidebar][.data-table]
@@ -106,18 +105,16 @@ func init() {
 //    ┊
 //    ╰── [rubberband]
 //
-//
 // GtkListView uses a single CSS node named listview. It may carry the
 // .separators style class, when GtkListView:show-separators property is set.
 // Each child widget uses a single CSS node named row. For rubberband selection,
 // a node with name rubberband is used.
 //
-// The main listview node may also carry style classes to select the style of
-// list presentation (ListContainers.html#list-styles): .rich-list,
+// The main listview node may also carry style classes to select the style
+// of list presentation (ListContainers.html#list-styles): .rich-list,
 // .navigation-sidebar or .data-table.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkListView uses the GTK_ACCESSIBLE_ROLE_LIST role, and the list items use
 // the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
@@ -166,8 +163,8 @@ func marshalListView(p uintptr) (interface{}, error) {
 // ConnectActivate is emitted when a row has been activated by the user, usually
 // via activating the GtkListView|list.activate-item action.
 //
-// This allows for a convenient way to handle activation in a listview. See
-// gtk.ListItem.SetActivatable() for details on how to use this signal.
+// This allows for a convenient way to handle activation in a listview.
+// See gtk.ListItem.SetActivatable() for details on how to use this signal.
 func (self *ListView) ConnectActivate(f func(position uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ListView_ConnectActivate), f)
 }
@@ -182,12 +179,12 @@ func (self *ListView) ConnectActivate(f func(position uint)) coreglib.SignalHand
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to use, or NULL.
-//    - factory (optional) to populate items with, or NULL.
+//   - model (optional) to use, or NULL.
+//   - factory (optional) to populate items with, or NULL.
 //
 // The function returns the following values:
 //
-//    - listView: new GtkListView using the given model and factory.
+//   - listView: new GtkListView using the given model and factory.
 //
 func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 	var _arg1 *C.GtkSelectionModel  // out
@@ -219,7 +216,7 @@ func NewListView(model SelectionModeller, factory *ListItemFactory) *ListView {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if rubberband selection is enabled.
+//   - ok: TRUE if rubberband selection is enabled.
 //
 func (self *ListView) EnableRubberband() bool {
 	var _arg0 *C.GtkListView // out
@@ -243,7 +240,7 @@ func (self *ListView) EnableRubberband() bool {
 //
 // The function returns the following values:
 //
-//    - listItemFactory (optional): factory in use.
+//   - listItemFactory (optional): factory in use.
 //
 func (self *ListView) Factory() *ListItemFactory {
 	var _arg0 *C.GtkListView        // out
@@ -267,7 +264,7 @@ func (self *ListView) Factory() *ListItemFactory {
 //
 // The function returns the following values:
 //
-//    - selectionModel (optional): model in use.
+//   - selectionModel (optional): model in use.
 //
 func (self *ListView) Model() *SelectionModel {
 	var _arg0 *C.GtkListView       // out
@@ -292,7 +289,7 @@ func (self *ListView) Model() *SelectionModel {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the list box shows separators.
+//   - ok: TRUE if the list box shows separators.
 //
 func (self *ListView) ShowSeparators() bool {
 	var _arg0 *C.GtkListView // out
@@ -317,7 +314,7 @@ func (self *ListView) ShowSeparators() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if rows are activated on single click.
+//   - ok: TRUE if rows are activated on single click.
 //
 func (self *ListView) SingleClickActivate() bool {
 	var _arg0 *C.GtkListView // out
@@ -342,7 +339,7 @@ func (self *ListView) SingleClickActivate() bool {
 //
 // The function takes the following parameters:
 //
-//    - enableRubberband: TRUE to enable rubberband selection.
+//   - enableRubberband: TRUE to enable rubberband selection.
 //
 func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkListView // out
@@ -362,7 +359,7 @@ func (self *ListView) SetEnableRubberband(enableRubberband bool) {
 //
 // The function takes the following parameters:
 //
-//    - factory (optional) to use or NULL for none.
+//   - factory (optional) to use or NULL for none.
 //
 func (self *ListView) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkListView        // out
@@ -384,7 +381,7 @@ func (self *ListView) SetFactory(factory *ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to use or NULL for none.
+//   - model (optional) to use or NULL for none.
 //
 func (self *ListView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkListView       // out
@@ -405,7 +402,7 @@ func (self *ListView) SetModel(model SelectionModeller) {
 //
 // The function takes the following parameters:
 //
-//    - showSeparators: TRUE to show separators.
+//   - showSeparators: TRUE to show separators.
 //
 func (self *ListView) SetShowSeparators(showSeparators bool) {
 	var _arg0 *C.GtkListView // out
@@ -426,7 +423,7 @@ func (self *ListView) SetShowSeparators(showSeparators bool) {
 //
 // The function takes the following parameters:
 //
-//    - singleClickActivate: TRUE to activate items on single click.
+//   - singleClickActivate: TRUE to activate items on single click.
 //
 func (self *ListView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkListView // out

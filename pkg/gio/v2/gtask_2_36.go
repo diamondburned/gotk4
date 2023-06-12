@@ -22,13 +22,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
-//    - sourceObject (optional): source object expected to be associated with the
-//      task.
+//   - result: Result.
+//   - sourceObject (optional): source object expected to be associated with the
+//     task.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if result and source_object are valid, FALSE if not.
+//   - ok: TRUE if result and source_object are valid, FALSE if not.
 //
 func TaskIsValid(result AsyncResulter, sourceObject *coreglib.Object) bool {
 	var _arg1 C.gpointer // out
@@ -62,10 +62,10 @@ func TaskIsValid(result AsyncResulter, sourceObject *coreglib.Object) bool {
 //
 // The function takes the following parameters:
 //
-//    - sourceObject (optional) that owns this task, or NULL.
-//    - callback (optional): ReadyCallback.
-//    - sourceTag (optional): opaque pointer indicating the source of this task.
-//    - err: error to report.
+//   - sourceObject (optional) that owns this task, or NULL.
+//   - callback (optional): ReadyCallback.
+//   - sourceTag (optional): opaque pointer indicating the source of this task.
+//   - err: error to report.
 //
 func TaskReportError(sourceObject *coreglib.Object, callback AsyncReadyCallback, sourceTag unsafe.Pointer, err error) {
 	var _arg1 C.gpointer            // out

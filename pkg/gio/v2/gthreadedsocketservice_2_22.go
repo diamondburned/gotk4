@@ -35,8 +35,8 @@ func init() {
 type ThreadedSocketServiceOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - connection
-	//    - sourceObject
+	//   - connection
+	//   - sourceObject
 	//
 	// The function returns the following values:
 	//
@@ -120,12 +120,12 @@ func (v *ThreadedSocketService) ConnectRun(f func(connection *SocketConnection, 
 //
 // The function takes the following parameters:
 //
-//    - maxThreads: maximal number of threads to execute concurrently handling
-//      incoming clients, -1 means no limit.
+//   - maxThreads: maximal number of threads to execute concurrently handling
+//     incoming clients, -1 means no limit.
 //
 // The function returns the following values:
 //
-//    - threadedSocketService: new Service.
+//   - threadedSocketService: new Service.
 //
 func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	var _arg1 C.int             // out
@@ -145,8 +145,8 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 
 // The function takes the following parameters:
 //
-//    - connection
-//    - sourceObject
+//   - connection
+//   - sourceObject
 //
 // The function returns the following values:
 //

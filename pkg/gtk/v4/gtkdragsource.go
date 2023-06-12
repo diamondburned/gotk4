@@ -35,9 +35,9 @@ func init() {
 //
 // GtkDragSource can be set up with the necessary ingredients for a DND
 // operation ahead of time. This includes the source for the data that is being
-// transferred, in the form of a gdk.ContentProvider, the desired action, and
-// the icon to use during the drag operation. After setting it up, the drag
-// source must be added to a widget as an event controller, using
+// transferred, in the form of a gdk.ContentProvider, the desired action,
+// and the icon to use during the drag operation. After setting it up,
+// the drag source must be added to a widget as an event controller, using
 // gtk.Widget.AddController().
 //
 //    static void
@@ -51,10 +51,9 @@ func init() {
 //      gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (drag_source));
 //    }
 //
-//
-// Setting up the content provider and icon ahead of time only makes sense when
-// the data does not change. More commonly, you will want to set them up just in
-// time. To do so, GtkDragSource has gtk.DragSource::prepare and
+// Setting up the content provider and icon ahead of time only makes sense
+// when the data does not change. More commonly, you will want to set them
+// up just in time. To do so, GtkDragSource has gtk.DragSource::prepare and
 // gtk.DragSource::drag-begin signals.
 //
 // The ::prepare signal is emitted before a drag is started, and can be used to
@@ -78,7 +77,6 @@ func init() {
 //        }, 2);
 //    }
 //
-//
 // The ::drag-begin signal is emitted after the GdkDrag object has been created,
 // and can be used to set up the drag icon.
 //
@@ -93,12 +91,11 @@ func init() {
 //      g_object_unref (paintable);
 //    }
 //
-//
-// During the DND operation, GtkDragSource emits signals that can be used to
-// obtain updates about the status of the operation, but it is not normally
-// necessary to connect to any signals, except for one case: when the supported
-// actions include GDK_ACTION_MOVE, you need to listen for the
-// gtk.DragSource::drag-end signal and delete the data after it has been
+// During the DND operation, GtkDragSource emits signals that can be used
+// to obtain updates about the status of the operation, but it is not
+// normally necessary to connect to any signals, except for one case:
+// when the supported actions include GDK_ACTION_MOVE, you need to listen for
+// the gtk.DragSource::drag-end signal and delete the data after it has been
 // transferred.
 type DragSource struct {
 	_ [0]func() // equal guard
@@ -151,8 +148,8 @@ func (source *DragSource) ConnectDragEnd(f func(drag gdk.Dragger, deleteData boo
 
 // ConnectPrepare is emitted when a drag is about to be initiated.
 //
-// It returns the GdkContentProvider to use for the drag that is about to start.
-// The default handler for this signal returns the value of the
+// It returns the GdkContentProvider to use for the drag that is about
+// to start. The default handler for this signal returns the value of the
 // gtk.DragSource:content property, so if you set up that property ahead of
 // time, you don't need to connect to this signal.
 func (source *DragSource) ConnectPrepare(f func(x, y float64) (contentProvider *gdk.ContentProvider)) coreglib.SignalHandle {
@@ -163,7 +160,7 @@ func (source *DragSource) ConnectPrepare(f func(x, y float64) (contentProvider *
 //
 // The function returns the following values:
 //
-//    - dragSource: new GtkDragSource.
+//   - dragSource: new GtkDragSource.
 //
 func NewDragSource() *DragSource {
 	var _cret *C.GtkDragSource // in
@@ -191,7 +188,7 @@ func (source *DragSource) DragCancel() {
 //
 // The function returns the following values:
 //
-//    - dragAction actions set on source.
+//   - dragAction actions set on source.
 //
 func (source *DragSource) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDragSource // out
@@ -213,7 +210,7 @@ func (source *DragSource) Actions() gdk.DragAction {
 //
 // The function returns the following values:
 //
-//    - contentProvider (optional): GdkContentProvider of source.
+//   - contentProvider (optional): GdkContentProvider of source.
 //
 func (source *DragSource) Content() *gdk.ContentProvider {
 	var _arg0 *C.GtkDragSource      // out
@@ -242,7 +239,7 @@ func (source *DragSource) Content() *gdk.ContentProvider {
 //
 // The function returns the following values:
 //
-//    - drag (optional): GdkDrag of the current drag operation, or NULL.
+//   - drag (optional): GdkDrag of the current drag operation, or NULL.
 //
 func (source *DragSource) Drag() gdk.Dragger {
 	var _arg0 *C.GtkDragSource // out
@@ -277,8 +274,8 @@ func (source *DragSource) Drag() gdk.Dragger {
 
 // SetActions sets the actions on the GtkDragSource.
 //
-// During a DND operation, the actions are offered to potential drop targets. If
-// actions include GDK_ACTION_MOVE, you need to listen to the
+// During a DND operation, the actions are offered to potential drop
+// targets. If actions include GDK_ACTION_MOVE, you need to listen to the
 // gtk.DragSource::drag-end signal and handle delete_data being TRUE.
 //
 // This function can be called before a drag is started, or in a handler for the
@@ -286,7 +283,7 @@ func (source *DragSource) Drag() gdk.Dragger {
 //
 // The function takes the following parameters:
 //
-//    - actions to offer.
+//   - actions to offer.
 //
 func (source *DragSource) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDragSource // out
@@ -313,7 +310,7 @@ func (source *DragSource) SetActions(actions gdk.DragAction) {
 //
 // The function takes the following parameters:
 //
-//    - content (optional): GdkContentProvider, or NULL.
+//   - content (optional): GdkContentProvider, or NULL.
 //
 func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 	var _arg0 *C.GtkDragSource      // out
@@ -341,9 +338,9 @@ func (source *DragSource) SetContent(content *gdk.ContentProvider) {
 //
 // The function takes the following parameters:
 //
-//    - paintable (optional) to use as icon, or NULL.
-//    - hotX: hotspot X coordinate on the icon.
-//    - hotY: hotspot Y coordinate on the icon.
+//   - paintable (optional) to use as icon, or NULL.
+//   - hotX: hotspot X coordinate on the icon.
+//   - hotY: hotspot Y coordinate on the icon.
 //
 func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int) {
 	var _arg0 *C.GtkDragSource // out

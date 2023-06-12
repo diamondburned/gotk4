@@ -46,8 +46,8 @@ type ParseErrorFunc func(start, end *ParseLocation, err error)
 // Each node has an associated drawing surface, which has the size of the
 // rectangle set when creating it.
 //
-// Render nodes are meant to be transient; once they have been associated to a
-// gsk.Renderer it's safe to release any reference you have on them. All
+// Render nodes are meant to be transient; once they have been associated to
+// a gsk.Renderer it's safe to release any reference you have on them. All
 // gsk.RenderNodes are immutable, you can only specify their properties during
 // construction.
 type RenderNode struct {
@@ -100,7 +100,7 @@ func BaseRenderNode(obj RenderNoder) *RenderNode {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context to draw to.
+//   - cr: cairo context to draw to.
 //
 func (node *RenderNode) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
@@ -120,7 +120,7 @@ func (node *RenderNode) Draw(cr *cairo.Context) {
 //
 // The function returns the following values:
 //
-//    - bounds: return location for the boundaries.
+//   - bounds: return location for the boundaries.
 //
 func (node *RenderNode) Bounds() *graphene.Rect {
 	var _arg0 *C.GskRenderNode  // out
@@ -142,7 +142,7 @@ func (node *RenderNode) Bounds() *graphene.Rect {
 //
 // The function returns the following values:
 //
-//    - renderNodeType: type of the GskRenderNode.
+//   - renderNodeType: type of the GskRenderNode.
 //
 func (node *RenderNode) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
@@ -161,9 +161,9 @@ func (node *RenderNode) NodeType() RenderNodeType {
 }
 
 // Serialize serializes the node for later deserialization via
-// gsk_render_node_deserialize(). No guarantees are made about the format used
-// other than that the same version of GTK will be able to deserialize the
-// result of a call to gsk_render_node_serialize() and
+// gsk_render_node_deserialize(). No guarantees are made about the
+// format used other than that the same version of GTK will be able to
+// deserialize the result of a call to gsk_render_node_serialize() and
 // gsk_render_node_deserialize() will correctly reject files it cannot open that
 // were created with previous versions of GTK.
 //
@@ -172,7 +172,7 @@ func (node *RenderNode) NodeType() RenderNodeType {
 //
 // The function returns the following values:
 //
-//    - bytes representing the node.
+//   - bytes representing the node.
 //
 func (node *RenderNode) Serialize() *glib.Bytes {
 	var _arg0 *C.GskRenderNode // out
@@ -206,7 +206,7 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 //
 // The function takes the following parameters:
 //
-//    - filename: file to save it to.
+//   - filename: file to save it to.
 //
 func (node *RenderNode) WriteToFile(filename string) error {
 	var _arg0 *C.GskRenderNode // out
@@ -237,12 +237,12 @@ func (node *RenderNode) WriteToFile(filename string) error {
 //
 // The function takes the following parameters:
 //
-//    - bytes containing the data.
-//    - errorFunc (optional): callback on parsing errors or NULL.
+//   - bytes containing the data.
+//   - errorFunc (optional): callback on parsing errors or NULL.
 //
 // The function returns the following values:
 //
-//    - renderNode (optional): new GskRenderNode or NULL on error.
+//   - renderNode (optional): new GskRenderNode or NULL on error.
 //
 func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNoder {
 	var _arg1 *C.GBytes           // out

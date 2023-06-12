@@ -25,14 +25,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - scanner: #GScanner.
-//    - style (optional) or NULL.
+//   - scanner: #GScanner.
+//   - style (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - color: pointer to a Color in which to store the result.
-//    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
-//      expected but not found.
+//   - color: pointer to a Color in which to store the result.
+//   - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
+//     expected but not found.
 //
 func RCParseColorFull(scanner *glib.Scanner, style *RCStyle) (*gdk.Color, uint) {
 	var _arg1 *C.GScanner   // out

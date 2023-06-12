@@ -36,12 +36,11 @@ func defaultSeparatorMenuItemOverrides(v *SeparatorMenuItem) SeparatorMenuItemOv
 	return SeparatorMenuItemOverrides{}
 }
 
-// SeparatorMenuItem is a separator used to group items within a menu. It
-// displays a horizontal line with a shadow to make it appear sunken into the
+// SeparatorMenuItem is a separator used to group items within a menu.
+// It displays a horizontal line with a shadow to make it appear sunken into the
 // interface.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkSeparatorMenuItem has a single CSS node with name separator.
 type SeparatorMenuItem struct {
@@ -119,7 +118,7 @@ func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - separatorMenuItem: new SeparatorMenuItem.
+//   - separatorMenuItem: new SeparatorMenuItem.
 //
 func NewSeparatorMenuItem() *SeparatorMenuItem {
 	var _cret *C.GtkWidget // in

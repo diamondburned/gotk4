@@ -175,12 +175,12 @@ func NewTimeZoneUTC() *TimeZone {
 //
 // The function takes the following parameters:
 //
-//    - typ of time_.
-//    - time_: pointer to a number of seconds since January 1, 1970.
+//   - typ of time_.
+//   - time_: pointer to a number of seconds since January 1, 1970.
 //
 // The function returns the following values:
 //
-//    - gint: interval containing time_, never -1.
+//   - gint: interval containing time_, never -1.
 //
 func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 	var _arg0 *C.GTimeZone // out
@@ -223,12 +223,12 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 //
 // The function takes the following parameters:
 //
-//    - typ of time_.
-//    - time_: number of seconds since January 1, 1970.
+//   - typ of time_.
+//   - time_: number of seconds since January 1, 1970.
 //
 // The function returns the following values:
 //
-//    - gint: interval containing time_, or -1 in case of failure.
+//   - gint: interval containing time_, or -1 in case of failure.
 //
 func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	var _arg0 *C.GTimeZone // out
@@ -260,11 +260,11 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 //
 // The function takes the following parameters:
 //
-//    - interval within the timezone.
+//   - interval within the timezone.
 //
 // The function returns the following values:
 //
-//    - utf8: time zone abbreviation, which belongs to tz.
+//   - utf8: time zone abbreviation, which belongs to tz.
 //
 func (tz *TimeZone) Abbreviation(interval int) string {
 	var _arg0 *C.GTimeZone // out
@@ -286,8 +286,8 @@ func (tz *TimeZone) Abbreviation(interval int) string {
 }
 
 // Identifier: get the identifier of this Zone, as passed to g_time_zone_new().
-// If the identifier passed at construction time was not recognised, UTC will be
-// returned. If it was NULL, the identifier of the local timezone at
+// If the identifier passed at construction time was not recognised,
+// UTC will be returned. If it was NULL, the identifier of the local timezone at
 // construction time will be returned.
 //
 // The identifier will be returned in the same format as provided at
@@ -296,7 +296,7 @@ func (tz *TimeZone) Abbreviation(interval int) string {
 //
 // The function returns the following values:
 //
-//    - utf8: identifier for this timezone.
+//   - utf8: identifier for this timezone.
 //
 func (tz *TimeZone) Identifier() string {
 	var _arg0 *C.GTimeZone // out
@@ -323,12 +323,12 @@ func (tz *TimeZone) Identifier() string {
 //
 // The function takes the following parameters:
 //
-//    - interval within the timezone.
+//   - interval within the timezone.
 //
 // The function returns the following values:
 //
-//    - gint32: number of seconds that should be added to UTC to get the local
-//      time in tz.
+//   - gint32: number of seconds that should be added to UTC to get the local
+//     time in tz.
 //
 func (tz *TimeZone) Offset(interval int) int32 {
 	var _arg0 *C.GTimeZone // out
@@ -354,11 +354,11 @@ func (tz *TimeZone) Offset(interval int) int32 {
 //
 // The function takes the following parameters:
 //
-//    - interval within the timezone.
+//   - interval within the timezone.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if daylight savings time is in effect.
+//   - ok: TRUE if daylight savings time is in effect.
 //
 func (tz *TimeZone) IsDst(interval int) bool {
 	var _arg0 *C.GTimeZone // out

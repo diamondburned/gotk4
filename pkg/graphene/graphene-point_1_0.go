@@ -94,13 +94,13 @@ func (p *Point) SetY(y float32) {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_point_t.
+//   - b: #graphene_point_t.
 //
 // The function returns the following values:
 //
-//    - dX (optional): distance component on the X axis.
-//    - dY (optional): distance component on the Y axis.
-//    - gfloat: distance between the two points.
+//   - dX (optional): distance component on the X axis.
+//   - dY (optional): distance component on the Y axis.
+//   - gfloat: distance between the two points.
 //
 func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var _arg0 *C.graphene_point_t // out
@@ -135,11 +135,11 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_point_t.
+//   - b: #graphene_point_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the points have the same coordinates.
+//   - ok: true if the points have the same coordinates.
 //
 func (a *Point) Equal(b *Point) bool {
 	var _arg0 *C.graphene_point_t // out
@@ -168,12 +168,12 @@ func (a *Point) Equal(b *Point) bool {
 //
 // The function takes the following parameters:
 //
-//    - x: x coordinate.
-//    - y: y coordinate.
+//   - x: x coordinate.
+//   - y: y coordinate.
 //
 // The function returns the following values:
 //
-//    - point: initialized point.
+//   - point: initialized point.
 //
 func (p *Point) Init(x float32, y float32) *Point {
 	var _arg0 *C.graphene_point_t // out
@@ -201,11 +201,11 @@ func (p *Point) Init(x float32, y float32) *Point {
 //
 // The function takes the following parameters:
 //
-//    - src to use.
+//   - src to use.
 //
 // The function returns the following values:
 //
-//    - point: initialized point.
+//   - point: initialized point.
 //
 func (p *Point) InitFromPoint(src *Point) *Point {
 	var _arg0 *C.graphene_point_t // out
@@ -231,11 +231,11 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_vec2_t.
+//   - src: #graphene_vec2_t.
 //
 // The function returns the following values:
 //
-//    - point: initialized point.
+//   - point: initialized point.
 //
 func (p *Point) InitFromVec2(src *Vec2) *Point {
 	var _arg0 *C.graphene_point_t // out
@@ -261,12 +261,12 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_point_t.
-//    - factor: linear interpolation factor.
+//   - b: #graphene_point_t.
+//   - factor: linear interpolation factor.
 //
 // The function returns the following values:
 //
-//    - res: return location for the interpolated point.
+//   - res: return location for the interpolated point.
 //
 func (a *Point) Interpolate(b *Point, factor float64) *Point {
 	var _arg0 *C.graphene_point_t // out
@@ -295,12 +295,12 @@ func (a *Point) Interpolate(b *Point, factor float64) *Point {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_point_t.
-//    - epsilon: threshold between the two points.
+//   - b: #graphene_point_t.
+//   - epsilon: threshold between the two points.
 //
 // The function returns the following values:
 //
-//    - ok: true if the distance is within epsilon.
+//   - ok: true if the distance is within epsilon.
 //
 func (a *Point) Near(b *Point, epsilon float32) bool {
 	var _arg0 *C.graphene_point_t // out
@@ -331,7 +331,7 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 //
 // The function returns the following values:
 //
-//    - v: return location for the vertex.
+//   - v: return location for the vertex.
 //
 func (p *Point) ToVec2() *Vec2 {
 	var _arg0 *C.graphene_point_t // out
@@ -353,7 +353,7 @@ func (p *Point) ToVec2() *Vec2 {
 //
 // The function returns the following values:
 //
-//    - point: fixed point.
+//   - point: fixed point.
 //
 func PointZero() *Point {
 	var _cret *C.graphene_point_t // in

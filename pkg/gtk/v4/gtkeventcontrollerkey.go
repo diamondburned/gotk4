@@ -82,7 +82,7 @@ func (controller *EventControllerKey) ConnectModifiers(f func(keyval gdk.Modifie
 //
 // The function returns the following values:
 //
-//    - eventControllerKey: new GtkEventControllerKey.
+//   - eventControllerKey: new GtkEventControllerKey.
 //
 func NewEventControllerKey() *EventControllerKey {
 	var _cret *C.GtkEventController // in
@@ -104,11 +104,11 @@ func NewEventControllerKey() *EventControllerKey {
 //
 // The function takes the following parameters:
 //
-//    - widget: GtkWidget.
+//   - widget: GtkWidget.
 //
 // The function returns the following values:
 //
-//    - ok: whether the widget handled the event.
+//   - ok: whether the widget handled the event.
 //
 func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 	var _arg0 *C.GtkEventControllerKey // out
@@ -137,7 +137,7 @@ func (controller *EventControllerKey) Forward(widget Widgetter) bool {
 //
 // The function returns the following values:
 //
-//    - guint: key group.
+//   - guint: key group.
 //
 func (controller *EventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey // out
@@ -159,7 +159,7 @@ func (controller *EventControllerKey) Group() uint {
 //
 // The function returns the following values:
 //
-//    - imContext: GtkIMContext.
+//   - imContext: GtkIMContext.
 //
 func (controller *EventControllerKey) IMContext() IMContexter {
 	var _arg0 *C.GtkEventControllerKey // out
@@ -197,7 +197,7 @@ func (controller *EventControllerKey) IMContext() IMContexter {
 //
 // The function takes the following parameters:
 //
-//    - imContext: GtkIMContext.
+//   - imContext: GtkIMContext.
 //
 func (controller *EventControllerKey) SetIMContext(imContext IMContexter) {
 	var _arg0 *C.GtkEventControllerKey // out

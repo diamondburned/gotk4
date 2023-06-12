@@ -27,8 +27,8 @@ func init() {
 	})
 }
 
-// TextExtendSelection: granularity types that extend the text selection. Use
-// the TextView::extend-selection signal to customize the selection.
+// TextExtendSelection: granularity types that extend the text selection.
+// Use the TextView::extend-selection signal to customize the selection.
 type TextExtendSelection C.gint
 
 const (

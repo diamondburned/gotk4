@@ -92,8 +92,8 @@ func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 // ConnectGotPageSize signal is emitted once for each page that gets rendered to
 // the preview.
 //
-// A handler for this signal should update the context according to page_setup
-// and set up a suitable cairo context, using
+// A handler for this signal should update the context according
+// to page_setup and set up a suitable cairo context, using
 // gtk_print_context_set_cairo_context().
 func (preview *PrintOperationPreview) ConnectGotPageSize(f func(context *PrintContext, pageSetup *PageSetup)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(preview, "got-page-size", false, unsafe.Pointer(C._gotk4_gtk3_PrintOperationPreview_ConnectGotPageSize), f)
@@ -124,11 +124,11 @@ func (preview *PrintOperationPreview) EndPreview() {
 //
 // The function takes the following parameters:
 //
-//    - pageNr: page number.
+//   - pageNr: page number.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the page has been selected for printing.
+//   - ok: TRUE if the page has been selected for printing.
 //
 func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 	var _arg0 *C.GtkPrintOperationPreview // out
@@ -162,7 +162,7 @@ func (preview *PrintOperationPreview) IsSelected(pageNr int) bool {
 //
 // The function takes the following parameters:
 //
-//    - pageNr: page to render.
+//   - pageNr: page to render.
 //
 func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	var _arg0 *C.GtkPrintOperationPreview // out
@@ -193,8 +193,8 @@ func (preview *PrintOperationPreview) endPreview() {
 
 // The function takes the following parameters:
 //
-//    - context
-//    - pageSetup
+//   - context
+//   - pageSetup
 //
 func (preview *PrintOperationPreview) gotPageSize(context *PrintContext, pageSetup *PageSetup) {
 	gclass := (*C.GtkPrintOperationPreviewIface)(coreglib.PeekParentClass(preview))
@@ -219,11 +219,11 @@ func (preview *PrintOperationPreview) gotPageSize(context *PrintContext, pageSet
 //
 // The function takes the following parameters:
 //
-//    - pageNr: page number.
+//   - pageNr: page number.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the page has been selected for printing.
+//   - ok: TRUE if the page has been selected for printing.
 //
 func (preview *PrintOperationPreview) isSelected(pageNr int) bool {
 	gclass := (*C.GtkPrintOperationPreviewIface)(coreglib.PeekParentClass(preview))
@@ -277,7 +277,7 @@ func (preview *PrintOperationPreview) ready(context *PrintContext) {
 //
 // The function takes the following parameters:
 //
-//    - pageNr: page to render.
+//   - pageNr: page to render.
 //
 func (preview *PrintOperationPreview) renderPage(pageNr int) {
 	gclass := (*C.GtkPrintOperationPreviewIface)(coreglib.PeekParentClass(preview))

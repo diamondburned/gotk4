@@ -27,12 +27,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - busType: Type.
+//   - ctx (optional) or NULL.
+//   - busType: Type.
 //
 // The function returns the following values:
 //
-//    - utf8: valid D-Bus address string for bus_type or NULL if error is set.
+//   - utf8: valid D-Bus address string for bus_type or NULL if error is set.
 //
 func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, error) {
 	var _arg2 *C.GCancellable // out
@@ -63,10 +63,10 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 	return _utf8, _goerr
 }
 
-// DBusAddressGetStream: asynchronously connects to an endpoint specified by
-// address and sets up the connection so it is in a state to run the client-side
-// of the D-Bus authentication conversation. address must be in the D-Bus
-// address format
+// DBusAddressGetStream: asynchronously connects to an endpoint
+// specified by address and sets up the connection so it is in
+// a state to run the client-side of the D-Bus authentication
+// conversation. address must be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // When the operation is finished, callback will be invoked. You can then call
@@ -77,9 +77,9 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - address: valid D-Bus address.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional) or NULL.
+//   - address: valid D-Bus address.
+//   - callback (optional) to call when the request is satisfied.
 //
 func DBusAddressGetStream(ctx context.Context, address string, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
@@ -113,14 +113,14 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 //
 // The function takes the following parameters:
 //
-//    - res obtained from the GAsyncReadyCallback passed to
-//      g_dbus_address_get_stream().
+//   - res obtained from the GAsyncReadyCallback passed to
+//     g_dbus_address_get_stream().
 //
 // The function returns the following values:
 //
-//    - outGuid (optional): NULL or return location to store the GUID extracted
-//      from address, if any.
-//    - ioStream or NULL if error is set.
+//   - outGuid (optional): NULL or return location to store the GUID extracted
+//     from address, if any.
+//   - ioStream or NULL if error is set.
 //
 func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _arg1 *C.GAsyncResult // out
@@ -165,10 +165,10 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	return _outGuid, _ioStream, _goerr
 }
 
-// DBusAddressGetStreamSync: synchronously connects to an endpoint specified by
-// address and sets up the connection so it is in a state to run the client-side
-// of the D-Bus authentication conversation. address must be in the D-Bus
-// address format
+// DBusAddressGetStreamSync: synchronously connects to an endpoint
+// specified by address and sets up the connection so it is in
+// a state to run the client-side of the D-Bus authentication
+// conversation. address must be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // A server is not required to set a GUID, so out_guid may be set to NULL even
@@ -179,14 +179,14 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - address: valid D-Bus address.
+//   - ctx (optional) or NULL.
+//   - address: valid D-Bus address.
 //
 // The function returns the following values:
 //
-//    - outGuid (optional): NULL or return location to store the GUID extracted
-//      from address, if any.
-//    - ioStream or NULL if error is set.
+//   - outGuid (optional): NULL or return location to store the GUID extracted
+//     from address, if any.
+//   - ioStream or NULL if error is set.
 //
 func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOStreamer, error) {
 	var _arg3 *C.GCancellable // out
@@ -247,11 +247,11 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 //
 // The function takes the following parameters:
 //
-//    - str: string.
+//   - str: string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if string is a valid D-Bus address, FALSE otherwise.
+//   - ok: TRUE if string is a valid D-Bus address, FALSE otherwise.
 //
 func DBusIsAddress(str string) bool {
 	var _arg1 *C.gchar   // out
@@ -273,13 +273,13 @@ func DBusIsAddress(str string) bool {
 }
 
 // DBusIsSupportedAddress: like g_dbus_is_address() but also checks if the
-// library supports the transports in string and that key/value pairs for each
-// transport are valid. See the specification of the D-Bus address format
+// library supports the transports in string and that key/value pairs for
+// each transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // The function takes the following parameters:
 //
-//    - str: string.
+//   - str: string.
 //
 func DBusIsSupportedAddress(str string) error {
 	var _arg1 *C.gchar  // out

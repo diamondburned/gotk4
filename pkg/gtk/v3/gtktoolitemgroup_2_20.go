@@ -41,8 +41,7 @@ func defaultToolItemGroupOverrides(v *ToolItemGroup) ToolItemGroupOverrides {
 // ToolItemGroup is used together with ToolPalette to add ToolItems to a palette
 // like container with different categories and drag and drop support.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkToolItemGroup has a single CSS node named toolitemgroup.
 type ToolItemGroup struct {
@@ -142,11 +141,11 @@ func marshalToolItemGroup(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - label of the new group.
+//   - label of the new group.
 //
 // The function returns the following values:
 //
-//    - toolItemGroup: new ToolItemGroup.
+//   - toolItemGroup: new ToolItemGroup.
 //
 func NewToolItemGroup(label string) *ToolItemGroup {
 	var _arg1 *C.gchar     // out
@@ -169,7 +168,7 @@ func NewToolItemGroup(label string) *ToolItemGroup {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if group is collapsed, FALSE if it is expanded.
+//   - ok: TRUE if group is collapsed, FALSE if it is expanded.
 //
 func (group *ToolItemGroup) Collapsed() bool {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -193,12 +192,12 @@ func (group *ToolItemGroup) Collapsed() bool {
 //
 // The function takes the following parameters:
 //
-//    - x position.
-//    - y position.
+//   - x position.
+//   - y position.
 //
 // The function returns the following values:
 //
-//    - toolItem at position (x, y).
+//   - toolItem at position (x, y).
 //
 func (group *ToolItemGroup) DropItem(x, y int) *ToolItem {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -226,7 +225,7 @@ func (group *ToolItemGroup) DropItem(x, y int) *ToolItem {
 //
 // The function returns the following values:
 //
-//    - ellipsizeMode of group.
+//   - ellipsizeMode of group.
 //
 func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
 	var _arg0 *C.GtkToolItemGroup  // out
@@ -248,7 +247,7 @@ func (group *ToolItemGroup) Ellipsize() pango.EllipsizeMode {
 //
 // The function returns the following values:
 //
-//    - reliefStyle: ReliefStyle.
+//   - reliefStyle: ReliefStyle.
 //
 func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -270,11 +269,11 @@ func (group *ToolItemGroup) HeaderRelief() ReliefStyle {
 //
 // The function takes the following parameters:
 //
-//    - item: ToolItem.
+//   - item: ToolItem.
 //
 // The function returns the following values:
 //
-//    - gint: index of item in group or -1 if item is no child of group.
+//   - gint: index of item in group or -1 if item is no child of group.
 //
 func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -299,9 +298,9 @@ func (group *ToolItemGroup) ItemPosition(item *ToolItem) int {
 //
 // The function returns the following values:
 //
-//    - utf8: label of group. The label is an internal string of group and must
-//      not be modified. Note that NULL is returned if a custom label has been
-//      set with gtk_tool_item_group_set_label_widget().
+//   - utf8: label of group. The label is an internal string of group and must
+//     not be modified. Note that NULL is returned if a custom label has been
+//     set with gtk_tool_item_group_set_label_widget().
 //
 func (group *ToolItemGroup) Label() string {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -324,7 +323,7 @@ func (group *ToolItemGroup) Label() string {
 //
 // The function returns the following values:
 //
-//    - widget: label widget of group.
+//   - widget: label widget of group.
 //
 func (group *ToolItemGroup) LabelWidget() Widgetter {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -362,7 +361,7 @@ func (group *ToolItemGroup) LabelWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - guint: number of tool items in group.
+//   - guint: number of tool items in group.
 //
 func (group *ToolItemGroup) NItems() uint {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -384,11 +383,11 @@ func (group *ToolItemGroup) NItems() uint {
 //
 // The function takes the following parameters:
 //
-//    - index: index.
+//   - index: index.
 //
 // The function returns the following values:
 //
-//    - toolItem at index.
+//   - toolItem at index.
 //
 func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -413,9 +412,9 @@ func (group *ToolItemGroup) NthItem(index uint) *ToolItem {
 //
 // The function takes the following parameters:
 //
-//    - item to insert into group.
-//    - position of item in group, starting with 0. The position -1 means end of
-//      list.
+//   - item to insert into group.
+//   - position of item in group, starting with 0. The position -1 means end of
+//     list.
 //
 func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -436,7 +435,7 @@ func (group *ToolItemGroup) Insert(item *ToolItem, position int) {
 //
 // The function takes the following parameters:
 //
-//    - collapsed: whether the group should be collapsed or expanded.
+//   - collapsed: whether the group should be collapsed or expanded.
 //
 func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -457,7 +456,7 @@ func (group *ToolItemGroup) SetCollapsed(collapsed bool) {
 //
 // The function takes the following parameters:
 //
-//    - ellipsize labels in group should use.
+//   - ellipsize labels in group should use.
 //
 func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
 	var _arg0 *C.GtkToolItemGroup  // out
@@ -476,7 +475,7 @@ func (group *ToolItemGroup) SetEllipsize(ellipsize pango.EllipsizeMode) {
 //
 // The function takes the following parameters:
 //
-//    - style: ReliefStyle.
+//   - style: ReliefStyle.
 //
 func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -494,9 +493,9 @@ func (group *ToolItemGroup) SetHeaderRelief(style ReliefStyle) {
 //
 // The function takes the following parameters:
 //
-//    - item to move to a new position, should be a child of group.
-//    - position: new position of item in group, starting with 0. The position -1
-//      means end of list.
+//   - item to move to a new position, should be a child of group.
+//   - position: new position of item in group, starting with 0. The position -1
+//     means end of list.
 //
 func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -518,7 +517,7 @@ func (group *ToolItemGroup) SetItemPosition(item *ToolItem, position int) {
 //
 // The function takes the following parameters:
 //
-//    - label: new human-readable label of of the group.
+//   - label: new human-readable label of of the group.
 //
 func (group *ToolItemGroup) SetLabel(label string) {
 	var _arg0 *C.GtkToolItemGroup // out
@@ -538,7 +537,7 @@ func (group *ToolItemGroup) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - labelWidget: widget to be displayed in place of the usual label.
+//   - labelWidget: widget to be displayed in place of the usual label.
 //
 func (group *ToolItemGroup) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolItemGroup // out

@@ -39,15 +39,15 @@ func defaultBufferedOutputStreamOverrides(v *BufferedOutputStream) BufferedOutpu
 //
 // By default, OutputStream's buffer size is set at 4 kilobytes.
 //
-// To create a buffered output stream, use g_buffered_output_stream_new(), or
-// g_buffered_output_stream_new_sized() to specify the buffer's size at
+// To create a buffered output stream, use g_buffered_output_stream_new(),
+// or g_buffered_output_stream_new_sized() to specify the buffer's size at
 // construction.
 //
 // To get the size of a buffer within a buffered input stream, use
 // g_buffered_output_stream_get_buffer_size(). To change the size of a buffered
-// output stream's buffer, use g_buffered_output_stream_set_buffer_size(). Note
-// that the buffer's size cannot be reduced below the size of the data within
-// the buffer.
+// output stream's buffer, use g_buffered_output_stream_set_buffer_size().
+// Note that the buffer's size cannot be reduced below the size of the data
+// within the buffer.
 type BufferedOutputStream struct {
 	_ [0]func() // equal guard
 	FilterOutputStream
@@ -97,11 +97,11 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - baseStream: Stream.
+//   - baseStream: Stream.
 //
 // The function returns the following values:
 //
-//    - bufferedOutputStream for the given base_stream.
+//   - bufferedOutputStream for the given base_stream.
 //
 func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
@@ -124,12 +124,12 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 //
 // The function takes the following parameters:
 //
-//    - baseStream: Stream.
-//    - size: #gsize.
+//   - baseStream: Stream.
+//   - size: #gsize.
 //
 // The function returns the following values:
 //
-//    - bufferedOutputStream with an internal buffer set to size.
+//   - bufferedOutputStream with an internal buffer set to size.
 //
 func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
@@ -154,7 +154,7 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream's buffer automatically grows, FALSE otherwise.
+//   - ok: TRUE if the stream's buffer automatically grows, FALSE otherwise.
 //
 func (stream *BufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
@@ -178,7 +178,7 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 //
 // The function returns the following values:
 //
-//    - gsize: current size of the buffer.
+//   - gsize: current size of the buffer.
 //
 func (stream *BufferedOutputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
@@ -203,7 +203,7 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 //
 // The function takes the following parameters:
 //
-//    - autoGrow: #gboolean.
+//   - autoGrow: #gboolean.
 //
 func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
@@ -223,7 +223,7 @@ func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 //
 // The function takes the following parameters:
 //
-//    - size: #gsize.
+//   - size: #gsize.
 //
 func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out

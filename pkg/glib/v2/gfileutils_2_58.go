@@ -30,13 +30,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file.
-//    - relativeTo (optional): relative directory, or NULL to use the current
-//      working directory.
+//   - filename: name of the file.
+//   - relativeTo (optional): relative directory, or NULL to use the current
+//     working directory.
 //
 // The function returns the following values:
 //
-//    - ret: newly allocated string with the canonical file path.
+//   - ret: newly allocated string with the canonical file path.
 //
 func CanonicalizeFilename(filename, relativeTo string) string {
 	var _arg1 *C.gchar // out

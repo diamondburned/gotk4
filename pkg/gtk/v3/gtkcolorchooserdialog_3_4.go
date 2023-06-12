@@ -105,12 +105,12 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title (optional): title of the dialog, or NULL.
-//    - parent (optional): transient parent of the dialog, or NULL.
+//   - title (optional): title of the dialog, or NULL.
+//   - parent (optional): transient parent of the dialog, or NULL.
 //
 // The function returns the following values:
 //
-//    - colorChooserDialog: new ColorChooserDialog.
+//   - colorChooserDialog: new ColorChooserDialog.
 //
 func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 	var _arg1 *C.gchar     // out

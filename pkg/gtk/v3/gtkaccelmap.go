@@ -32,8 +32,8 @@ func init() {
 }
 
 // AccelMap: accelerator maps are used to define runtime configurable
-// accelerators. Functions for manipulating them are are usually used by higher
-// level convenience mechanisms like UIManager and are thus considered
+// accelerators. Functions for manipulating them are are usually used by
+// higher level convenience mechanisms like UIManager and are thus considered
 // “low-level”. You’ll want to use them if you’re manually creating menus that
 // should have user-configurable accelerators.
 //
@@ -51,39 +51,36 @@ func init() {
 // the accelerator is being used in, e.g. “Gimp-Image”, “Abiword-Document” or
 // “Gnumeric-Settings”. The “Category1/.../Action” portion is most appropriately
 // chosen by the action the accelerator triggers, i.e. for accelerators on menu
-// items, choose the item’s menu path, e.g. “File/Save As”, “Image/View/Zoom” or
-// “Edit/Select All”. So a full valid accelerator path may look like:
+// items, choose the item’s menu path, e.g. “File/Save As”, “Image/View/Zoom”
+// or “Edit/Select All”. So a full valid accelerator path may look like:
 // “<Gimp-Toolbox>/File/Dialogs/Tool Options...”.
 //
 // All accelerators are stored inside one global AccelMap that can be obtained
 // using gtk_accel_map_get(). See [Monitoring changes][monitoring-changes] for
 // additional details.
 //
+// # Manipulating accelerators
 //
-// Manipulating accelerators
-//
-// New accelerators can be added using gtk_accel_map_add_entry(). To search for
-// specific accelerator, use gtk_accel_map_lookup_entry(). Modifications of
+// New accelerators can be added using gtk_accel_map_add_entry(). To search
+// for specific accelerator, use gtk_accel_map_lookup_entry(). Modifications of
 // existing accelerators should be done using gtk_accel_map_change_entry().
 //
-// In order to avoid having some accelerators changed, they can be locked using
-// gtk_accel_map_lock_path(). Unlocking is done using
+// In order to avoid having some accelerators changed, they can be
+// locked using gtk_accel_map_lock_path(). Unlocking is done using
 // gtk_accel_map_unlock_path().
 //
+// # Saving and loading accelerator maps
 //
-// Saving and loading accelerator maps
-//
-// Accelerator maps can be saved to and loaded from some external resource. For
-// simple saving and loading from file, gtk_accel_map_save() and
-// gtk_accel_map_load() are provided. Saving and loading can also be done by
-// providing file descriptor to gtk_accel_map_save_fd() and
+// Accelerator maps can be saved to and loaded from some external resource.
+// For simple saving and loading from file, gtk_accel_map_save() and
+// gtk_accel_map_load() are provided. Saving and loading can also be
+// done by providing file descriptor to gtk_accel_map_save_fd() and
 // gtk_accel_map_load_fd().
 //
+// # Monitoring changes
 //
-// Monitoring changes
-//
-// AccelMap object is only useful for monitoring changes of accelerators. By
-// connecting to AccelMap::changed signal, one can monitor changes of all
+// AccelMap object is only useful for monitoring changes of accelerators.
+// By connecting to AccelMap::changed signal, one can monitor changes of all
 // accelerators. It is also possible to monitor only single accelerator path by
 // using it as a detail of the AccelMap::changed signal.
 type AccelMap struct {
@@ -125,9 +122,9 @@ func (v *AccelMap) ConnectChanged(f func(accelPath string, accelKey uint, accelM
 //
 // The function takes the following parameters:
 //
-//    - accelPath: valid accelerator path.
-//    - accelKey: accelerator key.
-//    - accelMods: accelerator modifiers.
+//   - accelPath: valid accelerator path.
+//   - accelKey: accelerator key.
+//   - accelMods: accelerator modifiers.
 //
 func AccelMapAddEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType) {
 	var _arg1 *C.gchar          // out
@@ -150,12 +147,12 @@ func AccelMapAddEntry(accelPath string, accelKey uint, accelMods gdk.ModifierTyp
 // Accel map entries whose accel path matches one of the filters are skipped by
 // gtk_accel_map_foreach().
 //
-// This function is intended for GTK+ modules that create their own menus, but
-// don’t want them to be saved into the applications accelerator map dump.
+// This function is intended for GTK+ modules that create their own menus,
+// but don’t want them to be saved into the applications accelerator map dump.
 //
 // The function takes the following parameters:
 //
-//    - filterPattern: pattern (see Spec).
+//   - filterPattern: pattern (see Spec).
 //
 func AccelMapAddFilter(filterPattern string) {
 	var _arg1 *C.gchar // out
@@ -168,8 +165,8 @@ func AccelMapAddFilter(filterPattern string) {
 }
 
 // AccelMapChangeEntry changes the accel_key and accel_mods currently associated
-// with accel_path. Due to conflicts with other accelerators, a change may not
-// always be possible, replace indicates whether other accelerators may be
+// with accel_path. Due to conflicts with other accelerators, a change may
+// not always be possible, replace indicates whether other accelerators may be
 // deleted to resolve such conflicts. A change will only occur if all conflicts
 // could be resolved (which might not be the case if conflicting accelerators
 // are locked). Successful changes are indicated by a TRUE return value.
@@ -180,14 +177,14 @@ func AccelMapAddFilter(filterPattern string) {
 //
 // The function takes the following parameters:
 //
-//    - accelPath: valid accelerator path.
-//    - accelKey: new accelerator key.
-//    - accelMods: new accelerator modifiers.
-//    - replace: TRUE if other accelerators may be deleted upon conflicts.
+//   - accelPath: valid accelerator path.
+//   - accelKey: new accelerator key.
+//   - accelMods: new accelerator modifiers.
+//   - replace: TRUE if other accelerators may be deleted upon conflicts.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the accelerator could be changed, FALSE otherwise.
+//   - ok: TRUE if the accelerator could be changed, FALSE otherwise.
 //
 func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.ModifierType, replace bool) bool {
 	var _arg1 *C.gchar          // out
@@ -224,8 +221,8 @@ func AccelMapChangeEntry(accelPath string, accelKey uint, accelMods gdk.Modifier
 //
 // The function takes the following parameters:
 //
-//    - fileName: file containing accelerator specifications, in the GLib file
-//      name encoding.
+//   - fileName: file containing accelerator specifications, in the GLib file
+//     name encoding.
 //
 func AccelMapLoad(fileName string) {
 	var _arg1 *C.gchar // out
@@ -243,7 +240,7 @@ func AccelMapLoad(fileName string) {
 //
 // The function takes the following parameters:
 //
-//    - fd: valid readable file descriptor.
+//   - fd: valid readable file descriptor.
 //
 func AccelMapLoadFd(fd int) {
 	var _arg1 C.gint // out
@@ -258,7 +255,7 @@ func AccelMapLoadFd(fd int) {
 //
 // The function takes the following parameters:
 //
-//    - scanner which has already been provided with an input file.
+//   - scanner which has already been provided with an input file.
 //
 func AccelMapLoadScanner(scanner *glib.Scanner) {
 	var _arg1 *C.GScanner // out
@@ -274,12 +271,12 @@ func AccelMapLoadScanner(scanner *glib.Scanner) {
 //
 // The function takes the following parameters:
 //
-//    - accelPath: valid accelerator path.
+//   - accelPath: valid accelerator path.
 //
 // The function returns the following values:
 //
-//    - key (optional): accelerator key to be filled in (optional).
-//    - ok: TRUE if accel_path is known, FALSE otherwise.
+//   - key (optional): accelerator key to be filled in (optional).
+//   - ok: TRUE if accel_path is known, FALSE otherwise.
 //
 func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 	var _arg1 *C.gchar      // out
@@ -303,14 +300,14 @@ func AccelMapLookupEntry(accelPath string) (*AccelKey, bool) {
 	return _key, _ok
 }
 
-// AccelMapSave saves current accelerator specifications (accelerator path, key
-// and modifiers) to file_name. The file is written in a format suitable to be
-// read back in by gtk_accel_map_load().
+// AccelMapSave saves current accelerator specifications (accelerator path,
+// key and modifiers) to file_name. The file is written in a format suitable to
+// be read back in by gtk_accel_map_load().
 //
 // The function takes the following parameters:
 //
-//    - fileName: name of the file to contain accelerator specifications, in the
-//      GLib file name encoding.
+//   - fileName: name of the file to contain accelerator specifications,
+//     in the GLib file name encoding.
 //
 func AccelMapSave(fileName string) {
 	var _arg1 *C.gchar // out
@@ -328,7 +325,7 @@ func AccelMapSave(fileName string) {
 //
 // The function takes the following parameters:
 //
-//    - fd: valid writable file descriptor.
+//   - fd: valid writable file descriptor.
 //
 func AccelMapSaveFd(fd int) {
 	var _arg1 C.gint // out

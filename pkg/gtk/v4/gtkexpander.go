@@ -33,13 +33,12 @@ func init() {
 //
 // This is similar to the triangles used in a GtkTreeView.
 //
-// Normally you use an expander as you would use a frame; you create the child
-// widget and use gtk.Expander.SetChild() to add it to the expander. When the
-// expander is toggled, it will take care of showing and hiding the child
-// automatically.
+// Normally you use an expander as you would use a frame; you create the
+// child widget and use gtk.Expander.SetChild() to add it to the expander.
+// When the expander is toggled, it will take care of showing and hiding the
+// child automatically.
 //
-//
-// Special Usage
+// # Special Usage
 //
 // There are situations in which you may prefer to show and hide the expanded
 // widget yourself, such as when you want to actually create the widget at
@@ -77,9 +76,7 @@ func init() {
 //      // ...
 //    }
 //
-//
-//
-// GtkExpander as GtkBuildable
+// # GtkExpander as GtkBuildable
 //
 // The GtkExpander implementation of the GtkBuildable interface supports placing
 // a child in the label position by specifying “label” as the “type” attribute
@@ -97,7 +94,6 @@ func init() {
 //      </child>
 //    </object>
 //
-//
 // CSS nodes
 //
 //    expander
@@ -107,13 +103,11 @@ func init() {
 //        │   ╰── <label widget>
 //        ╰── <child>
 //
-//
-// GtkExpander has three CSS nodes, the main node with the name expander, a
-// subnode with name title and node below it with name arrow. The arrow of an
+// GtkExpander has three CSS nodes, the main node with the name expander,
+// a subnode with name title and node below it with name arrow. The arrow of an
 // expander that is showing its child gets the :checked pseudoclass added to it.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkExpander uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Expander struct {
@@ -158,11 +152,11 @@ func (expander *Expander) ConnectActivate(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): text of the label.
+//   - label (optional): text of the label.
 //
 // The function returns the following values:
 //
-//    - expander: new GtkExpander widget.
+//   - expander: new GtkExpander widget.
 //
 func NewExpander(label string) *Expander {
 	var _arg1 *C.char      // out
@@ -186,8 +180,8 @@ func NewExpander(label string) *Expander {
 // NewExpanderWithMnemonic creates a new expander using label as the text of the
 // label.
 //
-// If characters in label are preceded by an underscore, they are underlined. If
-// you need a literal underscore character in a label, use “__” (two
+// If characters in label are preceded by an underscore, they are underlined.
+// If you need a literal underscore character in a label, use “__” (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic.
 //
@@ -195,12 +189,12 @@ func NewExpander(label string) *Expander {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): text of the label with an underscore in front of the
-//      mnemonic character.
+//   - label (optional): text of the label with an underscore in front of the
+//     mnemonic character.
 //
 // The function returns the following values:
 //
-//    - expander: new GtkExpander widget.
+//   - expander: new GtkExpander widget.
 //
 func NewExpanderWithMnemonic(label string) *Expander {
 	var _arg1 *C.char      // out
@@ -225,7 +219,7 @@ func NewExpanderWithMnemonic(label string) *Expander {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of expander.
+//   - widget (optional): child widget of expander.
 //
 func (expander *Expander) Child() Widgetter {
 	var _arg0 *C.GtkExpander // out
@@ -264,7 +258,7 @@ func (expander *Expander) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: current state of the expander.
+//   - ok: current state of the expander.
 //
 func (expander *Expander) Expanded() bool {
 	var _arg0 *C.GtkExpander // out
@@ -293,8 +287,8 @@ func (expander *Expander) Expanded() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): text of the label widget. This string is owned by the
-//      widget and must not be modified or freed.
+//   - utf8 (optional): text of the label widget. This string is owned by the
+//     widget and must not be modified or freed.
 //
 func (expander *Expander) Label() string {
 	var _arg0 *C.GtkExpander // out
@@ -318,7 +312,7 @@ func (expander *Expander) Label() string {
 //
 // The function returns the following values:
 //
-//    - widget (optional): label widget, or NULL if there is none.
+//   - widget (optional): label widget, or NULL if there is none.
 //
 func (expander *Expander) LabelWidget() Widgetter {
 	var _arg0 *C.GtkExpander // out
@@ -356,7 +350,7 @@ func (expander *Expander) LabelWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: “resize toplevel” setting.
+//   - ok: “resize toplevel” setting.
 //
 func (expander *Expander) ResizeToplevel() bool {
 	var _arg0 *C.GtkExpander // out
@@ -380,7 +374,7 @@ func (expander *Expander) ResizeToplevel() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the label’s text will be parsed for markup.
+//   - ok: TRUE if the label’s text will be parsed for markup.
 //
 func (expander *Expander) UseMarkup() bool {
 	var _arg0 *C.GtkExpander // out
@@ -404,8 +398,8 @@ func (expander *Expander) UseMarkup() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if an embedded underline in the expander label indicates the
-//      mnemonic accelerator keys.
+//   - ok: TRUE if an embedded underline in the expander label indicates the
+//     mnemonic accelerator keys.
 //
 func (expander *Expander) UseUnderline() bool {
 	var _arg0 *C.GtkExpander // out
@@ -429,7 +423,7 @@ func (expander *Expander) UseUnderline() bool {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (expander *Expander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkExpander // out
@@ -452,7 +446,7 @@ func (expander *Expander) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - expanded: whether the child widget is revealed.
+//   - expanded: whether the child widget is revealed.
 //
 func (expander *Expander) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkExpander // out
@@ -474,7 +468,7 @@ func (expander *Expander) SetExpanded(expanded bool) {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): string.
+//   - label (optional): string.
 //
 func (expander *Expander) SetLabel(label string) {
 	var _arg0 *C.GtkExpander // out
@@ -497,7 +491,7 @@ func (expander *Expander) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - labelWidget (optional): new label widget.
+//   - labelWidget (optional): new label widget.
 //
 func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkExpander // out
@@ -518,7 +512,7 @@ func (expander *Expander) SetLabelWidget(labelWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - resizeToplevel: whether to resize the toplevel.
+//   - resizeToplevel: whether to resize the toplevel.
 //
 func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 	var _arg0 *C.GtkExpander // out
@@ -538,7 +532,7 @@ func (expander *Expander) SetResizeToplevel(resizeToplevel bool) {
 //
 // The function takes the following parameters:
 //
-//    - useMarkup: TRUE if the label’s text should be parsed for markup.
+//   - useMarkup: TRUE if the label’s text should be parsed for markup.
 //
 func (expander *Expander) SetUseMarkup(useMarkup bool) {
 	var _arg0 *C.GtkExpander // out
@@ -558,7 +552,7 @@ func (expander *Expander) SetUseMarkup(useMarkup bool) {
 //
 // The function takes the following parameters:
 //
-//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//   - useUnderline: TRUE if underlines in the text indicate mnemonics.
 //
 func (expander *Expander) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkExpander // out

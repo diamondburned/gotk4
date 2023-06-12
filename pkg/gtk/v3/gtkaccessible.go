@@ -65,8 +65,8 @@ func defaultAccessibleOverrides(v *Accessible) AccessibleOverrides {
 // associating a widget with its accessible object.
 //
 // An accessible implementation for a third-party widget should derive from
-// Accessible and implement the suitable interfaces from ATK, such as Text or
-// Selection. To establish the connection between the widget class and its
+// Accessible and implement the suitable interfaces from ATK, such as Text
+// or Selection. To establish the connection between the widget class and its
 // corresponding acccessible implementation, override the get_accessible vfunc
 // in WidgetClass.
 type Accessible struct {
@@ -138,8 +138,8 @@ func (accessible *Accessible) ConnectWidgetDestroyed() {
 //
 // The function returns the following values:
 //
-//    - widget (optional): pointer to the Widget corresponding to the Accessible,
-//      or NULL.
+//   - widget (optional): pointer to the Widget corresponding to the Accessible,
+//     or NULL.
 //
 func (accessible *Accessible) Widget() Widgetter {
 	var _arg0 *C.GtkAccessible // out
@@ -180,7 +180,7 @@ func (accessible *Accessible) Widget() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - widget (optional) or NULL to unset.
+//   - widget (optional) or NULL to unset.
 //
 func (accessible *Accessible) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkAccessible // out

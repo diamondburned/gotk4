@@ -17,7 +17,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - vec4: constant vector.
+//   - vec4: constant vector.
 //
 func Vec4One() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
@@ -36,7 +36,7 @@ func Vec4One() *Vec4 {
 //
 // The function returns the following values:
 //
-//    - vec4: constant vector.
+//   - vec4: constant vector.
 //
 func Vec4WAxis() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
@@ -55,7 +55,7 @@ func Vec4WAxis() *Vec4 {
 //
 // The function returns the following values:
 //
-//    - vec4: constant vector.
+//   - vec4: constant vector.
 //
 func Vec4XAxis() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
@@ -74,7 +74,7 @@ func Vec4XAxis() *Vec4 {
 //
 // The function returns the following values:
 //
-//    - vec4: constant vector.
+//   - vec4: constant vector.
 //
 func Vec4YAxis() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
@@ -93,7 +93,7 @@ func Vec4YAxis() *Vec4 {
 //
 // The function returns the following values:
 //
-//    - vec4: constant vector.
+//   - vec4: constant vector.
 //
 func Vec4ZAxis() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
@@ -112,7 +112,7 @@ func Vec4ZAxis() *Vec4 {
 //
 // The function returns the following values:
 //
-//    - vec4: constant vector.
+//   - vec4: constant vector.
 //
 func Vec4Zero() *Vec4 {
 	var _cret *C.graphene_vec4_t // in

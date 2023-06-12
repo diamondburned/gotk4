@@ -27,13 +27,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - tmpl (optional): template for the file name, as in g_file_open_tmp(), or
-//      NULL for a default template.
+//   - tmpl (optional): template for the file name, as in g_file_open_tmp(),
+//     or NULL for a default template.
 //
 // The function returns the following values:
 //
-//    - iostream: on return, a IOStream for the created file.
-//    - file: new #GFile. Free the returned object with g_object_unref().
+//   - iostream: on return, a IOStream for the created file.
+//   - file: new #GFile. Free the returned object with g_object_unref().
 //
 func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 	var _arg1 *C.char          // out

@@ -34,8 +34,8 @@ type StateType C.gint
 const (
 	// StateInvalid indicates an invalid state - probably an error condition.
 	StateInvalid StateType = iota
-	// StateActive indicates a window is currently the active window, or an
-	// object is the active subelement within a container or table.
+	// StateActive indicates a window is currently the active window,
+	// or an object is the active subelement within a container or table.
 	// ATK_STATE_ACTIVE should not be used for objects which have
 	// ATK_STATE_FOCUSABLE or ATK_STATE_SELECTABLE: Those objects should use
 	// ATK_STATE_FOCUSED and ATK_STATE_SELECTED respectively. ATK_STATE_ACTIVE
@@ -70,9 +70,9 @@ const (
 	// ATK_STATE_EDITABLE and should contain ATK_STATE_READ_ONLY.
 	StateEditable
 	// StateEnabled indicates that this object is enabled, i.e. that it
-	// currently reflects some application state. Objects that are "greyed out"
-	// may lack this state, and may lack the STATE_SENSITIVE if direct user
-	// interaction cannot cause them to acquire STATE_ENABLED. See also:
+	// currently reflects some application state. Objects that are "greyed
+	// out" may lack this state, and may lack the STATE_SENSITIVE if direct
+	// user interaction cannot cause them to acquire STATE_ENABLED. See also:
 	// ATK_STATE_SENSITIVE.
 	StateEnabled
 	// StateExpandable indicates this object allows progressive disclosure of
@@ -120,13 +120,13 @@ const (
 	// that has been selected.
 	StateSelected
 	// StateSensitive indicates this object is sensitive, e.g. to user
-	// interaction. STATE_SENSITIVE usually accompanies STATE_ENABLED for
-	// user-actionable controls, but may be found in the absence of
-	// STATE_ENABLED if the current visible state of the control is
+	// interaction. STATE_SENSITIVE usually accompanies STATE_ENABLED
+	// for user-actionable controls, but may be found in the absence
+	// of STATE_ENABLED if the current visible state of the control is
 	// "disconnected" from the application state. In such cases, direct user
-	// interaction can often result in the object gaining STATE_SENSITIVE, for
-	// instance if a user makes an explicit selection using an object whose
-	// current state is ambiguous or undefined. see STATE_ENABLED,
+	// interaction can often result in the object gaining STATE_SENSITIVE,
+	// for instance if a user makes an explicit selection using an object
+	// whose current state is ambiguous or undefined. see STATE_ENABLED,
 	// STATE_INDETERMINATE.
 	StateSensitive
 	// StateShowing indicates this object, the object's parent, the object's
@@ -137,50 +137,50 @@ const (
 	// StateSingleLine indicates this (text) object can contain only a single
 	// line of text.
 	StateSingleLine
-	// StateStale indicates that the information returned for this object may no
-	// longer be synchronized with the application state. This is implied if the
-	// object has STATE_TRANSIENT, and can also occur towards the end of the
-	// object peer's lifecycle. It can also be used to indicate that the index
-	// associated with this object has changed since the user accessed the
+	// StateStale indicates that the information returned for this object may
+	// no longer be synchronized with the application state. This is implied
+	// if the object has STATE_TRANSIENT, and can also occur towards the end
+	// of the object peer's lifecycle. It can also be used to indicate that the
+	// index associated with this object has changed since the user accessed the
 	// object (in lieu of "index-in-parent-changed" events).
 	StateStale
-	// StateTransient indicates this object is transient, i.e. a snapshot which
-	// may not emit events when its state changes. Data from objects with
-	// ATK_STATE_TRANSIENT should not be cached, since there may be no
+	// StateTransient indicates this object is transient, i.e. a snapshot
+	// which may not emit events when its state changes. Data from objects
+	// with ATK_STATE_TRANSIENT should not be cached, since there may be no
 	// notification given when the cached data becomes obsolete.
 	StateTransient
 	// StateVertical indicates the orientation of this object is vertical.
 	StateVertical
 	// StateVisible indicates this object is visible, e.g. has been explicitly
 	// marked for exposure to the user. **note**: ATK_STATE_VISIBLE is no
-	// guarantee that the object is actually unobscured on the screen, only that
-	// it is 'potentially' visible, barring obstruction, being scrolled or
-	// clipped out of the field of view, or having an ancestor container that
-	// has not yet made visible. A widget is potentially onscreen if it has both
-	// ATK_STATE_VISIBLE and ATK_STATE_SHOWING. The absence of ATK_STATE_VISIBLE
-	// and ATK_STATE_SHOWING is semantically equivalent to saying that an object
-	// is 'hidden'. See also ATK_STATE_TRUNCATED, which applies if an object
-	// with ATK_STATE_VISIBLE and ATK_STATE_SHOWING set lies within a viewport
-	// which means that its contents are clipped, e.g. a truncated spreadsheet
-	// cell or an image within a scrolling viewport. Mostly useful for
-	// screen-review and magnification algorithms.
+	// guarantee that the object is actually unobscured on the screen,
+	// only that it is 'potentially' visible, barring obstruction, being
+	// scrolled or clipped out of the field of view, or having an ancestor
+	// container that has not yet made visible. A widget is potentially onscreen
+	// if it has both ATK_STATE_VISIBLE and ATK_STATE_SHOWING. The absence of
+	// ATK_STATE_VISIBLE and ATK_STATE_SHOWING is semantically equivalent to
+	// saying that an object is 'hidden'. See also ATK_STATE_TRUNCATED, which
+	// applies if an object with ATK_STATE_VISIBLE and ATK_STATE_SHOWING set
+	// lies within a viewport which means that its contents are clipped, e.g.
+	// a truncated spreadsheet cell or an image within a scrolling viewport.
+	// Mostly useful for screen-review and magnification algorithms.
 	StateVisible
 	// StateManagesDescendants indicates that "active-descendant-changed" event
 	// is sent when children become 'active' (i.e. are selected or navigated to
 	// onscreen). Used to prevent need to enumerate all children in very large
 	// containers, like tables. The presence of STATE_MANAGES_DESCENDANTS is an
-	// indication to the client. that the children should not, and need not, be
-	// enumerated by the client. Objects implementing this state are expected to
-	// provide relevant state notifications to listening clients, for instance
-	// notifications of visibility changes and activation of their contained
-	// child objects, without the client having previously requested references
-	// to those children.
+	// indication to the client. that the children should not, and need not,
+	// be enumerated by the client. Objects implementing this state are
+	// expected to provide relevant state notifications to listening clients,
+	// for instance notifications of visibility changes and activation of their
+	// contained child objects, without the client having previously requested
+	// references to those children.
 	StateManagesDescendants
 	// StateIndeterminate indicates that the value, or some other quantifiable
 	// property, of this AtkObject cannot be fully determined. In the case of a
 	// large data set in which the total number of items in that set is unknown
-	// (e.g. 1 of 999+), implementors should expose the currently-known set size
-	// (999) along with this state. In the case of a check box, this state
+	// (e.g. 1 of 999+), implementors should expose the currently-known set
+	// size (999) along with this state. In the case of a check box, this state
 	// should be used to indicate that the check box is a tri-state check box
 	// which is currently neither checked nor unchecked.
 	StateIndeterminate
@@ -198,13 +198,13 @@ const (
 	StateInvalidEntry
 	// StateSupportsAutocompletion indicates that the object in question
 	// implements some form of ¨typeahead¨ or pre-selection behavior whereby
-	// entering the first character of one or more sub-elements causes those
-	// elements to scroll into view or become selected. Subsequent character
-	// input may narrow the selection further as long as one or more
-	// sub-elements match the string. This state is normally only useful and
-	// encountered on objects that implement Selection. In some cases the
-	// typeahead behavior may result in full or partial ¨completion¨ of the data
-	// in the input field, in which case these input events may trigger
+	// entering the first character of one or more sub-elements causes
+	// those elements to scroll into view or become selected. Subsequent
+	// character input may narrow the selection further as long as one or
+	// more sub-elements match the string. This state is normally only useful
+	// and encountered on objects that implement Selection. In some cases the
+	// typeahead behavior may result in full or partial ¨completion¨ of the
+	// data in the input field, in which case these input events may trigger
 	// text-changed events from the AtkText interface. This state supplants
 	// ATK_ROLE_AUTOCOMPLETE.
 	StateSupportsAutocompletion
@@ -220,10 +220,10 @@ const (
 	// "Return" key. Typically a "close" or "submit" button.
 	StateDefault
 	// StateAnimated indicates that the object changes its appearance
-	// dynamically as an inherent part of its presentation. This state may come
-	// and go if an object is only temporarily animated on the way to a 'final'
-	// onscreen presentation. **note**: some applications, notably content
-	// viewers, may not be able to detect all kinds of animated content.
+	// dynamically as an inherent part of its presentation. This state may
+	// come and go if an object is only temporarily animated on the way to a
+	// 'final' onscreen presentation. **note**: some applications, notably
+	// content viewers, may not be able to detect all kinds of animated content.
 	// Therefore the absence of this state should not be taken as definitive
 	// evidence that the object's visual representation is static; this state is
 	// advisory.
@@ -235,19 +235,19 @@ const (
 	// StateCheckable indicates this object has the potential to be checked,
 	// such as a checkbox or toggle-able table cell. Since: ATK-2.12.
 	StateCheckable
-	// StateHasPopup indicates that the object has a popup context menu or
-	// sub-level menu which may or may not be showing. This means that
+	// StateHasPopup indicates that the object has a popup context menu
+	// or sub-level menu which may or may not be showing. This means that
 	// activation renders conditional content. Note that ordinary tooltips are
 	// not considered popups in this context. Since: ATK-2.12.
 	StateHasPopup
 	// StateHasTooltip indicates this object has a tooltip. Since: ATK-2.16.
 	StateHasTooltip
-	// StateReadOnly indicates that a widget which is ENABLED and SENSITIVE has
-	// a value which can be read, but not modified, by the user. Note that this
-	// state should only be applied to widget types whose value is normally
-	// directly user modifiable, such as check boxes, radio buttons, spin
-	// buttons, text input fields, and combo boxes, as a means to convey that
-	// the expected interaction with that widget is not possible. When the
+	// StateReadOnly indicates that a widget which is ENABLED and SENSITIVE
+	// has a value which can be read, but not modified, by the user. Note
+	// that this state should only be applied to widget types whose value is
+	// normally directly user modifiable, such as check boxes, radio buttons,
+	// spin buttons, text input fields, and combo boxes, as a means to convey
+	// that the expected interaction with that widget is not possible. When the
 	// expected interaction with a widget does not include modification by the
 	// user, as is the case with labels and containers, ATK_STATE_READ_ONLY
 	// should not be applied. See also ATK_STATE_EDITABLE. Since: ATK-2-16.
@@ -361,11 +361,11 @@ func (s StateType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - name: character string state name.
+//   - name: character string state name.
 //
 // The function returns the following values:
 //
-//    - stateType corresponding to name.
+//   - stateType corresponding to name.
 //
 func StateTypeForName(name string) StateType {
 	var _arg1 *C.gchar       // out
@@ -388,11 +388,11 @@ func StateTypeForName(name string) StateType {
 //
 // The function takes the following parameters:
 //
-//    - typ whose name is required.
+//   - typ whose name is required.
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the AtkStateType.
+//   - utf8: string describing the AtkStateType.
 //
 func StateTypeGetName(typ StateType) string {
 	var _arg1 C.AtkStateType // out
@@ -414,11 +414,11 @@ func StateTypeGetName(typ StateType) string {
 //
 // The function takes the following parameters:
 //
-//    - name: character string describing the new state.
+//   - name: character string describing the new state.
 //
 // The function returns the following values:
 //
-//    - stateType value for the new state.
+//   - stateType value for the new state.
 //
 func StateTypeRegister(name string) StateType {
 	var _arg1 *C.gchar       // out

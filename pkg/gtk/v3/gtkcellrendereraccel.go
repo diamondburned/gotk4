@@ -78,10 +78,10 @@ type CellRendererAccelOverrides struct {
 	AccelCleared func(pathString string)
 	// The function takes the following parameters:
 	//
-	//    - pathString
-	//    - accelKey
-	//    - accelMods
-	//    - hardwareKeycode
+	//   - pathString
+	//   - accelKey
+	//   - accelMods
+	//   - hardwareKeycode
 	//
 	AccelEdited func(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint)
 }
@@ -163,7 +163,7 @@ func (v *CellRendererAccel) ConnectAccelEdited(f func(pathString string, accelKe
 //
 // The function returns the following values:
 //
-//    - cellRendererAccel: new cell renderer.
+//   - cellRendererAccel: new cell renderer.
 //
 func NewCellRendererAccel() *CellRendererAccel {
 	var _cret *C.GtkCellRenderer // in
@@ -197,10 +197,10 @@ func (accel *CellRendererAccel) accelCleared(pathString string) {
 
 // The function takes the following parameters:
 //
-//    - pathString
-//    - accelKey
-//    - accelMods
-//    - hardwareKeycode
+//   - pathString
+//   - accelKey
+//   - accelMods
+//   - hardwareKeycode
 //
 func (accel *CellRendererAccel) accelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint) {
 	gclass := (*C.GtkCellRendererAccelClass)(coreglib.PeekParentClass(accel))

@@ -36,8 +36,8 @@ func init() {
 // child models when gtk_tree_list_row_set_expanded() is called.
 //
 // This function can return NULL to indicate that item is guaranteed to be a
-// leaf node and will never have children. If it does not have children but may
-// get children later, it should return an empty model that is filled once
+// leaf node and will never have children. If it does not have children but
+// may get children later, it should return an empty model that is filled once
 // children arrive.
 type TreeListModelCreateModelFunc func(item *coreglib.Object) (listModel *gio.ListModel)
 
@@ -96,16 +96,16 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - root: GListModel to use as root.
-//    - passthrough: TRUE to pass through items from the models.
-//    - autoexpand: TRUE to set the autoexpand property and expand the root
-//      model.
-//    - createFunc: function to call to create the GListModel for the children of
-//      an item.
+//   - root: GListModel to use as root.
+//   - passthrough: TRUE to pass through items from the models.
+//   - autoexpand: TRUE to set the autoexpand property and expand the root
+//     model.
+//   - createFunc: function to call to create the GListModel for the children of
+//     an item.
 //
 // The function returns the following values:
 //
-//    - treeListModel: newly created GtkTreeListModel.
+//   - treeListModel: newly created GtkTreeListModel.
 //
 func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, createFunc TreeListModelCreateModelFunc) *TreeListModel {
 	var _arg1 *C.GListModel                     // out
@@ -149,7 +149,7 @@ func NewTreeListModel(root gio.ListModeller, passthrough, autoexpand bool, creat
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the model is set to autoexpand.
+//   - ok: TRUE if the model is set to autoexpand.
 //
 func (self *TreeListModel) Autoexpand() bool {
 	var _arg0 *C.GtkTreeListModel // out
@@ -172,18 +172,18 @@ func (self *TreeListModel) Autoexpand() bool {
 // ChildRow gets the row item corresponding to the child at index position for
 // self's root model.
 //
-// If position is greater than the number of children in the root model, NULL is
-// returned.
+// If position is greater than the number of children in the root model,
+// NULL is returned.
 //
 // Do not confuse this function with gtk.TreeListModel.GetRow().
 //
 // The function takes the following parameters:
 //
-//    - position of the child to get.
+//   - position of the child to get.
 //
 // The function returns the following values:
 //
-//    - treeListRow (optional): child in position.
+//   - treeListRow (optional): child in position.
 //
 func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
@@ -210,7 +210,7 @@ func (self *TreeListModel) ChildRow(position uint) *TreeListRow {
 //
 // The function returns the following values:
 //
-//    - listModel: root model.
+//   - listModel: root model.
 //
 func (self *TreeListModel) Model() *gio.ListModel {
 	var _arg0 *C.GtkTreeListModel // out
@@ -245,7 +245,7 @@ func (self *TreeListModel) Model() *gio.ListModel {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the model is passing through original row items.
+//   - ok: TRUE if the model is passing through original row items.
 //
 func (self *TreeListModel) Passthrough() bool {
 	var _arg0 *C.GtkTreeListModel // out
@@ -282,11 +282,11 @@ func (self *TreeListModel) Passthrough() bool {
 //
 // The function takes the following parameters:
 //
-//    - position of the row to fetch.
+//   - position of the row to fetch.
 //
 // The function returns the following values:
 //
-//    - treeListRow (optional): row item.
+//   - treeListRow (optional): row item.
 //
 func (self *TreeListModel) Row(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListModel // out
@@ -317,7 +317,7 @@ func (self *TreeListModel) Row(position uint) *TreeListRow {
 //
 // The function takes the following parameters:
 //
-//    - autoexpand: TRUE to make the model autoexpand its rows.
+//   - autoexpand: TRUE to make the model autoexpand its rows.
 //
 func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 	var _arg0 *C.GtkTreeListModel // out
@@ -392,11 +392,11 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - position of the child to get.
+//   - position of the child to get.
 //
 // The function returns the following values:
 //
-//    - treeListRow (optional): child in position.
+//   - treeListRow (optional): child in position.
 //
 func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 	var _arg0 *C.GtkTreeListRow // out
@@ -422,13 +422,13 @@ func (self *TreeListRow) ChildRow(position uint) *TreeListRow {
 // Children: if the row is expanded, gets the model holding the children of
 // self.
 //
-// This model is the model created by the gtk.TreeListModelCreateModelFunc and
-// contains the original items, no matter what value
+// This model is the model created by the gtk.TreeListModelCreateModelFunc
+// and contains the original items, no matter what value
 // gtk.TreeListModel:passthrough is set to.
 //
 // The function returns the following values:
 //
-//    - listModel (optional): model containing the children.
+//   - listModel (optional): model containing the children.
 //
 func (self *TreeListRow) Children() *gio.ListModel {
 	var _arg0 *C.GtkTreeListRow // out
@@ -455,15 +455,15 @@ func (self *TreeListRow) Children() *gio.ListModel {
 
 // Depth gets the depth of this row.
 //
-// Rows that correspond to items in the root model have a depth of zero, rows
-// corresponding to items of models of direct children of the root model have a
-// depth of 1 and so on.
+// Rows that correspond to items in the root model have a depth of zero,
+// rows corresponding to items of models of direct children of the root model
+// have a depth of 1 and so on.
 //
 // The depth of a row never changes until the row is destroyed.
 //
 // The function returns the following values:
 //
-//    - guint: depth of this row.
+//   - guint: depth of this row.
 //
 func (self *TreeListRow) Depth() uint {
 	var _arg0 *C.GtkTreeListRow // out
@@ -485,7 +485,7 @@ func (self *TreeListRow) Depth() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the row is expanded.
+//   - ok: TRUE if the row is expanded.
 //
 func (self *TreeListRow) Expanded() bool {
 	var _arg0 *C.GtkTreeListRow // out
@@ -511,7 +511,7 @@ func (self *TreeListRow) Expanded() bool {
 //
 // The function returns the following values:
 //
-//    - object (optional): item of this row or NULL when the row was destroyed.
+//   - object (optional): item of this row or NULL when the row was destroyed.
 //
 func (self *TreeListRow) Item() *coreglib.Object {
 	var _arg0 *C.GtkTreeListRow // out
@@ -539,7 +539,7 @@ func (self *TreeListRow) Item() *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - treeListRow (optional): parent of self.
+//   - treeListRow (optional): parent of self.
 //
 func (self *TreeListRow) Parent() *TreeListRow {
 	var _arg0 *C.GtkTreeListRow // out
@@ -564,7 +564,7 @@ func (self *TreeListRow) Parent() *TreeListRow {
 //
 // The function returns the following values:
 //
-//    - guint: position in the model.
+//   - guint: position in the model.
 //
 func (self *TreeListRow) Position() uint {
 	var _arg0 *C.GtkTreeListRow // out
@@ -591,7 +591,7 @@ func (self *TreeListRow) Position() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the row is expandable.
+//   - ok: TRUE if the row is expandable.
 //
 func (self *TreeListRow) IsExpandable() bool {
 	var _arg0 *C.GtkTreeListRow // out
@@ -621,7 +621,7 @@ func (self *TreeListRow) IsExpandable() bool {
 //
 // The function takes the following parameters:
 //
-//    - expanded: TRUE if the row should be expanded.
+//   - expanded: TRUE if the row should be expanded.
 //
 func (self *TreeListRow) SetExpanded(expanded bool) {
 	var _arg0 *C.GtkTreeListRow // out

@@ -18,14 +18,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file to identify.
+//   - filename: name of the file to identify.
 //
 // The function returns the following values:
 //
-//    - width (optional): return location for the width of the image.
-//    - height (optional): return location for the height of the image.
-//    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
-//      the file.
+//   - width (optional): return location for the width of the image.
+//   - height (optional): return location for the height of the image.
+//   - pixbufFormat (optional): GdkPixbufFormat describing the image format of
+//     the file.
 //
 func PixbufGetFileInfo(filename string) (width, height int, pixbufFormat *PixbufFormat) {
 	var _arg1 *C.gchar           // out

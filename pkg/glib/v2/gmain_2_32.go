@@ -21,17 +21,17 @@ const SOURCE_CONTINUE = true
 // #GSource from the main loop.
 const SOURCE_REMOVE = false
 
-// MainContextRefThreadDefault gets the thread-default Context for this thread,
-// as with g_main_context_get_thread_default(), but also adds a reference to it
-// with g_main_context_ref(). In addition, unlike
+// MainContextRefThreadDefault gets the thread-default Context for this
+// thread, as with g_main_context_get_thread_default(), but also adds
+// a reference to it with g_main_context_ref(). In addition, unlike
 // g_main_context_get_thread_default(), if the thread-default context is the
 // global default context, this will return that Context (with a ref added to
 // it) rather than returning NULL.
 //
 // The function returns the following values:
 //
-//    - mainContext: thread-default Context. Unref with g_main_context_unref()
-//      when you are done with it.
+//   - mainContext: thread-default Context. Unref with g_main_context_unref()
+//     when you are done with it.
 //
 func MainContextRefThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in

@@ -125,7 +125,7 @@ func (b *Border) SetBottom(bottom int16) {
 //
 // The function returns the following values:
 //
-//    - border: copy of border_.
+//   - border: copy of border_.
 //
 func (border_ *Border) Copy() *Border {
 	var _arg0 *C.GtkBorder // out

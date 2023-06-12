@@ -93,11 +93,11 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - matchFunc (optional): function to filter items.
+//   - matchFunc (optional): function to filter items.
 //
 // The function returns the following values:
 //
-//    - customFilter: new GtkCustomFilter.
+//   - customFilter: new GtkCustomFilter.
 //
 func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 	var _arg1 C.GtkCustomFilterFunc // out
@@ -132,7 +132,7 @@ func NewCustomFilter(matchFunc CustomFilterFunc) *CustomFilter {
 //
 // The function takes the following parameters:
 //
-//    - matchFunc (optional): function to filter items.
+//   - matchFunc (optional): function to filter items.
 //
 func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 	var _arg0 *C.GtkCustomFilter    // out

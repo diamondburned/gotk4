@@ -81,20 +81,20 @@ type FileOutputStreamOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - utf8 (optional): entity tag for the stream.
+	//   - utf8 (optional): entity tag for the stream.
 	//
 	ETag func() string
 	// QueryInfo queries a file output stream for the given attributes. This
 	// function blocks while querying the stream. For the asynchronous version
-	// of this function, see g_file_output_stream_query_info_async(). While the
-	// stream is blocked, the stream will set the pending flag internally, and
-	// any other operations on the stream will fail with G_IO_ERROR_PENDING.
+	// of this function, see g_file_output_stream_query_info_async(). While
+	// the stream is blocked, the stream will set the pending flag internally,
+	// and any other operations on the stream will fail with G_IO_ERROR_PENDING.
 	//
 	// Can fail if the stream was already closed (with error being set to
 	// G_IO_ERROR_CLOSED), the stream has pending operations (with error being
 	// set to G_IO_ERROR_PENDING), or if querying info is not supported for the
-	// stream's interface (with error being set to G_IO_ERROR_NOT_SUPPORTED). In
-	// all cases of failure, NULL will be returned.
+	// stream's interface (with error being set to G_IO_ERROR_NOT_SUPPORTED).
+	// In all cases of failure, NULL will be returned.
 	//
 	// If cancellable is not NULL, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
@@ -103,12 +103,12 @@ type FileOutputStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - attributes: file attribute query string.
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - attributes: file attribute query string.
 	//
 	// The function returns the following values:
 	//
-	//    - fileInfo for the stream, or NULL on error.
+	//   - fileInfo for the stream, or NULL on error.
 	//
 	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error)
 	// QueryInfoFinish finalizes the asynchronous query started by
@@ -116,18 +116,18 @@ type FileOutputStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - fileInfo for the finished query.
+	//   - fileInfo for the finished query.
 	//
 	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error)
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional)
-	//    - offset
-	//    - typ
+	//   - ctx (optional)
+	//   - offset
+	//   - typ
 	//
 	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
 	// The function returns the following values:
@@ -135,8 +135,8 @@ type FileOutputStreamOverrides struct {
 	Tell func() int64
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional)
-	//    - size
+	//   - ctx (optional)
+	//   - size
 	//
 	TruncateFn func(ctx context.Context, size int64) error
 }
@@ -250,7 +250,7 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): entity tag for the stream.
+//   - utf8 (optional): entity tag for the stream.
 //
 func (stream *FileOutputStream) ETag() string {
 	var _arg0 *C.GFileOutputStream // out
@@ -289,12 +289,12 @@ func (stream *FileOutputStream) ETag() string {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - attributes: file attribute query string.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
 //
 // The function returns the following values:
 //
-//    - fileInfo for the stream, or NULL on error.
+//   - fileInfo for the stream, or NULL on error.
 //
 func (stream *FileOutputStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
@@ -337,10 +337,10 @@ func (stream *FileOutputStream) QueryInfo(ctx context.Context, attributes string
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - attributes: file attribute query string.
-//    - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *FileOutputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileOutputStream  // out
@@ -377,11 +377,11 @@ func (stream *FileOutputStream) QueryInfoAsync(ctx context.Context, attributes s
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - fileInfo for the finished query.
+//   - fileInfo for the finished query.
 //
 func (stream *FileOutputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
@@ -459,7 +459,7 @@ func (stream *FileOutputStream) canTruncate() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): entity tag for the stream.
+//   - utf8 (optional): entity tag for the stream.
 //
 func (stream *FileOutputStream) eTag() string {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -501,12 +501,12 @@ func (stream *FileOutputStream) eTag() string {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - attributes: file attribute query string.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
 //
 // The function returns the following values:
 //
-//    - fileInfo for the stream, or NULL on error.
+//   - fileInfo for the stream, or NULL on error.
 //
 func (stream *FileOutputStream) queryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -552,10 +552,10 @@ func (stream *FileOutputStream) queryInfo(ctx context.Context, attributes string
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - attributes: file attribute query string.
-//    - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *FileOutputStream) queryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -595,11 +595,11 @@ func (stream *FileOutputStream) queryInfoAsync(ctx context.Context, attributes s
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - fileInfo for the finished query.
+//   - fileInfo for the finished query.
 //
 func (stream *FileOutputStream) queryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -630,9 +630,9 @@ func (stream *FileOutputStream) queryInfoFinish(result AsyncResulter) (*FileInfo
 
 // The function takes the following parameters:
 //
-//    - ctx (optional)
-//    - offset
-//    - typ
+//   - ctx (optional)
+//   - offset
+//   - typ
 //
 func (stream *FileOutputStream) seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
@@ -691,8 +691,8 @@ func (stream *FileOutputStream) tell() int64 {
 
 // The function takes the following parameters:
 //
-//    - ctx (optional)
-//    - size
+//   - ctx (optional)
+//   - size
 //
 func (stream *FileOutputStream) truncateFn(ctx context.Context, size int64) error {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))

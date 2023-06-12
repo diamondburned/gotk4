@@ -32,8 +32,8 @@ func init() {
 	})
 }
 
-// Calendar: GtkCalendar is a widget that displays a Gregorian calendar, one
-// month at a time.
+// Calendar: GtkCalendar is a widget that displays a Gregorian calendar,
+// one month at a time.
 //
 // !An example GtkCalendar (calendar.png)
 //
@@ -65,7 +65,6 @@ func init() {
 //    │   ╰── button
 //    ╰── grid
 //        ╰── label[.day-name][.week-number][.day-number][.other-month][.today]
-//
 //
 // GtkCalendar has a main node with name calendar. It contains a subnode called
 // header containing the widgets for switching between years and months.
@@ -140,7 +139,7 @@ func (calendar *Calendar) ConnectPrevYear(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - calendar: newly GtkCalendar widget.
+//   - calendar: newly GtkCalendar widget.
 //
 func NewCalendar() *Calendar {
 	var _cret *C.GtkWidget // in
@@ -170,7 +169,7 @@ func (calendar *Calendar) ClearMarks() {
 //
 // The function returns the following values:
 //
-//    - dateTime: GDate representing the shown date.
+//   - dateTime: GDate representing the shown date.
 //
 func (self *Calendar) Date() *glib.DateTime {
 	var _arg0 *C.GtkCalendar // out
@@ -198,11 +197,11 @@ func (self *Calendar) Date() *glib.DateTime {
 //
 // The function takes the following parameters:
 //
-//    - day number between 1 and 31.
+//   - day number between 1 and 31.
 //
 // The function returns the following values:
 //
-//    - ok: whether the day is marked.
+//   - ok: whether the day is marked.
 //
 func (calendar *Calendar) DayIsMarked(day uint) bool {
 	var _arg0 *C.GtkCalendar // out
@@ -232,7 +231,7 @@ func (calendar *Calendar) DayIsMarked(day uint) bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the calendar shows day names.
+//   - ok: whether the calendar shows day names.
 //
 func (self *Calendar) ShowDayNames() bool {
 	var _arg0 *C.GtkCalendar // out
@@ -258,7 +257,7 @@ func (self *Calendar) ShowDayNames() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the calendar is showing a heading.
+//   - ok: whether the calendar is showing a heading.
 //
 func (self *Calendar) ShowHeading() bool {
 	var _arg0 *C.GtkCalendar // out
@@ -284,7 +283,7 @@ func (self *Calendar) ShowHeading() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the calendar is showing week numbers.
+//   - ok: whether the calendar is showing week numbers.
 //
 func (self *Calendar) ShowWeekNumbers() bool {
 	var _arg0 *C.GtkCalendar // out
@@ -308,7 +307,7 @@ func (self *Calendar) ShowWeekNumbers() bool {
 //
 // The function takes the following parameters:
 //
-//    - day number to mark between 1 and 31.
+//   - day number to mark between 1 and 31.
 //
 func (calendar *Calendar) MarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out
@@ -326,7 +325,7 @@ func (calendar *Calendar) MarkDay(day uint) {
 //
 // The function takes the following parameters:
 //
-//    - date representing the day to select.
+//   - date representing the day to select.
 //
 func (self *Calendar) SelectDay(date *glib.DateTime) {
 	var _arg0 *C.GtkCalendar // out
@@ -344,7 +343,7 @@ func (self *Calendar) SelectDay(date *glib.DateTime) {
 //
 // The function takes the following parameters:
 //
-//    - value: whether to show day names above the day numbers.
+//   - value: whether to show day names above the day numbers.
 //
 func (self *Calendar) SetShowDayNames(value bool) {
 	var _arg0 *C.GtkCalendar // out
@@ -367,7 +366,7 @@ func (self *Calendar) SetShowDayNames(value bool) {
 //
 // The function takes the following parameters:
 //
-//    - value: whether to show the heading in the calendar.
+//   - value: whether to show the heading in the calendar.
 //
 func (self *Calendar) SetShowHeading(value bool) {
 	var _arg0 *C.GtkCalendar // out
@@ -387,7 +386,7 @@ func (self *Calendar) SetShowHeading(value bool) {
 //
 // The function takes the following parameters:
 //
-//    - value: whether to show week numbers on the left of the days.
+//   - value: whether to show week numbers on the left of the days.
 //
 func (self *Calendar) SetShowWeekNumbers(value bool) {
 	var _arg0 *C.GtkCalendar // out
@@ -407,7 +406,7 @@ func (self *Calendar) SetShowWeekNumbers(value bool) {
 //
 // The function takes the following parameters:
 //
-//    - day number to unmark between 1 and 31.
+//   - day number to unmark between 1 and 31.
 //
 func (calendar *Calendar) UnmarkDay(day uint) {
 	var _arg0 *C.GtkCalendar // out

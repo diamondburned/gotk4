@@ -20,13 +20,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: Pixbuf.
-//    - scale of the new surface, or 0 to use same as window.
-//    - forWindow (optional): window this will be drawn to, or NULL.
+//   - pixbuf: Pixbuf.
+//   - scale of the new surface, or 0 to use same as window.
+//   - forWindow (optional): window this will be drawn to, or NULL.
 //
 // The function returns the following values:
 //
-//    - surface: new cairo surface, must be freed with cairo_surface_destroy().
+//   - surface: new cairo surface, must be freed with cairo_surface_destroy().
 //
 func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow Windower) *cairo.Surface {
 	var _arg1 *C.GdkPixbuf       // out

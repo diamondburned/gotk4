@@ -2,10 +2,828 @@
 
 package gio
 
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+)
+
 // #include <stdlib.h>
 // #include <gio/gio.h>
+// #include <glib-object.h>
+// extern void _gotk4_gio2_SettingsBackendClass_unsubscribe(GSettingsBackend*, gchar*);
+// extern void _gotk4_gio2_SettingsBackendClass_sync(GSettingsBackend*);
+// extern void _gotk4_gio2_SettingsBackendClass_subscribe(GSettingsBackend*, gchar*);
+// extern void _gotk4_gio2_SettingsBackendClass_reset(GSettingsBackend*, gchar*, gpointer);
+// extern gboolean _gotk4_gio2_SettingsBackendClass_write_tree(GSettingsBackend*, GTree*, gpointer);
+// extern gboolean _gotk4_gio2_SettingsBackendClass_write(GSettingsBackend*, gchar*, GVariant*, gpointer);
+// extern gboolean _gotk4_gio2_SettingsBackendClass_get_writable(GSettingsBackend*, gchar*);
+// extern GVariant* _gotk4_gio2_SettingsBackendClass_read_user_value(GSettingsBackend*, gchar*, GVariantType*);
+// extern GVariant* _gotk4_gio2_SettingsBackendClass_read(GSettingsBackend*, gchar*, GVariantType*, gboolean);
+// GVariant* _gotk4_gio2_SettingsBackend_virtual_read(void* fnptr, GSettingsBackend* arg0, gchar* arg1, GVariantType* arg2, gboolean arg3) {
+//   return ((GVariant* (*)(GSettingsBackend*, gchar*, GVariantType*, gboolean))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// GVariant* _gotk4_gio2_SettingsBackend_virtual_read_user_value(void* fnptr, GSettingsBackend* arg0, gchar* arg1, GVariantType* arg2) {
+//   return ((GVariant* (*)(GSettingsBackend*, gchar*, GVariantType*))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_gio2_SettingsBackend_virtual_get_writable(void* fnptr, GSettingsBackend* arg0, gchar* arg1) {
+//   return ((gboolean (*)(GSettingsBackend*, gchar*))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_gio2_SettingsBackend_virtual_write(void* fnptr, GSettingsBackend* arg0, gchar* arg1, GVariant* arg2, gpointer arg3) {
+//   return ((gboolean (*)(GSettingsBackend*, gchar*, GVariant*, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_gio2_SettingsBackend_virtual_write_tree(void* fnptr, GSettingsBackend* arg0, GTree* arg1, gpointer arg2) {
+//   return ((gboolean (*)(GSettingsBackend*, GTree*, gpointer))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gio2_SettingsBackend_virtual_reset(void* fnptr, GSettingsBackend* arg0, gchar* arg1, gpointer arg2) {
+//   ((void (*)(GSettingsBackend*, gchar*, gpointer))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_gio2_SettingsBackend_virtual_subscribe(void* fnptr, GSettingsBackend* arg0, gchar* arg1) {
+//   ((void (*)(GSettingsBackend*, gchar*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_SettingsBackend_virtual_sync(void* fnptr, GSettingsBackend* arg0) {
+//   ((void (*)(GSettingsBackend*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_SettingsBackend_virtual_unsubscribe(void* fnptr, GSettingsBackend* arg0, gchar* arg1) {
+//   ((void (*)(GSettingsBackend*, gchar*))(fnptr))(arg0, arg1);
+// };
 import "C"
+
+// GType values.
+var (
+	GTypeSettingsBackend = coreglib.Type(C.g_settings_backend_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeSettingsBackend, F: marshalSettingsBackend},
+	})
+}
 
 // SETTINGS_BACKEND_EXTENSION_POINT_NAME: extension point for Backend
 // functionality.
 const SETTINGS_BACKEND_EXTENSION_POINT_NAME = "gsettings-backend"
+
+// NewKeyfileSettingsBackend creates a keyfile-backed Backend.
+//
+// The filename of the keyfile to use is given by filename.
+//
+// All settings read to or written from the backend must fall under the path
+// given in root_path (which must start and end with a slash and not contain two
+// consecutive slashes). root_path may be "/".
+//
+// If root_group is non-NULL then it specifies the name of the keyfile group
+// used for keys that are written directly below root_path. For example,
+// if root_path is "/apps/example/" and root_group is "toplevel", then settings
+// the key "/apps/example/enabled" to a value of TRUE will cause the following
+// to appear in the keyfile:
+//
+//    [toplevel]
+//    enabled=true
+//
+// If root_group is NULL then it is not permitted to store keys directly below
+// the root_path.
+//
+// For keys not stored directly below root_path (ie: in a sub-path),
+// the name of the subpath (with the final slash stripped) is used
+// as the name of the keyfile group. To continue the example, if
+// "/apps/example/profiles/default/font-size" were set to 12 then the following
+// would appear in the keyfile:
+//
+//    [profiles/default]
+//    font-size=12
+//
+// The backend will refuse writes (and return writability as being FALSE)
+// for keys outside of root_path and, in the event that root_group is NULL,
+// also for keys directly under root_path. Writes will also be refused if
+// the backend detects that it has the inability to rewrite the keyfile (ie:
+// the containing directory is not writable).
+//
+// There is no checking done for your key namespace clashing with the syntax of
+// the key file format. For example, if you have '[' or ']' characters in your
+// path names or '=' in your key names you may be in trouble.
+//
+// The backend reads default values from a keyfile called defaults in the
+// directory specified by the SettingsBackend:defaults-dir property, and a list
+// of locked keys from a text file with the name locks in the same location.
+//
+// The function takes the following parameters:
+//
+//   - filename of the keyfile.
+//   - rootPath: path under which all settings keys appear.
+//   - rootGroup (optional): group name corresponding to root_path, or NULL.
+//
+// The function returns the following values:
+//
+//   - settingsBackend: keyfile-backed Backend.
+//
+func NewKeyfileSettingsBackend(filename, rootPath, rootGroup string) SettingsBackender {
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.gchar            // out
+	var _arg3 *C.gchar            // out
+	var _cret *C.GSettingsBackend // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(rootPath)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if rootGroup != "" {
+		_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(rootGroup)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+
+	_cret = C.g_keyfile_settings_backend_new(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(filename)
+	runtime.KeepAlive(rootPath)
+	runtime.KeepAlive(rootGroup)
+
+	var _settingsBackend SettingsBackender // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.SettingsBackender is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(SettingsBackender)
+			return ok
+		})
+		rv, ok := casted.(SettingsBackender)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.SettingsBackender")
+		}
+		_settingsBackend = rv
+	}
+
+	return _settingsBackend
+}
+
+// SettingsBackendOverrides contains methods that are overridable.
+type SettingsBackendOverrides struct {
+	// The function takes the following parameters:
+	//
+	// The function returns the following values:
+	//
+	Writable func(key string) bool
+	// The function takes the following parameters:
+	//
+	//   - key
+	//   - expectedType
+	//   - defaultValue
+	//
+	// The function returns the following values:
+	//
+	Read func(key string, expectedType *glib.VariantType, defaultValue bool) *glib.Variant
+	// The function takes the following parameters:
+	//
+	//   - key
+	//   - expectedType
+	//
+	// The function returns the following values:
+	//
+	ReadUserValue func(key string, expectedType *glib.VariantType) *glib.Variant
+	// The function takes the following parameters:
+	//
+	//   - key
+	//   - originTag (optional)
+	//
+	Reset func(key string, originTag unsafe.Pointer)
+	// The function takes the following parameters:
+	//
+	Subscribe func(name string)
+	Sync      func()
+	// The function takes the following parameters:
+	//
+	Unsubscribe func(name string)
+	// The function takes the following parameters:
+	//
+	//   - key
+	//   - value
+	//   - originTag (optional)
+	//
+	// The function returns the following values:
+	//
+	Write func(key string, value *glib.Variant, originTag unsafe.Pointer) bool
+	// The function takes the following parameters:
+	//
+	//   - tree
+	//   - originTag (optional)
+	//
+	// The function returns the following values:
+	//
+	WriteTree func(tree *glib.Tree, originTag unsafe.Pointer) bool
+}
+
+func defaultSettingsBackendOverrides(v *SettingsBackend) SettingsBackendOverrides {
+	return SettingsBackendOverrides{
+		Writable:      v.writable,
+		Read:          v.read,
+		ReadUserValue: v.readUserValue,
+		Reset:         v.reset,
+		Subscribe:     v.subscribe,
+		Sync:          v.sync,
+		Unsubscribe:   v.unsubscribe,
+		Write:         v.write,
+		WriteTree:     v.writeTree,
+	}
+}
+
+// SettingsBackend interface defines a generic interface for non-strictly-typed
+// data that is stored in a hierarchy. To implement an alternative storage
+// backend for #GSettings, you need to implement the Backend interface and then
+// make it implement the extension point SETTINGS_BACKEND_EXTENSION_POINT_NAME.
+//
+// The interface defines methods for reading and writing values, a method for
+// determining if writing of certain values will fail (lockdown) and a change
+// notification mechanism.
+//
+// The semantics of the interface are very precisely defined and implementations
+// must carefully adhere to the expectations of callers that are documented on
+// each of the interface methods.
+//
+// Some of the Backend functions accept or return a #GTree.
+// These trees always have strings as keys and #GVariant as values.
+// g_settings_backend_create_tree() is a convenience function to create suitable
+// trees.
+//
+// The Backend API is exported to allow third-party implementations,
+// but does not carry the same stability guarantees as the public GIO API.
+// For this reason, you have to define the C preprocessor symbol
+// G_SETTINGS_ENABLE_BACKEND before including gio/gsettingsbackend.h.
+type SettingsBackend struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*SettingsBackend)(nil)
+)
+
+// SettingsBackender describes types inherited from class SettingsBackend.
+//
+// To get the original type, the caller must assert this to an interface or
+// another type.
+type SettingsBackender interface {
+	coreglib.Objector
+	baseSettingsBackend() *SettingsBackend
+}
+
+var _ SettingsBackender = (*SettingsBackend)(nil)
+
+func init() {
+	coreglib.RegisterClassInfo[*SettingsBackend, *SettingsBackendClass, SettingsBackendOverrides](
+		GTypeSettingsBackend,
+		initSettingsBackendClass,
+		wrapSettingsBackend,
+		defaultSettingsBackendOverrides,
+	)
+}
+
+func initSettingsBackendClass(gclass unsafe.Pointer, overrides SettingsBackendOverrides, classInitFunc func(*SettingsBackendClass)) {
+	pclass := (*C.GSettingsBackendClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSettingsBackend))))
+
+	if overrides.Writable != nil {
+		pclass.get_writable = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_get_writable)
+	}
+
+	if overrides.Read != nil {
+		pclass.read = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_read)
+	}
+
+	if overrides.ReadUserValue != nil {
+		pclass.read_user_value = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_read_user_value)
+	}
+
+	if overrides.Reset != nil {
+		pclass.reset = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_reset)
+	}
+
+	if overrides.Subscribe != nil {
+		pclass.subscribe = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_subscribe)
+	}
+
+	if overrides.Sync != nil {
+		pclass.sync = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_sync)
+	}
+
+	if overrides.Unsubscribe != nil {
+		pclass.unsubscribe = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_unsubscribe)
+	}
+
+	if overrides.Write != nil {
+		pclass.write = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_write)
+	}
+
+	if overrides.WriteTree != nil {
+		pclass.write_tree = (*[0]byte)(C._gotk4_gio2_SettingsBackendClass_write_tree)
+	}
+
+	if classInitFunc != nil {
+		class := (*SettingsBackendClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapSettingsBackend(obj *coreglib.Object) *SettingsBackend {
+	return &SettingsBackend{
+		Object: obj,
+	}
+}
+
+func marshalSettingsBackend(p uintptr) (interface{}, error) {
+	return wrapSettingsBackend(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func (backend *SettingsBackend) baseSettingsBackend() *SettingsBackend {
+	return backend
+}
+
+// BaseSettingsBackend returns the underlying base object.
+func BaseSettingsBackend(obj SettingsBackender) *SettingsBackend {
+	return obj.baseSettingsBackend()
+}
+
+// Changed signals that a single key has possibly changed. Backend
+// implementations should call this if a key has possibly changed its value.
+//
+// key must be a valid key (ie starting with a slash, not containing '//',
+// and not ending with a slash).
+//
+// The implementation must call this function during any call to
+// g_settings_backend_write(), before the call returns (except in the case that
+// no keys are actually changed and it cares to detect this fact). It may not
+// rely on the existence of a mainloop for dispatching the signal later.
+//
+// The implementation may call this function at any other time it likes in
+// response to other events (such as changes occurring outside of the program).
+// These calls may originate from a mainloop or may originate in response to any
+// other action (including from calls to g_settings_backend_write()).
+//
+// In the case that this call is in response to a call to
+// g_settings_backend_write() then origin_tag must be set to the same value that
+// was passed to that call.
+//
+// The function takes the following parameters:
+//
+//   - key: name of the key.
+//   - originTag (optional): origin tag.
+//
+func (backend *SettingsBackend) Changed(key string, originTag unsafe.Pointer) {
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gpointer          // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.gpointer)(unsafe.Pointer(originTag))
+
+	C.g_settings_backend_changed(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(originTag)
+}
+
+// ChangedTree: this call is a convenience wrapper. It gets the list
+// of changes from tree, computes the longest common prefix and calls
+// g_settings_backend_changed().
+//
+// The function takes the following parameters:
+//
+//   - tree containing the changes.
+//   - originTag (optional): origin tag.
+//
+func (backend *SettingsBackend) ChangedTree(tree *glib.Tree, originTag unsafe.Pointer) {
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.GTree            // out
+	var _arg2 C.gpointer          // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
+	_arg2 = (C.gpointer)(unsafe.Pointer(originTag))
+
+	C.g_settings_backend_changed_tree(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(tree)
+	runtime.KeepAlive(originTag)
+}
+
+// KeysChanged signals that a list of keys have possibly changed. Backend
+// implementations should call this if keys have possibly changed their values.
+//
+// path must be a valid path (ie starting and ending with a slash and not
+// containing '//'). Each string in items must form a valid key name when path
+// is prefixed to it (ie: each item must not start or end with '/' and must not
+// contain '//').
+//
+// The meaning of this signal is that any of the key names resulting from the
+// contatenation of path with each item in items may have changed.
+//
+// The same rules for when notifications must occur apply as per
+// g_settings_backend_changed(). These two calls can be used
+// interchangeably if exactly one item has changed (although in that case
+// g_settings_backend_changed() is definitely preferred).
+//
+// For efficiency reasons, the implementation should strive for path to be as
+// long as possible (ie: the longest common prefix of all of the keys that were
+// changed) but this is not strictly required.
+//
+// The function takes the following parameters:
+//
+//   - path containing the changes.
+//   - items: NULL-terminated list of changed keys.
+//   - originTag (optional): origin tag.
+//
+func (backend *SettingsBackend) KeysChanged(path string, items []string, originTag unsafe.Pointer) {
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 **C.gchar           // out
+	var _arg3 C.gpointer          // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		_arg2 = (**C.gchar)(C.calloc(C.size_t((len(items) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg2))
+		{
+			out := unsafe.Slice(_arg2, len(items)+1)
+			var zero *C.gchar
+			out[len(items)] = zero
+			for i := range items {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(items[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+	_arg3 = (C.gpointer)(unsafe.Pointer(originTag))
+
+	C.g_settings_backend_keys_changed(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(items)
+	runtime.KeepAlive(originTag)
+}
+
+// PathChanged signals that all keys below a given path may have possibly
+// changed. Backend implementations should call this if an entire path of keys
+// have possibly changed their values.
+//
+// path must be a valid path (ie starting and ending with a slash and not
+// containing '//').
+//
+// The meaning of this signal is that any of the key which has a name starting
+// with path may have changed.
+//
+// The same rules for when notifications must occur apply as per
+// g_settings_backend_changed(). This call might be an appropriate reasponse to
+// a 'reset' call but implementations are also free to explicitly list the keys
+// that were affected by that call if they can easily do so.
+//
+// For efficiency reasons, the implementation should strive for path to be as
+// long as possible (ie: the longest common prefix of all of the keys that were
+// changed) but this is not strictly required. As an example, if this function
+// is called with the path of "/" then every single key in the application will
+// be notified of a possible change.
+//
+// The function takes the following parameters:
+//
+//   - path containing the changes.
+//   - originTag (optional): origin tag.
+//
+func (backend *SettingsBackend) PathChanged(path string, originTag unsafe.Pointer) {
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gpointer          // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.gpointer)(unsafe.Pointer(originTag))
+
+	C.g_settings_backend_path_changed(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(originTag)
+}
+
+// PathWritableChanged signals that the writability of all keys below a given
+// path may have changed.
+//
+// Since GSettings performs no locking operations for itself, this call will
+// always be made in response to external events.
+//
+// The function takes the following parameters:
+//
+//   - path: name of the path.
+//
+func (backend *SettingsBackend) PathWritableChanged(path string) {
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.g_settings_backend_path_writable_changed(_arg0, _arg1)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(path)
+}
+
+// WritableChanged signals that the writability of a single key has possibly
+// changed.
+//
+// Since GSettings performs no locking operations for itself, this call will
+// always be made in response to external events.
+//
+// The function takes the following parameters:
+//
+//   - key: name of the key.
+//
+func (backend *SettingsBackend) WritableChanged(key string) {
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.g_settings_backend_writable_changed(_arg0, _arg1)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(key)
+}
+
+// The function takes the following parameters:
+//
+// The function returns the following values:
+//
+func (backend *SettingsBackend) writable(key string) bool {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.get_writable
+
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_gio2_SettingsBackend_virtual_get_writable(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(key)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//   - key
+//   - expectedType
+//   - defaultValue
+//
+// The function returns the following values:
+//
+func (backend *SettingsBackend) read(key string, expectedType *glib.VariantType, defaultValue bool) *glib.Variant {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.read
+
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.GVariantType     // out
+	var _arg3 C.gboolean          // out
+	var _cret *C.GVariant         // in
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+	if defaultValue {
+		_arg3 = C.TRUE
+	}
+
+	_cret = C._gotk4_gio2_SettingsBackend_virtual_read(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(expectedType)
+	runtime.KeepAlive(defaultValue)
+
+	var _variant *glib.Variant // out
+
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	return _variant
+}
+
+// The function takes the following parameters:
+//
+//   - key
+//   - expectedType
+//
+// The function returns the following values:
+//
+func (backend *SettingsBackend) readUserValue(key string, expectedType *glib.VariantType) *glib.Variant {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.read_user_value
+
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.GVariantType     // out
+	var _cret *C.GVariant         // in
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(expectedType)))
+
+	_cret = C._gotk4_gio2_SettingsBackend_virtual_read_user_value(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(expectedType)
+
+	var _variant *glib.Variant // out
+
+	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_variant)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	return _variant
+}
+
+// The function takes the following parameters:
+//
+//   - key
+//   - originTag (optional)
+//
+func (backend *SettingsBackend) reset(key string, originTag unsafe.Pointer) {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.reset
+
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gpointer          // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.gpointer)(unsafe.Pointer(originTag))
+
+	C._gotk4_gio2_SettingsBackend_virtual_reset(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(originTag)
+}
+
+// The function takes the following parameters:
+//
+func (backend *SettingsBackend) subscribe(name string) {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.subscribe
+
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gio2_SettingsBackend_virtual_subscribe(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(name)
+}
+
+func (backend *SettingsBackend) sync() {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.sync
+
+	var _arg0 *C.GSettingsBackend // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+
+	C._gotk4_gio2_SettingsBackend_virtual_sync(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(backend)
+}
+
+// The function takes the following parameters:
+//
+func (backend *SettingsBackend) unsubscribe(name string) {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.unsubscribe
+
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_gio2_SettingsBackend_virtual_unsubscribe(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(name)
+}
+
+// The function takes the following parameters:
+//
+//   - key
+//   - value
+//   - originTag (optional)
+//
+// The function returns the following values:
+//
+func (backend *SettingsBackend) write(key string, value *glib.Variant, originTag unsafe.Pointer) bool {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.write
+
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.GVariant         // out
+	var _arg3 C.gpointer          // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(key)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(value)))
+	_arg3 = (C.gpointer)(unsafe.Pointer(originTag))
+
+	_cret = C._gotk4_gio2_SettingsBackend_virtual_write(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(key)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(originTag)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//   - tree
+//   - originTag (optional)
+//
+// The function returns the following values:
+//
+func (backend *SettingsBackend) writeTree(tree *glib.Tree, originTag unsafe.Pointer) bool {
+	gclass := (*C.GSettingsBackendClass)(coreglib.PeekParentClass(backend))
+	fnarg := gclass.write_tree
+
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.GTree            // out
+	var _arg2 C.gpointer          // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(coreglib.InternObject(backend).Native()))
+	_arg1 = (*C.GTree)(gextras.StructNative(unsafe.Pointer(tree)))
+	_arg2 = (C.gpointer)(unsafe.Pointer(originTag))
+
+	_cret = C._gotk4_gio2_SettingsBackend_virtual_write_tree(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(backend)
+	runtime.KeepAlive(tree)
+	runtime.KeepAlive(originTag)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SettingsBackendClass class structure for Backend.
+//
+// An instance of this type is always passed by reference.
+type SettingsBackendClass struct {
+	*settingsBackendClass
+}
+
+// settingsBackendClass is the struct that's finalized.
+type settingsBackendClass struct {
+	native *C.GSettingsBackendClass
+}

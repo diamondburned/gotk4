@@ -53,8 +53,8 @@ func defaultDirectoryListOverrides(v *DirectoryList) DirectoryListOverrides {
 // set to give more indication about the failure.
 //
 // The GFileInfos returned from a GtkDirectoryList have the "standard::file"
-// attribute set to the GFile they refer to. This way you can get at the file
-// that is referred to in the same way you would via
+// attribute set to the GFile they refer to. This way you can get
+// at the file that is referred to in the same way you would via
 // g_file_enumerator_get_child(). This means you do not need access to the
 // GtkDirectoryList, but can access the GFile directly from the GFileInfo when
 // operating with a GtkListView or similar.
@@ -104,12 +104,12 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - attributes (optional) to query with.
-//    - file (optional) to query.
+//   - attributes (optional) to query with.
+//   - file (optional) to query.
 //
 // The function returns the following values:
 //
-//    - directoryList: new GtkDirectoryList.
+//   - directoryList: new GtkDirectoryList.
 //
 func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 	var _arg1 *C.char             // out
@@ -139,7 +139,7 @@ func NewDirectoryList(attributes string, file gio.Filer) *DirectoryList {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): queried attributes.
+//   - utf8 (optional): queried attributes.
 //
 func (self *DirectoryList) Attributes() string {
 	var _arg0 *C.GtkDirectoryList // out
@@ -170,7 +170,7 @@ func (self *DirectoryList) Attributes() string {
 //
 // The function returns the following values:
 //
-//    - err (optional): loading error or NULL if loading finished successfully.
+//   - err (optional): loading error or NULL if loading finished successfully.
 //
 func (self *DirectoryList) Error() error {
 	var _arg0 *C.GtkDirectoryList // out
@@ -194,7 +194,7 @@ func (self *DirectoryList) Error() error {
 //
 // The function returns the following values:
 //
-//    - file (optional) whose children are enumerated.
+//   - file (optional) whose children are enumerated.
 //
 func (self *DirectoryList) File() *gio.File {
 	var _arg0 *C.GtkDirectoryList // out
@@ -223,7 +223,7 @@ func (self *DirectoryList) File() *gio.File {
 //
 // The function returns the following values:
 //
-//    - gint: IO priority.
+//   - gint: IO priority.
 //
 func (self *DirectoryList) IOPriority() int {
 	var _arg0 *C.GtkDirectoryList // out
@@ -246,7 +246,7 @@ func (self *DirectoryList) IOPriority() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the directory is monitored.
+//   - ok: TRUE if the directory is monitored.
 //
 func (self *DirectoryList) Monitored() bool {
 	var _arg0 *C.GtkDirectoryList // out
@@ -268,12 +268,12 @@ func (self *DirectoryList) Monitored() bool {
 
 // IsLoading returns TRUE if the children enumeration is currently in progress.
 //
-// Files will be added to self from time to time while loading is going on. The
-// order in which are added is undefined and may change in between runs.
+// Files will be added to self from time to time while loading is going on.
+// The order in which are added is undefined and may change in between runs.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self is loading.
+//   - ok: TRUE if self is loading.
 //
 func (self *DirectoryList) IsLoading() bool {
 	var _arg0 *C.GtkDirectoryList // out
@@ -301,7 +301,7 @@ func (self *DirectoryList) IsLoading() bool {
 //
 // The function takes the following parameters:
 //
-//    - attributes (optional) to enumerate.
+//   - attributes (optional) to enumerate.
 //
 func (self *DirectoryList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkDirectoryList // out
@@ -324,7 +324,7 @@ func (self *DirectoryList) SetAttributes(attributes string) {
 //
 // The function takes the following parameters:
 //
-//    - file (optional) to be enumerated.
+//   - file (optional) to be enumerated.
 //
 func (self *DirectoryList) SetFile(file gio.Filer) {
 	var _arg0 *C.GtkDirectoryList // out
@@ -345,14 +345,14 @@ func (self *DirectoryList) SetFile(file gio.Filer) {
 // Setting the priority while self is loading will reprioritize the ongoing load
 // as soon as possible.
 //
-// The default IO priority is G_PRIORITY_DEFAULT, which is higher than the GTK
-// redraw priority. If you are loading a lot of directories in parallel,
+// The default IO priority is G_PRIORITY_DEFAULT, which is higher than the
+// GTK redraw priority. If you are loading a lot of directories in parallel,
 // lowering it to something like G_PRIORITY_DEFAULT_IDLE may increase
 // responsiveness.
 //
 // The function takes the following parameters:
 //
-//    - ioPriority: IO priority to use.
+//   - ioPriority: IO priority to use.
 //
 func (self *DirectoryList) SetIOPriority(ioPriority int) {
 	var _arg0 *C.GtkDirectoryList // out
@@ -376,7 +376,7 @@ func (self *DirectoryList) SetIOPriority(ioPriority int) {
 //
 // The function takes the following parameters:
 //
-//    - monitored: TRUE to monitor the directory for changes.
+//   - monitored: TRUE to monitor the directory for changes.
 //
 func (self *DirectoryList) SetMonitored(monitored bool) {
 	var _arg0 *C.GtkDirectoryList // out

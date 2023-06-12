@@ -16,15 +16,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - envp (optional): an environment list (eg, as returned from
-//      g_get_environ()), or NULL for an empty environment list.
-//    - variable: environment variable to get.
+//   - envp (optional): an environment list (eg, as returned from
+//     g_get_environ()), or NULL for an empty environment list.
+//   - variable: environment variable to get.
 //
 // The function returns the following values:
 //
-//    - filename: value of the environment variable, or NULL if the environment
-//      variable is not set in envp. The returned string is owned by envp, and
-//      will be freed if variable is set or unset again.
+//   - filename: value of the environment variable, or NULL if the environment
+//     variable is not set in envp. The returned string is owned by envp,
+//     and will be freed if variable is set or unset again.
 //
 func EnvironGetenv(envp []string, variable string) string {
 	var _arg1 **C.gchar // out
@@ -63,16 +63,16 @@ func EnvironGetenv(envp []string, variable string) string {
 //
 // The function takes the following parameters:
 //
-//    - envp (optional): an environment list that can be freed using g_strfreev()
-//      (e.g., as returned from g_get_environ()), or NULL for an empty
-//      environment list.
-//    - variable: environment variable to set, must not contain '='.
-//    - value for to set the variable to.
-//    - overwrite: whether to change the variable if it already exists.
+//   - envp (optional): an environment list that can be freed using g_strfreev()
+//     (e.g., as returned from g_get_environ()), or NULL for an empty
+//     environment list.
+//   - variable: environment variable to set, must not contain '='.
+//   - value for to set the variable to.
+//   - overwrite: whether to change the variable if it already exists.
 //
 // The function returns the following values:
 //
-//    - filenames: the updated environment list. Free it using g_strfreev().
+//   - filenames: the updated environment list. Free it using g_strfreev().
 //
 func EnvironSetenv(envp []string, variable, value string, overwrite bool) []string {
 	var _arg1 **C.gchar  // out
@@ -132,14 +132,14 @@ func EnvironSetenv(envp []string, variable, value string, overwrite bool) []stri
 //
 // The function takes the following parameters:
 //
-//    - envp (optional): an environment list that can be freed using g_strfreev()
-//      (e.g., as returned from g_get_environ()), or NULL for an empty
-//      environment list.
-//    - variable: environment variable to remove, must not contain '='.
+//   - envp (optional): an environment list that can be freed using g_strfreev()
+//     (e.g., as returned from g_get_environ()), or NULL for an empty
+//     environment list.
+//   - variable: environment variable to remove, must not contain '='.
 //
 // The function returns the following values:
 //
-//    - filenames: the updated environment list. Free it using g_strfreev().
+//   - filenames: the updated environment list. Free it using g_strfreev().
 //
 func EnvironUnsetenv(envp []string, variable string) []string {
 	var _arg1 **C.gchar // out

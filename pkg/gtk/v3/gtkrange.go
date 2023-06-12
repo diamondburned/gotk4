@@ -65,8 +65,8 @@ type RangeOverrides struct {
 	AdjustBounds func(newValue float64)
 	// The function takes the following parameters:
 	//
-	//    - scroll
-	//    - newValue
+	//   - scroll
+	//   - newValue
 	//
 	// The function returns the following values:
 	//
@@ -76,9 +76,9 @@ type RangeOverrides struct {
 	RangeBorder func(border_ *Border)
 	// The function takes the following parameters:
 	//
-	//    - orientation
-	//    - minimum
-	//    - natural
+	//   - orientation
+	//   - minimum
+	//   - natural
 	//
 	RangeSizeRequest func(orientation Orientation, minimum, natural *int)
 	// The function takes the following parameters:
@@ -98,12 +98,12 @@ func defaultRangeOverrides(v *Range) RangeOverrides {
 	}
 }
 
-// Range is the common base class for widgets which visualize an adjustment, e.g
-// Scale or Scrollbar.
+// Range is the common base class for widgets which visualize an adjustment,
+// e.g Scale or Scrollbar.
 //
-// Apart from signals for monitoring the parameters of the adjustment, Range
-// provides properties and methods for influencing the sensitivity of the
-// “steppers”. It also provides properties and methods for setting a “fill
+// Apart from signals for monitoring the parameters of the adjustment,
+// Range provides properties and methods for influencing the sensitivity of
+// the “steppers”. It also provides properties and methods for setting a “fill
 // level” on range widgets. See gtk_range_set_fill_level().
 type Range struct {
 	_ [0]func() // equal guard
@@ -237,13 +237,13 @@ func (_range *Range) ConnectValueChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(_range, "value-changed", false, unsafe.Pointer(C._gotk4_gtk3_Range_ConnectValueChanged), f)
 }
 
-// Adjustment: get the Adjustment which is the “model” object for Range. See
-// gtk_range_set_adjustment() for details. The return value does not have a
+// Adjustment: get the Adjustment which is the “model” object for Range.
+// See gtk_range_set_adjustment() for details. The return value does not have a
 // reference added, so should not be unreferenced.
 //
 // The function returns the following values:
 //
-//    - adjustment: Adjustment.
+//   - adjustment: Adjustment.
 //
 func (_range *Range) Adjustment() *Adjustment {
 	var _arg0 *C.GtkRange      // out
@@ -265,7 +265,7 @@ func (_range *Range) Adjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - gdouble: current fill level.
+//   - gdouble: current fill level.
 //
 func (_range *Range) FillLevel() float64 {
 	var _arg0 *C.GtkRange // out
@@ -287,7 +287,7 @@ func (_range *Range) FillLevel() float64 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the range is flippable.
+//   - ok: TRUE if the range is flippable.
 //
 func (_range *Range) Flippable() bool {
 	var _arg0 *C.GtkRange // out
@@ -311,7 +311,7 @@ func (_range *Range) Flippable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the range is inverted.
+//   - ok: TRUE if the range is inverted.
 //
 func (_range *Range) Inverted() bool {
 	var _arg0 *C.GtkRange // out
@@ -336,7 +336,7 @@ func (_range *Range) Inverted() bool {
 //
 // The function returns the following values:
 //
-//    - sensitivityType: lower stepper’s sensitivity policy.
+//   - sensitivityType: lower stepper’s sensitivity policy.
 //
 func (_range *Range) LowerStepperSensitivity() SensitivityType {
 	var _arg0 *C.GtkRange          // out
@@ -362,7 +362,7 @@ func (_range *Range) LowerStepperSensitivity() SensitivityType {
 //
 // The function returns the following values:
 //
-//    - gint: minimum size of the range’s slider.
+//   - gint: minimum size of the range’s slider.
 //
 func (_range *Range) MinSliderSize() int {
 	var _arg0 *C.GtkRange // out
@@ -387,7 +387,7 @@ func (_range *Range) MinSliderSize() int {
 //
 // The function returns the following values:
 //
-//    - rangeRect: return location for the range rectangle.
+//   - rangeRect: return location for the range rectangle.
 //
 func (_range *Range) RangeRect() *gdk.Rectangle {
 	var _arg0 *C.GtkRange    // out
@@ -409,7 +409,7 @@ func (_range *Range) RangeRect() *gdk.Rectangle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if range is restricted to the fill level.
+//   - ok: TRUE if range is restricted to the fill level.
 //
 func (_range *Range) RestrictToFillLevel() bool {
 	var _arg0 *C.GtkRange // out
@@ -434,7 +434,7 @@ func (_range *Range) RestrictToFillLevel() bool {
 //
 // The function returns the following values:
 //
-//    - gint: number of digits to round to.
+//   - gint: number of digits to round to.
 //
 func (_range *Range) RoundDigits() int {
 	var _arg0 *C.GtkRange // out
@@ -456,7 +456,7 @@ func (_range *Range) RoundDigits() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if range shows the fill level.
+//   - ok: TRUE if range shows the fill level.
 //
 func (_range *Range) ShowFillLevel() bool {
 	var _arg0 *C.GtkRange // out
@@ -476,15 +476,15 @@ func (_range *Range) ShowFillLevel() bool {
 	return _ok
 }
 
-// SliderRange: this function returns sliders range along the long dimension, in
-// widget->window coordinates.
+// SliderRange: this function returns sliders range along the long dimension,
+// in widget->window coordinates.
 //
 // This function is useful mainly for Range subclasses.
 //
 // The function returns the following values:
 //
-//    - sliderStart (optional): return location for the slider's start, or NULL.
-//    - sliderEnd (optional): return location for the slider's end, or NULL.
+//   - sliderStart (optional): return location for the slider's start, or NULL.
+//   - sliderEnd (optional): return location for the slider's end, or NULL.
 //
 func (_range *Range) SliderRange() (sliderStart, sliderEnd int) {
 	var _arg0 *C.GtkRange // out
@@ -511,7 +511,7 @@ func (_range *Range) SliderRange() (sliderStart, sliderEnd int) {
 //
 // The function returns the following values:
 //
-//    - ok: whether the range’s slider has a fixed size.
+//   - ok: whether the range’s slider has a fixed size.
 //
 func (_range *Range) SliderSizeFixed() bool {
 	var _arg0 *C.GtkRange // out
@@ -536,7 +536,7 @@ func (_range *Range) SliderSizeFixed() bool {
 //
 // The function returns the following values:
 //
-//    - sensitivityType: upper stepper’s sensitivity policy.
+//   - sensitivityType: upper stepper’s sensitivity policy.
 //
 func (_range *Range) UpperStepperSensitivity() SensitivityType {
 	var _arg0 *C.GtkRange          // out
@@ -558,7 +558,7 @@ func (_range *Range) UpperStepperSensitivity() SensitivityType {
 //
 // The function returns the following values:
 //
-//    - gdouble: current value of the range.
+//   - gdouble: current value of the range.
 //
 func (_range *Range) Value() float64 {
 	var _arg0 *C.GtkRange // out
@@ -576,17 +576,17 @@ func (_range *Range) Value() float64 {
 	return _gdouble
 }
 
-// SetAdjustment sets the adjustment to be used as the “model” object for this
-// range widget. The adjustment indicates the current range value, the minimum
-// and maximum range values, the step/page increments used for keybindings and
-// scrolling, and the page size. The page size is normally 0 for Scale and
-// nonzero for Scrollbar, and indicates the size of the visible area of the
-// widget being scrolled. The page size affects the size of the scrollbar
+// SetAdjustment sets the adjustment to be used as the “model” object for
+// this range widget. The adjustment indicates the current range value,
+// the minimum and maximum range values, the step/page increments used for
+// keybindings and scrolling, and the page size. The page size is normally 0 for
+// Scale and nonzero for Scrollbar, and indicates the size of the visible area
+// of the widget being scrolled. The page size affects the size of the scrollbar
 // slider.
 //
 // The function takes the following parameters:
 //
-//    - adjustment: Adjustment.
+//   - adjustment: Adjustment.
 //
 func (_range *Range) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkRange      // out
@@ -608,18 +608,18 @@ func (_range *Range) SetAdjustment(adjustment *Adjustment) {
 // play position, and the fill level would be the position up to which the
 // file/stream has been downloaded.
 //
-// This amount of prebuffering can be displayed on the range’s trough and is
-// themeable separately from the trough. To enable fill level display, use
-// gtk_range_set_show_fill_level(). The range defaults to not showing the fill
-// level.
+// This amount of prebuffering can be displayed on the range’s trough and
+// is themeable separately from the trough. To enable fill level display,
+// use gtk_range_set_show_fill_level(). The range defaults to not showing the
+// fill level.
 //
-// Additionally, it’s possible to restrict the range’s slider position to values
-// which are smaller than the fill level. This is controller by
+// Additionally, it’s possible to restrict the range’s slider position
+// to values which are smaller than the fill level. This is controller by
 // gtk_range_set_restrict_to_fill_level() and is by default enabled.
 //
 // The function takes the following parameters:
 //
-//    - fillLevel: new position of the fill level indicator.
+//   - fillLevel: new position of the fill level indicator.
 //
 func (_range *Range) SetFillLevel(fillLevel float64) {
 	var _arg0 *C.GtkRange // out
@@ -640,7 +640,7 @@ func (_range *Range) SetFillLevel(fillLevel float64) {
 //
 // The function takes the following parameters:
 //
-//    - flippable: TRUE to make the range flippable.
+//   - flippable: TRUE to make the range flippable.
 //
 func (_range *Range) SetFlippable(flippable bool) {
 	var _arg0 *C.GtkRange // out
@@ -662,8 +662,8 @@ func (_range *Range) SetFlippable(flippable bool) {
 //
 // The function takes the following parameters:
 //
-//    - step size.
-//    - page size.
+//   - step size.
+//   - page size.
 //
 func (_range *Range) SetIncrements(step, page float64) {
 	var _arg0 *C.GtkRange // out
@@ -686,7 +686,7 @@ func (_range *Range) SetIncrements(step, page float64) {
 //
 // The function takes the following parameters:
 //
-//    - setting: TRUE to invert the range.
+//   - setting: TRUE to invert the range.
 //
 func (_range *Range) SetInverted(setting bool) {
 	var _arg0 *C.GtkRange // out
@@ -707,7 +707,7 @@ func (_range *Range) SetInverted(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - sensitivity: lower stepper’s sensitivity policy.
+//   - sensitivity: lower stepper’s sensitivity policy.
 //
 func (_range *Range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
 	var _arg0 *C.GtkRange          // out
@@ -729,7 +729,7 @@ func (_range *Range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
 //
 // The function takes the following parameters:
 //
-//    - minSize slider’s minimum size.
+//   - minSize slider’s minimum size.
 //
 func (_range *Range) SetMinSliderSize(minSize int) {
 	var _arg0 *C.GtkRange // out
@@ -743,14 +743,14 @@ func (_range *Range) SetMinSliderSize(minSize int) {
 	runtime.KeepAlive(minSize)
 }
 
-// SetRange sets the allowable values in the Range, and clamps the range value
-// to be between min and max. (If the range has a non-zero page size, it is
-// clamped between min and max - page-size.).
+// SetRange sets the allowable values in the Range, and clamps the range
+// value to be between min and max. (If the range has a non-zero page size,
+// it is clamped between min and max - page-size.).
 //
 // The function takes the following parameters:
 //
-//    - min: minimum range value.
-//    - max: maximum range value.
+//   - min: minimum range value.
+//   - max: maximum range value.
 //
 func (_range *Range) SetRange(min, max float64) {
 	var _arg0 *C.GtkRange // out
@@ -773,7 +773,7 @@ func (_range *Range) SetRange(min, max float64) {
 //
 // The function takes the following parameters:
 //
-//    - restrictToFillLevel: whether the fill level restricts slider movement.
+//   - restrictToFillLevel: whether the fill level restricts slider movement.
 //
 func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 	var _arg0 *C.GtkRange // out
@@ -794,7 +794,7 @@ func (_range *Range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 //
 // The function takes the following parameters:
 //
-//    - roundDigits: precision in digits, or -1.
+//   - roundDigits: precision in digits, or -1.
 //
 func (_range *Range) SetRoundDigits(roundDigits int) {
 	var _arg0 *C.GtkRange // out
@@ -814,7 +814,7 @@ func (_range *Range) SetRoundDigits(roundDigits int) {
 //
 // The function takes the following parameters:
 //
-//    - showFillLevel: whether a fill level indicator graphics is shown.
+//   - showFillLevel: whether a fill level indicator graphics is shown.
 //
 func (_range *Range) SetShowFillLevel(showFillLevel bool) {
 	var _arg0 *C.GtkRange // out
@@ -837,7 +837,7 @@ func (_range *Range) SetShowFillLevel(showFillLevel bool) {
 //
 // The function takes the following parameters:
 //
-//    - sizeFixed: TRUE to make the slider size constant.
+//   - sizeFixed: TRUE to make the slider size constant.
 //
 func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
 	var _arg0 *C.GtkRange // out
@@ -858,7 +858,7 @@ func (_range *Range) SetSliderSizeFixed(sizeFixed bool) {
 //
 // The function takes the following parameters:
 //
-//    - sensitivity: upper stepper’s sensitivity policy.
+//   - sensitivity: upper stepper’s sensitivity policy.
 //
 func (_range *Range) SetUpperStepperSensitivity(sensitivity SensitivityType) {
 	var _arg0 *C.GtkRange          // out
@@ -873,12 +873,12 @@ func (_range *Range) SetUpperStepperSensitivity(sensitivity SensitivityType) {
 }
 
 // SetValue sets the current value of the range; if the value is outside the
-// minimum or maximum range values, it will be clamped to fit inside them. The
-// range emits the Range::value-changed signal if the value changes.
+// minimum or maximum range values, it will be clamped to fit inside them.
+// The range emits the Range::value-changed signal if the value changes.
 //
 // The function takes the following parameters:
 //
-//    - value: new value of the range.
+//   - value: new value of the range.
 //
 func (_range *Range) SetValue(value float64) {
 	var _arg0 *C.GtkRange // out
@@ -911,8 +911,8 @@ func (_range *Range) adjustBounds(newValue float64) {
 
 // The function takes the following parameters:
 //
-//    - scroll
-//    - newValue
+//   - scroll
+//   - newValue
 //
 // The function returns the following values:
 //
@@ -962,9 +962,9 @@ func (_range *Range) rangeBorder(border_ *Border) {
 
 // The function takes the following parameters:
 //
-//    - orientation
-//    - minimum
-//    - natural
+//   - orientation
+//   - minimum
+//   - natural
 //
 func (_range *Range) rangeSizeRequest(orientation Orientation, minimum, natural *int) {
 	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))

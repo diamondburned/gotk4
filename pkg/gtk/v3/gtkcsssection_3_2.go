@@ -116,17 +116,17 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 	return &CSSSection{&cssSection{(*C.GtkCssSection)(b)}}, nil
 }
 
-// EndLine returns the line in the CSS document where this section end. The line
-// number is 0-indexed, so the first line of the document will return 0. This
-// value may change in future invocations of this function if section is not yet
-// parsed completely. This will for example happen in the
+// EndLine returns the line in the CSS document where this section end.
+// The line number is 0-indexed, so the first line of the document will
+// return 0. This value may change in future invocations of this function if
+// section is not yet parsed completely. This will for example happen in the
 // GtkCssProvider::parsing-error signal. The end position and line may be
 // identical to the start position and line for sections which failed to parse
 // anything successfully.
 //
 // The function returns the following values:
 //
-//    - guint: line number.
+//   - guint: line number.
 //
 func (section *CSSSection) EndLine() uint {
 	var _arg0 *C.GtkCssSection // out
@@ -146,14 +146,14 @@ func (section *CSSSection) EndLine() uint {
 
 // EndPosition returns the offset in bytes from the start of the current line
 // returned via gtk_css_section_get_end_line(). This value may change in future
-// invocations of this function if section is not yet parsed completely. This
-// will for example happen in the GtkCssProvider::parsing-error signal. The end
-// position and line may be identical to the start position and line for
+// invocations of this function if section is not yet parsed completely.
+// This will for example happen in the GtkCssProvider::parsing-error signal.
+// The end position and line may be identical to the start position and line for
 // sections which failed to parse anything successfully.
 //
 // The function returns the following values:
 //
-//    - guint: offset in bytes from the start of the line.
+//   - guint: offset in bytes from the start of the line.
 //
 func (section *CSSSection) EndPosition() uint {
 	var _arg0 *C.GtkCssSection // out
@@ -171,14 +171,14 @@ func (section *CSSSection) EndPosition() uint {
 	return _guint
 }
 
-// File gets the file that section was parsed from. If no such file exists, for
-// example because the CSS was loaded via gtk_css_provider_load_from_data(),
+// File gets the file that section was parsed from. If no such file exists,
+// for example because the CSS was loaded via gtk_css_provider_load_from_data(),
 // then NULL is returned.
 //
 // The function returns the following values:
 //
-//    - file that section was parsed from or NULL if section was parsed from
-//      other data.
+//   - file that section was parsed from or NULL if section was parsed from
+//     other data.
 //
 func (section *CSSSection) File() *gio.File {
 	var _arg0 *C.GtkCssSection // out
@@ -210,7 +210,7 @@ func (section *CSSSection) File() *gio.File {
 //
 // The function returns the following values:
 //
-//    - cssSection (optional): parent section or NULL if none.
+//   - cssSection (optional): parent section or NULL if none.
 //
 func (section *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
@@ -241,7 +241,7 @@ func (section *CSSSection) Parent() *CSSSection {
 //
 // The function returns the following values:
 //
-//    - cssSectionType: type of section.
+//   - cssSectionType: type of section.
 //
 func (section *CSSSection) SectionType() CSSSectionType {
 	var _arg0 *C.GtkCssSection    // out
@@ -264,7 +264,7 @@ func (section *CSSSection) SectionType() CSSSectionType {
 //
 // The function returns the following values:
 //
-//    - guint: line number.
+//   - guint: line number.
 //
 func (section *CSSSection) StartLine() uint {
 	var _arg0 *C.GtkCssSection // out
@@ -287,7 +287,7 @@ func (section *CSSSection) StartLine() uint {
 //
 // The function returns the following values:
 //
-//    - guint: offset in bytes from the start of the line.
+//   - guint: offset in bytes from the start of the line.
 //
 func (section *CSSSection) StartPosition() uint {
 	var _arg0 *C.GtkCssSection // out

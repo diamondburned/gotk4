@@ -16,16 +16,16 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// DeviceGrabAdd adds a GTK+ grab on device, so all the events on device and its
-// associated pointer or keyboard (if any) are delivered to widget. If the
+// DeviceGrabAdd adds a GTK+ grab on device, so all the events on device and
+// its associated pointer or keyboard (if any) are delivered to widget. If the
 // block_others parameter is TRUE, any other devices will be unable to interact
 // with widget during the grab.
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
-//    - device to grab on.
-//    - blockOthers: TRUE to prevent other devices to interact with widget.
+//   - widget: Widget.
+//   - device to grab on.
+//   - blockOthers: TRUE to prevent other devices to interact with widget.
 //
 func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 	var _arg1 *C.GtkWidget // out
@@ -50,8 +50,8 @@ func DeviceGrabAdd(widget Widgetter, device gdk.Devicer, blockOthers bool) {
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
-//    - device: Device.
+//   - widget: Widget.
+//   - device: Device.
 //
 func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 	var _arg1 *C.GtkWidget // out
@@ -71,7 +71,7 @@ func DeviceGrabRemove(widget Widgetter, device gdk.Devicer) {
 //
 // The function returns the following values:
 //
-//    - guint: binary age of the GTK+ library.
+//   - guint: binary age of the GTK+ library.
 //
 func GetBinaryAge() uint {
 	var _cret C.guint // in
@@ -91,7 +91,7 @@ func GetBinaryAge() uint {
 //
 // The function returns the following values:
 //
-//    - guint: interface age of the GTK+ library.
+//   - guint: interface age of the GTK+ library.
 //
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
@@ -115,7 +115,7 @@ func GetInterfaceAge() uint {
 //
 // The function returns the following values:
 //
-//    - guint: major version number of the GTK+ library.
+//   - guint: major version number of the GTK+ library.
 //
 func GetMajorVersion() uint {
 	var _cret C.guint // in
@@ -132,14 +132,14 @@ func GetMajorVersion() uint {
 // GetMicroVersion returns the micro version number of the GTK+ library. (e.g.
 // in GTK+ version 3.1.5 this is 5.)
 //
-// This function is in the library, so it represents the GTK+ library your code
-// is are running against. Contrast with the K_MICRO_VERSION macro, which
-// represents the micro version of the GTK+ headers you have included when
+// This function is in the library, so it represents the GTK+ library your
+// code is are running against. Contrast with the K_MICRO_VERSION macro,
+// which represents the micro version of the GTK+ headers you have included when
 // compiling your code.
 //
 // The function returns the following values:
 //
-//    - guint: micro version number of the GTK+ library.
+//   - guint: micro version number of the GTK+ library.
 //
 func GetMicroVersion() uint {
 	var _cret C.guint // in
@@ -156,14 +156,14 @@ func GetMicroVersion() uint {
 // GetMinorVersion returns the minor version number of the GTK+ library. (e.g.
 // in GTK+ version 3.1.5 this is 1.)
 //
-// This function is in the library, so it represents the GTK+ library your code
-// is are running against. Contrast with the K_MINOR_VERSION macro, which
-// represents the minor version of the GTK+ headers you have included when
+// This function is in the library, so it represents the GTK+ library your
+// code is are running against. Contrast with the K_MINOR_VERSION macro,
+// which represents the minor version of the GTK+ headers you have included when
 // compiling your code.
 //
 // The function returns the following values:
 //
-//    - guint: minor version number of the GTK+ library.
+//   - guint: minor version number of the GTK+ library.
 //
 func GetMinorVersion() uint {
 	var _cret C.guint // in

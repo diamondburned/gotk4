@@ -42,18 +42,18 @@ func defaultArrowOverrides(v *Arrow) ArrowOverrides {
 // can be one of shadow in, shadow out, etched in, or etched out. Note that
 // these directions and style types may be amended in versions of GTK+ to come.
 //
-// GtkArrow will fill any space alloted to it, but since it is inherited from
-// Misc, it can be padded and/or aligned, to fill exactly the space the
+// GtkArrow will fill any space alloted to it, but since it is inherited
+// from Misc, it can be padded and/or aligned, to fill exactly the space the
 // programmer desires.
 //
 // Arrows are created with a call to gtk_arrow_new(). The direction or style of
 // an arrow can be changed after creation by using gtk_arrow_set().
 //
-// GtkArrow has been deprecated; you can simply use a Image with a suitable icon
-// name, such as “pan-down-symbolic“. When replacing GtkArrow by an image, pay
-// attention to the fact that GtkArrow is doing automatic flipping between
-// K_ARROW_LEFT and K_ARROW_RIGHT, depending on the text direction. To get the
-// same effect with an image, use the icon names “pan-start-symbolic“ and
+// GtkArrow has been deprecated; you can simply use a Image with a suitable
+// icon name, such as “pan-down-symbolic“. When replacing GtkArrow by an image,
+// pay attention to the fact that GtkArrow is doing automatic flipping between
+// K_ARROW_LEFT and K_ARROW_RIGHT, depending on the text direction. To get
+// the same effect with an image, use the icon names “pan-start-symbolic“ and
 // “pan-end-symbolic“, which react to the text direction.
 type Arrow struct {
 	_ [0]func() // equal guard
@@ -109,12 +109,12 @@ func marshalArrow(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - arrowType: valid ArrowType.
-//    - shadowType: valid ShadowType.
+//   - arrowType: valid ArrowType.
+//   - shadowType: valid ShadowType.
 //
 // The function returns the following values:
 //
-//    - arrow: new Arrow widget.
+//   - arrow: new Arrow widget.
 //
 func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 	var _arg1 C.GtkArrowType  // out
@@ -141,8 +141,8 @@ func NewArrow(arrowType ArrowType, shadowType ShadowType) *Arrow {
 //
 // The function takes the following parameters:
 //
-//    - arrowType: valid ArrowType.
-//    - shadowType: valid ShadowType.
+//   - arrowType: valid ArrowType.
+//   - shadowType: valid ShadowType.
 //
 func (arrow *Arrow) Set(arrowType ArrowType, shadowType ShadowType) {
 	var _arg0 *C.GtkArrow     // out

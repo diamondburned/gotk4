@@ -62,9 +62,9 @@ func (d DevicePadFeature) String() string {
 // GDK_SOURCE_TABLET_PAD, it allows querying the features provided by the pad
 // device.
 //
-// Tablet pads may contain one or more groups, each containing a subset of the
-// buttons/rings/strips available. gdk_device_pad_get_n_groups() can be used to
-// obtain the number of groups, gdk_device_pad_get_n_features() and
+// Tablet pads may contain one or more groups, each containing a subset of
+// the buttons/rings/strips available. gdk_device_pad_get_n_groups() can be
+// used to obtain the number of groups, gdk_device_pad_get_n_features() and
 // gdk_device_pad_get_feature_group() can be combined to find out the number of
 // buttons/rings/strips the device has, and how are they grouped.
 //
@@ -90,8 +90,8 @@ var (
 type DevicePadder interface {
 	coreglib.Objector
 
-	// FeatureGroup returns the group the given feature and idx belong to, or -1
-	// if feature/index do not exist in pad.
+	// FeatureGroup returns the group the given feature and idx belong to,
+	// or -1 if feature/index do not exist in pad.
 	FeatureGroup(feature DevicePadFeature, featureIdx int) int
 	// GroupNModes returns the number of modes that group may have.
 	GroupNModes(groupIdx int) int
@@ -120,12 +120,12 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - feature type to get the group from.
-//    - featureIdx: index of the feature to get the group from.
+//   - feature type to get the group from.
+//   - featureIdx: index of the feature to get the group from.
 //
 // The function returns the following values:
 //
-//    - gint: group number of the queried pad feature.
+//   - gint: group number of the queried pad feature.
 //
 func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 	var _arg0 *C.GdkDevicePad       // out
@@ -153,11 +153,11 @@ func (pad *DevicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int
 //
 // The function takes the following parameters:
 //
-//    - groupIdx: group to get the number of available modes from.
+//   - groupIdx: group to get the number of available modes from.
 //
 // The function returns the following values:
 //
-//    - gint: number of modes available in group.
+//   - gint: number of modes available in group.
 //
 func (pad *DevicePad) GroupNModes(groupIdx int) int {
 	var _arg0 *C.GdkDevicePad // out
@@ -182,11 +182,11 @@ func (pad *DevicePad) GroupNModes(groupIdx int) int {
 //
 // The function takes the following parameters:
 //
-//    - feature: pad feature.
+//   - feature: pad feature.
 //
 // The function returns the following values:
 //
-//    - gint: amount of elements of type feature that this pad has.
+//   - gint: amount of elements of type feature that this pad has.
 //
 func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
 	var _arg0 *C.GdkDevicePad       // out
@@ -213,7 +213,7 @@ func (pad *DevicePad) NFeatures(feature DevicePadFeature) int {
 //
 // The function returns the following values:
 //
-//    - gint: number of button/ring/strip groups in the pad.
+//   - gint: number of button/ring/strip groups in the pad.
 //
 func (pad *DevicePad) NGroups() int {
 	var _arg0 *C.GdkDevicePad // out

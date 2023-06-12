@@ -36,9 +36,9 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - context: PangoContext, from a pangocairo font map.
-//    - fn (optional): callback function for rendering attributes of type
-//      PANGO_ATTR_SHAPE, or NULL to disable shape rendering.
+//   - context: PangoContext, from a pangocairo font map.
+//   - fn (optional): callback function for rendering attributes of type
+//     PANGO_ATTR_SHAPE, or NULL to disable shape rendering.
 //
 func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
 	var _arg1 *C.PangoContext               // out

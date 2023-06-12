@@ -24,7 +24,7 @@ func GLContextClearCurrent() {
 //
 // The function returns the following values:
 //
-//    - glContext (optional): current GLContext, or NULL.
+//   - glContext (optional): current GLContext, or NULL.
 //
 func GLContextGetCurrent() GLContexter {
 	var _cret *C.GdkGLContext // in

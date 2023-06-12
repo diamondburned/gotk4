@@ -68,11 +68,11 @@ func NewBoxAlloc() *Box {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_box_t.
+//   - b: #graphene_box_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the box is contained in the given box.
+//   - ok: true if the box is contained in the given box.
 //
 func (a *Box) ContainsBox(b *Box) bool {
 	var _arg0 *C.graphene_box_t // out
@@ -99,11 +99,11 @@ func (a *Box) ContainsBox(b *Box) bool {
 //
 // The function takes the following parameters:
 //
-//    - point coordinates to check.
+//   - point coordinates to check.
 //
 // The function returns the following values:
 //
-//    - ok: true if the point is contained in the given box.
+//   - ok: true if the point is contained in the given box.
 //
 func (box *Box) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_box_t     // out
@@ -130,11 +130,11 @@ func (box *Box) ContainsPoint(point *Point3D) bool {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_box_t.
+//   - b: #graphene_box_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the boxes are equal.
+//   - ok: true if the boxes are equal.
 //
 func (a *Box) Equal(b *Box) bool {
 	var _arg0 *C.graphene_box_t // out
@@ -161,11 +161,11 @@ func (a *Box) Equal(b *Box) bool {
 //
 // The function takes the following parameters:
 //
-//    - point coordinates of the point to include.
+//   - point coordinates of the point to include.
 //
 // The function returns the following values:
 //
-//    - res: return location for the expanded box.
+//   - res: return location for the expanded box.
 //
 func (box *Box) Expand(point *Point3D) *Box {
 	var _arg0 *C.graphene_box_t     // out
@@ -193,11 +193,11 @@ func (box *Box) Expand(point *Point3D) *Box {
 //
 // The function takes the following parameters:
 //
-//    - scalar value.
+//   - scalar value.
 //
 // The function returns the following values:
 //
-//    - res: return location for the expanded box.
+//   - res: return location for the expanded box.
 //
 func (box *Box) ExpandScalar(scalar float32) *Box {
 	var _arg0 *C.graphene_box_t // out
@@ -223,11 +223,11 @@ func (box *Box) ExpandScalar(scalar float32) *Box {
 //
 // The function takes the following parameters:
 //
-//    - vec coordinates of the point to include, as a #graphene_vec3_t.
+//   - vec coordinates of the point to include, as a #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the expanded box.
+//   - res: return location for the expanded box.
 //
 func (box *Box) ExpandVec3(vec *Vec3) *Box {
 	var _arg0 *C.graphene_box_t  // out
@@ -253,7 +253,7 @@ func (box *Box) ExpandVec3(vec *Vec3) *Box {
 //
 // The function returns the following values:
 //
-//    - sphere: return location for the bounding sphere.
+//   - sphere: return location for the bounding sphere.
 //
 func (box *Box) BoundingSphere() *Sphere {
 	var _arg0 *C.graphene_box_t   // out
@@ -275,7 +275,7 @@ func (box *Box) BoundingSphere() *Sphere {
 //
 // The function returns the following values:
 //
-//    - center: return location for the coordinates of the center.
+//   - center: return location for the coordinates of the center.
 //
 func (box *Box) Center() *Point3D {
 	var _arg0 *C.graphene_box_t    // out
@@ -297,7 +297,7 @@ func (box *Box) Center() *Point3D {
 //
 // The function returns the following values:
 //
-//    - gfloat: depth of the box.
+//   - gfloat: depth of the box.
 //
 func (box *Box) Depth() float32 {
 	var _arg0 *C.graphene_box_t // out
@@ -319,7 +319,7 @@ func (box *Box) Depth() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: height of the box.
+//   - gfloat: height of the box.
 //
 func (box *Box) Height() float32 {
 	var _arg0 *C.graphene_box_t // out
@@ -342,7 +342,7 @@ func (box *Box) Height() float32 {
 //
 // The function returns the following values:
 //
-//    - max: return location for the maximum point.
+//   - max: return location for the maximum point.
 //
 func (box *Box) Max() *Point3D {
 	var _arg0 *C.graphene_box_t    // out
@@ -365,7 +365,7 @@ func (box *Box) Max() *Point3D {
 //
 // The function returns the following values:
 //
-//    - min: return location for the minimum point.
+//   - min: return location for the minimum point.
 //
 func (box *Box) Min() *Point3D {
 	var _arg0 *C.graphene_box_t    // out
@@ -388,7 +388,7 @@ func (box *Box) Min() *Point3D {
 //
 // The function returns the following values:
 //
-//    - size: return location for the size.
+//   - size: return location for the size.
 //
 func (box *Box) Size() *Vec3 {
 	var _arg0 *C.graphene_box_t // out
@@ -410,7 +410,7 @@ func (box *Box) Size() *Vec3 {
 //
 // The function returns the following values:
 //
-//    - vertices: return location for an array of 8 #graphene_vec3_t.
+//   - vertices: return location for an array of 8 #graphene_vec3_t.
 //
 func (box *Box) Vertices() [8]Vec3 {
 	var _arg0 *C.graphene_box_t    // out
@@ -437,7 +437,7 @@ func (box *Box) Vertices() [8]Vec3 {
 //
 // The function returns the following values:
 //
-//    - gfloat: width of the box.
+//   - gfloat: width of the box.
 //
 func (box *Box) Width() float32 {
 	var _arg0 *C.graphene_box_t // out
@@ -459,12 +459,12 @@ func (box *Box) Width() float32 {
 //
 // The function takes the following parameters:
 //
-//    - min (optional) coordinates of the minimum vertex.
-//    - max (optional) coordinates of the maximum vertex.
+//   - min (optional) coordinates of the minimum vertex.
+//   - max (optional) coordinates of the maximum vertex.
 //
 // The function returns the following values:
 //
-//    - ret: initialized #graphene_box_t.
+//   - ret: initialized #graphene_box_t.
 //
 func (box *Box) Init(min *Point3D, max *Point3D) *Box {
 	var _arg0 *C.graphene_box_t     // out
@@ -497,11 +497,11 @@ func (box *Box) Init(min *Point3D, max *Point3D) *Box {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_box_t.
+//   - src: #graphene_box_t.
 //
 // The function returns the following values:
 //
-//    - ret: initialized #graphene_box_t.
+//   - ret: initialized #graphene_box_t.
 //
 func (box *Box) InitFromBox(src *Box) *Box {
 	var _arg0 *C.graphene_box_t // out
@@ -529,11 +529,11 @@ func (box *Box) InitFromBox(src *Box) *Box {
 //
 // The function takes the following parameters:
 //
-//    - points: array of #graphene_point3d_t.
+//   - points: array of #graphene_point3d_t.
 //
 // The function returns the following values:
 //
-//    - ret: initialized #graphene_box_t.
+//   - ret: initialized #graphene_box_t.
 //
 func (box *Box) InitFromPoints(points []Point3D) *Box {
 	var _arg0 *C.graphene_box_t     // out
@@ -568,12 +568,12 @@ func (box *Box) InitFromPoints(points []Point3D) *Box {
 //
 // The function takes the following parameters:
 //
-//    - min (optional) coordinates of the minimum vertex.
-//    - max (optional) coordinates of the maximum vertex.
+//   - min (optional) coordinates of the minimum vertex.
+//   - max (optional) coordinates of the maximum vertex.
 //
 // The function returns the following values:
 //
-//    - ret: initialized #graphene_box_t.
+//   - ret: initialized #graphene_box_t.
 //
 func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	var _arg0 *C.graphene_box_t  // out
@@ -608,11 +608,11 @@ func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 //
 // The function takes the following parameters:
 //
-//    - vectors: array of #graphene_vec3_t.
+//   - vectors: array of #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - ret: initialized #graphene_box_t.
+//   - ret: initialized #graphene_box_t.
 //
 func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 	var _arg0 *C.graphene_box_t  // out
@@ -649,12 +649,12 @@ func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_box_t.
+//   - b: #graphene_box_t.
 //
 // The function returns the following values:
 //
-//    - res (optional): return location for the result.
-//    - ok: true if the two boxes intersect.
+//   - res (optional): return location for the result.
+//   - ok: true if the two boxes intersect.
 //
 func (a *Box) Intersection(b *Box) (*Box, bool) {
 	var _arg0 *C.graphene_box_t // out
@@ -684,11 +684,11 @@ func (a *Box) Intersection(b *Box) (*Box, bool) {
 //
 // The function takes the following parameters:
 //
-//    - b: box to union to a.
+//   - b: box to union to a.
 //
 // The function returns the following values:
 //
-//    - res: return location for the result.
+//   - res: return location for the result.
 //
 func (a *Box) Union(b *Box) *Box {
 	var _arg0 *C.graphene_box_t // out
@@ -715,7 +715,7 @@ func (a *Box) Union(b *Box) *Box {
 //
 // The function returns the following values:
 //
-//    - box: #graphene_box_t.
+//   - box: #graphene_box_t.
 //
 func BoxEmpty() *Box {
 	var _cret *C.graphene_box_t // in
@@ -735,7 +735,7 @@ func BoxEmpty() *Box {
 //
 // The function returns the following values:
 //
-//    - box: #graphene_box_t.
+//   - box: #graphene_box_t.
 //
 func BoxInfinite() *Box {
 	var _cret *C.graphene_box_t // in
@@ -756,7 +756,7 @@ func BoxInfinite() *Box {
 //
 // The function returns the following values:
 //
-//    - box: #graphene_box_t.
+//   - box: #graphene_box_t.
 //
 func BoxMinusOne() *Box {
 	var _cret *C.graphene_box_t // in
@@ -777,7 +777,7 @@ func BoxMinusOne() *Box {
 //
 // The function returns the following values:
 //
-//    - box: #graphene_box_t.
+//   - box: #graphene_box_t.
 //
 func BoxOne() *Box {
 	var _cret *C.graphene_box_t // in
@@ -798,7 +798,7 @@ func BoxOne() *Box {
 //
 // The function returns the following values:
 //
-//    - box: #graphene_box_t.
+//   - box: #graphene_box_t.
 //
 func BoxOneMinusOne() *Box {
 	var _cret *C.graphene_box_t // in
@@ -818,7 +818,7 @@ func BoxOneMinusOne() *Box {
 //
 // The function returns the following values:
 //
-//    - box: #graphene_box_t.
+//   - box: #graphene_box_t.
 //
 func BoxZero() *Box {
 	var _cret *C.graphene_box_t // in

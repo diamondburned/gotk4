@@ -87,13 +87,13 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - service type to look up (eg, "ldap").
-//    - protocol: networking protocol to use for service (eg, "tcp").
-//    - domain: DNS domain to look up the service in.
+//   - service type to look up (eg, "ldap").
+//   - protocol: networking protocol to use for service (eg, "tcp").
+//   - domain: DNS domain to look up the service in.
 //
 // The function returns the following values:
 //
-//    - networkService: new Service.
+//   - networkService: new Service.
 //
 func NewNetworkService(service, protocol, domain string) *NetworkService {
 	var _arg1 *C.gchar              // out
@@ -125,7 +125,7 @@ func NewNetworkService(service, protocol, domain string) *NetworkService {
 //
 // The function returns the following values:
 //
-//    - utf8 srv's domain name.
+//   - utf8 srv's domain name.
 //
 func (srv *NetworkService) Domain() string {
 	var _arg0 *C.GNetworkService // out
@@ -147,7 +147,7 @@ func (srv *NetworkService) Domain() string {
 //
 // The function returns the following values:
 //
-//    - utf8 srv's protocol name.
+//   - utf8 srv's protocol name.
 //
 func (srv *NetworkService) Protocol() string {
 	var _arg0 *C.GNetworkService // out
@@ -170,7 +170,7 @@ func (srv *NetworkService) Protocol() string {
 //
 // The function returns the following values:
 //
-//    - utf8 srv's scheme name.
+//   - utf8 srv's scheme name.
 //
 func (srv *NetworkService) Scheme() string {
 	var _arg0 *C.GNetworkService // out
@@ -192,7 +192,7 @@ func (srv *NetworkService) Scheme() string {
 //
 // The function returns the following values:
 //
-//    - utf8 srv's service name.
+//   - utf8 srv's service name.
 //
 func (srv *NetworkService) Service() string {
 	var _arg0 *C.GNetworkService // out
@@ -215,7 +215,7 @@ func (srv *NetworkService) Service() string {
 //
 // The function takes the following parameters:
 //
-//    - scheme: URI scheme.
+//   - scheme: URI scheme.
 //
 func (srv *NetworkService) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out

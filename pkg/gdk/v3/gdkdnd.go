@@ -157,8 +157,8 @@ func (d DragAction) Has(other DragAction) bool {
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
-//    - time_: timestamp for this operation.
+//   - context: DragContext.
+//   - time_: timestamp for this operation.
 //
 func DragAbort(context *DragContext, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
@@ -181,8 +181,8 @@ func DragAbort(context *DragContext, time_ uint32) {
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
-//    - time_: timestamp for this operation.
+//   - context: DragContext.
+//   - time_: timestamp for this operation.
 //
 func DragDrop(context *DragContext, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
@@ -206,14 +206,14 @@ func DragDrop(context *DragContext, time_ uint32) {
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
-//    - destWindow: new destination window, obtained by gdk_drag_find_window().
-//    - protocol: DND protocol in use, obtained by gdk_drag_find_window().
-//    - xRoot: x position of the pointer in root coordinates.
-//    - yRoot: y position of the pointer in root coordinates.
-//    - suggestedAction: suggested action.
-//    - possibleActions: possible actions.
-//    - time_: timestamp for this operation.
+//   - context: DragContext.
+//   - destWindow: new destination window, obtained by gdk_drag_find_window().
+//   - protocol: DND protocol in use, obtained by gdk_drag_find_window().
+//   - xRoot: x position of the pointer in root coordinates.
+//   - yRoot: y position of the pointer in root coordinates.
+//   - suggestedAction: suggested action.
+//   - possibleActions: possible actions.
+//   - time_: timestamp for this operation.
 //
 // The function returns the following values:
 //
@@ -263,10 +263,10 @@ func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
-//    - action: selected action which will be taken when a drop happens, or 0 to
-//      indicate that a drop will not be accepted.
-//    - time_: timestamp for this operation.
+//   - context: DragContext.
+//   - action: selected action which will be taken when a drop happens, or 0 to
+//     indicate that a drop will not be accepted.
+//   - time_: timestamp for this operation.
 //
 func DragStatus(context *DragContext, action DragAction, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
@@ -289,9 +289,9 @@ func DragStatus(context *DragContext, action DragAction, time_ uint32) {
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
-//    - success: TRUE if the data was successfully received.
-//    - time_: timestamp for this operation.
+//   - context: DragContext.
+//   - success: TRUE if the data was successfully received.
+//   - time_: timestamp for this operation.
 //
 func DropFinish(context *DragContext, success bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out
@@ -317,9 +317,9 @@ func DropFinish(context *DragContext, success bool, time_ uint32) {
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
-//    - accepted: TRUE if the drop is accepted.
-//    - time_: timestamp for this operation.
+//   - context: DragContext.
+//   - accepted: TRUE if the drop is accepted.
+//   - time_: timestamp for this operation.
 //
 func DropReply(context *DragContext, accepted bool, time_ uint32) {
 	var _arg1 *C.GdkDragContext // out

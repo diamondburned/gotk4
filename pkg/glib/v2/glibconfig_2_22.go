@@ -11,8 +11,8 @@ import "C"
 const GINTPTR_FORMAT = "li"
 
 // GINTPTR_MODIFIER: platform dependent length modifier for conversion
-// specifiers for scanning and printing values of type #gintptr or #guintptr. It
-// is a string literal.
+// specifiers for scanning and printing values of type #gintptr or #guintptr.
+// It is a string literal.
 const GINTPTR_MODIFIER = "l"
 
 // GUINTPTR_FORMAT: this is the platform dependent conversion specifier for

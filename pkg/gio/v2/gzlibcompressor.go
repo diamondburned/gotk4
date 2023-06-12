@@ -79,12 +79,12 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - format to use for the compressed data.
-//    - level: compression level (0-9), -1 for default.
+//   - format to use for the compressed data.
+//   - level: compression level (0-9), -1 for default.
 //
 // The function returns the following values:
 //
-//    - zlibCompressor: new Compressor.
+//   - zlibCompressor: new Compressor.
 //
 func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
@@ -109,7 +109,7 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 //
 // The function returns the following values:
 //
-//    - fileInfo (optional) or NULL.
+//   - fileInfo (optional) or NULL.
 //
 func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibCompressor // out
@@ -130,17 +130,17 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 }
 
 // SetFileInfo sets file_info in compressor. If non-NULL, and compressor's
-// Compressor:format property is G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be used
-// to set the file name and modification time in the GZIP header of the
+// Compressor:format property is G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be
+// used to set the file name and modification time in the GZIP header of the
 // compressed data.
 //
 // Note: it is an error to call this function while a compression is in
-// progress; it may only be called immediately after creation of compressor, or
-// after resetting it with g_converter_reset().
+// progress; it may only be called immediately after creation of compressor,
+// or after resetting it with g_converter_reset().
 //
 // The function takes the following parameters:
 //
-//    - fileInfo (optional): Info.
+//   - fileInfo (optional): Info.
 //
 func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 	var _arg0 *C.GZlibCompressor // out

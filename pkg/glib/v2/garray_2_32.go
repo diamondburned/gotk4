@@ -18,18 +18,18 @@ import "C"
 //
 // The purpose of a #GBytes is to keep the memory region that it holds alive for
 // as long as anyone holds a reference to the bytes. When the last reference
-// count is dropped, the memory is released. Multiple unrelated callers can use
-// byte data in the #GBytes without coordinating their activities, resting
-// assured that the byte data will not change or move while they hold a
+// count is dropped, the memory is released. Multiple unrelated callers
+// can use byte data in the #GBytes without coordinating their activities,
+// resting assured that the byte data will not change or move while they hold a
 // reference.
 //
 // A #GBytes can come from many different origins that may have different
 // procedures for freeing the memory region. Examples are memory from
 // g_malloc(), from memory slices, from a File or memory from other allocators.
 //
-// #GBytes work well as keys in Table. Use g_bytes_equal() and g_bytes_hash() as
-// parameters to g_hash_table_new() or g_hash_table_new_full(). #GBytes can also
-// be used as keys in a #GTree by passing the g_bytes_compare() function to
+// #GBytes work well as keys in Table. Use g_bytes_equal() and g_bytes_hash()
+// as parameters to g_hash_table_new() or g_hash_table_new_full(). #GBytes can
+// also be used as keys in a #GTree by passing the g_bytes_compare() function to
 // g_tree_new().
 //
 // The data pointed to by this bytes must not be modified. For a mutable array
@@ -80,18 +80,18 @@ func NewBytes(data []byte) *Bytes {
 //
 // If bytes1 and bytes2 have different length but the shorter one is a prefix of
 // the longer one then the shorter one is considered to be less than the longer
-// one. Otherwise the first byte where both differ is used for comparison. If
-// bytes1 has a smaller value at that position it is considered less, otherwise
-// greater than bytes2.
+// one. Otherwise the first byte where both differ is used for comparison.
+// If bytes1 has a smaller value at that position it is considered less,
+// otherwise greater than bytes2.
 //
 // The function takes the following parameters:
 //
-//    - bytes2: pointer to a #GBytes to compare with bytes1.
+//   - bytes2: pointer to a #GBytes to compare with bytes1.
 //
 // The function returns the following values:
 //
-//    - gint: negative value if bytes1 is less than bytes2, a positive value if
-//      bytes1 is greater than bytes2, and zero if bytes1 is equal to bytes2.
+//   - gint: negative value if bytes1 is less than bytes2, a positive value if
+//     bytes1 is greater than bytes2, and zero if bytes1 is equal to bytes2.
 //
 func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 	var _arg0 C.gconstpointer // out
@@ -120,11 +120,11 @@ func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 //
 // The function takes the following parameters:
 //
-//    - bytes2: pointer to a #GBytes to compare with bytes1.
+//   - bytes2: pointer to a #GBytes to compare with bytes1.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two keys match.
+//   - ok: TRUE if the two keys match.
 //
 func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 	var _arg0 C.gconstpointer // out
@@ -157,7 +157,7 @@ func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 //
 // The function returns the following values:
 //
-//    - guint8s (optional): a pointer to the byte data, or NULL.
+//   - guint8s (optional): a pointer to the byte data, or NULL.
 //
 func (bytes *Bytes) Data() []byte {
 	var _arg0 *C.GBytes       // out
@@ -183,7 +183,7 @@ func (bytes *Bytes) Data() []byte {
 //
 // The function returns the following values:
 //
-//    - gsize: size.
+//   - gsize: size.
 //
 func (bytes *Bytes) Size() uint {
 	var _arg0 *C.GBytes // out
@@ -208,7 +208,7 @@ func (bytes *Bytes) Size() uint {
 //
 // The function returns the following values:
 //
-//    - guint: hash value corresponding to the key.
+//   - guint: hash value corresponding to the key.
 //
 func (bytes *Bytes) Hash() uint {
 	var _arg0 C.gconstpointer // out
@@ -226,8 +226,8 @@ func (bytes *Bytes) Hash() uint {
 	return _guint
 }
 
-// NewFromBytes creates a #GBytes which is a subsection of another #GBytes. The
-// offset + length may not be longer than the size of bytes.
+// NewFromBytes creates a #GBytes which is a subsection of another #GBytes.
+// The offset + length may not be longer than the size of bytes.
 //
 // A reference to bytes will be held by the newly created #GBytes until the byte
 // data is no longer needed.
@@ -240,12 +240,12 @@ func (bytes *Bytes) Hash() uint {
 //
 // The function takes the following parameters:
 //
-//    - offset which subsection starts at.
-//    - length of subsection.
+//   - offset which subsection starts at.
+//   - length of subsection.
 //
 // The function returns the following values:
 //
-//    - ret: new #GBytes.
+//   - ret: new #GBytes.
 //
 func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
 	var _arg0 *C.GBytes // out

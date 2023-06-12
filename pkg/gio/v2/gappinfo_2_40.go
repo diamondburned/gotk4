@@ -24,7 +24,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - appInfoMonitor: reference to a InfoMonitor.
+//   - appInfoMonitor: reference to a InfoMonitor.
 //
 func AppInfoMonitorGet() *AppInfoMonitor {
 	var _cret *C.GAppInfoMonitor // in

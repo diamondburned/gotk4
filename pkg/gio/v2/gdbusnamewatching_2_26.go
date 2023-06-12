@@ -32,7 +32,7 @@ type BusNameVanishedCallback func(connection *DBusConnection, name string)
 //
 // The function takes the following parameters:
 //
-//    - watcherId: identifier obtained from g_bus_watch_name().
+//   - watcherId: identifier obtained from g_bus_watch_name().
 //
 func BusUnwatchName(watcherId uint) {
 	var _arg1 C.guint // out

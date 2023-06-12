@@ -17,7 +17,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - source (optional): currently firing source or NULL.
+//   - source (optional): currently firing source or NULL.
 //
 func MainCurrentSource() *Source {
 	var _cret *C.GSource // in

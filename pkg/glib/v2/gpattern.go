@@ -11,19 +11,19 @@ import (
 // #include <glib.h>
 import "C"
 
-// PatternMatchSimple matches a string against a pattern given as a string. If
-// this function is to be called in a loop, it's more efficient to compile the
-// pattern once with g_pattern_spec_new() and call g_pattern_match_string()
+// PatternMatchSimple matches a string against a pattern given as a string.
+// If this function is to be called in a loop, it's more efficient to compile
+// the pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 // repeatedly.
 //
 // The function takes the following parameters:
 //
-//    - pattern: UTF-8 encoded pattern.
-//    - str: UTF-8 encoded string to match.
+//   - pattern: UTF-8 encoded pattern.
+//   - str: UTF-8 encoded string to match.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if string matches pspec.
+//   - ok: TRUE if string matches pspec.
 //
 func PatternMatchSimple(pattern, str string) bool {
 	var _arg1 *C.gchar   // out

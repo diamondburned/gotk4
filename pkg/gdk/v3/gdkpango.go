@@ -29,7 +29,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - context: new Context for the default display.
+//   - context: new Context for the default display.
 //
 func PangoContextGet() *pango.Context {
 	var _cret *C.PangoContext // in

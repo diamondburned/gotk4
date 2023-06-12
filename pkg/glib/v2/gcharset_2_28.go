@@ -11,16 +11,16 @@ import (
 // #include <glib.h>
 import "C"
 
-// GetLocaleVariants returns a list of derived variants of locale, which can be
-// used to e.g. construct locale-dependent filenames or search paths. The
+// GetLocaleVariants returns a list of derived variants of locale, which can
+// be used to e.g. construct locale-dependent filenames or search paths. The
 // returned list is sorted from most desirable to least desirable. This function
 // handles territory, charset and extra locale modifiers. See setlocale(3)
 // (man:setlocale) for information about locales and their format.
 //
 // locale itself is guaranteed to be returned in the output.
 //
-// For example, if locale is fr_BE, then the returned list is fr_BE, fr. If
-// locale is en_GB.UTF-8euro, then the returned list is en_GB.UTF-8euro,
+// For example, if locale is fr_BE, then the returned list is fr_BE, fr.
+// If locale is en_GB.UTF-8euro, then the returned list is en_GB.UTF-8euro,
 // en_GB.UTF-8, en_GBeuro, en_GB, en.UTF-8euro, en.UTF-8, eneuro, en.
 //
 // If you need the list of variants for the current locale, use
@@ -28,12 +28,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - locale identifier.
+//   - locale identifier.
 //
 // The function returns the following values:
 //
-//    - utf8s: newly allocated array of newly allocated strings with the locale
-//      variants. Free with g_strfreev().
+//   - utf8s: newly allocated array of newly allocated strings with the locale
+//     variants. Free with g_strfreev().
 //
 func GetLocaleVariants(locale string) []string {
 	var _arg1 *C.gchar  // out

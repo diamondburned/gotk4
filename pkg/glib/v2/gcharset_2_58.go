@@ -11,8 +11,8 @@ import (
 // #include <glib.h>
 import "C"
 
-// GetLanguageNamesWithCategory computes a list of applicable locale names with
-// a locale category name, which can be used to construct the fallback
+// GetLanguageNamesWithCategory computes a list of applicable locale names
+// with a locale category name, which can be used to construct the fallback
 // locale-dependent filenames or search paths. The returned list is sorted from
 // most desirable to least desirable and always contains the default locale "C".
 //
@@ -24,14 +24,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - categoryName: locale category name.
+//   - categoryName: locale category name.
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings owned by the thread
-//      g_get_language_names_with_category was called from. It must not be
-//      modified or freed. It must be copied if planned to be used in another
-//      thread.
+//   - utf8s: NULL-terminated array of strings owned by the thread
+//     g_get_language_names_with_category was called from. It must not be
+//     modified or freed. It must be copied if planned to be used in another
+//     thread.
 //
 func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _arg1 *C.gchar  // out

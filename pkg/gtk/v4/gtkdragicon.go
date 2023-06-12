@@ -40,8 +40,8 @@ func defaultDragIconOverrides(v *DragIcon) DragIconOverrides {
 // A drag icon moves with the pointer during a Drag-and-Drop operation and is
 // destroyed when the drag ends.
 //
-// To set up a drag icon and associate it with an ongoing drag operation, use
-// gtk.DragIcon().GetForDrag to get the icon for a drag. You can then use it
+// To set up a drag icon and associate it with an ongoing drag operation,
+// use gtk.DragIcon().GetForDrag to get the icon for a drag. You can then use it
 // like any other widget and use gtk.DragIcon.SetChild() to set whatever widget
 // should be used for the drag icon.
 //
@@ -123,7 +123,7 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - widget (optional): drag icon or NULL if none.
+//   - widget (optional): drag icon or NULL if none.
 //
 func (self *DragIcon) Child() Widgetter {
 	var _arg0 *C.GtkDragIcon // out
@@ -160,7 +160,7 @@ func (self *DragIcon) Child() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - child (optional): GtkWidget or NULL.
+//   - child (optional): GtkWidget or NULL.
 //
 func (self *DragIcon) SetChild(child Widgetter) {
 	var _arg0 *C.GtkDragIcon // out
@@ -188,11 +188,11 @@ func (self *DragIcon) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - value: GValue.
+//   - value: GValue.
 //
 // The function returns the following values:
 //
-//    - widget (optional): new GtkWidget for displaying value as a drag icon.
+//   - widget (optional): new GtkWidget for displaying value as a drag icon.
 //
 func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
 	var _arg1 *C.GValue    // out
@@ -231,11 +231,11 @@ func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - drag: GdkDrag.
+//   - drag: GdkDrag.
 //
 // The function returns the following values:
 //
-//    - widget: GtkDragIcon.
+//   - widget: GtkDragIcon.
 //
 func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	var _arg1 *C.GdkDrag   // out
@@ -269,18 +269,18 @@ func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
 	return _widget
 }
 
-// DragIconSetFromPaintable creates a GtkDragIcon that shows paintable, and
-// associates it with the drag operation.
+// DragIconSetFromPaintable creates a GtkDragIcon that shows paintable,
+// and associates it with the drag operation.
 //
 // The hotspot position on the paintable is aligned with the hotspot of the
 // cursor.
 //
 // The function takes the following parameters:
 //
-//    - drag: GdkDrag.
-//    - paintable: GdkPaintable to display.
-//    - hotX: x coordinate of the hotspot.
-//    - hotY: y coordinate of the hotspot.
+//   - drag: GdkDrag.
+//   - paintable: GdkPaintable to display.
+//   - hotX: x coordinate of the hotspot.
+//   - hotY: y coordinate of the hotspot.
 //
 func DragIconSetFromPaintable(drag gdk.Dragger, paintable gdk.Paintabler, hotX, hotY int) {
 	var _arg1 *C.GdkDrag      // out

@@ -121,7 +121,7 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - volumeButton: new VolumeButton.
+//   - volumeButton: new VolumeButton.
 //
 func NewVolumeButton() *VolumeButton {
 	var _cret *C.GtkWidget // in

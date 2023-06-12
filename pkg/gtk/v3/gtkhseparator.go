@@ -40,9 +40,9 @@ func defaultHSeparatorOverrides(v *HSeparator) HSeparatorOverrides {
 // a window. It displays a horizontal line with a shadow to make it appear
 // sunken into the interface.
 //
-// > The HSeparator widget is not used as a separator within menus. > To create
-// a separator in a menu create an empty SeparatorMenuItem > widget using
-// gtk_separator_menu_item_new() and add it to the menu with >
+// > The HSeparator widget is not used as a separator within menus.
+// > To create a separator in a menu create an empty SeparatorMenuItem >
+// widget using gtk_separator_menu_item_new() and add it to the menu with >
 // gtk_menu_shell_append().
 //
 // GtkHSeparator has been deprecated, use Separator instead.
@@ -105,7 +105,7 @@ func marshalHSeparator(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - hSeparator: new HSeparator.
+//   - hSeparator: new HSeparator.
 //
 func NewHSeparator() *HSeparator {
 	var _cret *C.GtkWidget // in

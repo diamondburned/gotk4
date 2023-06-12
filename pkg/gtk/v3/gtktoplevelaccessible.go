@@ -76,7 +76,7 @@ func marshalToplevelAccessible(p uintptr) (interface{}, error) {
 
 // The function returns the following values:
 //
-//    - list: list of children.
+//   - list: list of children.
 //
 func (accessible *ToplevelAccessible) Children() []*Window {
 	var _arg0 *C.GtkToplevelAccessible // out

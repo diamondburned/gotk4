@@ -50,18 +50,16 @@ func defaultDropDownOverrides(v *DropDown) DropDownOverrides {
 // for other models, you have to provide an expression to find the strings via
 // gtk.DropDown.SetExpression().
 //
-// GtkDropDown can optionally allow search in the popup, which is useful if the
-// list of options is long. To enable the search entry, use
+// GtkDropDown can optionally allow search in the popup, which is useful
+// if the list of options is long. To enable the search entry, use
 // gtk.DropDown.SetEnableSearch().
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkDropDown has a single CSS node with name dropdown, with the button and
 // popover nodes as children.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkDropDown uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type DropDown struct {
@@ -120,12 +118,12 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to use or NULL for none.
-//    - expression (optional) to use or NULL for none.
+//   - model (optional) to use or NULL for none.
+//   - expression (optional) to use or NULL for none.
 //
 // The function returns the following values:
 //
-//    - dropDown: new GtkDropDown.
+//   - dropDown: new GtkDropDown.
 //
 func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 	var _arg1 *C.GListModel    // out
@@ -157,11 +155,11 @@ func NewDropDown(model gio.ListModeller, expression Expressioner) *DropDown {
 //
 // The function takes the following parameters:
 //
-//    - strings to put in the dropdown.
+//   - strings to put in the dropdown.
 //
 // The function returns the following values:
 //
-//    - dropDown: new GtkDropDown.
+//   - dropDown: new GtkDropDown.
 //
 func NewDropDownFromStrings(strings []string) *DropDown {
 	var _arg1 **C.char     // out
@@ -195,7 +193,7 @@ func NewDropDownFromStrings(strings []string) *DropDown {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the popup includes a search entry.
+//   - ok: TRUE if the popup includes a search entry.
 //
 func (self *DropDown) EnableSearch() bool {
 	var _arg0 *C.GtkDropDown // out
@@ -221,7 +219,7 @@ func (self *DropDown) EnableSearch() bool {
 //
 // The function returns the following values:
 //
-//    - expression (optional): GtkExpression or NULL.
+//   - expression (optional): GtkExpression or NULL.
 //
 func (self *DropDown) Expression() Expressioner {
 	var _arg0 *C.GtkDropDown   // out
@@ -262,7 +260,7 @@ func (self *DropDown) Expression() Expressioner {
 //
 // The function returns the following values:
 //
-//    - listItemFactory (optional): factory in use.
+//   - listItemFactory (optional): factory in use.
 //
 func (self *DropDown) Factory() *ListItemFactory {
 	var _arg0 *C.GtkDropDown        // out
@@ -287,7 +285,7 @@ func (self *DropDown) Factory() *ListItemFactory {
 //
 // The function returns the following values:
 //
-//    - listItemFactory (optional): factory in use.
+//   - listItemFactory (optional): factory in use.
 //
 func (self *DropDown) ListFactory() *ListItemFactory {
 	var _arg0 *C.GtkDropDown        // out
@@ -311,7 +309,7 @@ func (self *DropDown) ListFactory() *ListItemFactory {
 //
 // The function returns the following values:
 //
-//    - listModel (optional): model in use.
+//   - listModel (optional): model in use.
 //
 func (self *DropDown) Model() *gio.ListModel {
 	var _arg0 *C.GtkDropDown // out
@@ -340,8 +338,8 @@ func (self *DropDown) Model() *gio.ListModel {
 //
 // The function returns the following values:
 //
-//    - guint: position of the selected item, or GTK_INVALID_LIST_POSITION if not
-//      item is selected.
+//   - guint: position of the selected item, or GTK_INVALID_LIST_POSITION if not
+//     item is selected.
 //
 func (self *DropDown) Selected() uint {
 	var _arg0 *C.GtkDropDown // out
@@ -364,7 +362,7 @@ func (self *DropDown) Selected() uint {
 //
 // The function returns the following values:
 //
-//    - object (optional): selected item.
+//   - object (optional): selected item.
 //
 func (self *DropDown) SelectedItem() *coreglib.Object {
 	var _arg0 *C.GtkDropDown // out
@@ -389,7 +387,7 @@ func (self *DropDown) SelectedItem() *coreglib.Object {
 //
 // The function takes the following parameters:
 //
-//    - enableSearch: whether to enable search.
+//   - enableSearch: whether to enable search.
 //
 func (self *DropDown) SetEnableSearch(enableSearch bool) {
 	var _arg0 *C.GtkDropDown // out
@@ -413,7 +411,7 @@ func (self *DropDown) SetEnableSearch(enableSearch bool) {
 //
 // The function takes the following parameters:
 //
-//    - expression (optional): GtkExpression, or NULL.
+//   - expression (optional): GtkExpression, or NULL.
 //
 func (self *DropDown) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkDropDown   // out
@@ -433,7 +431,7 @@ func (self *DropDown) SetExpression(expression Expressioner) {
 //
 // The function takes the following parameters:
 //
-//    - factory (optional) to use or NULL for none.
+//   - factory (optional) to use or NULL for none.
 //
 func (self *DropDown) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
@@ -454,7 +452,7 @@ func (self *DropDown) SetFactory(factory *ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - factory (optional) to use or NULL for none.
+//   - factory (optional) to use or NULL for none.
 //
 func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkDropDown        // out
@@ -474,7 +472,7 @@ func (self *DropDown) SetListFactory(factory *ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to use or NULL for none.
+//   - model (optional) to use or NULL for none.
 //
 func (self *DropDown) SetModel(model gio.ListModeller) {
 	var _arg0 *C.GtkDropDown // out
@@ -494,7 +492,7 @@ func (self *DropDown) SetModel(model gio.ListModeller) {
 //
 // The function takes the following parameters:
 //
-//    - position of the item to select, or GTK_INVALID_LIST_POSITION.
+//   - position of the item to select, or GTK_INVALID_LIST_POSITION.
 //
 func (self *DropDown) SetSelected(position uint) {
 	var _arg0 *C.GtkDropDown // out

@@ -3047,6 +3047,203 @@ func _gotk4_gio2_SettingsClass_writable_changed(arg0 *C.GSettings, arg1 *C.gchar
 	overrides.WritableChanged(_key)
 }
 
+//export _gotk4_gio2_SettingsBackendClass_get_writable
+func _gotk4_gio2_SettingsBackendClass_get_writable(arg0 *C.GSettingsBackend, arg1 *C.gchar) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.Writable == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.Writable, got none")
+	}
+
+	var _key string // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := overrides.Writable(_key)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_SettingsBackendClass_read
+func _gotk4_gio2_SettingsBackendClass_read(arg0 *C.GSettingsBackend, arg1 *C.gchar, arg2 *C.GVariantType, arg3 C.gboolean) (cret *C.GVariant) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.Read == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.Read, got none")
+	}
+
+	var _key string                     // out
+	var _expectedType *glib.VariantType // out
+	var _defaultValue bool              // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	if arg3 != 0 {
+		_defaultValue = true
+	}
+
+	variant := overrides.Read(_key, _expectedType, _defaultValue)
+
+	var _ *glib.Variant
+
+	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+
+	return cret
+}
+
+//export _gotk4_gio2_SettingsBackendClass_read_user_value
+func _gotk4_gio2_SettingsBackendClass_read_user_value(arg0 *C.GSettingsBackend, arg1 *C.gchar, arg2 *C.GVariantType) (cret *C.GVariant) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.ReadUserValue == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.ReadUserValue, got none")
+	}
+
+	var _key string                     // out
+	var _expectedType *glib.VariantType // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_expectedType = (*glib.VariantType)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+
+	variant := overrides.ReadUserValue(_key, _expectedType)
+
+	var _ *glib.Variant
+
+	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+
+	return cret
+}
+
+//export _gotk4_gio2_SettingsBackendClass_reset
+func _gotk4_gio2_SettingsBackendClass_reset(arg0 *C.GSettingsBackend, arg1 *C.gchar, arg2 C.gpointer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.Reset == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.Reset, got none")
+	}
+
+	var _key string               // out
+	var _originTag unsafe.Pointer // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_originTag = (unsafe.Pointer)(unsafe.Pointer(arg2))
+
+	overrides.Reset(_key, _originTag)
+}
+
+//export _gotk4_gio2_SettingsBackendClass_subscribe
+func _gotk4_gio2_SettingsBackendClass_subscribe(arg0 *C.GSettingsBackend, arg1 *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.Subscribe == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.Subscribe, got none")
+	}
+
+	var _name string // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	overrides.Subscribe(_name)
+}
+
+//export _gotk4_gio2_SettingsBackendClass_sync
+func _gotk4_gio2_SettingsBackendClass_sync(arg0 *C.GSettingsBackend) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.Sync == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.Sync, got none")
+	}
+
+	overrides.Sync()
+}
+
+//export _gotk4_gio2_SettingsBackendClass_unsubscribe
+func _gotk4_gio2_SettingsBackendClass_unsubscribe(arg0 *C.GSettingsBackend, arg1 *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.Unsubscribe == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.Unsubscribe, got none")
+	}
+
+	var _name string // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	overrides.Unsubscribe(_name)
+}
+
+//export _gotk4_gio2_SettingsBackendClass_write
+func _gotk4_gio2_SettingsBackendClass_write(arg0 *C.GSettingsBackend, arg1 *C.gchar, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.Write == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.Write, got none")
+	}
+
+	var _key string               // out
+	var _value *glib.Variant      // out
+	var _originTag unsafe.Pointer // out
+
+	_key = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	C.g_variant_ref(arg2)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_value)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+	_originTag = (unsafe.Pointer)(unsafe.Pointer(arg3))
+
+	ok := overrides.Write(_key, _value, _originTag)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_SettingsBackendClass_write_tree
+func _gotk4_gio2_SettingsBackendClass_write_tree(arg0 *C.GSettingsBackend, arg1 *C.GTree, arg2 C.gpointer) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SettingsBackendOverrides](instance0)
+	if overrides.WriteTree == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsBackendOverrides.WriteTree, got none")
+	}
+
+	var _tree *glib.Tree          // out
+	var _originTag unsafe.Pointer // out
+
+	_tree = (*glib.Tree)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	C.g_tree_ref(arg1)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_tree)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_tree_unref((*C.GTree)(intern.C))
+		},
+	)
+	_originTag = (unsafe.Pointer)(unsafe.Pointer(arg2))
+
+	ok := overrides.WriteTree(_tree, _originTag)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_gio2_SocketAddressClass_get_family
 func _gotk4_gio2_SocketAddressClass_get_family(arg0 *C.GSocketAddress) (cret C.GSocketFamily) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))

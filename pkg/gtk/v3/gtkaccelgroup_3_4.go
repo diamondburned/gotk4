@@ -25,14 +25,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - display (optional) or NULL to use the default display.
-//    - acceleratorKey: accelerator keyval.
-//    - keycode: accelerator keycode.
-//    - acceleratorMods: accelerator modifier mask.
+//   - display (optional) or NULL to use the default display.
+//   - acceleratorKey: accelerator keyval.
+//   - keycode: accelerator keycode.
+//   - acceleratorMods: accelerator modifier mask.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string representing the accelerator.
+//   - utf8: newly-allocated string representing the accelerator.
 //
 func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
@@ -63,21 +63,21 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycod
 }
 
 // AcceleratorNameWithKeycode converts an accelerator keyval and modifier mask
-// into a string parseable by gtk_accelerator_parse_with_keycode(), similarly to
-// gtk_accelerator_name() but handling keycodes. This is only useful for
+// into a string parseable by gtk_accelerator_parse_with_keycode(), similarly
+// to gtk_accelerator_name() but handling keycodes. This is only useful for
 // system-level components, applications should use gtk_accelerator_parse()
 // instead.
 //
 // The function takes the following parameters:
 //
-//    - display (optional) or NULL to use the default display.
-//    - acceleratorKey: accelerator keyval.
-//    - keycode: accelerator keycode.
-//    - acceleratorMods: accelerator modifier mask.
+//   - display (optional) or NULL to use the default display.
+//   - acceleratorKey: accelerator keyval.
+//   - keycode: accelerator keycode.
+//   - acceleratorMods: accelerator modifier mask.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated accelerator name.
+//   - utf8: newly allocated accelerator name.
 //
 func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
@@ -108,12 +108,12 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 }
 
 // AcceleratorParseWithKeycode parses a string representing an accelerator,
-// similarly to gtk_accelerator_parse() but handles keycodes as well. This is
-// only useful for system-level components, applications should use
+// similarly to gtk_accelerator_parse() but handles keycodes as well.
+// This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
 //
-// If accelerator_codes is given and the result stored in it is non-NULL, the
-// result must be freed with g_free().
+// If accelerator_codes is given and the result stored in it is non-NULL,
+// the result must be freed with g_free().
 //
 // If a keycode is present in the accelerator and no accelerator_codes is given,
 // the parse will fail.
@@ -123,16 +123,16 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 //
 // The function takes the following parameters:
 //
-//    - accelerator: string representing an accelerator.
+//   - accelerator: string representing an accelerator.
 //
 // The function returns the following values:
 //
-//    - acceleratorKey (optional): return location for accelerator keyval, or
-//      NULL.
-//    - acceleratorCodes (optional): return location for accelerator keycodes, or
-//      NULL.
-//    - acceleratorMods (optional): return location for accelerator modifier
-//      mask, NULL.
+//   - acceleratorKey (optional): return location for accelerator keyval,
+//     or NULL.
+//   - acceleratorCodes (optional): return location for accelerator keycodes,
+//     or NULL.
+//   - acceleratorMods (optional): return location for accelerator modifier
+//     mask, NULL.
 //
 func AcceleratorParseWithKeycode(accelerator string) (uint, []uint, gdk.ModifierType) {
 	var _arg1 *C.gchar          // out

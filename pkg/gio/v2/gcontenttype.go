@@ -14,18 +14,18 @@ import (
 // #include <gio/gio.h>
 import "C"
 
-// ContentTypeCanBeExecutable checks if a content type can be executable. Note
-// that for instance things like text files can be executables (i.e. scripts and
-// batch files).
+// ContentTypeCanBeExecutable checks if a content type can be executable.
+// Note that for instance things like text files can be executables (i.e.
+// scripts and batch files).
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
+//   - typ: content type string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the file type corresponds to a type that can be executable,
-//      FALSE otherwise.
+//   - ok: TRUE if the file type corresponds to a type that can be executable,
+//     FALSE otherwise.
 //
 func ContentTypeCanBeExecutable(typ string) bool {
 	var _arg1 *C.gchar   // out
@@ -50,12 +50,12 @@ func ContentTypeCanBeExecutable(typ string) bool {
 //
 // The function takes the following parameters:
 //
-//    - type1: content type string.
-//    - type2: content type string.
+//   - type1: content type string.
+//   - type2: content type string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two strings are identical or equivalent, FALSE otherwise.
+//   - ok: TRUE if the two strings are identical or equivalent, FALSE otherwise.
 //
 func ContentTypeEquals(type1, type2 string) bool {
 	var _arg1 *C.gchar   // out
@@ -85,12 +85,12 @@ func ContentTypeEquals(type1, type2 string) bool {
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
+//   - typ: content type string.
 //
 // The function returns the following values:
 //
-//    - utf8: short description of the content type type. Free the returned
-//      string with g_free().
+//   - utf8: short description of the content type type. Free the returned
+//     string with g_free().
 //
 func ContentTypeGetDescription(typ string) string {
 	var _arg1 *C.gchar // out
@@ -114,12 +114,12 @@ func ContentTypeGetDescription(typ string) string {
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
+//   - typ: content type string.
 //
 // The function returns the following values:
 //
-//    - icon corresponding to the content type. Free the returned object with
-//      g_object_unref().
+//   - icon corresponding to the content type. Free the returned object with
+//     g_object_unref().
 //
 func ContentTypeGetIcon(typ string) *Icon {
 	var _arg1 *C.gchar // out
@@ -143,12 +143,12 @@ func ContentTypeGetIcon(typ string) *Icon {
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
+//   - typ: content type string.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): registered mime type for the given type, or NULL if
-//      unknown; free with g_free().
+//   - utf8 (optional): registered mime type for the given type, or NULL if
+//     unknown; free with g_free().
 //
 func ContentTypeGetMIMEType(typ string) string {
 	var _arg1 *C.gchar // out
@@ -177,15 +177,15 @@ func ContentTypeGetMIMEType(typ string) string {
 //
 // The function takes the following parameters:
 //
-//    - filename (optional): string, or NULL.
-//    - data (optional): stream of data, or NULL.
+//   - filename (optional): string, or NULL.
+//   - data (optional): stream of data, or NULL.
 //
 // The function returns the following values:
 //
-//    - resultUncertain (optional): return location for the certainty of the
-//      result, or NULL.
-//    - utf8: string indicating a guessed content type for the given data. Free
-//      with g_free().
+//   - resultUncertain (optional): return location for the certainty of the
+//     result, or NULL.
+//   - utf8: string indicating a guessed content type for the given data.
+//     Free with g_free().
 //
 func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _arg1 *C.gchar  // out
@@ -223,12 +223,12 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
-//    - supertype: content type string.
+//   - typ: content type string.
+//   - supertype: content type string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is a kind of supertype, FALSE otherwise.
+//   - ok: TRUE if type is a kind of supertype, FALSE otherwise.
 //
 func ContentTypeIsA(typ, supertype string) bool {
 	var _arg1 *C.gchar   // out
@@ -259,11 +259,11 @@ func ContentTypeIsA(typ, supertype string) bool {
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
+//   - typ: content type string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the type is the unknown type.
+//   - ok: TRUE if the type is the unknown type.
 //
 func ContentTypeIsUnknown(typ string) bool {
 	var _arg1 *C.gchar   // out
@@ -290,7 +290,7 @@ func ContentTypeIsUnknown(typ string) bool {
 //
 // The function returns the following values:
 //
-//    - list of the registered content types.
+//   - list of the registered content types.
 //
 func ContentTypesGetRegistered() []string {
 	var _cret *C.GList // in

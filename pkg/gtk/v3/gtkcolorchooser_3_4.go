@@ -94,16 +94,16 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 }
 
 // ConnectColorActivated is emitted when a color is activated from the color
-// chooser. This usually happens when the user clicks a color swatch, or a color
-// is selected and the user presses one of the keys Space, Shift+Space, Return
-// or Enter.
+// chooser. This usually happens when the user clicks a color swatch, or a
+// color is selected and the user presses one of the keys Space, Shift+Space,
+// Return or Enter.
 func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(chooser, "color-activated", false, unsafe.Pointer(C._gotk4_gtk3_ColorChooser_ConnectColorActivated), f)
 }
 
 // AddPalette adds a palette to the color chooser. If orientation is horizontal,
-// the colors are grouped in rows, with colors_per_line colors in each row. If
-// horizontal is FALSE, the colors are grouped in columns instead.
+// the colors are grouped in rows, with colors_per_line colors in each row.
+// If horizontal is FALSE, the colors are grouped in columns instead.
 //
 // The default color palette of ColorChooserWidget has 27 colors, organized in
 // columns of 3 colors. The default gray palette has 9 grays in a single row.
@@ -118,10 +118,10 @@ func (chooser *ColorChooser) ConnectColorActivated(f func(color *gdk.RGBA)) core
 //
 // The function takes the following parameters:
 //
-//    - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
-//      displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
-//    - colorsPerLine: number of colors to show in each row/column.
-//    - colors (optional) of the palette, or NULL.
+//   - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
+//     displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
+//   - colorsPerLine: number of colors to show in each row/column.
+//   - colors (optional) of the palette, or NULL.
 //
 func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
@@ -154,7 +154,7 @@ func (chooser *ColorChooser) AddPalette(orientation Orientation, colorsPerLine i
 //
 // The function returns the following values:
 //
-//    - color to fill in with the current color.
+//   - color to fill in with the current color.
 //
 func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 	var _arg0 *C.GtkColorChooser // out
@@ -176,7 +176,7 @@ func (chooser *ColorChooser) RGBA() *gdk.RGBA {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the color chooser uses the alpha channel, FALSE if not.
+//   - ok: TRUE if the color chooser uses the alpha channel, FALSE if not.
 //
 func (chooser *ColorChooser) UseAlpha() bool {
 	var _arg0 *C.GtkColorChooser // out
@@ -200,7 +200,7 @@ func (chooser *ColorChooser) UseAlpha() bool {
 //
 // The function takes the following parameters:
 //
-//    - color: new color.
+//   - color: new color.
 //
 func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 	var _arg0 *C.GtkColorChooser // out
@@ -219,7 +219,7 @@ func (chooser *ColorChooser) SetRGBA(color *gdk.RGBA) {
 //
 // The function takes the following parameters:
 //
-//    - useAlpha: TRUE if color chooser should use alpha channel, FALSE if not.
+//   - useAlpha: TRUE if color chooser should use alpha channel, FALSE if not.
 //
 func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorChooser // out
@@ -236,8 +236,8 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 }
 
 // addPalette adds a palette to the color chooser. If orientation is horizontal,
-// the colors are grouped in rows, with colors_per_line colors in each row. If
-// horizontal is FALSE, the colors are grouped in columns instead.
+// the colors are grouped in rows, with colors_per_line colors in each row.
+// If horizontal is FALSE, the colors are grouped in columns instead.
 //
 // The default color palette of ColorChooserWidget has 27 colors, organized in
 // columns of 3 colors. The default gray palette has 9 grays in a single row.
@@ -252,10 +252,10 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 //
 // The function takes the following parameters:
 //
-//    - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
-//      displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
-//    - colorsPerLine: number of colors to show in each row/column.
-//    - colors (optional) of the palette, or NULL.
+//   - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
+//     displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
+//   - colorsPerLine: number of colors to show in each row/column.
+//   - colors (optional) of the palette, or NULL.
 //
 func (chooser *ColorChooser) addPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
 	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))
@@ -308,7 +308,7 @@ func (chooser *ColorChooser) colorActivated(color *gdk.RGBA) {
 //
 // The function returns the following values:
 //
-//    - color to fill in with the current color.
+//   - color to fill in with the current color.
 //
 func (chooser *ColorChooser) rgbA() *gdk.RGBA {
 	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))
@@ -333,7 +333,7 @@ func (chooser *ColorChooser) rgbA() *gdk.RGBA {
 //
 // The function takes the following parameters:
 //
-//    - color: new color.
+//   - color: new color.
 //
 func (chooser *ColorChooser) setRGBA(color *gdk.RGBA) {
 	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))

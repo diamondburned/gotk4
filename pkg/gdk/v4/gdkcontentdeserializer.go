@@ -43,12 +43,12 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object.
-//    - stream: GInputStream to read the serialized content from.
-//    - mimeType: mime type to deserialize from.
-//    - typ: GType to deserialize from.
-//    - ioPriority: i/O priority of the operation.
-//    - callback (optional) to call when the operation is done.
+//   - ctx (optional): optional GCancellable object.
+//   - stream: GInputStream to read the serialized content from.
+//   - mimeType: mime type to deserialize from.
+//   - typ: GType to deserialize from.
+//   - ioPriority: i/O priority of the operation.
+//   - callback (optional) to call when the operation is done.
 //
 func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mimeType string, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
@@ -87,8 +87,8 @@ func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mime
 //
 // The function takes the following parameters:
 //
-//    - result: GAsyncResult.
-//    - value: return location for the result of the operation.
+//   - result: GAsyncResult.
+//   - value: return location for the result of the operation.
 //
 func ContentDeserializeFinish(result gio.AsyncResulter, value *coreglib.Value) error {
 	var _arg1 *C.GAsyncResult // out
@@ -152,7 +152,7 @@ func marshalContentDeserializer(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - cancellable for the current operation.
+//   - cancellable for the current operation.
 //
 func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 	var _arg0 *C.GdkContentDeserializer // out
@@ -179,7 +179,7 @@ func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 //
 // The function returns the following values:
 //
-//    - gType: GType for the current operation.
+//   - gType: GType for the current operation.
 //
 func (deserializer *ContentDeserializer) GType() coreglib.Type {
 	var _arg0 *C.GdkContentDeserializer // out
@@ -203,7 +203,7 @@ func (deserializer *ContentDeserializer) GType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - inputStream: input stream for the current operation.
+//   - inputStream: input stream for the current operation.
 //
 func (deserializer *ContentDeserializer) InputStream() gio.InputStreamer {
 	var _arg0 *C.GdkContentDeserializer // out
@@ -241,7 +241,7 @@ func (deserializer *ContentDeserializer) InputStream() gio.InputStreamer {
 //
 // The function returns the following values:
 //
-//    - utf8: mime type for the current operation.
+//   - utf8: mime type for the current operation.
 //
 func (deserializer *ContentDeserializer) MIMEType() string {
 	var _arg0 *C.GdkContentDeserializer // out
@@ -265,7 +265,7 @@ func (deserializer *ContentDeserializer) MIMEType() string {
 //
 // The function returns the following values:
 //
-//    - gint: i/O priority for the current operation.
+//   - gint: i/O priority for the current operation.
 //
 func (deserializer *ContentDeserializer) Priority() int {
 	var _arg0 *C.GdkContentDeserializer // out
@@ -289,7 +289,7 @@ func (deserializer *ContentDeserializer) Priority() int {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): task data for deserializer.
+//   - gpointer (optional): task data for deserializer.
 //
 func (deserializer *ContentDeserializer) TaskData() unsafe.Pointer {
 	var _arg0 *C.GdkContentDeserializer // out
@@ -312,7 +312,7 @@ func (deserializer *ContentDeserializer) TaskData() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): user data for this deserializer.
+//   - gpointer (optional): user data for this deserializer.
 //
 func (deserializer *ContentDeserializer) UserData() unsafe.Pointer {
 	var _arg0 *C.GdkContentDeserializer // out
@@ -334,7 +334,7 @@ func (deserializer *ContentDeserializer) UserData() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - value: GValue for the current operation.
+//   - value: GValue for the current operation.
 //
 func (deserializer *ContentDeserializer) Value() *coreglib.Value {
 	var _arg0 *C.GdkContentDeserializer // out
@@ -358,7 +358,7 @@ func (deserializer *ContentDeserializer) Value() *coreglib.Value {
 //
 // The function takes the following parameters:
 //
-//    - err: GError.
+//   - err: GError.
 //
 func (deserializer *ContentDeserializer) ReturnError(err error) {
 	var _arg0 *C.GdkContentDeserializer // out

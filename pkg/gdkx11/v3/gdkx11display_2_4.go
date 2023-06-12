@@ -13,9 +13,9 @@ import (
 // #include <gdk/gdkx.h>
 import "C"
 
-// X11RegisterStandardEventType registers interest in receiving extension events
-// with type codes between event_base and event_base + n_events - 1. The
-// registered events must have the window field in the same place as core X
+// X11RegisterStandardEventType registers interest in receiving extension
+// events with type codes between event_base and event_base + n_events - 1.
+// The registered events must have the window field in the same place as core X
 // events (this is not the case for e.g. XKB extension events).
 //
 // If an event type is registered, events of this type will go through global
@@ -28,9 +28,9 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - display: Display.
-//    - eventBase: first event type code to register.
-//    - nEvents: number of event type codes to register.
+//   - display: Display.
+//   - eventBase: first event type code to register.
+//   - nEvents: number of event type codes to register.
 //
 func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 	var _arg1 *C.GdkDisplay // out

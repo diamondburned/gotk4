@@ -31,10 +31,10 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): #GCancellable.
-//    - uri to show.
-//    - context (optional): optional LaunchContext.
-//    - callback (optional) to call when the request is done.
+//   - ctx (optional): #GCancellable.
+//   - uri to show.
+//   - context (optional): optional LaunchContext.
+//   - callback (optional) to call when the request is done.
 //
 func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *AppLaunchContext, callback AsyncReadyCallback) {
 	var _arg3 *C.GCancellable       // out
@@ -70,7 +70,7 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out

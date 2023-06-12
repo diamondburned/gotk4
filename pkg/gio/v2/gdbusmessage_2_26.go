@@ -18,13 +18,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - blob representing a binary D-Bus message.
+//   - blob representing a binary D-Bus message.
 //
 // The function returns the following values:
 //
-//    - gssize: number of bytes needed or -1 if error is set (e.g. if blob
-//      contains invalid data or not enough data is available to determine the
-//      size).
+//   - gssize: number of bytes needed or -1 if error is set (e.g. if blob
+//     contains invalid data or not enough data is available to determine the
+//     size).
 //
 func DBusMessageBytesNeeded(blob []byte) (int, error) {
 	var _arg1 *C.guchar // out

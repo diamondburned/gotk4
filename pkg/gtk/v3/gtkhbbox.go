@@ -99,7 +99,7 @@ func marshalHButtonBox(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - hButtonBox: new button box Widget.
+//   - hButtonBox: new button box Widget.
 //
 func NewHButtonBox() *HButtonBox {
 	var _cret *C.GtkWidget // in

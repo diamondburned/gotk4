@@ -11,29 +11,29 @@ import (
 // #include <glib.h>
 import "C"
 
-// CheckVersion checks that the GLib library in use is compatible with the given
-// version. Generally you would pass in the constants IB_MAJOR_VERSION,
+// CheckVersion checks that the GLib library in use is compatible with the
+// given version. Generally you would pass in the constants IB_MAJOR_VERSION,
 // IB_MINOR_VERSION, IB_MICRO_VERSION as the three arguments to this function;
 // that produces a check that the library in use is compatible with the version
 // of GLib the application or module was compiled against.
 //
-// Compatibility is defined by two things: first the version of the running
-// library is newer than the version
-// required_major.required_minor.required_micro. Second the running library must
-// be binary compatible with the version
+// Compatibility is defined by two things: first the
+// version of the running library is newer than the version
+// required_major.required_minor.required_micro. Second the
+// running library must be binary compatible with the version
 // required_major.required_minor.required_micro (same major version.).
 //
 // The function takes the following parameters:
 //
-//    - requiredMajor: required major version.
-//    - requiredMinor: required minor version.
-//    - requiredMicro: required micro version.
+//   - requiredMajor: required major version.
+//   - requiredMinor: required minor version.
+//   - requiredMicro: required micro version.
 //
 // The function returns the following values:
 //
-//    - utf8: NULL if the GLib library is compatible with the given version, or a
-//      string describing the version mismatch. The returned string is owned by
-//      GLib and must not be modified or freed.
+//   - utf8: NULL if the GLib library is compatible with the given version,
+//     or a string describing the version mismatch. The returned string is owned
+//     by GLib and must not be modified or freed.
 //
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint  // out

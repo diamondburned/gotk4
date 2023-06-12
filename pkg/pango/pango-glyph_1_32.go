@@ -22,8 +22,8 @@ import "C"
 // This is similar to shape, except it also can optionally take the full
 // paragraph text as input, which will then be used to perform certain
 // cross-item shaping interactions. If you have access to the broader text of
-// which item_text is part of, provide the broader text as paragraph_text. If
-// paragraph_text is NULL, item text is used instead.
+// which item_text is part of, provide the broader text as paragraph_text.
+// If paragraph_text is NULL, item text is used instead.
 //
 // Note that the extra attributes in the analyis that is returned from itemize
 // have indices that are relative to the entire paragraph, so you do not pass
@@ -32,14 +32,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - itemText: valid UTF-8 text to shape.
-//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated text.
-//    - paragraphText (optional): text of the paragraph (see details). May be
-//      NULL.
-//    - paragraphLength: length (in bytes) of paragraph_text. -1 means
-//      nul-terminated text.
-//    - analysis: PangoAnalysis structure from itemize.
-//    - glyphs: glyph string in which to store results.
+//   - itemText: valid UTF-8 text to shape.
+//   - itemLength: length (in bytes) of item_text. -1 means nul-terminated text.
+//   - paragraphText (optional): text of the paragraph (see details). May be
+//     NULL.
+//   - paragraphLength: length (in bytes) of paragraph_text. -1 means
+//     nul-terminated text.
+//   - analysis: PangoAnalysis structure from itemize.
+//   - glyphs: glyph string in which to store results.
 //
 func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out

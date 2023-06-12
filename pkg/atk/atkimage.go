@@ -96,7 +96,7 @@ func marshalImage(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - utf8: string representing the image description.
+//   - utf8: string representing the image description.
 //
 func (image *Image) ImageDescription() string {
 	var _arg0 *C.AtkImage // out
@@ -118,9 +118,9 @@ func (image *Image) ImageDescription() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
-//      used by the image description, or NULL if the image does not specify a
-//      locale.
+//   - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+//     used by the image description, or NULL if the image does not specify a
+//     locale.
 //
 func (image *Image) ImageLocale() string {
 	var _arg0 *C.AtkImage // out
@@ -148,15 +148,15 @@ func (image *Image) ImageLocale() string {
 //
 // The function takes the following parameters:
 //
-//    - coordType specifies whether the coordinates are relative to the screen or
-//      to the components top level window.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
 //
 // The function returns the following values:
 //
-//    - x (optional) address of #gint to put x coordinate position; otherwise, -1
-//      if value cannot be obtained.
-//    - y (optional) address of #gint to put y coordinate position; otherwise, -1
-//      if value cannot be obtained.
+//   - x (optional) address of #gint to put x coordinate position; otherwise,
+//     -1 if value cannot be obtained.
+//   - y (optional) address of #gint to put y coordinate position; otherwise,
+//     -1 if value cannot be obtained.
 //
 func (image *Image) ImagePosition(coordType CoordType) (x, y int) {
 	var _arg0 *C.AtkImage    // out
@@ -180,8 +180,8 @@ func (image *Image) ImagePosition(coordType CoordType) (x, y int) {
 	return _x, _y
 }
 
-// ImageSize: get the width and height in pixels for the specified image. The
-// values of width and height are returned as -1 if the values cannot be
+// ImageSize: get the width and height in pixels for the specified image.
+// The values of width and height are returned as -1 if the values cannot be
 // obtained (for instance, if the object is not onscreen).
 //
 // If the size can not be obtained (e.g. missing support), x and y are set to
@@ -189,10 +189,10 @@ func (image *Image) ImagePosition(coordType CoordType) (x, y int) {
 //
 // The function returns the following values:
 //
-//    - width (optional): filled with the image width, or -1 if the value cannot
-//      be obtained.
-//    - height (optional): filled with the image height, or -1 if the value
-//      cannot be obtained.
+//   - width (optional): filled with the image width, or -1 if the value cannot
+//     be obtained.
+//   - height (optional): filled with the image height, or -1 if the value
+//     cannot be obtained.
 //
 func (image *Image) ImageSize() (width, height int) {
 	var _arg0 *C.AtkImage // out
@@ -217,11 +217,11 @@ func (image *Image) ImageSize() (width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - description: string description to set for image.
+//   - description: string description to set for image.
 //
 // The function returns the following values:
 //
-//    - ok: boolean TRUE, or FALSE if operation could not be completed.
+//   - ok: boolean TRUE, or FALSE if operation could not be completed.
 //
 func (image *Image) SetImageDescription(description string) bool {
 	var _arg0 *C.AtkImage // out
@@ -249,7 +249,7 @@ func (image *Image) SetImageDescription(description string) bool {
 //
 // The function returns the following values:
 //
-//    - utf8: string representing the image description.
+//   - utf8: string representing the image description.
 //
 func (image *Image) imageDescription() string {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
@@ -274,9 +274,9 @@ func (image *Image) imageDescription() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
-//      used by the image description, or NULL if the image does not specify a
-//      locale.
+//   - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+//     used by the image description, or NULL if the image does not specify a
+//     locale.
 //
 func (image *Image) imageLocale() string {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
@@ -307,15 +307,15 @@ func (image *Image) imageLocale() string {
 //
 // The function takes the following parameters:
 //
-//    - coordType specifies whether the coordinates are relative to the screen or
-//      to the components top level window.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
 //
 // The function returns the following values:
 //
-//    - x (optional) address of #gint to put x coordinate position; otherwise, -1
-//      if value cannot be obtained.
-//    - y (optional) address of #gint to put y coordinate position; otherwise, -1
-//      if value cannot be obtained.
+//   - x (optional) address of #gint to put x coordinate position; otherwise,
+//     -1 if value cannot be obtained.
+//   - y (optional) address of #gint to put y coordinate position; otherwise,
+//     -1 if value cannot be obtained.
 //
 func (image *Image) imagePosition(coordType CoordType) (x, y int) {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
@@ -342,8 +342,8 @@ func (image *Image) imagePosition(coordType CoordType) (x, y int) {
 	return _x, _y
 }
 
-// imageSize: get the width and height in pixels for the specified image. The
-// values of width and height are returned as -1 if the values cannot be
+// imageSize: get the width and height in pixels for the specified image.
+// The values of width and height are returned as -1 if the values cannot be
 // obtained (for instance, if the object is not onscreen).
 //
 // If the size can not be obtained (e.g. missing support), x and y are set to
@@ -351,10 +351,10 @@ func (image *Image) imagePosition(coordType CoordType) (x, y int) {
 //
 // The function returns the following values:
 //
-//    - width (optional): filled with the image width, or -1 if the value cannot
-//      be obtained.
-//    - height (optional): filled with the image height, or -1 if the value
-//      cannot be obtained.
+//   - width (optional): filled with the image width, or -1 if the value cannot
+//     be obtained.
+//   - height (optional): filled with the image height, or -1 if the value
+//     cannot be obtained.
 //
 func (image *Image) imageSize() (width, height int) {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
@@ -382,11 +382,11 @@ func (image *Image) imageSize() (width, height int) {
 //
 // The function takes the following parameters:
 //
-//    - description: string description to set for image.
+//   - description: string description to set for image.
 //
 // The function returns the following values:
 //
-//    - ok: boolean TRUE, or FALSE if operation could not be completed.
+//   - ok: boolean TRUE, or FALSE if operation could not be completed.
 //
 func (image *Image) setImageDescription(description string) bool {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))

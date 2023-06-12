@@ -83,9 +83,9 @@ type ToolbarOverrides struct {
 	OrientationChanged func(orientation Orientation)
 	// The function takes the following parameters:
 	//
-	//    - x
-	//    - y
-	//    - buttonNumber
+	//   - x
+	//   - y
+	//   - buttonNumber
 	//
 	// The function returns the following values:
 	//
@@ -123,8 +123,7 @@ func defaultToolbarOverrides(v *Toolbar) ToolbarOverrides {
 // Creating a context menu for the toolbar can be done by connecting to the
 // Toolbar::popup-context-menu signal.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkToolbar has a single CSS node with name toolbar.
 type Toolbar struct {
@@ -253,8 +252,8 @@ func (toolbar *Toolbar) ConnectOrientationChanged(f func(orientation Orientation
 // ConnectPopupContextMenu is emitted when the user right-clicks the toolbar or
 // uses the keybinding to display a popup menu.
 //
-// Application developers should handle this signal if they want to display a
-// context menu on the toolbar. The context-menu should appear at the
+// Application developers should handle this signal if they want to display
+// a context menu on the toolbar. The context-menu should appear at the
 // coordinates given by x and y. The mouse button number is given by the button
 // parameter. If the menu was popped up using the keybaord, button is -1.
 func (toolbar *Toolbar) ConnectPopupContextMenu(f func(x, y, button int) (ok bool)) coreglib.SignalHandle {
@@ -270,7 +269,7 @@ func (toolbar *Toolbar) ConnectStyleChanged(f func(style ToolbarStyle)) coreglib
 //
 // The function returns the following values:
 //
-//    - toolbar: newly-created toolbar.
+//   - toolbar: newly-created toolbar.
 //
 func NewToolbar() *Toolbar {
 	var _cret *C.GtkWidget // in
@@ -292,12 +291,12 @@ func NewToolbar() *Toolbar {
 //
 // The function takes the following parameters:
 //
-//    - x coordinate of a point on the toolbar.
-//    - y coordinate of a point on the toolbar.
+//   - x coordinate of a point on the toolbar.
+//   - y coordinate of a point on the toolbar.
 //
 // The function returns the following values:
 //
-//    - gint: position corresponding to the point (x, y) on the toolbar.
+//   - gint: position corresponding to the point (x, y) on the toolbar.
 //
 func (toolbar *Toolbar) DropIndex(x, y int) int {
 	var _arg0 *C.GtkToolbar // out
@@ -326,7 +325,7 @@ func (toolbar *Toolbar) DropIndex(x, y int) int {
 //
 // The function returns the following values:
 //
-//    - iconSize: current icon size for the icons on the toolbar.
+//   - iconSize: current icon size for the icons on the toolbar.
 //
 func (toolbar *Toolbar) IconSize() IconSize {
 	var _arg0 *C.GtkToolbar // out
@@ -344,16 +343,16 @@ func (toolbar *Toolbar) IconSize() IconSize {
 	return _iconSize
 }
 
-// ItemIndex returns the position of item on the toolbar, starting from 0. It is
-// an error if item is not a child of the toolbar.
+// ItemIndex returns the position of item on the toolbar, starting from 0.
+// It is an error if item is not a child of the toolbar.
 //
 // The function takes the following parameters:
 //
-//    - item that is a child of toolbar.
+//   - item that is a child of toolbar.
 //
 // The function returns the following values:
 //
-//    - gint: position of item on the toolbar.
+//   - gint: position of item on the toolbar.
 //
 func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 	var _arg0 *C.GtkToolbar  // out
@@ -378,7 +377,7 @@ func (toolbar *Toolbar) ItemIndex(item *ToolItem) int {
 //
 // The function returns the following values:
 //
-//    - gint: number of items on the toolbar.
+//   - gint: number of items on the toolbar.
 //
 func (toolbar *Toolbar) NItems() int {
 	var _arg0 *C.GtkToolbar // out
@@ -401,12 +400,12 @@ func (toolbar *Toolbar) NItems() int {
 //
 // The function takes the following parameters:
 //
-//    - n on the toolbar.
+//   - n on the toolbar.
 //
 // The function returns the following values:
 //
-//    - toolItem (optional): n'th ToolItem on toolbar, or NULL if there isn’t an
-//      n'th item.
+//   - toolItem (optional): n'th ToolItem on toolbar, or NULL if there isn’t an
+//     n'th item.
 //
 func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 	var _arg0 *C.GtkToolbar  // out
@@ -434,7 +433,7 @@ func (toolbar *Toolbar) NthItem(n int) *ToolItem {
 //
 // The function returns the following values:
 //
-//    - reliefStyle: relief style of buttons on toolbar.
+//   - reliefStyle: relief style of buttons on toolbar.
 //
 func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 	var _arg0 *C.GtkToolbar    // out
@@ -457,7 +456,7 @@ func (toolbar *Toolbar) ReliefStyle() ReliefStyle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the toolbar has an overflow menu.
+//   - ok: TRUE if the toolbar has an overflow menu.
 //
 func (toolbar *Toolbar) ShowArrow() bool {
 	var _arg0 *C.GtkToolbar // out
@@ -482,7 +481,7 @@ func (toolbar *Toolbar) ShowArrow() bool {
 //
 // The function returns the following values:
 //
-//    - toolbarStyle: current style of toolbar.
+//   - toolbarStyle: current style of toolbar.
 //
 func (toolbar *Toolbar) Style() ToolbarStyle {
 	var _arg0 *C.GtkToolbar     // out
@@ -500,14 +499,14 @@ func (toolbar *Toolbar) Style() ToolbarStyle {
 	return _toolbarStyle
 }
 
-// Insert a ToolItem into the toolbar at position pos. If pos is 0 the item is
-// prepended to the start of the toolbar. If pos is negative, the item is
+// Insert a ToolItem into the toolbar at position pos. If pos is 0 the item
+// is prepended to the start of the toolbar. If pos is negative, the item is
 // appended to the end of the toolbar.
 //
 // The function takes the following parameters:
 //
-//    - item: ToolItem.
-//    - pos: position of the new item.
+//   - item: ToolItem.
+//   - pos: position of the new item.
 //
 func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 	var _arg0 *C.GtkToolbar  // out
@@ -524,9 +523,9 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 	runtime.KeepAlive(pos)
 }
 
-// SetDropHighlightItem highlights toolbar to give an idea of what it would look
-// like if item was added to toolbar at the position indicated by index_. If
-// item is NULL, highlighting is turned off. In that case index_ is ignored.
+// SetDropHighlightItem highlights toolbar to give an idea of what it would
+// look like if item was added to toolbar at the position indicated by index_.
+// If item is NULL, highlighting is turned off. In that case index_ is ignored.
 //
 // The tool_item passed to this function must not be part of any widget
 // hierarchy. When an item is set as drop highlight item it can not added to any
@@ -534,8 +533,8 @@ func (toolbar *Toolbar) Insert(item *ToolItem, pos int) {
 //
 // The function takes the following parameters:
 //
-//    - toolItem (optional) or NULL to turn of highlighting.
-//    - index_: position on toolbar.
+//   - toolItem (optional) or NULL to turn of highlighting.
+//   - index_: position on toolbar.
 //
 func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 	var _arg0 *C.GtkToolbar  // out
@@ -554,16 +553,16 @@ func (toolbar *Toolbar) SetDropHighlightItem(toolItem *ToolItem, index_ int) {
 	runtime.KeepAlive(index_)
 }
 
-// SetIconSize: this function sets the size of stock icons in the toolbar. You
-// can call it both before you add the icons and after they’ve been added. The
-// size you set will override user preferences for the default icon size.
+// SetIconSize: this function sets the size of stock icons in the toolbar.
+// You can call it both before you add the icons and after they’ve been added.
+// The size you set will override user preferences for the default icon size.
 //
 // This should only be used for special-purpose toolbars, normal application
 // toolbars should respect the user preferences for the size of icons.
 //
 // The function takes the following parameters:
 //
-//    - iconSize that stock icons in the toolbar shall have.
+//   - iconSize that stock icons in the toolbar shall have.
 //
 func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
 	var _arg0 *C.GtkToolbar // out
@@ -577,9 +576,9 @@ func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
 	runtime.KeepAlive(iconSize)
 }
 
-// SetShowArrow sets whether to show an overflow menu when toolbar isn’t
-// allocated enough size to show all of its items. If TRUE, items which can’t
-// fit in toolbar, and which have a proxy menu item set by
+// SetShowArrow sets whether to show an overflow menu when toolbar
+// isn’t allocated enough size to show all of its items. If TRUE,
+// items which can’t fit in toolbar, and which have a proxy menu item set by
 // gtk_tool_item_set_proxy_menu_item() or ToolItem::create-menu-proxy, will be
 // available in an overflow menu, which can be opened by an added arrow button.
 // If FALSE, toolbar will request enough size to fit all of its child items
@@ -587,7 +586,7 @@ func (toolbar *Toolbar) SetIconSize(iconSize IconSize) {
 //
 // The function takes the following parameters:
 //
-//    - showArrow: whether to show an overflow menu.
+//   - showArrow: whether to show an overflow menu.
 //
 func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 	var _arg0 *C.GtkToolbar // out
@@ -608,7 +607,7 @@ func (toolbar *Toolbar) SetShowArrow(showArrow bool) {
 //
 // The function takes the following parameters:
 //
-//    - style: new style for toolbar.
+//   - style: new style for toolbar.
 //
 func (toolbar *Toolbar) SetStyle(style ToolbarStyle) {
 	var _arg0 *C.GtkToolbar     // out
@@ -663,9 +662,9 @@ func (toolbar *Toolbar) orientationChanged(orientation Orientation) {
 
 // The function takes the following parameters:
 //
-//    - x
-//    - y
-//    - buttonNumber
+//   - x
+//   - y
+//   - buttonNumber
 //
 // The function returns the following values:
 //

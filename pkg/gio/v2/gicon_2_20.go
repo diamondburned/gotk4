@@ -23,11 +23,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: string obtained via g_icon_to_string().
+//   - str: string obtained via g_icon_to_string().
 //
 // The function returns the following values:
 //
-//    - icon: object implementing the #GIcon interface or NULL if error is set.
+//   - icon: object implementing the #GIcon interface or NULL if error is set.
 //
 func NewIconForString(str string) (*Icon, error) {
 	var _arg1 *C.gchar  // out

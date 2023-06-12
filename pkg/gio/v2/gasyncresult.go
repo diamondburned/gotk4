@@ -38,14 +38,14 @@ func init() {
 // AsyncResult provides a base class for implementing asynchronous function
 // results.
 //
-// Asynchronous operations are broken up into two separate operations which are
-// chained together by a ReadyCallback. To begin an asynchronous operation,
-// provide a ReadyCallback to the asynchronous function. This callback will be
-// triggered when the operation has completed, and must be run in a later
-// iteration of the [thread-default main
+// Asynchronous operations are broken up into two separate operations
+// which are chained together by a ReadyCallback. To begin an asynchronous
+// operation, provide a ReadyCallback to the asynchronous function.
+// This callback will be triggered when the operation has completed,
+// and must be run in a later iteration of the [thread-default main
 // context][g-main-context-push-thread-default] from where the operation was
-// initiated. It will be passed a Result instance filled with the details of the
-// operation's success or failure, the object the asynchronous function was
+// initiated. It will be passed a Result instance filled with the details of
+// the operation's success or failure, the object the asynchronous function was
 // started for and any error codes returned. The asynchronous callback function
 // is then expected to call the corresponding "_finish()" function, passing the
 // object the function was called for, the Result instance, and (optionally) an
@@ -53,10 +53,10 @@ func init() {
 //
 // The "_finish()" function for an operation takes the generic result (of type
 // Result) and returns the specific result that the operation in question yields
-// (e.g. a Enumerator for a "enumerate children" operation). If the result or
-// error status of the operation is not needed, there is no need to call the
-// "_finish()" function; GIO will take care of cleaning up the result and error
-// information after the ReadyCallback returns. You can pass NULL for the
+// (e.g. a Enumerator for a "enumerate children" operation). If the result
+// or error status of the operation is not needed, there is no need to call
+// the "_finish()" function; GIO will take care of cleaning up the result and
+// error information after the ReadyCallback returns. You can pass NULL for the
 // ReadyCallback if you don't need to take any action at all after the operation
 // completes. Applications may also take a reference to the Result and call
 // "_finish()" later; however, the "_finish()" function may be called at most
@@ -109,9 +109,9 @@ func init() {
 //
 // I/O Priority
 //
-// Many I/O-related asynchronous operations have a priority parameter, which is
-// used in certain cases to determine the order in which operations are
-// executed. They are not used to determine system-wide I/O scheduling.
+// Many I/O-related asynchronous operations have a priority parameter,
+// which is used in certain cases to determine the order in which operations
+// are executed. They are not used to determine system-wide I/O scheduling.
 // Priorities are integers, with lower numbers indicating higher priority. It is
 // recommended to choose priorities between G_PRIORITY_LOW and G_PRIORITY_HIGH,
 // with G_PRIORITY_DEFAULT as a default.
@@ -159,8 +159,8 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - object (optional): new reference to the source object for the res, or
-//      NULL if there is none.
+//   - object (optional): new reference to the source object for the res,
+//     or NULL if there is none.
 //
 func (res *AsyncResult) SourceObject() *coreglib.Object {
 	var _arg0 *C.GAsyncResult // out
@@ -184,7 +184,7 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): user data for res.
+//   - gpointer (optional): user data for res.
 //
 func (res *AsyncResult) UserData() unsafe.Pointer {
 	var _arg0 *C.GAsyncResult // out
@@ -207,11 +207,11 @@ func (res *AsyncResult) UserData() unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - sourceTag (optional): application-defined tag.
+//   - sourceTag (optional): application-defined tag.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if res has the indicated source_tag, FALSE if not.
+//   - ok: TRUE if res has the indicated source_tag, FALSE if not.
 //
 func (res *AsyncResult) IsTagged(sourceTag unsafe.Pointer) bool {
 	var _arg0 *C.GAsyncResult // out
@@ -264,8 +264,8 @@ func (res *AsyncResult) LegacyPropagateError() error {
 //
 // The function returns the following values:
 //
-//    - object (optional): new reference to the source object for the res, or
-//      NULL if there is none.
+//   - object (optional): new reference to the source object for the res,
+//     or NULL if there is none.
 //
 func (res *AsyncResult) sourceObject() *coreglib.Object {
 	gclass := (*C.GAsyncResultIface)(coreglib.PeekParentClass(res))
@@ -292,7 +292,7 @@ func (res *AsyncResult) sourceObject() *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): user data for res.
+//   - gpointer (optional): user data for res.
 //
 func (res *AsyncResult) userData() unsafe.Pointer {
 	gclass := (*C.GAsyncResultIface)(coreglib.PeekParentClass(res))
@@ -318,11 +318,11 @@ func (res *AsyncResult) userData() unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - sourceTag (optional): application-defined tag.
+//   - sourceTag (optional): application-defined tag.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if res has the indicated source_tag, FALSE if not.
+//   - ok: TRUE if res has the indicated source_tag, FALSE if not.
 //
 func (res *AsyncResult) isTagged(sourceTag unsafe.Pointer) bool {
 	gclass := (*C.GAsyncResultIface)(coreglib.PeekParentClass(res))

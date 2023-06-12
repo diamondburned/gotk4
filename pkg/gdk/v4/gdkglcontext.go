@@ -45,22 +45,20 @@ func init() {
 // A GdkGLContext has to be made "current" in order to start using it, otherwise
 // any OpenGL call will be ignored.
 //
+// # Creating a new OpenGL context
 //
-// Creating a new OpenGL context
+// In order to create a new GdkGLContext instance you need a GdkSurface,
+// which you typically get during the realize call of a widget.
 //
-// In order to create a new GdkGLContext instance you need a GdkSurface, which
-// you typically get during the realize call of a widget.
-//
-// A GdkGLContext is not realized until either gdk.GLContext.MakeCurrent() or
-// gdk.GLContext.Realize() is called. It is possible to specify details of the
-// GL context like the OpenGL version to be used, or whether the GL context
-// should have extra state validation enabled after calling
-// gdk.Surface.CreateGLContext() by calling gdk.GLContext.Realize(). If the
-// realization fails you have the option to change the settings of the
+// A GdkGLContext is not realized until either gdk.GLContext.MakeCurrent()
+// or gdk.GLContext.Realize() is called. It is possible to specify details
+// of the GL context like the OpenGL version to be used, or whether the
+// GL context should have extra state validation enabled after calling
+// gdk.Surface.CreateGLContext() by calling gdk.GLContext.Realize().
+// If the realization fails you have the option to change the settings of the
 // GdkGLContext and try again.
 //
-//
-// Using a GdkGLContext
+// # Using a GdkGLContext
 //
 // You will need to make the GdkGLContext the current context before issuing
 // OpenGL calls; the system sends OpenGL commands to whichever context is
@@ -69,7 +67,6 @@ func init() {
 // issuing commands:
 //
 //    gdk_gl_context_make_current (context);
-//
 //
 // You can now perform your drawing using OpenGL commands.
 //
@@ -124,7 +121,7 @@ func BaseGLContext(obj GLContexter) *GLContext {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if debugging is enabled.
+//   - ok: TRUE if debugging is enabled.
 //
 func (context *GLContext) DebugEnabled() bool {
 	var _arg0 *C.GdkGLContext // out
@@ -148,7 +145,7 @@ func (context *GLContext) DebugEnabled() bool {
 //
 // The function returns the following values:
 //
-//    - display (optional): GdkDisplay or NULL.
+//   - display (optional): GdkDisplay or NULL.
 //
 func (context *GLContext) Display() *Display {
 	var _arg0 *C.GdkGLContext // out
@@ -174,7 +171,7 @@ func (context *GLContext) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the context should be forward-compatible.
+//   - ok: TRUE if the context should be forward-compatible.
 //
 func (context *GLContext) ForwardCompatible() bool {
 	var _arg0 *C.GdkGLContext // out
@@ -200,8 +197,8 @@ func (context *GLContext) ForwardCompatible() bool {
 //
 // The function returns the following values:
 //
-//    - major (optional): return location for the major version to request.
-//    - minor (optional): return location for the minor version to request.
+//   - major (optional): return location for the major version to request.
+//   - minor (optional): return location for the minor version to request.
 //
 func (context *GLContext) RequiredVersion() (major, minor int) {
 	var _arg0 *C.GdkGLContext // out
@@ -226,7 +223,7 @@ func (context *GLContext) RequiredVersion() (major, minor int) {
 //
 // The function returns the following values:
 //
-//    - glContext (optional): GdkGLContext or NULL.
+//   - glContext (optional): GdkGLContext or NULL.
 //
 func (context *GLContext) SharedContext() GLContexter {
 	var _arg0 *C.GdkGLContext // out
@@ -263,7 +260,7 @@ func (context *GLContext) SharedContext() GLContexter {
 //
 // The function returns the following values:
 //
-//    - surface (optional): GdkSurface or NULL.
+//   - surface (optional): GdkSurface or NULL.
 //
 func (context *GLContext) Surface() Surfacer {
 	var _arg0 *C.GdkGLContext // out
@@ -300,7 +297,7 @@ func (context *GLContext) Surface() Surfacer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GdkGLContext is using an OpenGL ES profile.
+//   - ok: TRUE if the GdkGLContext is using an OpenGL ES profile.
 //
 func (context *GLContext) UseES() bool {
 	var _arg0 *C.GdkGLContext // out
@@ -326,8 +323,8 @@ func (context *GLContext) UseES() bool {
 //
 // The function returns the following values:
 //
-//    - major: return location for the major version.
-//    - minor: return location for the minor version.
+//   - major: return location for the major version.
+//   - minor: return location for the minor version.
 //
 func (context *GLContext) Version() (major, minor int) {
 	var _arg0 *C.GdkGLContext // out
@@ -357,8 +354,8 @@ func (context *GLContext) Version() (major, minor int) {
 // version of the specification. If the realization is successful, this function
 // will return FALSE.
 //
-// If the underlying OpenGL implementation does not support core profiles, GDK
-// will fall back to a pre-3.2 compatibility profile, and this function will
+// If the underlying OpenGL implementation does not support core profiles,
+// GDK will fall back to a pre-3.2 compatibility profile, and this function will
 // return TRUE.
 //
 // You can use the value returned by this function to decide which kind of
@@ -367,7 +364,7 @@ func (context *GLContext) Version() (major, minor int) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GL context is in legacy mode.
+//   - ok: TRUE if the GL context is in legacy mode.
 //
 func (context *GLContext) IsLegacy() bool {
 	var _arg0 *C.GdkGLContext // out
@@ -428,7 +425,7 @@ func (context *GLContext) Realize() error {
 //
 // The function takes the following parameters:
 //
-//    - enabled: whether to enable debugging in the context.
+//   - enabled: whether to enable debugging in the context.
 //
 func (context *GLContext) SetDebugEnabled(enabled bool) {
 	var _arg0 *C.GdkGLContext // out
@@ -457,7 +454,7 @@ func (context *GLContext) SetDebugEnabled(enabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - compatible: whether the context should be forward-compatible.
+//   - compatible: whether the context should be forward-compatible.
 //
 func (context *GLContext) SetForwardCompatible(compatible bool) {
 	var _arg0 *C.GdkGLContext // out
@@ -482,8 +479,8 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 //
 // The function takes the following parameters:
 //
-//    - major version to request.
-//    - minor version to request.
+//   - major version to request.
+//   - minor version to request.
 //
 func (context *GLContext) SetRequiredVersion(major, minor int) {
 	var _arg0 *C.GdkGLContext // out
@@ -516,8 +513,8 @@ func (context *GLContext) SetRequiredVersion(major, minor int) {
 //
 // The function takes the following parameters:
 //
-//    - useEs: whether the context should use OpenGL ES instead of OpenGL, or -1
-//      to allow auto-detection.
+//   - useEs: whether the context should use OpenGL ES instead of OpenGL,
+//     or -1 to allow auto-detection.
 //
 func (context *GLContext) SetUseES(useEs int) {
 	var _arg0 *C.GdkGLContext // out
@@ -543,7 +540,7 @@ func GLContextClearCurrent() {
 //
 // The function returns the following values:
 //
-//    - glContext (optional): current GdkGLContext, or NULL.
+//   - glContext (optional): current GdkGLContext, or NULL.
 //
 func GLContextGetCurrent() GLContexter {
 	var _cret *C.GdkGLContext // in

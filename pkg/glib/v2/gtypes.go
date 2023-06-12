@@ -76,8 +76,8 @@ type CompareDataFunc func(a, b unsafe.Pointer) (gint int)
 // g_slist_foreach().
 type Func func(data unsafe.Pointer)
 
-// HFunc specifies the type of the function passed to g_hash_table_foreach(). It
-// is called with each key/value pair, together with the user_data parameter
+// HFunc specifies the type of the function passed to g_hash_table_foreach().
+// It is called with each key/value pair, together with the user_data parameter
 // which is passed to g_hash_table_foreach().
 type HFunc func(key, value unsafe.Pointer)
 
@@ -154,7 +154,7 @@ func (t *TimeVal) SetTvUsec(tvUsec int32) {
 //
 // The function takes the following parameters:
 //
-//    - microseconds: number of microseconds to add to time.
+//   - microseconds: number of microseconds to add to time.
 //
 func (time_ *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
@@ -173,14 +173,14 @@ func (time_ *TimeVal) Add(microseconds int32) {
 // ISO 8601.
 //
 // ISO 8601 allows a large number of date/time formats, with or without
-// punctuation and optional elements. The format returned by this function is a
-// complete date and time, with optional punctuation included, the UTC time zone
-// represented as "Z", and the tv_usec part included if and only if it is
+// punctuation and optional elements. The format returned by this function is
+// a complete date and time, with optional punctuation included, the UTC time
+// zone represented as "Z", and the tv_usec part included if and only if it is
 // nonzero, i.e. either "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.fffffZ".
 //
 // This corresponds to the Internet date/time format defined by RFC 3339
-// (https://www.ietf.org/rfc/rfc3339.txt), and to either of the two most-precise
-// formats defined by the W3C Note Date and Time Formats
+// (https://www.ietf.org/rfc/rfc3339.txt), and to either of the two
+// most-precise formats defined by the W3C Note Date and Time Formats
 // (http://www.w3.org/TR/NOTE-datetime-19980827). Both of these documents are
 // profiles of ISO 8601.
 //
@@ -205,8 +205,8 @@ func (time_ *TimeVal) Add(microseconds int32) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string containing an ISO 8601 date, or
-//      NULL if time_ was too large.
+//   - utf8 (optional): newly allocated string containing an ISO 8601 date,
+//     or NULL if time_ was too large.
 //
 func (time_ *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out

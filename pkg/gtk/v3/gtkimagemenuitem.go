@@ -41,26 +41,26 @@ func defaultImageMenuItemOverrides(v *ImageMenuItem) ImageMenuItemOverrides {
 //
 // This is functionally equivalent to:
 //
-//      GtkWidget *box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-//      GtkWidget *icon = gtk_image_new_from_icon_name ("folder-music-symbolic", GTK_ICON_SIZE_MENU);
-//      GtkWidget *label = gtk_accel_label_new ("Music");
-//      GtkWidget *menu_item = gtk_menu_item_new ();
-//      GtkAccelGroup *accel_group = gtk_accel_group_new ();
+//    GtkWidget *box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+//    GtkWidget *icon = gtk_image_new_from_icon_name ("folder-music-symbolic", GTK_ICON_SIZE_MENU);
+//    GtkWidget *label = gtk_accel_label_new ("Music");
+//    GtkWidget *menu_item = gtk_menu_item_new ();
+//    GtkAccelGroup *accel_group = gtk_accel_group_new ();
 //
-//      gtk_container_add (GTK_CONTAINER (box), icon);
+//    gtk_container_add (GTK_CONTAINER (box), icon);
 //
-//      gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
-//      gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+//    gtk_label_set_use_underline (GTK_LABEL (label), TRUE);
+//    gtk_label_set_xalign (GTK_LABEL (label), 0.0);
 //
-//      gtk_widget_add_accelerator (menu_item, "activate", accel_group,
-//                                  GDK_KEY_m, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-//      gtk_accel_label_set_accel_widget (GTK_ACCEL_LABEL (label), menu_item);
+//    gtk_widget_add_accelerator (menu_item, "activate", accel_group,
+//                                GDK_KEY_m, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+//    gtk_accel_label_set_accel_widget (GTK_ACCEL_LABEL (label), menu_item);
 //
-//      gtk_box_pack_end (GTK_BOX (box), label, TRUE, TRUE, 0);
+//    gtk_box_pack_end (GTK_BOX (box), label, TRUE, TRUE, 0);
 //
-//      gtk_container_add (GTK_CONTAINER (menu_item), box);
+//    gtk_container_add (GTK_CONTAINER (menu_item), box);
 //
-//      gtk_widget_show_all (menu_item);.
+//    gtk_widget_show_all (menu_item);.
 type ImageMenuItem struct {
 	_ [0]func() // equal guard
 	MenuItem
@@ -138,7 +138,7 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - imageMenuItem: new ImageMenuItem.
+//   - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItem() *ImageMenuItem {
 	var _cret *C.GtkWidget // in
@@ -156,22 +156,22 @@ func NewImageMenuItem() *ImageMenuItem {
 // and text from a stock item. Some stock ids have preprocessor macros like
 // K_STOCK_OK and K_STOCK_APPLY.
 //
-// If you want this menu item to have changeable accelerators, then pass in NULL
-// for accel_group. Next call gtk_menu_item_set_accel_path() with an appropriate
-// path for the menu item, use gtk_stock_lookup() to look up the standard
-// accelerator for the stock item, and if one is found, call
+// If you want this menu item to have changeable accelerators, then pass in
+// NULL for accel_group. Next call gtk_menu_item_set_accel_path() with an
+// appropriate path for the menu item, use gtk_stock_lookup() to look up
+// the standard accelerator for the stock item, and if one is found, call
 // gtk_accel_map_add_entry() to register it.
 //
 // Deprecated: Use gtk_menu_item_new_with_mnemonic() instead.
 //
 // The function takes the following parameters:
 //
-//    - stockId: name of the stock item.
-//    - accelGroup (optional) to add the menu items accelerator to, or NULL.
+//   - stockId: name of the stock item.
+//   - accelGroup (optional) to add the menu items accelerator to, or NULL.
 //
 // The function returns the following values:
 //
-//    - imageMenuItem: new ImageMenuItem.
+//   - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMenuItem {
 	var _arg1 *C.gchar         // out
@@ -201,11 +201,11 @@ func NewImageMenuItemFromStock(stockId string, accelGroup *AccelGroup) *ImageMen
 //
 // The function takes the following parameters:
 //
-//    - label: text of the menu item.
+//   - label: text of the menu item.
 //
 // The function returns the following values:
 //
-//    - imageMenuItem: new ImageMenuItem.
+//   - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 	var _arg1 *C.gchar     // out
@@ -232,12 +232,12 @@ func NewImageMenuItemWithLabel(label string) *ImageMenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the menu item, with an underscore in front of the mnemonic
-//      character.
+//   - label: text of the menu item, with an underscore in front of the mnemonic
+//     character.
 //
 // The function returns the following values:
 //
-//    - imageMenuItem: new ImageMenuItem.
+//   - imageMenuItem: new ImageMenuItem.
 //
 func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 	var _arg1 *C.gchar     // out
@@ -263,7 +263,7 @@ func NewImageMenuItemWithMnemonic(label string) *ImageMenuItem {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the menu item will always show the image.
+//   - ok: TRUE if the menu item will always show the image.
 //
 func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 	var _arg0 *C.GtkImageMenuItem // out
@@ -290,7 +290,7 @@ func (imageMenuItem *ImageMenuItem) AlwaysShowImage() bool {
 //
 // The function returns the following values:
 //
-//    - widget set as image of image_menu_item.
+//   - widget set as image of image_menu_item.
 //
 func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 	var _arg0 *C.GtkImageMenuItem // out
@@ -331,8 +331,8 @@ func (imageMenuItem *ImageMenuItem) Image() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the label set in the menuitem is used as a stock id to select
-//      the stock item for the item.
+//   - ok: TRUE if the label set in the menuitem is used as a stock id to select
+//     the stock item for the item.
 //
 func (imageMenuItem *ImageMenuItem) UseStock() bool {
 	var _arg0 *C.GtkImageMenuItem // out
@@ -352,9 +352,9 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 	return _ok
 }
 
-// SetAccelGroup specifies an accel_group to add the menu items accelerator to
-// (this only applies to stock items so a stock item must already be set, make
-// sure to call gtk_image_menu_item_set_use_stock() and
+// SetAccelGroup specifies an accel_group to add the menu items accelerator
+// to (this only applies to stock items so a stock item must already
+// be set, make sure to call gtk_image_menu_item_set_use_stock() and
 // gtk_menu_item_set_label() with a valid stock item first).
 //
 // If you want this menu item to have changeable accelerators then you shouldnt
@@ -364,7 +364,7 @@ func (imageMenuItem *ImageMenuItem) UseStock() bool {
 //
 // The function takes the following parameters:
 //
-//    - accelGroup: AccelGroup.
+//   - accelGroup: AccelGroup.
 //
 func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkImageMenuItem // out
@@ -388,7 +388,7 @@ func (imageMenuItem *ImageMenuItem) SetAccelGroup(accelGroup *AccelGroup) {
 //
 // The function takes the following parameters:
 //
-//    - alwaysShow: TRUE if the menuitem should always show the image.
+//   - alwaysShow: TRUE if the menuitem should always show the image.
 //
 func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkImageMenuItem // out
@@ -412,7 +412,7 @@ func (imageMenuItem *ImageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 //
 // The function takes the following parameters:
 //
-//    - image (optional): widget to set as the image for the menu item.
+//   - image (optional): widget to set as the image for the menu item.
 //
 func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 	var _arg0 *C.GtkImageMenuItem // out
@@ -435,7 +435,7 @@ func (imageMenuItem *ImageMenuItem) SetImage(image Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - useStock: TRUE if the menuitem should use a stock item.
+//   - useStock: TRUE if the menuitem should use a stock item.
 //
 func (imageMenuItem *ImageMenuItem) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkImageMenuItem // out

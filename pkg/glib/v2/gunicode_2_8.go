@@ -11,8 +11,8 @@ import (
 // #include <glib.h>
 import "C"
 
-// UTF8CollateKeyForFilename converts a string into a collation key that can be
-// compared with other collation keys produced by the same function using
+// UTF8CollateKeyForFilename converts a string into a collation key that can
+// be compared with other collation keys produced by the same function using
 // strcmp().
 //
 // In order to sort filenames correctly, this function treats the dot '.' as a
@@ -26,13 +26,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: UTF-8 encoded string.
-//    - len: length of str, in bytes, or -1 if str is nul-terminated.
+//   - str: UTF-8 encoded string.
+//   - len: length of str, in bytes, or -1 if str is nul-terminated.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string. This string should be freed with g_free()
-//      when you are done with it.
+//   - utf8: newly allocated string. This string should be freed with g_free()
+//     when you are done with it.
 //
 func UTF8CollateKeyForFilename(str string, len int) string {
 	var _arg1 *C.gchar // out

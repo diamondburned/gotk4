@@ -50,21 +50,20 @@ func defaultPopoverOverrides(v *Popover) PopoverOverrides {
 // Popover is a bubble-like context window, primarily meant to provide
 // context-dependent information or options. Popovers are attached to a widget,
 // passed at construction time on gtk_popover_new(), or updated afterwards
-// through gtk_popover_set_relative_to(), by default they will point to the
-// whole widget area, although this behavior can be changed through
+// through gtk_popover_set_relative_to(), by default they will point to
+// the whole widget area, although this behavior can be changed through
 // gtk_popover_set_pointing_to().
 //
 // The position of a popover relative to the widget it is attached to can also
 // be changed through gtk_popover_set_position().
 //
-// By default, Popover performs a GTK+ grab, in order to ensure input events get
-// redirected to it while it is shown, and also so the popover is dismissed in
-// the expected situations (clicks outside the popover, or the Esc key being
-// pressed). If no such modal behavior is desired on a popover,
+// By default, Popover performs a GTK+ grab, in order to ensure input events
+// get redirected to it while it is shown, and also so the popover is
+// dismissed in the expected situations (clicks outside the popover, or the
+// Esc key being pressed). If no such modal behavior is desired on a popover,
 // gtk_popover_set_modal() may be called on it to tweak its behavior.
 //
-//
-// GtkPopover as menu replacement
+// # GtkPopover as menu replacement
 //
 // GtkPopover is often used to replace menus. To facilitate this, it supports
 // being populated from a Model, using gtk_popover_new_from_model(). In addition
@@ -95,8 +94,7 @@ func defaultPopoverOverrides(v *Popover) PopoverOverrides {
 //      </item>
 //    </section>
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkPopover has a single css node called popover. It always gets the
 // .background style class and it gets the .menu style class if it is menu-like
@@ -171,11 +169,11 @@ func (popover *Popover) ConnectClosed(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - relativeTo (optional) the popover is related to.
+//   - relativeTo (optional) the popover is related to.
 //
 // The function returns the following values:
 //
-//    - popover: new Popover.
+//   - popover: new Popover.
 //
 func NewPopover(relativeTo Widgetter) *Popover {
 	var _arg1 *C.GtkWidget // out
@@ -207,12 +205,12 @@ func NewPopover(relativeTo Widgetter) *Popover {
 //
 // The function takes the following parameters:
 //
-//    - relativeTo (optional) the popover is related to.
-//    - model: Model.
+//   - relativeTo (optional) the popover is related to.
+//   - model: Model.
 //
 // The function returns the following values:
 //
-//    - popover: new Popover.
+//   - popover: new Popover.
 //
 func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover {
 	var _arg1 *C.GtkWidget  // out
@@ -258,8 +256,8 @@ func NewPopoverFromModel(relativeTo Widgetter, model gio.MenuModeller) *Popover 
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to bind to or NULL to remove binding.
-//    - actionNamespace (optional): namespace for actions in model.
+//   - model (optional) to bind to or NULL to remove binding.
+//   - actionNamespace (optional): namespace for actions in model.
 //
 func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string) {
 	var _arg0 *C.GtkPopover // out
@@ -286,7 +284,7 @@ func (popover *Popover) BindModel(model gio.MenuModeller, actionNamespace string
 //
 // The function returns the following values:
 //
-//    - popoverConstraint: constraint for placing this popover.
+//   - popoverConstraint: constraint for placing this popover.
 //
 func (popover *Popover) ConstrainTo() PopoverConstraint {
 	var _arg0 *C.GtkPopover          // out
@@ -309,7 +307,7 @@ func (popover *Popover) ConstrainTo() PopoverConstraint {
 //
 // The function returns the following values:
 //
-//    - widget (optional): default widget, or NULL if there is none.
+//   - widget (optional): default widget, or NULL if there is none.
 //
 func (popover *Popover) DefaultWidget() Widgetter {
 	var _arg0 *C.GtkPopover // out
@@ -347,7 +345,7 @@ func (popover *Popover) DefaultWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok if popover is modal.
+//   - ok if popover is modal.
 //
 func (popover *Popover) Modal() bool {
 	var _arg0 *C.GtkPopover // out
@@ -373,8 +371,8 @@ func (popover *Popover) Modal() bool {
 //
 // The function returns the following values:
 //
-//    - rect: location to store the rectangle.
-//    - ok: TRUE if a rectangle to point to was set.
+//   - rect: location to store the rectangle.
+//   - ok: TRUE if a rectangle to point to was set.
 //
 func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkPopover  // out
@@ -401,7 +399,7 @@ func (popover *Popover) PointingTo() (*gdk.Rectangle, bool) {
 //
 // The function returns the following values:
 //
-//    - positionType: preferred position.
+//   - positionType: preferred position.
 //
 func (popover *Popover) Position() PositionType {
 	var _arg0 *C.GtkPopover     // out
@@ -423,7 +421,7 @@ func (popover *Popover) Position() PositionType {
 //
 // The function returns the following values:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 func (popover *Popover) RelativeTo() Widgetter {
 	var _arg0 *C.GtkPopover // out
@@ -466,8 +464,8 @@ func (popover *Popover) RelativeTo() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok if the show and hide transitions of the given popover are enabled, LSE
-//      otherwise.
+//   - ok if the show and hide transitions of the given popover are enabled,
+//     LSE otherwise.
 //
 func (popover *Popover) TransitionsEnabled() bool {
 	var _arg0 *C.GtkPopover // out
@@ -518,7 +516,7 @@ func (popover *Popover) Popup() {
 //
 // The function takes the following parameters:
 //
-//    - constraint: new constraint.
+//   - constraint: new constraint.
 //
 func (popover *Popover) SetConstrainTo(constraint PopoverConstraint) {
 	var _arg0 *C.GtkPopover          // out
@@ -538,7 +536,7 @@ func (popover *Popover) SetConstrainTo(constraint PopoverConstraint) {
 //
 // The function takes the following parameters:
 //
-//    - widget (optional): new default widget, or NULL.
+//   - widget (optional): new default widget, or NULL.
 //
 func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 	var _arg0 *C.GtkPopover // out
@@ -561,7 +559,7 @@ func (popover *Popover) SetDefaultWidget(widget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - modal to make popover claim all input within the toplevel.
+//   - modal to make popover claim all input within the toplevel.
 //
 func (popover *Popover) SetModal(modal bool) {
 	var _arg0 *C.GtkPopover // out
@@ -577,13 +575,13 @@ func (popover *Popover) SetModal(modal bool) {
 	runtime.KeepAlive(modal)
 }
 
-// SetPointingTo sets the rectangle that popover will point to, in the
-// coordinate space of the widget popover is attached to, see
+// SetPointingTo sets the rectangle that popover will point to,
+// in the coordinate space of the widget popover is attached to, see
 // gtk_popover_set_relative_to().
 //
 // The function takes the following parameters:
 //
-//    - rect: rectangle to point to.
+//   - rect: rectangle to point to.
 //
 func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkPopover   // out
@@ -606,7 +604,7 @@ func (popover *Popover) SetPointingTo(rect *gdk.Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - position: preferred popover position.
+//   - position: preferred popover position.
 //
 func (popover *Popover) SetPosition(position PositionType) {
 	var _arg0 *C.GtkPopover     // out
@@ -630,7 +628,7 @@ func (popover *Popover) SetPosition(position PositionType) {
 //
 // The function takes the following parameters:
 //
-//    - relativeTo (optional): Widget.
+//   - relativeTo (optional): Widget.
 //
 func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 	var _arg0 *C.GtkPopover // out
@@ -655,7 +653,7 @@ func (popover *Popover) SetRelativeTo(relativeTo Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - transitionsEnabled: whether transitions are enabled.
+//   - transitionsEnabled: whether transitions are enabled.
 //
 func (popover *Popover) SetTransitionsEnabled(transitionsEnabled bool) {
 	var _arg0 *C.GtkPopover // out

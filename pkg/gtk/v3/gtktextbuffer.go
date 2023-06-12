@@ -140,14 +140,14 @@ type TextBufferOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - tag: TextTag.
-	//    - start: one bound of range to be tagged.
-	//    - end: other bound of range to be tagged.
+	//   - tag: TextTag.
+	//   - start: one bound of range to be tagged.
+	//   - end: other bound of range to be tagged.
 	//
 	ApplyTag func(tag *TextTag, start, end *TextIter)
-	// BeginUserAction: called to indicate that the buffer operations between
-	// here and a call to gtk_text_buffer_end_user_action() are part of a single
-	// user-visible operation. The operations between
+	// BeginUserAction: called to indicate that the buffer operations
+	// between here and a call to gtk_text_buffer_end_user_action() are
+	// part of a single user-visible operation. The operations between
 	// gtk_text_buffer_begin_user_action() and gtk_text_buffer_end_user_action()
 	// can then be grouped when creating an undo stack. TextBuffer maintains a
 	// count of calls to gtk_text_buffer_begin_user_action() that have not been
@@ -165,8 +165,8 @@ type TextBufferOverrides struct {
 	Changed         func()
 	// The function takes the following parameters:
 	//
-	//    - start
-	//    - end
+	//   - start
+	//   - end
 	//
 	DeleteRange func(start, end *TextIter)
 	// EndUserAction: should be paired with a call to
@@ -186,29 +186,29 @@ type TextBufferOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - iter: location to insert the anchor.
-	//    - anchor: TextChildAnchor.
+	//   - iter: location to insert the anchor.
+	//   - anchor: TextChildAnchor.
 	//
 	InsertChildAnchor func(iter *TextIter, anchor *TextChildAnchor)
-	// InsertPixbuf inserts an image into the text buffer at iter. The image
-	// will be counted as one character in character counts, and when obtaining
-	// the buffer contents as a string, will be represented by the Unicode
-	// “object replacement character” 0xFFFC. Note that the “slice” variants for
-	// obtaining portions of the buffer as a string include this character for
-	// pixbufs, but the “text” variants do not. e.g. see
-	// gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
+	// InsertPixbuf inserts an image into the text buffer at iter.
+	// The image will be counted as one character in character counts,
+	// and when obtaining the buffer contents as a string, will be represented
+	// by the Unicode “object replacement character” 0xFFFC. Note that the
+	// “slice” variants for obtaining portions of the buffer as a string
+	// include this character for pixbufs, but the “text” variants do not. e.g.
+	// see gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
 	//
 	// The function takes the following parameters:
 	//
-	//    - iter: location to insert the pixbuf.
-	//    - pixbuf: Pixbuf.
+	//   - iter: location to insert the pixbuf.
+	//   - pixbuf: Pixbuf.
 	//
 	InsertPixbuf func(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 	// The function takes the following parameters:
 	//
-	//    - pos
-	//    - newText
-	//    - newTextLength
+	//   - pos
+	//   - newText
+	//   - newTextLength
 	//
 	InsertText func(pos *TextIter, newText string, newTextLength int)
 	// The function takes the following parameters:
@@ -216,8 +216,8 @@ type TextBufferOverrides struct {
 	MarkDeleted func(mark *TextMark)
 	// The function takes the following parameters:
 	//
-	//    - location
-	//    - mark
+	//   - location
+	//   - mark
 	//
 	MarkSet         func(location *TextIter, mark *TextMark)
 	ModifiedChanged func()
@@ -230,9 +230,9 @@ type TextBufferOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - tag: TextTag.
-	//    - start: one bound of range to be untagged.
-	//    - end: other bound of range to be untagged.
+	//   - tag: TextTag.
+	//   - start: one bound of range to be untagged.
+	//   - end: other bound of range to be untagged.
 	//
 	RemoveTag func(tag *TextTag, start, end *TextIter)
 }
@@ -462,14 +462,14 @@ func (buffer *TextBuffer) ConnectModifiedChanged(f func()) coreglib.SignalHandle
 }
 
 // ConnectPasteDone signal is emitted after paste operation has been completed.
-// This is useful to properly scroll the view to the end of the pasted text. See
-// gtk_text_buffer_paste_clipboard() for more details.
+// This is useful to properly scroll the view to the end of the pasted text.
+// See gtk_text_buffer_paste_clipboard() for more details.
 func (buffer *TextBuffer) ConnectPasteDone(f func(clipboard *Clipboard)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(buffer, "paste-done", false, unsafe.Pointer(C._gotk4_gtk3_TextBuffer_ConnectPasteDone), f)
 }
 
-// ConnectRemoveTag signal is emitted to remove all occurrences of tag from a
-// range of text in a TextBuffer. Removal actually occurs in the default
+// ConnectRemoveTag signal is emitted to remove all occurrences of tag from
+// a range of text in a TextBuffer. Removal actually occurs in the default
 // handler.
 //
 // Note that if your handler runs before the default handler it must not
@@ -484,11 +484,11 @@ func (buffer *TextBuffer) ConnectRemoveTag(f func(tag *TextTag, start, end *Text
 //
 // The function takes the following parameters:
 //
-//    - table (optional): tag table, or NULL to create a new one.
+//   - table (optional): tag table, or NULL to create a new one.
 //
 // The function returns the following values:
 //
-//    - textBuffer: new text buffer.
+//   - textBuffer: new text buffer.
 //
 func NewTextBuffer(table *TextTagTable) *TextBuffer {
 	var _arg1 *C.GtkTextTagTable // out
@@ -517,8 +517,8 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 //
 // The function takes the following parameters:
 //
-//    - mark to add.
-//    - where: location to place mark.
+//   - mark to add.
+//   - where: location to place mark.
 //
 func (buffer *TextBuffer) AddMark(mark *TextMark, where *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -541,7 +541,7 @@ func (buffer *TextBuffer) AddMark(mark *TextMark, where *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - clipboard: Clipboard.
+//   - clipboard: Clipboard.
 //
 func (buffer *TextBuffer) AddSelectionClipboard(clipboard *Clipboard) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -561,9 +561,9 @@ func (buffer *TextBuffer) AddSelectionClipboard(clipboard *Clipboard) {
 //
 // The function takes the following parameters:
 //
-//    - tag: TextTag.
-//    - start: one bound of range to be tagged.
-//    - end: other bound of range to be tagged.
+//   - tag: TextTag.
+//   - start: one bound of range to be tagged.
+//   - end: other bound of range to be tagged.
 //
 func (buffer *TextBuffer) ApplyTag(tag *TextTag, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -588,9 +588,9 @@ func (buffer *TextBuffer) ApplyTag(tag *TextTag, start, end *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - name of a named TextTag.
-//    - start: one bound of range to be tagged.
-//    - end: other bound of range to be tagged.
+//   - name of a named TextTag.
+//   - start: one bound of range to be tagged.
+//   - end: other bound of range to be tagged.
 //
 func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -611,8 +611,8 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 	runtime.KeepAlive(end)
 }
 
-// Backspace performs the appropriate action as if the user hit the delete key
-// with the cursor at the position specified by iter. In the normal case a
+// Backspace performs the appropriate action as if the user hit the delete
+// key with the cursor at the position specified by iter. In the normal case a
 // single character will be deleted, but when combining accents are involved,
 // more than one character can be deleted, and when precomposed character and
 // accent combinations are involved, less than one character will be deleted.
@@ -623,13 +623,13 @@ func (buffer *TextBuffer) ApplyTagByName(name string, start, end *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - iter: position in buffer.
-//    - interactive: whether the deletion is caused by user interaction.
-//    - defaultEditable: whether the buffer is editable by default.
+//   - iter: position in buffer.
+//   - interactive: whether the deletion is caused by user interaction.
+//   - defaultEditable: whether the buffer is editable by default.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the buffer was modified.
+//   - ok: TRUE if the buffer was modified.
 //
 func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
@@ -662,9 +662,9 @@ func (buffer *TextBuffer) Backspace(iter *TextIter, interactive, defaultEditable
 	return _ok
 }
 
-// BeginUserAction: called to indicate that the buffer operations between here
-// and a call to gtk_text_buffer_end_user_action() are part of a single
-// user-visible operation. The operations between
+// BeginUserAction: called to indicate that the buffer operations
+// between here and a call to gtk_text_buffer_end_user_action() are
+// part of a single user-visible operation. The operations between
 // gtk_text_buffer_begin_user_action() and gtk_text_buffer_end_user_action() can
 // then be grouped when creating an undo stack. TextBuffer maintains a count of
 // calls to gtk_text_buffer_begin_user_action() that have not been closed with a
@@ -690,7 +690,7 @@ func (buffer *TextBuffer) BeginUserAction() {
 //
 // The function takes the following parameters:
 //
-//    - clipboard object to copy to.
+//   - clipboard object to copy to.
 //
 func (buffer *TextBuffer) CopyClipboard(clipboard *Clipboard) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -704,19 +704,19 @@ func (buffer *TextBuffer) CopyClipboard(clipboard *Clipboard) {
 	runtime.KeepAlive(clipboard)
 }
 
-// CreateChildAnchor: this is a convenience function which simply creates a
-// child anchor with gtk_text_child_anchor_new() and inserts it into the buffer
-// with gtk_text_buffer_insert_child_anchor(). The new anchor is owned by the
-// buffer; no reference count is returned to the caller of
+// CreateChildAnchor: this is a convenience function which simply creates
+// a child anchor with gtk_text_child_anchor_new() and inserts it into the
+// buffer with gtk_text_buffer_insert_child_anchor(). The new anchor is
+// owned by the buffer; no reference count is returned to the caller of
 // gtk_text_buffer_create_child_anchor().
 //
 // The function takes the following parameters:
 //
-//    - iter: location in the buffer.
+//   - iter: location in the buffer.
 //
 // The function returns the following values:
 //
-//    - textChildAnchor: created child anchor.
+//   - textChildAnchor: created child anchor.
 //
 func (buffer *TextBuffer) CreateChildAnchor(iter *TextIter) *TextChildAnchor {
 	var _arg0 *C.GtkTextBuffer      // out
@@ -737,8 +737,8 @@ func (buffer *TextBuffer) CreateChildAnchor(iter *TextIter) *TextChildAnchor {
 	return _textChildAnchor
 }
 
-// CreateMark creates a mark at position where. If mark_name is NULL, the mark
-// is anonymous; otherwise, the mark can be retrieved by name using
+// CreateMark creates a mark at position where. If mark_name is NULL,
+// the mark is anonymous; otherwise, the mark can be retrieved by name using
 // gtk_text_buffer_get_mark(). If a mark has left gravity, and text is inserted
 // at the mark’s current location, the mark will be moved to the left of the
 // newly-inserted text. If the mark has right gravity (left_gravity = FALSE),
@@ -755,13 +755,13 @@ func (buffer *TextBuffer) CreateChildAnchor(iter *TextIter) *TextChildAnchor {
 //
 // The function takes the following parameters:
 //
-//    - markName (optional): name for mark, or NULL.
-//    - where: location to place mark.
-//    - leftGravity: whether the mark has left gravity.
+//   - markName (optional): name for mark, or NULL.
+//   - where: location to place mark.
+//   - leftGravity: whether the mark has left gravity.
 //
 // The function returns the following values:
 //
-//    - textMark: new TextMark object.
+//   - textMark: new TextMark object.
 //
 func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravity bool) *TextMark {
 	var _arg0 *C.GtkTextBuffer // out
@@ -798,8 +798,8 @@ func (buffer *TextBuffer) CreateMark(markName string, where *TextIter, leftGravi
 //
 // The function takes the following parameters:
 //
-//    - clipboard object to cut to.
-//    - defaultEditable: default editability of the buffer.
+//   - clipboard object to cut to.
+//   - defaultEditable: default editability of the buffer.
 //
 func (buffer *TextBuffer) CutClipboard(clipboard *Clipboard, defaultEditable bool) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -827,8 +827,8 @@ func (buffer *TextBuffer) CutClipboard(clipboard *Clipboard, defaultEditable boo
 //
 // The function takes the following parameters:
 //
-//    - start: position in buffer.
-//    - end: another position in buffer.
+//   - start: position in buffer.
+//   - end: another position in buffer.
 //
 func (buffer *TextBuffer) Delete(start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -852,13 +852,13 @@ func (buffer *TextBuffer) Delete(start, end *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - startIter: start of range to delete.
-//    - endIter: end of range.
-//    - defaultEditable: whether the buffer is editable by default.
+//   - startIter: start of range to delete.
+//   - endIter: end of range.
+//   - defaultEditable: whether the buffer is editable by default.
 //
 // The function returns the following values:
 //
-//    - ok: whether some text was actually deleted.
+//   - ok: whether some text was actually deleted.
 //
 func (buffer *TextBuffer) DeleteInteractive(startIter, endIter *TextIter, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
@@ -889,18 +889,18 @@ func (buffer *TextBuffer) DeleteInteractive(startIter, endIter *TextIter, defaul
 	return _ok
 }
 
-// DeleteMark deletes mark, so that it’s no longer located anywhere in the
-// buffer. Removes the reference the buffer holds to the mark, so if you haven’t
-// called g_object_ref() on the mark, it will be freed. Even if the mark isn’t
-// freed, most operations on mark become invalid, until it gets added to a
-// buffer again with gtk_text_buffer_add_mark(). Use gtk_text_mark_get_deleted()
-// to find out if a mark has been removed from its buffer. The
-// TextBuffer::mark-deleted signal will be emitted as notification after the
-// mark is deleted.
+// DeleteMark deletes mark, so that it’s no longer located anywhere
+// in the buffer. Removes the reference the buffer holds to the mark,
+// so if you haven’t called g_object_ref() on the mark, it will be freed.
+// Even if the mark isn’t freed, most operations on mark become invalid,
+// until it gets added to a buffer again with gtk_text_buffer_add_mark(). Use
+// gtk_text_mark_get_deleted() to find out if a mark has been removed from its
+// buffer. The TextBuffer::mark-deleted signal will be emitted as notification
+// after the mark is deleted.
 //
 // The function takes the following parameters:
 //
-//    - mark in buffer.
+//   - mark in buffer.
 //
 func (buffer *TextBuffer) DeleteMark(mark *TextMark) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -919,7 +919,7 @@ func (buffer *TextBuffer) DeleteMark(mark *TextMark) {
 //
 // The function takes the following parameters:
 //
-//    - name of a mark in buffer.
+//   - name of a mark in buffer.
 //
 func (buffer *TextBuffer) DeleteMarkByName(name string) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -935,18 +935,18 @@ func (buffer *TextBuffer) DeleteMarkByName(name string) {
 }
 
 // DeleteSelection deletes the range between the “insert” and “selection_bound”
-// marks, that is, the currently-selected text. If interactive is TRUE, the
-// editability of the selection will be considered (users can’t delete
+// marks, that is, the currently-selected text. If interactive is TRUE,
+// the editability of the selection will be considered (users can’t delete
 // uneditable text).
 //
 // The function takes the following parameters:
 //
-//    - interactive: whether the deletion is caused by user interaction.
-//    - defaultEditable: whether the buffer is editable by default.
+//   - interactive: whether the deletion is caused by user interaction.
+//   - defaultEditable: whether the buffer is editable by default.
 //
 // The function returns the following values:
 //
-//    - ok: whether there was a non-empty selection to delete.
+//   - ok: whether there was a non-empty selection to delete.
 //
 func (buffer *TextBuffer) DeleteSelection(interactive, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
@@ -993,8 +993,8 @@ func (buffer *TextBuffer) EndUserAction() {
 //
 // The function returns the following values:
 //
-//    - start: iterator to initialize with first position in the buffer.
-//    - end: iterator to initialize with the end iterator.
+//   - start: iterator to initialize with first position in the buffer.
+//   - end: iterator to initialize with the end iterator.
 //
 func (buffer *TextBuffer) Bounds() (start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1017,12 +1017,12 @@ func (buffer *TextBuffer) Bounds() (start, end *TextIter) {
 
 // CharCount gets the number of characters in the buffer; note that characters
 // and bytes are not the same, you can’t e.g. expect the contents of the buffer
-// in string form to be this many bytes long. The character count is cached, so
-// this function is very fast.
+// in string form to be this many bytes long. The character count is cached,
+// so this function is very fast.
 //
 // The function returns the following values:
 //
-//    - gint: number of characters in the buffer.
+//   - gint: number of characters in the buffer.
 //
 func (buffer *TextBuffer) CharCount() int {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1040,15 +1040,15 @@ func (buffer *TextBuffer) CharCount() int {
 	return _gint
 }
 
-// CopyTargetList: this function returns the list of targets this text buffer
-// can provide for copying and as DND source. The targets in the list are added
-// with info values from the TextBufferTargetInfo enum, using
-// gtk_target_list_add_rich_text_targets() and
+// CopyTargetList: this function returns the list of targets this text
+// buffer can provide for copying and as DND source. The targets in
+// the list are added with info values from the TextBufferTargetInfo
+// enum, using gtk_target_list_add_rich_text_targets() and
 // gtk_target_list_add_text_targets().
 //
 // The function returns the following values:
 //
-//    - targetList: TargetList.
+//   - targetList: TargetList.
 //
 func (buffer *TextBuffer) CopyTargetList() *TargetList {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1075,14 +1075,14 @@ func (buffer *TextBuffer) CopyTargetList() *TargetList {
 
 // EndIter initializes iter with the “end iterator,” one past the last valid
 // character in the text buffer. If dereferenced with gtk_text_iter_get_char(),
-// the end iterator has a character value of 0. The entire buffer lies in the
-// range from the first position in the buffer (call
+// the end iterator has a character value of 0. The entire buffer
+// lies in the range from the first position in the buffer (call
 // gtk_text_buffer_get_start_iter() to get character position 0) to the end
 // iterator.
 //
 // The function returns the following values:
 //
-//    - iter: iterator to initialize.
+//   - iter: iterator to initialize.
 //
 func (buffer *TextBuffer) EndIter() *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1104,7 +1104,7 @@ func (buffer *TextBuffer) EndIter() *TextIter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the there is text selected.
+//   - ok: TRUE if the there is text selected.
 //
 func (buffer *TextBuffer) HasSelection() bool {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1130,7 +1130,7 @@ func (buffer *TextBuffer) HasSelection() bool {
 //
 // The function returns the following values:
 //
-//    - textMark: insertion point mark.
+//   - textMark: insertion point mark.
 //
 func (buffer *TextBuffer) GetInsert() *TextMark {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1152,11 +1152,11 @@ func (buffer *TextBuffer) GetInsert() *TextMark {
 //
 // The function takes the following parameters:
 //
-//    - anchor: child anchor that appears in buffer.
+//   - anchor: child anchor that appears in buffer.
 //
 // The function returns the following values:
 //
-//    - iter: iterator to be initialized.
+//   - iter: iterator to be initialized.
 //
 func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 	var _arg0 *C.GtkTextBuffer      // out
@@ -1182,11 +1182,11 @@ func (buffer *TextBuffer) IterAtChildAnchor(anchor *TextChildAnchor) *TextIter {
 //
 // The function takes the following parameters:
 //
-//    - lineNumber: line number counting from 0.
+//   - lineNumber: line number counting from 0.
 //
 // The function returns the following values:
 //
-//    - iter: iterator to initialize.
+//   - iter: iterator to initialize.
 //
 func (buffer *TextBuffer) IterAtLine(lineNumber int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1207,9 +1207,9 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int) *TextIter {
 	return _iter
 }
 
-// IterAtLineIndex obtains an iterator pointing to byte_index within the given
-// line. byte_index must be the start of a UTF-8 character. Note bytes, not
-// characters; UTF-8 may encode one character as multiple bytes.
+// IterAtLineIndex obtains an iterator pointing to byte_index within the
+// given line. byte_index must be the start of a UTF-8 character. Note bytes,
+// not characters; UTF-8 may encode one character as multiple bytes.
 //
 // Before the 3.20 version, it was not allowed to pass an invalid location.
 //
@@ -1219,12 +1219,12 @@ func (buffer *TextBuffer) IterAtLine(lineNumber int) *TextIter {
 //
 // The function takes the following parameters:
 //
-//    - lineNumber: line number counting from 0.
-//    - byteIndex: byte index from start of line.
+//   - lineNumber: line number counting from 0.
+//   - byteIndex: byte index from start of line.
 //
 // The function returns the following values:
 //
-//    - iter: iterator to initialize.
+//   - iter: iterator to initialize.
 //
 func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1260,12 +1260,12 @@ func (buffer *TextBuffer) IterAtLineIndex(lineNumber, byteIndex int) *TextIter {
 //
 // The function takes the following parameters:
 //
-//    - lineNumber: line number counting from 0.
-//    - charOffset: char offset from start of line.
+//   - lineNumber: line number counting from 0.
+//   - charOffset: char offset from start of line.
 //
 // The function returns the following values:
 //
-//    - iter: iterator to initialize.
+//   - iter: iterator to initialize.
 //
 func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1293,11 +1293,11 @@ func (buffer *TextBuffer) IterAtLineOffset(lineNumber, charOffset int) *TextIter
 //
 // The function takes the following parameters:
 //
-//    - mark in buffer.
+//   - mark in buffer.
 //
 // The function returns the following values:
 //
-//    - iter: iterator to initialize.
+//   - iter: iterator to initialize.
 //
 func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1318,18 +1318,18 @@ func (buffer *TextBuffer) IterAtMark(mark *TextMark) *TextIter {
 	return _iter
 }
 
-// IterAtOffset initializes iter to a position char_offset chars from the start
-// of the entire buffer. If char_offset is -1 or greater than the number of
-// characters in the buffer, iter is initialized to the end iterator, the
-// iterator one past the last valid character in the buffer.
+// IterAtOffset initializes iter to a position char_offset chars from the
+// start of the entire buffer. If char_offset is -1 or greater than the number
+// of characters in the buffer, iter is initialized to the end iterator,
+// the iterator one past the last valid character in the buffer.
 //
 // The function takes the following parameters:
 //
-//    - charOffset: char offset from start of buffer, counting from 0, or -1.
+//   - charOffset: char offset from start of buffer, counting from 0, or -1.
 //
 // The function returns the following values:
 //
-//    - iter: iterator to initialize.
+//   - iter: iterator to initialize.
 //
 func (buffer *TextBuffer) IterAtOffset(charOffset int) *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1350,12 +1350,12 @@ func (buffer *TextBuffer) IterAtOffset(charOffset int) *TextIter {
 	return _iter
 }
 
-// LineCount obtains the number of lines in the buffer. This value is cached, so
-// the function is very fast.
+// LineCount obtains the number of lines in the buffer. This value is cached,
+// so the function is very fast.
 //
 // The function returns the following values:
 //
-//    - gint: number of lines in the buffer.
+//   - gint: number of lines in the buffer.
 //
 func (buffer *TextBuffer) LineCount() int {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1378,11 +1378,11 @@ func (buffer *TextBuffer) LineCount() int {
 //
 // The function takes the following parameters:
 //
-//    - name: mark name.
+//   - name: mark name.
 //
 // The function returns the following values:
 //
-//    - textMark (optional) or NULL.
+//   - textMark (optional) or NULL.
 //
 func (buffer *TextBuffer) Mark(name string) *TextMark {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1406,13 +1406,13 @@ func (buffer *TextBuffer) Mark(name string) *TextMark {
 	return _textMark
 }
 
-// Modified indicates whether the buffer has been modified since the last call
-// to gtk_text_buffer_set_modified() set the modification flag to FALSE. Used
-// for example to enable a “save” function in a text editor.
+// Modified indicates whether the buffer has been modified since the last
+// call to gtk_text_buffer_set_modified() set the modification flag to FALSE.
+// Used for example to enable a “save” function in a text editor.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the buffer has been modified.
+//   - ok: TRUE if the buffer has been modified.
 //
 func (buffer *TextBuffer) Modified() bool {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1432,15 +1432,15 @@ func (buffer *TextBuffer) Modified() bool {
 	return _ok
 }
 
-// PasteTargetList: this function returns the list of targets this text buffer
-// supports for pasting and as DND destination. The targets in the list are
-// added with info values from the TextBufferTargetInfo enum, using
-// gtk_target_list_add_rich_text_targets() and
+// PasteTargetList: this function returns the list of targets this text
+// buffer supports for pasting and as DND destination. The targets in
+// the list are added with info values from the TextBufferTargetInfo
+// enum, using gtk_target_list_add_rich_text_targets() and
 // gtk_target_list_add_text_targets().
 //
 // The function returns the following values:
 //
-//    - targetList: TargetList.
+//   - targetList: TargetList.
 //
 func (buffer *TextBuffer) PasteTargetList() *TargetList {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1471,15 +1471,15 @@ func (buffer *TextBuffer) PasteTargetList() *TargetList {
 // typing.
 //
 // The currently-selected text in buffer is the region between the
-// “selection_bound” and “insert” marks. If “selection_bound” and “insert” are
-// in the same place, then there is no current selection.
+// “selection_bound” and “insert” marks. If “selection_bound” and
+// “insert” are in the same place, then there is no current selection.
 // gtk_text_buffer_get_selection_bounds() is another convenient function for
 // handling the selection, if you just want to know whether there’s a selection
 // and what its bounds are.
 //
 // The function returns the following values:
 //
-//    - textMark: selection bound mark.
+//   - textMark: selection bound mark.
 //
 func (buffer *TextBuffer) SelectionBound() *TextMark {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1505,9 +1505,9 @@ func (buffer *TextBuffer) SelectionBound() *TextMark {
 //
 // The function returns the following values:
 //
-//    - start: iterator to initialize with selection start.
-//    - end: iterator to initialize with selection end.
-//    - ok: whether the selection has nonzero length.
+//   - start: iterator to initialize with selection start.
+//   - end: iterator to initialize with selection end.
+//   - ok: whether the selection has nonzero length.
 //
 func (buffer *TextBuffer) SelectionBounds() (start, end *TextIter, ok bool) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1533,8 +1533,8 @@ func (buffer *TextBuffer) SelectionBounds() (start, end *TextIter, ok bool) {
 	return _start, _end, _ok
 }
 
-// Slice returns the text in the range [start,end). Excludes undisplayed text
-// (text marked with tags that set the invisibility attribute) if
+// Slice returns the text in the range [start,end). Excludes undisplayed
+// text (text marked with tags that set the invisibility attribute) if
 // include_hidden_chars is FALSE. The returned string includes a 0xFFFC
 // character whenever the buffer contains embedded images, so byte and character
 // indexes into the returned string do correspond to byte and character indexes
@@ -1544,13 +1544,13 @@ func (buffer *TextBuffer) SelectionBounds() (start, end *TextIter, ok bool) {
 //
 // The function takes the following parameters:
 //
-//    - start of a range.
-//    - end of a range.
-//    - includeHiddenChars: whether to include invisible text.
+//   - start of a range.
+//   - end of a range.
+//   - includeHiddenChars: whether to include invisible text.
 //
 // The function returns the following values:
 //
-//    - utf8: allocated UTF-8 string.
+//   - utf8: allocated UTF-8 string.
 //
 func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) string {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1580,13 +1580,13 @@ func (buffer *TextBuffer) Slice(start, end *TextIter, includeHiddenChars bool) s
 	return _utf8
 }
 
-// StartIter: initialized iter with the first position in the text buffer. This
-// is the same as using gtk_text_buffer_get_iter_at_offset() to get the iter at
-// character offset 0.
+// StartIter: initialized iter with the first position in the text buffer.
+// This is the same as using gtk_text_buffer_get_iter_at_offset() to get the
+// iter at character offset 0.
 //
 // The function returns the following values:
 //
-//    - iter: iterator to initialize.
+//   - iter: iterator to initialize.
 //
 func (buffer *TextBuffer) StartIter() *TextIter {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1608,7 +1608,7 @@ func (buffer *TextBuffer) StartIter() *TextIter {
 //
 // The function returns the following values:
 //
-//    - textTagTable buffer’s tag table.
+//   - textTagTable buffer’s tag table.
 //
 func (buffer *TextBuffer) TagTable() *TextTagTable {
 	var _arg0 *C.GtkTextBuffer   // out
@@ -1626,8 +1626,8 @@ func (buffer *TextBuffer) TagTable() *TextTagTable {
 	return _textTagTable
 }
 
-// Text returns the text in the range [start,end). Excludes undisplayed text
-// (text marked with tags that set the invisibility attribute) if
+// Text returns the text in the range [start,end). Excludes undisplayed
+// text (text marked with tags that set the invisibility attribute) if
 // include_hidden_chars is FALSE. Does not include characters representing
 // embedded images, so byte and character indexes into the returned string do
 // not correspond to byte and character indexes into the buffer. Contrast with
@@ -1635,13 +1635,13 @@ func (buffer *TextBuffer) TagTable() *TextTagTable {
 //
 // The function takes the following parameters:
 //
-//    - start of a range.
-//    - end of a range.
-//    - includeHiddenChars: whether to include invisible text.
+//   - start of a range.
+//   - end of a range.
+//   - includeHiddenChars: whether to include invisible text.
 //
 // The function returns the following values:
 //
-//    - utf8: allocated UTF-8 string.
+//   - utf8: allocated UTF-8 string.
 //
 func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) string {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1680,8 +1680,8 @@ func (buffer *TextBuffer) Text(start, end *TextIter, includeHiddenChars bool) st
 //
 // The function takes the following parameters:
 //
-//    - iter: position in the buffer.
-//    - text in UTF-8 format.
+//   - iter: position in the buffer.
+//   - text in UTF-8 format.
 //
 func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1707,7 +1707,7 @@ func (buffer *TextBuffer) Insert(iter *TextIter, text string) {
 //
 // The function takes the following parameters:
 //
-//    - text in UTF-8 format.
+//   - text in UTF-8 format.
 //
 func (buffer *TextBuffer) InsertAtCursor(text string) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1725,21 +1725,21 @@ func (buffer *TextBuffer) InsertAtCursor(text string) {
 	runtime.KeepAlive(text)
 }
 
-// InsertChildAnchor inserts a child widget anchor into the text buffer at iter.
-// The anchor will be counted as one character in character counts, and when
-// obtaining the buffer contents as a string, will be represented by the Unicode
-// “object replacement character” 0xFFFC. Note that the “slice” variants for
-// obtaining portions of the buffer as a string include this character for child
-// anchors, but the “text” variants do not. E.g. see gtk_text_buffer_get_slice()
-// and gtk_text_buffer_get_text(). Consider
+// InsertChildAnchor inserts a child widget anchor into the text buffer at
+// iter. The anchor will be counted as one character in character counts,
+// and when obtaining the buffer contents as a string, will be represented
+// by the Unicode “object replacement character” 0xFFFC. Note that the
+// “slice” variants for obtaining portions of the buffer as a string include
+// this character for child anchors, but the “text” variants do not. E.g.
+// see gtk_text_buffer_get_slice() and gtk_text_buffer_get_text(). Consider
 // gtk_text_buffer_create_child_anchor() as a more convenient alternative to
 // this function. The buffer will add a reference to the anchor, so you can
 // unref it after insertion.
 //
 // The function takes the following parameters:
 //
-//    - iter: location to insert the anchor.
-//    - anchor: TextChildAnchor.
+//   - iter: location to insert the anchor.
+//   - anchor: TextChildAnchor.
 //
 func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor) {
 	var _arg0 *C.GtkTextBuffer      // out
@@ -1761,19 +1761,19 @@ func (buffer *TextBuffer) InsertChildAnchor(iter *TextIter, anchor *TextChildAnc
 // to prevent insertions at ineditable locations if the insertion results from a
 // user action (is interactive).
 //
-// default_editable indicates the editability of text that doesn't have a tag
-// affecting editability applied to it. Typically the result of
+// default_editable indicates the editability of text that doesn't have
+// a tag affecting editability applied to it. Typically the result of
 // gtk_text_view_get_editable() is appropriate here.
 //
 // The function takes the following parameters:
 //
-//    - iter: position in buffer.
-//    - text: some UTF-8 text.
-//    - defaultEditable: default editability of buffer.
+//   - iter: position in buffer.
+//   - text: some UTF-8 text.
+//   - defaultEditable: default editability of buffer.
 //
 // The function returns the following values:
 //
-//    - ok: whether text was actually inserted.
+//   - ok: whether text was actually inserted.
 //
 func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1811,18 +1811,18 @@ func (buffer *TextBuffer) InsertInteractive(iter *TextIter, text string, default
 // InsertInteractiveAtCursor calls gtk_text_buffer_insert_interactive() at the
 // cursor position.
 //
-// default_editable indicates the editability of text that doesn't have a tag
-// affecting editability applied to it. Typically the result of
+// default_editable indicates the editability of text that doesn't have
+// a tag affecting editability applied to it. Typically the result of
 // gtk_text_view_get_editable() is appropriate here.
 //
 // The function takes the following parameters:
 //
-//    - text in UTF-8 format.
-//    - defaultEditable: default editability of buffer.
+//   - text in UTF-8 format.
+//   - defaultEditable: default editability of buffer.
 //
 // The function returns the following values:
 //
-//    - ok: whether text was actually inserted.
+//   - ok: whether text was actually inserted.
 //
 func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1854,17 +1854,17 @@ func (buffer *TextBuffer) InsertInteractiveAtCursor(text string, defaultEditable
 	return _ok
 }
 
-// InsertMarkup inserts the text in markup at position iter. markup will be
-// inserted in its entirety and must be nul-terminated and valid UTF-8. Emits
-// the TextBuffer::insert-text signal, possibly multiple times; insertion
+// InsertMarkup inserts the text in markup at position iter. markup will
+// be inserted in its entirety and must be nul-terminated and valid UTF-8.
+// Emits the TextBuffer::insert-text signal, possibly multiple times; insertion
 // actually occurs in the default handler for the signal. iter will point to the
 // end of the inserted text on return.
 //
 // The function takes the following parameters:
 //
-//    - iter: location to insert the markup.
-//    - markup: nul-terminated UTF-8 string containing [Pango
-//      markup][PangoMarkupFormat].
+//   - iter: location to insert the markup.
+//   - markup: nul-terminated UTF-8 string containing [Pango
+//     markup][PangoMarkupFormat].
 //
 func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1885,18 +1885,18 @@ func (buffer *TextBuffer) InsertMarkup(iter *TextIter, markup string) {
 	runtime.KeepAlive(markup)
 }
 
-// InsertPixbuf inserts an image into the text buffer at iter. The image will be
-// counted as one character in character counts, and when obtaining the buffer
-// contents as a string, will be represented by the Unicode “object replacement
-// character” 0xFFFC. Note that the “slice” variants for obtaining portions of
-// the buffer as a string include this character for pixbufs, but the “text”
-// variants do not. e.g. see gtk_text_buffer_get_slice() and
+// InsertPixbuf inserts an image into the text buffer at iter. The image will
+// be counted as one character in character counts, and when obtaining the
+// buffer contents as a string, will be represented by the Unicode “object
+// replacement character” 0xFFFC. Note that the “slice” variants for obtaining
+// portions of the buffer as a string include this character for pixbufs,
+// but the “text” variants do not. e.g. see gtk_text_buffer_get_slice() and
 // gtk_text_buffer_get_text().
 //
 // The function takes the following parameters:
 //
-//    - iter: location to insert the pixbuf.
-//    - pixbuf: Pixbuf.
+//   - iter: location to insert the pixbuf.
+//   - pixbuf: Pixbuf.
 //
 func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1915,8 +1915,8 @@ func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 
 // InsertRange copies text, tags, and pixbufs between start and end (the order
 // of start and end doesn’t matter) and inserts the copy at iter. Used instead
-// of simply getting/inserting text because it preserves images and tags. If
-// start and end are in a different buffer from buffer, the two buffers must
+// of simply getting/inserting text because it preserves images and tags.
+// If start and end are in a different buffer from buffer, the two buffers must
 // share the same tag table.
 //
 // Implemented via emissions of the insert_text and apply_tag signals, so expect
@@ -1924,9 +1924,9 @@ func (buffer *TextBuffer) InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 //
 // The function takes the following parameters:
 //
-//    - iter: position in buffer.
-//    - start: position in a TextBuffer.
-//    - end: another position in the same buffer as start.
+//   - iter: position in buffer.
+//   - start: position in a TextBuffer.
+//   - end: another position in the same buffer as start.
 //
 func (buffer *TextBuffer) InsertRange(iter, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -1954,14 +1954,14 @@ func (buffer *TextBuffer) InsertRange(iter, start, end *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - iter: position in buffer.
-//    - start: position in a TextBuffer.
-//    - end: another position in the same buffer as start.
-//    - defaultEditable: default editability of the buffer.
+//   - iter: position in buffer.
+//   - start: position in a TextBuffer.
+//   - end: another position in the same buffer as start.
+//   - defaultEditable: default editability of the buffer.
 //
 // The function returns the following values:
 //
-//    - ok: whether an insertion was possible at iter.
+//   - ok: whether an insertion was possible at iter.
 //
 func (buffer *TextBuffer) InsertRangeInteractive(iter, start, end *TextIter, defaultEditable bool) bool {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2000,8 +2000,8 @@ func (buffer *TextBuffer) InsertRangeInteractive(iter, start, end *TextIter, def
 //
 // The function takes the following parameters:
 //
-//    - mark: TextMark.
-//    - where: new location for mark in buffer.
+//   - mark: TextMark.
+//   - where: new location for mark in buffer.
 //
 func (buffer *TextBuffer) MoveMark(mark *TextMark, where *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2023,8 +2023,8 @@ func (buffer *TextBuffer) MoveMark(mark *TextMark, where *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - name of a mark.
-//    - where: new location for mark.
+//   - name of a mark.
+//   - where: new location for mark.
 //
 func (buffer *TextBuffer) MoveMarkByName(name string, where *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2052,9 +2052,9 @@ func (buffer *TextBuffer) MoveMarkByName(name string, where *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - clipboard to paste from.
-//    - overrideLocation (optional): location to insert pasted text, or NULL.
-//    - defaultEditable: whether the buffer is editable by default.
+//   - clipboard to paste from.
+//   - overrideLocation (optional): location to insert pasted text, or NULL.
+//   - defaultEditable: whether the buffer is editable by default.
 //
 func (buffer *TextBuffer) PasteClipboard(clipboard *Clipboard, overrideLocation *TextIter, defaultEditable bool) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2078,16 +2078,16 @@ func (buffer *TextBuffer) PasteClipboard(clipboard *Clipboard, overrideLocation 
 	runtime.KeepAlive(defaultEditable)
 }
 
-// PlaceCursor: this function moves the “insert” and “selection_bound” marks
-// simultaneously. If you move them to the same place in two steps with
-// gtk_text_buffer_move_mark(), you will temporarily select a region in between
-// their old and new locations, which can be pretty inefficient since the
-// temporarily-selected region will force stuff to be recalculated. This
-// function moves them as a unit, which can be optimized.
+// PlaceCursor: this function moves the “insert” and “selection_bound”
+// marks simultaneously. If you move them to the same place in two steps
+// with gtk_text_buffer_move_mark(), you will temporarily select a region
+// in between their old and new locations, which can be pretty inefficient
+// since the temporarily-selected region will force stuff to be recalculated.
+// This function moves them as a unit, which can be optimized.
 //
 // The function takes the following parameters:
 //
-//    - where to put the cursor.
+//   - where to put the cursor.
 //
 func (buffer *TextBuffer) PlaceCursor(where *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2108,8 +2108,8 @@ func (buffer *TextBuffer) PlaceCursor(where *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - start: one bound of range to be untagged.
-//    - end: other bound of range to be untagged.
+//   - start: one bound of range to be untagged.
+//   - end: other bound of range to be untagged.
 //
 func (buffer *TextBuffer) RemoveAllTags(start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2131,7 +2131,7 @@ func (buffer *TextBuffer) RemoveAllTags(start, end *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - clipboard added to buffer by gtk_text_buffer_add_selection_clipboard().
+//   - clipboard added to buffer by gtk_text_buffer_add_selection_clipboard().
 //
 func (buffer *TextBuffer) RemoveSelectionClipboard(clipboard *Clipboard) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2151,9 +2151,9 @@ func (buffer *TextBuffer) RemoveSelectionClipboard(clipboard *Clipboard) {
 //
 // The function takes the following parameters:
 //
-//    - tag: TextTag.
-//    - start: one bound of range to be untagged.
-//    - end: other bound of range to be untagged.
+//   - tag: TextTag.
+//   - start: one bound of range to be untagged.
+//   - end: other bound of range to be untagged.
 //
 func (buffer *TextBuffer) RemoveTag(tag *TextTag, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2178,9 +2178,9 @@ func (buffer *TextBuffer) RemoveTag(tag *TextTag, start, end *TextIter) {
 //
 // The function takes the following parameters:
 //
-//    - name of a TextTag.
-//    - start: one bound of range to be untagged.
-//    - end: other bound of range to be untagged.
+//   - name of a TextTag.
+//   - start: one bound of range to be untagged.
+//   - end: other bound of range to be untagged.
 //
 func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2201,17 +2201,17 @@ func (buffer *TextBuffer) RemoveTagByName(name string, start, end *TextIter) {
 	runtime.KeepAlive(end)
 }
 
-// SelectRange: this function moves the “insert” and “selection_bound” marks
-// simultaneously. If you move them in two steps with
-// gtk_text_buffer_move_mark(), you will temporarily select a region in between
-// their old and new locations, which can be pretty inefficient since the
-// temporarily-selected region will force stuff to be recalculated. This
+// SelectRange: this function moves the “insert” and “selection_bound”
+// marks simultaneously. If you move them in two steps with
+// gtk_text_buffer_move_mark(), you will temporarily select a region in
+// between their old and new locations, which can be pretty inefficient since
+// the temporarily-selected region will force stuff to be recalculated. This
 // function moves them as a unit, which can be optimized.
 //
 // The function takes the following parameters:
 //
-//    - ins: where to put the “insert” mark.
-//    - bound: where to put the “selection_bound” mark.
+//   - ins: where to put the “insert” mark.
+//   - bound: where to put the “selection_bound” mark.
 //
 func (buffer *TextBuffer) SelectRange(ins, bound *TextIter) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2228,15 +2228,15 @@ func (buffer *TextBuffer) SelectRange(ins, bound *TextIter) {
 	runtime.KeepAlive(bound)
 }
 
-// SetModified: used to keep track of whether the buffer has been modified since
-// the last time it was saved. Whenever the buffer is saved to disk, call
-// gtk_text_buffer_set_modified (buffer, FALSE). When the buffer is modified, it
-// will automatically toggled on the modified bit again. When the modified bit
-// flips, the buffer emits the TextBuffer::modified-changed signal.
+// SetModified: used to keep track of whether the buffer has been modified
+// since the last time it was saved. Whenever the buffer is saved to disk, call
+// gtk_text_buffer_set_modified (buffer, FALSE). When the buffer is modified,
+// it will automatically toggled on the modified bit again. When the modified
+// bit flips, the buffer emits the TextBuffer::modified-changed signal.
 //
 // The function takes the following parameters:
 //
-//    - setting: modification flag setting.
+//   - setting: modification flag setting.
 //
 func (buffer *TextBuffer) SetModified(setting bool) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2252,12 +2252,12 @@ func (buffer *TextBuffer) SetModified(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// SetText deletes current contents of buffer, and inserts text instead. If len
-// is -1, text must be nul-terminated. text must be valid UTF-8.
+// SetText deletes current contents of buffer, and inserts text instead.
+// If len is -1, text must be nul-terminated. text must be valid UTF-8.
 //
 // The function takes the following parameters:
 //
-//    - text: UTF-8 text to insert.
+//   - text: UTF-8 text to insert.
 //
 func (buffer *TextBuffer) SetText(text string) {
 	var _arg0 *C.GtkTextBuffer // out
@@ -2281,9 +2281,9 @@ func (buffer *TextBuffer) SetText(text string) {
 //
 // The function takes the following parameters:
 //
-//    - tag: TextTag.
-//    - start: one bound of range to be tagged.
-//    - end: other bound of range to be tagged.
+//   - tag: TextTag.
+//   - start: one bound of range to be tagged.
+//   - end: other bound of range to be tagged.
 //
 func (buffer *TextBuffer) applyTag(tag *TextTag, start, end *TextIter) {
 	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
@@ -2306,9 +2306,9 @@ func (buffer *TextBuffer) applyTag(tag *TextTag, start, end *TextIter) {
 	runtime.KeepAlive(end)
 }
 
-// beginUserAction: called to indicate that the buffer operations between here
-// and a call to gtk_text_buffer_end_user_action() are part of a single
-// user-visible operation. The operations between
+// beginUserAction: called to indicate that the buffer operations
+// between here and a call to gtk_text_buffer_end_user_action() are
+// part of a single user-visible operation. The operations between
 // gtk_text_buffer_begin_user_action() and gtk_text_buffer_end_user_action() can
 // then be grouped when creating an undo stack. TextBuffer maintains a count of
 // calls to gtk_text_buffer_begin_user_action() that have not been closed with a
@@ -2347,8 +2347,8 @@ func (buffer *TextBuffer) changed() {
 
 // The function takes the following parameters:
 //
-//    - start
-//    - end
+//   - start
+//   - end
 //
 func (buffer *TextBuffer) deleteRange(start, end *TextIter) {
 	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
@@ -2383,21 +2383,21 @@ func (buffer *TextBuffer) endUserAction() {
 	runtime.KeepAlive(buffer)
 }
 
-// insertChildAnchor inserts a child widget anchor into the text buffer at iter.
-// The anchor will be counted as one character in character counts, and when
-// obtaining the buffer contents as a string, will be represented by the Unicode
-// “object replacement character” 0xFFFC. Note that the “slice” variants for
-// obtaining portions of the buffer as a string include this character for child
-// anchors, but the “text” variants do not. E.g. see gtk_text_buffer_get_slice()
-// and gtk_text_buffer_get_text(). Consider
+// insertChildAnchor inserts a child widget anchor into the text buffer at
+// iter. The anchor will be counted as one character in character counts,
+// and when obtaining the buffer contents as a string, will be represented
+// by the Unicode “object replacement character” 0xFFFC. Note that the
+// “slice” variants for obtaining portions of the buffer as a string include
+// this character for child anchors, but the “text” variants do not. E.g.
+// see gtk_text_buffer_get_slice() and gtk_text_buffer_get_text(). Consider
 // gtk_text_buffer_create_child_anchor() as a more convenient alternative to
 // this function. The buffer will add a reference to the anchor, so you can
 // unref it after insertion.
 //
 // The function takes the following parameters:
 //
-//    - iter: location to insert the anchor.
-//    - anchor: TextChildAnchor.
+//   - iter: location to insert the anchor.
+//   - anchor: TextChildAnchor.
 //
 func (buffer *TextBuffer) insertChildAnchor(iter *TextIter, anchor *TextChildAnchor) {
 	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
@@ -2417,18 +2417,18 @@ func (buffer *TextBuffer) insertChildAnchor(iter *TextIter, anchor *TextChildAnc
 	runtime.KeepAlive(anchor)
 }
 
-// insertPixbuf inserts an image into the text buffer at iter. The image will be
-// counted as one character in character counts, and when obtaining the buffer
-// contents as a string, will be represented by the Unicode “object replacement
-// character” 0xFFFC. Note that the “slice” variants for obtaining portions of
-// the buffer as a string include this character for pixbufs, but the “text”
-// variants do not. e.g. see gtk_text_buffer_get_slice() and
+// insertPixbuf inserts an image into the text buffer at iter. The image will
+// be counted as one character in character counts, and when obtaining the
+// buffer contents as a string, will be represented by the Unicode “object
+// replacement character” 0xFFFC. Note that the “slice” variants for obtaining
+// portions of the buffer as a string include this character for pixbufs,
+// but the “text” variants do not. e.g. see gtk_text_buffer_get_slice() and
 // gtk_text_buffer_get_text().
 //
 // The function takes the following parameters:
 //
-//    - iter: location to insert the pixbuf.
-//    - pixbuf: Pixbuf.
+//   - iter: location to insert the pixbuf.
+//   - pixbuf: Pixbuf.
 //
 func (buffer *TextBuffer) insertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf) {
 	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
@@ -2450,9 +2450,9 @@ func (buffer *TextBuffer) insertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf)
 
 // The function takes the following parameters:
 //
-//    - pos
-//    - newText
-//    - newTextLength
+//   - pos
+//   - newText
+//   - newTextLength
 //
 func (buffer *TextBuffer) insertText(pos *TextIter, newText string, newTextLength int) {
 	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
@@ -2495,8 +2495,8 @@ func (buffer *TextBuffer) markDeleted(mark *TextMark) {
 
 // The function takes the following parameters:
 //
-//    - location
-//    - mark
+//   - location
+//   - mark
 //
 func (buffer *TextBuffer) markSet(location *TextIter, mark *TextMark) {
 	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
@@ -2551,9 +2551,9 @@ func (buffer *TextBuffer) pasteDone(clipboard *Clipboard) {
 //
 // The function takes the following parameters:
 //
-//    - tag: TextTag.
-//    - start: one bound of range to be untagged.
-//    - end: other bound of range to be untagged.
+//   - tag: TextTag.
+//   - start: one bound of range to be untagged.
+//   - end: other bound of range to be untagged.
 //
 func (buffer *TextBuffer) removeTag(tag *TextTag, start, end *TextIter) {
 	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))

@@ -12,14 +12,14 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// WindowGetDefaultIconName returns the fallback icon name for windows that has
-// been set with gtk_window_set_default_icon_name(). The returned string is
-// owned by GTK+ and should not be modified. It is only valid until the next
+// WindowGetDefaultIconName returns the fallback icon name for windows that
+// has been set with gtk_window_set_default_icon_name(). The returned string
+// is owned by GTK+ and should not be modified. It is only valid until the next
 // call to gtk_window_set_default_icon_name().
 //
 // The function returns the following values:
 //
-//    - utf8: fallback icon name for windows.
+//   - utf8: fallback icon name for windows.
 //
 func WindowGetDefaultIconName() string {
 	var _cret *C.gchar // in

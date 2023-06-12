@@ -17,12 +17,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - alpha value, between 1 and 65536.
+//   - alpha value, between 1 and 65536.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
@@ -50,12 +50,12 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - alpha value, between 1 and 65536.
+//   - alpha value, between 1 and 65536.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
@@ -112,12 +112,12 @@ func (a *AttrFontFeatures) Features() string {
 //
 // The function takes the following parameters:
 //
-//    - features: string with OpenType font features, in CSS syntax.
+//   - features: string with OpenType font features, in CSS syntax.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrFontFeatures(features string) *Attribute {
 	var _arg1 *C.gchar          // out

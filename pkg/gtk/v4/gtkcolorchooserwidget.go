@@ -39,14 +39,13 @@ func init() {
 //
 // To create a GtkColorChooserWidget, use gtk.ColorChooserWidget.New.
 //
-// To change the initially selected color, use gtk.ColorChooser.SetRGBA(). To
-// get the selected color use gtk.ColorChooser.GetRGBA().
+// To change the initially selected color, use gtk.ColorChooser.SetRGBA().
+// To get the selected color use gtk.ColorChooser.GetRGBA().
 //
 // The GtkColorChooserWidget is used in the gtk.ColorChooserDialog to provide a
 // dialog for selecting colors.
 //
-//
-// CSS names
+// # CSS names
 //
 // GtkColorChooserWidget has a single CSS node with name colorchooser.
 type ColorChooserWidget struct {
@@ -94,7 +93,7 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - colorChooserWidget: new GtkColorChooserWidget.
+//   - colorChooserWidget: new GtkColorChooserWidget.
 //
 func NewColorChooserWidget() *ColorChooserWidget {
 	var _cret *C.GtkWidget // in

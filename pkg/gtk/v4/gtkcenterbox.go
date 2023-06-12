@@ -36,15 +36,13 @@ func init() {
 // The sizing and positioning of children can be influenced with the align and
 // expand properties of the children.
 //
-//
-// GtkCenterBox as GtkBuildable
+// # GtkCenterBox as GtkBuildable
 //
 // The GtkCenterBox implementation of the GtkBuildable interface supports
 // placing children in the 3 positions by specifying “start”, “center” or “end”
 // as the “type” attribute of a <child> element.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkCenterBox uses a single CSS node with the name “box”,
 //
@@ -55,8 +53,7 @@ func init() {
 // In vertical orientation, the nodes of the children are arranged from top to
 // bottom.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkCenterBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type CenterBox struct {
@@ -104,7 +101,7 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - centerBox: new GtkCenterBox.
+//   - centerBox: new GtkCenterBox.
 //
 func NewCenterBox() *CenterBox {
 	var _cret *C.GtkWidget // in
@@ -123,7 +120,7 @@ func NewCenterBox() *CenterBox {
 //
 // The function returns the following values:
 //
-//    - baselinePosition: baseline position.
+//   - baselinePosition: baseline position.
 //
 func (self *CenterBox) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkCenterBox       // out
@@ -145,7 +142,7 @@ func (self *CenterBox) BaselinePosition() BaselinePosition {
 //
 // The function returns the following values:
 //
-//    - widget (optional): center widget.
+//   - widget (optional): center widget.
 //
 func (self *CenterBox) CenterWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
@@ -182,7 +179,7 @@ func (self *CenterBox) CenterWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget (optional): end widget.
+//   - widget (optional): end widget.
 //
 func (self *CenterBox) EndWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
@@ -219,7 +216,7 @@ func (self *CenterBox) EndWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget (optional): start widget.
+//   - widget (optional): start widget.
 //
 func (self *CenterBox) StartWidget() Widgetter {
 	var _arg0 *C.GtkCenterBox // out
@@ -255,13 +252,13 @@ func (self *CenterBox) StartWidget() Widgetter {
 // SetBaselinePosition sets the baseline position of a center box.
 //
 // This affects only horizontal boxes with at least one baseline aligned child.
-// If there is more vertical space available than requested, and the baseline is
-// not allocated by the parent then position is used to allocate the baseline
+// If there is more vertical space available than requested, and the baseline
+// is not allocated by the parent then position is used to allocate the baseline
 // wrt. the extra space available.
 //
 // The function takes the following parameters:
 //
-//    - position: GtkBaselinePosition.
+//   - position: GtkBaselinePosition.
 //
 func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkCenterBox       // out
@@ -281,7 +278,7 @@ func (self *CenterBox) SetBaselinePosition(position BaselinePosition) {
 //
 // The function takes the following parameters:
 //
-//    - child (optional): new center widget, or NULL.
+//   - child (optional): new center widget, or NULL.
 //
 func (self *CenterBox) SetCenterWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
@@ -303,7 +300,7 @@ func (self *CenterBox) SetCenterWidget(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child (optional): new end widget, or NULL.
+//   - child (optional): new end widget, or NULL.
 //
 func (self *CenterBox) SetEndWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out
@@ -325,7 +322,7 @@ func (self *CenterBox) SetEndWidget(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child (optional): new start widget, or NULL.
+//   - child (optional): new start widget, or NULL.
 //
 func (self *CenterBox) SetStartWidget(child Widgetter) {
 	var _arg0 *C.GtkCenterBox // out

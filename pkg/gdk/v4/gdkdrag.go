@@ -69,11 +69,11 @@ func (d DragCancelReason) String() string {
 //
 // The function takes the following parameters:
 //
-//    - action: GdkDragAction.
+//   - action: GdkDragAction.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if exactly one action was given.
+//   - ok: TRUE if exactly one action was given.
 //
 func DragActionIsUnique(action DragAction) bool {
 	var _arg1 C.GdkDragAction // out
@@ -95,14 +95,14 @@ func DragActionIsUnique(action DragAction) bool {
 
 // Drag: GdkDrag object represents the source of an ongoing DND operation.
 //
-// A GdkDrag is created when a drag is started, and stays alive for duration of
-// the DND operation. After a drag has been started with gdk.Drag().Begin, the
-// caller gets informed about the status of the ongoing drag operation with
+// A GdkDrag is created when a drag is started, and stays alive for duration
+// of the DND operation. After a drag has been started with gdk.Drag().Begin,
+// the caller gets informed about the status of the ongoing drag operation with
 // signals on the GdkDrag object.
 //
-// GTK provides a higher level abstraction based on top of these functions, and
-// so they are not normally needed in GTK applications. See the "Drag and Drop"
-// section of the GTK documentation for more information.
+// GTK provides a higher level abstraction based on top of these functions,
+// and so they are not normally needed in GTK applications. See the "Drag and
+// Drop" section of the GTK documentation for more information.
 type Drag struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -174,7 +174,7 @@ func (drag *Drag) ConnectDropPerformed(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - success: whether the drag was ultimatively successful.
+//   - success: whether the drag was ultimatively successful.
 //
 func (drag *Drag) DropDone(success bool) {
 	var _arg0 *C.GdkDrag // out
@@ -194,7 +194,7 @@ func (drag *Drag) DropDone(success bool) {
 //
 // The function returns the following values:
 //
-//    - dragAction: GdkDragAction flags.
+//   - dragAction: GdkDragAction flags.
 //
 func (drag *Drag) Actions() DragAction {
 	var _arg0 *C.GdkDrag      // out
@@ -216,7 +216,7 @@ func (drag *Drag) Actions() DragAction {
 //
 // The function returns the following values:
 //
-//    - contentProvider: GdkContentProvider associated to drag.
+//   - contentProvider: GdkContentProvider associated to drag.
 //
 func (drag *Drag) Content() *ContentProvider {
 	var _arg0 *C.GdkDrag            // out
@@ -238,7 +238,7 @@ func (drag *Drag) Content() *ContentProvider {
 //
 // The function returns the following values:
 //
-//    - device: GdkDevice associated to drag.
+//   - device: GdkDevice associated to drag.
 //
 func (drag *Drag) Device() Devicer {
 	var _arg0 *C.GdkDrag   // out
@@ -276,7 +276,7 @@ func (drag *Drag) Device() Devicer {
 //
 // The function returns the following values:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 func (drag *Drag) Display() *Display {
 	var _arg0 *C.GdkDrag    // out
@@ -304,7 +304,7 @@ func (drag *Drag) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - surface (optional): drag surface, or NULL.
+//   - surface (optional): drag surface, or NULL.
 //
 func (drag *Drag) DragSurface() Surfacer {
 	var _arg0 *C.GdkDrag    // out
@@ -341,7 +341,7 @@ func (drag *Drag) DragSurface() Surfacer {
 //
 // The function returns the following values:
 //
-//    - contentFormats: GdkContentFormats.
+//   - contentFormats: GdkContentFormats.
 //
 func (drag *Drag) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrag           // out
@@ -370,7 +370,7 @@ func (drag *Drag) Formats() *ContentFormats {
 //
 // The function returns the following values:
 //
-//    - dragAction: GdkDragAction value.
+//   - dragAction: GdkDragAction value.
 //
 func (drag *Drag) SelectedAction() DragAction {
 	var _arg0 *C.GdkDrag      // out
@@ -392,7 +392,7 @@ func (drag *Drag) SelectedAction() DragAction {
 //
 // The function returns the following values:
 //
-//    - surface: GdkSurface where the drag originates.
+//   - surface: GdkSurface where the drag originates.
 //
 func (drag *Drag) Surface() Surfacer {
 	var _arg0 *C.GdkDrag    // out
@@ -433,8 +433,8 @@ func (drag *Drag) Surface() Surfacer {
 //
 // The function takes the following parameters:
 //
-//    - hotX: x coordinate of the drag surface hotspot.
-//    - hotY: y coordinate of the drag surface hotspot.
+//   - hotX: x coordinate of the drag surface hotspot.
+//   - hotY: y coordinate of the drag surface hotspot.
 //
 func (drag *Drag) SetHotspot(hotX, hotY int) {
 	var _arg0 *C.GdkDrag // out
@@ -453,8 +453,8 @@ func (drag *Drag) SetHotspot(hotX, hotY int) {
 
 // DragBegin starts a drag and creates a new drag context for it.
 //
-// This function is called by the drag source. After this call, you probably
-// want to set up the drag icon using the surface returned by
+// This function is called by the drag source. After this call,
+// you probably want to set up the drag icon using the surface returned by
 // gdk.Drag.GetDragSurface().
 //
 // This function returns a reference to the gdk.Drag object, but GTK keeps its
@@ -466,16 +466,16 @@ func (drag *Drag) SetHotspot(hotX, hotY int) {
 //
 // The function takes the following parameters:
 //
-//    - surface: source surface for this drag.
-//    - device that controls this drag.
-//    - content: offered content.
-//    - actions supported by this drag.
-//    - dx: x offset to device's position where the drag nominally started.
-//    - dy: y offset to device's position where the drag nominally started.
+//   - surface: source surface for this drag.
+//   - device that controls this drag.
+//   - content: offered content.
+//   - actions supported by this drag.
+//   - dx: x offset to device's position where the drag nominally started.
+//   - dy: y offset to device's position where the drag nominally started.
 //
 // The function returns the following values:
 //
-//    - drag (optional): newly created gdk.Drag or NULL on error.
+//   - drag (optional): newly created gdk.Drag or NULL on error.
 //
 func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx, dy float64) Dragger {
 	var _arg1 *C.GdkSurface         // out

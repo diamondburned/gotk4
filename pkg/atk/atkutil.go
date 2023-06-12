@@ -31,8 +31,8 @@ func init() {
 	})
 }
 
-// CoordType specifies how xy coordinates are to be interpreted. Used by
-// functions such as atk_component_get_position() and
+// CoordType specifies how xy coordinates are to be interpreted.
+// Used by functions such as atk_component_get_position() and
 // atk_text_get_character_extents().
 type CoordType C.gint
 
@@ -104,14 +104,14 @@ type KeySnoopFunc func(event *KeyEventStruct) (gint int)
 // FocusTrackerNotify: cause the focus tracker functions which have been
 // specified to be executed for the object.
 //
-// Deprecated: Focus tracking has been dropped as a feature to be implemented by
-// ATK itself. As Object::focus-event was deprecated in favor of a
+// Deprecated: Focus tracking has been dropped as a feature to be implemented
+// by ATK itself. As Object::focus-event was deprecated in favor of a
 // Object::state-change signal, in order to notify a focus change on your
 // implementation, you can use atk_object_notify_state_change() instead.
 //
 // The function takes the following parameters:
 //
-//    - object: Object.
+//   - object: Object.
 //
 func FocusTrackerNotify(object *AtkObject) {
 	var _arg1 *C.AtkObject // out
@@ -126,7 +126,7 @@ func FocusTrackerNotify(object *AtkObject) {
 //
 // The function returns the following values:
 //
-//    - object: root accessible container for the current application.
+//   - object: root accessible container for the current application.
 //
 func GetRoot() *AtkObject {
 	var _cret *C.AtkObject // in
@@ -145,8 +145,8 @@ func GetRoot() *AtkObject {
 //
 // The function returns the following values:
 //
-//    - utf8: name string for the GUI toolkit implementing ATK for this
-//      application.
+//   - utf8: name string for the GUI toolkit implementing ATK for this
+//     application.
 //
 func GetToolkitName() string {
 	var _cret *C.gchar // in
@@ -165,8 +165,8 @@ func GetToolkitName() string {
 //
 // The function returns the following values:
 //
-//    - utf8: version string for the GUI toolkit implementing ATK for this
-//      application.
+//   - utf8: version string for the GUI toolkit implementing ATK for this
+//     application.
 //
 func GetToolkitVersion() string {
 	var _cret *C.gchar // in
@@ -189,7 +189,7 @@ func GetToolkitVersion() string {
 //
 // The function takes the following parameters:
 //
-//    - trackerId: id of the focus tracker to remove.
+//   - trackerId: id of the focus tracker to remove.
 //
 func RemoveFocusTracker(trackerId uint) {
 	var _arg1 C.guint // out
@@ -214,7 +214,7 @@ func RemoveFocusTracker(trackerId uint) {
 //
 // The function takes the following parameters:
 //
-//    - listenerId: id of the event listener to remove.
+//   - listenerId: id of the event listener to remove.
 //
 func RemoveGlobalEventListener(listenerId uint) {
 	var _arg1 C.guint // out
@@ -232,7 +232,7 @@ func RemoveGlobalEventListener(listenerId uint) {
 //
 // The function takes the following parameters:
 //
-//    - listenerId: id of the event listener to remove.
+//   - listenerId: id of the event listener to remove.
 //
 func RemoveKeyEventListener(listenerId uint) {
 	var _arg1 C.guint // out
@@ -311,9 +311,9 @@ func (k *KeyEventStruct) Type() int {
 	return _v
 }
 
-// State: bitmask representing the state of the modifier keys immediately after
-// the event takes place. The meaning of the bits is currently defined to match
-// the bitmask used by GDK in GdkEventType.state, see
+// State: bitmask representing the state of the modifier keys immediately
+// after the event takes place. The meaning of the bits is currently
+// defined to match the bitmask used by GDK in GdkEventType.state, see
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
 func (k *KeyEventStruct) State() uint {
 	valptr := &k.native.state
@@ -378,9 +378,9 @@ func (k *KeyEventStruct) SetType(typ int) {
 	*valptr = C.gint(typ)
 }
 
-// State: bitmask representing the state of the modifier keys immediately after
-// the event takes place. The meaning of the bits is currently defined to match
-// the bitmask used by GDK in GdkEventType.state, see
+// State: bitmask representing the state of the modifier keys immediately
+// after the event takes place. The meaning of the bits is currently
+// defined to match the bitmask used by GDK in GdkEventType.state, see
 // http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
 func (k *KeyEventStruct) SetState(state uint) {
 	valptr := &k.native.state

@@ -32,8 +32,8 @@ func init() {
 // The main objects that implement this interface are gtk.AppChooserWidget,
 // gtk.AppChooserDialog and gtk.AppChooserButton.
 //
-// Applications are represented by GIO GAppInfo objects here. GIO has a concept
-// of recommended and fallback applications for a given content type.
+// Applications are represented by GIO GAppInfo objects here. GIO has a
+// concept of recommended and fallback applications for a given content type.
 // Recommended applications are those that claim to handle the content type
 // itself, while fallback also includes applications that handle a more generic
 // content type. GIO also knows the default and last-used application for a
@@ -41,8 +41,8 @@ func init() {
 // whether the shown list of applications should include default, recommended or
 // fallback applications.
 //
-// To obtain the application that has been selected in a GtkAppChooser, use
-// gtk.AppChooser.GetAppInfo().
+// To obtain the application that has been selected in a GtkAppChooser,
+// use gtk.AppChooser.GetAppInfo().
 //
 // AppChooser wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -98,8 +98,8 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - appInfo (optional): GAppInfo for the currently selected application, or
-//      NULL if none is selected. Free with g_object_unref().
+//   - appInfo (optional): GAppInfo for the currently selected application,
+//     or NULL if none is selected. Free with g_object_unref().
 //
 func (self *AppChooser) AppInfo() *gio.AppInfo {
 	var _arg0 *C.GtkAppChooser // out
@@ -129,7 +129,7 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 //
 // The function returns the following values:
 //
-//    - utf8: content type of self. Free with g_free().
+//   - utf8: content type of self. Free with g_free().
 //
 func (self *AppChooser) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out

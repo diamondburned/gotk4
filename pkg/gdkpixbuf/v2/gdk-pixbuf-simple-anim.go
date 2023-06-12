@@ -51,13 +51,13 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - width of the animation.
-//    - height of the animation.
-//    - rate: speed of the animation, in frames per second.
+//   - width of the animation.
+//   - height of the animation.
+//   - rate: speed of the animation, in frames per second.
 //
 // The function returns the following values:
 //
-//    - pixbufSimpleAnim: newly allocated PixbufSimpleAnim.
+//   - pixbufSimpleAnim: newly allocated PixbufSimpleAnim.
 //
 func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
 	var _arg1 C.gint                 // out
@@ -86,7 +86,7 @@ func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf to add.
+//   - pixbuf to add.
 //
 func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
@@ -104,7 +104,7 @@ func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the animation loops forever, FALSE otherwise.
+//   - ok: TRUE if the animation loops forever, FALSE otherwise.
 //
 func (animation *PixbufSimpleAnim) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
@@ -129,7 +129,7 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 //
 // The function takes the following parameters:
 //
-//    - loop: whether to loop the animation.
+//   - loop: whether to loop the animation.
 //
 func (animation *PixbufSimpleAnim) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out

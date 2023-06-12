@@ -65,15 +65,15 @@ type DBusInterfaceSkeletonOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - dBusInterfaceInfo (never NULL). Do not free.
+	//   - dBusInterfaceInfo (never NULL). Do not free.
 	//
 	Info func() *DBusInterfaceInfo
 	// Properties gets all D-Bus properties for interface_.
 	//
 	// The function returns the following values:
 	//
-	//    - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
-	//      g_variant_unref().
+	//   - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
+	//     g_variant_unref().
 	//
 	Properties func() *glib.Variant
 }
@@ -170,17 +170,17 @@ func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkele
 // ConnectGAuthorizeMethod is emitted when a method is invoked by a remote
 // caller and used to determine if the method call is authorized.
 //
-// Note that this signal is emitted in a thread dedicated to handling the method
-// call so handlers are allowed to perform blocking IO. This means that it is
-// appropriate to call e.g. polkit_authority_check_authorization_sync()
+// Note that this signal is emitted in a thread dedicated to handling the
+// method call so handlers are allowed to perform blocking IO. This means that
+// it is appropriate to call e.g. polkit_authority_check_authorization_sync()
 // (http://hal.freedesktop.org/docs/polkit/PolkitAuthority.html#polkit-authority-check-authorization-sync)
 // with the POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION
 // (http://hal.freedesktop.org/docs/polkit/PolkitAuthority.htmlLKIT-CHECK-AUTHORIZATION-FLAGS-ALLOW-USER-INTERACTION:CAPS)
 // flag set.
 //
 // If FALSE is returned then no further handlers are run and the signal handler
-// must take a reference to invocation and finish handling the call (e.g. return
-// an error via g_dbus_method_invocation_return_error()).
+// must take a reference to invocation and finish handling the call (e.g.
+// return an error via g_dbus_method_invocation_return_error()).
 //
 // Otherwise, if TRUE is returned, signal emission continues. If no handlers
 // return FALSE, then the method is dispatched. If interface has an enclosing
@@ -189,10 +189,10 @@ func BaseDBusInterfaceSkeleton(obj DBusInterfaceSkeletonner) *DBusInterfaceSkele
 //
 // The default class handler just returns TRUE.
 //
-// Please note that the common case is optimized: if no signals handlers are
-// connected and the default class handler isn't overridden (for both interface
-// and the enclosing BusObjectSkeleton, if any) and BusInterfaceSkeleton:g-flags
-// does not have the
+// Please note that the common case is optimized: if no signals
+// handlers are connected and the default class handler isn't
+// overridden (for both interface and the enclosing BusObjectSkeleton,
+// if any) and BusInterfaceSkeleton:g-flags does not have the
 // G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD flags
 // set, no dedicated thread is ever used and the call will be handled in the
 // same thread as the object that interface belongs to was exported in.
@@ -210,8 +210,8 @@ func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocati
 //
 // The function takes the following parameters:
 //
-//    - connection to export interface_ on.
-//    - objectPath: path to export the interface at.
+//   - connection to export interface_ on.
+//   - objectPath: path to export the interface at.
 //
 func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, objectPath string) error {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -258,8 +258,8 @@ func (interface_ *DBusInterfaceSkeleton) Flush() {
 //
 // The function returns the following values:
 //
-//    - dBusConnection (optional) or NULL if interface_ is not exported anywhere.
-//      Do not free, the object belongs to interface_.
+//   - dBusConnection (optional) or NULL if interface_ is not exported anywhere.
+//     Do not free, the object belongs to interface_.
 //
 func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -283,9 +283,9 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 //
 // The function returns the following values:
 //
-//    - list of all the connections that interface_ is exported on. The returned
-//      list should be freed with g_list_free() after each element has been freed
-//      with g_object_unref().
+//   - list of all the connections that interface_ is exported on. The returned
+//     list should be freed with g_list_free() after each element has been freed
+//     with g_object_unref().
 //
 func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -314,8 +314,8 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 //
 // The function returns the following values:
 //
-//    - dBusInterfaceSkeletonFlags: one or more flags from the
-//      BusInterfaceSkeletonFlags enumeration.
+//   - dBusInterfaceSkeletonFlags: one or more flags from the
+//     BusInterfaceSkeletonFlags enumeration.
 //
 func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
@@ -338,7 +338,7 @@ func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 //
 // The function returns the following values:
 //
-//    - dBusInterfaceInfo (never NULL). Do not free.
+//   - dBusInterfaceInfo (never NULL). Do not free.
 //
 func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -367,8 +367,8 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string owned by interface_ or NULL if interface_ is not
-//      exported anywhere. Do not free, the string belongs to interface_.
+//   - utf8 (optional): string owned by interface_ or NULL if interface_ is not
+//     exported anywhere. Do not free, the string belongs to interface_.
 //
 func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -392,8 +392,8 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 //
 // The function returns the following values:
 //
-//    - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
-//      g_variant_unref().
+//   - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
+//     g_variant_unref().
 //
 func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -421,11 +421,11 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - connection: BusConnection.
+//   - connection: BusConnection.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if interface_ is exported on connection, FALSE otherwise.
+//   - ok: TRUE if interface_ is exported on connection, FALSE otherwise.
 //
 func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnection) bool {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -452,7 +452,7 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 //
 // The function takes the following parameters:
 //
-//    - flags flags from the BusInterfaceSkeletonFlags enumeration.
+//   - flags flags from the BusInterfaceSkeletonFlags enumeration.
 //
 func (interface_ *DBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
@@ -486,7 +486,7 @@ func (interface_ *DBusInterfaceSkeleton) Unexport() {
 //
 // The function takes the following parameters:
 //
-//    - connection: BusConnection.
+//   - connection: BusConnection.
 //
 func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBusConnection) {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
@@ -552,7 +552,7 @@ func (interface_ *DBusInterfaceSkeleton) gAuthorizeMethod(invocation *DBusMethod
 //
 // The function returns the following values:
 //
-//    - dBusInterfaceInfo (never NULL). Do not free.
+//   - dBusInterfaceInfo (never NULL). Do not free.
 //
 func (interface_ *DBusInterfaceSkeleton) info() *DBusInterfaceInfo {
 	gclass := (*C.GDBusInterfaceSkeletonClass)(coreglib.PeekParentClass(interface_))
@@ -584,8 +584,8 @@ func (interface_ *DBusInterfaceSkeleton) info() *DBusInterfaceInfo {
 //
 // The function returns the following values:
 //
-//    - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
-//      g_variant_unref().
+//   - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
+//     g_variant_unref().
 //
 func (interface_ *DBusInterfaceSkeleton) properties() *glib.Variant {
 	gclass := (*C.GDBusInterfaceSkeletonClass)(coreglib.PeekParentClass(interface_))

@@ -50,8 +50,7 @@ func defaultMenuToolButtonOverrides(v *MenuToolButton) MenuToolButtonOverrides {
 //
 // Use gtk_menu_tool_button_new() to create a new MenuToolButton.
 //
-//
-// GtkMenuToolButton as GtkBuildable
+// # GtkMenuToolButton as GtkBuildable
 //
 // The GtkMenuToolButton implementation of the GtkBuildable interface supports
 // adding a menu by specifying “menu” as the “type” attribute of a <child>
@@ -149,8 +148,8 @@ func marshalMenuToolButton(p uintptr) (interface{}, error) {
 // It can be used to populate the menu on demand, using
 // gtk_menu_tool_button_set_menu().
 //
-// Note that even if you populate the menu dynamically in this way, you must set
-// an empty menu on the MenuToolButton beforehand, since the arrow is made
+// Note that even if you populate the menu dynamically in this way, you must
+// set an empty menu on the MenuToolButton beforehand, since the arrow is made
 // insensitive if the menu is not set.
 func (button *MenuToolButton) ConnectShowMenu(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(button, "show-menu", false, unsafe.Pointer(C._gotk4_gtk3_MenuToolButton_ConnectShowMenu), f)
@@ -161,12 +160,12 @@ func (button *MenuToolButton) ConnectShowMenu(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - iconWidget (optional): widget that will be used as icon widget, or NULL.
-//    - label (optional): string that will be used as label, or NULL.
+//   - iconWidget (optional): widget that will be used as icon widget, or NULL.
+//   - label (optional): string that will be used as label, or NULL.
 //
 // The function returns the following values:
 //
-//    - menuToolButton: new MenuToolButton.
+//   - menuToolButton: new MenuToolButton.
 //
 func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 	var _arg1 *C.GtkWidget   // out
@@ -200,11 +199,11 @@ func NewMenuToolButton(iconWidget Widgetter, label string) *MenuToolButton {
 //
 // The function takes the following parameters:
 //
-//    - stockId: name of a stock item.
+//   - stockId: name of a stock item.
 //
 // The function returns the following values:
 //
-//    - menuToolButton: new MenuToolButton.
+//   - menuToolButton: new MenuToolButton.
 //
 func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 	var _arg1 *C.gchar       // out
@@ -227,7 +226,7 @@ func NewMenuToolButtonFromStock(stockId string) *MenuToolButton {
 //
 // The function returns the following values:
 //
-//    - widget associated with MenuToolButton.
+//   - widget associated with MenuToolButton.
 //
 func (button *MenuToolButton) Menu() Widgetter {
 	var _arg0 *C.GtkMenuToolButton // out
@@ -267,7 +266,7 @@ func (button *MenuToolButton) Menu() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - markup text to be used as tooltip text for button’s arrow button.
+//   - markup text to be used as tooltip text for button’s arrow button.
 //
 func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 	var _arg0 *C.GtkMenuToolButton // out
@@ -282,13 +281,13 @@ func (button *MenuToolButton) SetArrowTooltipMarkup(markup string) {
 	runtime.KeepAlive(markup)
 }
 
-// SetArrowTooltipText sets the tooltip text to be used as tooltip for the arrow
-// button which pops up the menu. See gtk_tool_item_set_tooltip_text() for
+// SetArrowTooltipText sets the tooltip text to be used as tooltip for the
+// arrow button which pops up the menu. See gtk_tool_item_set_tooltip_text() for
 // setting a tooltip on the whole MenuToolButton.
 //
 // The function takes the following parameters:
 //
-//    - text to be used as tooltip text for button’s arrow button.
+//   - text to be used as tooltip text for button’s arrow button.
 //
 func (button *MenuToolButton) SetArrowTooltipText(text string) {
 	var _arg0 *C.GtkMenuToolButton // out
@@ -303,12 +302,12 @@ func (button *MenuToolButton) SetArrowTooltipText(text string) {
 	runtime.KeepAlive(text)
 }
 
-// SetMenu sets the Menu that is popped up when the user clicks on the arrow. If
-// menu is NULL, the arrow button becomes insensitive.
+// SetMenu sets the Menu that is popped up when the user clicks on the arrow.
+// If menu is NULL, the arrow button becomes insensitive.
 //
 // The function takes the following parameters:
 //
-//    - menu associated with MenuToolButton.
+//   - menu associated with MenuToolButton.
 //
 func (button *MenuToolButton) SetMenu(menu Widgetter) {
 	var _arg0 *C.GtkMenuToolButton // out

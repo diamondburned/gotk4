@@ -16,12 +16,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
-//    - mimeType: mime type string.
+//   - typ: content type string.
+//   - mimeType: mime type string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is a kind of mime_type, FALSE otherwise.
+//   - ok: TRUE if type is a kind of mime_type, FALSE otherwise.
 //
 func ContentTypeIsMIMEType(typ, mimeType string) bool {
 	var _arg1 *C.gchar   // out

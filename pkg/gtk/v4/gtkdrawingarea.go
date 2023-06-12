@@ -46,8 +46,8 @@ type DrawingAreaDrawFunc func(drawingArea *DrawingArea, cr *cairo.Context, width
 type DrawingAreaOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - width
-	//    - height
+	//   - width
+	//   - height
 	//
 	Resize func(width, height int)
 }
@@ -117,7 +117,6 @@ func defaultDrawingAreaOverrides(v *DrawingArea) DrawingAreaOverrides {
 //                                      NULL, NULL);
 //      return 0;
 //    }
-//
 //
 // The draw function is normally called when a drawing area first comes
 // onscreen, or when it’s covered by another window and then uncovered. You can
@@ -193,8 +192,8 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 // ConnectResize is emitted once when the widget is realized, and then each time
 // the widget is changed while realized.
 //
-// This is useful in order to keep state up to date with the widget size, like
-// for instance a backing surface.
+// This is useful in order to keep state up to date with the widget size,
+// like for instance a backing surface.
 func (self *DrawingArea) ConnectResize(f func(width, height int)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "resize", false, unsafe.Pointer(C._gotk4_gtk4_DrawingArea_ConnectResize), f)
 }
@@ -203,7 +202,7 @@ func (self *DrawingArea) ConnectResize(f func(width, height int)) coreglib.Signa
 //
 // The function returns the following values:
 //
-//    - drawingArea: new GtkDrawingArea.
+//   - drawingArea: new GtkDrawingArea.
 //
 func NewDrawingArea() *DrawingArea {
 	var _cret *C.GtkWidget // in
@@ -221,7 +220,7 @@ func NewDrawingArea() *DrawingArea {
 //
 // The function returns the following values:
 //
-//    - gint: height requested for content of the drawing area.
+//   - gint: height requested for content of the drawing area.
 //
 func (self *DrawingArea) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea // out
@@ -243,7 +242,7 @@ func (self *DrawingArea) ContentHeight() int {
 //
 // The function returns the following values:
 //
-//    - gint: width requested for content of the drawing area.
+//   - gint: width requested for content of the drawing area.
 //
 func (self *DrawingArea) ContentWidth() int {
 	var _arg0 *C.GtkDrawingArea // out
@@ -271,7 +270,7 @@ func (self *DrawingArea) ContentWidth() int {
 //
 // The function takes the following parameters:
 //
-//    - height of contents.
+//   - height of contents.
 //
 func (self *DrawingArea) SetContentHeight(height int) {
 	var _arg0 *C.GtkDrawingArea // out
@@ -295,7 +294,7 @@ func (self *DrawingArea) SetContentHeight(height int) {
 //
 // The function takes the following parameters:
 //
-//    - width of contents.
+//   - width of contents.
 //
 func (self *DrawingArea) SetContentWidth(width int) {
 	var _arg0 *C.GtkDrawingArea // out
@@ -325,8 +324,8 @@ func (self *DrawingArea) SetContentWidth(width int) {
 //
 // The function takes the following parameters:
 //
-//    - drawFunc (optional): callback that lets you draw the drawing area's
-//      contents.
+//   - drawFunc (optional): callback that lets you draw the drawing area's
+//     contents.
 //
 func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	var _arg0 *C.GtkDrawingArea        // out
@@ -348,8 +347,8 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 
 // The function takes the following parameters:
 //
-//    - width
-//    - height
+//   - width
+//   - height
 //
 func (area *DrawingArea) resize(width, height int) {
 	gclass := (*C.GtkDrawingAreaClass)(coreglib.PeekParentClass(area))

@@ -174,7 +174,7 @@ type DialogOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - responseId: response ID.
+	//   - responseId: response ID.
 	//
 	Response func(responseId int)
 }
@@ -193,16 +193,16 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 // GTK+ treats a dialog as a window split vertically. The top section is a VBox,
 // and is where widgets such as a Label or a Entry should be packed. The bottom
 // area is known as the “action area”. This is generally used for packing
-// buttons into the dialog which may perform functions such as cancel, ok, or
-// apply.
+// buttons into the dialog which may perform functions such as cancel, ok,
+// or apply.
 //
 // Dialog boxes are created with a call to gtk_dialog_new() or
 // gtk_dialog_new_with_buttons(). gtk_dialog_new_with_buttons() is recommended;
 // it allows you to set the dialog title, some convenient flags, and add simple
 // buttons.
 //
-// If “dialog” is a newly created dialog, the two primary areas of the window
-// can be accessed through gtk_dialog_get_content_area() and
+// If “dialog” is a newly created dialog, the two primary areas of the
+// window can be accessed through gtk_dialog_get_content_area() and
 // gtk_dialog_get_action_area(), as can be seen from the example below.
 //
 // A “modal” dialog (that is, one which freezes the rest of the application from
@@ -222,12 +222,12 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 // of K_RESPONSE_DELETE_EVENT.
 //
 // If you want to block waiting for a dialog to return before returning control
-// flow to your code, you can call gtk_dialog_run(). This function enters a
-// recursive main loop and waits for the user to respond to the dialog,
+// flow to your code, you can call gtk_dialog_run(). This function enters
+// a recursive main loop and waits for the user to respond to the dialog,
 // returning the response ID corresponding to the button the user clicked.
 //
-// For the simple dialog in the following example, in reality you’d probably use
-// MessageDialog to save yourself some effort. But you’d need to create the
+// For the simple dialog in the following example, in reality you’d probably
+// use MessageDialog to save yourself some effort. But you’d need to create the
 // dialog contents manually if you had more than a simple message in the dialog.
 //
 // An example for simple GtkDialog usage:
@@ -263,8 +263,7 @@ func defaultDialogOverrides(v *Dialog) DialogOverrides {
 //     gtk_widget_show_all (dialog);
 //    }
 //
-//
-// GtkDialog as GtkBuildable
+// # GtkDialog as GtkBuildable
 //
 // The GtkDialog implementation of the Buildable interface exposes the vbox and
 // action_area as internal children with the names “vbox” and “action_area”.
@@ -367,9 +366,9 @@ func (dialog *Dialog) ConnectClose(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(dialog, "close", false, unsafe.Pointer(C._gotk4_gtk3_Dialog_ConnectClose), f)
 }
 
-// ConnectResponse is emitted when an action widget is clicked, the dialog
-// receives a delete event, or the application programmer calls
-// gtk_dialog_response(). On a delete event, the response ID is
+// ConnectResponse is emitted when an action widget is clicked,
+// the dialog receives a delete event, or the application programmer
+// calls gtk_dialog_response(). On a delete event, the response ID is
 // K_RESPONSE_DELETE_EVENT. Otherwise, it depends on which action widget was
 // clicked.
 func (dialog *Dialog) ConnectResponse(f func(responseId int)) coreglib.SignalHandle {
@@ -383,7 +382,7 @@ func (dialog *Dialog) ConnectResponse(f func(responseId int)) coreglib.SignalHan
 //
 // The function returns the following values:
 //
-//    - dialog: new dialog as a Widget.
+//   - dialog: new dialog as a Widget.
 //
 func NewDialog() *Dialog {
 	var _cret *C.GtkWidget // in
@@ -398,15 +397,15 @@ func NewDialog() *Dialog {
 }
 
 // AddActionWidget adds an activatable widget to the action area of a Dialog,
-// connecting a signal handler that will emit the Dialog::response signal on the
-// dialog when the widget is activated. The widget is appended to the end of the
-// dialog’s action area. If you want to add a non-activatable widget, simply
-// pack it into the action_area field of the Dialog struct.
+// connecting a signal handler that will emit the Dialog::response signal on
+// the dialog when the widget is activated. The widget is appended to the end
+// of the dialog’s action area. If you want to add a non-activatable widget,
+// simply pack it into the action_area field of the Dialog struct.
 //
 // The function takes the following parameters:
 //
-//    - child: activatable widget.
-//    - responseId: response ID for child.
+//   - child: activatable widget.
+//   - responseId: response ID for child.
 //
 func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 	var _arg0 *C.GtkDialog // out
@@ -430,12 +429,12 @@ func (dialog *Dialog) AddActionWidget(child Widgetter, responseId int) {
 //
 // The function takes the following parameters:
 //
-//    - buttonText: text of button.
-//    - responseId: response ID for the button.
+//   - buttonText: text of button.
+//   - responseId: response ID for the button.
 //
 // The function returns the following values:
 //
-//    - widget widget that was added.
+//   - widget widget that was added.
 //
 func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
@@ -483,7 +482,7 @@ func (dialog *Dialog) AddButton(buttonText string, responseId int) Widgetter {
 //
 // The function returns the following values:
 //
-//    - box: action area.
+//   - box: action area.
 //
 func (dialog *Dialog) ActionArea() *Box {
 	var _arg0 *C.GtkDialog // out
@@ -505,7 +504,7 @@ func (dialog *Dialog) ActionArea() *Box {
 //
 // The function returns the following values:
 //
-//    - box: content area Box.
+//   - box: content area Box.
 //
 func (dialog *Dialog) ContentArea() *Box {
 	var _arg0 *C.GtkDialog // out
@@ -528,7 +527,7 @@ func (dialog *Dialog) ContentArea() *Box {
 //
 // The function returns the following values:
 //
-//    - headerBar: header bar.
+//   - headerBar: header bar.
 //
 func (dialog *Dialog) HeaderBar() *HeaderBar {
 	var _arg0 *C.GtkDialog // out
@@ -551,12 +550,12 @@ func (dialog *Dialog) HeaderBar() *HeaderBar {
 //
 // The function takes the following parameters:
 //
-//    - widget in the action area of dialog.
+//   - widget in the action area of dialog.
 //
 // The function returns the following values:
 //
-//    - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
-//      a response id set.
+//   - gint: response id of widget, or GTK_RESPONSE_NONE if widget doesn’t have
+//     a response id set.
 //
 func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 	var _arg0 *C.GtkDialog // out
@@ -582,11 +581,11 @@ func (dialog *Dialog) ResponseForWidget(widget Widgetter) int {
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID used by the dialog widget.
+//   - responseId: response ID used by the dialog widget.
 //
 // The function returns the following values:
 //
-//    - widget (optional) button that uses the given response_id, or NULL.
+//   - widget (optional) button that uses the given response_id, or NULL.
 //
 func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	var _arg0 *C.GtkDialog // out
@@ -622,14 +621,14 @@ func (dialog *Dialog) WidgetForResponse(responseId int) Widgetter {
 	return _widget
 }
 
-// Response emits the Dialog::response signal with the given response ID. Used
-// to indicate that the user has responded to the dialog in some way; typically
-// either you or gtk_dialog_run() will be monitoring the ::response signal and
-// take appropriate action.
+// Response emits the Dialog::response signal with the given response ID.
+// Used to indicate that the user has responded to the dialog in some way;
+// typically either you or gtk_dialog_run() will be monitoring the ::response
+// signal and take appropriate action.
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (dialog *Dialog) Response(responseId int) {
 	var _arg0 *C.GtkDialog // out
@@ -652,9 +651,9 @@ func (dialog *Dialog) Response(responseId int) {
 // gtk_widget_show() on the dialog for you. Note that you still need to show any
 // children of the dialog yourself.
 //
-// During gtk_dialog_run(), the default behavior of Widget::delete-event is
-// disabled; if the dialog receives ::delete_event, it will not be destroyed as
-// windows usually are, and gtk_dialog_run() will return
+// During gtk_dialog_run(), the default behavior of Widget::delete-event
+// is disabled; if the dialog receives ::delete_event, it will not be
+// destroyed as windows usually are, and gtk_dialog_run() will return
 // K_RESPONSE_DELETE_EVENT. Also, during gtk_dialog_run() the dialog will be
 // modal. You can force gtk_dialog_run() to return at any time by calling
 // gtk_dialog_response() to emit the ::response signal. Destroying the dialog
@@ -666,20 +665,20 @@ func (dialog *Dialog) Response(responseId int) {
 //
 // Typical usage of this function might be:
 //
-//      GtkWidget *dialog = gtk_dialog_new ();
-//      // Set up dialog...
+//    GtkWidget *dialog = gtk_dialog_new ();
+//    // Set up dialog...
 //
-//      int result = gtk_dialog_run (GTK_DIALOG (dialog));
-//      switch (result)
-//        {
-//          case GTK_RESPONSE_ACCEPT:
-//             // do_application_specific_something ();
-//             break;
-//          default:
-//             // do_nothing_since_dialog_was_cancelled ();
-//             break;
-//        }
-//      gtk_widget_destroy (dialog);
+//    int result = gtk_dialog_run (GTK_DIALOG (dialog));
+//    switch (result)
+//      {
+//        case GTK_RESPONSE_ACCEPT:
+//           // do_application_specific_something ();
+//           break;
+//        default:
+//           // do_nothing_since_dialog_was_cancelled ();
+//           break;
+//      }
+//    gtk_widget_destroy (dialog);
 //
 // Note that even though the recursive main loop gives the effect of a modal
 // dialog (it prevents the user from interacting with other windows in the same
@@ -688,7 +687,7 @@ func (dialog *Dialog) Response(responseId int) {
 //
 // The function returns the following values:
 //
-//    - gint: response ID.
+//   - gint: response ID.
 //
 func (dialog *Dialog) Run() int {
 	var _arg0 *C.GtkDialog // out
@@ -706,10 +705,10 @@ func (dialog *Dialog) Run() int {
 	return _gint
 }
 
-// SetAlternativeButtonOrderFromArray sets an alternative button order. If the
-// Settings:gtk-alternative-button-order setting is set to TRUE, the dialog
-// buttons are reordered according to the order of the response ids in
-// new_order.
+// SetAlternativeButtonOrderFromArray sets an alternative button order.
+// If the Settings:gtk-alternative-button-order setting is set to TRUE,
+// the dialog buttons are reordered according to the order of the response ids
+// in new_order.
 //
 // See gtk_dialog_set_alternative_button_order() for more information.
 //
@@ -719,7 +718,7 @@ func (dialog *Dialog) Run() int {
 //
 // The function takes the following parameters:
 //
-//    - newOrder: array of response ids of dialog’s buttons.
+//   - newOrder: array of response ids of dialog’s buttons.
 //
 func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	var _arg0 *C.GtkDialog // out
@@ -742,13 +741,13 @@ func (dialog *Dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 	runtime.KeepAlive(newOrder)
 }
 
-// SetDefaultResponse sets the last widget in the dialog’s action area with the
-// given response_id as the default widget for the dialog. Pressing “Enter”
+// SetDefaultResponse sets the last widget in the dialog’s action area with
+// the given response_id as the default widget for the dialog. Pressing “Enter”
 // normally activates the default widget.
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	var _arg0 *C.GtkDialog // out
@@ -762,14 +761,14 @@ func (dialog *Dialog) SetDefaultResponse(responseId int) {
 	runtime.KeepAlive(responseId)
 }
 
-// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
-// each widget in the dialog’s action area with the given response_id. A
-// convenient way to sensitize/desensitize dialog buttons.
+// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting)
+// for each widget in the dialog’s action area with the given response_id.
+// A convenient way to sensitize/desensitize dialog buttons.
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
-//    - setting: TRUE for sensitive.
+//   - responseId: response ID.
+//   - setting: TRUE for sensitive.
 //
 func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	var _arg0 *C.GtkDialog // out
@@ -800,14 +799,14 @@ func (dialog *Dialog) close() {
 	runtime.KeepAlive(dialog)
 }
 
-// Response emits the Dialog::response signal with the given response ID. Used
-// to indicate that the user has responded to the dialog in some way; typically
-// either you or gtk_dialog_run() will be monitoring the ::response signal and
-// take appropriate action.
+// Response emits the Dialog::response signal with the given response ID.
+// Used to indicate that the user has responded to the dialog in some way;
+// typically either you or gtk_dialog_run() will be monitoring the ::response
+// signal and take appropriate action.
 //
 // The function takes the following parameters:
 //
-//    - responseId: response ID.
+//   - responseId: response ID.
 //
 func (dialog *Dialog) response(responseId int) {
 	gclass := (*C.GtkDialogClass)(coreglib.PeekParentClass(dialog))

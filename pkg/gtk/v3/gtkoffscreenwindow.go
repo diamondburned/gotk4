@@ -112,7 +112,7 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - offscreenWindow: pointer to a Widget.
+//   - offscreenWindow: pointer to a Widget.
 //
 func NewOffscreenWindow() *OffscreenWindow {
 	var _cret *C.GtkWidget // in
@@ -132,7 +132,7 @@ func NewOffscreenWindow() *OffscreenWindow {
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional) pointer, or NULL.
+//   - pixbuf (optional) pointer, or NULL.
 //
 func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkOffscreenWindow // out
@@ -168,7 +168,7 @@ func (offscreen *OffscreenWindow) Pixbuf() *gdkpixbuf.Pixbuf {
 //
 // The function returns the following values:
 //
-//    - surface (optional) pointer to the offscreen surface, or NULL.
+//   - surface (optional) pointer to the offscreen surface, or NULL.
 //
 func (offscreen *OffscreenWindow) Surface() *cairo.Surface {
 	var _arg0 *C.GtkOffscreenWindow // out

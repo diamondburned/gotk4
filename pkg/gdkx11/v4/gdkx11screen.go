@@ -49,14 +49,14 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 	return coreglib.ConnectGeneratedClosure(screen, "window-manager-changed", false, unsafe.Pointer(C._gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged), f)
 }
 
-// CurrentDesktop returns the current workspace for screen when running under a
-// window manager that supports multiple workspaces, as described in the
+// CurrentDesktop returns the current workspace for screen when running under
+// a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
 //
 // The function returns the following values:
 //
-//    - guint32: current workspace, or 0 if workspaces are not supported.
+//   - guint32: current workspace, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkX11Screen // out
@@ -81,7 +81,7 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 //
 // The function returns the following values:
 //
-//    - guint32: number of workspaces, or 0 if workspaces are not supported.
+//   - guint32: number of workspaces, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkX11Screen // out
@@ -103,7 +103,7 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 //
 // The function returns the following values:
 //
-//    - gint: position of screen among the screens of its display.
+//   - gint: position of screen among the screens of its display.
 //
 func (screen *X11Screen) ScreenNumber() int {
 	var _arg0 *C.GdkX11Screen // out
@@ -125,9 +125,9 @@ func (screen *X11Screen) ScreenNumber() int {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the window manager screen screen, or "unknown" if the
-//      window manager is unknown. The string is owned by GDK and should not be
-//      freed.
+//   - utf8: name of the window manager screen screen, or "unknown" if the
+//     window manager is unknown. The string is owned by GDK and should not be
+//     freed.
 //
 func (screen *X11Screen) WindowManagerName() string {
 	var _arg0 *C.GdkX11Screen // out
@@ -145,26 +145,26 @@ func (screen *X11Screen) WindowManagerName() string {
 	return _utf8
 }
 
-// SupportsNetWmHint: this function is specific to the X11 backend of GDK, and
-// indicates whether the window manager supports a certain hint from the
+// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
+// and indicates whether the window manager supports a certain hint from the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
 //
 // When using this function, keep in mind that the window manager can change
 // over time; so you shouldn’t use this function in a way that impacts
-// persistent application state. A common bug is that your application can start
-// up before the window manager does when the user logs in, and before the
-// window manager starts gdk_x11_screen_supports_net_wm_hint() will return FALSE
-// for every property. You can monitor the window_manager_changed signal on
-// X11Screen to detect a window manager change.
+// persistent application state. A common bug is that your application can
+// start up before the window manager does when the user logs in, and before
+// the window manager starts gdk_x11_screen_supports_net_wm_hint() will return
+// FALSE for every property. You can monitor the window_manager_changed signal
+// on X11Screen to detect a window manager change.
 //
 // The function takes the following parameters:
 //
-//    - propertyName: name of the WM property.
+//   - propertyName: name of the WM property.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the window manager supports property.
+//   - ok: TRUE if the window manager supports property.
 //
 func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	var _arg0 *C.GdkX11Screen // out

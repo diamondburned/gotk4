@@ -10,13 +10,13 @@ import "C"
 // g_file_measure_disk_usage() to make periodic progress reports when measuring
 // the amount of disk spaced used by a directory.
 //
-// These calls are made on a best-effort basis and not all types of #GFile will
-// support them. At the minimum, however, one call will always be made
+// These calls are made on a best-effort basis and not all types of #GFile
+// will support them. At the minimum, however, one call will always be made
 // immediately.
 //
-// In the case that there is no support, reporting will be set to FALSE (and the
-// other values undefined) and no further calls will be made. Otherwise, the
-// reporting will be TRUE and the other values all-zeros during the first
+// In the case that there is no support, reporting will be set to FALSE (and
+// the other values undefined) and no further calls will be made. Otherwise,
+// the reporting will be TRUE and the other values all-zeros during the first
 // (immediate) call. In this way, you can know which type of progress UI to show
 // without a delay.
 //

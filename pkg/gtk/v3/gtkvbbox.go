@@ -99,7 +99,7 @@ func marshalVButtonBox(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - vButtonBox: new button box Widget.
+//   - vButtonBox: new button box Widget.
 //
 func NewVButtonBox() *VButtonBox {
 	var _cret *C.GtkWidget // in

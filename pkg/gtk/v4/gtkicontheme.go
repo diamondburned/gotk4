@@ -151,14 +151,14 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - file: GFile.
-//    - size: desired icon size.
-//    - scale: desired scale.
+//   - file: GFile.
+//   - size: desired icon size.
+//   - scale: desired scale.
 //
 // The function returns the following values:
 //
-//    - iconPaintable: GtkIconPaintable containing for the icon. Unref with
-//      g_object_unref().
+//   - iconPaintable: GtkIconPaintable containing for the icon. Unref with
+//     g_object_unref().
 //
 func NewIconPaintableForFile(file gio.Filer, size, scale int) *IconPaintable {
 	var _arg1 *C.GFile            // out
@@ -188,7 +188,7 @@ func NewIconPaintableForFile(file gio.Filer, size, scale int) *IconPaintable {
 //
 // The function returns the following values:
 //
-//    - file (optional) for the icon, or NULL. Free with g_object_unref().
+//   - file (optional) for the icon, or NULL. Free with g_object_unref().
 //
 func (self *IconPaintable) File() *gio.File {
 	var _arg0 *C.GtkIconPaintable // out
@@ -215,17 +215,17 @@ func (self *IconPaintable) File() *gio.File {
 
 // IconName: get the icon name being used for this icon.
 //
-// When an icon looked up in the icon theme was not available, the icon theme
-// may use fallback icons - either those specified to
-// gtk_icon_theme_lookup_icon() or the always-available "image-missing". The
-// icon chosen is returned by this function.
+// When an icon looked up in the icon theme was not available,
+// the icon theme may use fallback icons - either those specified to
+// gtk_icon_theme_lookup_icon() or the always-available "image-missing".
+// The icon chosen is returned by this function.
 //
 // If the icon was created without an icon theme, this function returns NULL.
 //
 // The function returns the following values:
 //
-//    - filename (optional): themed icon-name for the icon, or NULL if its not a
-//      themed icon.
+//   - filename (optional): themed icon-name for the icon, or NULL if its not a
+//     themed icon.
 //
 func (self *IconPaintable) IconName() string {
 	var _arg0 *C.GtkIconPaintable // out
@@ -255,7 +255,7 @@ func (self *IconPaintable) IconName() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the icon is symbolic, FALSE otherwise.
+//   - ok: TRUE if the icon is symbolic, FALSE otherwise.
 //
 func (self *IconPaintable) IsSymbolic() bool {
 	var _arg0 *C.GtkIconPaintable // out
@@ -277,14 +277,14 @@ func (self *IconPaintable) IsSymbolic() bool {
 
 // IconTheme: GtkIconTheme provides a facility for loading themed icons.
 //
-// The main reason for using a name rather than simply providing a filename is
-// to allow different icons to be used depending on what “icon theme” is
-// selected by the user. The operation of icon themes on Linux and Unix follows
-// the Icon Theme Specification
+// The main reason for using a name rather than simply providing
+// a filename is to allow different icons to be used depending on
+// what “icon theme” is selected by the user. The operation of icon
+// themes on Linux and Unix follows the Icon Theme Specification
 // (http://www.freedesktop.org/Standards/icon-theme-spec) There is a fallback
-// icon theme, named hicolor, where applications should install their icons, but
-// additional icon themes can be installed as operating system vendors and users
-// choose.
+// icon theme, named hicolor, where applications should install their icons,
+// but additional icon themes can be installed as operating system vendors and
+// users choose.
 //
 // In many cases, named themes are used indirectly, via gtk.Image rather than
 // directly, but looking up icons directly is also simple. The GtkIconTheme
@@ -341,7 +341,7 @@ func (self *IconTheme) ConnectChanged(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - iconTheme: newly created GtkIconTheme object.
+//   - iconTheme: newly created GtkIconTheme object.
 //
 func NewIconTheme() *IconTheme {
 	var _cret *C.GtkIconTheme // in
@@ -365,7 +365,7 @@ func NewIconTheme() *IconTheme {
 //
 // The function takes the following parameters:
 //
-//    - path: resource path.
+//   - path: resource path.
 //
 func (self *IconTheme) AddResourcePath(path string) {
 	var _arg0 *C.GtkIconTheme // out
@@ -386,7 +386,7 @@ func (self *IconTheme) AddResourcePath(path string) {
 //
 // The function takes the following parameters:
 //
-//    - path: directory name to append to the icon path.
+//   - path: directory name to append to the icon path.
 //
 func (self *IconTheme) AddSearchPath(path string) {
 	var _arg0 *C.GtkIconTheme // out
@@ -405,7 +405,7 @@ func (self *IconTheme) AddSearchPath(path string) {
 //
 // The function returns the following values:
 //
-//    - display (optional) of icon_theme.
+//   - display (optional) of icon_theme.
 //
 func (self *IconTheme) Display() *gdk.Display {
 	var _arg0 *C.GtkIconTheme // out
@@ -434,8 +434,8 @@ func (self *IconTheme) Display() *gdk.Display {
 //
 // The function returns the following values:
 //
-//    - utf8s: string array holding the names of all the icons in the theme. You
-//      must free the array using g_strfreev().
+//   - utf8s: string array holding the names of all the icons in the theme.
+//     You must free the array using g_strfreev().
 //
 func (self *IconTheme) IconNames() []string {
 	var _arg0 *C.GtkIconTheme // out
@@ -475,13 +475,13 @@ func (self *IconTheme) IconNames() []string {
 //
 // The function takes the following parameters:
 //
-//    - iconName: name of an icon.
+//   - iconName: name of an icon.
 //
 // The function returns the following values:
 //
-//    - gints: newly allocated array describing the sizes at which the icon is
-//      available. The array should be freed with g_free() when it is no longer
-//      needed.
+//   - gints: newly allocated array describing the sizes at which the icon is
+//     available. The array should be freed with g_free() when it is no longer
+//     needed.
 //
 func (self *IconTheme) IconSizes(iconName string) []int {
 	var _arg0 *C.GtkIconTheme // out
@@ -522,8 +522,8 @@ func (self *IconTheme) IconSizes(iconName string) []int {
 //
 // The function returns the following values:
 //
-//    - utf8s (optional): A list of resource paths or NULL. The returned value
-//      should be freed with g_strfreev().
+//   - utf8s (optional): A list of resource paths or NULL. The returned value
+//     should be freed with g_strfreev().
 //
 func (self *IconTheme) ResourcePath() []string {
 	var _arg0 *C.GtkIconTheme // out
@@ -563,8 +563,8 @@ func (self *IconTheme) ResourcePath() []string {
 //
 // The function returns the following values:
 //
-//    - filenames (optional): a list of icon theme path directories or NULL. The
-//      returned value should be freed with g_strfreev().
+//   - filenames (optional): a list of icon theme path directories or NULL.
+//     The returned value should be freed with g_strfreev().
 //
 func (self *IconTheme) SearchPath() []string {
 	var _arg0 *C.GtkIconTheme // out
@@ -626,11 +626,11 @@ func (self *IconTheme) ThemeName() string {
 //
 // The function takes the following parameters:
 //
-//    - gicon: GIcon.
+//   - gicon: GIcon.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self includes an icon for gicon.
+//   - ok: TRUE if self includes an icon for gicon.
 //
 func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 	var _arg0 *C.GtkIconTheme // out
@@ -657,11 +657,11 @@ func (self *IconTheme) HasGIcon(gicon gio.Iconner) bool {
 //
 // The function takes the following parameters:
 //
-//    - iconName: name of an icon.
+//   - iconName: name of an icon.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self includes an icon for icon_name.
+//   - ok: TRUE if self includes an icon for icon_name.
 //
 func (self *IconTheme) HasIcon(iconName string) bool {
 	var _arg0 *C.GtkIconTheme // out
@@ -692,16 +692,16 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 //
 // The function takes the following parameters:
 //
-//    - icon: GIcon to look up.
-//    - size: desired icon size.
-//    - scale: desired scale.
-//    - direction: text direction the icon will be displayed in.
-//    - flags modifying the behavior of the icon lookup.
+//   - icon: GIcon to look up.
+//   - size: desired icon size.
+//   - scale: desired scale.
+//   - direction: text direction the icon will be displayed in.
+//   - flags modifying the behavior of the icon lookup.
 //
 // The function returns the following values:
 //
-//    - iconPaintable: GtkIconPaintable containing information about the icon.
-//      Unref with g_object_unref().
+//   - iconPaintable: GtkIconPaintable containing information about the icon.
+//     Unref with g_object_unref().
 //
 func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
@@ -740,8 +740,8 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, directio
 // The icon can then be rendered by using it as a GdkPaintable, or you can get
 // information such as the filename and size.
 //
-// If the available icon_name is not available and fallbacks are provided, they
-// will be tried in order.
+// If the available icon_name is not available and fallbacks are provided,
+// they will be tried in order.
 //
 // If no matching icon is found, then a paintable that renders the "missing
 // icon" icon is returned. If you need to do something else for missing icons
@@ -753,16 +753,16 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, directio
 //
 // The function takes the following parameters:
 //
-//    - iconName: name of the icon to lookup.
-//    - fallbacks (optional)
-//    - size: desired icon size.
-//    - scale: window scale this will be displayed on.
-//    - direction: text direction the icon will be displayed in.
-//    - flags modifying the behavior of the icon lookup.
+//   - iconName: name of the icon to lookup.
+//   - fallbacks (optional)
+//   - size: desired icon size.
+//   - scale: window scale this will be displayed on.
+//   - direction: text direction the icon will be displayed in.
+//   - flags modifying the behavior of the icon lookup.
 //
 // The function returns the following values:
 //
-//    - iconPaintable: GtkIconPaintable object containing the icon.
+//   - iconPaintable: GtkIconPaintable object containing the icon.
 //
 func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, scale int, direction TextDirection, flags IconLookupFlags) *IconPaintable {
 	var _arg0 *C.GtkIconTheme      // out
@@ -813,23 +813,23 @@ func (self *IconTheme) LookupIcon(iconName string, fallbacks []string, size, sca
 
 // SetSearchPath sets the search path for the icon theme object.
 //
-// When looking for an icon theme, GTK will search for a subdirectory of one or
-// more of the directories in path with the same name as the icon theme
+// When looking for an icon theme, GTK will search for a subdirectory of one
+// or more of the directories in path with the same name as the icon theme
 // containing an index.theme file. (Themes from multiple of the path elements
 // are combined to allow themes to be extended by adding icons in the user’s
 // home directory.)
 //
-// In addition if an icon found isn’t found either in the current icon theme or
-// the default icon theme, and an image file with the right name is found
-// directly in one of the elements of path, then that image will be used for the
-// icon name. (This is legacy feature, and new icons should be put into the
+// In addition if an icon found isn’t found either in the current icon theme
+// or the default icon theme, and an image file with the right name is found
+// directly in one of the elements of path, then that image will be used for
+// the icon name. (This is legacy feature, and new icons should be put into the
 // fallback icon theme, which is called hicolor, rather than directly on the
 // icon path.).
 //
 // The function takes the following parameters:
 //
-//    - path (optional): NULL-terminated array of directories that are searched
-//      for icon themes.
+//   - path (optional): NULL-terminated array of directories that are searched
+//     for icon themes.
 //
 func (self *IconTheme) SetSearchPath(path []string) {
 	var _arg0 *C.GtkIconTheme // out
@@ -863,8 +863,8 @@ func (self *IconTheme) SetSearchPath(path []string) {
 //
 // The function takes the following parameters:
 //
-//    - themeName (optional): name of icon theme to use instead of configured
-//      theme, or NULL to unset a previously set custom theme.
+//   - themeName (optional): name of icon theme to use instead of configured
+//     theme, or NULL to unset a previously set custom theme.
 //
 func (self *IconTheme) SetThemeName(themeName string) {
 	var _arg0 *C.GtkIconTheme // out
@@ -883,22 +883,22 @@ func (self *IconTheme) SetThemeName(themeName string) {
 
 // IconThemeGetForDisplay gets the icon theme object associated with display.
 //
-// If this function has not previously been called for the given display, a new
-// icon theme object will be created and associated with the display. Icon theme
-// objects are fairly expensive to create, so using this function is usually a
-// better choice than calling gtk.IconTheme.New and setting the display
-// yourself; by using this function a single icon theme object will be shared
-// between users.
+// If this function has not previously been called for the given display,
+// a new icon theme object will be created and associated with the display.
+// Icon theme objects are fairly expensive to create, so using this function
+// is usually a better choice than calling gtk.IconTheme.New and setting the
+// display yourself; by using this function a single icon theme object will be
+// shared between users.
 //
 // The function takes the following parameters:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 // The function returns the following values:
 //
-//    - iconTheme: unique GtkIconTheme associated with the given display. This
-//      icon theme is associated with the display and can be used as long as the
-//      display is open. Do not ref or unref it.
+//   - iconTheme: unique GtkIconTheme associated with the given display.
+//     This icon theme is associated with the display and can be used as long as
+//     the display is open. Do not ref or unref it.
 //
 func IconThemeGetForDisplay(display *gdk.Display) *IconTheme {
 	var _arg1 *C.GdkDisplay   // out

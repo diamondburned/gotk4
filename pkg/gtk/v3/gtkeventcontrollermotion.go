@@ -75,11 +75,11 @@ func (v *EventControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.Sig
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - eventControllerMotion: new EventControllerMotion.
+//   - eventControllerMotion: new EventControllerMotion.
 //
 func NewEventControllerMotion(widget Widgetter) *EventControllerMotion {
 	var _arg1 *C.GtkWidget          // out

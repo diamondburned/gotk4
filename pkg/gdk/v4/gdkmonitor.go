@@ -108,7 +108,7 @@ func (monitor *Monitor) ConnectInvalidate(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the connector.
+//   - utf8 (optional): name of the connector.
 //
 func (monitor *Monitor) Connector() string {
 	var _arg0 *C.GdkMonitor // out
@@ -132,7 +132,7 @@ func (monitor *Monitor) Connector() string {
 //
 // The function returns the following values:
 //
-//    - display: display.
+//   - display: display.
 //
 func (monitor *Monitor) Display() *Display {
 	var _arg0 *C.GdkMonitor // out
@@ -158,7 +158,7 @@ func (monitor *Monitor) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - geometry: GdkRectangle to be filled with the monitor geometry.
+//   - geometry: GdkRectangle to be filled with the monitor geometry.
 //
 func (monitor *Monitor) Geometry() *Rectangle {
 	var _arg0 *C.GdkMonitor  // out
@@ -180,7 +180,7 @@ func (monitor *Monitor) Geometry() *Rectangle {
 //
 // The function returns the following values:
 //
-//    - gint: physical height of the monitor.
+//   - gint: physical height of the monitor.
 //
 func (monitor *Monitor) HeightMm() int {
 	var _arg0 *C.GdkMonitor // out
@@ -207,7 +207,7 @@ func (monitor *Monitor) HeightMm() int {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the manufacturer, or NULL.
+//   - utf8 (optional): name of the manufacturer, or NULL.
 //
 func (monitor *Monitor) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
@@ -231,7 +231,7 @@ func (monitor *Monitor) Manufacturer() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): monitor model, or NULL.
+//   - utf8 (optional): monitor model, or NULL.
 //
 func (monitor *Monitor) Model() string {
 	var _arg0 *C.GdkMonitor // out
@@ -257,7 +257,7 @@ func (monitor *Monitor) Model() string {
 //
 // The function returns the following values:
 //
-//    - gint: refresh rate in milli-Hertz, or 0.
+//   - gint: refresh rate in milli-Hertz, or 0.
 //
 func (monitor *Monitor) RefreshRate() int {
 	var _arg0 *C.GdkMonitor // out
@@ -287,7 +287,7 @@ func (monitor *Monitor) RefreshRate() int {
 //
 // The function returns the following values:
 //
-//    - gint: scale factor.
+//   - gint: scale factor.
 //
 func (monitor *Monitor) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor // out
@@ -310,7 +310,7 @@ func (monitor *Monitor) ScaleFactor() int {
 //
 // The function returns the following values:
 //
-//    - subpixelLayout: subpixel layout.
+//   - subpixelLayout: subpixel layout.
 //
 func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 	var _arg0 *C.GdkMonitor       // out
@@ -332,7 +332,7 @@ func (monitor *Monitor) SubpixelLayout() SubpixelLayout {
 //
 // The function returns the following values:
 //
-//    - gint: physical width of the monitor.
+//   - gint: physical width of the monitor.
 //
 func (monitor *Monitor) WidthMm() int {
 	var _arg0 *C.GdkMonitor // out
@@ -357,7 +357,7 @@ func (monitor *Monitor) WidthMm() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the object corresponds to a physical monitor.
+//   - ok: TRUE if the object corresponds to a physical monitor.
 //
 func (monitor *Monitor) IsValid() bool {
 	var _arg0 *C.GdkMonitor // out

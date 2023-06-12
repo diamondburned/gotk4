@@ -115,8 +115,8 @@ const (
 	// This phase runs from the event widget, up to the toplevel.
 	PhaseBubble
 	// PhaseTarget events are delivered in the default widget event handlers,
-	// note that widget implementations must chain up on button, motion, touch
-	// and grab broken handlers for controllers in this phase to be run.
+	// note that widget implementations must chain up on button, motion,
+	// touch and grab broken handlers for controllers in this phase to be run.
 	PhaseTarget
 )
 

@@ -29,10 +29,10 @@ const (
 	// on the file and use of an atomic rename() of the new version of the file
 	// over the old.
 	FileSetContentsConsistent FileSetContentsFlags = 0b1
-	// FileSetContentsDurable: guarantee file durability: after a crash, the new
-	// version of the file will be available. On Unix systems this equates to an
-	// fsync() on the file (if G_FILE_SET_CONTENTS_CONSISTENT is unset), or the
-	// effects of G_FILE_SET_CONTENTS_CONSISTENT plus an fsync() on the
+	// FileSetContentsDurable: guarantee file durability: after a crash, the
+	// new version of the file will be available. On Unix systems this equates
+	// to an fsync() on the file (if G_FILE_SET_CONTENTS_CONSISTENT is unset),
+	// or the effects of G_FILE_SET_CONTENTS_CONSISTENT plus an fsync() on the
 	// directory containing the file after calling rename().
 	FileSetContentsDurable FileSetContentsFlags = 0b10
 	// FileSetContentsOnlyExisting: only apply consistency and durability
@@ -79,17 +79,17 @@ func (f FileSetContentsFlags) Has(other FileSetContentsFlags) bool {
 	return (f & other) == other
 }
 
-// FileSetContentsFull writes all of contents to a file named filename, with
-// good error checking. If a file called filename already exists it will be
+// FileSetContentsFull writes all of contents to a file named filename,
+// with good error checking. If a file called filename already exists it will be
 // overwritten.
 //
-// flags control the properties of the write operation: whether it’s atomic, and
-// what the tradeoff is between returning quickly or being resilient to system
-// crashes.
+// flags control the properties of the write operation: whether it’s atomic,
+// and what the tradeoff is between returning quickly or being resilient to
+// system crashes.
 //
-// As this function performs file I/O, it is recommended to not call it anywhere
-// where blocking would cause problems, such as in the main loop of a graphical
-// application. In particular, if flags has any value other than
+// As this function performs file I/O, it is recommended to not call it
+// anywhere where blocking would cause problems, such as in the main loop of
+// a graphical application. In particular, if flags has any value other than
 // G_FILE_SET_CONTENTS_NONE then this function may call fsync().
 //
 // If G_FILE_SET_CONTENTS_CONSISTENT is set in flags, the operation is atomic in
@@ -98,22 +98,22 @@ func (f FileSetContentsFlags) Has(other FileSetContentsFlags) bool {
 //
 // Notes:
 //
-// - On UNIX, if filename already exists hard links to filename will break. Also
-// since the file is recreated, existing permissions, access control lists,
+// - On UNIX, if filename already exists hard links to filename will break.
+// Also since the file is recreated, existing permissions, access control lists,
 // metadata etc. may be lost. If filename is a symbolic link, the link itself
 // will be replaced, not the linked file.
 //
-// - On UNIX, if filename already exists and is non-empty, and if the system
-// supports it (via a journalling filesystem or equivalent), and if
-// G_FILE_SET_CONTENTS_CONSISTENT is set in flags, the fsync() call (or
+// - On UNIX, if filename already exists and is non-empty, and if the
+// system supports it (via a journalling filesystem or equivalent),
+// and if G_FILE_SET_CONTENTS_CONSISTENT is set in flags, the fsync() call (or
 // equivalent) will be used to ensure atomic replacement: filename will contain
 // either its old contents or contents, even in the face of system power loss,
 // the disk being unsafely removed, etc.
 //
-// - On UNIX, if filename does not already exist or is empty, there is a
-// possibility that system power loss etc. after calling this function will
-// leave filename empty or full of NUL bytes, depending on the underlying
-// filesystem, unless G_FILE_SET_CONTENTS_DURABLE and
+// - On UNIX, if filename does not already exist or is empty,
+// there is a possibility that system power loss etc. after calling this
+// function will leave filename empty or full of NUL bytes, depending
+// on the underlying filesystem, unless G_FILE_SET_CONTENTS_DURABLE and
 // G_FILE_SET_CONTENTS_CONSISTENT are set in flags.
 //
 // - On Windows renaming a file will not remove an existing file with the new
@@ -137,11 +137,11 @@ func (f FileSetContentsFlags) Has(other FileSetContentsFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - filename: name of a file to write contents to, in the GLib file name
-//      encoding.
-//    - contents: string to write to the file.
-//    - flags controlling the safety vs speed of the operation.
-//    - mode: file mode, as passed to open(); typically this will be 0666.
+//   - filename: name of a file to write contents to, in the GLib file name
+//     encoding.
+//   - contents: string to write to the file.
+//   - flags controlling the safety vs speed of the operation.
+//   - mode: file mode, as passed to open(); typically this will be 0666.
 //
 func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, mode int) error {
 	var _arg1 *C.gchar // out

@@ -54,14 +54,14 @@ func init() {
 // Action represents a single named action.
 //
 // The main interface to an action is that it can be activated with
-// g_action_activate(). This results in the 'activate' signal being emitted. An
-// activation has a #GVariant parameter (which may be NULL). The correct type
+// g_action_activate(). This results in the 'activate' signal being emitted.
+// An activation has a #GVariant parameter (which may be NULL). The correct type
 // for the parameter is determined by a static parameter type (which is given at
 // construction time).
 //
 // An action may optionally have a state, in which case the state may be set
-// with g_action_change_state(). This call takes a #GVariant. The correct type
-// for the state is determined by a static state type (which is given at
+// with g_action_change_state(). This call takes a #GVariant. The correct
+// type for the state is determined by a static state type (which is given at
 // construction time).
 //
 // The state may have a hint associated with it, specifying its valid range.
@@ -69,10 +69,10 @@ func init() {
 // #GAction is merely the interface to the concept of an action, as described
 // above. Various implementations of actions exist, including Action.
 //
-// In all cases, the implementing class is responsible for storing the name of
-// the action, the parameter type, the enabled state, the optional state type
-// and the state and emitting the appropriate signals when these change. The
-// implementor is responsible for filtering calls to g_action_activate() and
+// In all cases, the implementing class is responsible for storing the name
+// of the action, the parameter type, the enabled state, the optional state
+// type and the state and emitting the appropriate signals when these change.
+// The implementor is responsible for filtering calls to g_action_activate() and
 // g_action_change_state() for type safety and for the state being enabled.
 //
 // Probably the only useful thing to do with a #GAction is to put it inside of a
@@ -135,7 +135,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - parameter (optional) to the activation.
+//   - parameter (optional) to the activation.
 //
 func (action *Action) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
@@ -156,15 +156,15 @@ func (action *Action) Activate(parameter *glib.Variant) {
 // The action must be stateful and value must be of the correct type. See
 // g_action_get_state_type().
 //
-// This call merely requests a change. The action may refuse to change its state
-// or may change its state to something other than value. See
+// This call merely requests a change. The action may refuse to change
+// its state or may change its state to something other than value. See
 // g_action_get_state_hint().
 //
 // If the value GVariant is floating, it is consumed.
 //
 // The function takes the following parameters:
 //
-//    - value: new state.
+//   - value: new state.
 //
 func (action *Action) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
@@ -185,7 +185,7 @@ func (action *Action) ChangeState(value *glib.Variant) {
 //
 // The function returns the following values:
 //
-//    - ok: whether the action is enabled.
+//   - ok: whether the action is enabled.
 //
 func (action *Action) Enabled() bool {
 	var _arg0 *C.GAction // out
@@ -209,7 +209,7 @@ func (action *Action) Enabled() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the action.
+//   - utf8: name of the action.
 //
 func (action *Action) Name() string {
 	var _arg0 *C.GAction // out
@@ -238,7 +238,7 @@ func (action *Action) Name() string {
 //
 // The function returns the following values:
 //
-//    - variantType (optional): parameter type.
+//   - variantType (optional): parameter type.
 //
 func (action *Action) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
@@ -260,8 +260,8 @@ func (action *Action) ParameterType() *glib.VariantType {
 
 // State queries the current state of action.
 //
-// If the action is not stateful then NULL will be returned. If the action is
-// stateful then the type of the return value is the type given by
+// If the action is not stateful then NULL will be returned. If the action
+// is stateful then the type of the return value is the type given by
 // g_action_get_state_type().
 //
 // The return value (if non-NULL) should be freed with g_variant_unref() when it
@@ -269,7 +269,7 @@ func (action *Action) ParameterType() *glib.VariantType {
 //
 // The function returns the following values:
 //
-//    - variant (optional): current state of the action.
+//   - variant (optional): current state of the action.
 //
 func (action *Action) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
@@ -315,7 +315,7 @@ func (action *Action) State() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - variant (optional): state range hint.
+//   - variant (optional): state range hint.
 //
 func (action *Action) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
@@ -345,17 +345,17 @@ func (action *Action) StateHint() *glib.Variant {
 //
 // If the action is stateful (e.g. created with g_simple_action_new_stateful())
 // then this function returns the Type of the state. This is the type of the
-// initial value given as the state. All calls to g_action_change_state() must
-// give a #GVariant of this type and g_action_get_state() will return a
+// initial value given as the state. All calls to g_action_change_state()
+// must give a #GVariant of this type and g_action_get_state() will return a
 // #GVariant of the same type.
 //
-// If the action is not stateful (e.g. created with g_simple_action_new()) then
-// this function will return NULL. In that case, g_action_get_state() will
+// If the action is not stateful (e.g. created with g_simple_action_new())
+// then this function will return NULL. In that case, g_action_get_state() will
 // return NULL and you must not call g_action_change_state().
 //
 // The function returns the following values:
 //
-//    - variantType (optional): state type, if the action is stateful.
+//   - variantType (optional): state type, if the action is stateful.
 //
 func (action *Action) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
@@ -385,7 +385,7 @@ func (action *Action) StateType() *glib.VariantType {
 //
 // The function takes the following parameters:
 //
-//    - parameter (optional) to the activation.
+//   - parameter (optional) to the activation.
 //
 func (action *Action) activate(parameter *glib.Variant) {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
@@ -409,15 +409,15 @@ func (action *Action) activate(parameter *glib.Variant) {
 // The action must be stateful and value must be of the correct type. See
 // g_action_get_state_type().
 //
-// This call merely requests a change. The action may refuse to change its state
-// or may change its state to something other than value. See
+// This call merely requests a change. The action may refuse to change
+// its state or may change its state to something other than value. See
 // g_action_get_state_hint().
 //
 // If the value GVariant is floating, it is consumed.
 //
 // The function takes the following parameters:
 //
-//    - value: new state.
+//   - value: new state.
 //
 func (action *Action) changeState(value *glib.Variant) {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
@@ -441,7 +441,7 @@ func (action *Action) changeState(value *glib.Variant) {
 //
 // The function returns the following values:
 //
-//    - ok: whether the action is enabled.
+//   - ok: whether the action is enabled.
 //
 func (action *Action) enabled() bool {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
@@ -468,7 +468,7 @@ func (action *Action) enabled() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the action.
+//   - utf8: name of the action.
 //
 func (action *Action) name() string {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
@@ -500,7 +500,7 @@ func (action *Action) name() string {
 //
 // The function returns the following values:
 //
-//    - variantType (optional): parameter type.
+//   - variantType (optional): parameter type.
 //
 func (action *Action) parameterType() *glib.VariantType {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
@@ -525,8 +525,8 @@ func (action *Action) parameterType() *glib.VariantType {
 
 // State queries the current state of action.
 //
-// If the action is not stateful then NULL will be returned. If the action is
-// stateful then the type of the return value is the type given by
+// If the action is not stateful then NULL will be returned. If the action
+// is stateful then the type of the return value is the type given by
 // g_action_get_state_type().
 //
 // The return value (if non-NULL) should be freed with g_variant_unref() when it
@@ -534,7 +534,7 @@ func (action *Action) parameterType() *glib.VariantType {
 //
 // The function returns the following values:
 //
-//    - variant (optional): current state of the action.
+//   - variant (optional): current state of the action.
 //
 func (action *Action) state() *glib.Variant {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
@@ -583,7 +583,7 @@ func (action *Action) state() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - variant (optional): state range hint.
+//   - variant (optional): state range hint.
 //
 func (action *Action) stateHint() *glib.Variant {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
@@ -616,17 +616,17 @@ func (action *Action) stateHint() *glib.Variant {
 //
 // If the action is stateful (e.g. created with g_simple_action_new_stateful())
 // then this function returns the Type of the state. This is the type of the
-// initial value given as the state. All calls to g_action_change_state() must
-// give a #GVariant of this type and g_action_get_state() will return a
+// initial value given as the state. All calls to g_action_change_state()
+// must give a #GVariant of this type and g_action_get_state() will return a
 // #GVariant of the same type.
 //
-// If the action is not stateful (e.g. created with g_simple_action_new()) then
-// this function will return NULL. In that case, g_action_get_state() will
+// If the action is not stateful (e.g. created with g_simple_action_new())
+// then this function will return NULL. In that case, g_action_get_state() will
 // return NULL and you must not call g_action_change_state().
 //
 // The function returns the following values:
 //
-//    - variantType (optional): state type, if the action is stateful.
+//   - variantType (optional): state type, if the action is stateful.
 //
 func (action *Action) stateType() *glib.VariantType {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))

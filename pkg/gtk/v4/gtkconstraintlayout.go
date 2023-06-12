@@ -45,8 +45,7 @@ func defaultConstraintLayoutOverrides(v *ConstraintLayout) ConstraintLayoutOverr
 // attributes, expressed via gtk.Constraint instances, to measure and allocate
 // widgets.
 //
-//
-// How do constraints work
+// # How do constraints work
 //
 // Constraints are objects defining the relationship between attributes of a
 // widget; you can read the description of the gtk.Constraint class to have a
@@ -72,12 +71,11 @@ func defaultConstraintLayoutOverrides(v *ConstraintLayout) ConstraintLayoutOverr
 // that is: have more than one solution. The behavior of an unstable layout is
 // undefined.
 //
-// A constraint-based layout with conflicting constraints may be unsolvable, and
-// lead to an unstable layout. You can use the gtk.Constraint:strength property
-// of gtk.Constraint to "nudge" the layout towards a solution.
+// A constraint-based layout with conflicting constraints may be unsolvable,
+// and lead to an unstable layout. You can use the gtk.Constraint:strength
+// property of gtk.Constraint to "nudge" the layout towards a solution.
 //
-//
-// GtkConstraintLayout as GtkBuildable
+// # GtkConstraintLayout as GtkBuildable
 //
 // GtkConstraintLayout implements the gtk.Buildable interface and has a custom
 // "constraints" element which allows describing constraints in a gtk.Builder UI
@@ -85,28 +83,26 @@ func defaultConstraintLayoutOverrides(v *ConstraintLayout) ConstraintLayoutOverr
 //
 // An example of a UI definition fragment specifying a constraint:
 //
-//      <object class="GtkConstraintLayout">
-//        <constraints>
-//          <constraint target="button" target-attribute="start"
-//                      relation="eq"
-//                      source="super" source-attribute="start"
-//                      constant="12"
-//                      strength="required" />
-//          <constraint target="button" target-attribute="width"
-//                      relation="ge"
-//                      constant="250"
-//                      strength="strong" />
-//        </constraints>
-//      </object>
-//
+//    <object class="GtkConstraintLayout">
+//      <constraints>
+//        <constraint target="button" target-attribute="start"
+//                    relation="eq"
+//                    source="super" source-attribute="start"
+//                    constant="12"
+//                    strength="required" />
+//        <constraint target="button" target-attribute="width"
+//                    relation="ge"
+//                    constant="250"
+//                    strength="strong" />
+//      </constraints>
+//    </object>
 //
 // The definition above will add two constraints to the GtkConstraintLayout:
 //
-//    - a required constraint between the leading edge of "button" and
-//      the leading edge of the widget using the constraint layout, plus
-//      12 pixels
-//    - a strong, constant constraint making the width of "button" greater
-//      than, or equal to 250 pixels
+//   - a required constraint between the leading edge of "button" and the
+//     leading edge of the widget using the constraint layout, plus 12 pixels
+//   - a strong, constant constraint making the width of "button" greater than,
+//     or equal to 250 pixels
 //
 // The "target" and "target-attribute" attributes are required.
 //
@@ -128,38 +124,35 @@ func defaultConstraintLayoutOverrides(v *ConstraintLayout) ConstraintLayoutOverr
 // Additionally, the "constraints" element can also contain a description of the
 // ConstraintGuides used by the layout:
 //
-//      <constraints>
-//        <guide min-width="100" max-width="500" name="hspace"/>
-//        <guide min-height="64" nat-height="128" name="vspace" strength="strong"/>
-//      </constraints>
-//
+//    <constraints>
+//      <guide min-width="100" max-width="500" name="hspace"/>
+//      <guide min-height="64" nat-height="128" name="vspace" strength="strong"/>
+//    </constraints>
 //
 // The "guide" element has the following optional attributes:
 //
-//    - "min-width", "nat-width", and "max-width", describe the minimum,
-//      natural, and maximum width of the guide, respectively
-//    - "min-height", "nat-height", and "max-height", describe the minimum,
-//      natural, and maximum height of the guide, respectively
-//    - "strength" describes the strength of the constraint on the natural
-//      size of the guide; if not specified, the constraint is assumed to
-//      have a medium strength
-//    - "name" describes a name for the guide, useful when debugging
+//   - "min-width", "nat-width", and "max-width", describe the minimum, natural,
+//     and maximum width of the guide, respectively
+//   - "min-height", "nat-height", and "max-height", describe the minimum,
+//     natural, and maximum height of the guide, respectively
+//   - "strength" describes the strength of the constraint on the natural size
+//     of the guide; if not specified, the constraint is assumed to have a
+//     medium strength
+//   - "name" describes a name for the guide, useful when debugging
 //
+// # Using the Visual Format Language
 //
-// Using the Visual Format Language
-//
-// Complex constraints can be described using a compact syntax called VFL, or
-// *Visual Format Language*.
+// Complex constraints can be described using a compact syntax called VFL,
+// or *Visual Format Language*.
 //
 // The Visual Format Language describes all the constraints on a row or column,
-// typically starting from the leading edge towards the trailing one. Each
-// element of the layout is composed by "views", which identify a
+// typically starting from the leading edge towards the trailing one.
+// Each element of the layout is composed by "views", which identify a
 // gtk.ConstraintTarget.
 //
 // For instance:
 //
-//      [button]-[textField]
-//
+//    [button]-[textField]
 //
 // Describes a constraint that binds the trailing edge of "button" to the
 // leading edge of "textField", leaving a default space between the two.
@@ -167,29 +160,26 @@ func defaultConstraintLayoutOverrides(v *ConstraintLayout) ConstraintLayoutOverr
 // Using VFL is also possible to specify predicates that describe constraints on
 // attributes like width and height:
 //
-//      // Width must be greater than, or equal to 50
-//      [button(>=50)]
+//    // Width must be greater than, or equal to 50
+//    [button(>=50)]
 //
-//      // Width of button1 must be equal to width of button2
-//      [button1(==button2)]
-//
+//    // Width of button1 must be equal to width of button2
+//    [button1(==button2)]
 //
 // The default orientation for a VFL description is horizontal, unless otherwise
 // specified:
 //
-//      // horizontal orientation, default attribute: width
-//      H:[button(>=150)]
+//    // horizontal orientation, default attribute: width
+//    H:[button(>=150)]
 //
-//      // vertical orientation, default attribute: height
-//      V:[button1(==button2)]
-//
+//    // vertical orientation, default attribute: height
+//    V:[button1(==button2)]
 //
 // It's also possible to specify multiple predicates, as well as their strength:
 //
-//      // minimum width of button must be 150
-//      // natural width of button can be 250
-//      [button(>=150required, ==250medium)]
-//
+//    // minimum width of button must be 150
+//    // natural width of button can be 250
+//    [button(>=150required, ==250medium)]
 //
 // Finally, it's also possible to use simple arithmetic operators:
 //
@@ -245,7 +235,7 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - constraintLayout: newly created GtkConstraintLayout.
+//   - constraintLayout: newly created GtkConstraintLayout.
 //
 func NewConstraintLayout() *ConstraintLayout {
 	var _cret *C.GtkLayoutManager // in
@@ -264,17 +254,17 @@ func NewConstraintLayout() *ConstraintLayout {
 // The gtk.Constraint:source and gtk.Constraint:target properties of constraint
 // can be:
 //
-//    - set to NULL to indicate that the constraint refers to the
-//      widget using layout
-//    - set to the gtk.Widget using layout
-//    - set to a child of the gtk.Widget using layout
-//    - set to a gtk.ConstraintGuide that is part of layout
+//   - set to NULL to indicate that the constraint refers to the widget using
+//     layout
+//   - set to the gtk.Widget using layout
+//   - set to a child of the gtk.Widget using layout
+//   - set to a gtk.ConstraintGuide that is part of layout
 //
 // The layout acquires the ownership of constraint after calling this function.
 //
 // The function takes the following parameters:
 //
-//    - constraint: gtk.Constraint.
+//   - constraint: gtk.Constraint.
 //
 func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
@@ -300,31 +290,30 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //
 // The VFL grammar is:
 //
-//           <visualFormatString> = (<orientation>)?
-//                                  (<superview><connection>)?
-//                                  <view>(<connection><view>)*
-//                                  (<connection><superview>)?
-//                  <orientation> = 'H' | 'V'
-//                    <superview> = '|'
-//                   <connection> = '' | '-' <predicateList> '-' | '-'
-//                <predicateList> = <simplePredicate> | <predicateListWithParens>
-//              <simplePredicate> = <metricName> | <positiveNumber>
-//      <predicateListWithParens> = '(' <predicate> (',' <predicate>)* ')'
-//                    <predicate> = (<relation>)? <objectOfPredicate> (<operatorList>)? ('@' <priority>)?
-//                     <relation> = '==' | '<=' | '>='
-//            <objectOfPredicate> = <constant> | <viewName> | ('.' <attributeName>)?
-//                     <priority> = <positiveNumber> | 'required' | 'strong' | 'medium' | 'weak'
-//                     <constant> = <number>
-//                 <operatorList> = (<multiplyOperator>)? (<addOperator>)?
-//             <multiplyOperator> = [ '*' | '/' ] <positiveNumber>
-//                  <addOperator> = [ '+' | '-' ] <positiveNumber>
-//                     <viewName> = A-Za-z_ ([A-Za-z0-9_]*) // A C identifier
-//                   <metricName> = A-Za-z_ ([A-Za-z0-9_]*) // A C identifier
-//                <attributeName> = 'top' | 'bottom' | 'left' | 'right' | 'width' | 'height' |
-//                                  'start' | 'end' | 'centerX' | 'centerY' | 'baseline'
-//               <positiveNumber> // A positive real number parseable by g_ascii_strtod()
-//                       <number> // A real number parseable by g_ascii_strtod()
-//
+//         <visualFormatString> = (<orientation>)?
+//                                (<superview><connection>)?
+//                                <view>(<connection><view>)*
+//                                (<connection><superview>)?
+//                <orientation> = 'H' | 'V'
+//                  <superview> = '|'
+//                 <connection> = '' | '-' <predicateList> '-' | '-'
+//              <predicateList> = <simplePredicate> | <predicateListWithParens>
+//            <simplePredicate> = <metricName> | <positiveNumber>
+//    <predicateListWithParens> = '(' <predicate> (',' <predicate>)* ')'
+//                  <predicate> = (<relation>)? <objectOfPredicate> (<operatorList>)? ('@' <priority>)?
+//                   <relation> = '==' | '<=' | '>='
+//          <objectOfPredicate> = <constant> | <viewName> | ('.' <attributeName>)?
+//                   <priority> = <positiveNumber> | 'required' | 'strong' | 'medium' | 'weak'
+//                   <constant> = <number>
+//               <operatorList> = (<multiplyOperator>)? (<addOperator>)?
+//           <multiplyOperator> = [ '*' | '/' ] <positiveNumber>
+//                <addOperator> = [ '+' | '-' ] <positiveNumber>
+//                   <viewName> = A-Za-z_ ([A-Za-z0-9_]*) // A C identifier
+//                 <metricName> = A-Za-z_ ([A-Za-z0-9_]*) // A C identifier
+//              <attributeName> = 'top' | 'bottom' | 'left' | 'right' | 'width' | 'height' |
+//                                'start' | 'end' | 'centerX' | 'centerY' | 'baseline'
+//             <positiveNumber> // A positive real number parseable by g_ascii_strtod()
+//                     <number> // A real number parseable by g_ascii_strtod()
 //
 // **Note**: The VFL grammar used by GTK is slightly different than the one
 // defined by Apple, as it can use symbolic values for the constraint's strength
@@ -333,52 +322,52 @@ func (layout *ConstraintLayout) AddConstraint(constraint *Constraint) {
 //
 // Examples of VFL descriptions are:
 //
-//      // Default spacing
-//      [button]-[textField]
+//    // Default spacing
+//    [button]-[textField]
 //
-//      // Width constraint
-//      [button(>=50)]
+//    // Width constraint
+//    [button(>=50)]
 //
-//      // Connection to super view
-//      |-50-[purpleBox]-50-|
+//    // Connection to super view
+//    |-50-[purpleBox]-50-|
 //
-//      // Vertical layout
-//      V:[topField]-10-[bottomField]
+//    // Vertical layout
+//    V:[topField]-10-[bottomField]
 //
-//      // Flush views
-//      [maroonView][blueView]
+//    // Flush views
+//    [maroonView][blueView]
 //
-//      // Priority
-//      [button(100strong)]
+//    // Priority
+//    [button(100strong)]
 //
-//      // Equal widths
-//      [button1(==button2)]
+//    // Equal widths
+//    [button1(==button2)]
 //
-//      // Multiple predicates
-//      [flexibleButton(>=70,<=100)]
+//    // Multiple predicates
+//    [flexibleButton(>=70,<=100)]
 //
-//      // A complete line of layout
-//      |-[find]-[findNext]-[findField(>=20)]-|
+//    // A complete line of layout
+//    |-[find]-[findNext]-[findField(>=20)]-|
 //
-//      // Operators
-//      [button1(button2 / 3 + 50)]
+//    // Operators
+//    [button1(button2 / 3 + 50)]
 //
-//      // Named attributes
-//      [button1(==button2.height)].
+//    // Named attributes
+//    [button1(==button2.height)].
 //
 // The function takes the following parameters:
 //
-//    - lines: array of Visual Format Language lines defining a set of
-//      constraints.
-//    - hspacing: default horizontal spacing value, or -1 for the fallback value.
-//    - vspacing: default vertical spacing value, or -1 for the fallback value.
-//    - views: dictionary of [ name, target ] pairs; the name keys map to the
-//      view names in the VFL lines, while the target values map to children of
-//      the widget using a GtkConstraintLayout, or guides.
+//   - lines: array of Visual Format Language lines defining a set of
+//     constraints.
+//   - hspacing: default horizontal spacing value, or -1 for the fallback value.
+//   - vspacing: default vertical spacing value, or -1 for the fallback value.
+//   - views: dictionary of [ name, target ] pairs; the name keys map to the
+//     view names in the VFL lines, while the target values map to children of
+//     the widget using a GtkConstraintLayout, or guides.
 //
 // The function returns the following values:
 //
-//    - list of gtk.Constraint instances that were added to the layout.
+//   - list of gtk.Constraint instances that were added to the layout.
 //
 func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hspacing, vspacing int, views map[string]ConstraintTargetter) ([]*Constraint, error) {
 	var _arg0 *C.GtkConstraintLayout // out
@@ -447,7 +436,7 @@ func (layout *ConstraintLayout) AddConstraintsFromDescription(lines []string, hs
 //
 // The function takes the following parameters:
 //
-//    - guide: gtk.ConstraintGuide object.
+//   - guide: gtk.ConstraintGuide object.
 //
 func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out
@@ -474,7 +463,7 @@ func (layout *ConstraintLayout) AddGuide(guide *ConstraintGuide) {
 //
 // The function returns the following values:
 //
-//    - listModel: a GListModel tracking the layout's constraints.
+//   - listModel: a GListModel tracking the layout's constraints.
 //
 func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 	var _arg0 *C.GtkConstraintLayout // out
@@ -509,7 +498,7 @@ func (layout *ConstraintLayout) ObserveConstraints() *gio.ListModel {
 //
 // The function returns the following values:
 //
-//    - listModel: a GListModel tracking the layout's guides.
+//   - listModel: a GListModel tracking the layout's guides.
 //
 func (layout *ConstraintLayout) ObserveGuides() *gio.ListModel {
 	var _arg0 *C.GtkConstraintLayout // out
@@ -547,7 +536,7 @@ func (layout *ConstraintLayout) RemoveAllConstraints() {
 //
 // The function takes the following parameters:
 //
-//    - constraint: gtk.Constraint.
+//   - constraint: gtk.Constraint.
 //
 func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 	var _arg0 *C.GtkConstraintLayout // out
@@ -566,7 +555,7 @@ func (layout *ConstraintLayout) RemoveConstraint(constraint *Constraint) {
 //
 // The function takes the following parameters:
 //
-//    - guide: gtk.ConstraintGuide object.
+//   - guide: gtk.ConstraintGuide object.
 //
 func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	var _arg0 *C.GtkConstraintLayout // out

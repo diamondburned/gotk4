@@ -16,10 +16,10 @@ import "C"
 // TimeValFromISO8601 converts a string containing an ISO 8601 encoded date and
 // time to a Val and puts it into time_.
 //
-// iso_date must include year, month, day, hours, minutes, and seconds. It can
-// optionally include fractions of a second and a time zone indicator. (In the
-// absence of any time zone indication, the timestamp is assumed to be in local
-// time.)
+// iso_date must include year, month, day, hours, minutes, and seconds.
+// It can optionally include fractions of a second and a time zone indicator.
+// (In the absence of any time zone indication, the timestamp is assumed to be
+// in local time.)
 //
 // Any leading or trailing space in iso_date is ignored.
 //
@@ -35,12 +35,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - isoDate: ISO 8601 encoded date string.
+//   - isoDate: ISO 8601 encoded date string.
 //
 // The function returns the following values:
 //
-//    - time_: Val.
-//    - ok: TRUE if the conversion was successful.
+//   - time_: Val.
+//   - ok: TRUE if the conversion was successful.
 //
 func TimeValFromISO8601(isoDate string) (*TimeVal, bool) {
 	var _arg1 *C.gchar   // out

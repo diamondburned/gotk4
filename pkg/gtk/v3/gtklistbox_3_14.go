@@ -10,6 +10,6 @@ import ()
 // #include <gtk/gtkx.h>
 import "C"
 
-// ListBoxForEachFunc: function used by gtk_list_box_selected_foreach(). It will
-// be called on every selected child of the box.
+// ListBoxForEachFunc: function used by gtk_list_box_selected_foreach().
+// It will be called on every selected child of the box.
 type ListBoxForEachFunc func(box *ListBox, row *ListBoxRow)

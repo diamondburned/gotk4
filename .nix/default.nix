@@ -14,5 +14,15 @@ in import "${src.gotk4-nix}/${action}.nix" {
 			sha256 = "0pgyx1l1gj33g5i9kwjar7dc3sal2g14mhfljcajj8bqzzrbc3za";
 		};
 		useFetched = true;
+		# usePatchedGo = true;
+		overlays = [
+			(self: super: {
+				go =
+					let
+						upstreamPkgs = import "${src.gotk4-nix}/pkgs.nix" {};
+					in
+						upstreamPkgs.go;
+			})
+		];
 	};
 }

@@ -160,6 +160,7 @@ func (g *Generator) Header() *file.Header {
 func (g *Generator) init(typ interface{}) bool {
 	resolved := types.TypeFromResult(g.gen, typ)
 	if resolved == nil || resolved.Extern == nil {
+		g.gen.Logln(logger.Debug, "type", fmt.Sprintf("%#v", typ), "cannot be resolved")
 		return false
 	}
 
@@ -180,7 +181,13 @@ func (g *Generator) init(typ interface{}) bool {
 		g.methods = typ.Methods
 		g.virtuals = typ.VirtualMethods
 
-		if !typ.IsIntrospectable() || types.Filter(g.gen, typ.Name, typ.CType) {
+		if types.Filter(g.gen, typ.Name, typ.CType) {
+			g.Logln(logger.Debug, "class is filtered")
+			return false
+		}
+
+		if !typ.IsIntrospectable() {
+			g.Logln(logger.Debug, "class is not introspectable")
 			return false
 		}
 
@@ -198,7 +205,13 @@ func (g *Generator) init(typ interface{}) bool {
 		g.methods = typ.Methods
 		g.virtuals = typ.VirtualMethods
 
-		if !typ.IsIntrospectable() || types.Filter(g.gen, typ.Name, typ.CType) {
+		if types.Filter(g.gen, typ.Name, typ.CType) {
+			g.Logln(logger.Debug, "interface is filtered")
+			return false
+		}
+
+		if !typ.IsIntrospectable() {
+			g.Logln(logger.Debug, "interface is not introspectable")
 			return false
 		}
 
@@ -208,6 +221,7 @@ func (g *Generator) init(typ interface{}) bool {
 		}
 
 	default:
+		g.Logln(logger.Debug, "unknown root type", fmt.Sprintf("%T", typ))
 		return false
 	}
 

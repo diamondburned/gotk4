@@ -365,7 +365,6 @@ var Filters = []FilterMatcher{
 	FileFilterNamespace("GLib", "grcbox."),
 	FileFilterNamespace("GLib", "grefcount."),
 	FileFilterNamespace("GLib", "grefstring."),
-	FileFilterNamespace("GLib", "gsettingsbackend."),
 	FileFilterNamespace("GLib", "gslice."),
 	FileFilterNamespace("GLib", "gslist."),
 	FileFilterNamespace("GLib", "gstdio."),
@@ -377,6 +376,7 @@ var Filters = []FilterMatcher{
 	FileFilterNamespace("GLib", "gthread."),
 	FileFilterNamespace("GLib", "gthreadpool."),
 	FileFilterNamespace("GLib", "gtrashstack."),
+	FileFilterNamespace("Gio", "gsettingsbackend."),
 
 	// Header-specific.
 	FileFilter("gskglrenderer."),

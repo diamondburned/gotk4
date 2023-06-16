@@ -57,9 +57,15 @@ environments.
 ## Updating Nixpkgs
 
 In case a new release of something is added to Nixpkgs Unstable, for example, a
-new Go version, then the `rev` and `sha256` of the `unstable` variable inside
-the [.nix/overlay.nix][shell.nix] file should be updated appropriately. The structure
-of the [shell.nix][shell.nix] file is commented inside the file itself.
+new GTK+ version, then the `sourceNixpkgs.rev` and `sourceNixpkgs.sha256`
+variables inside the [`.nix/default.nix`][] file should be updated
+appropriately.  Some packages, such as Go, do not come directly from Nixpkgs,
+but from [gotk4-nix.git][]; to update the gotk4-nix, then very similarly the
+`gotk4-nix.rev` and `gotk4-nix.sha256` variables inside [`.nix/default.nix`][]
+should be updated.
+
+[`.nix/default.nix`]: ./.nix/default.nix
+[gotk4-nix.git]: https://github.com/diamondburned/gotk4-nix
 
 Care should be taken when updating Nixpkgs, as the output could change
 drastically, and Nixpkgs versions should **never** be downgraded to ensure the

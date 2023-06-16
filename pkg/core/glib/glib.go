@@ -37,11 +37,10 @@ func gobool(b C.gboolean) bool {
 
 // InitI18n initializes the i18n subsystem. It runs the following C code:
 //
-//    setlocale(LC_ALL, "");
-//    bindtextdomain(domain, dir);
-//    bind_textdomain_codeset(domain, "UTF-8");
-//    textdomain(domain);
-//
+//	setlocale(LC_ALL, "");
+//	bindtextdomain(domain, dir);
+//	bind_textdomain_codeset(domain, "UTF-8");
+//	textdomain(domain);
 func InitI18n(domain, dir string) {
 	domainStr := C.CString(domain)
 	defer C.free(unsafe.Pointer(domainStr))
@@ -168,7 +167,7 @@ type AnyClosure interface{}
 // The user should never use this struct. The code generator should use it like
 // so:
 //
-//    obj.Connect("signal", externglib.GeneratedClosure{Func: v})
+//	obj.Connect("signal", externglib.GeneratedClosure{Func: v})
 //
 // There are a few differences in behavior that we have to make in goMarshal(),
 // and we want a clean way to differentiate manual Connect() calls with
@@ -652,6 +651,7 @@ func (v *Object) destroy() {
 }
 
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
+//
 //go:nosplit
 //go:nocheckptr
 func (v *Object) Cast() Objector {
@@ -678,6 +678,7 @@ func (v *Object) Cast() Objector {
 
 // CastType casts v to a concrete Go type that is associated with the given
 // GType.
+//
 //go:nosplit
 //go:nocheckptr
 func (v *Object) CastType(gtype Type) Objector {

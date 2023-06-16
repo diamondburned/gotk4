@@ -214,11 +214,10 @@ var constructorInterfaceImpl = gotmpl.NewGoTemplate(`
 
 // methodInterfaceTmpl needs the following type:
 //
-//    struct {
-//        Method
-//        StructName string
-//    }
-//
+//	struct {
+//	    Method
+//	    StructName string
+//	}
 var methodInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ with .Method }}
 	{{ GoDoc . 0 }}

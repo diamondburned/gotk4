@@ -745,9 +745,8 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 
 // GLibLogs adds the following g_log_* functions:
 //
-//  - g_log_set_handler
-//  - g_log_set_handler_full
-//
+//   - g_log_set_handler
+//   - g_log_set_handler_full
 func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.File("gmessages.go")
 	if !ok {

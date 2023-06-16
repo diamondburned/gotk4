@@ -465,11 +465,10 @@ func (tree *Tree) implInterfaces(in []*Resolved, gtypes map[string]struct{}) []*
 //
 // Example:
 //
-//    tree.Walk(func(t *Tree, root bool) []Tree {
-//        log.Println("currently at", t.Resolved.PublName())
-//        return t.Requires
-//    })
-//
+//	tree.Walk(func(t *Tree, root bool) []Tree {
+//	    log.Println("currently at", t.Resolved.PublName())
+//	    return t.Requires
+//	})
 func (tree *Tree) Walk(f func(t *Tree, root bool) (traversed []Tree)) {
 	tree.walk(f, true)
 }

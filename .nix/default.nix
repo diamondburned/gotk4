@@ -11,9 +11,9 @@ let
 	gotk4-nix = systemPkgs.fetchFromGitHub {
 		owner = "diamondburned";
 		repo  = "gotk4-nix";
-		# This is a commit from 2022-05-29.
-		rev    = "0a50408da4eb59ad4500db49785676714f4bd4e6";
-		sha256 = "1ryxxkxly298yr3m0868g69jgk8gagvg6zmpknv2l7jd8x3w4pz7";
+		# This is a commit from 2022-10-17.
+		rev    = "2c031f93638f8c97a298807df80424f68ffaac76";
+		sha256 = "YB3EAE8SRayFukBLhT5q2kgrkStqGXc9QYbpQP+y61I=";
 	};
 
 in import "${gotk4-nix}/${action}.nix" {

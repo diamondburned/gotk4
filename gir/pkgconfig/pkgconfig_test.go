@@ -10,16 +10,16 @@ func TestIncludeDirs(t *testing.T) {
 	tests := [][2][]string{
 		{
 			{"gtk4"},
-			{"/nix/store/k6wcjrnbnjn4spyiikvm9ysj3b1g2acd-gtk4-4.0.3-dev/include"},
+			{"/nix/store/niw855nnjgqbq2s0iqxrk9xs5mr10rz8-gtk4-4.2.1-dev/include"},
 		},
 		{
 			{"gtk4", "pango", "cairo", "glib-2.0", "gdk-3.0"},
 			{
-				"/nix/store/k6wcjrnbnjn4spyiikvm9ysj3b1g2acd-gtk4-4.0.3-dev/include",
-				"/nix/store/ddkmvr82cx5risya88zhcz49ngfcpbmc-pango-1.48.3-dev/include",
-				"/nix/store/0dj85avpdlzrh97fmp7sh02a0lz1z5nv-cairo-1.16.0-dev/include",
-				"/nix/store/wkw8b59nljjv649vwf2v05i8qkx5p1ns-glib-2.66.8-dev/include",
-				"/nix/store/lzyp6d969dc407n2jbwg2grv28ss5pxn-gtk+3-3.24.27-dev/include",
+				"/nix/store/niw855nnjgqbq2s0iqxrk9xs5mr10rz8-gtk4-4.2.1-dev/include",
+				"/nix/store/c52730cidby7p2qwwq8cf91anqrni6lg-pango-1.48.4-dev/include",
+				"/nix/store/gp87jysb40b919z8s7ixcilwdsiyl0rp-cairo-1.16.0-dev/include",
+				"/nix/store/d9zs9xg86lhqjqni0v8h2ibdrjb57fn4-glib-2.68.2-dev/include",
+				"/nix/store/vsk1qc1na4izgz461vxkvn655yvarfr7-gtk+3-3.24.27-dev/include",
 			},
 		},
 	}

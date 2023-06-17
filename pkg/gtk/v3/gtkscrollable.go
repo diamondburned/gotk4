@@ -37,8 +37,7 @@ func init() {
 // To implement this interface you should override the Scrollable:hadjustment
 // and Scrollable:vadjustment properties.
 //
-//
-// Creating a scrollable widget
+// # Creating a scrollable widget
 //
 // All scrollable widgets should do the following.
 //
@@ -54,8 +53,8 @@ func init() {
 // - When the parent allocates space to the scrollable child widget, the widget
 // should update the adjustments’ properties with new values.
 //
-// - When any of the adjustments emits the Adjustment::value-changed signal, the
-// scrollable widget should scroll its contents.
+// - When any of the adjustments emits the Adjustment::value-changed signal,
+// the scrollable widget should scroll its contents.
 //
 // Scrollable wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -111,13 +110,13 @@ func marshalScrollable(p uintptr) (interface{}, error) {
 
 // Border returns the size of a non-scrolling border around the outside of the
 // scrollable. An example for this would be treeview headers. GTK+ can use this
-// information to display overlayed graphics, like the overshoot indication, at
-// the right position.
+// information to display overlayed graphics, like the overshoot indication,
+// at the right position.
 //
 // The function returns the following values:
 //
-//    - border: return location for the results.
-//    - ok: TRUE if border has been set.
+//   - border: return location for the results.
+//   - ok: TRUE if border has been set.
 //
 func (scrollable *Scrollable) Border() (*Border, bool) {
 	var _arg0 *C.GtkScrollable // out
@@ -144,7 +143,7 @@ func (scrollable *Scrollable) Border() (*Border, bool) {
 //
 // The function returns the following values:
 //
-//    - adjustment: horizontal Adjustment.
+//   - adjustment: horizontal Adjustment.
 //
 func (scrollable *Scrollable) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrollable // out
@@ -166,7 +165,7 @@ func (scrollable *Scrollable) HAdjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - scrollablePolicy: horizontal ScrollablePolicy.
+//   - scrollablePolicy: horizontal ScrollablePolicy.
 //
 func (scrollable *Scrollable) HScrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
@@ -188,7 +187,7 @@ func (scrollable *Scrollable) HScrollPolicy() ScrollablePolicy {
 //
 // The function returns the following values:
 //
-//    - adjustment: vertical Adjustment.
+//   - adjustment: vertical Adjustment.
 //
 func (scrollable *Scrollable) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkScrollable // out
@@ -210,7 +209,7 @@ func (scrollable *Scrollable) VAdjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - scrollablePolicy: vertical ScrollablePolicy.
+//   - scrollablePolicy: vertical ScrollablePolicy.
 //
 func (scrollable *Scrollable) VScrollPolicy() ScrollablePolicy {
 	var _arg0 *C.GtkScrollable      // out
@@ -232,7 +231,7 @@ func (scrollable *Scrollable) VScrollPolicy() ScrollablePolicy {
 //
 // The function takes the following parameters:
 //
-//    - hadjustment (optional): Adjustment.
+//   - hadjustment (optional): Adjustment.
 //
 func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 	var _arg0 *C.GtkScrollable // out
@@ -253,7 +252,7 @@ func (scrollable *Scrollable) SetHAdjustment(hadjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - policy: horizontal ScrollablePolicy.
+//   - policy: horizontal ScrollablePolicy.
 //
 func (scrollable *Scrollable) SetHScrollPolicy(policy ScrollablePolicy) {
 	var _arg0 *C.GtkScrollable      // out
@@ -271,7 +270,7 @@ func (scrollable *Scrollable) SetHScrollPolicy(policy ScrollablePolicy) {
 //
 // The function takes the following parameters:
 //
-//    - vadjustment (optional): Adjustment.
+//   - vadjustment (optional): Adjustment.
 //
 func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 	var _arg0 *C.GtkScrollable // out
@@ -292,7 +291,7 @@ func (scrollable *Scrollable) SetVAdjustment(vadjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - policy: vertical ScrollablePolicy.
+//   - policy: vertical ScrollablePolicy.
 //
 func (scrollable *Scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	var _arg0 *C.GtkScrollable      // out
@@ -308,13 +307,13 @@ func (scrollable *Scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 
 // Border returns the size of a non-scrolling border around the outside of the
 // scrollable. An example for this would be treeview headers. GTK+ can use this
-// information to display overlayed graphics, like the overshoot indication, at
-// the right position.
+// information to display overlayed graphics, like the overshoot indication,
+// at the right position.
 //
 // The function returns the following values:
 //
-//    - border: return location for the results.
-//    - ok: TRUE if border has been set.
+//   - border: return location for the results.
+//   - ok: TRUE if border has been set.
 //
 func (scrollable *Scrollable) border() (*Border, bool) {
 	gclass := (*C.GtkScrollableInterface)(coreglib.PeekParentClass(scrollable))

@@ -93,7 +93,7 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - invisible: new Invisible.
+//   - invisible: new Invisible.
 //
 func NewInvisible() *Invisible {
 	var _cret *C.GtkWidget // in
@@ -111,11 +111,11 @@ func NewInvisible() *Invisible {
 //
 // The function takes the following parameters:
 //
-//    - screen which identifies on which the new Invisible will be created.
+//   - screen which identifies on which the new Invisible will be created.
 //
 // The function returns the following values:
 //
-//    - invisible: newly created Invisible object.
+//   - invisible: newly created Invisible object.
 //
 func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 	var _arg1 *C.GdkScreen // out
@@ -137,7 +137,7 @@ func NewInvisibleForScreen(screen *gdk.Screen) *Invisible {
 //
 // The function returns the following values:
 //
-//    - screen: associated Screen.
+//   - screen: associated Screen.
 //
 func (invisible *Invisible) Screen() *gdk.Screen {
 	var _arg0 *C.GtkInvisible // out
@@ -164,7 +164,7 @@ func (invisible *Invisible) Screen() *gdk.Screen {
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkInvisible // out

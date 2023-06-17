@@ -33,8 +33,8 @@ func init() {
 // It is primarily meant for pixel data that will not change over multiple
 // frames, and will be used for a long time.
 //
-// There are various ways to create GdkTexture objects from a GdkPixbuf, or a
-// Cairo surface, or other pixel data.
+// There are various ways to create GdkTexture objects from a GdkPixbuf,
+// or a Cairo surface, or other pixel data.
 //
 // The ownership of the pixel data is transferred to the GdkTexture instance;
 // you can only make a copy of it, via gdk.Texture.Download().
@@ -89,11 +89,11 @@ func BaseTexture(obj Texturer) *Texture {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: GdkPixbuf.
+//   - pixbuf: GdkPixbuf.
 //
 // The function returns the following values:
 //
-//    - texture: new GdkTexture.
+//   - texture: new GdkTexture.
 //
 func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 	var _arg1 *C.GdkPixbuf  // out
@@ -120,11 +120,11 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 //
 // The function takes the following parameters:
 //
-//    - file: GFile to load.
+//   - file: GFile to load.
 //
 // The function returns the following values:
 //
-//    - texture: newly-created GdkTexture or NULL if an error occurred.
+//   - texture: newly-created GdkTexture or NULL if an error occurred.
 //
 func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _arg1 *C.GFile      // out
@@ -159,11 +159,11 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path of the resource file.
+//   - resourcePath: path of the resource file.
 //
 // The function returns the following values:
 //
-//    - texture: newly-created GdkTexture.
+//   - texture: newly-created GdkTexture.
 //
 func NewTextureFromResource(resourcePath string) *Texture {
 	var _arg1 *C.char       // out
@@ -186,7 +186,7 @@ func NewTextureFromResource(resourcePath string) *Texture {
 //
 // The function returns the following values:
 //
-//    - gint: height of the GdkTexture.
+//   - gint: height of the GdkTexture.
 //
 func (texture *Texture) Height() int {
 	var _arg0 *C.GdkTexture // out
@@ -208,7 +208,7 @@ func (texture *Texture) Height() int {
 //
 // The function returns the following values:
 //
-//    - gint: width of the GdkTexture.
+//   - gint: width of the GdkTexture.
 //
 func (texture *Texture) Width() int {
 	var _arg0 *C.GdkTexture // out
@@ -234,11 +234,11 @@ func (texture *Texture) Width() int {
 //
 // The function takes the following parameters:
 //
-//    - filename to store to.
+//   - filename to store to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if saving succeeded, FALSE on failure.
+//   - ok: TRUE if saving succeeded, FALSE on failure.
 //
 func (texture *Texture) SaveToPNG(filename string) bool {
 	var _arg0 *C.GdkTexture // out

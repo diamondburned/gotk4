@@ -29,10 +29,10 @@ func init() {
 //
 // !An example GtkScrollbar (scrollbar.png)
 //
-// Its position and movement are controlled by the adjustment that is passed to
-// or created by gtk.Scrollbar.New. See [class.Gtk.Adjustment] for more details.
-// The gtk.Adjustment:value field sets the position of the thumb and must be
-// between gtk.Adjustment:lower and gtk.Adjustment:upper -
+// Its position and movement are controlled by the adjustment that is passed
+// to or created by gtk.Scrollbar.New. See [class.Gtk.Adjustment] for more
+// details. The gtk.Adjustment:value field sets the position of the thumb
+// and must be between gtk.Adjustment:lower and gtk.Adjustment:upper -
 // gtk.Adjustment:page-size. The gtk.Adjustment:page-size represents the size of
 // the visible scrollable area.
 //
@@ -48,7 +48,6 @@ func init() {
 //        ╰── trough
 //            ╰── slider
 //
-//
 // GtkScrollbar has a main CSS node with name scrollbar and a subnode for its
 // contents. The main node gets the .horizontal or .vertical style classes
 // applied, depending on the scrollbar's orientation.
@@ -61,8 +60,7 @@ func init() {
 // classes related to overlay scrolling (.overlay-indicator, .dragging,
 // .hovering).
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkScrollbar uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
 type Scrollbar struct {
@@ -110,13 +108,13 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - orientation scrollbar’s orientation.
-//    - adjustment (optional): gtk.Adjustment to use, or NULL to create a new
-//      adjustment.
+//   - orientation scrollbar’s orientation.
+//   - adjustment (optional): gtk.Adjustment to use, or NULL to create a new
+//     adjustment.
 //
 // The function returns the following values:
 //
-//    - scrollbar: new GtkScrollbar.
+//   - scrollbar: new GtkScrollbar.
 //
 func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 	var _arg1 C.GtkOrientation // out
@@ -143,7 +141,7 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar {
 //
 // The function returns the following values:
 //
-//    - adjustment scrollbar's adjustment.
+//   - adjustment scrollbar's adjustment.
 //
 func (self *Scrollbar) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScrollbar  // out
@@ -165,7 +163,7 @@ func (self *Scrollbar) Adjustment() *Adjustment {
 //
 // The function takes the following parameters:
 //
-//    - adjustment (optional) to set.
+//   - adjustment (optional) to set.
 //
 func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScrollbar  // out

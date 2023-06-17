@@ -35,8 +35,7 @@ func init() {
 // To start the animation, use gtk.Spinner.Start(), to stop it use
 // gtk.Spinner.Stop().
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkSpinner has a single CSS node with the name spinner. When the animation is
 // active, the :checked pseudoclass is added to this node.
@@ -77,7 +76,7 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - spinner: new GtkSpinner.
+//   - spinner: new GtkSpinner.
 //
 func NewSpinner() *Spinner {
 	var _cret *C.GtkWidget // in
@@ -95,7 +94,7 @@ func NewSpinner() *Spinner {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the spinner is active.
+//   - ok: TRUE if the spinner is active.
 //
 func (spinner *Spinner) Spinning() bool {
 	var _arg0 *C.GtkSpinner // out
@@ -119,7 +118,7 @@ func (spinner *Spinner) Spinning() bool {
 //
 // The function takes the following parameters:
 //
-//    - spinning: whether the spinner should be spinning.
+//   - spinning: whether the spinner should be spinning.
 //
 func (spinner *Spinner) SetSpinning(spinning bool) {
 	var _arg0 *C.GtkSpinner // out

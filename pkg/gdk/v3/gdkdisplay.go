@@ -127,11 +127,11 @@ func (display *Display) Close() {
 //
 // The function takes the following parameters:
 //
-//    - device: Device.
+//   - device: Device.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there is a grab in effect for device.
+//   - ok: TRUE if there is a grab in effect for device.
 //
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg0 *C.GdkDisplay // out
@@ -177,8 +177,8 @@ func (display *Display) Flush() {
 //
 // The function returns the following values:
 //
-//    - appLaunchContext: new AppLaunchContext for display. Free with
-//      g_object_unref() when done.
+//   - appLaunchContext: new AppLaunchContext for display. Free with
+//     g_object_unref() when done.
 //
 func (display *Display) AppLaunchContext() *AppLaunchContext {
 	var _arg0 *C.GdkDisplay          // out
@@ -200,7 +200,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 //
 // The function returns the following values:
 //
-//    - guint: default cursor size.
+//   - guint: default cursor size.
 //
 func (display *Display) DefaultCursorSize() uint {
 	var _arg0 *C.GdkDisplay // out
@@ -218,13 +218,13 @@ func (display *Display) DefaultCursorSize() uint {
 	return _guint
 }
 
-// DefaultGroup returns the default group leader window for all toplevel windows
-// on display. This window is implicitly created by GDK. See
+// DefaultGroup returns the default group leader window for all toplevel
+// windows on display. This window is implicitly created by GDK. See
 // gdk_window_set_group().
 //
 // The function returns the following values:
 //
-//    - window: default group leader window for display.
+//   - window: default group leader window for display.
 //
 func (display *Display) DefaultGroup() Windower {
 	var _arg0 *C.GdkDisplay // out
@@ -262,7 +262,7 @@ func (display *Display) DefaultGroup() Windower {
 //
 // The function returns the following values:
 //
-//    - screen: default Screen object for display.
+//   - screen: default Screen object for display.
 //
 func (display *Display) DefaultScreen() *Screen {
 	var _arg0 *C.GdkDisplay // out
@@ -284,7 +284,7 @@ func (display *Display) DefaultScreen() *Screen {
 //
 // The function returns the following values:
 //
-//    - seat: default seat.
+//   - seat: default seat.
 //
 func (display *Display) DefaultSeat() Seater {
 	var _arg0 *C.GdkDisplay // out
@@ -324,8 +324,8 @@ func (display *Display) DefaultSeat() Seater {
 //
 // The function returns the following values:
 //
-//    - deviceManager (optional) or NULL. This memory is owned by GDK and must
-//      not be freed or unreferenced.
+//   - deviceManager (optional) or NULL. This memory is owned by GDK and must
+//     not be freed or unreferenced.
 //
 func (display *Display) DeviceManager() DeviceManagerer {
 	var _arg0 *C.GdkDisplay       // out
@@ -363,8 +363,8 @@ func (display *Display) DeviceManager() DeviceManagerer {
 //
 // The function returns the following values:
 //
-//    - event (optional): next Event to be processed, or NULL if no events are
-//      pending. The returned Event should be freed with gdk_event_free().
+//   - event (optional): next Event to be processed, or NULL if no events are
+//     pending. The returned Event should be freed with gdk_event_free().
 //
 func (display *Display) Event() *Event {
 	var _arg0 *C.GdkDisplay // out
@@ -391,8 +391,8 @@ func (display *Display) Event() *Event {
 //
 // The function returns the following values:
 //
-//    - width: return location for the maximal cursor width.
-//    - height: return location for the maximal cursor height.
+//   - width: return location for the maximal cursor width.
+//   - height: return location for the maximal cursor height.
 //
 func (display *Display) MaximalCursorSize() (width, height uint) {
 	var _arg0 *C.GdkDisplay // out
@@ -417,11 +417,11 @@ func (display *Display) MaximalCursorSize() (width, height uint) {
 //
 // The function takes the following parameters:
 //
-//    - monitorNum: number of the monitor.
+//   - monitorNum: number of the monitor.
 //
 // The function returns the following values:
 //
-//    - monitor (optional) or NULL if monitor_num is not a valid monitor number.
+//   - monitor (optional) or NULL if monitor_num is not a valid monitor number.
 //
 func (display *Display) Monitor(monitorNum int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
@@ -444,17 +444,17 @@ func (display *Display) Monitor(monitorNum int) *Monitor {
 	return _monitor
 }
 
-// MonitorAtPoint gets the monitor in which the point (x, y) is located, or a
-// nearby monitor if the point is not in any monitor.
+// MonitorAtPoint gets the monitor in which the point (x, y) is located,
+// or a nearby monitor if the point is not in any monitor.
 //
 // The function takes the following parameters:
 //
-//    - x coordinate of the point.
-//    - y coordinate of the point.
+//   - x coordinate of the point.
+//   - y coordinate of the point.
 //
 // The function returns the following values:
 //
-//    - monitor containing the point.
+//   - monitor containing the point.
 //
 func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 	var _arg0 *C.GdkDisplay // out
@@ -483,11 +483,11 @@ func (display *Display) MonitorAtPoint(x, y int) *Monitor {
 //
 // The function takes the following parameters:
 //
-//    - window: Window.
+//   - window: Window.
 //
 // The function returns the following values:
 //
-//    - monitor with the largest overlap with window.
+//   - monitor with the largest overlap with window.
 //
 func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 	var _arg0 *C.GdkDisplay // out
@@ -515,7 +515,7 @@ func (display *Display) MonitorAtWindow(window Windower) *Monitor {
 //
 // The function returns the following values:
 //
-//    - gint: number of monitors.
+//   - gint: number of monitors.
 //
 func (display *Display) NMonitors() int {
 	var _arg0 *C.GdkDisplay // out
@@ -539,7 +539,7 @@ func (display *Display) NMonitors() int {
 //
 // The function returns the following values:
 //
-//    - gint: number of screens.
+//   - gint: number of screens.
 //
 func (display *Display) NScreens() int {
 	var _arg0 *C.GdkDisplay // out
@@ -561,8 +561,8 @@ func (display *Display) NScreens() int {
 //
 // The function returns the following values:
 //
-//    - utf8: string representing the display name. This string is owned by GDK
-//      and should not be modified or freed.
+//   - utf8: string representing the display name. This string is owned by GDK
+//     and should not be modified or freed.
 //
 func (display *Display) Name() string {
 	var _arg0 *C.GdkDisplay // out
@@ -587,13 +587,13 @@ func (display *Display) Name() string {
 //
 // The function returns the following values:
 //
-//    - screen (optional): location to store the screen that the cursor is on, or
-//      NULL.
-//    - x (optional): location to store root window X coordinate of pointer, or
-//      NULL.
-//    - y (optional): location to store root window Y coordinate of pointer, or
-//      NULL.
-//    - mask (optional): location to store current modifier mask, or NULL.
+//   - screen (optional): location to store the screen that the cursor is on,
+//     or NULL.
+//   - x (optional): location to store root window X coordinate of pointer,
+//     or NULL.
+//   - y (optional): location to store root window Y coordinate of pointer,
+//     or NULL.
+//   - mask (optional): location to store current modifier mask, or NULL.
 //
 func (display *Display) Pointer() (screen *Screen, x, y int, mask ModifierType) {
 	var _arg0 *C.GdkDisplay     // out
@@ -631,8 +631,8 @@ func (display *Display) Pointer() (screen *Screen, x, y int, mask ModifierType) 
 //
 // The function returns the following values:
 //
-//    - monitor (optional): primary monitor, or NULL if no primary monitor is
-//      configured by the user.
+//   - monitor (optional): primary monitor, or NULL if no primary monitor is
+//     configured by the user.
 //
 func (display *Display) PrimaryMonitor() *Monitor {
 	var _arg0 *C.GdkDisplay // out
@@ -659,11 +659,11 @@ func (display *Display) PrimaryMonitor() *Monitor {
 //
 // The function takes the following parameters:
 //
-//    - screenNum: screen number.
+//   - screenNum: screen number.
 //
 // The function returns the following values:
 //
-//    - screen: Screen object.
+//   - screen: Screen object.
 //
 func (display *Display) Screen(screenNum int) *Screen {
 	var _arg0 *C.GdkDisplay // out
@@ -693,11 +693,11 @@ func (display *Display) Screen(screenNum int) *Screen {
 //
 // The function returns the following values:
 //
-//    - winX (optional): return location for x coordinate of the pointer location
-//      relative to the window origin, or NULL.
-//    - winY (optional): return location for y coordinate of the pointer location
-//      relative & to the window origin, or NULL.
-//    - window (optional) under the mouse pointer, or NULL.
+//   - winX (optional): return location for x coordinate of the pointer location
+//     relative to the window origin, or NULL.
+//   - winY (optional): return location for y coordinate of the pointer location
+//     relative & to the window origin, or NULL.
+//   - window (optional) under the mouse pointer, or NULL.
 //
 func (display *Display) WindowAtPointer() (winX, winY int, window Windower) {
 	var _arg0 *C.GdkDisplay // out
@@ -741,7 +741,7 @@ func (display *Display) WindowAtPointer() (winX, winY int, window Windower) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there are events ready to be processed.
+//   - ok: TRUE if there are events ready to be processed.
 //
 func (display *Display) HasPending() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -765,7 +765,7 @@ func (display *Display) HasPending() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the display is closed.
+//   - ok: TRUE if the display is closed.
 //
 func (display *Display) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -791,7 +791,7 @@ func (display *Display) IsClosed() bool {
 //
 // The function takes the following parameters:
 //
-//    - time_: timestap (e.g K_CURRENT_TIME).
+//   - time_: timestap (e.g K_CURRENT_TIME).
 //
 func (display *Display) KeyboardUngrab(time_ uint32) {
 	var _arg0 *C.GdkDisplay // out
@@ -812,7 +812,7 @@ func (display *Display) KeyboardUngrab(time_ uint32) {
 //
 // The function returns the following values:
 //
-//    - list: a list of Device.
+//   - list: a list of Device.
 //
 func (display *Display) ListDevices() []Devicer {
 	var _arg0 *C.GdkDisplay // out
@@ -856,7 +856,7 @@ func (display *Display) ListDevices() []Devicer {
 //
 // The function returns the following values:
 //
-//    - list: the list of seats known to the Display.
+//   - list: the list of seats known to the Display.
 //
 func (display *Display) ListSeats() []Seater {
 	var _arg0 *C.GdkDisplay // out
@@ -899,14 +899,14 @@ func (display *Display) ListSeats() []Seater {
 // NotifyStartupComplete indicates to the GUI environment that the application
 // has finished loading, using a given identifier.
 //
-// GTK+ will call this function automatically for Window with custom
-// startup-notification identifier unless
+// GTK+ will call this function automatically for Window
+// with custom startup-notification identifier unless
 // gtk_window_set_auto_startup_notification() is called to disable that feature.
 //
 // The function takes the following parameters:
 //
-//    - startupId: startup-notification identifier, for which notification
-//      process should be completed.
+//   - startupId: startup-notification identifier, for which notification
+//     process should be completed.
 //
 func (display *Display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
@@ -928,9 +928,9 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 //
 // The function returns the following values:
 //
-//    - event (optional): copy of the first Event on the event queue, or NULL if
-//      no events are in the queue. The returned Event should be freed with
-//      gdk_event_free().
+//   - event (optional): copy of the first Event on the event queue, or NULL
+//     if no events are in the queue. The returned Event should be freed with
+//     gdk_event_free().
 //
 func (display *Display) PeekEvent() *Event {
 	var _arg0 *C.GdkDisplay // out
@@ -959,7 +959,7 @@ func (display *Display) PeekEvent() *Event {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if an active X pointer grab is in effect.
+//   - ok: TRUE if an active X pointer grab is in effect.
 //
 func (display *Display) PointerIsGrabbed() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -985,7 +985,7 @@ func (display *Display) PointerIsGrabbed() bool {
 //
 // The function takes the following parameters:
 //
-//    - time_: timestap (e.g. GDK_CURRENT_TIME).
+//   - time_: timestap (e.g. GDK_CURRENT_TIME).
 //
 func (display *Display) PointerUngrab(time_ uint32) {
 	var _arg0 *C.GdkDisplay // out
@@ -1004,7 +1004,7 @@ func (display *Display) PointerUngrab(time_ uint32) {
 //
 // The function takes the following parameters:
 //
-//    - event: Event.
+//   - event: Event.
 //
 func (display *Display) PutEvent(event *Event) {
 	var _arg0 *C.GdkDisplay // out
@@ -1025,7 +1025,7 @@ func (display *Display) PutEvent(event *Event) {
 //
 // The function takes the following parameters:
 //
-//    - distance in pixels.
+//   - distance in pixels.
 //
 func (display *Display) SetDoubleClickDistance(distance uint) {
 	var _arg0 *C.GdkDisplay // out
@@ -1045,7 +1045,7 @@ func (display *Display) SetDoubleClickDistance(distance uint) {
 //
 // The function takes the following parameters:
 //
-//    - msec: double click time in milliseconds (thousandths of a second).
+//   - msec: double click time in milliseconds (thousandths of a second).
 //
 func (display *Display) SetDoubleClickTime(msec uint) {
 	var _arg0 *C.GdkDisplay // out
@@ -1066,7 +1066,7 @@ func (display *Display) SetDoubleClickTime(msec uint) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the display supports clipboard persistance.
+//   - ok: TRUE if the display supports clipboard persistance.
 //
 func (display *Display) SupportsClipboardPersistence() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -1097,7 +1097,7 @@ func (display *Display) SupportsClipboardPersistence() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if windows may be composited.
+//   - ok: TRUE if windows may be composited.
 //
 func (display *Display) SupportsComposite() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -1122,7 +1122,7 @@ func (display *Display) SupportsComposite() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether cursors can have alpha channels.
+//   - ok: whether cursors can have alpha channels.
 //
 func (display *Display) SupportsCursorAlpha() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -1147,7 +1147,7 @@ func (display *Display) SupportsCursorAlpha() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether cursors can have multiple colors.
+//   - ok: whether cursors can have multiple colors.
 //
 func (display *Display) SupportsCursorColor() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -1172,7 +1172,7 @@ func (display *Display) SupportsCursorColor() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if windows with modified input shape are supported.
+//   - ok: TRUE if windows with modified input shape are supported.
 //
 func (display *Display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -1197,7 +1197,7 @@ func (display *Display) SupportsInputShapes() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether EventOwnerChange events will be sent.
+//   - ok: whether EventOwnerChange events will be sent.
 //
 func (display *Display) SupportsSelectionNotification() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -1222,7 +1222,7 @@ func (display *Display) SupportsSelectionNotification() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if shaped windows are supported.
+//   - ok: TRUE if shaped windows are supported.
 //
 func (display *Display) SupportsShapes() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -1242,9 +1242,9 @@ func (display *Display) SupportsShapes() bool {
 	return _ok
 }
 
-// Sync flushes any requests queued for the windowing system and waits until all
-// requests have been handled. This is often used for making sure that the
-// display is synchronized with the current state of the program. Calling
+// Sync flushes any requests queued for the windowing system and waits until
+// all requests have been handled. This is often used for making sure that
+// the display is synchronized with the current state of the program. Calling
 // gdk_display_sync() before gdk_error_trap_pop() makes sure that any errors
 // generated from earlier requests are handled before the error trap is removed.
 //
@@ -1264,17 +1264,17 @@ func (display *Display) Sync() {
 // it will be moved as far as allowed by the grab. Warping the pointer creates
 // events as if the user had moved the mouse instantaneously to the destination.
 //
-// Note that the pointer should normally be under the control of the user. This
-// function was added to cover some rare use cases like keyboard navigation
+// Note that the pointer should normally be under the control of the user.
+// This function was added to cover some rare use cases like keyboard navigation
 // support for the color picker in the ColorSelectionDialog.
 //
 // Deprecated: Use gdk_device_warp() instead.
 //
 // The function takes the following parameters:
 //
-//    - screen of display to warp the pointer to.
-//    - x coordinate of the destination.
-//    - y coordinate of the destination.
+//   - screen of display to warp the pointer to.
+//   - x coordinate of the destination.
+//   - y coordinate of the destination.
 //
 func (display *Display) WarpPointer(screen *Screen, x, y int) {
 	var _arg0 *C.GdkDisplay // out
@@ -1295,8 +1295,8 @@ func (display *Display) WarpPointer(screen *Screen, x, y int) {
 }
 
 // DisplayOpenDefaultLibgtkOnly opens the default display specified by command
-// line arguments or environment variables, sets it as the default display, and
-// returns it. gdk_parse_args() must have been called first. If the default
+// line arguments or environment variables, sets it as the default display,
+// and returns it. gdk_parse_args() must have been called first. If the default
 // display has previously been set, simply returns that. An internal function
 // that should not be used by applications.
 //
@@ -1304,8 +1304,8 @@ func (display *Display) WarpPointer(screen *Screen, x, y int) {
 //
 // The function returns the following values:
 //
-//    - display (optional): default display, if it could be opened, otherwise
-//      NULL.
+//   - display (optional): default display, if it could be opened, otherwise
+//     NULL.
 //
 func DisplayOpenDefaultLibgtkOnly() *Display {
 	var _cret *C.GdkDisplay // in

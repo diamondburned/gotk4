@@ -22,11 +22,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - c: unicode character.
+//   - c: unicode character.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the character is wide in legacy East Asian locales.
+//   - ok: TRUE if the character is wide in legacy East Asian locales.
 //
 func UnicharIswideCjk(c uint32) bool {
 	var _arg1 C.gunichar // out

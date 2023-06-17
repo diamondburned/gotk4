@@ -39,26 +39,24 @@ func defaultSearchBarOverrides(v *SearchBar) SearchBarOverrides {
 }
 
 // SearchBar is a container made to have a search entry (possibly with
-// additional connex widgets, such as drop-down menus, or buttons) built-in. The
-// search bar would appear when a search is started through typing on the
+// additional connex widgets, such as drop-down menus, or buttons) built-in.
+// The search bar would appear when a search is started through typing on the
 // keyboard, or the application’s search mode is toggled on.
 //
-// For keyboard presses to start a search, events will need to be forwarded from
-// the top-level window that contains the search bar. See
-// gtk_search_bar_handle_event() for example code. Common shortcuts such as
+// For keyboard presses to start a search, events will need to be
+// forwarded from the top-level window that contains the search bar.
+// See gtk_search_bar_handle_event() for example code. Common shortcuts such as
 // Ctrl+F should be handled as an application action, or through the menu items.
 //
 // You will also need to tell the search bar about which entry you are using as
 // your search entry using gtk_search_bar_connect_entry(). The following example
 // shows you how to create a more complex search entry.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkSearchBar has a single CSS node with name searchbar.
 //
-//
-// Creating a search bar
+// # Creating a search bar
 //
 // A simple example
 // (https://gitlab.gnome.org/GNOME/gtk/blob/gtk-3-24/examples/search-bar.c).
@@ -117,7 +115,7 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - searchBar: new SearchBar.
+//   - searchBar: new SearchBar.
 //
 func NewSearchBar() *SearchBar {
 	var _cret *C.GtkWidget // in
@@ -138,7 +136,7 @@ func NewSearchBar() *SearchBar {
 //
 // The function takes the following parameters:
 //
-//    - entry: Entry.
+//   - entry: Entry.
 //
 func (bar *SearchBar) ConnectEntry(entry *Entry) {
 	var _arg0 *C.GtkSearchBar // out
@@ -156,7 +154,7 @@ func (bar *SearchBar) ConnectEntry(entry *Entry) {
 //
 // The function returns the following values:
 //
-//    - ok: whether search mode is toggled on.
+//   - ok: whether search mode is toggled on.
 //
 func (bar *SearchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
@@ -180,7 +178,7 @@ func (bar *SearchBar) SearchMode() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the close button is shown.
+//   - ok: whether the close button is shown.
 //
 func (bar *SearchBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
@@ -238,13 +236,13 @@ func (bar *SearchBar) ShowCloseButton() bool {
 //
 // The function takes the following parameters:
 //
-//    - event containing key press events.
+//   - event containing key press events.
 //
 // The function returns the following values:
 //
-//    - ok: GDK_EVENT_STOP if the key press event resulted in text being entered
-//      in the search entry (and revealing the search bar if necessary),
-//      GDK_EVENT_PROPAGATE otherwise.
+//   - ok: GDK_EVENT_STOP if the key press event resulted in text being
+//     entered in the search entry (and revealing the search bar if necessary),
+//     GDK_EVENT_PROPAGATE otherwise.
 //
 func (bar *SearchBar) HandleEvent(event *gdk.Event) bool {
 	var _arg0 *C.GtkSearchBar // out
@@ -271,7 +269,7 @@ func (bar *SearchBar) HandleEvent(event *gdk.Event) bool {
 //
 // The function takes the following parameters:
 //
-//    - searchMode: new state of the search mode.
+//   - searchMode: new state of the search mode.
 //
 func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
@@ -293,7 +291,7 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 //
 // The function takes the following parameters:
 //
-//    - visible: whether the close button will be shown or not.
+//   - visible: whether the close button will be shown or not.
 //
 func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out

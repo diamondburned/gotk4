@@ -6,7 +6,7 @@ package gio
 // #include <gio/gio.h>
 import "C"
 
-// FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON: key in the "standard" namespace for
-// getting the symbolic icon for the file. Corresponding AttributeType is
+// FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON: key in the "standard" namespace
+// for getting the symbolic icon for the file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_OBJECT. The value for this key should contain a #GIcon.
 const FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON = "standard::symbolic-icon"

@@ -113,7 +113,7 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - recentChooserWidget: new RecentChooserWidget.
+//   - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidget() *RecentChooserWidget {
 	var _cret *C.GtkWidget // in
@@ -135,11 +135,11 @@ func NewRecentChooserWidget() *RecentChooserWidget {
 //
 // The function takes the following parameters:
 //
-//    - manager: RecentManager.
+//   - manager: RecentManager.
 //
 // The function returns the following values:
 //
-//    - recentChooserWidget: new RecentChooserWidget.
+//   - recentChooserWidget: new RecentChooserWidget.
 //
 func NewRecentChooserWidgetForManager(manager *RecentManager) *RecentChooserWidget {
 	var _arg1 *C.GtkRecentManager // out

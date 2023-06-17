@@ -144,13 +144,13 @@ func init() {
 // rows and columns. It may also be used to present tree-structured information
 // if the nodes of the trees can be said to contain multiple "columns".
 // Individual elements of an Table are typically referred to as "cells". Those
-// cells should implement the interface TableCell, but #Atk doesn't require them
-// to be direct children of the current Table. They can be grand-children,
+// cells should implement the interface TableCell, but #Atk doesn't require
+// them to be direct children of the current Table. They can be grand-children,
 // grand-grand-children etc. Table provides the API needed to get a individual
 // cell based on the row and column numbers.
 //
-// Children of Table are frequently "lightweight" objects, that is, they may not
-// have backing widgets in the host UI toolkit. They are therefore often
+// Children of Table are frequently "lightweight" objects, that is, they may
+// not have backing widgets in the host UI toolkit. They are therefore often
 // transient.
 //
 // Since tables are often very complex, Table includes provision for offering
@@ -336,12 +336,12 @@ func (table *Table) ConnectRowReordered(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the column was successfully added to the
-//      selection, or 0 if value does not implement this interface.
+//   - ok: gboolean representing if the column was successfully added to the
+//     selection, or 0 if value does not implement this interface.
 //
 func (table *Table) AddColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
@@ -368,12 +368,12 @@ func (table *Table) AddColumnSelection(column int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
+//   - row representing a row in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if row was successfully added to selection, or
-//      0 if value does not implement this interface.
+//   - ok: gboolean representing if row was successfully added to selection,
+//     or 0 if value does not implement this interface.
 //
 func (table *Table) AddRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
@@ -400,8 +400,8 @@ func (table *Table) AddRowSelection(row int) bool {
 //
 // The function returns the following values:
 //
-//    - object (optional): atkObject* representing the table caption, or NULL if
-//      value does not implement this interface.
+//   - object (optional): atkObject* representing the table caption, or NULL if
+//     value does not implement this interface.
 //
 func (table *Table) Caption() *AtkObject {
 	var _arg0 *C.AtkTable  // out
@@ -427,12 +427,12 @@ func (table *Table) Caption() *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - index_ representing an index in table.
+//   - index_ representing an index in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the column at the specified index, or -1 if the table
-//      does not implement this method.
+//   - gint representing the column at the specified index, or -1 if the table
+//     does not implement this method.
 //
 func (table *Table) ColumnAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
@@ -458,12 +458,12 @@ func (table *Table) ColumnAtIndex(index_ int) int {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - utf8: gchar* representing the column description, or NULL if value does
-//      not implement this interface.
+//   - utf8: gchar* representing the column description, or NULL if value does
+//     not implement this interface.
 //
 func (table *Table) ColumnDescription(column int) string {
 	var _arg0 *C.AtkTable // out
@@ -489,13 +489,13 @@ func (table *Table) ColumnDescription(column int) string {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the column extent at specified position, or 0 if value
-//      does not implement this interface.
+//   - gint representing the column extent at specified position, or 0 if value
+//     does not implement this interface.
 //
 func (table *Table) ColumnExtentAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
@@ -524,12 +524,12 @@ func (table *Table) ColumnExtentAt(row, column int) int {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in the table.
+//   - column representing a column in the table.
 //
 // The function returns the following values:
 //
-//    - object (optional): atkObject* representing the specified column header,
-//      or NULL if value does not implement this interface.
+//   - object (optional): atkObject* representing the specified column header,
+//     or NULL if value does not implement this interface.
 //
 func (table *Table) ColumnHeader(column int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
@@ -559,14 +559,14 @@ func (table *Table) ColumnHeader(column int) *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the index at specified position. The value -1 is
-//      returned if the object at row,column is not a child of table or table
-//      does not implement this interface.
+//   - gint representing the index at specified position. The value -1 is
+//     returned if the object at row,column is not a child of table or table
+//     does not implement this interface.
 //
 func (table *Table) IndexAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
@@ -594,8 +594,8 @@ func (table *Table) IndexAt(row, column int) int {
 //
 // The function returns the following values:
 //
-//    - gint representing the number of columns, or 0 if value does not implement
-//      this interface.
+//   - gint representing the number of columns, or 0 if value does not implement
+//     this interface.
 //
 func (table *Table) NColumns() int {
 	var _arg0 *C.AtkTable // out
@@ -617,8 +617,8 @@ func (table *Table) NColumns() int {
 //
 // The function returns the following values:
 //
-//    - gint representing the number of rows, or 0 if value does not implement
-//      this interface.
+//   - gint representing the number of rows, or 0 if value does not implement
+//     this interface.
 //
 func (table *Table) NRows() int {
 	var _arg0 *C.AtkTable // out
@@ -642,12 +642,12 @@ func (table *Table) NRows() int {
 //
 // The function takes the following parameters:
 //
-//    - index_ representing an index in table.
+//   - index_ representing an index in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the row at the specified index, or -1 if the table does
-//      not implement this method.
+//   - gint representing the row at the specified index, or -1 if the table does
+//     not implement this method.
 //
 func (table *Table) RowAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
@@ -672,12 +672,12 @@ func (table *Table) RowAtIndex(index_ int) int {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
+//   - row representing a row in table.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): gchar* representing the row description, or NULL if
-//      value does not implement this interface.
+//   - utf8 (optional): gchar* representing the row description, or NULL if
+//     value does not implement this interface.
 //
 func (table *Table) RowDescription(row int) string {
 	var _arg0 *C.AtkTable // out
@@ -705,13 +705,13 @@ func (table *Table) RowDescription(row int) string {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the row extent at specified position, or 0 if value
-//      does not implement this interface.
+//   - gint representing the row extent at specified position, or 0 if value
+//     does not implement this interface.
 //
 func (table *Table) RowExtentAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
@@ -739,12 +739,12 @@ func (table *Table) RowExtentAt(row, column int) int {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in the table.
+//   - row representing a row in the table.
 //
 // The function returns the following values:
 //
-//    - object (optional): atkObject* representing the specified row header, or
-//      NULL if value does not implement this interface.
+//   - object (optional): atkObject* representing the specified row header,
+//     or NULL if value does not implement this interface.
 //
 func (table *Table) RowHeader(row int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
@@ -773,12 +773,12 @@ func (table *Table) RowHeader(row int) *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - selected that is to contain the selected columns numbers.
+//   - selected that is to contain the selected columns numbers.
 //
 // The function returns the following values:
 //
-//    - gint representing the number of selected columns, or 0 if value does not
-//      implement this interface.
+//   - gint representing the number of selected columns, or 0 if value does not
+//     implement this interface.
 //
 func (table *Table) SelectedColumns(selected **int) int {
 	var _arg0 *C.AtkTable // out
@@ -804,12 +804,12 @@ func (table *Table) SelectedColumns(selected **int) int {
 //
 // The function takes the following parameters:
 //
-//    - selected that is to contain the selected row numbers.
+//   - selected that is to contain the selected row numbers.
 //
 // The function returns the following values:
 //
-//    - gint representing the number of selected rows, or zero if value does not
-//      implement this interface.
+//   - gint representing the number of selected rows, or zero if value does not
+//     implement this interface.
 //
 func (table *Table) SelectedRows(selected **int) int {
 	var _arg0 *C.AtkTable // out
@@ -834,8 +834,8 @@ func (table *Table) SelectedRows(selected **int) int {
 //
 // The function returns the following values:
 //
-//    - object: atkObject* representing a summary description of the table, or
-//      zero if value does not implement this interface.
+//   - object: atkObject* representing a summary description of the table,
+//     or zero if value does not implement this interface.
 //
 func (table *Table) Summary() *AtkObject {
 	var _arg0 *C.AtkTable  // out
@@ -858,12 +858,12 @@ func (table *Table) Summary() *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the column is selected, or 0 if value does
-//      not implement this interface.
+//   - ok: gboolean representing if the column is selected, or 0 if value does
+//     not implement this interface.
 //
 func (table *Table) IsColumnSelected(column int) bool {
 	var _arg0 *C.AtkTable // out
@@ -891,12 +891,12 @@ func (table *Table) IsColumnSelected(column int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
+//   - row representing a row in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the row is selected, or 0 if value does not
-//      implement this interface.
+//   - ok: gboolean representing if the row is selected, or 0 if value does not
+//     implement this interface.
 //
 func (table *Table) IsRowSelected(row int) bool {
 	var _arg0 *C.AtkTable // out
@@ -924,13 +924,13 @@ func (table *Table) IsRowSelected(row int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the cell is selected, or 0 if value does not
-//      implement this interface.
+//   - ok: gboolean representing if the cell is selected, or 0 if value does not
+//     implement this interface.
 //
 func (table *Table) IsSelected(row, column int) bool {
 	var _arg0 *C.AtkTable // out
@@ -961,12 +961,12 @@ func (table *Table) IsSelected(row, column int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - object representing the referred to accessible.
+//   - object representing the referred to accessible.
 //
 func (table *Table) RefAt(row, column int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
@@ -994,12 +994,12 @@ func (table *Table) RefAt(row, column int) *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the column was successfully removed from the
-//      selection, or 0 if value does not implement this interface.
+//   - ok: gboolean representing if the column was successfully removed from the
+//     selection, or 0 if value does not implement this interface.
 //
 func (table *Table) RemoveColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
@@ -1026,12 +1026,12 @@ func (table *Table) RemoveColumnSelection(column int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
+//   - row representing a row in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the row was successfully removed from the
-//      selection, or 0 if value does not implement this interface.
+//   - ok: gboolean representing if the row was successfully removed from the
+//     selection, or 0 if value does not implement this interface.
 //
 func (table *Table) RemoveRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
@@ -1058,7 +1058,7 @@ func (table *Table) RemoveRowSelection(row int) bool {
 //
 // The function takes the following parameters:
 //
-//    - caption representing the caption to set for table.
+//   - caption representing the caption to set for table.
 //
 func (table *Table) SetCaption(caption *AtkObject) {
 	var _arg0 *C.AtkTable  // out
@@ -1077,9 +1077,9 @@ func (table *Table) SetCaption(caption *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
-//    - description representing the description text to set for the specified
-//      column of the table.
+//   - column representing a column in table.
+//   - description representing the description text to set for the specified
+//     column of the table.
 //
 func (table *Table) SetColumnDescription(column int, description string) {
 	var _arg0 *C.AtkTable // out
@@ -1101,8 +1101,8 @@ func (table *Table) SetColumnDescription(column int, description string) {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
-//    - header: Table.
+//   - column representing a column in table.
+//   - header: Table.
 //
 func (table *Table) SetColumnHeader(column int, header *AtkObject) {
 	var _arg0 *C.AtkTable  // out
@@ -1123,9 +1123,9 @@ func (table *Table) SetColumnHeader(column int, header *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - description representing the description text to set for the specified
-//      row of table.
+//   - row representing a row in table.
+//   - description representing the description text to set for the specified
+//     row of table.
 //
 func (table *Table) SetRowDescription(row int, description string) {
 	var _arg0 *C.AtkTable // out
@@ -1147,8 +1147,8 @@ func (table *Table) SetRowDescription(row int, description string) {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - header: Table.
+//   - row representing a row in table.
+//   - header: Table.
 //
 func (table *Table) SetRowHeader(row int, header *AtkObject) {
 	var _arg0 *C.AtkTable  // out
@@ -1169,7 +1169,7 @@ func (table *Table) SetRowHeader(row int, header *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - accessible representing the summary description to set for table.
+//   - accessible representing the summary description to set for table.
 //
 func (table *Table) SetSummary(accessible *AtkObject) {
 	var _arg0 *C.AtkTable  // out
@@ -1187,12 +1187,12 @@ func (table *Table) SetSummary(accessible *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the column was successfully added to the
-//      selection, or 0 if value does not implement this interface.
+//   - ok: gboolean representing if the column was successfully added to the
+//     selection, or 0 if value does not implement this interface.
 //
 func (table *Table) addColumnSelection(column int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1222,12 +1222,12 @@ func (table *Table) addColumnSelection(column int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
+//   - row representing a row in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if row was successfully added to selection, or
-//      0 if value does not implement this interface.
+//   - ok: gboolean representing if row was successfully added to selection,
+//     or 0 if value does not implement this interface.
 //
 func (table *Table) addRowSelection(row int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1255,8 +1255,8 @@ func (table *Table) addRowSelection(row int) bool {
 
 // The function takes the following parameters:
 //
-//    - column
-//    - numDeleted
+//   - column
+//   - numDeleted
 //
 func (table *Table) columnDeleted(column, numDeleted int) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1278,8 +1278,8 @@ func (table *Table) columnDeleted(column, numDeleted int) {
 
 // The function takes the following parameters:
 //
-//    - column
-//    - numInserted
+//   - column
+//   - numInserted
 //
 func (table *Table) columnInserted(column, numInserted int) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1315,8 +1315,8 @@ func (table *Table) columnReordered() {
 //
 // The function returns the following values:
 //
-//    - object (optional): atkObject* representing the table caption, or NULL if
-//      value does not implement this interface.
+//   - object (optional): atkObject* representing the table caption, or NULL if
+//     value does not implement this interface.
 //
 func (table *Table) caption() *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1345,12 +1345,12 @@ func (table *Table) caption() *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - index_ representing an index in table.
+//   - index_ representing an index in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the column at the specified index, or -1 if the table
-//      does not implement this method.
+//   - gint representing the column at the specified index, or -1 if the table
+//     does not implement this method.
 //
 func (table *Table) columnAtIndex(index_ int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1379,12 +1379,12 @@ func (table *Table) columnAtIndex(index_ int) int {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - utf8: gchar* representing the column description, or NULL if value does
-//      not implement this interface.
+//   - utf8: gchar* representing the column description, or NULL if value does
+//     not implement this interface.
 //
 func (table *Table) columnDescription(column int) string {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1413,13 +1413,13 @@ func (table *Table) columnDescription(column int) string {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the column extent at specified position, or 0 if value
-//      does not implement this interface.
+//   - gint representing the column extent at specified position, or 0 if value
+//     does not implement this interface.
 //
 func (table *Table) columnExtentAt(row, column int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1451,12 +1451,12 @@ func (table *Table) columnExtentAt(row, column int) int {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in the table.
+//   - column representing a column in the table.
 //
 // The function returns the following values:
 //
-//    - object (optional): atkObject* representing the specified column header,
-//      or NULL if value does not implement this interface.
+//   - object (optional): atkObject* representing the specified column header,
+//     or NULL if value does not implement this interface.
 //
 func (table *Table) columnHeader(column int) *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1489,14 +1489,14 @@ func (table *Table) columnHeader(column int) *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the index at specified position. The value -1 is
-//      returned if the object at row,column is not a child of table or table
-//      does not implement this interface.
+//   - gint representing the index at specified position. The value -1 is
+//     returned if the object at row,column is not a child of table or table
+//     does not implement this interface.
 //
 func (table *Table) indexAt(row, column int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1527,8 +1527,8 @@ func (table *Table) indexAt(row, column int) int {
 //
 // The function returns the following values:
 //
-//    - gint representing the number of columns, or 0 if value does not implement
-//      this interface.
+//   - gint representing the number of columns, or 0 if value does not implement
+//     this interface.
 //
 func (table *Table) nColumns() int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1553,8 +1553,8 @@ func (table *Table) nColumns() int {
 //
 // The function returns the following values:
 //
-//    - gint representing the number of rows, or 0 if value does not implement
-//      this interface.
+//   - gint representing the number of rows, or 0 if value does not implement
+//     this interface.
 //
 func (table *Table) nRows() int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1581,12 +1581,12 @@ func (table *Table) nRows() int {
 //
 // The function takes the following parameters:
 //
-//    - index_ representing an index in table.
+//   - index_ representing an index in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the row at the specified index, or -1 if the table does
-//      not implement this method.
+//   - gint representing the row at the specified index, or -1 if the table does
+//     not implement this method.
 //
 func (table *Table) rowAtIndex(index_ int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1614,12 +1614,12 @@ func (table *Table) rowAtIndex(index_ int) int {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
+//   - row representing a row in table.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): gchar* representing the row description, or NULL if
-//      value does not implement this interface.
+//   - utf8 (optional): gchar* representing the row description, or NULL if
+//     value does not implement this interface.
 //
 func (table *Table) rowDescription(row int) string {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1650,13 +1650,13 @@ func (table *Table) rowDescription(row int) string {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - gint representing the row extent at specified position, or 0 if value
-//      does not implement this interface.
+//   - gint representing the row extent at specified position, or 0 if value
+//     does not implement this interface.
 //
 func (table *Table) rowExtentAt(row, column int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1687,12 +1687,12 @@ func (table *Table) rowExtentAt(row, column int) int {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in the table.
+//   - row representing a row in the table.
 //
 // The function returns the following values:
 //
-//    - object (optional): atkObject* representing the specified row header, or
-//      NULL if value does not implement this interface.
+//   - object (optional): atkObject* representing the specified row header,
+//     or NULL if value does not implement this interface.
 //
 func (table *Table) rowHeader(row int) *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1724,12 +1724,12 @@ func (table *Table) rowHeader(row int) *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - selected that is to contain the selected columns numbers.
+//   - selected that is to contain the selected columns numbers.
 //
 // The function returns the following values:
 //
-//    - gint representing the number of selected columns, or 0 if value does not
-//      implement this interface.
+//   - gint representing the number of selected columns, or 0 if value does not
+//     implement this interface.
 //
 func (table *Table) selectedColumns(selected **int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1758,12 +1758,12 @@ func (table *Table) selectedColumns(selected **int) int {
 //
 // The function takes the following parameters:
 //
-//    - selected that is to contain the selected row numbers.
+//   - selected that is to contain the selected row numbers.
 //
 // The function returns the following values:
 //
-//    - gint representing the number of selected rows, or zero if value does not
-//      implement this interface.
+//   - gint representing the number of selected rows, or zero if value does not
+//     implement this interface.
 //
 func (table *Table) selectedRows(selected **int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1791,8 +1791,8 @@ func (table *Table) selectedRows(selected **int) int {
 //
 // The function returns the following values:
 //
-//    - object: atkObject* representing a summary description of the table, or
-//      zero if value does not implement this interface.
+//   - object: atkObject* representing a summary description of the table,
+//     or zero if value does not implement this interface.
 //
 func (table *Table) summary() *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1818,12 +1818,12 @@ func (table *Table) summary() *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the column is selected, or 0 if value does
-//      not implement this interface.
+//   - ok: gboolean representing if the column is selected, or 0 if value does
+//     not implement this interface.
 //
 func (table *Table) isColumnSelected(column int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1854,12 +1854,12 @@ func (table *Table) isColumnSelected(column int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
+//   - row representing a row in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the row is selected, or 0 if value does not
-//      implement this interface.
+//   - ok: gboolean representing if the row is selected, or 0 if value does not
+//     implement this interface.
 //
 func (table *Table) isRowSelected(row int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1890,13 +1890,13 @@ func (table *Table) isRowSelected(row int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the cell is selected, or 0 if value does not
-//      implement this interface.
+//   - ok: gboolean representing if the cell is selected, or 0 if value does not
+//     implement this interface.
 //
 func (table *Table) isSelected(row, column int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1942,12 +1942,12 @@ func (table *Table) modelChanged() {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - column representing a column in table.
+//   - row representing a row in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - object representing the referred to accessible.
+//   - object representing the referred to accessible.
 //
 func (table *Table) refAt(row, column int) *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -1978,12 +1978,12 @@ func (table *Table) refAt(row, column int) *AtkObject {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
+//   - column representing a column in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the column was successfully removed from the
-//      selection, or 0 if value does not implement this interface.
+//   - ok: gboolean representing if the column was successfully removed from the
+//     selection, or 0 if value does not implement this interface.
 //
 func (table *Table) removeColumnSelection(column int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2013,12 +2013,12 @@ func (table *Table) removeColumnSelection(column int) bool {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
+//   - row representing a row in table.
 //
 // The function returns the following values:
 //
-//    - ok: gboolean representing if the row was successfully removed from the
-//      selection, or 0 if value does not implement this interface.
+//   - ok: gboolean representing if the row was successfully removed from the
+//     selection, or 0 if value does not implement this interface.
 //
 func (table *Table) removeRowSelection(row int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2046,8 +2046,8 @@ func (table *Table) removeRowSelection(row int) bool {
 
 // The function takes the following parameters:
 //
-//    - row
-//    - numDeleted
+//   - row
+//   - numDeleted
 //
 func (table *Table) rowDeleted(row, numDeleted int) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2069,8 +2069,8 @@ func (table *Table) rowDeleted(row, numDeleted int) {
 
 // The function takes the following parameters:
 //
-//    - row
-//    - numInserted
+//   - row
+//   - numInserted
 //
 func (table *Table) rowInserted(row, numInserted int) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2106,7 +2106,7 @@ func (table *Table) rowReordered() {
 //
 // The function takes the following parameters:
 //
-//    - caption representing the caption to set for table.
+//   - caption representing the caption to set for table.
 //
 func (table *Table) setCaption(caption *AtkObject) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2128,9 +2128,9 @@ func (table *Table) setCaption(caption *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
-//    - description representing the description text to set for the specified
-//      column of the table.
+//   - column representing a column in table.
+//   - description representing the description text to set for the specified
+//     column of the table.
 //
 func (table *Table) setColumnDescription(column int, description string) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2155,8 +2155,8 @@ func (table *Table) setColumnDescription(column int, description string) {
 //
 // The function takes the following parameters:
 //
-//    - column representing a column in table.
-//    - header: Table.
+//   - column representing a column in table.
+//   - header: Table.
 //
 func (table *Table) setColumnHeader(column int, header *AtkObject) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2180,9 +2180,9 @@ func (table *Table) setColumnHeader(column int, header *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - description representing the description text to set for the specified
-//      row of table.
+//   - row representing a row in table.
+//   - description representing the description text to set for the specified
+//     row of table.
 //
 func (table *Table) setRowDescription(row int, description string) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2207,8 +2207,8 @@ func (table *Table) setRowDescription(row int, description string) {
 //
 // The function takes the following parameters:
 //
-//    - row representing a row in table.
-//    - header: Table.
+//   - row representing a row in table.
+//   - header: Table.
 //
 func (table *Table) setRowHeader(row int, header *AtkObject) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
@@ -2232,7 +2232,7 @@ func (table *Table) setRowHeader(row int, header *AtkObject) {
 //
 // The function takes the following parameters:
 //
-//    - accessible representing the summary description to set for table.
+//   - accessible representing the summary description to set for table.
 //
 func (table *Table) setSummary(accessible *AtkObject) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))

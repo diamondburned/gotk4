@@ -40,13 +40,13 @@ type TextTagOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - eventObject: object that received the event, such as a widget.
-	//    - event: event.
-	//    - iter: location where the event was received.
+	//   - eventObject: object that received the event, such as a widget.
+	//   - event: event.
+	//   - iter: location where the event was received.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: result of signal emission (whether the event was handled).
+	//   - ok: result of signal emission (whether the event was handled).
 	//
 	Event func(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
 }
@@ -68,8 +68,8 @@ func defaultTextTagOverrides(v *TextTag) TextTagOverrides {
 // for numerous examples.
 //
 // For each property of TextTag, there is a “set” property, e.g. “font-set”
-// corresponds to “font”. These “set” properties reflect whether a property has
-// been set or not. They are maintained by GTK+ and you should not set them
+// corresponds to “font”. These “set” properties reflect whether a property
+// has been set or not. They are maintained by GTK+ and you should not set them
 // independently.
 type TextTag struct {
 	_ [0]func() // equal guard
@@ -123,11 +123,11 @@ func (tag *TextTag) ConnectEvent(f func(object *coreglib.Object, event *gdk.Even
 //
 // The function takes the following parameters:
 //
-//    - name (optional): tag name, or NULL.
+//   - name (optional): tag name, or NULL.
 //
 // The function returns the following values:
 //
-//    - textTag: new TextTag.
+//   - textTag: new TextTag.
 //
 func NewTextTag(name string) *TextTag {
 	var _arg1 *C.gchar      // out
@@ -156,7 +156,7 @@ func NewTextTag(name string) *TextTag {
 //
 // The function takes the following parameters:
 //
-//    - sizeChanged: whether the change affects the TextView layout.
+//   - sizeChanged: whether the change affects the TextView layout.
 //
 func (tag *TextTag) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag // out
@@ -176,13 +176,13 @@ func (tag *TextTag) Changed(sizeChanged bool) {
 //
 // The function takes the following parameters:
 //
-//    - eventObject: object that received the event, such as a widget.
-//    - event: event.
-//    - iter: location where the event was received.
+//   - eventObject: object that received the event, such as a widget.
+//   - event: event.
+//   - iter: location where the event was received.
 //
 // The function returns the following values:
 //
-//    - ok: result of signal emission (whether the event was handled).
+//   - ok: result of signal emission (whether the event was handled).
 //
 func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool {
 	var _arg0 *C.GtkTextTag  // out
@@ -215,7 +215,7 @@ func (tag *TextTag) Event(eventObject *coreglib.Object, event *gdk.Event, iter *
 //
 // The function returns the following values:
 //
-//    - gint tag’s priority.
+//   - gint tag’s priority.
 //
 func (tag *TextTag) Priority() int {
 	var _arg0 *C.GtkTextTag // out
@@ -234,19 +234,19 @@ func (tag *TextTag) Priority() int {
 }
 
 // SetPriority sets the priority of a TextTag. Valid priorities start at 0 and
-// go to one less than gtk_text_tag_table_get_size(). Each tag in a table has a
-// unique priority; setting the priority of one tag shifts the priorities of all
-// the other tags in the table to maintain a unique priority for each tag.
-// Higher priority tags “win” if two tags both set the same text attribute. When
-// adding a tag to a tag table, it will be assigned the highest priority in the
-// table by default; so normally the precedence of a set of tags is the order in
-// which they were added to the table, or created with
+// go to one less than gtk_text_tag_table_get_size(). Each tag in a table has
+// a unique priority; setting the priority of one tag shifts the priorities of
+// all the other tags in the table to maintain a unique priority for each tag.
+// Higher priority tags “win” if two tags both set the same text attribute.
+// When adding a tag to a tag table, it will be assigned the highest priority
+// in the table by default; so normally the precedence of a set of tags
+// is the order in which they were added to the table, or created with
 // gtk_text_buffer_create_tag(), which adds the tag to the buffer’s table
 // automatically.
 //
 // The function takes the following parameters:
 //
-//    - priority: new priority.
+//   - priority: new priority.
 //
 func (tag *TextTag) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag // out
@@ -264,13 +264,13 @@ func (tag *TextTag) SetPriority(priority int) {
 //
 // The function takes the following parameters:
 //
-//    - eventObject: object that received the event, such as a widget.
-//    - event: event.
-//    - iter: location where the event was received.
+//   - eventObject: object that received the event, such as a widget.
+//   - event: event.
+//   - iter: location where the event was received.
 //
 // The function returns the following values:
 //
-//    - ok: result of signal emission (whether the event was handled).
+//   - ok: result of signal emission (whether the event was handled).
 //
 func (tag *TextTag) event(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool {
 	gclass := (*C.GtkTextTagClass)(coreglib.PeekParentClass(tag))

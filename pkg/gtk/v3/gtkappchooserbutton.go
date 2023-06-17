@@ -48,17 +48,17 @@ func defaultAppChooserButtonOverrides(v *AppChooserButton) AppChooserButtonOverr
 	}
 }
 
-// AppChooserButton is a widget that lets the user select an application. It
-// implements the AppChooser interface.
+// AppChooserButton is a widget that lets the user select an application.
+// It implements the AppChooser interface.
 //
 // Initially, a AppChooserButton selects the first application in its list,
 // which will either be the most-recently used application or, if
 // AppChooserButton:show-default-item is TRUE, the default application.
 //
-// The list of applications shown in a AppChooserButton includes the recommended
-// applications for the given content type. When
-// AppChooserButton:show-default-item is set, the default application is also
-// included. To let the user chooser other applications, you can set the
+// The list of applications shown in a AppChooserButton includes
+// the recommended applications for the given content type. When
+// AppChooserButton:show-default-item is set, the default application is
+// also included. To let the user chooser other applications, you can set the
 // AppChooserButton:show-dialog-item property, which allows to open a full
 // AppChooserDialog.
 //
@@ -176,11 +176,11 @@ func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type to show applications for.
+//   - contentType: content type to show applications for.
 //
 // The function returns the following values:
 //
-//    - appChooserButton: newly created AppChooserButton.
+//   - appChooserButton: newly created AppChooserButton.
 //
 func NewAppChooserButton(contentType string) *AppChooserButton {
 	var _arg1 *C.gchar     // out
@@ -207,9 +207,9 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 //
 // The function takes the following parameters:
 //
-//    - name of the custom item.
-//    - label for the custom item.
-//    - icon for the custom item.
+//   - name of the custom item.
+//   - label for the custom item.
+//   - icon for the custom item.
 //
 func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Iconner) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -246,8 +246,8 @@ func (self *AppChooserButton) AppendSeparator() {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): text to display at the top of the dialog, or NULL, in
-//      which case a default text is displayed.
+//   - utf8 (optional): text to display at the top of the dialog, or NULL,
+//     in which case a default text is displayed.
 //
 func (self *AppChooserButton) Heading() string {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -272,7 +272,7 @@ func (self *AppChooserButton) Heading() string {
 //
 // The function returns the following values:
 //
-//    - ok: value of AppChooserButton:show-default-item.
+//   - ok: value of AppChooserButton:show-default-item.
 //
 func (self *AppChooserButton) ShowDefaultItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -297,7 +297,7 @@ func (self *AppChooserButton) ShowDefaultItem() bool {
 //
 // The function returns the following values:
 //
-//    - ok: value of AppChooserButton:show-dialog-item.
+//   - ok: value of AppChooserButton:show-dialog-item.
 //
 func (self *AppChooserButton) ShowDialogItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -324,7 +324,7 @@ func (self *AppChooserButton) ShowDialogItem() bool {
 //
 // The function takes the following parameters:
 //
-//    - name of the custom item.
+//   - name of the custom item.
 //
 func (self *AppChooserButton) SetActiveCustomItem(name string) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -344,7 +344,7 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 //
 // The function takes the following parameters:
 //
-//    - heading: string containing Pango markup.
+//   - heading: string containing Pango markup.
 //
 func (self *AppChooserButton) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -364,7 +364,7 @@ func (self *AppChooserButton) SetHeading(heading string) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for AppChooserButton:show-default-item.
+//   - setting: new value for AppChooserButton:show-default-item.
 //
 func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -385,7 +385,7 @@ func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for AppChooserButton:show-dialog-item.
+//   - setting: new value for AppChooserButton:show-dialog-item.
 //
 func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out

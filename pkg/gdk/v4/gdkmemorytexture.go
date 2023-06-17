@@ -35,8 +35,8 @@ func init() {
 //
 // It describes formats by listing the contents of the memory passed to it. So
 // GDK_MEMORY_A8R8G8B8 will be 1 byte (8 bits) of alpha, followed by a byte each
-// of red, green and blue. It is not endian-dependent, so CAIRO_FORMAT_ARGB32 is
-// represented by different GdkMemoryFormats on architectures with different
+// of red, green and blue. It is not endian-dependent, so CAIRO_FORMAT_ARGB32
+// is represented by different GdkMemoryFormats on architectures with different
 // endiannesses.
 //
 // Its naming is modelled after VkFormat (see
@@ -45,11 +45,11 @@ func init() {
 type MemoryFormat C.gint
 
 const (
-	// MemoryB8G8R8A8Premultiplied: 4 bytes; for blue, green, red, alpha. The
-	// color values are premultiplied with the alpha value.
+	// MemoryB8G8R8A8Premultiplied: 4 bytes; for blue, green, red, alpha.
+	// The color values are premultiplied with the alpha value.
 	MemoryB8G8R8A8Premultiplied MemoryFormat = iota
-	// MemoryA8R8G8B8Premultiplied: 4 bytes; for alpha, red, green, blue. The
-	// color values are premultiplied with the alpha value.
+	// MemoryA8R8G8B8Premultiplied: 4 bytes; for alpha, red, green, blue.
+	// The color values are premultiplied with the alpha value.
 	MemoryA8R8G8B8Premultiplied
 	// MemoryR8G8B8A8Premultiplied: 4 bytes; for red, green, blue, alpha The
 	// color values are premultiplied with the alpha value.
@@ -134,15 +134,15 @@ func marshalMemoryTexture(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - width of the texture.
-//    - height of the texture.
-//    - format of the data.
-//    - bytes: GBytes containing the pixel data.
-//    - stride for the data.
+//   - width of the texture.
+//   - height of the texture.
+//   - format of the data.
+//   - bytes: GBytes containing the pixel data.
+//   - stride for the data.
 //
 // The function returns the following values:
 //
-//    - memoryTexture: newly-created GdkTexture.
+//   - memoryTexture: newly-created GdkTexture.
 //
 func NewMemoryTexture(width, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) *MemoryTexture {
 	var _arg1 C.int             // out

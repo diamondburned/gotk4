@@ -50,11 +50,11 @@ func init() {
 // text is longer than the allocation of the widget, the widget will scroll so
 // that the cursor position is visible.
 //
-// When using an entry for passwords and other sensitive information, it can be
-// put into “password mode” using gtk.Text.SetVisibility(). In this mode,
-// entered text is displayed using a “invisible” character. By default, GTK
-// picks the best invisible character that is available in the current font, but
-// it can be changed with gtk.Text.SetInvisibleChar().
+// When using an entry for passwords and other sensitive information, it can
+// be put into “password mode” using gtk.Text.SetVisibility(). In this mode,
+// entered text is displayed using a “invisible” character. By default,
+// GTK picks the best invisible character that is available in the current font,
+// but it can be changed with gtk.Text.SetInvisibleChar().
 //
 // If you are looking to add icons or progress display in an entry, look at
 // GtkEntry. There other alternatives for more specialized use cases, such as
@@ -72,7 +72,6 @@ func init() {
 //    ├── [block-cursor]
 //    ╰── [window.popup]
 //
-//
 // GtkText has a main node with the name text. Depending on the properties of
 // the widget, the .read-only style class may appear.
 //
@@ -87,18 +86,17 @@ func init() {
 // is scrolled out of view. These nodes get the .left and .right style classes
 // added depending on where the indication is drawn.
 //
-// When touch is used and touch selection handles are shown, they are using CSS
-// nodes with name cursor-handle. They get the .top or .bottom style class
-// depending on where they are shown in relation to the selection. If there is
-// just a single handle for the text cursor, it gets the style class
+// When touch is used and touch selection handles are shown, they are using
+// CSS nodes with name cursor-handle. They get the .top or .bottom style
+// class depending on where they are shown in relation to the selection.
+// If there is just a single handle for the text cursor, it gets the style class
 // .insertion-cursor.
 //
+// # Accessibility
 //
-// Accessibility
-//
-// GtkText uses the GTK_ACCESSIBLE_ROLE_NONE role, which causes it to be skipped
-// for accessibility. This is because GtkText is expected to be used as a
-// delegate for a GtkEditable implementation that will be represented to
+// GtkText uses the GTK_ACCESSIBLE_ROLE_NONE role, which causes it to be
+// skipped for accessibility. This is because GtkText is expected to be used
+// as a delegate for a GtkEditable implementation that will be represented to
 // accessibility.
 type Text struct {
 	_ [0]func() // equal guard
@@ -282,7 +280,7 @@ func (self *Text) ConnectToggleOverwrite(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - text: new GtkText.
+//   - text: new GtkText.
 //
 func NewText() *Text {
 	var _cret *C.GtkWidget // in
@@ -300,11 +298,11 @@ func NewText() *Text {
 //
 // The function takes the following parameters:
 //
-//    - buffer to use for the new GtkText.
+//   - buffer to use for the new GtkText.
 //
 // The function returns the following values:
 //
-//    - text: new GtkText.
+//   - text: new GtkText.
 //
 func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 	var _arg1 *C.GtkEntryBuffer // out
@@ -326,7 +324,7 @@ func NewTextWithBuffer(buffer *EntryBuffer) *Text {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GtkText will activate the default widget.
+//   - ok: TRUE if the GtkText will activate the default widget.
 //
 func (self *Text) ActivatesDefault() bool {
 	var _arg0 *C.GtkText // out
@@ -351,7 +349,7 @@ func (self *Text) ActivatesDefault() bool {
 //
 // The function returns the following values:
 //
-//    - attrList (optional): attribute list, or NULL if none was set.
+//   - attrList (optional): attribute list, or NULL if none was set.
 //
 func (self *Text) Attributes() *pango.AttrList {
 	var _arg0 *C.GtkText       // out
@@ -382,7 +380,7 @@ func (self *Text) Attributes() *pango.AttrList {
 //
 // The function returns the following values:
 //
-//    - entryBuffer: GtkEntryBuffer object.
+//   - entryBuffer: GtkEntryBuffer object.
 //
 func (self *Text) Buffer() *EntryBuffer {
 	var _arg0 *C.GtkText        // out
@@ -405,7 +403,7 @@ func (self *Text) Buffer() *EntryBuffer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if Emoji completion is enabled.
+//   - ok: TRUE if Emoji completion is enabled.
 //
 func (self *Text) EnableEmojiCompletion() bool {
 	var _arg0 *C.GtkText // out
@@ -429,7 +427,7 @@ func (self *Text) EnableEmojiCompletion() bool {
 //
 // The function returns the following values:
 //
-//    - menuModel (optional): menu model.
+//   - menuModel (optional): menu model.
 //
 func (self *Text) ExtraMenu() gio.MenuModeller {
 	var _arg0 *C.GtkText    // out
@@ -511,8 +509,8 @@ func (self *Text) InputPurpose() InputPurpose {
 //
 // The function returns the following values:
 //
-//    - gunichar: current invisible char, or 0, if text does not show invisible
-//      text at all.
+//   - gunichar: current invisible char, or 0, if text does not show invisible
+//     text at all.
 //
 func (self *Text) InvisibleChar() uint32 {
 	var _arg0 *C.GtkText // out
@@ -539,8 +537,8 @@ func (self *Text) InvisibleChar() uint32 {
 //
 // The function returns the following values:
 //
-//    - gint: maximum allowed number of characters in GtkText, or 0 if there is
-//      no maximum.
+//   - gint: maximum allowed number of characters in GtkText, or 0 if there is
+//     no maximum.
 //
 func (self *Text) MaxLength() int {
 	var _arg0 *C.GtkText // out
@@ -562,7 +560,7 @@ func (self *Text) MaxLength() int {
 //
 // The function returns the following values:
 //
-//    - ok: whether the text is overwritten when typing.
+//   - ok: whether the text is overwritten when typing.
 //
 func (self *Text) OverwriteMode() bool {
 	var _arg0 *C.GtkText // out
@@ -587,10 +585,10 @@ func (self *Text) OverwriteMode() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): pointer to the placeholder text as a string. This string
-//      points to internally allocated storage in the widget and must not be
-//      freed, modified or stored. If no placeholder text has been set, NULL will
-//      be returned.
+//   - utf8 (optional): pointer to the placeholder text as a string. This
+//     string points to internally allocated storage in the widget and must
+//     not be freed, modified or stored. If no placeholder text has been set,
+//     NULL will be returned.
 //
 func (self *Text) PlaceholderText() string {
 	var _arg0 *C.GtkText // out
@@ -615,7 +613,7 @@ func (self *Text) PlaceholderText() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self will propagate the text width.
+//   - ok: TRUE if self will propagate the text width.
 //
 func (self *Text) PropagateTextWidth() bool {
 	var _arg0 *C.GtkText // out
@@ -640,7 +638,7 @@ func (self *Text) PropagateTextWidth() bool {
 //
 // The function returns the following values:
 //
-//    - tabArray (optional): tabstops, or NULL if none was set.
+//   - tabArray (optional): tabstops, or NULL if none was set.
 //
 func (self *Text) Tabs() *pango.TabArray {
 	var _arg0 *C.GtkText       // out
@@ -667,7 +665,7 @@ func (self *Text) Tabs() *pango.TabArray {
 //
 // The function returns the following values:
 //
-//    - guint16: current number of characters in GtkText, or 0 if there are none.
+//   - guint16: current number of characters in GtkText, or 0 if there are none.
 //
 func (self *Text) TextLength() uint16 {
 	var _arg0 *C.GtkText // out
@@ -690,7 +688,7 @@ func (self *Text) TextLength() uint16 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self will truncate multi-line text.
+//   - ok: TRUE if self will truncate multi-line text.
 //
 func (self *Text) TruncateMultiline() bool {
 	var _arg0 *C.GtkText // out
@@ -714,7 +712,7 @@ func (self *Text) TruncateMultiline() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the text is currently visible.
+//   - ok: TRUE if the text is currently visible.
 //
 func (self *Text) Visibility() bool {
 	var _arg0 *C.GtkText // out
@@ -736,14 +734,14 @@ func (self *Text) Visibility() bool {
 
 // GrabFocusWithoutSelecting causes self to have keyboard focus.
 //
-// It behaves like gtk.Widget.GrabFocus(), except that it doesn't select the
-// contents of self. You only want to call this on some special entries which
-// the user usually doesn't want to replace all text in, such as
+// It behaves like gtk.Widget.GrabFocus(), except that it doesn't select
+// the contents of self. You only want to call this on some special entries
+// which the user usually doesn't want to replace all text in, such as
 // search-as-you-type entries.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if focus is now inside self.
+//   - ok: TRUE if focus is now inside self.
 //
 func (self *Text) GrabFocusWithoutSelecting() bool {
 	var _arg0 *C.GtkText // out
@@ -771,7 +769,7 @@ func (self *Text) GrabFocusWithoutSelecting() bool {
 //
 // The function takes the following parameters:
 //
-//    - activates: TRUE to activate window’s default widget on Enter keypress.
+//   - activates: TRUE to activate window’s default widget on Enter keypress.
 //
 func (self *Text) SetActivatesDefault(activates bool) {
 	var _arg0 *C.GtkText // out
@@ -791,7 +789,7 @@ func (self *Text) SetActivatesDefault(activates bool) {
 //
 // The function takes the following parameters:
 //
-//    - attrs (optional): PangoAttrList or NULL to unset.
+//   - attrs (optional): PangoAttrList or NULL to unset.
 //
 func (self *Text) SetAttributes(attrs *pango.AttrList) {
 	var _arg0 *C.GtkText       // out
@@ -812,7 +810,7 @@ func (self *Text) SetAttributes(attrs *pango.AttrList) {
 //
 // The function takes the following parameters:
 //
-//    - buffer: GtkEntryBuffer.
+//   - buffer: GtkEntryBuffer.
 //
 func (self *Text) SetBuffer(buffer *EntryBuffer) {
 	var _arg0 *C.GtkText        // out
@@ -833,7 +831,7 @@ func (self *Text) SetBuffer(buffer *EntryBuffer) {
 //
 // The function takes the following parameters:
 //
-//    - enableEmojiCompletion: TRUE to enable Emoji completion.
+//   - enableEmojiCompletion: TRUE to enable Emoji completion.
 //
 func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 	var _arg0 *C.GtkText // out
@@ -854,7 +852,7 @@ func (self *Text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): GMenuModel.
+//   - model (optional): GMenuModel.
 //
 func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 	var _arg0 *C.GtkText    // out
@@ -875,7 +873,7 @@ func (self *Text) SetExtraMenu(model gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - hints: hints.
+//   - hints: hints.
 //
 func (self *Text) SetInputHints(hints InputHints) {
 	var _arg0 *C.GtkText      // out
@@ -896,7 +894,7 @@ func (self *Text) SetInputHints(hints InputHints) {
 //
 // The function takes the following parameters:
 //
-//    - purpose: purpose.
+//   - purpose: purpose.
 //
 func (self *Text) SetInputPurpose(purpose InputPurpose) {
 	var _arg0 *C.GtkText        // out
@@ -919,7 +917,7 @@ func (self *Text) SetInputPurpose(purpose InputPurpose) {
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
+//   - ch: unicode character.
 //
 func (self *Text) SetInvisibleChar(ch uint32) {
 	var _arg0 *C.GtkText // out
@@ -943,9 +941,9 @@ func (self *Text) SetInvisibleChar(ch uint32) {
 //
 // The function takes the following parameters:
 //
-//    - length: maximum length of the GtkText, or 0 for no maximum. (other than
-//      the maximum length of entries.) The value passed in will be clamped to
-//      the range 0-65536.
+//   - length: maximum length of the GtkText, or 0 for no maximum. (other than
+//     the maximum length of entries.) The value passed in will be clamped to
+//     the range 0-65536.
 //
 func (self *Text) SetMaxLength(length int) {
 	var _arg0 *C.GtkText // out
@@ -964,7 +962,7 @@ func (self *Text) SetMaxLength(length int) {
 //
 // The function takes the following parameters:
 //
-//    - overwrite: new value.
+//   - overwrite: new value.
 //
 func (self *Text) SetOverwriteMode(overwrite bool) {
 	var _arg0 *C.GtkText // out
@@ -987,8 +985,8 @@ func (self *Text) SetOverwriteMode(overwrite bool) {
 //
 // The function takes the following parameters:
 //
-//    - text (optional): string to be displayed when self is empty and unfocused,
-//      or NULL.
+//   - text (optional): string to be displayed when self is empty and unfocused,
+//     or NULL.
 //
 func (self *Text) SetPlaceholderText(text string) {
 	var _arg0 *C.GtkText // out
@@ -1010,7 +1008,7 @@ func (self *Text) SetPlaceholderText(text string) {
 //
 // The function takes the following parameters:
 //
-//    - propagateTextWidth: TRUE to propagate the text width.
+//   - propagateTextWidth: TRUE to propagate the text width.
 //
 func (self *Text) SetPropagateTextWidth(propagateTextWidth bool) {
 	var _arg0 *C.GtkText // out
@@ -1030,7 +1028,7 @@ func (self *Text) SetPropagateTextWidth(propagateTextWidth bool) {
 //
 // The function takes the following parameters:
 //
-//    - tabs (optional): PangoTabArray.
+//   - tabs (optional): PangoTabArray.
 //
 func (self *Text) SetTabs(tabs *pango.TabArray) {
 	var _arg0 *C.GtkText       // out
@@ -1051,7 +1049,7 @@ func (self *Text) SetTabs(tabs *pango.TabArray) {
 //
 // The function takes the following parameters:
 //
-//    - truncateMultiline: TRUE to truncate multi-line text.
+//   - truncateMultiline: TRUE to truncate multi-line text.
 //
 func (self *Text) SetTruncateMultiline(truncateMultiline bool) {
 	var _arg0 *C.GtkText // out
@@ -1082,7 +1080,7 @@ func (self *Text) SetTruncateMultiline(truncateMultiline bool) {
 //
 // The function takes the following parameters:
 //
-//    - visible: TRUE if the contents of the GtkText are displayed as plaintext.
+//   - visible: TRUE if the contents of the GtkText are displayed as plaintext.
 //
 func (self *Text) SetVisibility(visible bool) {
 	var _arg0 *C.GtkText // out

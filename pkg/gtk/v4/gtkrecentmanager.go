@@ -110,9 +110,9 @@ func defaultRecentManagerOverrides(v *RecentManager) RecentManagerOverrides {
 //
 // The recently used files list is per user.
 //
-// GtkRecentManager acts like a database of all the recently used files. You can
-// create new GtkRecentManager objects, but it is more efficient to use the
-// default manager created by GTK.
+// GtkRecentManager acts like a database of all the recently used files.
+// You can create new GtkRecentManager objects, but it is more efficient to use
+// the default manager created by GTK.
 //
 // Adding a new recently used file is as simple as:
 //
@@ -120,7 +120,6 @@ func defaultRecentManagerOverrides(v *RecentManager) RecentManagerOverrides {
 //
 //    manager = gtk_recent_manager_get_default ();
 //    gtk_recent_manager_add_item (manager, file_uri);
-//
 //
 // The GtkRecentManager will try to gather all the needed information from the
 // file itself through GIO.
@@ -144,7 +143,6 @@ func defaultRecentManagerOverrides(v *RecentManager) RecentManagerOverrides {
 //       // Use the info object
 //       gtk_recent_info_unref (info);
 //     }
-//
 //
 // In order to retrieve the list of recently used files, you can use
 // gtk.RecentManager.GetItems(), which returns a list of gtk.RecentInfo.
@@ -213,7 +211,7 @@ func (manager *RecentManager) ConnectChanged(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - recentManager: newly created GtkRecentManager object.
+//   - recentManager: newly created GtkRecentManager object.
 //
 func NewRecentManager() *RecentManager {
 	var _cret *C.GtkRecentManager // in
@@ -239,20 +237,20 @@ func NewRecentManager() *RecentManager {
 // the URI; the name of the application that is registering the item, and a
 // command line to be used when launching the item.
 //
-// Optionally, a GtkRecentData might contain a UTF-8 string to be used when
-// viewing the item instead of the last component of the URI; a short
+// Optionally, a GtkRecentData might contain a UTF-8 string to be used
+// when viewing the item instead of the last component of the URI; a short
 // description of the item; whether the item should be considered private - that
 // is, should be displayed only by the applications that have registered it.
 //
 // The function takes the following parameters:
 //
-//    - uri: valid URI.
-//    - recentData: metadata of the resource.
+//   - uri: valid URI.
+//   - recentData: metadata of the resource.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the new item was successfully added to the recently used
-//      resources list, FALSE otherwise.
+//   - ok: TRUE if the new item was successfully added to the recently used
+//     resources list, FALSE otherwise.
 //
 func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 	var _arg0 *C.GtkRecentManager // out
@@ -282,8 +280,8 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 // AddItem adds a new resource, pointed by uri, into the recently used resources
 // list.
 //
-// This function automatically retrieves some of the needed metadata and setting
-// other metadata to common default values; it then feeds the data to
+// This function automatically retrieves some of the needed metadata and
+// setting other metadata to common default values; it then feeds the data to
 // gtk.RecentManager.AddFull().
 //
 // See gtk.RecentManager.AddFull() if you want to explicitly define the metadata
@@ -291,12 +289,12 @@ func (manager *RecentManager) AddFull(uri string, recentData *RecentData) bool {
 //
 // The function takes the following parameters:
 //
-//    - uri: valid URI.
+//   - uri: valid URI.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the new item was successfully added to the recently used
-//      resources list.
+//   - ok: TRUE if the new item was successfully added to the recently used
+//     resources list.
 //
 func (manager *RecentManager) AddItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
@@ -324,9 +322,9 @@ func (manager *RecentManager) AddItem(uri string) bool {
 //
 // The function returns the following values:
 //
-//    - list of newly allocated GtkRecentInfo objects. Use gtk.RecentInfo.Unref()
-//      on each item inside the list, and then free the list itself using
-//      g_list_free().
+//   - list of newly allocated GtkRecentInfo objects. Use gtk.RecentInfo.Unref()
+//     on each item inside the list, and then free the list itself using
+//     g_list_free().
 //
 func (manager *RecentManager) Items() []*RecentInfo {
 	var _arg0 *C.GtkRecentManager // out
@@ -361,11 +359,11 @@ func (manager *RecentManager) Items() []*RecentInfo {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI.
+//   - uri: URI.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the resource was found, FALSE otherwise.
+//   - ok: TRUE if the resource was found, FALSE otherwise.
 //
 func (manager *RecentManager) HasItem(uri string) bool {
 	var _arg0 *C.GtkRecentManager // out
@@ -389,19 +387,19 @@ func (manager *RecentManager) HasItem(uri string) bool {
 	return _ok
 }
 
-// LookupItem searches for a URI inside the recently used resources list, and
-// returns a GtkRecentInfo containing information about the resource like its
-// MIME type, or its display name.
+// LookupItem searches for a URI inside the recently used resources list,
+// and returns a GtkRecentInfo containing information about the resource like
+// its MIME type, or its display name.
 //
 // The function takes the following parameters:
 //
-//    - uri: URI.
+//   - uri: URI.
 //
 // The function returns the following values:
 //
-//    - recentInfo (optional): GtkRecentInfo containing information about the
-//      resource pointed by uri, or NULL if the URI was not registered in the
-//      recently used resources list. Free with gtk.RecentInfo.Unref().
+//   - recentInfo (optional): GtkRecentInfo containing information about the
+//     resource pointed by uri, or NULL if the URI was not registered in the
+//     recently used resources list. Free with gtk.RecentInfo.Unref().
 //
 func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 	var _arg0 *C.GtkRecentManager // out
@@ -444,9 +442,9 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI of a recently used resource.
-//    - newUri (optional): new URI of the recently used resource, or NULL to
-//      remove the item pointed by uri in the list.
+//   - uri: URI of a recently used resource.
+//   - newUri (optional): new URI of the recently used resource, or NULL to
+//     remove the item pointed by uri in the list.
 //
 func (manager *RecentManager) MoveItem(uri, newUri string) error {
 	var _arg0 *C.GtkRecentManager // out
@@ -480,8 +478,8 @@ func (manager *RecentManager) MoveItem(uri, newUri string) error {
 //
 // The function returns the following values:
 //
-//    - gint: number of items that have been removed from the recently used
-//      resources list.
+//   - gint: number of items that have been removed from the recently used
+//     resources list.
 //
 func (manager *RecentManager) PurgeItems() (int, error) {
 	var _arg0 *C.GtkRecentManager // out
@@ -509,7 +507,7 @@ func (manager *RecentManager) PurgeItems() (int, error) {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI of the item you wish to remove.
+//   - uri: URI of the item you wish to remove.
 //
 func (manager *RecentManager) RemoveItem(uri string) error {
 	var _arg0 *C.GtkRecentManager // out
@@ -550,7 +548,7 @@ func (manager *RecentManager) changed() {
 //
 // The function returns the following values:
 //
-//    - recentManager: unique GtkRecentManager. Do not ref or unref it.
+//   - recentManager: unique GtkRecentManager. Do not ref or unref it.
 //
 func RecentManagerGetDefault() *RecentManager {
 	var _cret *C.GtkRecentManager // in
@@ -684,14 +682,14 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - appName (optional): name of the application that should be mapped to a
-//      GAppInfo; if NULL is used then the default application for the MIME type
-//      is used.
+//   - appName (optional): name of the application that should be mapped to a
+//     GAppInfo; if NULL is used then the default application for the MIME type
+//     is used.
 //
 // The function returns the following values:
 //
-//    - appInfo (optional): newly created GAppInfo, or NULL. In case of error,
-//      error will be set either with a GTK_RECENT_MANAGER_ERROR or a G_IO_ERROR.
+//   - appInfo (optional): newly created GAppInfo, or NULL. In case of error,
+//     error will be set either with a GTK_RECENT_MANAGER_ERROR or a G_IO_ERROR.
 //
 func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 	var _arg0 *C.GtkRecentInfo // out
@@ -732,7 +730,7 @@ func (info *RecentInfo) CreateAppInfo(appName string) (*gio.AppInfo, error) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the resource exists.
+//   - ok: TRUE if the resource exists.
 //
 func (info *RecentInfo) Exists() bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -757,7 +755,7 @@ func (info *RecentInfo) Exists() bool {
 //
 // The function returns the following values:
 //
-//    - dateTime for the time when the resource was added.
+//   - dateTime for the time when the resource was added.
 //
 func (info *RecentInfo) Added() *glib.DateTime {
 	var _arg0 *C.GtkRecentInfo // out
@@ -787,8 +785,8 @@ func (info *RecentInfo) Added() *glib.DateTime {
 //
 // The function returns the following values:
 //
-//    - gint: positive integer containing the number of days elapsed since the
-//      time this resource was last modified.
+//   - gint: positive integer containing the number of days elapsed since the
+//     time this resource was last modified.
 //
 func (info *RecentInfo) Age() int {
 	var _arg0 *C.GtkRecentInfo // out
@@ -814,17 +812,17 @@ func (info *RecentInfo) Age() int {
 //
 // The function takes the following parameters:
 //
-//    - appName: name of the application that has registered this item.
+//   - appName: name of the application that has registered this item.
 //
 // The function returns the following values:
 //
-//    - appExec: return location for the string containing the command line.
-//    - count: return location for the number of times this item was registered.
-//    - stamp: return location for the time this item was last registered for
-//      this application.
-//    - ok: TRUE if an application with app_name has registered this resource
-//      inside the recently used list, or FALSE otherwise. The app_exec string is
-//      owned by the GtkRecentInfo and should not be modified or freed.
+//   - appExec: return location for the string containing the command line.
+//   - count: return location for the number of times this item was registered.
+//   - stamp: return location for the time this item was last registered for
+//     this application.
+//   - ok: TRUE if an application with app_name has registered this resource
+//     inside the recently used list, or FALSE otherwise. The app_exec string is
+//     owned by the GtkRecentInfo and should not be modified or freed.
 //
 func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, *glib.DateTime, bool) {
 	var _arg0 *C.GtkRecentInfo // out
@@ -869,8 +867,8 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, *glib.Dat
 //
 // The function returns the following values:
 //
-//    - utf8s: newly allocated NULL-terminated array of strings. Use g_strfreev()
-//      to free it.
+//   - utf8s: newly allocated NULL-terminated array of strings. Use g_strfreev()
+//     to free it.
 //
 func (info *RecentInfo) Applications() []string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -901,8 +899,8 @@ func (info *RecentInfo) Applications() []string {
 //
 // The function returns the following values:
 //
-//    - utf8: description of the resource. The returned string is owned by the
-//      recent manager, and should not be freed.
+//   - utf8: description of the resource. The returned string is owned by the
+//     recent manager, and should not be freed.
 //
 func (info *RecentInfo) Description() string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -926,8 +924,8 @@ func (info *RecentInfo) Description() string {
 //
 // The function returns the following values:
 //
-//    - utf8: display name of the resource. The returned string is owned by the
-//      recent manager, and should not be freed.
+//   - utf8: display name of the resource. The returned string is owned by the
+//     recent manager, and should not be freed.
 //
 func (info *RecentInfo) DisplayName() string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -949,8 +947,8 @@ func (info *RecentInfo) DisplayName() string {
 //
 // The function returns the following values:
 //
-//    - icon (optional) containing the icon, or NULL. Use g_object_unref() when
-//      finished using the icon.
+//   - icon (optional) containing the icon, or NULL. Use g_object_unref() when
+//     finished using the icon.
 //
 func (info *RecentInfo) GIcon() *gio.Icon {
 	var _arg0 *C.GtkRecentInfo // out
@@ -982,8 +980,8 @@ func (info *RecentInfo) GIcon() *gio.Icon {
 //
 // The function returns the following values:
 //
-//    - utf8s: a newly allocated NULL terminated array of strings. Use
-//      g_strfreev() to free it.
+//   - utf8s: a newly allocated NULL terminated array of strings. Use
+//     g_strfreev() to free it.
 //
 func (info *RecentInfo) Groups() []string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1014,8 +1012,8 @@ func (info *RecentInfo) Groups() []string {
 //
 // The function returns the following values:
 //
-//    - utf8: MIME type of the resource. The returned string is owned by the
-//      recent manager, and should not be freed.
+//   - utf8: MIME type of the resource. The returned string is owned by the
+//     recent manager, and should not be freed.
 //
 func (info *RecentInfo) MIMEType() string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1037,7 +1035,7 @@ func (info *RecentInfo) MIMEType() string {
 //
 // The function returns the following values:
 //
-//    - dateTime for the time when the resource was last modified.
+//   - dateTime for the time when the resource was last modified.
 //
 func (info *RecentInfo) Modified() *glib.DateTime {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1069,7 +1067,7 @@ func (info *RecentInfo) Modified() *glib.DateTime {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the private flag was found, FALSE otherwise.
+//   - ok: TRUE if the private flag was found, FALSE otherwise.
 //
 func (info *RecentInfo) PrivateHint() bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1097,7 +1095,7 @@ func (info *RecentInfo) PrivateHint() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string in UTF-8 encoding free it with g_free().
+//   - utf8: newly-allocated string in UTF-8 encoding free it with g_free().
 //
 func (info *RecentInfo) ShortName() string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1120,8 +1118,8 @@ func (info *RecentInfo) ShortName() string {
 //
 // The function returns the following values:
 //
-//    - utf8: URI of the resource. The returned string is owned by the recent
-//      manager, and should not be freed.
+//   - utf8: URI of the resource. The returned string is owned by the recent
+//     manager, and should not be freed.
 //
 func (info *RecentInfo) URI() string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1146,8 +1144,8 @@ func (info *RecentInfo) URI() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated UTF-8 string containing the resource’s
-//      URI or NULL. Use g_free() when done using it.
+//   - utf8 (optional): newly allocated UTF-8 string containing the resource’s
+//     URI or NULL. Use g_free() when done using it.
 //
 func (info *RecentInfo) URIDisplay() string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1172,7 +1170,7 @@ func (info *RecentInfo) URIDisplay() string {
 //
 // The function returns the following values:
 //
-//    - dateTime for the time when the resource was last visited.
+//   - dateTime for the time when the resource was last visited.
 //
 func (info *RecentInfo) Visited() *glib.DateTime {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1202,11 +1200,11 @@ func (info *RecentInfo) Visited() *glib.DateTime {
 //
 // The function takes the following parameters:
 //
-//    - appName: string containing an application name.
+//   - appName: string containing an application name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if an application with name app_name was found, FALSE otherwise.
+//   - ok: TRUE if an application with name app_name was found, FALSE otherwise.
 //
 func (info *RecentInfo) HasApplication(appName string) bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1235,11 +1233,11 @@ func (info *RecentInfo) HasApplication(appName string) bool {
 //
 // The function takes the following parameters:
 //
-//    - groupName: name of a group.
+//   - groupName: name of a group.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the group was found.
+//   - ok: TRUE if the group was found.
 //
 func (info *RecentInfo) HasGroup(groupName string) bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1268,7 +1266,7 @@ func (info *RecentInfo) HasGroup(groupName string) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the resource is local.
+//   - ok: TRUE if the resource is local.
 //
 func (info *RecentInfo) IsLocal() bool {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1293,7 +1291,7 @@ func (info *RecentInfo) IsLocal() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: application name. Use g_free() to free it.
+//   - utf8: application name. Use g_free() to free it.
 //
 func (info *RecentInfo) LastApplication() string {
 	var _arg0 *C.GtkRecentInfo // out
@@ -1316,12 +1314,12 @@ func (info *RecentInfo) LastApplication() string {
 //
 // The function takes the following parameters:
 //
-//    - infoB: GtkRecentInfo.
+//   - infoB: GtkRecentInfo.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if both GtkRecentInfo point to the same resource, FALSE
-//      otherwise.
+//   - ok: TRUE if both GtkRecentInfo point to the same resource, FALSE
+//     otherwise.
 //
 func (infoA *RecentInfo) Match(infoB *RecentInfo) bool {
 	var _arg0 *C.GtkRecentInfo // out

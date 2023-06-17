@@ -23,7 +23,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - application (optional): default application for this process, or NULL.
+//   - application (optional): default application for this process, or NULL.
 //
 func ApplicationGetDefault() *Application {
 	var _cret *C.GApplication // in

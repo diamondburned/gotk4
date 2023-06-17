@@ -107,13 +107,13 @@ func marshalBlendNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - bottom node to be drawn.
-//    - top: node to be blended onto the bottom node.
-//    - blendMode: blend mode to use.
+//   - bottom node to be drawn.
+//   - top: node to be blended onto the bottom node.
+//   - blendMode: blend mode to use.
 //
 // The function returns the following values:
 //
-//    - blendNode: new GskRenderNode.
+//   - blendNode: new GskRenderNode.
 //
 func NewBlendNode(bottom, top RenderNoder, blendMode BlendMode) *BlendNode {
 	var _arg1 *C.GskRenderNode // out
@@ -141,7 +141,7 @@ func NewBlendNode(bottom, top RenderNoder, blendMode BlendMode) *BlendNode {
 //
 // The function returns the following values:
 //
-//    - blendMode: blend mode.
+//   - blendMode: blend mode.
 //
 func (node *BlendNode) BlendMode() BlendMode {
 	var _arg0 *C.GskRenderNode // out
@@ -163,7 +163,7 @@ func (node *BlendNode) BlendMode() BlendMode {
 //
 // The function returns the following values:
 //
-//    - renderNode: bottom child node.
+//   - renderNode: bottom child node.
 //
 func (node *BlendNode) BottomChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -201,7 +201,7 @@ func (node *BlendNode) BottomChild() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - renderNode: top child node.
+//   - renderNode: top child node.
 //
 func (node *BlendNode) TopChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -261,12 +261,12 @@ func marshalBlurNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - child node to blur.
-//    - radius: blur radius.
+//   - child node to blur.
+//   - radius: blur radius.
 //
 // The function returns the following values:
 //
-//    - blurNode: new GskRenderNode.
+//   - blurNode: new GskRenderNode.
 //
 func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 	var _arg1 *C.GskRenderNode // out
@@ -291,7 +291,7 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 //
 // The function returns the following values:
 //
-//    - renderNode: blurred child node.
+//   - renderNode: blurred child node.
 //
 func (node *BlurNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -329,7 +329,7 @@ func (node *BlurNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - gfloat: blur radius.
+//   - gfloat: blur radius.
 //
 func (node *BlurNode) Radius() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -376,14 +376,14 @@ func marshalBorderNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - outline describing the outline of the border.
-//    - borderWidth: stroke width of the border on the top, right, bottom and
-//      left side respectively.
-//    - borderColor: color used on the top, right, bottom and left side.
+//   - outline describing the outline of the border.
+//   - borderWidth: stroke width of the border on the top, right, bottom and
+//     left side respectively.
+//   - borderColor: color used on the top, right, bottom and left side.
 //
 // The function returns the following values:
 //
-//    - borderNode: new GskRenderNode.
+//   - borderNode: new GskRenderNode.
 //
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) *BorderNode {
 	var _arg1 *C.GskRoundedRect // out
@@ -417,8 +417,8 @@ func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]
 //
 // The function returns the following values:
 //
-//    - rgbA: array of 4 RGBA structs for the top, right, bottom and left color
-//      of the border.
+//   - rgbA: array of 4 RGBA structs for the top, right, bottom and left color
+//     of the border.
 //
 func (node *BorderNode) Colors() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
@@ -440,7 +440,7 @@ func (node *BorderNode) Colors() *gdk.RGBA {
 //
 // The function returns the following values:
 //
-//    - roundedRect: outline of the border.
+//   - roundedRect: outline of the border.
 //
 func (node *BorderNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
@@ -462,8 +462,8 @@ func (node *BorderNode) Outline() *RoundedRect {
 //
 // The function returns the following values:
 //
-//    - gfloats: array of 4 floats for the top, right, bottom and left stroke
-//      width of the border, respectively.
+//   - gfloats: array of 4 floats for the top, right, bottom and left stroke
+//     width of the border, respectively.
 //
 func (node *BorderNode) Widths() [4]float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -510,11 +510,11 @@ func marshalCairoNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - bounds: rectangle to render to.
+//   - bounds: rectangle to render to.
 //
 // The function returns the following values:
 //
-//    - cairoNode: new GskRenderNode.
+//   - cairoNode: new GskRenderNode.
 //
 func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 	var _arg1 *C.graphene_rect_t // out
@@ -540,8 +540,8 @@ func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 //
 // The function returns the following values:
 //
-//    - context: cairo context used for drawing; use cairo_destroy() when done
-//      drawing.
+//   - context: cairo context used for drawing; use cairo_destroy() when done
+//     drawing.
 //
 func (node *CairoNode) DrawContext() *cairo.Context {
 	var _arg0 *C.GskRenderNode // out
@@ -566,7 +566,7 @@ func (node *CairoNode) DrawContext() *cairo.Context {
 //
 // The function returns the following values:
 //
-//    - surface: cairo surface.
+//   - surface: cairo surface.
 //
 func (node *CairoNode) Surface() *cairo.Surface {
 	var _arg0 *C.GskRenderNode   // out
@@ -615,12 +615,12 @@ func marshalClipNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - child: node to draw.
-//    - clip to apply.
+//   - child: node to draw.
+//   - clip to apply.
 //
 // The function returns the following values:
 //
-//    - clipNode: new GskRenderNode.
+//   - clipNode: new GskRenderNode.
 //
 func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 	var _arg1 *C.GskRenderNode   // out
@@ -645,7 +645,7 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 //
 // The function returns the following values:
 //
-//    - renderNode: child that is getting clipped.
+//   - renderNode: child that is getting clipped.
 //
 func (node *ClipNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -683,7 +683,7 @@ func (node *ClipNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - rect: clip rectangle.
+//   - rect: clip rectangle.
 //
 func (node *ClipNode) Clip() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
@@ -735,13 +735,13 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - child: node to draw.
-//    - colorMatrix: matrix to apply.
-//    - colorOffset values to add to the color.
+//   - child: node to draw.
+//   - colorMatrix: matrix to apply.
+//   - colorOffset values to add to the color.
 //
 // The function returns the following values:
 //
-//    - colorMatrixNode: new GskRenderNode.
+//   - colorMatrixNode: new GskRenderNode.
 //
 func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) *ColorMatrixNode {
 	var _arg1 *C.GskRenderNode     // out
@@ -770,7 +770,7 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 //
 // The function returns the following values:
 //
-//    - renderNode: child that is getting its colors modified.
+//   - renderNode: child that is getting its colors modified.
 //
 func (node *ColorMatrixNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -808,7 +808,7 @@ func (node *ColorMatrixNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - matrix: 4x4 color matrix.
+//   - matrix: 4x4 color matrix.
 //
 func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 	var _arg0 *C.GskRenderNode     // out
@@ -830,7 +830,7 @@ func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 //
 // The function returns the following values:
 //
-//    - vec4: color vector.
+//   - vec4: color vector.
 //
 func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 	var _arg0 *C.GskRenderNode   // out
@@ -875,12 +875,12 @@ func marshalColorNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - rgba: GdkRGBA specifying a color.
-//    - bounds: rectangle to render the color into.
+//   - rgba: GdkRGBA specifying a color.
+//   - bounds: rectangle to render the color into.
 //
 // The function returns the following values:
 //
-//    - colorNode: new GskRenderNode.
+//   - colorNode: new GskRenderNode.
 //
 func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 	var _arg1 *C.GdkRGBA         // out
@@ -905,7 +905,7 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 //
 // The function returns the following values:
 //
-//    - rgbA: color of the node.
+//   - rgbA: color of the node.
 //
 func (node *ColorNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
@@ -947,22 +947,22 @@ func marshalConicGradientNode(p uintptr) (interface{}, error) {
 
 // NewConicGradientNode creates a GskRenderNode that draws a conic gradient.
 //
-// The conic gradient starts around center in the direction of rotation. A
-// rotation of 0 means that the gradient points up. Color stops are then added
+// The conic gradient starts around center in the direction of rotation.
+// A rotation of 0 means that the gradient points up. Color stops are then added
 // clockwise.
 //
 // The function takes the following parameters:
 //
-//    - bounds of the node.
-//    - center of the gradient.
-//    - rotation of the gradient in degrees.
-//    - colorStops: pointer to an array of GskColorStop defining the gradient.
-//      The offsets of all color stops must be increasing. The first stop's
-//      offset must be >= 0 and the last stop's offset must be <= 1.
+//   - bounds of the node.
+//   - center of the gradient.
+//   - rotation of the gradient in degrees.
+//   - colorStops: pointer to an array of GskColorStop defining the gradient.
+//     The offsets of all color stops must be increasing. The first stop's
+//     offset must be >= 0 and the last stop's offset must be <= 1.
 //
 // The function returns the following values:
 //
-//    - conicGradientNode: new GskRenderNode.
+//   - conicGradientNode: new GskRenderNode.
 //
 func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) *ConicGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
@@ -998,8 +998,8 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 	return _conicGradientNode
 }
 
-// Angle retrieves the angle for the gradient in radians, normalized in [0, 2 *
-// PI].
+// Angle retrieves the angle for the gradient in radians, normalized in [0,
+// 2 * PI].
 //
 // The angle is starting at the top and going clockwise, as expressed in the css
 // specification:
@@ -1008,7 +1008,7 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 //
 // The function returns the following values:
 //
-//    - gfloat: angle for the gradient.
+//   - gfloat: angle for the gradient.
 //
 func (node *ConicGradientNode) Angle() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -1030,7 +1030,7 @@ func (node *ConicGradientNode) Angle() float32 {
 //
 // The function returns the following values:
 //
-//    - point: center point for the gradient.
+//   - point: center point for the gradient.
 //
 func (node *ConicGradientNode) Center() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
@@ -1052,7 +1052,7 @@ func (node *ConicGradientNode) Center() *graphene.Point {
 //
 // The function returns the following values:
 //
-//    - colorStops: color stops in the gradient.
+//   - colorStops: color stops in the gradient.
 //
 func (node *ConicGradientNode) ColorStops() []ColorStop {
 	var _arg0 *C.GskRenderNode // out
@@ -1081,7 +1081,7 @@ func (node *ConicGradientNode) ColorStops() []ColorStop {
 //
 // The function returns the following values:
 //
-//    - gsize: number of color stops.
+//   - gsize: number of color stops.
 //
 func (node *ConicGradientNode) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
@@ -1103,7 +1103,7 @@ func (node *ConicGradientNode) NColorStops() uint {
 //
 // The function returns the following values:
 //
-//    - gfloat: rotation for the gradient.
+//   - gfloat: rotation for the gradient.
 //
 func (node *ConicGradientNode) Rotation() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -1150,11 +1150,11 @@ func marshalContainerNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - children of the node.
+//   - children of the node.
 //
 // The function returns the following values:
 //
-//    - containerNode: new GskRenderNode.
+//   - containerNode: new GskRenderNode.
 //
 func NewContainerNode(children []RenderNoder) *ContainerNode {
 	var _arg1 **C.GskRenderNode // out
@@ -1185,11 +1185,11 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 //
 // The function takes the following parameters:
 //
-//    - idx: position of the child to get.
+//   - idx: position of the child to get.
 //
 // The function returns the following values:
 //
-//    - renderNode: idx'th child of container.
+//   - renderNode: idx'th child of container.
 //
 func (node *ContainerNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -1230,7 +1230,7 @@ func (node *ContainerNode) Child(idx uint) RenderNoder {
 //
 // The function returns the following values:
 //
-//    - guint: number of children of the GskRenderNode.
+//   - guint: number of children of the GskRenderNode.
 //
 func (node *ContainerNode) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
@@ -1275,14 +1275,14 @@ func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - start node to be drawn.
-//    - end: node to be cross_fadeed onto the start node.
-//    - progress: how far the fade has progressed from start to end. The value
-//      will be clamped to the range [0 ... 1].
+//   - start node to be drawn.
+//   - end: node to be cross_fadeed onto the start node.
+//   - progress: how far the fade has progressed from start to end. The value
+//     will be clamped to the range [0 ... 1].
 //
 // The function returns the following values:
 //
-//    - crossFadeNode: new GskRenderNode.
+//   - crossFadeNode: new GskRenderNode.
 //
 func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 	var _arg1 *C.GskRenderNode // out
@@ -1310,7 +1310,7 @@ func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 //
 // The function returns the following values:
 //
-//    - renderNode: GskRenderNode.
+//   - renderNode: GskRenderNode.
 //
 func (node *CrossFadeNode) EndChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -1348,7 +1348,7 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - gfloat progress value, between 0 and 1.
+//   - gfloat progress value, between 0 and 1.
 //
 func (node *CrossFadeNode) Progress() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -1371,7 +1371,7 @@ func (node *CrossFadeNode) Progress() float32 {
 //
 // The function returns the following values:
 //
-//    - renderNode: GskRenderNode.
+//   - renderNode: GskRenderNode.
 //
 func (node *CrossFadeNode) StartChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -1435,12 +1435,12 @@ func marshalDebugNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - child to add debug info for.
-//    - message: debug message.
+//   - child to add debug info for.
+//   - message: debug message.
 //
 // The function returns the following values:
 //
-//    - debugNode: new GskRenderNode.
+//   - debugNode: new GskRenderNode.
 //
 func NewDebugNode(child RenderNoder, message string) *DebugNode {
 	var _arg1 *C.GskRenderNode // out
@@ -1465,7 +1465,7 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 //
 // The function returns the following values:
 //
-//    - renderNode: child GskRenderNode.
+//   - renderNode: child GskRenderNode.
 //
 func (node *DebugNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -1503,7 +1503,7 @@ func (node *DebugNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - utf8: debug message.
+//   - utf8: debug message.
 //
 func (node *DebugNode) Message() string {
 	var _arg0 *C.GskRenderNode // out
@@ -1546,8 +1546,8 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 // NewGLShaderNode creates a GskRenderNode that will render the given shader
 // into the area given by bounds.
 //
-// The args is a block of data to use for uniform input, as per types and
-// offsets defined by the shader. Normally this is generated by
+// The args is a block of data to use for uniform input, as per types
+// and offsets defined by the shader. Normally this is generated by
 // gsk.GLShader.FormatArgs() or gsk.ShaderArgsBuilder.
 //
 // See gsk.GLShader for details about how the shader should be written.
@@ -1556,22 +1556,22 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 // GskTextureNodes, which will be used directly). These textures will be sent as
 // input to the shader.
 //
-// If the renderer doesn't support GL shaders, or if there is any problem when
-// compiling the shader, then the node will draw pink. You should use
+// If the renderer doesn't support GL shaders, or if there is any problem
+// when compiling the shader, then the node will draw pink. You should use
 // gsk.GLShader.Compile() to ensure the shader will work for the renderer before
 // using it.
 //
 // The function takes the following parameters:
 //
-//    - shader: GLShader.
-//    - bounds: rectangle to render the shader into.
-//    - args arguments for the uniforms.
-//    - children: array of child nodes, these will be rendered to textures and
-//      used as input.
+//   - shader: GLShader.
+//   - bounds: rectangle to render the shader into.
+//   - args arguments for the uniforms.
+//   - children: array of child nodes, these will be rendered to textures and
+//     used as input.
 //
 // The function returns the following values:
 //
-//    - glShaderNode: new GskRenderNode.
+//   - glShaderNode: new GskRenderNode.
 //
 func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNoder) *GLShaderNode {
 	var _arg1 *C.GskGLShader     // out
@@ -1611,7 +1611,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 //
 // The function returns the following values:
 //
-//    - bytes with the uniform arguments.
+//   - bytes with the uniform arguments.
 //
 func (node *GLShaderNode) Args() *glib.Bytes {
 	var _arg0 *C.GskRenderNode // out
@@ -1640,11 +1640,11 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 //
 // The function takes the following parameters:
 //
-//    - idx: position of the child to get.
+//   - idx: position of the child to get.
 //
 // The function returns the following values:
 //
-//    - renderNode: idx'th child of node.
+//   - renderNode: idx'th child of node.
 //
 func (node *GLShaderNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -1685,7 +1685,7 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 //
 // The function returns the following values:
 //
-//    - guint: number of children.
+//   - guint: number of children.
 //
 func (node *GLShaderNode) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
@@ -1707,7 +1707,7 @@ func (node *GLShaderNode) NChildren() uint {
 //
 // The function returns the following values:
 //
-//    - glShader: GLShader shader.
+//   - glShader: GLShader shader.
 //
 func (node *GLShaderNode) Shader() *GLShader {
 	var _arg0 *C.GskRenderNode // out
@@ -1752,16 +1752,16 @@ func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - outline of the region containing the shadow.
-//    - color of the shadow.
-//    - dx: horizontal offset of shadow.
-//    - dy: vertical offset of shadow.
-//    - spread: how far the shadow spreads towards the inside.
-//    - blurRadius: how much blur to apply to the shadow.
+//   - outline of the region containing the shadow.
+//   - color of the shadow.
+//   - dx: horizontal offset of shadow.
+//   - dy: vertical offset of shadow.
+//   - spread: how far the shadow spreads towards the inside.
+//   - blurRadius: how much blur to apply to the shadow.
 //
 // The function returns the following values:
 //
-//    - insetShadowNode: new GskRenderNode.
+//   - insetShadowNode: new GskRenderNode.
 //
 func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *InsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
@@ -1798,7 +1798,7 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, b
 //
 // The function returns the following values:
 //
-//    - gfloat: blur radius, in pixels.
+//   - gfloat: blur radius, in pixels.
 //
 func (node *InsetShadowNode) BlurRadius() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -1820,7 +1820,7 @@ func (node *InsetShadowNode) BlurRadius() float32 {
 //
 // The function returns the following values:
 //
-//    - rgbA: color of the shadow.
+//   - rgbA: color of the shadow.
 //
 func (node *InsetShadowNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
@@ -1842,7 +1842,7 @@ func (node *InsetShadowNode) Color() *gdk.RGBA {
 //
 // The function returns the following values:
 //
-//    - gfloat: offset, in pixels.
+//   - gfloat: offset, in pixels.
 //
 func (node *InsetShadowNode) Dx() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -1864,7 +1864,7 @@ func (node *InsetShadowNode) Dx() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: offset, in pixels.
+//   - gfloat: offset, in pixels.
 //
 func (node *InsetShadowNode) Dy() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -1886,7 +1886,7 @@ func (node *InsetShadowNode) Dy() float32 {
 //
 // The function returns the following values:
 //
-//    - roundedRect: rounded rectangle.
+//   - roundedRect: rounded rectangle.
 //
 func (node *InsetShadowNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
@@ -1908,7 +1908,7 @@ func (node *InsetShadowNode) Outline() *RoundedRect {
 //
 // The function returns the following values:
 //
-//    - gfloat: size of the shadow, in pixels.
+//   - gfloat: size of the shadow, in pixels.
 //
 func (node *InsetShadowNode) Spread() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -1954,16 +1954,16 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - bounds: rectangle to render the linear gradient into.
-//    - start: point at which the linear gradient will begin.
-//    - end: point at which the linear gradient will finish.
-//    - colorStops: pointer to an array of GskColorStop defining the gradient.
-//      The offsets of all color stops must be increasing. The first stop's
-//      offset must be >= 0 and the last stop's offset must be <= 1.
+//   - bounds: rectangle to render the linear gradient into.
+//   - start: point at which the linear gradient will begin.
+//   - end: point at which the linear gradient will finish.
+//   - colorStops: pointer to an array of GskColorStop defining the gradient.
+//     The offsets of all color stops must be increasing. The first stop's
+//     offset must be >= 0 and the last stop's offset must be <= 1.
 //
 // The function returns the following values:
 //
-//    - linearGradientNode: new GskRenderNode.
+//   - linearGradientNode: new GskRenderNode.
 //
 func NewLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, colorStops []ColorStop) *LinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
@@ -2003,7 +2003,7 @@ func NewLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, co
 //
 // The function returns the following values:
 //
-//    - colorStops: color stops in the gradient.
+//   - colorStops: color stops in the gradient.
 //
 func (node *LinearGradientNode) ColorStops() []ColorStop {
 	var _arg0 *C.GskRenderNode // out
@@ -2032,7 +2032,7 @@ func (node *LinearGradientNode) ColorStops() []ColorStop {
 //
 // The function returns the following values:
 //
-//    - point: final point.
+//   - point: final point.
 //
 func (node *LinearGradientNode) End() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
@@ -2054,7 +2054,7 @@ func (node *LinearGradientNode) End() *graphene.Point {
 //
 // The function returns the following values:
 //
-//    - gsize: number of color stops.
+//   - gsize: number of color stops.
 //
 func (node *LinearGradientNode) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
@@ -2076,7 +2076,7 @@ func (node *LinearGradientNode) NColorStops() uint {
 //
 // The function returns the following values:
 //
-//    - point: initial point.
+//   - point: initial point.
 //
 func (node *LinearGradientNode) Start() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
@@ -2121,12 +2121,12 @@ func marshalOpacityNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - child: node to draw.
-//    - opacity to apply.
+//   - child: node to draw.
+//   - opacity to apply.
 //
 // The function returns the following values:
 //
-//    - opacityNode: new GskRenderNode.
+//   - opacityNode: new GskRenderNode.
 //
 func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 	var _arg1 *C.GskRenderNode // out
@@ -2151,7 +2151,7 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 //
 // The function returns the following values:
 //
-//    - renderNode: child that is getting opacityed.
+//   - renderNode: child that is getting opacityed.
 //
 func (node *OpacityNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -2189,7 +2189,7 @@ func (node *OpacityNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - gfloat: opacity factor.
+//   - gfloat: opacity factor.
 //
 func (node *OpacityNode) Opacity() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2234,16 +2234,16 @@ func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - outline of the region surrounded by shadow.
-//    - color of the shadow.
-//    - dx: horizontal offset of shadow.
-//    - dy: vertical offset of shadow.
-//    - spread: how far the shadow spreads towards the inside.
-//    - blurRadius: how much blur to apply to the shadow.
+//   - outline of the region surrounded by shadow.
+//   - color of the shadow.
+//   - dx: horizontal offset of shadow.
+//   - dy: vertical offset of shadow.
+//   - spread: how far the shadow spreads towards the inside.
+//   - blurRadius: how much blur to apply to the shadow.
 //
 // The function returns the following values:
 //
-//    - outsetShadowNode: new GskRenderNode.
+//   - outsetShadowNode: new GskRenderNode.
 //
 func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *OutsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
@@ -2280,7 +2280,7 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, 
 //
 // The function returns the following values:
 //
-//    - gfloat: blur radius, in pixels.
+//   - gfloat: blur radius, in pixels.
 //
 func (node *OutsetShadowNode) BlurRadius() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2302,7 +2302,7 @@ func (node *OutsetShadowNode) BlurRadius() float32 {
 //
 // The function returns the following values:
 //
-//    - rgbA: color.
+//   - rgbA: color.
 //
 func (node *OutsetShadowNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
@@ -2324,7 +2324,7 @@ func (node *OutsetShadowNode) Color() *gdk.RGBA {
 //
 // The function returns the following values:
 //
-//    - gfloat: offset, in pixels.
+//   - gfloat: offset, in pixels.
 //
 func (node *OutsetShadowNode) Dx() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2346,7 +2346,7 @@ func (node *OutsetShadowNode) Dx() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: offset, in pixels.
+//   - gfloat: offset, in pixels.
 //
 func (node *OutsetShadowNode) Dy() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2368,7 +2368,7 @@ func (node *OutsetShadowNode) Dy() float32 {
 //
 // The function returns the following values:
 //
-//    - roundedRect: rounded rectangle.
+//   - roundedRect: rounded rectangle.
 //
 func (node *OutsetShadowNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
@@ -2390,7 +2390,7 @@ func (node *OutsetShadowNode) Outline() *RoundedRect {
 //
 // The function returns the following values:
 //
-//    - gfloat: size of the shadow, in pixels.
+//   - gfloat: size of the shadow, in pixels.
 //
 func (node *OutsetShadowNode) Spread() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2438,20 +2438,20 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - bounds of the node.
-//    - center of the gradient.
-//    - hradius: horizontal radius.
-//    - vradius: vertical radius.
-//    - start: percentage >= 0 that defines the start of the gradient around
-//      center.
-//    - end: percentage >= 0 that defines the end of the gradient around center.
-//    - colorStops: pointer to an array of GskColorStop defining the gradient.
-//      The offsets of all color stops must be increasing. The first stop's
-//      offset must be >= 0 and the last stop's offset must be <= 1.
+//   - bounds of the node.
+//   - center of the gradient.
+//   - hradius: horizontal radius.
+//   - vradius: vertical radius.
+//   - start: percentage >= 0 that defines the start of the gradient around
+//     center.
+//   - end: percentage >= 0 that defines the end of the gradient around center.
+//   - colorStops: pointer to an array of GskColorStop defining the gradient.
+//     The offsets of all color stops must be increasing. The first stop's
+//     offset must be >= 0 and the last stop's offset must be <= 1.
 //
 // The function returns the following values:
 //
-//    - radialGradientNode: new GskRenderNode.
+//   - radialGradientNode: new GskRenderNode.
 //
 func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, colorStops []ColorStop) *RadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
@@ -2500,7 +2500,7 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 //
 // The function returns the following values:
 //
-//    - point: center point for the gradient.
+//   - point: center point for the gradient.
 //
 func (node *RadialGradientNode) Center() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
@@ -2522,7 +2522,7 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 //
 // The function returns the following values:
 //
-//    - colorStops: color stops in the gradient.
+//   - colorStops: color stops in the gradient.
 //
 func (node *RadialGradientNode) ColorStops() []ColorStop {
 	var _arg0 *C.GskRenderNode // out
@@ -2551,7 +2551,7 @@ func (node *RadialGradientNode) ColorStops() []ColorStop {
 //
 // The function returns the following values:
 //
-//    - gfloat: end value for the gradient.
+//   - gfloat: end value for the gradient.
 //
 func (node *RadialGradientNode) End() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2573,7 +2573,7 @@ func (node *RadialGradientNode) End() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: horizontal radius for the gradient.
+//   - gfloat: horizontal radius for the gradient.
 //
 func (node *RadialGradientNode) Hradius() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2595,7 +2595,7 @@ func (node *RadialGradientNode) Hradius() float32 {
 //
 // The function returns the following values:
 //
-//    - gsize: number of color stops.
+//   - gsize: number of color stops.
 //
 func (node *RadialGradientNode) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
@@ -2617,7 +2617,7 @@ func (node *RadialGradientNode) NColorStops() uint {
 //
 // The function returns the following values:
 //
-//    - gfloat: start value for the gradient.
+//   - gfloat: start value for the gradient.
 //
 func (node *RadialGradientNode) Start() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2639,7 +2639,7 @@ func (node *RadialGradientNode) Start() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: vertical radius for the gradient.
+//   - gfloat: vertical radius for the gradient.
 //
 func (node *RadialGradientNode) Vradius() float32 {
 	var _arg0 *C.GskRenderNode // out
@@ -2684,14 +2684,14 @@ func marshalRepeatNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - bounds of the area to be painted.
-//    - child to repeat.
-//    - childBounds (optional): area of the child to repeat or NULL to use the
-//      child's bounds.
+//   - bounds of the area to be painted.
+//   - child to repeat.
+//   - childBounds (optional): area of the child to repeat or NULL to use the
+//     child's bounds.
 //
 // The function returns the following values:
 //
-//    - repeatNode: new GskRenderNode.
+//   - repeatNode: new GskRenderNode.
 //
 func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphene.Rect) *RepeatNode {
 	var _arg1 *C.graphene_rect_t // out
@@ -2721,7 +2721,7 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 //
 // The function returns the following values:
 //
-//    - renderNode: GskRenderNode.
+//   - renderNode: GskRenderNode.
 //
 func (node *RepeatNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -2759,7 +2759,7 @@ func (node *RepeatNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - rect: bounding rectangle.
+//   - rect: bounding rectangle.
 //
 func (node *RepeatNode) ChildBounds() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
@@ -2805,16 +2805,16 @@ func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - bounds: rectangle to render the linear gradient into.
-//    - start: point at which the linear gradient will begin.
-//    - end: point at which the linear gradient will finish.
-//    - colorStops: pointer to an array of GskColorStop defining the gradient.
-//      The offsets of all color stops must be increasing. The first stop's
-//      offset must be >= 0 and the last stop's offset must be <= 1.
+//   - bounds: rectangle to render the linear gradient into.
+//   - start: point at which the linear gradient will begin.
+//   - end: point at which the linear gradient will finish.
+//   - colorStops: pointer to an array of GskColorStop defining the gradient.
+//     The offsets of all color stops must be increasing. The first stop's
+//     offset must be >= 0 and the last stop's offset must be <= 1.
 //
 // The function returns the following values:
 //
-//    - repeatingLinearGradientNode: new GskRenderNode.
+//   - repeatingLinearGradientNode: new GskRenderNode.
 //
 func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, colorStops []ColorStop) *RepeatingLinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
@@ -2881,20 +2881,20 @@ func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - bounds of the node.
-//    - center of the gradient.
-//    - hradius: horizontal radius.
-//    - vradius: vertical radius.
-//    - start: percentage >= 0 that defines the start of the gradient around
-//      center.
-//    - end: percentage >= 0 that defines the end of the gradient around center.
-//    - colorStops: pointer to an array of GskColorStop defining the gradient.
-//      The offsets of all color stops must be increasing. The first stop's
-//      offset must be >= 0 and the last stop's offset must be <= 1.
+//   - bounds of the node.
+//   - center of the gradient.
+//   - hradius: horizontal radius.
+//   - vradius: vertical radius.
+//   - start: percentage >= 0 that defines the start of the gradient around
+//     center.
+//   - end: percentage >= 0 that defines the end of the gradient around center.
+//   - colorStops: pointer to an array of GskColorStop defining the gradient.
+//     The offsets of all color stops must be increasing. The first stop's
+//     offset must be >= 0 and the last stop's offset must be <= 1.
 //
 // The function returns the following values:
 //
-//    - repeatingRadialGradientNode: new GskRenderNode.
+//   - repeatingRadialGradientNode: new GskRenderNode.
 //
 func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, colorStops []ColorStop) *RepeatingRadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
@@ -2967,12 +2967,12 @@ func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - child: node to draw.
-//    - clip to apply.
+//   - child: node to draw.
+//   - clip to apply.
 //
 // The function returns the following values:
 //
-//    - roundedClipNode: new GskRenderNode.
+//   - roundedClipNode: new GskRenderNode.
 //
 func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 	var _arg1 *C.GskRenderNode  // out
@@ -2997,7 +2997,7 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 //
 // The function returns the following values:
 //
-//    - renderNode: child that is getting clipped.
+//   - renderNode: child that is getting clipped.
 //
 func (node *RoundedClipNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -3035,7 +3035,7 @@ func (node *RoundedClipNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - roundedRect: rounded rectangle.
+//   - roundedRect: rounded rectangle.
 //
 func (node *RoundedClipNode) Clip() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
@@ -3081,12 +3081,12 @@ func marshalShadowNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - child: node to draw.
-//    - shadows to apply.
+//   - child: node to draw.
+//   - shadows to apply.
 //
 // The function returns the following values:
 //
-//    - shadowNode: new GskRenderNode.
+//   - shadowNode: new GskRenderNode.
 //
 func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 	var _arg1 *C.GskRenderNode // out
@@ -3120,7 +3120,7 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 //
 // The function returns the following values:
 //
-//    - renderNode: child render node.
+//   - renderNode: child render node.
 //
 func (node *ShadowNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -3158,7 +3158,7 @@ func (node *ShadowNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - gsize: number of shadows.
+//   - gsize: number of shadows.
 //
 func (node *ShadowNode) NShadows() uint {
 	var _arg0 *C.GskRenderNode // out
@@ -3180,11 +3180,11 @@ func (node *ShadowNode) NShadows() uint {
 //
 // The function takes the following parameters:
 //
-//    - i: given index.
+//   - i: given index.
 //
 // The function returns the following values:
 //
-//    - shadow data.
+//   - shadow data.
 //
 func (node *ShadowNode) Shadow(i uint) *Shadow {
 	var _arg0 *C.GskRenderNode // out
@@ -3233,14 +3233,14 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - font containing the glyphs.
-//    - glyphs to render.
-//    - color: foreground color to render with.
-//    - offset of the baseline.
+//   - font containing the glyphs.
+//   - glyphs to render.
+//   - color: foreground color to render with.
+//   - offset of the baseline.
 //
 // The function returns the following values:
 //
-//    - textNode (optional): new GskRenderNode.
+//   - textNode (optional): new GskRenderNode.
 //
 func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) *TextNode {
 	var _arg1 *C.PangoFont        // out
@@ -3273,7 +3273,7 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 //
 // The function returns the following values:
 //
-//    - rgbA: text color.
+//   - rgbA: text color.
 //
 func (node *TextNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
@@ -3295,7 +3295,7 @@ func (node *TextNode) Color() *gdk.RGBA {
 //
 // The function returns the following values:
 //
-//    - font: font.
+//   - font: font.
 //
 func (node *TextNode) Font() pango.Fonter {
 	var _arg0 *C.GskRenderNode // out
@@ -3333,7 +3333,7 @@ func (node *TextNode) Font() pango.Fonter {
 //
 // The function returns the following values:
 //
-//    - glyphInfos: glyph information.
+//   - glyphInfos: glyph information.
 //
 func (node *TextNode) Glyphs() []pango.GlyphInfo {
 	var _arg0 *C.GskRenderNode  // out
@@ -3362,7 +3362,7 @@ func (node *TextNode) Glyphs() []pango.GlyphInfo {
 //
 // The function returns the following values:
 //
-//    - guint: number of glyphs.
+//   - guint: number of glyphs.
 //
 func (node *TextNode) NumGlyphs() uint {
 	var _arg0 *C.GskRenderNode // out
@@ -3384,7 +3384,7 @@ func (node *TextNode) NumGlyphs() uint {
 //
 // The function returns the following values:
 //
-//    - point with the horizontal and vertical offsets.
+//   - point with the horizontal and vertical offsets.
 //
 func (node *TextNode) Offset() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
@@ -3406,7 +3406,7 @@ func (node *TextNode) Offset() *graphene.Point {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the text node has color glyphs.
+//   - ok: TRUE if the text node has color glyphs.
 //
 func (node *TextNode) HasColorGlyphs() bool {
 	var _arg0 *C.GskRenderNode // out
@@ -3453,12 +3453,12 @@ func marshalTextureNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - texture: GdkTexture.
-//    - bounds: rectangle to render the texture into.
+//   - texture: GdkTexture.
+//   - bounds: rectangle to render the texture into.
 //
 // The function returns the following values:
 //
-//    - textureNode: new GskRenderNode.
+//   - textureNode: new GskRenderNode.
 //
 func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 	var _arg1 *C.GdkTexture      // out
@@ -3483,7 +3483,7 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 //
 // The function returns the following values:
 //
-//    - texture: GdkTexture.
+//   - texture: GdkTexture.
 //
 func (node *TextureNode) Texture() gdk.Texturer {
 	var _arg0 *C.GskRenderNode // out
@@ -3544,12 +3544,12 @@ func marshalTransformNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - child: node to transform.
-//    - transform to apply.
+//   - child: node to transform.
+//   - transform to apply.
 //
 // The function returns the following values:
 //
-//    - transformNode: new GskRenderNode.
+//   - transformNode: new GskRenderNode.
 //
 func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 	var _arg1 *C.GskRenderNode // out
@@ -3574,7 +3574,7 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 //
 // The function returns the following values:
 //
-//    - renderNode: child that is getting transformed.
+//   - renderNode: child that is getting transformed.
 //
 func (node *TransformNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
@@ -3612,7 +3612,7 @@ func (node *TransformNode) Child() RenderNoder {
 //
 // The function returns the following values:
 //
-//    - transform: GskTransform.
+//   - transform: GskTransform.
 //
 func (node *TransformNode) Transform() *Transform {
 	var _arg0 *C.GskRenderNode // out

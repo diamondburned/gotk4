@@ -41,8 +41,8 @@ func init() {
 }
 
 // TableCell: being Table a component which present elements ordered via rows
-// and columns, an TableCell is the interface which each of those elements, so
-// "cells" should implement.
+// and columns, an TableCell is the interface which each of those elements,
+// so "cells" should implement.
 //
 // See also Table.
 //
@@ -93,8 +93,8 @@ func marshalTableCell(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gint representing the number of columns occupied by this cell, or 0 if
-//      the cell does not implement this method.
+//   - gint representing the number of columns occupied by this cell, or 0 if
+//     the cell does not implement this method.
 //
 func (cell *TableCell) ColumnSpan() int {
 	var _arg0 *C.AtkTableCell // out
@@ -116,9 +116,9 @@ func (cell *TableCell) ColumnSpan() int {
 //
 // The function returns the following values:
 //
-//    - row of the given cell.
-//    - column of the given cell.
-//    - ok: TRUE if successful; FALSE otherwise.
+//   - row of the given cell.
+//   - column of the given cell.
+//   - ok: TRUE if successful; FALSE otherwise.
 //
 func (cell *TableCell) Position() (row, column int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
@@ -147,17 +147,17 @@ func (cell *TableCell) Position() (row, column int, ok bool) {
 // RowColumnSpan gets the row and column indexes and span of this cell
 // accessible.
 //
-// Note: If the object does not implement this function, then, by default, atk
-// will implement this function by calling get_row_span and get_column_span on
-// the object.
+// Note: If the object does not implement this function, then, by default,
+// atk will implement this function by calling get_row_span and get_column_span
+// on the object.
 //
 // The function returns the following values:
 //
-//    - row index of the given cell.
-//    - column index of the given cell.
-//    - rowSpan: number of rows occupied by this cell.
-//    - columnSpan: number of columns occupied by this cell.
-//    - ok: TRUE if successful; FALSE otherwise.
+//   - row index of the given cell.
+//   - column index of the given cell.
+//   - rowSpan: number of rows occupied by this cell.
+//   - columnSpan: number of columns occupied by this cell.
+//   - ok: TRUE if successful; FALSE otherwise.
 //
 func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
@@ -193,8 +193,8 @@ func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int, ok
 //
 // The function returns the following values:
 //
-//    - gint representing the number of rows occupied by this cell, or 0 if the
-//      cell does not implement this method.
+//   - gint representing the number of rows occupied by this cell, or 0 if the
+//     cell does not implement this method.
 //
 func (cell *TableCell) RowSpan() int {
 	var _arg0 *C.AtkTableCell // out
@@ -216,7 +216,7 @@ func (cell *TableCell) RowSpan() int {
 //
 // The function returns the following values:
 //
-//    - object: atk object for the containing table.
+//   - object: atk object for the containing table.
 //
 func (cell *TableCell) Table() *AtkObject {
 	var _arg0 *C.AtkTableCell // out
@@ -238,8 +238,8 @@ func (cell *TableCell) Table() *AtkObject {
 //
 // The function returns the following values:
 //
-//    - gint representing the number of columns occupied by this cell, or 0 if
-//      the cell does not implement this method.
+//   - gint representing the number of columns occupied by this cell, or 0 if
+//     the cell does not implement this method.
 //
 func (cell *TableCell) columnSpan() int {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
@@ -264,9 +264,9 @@ func (cell *TableCell) columnSpan() int {
 //
 // The function returns the following values:
 //
-//    - row of the given cell.
-//    - column of the given cell.
-//    - ok: TRUE if successful; FALSE otherwise.
+//   - row of the given cell.
+//   - column of the given cell.
+//   - ok: TRUE if successful; FALSE otherwise.
 //
 func (cell *TableCell) position() (row, column int, ok bool) {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
@@ -298,17 +298,17 @@ func (cell *TableCell) position() (row, column int, ok bool) {
 // rowColumnSpan gets the row and column indexes and span of this cell
 // accessible.
 //
-// Note: If the object does not implement this function, then, by default, atk
-// will implement this function by calling get_row_span and get_column_span on
-// the object.
+// Note: If the object does not implement this function, then, by default,
+// atk will implement this function by calling get_row_span and get_column_span
+// on the object.
 //
 // The function returns the following values:
 //
-//    - row index of the given cell.
-//    - column index of the given cell.
-//    - rowSpan: number of rows occupied by this cell.
-//    - columnSpan: number of columns occupied by this cell.
-//    - ok: TRUE if successful; FALSE otherwise.
+//   - row index of the given cell.
+//   - column index of the given cell.
+//   - rowSpan: number of rows occupied by this cell.
+//   - columnSpan: number of columns occupied by this cell.
+//   - ok: TRUE if successful; FALSE otherwise.
 //
 func (cell *TableCell) rowColumnSpan() (row, column, rowSpan, columnSpan int, ok bool) {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
@@ -347,8 +347,8 @@ func (cell *TableCell) rowColumnSpan() (row, column, rowSpan, columnSpan int, ok
 //
 // The function returns the following values:
 //
-//    - gint representing the number of rows occupied by this cell, or 0 if the
-//      cell does not implement this method.
+//   - gint representing the number of rows occupied by this cell, or 0 if the
+//     cell does not implement this method.
 //
 func (cell *TableCell) rowSpan() int {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
@@ -373,7 +373,7 @@ func (cell *TableCell) rowSpan() int {
 //
 // The function returns the following values:
 //
-//    - object: atk object for the containing table.
+//   - object: atk object for the containing table.
 //
 func (cell *TableCell) table() *AtkObject {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))

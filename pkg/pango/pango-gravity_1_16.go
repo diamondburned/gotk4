@@ -32,13 +32,13 @@ func init() {
 // Gravity: PangoGravity represents the orientation of glyphs in a segment of
 // text.
 //
-// This is useful when rendering vertical text layouts. In those situations, the
-// layout is rotated using a non-identity pango.Matrix, and then glyph
+// This is useful when rendering vertical text layouts. In those situations,
+// the layout is rotated using a non-identity pango.Matrix, and then glyph
 // orientation is controlled using PangoGravity.
 //
 // Not every value in this enumeration makes sense for every usage of
-// PangoGravity; for example, PANGO_GRAVITY_AUTO only can be passed to
-// pango.Context.SetBaseGravity() and can only be returned by
+// PangoGravity; for example, PANGO_GRAVITY_AUTO only can be passed
+// to pango.Context.SetBaseGravity() and can only be returned by
 // pango.Context.GetBaseGravity().
 //
 // See also: pango.GravityHint.
@@ -84,12 +84,12 @@ func (g Gravity) String() string {
 //
 // The function takes the following parameters:
 //
-//    - matrix (optional): PangoMatrix.
+//   - matrix (optional): PangoMatrix.
 //
 // The function returns the following values:
 //
-//    - gravity of matrix, which will never be PANGO_GRAVITY_AUTO, or
-//      PANGO_GRAVITY_SOUTH if matrix is NULL.
+//   - gravity of matrix, which will never be PANGO_GRAVITY_AUTO, or
+//     PANGO_GRAVITY_SOUTH if matrix is NULL.
 //
 func GravityGetForMatrix(matrix *Matrix) Gravity {
 	var _arg1 *C.PangoMatrix // out
@@ -114,18 +114,18 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 // The gravity is determined based on the script, base gravity, and hint.
 //
 // If base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
-// preferred gravity of script. To get the preferred gravity of a script, pass
-// PANGO_GRAVITY_AUTO and PANGO_GRAVITY_HINT_STRONG in.
+// preferred gravity of script. To get the preferred gravity of a script,
+// pass PANGO_GRAVITY_AUTO and PANGO_GRAVITY_HINT_STRONG in.
 //
 // The function takes the following parameters:
 //
-//    - script to query.
-//    - baseGravity: base gravity of the paragraph.
-//    - hint: orientation hint.
+//   - script to query.
+//   - baseGravity: base gravity of the paragraph.
+//   - hint: orientation hint.
 //
 // The function returns the following values:
 //
-//    - gravity: resolved gravity suitable to use for a run of text with script.
+//   - gravity: resolved gravity suitable to use for a run of text with script.
 //
 func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
@@ -152,17 +152,17 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 // GravityToRotation converts a Gravity value to its natural rotation in
 // radians.
 //
-// Note that pango.Matrix.Rotate() takes angle in degrees, not radians. So, to
-// call pango.Matrix,rotate with the output of this function you should multiply
-// it by (180. / G_PI).
+// Note that pango.Matrix.Rotate() takes angle in degrees, not radians. So,
+// to call pango.Matrix,rotate with the output of this function you should
+// multiply it by (180. / G_PI).
 //
 // The function takes the following parameters:
 //
-//    - gravity to query, should not be PANGO_GRAVITY_AUTO.
+//   - gravity to query, should not be PANGO_GRAVITY_AUTO.
 //
 // The function returns the following values:
 //
-//    - gdouble: rotation value corresponding to gravity.
+//   - gdouble: rotation value corresponding to gravity.
 //
 func GravityToRotation(gravity Gravity) float64 {
 	var _arg1 C.PangoGravity // out

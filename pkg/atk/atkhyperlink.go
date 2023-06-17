@@ -117,14 +117,14 @@ type HyperlinkOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - gint: index with the hypertext document at which this link ends.
+	//   - gint: index with the hypertext document at which this link ends.
 	//
 	EndIndex func() int
 	// NAnchors gets the number of anchors associated with this hyperlink.
 	//
 	// The function returns the following values:
 	//
-	//    - gint: number of anchors associated with this hyperlink.
+	//   - gint: number of anchors associated with this hyperlink.
 	//
 	NAnchors func() int
 	// GetObject returns the item associated with this hyperlinks nth anchor.
@@ -135,11 +135,11 @@ type HyperlinkOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - i: (zero-index) integer specifying the desired anchor.
+	//   - i: (zero-index) integer specifying the desired anchor.
 	//
 	// The function returns the following values:
 	//
-	//    - object associated with this hyperlinks i-th anchor.
+	//   - object associated with this hyperlinks i-th anchor.
 	//
 	GetObject func(i int) *AtkObject
 	// StartIndex gets the index with the hypertext document at which this link
@@ -147,7 +147,7 @@ type HyperlinkOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - gint: index with the hypertext document at which this link begins.
+	//   - gint: index with the hypertext document at which this link begins.
 	//
 	StartIndex func() int
 	// URI: get a the URI associated with the anchor specified by i of link_.
@@ -156,11 +156,11 @@ type HyperlinkOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - i: (zero-index) integer specifying the desired anchor.
+	//   - i: (zero-index) integer specifying the desired anchor.
 	//
 	// The function returns the following values:
 	//
-	//    - utf8: string specifying the URI.
+	//   - utf8: string specifying the URI.
 	//
 	URI func(i int) string
 	// IsSelectedLink determines whether this AtkHyperlink is selected
@@ -170,7 +170,7 @@ type HyperlinkOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: true if the AtkHyperlink is selected, False otherwise.
+	//   - ok: true if the AtkHyperlink is selected, False otherwise.
 	//
 	IsSelectedLink func() bool
 	// IsValid: since the document that a link is associated with may have
@@ -179,7 +179,7 @@ type HyperlinkOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether or not this link is still valid.
+	//   - ok: whether or not this link is still valid.
 	//
 	IsValid       func() bool
 	LinkActivated func()
@@ -202,11 +202,11 @@ func defaultHyperlinkOverrides(v *Hyperlink) HyperlinkOverrides {
 	}
 }
 
-// Hyperlink: ATK object which encapsulates a link or set of links (for instance
-// in the case of client-side image maps) in a hypertext document. It may
-// implement the AtkAction interface. AtkHyperlink may also be used to refer to
-// inline embedded content, since it allows specification of a start and end
-// offset within the host AtkHypertext object.
+// Hyperlink: ATK object which encapsulates a link or set of links (for
+// instance in the case of client-side image maps) in a hypertext document.
+// It may implement the AtkAction interface. AtkHyperlink may also be used to
+// refer to inline embedded content, since it allows specification of a start
+// and end offset within the host AtkHypertext object.
 type Hyperlink struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -295,7 +295,7 @@ func (link_ *Hyperlink) ConnectLinkActivated(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - gint: index with the hypertext document at which this link ends.
+//   - gint: index with the hypertext document at which this link ends.
 //
 func (link_ *Hyperlink) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
@@ -317,7 +317,7 @@ func (link_ *Hyperlink) EndIndex() int {
 //
 // The function returns the following values:
 //
-//    - gint: number of anchors associated with this hyperlink.
+//   - gint: number of anchors associated with this hyperlink.
 //
 func (link_ *Hyperlink) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
@@ -335,19 +335,19 @@ func (link_ *Hyperlink) NAnchors() int {
 	return _gint
 }
 
-// GetObject returns the item associated with this hyperlinks nth anchor. For
-// instance, the returned Object will implement Text if link_ is a text
+// GetObject returns the item associated with this hyperlinks nth anchor.
+// For instance, the returned Object will implement Text if link_ is a text
 // hyperlink, Image if link_ is an image hyperlink etc.
 //
 // Multiple anchors are primarily used by client-side image maps.
 //
 // The function takes the following parameters:
 //
-//    - i: (zero-index) integer specifying the desired anchor.
+//   - i: (zero-index) integer specifying the desired anchor.
 //
 // The function returns the following values:
 //
-//    - object associated with this hyperlinks i-th anchor.
+//   - object associated with this hyperlinks i-th anchor.
 //
 func (link_ *Hyperlink) GetObject(i int) *AtkObject {
 	var _arg0 *C.AtkHyperlink // out
@@ -373,7 +373,7 @@ func (link_ *Hyperlink) GetObject(i int) *AtkObject {
 //
 // The function returns the following values:
 //
-//    - gint: index with the hypertext document at which this link begins.
+//   - gint: index with the hypertext document at which this link begins.
 //
 func (link_ *Hyperlink) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
@@ -397,11 +397,11 @@ func (link_ *Hyperlink) StartIndex() int {
 //
 // The function takes the following parameters:
 //
-//    - i: (zero-index) integer specifying the desired anchor.
+//   - i: (zero-index) integer specifying the desired anchor.
 //
 // The function returns the following values:
 //
-//    - utf8: string specifying the URI.
+//   - utf8: string specifying the URI.
 //
 func (link_ *Hyperlink) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
@@ -429,7 +429,7 @@ func (link_ *Hyperlink) URI(i int) string {
 //
 // The function returns the following values:
 //
-//    - ok: whether or not this link displays its content inline.
+//   - ok: whether or not this link displays its content inline.
 //
 func (link_ *Hyperlink) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
@@ -456,7 +456,7 @@ func (link_ *Hyperlink) IsInline() bool {
 //
 // The function returns the following values:
 //
-//    - ok: true if the AtkHyperlink is selected, False otherwise.
+//   - ok: true if the AtkHyperlink is selected, False otherwise.
 //
 func (link_ *Hyperlink) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
@@ -482,7 +482,7 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether or not this link is still valid.
+//   - ok: whether or not this link is still valid.
 //
 func (link_ *Hyperlink) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
@@ -506,7 +506,7 @@ func (link_ *Hyperlink) IsValid() bool {
 //
 // The function returns the following values:
 //
-//    - gint: index with the hypertext document at which this link ends.
+//   - gint: index with the hypertext document at which this link ends.
 //
 func (link_ *Hyperlink) endIndex() int {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
@@ -531,7 +531,7 @@ func (link_ *Hyperlink) endIndex() int {
 //
 // The function returns the following values:
 //
-//    - gint: number of anchors associated with this hyperlink.
+//   - gint: number of anchors associated with this hyperlink.
 //
 func (link_ *Hyperlink) nAnchors() int {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
@@ -552,19 +552,19 @@ func (link_ *Hyperlink) nAnchors() int {
 	return _gint
 }
 
-// getObject returns the item associated with this hyperlinks nth anchor. For
-// instance, the returned Object will implement Text if link_ is a text
+// getObject returns the item associated with this hyperlinks nth anchor.
+// For instance, the returned Object will implement Text if link_ is a text
 // hyperlink, Image if link_ is an image hyperlink etc.
 //
 // Multiple anchors are primarily used by client-side image maps.
 //
 // The function takes the following parameters:
 //
-//    - i: (zero-index) integer specifying the desired anchor.
+//   - i: (zero-index) integer specifying the desired anchor.
 //
 // The function returns the following values:
 //
-//    - object associated with this hyperlinks i-th anchor.
+//   - object associated with this hyperlinks i-th anchor.
 //
 func (link_ *Hyperlink) getObject(i int) *AtkObject {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
@@ -593,7 +593,7 @@ func (link_ *Hyperlink) getObject(i int) *AtkObject {
 //
 // The function returns the following values:
 //
-//    - gint: index with the hypertext document at which this link begins.
+//   - gint: index with the hypertext document at which this link begins.
 //
 func (link_ *Hyperlink) startIndex() int {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
@@ -620,11 +620,11 @@ func (link_ *Hyperlink) startIndex() int {
 //
 // The function takes the following parameters:
 //
-//    - i: (zero-index) integer specifying the desired anchor.
+//   - i: (zero-index) integer specifying the desired anchor.
 //
 // The function returns the following values:
 //
-//    - utf8: string specifying the URI.
+//   - utf8: string specifying the URI.
 //
 func (link_ *Hyperlink) urI(i int) string {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
@@ -656,7 +656,7 @@ func (link_ *Hyperlink) urI(i int) string {
 //
 // The function returns the following values:
 //
-//    - ok: true if the AtkHyperlink is selected, False otherwise.
+//   - ok: true if the AtkHyperlink is selected, False otherwise.
 //
 func (link_ *Hyperlink) isSelectedLink() bool {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
@@ -685,7 +685,7 @@ func (link_ *Hyperlink) isSelectedLink() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether or not this link is still valid.
+//   - ok: whether or not this link is still valid.
 //
 func (link_ *Hyperlink) isValid() bool {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))

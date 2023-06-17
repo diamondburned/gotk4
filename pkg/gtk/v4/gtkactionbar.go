@@ -33,12 +33,11 @@ func init() {
 // fill the area.
 //
 // It allows placing children at the start or the end. In addition, it contains
-// an internal centered box which is centered with respect to the full width of
-// the box, even if the children at either side take up different amounts of
+// an internal centered box which is centered with respect to the full width
+// of the box, even if the children at either side take up different amounts of
 // space.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkActionBar has a single CSS node with name actionbar.
 type ActionBar struct {
@@ -78,7 +77,7 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - actionBar: new GtkActionBar.
+//   - actionBar: new GtkActionBar.
 //
 func NewActionBar() *ActionBar {
 	var _cret *C.GtkWidget // in
@@ -96,7 +95,7 @@ func NewActionBar() *ActionBar {
 //
 // The function returns the following values:
 //
-//    - widget (optional): center GtkWidget or NULL.
+//   - widget (optional): center GtkWidget or NULL.
 //
 func (actionBar *ActionBar) CenterWidget() Widgetter {
 	var _arg0 *C.GtkActionBar // out
@@ -133,7 +132,7 @@ func (actionBar *ActionBar) CenterWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: current value of the gtk.ActionBar:revealed property.
+//   - ok: current value of the gtk.ActionBar:revealed property.
 //
 func (actionBar *ActionBar) Revealed() bool {
 	var _arg0 *C.GtkActionBar // out
@@ -158,7 +157,7 @@ func (actionBar *ActionBar) Revealed() bool {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to be added to action_bar.
+//   - child: GtkWidget to be added to action_bar.
 //
 func (actionBar *ActionBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
@@ -177,7 +176,7 @@ func (actionBar *ActionBar) PackEnd(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to be added to action_bar.
+//   - child: GtkWidget to be added to action_bar.
 //
 func (actionBar *ActionBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
@@ -195,7 +194,7 @@ func (actionBar *ActionBar) PackStart(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to be removed.
+//   - child: GtkWidget to be removed.
 //
 func (actionBar *ActionBar) Remove(child Widgetter) {
 	var _arg0 *C.GtkActionBar // out
@@ -213,7 +212,7 @@ func (actionBar *ActionBar) Remove(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - centerWidget (optional): widget to use for the center.
+//   - centerWidget (optional): widget to use for the center.
 //
 func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 	var _arg0 *C.GtkActionBar // out
@@ -236,7 +235,7 @@ func (actionBar *ActionBar) SetCenterWidget(centerWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - revealed: new value of the property.
+//   - revealed: new value of the property.
 //
 func (actionBar *ActionBar) SetRevealed(revealed bool) {
 	var _arg0 *C.GtkActionBar // out

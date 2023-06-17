@@ -44,30 +44,30 @@ const MINOR_VERSION = 2
 // that produces a check that the library in use is compatible with the version
 // of GTK the application or module was compiled against.
 //
-// Compatibility is defined by two things: first the version of the running
-// library is newer than the version
-// required_major.required_minor.required_micro. Second the running library must
-// be binary compatible with the version
+// Compatibility is defined by two things: first the
+// version of the running library is newer than the version
+// required_major.required_minor.required_micro. Second the
+// running library must be binary compatible with the version
 // required_major.required_minor.required_micro (same major version.)
 //
-// This function is primarily for GTK modules; the module can call this function
-// to check that it wasn’t loaded into an incompatible version of GTK. However,
-// such a check isn’t completely reliable, since the module may be linked
-// against an old version of GTK and calling the old version of
+// This function is primarily for GTK modules; the module can call this
+// function to check that it wasn’t loaded into an incompatible version of GTK.
+// However, such a check isn’t completely reliable, since the module may
+// be linked against an old version of GTK and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK.
 //
 // The function takes the following parameters:
 //
-//    - requiredMajor: required major version.
-//    - requiredMinor: required minor version.
-//    - requiredMicro: required micro version.
+//   - requiredMajor: required major version.
+//   - requiredMinor: required minor version.
+//   - requiredMicro: required micro version.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): NULL if the GTK library is compatible with the given
-//      version, or a string describing the version mismatch. The returned string
-//      is owned by GTK and should not be modified or freed.
+//   - utf8 (optional): NULL if the GTK library is compatible with the given
+//     version, or a string describing the version mismatch. The returned string
+//     is owned by GTK and should not be modified or freed.
 //
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint // out
@@ -99,7 +99,7 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 //
 // The function returns the following values:
 //
-//    - guint: binary age of the GTK library.
+//   - guint: binary age of the GTK library.
 //
 func GetBinaryAge() uint {
 	var _cret C.guint // in
@@ -119,7 +119,7 @@ func GetBinaryAge() uint {
 //
 // The function returns the following values:
 //
-//    - guint: interface age of the GTK library.
+//   - guint: interface age of the GTK library.
 //
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
@@ -137,14 +137,14 @@ func GetInterfaceAge() uint {
 //
 // For example, in GTK version 3.1.5 this is 3.
 //
-// This function is in the library, so it represents the GTK library your code
-// is running against. Contrast with the GTK_MAJOR_VERSION macro, which
-// represents the major version of the GTK headers you have included when
+// This function is in the library, so it represents the GTK library your
+// code is running against. Contrast with the GTK_MAJOR_VERSION macro,
+// which represents the major version of the GTK headers you have included when
 // compiling your code.
 //
 // The function returns the following values:
 //
-//    - guint: major version number of the GTK library.
+//   - guint: major version number of the GTK library.
 //
 func GetMajorVersion() uint {
 	var _cret C.guint // in
@@ -162,14 +162,14 @@ func GetMajorVersion() uint {
 //
 // For example, in GTK version 3.1.5 this is 5.
 //
-// This function is in the library, so it represents the GTK library your code
-// is are running against. Contrast with the GTK_MICRO_VERSION macro, which
-// represents the micro version of the GTK headers you have included when
+// This function is in the library, so it represents the GTK library your
+// code is are running against. Contrast with the GTK_MICRO_VERSION macro,
+// which represents the micro version of the GTK headers you have included when
 // compiling your code.
 //
 // The function returns the following values:
 //
-//    - guint: micro version number of the GTK library.
+//   - guint: micro version number of the GTK library.
 //
 func GetMicroVersion() uint {
 	var _cret C.guint // in
@@ -187,14 +187,14 @@ func GetMicroVersion() uint {
 //
 // For example, in GTK version 3.1.5 this is 1.
 //
-// This function is in the library, so it represents the GTK library your code
-// is are running against. Contrast with the GTK_MINOR_VERSION macro, which
-// represents the minor version of the GTK headers you have included when
+// This function is in the library, so it represents the GTK library your
+// code is are running against. Contrast with the GTK_MINOR_VERSION macro,
+// which represents the minor version of the GTK headers you have included when
 // compiling your code.
 //
 // The function returns the following values:
 //
-//    - guint: minor version number of the GTK library.
+//   - guint: minor version number of the GTK library.
 //
 func GetMinorVersion() uint {
 	var _cret C.guint // in

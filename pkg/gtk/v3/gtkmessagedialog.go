@@ -35,8 +35,8 @@ func init() {
 	})
 }
 
-// ButtonsType: prebuilt sets of buttons for the dialog. If none of these
-// choices are appropriate, simply use GTK_BUTTONS_NONE then call
+// ButtonsType: prebuilt sets of buttons for the dialog. If none of
+// these choices are appropriate, simply use GTK_BUTTONS_NONE then call
 // gtk_dialog_add_buttons().
 //
 // > Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO > and
@@ -106,24 +106,23 @@ func defaultMessageDialogOverrides(v *MessageDialog) MessageDialogOverrides {
 //
 // An example for using a modal dialog:
 //
-//     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-//     dialog = gtk_message_dialog_new (parent_window,
-//                                      flags,
-//                                      GTK_MESSAGE_ERROR,
-//                                      GTK_BUTTONS_CLOSE,
-//                                      "Error reading “s”: s",
-//                                      filename,
-//                                      g_strerror (errno));
+//    GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+//    dialog = gtk_message_dialog_new (parent_window,
+//                                     flags,
+//                                     GTK_MESSAGE_ERROR,
+//                                     GTK_BUTTONS_CLOSE,
+//                                     "Error reading “s”: s",
+//                                     filename,
+//                                     g_strerror (errno));
 //
-//     // Destroy the dialog when the user responds to it
-//     // (e.g. clicks a button)
+//    // Destroy the dialog when the user responds to it
+//    // (e.g. clicks a button)
 //
-//     g_signal_connect_swapped (dialog, "response",
-//                               G_CALLBACK (gtk_widget_destroy),
-//                               dialog);
+//    g_signal_connect_swapped (dialog, "response",
+//                              G_CALLBACK (gtk_widget_destroy),
+//                              dialog);
 //
-//
-// GtkMessageDialog as GtkBuildable
+// # GtkMessageDialog as GtkBuildable
 //
 // The GtkMessageDialog implementation of the GtkBuildable interface exposes the
 // message area as an internal child with the name “message_area”.
@@ -187,7 +186,7 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - widget dialog’s image.
+//   - widget dialog’s image.
 //
 func (dialog *MessageDialog) Image() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
@@ -221,15 +220,15 @@ func (dialog *MessageDialog) Image() Widgetter {
 	return _widget
 }
 
-// MessageArea returns the message area of the dialog. This is the box where the
-// dialog’s primary and secondary labels are packed. You can add your own extra
-// content to that box and it will appear below those labels. See
+// MessageArea returns the message area of the dialog. This is the box where
+// the dialog’s primary and secondary labels are packed. You can add your
+// own extra content to that box and it will appear below those labels. See
 // gtk_dialog_get_content_area() for the corresponding function in the parent
 // Dialog.
 //
 // The function returns the following values:
 //
-//    - widget corresponding to the “message area” in the message_dialog.
+//   - widget corresponding to the “message area” in the message_dialog.
 //
 func (messageDialog *MessageDialog) MessageArea() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
@@ -269,7 +268,7 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - image: image.
+//   - image: image.
 //
 func (dialog *MessageDialog) SetImage(image Widgetter) {
 	var _arg0 *C.GtkMessageDialog // out
@@ -288,7 +287,7 @@ func (dialog *MessageDialog) SetImage(image Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - str: markup string (see [Pango markup format][PangoMarkupFormat]).
+//   - str: markup string (see [Pango markup format][PangoMarkupFormat]).
 //
 func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out

@@ -22,11 +22,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - list: TargetList.
+//   - list: TargetList.
 //
 // The function returns the following values:
 //
-//    - targetEntrys: new table.
+//   - targetEntrys: new table.
 //
 func TargetTableNewFromList(list *TargetList) []TargetEntry {
 	var _arg1 *C.GtkTargetList  // out

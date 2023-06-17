@@ -56,8 +56,7 @@ func defaultFileChooserNativeOverrides(v *FileChooserNative) FileChooserNativeOv
 // toplevel widgets, and GTK does not keep them alive. It is your responsibility
 // to keep a reference until you are done with the object.
 //
-//
-// Typical usage
+// # Typical usage
 //
 // In the simplest of cases, you can the following code to use
 // GtkFileChooserNative to select a file for opening:
@@ -91,7 +90,6 @@ func defaultFileChooserNativeOverrides(v *FileChooserNative) FileChooserNativeOv
 //
 //      g_signal_connect (native, "response", G_CALLBACK (on_response), NULL);
 //      gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));
-//
 //
 // To use a GtkFileChooserNative for saving, you can use this:
 //
@@ -132,30 +130,26 @@ func defaultFileChooserNativeOverrides(v *FileChooserNative) FileChooserNativeOv
 //      g_signal_connect (native, "response", G_CALLBACK (on_response), NULL);
 //      gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));
 //
-//
 // For more information on how to best set up a file dialog, see the
 // gtk.FileChooserDialog documentation.
 //
-//
-// Response Codes
+// # Response Codes
 //
 // GtkFileChooserNative inherits from gtk.NativeDialog, which means it will
 // return GTK_RESPONSE_ACCEPT if the user accepted, and GTK_RESPONSE_CANCEL if
 // he pressed cancel. It can also return GTK_RESPONSE_DELETE_EVENT if the window
 // was unexpectedly closed.
 //
-//
-// Differences from FileChooserDialog
+// # Differences from FileChooserDialog
 //
 // There are a few things in the gtk.FileChooser interface that are not possible
 // to use with GtkFileChooserNative, as such use would prohibit the use of a
 // native dialog.
 //
-// No operations that change the dialog work while the dialog is visible. Set
-// all the properties that are required before showing the dialog.
+// No operations that change the dialog work while the dialog is visible.
+// Set all the properties that are required before showing the dialog.
 //
-//
-// Win32 details
+// # Win32 details
 //
 // On windows the IFileDialog implementation (added in Windows Vista) is used.
 // It supports many of the features that GtkFileChooser has, but there are some
@@ -166,8 +160,7 @@ func defaultFileChooserNativeOverrides(v *FileChooserNative) FileChooserNativeOv
 // If any of these features are used the regular GtkFileChooserDialog will be
 // used in place of the native one.
 //
-//
-// Portal details
+// # Portal details
 //
 // When the org.freedesktop.portal.FileChooser portal is available on the
 // session bus, it is used to bring up an out-of-process file chooser. Depending
@@ -230,17 +223,17 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title (optional): title of the native, or NULL.
-//    - parent (optional): transient parent of the native, or NULL.
-//    - action: open or save mode for the dialog.
-//    - acceptLabel (optional): text to go in the accept button, or NULL for the
-//      default.
-//    - cancelLabel (optional): text to go in the cancel button, or NULL for the
-//      default.
+//   - title (optional): title of the native, or NULL.
+//   - parent (optional): transient parent of the native, or NULL.
+//   - action: open or save mode for the dialog.
+//   - acceptLabel (optional): text to go in the accept button, or NULL for the
+//     default.
+//   - cancelLabel (optional): text to go in the cancel button, or NULL for the
+//     default.
 //
 // The function returns the following values:
 //
-//    - fileChooserNative: new GtkFileChooserNative.
+//   - fileChooserNative: new GtkFileChooserNative.
 //
 func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel, cancelLabel string) *FileChooserNative {
 	var _arg1 *C.char                 // out
@@ -285,8 +278,8 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): custom label, or NULL for the default. This string is
-//      owned by GTK and should not be modified or freed.
+//   - utf8 (optional): custom label, or NULL for the default. This string is
+//     owned by GTK and should not be modified or freed.
 //
 func (self *FileChooserNative) AcceptLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
@@ -310,8 +303,8 @@ func (self *FileChooserNative) AcceptLabel() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): custom label, or NULL for the default. This string is
-//      owned by GTK and should not be modified or freed.
+//   - utf8 (optional): custom label, or NULL for the default. This string is
+//     owned by GTK and should not be modified or freed.
 //
 func (self *FileChooserNative) CancelLabel() string {
 	var _arg0 *C.GtkFileChooserNative // out
@@ -333,8 +326,8 @@ func (self *FileChooserNative) CancelLabel() string {
 
 // SetAcceptLabel sets the custom label text for the accept button.
 //
-// If characters in label are preceded by an underscore, they are underlined. If
-// you need a literal underscore character in a label, use “__” (two
+// If characters in label are preceded by an underscore, they are underlined.
+// If you need a literal underscore character in a label, use “__” (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic.
 //
@@ -342,7 +335,7 @@ func (self *FileChooserNative) CancelLabel() string {
 //
 // The function takes the following parameters:
 //
-//    - acceptLabel (optional): custom label or NULL for the default.
+//   - acceptLabel (optional): custom label or NULL for the default.
 //
 func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out
@@ -361,8 +354,8 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 
 // SetCancelLabel sets the custom label text for the cancel button.
 //
-// If characters in label are preceded by an underscore, they are underlined. If
-// you need a literal underscore character in a label, use “__” (two
+// If characters in label are preceded by an underscore, they are underlined.
+// If you need a literal underscore character in a label, use “__” (two
 // underscores). The first underlined character represents a keyboard
 // accelerator called a mnemonic.
 //
@@ -370,7 +363,7 @@ func (self *FileChooserNative) SetAcceptLabel(acceptLabel string) {
 //
 // The function takes the following parameters:
 //
-//    - cancelLabel (optional): custom label or NULL for the default.
+//   - cancelLabel (optional): custom label or NULL for the default.
 //
 func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 	var _arg0 *C.GtkFileChooserNative // out

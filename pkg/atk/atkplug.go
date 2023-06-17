@@ -98,7 +98,7 @@ func marshalPlug(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - plug: newly created Plug.
+//   - plug: newly created Plug.
 //
 func NewPlug() *Plug {
 	var _cret *C.AtkObject // in
@@ -122,7 +122,7 @@ func NewPlug() *Plug {
 //
 // The function returns the following values:
 //
-//    - utf8: unique ID for the plug.
+//   - utf8: unique ID for the plug.
 //
 func (plug *Plug) ID() string {
 	var _arg0 *C.AtkPlug // out
@@ -153,7 +153,7 @@ func (plug *Plug) ID() string {
 //
 // The function takes the following parameters:
 //
-//    - child to be set as accessible child of plug.
+//   - child to be set as accessible child of plug.
 //
 func (plug *Plug) SetChild(child *AtkObject) {
 	var _arg0 *C.AtkPlug   // out

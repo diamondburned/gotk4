@@ -124,11 +124,11 @@ func marshalAccelLabel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - str: label string. Must be non-NULL.
+//   - str: label string. Must be non-NULL.
 //
 // The function returns the following values:
 //
-//    - accelLabel: new AccelLabel.
+//   - accelLabel: new AccelLabel.
 //
 func NewAccelLabel(str string) *AccelLabel {
 	var _arg1 *C.gchar     // out
@@ -151,8 +151,8 @@ func NewAccelLabel(str string) *AccelLabel {
 //
 // The function returns the following values:
 //
-//    - acceleratorKey: return location for the keyval.
-//    - acceleratorMods: return location for the modifier mask.
+//   - acceleratorKey: return location for the keyval.
+//   - acceleratorMods: return location for the modifier mask.
 //
 func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
@@ -173,12 +173,12 @@ func (accelLabel *AccelLabel) Accel() (uint, gdk.ModifierType) {
 	return _acceleratorKey, _acceleratorMods
 }
 
-// AccelWidget fetches the widget monitored by this accelerator label. See
-// gtk_accel_label_set_accel_widget().
+// AccelWidget fetches the widget monitored by this accelerator label.
+// See gtk_accel_label_set_accel_widget().
 //
 // The function returns the following values:
 //
-//    - widget (optional): object monitored by the accelerator label, or NULL.
+//   - widget (optional): object monitored by the accelerator label, or NULL.
 //
 func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 	var _arg0 *C.GtkAccelLabel // out
@@ -211,13 +211,13 @@ func (accelLabel *AccelLabel) AccelWidget() Widgetter {
 	return _widget
 }
 
-// AccelWidth returns the width needed to display the accelerator key(s). This
-// is used by menus to align all of the MenuItem widgets, and shouldn't be
+// AccelWidth returns the width needed to display the accelerator key(s).
+// This is used by menus to align all of the MenuItem widgets, and shouldn't be
 // needed by applications.
 //
 // The function returns the following values:
 //
-//    - guint: width needed to display the accelerator key(s).
+//   - guint: width needed to display the accelerator key(s).
 //
 func (accelLabel *AccelLabel) AccelWidth() uint {
 	var _arg0 *C.GtkAccelLabel // out
@@ -241,7 +241,7 @@ func (accelLabel *AccelLabel) AccelWidth() uint {
 //
 // The function returns the following values:
 //
-//    - ok always returns FALSE.
+//   - ok always returns FALSE.
 //
 func (accelLabel *AccelLabel) Refetch() bool {
 	var _arg0 *C.GtkAccelLabel // out
@@ -271,8 +271,8 @@ func (accelLabel *AccelLabel) Refetch() bool {
 //
 // The function takes the following parameters:
 //
-//    - acceleratorKey: keyval, or 0.
-//    - acceleratorMods: modifier mask for the accel.
+//   - acceleratorKey: keyval, or 0.
+//   - acceleratorMods: modifier mask for the accel.
 //
 func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
 	var _arg0 *C.GtkAccelLabel  // out
@@ -289,15 +289,15 @@ func (accelLabel *AccelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.
 	runtime.KeepAlive(acceleratorMods)
 }
 
-// SetAccelClosure sets the closure to be monitored by this accelerator label.
-// The closure must be connected to an accelerator group; see
+// SetAccelClosure sets the closure to be monitored by this accelerator
+// label. The closure must be connected to an accelerator group; see
 // gtk_accel_group_connect(). Passing NULL for accel_closure will dissociate
 // accel_label from its current closure, if any.
 //
 // The function takes the following parameters:
 //
-//    - accelClosure (optional): closure to monitor for accelerator changes, or
-//      NULL.
+//   - accelClosure (optional): closure to monitor for accelerator changes,
+//     or NULL.
 //
 func (accelLabel *AccelLabel) SetAccelClosure(accelClosure coreglib.AnyClosure) {
 	var _arg0 *C.GtkAccelLabel // out
@@ -317,7 +317,7 @@ func (accelLabel *AccelLabel) SetAccelClosure(accelClosure coreglib.AnyClosure) 
 //
 // The function takes the following parameters:
 //
-//    - accelWidget (optional): widget to be monitored, or NULL.
+//   - accelWidget (optional): widget to be monitored, or NULL.
 //
 func (accelLabel *AccelLabel) SetAccelWidget(accelWidget Widgetter) {
 	var _arg0 *C.GtkAccelLabel // out

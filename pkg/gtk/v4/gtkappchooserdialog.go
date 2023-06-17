@@ -31,8 +31,8 @@ func init() {
 //
 // !An example GtkAppChooserDialog (appchooserdialog.png)
 //
-// Note that GtkAppChooserDialog does not have any interesting methods of its
-// own. Instead, you should get the embedded GtkAppChooserWidget using
+// Note that GtkAppChooserDialog does not have any interesting methods of
+// its own. Instead, you should get the embedded GtkAppChooserWidget using
 // gtk.AppChooserDialog.GetWidget() and call its methods if the generic
 // gtk.AppChooser interface is not sufficient for your needs.
 //
@@ -126,13 +126,13 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): GtkWindow, or NULL.
-//    - flags for this dialog.
-//    - file: GFile.
+//   - parent (optional): GtkWindow, or NULL.
+//   - flags for this dialog.
+//   - file: GFile.
 //
 // The function returns the following values:
 //
-//    - appChooserDialog: newly created GtkAppChooserDialog.
+//   - appChooserDialog: newly created GtkAppChooserDialog.
 //
 func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
@@ -165,13 +165,13 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.Filer) *App
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): GtkWindow, or NULL.
-//    - flags for this dialog.
-//    - contentType: content type string.
+//   - parent (optional): GtkWindow, or NULL.
+//   - flags for this dialog.
+//   - contentType: content type string.
 //
 // The function returns the following values:
 //
-//    - appChooserDialog: newly created GtkAppChooserDialog.
+//   - appChooserDialog: newly created GtkAppChooserDialog.
 //
 func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, contentType string) *AppChooserDialog {
 	var _arg1 *C.GtkWindow     // out
@@ -202,8 +202,8 @@ func NewAppChooserDialogForContentType(parent *Window, flags DialogFlags, conten
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): text to display at the top of the dialog, or NULL, in
-//      which case a default text is displayed.
+//   - utf8 (optional): text to display at the top of the dialog, or NULL,
+//     in which case a default text is displayed.
 //
 func (self *AppChooserDialog) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog // out
@@ -227,7 +227,7 @@ func (self *AppChooserDialog) Heading() string {
 //
 // The function returns the following values:
 //
-//    - widget: GtkAppChooserWidget of self.
+//   - widget: GtkAppChooserWidget of self.
 //
 func (self *AppChooserDialog) Widget() Widgetter {
 	var _arg0 *C.GtkAppChooserDialog // out
@@ -267,7 +267,7 @@ func (self *AppChooserDialog) Widget() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - heading: string containing Pango markup.
+//   - heading: string containing Pango markup.
 //
 func (self *AppChooserDialog) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserDialog // out

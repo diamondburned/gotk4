@@ -50,8 +50,8 @@ const (
 	// ButtonboxCenter buttons are centered in the box. Since 2.12.
 	ButtonboxCenter ButtonBoxStyle = 5
 	// ButtonboxExpand buttons expand to fill the box. This entails giving
-	// buttons a "linked" appearance, making button sizes homogeneous, and
-	// setting spacing to 0 (same as calling gtk_box_set_homogeneous() and
+	// buttons a "linked" appearance, making button sizes homogeneous,
+	// and setting spacing to 0 (same as calling gtk_box_set_homogeneous() and
 	// gtk_box_set_spacing() manually). Since 3.12.
 	ButtonboxExpand ButtonBoxStyle = 6
 )
@@ -147,11 +147,11 @@ func marshalButtonBox(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - orientation box's orientation.
+//   - orientation box's orientation.
 //
 // The function returns the following values:
 //
-//    - buttonBox: new ButtonBox.
+//   - buttonBox: new ButtonBox.
 //
 func NewButtonBox(orientation Orientation) *ButtonBox {
 	var _arg1 C.GtkOrientation // out
@@ -174,11 +174,11 @@ func NewButtonBox(orientation Orientation) *ButtonBox {
 //
 // The function takes the following parameters:
 //
-//    - child of widget.
+//   - child of widget.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the child is not subject to homogenous sizing.
+//   - ok: TRUE if the child is not subject to homogenous sizing.
 //
 func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 	var _arg0 *C.GtkButtonBox // out
@@ -206,11 +206,11 @@ func (widget *ButtonBox) ChildNonHomogeneous(child Widgetter) bool {
 //
 // The function takes the following parameters:
 //
-//    - child of widget.
+//   - child of widget.
 //
 // The function returns the following values:
 //
-//    - ok: whether child should appear in a secondary group of children.
+//   - ok: whether child should appear in a secondary group of children.
 //
 func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 	var _arg0 *C.GtkButtonBox // out
@@ -238,7 +238,7 @@ func (widget *ButtonBox) ChildSecondary(child Widgetter) bool {
 //
 // The function returns the following values:
 //
-//    - buttonBoxStyle: method used to lay out buttons in widget.
+//   - buttonBoxStyle: method used to lay out buttons in widget.
 //
 func (widget *ButtonBox) Layout() ButtonBoxStyle {
 	var _arg0 *C.GtkButtonBox     // out
@@ -261,8 +261,8 @@ func (widget *ButtonBox) Layout() ButtonBoxStyle {
 //
 // The function takes the following parameters:
 //
-//    - child of widget.
-//    - nonHomogeneous: new value.
+//   - child of widget.
+//   - nonHomogeneous: new value.
 //
 func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous bool) {
 	var _arg0 *C.GtkButtonBox // out
@@ -287,17 +287,17 @@ func (widget *ButtonBox) SetChildNonHomogeneous(child Widgetter, nonHomogeneous 
 // This group appears after the other children if the style is
 // GTK_BUTTONBOX_START, GTK_BUTTONBOX_SPREAD or GTK_BUTTONBOX_EDGE, and before
 // the other children if the style is GTK_BUTTONBOX_END. For horizontal button
-// boxes, the definition of before/after depends on direction of the widget (see
-// gtk_widget_set_direction()). If the style is GTK_BUTTONBOX_START or
+// boxes, the definition of before/after depends on direction of the widget
+// (see gtk_widget_set_direction()). If the style is GTK_BUTTONBOX_START or
 // GTK_BUTTONBOX_END, then the secondary children are aligned at the other end
 // of the button box from the main children. For the other styles, they appear
 // immediately next to the main children.
 //
 // The function takes the following parameters:
 //
-//    - child of widget.
-//    - isSecondary: if TRUE, the child appears in a secondary group of the
-//      button box.
+//   - child of widget.
+//   - isSecondary: if TRUE, the child appears in a secondary group of the
+//     button box.
 //
 func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 	var _arg0 *C.GtkButtonBox // out
@@ -320,7 +320,7 @@ func (widget *ButtonBox) SetChildSecondary(child Widgetter, isSecondary bool) {
 //
 // The function takes the following parameters:
 //
-//    - layoutStyle: new layout style.
+//   - layoutStyle: new layout style.
 //
 func (widget *ButtonBox) SetLayout(layoutStyle ButtonBoxStyle) {
 	var _arg0 *C.GtkButtonBox     // out

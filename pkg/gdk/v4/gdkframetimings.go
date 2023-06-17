@@ -63,8 +63,8 @@ func marshalFrameTimings(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if all information that will be available for the frame has been
-//      filled in.
+//   - ok: TRUE if all information that will be available for the frame has been
+//     filled in.
 //
 func (timings *FrameTimings) Complete() bool {
 	var _arg0 *C.GdkFrameTimings // out
@@ -89,7 +89,7 @@ func (timings *FrameTimings) Complete() bool {
 //
 // The function returns the following values:
 //
-//    - gint64: frame counter value for this frame.
+//   - gint64: frame counter value for this frame.
 //
 func (timings *FrameTimings) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameTimings // out
@@ -114,8 +114,8 @@ func (timings *FrameTimings) FrameCounter() int64 {
 //
 // The function returns the following values:
 //
-//    - gint64: frame time for the frame, in the timescale of
-//      g_get_monotonic_time().
+//   - gint64: frame time for the frame, in the timescale of
+//     g_get_monotonic_time().
 //
 func (timings *FrameTimings) FrameTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
@@ -136,21 +136,21 @@ func (timings *FrameTimings) FrameTime() int64 {
 // PredictedPresentationTime gets the predicted time at which this frame will be
 // displayed.
 //
-// Although no predicted time may be available, if one is available, it will be
-// available while the frame is being generated, in contrast to
+// Although no predicted time may be available, if one is available,
+// it will be available while the frame is being generated, in contrast to
 // gdk.FrameTimings.GetPresentationTime(), which is only available after the
 // frame has been presented.
 //
 // In general, if you are simply animating, you should use
 // gdk.FrameClock.GetFrameTime() rather than this function, but this function is
-// useful for applications that want exact control over latency. For example, a
-// movie player may want this information for Audio/Video synchronization.
+// useful for applications that want exact control over latency. For example,
+// a movie player may want this information for Audio/Video synchronization.
 //
 // The function returns the following values:
 //
-//    - gint64: predicted time at which the frame will be presented, in the
-//      timescale of g_get_monotonic_time(), or 0 if no predicted presentation
-//      time is available.
+//   - gint64: predicted time at which the frame will be presented, in the
+//     timescale of g_get_monotonic_time(), or 0 if no predicted presentation
+//     time is available.
 //
 func (timings *FrameTimings) PredictedPresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
@@ -174,9 +174,9 @@ func (timings *FrameTimings) PredictedPresentationTime() int64 {
 //
 // The function returns the following values:
 //
-//    - gint64: time the frame was displayed to the user, in the timescale of
-//      g_get_monotonic_time(), or 0 if no presentation time is available. See
-//      gdk.FrameTimings.GetComplete().
+//   - gint64: time the frame was displayed to the user, in the timescale of
+//     g_get_monotonic_time(), or 0 if no presentation time is available.
+//     See gdk.FrameTimings.GetComplete().
 //
 func (timings *FrameTimings) PresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings // out
@@ -201,8 +201,8 @@ func (timings *FrameTimings) PresentationTime() int64 {
 //
 // The function returns the following values:
 //
-//    - gint64: refresh interval of the display, in microseconds, or 0 if the
-//      refresh interval is not available. See gdk.FrameTimings.GetComplete().
+//   - gint64: refresh interval of the display, in microseconds, or 0 if the
+//     refresh interval is not available. See gdk.FrameTimings.GetComplete().
 //
 func (timings *FrameTimings) RefreshInterval() int64 {
 	var _arg0 *C.GdkFrameTimings // out

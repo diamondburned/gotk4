@@ -79,11 +79,11 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - format to use for the compressed data.
+//   - format to use for the compressed data.
 //
 // The function returns the following values:
 //
-//    - zlibDecompressor: new Decompressor.
+//   - zlibDecompressor: new Decompressor.
 //
 func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 	var _arg1 C.GZlibCompressorFormat // out
@@ -109,7 +109,7 @@ func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 //
 // The function returns the following values:
 //
-//    - fileInfo (optional) or NULL.
+//   - fileInfo (optional) or NULL.
 //
 func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibDecompressor // out

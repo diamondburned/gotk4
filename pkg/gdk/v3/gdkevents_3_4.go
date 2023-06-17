@@ -9,8 +9,8 @@ import "C"
 // BUTTON_MIDDLE: middle button.
 const BUTTON_MIDDLE = 2
 
-// BUTTON_PRIMARY: primary button. This is typically the left mouse button, or
-// the right button in a left-handed setup.
+// BUTTON_PRIMARY: primary button. This is typically the left mouse button,
+// or the right button in a left-handed setup.
 const BUTTON_PRIMARY = 1
 
 // BUTTON_SECONDARY: secondary button. This is typically the right mouse button,

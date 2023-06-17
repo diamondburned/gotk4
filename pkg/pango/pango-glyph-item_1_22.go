@@ -30,15 +30,15 @@ func init() {
 // PangoGlyphItem.
 //
 // The *forward direction* of the iterator is the logical direction of text.
-// That is, with increasing start_index and start_char values. If glyph_item is
-// right-to-left (that is, if glyph_item->item->analysis.level is odd), then
-// start_glyph decreases as the iterator moves forward. Moreover, in
-// right-to-left cases, start_glyph is greater than end_glyph.
+// That is, with increasing start_index and start_char values. If glyph_item
+// is right-to-left (that is, if glyph_item->item->analysis.level is odd),
+// then start_glyph decreases as the iterator moves forward. Moreover,
+// in right-to-left cases, start_glyph is greater than end_glyph.
 //
 // An iterator should be initialized using either
-// pango_glyph_item_iter_init_start() or pango_glyph_item_iter_init_end(), for
-// forward and backward iteration respectively, and walked over using any
-// desired mixture of pango_glyph_item_iter_next_cluster() and
+// pango_glyph_item_iter_init_start() or pango_glyph_item_iter_init_end(),
+// for forward and backward iteration respectively, and walked over
+// using any desired mixture of pango_glyph_item_iter_next_cluster() and
 // pango_glyph_item_iter_prev_cluster().
 //
 // A common idiom for doing a forward iteration over the clusters is:
@@ -53,7 +53,6 @@ func init() {
 //    {
 //      ...
 //    }
-//
 //
 // Note that text is the start of the text for layout, which is then indexed by
 // glyph_item->item->offset to get to the text of glyph_item. The start_index
@@ -169,9 +168,9 @@ func (g *GlyphItemIter) SetEndChar(endChar int) {
 //
 // The function returns the following values:
 //
-//    - glyphItemIter (optional): newly allocated PangoGlyphItemIter, which
-//      should be freed with pango_glyph_item_iter_free(), or NULL if orig was
-//      NULL.
+//   - glyphItemIter (optional): newly allocated PangoGlyphItemIter, which
+//     should be freed with pango_glyph_item_iter_free(), or NULL if orig was
+//     NULL.
 //
 func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 	var _arg0 *C.PangoGlyphItemIter // out
@@ -206,12 +205,12 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 //
 // The function takes the following parameters:
 //
-//    - glyphItem: glyph item to iterate over.
-//    - text corresponding to the glyph item.
+//   - glyphItem: glyph item to iterate over.
+//   - text corresponding to the glyph item.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if there are no clusters in the glyph item.
+//   - ok: FALSE if there are no clusters in the glyph item.
 //
 func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
@@ -245,12 +244,12 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 //
 // The function takes the following parameters:
 //
-//    - glyphItem: glyph item to iterate over.
-//    - text corresponding to the glyph item.
+//   - glyphItem: glyph item to iterate over.
+//   - text corresponding to the glyph item.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if there are no clusters in the glyph item.
+//   - ok: FALSE if there are no clusters in the glyph item.
 //
 func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
@@ -283,8 +282,8 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the iterator was advanced, FALSE if we were already on the
-//      last cluster.
+//   - ok: TRUE if the iterator was advanced, FALSE if we were already on the
+//     last cluster.
 //
 func (iter *GlyphItemIter) NextCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
@@ -309,8 +308,8 @@ func (iter *GlyphItemIter) NextCluster() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the iterator was moved, FALSE if we were already on the first
-//      cluster.
+//   - ok: TRUE if the iterator was moved, FALSE if we were already on the first
+//     cluster.
 //
 func (iter *GlyphItemIter) PrevCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out

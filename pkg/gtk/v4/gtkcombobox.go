@@ -72,8 +72,8 @@ func defaultComboBoxOverrides(v *ComboBox) ComboBoxOverrides {
 // specified in the form of a tree model, and the display of the choices can be
 // adapted to the data in the model by using cell renderers, as you would in a
 // tree view. This is possible since GtkComboBox implements the gtk.CellLayout
-// interface. The tree model holding the valid choices is not restricted to a
-// flat list, it can be a real tree, and the popup will reflect the tree
+// interface. The tree model holding the valid choices is not restricted to
+// a flat list, it can be a real tree, and the popup will reflect the tree
 // structure.
 //
 // To allow the user to enter values not in the model, the
@@ -81,8 +81,8 @@ func defaultComboBoxOverrides(v *ComboBox) ComboBoxOverrides {
 // gtk.Entry. This entry can be accessed by calling gtk.ComboBox.GetChild() on
 // the combo box.
 //
-// For a simple list of textual choices, the model-view API of GtkComboBox can
-// be a bit overwhelming. In this case, gtk.ComboBoxText offers a simple
+// For a simple list of textual choices, the model-view API of GtkComboBox
+// can be a bit overwhelming. In this case, gtk.ComboBoxText offers a simple
 // alternative. Both GtkComboBox and GtkComboBoxText can contain an entry.
 //
 // CSS nodes
@@ -95,7 +95,6 @@ func defaultComboBoxOverrides(v *ComboBox) ComboBoxOverrides {
 //    │           ╰── arrow
 //    ╰── window.popup
 //
-//
 // A normal combobox contains a box with the .linked class, a button with the
 // .combo class and inside those buttons, there are a cellview and an arrow.
 //
@@ -107,14 +106,12 @@ func defaultComboBoxOverrides(v *ComboBox) ComboBoxOverrides {
 //    │           ╰── arrow
 //    ╰── window.popup
 //
-//
-// A GtkComboBox with an entry has a single CSS node with name combobox. It
-// contains a box with the .linked class. That box contains an entry and a
+// A GtkComboBox with an entry has a single CSS node with name combobox.
+// It contains a box with the .linked class. That box contains an entry and a
 // button, both with the .combo class added. The button also contains another
 // node with name arrow.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkComboBox uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type ComboBox struct {
@@ -275,7 +272,7 @@ func (comboBox *ComboBox) ConnectPopup(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - comboBox: new GtkComboBox.
+//   - comboBox: new GtkComboBox.
 //
 func NewComboBox() *ComboBox {
 	var _cret *C.GtkWidget // in
@@ -293,7 +290,7 @@ func NewComboBox() *ComboBox {
 //
 // The function returns the following values:
 //
-//    - comboBox: new GtkComboBox.
+//   - comboBox: new GtkComboBox.
 //
 func NewComboBoxWithEntry() *ComboBox {
 	var _cret *C.GtkWidget // in
@@ -311,11 +308,11 @@ func NewComboBoxWithEntry() *ComboBox {
 //
 // The function takes the following parameters:
 //
-//    - model: GtkTreeModel.
+//   - model: GtkTreeModel.
 //
 // The function returns the following values:
 //
-//    - comboBox: new GtkComboBox.
+//   - comboBox: new GtkComboBox.
 //
 func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
@@ -338,11 +335,11 @@ func NewComboBoxWithModel(model TreeModeller) *ComboBox {
 //
 // The function takes the following parameters:
 //
-//    - model: GtkTreeModel.
+//   - model: GtkTreeModel.
 //
 // The function returns the following values:
 //
-//    - comboBox: new GtkComboBox.
+//   - comboBox: new GtkComboBox.
 //
 func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 	var _arg1 *C.GtkTreeModel // out
@@ -362,15 +359,15 @@ func NewComboBoxWithModelAndEntry(model TreeModeller) *ComboBox {
 
 // Active returns the index of the currently active item.
 //
-// If the model is a non-flat treemodel, and the active item is not an immediate
-// child of the root of the tree, this function returns
+// If the model is a non-flat treemodel, and the active item is not
+// an immediate child of the root of the tree, this function returns
 // gtk_tree_path_get_indices (path)[0], where path is the gtk.TreePath of the
 // active item.
 //
 // The function returns the following values:
 //
-//    - gint: integer which is the index of the currently active item, or -1 if
-//      there’s no active item.
+//   - gint: integer which is the index of the currently active item, or -1 if
+//     there’s no active item.
 //
 func (comboBox *ComboBox) Active() int {
 	var _arg0 *C.GtkComboBox // out
@@ -390,8 +387,8 @@ func (comboBox *ComboBox) Active() int {
 
 // ActiveID returns the ID of the active row of combo_box.
 //
-// This value is taken from the active row and the column specified by the
-// gtk.ComboBox:id-column property of combo_box (see
+// This value is taken from the active row and the column specified
+// by the gtk.ComboBox:id-column property of combo_box (see
 // gtk.ComboBox.SetIDColumn()).
 //
 // The returned value is an interned string which means that you can compare the
@@ -402,7 +399,7 @@ func (comboBox *ComboBox) Active() int {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): ID of the active row, or NULL.
+//   - utf8 (optional): ID of the active row, or NULL.
 //
 func (comboBox *ComboBox) ActiveID() string {
 	var _arg0 *C.GtkComboBox // out
@@ -428,8 +425,8 @@ func (comboBox *ComboBox) ActiveID() string {
 //
 // The function returns the following values:
 //
-//    - iter: GtkTreeIter.
-//    - ok: TRUE if iter was set, FALSE otherwise.
+//   - iter: GtkTreeIter.
+//   - ok: TRUE if iter was set, FALSE otherwise.
 //
 func (comboBox *ComboBox) ActiveIter() (*TreeIter, bool) {
 	var _arg0 *C.GtkComboBox // out
@@ -457,10 +454,10 @@ func (comboBox *ComboBox) ActiveIter() (*TreeIter, bool) {
 //
 // The function returns the following values:
 //
-//    - sensitivityType: GTK_SENSITIVITY_ON if the dropdown button is sensitive
-//      when the model is empty, GTK_SENSITIVITY_OFF if the button is always
-//      insensitive or GTK_SENSITIVITY_AUTO if it is only sensitive as long as
-//      the model has one item to be selected.
+//   - sensitivityType: GTK_SENSITIVITY_ON if the dropdown button is sensitive
+//     when the model is empty, GTK_SENSITIVITY_OFF if the button is always
+//     insensitive or GTK_SENSITIVITY_AUTO if it is only sensitive as long as
+//     the model has one item to be selected.
 //
 func (comboBox *ComboBox) ButtonSensitivity() SensitivityType {
 	var _arg0 *C.GtkComboBox       // out
@@ -482,7 +479,7 @@ func (comboBox *ComboBox) ButtonSensitivity() SensitivityType {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of combo_box.
+//   - widget (optional): child widget of combo_box.
 //
 func (comboBox *ComboBox) Child() Widgetter {
 	var _arg0 *C.GtkComboBox // out
@@ -520,7 +517,7 @@ func (comboBox *ComboBox) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - gint: column in the data source model of combo_box.
+//   - gint: column in the data source model of combo_box.
 //
 func (comboBox *ComboBox) EntryTextColumn() int {
 	var _arg0 *C.GtkComboBox // out
@@ -542,7 +539,7 @@ func (comboBox *ComboBox) EntryTextColumn() int {
 //
 // The function returns the following values:
 //
-//    - ok: whether there is an entry in combo_box.
+//   - ok: whether there is an entry in combo_box.
 //
 func (comboBox *ComboBox) HasEntry() bool {
 	var _arg0 *C.GtkComboBox // out
@@ -567,7 +564,7 @@ func (comboBox *ComboBox) HasEntry() bool {
 //
 // The function returns the following values:
 //
-//    - gint: column in the data source model of combo_box.
+//   - gint: column in the data source model of combo_box.
 //
 func (comboBox *ComboBox) IDColumn() int {
 	var _arg0 *C.GtkComboBox // out
@@ -589,7 +586,7 @@ func (comboBox *ComboBox) IDColumn() int {
 //
 // The function returns the following values:
 //
-//    - treeModel (optional): GtkTreeModel which was passed during construction.
+//   - treeModel (optional): GtkTreeModel which was passed during construction.
 //
 func (comboBox *ComboBox) Model() *TreeModel {
 	var _arg0 *C.GtkComboBox  // out
@@ -613,7 +610,7 @@ func (comboBox *ComboBox) Model() *TreeModel {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the popup uses a fixed width.
+//   - ok: TRUE if the popup uses a fixed width.
 //
 func (comboBox *ComboBox) PopupFixedWidth() bool {
 	var _arg0 *C.GtkComboBox // out
@@ -669,7 +666,7 @@ func (comboBox *ComboBox) Popup() {
 //
 // The function takes the following parameters:
 //
-//    - device: GdkDevice.
+//   - device: GdkDevice.
 //
 func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 	var _arg0 *C.GtkComboBox // out
@@ -687,8 +684,8 @@ func (comboBox *ComboBox) PopupForDevice(device gdk.Devicer) {
 //
 // The function takes the following parameters:
 //
-//    - index_: index in the model passed during construction, or -1 to have no
-//      active item.
+//   - index_: index in the model passed during construction, or -1 to have no
+//     active item.
 //
 func (comboBox *ComboBox) SetActive(index_ int) {
 	var _arg0 *C.GtkComboBox // out
@@ -713,12 +710,12 @@ func (comboBox *ComboBox) SetActive(index_ int) {
 //
 // The function takes the following parameters:
 //
-//    - activeId (optional): ID of the row to select, or NULL.
+//   - activeId (optional): ID of the row to select, or NULL.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a row with a matching ID was found. If a NULL active_id was
-//      given to unset the active row, the function always returns TRUE.
+//   - ok: TRUE if a row with a matching ID was found. If a NULL active_id was
+//     given to unset the active row, the function always returns TRUE.
 //
 func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 	var _arg0 *C.GtkComboBox // out
@@ -750,7 +747,7 @@ func (comboBox *ComboBox) SetActiveID(activeId string) bool {
 //
 // The function takes the following parameters:
 //
-//    - iter (optional): GtkTreeIter, or NULL.
+//   - iter (optional): GtkTreeIter, or NULL.
 //
 func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 	var _arg0 *C.GtkComboBox // out
@@ -771,7 +768,7 @@ func (comboBox *ComboBox) SetActiveIter(iter *TreeIter) {
 //
 // The function takes the following parameters:
 //
-//    - sensitivity: specify the sensitivity of the dropdown button.
+//   - sensitivity: specify the sensitivity of the dropdown button.
 //
 func (comboBox *ComboBox) SetButtonSensitivity(sensitivity SensitivityType) {
 	var _arg0 *C.GtkComboBox       // out
@@ -789,7 +786,7 @@ func (comboBox *ComboBox) SetButtonSensitivity(sensitivity SensitivityType) {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (comboBox *ComboBox) SetChild(child Widgetter) {
 	var _arg0 *C.GtkComboBox // out
@@ -816,8 +813,8 @@ func (comboBox *ComboBox) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - textColumn: column in model to get the strings from for the internal
-//      entry.
+//   - textColumn: column in model to get the strings from for the internal
+//     entry.
 //
 func (comboBox *ComboBox) SetEntryTextColumn(textColumn int) {
 	var _arg0 *C.GtkComboBox // out
@@ -838,7 +835,7 @@ func (comboBox *ComboBox) SetEntryTextColumn(textColumn int) {
 //
 // The function takes the following parameters:
 //
-//    - idColumn: column in model to get string IDs for values from.
+//   - idColumn: column in model to get string IDs for values from.
 //
 func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 	var _arg0 *C.GtkComboBox // out
@@ -857,13 +854,13 @@ func (comboBox *ComboBox) SetIDColumn(idColumn int) {
 // Will unset a previously set model (if applicable). If model is NULL, then it
 // will unset the model.
 //
-// Note that this function does not clear the cell renderers, you have to call
-// gtk.CellLayout.Clear() yourself if you need to set up different cell
+// Note that this function does not clear the cell renderers, you have to
+// call gtk.CellLayout.Clear() yourself if you need to set up different cell
 // renderers for the new model.
 //
 // The function takes the following parameters:
 //
-//    - model (optional): GtkTreeModel.
+//   - model (optional): GtkTreeModel.
 //
 func (comboBox *ComboBox) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkComboBox  // out
@@ -887,7 +884,7 @@ func (comboBox *ComboBox) SetModel(model TreeModeller) {
 //
 // The function takes the following parameters:
 //
-//    - fixed: whether to use a fixed popup width.
+//   - fixed: whether to use a fixed popup width.
 //
 func (comboBox *ComboBox) SetPopupFixedWidth(fixed bool) {
 	var _arg0 *C.GtkComboBox // out
@@ -911,7 +908,7 @@ func (comboBox *ComboBox) SetPopupFixedWidth(fixed bool) {
 //
 // The function takes the following parameters:
 //
-//    - fn (optional): GtkTreeViewRowSeparatorFunc.
+//   - fn (optional): GtkTreeViewRowSeparatorFunc.
 //
 func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
 	var _arg0 *C.GtkComboBox                // out

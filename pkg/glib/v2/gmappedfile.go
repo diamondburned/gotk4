@@ -27,8 +27,8 @@ func init() {
 	})
 }
 
-// MappedFile represents a file mapping created with g_mapped_file_new(). It has
-// only private members and should not be accessed directly.
+// MappedFile represents a file mapping created with g_mapped_file_new().
+// It has only private members and should not be accessed directly.
 //
 // An instance of this type is always passed by reference.
 type MappedFile struct {
@@ -112,13 +112,13 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	return _mappedFile, _goerr
 }
 
-// Bytes creates a new #GBytes which references the data mapped from file. The
-// mapped contents of the file must not be modified after creating this bytes
-// object, because a #GBytes should be immutable.
+// Bytes creates a new #GBytes which references the data mapped from file.
+// The mapped contents of the file must not be modified after creating this
+// bytes object, because a #GBytes should be immutable.
 //
 // The function returns the following values:
 //
-//    - bytes: newly allocated #GBytes referencing data from file.
+//   - bytes: newly allocated #GBytes referencing data from file.
 //
 func (file *MappedFile) Bytes() *Bytes {
 	var _arg0 *C.GMappedFile // out
@@ -151,7 +151,7 @@ func (file *MappedFile) Bytes() *Bytes {
 //
 // The function returns the following values:
 //
-//    - utf8 contents of file, or NULL.
+//   - utf8 contents of file, or NULL.
 //
 func (file *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
@@ -174,7 +174,7 @@ func (file *MappedFile) Contents() string {
 //
 // The function returns the following values:
 //
-//    - gsize: length of the contents of file.
+//   - gsize: length of the contents of file.
 //
 func (file *MappedFile) Length() uint {
 	var _arg0 *C.GMappedFile // out

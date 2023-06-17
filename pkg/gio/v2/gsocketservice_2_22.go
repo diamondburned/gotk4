@@ -35,8 +35,8 @@ func init() {
 type SocketServiceOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - connection
-	//    - sourceObject
+	//   - connection
+	//   - sourceObject
 	//
 	// The function returns the following values:
 	//
@@ -62,14 +62,14 @@ func defaultSocketServiceOverrides(v *SocketService) SocketServiceOverrides {
 // and override the default signal handler implementation.
 //
 // In either case, the handler must immediately return, or else it will block
-// additional incoming connections from being serviced. If you are interested in
-// writing connection handlers that contain blocking code then see
+// additional incoming connections from being serviced. If you are interested
+// in writing connection handlers that contain blocking code then see
 // SocketService.
 //
 // The socket service runs on the main loop of the [thread-default
 // context][g-main-context-push-thread-default-context] of the thread it is
-// created in, and is not threadsafe in general. However, the calls to start and
-// stop the service are thread-safe so these can be used from threads that
+// created in, and is not threadsafe in general. However, the calls to start
+// and stop the service are thread-safe so these can be used from threads that
 // handle incoming clients.
 type SocketService struct {
 	_ [0]func() // equal guard
@@ -124,8 +124,8 @@ func (service *SocketService) ConnectIncoming(f func(connection *SocketConnectio
 	return coreglib.ConnectGeneratedClosure(service, "incoming", false, unsafe.Pointer(C._gotk4_gio2_SocketService_ConnectIncoming), f)
 }
 
-// NewSocketService creates a new Service with no sockets to listen for. New
-// listeners can be added with e.g. g_socket_listener_add_address() or
+// NewSocketService creates a new Service with no sockets to listen for.
+// New listeners can be added with e.g. g_socket_listener_add_address() or
 // g_socket_listener_add_inet_port().
 //
 // New services are created active, there is no need to call
@@ -134,7 +134,7 @@ func (service *SocketService) ConnectIncoming(f func(connection *SocketConnectio
 //
 // The function returns the following values:
 //
-//    - socketService: new Service.
+//   - socketService: new Service.
 //
 func NewSocketService() *SocketService {
 	var _cret *C.GSocketService // in
@@ -148,13 +148,13 @@ func NewSocketService() *SocketService {
 	return _socketService
 }
 
-// IsActive: check whether the service is active or not. An active service will
-// accept new clients that connect, while a non-active service will let
+// IsActive: check whether the service is active or not. An active service
+// will accept new clients that connect, while a non-active service will let
 // connecting clients queue up until the service is started.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the service is active, FALSE otherwise.
+//   - ok: TRUE if the service is active, FALSE otherwise.
 //
 func (service *SocketService) IsActive() bool {
 	var _arg0 *C.GSocketService // out
@@ -195,9 +195,9 @@ func (service *SocketService) Start() {
 // This call is thread-safe, so it may be called from a thread handling an
 // incoming client request.
 //
-// Note that this only stops accepting new connections; it does not close the
-// listening sockets, and you can call g_socket_service_start() again later to
-// begin listening again. To close the listening sockets, call
+// Note that this only stops accepting new connections; it does not close
+// the listening sockets, and you can call g_socket_service_start() again
+// later to begin listening again. To close the listening sockets, call
 // g_socket_listener_close(). (This will happen automatically when the Service
 // is finalized.)
 //
@@ -215,8 +215,8 @@ func (service *SocketService) Stop() {
 
 // The function takes the following parameters:
 //
-//    - connection
-//    - sourceObject
+//   - connection
+//   - sourceObject
 //
 // The function returns the following values:
 //

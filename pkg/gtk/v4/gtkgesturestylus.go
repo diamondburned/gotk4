@@ -83,7 +83,7 @@ func (gesture *GestureStylus) ConnectUp(f func(x, y float64)) coreglib.SignalHan
 //
 // The function returns the following values:
 //
-//    - gestureStylus: newly created stylus gesture.
+//   - gestureStylus: newly created stylus gesture.
 //
 func NewGestureStylus() *GestureStylus {
 	var _cret *C.GtkGesture // in
@@ -105,12 +105,12 @@ func NewGestureStylus() *GestureStylus {
 //
 // The function takes the following parameters:
 //
-//    - axis: requested device axis.
+//   - axis: requested device axis.
 //
 // The function returns the following values:
 //
-//    - value: return location for the axis value.
-//    - ok: TRUE if there is a current value for the axis.
+//   - value: return location for the axis value.
+//   - ok: TRUE if there is a current value for the axis.
 //
 func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus // out
@@ -138,13 +138,13 @@ func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 
 // Backlog returns the accumulated backlog of tracking information.
 //
-// By default, GTK will limit rate of input events. On stylus input where
-// accuracy of strokes is paramount, this function returns the accumulated
-// coordinate/timing state before the emission of the current
+// By default, GTK will limit rate of input events. On stylus input
+// where accuracy of strokes is paramount, this function returns the
+// accumulated coordinate/timing state before the emission of the current
 // [Gtk.GestureStylus::motion] signal.
 //
-// This function may only be called within a gtk.GestureStylus::motion signal
-// handler, the state given in this signal and obtainable through
+// This function may only be called within a gtk.GestureStylus::motion
+// signal handler, the state given in this signal and obtainable through
 // gtk.GestureStylus.GetAxis() express the latest (most up-to-date) state in
 // motion history.
 //
@@ -152,8 +152,8 @@ func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 //
 // The function returns the following values:
 //
-//    - backlog coordinates and times for the backlog events.
-//    - ok: TRUE if there is a backlog to unfold in the current state.
+//   - backlog coordinates and times for the backlog events.
+//   - ok: TRUE if there is a backlog to unfold in the current state.
 //
 func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 	var _arg0 *C.GtkGestureStylus // out
@@ -199,7 +199,7 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 //
 // The function returns the following values:
 //
-//    - deviceTool (optional): current stylus tool.
+//   - deviceTool (optional): current stylus tool.
 //
 func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	var _arg0 *C.GtkGestureStylus // out

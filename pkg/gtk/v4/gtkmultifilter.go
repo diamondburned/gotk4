@@ -69,12 +69,12 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 // Use gtk.MultiFilter.Append() to add filters to it.
 //
 // This filter matches an item if any of the filters added to it matches the
-// item. In particular, this means that if no filter has been added to it, the
-// filter matches no item.
+// item. In particular, this means that if no filter has been added to it,
+// the filter matches no item.
 //
 // The function returns the following values:
 //
-//    - anyFilter: new GtkAnyFilter.
+//   - anyFilter: new GtkAnyFilter.
 //
 func NewAnyFilter() *AnyFilter {
 	var _cret *C.GtkAnyFilter // in
@@ -126,12 +126,12 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 // Use gtk.MultiFilter.Append() to add filters to it.
 //
 // This filter matches an item if each of the filters added to it matches the
-// item. In particular, this means that if no filter has been added to it, the
-// filter matches every item.
+// item. In particular, this means that if no filter has been added to it,
+// the filter matches every item.
 //
 // The function returns the following values:
 //
-//    - everyFilter: new GtkEveryFilter.
+//   - everyFilter: new GtkEveryFilter.
 //
 func NewEveryFilter() *EveryFilter {
 	var _cret *C.GtkEveryFilter // in
@@ -203,7 +203,7 @@ func BaseMultiFilter(obj MultiFilterer) *MultiFilter {
 //
 // The function takes the following parameters:
 //
-//    - filter: new filter to use.
+//   - filter: new filter to use.
 //
 func (self *MultiFilter) Append(filter *Filter) {
 	var _arg0 *C.GtkMultiFilter // out
@@ -226,7 +226,7 @@ func (self *MultiFilter) Append(filter *Filter) {
 //
 // The function takes the following parameters:
 //
-//    - position of filter to remove.
+//   - position of filter to remove.
 //
 func (self *MultiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter // out

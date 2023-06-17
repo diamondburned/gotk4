@@ -33,21 +33,21 @@ func init() {
 // It is able to parse CSS-like input in order to style widgets.
 //
 // An application can make GTK parse a specific CSS style sheet by calling
-// gtk.CSSProvider.LoadFromFile() or gtk.CSSProvider.LoadFromResource() and
-// adding the provider with gtk.StyleContext.AddProvider() or
+// gtk.CSSProvider.LoadFromFile() or gtk.CSSProvider.LoadFromResource()
+// and adding the provider with gtk.StyleContext.AddProvider() or
 // gtk.StyleContext().AddProviderForDisplay.
 //
-// In addition, certain files will be read when GTK is initialized. First, the
-// file $XDG_CONFIG_HOME/gtk-4.0/gtk.css is loaded if it exists. Then, GTK loads
-// the first existing file among
+// In addition, certain files will be read when GTK is initialized.
+// First, the file $XDG_CONFIG_HOME/gtk-4.0/gtk.css is loaded
+// if it exists. Then, GTK loads the first existing file among
 // XDG_DATA_HOME/themes/THEME/gtk-VERSION/gtk-VARIANT.css,
 // $HOME/.themes/THEME/gtk-VERSION/gtk-VARIANT.css,
 // $XDG_DATA_DIRS/themes/THEME/gtk-VERSION/gtk-VARIANT.css and
-// DATADIR/share/themes/THEME/gtk-VERSION/gtk-VARIANT.css, where THEME is the
-// name of the current theme (see the gtk.Settings:gtk-theme-name setting),
-// VARIANT is the variant to load (see the
-// gtk.Settings:gtk-application-prefer-dark-theme setting), DATADIR is the
-// prefix configured when GTK was compiled (unless overridden by the
+// DATADIR/share/themes/THEME/gtk-VERSION/gtk-VARIANT.css, where THEME
+// is the name of the current theme (see the gtk.Settings:gtk-theme-name
+// setting), VARIANT is the variant to load (see the
+// gtk.Settings:gtk-application-prefer-dark-theme setting), DATADIR is
+// the prefix configured when GTK was compiled (unless overridden by the
 // GTK_DATA_PREFIX environment variable), and VERSION is the GTK version number.
 // If no file is found for the current version, GTK tries older versions all the
 // way back to 4.0.
@@ -88,8 +88,8 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 // parsed at all. So it is a useful idea to check that the parsing succeeds by
 // connecting to this signal.
 //
-// Note that this signal may be emitted at any time as the css provider may opt
-// to defer parsing parts or all of the input to a later time than when a
+// Note that this signal may be emitted at any time as the css provider may
+// opt to defer parsing parts or all of the input to a later time than when a
 // loading function was called.
 func (cssProvider *CSSProvider) ConnectParsingError(f func(section *CSSSection, err error)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(cssProvider, "parsing-error", false, unsafe.Pointer(C._gotk4_gtk4_CssProvider_ConnectParsingError), f)
@@ -99,7 +99,7 @@ func (cssProvider *CSSProvider) ConnectParsingError(f func(section *CSSSection, 
 //
 // The function returns the following values:
 //
-//    - cssProvider: new GtkCssProvider.
+//   - cssProvider: new GtkCssProvider.
 //
 func NewCSSProvider() *CSSProvider {
 	var _cret *C.GtkCssProvider // in
@@ -119,7 +119,7 @@ func NewCSSProvider() *CSSProvider {
 //
 // The function takes the following parameters:
 //
-//    - data: CSS data loaded in memory.
+//   - data: CSS data loaded in memory.
 //
 func (cssProvider *CSSProvider) LoadFromData(data string) {
 	var _arg0 *C.GtkCssProvider // out
@@ -143,7 +143,7 @@ func (cssProvider *CSSProvider) LoadFromData(data string) {
 //
 // The function takes the following parameters:
 //
-//    - file: GFile pointing to a file to load.
+//   - file: GFile pointing to a file to load.
 //
 func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) {
 	var _arg0 *C.GtkCssProvider // out
@@ -163,7 +163,7 @@ func (cssProvider *CSSProvider) LoadFromFile(file gio.Filer) {
 //
 // The function takes the following parameters:
 //
-//    - path of a filename to load, in the GLib filename encoding.
+//   - path of a filename to load, in the GLib filename encoding.
 //
 func (cssProvider *CSSProvider) LoadFromPath(path string) {
 	var _arg0 *C.GtkCssProvider // out
@@ -185,7 +185,7 @@ func (cssProvider *CSSProvider) LoadFromPath(path string) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: GResource resource path.
+//   - resourcePath: GResource resource path.
 //
 func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 	var _arg0 *C.GtkCssProvider // out
@@ -202,14 +202,14 @@ func (cssProvider *CSSProvider) LoadFromResource(resourcePath string) {
 
 // LoadNamed loads a theme from the usual theme paths.
 //
-// The actual process of finding the theme might change between releases, but it
-// is guaranteed that this function uses the same mechanism to load the theme
-// that GTK uses for loading its own theme.
+// The actual process of finding the theme might change between releases,
+// but it is guaranteed that this function uses the same mechanism to load the
+// theme that GTK uses for loading its own theme.
 //
 // The function takes the following parameters:
 //
-//    - name: theme name.
-//    - variant (optional) to load, for example, "dark", or NULL for the default.
+//   - name: theme name.
+//   - variant (optional) to load, for example, "dark", or NULL for the default.
 //
 func (provider *CSSProvider) LoadNamed(name, variant string) {
 	var _arg0 *C.GtkCssProvider // out
@@ -238,7 +238,7 @@ func (provider *CSSProvider) LoadNamed(name, variant string) {
 //
 // The function returns the following values:
 //
-//    - utf8: new string representing the provider.
+//   - utf8: new string representing the provider.
 //
 func (provider *CSSProvider) String() string {
 	var _arg0 *C.GtkCssProvider // out

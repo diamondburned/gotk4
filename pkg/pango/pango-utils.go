@@ -20,13 +20,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: string to parse.
-//    - warn: if TRUE, issue a g_warning() on bad input.
+//   - str: string to parse.
+//   - warn: if TRUE, issue a g_warning() on bad input.
 //
 // The function returns the following values:
 //
-//    - stretch: PangoStretch to store the result in.
-//    - ok: TRUE if str was successfully parsed.
+//   - stretch: PangoStretch to store the result in.
+//   - ok: TRUE if str was successfully parsed.
 //
 func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _arg1 *C.char        // out
@@ -62,13 +62,13 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 //
 // The function takes the following parameters:
 //
-//    - str: string to parse.
-//    - warn: if TRUE, issue a g_warning() on bad input.
+//   - str: string to parse.
+//   - warn: if TRUE, issue a g_warning() on bad input.
 //
 // The function returns the following values:
 //
-//    - style: PangoStyle to store the result in.
-//    - ok: TRUE if str was successfully parsed.
+//   - style: PangoStyle to store the result in.
+//   - ok: TRUE if str was successfully parsed.
 //
 func ParseStyle(str string, warn bool) (Style, bool) {
 	var _arg1 *C.char      // out
@@ -104,13 +104,13 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 //
 // The function takes the following parameters:
 //
-//    - str: string to parse.
-//    - warn: if TRUE, issue a g_warning() on bad input.
+//   - str: string to parse.
+//   - warn: if TRUE, issue a g_warning() on bad input.
 //
 // The function returns the following values:
 //
-//    - variant: PangoVariant to store the result in.
-//    - ok: TRUE if str was successfully parsed.
+//   - variant: PangoVariant to store the result in.
+//   - ok: TRUE if str was successfully parsed.
 //
 func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _arg1 *C.char        // out
@@ -146,13 +146,13 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 //
 // The function takes the following parameters:
 //
-//    - str: string to parse.
-//    - warn: if TRUE, issue a g_warning() on bad input.
+//   - str: string to parse.
+//   - warn: if TRUE, issue a g_warning() on bad input.
 //
 // The function returns the following values:
 //
-//    - weight: PangoWeight to store the result in.
-//    - ok: TRUE if str was successfully parsed.
+//   - weight: PangoWeight to store the result in.
+//   - ok: TRUE if str was successfully parsed.
 //
 func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _arg1 *C.char       // out
@@ -188,11 +188,11 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 //
 // The function takes the following parameters:
 //
-//    - str: G_SEARCHPATH_SEPARATOR separated list of filenames.
+//   - str: G_SEARCHPATH_SEPARATOR separated list of filenames.
 //
 // The function returns the following values:
 //
-//    - utf8s: list of strings to be freed with g_strfreev().
+//   - utf8s: list of strings to be freed with g_strfreev().
 //
 func SplitFileList(str string) []string {
 	var _arg1 *C.char  // out
@@ -231,11 +231,11 @@ func SplitFileList(str string) []string {
 //
 // The function takes the following parameters:
 //
-//    - str: string.
+//   - str: string.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string that must be freed with g_free().
+//   - utf8: newly-allocated string that must be freed with g_free().
 //
 func TrimString(str string) string {
 	var _arg1 *C.char // out

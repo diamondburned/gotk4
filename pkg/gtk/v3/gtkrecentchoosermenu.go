@@ -37,20 +37,20 @@ func defaultRecentChooserMenuOverrides(v *RecentChooserMenu) RecentChooserMenuOv
 	return RecentChooserMenuOverrides{}
 }
 
-// RecentChooserMenu is a widget suitable for displaying recently used files
-// inside a menu. It can be used to set a sub-menu of a MenuItem using
+// RecentChooserMenu is a widget suitable for displaying recently used
+// files inside a menu. It can be used to set a sub-menu of a MenuItem using
 // gtk_menu_item_set_submenu(), or as the menu of a MenuToolButton.
 //
 // Note that RecentChooserMenu does not have any methods of its own. Instead,
 // you should use the functions that work on a RecentChooser.
 //
-// Note also that RecentChooserMenu does not support multiple filters, as it has
-// no way to let the user choose between them as the RecentChooserWidget and
-// RecentChooserDialog widgets do. Thus using gtk_recent_chooser_add_filter() on
-// a RecentChooserMenu widget will yield the same effects as using
-// gtk_recent_chooser_set_filter(), replacing any currently set filter with the
-// supplied filter; gtk_recent_chooser_remove_filter() will remove any currently
-// set RecentFilter object and will unset the current filter;
+// Note also that RecentChooserMenu does not support multiple filters, as it
+// has no way to let the user choose between them as the RecentChooserWidget and
+// RecentChooserDialog widgets do. Thus using gtk_recent_chooser_add_filter()
+// on a RecentChooserMenu widget will yield the same effects as using
+// gtk_recent_chooser_set_filter(), replacing any currently set filter with
+// the supplied filter; gtk_recent_chooser_remove_filter() will remove any
+// currently set RecentFilter object and will unset the current filter;
 // gtk_recent_chooser_list_filters() will return a list containing a single
 // RecentFilter object.
 //
@@ -121,8 +121,8 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 
 // NewRecentChooserMenu creates a new RecentChooserMenu widget.
 //
-// This kind of widget shows the list of recently used resources as a menu, each
-// item as a menu item. Each item inside the menu might have an icon,
+// This kind of widget shows the list of recently used resources as a menu,
+// each item as a menu item. Each item inside the menu might have an icon,
 // representing its MIME type, and a number, for mnemonic access.
 //
 // This widget implements the RecentChooser interface.
@@ -133,7 +133,7 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - recentChooserMenu: new RecentChooserMenu.
+//   - recentChooserMenu: new RecentChooserMenu.
 //
 func NewRecentChooserMenu() *RecentChooserMenu {
 	var _cret *C.GtkWidget // in
@@ -156,11 +156,11 @@ func NewRecentChooserMenu() *RecentChooserMenu {
 //
 // The function takes the following parameters:
 //
-//    - manager: RecentManager.
+//   - manager: RecentManager.
 //
 // The function returns the following values:
 //
-//    - recentChooserMenu: new RecentChooserMenu, bound to manager.
+//   - recentChooserMenu: new RecentChooserMenu, bound to manager.
 //
 func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 	var _arg1 *C.GtkRecentManager // out
@@ -183,7 +183,7 @@ func NewRecentChooserMenuForManager(manager *RecentManager) *RecentChooserMenu {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if numbers should be shown.
+//   - ok: TRUE if numbers should be shown.
 //
 func (menu *RecentChooserMenu) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentChooserMenu // out
@@ -210,7 +210,7 @@ func (menu *RecentChooserMenu) ShowNumbers() bool {
 //
 // The function takes the following parameters:
 //
-//    - showNumbers: whether to show numbers.
+//   - showNumbers: whether to show numbers.
 //
 func (menu *RecentChooserMenu) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentChooserMenu // out

@@ -45,8 +45,8 @@ func defaultObjectFactoryOverrides(v *ObjectFactory) ObjectFactoryOverrides {
 	}
 }
 
-// ObjectFactory: this class is the base object class for a factory used to
-// create an accessible object for a specific GType. The function
+// ObjectFactory: this class is the base object class for a factory used
+// to create an accessible object for a specific GType. The function
 // atk_registry_set_factory_type() is normally called to store in the registry
 // the factory type to be used to create an accessible of a particular GType.
 type ObjectFactory struct {
@@ -95,11 +95,11 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - obj: #GObject.
+//   - obj: #GObject.
 //
 // The function returns the following values:
 //
-//    - object that implements an accessibility interface on behalf of obj.
+//   - object that implements an accessibility interface on behalf of obj.
 //
 func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *AtkObject {
 	var _arg0 *C.AtkObjectFactory // out
@@ -125,8 +125,8 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *AtkObject 
 //
 // The function returns the following values:
 //
-//    - gType: type of the accessible which is created by the factory. The value
-//      G_TYPE_INVALID is returned if no type if found.
+//   - gType: type of the accessible which is created by the factory. The value
+//     G_TYPE_INVALID is returned if no type if found.
 //
 func (factory *ObjectFactory) AccessibleType() coreglib.Type {
 	var _arg0 *C.AtkObjectFactory // out

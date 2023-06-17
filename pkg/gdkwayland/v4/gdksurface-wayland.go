@@ -98,9 +98,9 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 
 // WaylandToplevel: wayland implementation of GdkToplevel.
 //
-// Beyond the gdk.Toplevel API, the Wayland implementation has API to set up
-// cross-process parent-child relationships between surfaces with
-// gdkwayland.WaylandToplevel.ExportHandle() and
+// Beyond the gdk.Toplevel API, the Wayland implementation has
+// API to set up cross-process parent-child relationships between
+// surfaces with gdkwayland.WaylandToplevel.ExportHandle() and
 // gdkwayland.WaylandToplevel.SetTransientForExported().
 type WaylandToplevel struct {
 	_ [0]func() // equal guard
@@ -150,8 +150,8 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 // gdkwayland.WaylandToplevel.UnexportHandle() should be called to clean up
 // resources.
 //
-// The main purpose for obtaining a handle is to mark a surface from another
-// surface as transient for this one, see
+// The main purpose for obtaining a handle is to mark a
+// surface from another surface as transient for this one, see
 // gdkwayland.WaylandToplevel.SetTransientForExported().
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
@@ -159,11 +159,11 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - callback to call with the handle.
+//   - callback to call with the handle.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the handle has been requested, FALSE if an error occurred.
+//   - ok: TRUE if the handle has been requested, FALSE if an error occurred.
 //
 func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
 	var _arg0 *C.GdkToplevel               // out
@@ -194,7 +194,7 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 //
 // The function takes the following parameters:
 //
-//    - applicationId: application id for the toplevel.
+//   - applicationId: application id for the toplevel.
 //
 func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
@@ -220,12 +220,12 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 //
 // The function takes the following parameters:
 //
-//    - parentHandleStr: exported handle for a surface.
+//   - parentHandleStr: exported handle for a surface.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the surface has been marked as transient, FALSE if an error
-//      occurred.
+//   - ok: TRUE if the surface has been marked as transient, FALSE if an error
+//     occurred.
 //
 func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	var _arg0 *C.GdkToplevel // out

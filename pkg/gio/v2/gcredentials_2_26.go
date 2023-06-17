@@ -33,16 +33,16 @@ func init() {
 // Some operating systems supports looking up the credentials of the remote peer
 // of a communication endpoint - see e.g. g_socket_get_credentials().
 //
-// Some operating systems supports securely sending and receiving credentials
-// over a Unix Domain Socket, see CredentialsMessage,
-// g_unix_connection_send_credentials() and
+// Some operating systems supports securely sending and
+// receiving credentials over a Unix Domain Socket, see
+// CredentialsMessage, g_unix_connection_send_credentials() and
 // g_unix_connection_receive_credentials() for details.
 //
 // On Linux, the native credential type is a struct ucred - see the unix(7) man
 // page for details. This corresponds to G_CREDENTIALS_TYPE_LINUX_UCRED.
 //
-// On Apple operating systems (including iOS, tvOS, and macOS), the native
-// credential type is a struct xucred. This corresponds to
+// On Apple operating systems (including iOS, tvOS, and macOS),
+// the native credential type is a struct xucred. This corresponds to
 // G_CREDENTIALS_TYPE_APPLE_XUCRED.
 //
 // On FreeBSD, Debian GNU/kFreeBSD, and GNU/Hurd, the native credential type is
@@ -80,7 +80,7 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - credentials Free with g_object_unref().
+//   - credentials Free with g_object_unref().
 //
 func NewCredentials() *Credentials {
 	var _cret *C.GCredentials // in
@@ -100,7 +100,7 @@ func NewCredentials() *Credentials {
 //
 // The function takes the following parameters:
 //
-//    - otherCredentials: #GCredentials.
+//   - otherCredentials: #GCredentials.
 //
 func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error {
 	var _arg0 *C.GCredentials // out
@@ -132,8 +132,8 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 //
 // The function takes the following parameters:
 //
-//    - nativeType: type of native credentials to set.
-//    - native: pointer to native credentials.
+//   - nativeType: type of native credentials to set.
+//   - native: pointer to native credentials.
 //
 func (credentials *Credentials) SetNative(nativeType CredentialsType, native unsafe.Pointer) {
 	var _arg0 *C.GCredentials    // out
@@ -156,7 +156,7 @@ func (credentials *Credentials) SetNative(nativeType CredentialsType, native uns
 //
 // The function returns the following values:
 //
-//    - utf8: string that should be freed with g_free().
+//   - utf8: string that should be freed with g_free().
 //
 func (credentials *Credentials) String() string {
 	var _arg0 *C.GCredentials // out

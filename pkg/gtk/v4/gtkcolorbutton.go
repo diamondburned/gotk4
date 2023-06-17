@@ -41,7 +41,6 @@ func init() {
 //    ╰── button.color
 //        ╰── [content]
 //
-//
 // GtkColorButton has a single CSS node with name colorbutton which contains a
 // button node. To differentiate it from a plain GtkButton, it gets the .color
 // style class.
@@ -101,13 +100,13 @@ func (button *ColorButton) ConnectColorSet(f func()) coreglib.SignalHandle {
 // NewColorButton creates a new color button.
 //
 // This returns a widget in the form of a small button containing a swatch
-// representing the current selected color. When the button is clicked, a color
-// chooser dialog will open, allowing the user to select a color. The swatch
-// will be updated to reflect the new color when the user finishes.
+// representing the current selected color. When the button is clicked,
+// a color chooser dialog will open, allowing the user to select a color.
+// The swatch will be updated to reflect the new color when the user finishes.
 //
 // The function returns the following values:
 //
-//    - colorButton: new color button.
+//   - colorButton: new color button.
 //
 func NewColorButton() *ColorButton {
 	var _cret *C.GtkWidget // in
@@ -125,11 +124,11 @@ func NewColorButton() *ColorButton {
 //
 // The function takes the following parameters:
 //
-//    - rgba: GdkRGBA to set the current color with.
+//   - rgba: GdkRGBA to set the current color with.
 //
 // The function returns the following values:
 //
-//    - colorButton: new color button.
+//   - colorButton: new color button.
 //
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
@@ -151,7 +150,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the dialog is modal.
+//   - ok: TRUE if the dialog is modal.
 //
 func (button *ColorButton) Modal() bool {
 	var _arg0 *C.GtkColorButton // out
@@ -175,7 +174,7 @@ func (button *ColorButton) Modal() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: internal string, do not free the return value.
+//   - utf8: internal string, do not free the return value.
 //
 func (button *ColorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
@@ -197,7 +196,7 @@ func (button *ColorButton) Title() string {
 //
 // The function takes the following parameters:
 //
-//    - modal: TRUE to make the dialog modal.
+//   - modal: TRUE to make the dialog modal.
 //
 func (button *ColorButton) SetModal(modal bool) {
 	var _arg0 *C.GtkColorButton // out
@@ -217,7 +216,7 @@ func (button *ColorButton) SetModal(modal bool) {
 //
 // The function takes the following parameters:
 //
-//    - title: string containing new window title.
+//   - title: string containing new window title.
 //
 func (button *ColorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out

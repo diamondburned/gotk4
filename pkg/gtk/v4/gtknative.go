@@ -35,9 +35,9 @@ func init() {
 // Every widget that is not itself a GtkNative is contained in one, and you can
 // get it with gtk.Widget.GetNative().
 //
-// To get the surface of a GtkNative, use gtk.Native.GetSurface(). It is also
-// possible to find the GtkNative to which a surface belongs, with
-// gtk.Native().GetForSurface.
+// To get the surface of a GtkNative, use gtk.Native.GetSurface().
+// It is also possible to find the GtkNative to which a surface belongs,
+// with gtk.Native().GetForSurface.
 //
 // In addition to a gdk.Surface, a GtkNative also provides a gsk.Renderer for
 // rendering on that surface. To get the renderer, use gtk.Native.GetRenderer().
@@ -101,7 +101,7 @@ func marshalNativeSurface(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - renderer for self.
+//   - renderer for self.
 //
 func (self *NativeSurface) Renderer() gsk.Rendererer {
 	var _arg0 *C.GtkNative   // out
@@ -139,7 +139,7 @@ func (self *NativeSurface) Renderer() gsk.Rendererer {
 //
 // The function returns the following values:
 //
-//    - surface of self.
+//   - surface of self.
 //
 func (self *NativeSurface) Surface() gdk.Surfacer {
 	var _arg0 *C.GtkNative  // out
@@ -180,8 +180,8 @@ func (self *NativeSurface) Surface() gdk.Surfacer {
 //
 // The function returns the following values:
 //
-//    - x: return location for the x coordinate.
-//    - y: return location for the y coordinate.
+//   - x: return location for the x coordinate.
+//   - y: return location for the y coordinate.
 //
 func (self *NativeSurface) SurfaceTransform() (x, y float64) {
 	var _arg0 *C.GtkNative // out
@@ -230,11 +230,11 @@ func (self *NativeSurface) Unrealize() {
 //
 // The function takes the following parameters:
 //
-//    - surface: GdkSurface.
+//   - surface: GdkSurface.
 //
 // The function returns the following values:
 //
-//    - native: GtkNative that is associated with surface.
+//   - native: GtkNative that is associated with surface.
 //
 func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
 	var _arg1 *C.GdkSurface // out

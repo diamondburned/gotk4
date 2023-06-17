@@ -47,13 +47,12 @@ func defaultFrameOverrides(v *Frame) FrameOverrides {
 	}
 }
 
-// Frame: frame widget is a bin that surrounds its child with a decorative frame
-// and an optional label. If present, the label is drawn in a gap in the top
-// side of the frame. The position of the label can be controlled with
+// Frame: frame widget is a bin that surrounds its child with a decorative
+// frame and an optional label. If present, the label is drawn in a gap in
+// the top side of the frame. The position of the label can be controlled with
 // gtk_frame_set_label_align().
 //
-//
-// GtkFrame as GtkBuildable
+// # GtkFrame as GtkBuildable
 //
 // The GtkFrame implementation of the GtkBuildable interface supports placing a
 // child in the label position by specifying “label” as the “type” attribute of
@@ -82,8 +81,8 @@ func defaultFrameOverrides(v *Frame) FrameOverrides {
 // “border” node is used to draw the visible border. You can set the appearance
 // of the border using CSS properties like “border-style” on the “border” node.
 //
-// The border node can be given the style class “.flat”, which is used by themes
-// to disable drawing of the border. To do this from code, call
+// The border node can be given the style class “.flat”, which is used
+// by themes to disable drawing of the border. To do this from code, call
 // gtk_frame_set_shadow_type() with GTK_SHADOW_NONE to add the “.flat” class or
 // any other shadow type to remove it.
 type Frame struct {
@@ -147,11 +146,11 @@ func marshalFrame(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): text to use as the label of the frame.
+//   - label (optional): text to use as the label of the frame.
 //
 // The function returns the following values:
 //
-//    - frame: new Frame widget.
+//   - frame: new Frame widget.
 //
 func NewFrame(label string) *Frame {
 	var _arg1 *C.gchar     // out
@@ -178,9 +177,9 @@ func NewFrame(label string) *Frame {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): text in the label, or NULL if there was no label widget
-//      or the lable widget was not a Label. This string is owned by GTK+ and
-//      must not be modified or freed.
+//   - utf8 (optional): text in the label, or NULL if there was no label widget
+//     or the lable widget was not a Label. This string is owned by GTK+ and
+//     must not be modified or freed.
 //
 func (frame *Frame) Label() string {
 	var _arg0 *C.GtkFrame // out
@@ -205,10 +204,10 @@ func (frame *Frame) Label() string {
 //
 // The function returns the following values:
 //
-//    - xalign (optional): location to store X alignment of frame’s label, or
-//      NULL.
-//    - yalign (optional): location to store X alignment of frame’s label, or
-//      NULL.
+//   - xalign (optional): location to store X alignment of frame’s label,
+//     or NULL.
+//   - yalign (optional): location to store X alignment of frame’s label,
+//     or NULL.
 //
 func (frame *Frame) LabelAlign() (xalign, yalign float32) {
 	var _arg0 *C.GtkFrame // out
@@ -234,7 +233,7 @@ func (frame *Frame) LabelAlign() (xalign, yalign float32) {
 //
 // The function returns the following values:
 //
-//    - widget (optional): label widget, or NULL if there is none.
+//   - widget (optional): label widget, or NULL if there is none.
 //
 func (frame *Frame) LabelWidget() Widgetter {
 	var _arg0 *C.GtkFrame  // out
@@ -272,7 +271,7 @@ func (frame *Frame) LabelWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - shadowType: current shadow type of the frame.
+//   - shadowType: current shadow type of the frame.
 //
 func (frame *Frame) ShadowType() ShadowType {
 	var _arg0 *C.GtkFrame     // out
@@ -295,7 +294,7 @@ func (frame *Frame) ShadowType() ShadowType {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): text to use as the label of the frame.
+//   - label (optional): text to use as the label of the frame.
 //
 func (frame *Frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame // out
@@ -317,12 +316,12 @@ func (frame *Frame) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - xalign: position of the label along the top edge of the widget. A value
-//      of 0.0 represents left alignment; 1.0 represents right alignment.
-//    - yalign: y alignment of the label. A value of 0.0 aligns under the frame;
-//      1.0 aligns above the frame. If the values are exactly 0.0 or 1.0 the gap
-//      in the frame won’t be painted because the label will be completely above
-//      or below the frame.
+//   - xalign: position of the label along the top edge of the widget. A value
+//     of 0.0 represents left alignment; 1.0 represents right alignment.
+//   - yalign: y alignment of the label. A value of 0.0 aligns under the frame;
+//     1.0 aligns above the frame. If the values are exactly 0.0 or 1.0 the gap
+//     in the frame won’t be painted because the label will be completely above
+//     or below the frame.
 //
 func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 	var _arg0 *C.GtkFrame // out
@@ -344,7 +343,7 @@ func (frame *Frame) SetLabelAlign(xalign, yalign float32) {
 //
 // The function takes the following parameters:
 //
-//    - labelWidget (optional): new label widget.
+//   - labelWidget (optional): new label widget.
 //
 func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkFrame  // out
@@ -360,15 +359,15 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	runtime.KeepAlive(labelWidget)
 }
 
-// SetShadowType sets the Frame:shadow-type for frame, i.e. whether it is drawn
-// without (GTK_SHADOW_NONE) or with (other values) a visible border. Values
-// other than GTK_SHADOW_NONE are treated identically by GtkFrame. The chosen
-// type is applied by removing or adding the .flat class to the CSS node named
-// border.
+// SetShadowType sets the Frame:shadow-type for frame, i.e. whether it is
+// drawn without (GTK_SHADOW_NONE) or with (other values) a visible border.
+// Values other than GTK_SHADOW_NONE are treated identically by GtkFrame.
+// The chosen type is applied by removing or adding the .flat class to the CSS
+// node named border.
 //
 // The function takes the following parameters:
 //
-//    - typ: new ShadowType.
+//   - typ: new ShadowType.
 //
 func (frame *Frame) SetShadowType(typ ShadowType) {
 	var _arg0 *C.GtkFrame     // out

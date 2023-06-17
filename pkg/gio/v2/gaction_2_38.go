@@ -25,11 +25,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - actionName: potential action name.
+//   - actionName: potential action name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if action_name is valid.
+//   - ok: TRUE if action_name is valid.
 //
 func ActionNameIsValid(actionName string) bool {
 	var _arg1 *C.gchar   // out
@@ -59,29 +59,29 @@ func ActionNameIsValid(actionName string) bool {
 // consists of just an action name containing no whitespace nor the characters
 // ':', '(' or ')'. For example: "app.action".
 //
-// The second format is used to represent an action with a target value that is
-// a non-empty string consisting only of alphanumerics, plus '-' and '.'. In
-// that case, the action name and target value are separated by a double colon
-// ("::"). For example: "app.action::target".
+// The second format is used to represent an action with a target value that
+// is a non-empty string consisting only of alphanumerics, plus '-' and '.'.
+// In that case, the action name and target value are separated by a double
+// colon ("::"). For example: "app.action::target".
 //
 // The third format is used to represent an action with any type of target
 // value, including strings. The target value follows the action name,
 // surrounded in parens. For example: "app.action(42)". The target value is
-// parsed using g_variant_parse(). If a tuple-typed value is desired, it must be
-// specified in the same way, resulting in two sets of parens, for example:
+// parsed using g_variant_parse(). If a tuple-typed value is desired, it must
+// be specified in the same way, resulting in two sets of parens, for example:
 // "app.action((1,2,3))". A string target can be specified this way as well:
 // "app.action('target')". For strings, this third format must be used if *
-// target value is empty or contains characters other than alphanumerics, '-'
-// and '.'.
+// target value is empty or contains characters other than alphanumerics,
+// '-' and '.'.
 //
 // The function takes the following parameters:
 //
-//    - detailedName: detailed action name.
+//   - detailedName: detailed action name.
 //
 // The function returns the following values:
 //
-//    - actionName: action name.
-//    - targetValue: target value, or NULL for no target.
+//   - actionName: action name.
+//   - targetValue: target value, or NULL for no target.
 //
 func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error) {
 	var _arg1 *C.gchar    // out
@@ -129,12 +129,12 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 //
 // The function takes the following parameters:
 //
-//    - actionName: valid action name.
-//    - targetValue (optional) target value, or NULL.
+//   - actionName: valid action name.
+//   - targetValue (optional) target value, or NULL.
 //
 // The function returns the following values:
 //
-//    - utf8: detailed format string.
+//   - utf8: detailed format string.
 //
 func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
 	var _arg1 *C.gchar    // out

@@ -149,11 +149,11 @@ func (radioMenuItem *RadioMenuItem) ConnectGroupChanged(f func()) coreglib.Signa
 //
 // The function takes the following parameters:
 //
-//    - group (optional) to which the radio menu item is to be attached, or NULL.
+//   - group (optional) to which the radio menu item is to be attached, or NULL.
 //
 // The function returns the following values:
 //
-//    - radioMenuItem: new RadioMenuItem.
+//   - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
@@ -184,11 +184,11 @@ func NewRadioMenuItem(group []*RadioMenuItem) *RadioMenuItem {
 //
 // The function takes the following parameters:
 //
-//    - group (optional): existing RadioMenuItem.
+//   - group (optional): existing RadioMenuItem.
 //
 // The function returns the following values:
 //
-//    - radioMenuItem: new RadioMenuItem.
+//   - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
@@ -213,12 +213,12 @@ func NewRadioMenuItemFromWidget(group *RadioMenuItem) *RadioMenuItem {
 //
 // The function takes the following parameters:
 //
-//    - group (optional): group the radio menu item is inside, or NULL.
-//    - label: text for the label.
+//   - group (optional): group the radio menu item is inside, or NULL.
+//   - label: text for the label.
 //
 // The function returns the following values:
 //
-//    - radioMenuItem: new RadioMenuItem.
+//   - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
@@ -254,12 +254,12 @@ func NewRadioMenuItemWithLabel(group []*RadioMenuItem, label string) *RadioMenuI
 //
 // The function takes the following parameters:
 //
-//    - group (optional): existing RadioMenuItem.
-//    - label (optional): text for the label.
+//   - group (optional): existing RadioMenuItem.
+//   - label (optional): text for the label.
 //
 // The function returns the following values:
 //
-//    - radioMenuItem: new RadioMenuItem.
+//   - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
@@ -291,13 +291,13 @@ func NewRadioMenuItemWithLabelFromWidget(group *RadioMenuItem, label string) *Ra
 //
 // The function takes the following parameters:
 //
-//    - group (optional): group the radio menu item is inside, or NULL.
-//    - label: text of the button, with an underscore in front of the mnemonic
-//      character.
+//   - group (optional): group the radio menu item is inside, or NULL.
+//   - label: text of the button, with an underscore in front of the mnemonic
+//     character.
 //
 // The function returns the following values:
 //
-//    - radioMenuItem: new RadioMenuItem.
+//   - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GSList    // out
@@ -327,8 +327,8 @@ func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMe
 	return _radioMenuItem
 }
 
-// NewRadioMenuItemWithMnemonicFromWidget creates a new GtkRadioMenuItem
-// containing a label. The label will be created using
+// NewRadioMenuItemWithMnemonicFromWidget creates a new
+// GtkRadioMenuItem containing a label. The label will be created using
 // gtk_label_new_with_mnemonic(), so underscores in label indicate the mnemonic
 // for the menu item.
 //
@@ -336,13 +336,13 @@ func NewRadioMenuItemWithMnemonic(group []*RadioMenuItem, label string) *RadioMe
 //
 // The function takes the following parameters:
 //
-//    - group (optional): existing RadioMenuItem.
-//    - label (optional): text of the button, with an underscore in front of the
-//      mnemonic character.
+//   - group (optional): existing RadioMenuItem.
+//   - label (optional): text of the button, with an underscore in front of the
+//     mnemonic character.
 //
 // The function returns the following values:
 //
-//    - radioMenuItem: new RadioMenuItem.
+//   - radioMenuItem: new RadioMenuItem.
 //
 func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) *RadioMenuItem {
 	var _arg1 *C.GtkRadioMenuItem // out
@@ -373,7 +373,7 @@ func NewRadioMenuItemWithMnemonicFromWidget(group *RadioMenuItem, label string) 
 //
 // The function returns the following values:
 //
-//    - sList: group of radio_menu_item.
+//   - sList: group of radio_menu_item.
 //
 func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
 	var _arg0 *C.GtkRadioMenuItem // out
@@ -406,22 +406,22 @@ func (radioMenuItem *RadioMenuItem) Group() []*RadioMenuItem {
 //
 // A common way to set up a group of RadioMenuItem instances is:
 //
-//      GtkRadioMenuItem *last_item = NULL;
+//    GtkRadioMenuItem *last_item = NULL;
 //
-//      while ( ...more items to add... )
-//        {
-//          GtkRadioMenuItem *radio_item;
+//    while ( ...more items to add... )
+//      {
+//        GtkRadioMenuItem *radio_item;
 //
-//          radio_item = gtk_radio_menu_item_new (...);
+//        radio_item = gtk_radio_menu_item_new (...);
 //
-//          gtk_radio_menu_item_join_group (radio_item, last_item);
-//          last_item = radio_item;
-//        }.
+//        gtk_radio_menu_item_join_group (radio_item, last_item);
+//        last_item = radio_item;
+//      }.
 //
 // The function takes the following parameters:
 //
-//    - groupSource (optional) whose group we are joining, or NULL to remove the
-//      radio_menu_item from its current group.
+//   - groupSource (optional) whose group we are joining, or NULL to remove the
+//     radio_menu_item from its current group.
 //
 func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out
@@ -441,7 +441,7 @@ func (radioMenuItem *RadioMenuItem) JoinGroup(groupSource *RadioMenuItem) {
 //
 // The function takes the following parameters:
 //
-//    - group (optional): new group, or NULL.
+//   - group (optional): new group, or NULL.
 //
 func (radioMenuItem *RadioMenuItem) SetGroup(group []*RadioMenuItem) {
 	var _arg0 *C.GtkRadioMenuItem // out

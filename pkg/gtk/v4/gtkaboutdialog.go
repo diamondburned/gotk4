@@ -135,8 +135,8 @@ func (l License) String() string {
 // !An example GtkAboutDialog (aboutdialog.png)
 //
 // About dialogs often contain links and email addresses. GtkAboutDialog
-// displays these as clickable links. By default, it calls gtk.ShowURI() when a
-// user clicks one. The behaviour can be overridden with the
+// displays these as clickable links. By default, it calls gtk.ShowURI()
+// when a user clicks one. The behaviour can be overridden with the
 // gtk.AboutDialog::activate-link signal.
 //
 // To specify a person with an email address, use a string like Edgar Allan Poe
@@ -163,9 +163,7 @@ func (l License) String() string {
 //                           "title", _("About ExampleCode"),
 //                           NULL);
 //
-//
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkAboutDialog has a single CSS node with the name window and style class
 // .aboutdialog.
@@ -240,7 +238,7 @@ func (about *AboutDialog) ConnectActivateLink(f func(uri string) (ok bool)) core
 //
 // The function returns the following values:
 //
-//    - aboutDialog: newly created GtkAboutDialog.
+//   - aboutDialog: newly created GtkAboutDialog.
 //
 func NewAboutDialog() *AboutDialog {
 	var _cret *C.GtkWidget // in
@@ -258,8 +256,8 @@ func NewAboutDialog() *AboutDialog {
 //
 // The function takes the following parameters:
 //
-//    - sectionName: name of the section.
-//    - people who belong to that section.
+//   - sectionName: name of the section.
+//   - people who belong to that section.
 //
 func (about *AboutDialog) AddCreditSection(sectionName string, people []string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -294,8 +292,8 @@ func (about *AboutDialog) AddCreditSection(sectionName string, people []string) 
 //
 // The function returns the following values:
 //
-//    - utf8s: a NULL-terminated string array containing the artists. The array
-//      is owned by the about dialog and must not be modified.
+//   - utf8s: a NULL-terminated string array containing the artists. The array
+//     is owned by the about dialog and must not be modified.
 //
 func (about *AboutDialog) Artists() []string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -330,8 +328,8 @@ func (about *AboutDialog) Artists() []string {
 //
 // The function returns the following values:
 //
-//    - utf8s: a NULL-terminated string array containing the authors. The array
-//      is owned by the about dialog and must not be modified.
+//   - utf8s: a NULL-terminated string array containing the authors. The array
+//     is owned by the about dialog and must not be modified.
 //
 func (about *AboutDialog) Authors() []string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -365,8 +363,8 @@ func (about *AboutDialog) Authors() []string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): comments. The string is owned by the about dialog and
-//      must not be modified.
+//   - utf8 (optional): comments. The string is owned by the about dialog and
+//     must not be modified.
 //
 func (about *AboutDialog) Comments() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -390,8 +388,8 @@ func (about *AboutDialog) Comments() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): copyright string. The string is owned by the about
-//      dialog and must not be modified.
+//   - utf8 (optional): copyright string. The string is owned by the about
+//     dialog and must not be modified.
 //
 func (about *AboutDialog) Copyright() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -416,8 +414,8 @@ func (about *AboutDialog) Copyright() string {
 //
 // The function returns the following values:
 //
-//    - utf8s: a NULL-terminated string array containing the documenters. The
-//      array is owned by the about dialog and must not be modified.
+//   - utf8s: a NULL-terminated string array containing the documenters.
+//     The array is owned by the about dialog and must not be modified.
 //
 func (about *AboutDialog) Documenters() []string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -451,8 +449,8 @@ func (about *AboutDialog) Documenters() []string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): license information. The string is owned by the about
-//      dialog and must not be modified.
+//   - utf8 (optional): license information. The string is owned by the about
+//     dialog and must not be modified.
 //
 func (about *AboutDialog) License() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -476,7 +474,7 @@ func (about *AboutDialog) License() string {
 //
 // The function returns the following values:
 //
-//    - license: gtk.License value.
+//   - license: gtk.License value.
 //
 func (about *AboutDialog) LicenseType() License {
 	var _arg0 *C.GtkAboutDialog // out
@@ -498,9 +496,9 @@ func (about *AboutDialog) LicenseType() License {
 //
 // The function returns the following values:
 //
-//    - paintable (optional) displayed as logo or NULL if the logo is unset or
-//      has been set via gtk.AboutDialog.SetLogoIconName(). The paintable is
-//      owned by the about dialog.
+//   - paintable (optional) displayed as logo or NULL if the logo is unset or
+//     has been set via gtk.AboutDialog.SetLogoIconName(). The paintable is
+//     owned by the about dialog.
 //
 func (about *AboutDialog) Logo() *gdk.Paintable {
 	var _arg0 *C.GtkAboutDialog // out
@@ -529,9 +527,9 @@ func (about *AboutDialog) Logo() *gdk.Paintable {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name displayed as logo, or NULL if the logo has
-//      been set via gtk.AboutDialog.SetLogo(). The string is owned by the
-//      dialog.
+//   - utf8 (optional): icon name displayed as logo, or NULL if the logo has
+//     been set via gtk.AboutDialog.SetLogo(). The string is owned by the
+//     dialog.
 //
 func (about *AboutDialog) LogoIconName() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -555,8 +553,8 @@ func (about *AboutDialog) LogoIconName() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): program name. The string is owned by the about dialog
-//      and must not be modified.
+//   - utf8 (optional): program name. The string is owned by the about dialog
+//     and must not be modified.
 //
 func (about *AboutDialog) ProgramName() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -581,7 +579,7 @@ func (about *AboutDialog) ProgramName() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): system information.
+//   - utf8 (optional): system information.
 //
 func (about *AboutDialog) SystemInformation() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -606,7 +604,7 @@ func (about *AboutDialog) SystemInformation() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): translator credits string.
+//   - utf8 (optional): translator credits string.
 //
 func (about *AboutDialog) TranslatorCredits() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -630,8 +628,8 @@ func (about *AboutDialog) TranslatorCredits() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): version string. The string is owned by the about dialog
-//      and must not be modified.
+//   - utf8 (optional): version string. The string is owned by the about dialog
+//     and must not be modified.
 //
 func (about *AboutDialog) Version() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -655,7 +653,7 @@ func (about *AboutDialog) Version() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): website URL.
+//   - utf8 (optional): website URL.
 //
 func (about *AboutDialog) Website() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -679,7 +677,7 @@ func (about *AboutDialog) Website() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): label used for the website link.
+//   - utf8 (optional): label used for the website link.
 //
 func (about *AboutDialog) WebsiteLabel() string {
 	var _arg0 *C.GtkAboutDialog // out
@@ -704,7 +702,7 @@ func (about *AboutDialog) WebsiteLabel() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the license text is wrapped.
+//   - ok: TRUE if the license text is wrapped.
 //
 func (about *AboutDialog) WrapLicense() bool {
 	var _arg0 *C.GtkAboutDialog // out
@@ -729,7 +727,7 @@ func (about *AboutDialog) WrapLicense() bool {
 //
 // The function takes the following parameters:
 //
-//    - artists authors of the artwork of the application.
+//   - artists authors of the artwork of the application.
 //
 func (about *AboutDialog) SetArtists(artists []string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -760,7 +758,7 @@ func (about *AboutDialog) SetArtists(artists []string) {
 //
 // The function takes the following parameters:
 //
-//    - authors of the application.
+//   - authors of the application.
 //
 func (about *AboutDialog) SetAuthors(authors []string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -792,7 +790,7 @@ func (about *AboutDialog) SetAuthors(authors []string) {
 //
 // The function takes the following parameters:
 //
-//    - comments (optional) string.
+//   - comments (optional) string.
 //
 func (about *AboutDialog) SetComments(comments string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -815,7 +813,7 @@ func (about *AboutDialog) SetComments(comments string) {
 //
 // The function takes the following parameters:
 //
-//    - copyright (optional) string.
+//   - copyright (optional) string.
 //
 func (about *AboutDialog) SetCopyright(copyright string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -837,7 +835,7 @@ func (about *AboutDialog) SetCopyright(copyright string) {
 //
 // The function takes the following parameters:
 //
-//    - documenters authors of the documentation of the application.
+//   - documenters authors of the documentation of the application.
 //
 func (about *AboutDialog) SetDocumenters(documenters []string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -870,7 +868,7 @@ func (about *AboutDialog) SetDocumenters(documenters []string) {
 //
 // The function takes the following parameters:
 //
-//    - license (optional) information.
+//   - license (optional) information.
 //
 func (about *AboutDialog) SetLicense(license string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -894,7 +892,7 @@ func (about *AboutDialog) SetLicense(license string) {
 //
 // The function takes the following parameters:
 //
-//    - licenseType: type of license.
+//   - licenseType: type of license.
 //
 func (about *AboutDialog) SetLicenseType(licenseType License) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -912,7 +910,7 @@ func (about *AboutDialog) SetLicenseType(licenseType License) {
 //
 // The function takes the following parameters:
 //
-//    - logo (optional): GdkPaintable.
+//   - logo (optional): GdkPaintable.
 //
 func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -933,7 +931,7 @@ func (about *AboutDialog) SetLogo(logo gdk.Paintabler) {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name.
+//   - iconName (optional): icon name.
 //
 func (about *AboutDialog) SetLogoIconName(iconName string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -956,7 +954,7 @@ func (about *AboutDialog) SetLogoIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - name (optional): program name.
+//   - name (optional): program name.
 //
 func (about *AboutDialog) SetProgramName(name string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -982,7 +980,7 @@ func (about *AboutDialog) SetProgramName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - systemInformation (optional): system information.
+//   - systemInformation (optional): system information.
 //
 func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -1010,15 +1008,14 @@ func (about *AboutDialog) SetSystemInformation(systemInformation string) {
 //     gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
 //                                              _("translator-credits"));
 //
-//
 // It is a good idea to use the customary msgid “translator-credits” for this
-// purpose, since translators will already know the purpose of that msgid, and
-// since GtkAboutDialog will detect if “translator-credits” is untranslated and
-// hide the tab.
+// purpose, since translators will already know the purpose of that msgid,
+// and since GtkAboutDialog will detect if “translator-credits” is untranslated
+// and hide the tab.
 //
 // The function takes the following parameters:
 //
-//    - translatorCredits (optional): translator credits.
+//   - translatorCredits (optional): translator credits.
 //
 func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -1039,7 +1036,7 @@ func (about *AboutDialog) SetTranslatorCredits(translatorCredits string) {
 //
 // The function takes the following parameters:
 //
-//    - version (optional) string.
+//   - version (optional) string.
 //
 func (about *AboutDialog) SetVersion(version string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -1060,7 +1057,7 @@ func (about *AboutDialog) SetVersion(version string) {
 //
 // The function takes the following parameters:
 //
-//    - website (optional): URL string starting with http://.
+//   - website (optional): URL string starting with http://.
 //
 func (about *AboutDialog) SetWebsite(website string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -1081,7 +1078,7 @@ func (about *AboutDialog) SetWebsite(website string) {
 //
 // The function takes the following parameters:
 //
-//    - websiteLabel: label used for the website link.
+//   - websiteLabel: label used for the website link.
 //
 func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 	var _arg0 *C.GtkAboutDialog // out
@@ -1101,7 +1098,7 @@ func (about *AboutDialog) SetWebsiteLabel(websiteLabel string) {
 //
 // The function takes the following parameters:
 //
-//    - wrapLicense: whether to wrap the license.
+//   - wrapLicense: whether to wrap the license.
 //
 func (about *AboutDialog) SetWrapLicense(wrapLicense bool) {
 	var _arg0 *C.GtkAboutDialog // out

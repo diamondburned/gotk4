@@ -54,8 +54,8 @@ func init() {
 // true, then when the GtkPaned is resized, that child will expand or shrink
 // along with the paned widget. If shrink is true, then that child can be made
 // smaller than its requisition by the user. Setting shrink to FALSE allows the
-// application to set a minimum size. If resize is false for both children, then
-// this is treated as if resize is true for both children.
+// application to set a minimum size. If resize is false for both children,
+// then this is treated as if resize is true for both children.
 //
 // The application can set the position of the slider as if it were set by the
 // user, by calling gtk.Paned.SetPosition().
@@ -66,7 +66,6 @@ func init() {
 //    ├── <child>
 //    ├── separator[.wide]
 //    ╰── <child>
-//
 //
 // GtkPaned has a main CSS node with name paned, and a subnode for the separator
 // with name separator. The subnode gets a .wide style class when the paned is
@@ -198,11 +197,11 @@ func (paned *Paned) ConnectToggleHandleFocus(f func() (ok bool)) coreglib.Signal
 //
 // The function takes the following parameters:
 //
-//    - orientation paned’s orientation.
+//   - orientation paned’s orientation.
 //
 // The function returns the following values:
 //
-//    - paned: new GtkPaned.
+//   - paned: new GtkPaned.
 //
 func NewPaned(orientation Orientation) *Paned {
 	var _arg1 C.GtkOrientation // out
@@ -226,7 +225,7 @@ func NewPaned(orientation Orientation) *Paned {
 //
 // The function returns the following values:
 //
-//    - widget (optional): end child widget.
+//   - widget (optional): end child widget.
 //
 func (paned *Paned) EndChild() Widgetter {
 	var _arg0 *C.GtkPaned  // out
@@ -263,7 +262,7 @@ func (paned *Paned) EndChild() Widgetter {
 //
 // The function returns the following values:
 //
-//    - gint: position of the divider.
+//   - gint: position of the divider.
 //
 func (paned *Paned) Position() int {
 	var _arg0 *C.GtkPaned // out
@@ -285,7 +284,7 @@ func (paned *Paned) Position() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the end child is resizable.
+//   - ok: TRUE if the end child is resizable.
 //
 func (paned *Paned) ResizeEndChild() bool {
 	var _arg0 *C.GtkPaned // out
@@ -309,7 +308,7 @@ func (paned *Paned) ResizeEndChild() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the start child is resizable.
+//   - ok: TRUE if the start child is resizable.
 //
 func (paned *Paned) ResizeStartChild() bool {
 	var _arg0 *C.GtkPaned // out
@@ -333,7 +332,7 @@ func (paned *Paned) ResizeStartChild() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the end child is shrinkable.
+//   - ok: TRUE if the end child is shrinkable.
 //
 func (paned *Paned) ShrinkEndChild() bool {
 	var _arg0 *C.GtkPaned // out
@@ -357,7 +356,7 @@ func (paned *Paned) ShrinkEndChild() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the start child is shrinkable.
+//   - ok: TRUE if the start child is shrinkable.
 //
 func (paned *Paned) ShrinkStartChild() bool {
 	var _arg0 *C.GtkPaned // out
@@ -383,7 +382,7 @@ func (paned *Paned) ShrinkStartChild() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional): start child widget.
+//   - widget (optional): start child widget.
 //
 func (paned *Paned) StartChild() Widgetter {
 	var _arg0 *C.GtkPaned  // out
@@ -420,7 +419,7 @@ func (paned *Paned) StartChild() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the paned should have a wide handle.
+//   - ok: TRUE if the paned should have a wide handle.
 //
 func (paned *Paned) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
@@ -444,7 +443,7 @@ func (paned *Paned) WideHandle() bool {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 func (paned *Paned) SetEndChild(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
@@ -462,8 +461,8 @@ func (paned *Paned) SetEndChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - position: pixel position of divider, a negative value means that the
-//      position is unset.
+//   - position: pixel position of divider, a negative value means that the
+//     position is unset.
 //
 func (paned *Paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
@@ -481,7 +480,7 @@ func (paned *Paned) SetPosition(position int) {
 //
 // The function takes the following parameters:
 //
-//    - resize: TRUE to let the end child be resized.
+//   - resize: TRUE to let the end child be resized.
 //
 func (paned *Paned) SetResizeEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
@@ -501,7 +500,7 @@ func (paned *Paned) SetResizeEndChild(resize bool) {
 //
 // The function takes the following parameters:
 //
-//    - resize: TRUE to let the start child be resized.
+//   - resize: TRUE to let the start child be resized.
 //
 func (paned *Paned) SetResizeStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
@@ -521,7 +520,7 @@ func (paned *Paned) SetResizeStartChild(resize bool) {
 //
 // The function takes the following parameters:
 //
-//    - resize: TRUE to let the end child be shrunk.
+//   - resize: TRUE to let the end child be shrunk.
 //
 func (paned *Paned) SetShrinkEndChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
@@ -541,7 +540,7 @@ func (paned *Paned) SetShrinkEndChild(resize bool) {
 //
 // The function takes the following parameters:
 //
-//    - resize: TRUE to let the start child be shrunk.
+//   - resize: TRUE to let the start child be shrunk.
 //
 func (paned *Paned) SetShrinkStartChild(resize bool) {
 	var _arg0 *C.GtkPaned // out
@@ -561,7 +560,7 @@ func (paned *Paned) SetShrinkStartChild(resize bool) {
 //
 // The function takes the following parameters:
 //
-//    - child: widget to add.
+//   - child: widget to add.
 //
 func (paned *Paned) SetStartChild(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
@@ -579,7 +578,7 @@ func (paned *Paned) SetStartChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - wide: new value for the gtk.Paned:wide-handle property.
+//   - wide: new value for the gtk.Paned:wide-handle property.
 //
 func (paned *Paned) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out

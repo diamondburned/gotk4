@@ -113,12 +113,12 @@ func defaultPanedOverrides(v *Paned) PanedOverrides {
 // a Frame with the shadow type set to GTK_SHADOW_IN so that the gutter appears
 // as a ridge. No separator is drawn if one of the children is missing.
 //
-// Each child has two options that can be set, resize and shrink. If resize is
-// true, then when the Paned is resized, that child will expand or shrink along
-// with the paned widget. If shrink is true, then that child can be made smaller
-// than its requisition by the user. Setting shrink to FALSE allows the
-// application to set a minimum size. If resize is false for both children, then
-// this is treated as if resize is true for both children.
+// Each child has two options that can be set, resize and shrink. If resize
+// is true, then when the Paned is resized, that child will expand or shrink
+// along with the paned widget. If shrink is true, then that child can be made
+// smaller than its requisition by the user. Setting shrink to FALSE allows the
+// application to set a minimum size. If resize is false for both children,
+// then this is treated as if resize is true for both children.
 //
 // The application can set the position of the slider as if it were set by the
 // user, by calling gtk_paned_set_position().
@@ -275,11 +275,11 @@ func (paned *Paned) ConnectToggleHandleFocus(f func() (ok bool)) coreglib.Signal
 //
 // The function takes the following parameters:
 //
-//    - orientation paned’s orientation.
+//   - orientation paned’s orientation.
 //
 // The function returns the following values:
 //
-//    - paned: new Paned.
+//   - paned: new Paned.
 //
 func NewPaned(orientation Orientation) *Paned {
 	var _arg1 C.GtkOrientation // out
@@ -302,7 +302,7 @@ func NewPaned(orientation Orientation) *Paned {
 //
 // The function takes the following parameters:
 //
-//    - child to add.
+//   - child to add.
 //
 func (paned *Paned) Add1(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
@@ -316,12 +316,12 @@ func (paned *Paned) Add1(child Widgetter) {
 	runtime.KeepAlive(child)
 }
 
-// Add2 adds a child to the bottom or right pane with default parameters. This
-// is equivalent to gtk_paned_pack2 (paned, child, TRUE, TRUE).
+// Add2 adds a child to the bottom or right pane with default parameters.
+// This is equivalent to gtk_paned_pack2 (paned, child, TRUE, TRUE).
 //
 // The function takes the following parameters:
 //
-//    - child to add.
+//   - child to add.
 //
 func (paned *Paned) Add2(child Widgetter) {
 	var _arg0 *C.GtkPaned  // out
@@ -339,7 +339,7 @@ func (paned *Paned) Add2(child Widgetter) {
 //
 // The function returns the following values:
 //
-//    - widget (optional): first child, or NULL if it is not set.
+//   - widget (optional): first child, or NULL if it is not set.
 //
 func (paned *Paned) Child1() Widgetter {
 	var _arg0 *C.GtkPaned  // out
@@ -376,7 +376,7 @@ func (paned *Paned) Child1() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget (optional): second child, or NULL if it is not set.
+//   - widget (optional): second child, or NULL if it is not set.
 //
 func (paned *Paned) Child2() Widgetter {
 	var _arg0 *C.GtkPaned  // out
@@ -409,13 +409,13 @@ func (paned *Paned) Child2() Widgetter {
 	return _widget
 }
 
-// HandleWindow returns the Window of the handle. This function is useful when
-// handling button or motion events because it enables the callback to
+// HandleWindow returns the Window of the handle. This function is useful
+// when handling button or motion events because it enables the callback to
 // distinguish between the window of the paned, a child and the handle.
 //
 // The function returns the following values:
 //
-//    - window paned’s handle window.
+//   - window paned’s handle window.
 //
 func (paned *Paned) HandleWindow() gdk.Windower {
 	var _arg0 *C.GtkPaned  // out
@@ -453,7 +453,7 @@ func (paned *Paned) HandleWindow() gdk.Windower {
 //
 // The function returns the following values:
 //
-//    - gint: position of the divider.
+//   - gint: position of the divider.
 //
 func (paned *Paned) Position() int {
 	var _arg0 *C.GtkPaned // out
@@ -475,7 +475,7 @@ func (paned *Paned) Position() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the paned should have a wide handle.
+//   - ok: TRUE if the paned should have a wide handle.
 //
 func (paned *Paned) WideHandle() bool {
 	var _arg0 *C.GtkPaned // out
@@ -499,9 +499,9 @@ func (paned *Paned) WideHandle() bool {
 //
 // The function takes the following parameters:
 //
-//    - child to add.
-//    - resize: should this child expand when the paned widget is resized.
-//    - shrink: can this child be made smaller than its requisition.
+//   - child to add.
+//   - resize: should this child expand when the paned widget is resized.
+//   - shrink: can this child be made smaller than its requisition.
 //
 func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
@@ -529,9 +529,9 @@ func (paned *Paned) Pack1(child Widgetter, resize, shrink bool) {
 //
 // The function takes the following parameters:
 //
-//    - child to add.
-//    - resize: should this child expand when the paned widget is resized.
-//    - shrink: can this child be made smaller than its requisition.
+//   - child to add.
+//   - resize: should this child expand when the paned widget is resized.
+//   - shrink: can this child be made smaller than its requisition.
 //
 func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 	var _arg0 *C.GtkPaned  // out
@@ -559,8 +559,8 @@ func (paned *Paned) Pack2(child Widgetter, resize, shrink bool) {
 //
 // The function takes the following parameters:
 //
-//    - position: pixel position of divider, a negative value means that the
-//      position is unset.
+//   - position: pixel position of divider, a negative value means that the
+//     position is unset.
 //
 func (paned *Paned) SetPosition(position int) {
 	var _arg0 *C.GtkPaned // out
@@ -578,7 +578,7 @@ func (paned *Paned) SetPosition(position int) {
 //
 // The function takes the following parameters:
 //
-//    - wide: new value for the Paned:wide-handle property.
+//   - wide: new value for the Paned:wide-handle property.
 //
 func (paned *Paned) SetWideHandle(wide bool) {
 	var _arg0 *C.GtkPaned // out

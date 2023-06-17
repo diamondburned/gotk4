@@ -30,8 +30,8 @@ func init() {
 	})
 }
 
-// TextTagTableForEach: function used with gtk_text_tag_table_foreach(), to
-// iterate over every GtkTextTag inside a GtkTextTagTable.
+// TextTagTableForEach: function used with gtk_text_tag_table_foreach(),
+// to iterate over every GtkTextTag inside a GtkTextTagTable.
 type TextTagTableForEach func(tag *TextTag)
 
 // TextTagTable: collection of tags in a GtkTextBuffer
@@ -40,8 +40,7 @@ type TextTagTableForEach func(tag *TextTag)
 // (section-text-widget.html), which gives an overview of all the objects and
 // data types related to the text widget and how they work together.
 //
-//
-// GtkTextTagTables as GtkBuildable
+// # GtkTextTagTables as GtkBuildable
 //
 // The GtkTextTagTable implementation of the GtkBuildable interface supports
 // adding tags by specifying “tag” as the “type” attribute of a <child> element.
@@ -103,7 +102,7 @@ func (table *TextTagTable) ConnectTagRemoved(f func(tag *TextTag)) coreglib.Sign
 //
 // The function returns the following values:
 //
-//    - textTagTable: new GtkTextTagTable.
+//   - textTagTable: new GtkTextTagTable.
 //
 func NewTextTagTable() *TextTagTable {
 	var _cret *C.GtkTextTagTable // in
@@ -126,11 +125,11 @@ func NewTextTagTable() *TextTagTable {
 //
 // The function takes the following parameters:
 //
-//    - tag: GtkTextTag.
+//   - tag: GtkTextTag.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE on success.
+//   - ok: TRUE on success.
 //
 func (table *TextTagTable) Add(tag *TextTag) bool {
 	var _arg0 *C.GtkTextTagTable // out
@@ -160,7 +159,7 @@ func (table *TextTagTable) Add(tag *TextTag) bool {
 //
 // The function takes the following parameters:
 //
-//    - fn: function to call on each tag.
+//   - fn: function to call on each tag.
 //
 func (table *TextTagTable) ForEach(fn TextTagTableForEach) {
 	var _arg0 *C.GtkTextTagTable       // out
@@ -181,7 +180,7 @@ func (table *TextTagTable) ForEach(fn TextTagTableForEach) {
 //
 // The function returns the following values:
 //
-//    - gint: number of tags in table.
+//   - gint: number of tags in table.
 //
 func (table *TextTagTable) Size() int {
 	var _arg0 *C.GtkTextTagTable // out
@@ -203,11 +202,11 @@ func (table *TextTagTable) Size() int {
 //
 // The function takes the following parameters:
 //
-//    - name of a tag.
+//   - name of a tag.
 //
 // The function returns the following values:
 //
-//    - textTag (optional): tag, or NULL if none by that name is in the table.
+//   - textTag (optional): tag, or NULL if none by that name is in the table.
 //
 func (table *TextTagTable) Lookup(name string) *TextTag {
 	var _arg0 *C.GtkTextTagTable // out
@@ -239,7 +238,7 @@ func (table *TextTagTable) Lookup(name string) *TextTag {
 //
 // The function takes the following parameters:
 //
-//    - tag: GtkTextTag.
+//   - tag: GtkTextTag.
 //
 func (table *TextTagTable) Remove(tag *TextTag) {
 	var _arg0 *C.GtkTextTagTable // out

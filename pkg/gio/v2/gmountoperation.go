@@ -56,32 +56,32 @@ type MountOperationOverrides struct {
 	Aborted func()
 	// The function takes the following parameters:
 	//
-	//    - message
-	//    - defaultUser
-	//    - defaultDomain
-	//    - flags
+	//   - message
+	//   - defaultUser
+	//   - defaultDomain
+	//   - flags
 	//
 	AskPassword func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
 	// AskQuestion: virtual implementation of Operation::ask-question.
 	//
 	// The function takes the following parameters:
 	//
-	//    - message: string containing a message to display to the user.
-	//    - choices: array of strings for each possible choice.
+	//   - message: string containing a message to display to the user.
+	//   - choices: array of strings for each possible choice.
 	//
 	AskQuestion func(message string, choices []string)
 	// Reply emits the Operation::reply signal.
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: OperationResult.
+	//   - result: OperationResult.
 	//
 	Reply func(result MountOperationResult)
 	// The function takes the following parameters:
 	//
-	//    - message
-	//    - timeLeft
-	//    - bytesLeft
+	//   - message
+	//   - timeLeft
+	//   - bytesLeft
 	//
 	ShowUnmountProgress func(message string, timeLeft, bytesLeft int64)
 }
@@ -214,8 +214,8 @@ func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) core
 // long as the unmount operation is outstanding, and then one last time when the
 // operation is completed, with bytes_left set to zero.
 //
-// Implementations of GMountOperation should handle this signal by showing an UI
-// notification, and then dismiss it, or show another notification of
+// Implementations of GMountOperation should handle this signal by showing
+// an UI notification, and then dismiss it, or show another notification of
 // completion, when bytes_left reaches zero.
 //
 // If the message contains a line break, the first line should be presented as a
@@ -228,7 +228,7 @@ func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, time
 //
 // The function returns the following values:
 //
-//    - mountOperation: Operation.
+//   - mountOperation: Operation.
 //
 func NewMountOperation() *MountOperation {
 	var _cret *C.GMountOperation // in
@@ -247,7 +247,7 @@ func NewMountOperation() *MountOperation {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if mount operation is anonymous.
+//   - ok: TRUE if mount operation is anonymous.
 //
 func (op *MountOperation) Anonymous() bool {
 	var _arg0 *C.GMountOperation // out
@@ -271,8 +271,8 @@ func (op *MountOperation) Anonymous() bool {
 //
 // The function returns the following values:
 //
-//    - gint: integer containing an index of the user's choice from the choice's
-//      list, or 0.
+//   - gint: integer containing an index of the user's choice from the choice's
+//     list, or 0.
 //
 func (op *MountOperation) Choice() int {
 	var _arg0 *C.GMountOperation // out
@@ -294,7 +294,7 @@ func (op *MountOperation) Choice() int {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string set to the domain.
+//   - utf8 (optional): string set to the domain.
 //
 func (op *MountOperation) Domain() string {
 	var _arg0 *C.GMountOperation // out
@@ -319,7 +319,7 @@ func (op *MountOperation) Domain() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if mount operation is for hidden volume.
+//   - ok: TRUE if mount operation is for hidden volume.
 //
 func (op *MountOperation) IsTcryptHiddenVolume() bool {
 	var _arg0 *C.GMountOperation // out
@@ -344,7 +344,7 @@ func (op *MountOperation) IsTcryptHiddenVolume() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if mount operation is for system volume.
+//   - ok: TRUE if mount operation is for system volume.
 //
 func (op *MountOperation) IsTcryptSystemVolume() bool {
 	var _arg0 *C.GMountOperation // out
@@ -368,7 +368,7 @@ func (op *MountOperation) IsTcryptSystemVolume() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the password within op.
+//   - utf8 (optional): string containing the password within op.
 //
 func (op *MountOperation) Password() string {
 	var _arg0 *C.GMountOperation // out
@@ -392,7 +392,7 @@ func (op *MountOperation) Password() string {
 //
 // The function returns the following values:
 //
-//    - passwordSave: Save flag.
+//   - passwordSave: Save flag.
 //
 func (op *MountOperation) PasswordSave() PasswordSave {
 	var _arg0 *C.GMountOperation // out
@@ -414,7 +414,7 @@ func (op *MountOperation) PasswordSave() PasswordSave {
 //
 // The function returns the following values:
 //
-//    - guint: veraCrypt PIM within op.
+//   - guint: veraCrypt PIM within op.
 //
 func (op *MountOperation) Pim() uint {
 	var _arg0 *C.GMountOperation // out
@@ -436,7 +436,7 @@ func (op *MountOperation) Pim() uint {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the user name.
+//   - utf8 (optional): string containing the user name.
 //
 func (op *MountOperation) Username() string {
 	var _arg0 *C.GMountOperation // out
@@ -460,7 +460,7 @@ func (op *MountOperation) Username() string {
 //
 // The function takes the following parameters:
 //
-//    - result: OperationResult.
+//   - result: OperationResult.
 //
 func (op *MountOperation) Reply(result MountOperationResult) {
 	var _arg0 *C.GMountOperation      // out
@@ -479,7 +479,7 @@ func (op *MountOperation) Reply(result MountOperationResult) {
 //
 // The function takes the following parameters:
 //
-//    - anonymous: boolean value.
+//   - anonymous: boolean value.
 //
 func (op *MountOperation) SetAnonymous(anonymous bool) {
 	var _arg0 *C.GMountOperation // out
@@ -499,7 +499,7 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 //
 // The function takes the following parameters:
 //
-//    - choice: integer.
+//   - choice: integer.
 //
 func (op *MountOperation) SetChoice(choice int) {
 	var _arg0 *C.GMountOperation // out
@@ -517,7 +517,7 @@ func (op *MountOperation) SetChoice(choice int) {
 //
 // The function takes the following parameters:
 //
-//    - domain (optional) to set.
+//   - domain (optional) to set.
 //
 func (op *MountOperation) SetDomain(domain string) {
 	var _arg0 *C.GMountOperation // out
@@ -539,7 +539,7 @@ func (op *MountOperation) SetDomain(domain string) {
 //
 // The function takes the following parameters:
 //
-//    - hiddenVolume: boolean value.
+//   - hiddenVolume: boolean value.
 //
 func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var _arg0 *C.GMountOperation // out
@@ -560,7 +560,7 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 //
 // The function takes the following parameters:
 //
-//    - systemVolume: boolean value.
+//   - systemVolume: boolean value.
 //
 func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	var _arg0 *C.GMountOperation // out
@@ -580,7 +580,7 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 //
 // The function takes the following parameters:
 //
-//    - password (optional) to set.
+//   - password (optional) to set.
 //
 func (op *MountOperation) SetPassword(password string) {
 	var _arg0 *C.GMountOperation // out
@@ -601,7 +601,7 @@ func (op *MountOperation) SetPassword(password string) {
 //
 // The function takes the following parameters:
 //
-//    - save: set of Save flags.
+//   - save: set of Save flags.
 //
 func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 	var _arg0 *C.GMountOperation // out
@@ -619,7 +619,7 @@ func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 //
 // The function takes the following parameters:
 //
-//    - pim: unsigned integer.
+//   - pim: unsigned integer.
 //
 func (op *MountOperation) SetPim(pim uint) {
 	var _arg0 *C.GMountOperation // out
@@ -637,7 +637,7 @@ func (op *MountOperation) SetPim(pim uint) {
 //
 // The function takes the following parameters:
 //
-//    - username (optional): input username.
+//   - username (optional): input username.
 //
 func (op *MountOperation) SetUsername(username string) {
 	var _arg0 *C.GMountOperation // out
@@ -668,10 +668,10 @@ func (op *MountOperation) aborted() {
 
 // The function takes the following parameters:
 //
-//    - message
-//    - defaultUser
-//    - defaultDomain
-//    - flags
+//   - message
+//   - defaultUser
+//   - defaultDomain
+//   - flags
 //
 func (op *MountOperation) askPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags) {
 	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))
@@ -704,8 +704,8 @@ func (op *MountOperation) askPassword(message, defaultUser, defaultDomain string
 //
 // The function takes the following parameters:
 //
-//    - message: string containing a message to display to the user.
-//    - choices: array of strings for each possible choice.
+//   - message: string containing a message to display to the user.
+//   - choices: array of strings for each possible choice.
 //
 func (op *MountOperation) askQuestion(message string, choices []string) {
 	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))
@@ -742,7 +742,7 @@ func (op *MountOperation) askQuestion(message string, choices []string) {
 //
 // The function takes the following parameters:
 //
-//    - result: OperationResult.
+//   - result: OperationResult.
 //
 func (op *MountOperation) reply(result MountOperationResult) {
 	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))
@@ -761,9 +761,9 @@ func (op *MountOperation) reply(result MountOperationResult) {
 
 // The function takes the following parameters:
 //
-//    - message
-//    - timeLeft
-//    - bytesLeft
+//   - message
+//   - timeLeft
+//   - bytesLeft
 //
 func (op *MountOperation) showUnmountProgress(message string, timeLeft, bytesLeft int64) {
 	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))

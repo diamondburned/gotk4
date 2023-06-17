@@ -37,15 +37,14 @@ func defaultSpinnerOverrides(v *Spinner) SpinnerOverrides {
 	return SpinnerOverrides{}
 }
 
-// Spinner widget displays an icon-size spinning animation. It is often used as
-// an alternative to a ProgressBar for displaying indefinite activity, instead
-// of actual progress.
+// Spinner widget displays an icon-size spinning animation. It is often used
+// as an alternative to a ProgressBar for displaying indefinite activity,
+// instead of actual progress.
 //
 // To start the animation, use gtk_spinner_start(), to stop it use
 // gtk_spinner_stop().
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkSpinner has a single CSS node with the name spinner. When the animation is
 // active, the :checked pseudoclass is added to this node.
@@ -99,7 +98,7 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - spinner: new Spinner.
+//   - spinner: new Spinner.
 //
 func NewSpinner() *Spinner {
 	var _cret *C.GtkWidget // in

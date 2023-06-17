@@ -43,18 +43,17 @@ func defaultIMContextSimpleOverrides(v *IMContextSimple) IMContextSimpleOverride
 // methods. It has a built-in table of compose sequences that is derived from
 // the X11 Compose files.
 //
-// GtkIMContextSimple reads additional compose sequences from the first of the
-// following files that is found: ~/.config/gtk-3.0/Compose, ~/.XCompose,
+// GtkIMContextSimple reads additional compose sequences from the first of
+// the following files that is found: ~/.config/gtk-3.0/Compose, ~/.XCompose,
 // /usr/share/X11/locale/$locale/Compose (for locales that have a nontrivial
 // Compose file). The syntax of these files is described in the Compose(5)
 // manual page.
 //
+// # Unicode characters
 //
-// Unicode characters
-//
-// GtkIMContextSimple also supports numeric entry of Unicode characters by
-// typing Ctrl-Shift-u, followed by a hexadecimal Unicode codepoint. For
-// example, Ctrl-Shift-u 1 2 3 Enter yields U+0123 LATIN SMALL LETTER G WITH
+// GtkIMContextSimple also supports numeric entry of Unicode characters
+// by typing Ctrl-Shift-u, followed by a hexadecimal Unicode codepoint.
+// For example, Ctrl-Shift-u 1 2 3 Enter yields U+0123 LATIN SMALL LETTER G WITH
 // CEDILLA, i.e. ģ.
 type IMContextSimple struct {
 	_ [0]func() // equal guard
@@ -97,7 +96,7 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - imContextSimple: new IMContextSimple.
+//   - imContextSimple: new IMContextSimple.
 //
 func NewIMContextSimple() *IMContextSimple {
 	var _cret *C.GtkIMContext // in
@@ -115,7 +114,7 @@ func NewIMContextSimple() *IMContextSimple {
 //
 // The function takes the following parameters:
 //
-//    - composeFile: path of compose file.
+//   - composeFile: path of compose file.
 //
 func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	var _arg0 *C.GtkIMContextSimple // out

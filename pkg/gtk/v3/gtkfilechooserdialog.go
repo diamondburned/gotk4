@@ -38,8 +38,8 @@ func defaultFileChooserDialogOverrides(v *FileChooserDialog) FileChooserDialogOv
 
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or
 // “File/Save as” commands. This widget works by putting a FileChooserWidget
-// inside a Dialog. It exposes the FileChooser interface, so you can use all of
-// the FileChooser functions on the file chooser dialog as well as those for
+// inside a Dialog. It exposes the FileChooser interface, so you can use all
+// of the FileChooser functions on the file chooser dialog as well as those for
 // Dialog.
 //
 // Note that FileChooserDialog does not have any methods of its own. Instead,
@@ -49,8 +49,7 @@ func defaultFileChooserDialogOverrides(v *FileChooserDialog) FileChooserDialogOv
 // FileChooserNative API, which will use a platform-specific dialog if available
 // and fall back to GtkFileChooserDialog otherwise.
 //
-//
-// Typical usage
+// # Typical usage
 //
 // In the simplest of cases, you can the following code to use FileChooserDialog
 // to select a file for opening:
@@ -118,8 +117,7 @@ func defaultFileChooserDialogOverrides(v *FileChooserDialog) FileChooserDialogOv
 //
 //    gtk_widget_destroy (dialog);
 //
-//
-// Setting up a file chooser dialog
+// # Setting up a file chooser dialog
 //
 // There are various cases in which you may need to use a FileChooserDialog:
 //
@@ -128,8 +126,8 @@ func defaultFileChooserDialogOverrides(v *FileChooserDialog) FileChooserDialogOv
 // - To save a file for the first time. Use K_FILE_CHOOSER_ACTION_SAVE, and
 // suggest a name such as “Untitled” with gtk_file_chooser_set_current_name().
 //
-// - To save a file under a different name. Use K_FILE_CHOOSER_ACTION_SAVE, and
-// set the existing filename with gtk_file_chooser_set_filename().
+// - To save a file under a different name. Use K_FILE_CHOOSER_ACTION_SAVE,
+// and set the existing filename with gtk_file_chooser_set_filename().
 //
 // - To choose a folder instead of a file. Use
 // K_FILE_CHOOSER_ACTION_SELECT_FOLDER.
@@ -143,12 +141,11 @@ func defaultFileChooserDialogOverrides(v *FileChooserDialog) FileChooserDialogOv
 // gtk_file_chooser_set_filename(), i.e. when you are doing a Save As command
 // and you already have a file saved somewhere.
 //
+// # Response Codes
 //
-// Response Codes
-//
-// FileChooserDialog inherits from Dialog, so buttons that go in its action area
-// have response codes such as K_RESPONSE_ACCEPT and K_RESPONSE_CANCEL. For
-// example, you could call gtk_file_chooser_dialog_new() as follows:
+// FileChooserDialog inherits from Dialog, so buttons that go in its action
+// area have response codes such as K_RESPONSE_ACCEPT and K_RESPONSE_CANCEL.
+// For example, you could call gtk_file_chooser_dialog_new() as follows:
 //
 //    GtkWidget *dialog;
 //    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
@@ -163,8 +160,8 @@ func defaultFileChooserDialogOverrides(v *FileChooserDialog) FileChooserDialogOv
 //                                          NULL);
 //
 // This will create buttons for “Cancel” and “Open” that use stock response
-// identifiers from ResponseType. For most dialog boxes you can use your own
-// custom response codes rather than the ones in ResponseType, but
+// identifiers from ResponseType. For most dialog boxes you can use your
+// own custom response codes rather than the ones in ResponseType, but
 // FileChooserDialog assumes that its “accept”-type action, e.g. an “Open” or
 // “Save” button, will have one of the following response codes:
 //

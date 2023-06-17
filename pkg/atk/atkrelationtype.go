@@ -76,8 +76,8 @@ const (
 	// RelationDescribedBy: reciprocal of ATK_RELATION_DESCRIPTION_FOR.
 	// Indicates that one or more target objects provide descriptive information
 	// about this object. This relation type is most appropriate for information
-	// that is not essential as its presentation may be user-configurable and/or
-	// limited to an on-demand mechanism such as an assistive technology
+	// that is not essential as its presentation may be user-configurable
+	// and/or limited to an on-demand mechanism such as an assistive technology
 	// command. For brief, essential information such as can be found in a
 	// widget's on-screen label, use ATK_RELATION_LABELLED_BY. For an on-screen
 	// error message, use ATK_RELATION_ERROR_MESSAGE. For lengthy extended
@@ -87,26 +87,26 @@ const (
 	// their content can be more closely reviewed.
 	RelationDescribedBy
 	// RelationDescriptionFor: reciprocal of ATK_RELATION_DESCRIBED_BY.
-	// Indicates that this object provides descriptive information about the
-	// target object(s). See also ATK_RELATION_DETAILS_FOR and
+	// Indicates that this object provides descriptive information
+	// about the target object(s). See also ATK_RELATION_DETAILS_FOR and
 	// ATK_RELATION_ERROR_FOR.
 	RelationDescriptionFor
 	// RelationNodeParentOf indicates an object is a cell in a treetable and is
 	// expanded to display other cells in the same column.
 	RelationNodeParentOf
-	// RelationDetails: reciprocal of ATK_RELATION_DETAILS_FOR. Indicates that
-	// this object has a detailed or extended description, the contents of which
-	// can be found in the target object(s). This relation type is most
-	// appropriate for information that is sufficiently lengthy as to make
-	// navigation to the container of that information desirable. For less
-	// verbose information suitable for announcement only, see
-	// ATK_RELATION_DESCRIBED_BY. If the detailed information describes an error
-	// condition, ATK_RELATION_ERROR_FOR should be used instead. Since:
+	// RelationDetails: reciprocal of ATK_RELATION_DETAILS_FOR. Indicates
+	// that this object has a detailed or extended description, the contents
+	// of which can be found in the target object(s). This relation type
+	// is most appropriate for information that is sufficiently lengthy as
+	// to make navigation to the container of that information desirable.
+	// For less verbose information suitable for announcement only,
+	// see ATK_RELATION_DESCRIBED_BY. If the detailed information describes an
+	// error condition, ATK_RELATION_ERROR_FOR should be used instead. Since:
 	// ATK-2.26.
 	RelationDetails
-	// RelationDetailsFor: reciprocal of ATK_RELATION_DETAILS. Indicates that
-	// this object provides a detailed or extended description about the target
-	// object(s). See also ATK_RELATION_DESCRIPTION_FOR and
+	// RelationDetailsFor: reciprocal of ATK_RELATION_DETAILS. Indicates
+	// that this object provides a detailed or extended description about
+	// the target object(s). See also ATK_RELATION_DESCRIPTION_FOR and
 	// ATK_RELATION_ERROR_FOR. Since: ATK-2.26.
 	RelationDetailsFor
 	// RelationErrorMessage: reciprocal of ATK_RELATION_ERROR_FOR. Indicates

@@ -26,9 +26,9 @@ func init() {
 	})
 }
 
-// VariantType: this section introduces the GVariant type system. It is based,
-// in large part, on the D-Bus type system, with two major changes and some
-// minor lifting of restrictions. The D-Bus specification
+// VariantType: this section introduces the GVariant type system.
+// It is based, in large part, on the D-Bus type system, with two major
+// changes and some minor lifting of restrictions. The D-Bus specification
 // (http://dbus.freedesktop.org/doc/dbus-specification.html), therefore,
 // provides a significant amount of information that is useful when working with
 // GVariant.
@@ -52,18 +52,18 @@ func init() {
 //
 // Just as in D-Bus, GVariant types are described with strings ("type strings").
 // Subject to the differences mentioned above, these strings are of the same
-// form as those found in D-Bus. Note, however: D-Bus always works in terms of
-// messages and therefore individual type strings appear nowhere in its
-// interface. Instead, "signatures" are a concatenation of the strings of the
-// type of each argument in a message. GVariant deals with single values
+// form as those found in D-Bus. Note, however: D-Bus always works in terms
+// of messages and therefore individual type strings appear nowhere in its
+// interface. Instead, "signatures" are a concatenation of the strings of
+// the type of each argument in a message. GVariant deals with single values
 // directly so GVariant type strings always describe the type of exactly one
 // value. This means that a D-Bus signature string is generally not a valid
 // GVariant type string -- except in the case that it is the signature of a
 // message containing exactly one argument.
 //
 // An indefinite type is similar in spirit to what may be called an abstract
-// type in other type systems. No value can exist that has an indefinite type as
-// its type, but values can exist that have types that are subtypes of
+// type in other type systems. No value can exist that has an indefinite type
+// as its type, but values can exist that have types that are subtypes of
 // indefinite types. That is to say, g_variant_get_type() will never return an
 // indefinite type, but calling g_variant_is_of_type() with an indefinite type
 // may return TRUE. For example, you cannot have a value that represents "an
@@ -72,13 +72,12 @@ func init() {
 // of integers" is a subtype of "array of no particular type".
 //
 // This is similar to how instances of abstract classes may not directly exist
-// in other type systems, but instances of their non-abstract subtypes may. For
-// example, in GTK, no object that has the type of Bin can exist (since Bin is
-// an abstract class), but a Window can certainly be instantiated, and you would
-// say that the Window is a Bin (since Window is a subclass of Bin).
+// in other type systems, but instances of their non-abstract subtypes may.
+// For example, in GTK, no object that has the type of Bin can exist (since Bin
+// is an abstract class), but a Window can certainly be instantiated, and you
+// would say that the Window is a Bin (since Window is a subclass of Bin).
 //
-//
-// GVariant Type Strings
+// # GVariant Type Strings
 //
 // A GVariant type string can be any of the following:
 //
@@ -122,8 +121,8 @@ func init() {
 //
 // - t: the type string of G_VARIANT_TYPE_UINT64; an unsigned 64 bit integer.
 //
-// - h: the type string of G_VARIANT_TYPE_HANDLE; a signed 32 bit value that, by
-// convention, is used as an index into an array of file descriptors that are
+// - h: the type string of G_VARIANT_TYPE_HANDLE; a signed 32 bit value that,
+// by convention, is used as an index into an array of file descriptors that are
 // sent alongside a D-Bus message.
 //
 // - d: the type string of G_VARIANT_TYPE_DOUBLE; a double precision floating
@@ -181,8 +180,8 @@ func init() {
 // "a{?*}" is an indefinite type that is a supertype of all arrays containing
 // dictionary entries where the key is any basic type and the value is any type
 // at all. This is, by definition, a dictionary, so this type string corresponds
-// to G_VARIANT_TYPE_DICTIONARY. Note that, due to the restriction that the key
-// of a dictionary entry must be a basic type, "{**}" is not a valid type
+// to G_VARIANT_TYPE_DICTIONARY. Note that, due to the restriction that the
+// key of a dictionary entry must be a basic type, "{**}" is not a valid type
 // string.
 //
 // An instance of this type is always passed by reference.
@@ -333,9 +332,9 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 //
 // The function returns the following values:
 //
-//    - variantType: new Type
+//   - variantType: new Type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) Copy() *VariantType {
 	var _arg0 *C.GVariantType // out
@@ -359,15 +358,15 @@ func (typ *VariantType) Copy() *VariantType {
 	return _variantType
 }
 
-// DupString returns a newly-allocated copy of the type string corresponding to
-// type. The returned string is nul-terminated. It is appropriate to call
+// DupString returns a newly-allocated copy of the type string corresponding
+// to type. The returned string is nul-terminated. It is appropriate to call
 // g_free() on the return value.
 //
 // The function returns the following values:
 //
-//    - utf8: corresponding type string
+//   - utf8: corresponding type string
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) DupString() string {
 	var _arg0 *C.GVariantType // out
@@ -392,9 +391,9 @@ func (typ *VariantType) DupString() string {
 //
 // The function returns the following values:
 //
-//    - variantType: element type of type
+//   - variantType: element type of type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) Element() *VariantType {
 	var _arg0 *C.GVariantType // out
@@ -415,8 +414,8 @@ func (typ *VariantType) Element() *VariantType {
 // Equal compares type1 and type2 for equality.
 //
 // Only returns TRUE if the types are exactly equal. Even if one type is an
-// indefinite type and the other is a subtype of it, FALSE will be returned if
-// they are not exactly equal. If you want to check for subtypes, use
+// indefinite type and the other is a subtype of it, FALSE will be returned
+// if they are not exactly equal. If you want to check for subtypes, use
 // g_variant_type_is_subtype_of().
 //
 // The argument types of type1 and type2 are only #gconstpointer to allow use
@@ -425,13 +424,13 @@ func (typ *VariantType) Element() *VariantType {
 //
 // The function takes the following parameters:
 //
-//    - type2: Type.
+//   - type2: Type.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type1 and type2 are exactly equal
+//   - ok: TRUE if type1 and type2 are exactly equal
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (type1 *VariantType) Equal(type2 *VariantType) bool {
 	var _arg0 C.gconstpointer // out
@@ -468,9 +467,9 @@ func (type1 *VariantType) Equal(type2 *VariantType) bool {
 //
 // The function returns the following values:
 //
-//    - variantType: first item type of type, or NULL
+//   - variantType: first item type of type, or NULL
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) First() *VariantType {
 	var _arg0 *C.GVariantType // out
@@ -494,9 +493,9 @@ func (typ *VariantType) First() *VariantType {
 //
 // The function returns the following values:
 //
-//    - gsize: length of the corresponding type string
+//   - gsize: length of the corresponding type string
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) StringLength() uint {
 	var _arg0 *C.GVariantType // out
@@ -521,9 +520,9 @@ func (typ *VariantType) StringLength() uint {
 //
 // The function returns the following values:
 //
-//    - guint: hash value
+//   - guint: hash value
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) Hash() uint {
 	var _arg0 C.gconstpointer // out
@@ -549,9 +548,9 @@ func (typ *VariantType) Hash() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is an array type
+//   - ok: TRUE if type is an array type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsArray() bool {
 	var _arg0 *C.GVariantType // out
@@ -583,9 +582,9 @@ func (typ *VariantType) IsArray() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is a basic type
+//   - ok: TRUE if type is a basic type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsBasic() bool {
 	var _arg0 *C.GVariantType // out
@@ -615,9 +614,9 @@ func (typ *VariantType) IsBasic() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is a container type
+//   - ok: TRUE if type is a container type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsContainer() bool {
 	var _arg0 *C.GVariantType // out
@@ -643,15 +642,15 @@ func (typ *VariantType) IsContainer() bool {
 // characters ('*', '?', or 'r').
 //
 // A #GVariant instance may not have an indefinite type, so calling this
-// function on the result of g_variant_get_type() will always result in TRUE
-// being returned. Calling this function on an indefinite type like
+// function on the result of g_variant_get_type() will always result in
+// TRUE being returned. Calling this function on an indefinite type like
 // G_VARIANT_TYPE_ARRAY, however, will result in FALSE being returned.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is definite
+//   - ok: TRUE if type is definite
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsDefinite() bool {
 	var _arg0 *C.GVariantType // out
@@ -679,9 +678,9 @@ func (typ *VariantType) IsDefinite() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is a dictionary entry type
+//   - ok: TRUE if type is a dictionary entry type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsDictEntry() bool {
 	var _arg0 *C.GVariantType // out
@@ -709,9 +708,9 @@ func (typ *VariantType) IsDictEntry() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is a maybe type
+//   - ok: TRUE if type is a maybe type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsMaybe() bool {
 	var _arg0 *C.GVariantType // out
@@ -739,13 +738,13 @@ func (typ *VariantType) IsMaybe() bool {
 //
 // The function takes the following parameters:
 //
-//    - supertype: Type.
+//   - supertype: Type.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is a subtype of supertype
+//   - ok: TRUE if type is a subtype of supertype
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	var _arg0 *C.GVariantType // out
@@ -776,9 +775,9 @@ func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is a tuple type
+//   - ok: TRUE if type is a tuple type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsTuple() bool {
 	var _arg0 *C.GVariantType // out
@@ -802,9 +801,9 @@ func (typ *VariantType) IsTuple() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type is the variant type
+//   - ok: TRUE if type is the variant type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) IsVariant() bool {
 	var _arg0 *C.GVariantType // out
@@ -831,9 +830,9 @@ func (typ *VariantType) IsVariant() bool {
 //
 // The function returns the following values:
 //
-//    - variantType: key type of the dictionary entry
+//   - variantType: key type of the dictionary entry
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) Key() *VariantType {
 	var _arg0 *C.GVariantType // out
@@ -861,9 +860,9 @@ func (typ *VariantType) Key() *VariantType {
 //
 // The function returns the following values:
 //
-//    - gsize: number of items in type
+//   - gsize: number of items in type
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) NItems() uint {
 	var _arg0 *C.GVariantType // out
@@ -894,9 +893,9 @@ func (typ *VariantType) NItems() uint {
 //
 // The function returns the following values:
 //
-//    - variantType: next Type after type, or NULL
+//   - variantType: next Type after type, or NULL
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) Next() *VariantType {
 	var _arg0 *C.GVariantType // out
@@ -920,9 +919,9 @@ func (typ *VariantType) Next() *VariantType {
 //
 // The function returns the following values:
 //
-//    - variantType: value type of the dictionary entry
+//   - variantType: value type of the dictionary entry
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func (typ *VariantType) Value() *VariantType {
 	var _arg0 *C.GVariantType // out
@@ -988,13 +987,13 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 //
 // The function takes the following parameters:
 //
-//    - typeString: pointer to any string.
+//   - typeString: pointer to any string.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if type_string is exactly one valid type string
+//   - ok: TRUE if type_string is exactly one valid type string
 //
-//      Since 2.24.
+//     Since 2.24.
 //
 func VariantTypeStringIsValid(typeString string) bool {
 	var _arg1 *C.gchar   // out

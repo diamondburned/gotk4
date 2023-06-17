@@ -66,18 +66,17 @@ type CellLayoutDataFunc func(cellLayout CellLayouter, cell CellRendererer, treeM
 // provide a TreeViewColumn like API for packing cells, setting attributes and
 // data funcs.
 //
-// One of the notable features provided by implementations of GtkCellLayout are
-// attributes. Attributes let you set the properties in flexible ways. They can
-// just be set to constant values like regular properties. But they can also be
-// mapped to a column of the underlying tree model with
-// gtk_cell_layout_set_attributes(), which means that the value of the attribute
-// can change from cell to cell as they are rendered by the cell renderer.
-// Finally, it is possible to specify a function with
+// One of the notable features provided by implementations of GtkCellLayout
+// are attributes. Attributes let you set the properties in flexible ways.
+// They can just be set to constant values like regular properties.
+// But they can also be mapped to a column of the underlying tree model
+// with gtk_cell_layout_set_attributes(), which means that the value of
+// the attribute can change from cell to cell as they are rendered by
+// the cell renderer. Finally, it is possible to specify a function with
 // gtk_cell_layout_set_cell_data_func() that is called to determine the value of
 // the attribute for each cell that is rendered.
 //
-//
-// GtkCellLayouts as GtkBuildable
+// # GtkCellLayouts as GtkBuildable
 //
 // Implementations of GtkCellLayout which also implement the GtkBuildable
 // interface (CellView, IconView, ComboBox, EntryCompletion, TreeViewColumn)
@@ -98,8 +97,8 @@ type CellLayoutDataFunc func(cellLayout CellLayouter, cell CellRendererer, treeM
 //      </child>"
 //    </object>
 //
-// Furthermore for implementations of GtkCellLayout that use a CellArea to lay
-// out cells (all GtkCellLayouts in GTK use a GtkCellArea) [cell
+// Furthermore for implementations of GtkCellLayout that use a CellArea
+// to lay out cells (all GtkCellLayouts in GTK use a GtkCellArea) [cell
 // properties][cell-properties] can also be defined in the format by specifying
 // the custom <cell-packing> attribute which can contain multiple <property>
 // elements defined in the normal way.
@@ -116,12 +115,11 @@ type CellLayoutDataFunc func(cellLayout CellLayouter, cell CellRendererer, treeM
 //      </child>"
 //    </object>
 //
+// # Subclassing GtkCellLayout implementations
 //
-// Subclassing GtkCellLayout implementations
-//
-// When subclassing a widget that implements CellLayout like IconView or
-// ComboBox, there are some considerations related to the fact that these
-// widgets internally use a CellArea. The cell area is exposed as a
+// When subclassing a widget that implements CellLayout like IconView
+// or ComboBox, there are some considerations related to the fact that
+// these widgets internally use a CellArea. The cell area is exposed as a
 // construct-only property by these widgets. This means that it is possible to
 // e.g. do
 //
@@ -202,15 +200,15 @@ func marshalCellLayout(p uintptr) (interface{}, error) {
 // AddAttribute adds an attribute mapping to the list in cell_layout.
 //
 // The column is the column of the model to get a value from, and the attribute
-// is the parameter on cell to be set from the value. So for example if column 2
-// of the model contains strings, you could have the “text” attribute of a
+// is the parameter on cell to be set from the value. So for example if column
+// 2 of the model contains strings, you could have the “text” attribute of a
 // CellRendererText get its values from column 2.
 //
 // The function takes the following parameters:
 //
-//    - cell: CellRenderer.
-//    - attribute on the renderer.
-//    - column position on the model to get the attribute from.
+//   - cell: CellRenderer.
+//   - attribute on the renderer.
+//   - column position on the model to get the attribute from.
 //
 func (cellLayout *CellLayout) AddAttribute(cell CellRendererer, attribute string, column int) {
 	var _arg0 *C.GtkCellLayout   // out
@@ -247,7 +245,7 @@ func (cellLayout *CellLayout) Clear() {
 //
 // The function takes the following parameters:
 //
-//    - cell to clear the attribute mapping on.
+//   - cell to clear the attribute mapping on.
 //
 func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 	var _arg0 *C.GtkCellLayout   // out
@@ -266,8 +264,8 @@ func (cellLayout *CellLayout) ClearAttributes(cell CellRendererer) {
 //
 // The function returns the following values:
 //
-//    - cellArea (optional): cell area used by cell_layout, or NULL in case no
-//      cell area is used.
+//   - cellArea (optional): cell area used by cell_layout, or NULL in case no
+//     cell area is used.
 //
 func (cellLayout *CellLayout) Area() CellAreaer {
 	var _arg0 *C.GtkCellLayout // out
@@ -304,9 +302,9 @@ func (cellLayout *CellLayout) Area() CellAreaer {
 //
 // The function returns the following values:
 //
-//    - list: a list of cell renderers. The list, but not the renderers has been
-//      newly allocated and should be freed with g_list_free() when no longer
-//      needed.
+//   - list: a list of cell renderers. The list, but not the renderers has been
+//     newly allocated and should be freed with g_list_free() when no longer
+//     needed.
 //
 func (cellLayout *CellLayout) Cells() []CellRendererer {
 	var _arg0 *C.GtkCellLayout // out
@@ -354,8 +352,8 @@ func (cellLayout *CellLayout) Cells() []CellRendererer {
 //
 // The function takes the following parameters:
 //
-//    - cell: CellRenderer.
-//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
+//   - cell: CellRenderer.
+//   - expand: TRUE if cell is to be given extra space allocated to cell_layout.
 //
 func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 	var _arg0 *C.GtkCellLayout   // out
@@ -382,8 +380,8 @@ func (cellLayout *CellLayout) PackEnd(cell CellRendererer, expand bool) {
 //
 // The function takes the following parameters:
 //
-//    - cell: CellRenderer.
-//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
+//   - cell: CellRenderer.
+//   - expand: TRUE if cell is to be given extra space allocated to cell_layout.
 //
 func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 	var _arg0 *C.GtkCellLayout   // out
@@ -409,8 +407,8 @@ func (cellLayout *CellLayout) PackStart(cell CellRendererer, expand bool) {
 //
 // The function takes the following parameters:
 //
-//    - cell to reorder.
-//    - position: new position to insert cell at.
+//   - cell to reorder.
+//   - position: new position to insert cell at.
 //
 func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 	var _arg0 *C.GtkCellLayout   // out
@@ -437,8 +435,8 @@ func (cellLayout *CellLayout) Reorder(cell CellRendererer, position int) {
 //
 // The function takes the following parameters:
 //
-//    - cell: CellRenderer.
-//    - fn (optional) to use, or NULL.
+//   - cell: CellRenderer.
+//   - fn (optional) to use, or NULL.
 //
 func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
 	var _arg0 *C.GtkCellLayout        // out
@@ -464,15 +462,15 @@ func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayout
 // addAttribute adds an attribute mapping to the list in cell_layout.
 //
 // The column is the column of the model to get a value from, and the attribute
-// is the parameter on cell to be set from the value. So for example if column 2
-// of the model contains strings, you could have the “text” attribute of a
+// is the parameter on cell to be set from the value. So for example if column
+// 2 of the model contains strings, you could have the “text” attribute of a
 // CellRendererText get its values from column 2.
 //
 // The function takes the following parameters:
 //
-//    - cell: CellRenderer.
-//    - attribute on the renderer.
-//    - column position on the model to get the attribute from.
+//   - cell: CellRenderer.
+//   - attribute on the renderer.
+//   - column position on the model to get the attribute from.
 //
 func (cellLayout *CellLayout) addAttribute(cell CellRendererer, attribute string, column int) {
 	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
@@ -515,7 +513,7 @@ func (cellLayout *CellLayout) clear() {
 //
 // The function takes the following parameters:
 //
-//    - cell to clear the attribute mapping on.
+//   - cell to clear the attribute mapping on.
 //
 func (cellLayout *CellLayout) clearAttributes(cell CellRendererer) {
 	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
@@ -537,8 +535,8 @@ func (cellLayout *CellLayout) clearAttributes(cell CellRendererer) {
 //
 // The function returns the following values:
 //
-//    - cellArea (optional): cell area used by cell_layout, or NULL in case no
-//      cell area is used.
+//   - cellArea (optional): cell area used by cell_layout, or NULL in case no
+//     cell area is used.
 //
 func (cellLayout *CellLayout) area() CellAreaer {
 	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
@@ -578,9 +576,9 @@ func (cellLayout *CellLayout) area() CellAreaer {
 //
 // The function returns the following values:
 //
-//    - list: a list of cell renderers. The list, but not the renderers has been
-//      newly allocated and should be freed with g_list_free() when no longer
-//      needed.
+//   - list: a list of cell renderers. The list, but not the renderers has been
+//     newly allocated and should be freed with g_list_free() when no longer
+//     needed.
 //
 func (cellLayout *CellLayout) cells() []CellRendererer {
 	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
@@ -631,8 +629,8 @@ func (cellLayout *CellLayout) cells() []CellRendererer {
 //
 // The function takes the following parameters:
 //
-//    - cell: CellRenderer.
-//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
+//   - cell: CellRenderer.
+//   - expand: TRUE if cell is to be given extra space allocated to cell_layout.
 //
 func (cellLayout *CellLayout) packEnd(cell CellRendererer, expand bool) {
 	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
@@ -662,8 +660,8 @@ func (cellLayout *CellLayout) packEnd(cell CellRendererer, expand bool) {
 //
 // The function takes the following parameters:
 //
-//    - cell: CellRenderer.
-//    - expand: TRUE if cell is to be given extra space allocated to cell_layout.
+//   - cell: CellRenderer.
+//   - expand: TRUE if cell is to be given extra space allocated to cell_layout.
 //
 func (cellLayout *CellLayout) packStart(cell CellRendererer, expand bool) {
 	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
@@ -692,8 +690,8 @@ func (cellLayout *CellLayout) packStart(cell CellRendererer, expand bool) {
 //
 // The function takes the following parameters:
 //
-//    - cell to reorder.
-//    - position: new position to insert cell at.
+//   - cell to reorder.
+//   - position: new position to insert cell at.
 //
 func (cellLayout *CellLayout) reorder(cell CellRendererer, position int) {
 	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
@@ -723,8 +721,8 @@ func (cellLayout *CellLayout) reorder(cell CellRendererer, position int) {
 //
 // The function takes the following parameters:
 //
-//    - cell: CellRenderer.
-//    - fn (optional) to use, or NULL.
+//   - cell: CellRenderer.
+//   - fn (optional) to use, or NULL.
 //
 func (cellLayout *CellLayout) setCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
 	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))

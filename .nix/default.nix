@@ -11,9 +11,9 @@ let
 	gotk4-nix = systemPkgs.fetchFromGitHub {
 		owner = "diamondburned";
 		repo  = "gotk4-nix";
-		# This is a commit from 2022-10-17.
-		rev    = "2c031f93638f8c97a298807df80424f68ffaac76";
-		sha256 = "YB3EAE8SRayFukBLhT5q2kgrkStqGXc9QYbpQP+y61I=";
+		# This is a commit from 2023-06-02.
+		rev    = "b186ac5419c22f4b75b1bdc35ef4fd9349c6b65e";
+		sha256 = "1pfx0p4w56d7pa1l9ipqfq52znfl7slc2wbjfqddq1jv1fp9z43q";
 	};
 
 in import "${gotk4-nix}/${action}.nix" {
@@ -35,5 +35,15 @@ in import "${gotk4-nix}/${action}.nix" {
 		# useFetched specifies whether to use the system copy of nixpkgs
 		# (false), or whether to force use of the pinned version (true).
 		useFetched = true;
+		# usePatchedGo = true;
+		overlays = [
+			(self: super: {
+				go =
+					let
+						upstreamPkgs = import "${gotk4-nix}/pkgs.nix" {};
+					in
+						upstreamPkgs.go;
+			})
+		];
 	};
 }

@@ -15,7 +15,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - gdouble: random number.
+//   - gdouble: random number.
 //
 func RandomDouble() float64 {
 	var _cret C.gdouble // in
@@ -34,12 +34,12 @@ func RandomDouble() float64 {
 //
 // The function takes the following parameters:
 //
-//    - begin: lower closed bound of the interval.
-//    - end: upper open bound of the interval.
+//   - begin: lower closed bound of the interval.
+//   - end: upper open bound of the interval.
 //
 // The function returns the following values:
 //
-//    - gdouble: random number.
+//   - gdouble: random number.
 //
 func RandomDoubleRange(begin, end float64) float64 {
 	var _arg1 C.gdouble // out
@@ -65,7 +65,7 @@ func RandomDoubleRange(begin, end float64) float64 {
 //
 // The function returns the following values:
 //
-//    - guint32: random number.
+//   - guint32: random number.
 //
 func RandomInt() uint32 {
 	var _cret C.guint32 // in
@@ -84,12 +84,12 @@ func RandomInt() uint32 {
 //
 // The function takes the following parameters:
 //
-//    - begin: lower closed bound of the interval.
-//    - end: upper open bound of the interval.
+//   - begin: lower closed bound of the interval.
+//   - end: upper open bound of the interval.
 //
 // The function returns the following values:
 //
-//    - gint32: random number.
+//   - gint32: random number.
 //
 func RandomIntRange(begin, end int32) int32 {
 	var _arg1 C.gint32 // out
@@ -115,7 +115,7 @@ func RandomIntRange(begin, end int32) int32 {
 //
 // The function takes the following parameters:
 //
-//    - seed: value to reinitialize the global random number generator.
+//   - seed: value to reinitialize the global random number generator.
 //
 func RandomSetSeed(seed uint32) {
 	var _arg1 C.guint32 // out

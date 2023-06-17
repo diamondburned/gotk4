@@ -88,11 +88,11 @@ func marshalListStore(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - itemType of items in the list.
+//   - itemType of items in the list.
 //
 // The function returns the following values:
 //
-//    - listStore: new Store.
+//   - listStore: new Store.
 //
 func NewListStore(itemType coreglib.Type) *ListStore {
 	var _arg1 C.GType       // out
@@ -119,7 +119,7 @@ func NewListStore(itemType coreglib.Type) *ListStore {
 //
 // The function takes the following parameters:
 //
-//    - item: new item.
+//   - item: new item.
 //
 func (store *ListStore) Append(item *coreglib.Object) {
 	var _arg0 *C.GListStore // out
@@ -137,18 +137,18 @@ func (store *ListStore) Append(item *coreglib.Object) {
 // until the first occurrence of item. If item was not found, then position will
 // not be set, and this method will return FALSE.
 //
-// If you need to compare the two items with a custom comparison function, use
-// g_list_store_find_with_equal_func() with a custom Func instead.
+// If you need to compare the two items with a custom comparison function,
+// use g_list_store_find_with_equal_func() with a custom Func instead.
 //
 // The function takes the following parameters:
 //
-//    - item: item.
+//   - item: item.
 //
 // The function returns the following values:
 //
-//    - position (optional): first position of item, if it was found.
-//    - ok: whether store contains item. If it was found, position will be set to
-//      the position where item occurred for the first time.
+//   - position (optional): first position of item, if it was found.
+//   - ok: whether store contains item. If it was found, position will be set to
+//     the position where item occurred for the first time.
 //
 func (store *ListStore) Find(item *coreglib.Object) (uint, bool) {
 	var _arg0 *C.GListStore // out
@@ -185,8 +185,8 @@ func (store *ListStore) Find(item *coreglib.Object) (uint, bool) {
 //
 // The function takes the following parameters:
 //
-//    - position at which to insert the new item.
-//    - item: new item.
+//   - position at which to insert the new item.
+//   - item: new item.
 //
 func (store *ListStore) Insert(position uint, item *coreglib.Object) {
 	var _arg0 *C.GListStore // out
@@ -206,20 +206,20 @@ func (store *ListStore) Insert(position uint, item *coreglib.Object) {
 // InsertSorted inserts item into store at a position to be determined by the
 // compare_func.
 //
-// The list must already be sorted before calling this function or the result is
-// undefined. Usually you would approach this by only ever inserting items by
+// The list must already be sorted before calling this function or the result
+// is undefined. Usually you would approach this by only ever inserting items by
 // way of this function.
 //
 // This function takes a ref on item.
 //
 // The function takes the following parameters:
 //
-//    - item: new item.
-//    - compareFunc: pairwise comparison function for sorting.
+//   - item: new item.
+//   - compareFunc: pairwise comparison function for sorting.
 //
 // The function returns the following values:
 //
-//    - guint: position at which item was inserted.
+//   - guint: position at which item was inserted.
 //
 func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.CompareDataFunc) uint {
 	var _arg0 *C.GListStore      // out
@@ -254,7 +254,7 @@ func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.Com
 //
 // The function takes the following parameters:
 //
-//    - position of the item that is to be removed.
+//   - position of the item that is to be removed.
 //
 func (store *ListStore) Remove(position uint) {
 	var _arg0 *C.GListStore // out
@@ -282,7 +282,7 @@ func (store *ListStore) RemoveAll() {
 //
 // The function takes the following parameters:
 //
-//    - compareFunc: pairwise comparison function for sorting.
+//   - compareFunc: pairwise comparison function for sorting.
 //
 func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	var _arg0 *C.GListStore      // out
@@ -315,9 +315,9 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 //
 // The function takes the following parameters:
 //
-//    - position at which to make the change.
-//    - nRemovals: number of items to remove.
-//    - additions items to add.
+//   - position at which to make the change.
+//   - nRemovals: number of items to remove.
+//   - additions items to add.
 //
 func (store *ListStore) Splice(position, nRemovals uint, additions []*coreglib.Object) {
 	var _arg0 *C.GListStore // out

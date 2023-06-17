@@ -24,12 +24,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - path: pathname inside the resource.
-//    - lookupFlags: LookupFlags.
+//   - path: pathname inside the resource.
+//   - lookupFlags: LookupFlags.
 //
 // The function returns the following values:
 //
-//    - utf8s: array of constant strings.
+//   - utf8s: array of constant strings.
 //
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
 	var _arg1 *C.char                // out
@@ -77,15 +77,15 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 //
 // The function takes the following parameters:
 //
-//    - path: pathname inside the resource.
-//    - lookupFlags: LookupFlags.
+//   - path: pathname inside the resource.
+//   - lookupFlags: LookupFlags.
 //
 // The function returns the following values:
 //
-//    - size (optional): location to place the length of the contents of the
-//      file, or NULL if the length is not needed.
-//    - flags (optional): location to place the Flags about the file, or NULL if
-//      the flags are not needed.
+//   - size (optional): location to place the length of the contents of the
+//     file, or NULL if the length is not needed.
+//   - flags (optional): location to place the Flags about the file, or NULL if
+//     the flags are not needed.
 //
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
 	var _arg1 *C.char                // out
@@ -131,12 +131,12 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 //
 // The function takes the following parameters:
 //
-//    - path: pathname inside the resource.
-//    - lookupFlags: LookupFlags.
+//   - path: pathname inside the resource.
+//   - lookupFlags: LookupFlags.
 //
 // The function returns the following values:
 //
-//    - bytes or NULL on error. Free the returned object with g_bytes_unref().
+//   - bytes or NULL on error. Free the returned object with g_bytes_unref().
 //
 func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (*glib.Bytes, error) {
 	var _arg1 *C.char                // out
@@ -177,13 +177,13 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (*glib.By
 //
 // The function takes the following parameters:
 //
-//    - path: pathname inside the resource.
-//    - lookupFlags: LookupFlags.
+//   - path: pathname inside the resource.
+//   - lookupFlags: LookupFlags.
 //
 // The function returns the following values:
 //
-//    - inputStream or NULL on error. Free the returned object with
-//      g_object_unref().
+//   - inputStream or NULL on error. Free the returned object with
+//     g_object_unref().
 //
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStreamer, error) {
 	var _arg1 *C.char                // out
@@ -232,7 +232,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 //
 // The function takes the following parameters:
 //
-//    - resource: #GResource.
+//   - resource: #GResource.
 //
 func ResourcesRegister(resource *Resource) {
 	var _arg1 *C.GResource // out
@@ -248,7 +248,7 @@ func ResourcesRegister(resource *Resource) {
 //
 // The function takes the following parameters:
 //
-//    - resource: #GResource.
+//   - resource: #GResource.
 //
 func ResourcesUnregister(resource *Resource) {
 	var _arg1 *C.GResource // out
@@ -271,11 +271,11 @@ func ResourcesUnregister(resource *Resource) {
 //
 // The function takes the following parameters:
 //
-//    - filename: path of a filename to load, in the GLib filename encoding.
+//   - filename: path of a filename to load, in the GLib filename encoding.
 //
 // The function returns the following values:
 //
-//    - resource: new #GResource, or NULL on error.
+//   - resource: new #GResource, or NULL on error.
 //
 func ResourceLoad(filename string) (*Resource, error) {
 	var _arg1 *C.gchar     // out

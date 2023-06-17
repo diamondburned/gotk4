@@ -12,11 +12,11 @@ import (
 import "C"
 
 // FormatSize formats a size (for example the size of a file) into a human
-// readable string. Sizes are rounded to the nearest size prefix (kB, MB, GB)
-// and are displayed rounded to the nearest tenth. E.g. the file size 3292528
-// bytes will be converted into the string "3.2 MB". The returned string is
-// UTF-8, and may use a non-breaking space to separate the number and units, to
-// ensure they aren’t separated when line wrapped.
+// readable string. Sizes are rounded to the nearest size prefix (kB, MB,
+// GB) and are displayed rounded to the nearest tenth. E.g. the file size
+// 3292528 bytes will be converted into the string "3.2 MB". The returned string
+// is UTF-8, and may use a non-breaking space to separate the number and units,
+// to ensure they aren’t separated when line wrapped.
 //
 // The prefix units base is 1000 (i.e. 1 kB is 1000 bytes).
 //
@@ -27,12 +27,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - size in bytes.
+//   - size in bytes.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated formatted string containing a human readable file
-//      size.
+//   - utf8: newly-allocated formatted string containing a human readable file
+//     size.
 //
 func FormatSize(size uint64) string {
 	var _arg1 C.guint64 // out
@@ -58,13 +58,13 @@ func FormatSize(size uint64) string {
 //
 // The function takes the following parameters:
 //
-//    - size in bytes.
-//    - flags to modify the output.
+//   - size in bytes.
+//   - flags to modify the output.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated formatted string containing a human readable file
-//      size.
+//   - utf8: newly-allocated formatted string containing a human readable file
+//     size.
 //
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	var _arg1 C.guint64          // out

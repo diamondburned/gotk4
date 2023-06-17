@@ -165,8 +165,8 @@ func NewKeyFile() *KeyFile {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
@@ -204,14 +204,14 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - oks: the values associated with the key as a list of booleans, or NULL if
-//      the key was not found or could not be parsed. The returned list of
-//      booleans should be freed with g_free() when no longer needed.
+//   - oks: the values associated with the key as a list of booleans, or NULL
+//     if the key was not found or could not be parsed. The returned list of
+//     booleans should be freed with g_free() when no longer needed.
 //
 func (keyFile *KeyFile) BooleanList(groupName string, key string) ([]bool, error) {
 	var _arg0 *C.GKeyFile // out
@@ -249,18 +249,18 @@ func (keyFile *KeyFile) BooleanList(groupName string, key string) ([]bool, error
 // comment will be read from above group_name. If both key and group_name are
 // NULL, then comment will be read from above the first group in the file.
 //
-// Note that the returned string does not include the '#' comment markers, but
-// does include any whitespace after them (on each line). It includes the line
-// breaks between lines, but does not include the final line break.
+// Note that the returned string does not include the '#' comment markers,
+// but does include any whitespace after them (on each line). It includes the
+// line breaks between lines, but does not include the final line break.
 //
 // The function takes the following parameters:
 //
-//    - groupName (optional): group name, or NULL.
-//    - key (optional): key.
+//   - groupName (optional): group name, or NULL.
+//   - key (optional): key.
 //
 // The function returns the following values:
 //
-//    - utf8: comment that should be freed with g_free().
+//   - utf8: comment that should be freed with g_free().
 //
 func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
@@ -296,8 +296,8 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	return _utf8, _goerr
 }
 
-// Double returns the value associated with key under group_name as a double. If
-// group_name is NULL, the start_group is used.
+// Double returns the value associated with key under group_name as a double.
+// If group_name is NULL, the start_group is used.
 //
 // If key cannot be found then 0.0 is returned and error is set to
 // KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with key
@@ -306,13 +306,13 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - gdouble: value associated with the key as a double, or 0.0 if the key was
-//      not found or could not be parsed.
+//   - gdouble: value associated with the key as a double, or 0.0 if the key was
+//     not found or could not be parsed.
 //
 func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _arg0 *C.GKeyFile // out
@@ -353,14 +353,14 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - gdoubles: the values associated with the key as a list of doubles, or
-//      NULL if the key was not found or could not be parsed. The returned list
-//      of doubles should be freed with g_free() when no longer needed.
+//   - gdoubles: the values associated with the key as a list of doubles,
+//     or NULL if the key was not found or could not be parsed. The returned
+//     list of doubles should be freed with g_free() when no longer needed.
 //
 func (keyFile *KeyFile) DoubleList(groupName string, key string) ([]float64, error) {
 	var _arg0 *C.GKeyFile // out
@@ -399,10 +399,10 @@ func (keyFile *KeyFile) DoubleList(groupName string, key string) ([]float64, err
 //
 // The function returns the following values:
 //
-//    - length (optional): return location for the number of returned groups, or
-//      NULL.
-//    - utf8s: newly-allocated NULL-terminated array of strings. Use g_strfreev()
-//      to free it.
+//   - length (optional): return location for the number of returned groups,
+//     or NULL.
+//   - utf8s: newly-allocated NULL-terminated array of strings. Use g_strfreev()
+//     to free it.
 //
 func (keyFile *KeyFile) Groups() (uint, []string) {
 	var _arg0 *C.GKeyFile // out
@@ -443,13 +443,13 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: non-NULL group name.
-//    - key: non-NULL key.
+//   - groupName: non-NULL group name.
+//   - key: non-NULL key.
 //
 // The function returns the following values:
 //
-//    - gint64: value associated with the key as a signed 64-bit integer, or 0 if
-//      the key was not found or could not be parsed.
+//   - gint64: value associated with the key as a signed 64-bit integer, or 0 if
+//     the key was not found or could not be parsed.
 //
 func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _arg0 *C.GKeyFile // out
@@ -489,13 +489,13 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - gint: value associated with the key as an integer, or 0 if the key was
-//      not found or could not be parsed.
+//   - gint: value associated with the key as an integer, or 0 if the key was
+//     not found or could not be parsed.
 //
 func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _arg0 *C.GKeyFile // out
@@ -536,14 +536,14 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - gints: the values associated with the key as a list of integers, or NULL
-//      if the key was not found or could not be parsed. The returned list of
-//      integers should be freed with g_free() when no longer needed.
+//   - gints: the values associated with the key as a list of integers, or NULL
+//     if the key was not found or could not be parsed. The returned list of
+//     integers should be freed with g_free() when no longer needed.
 //
 func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error) {
 	var _arg0 *C.GKeyFile // out
@@ -589,14 +589,14 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error)
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
+//   - groupName: group name.
 //
 // The function returns the following values:
 //
-//    - length (optional): return location for the number of keys returned, or
-//      NULL.
-//    - utf8s: newly-allocated NULL-terminated array of strings. Use g_strfreev()
-//      to free it.
+//   - length (optional): return location for the number of keys returned,
+//     or NULL.
+//   - utf8s: newly-allocated NULL-terminated array of strings. Use g_strfreev()
+//     to free it.
 //
 func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _arg0 *C.GKeyFile // out
@@ -651,14 +651,14 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - locale (optional) identifier or NULL.
+//   - groupName: group name.
+//   - key: key.
+//   - locale (optional) identifier or NULL.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): locale from the file, or NULL if the key was not found
-//      or the entry in the file was was untranslated.
+//   - utf8 (optional): locale from the file, or NULL if the key was not found
+//     or the entry in the file was was untranslated.
 //
 func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string) string {
 	var _arg0 *C.GKeyFile // out
@@ -708,14 +708,14 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - locale (optional) identifier or NULL.
+//   - groupName: group name.
+//   - key: key.
+//   - locale (optional) identifier or NULL.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string or NULL if the specified key cannot be
-//      found.
+//   - utf8: newly allocated string or NULL if the specified key cannot be
+//     found.
 //
 func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string) (string, error) {
 	var _arg0 *C.GKeyFile // out
@@ -769,14 +769,14 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - locale (optional) identifier or NULL.
+//   - groupName: group name.
+//   - key: key.
+//   - locale (optional) identifier or NULL.
 //
 // The function returns the following values:
 //
-//    - utf8s: newly allocated NULL-terminated string array or NULL if the key
-//      isn't found. The string array should be freed with g_strfreev().
+//   - utf8s: newly allocated NULL-terminated string array or NULL if the key
+//     isn't found. The string array should be freed with g_strfreev().
 //
 func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale string) ([]string, error) {
 	var _arg0 *C.GKeyFile // out
@@ -826,7 +826,7 @@ func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale st
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): start group of the key file.
+//   - utf8 (optional): start group of the key file.
 //
 func (keyFile *KeyFile) StartGroup() string {
 	var _arg0 *C.GKeyFile // out
@@ -856,13 +856,13 @@ func (keyFile *KeyFile) StartGroup() string {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string or NULL if the specified key cannot be
-//      found.
+//   - utf8: newly allocated string or NULL if the specified key cannot be
+//     found.
 //
 func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
@@ -902,13 +902,13 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - utf8s: a NULL-terminated string array or NULL if the specified key cannot
-//      be found. The array should be freed with g_strfreev().
+//   - utf8s: a NULL-terminated string array or NULL if the specified key cannot
+//     be found. The array should be freed with g_strfreev().
 //
 func (keyFile *KeyFile) StringList(groupName string, key string) ([]string, error) {
 	var _arg0 *C.GKeyFile // out
@@ -954,13 +954,13 @@ func (keyFile *KeyFile) StringList(groupName string, key string) ([]string, erro
 //
 // The function takes the following parameters:
 //
-//    - groupName: non-NULL group name.
-//    - key: non-NULL key.
+//   - groupName: non-NULL group name.
+//   - key: non-NULL key.
 //
 // The function returns the following values:
 //
-//    - guint64: value associated with the key as an unsigned 64-bit integer, or
-//      0 if the key was not found or could not be parsed.
+//   - guint64: value associated with the key as an unsigned 64-bit integer,
+//     or 0 if the key was not found or could not be parsed.
 //
 func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _arg0 *C.GKeyFile // out
@@ -1000,13 +1000,13 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string or NULL if the specified key cannot be
-//      found.
+//   - utf8: newly allocated string or NULL if the specified key cannot be
+//     found.
 //
 func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
@@ -1042,11 +1042,11 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
+//   - groupName: group name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if group_name is a part of key_file, FALSE otherwise.
+//   - ok: TRUE if group_name is a part of key_file, FALSE otherwise.
 //
 func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	var _arg0 *C.GKeyFile // out
@@ -1075,8 +1075,8 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 //
 // The function takes the following parameters:
 //
-//    - bytes: #GBytes.
-//    - flags from FileFlags.
+//   - bytes: #GBytes.
+//   - flags from FileFlags.
 //
 func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
@@ -1102,14 +1102,14 @@ func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 	return _goerr
 }
 
-// LoadFromData loads a key file from memory into an empty File structure. If
-// the object cannot be created then error is set to a FileError.
+// LoadFromData loads a key file from memory into an empty File structure.
+// If the object cannot be created then error is set to a FileError.
 //
 // The function takes the following parameters:
 //
-//    - data: key file loaded in memory.
-//    - length of data in bytes (or (gsize)-1 if data is nul-terminated).
-//    - flags from FileFlags.
+//   - data: key file loaded in memory.
+//   - length of data in bytes (or (gsize)-1 if data is nul-terminated).
+//   - flags from FileFlags.
 //
 func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
@@ -1146,13 +1146,13 @@ func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlag
 //
 // The function takes the following parameters:
 //
-//    - file: relative path to a filename to open and parse.
-//    - flags from FileFlags.
+//   - file: relative path to a filename to open and parse.
+//   - flags from FileFlags.
 //
 // The function returns the following values:
 //
-//    - fullPath (optional): return location for a string containing the full
-//      path of the file, or NULL.
+//   - fullPath (optional): return location for a string containing the full
+//     path of the file, or NULL.
 //
 func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (string, error) {
 	var _arg0 *C.GKeyFile     // out
@@ -1190,21 +1190,21 @@ func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (strin
 // full path in full_path.
 //
 // If the file could not be found in any of the search_dirs,
-// G_KEY_FILE_ERROR_NOT_FOUND is returned. If the file is found but the OS
-// returns an error when opening or reading the file, a G_FILE_ERROR is
+// G_KEY_FILE_ERROR_NOT_FOUND is returned. If the file is found but the
+// OS returns an error when opening or reading the file, a G_FILE_ERROR is
 // returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
 // returned.
 //
 // The function takes the following parameters:
 //
-//    - file: relative path to a filename to open and parse.
-//    - searchDirs: NULL-terminated array of directories to search.
-//    - flags from FileFlags.
+//   - file: relative path to a filename to open and parse.
+//   - searchDirs: NULL-terminated array of directories to search.
+//   - flags from FileFlags.
 //
 // The function returns the following values:
 //
-//    - fullPath (optional): return location for a string containing the full
-//      path of the file, or NULL.
+//   - fullPath (optional): return location for a string containing the full
+//     path of the file, or NULL.
 //
 func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFlags) (string, error) {
 	var _arg0 *C.GKeyFile     // out
@@ -1263,8 +1263,8 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 //
 // The function takes the following parameters:
 //
-//    - file: path of a filename to load, in the GLib filename encoding.
-//    - flags from FileFlags.
+//   - file: path of a filename to load, in the GLib filename encoding.
+//   - flags from FileFlags.
 //
 func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
@@ -1297,8 +1297,8 @@ func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 //
 // The function takes the following parameters:
 //
-//    - groupName (optional): group name, or NULL.
-//    - key (optional): key.
+//   - groupName (optional): group name, or NULL.
+//   - key (optional): key.
 //
 func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
@@ -1334,7 +1334,7 @@ func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
+//   - groupName: group name.
 //
 func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 	var _arg0 *C.GKeyFile // out
@@ -1362,8 +1362,8 @@ func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key name to remove.
+//   - groupName: group name.
+//   - key name to remove.
 //
 func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
@@ -1392,8 +1392,8 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 }
 
 // SaveToFile writes the contents of key_file to filename using
-// g_file_set_contents(). If you need stricter guarantees about durability of
-// the written file than are provided by g_file_set_contents(), use
+// g_file_set_contents(). If you need stricter guarantees about durability
+// of the written file than are provided by g_file_set_contents(), use
 // g_file_set_contents_full() with the return value of g_key_file_to_data().
 //
 // This function can fail for any of the reasons that g_file_set_contents() may
@@ -1401,7 +1401,7 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file to write to.
+//   - filename: name of the file to write to.
 //
 func (keyFile *KeyFile) SaveToFile(filename string) error {
 	var _arg0 *C.GKeyFile // out
@@ -1430,9 +1430,9 @@ func (keyFile *KeyFile) SaveToFile(filename string) error {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - value: TRUE or FALSE.
+//   - groupName: group name.
+//   - key: key.
+//   - value: TRUE or FALSE.
 //
 func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	var _arg0 *C.GKeyFile // out
@@ -1462,9 +1462,9 @@ func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - list: array of boolean values.
+//   - groupName: group name.
+//   - key: key.
+//   - list: array of boolean values.
 //
 func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool) {
 	var _arg0 *C.GKeyFile // out
@@ -1501,9 +1501,9 @@ func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool
 //
 // The function takes the following parameters:
 //
-//    - groupName (optional): group name, or NULL.
-//    - key (optional): key.
-//    - comment: comment.
+//   - groupName (optional): group name, or NULL.
+//   - key (optional): key.
+//   - comment: comment.
 //
 func (keyFile *KeyFile) SetComment(groupName string, key string, comment string) error {
 	var _arg0 *C.GKeyFile // out
@@ -1544,9 +1544,9 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - value: double value.
+//   - groupName: group name.
+//   - key: key.
+//   - value: double value.
 //
 func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 	var _arg0 *C.GKeyFile // out
@@ -1573,9 +1573,9 @@ func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - list: array of double values.
+//   - groupName: group name.
+//   - key: key.
+//   - list: array of double values.
 //
 func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float64) {
 	var _arg0 *C.GKeyFile // out
@@ -1606,9 +1606,9 @@ func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - value: integer value.
+//   - groupName: group name.
+//   - key: key.
+//   - value: integer value.
 //
 func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 	var _arg0 *C.GKeyFile // out
@@ -1635,9 +1635,9 @@ func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - value: integer value.
+//   - groupName: group name.
+//   - key: key.
+//   - value: integer value.
 //
 func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 	var _arg0 *C.GKeyFile // out
@@ -1664,9 +1664,9 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - list: array of integer values.
+//   - groupName: group name.
+//   - key: key.
+//   - list: array of integer values.
 //
 func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int) {
 	var _arg0 *C.GKeyFile // out
@@ -1697,13 +1697,13 @@ func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int)
 	runtime.KeepAlive(list)
 }
 
-// SetListSeparator sets the character which is used to separate values in
-// lists. Typically ';' or ',' are used as separators. The default list
+// SetListSeparator sets the character which is used to separate values
+// in lists. Typically ';' or ',' are used as separators. The default list
 // separator is ';'.
 //
 // The function takes the following parameters:
 //
-//    - separator: separator.
+//   - separator: separator.
 //
 func (keyFile *KeyFile) SetListSeparator(separator byte) {
 	var _arg0 *C.GKeyFile // out
@@ -1722,10 +1722,10 @@ func (keyFile *KeyFile) SetListSeparator(separator byte) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - locale identifier.
-//    - str: string.
+//   - groupName: group name.
+//   - key: key.
+//   - locale identifier.
+//   - str: string.
 //
 func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale string, str string) {
 	var _arg0 *C.GKeyFile // out
@@ -1758,10 +1758,10 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - locale identifier.
-//    - list: NULL-terminated array of locale string values.
+//   - groupName: group name.
+//   - key: key.
+//   - locale identifier.
+//   - list: NULL-terminated array of locale string values.
 //
 func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale string, list []string) {
 	var _arg0 *C.GKeyFile // out
@@ -1804,9 +1804,9 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - str: string.
+//   - groupName: group name.
+//   - key: key.
+//   - str: string.
 //
 func (keyFile *KeyFile) SetString(groupName string, key string, str string) {
 	var _arg0 *C.GKeyFile // out
@@ -1829,15 +1829,15 @@ func (keyFile *KeyFile) SetString(groupName string, key string, str string) {
 	runtime.KeepAlive(str)
 }
 
-// SetStringList associates a list of string values for key under group_name. If
-// key cannot be found then it is created. If group_name cannot be found then it
-// is created.
+// SetStringList associates a list of string values for key under group_name.
+// If key cannot be found then it is created. If group_name cannot be found then
+// it is created.
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - list: array of string values.
+//   - groupName: group name.
+//   - key: key.
+//   - list: array of string values.
 //
 func (keyFile *KeyFile) SetStringList(groupName string, key string, list []string) {
 	var _arg0 *C.GKeyFile // out
@@ -1874,9 +1874,9 @@ func (keyFile *KeyFile) SetStringList(groupName string, key string, list []strin
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - value: integer value.
+//   - groupName: group name.
+//   - key: key.
+//   - value: integer value.
 //
 func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	var _arg0 *C.GKeyFile // out
@@ -1906,9 +1906,9 @@ func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 //
 // The function takes the following parameters:
 //
-//    - groupName: group name.
-//    - key: key.
-//    - value: string.
+//   - groupName: group name.
+//   - key: key.
+//   - value: string.
 //
 func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 	var _arg0 *C.GKeyFile // out
@@ -1938,9 +1938,9 @@ func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 //
 // The function returns the following values:
 //
-//    - length (optional): return location for the length of the returned string,
-//      or NULL.
-//    - utf8: newly allocated string holding the contents of the File.
+//   - length (optional): return location for the length of the returned string,
+//     or NULL.
+//   - utf8: newly allocated string holding the contents of the File.
 //
 func (keyFile *KeyFile) ToData() (uint, string, error) {
 	var _arg0 *C.GKeyFile // out

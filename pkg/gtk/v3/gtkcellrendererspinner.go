@@ -39,10 +39,10 @@ func defaultCellRendererSpinnerOverrides(v *CellRendererSpinner) CellRendererSpi
 // Spinner. It can often be used as an alternative to a CellRendererProgress for
 // displaying indefinite activity, instead of actual progress.
 //
-// To start the animation in a cell, set the CellRendererSpinner:active property
-// to TRUE and increment the CellRendererSpinner:pulse property at regular
-// intervals. The usual way to set the cell renderer properties for each cell is
-// to bind them to columns in your tree model using e.g.
+// To start the animation in a cell, set the CellRendererSpinner:active
+// property to TRUE and increment the CellRendererSpinner:pulse property
+// at regular intervals. The usual way to set the cell renderer properties
+// for each cell is to bind them to columns in your tree model using e.g.
 // gtk_tree_view_column_add_attribute().
 type CellRendererSpinner struct {
 	_ [0]func() // equal guard
@@ -88,7 +88,7 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - cellRendererSpinner: new CellRenderer.
+//   - cellRendererSpinner: new CellRenderer.
 //
 func NewCellRendererSpinner() *CellRendererSpinner {
 	var _cret *C.GtkCellRenderer // in

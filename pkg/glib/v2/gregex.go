@@ -45,8 +45,8 @@ func marshalMatchInfo(p uintptr) (interface{}, error) {
 }
 
 // ExpandReferences returns a new string containing the text in string_to_expand
-// with references and escape sequences expanded. References refer to the last
-// match done with string against regex and have the same syntax used by
+// with references and escape sequences expanded. References refer to the
+// last match done with string against regex and have the same syntax used by
 // g_regex_replace().
 //
 // The string_to_expand must be UTF-8 encoded even if REGEX_RAW was passed to
@@ -63,11 +63,11 @@ func marshalMatchInfo(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - stringToExpand: string to expand.
+//   - stringToExpand: string to expand.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): expanded string, or NULL if an error occurred.
+//   - utf8 (optional): expanded string, or NULL if an error occurred.
 //
 func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, error) {
 	var _arg0 *C.GMatchInfo // out
@@ -99,9 +99,9 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 	return _utf8, _goerr
 }
 
-// Fetch retrieves the text matching the match_num'th capturing parentheses. 0
-// is the full text of the match, 1 is the first paren set, 2 the second, and so
-// on.
+// Fetch retrieves the text matching the match_num'th capturing parentheses.
+// 0 is the full text of the match, 1 is the first paren set, 2 the second,
+// and so on.
 //
 // If match_num is a valid sub pattern but it didn't match anything (e.g. sub
 // pattern 1, matching "b" against "(a)?b") then an empty string is returned.
@@ -116,12 +116,12 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 //
 // The function takes the following parameters:
 //
-//    - matchNum: number of the sub expression.
+//   - matchNum: number of the sub expression.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): matched substring, or NULL if an error occurred. You
-//      have to free the string yourself.
+//   - utf8 (optional): matched substring, or NULL if an error occurred.
+//     You have to free the string yourself.
 //
 func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 	var _arg0 *C.GMatchInfo // out
@@ -158,13 +158,13 @@ func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 // Substrings are matched in reverse order of length, so the first one is the
 // longest match.
 //
-// The strings are fetched from the string passed to the match function, so you
-// cannot call this function after freeing the string.
+// The strings are fetched from the string passed to the match function,
+// so you cannot call this function after freeing the string.
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of gchar * pointers. It must be freed using
-//      g_strfreev(). If the previous match failed NULL is returned.
+//   - utf8s: NULL-terminated array of gchar * pointers. It must be freed using
+//     g_strfreev(). If the previous match failed NULL is returned.
 //
 func (matchInfo *MatchInfo) FetchAll() []string {
 	var _arg0 *C.GMatchInfo // out
@@ -198,8 +198,8 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 
 // FetchNamed retrieves the text matching the capturing parentheses named name.
 //
-// If name is a valid sub pattern name but it didn't match anything (e.g. sub
-// pattern "X", matching "b" against "(?P<X>a)?b") then an empty string is
+// If name is a valid sub pattern name but it didn't match anything (e.g.
+// sub pattern "X", matching "b" against "(?P<X>a)?b") then an empty string is
 // returned.
 //
 // The string is fetched from the string passed to the match function, so you
@@ -207,12 +207,12 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 //
 // The function takes the following parameters:
 //
-//    - name of the subexpression.
+//   - name of the subexpression.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): matched substring, or NULL if an error occurred. You
-//      have to free the string yourself.
+//   - utf8 (optional): matched substring, or NULL if an error occurred.
+//     You have to free the string yourself.
 //
 func (matchInfo *MatchInfo) FetchNamed(name string) string {
 	var _arg0 *C.GMatchInfo // out
@@ -246,16 +246,16 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 //
 // The function takes the following parameters:
 //
-//    - name of the subexpression.
+//   - name of the subexpression.
 //
 // The function returns the following values:
 //
-//    - startPos (optional): pointer to location where to store the start
-//      position, or NULL.
-//    - endPos (optional): pointer to location where to store the end position,
-//      or NULL.
-//    - ok: TRUE if the position was fetched, FALSE otherwise. If the position
-//      cannot be fetched, start_pos and end_pos are left unchanged.
+//   - startPos (optional): pointer to location where to store the start
+//     position, or NULL.
+//   - endPos (optional): pointer to location where to store the end position,
+//     or NULL.
+//   - ok: TRUE if the position was fetched, FALSE otherwise. If the position
+//     cannot be fetched, start_pos and end_pos are left unchanged.
 //
 func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GMatchInfo // out
@@ -286,12 +286,12 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 }
 
 // FetchPos retrieves the position in bytes of the match_num'th capturing
-// parentheses. 0 is the full text of the match, 1 is the first paren set, 2 the
-// second, and so on.
+// parentheses. 0 is the full text of the match, 1 is the first paren set,
+// 2 the second, and so on.
 //
-// If match_num is a valid sub pattern but it didn't match anything (e.g. sub
-// pattern 1, matching "b" against "(a)?b") then start_pos and end_pos are set
-// to -1 and TRUE is returned.
+// If match_num is a valid sub pattern but it didn't match anything (e.g.
+// sub pattern 1, matching "b" against "(a)?b") then start_pos and end_pos are
+// set to -1 and TRUE is returned.
 //
 // If the match was obtained using the DFA algorithm, that is using
 // g_regex_match_all() or g_regex_match_all_full(), the retrieved position is
@@ -300,16 +300,16 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 //
 // The function takes the following parameters:
 //
-//    - matchNum: number of the sub expression.
+//   - matchNum: number of the sub expression.
 //
 // The function returns the following values:
 //
-//    - startPos (optional): pointer to location where to store the start
-//      position, or NULL.
-//    - endPos (optional): pointer to location where to store the end position,
-//      or NULL.
-//    - ok: TRUE if the position was fetched, FALSE otherwise. If the position
-//      cannot be fetched, start_pos and end_pos are left unchanged.
+//   - startPos (optional): pointer to location where to store the start
+//     position, or NULL.
+//   - endPos (optional): pointer to location where to store the end position,
+//     or NULL.
+//   - ok: TRUE if the position was fetched, FALSE otherwise. If the position
+//     cannot be fetched, start_pos and end_pos are left unchanged.
 //
 func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GMatchInfo // out
@@ -349,7 +349,7 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 //
 // The function returns the following values:
 //
-//    - gint: number of matched substrings, or -1 if an error occurred.
+//   - gint: number of matched substrings, or -1 if an error occurred.
 //
 func (matchInfo *MatchInfo) MatchCount() int {
 	var _arg0 *C.GMatchInfo // out
@@ -367,13 +367,13 @@ func (matchInfo *MatchInfo) MatchCount() int {
 	return _gint
 }
 
-// Regex returns #GRegex object used in match_info. It belongs to Glib and must
-// not be freed. Use g_regex_ref() if you need to keep it after you free
+// Regex returns #GRegex object used in match_info. It belongs to Glib and
+// must not be freed. Use g_regex_ref() if you need to keep it after you free
 // match_info object.
 //
 // The function returns the following values:
 //
-//    - regex object used in match_info.
+//   - regex object used in match_info.
 //
 func (matchInfo *MatchInfo) Regex() *Regex {
 	var _arg0 *C.GMatchInfo // out
@@ -403,7 +403,7 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 //
 // The function returns the following values:
 //
-//    - utf8: string searched with match_info.
+//   - utf8: string searched with match_info.
 //
 func (matchInfo *MatchInfo) String() string {
 	var _arg0 *C.GMatchInfo // out
@@ -421,24 +421,24 @@ func (matchInfo *MatchInfo) String() string {
 	return _utf8
 }
 
-// IsPartialMatch: usually if the string passed to g_regex_match*() matches as
-// far as it goes, but is too short to match the entire pattern, FALSE is
+// IsPartialMatch: usually if the string passed to g_regex_match*() matches
+// as far as it goes, but is too short to match the entire pattern, FALSE is
 // returned. There are circumstances where it might be helpful to distinguish
 // this case from other cases in which there is no match.
 //
-// Consider, for example, an application where a human is required to type in
-// data for a field with specific formatting requirements. An example might be a
-// date in the form ddmmmyy, defined by the pattern
+// Consider, for example, an application where a human is required to
+// type in data for a field with specific formatting requirements.
+// An example might be a date in the form ddmmmyy, defined by the pattern
 // "^\d?\d(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\d\d$". If the
 // application sees the user’s keystrokes one by one, and can check that what
 // has been typed so far is potentially valid, it is able to raise an error as
 // soon as a mistake is made.
 //
 // GRegex supports the concept of partial matching by means of the
-// REGEX_MATCH_PARTIAL_SOFT and REGEX_MATCH_PARTIAL_HARD flags. When they are
-// used, the return code for g_regex_match() or g_regex_match_full() is, as
-// usual, TRUE for a complete match, FALSE otherwise. But, when these functions
-// return FALSE, you can check if the match was partial calling
+// REGEX_MATCH_PARTIAL_SOFT and REGEX_MATCH_PARTIAL_HARD flags. When they
+// are used, the return code for g_regex_match() or g_regex_match_full() is,
+// as usual, TRUE for a complete match, FALSE otherwise. But, when these
+// functions return FALSE, you can check if the match was partial calling
 // g_match_info_is_partial_match().
 //
 // The difference between REGEX_MATCH_PARTIAL_SOFT and REGEX_MATCH_PARTIAL_HARD
@@ -455,7 +455,7 @@ func (matchInfo *MatchInfo) String() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the match was partial, FALSE otherwise.
+//   - ok: TRUE if the match was partial, FALSE otherwise.
 //
 func (matchInfo *MatchInfo) IsPartialMatch() bool {
 	var _arg0 *C.GMatchInfo // out
@@ -479,7 +479,7 @@ func (matchInfo *MatchInfo) IsPartialMatch() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the previous match operation succeeded, FALSE otherwise.
+//   - ok: TRUE if the previous match operation succeeded, FALSE otherwise.
 //
 func (matchInfo *MatchInfo) Matches() bool {
 	var _arg0 *C.GMatchInfo // out

@@ -81,11 +81,11 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - expression (optional) to evaluate.
+//   - expression (optional) to evaluate.
 //
 // The function returns the following values:
 //
-//    - numericSorter: new GtkNumericSorter.
+//   - numericSorter: new GtkNumericSorter.
 //
 func NewNumericSorter(expression Expressioner) *NumericSorter {
 	var _arg1 *C.GtkExpression    // out
@@ -111,7 +111,7 @@ func NewNumericSorter(expression Expressioner) *NumericSorter {
 //
 // The function returns the following values:
 //
-//    - expression (optional): GtkExpression, or NULL.
+//   - expression (optional): GtkExpression, or NULL.
 //
 func (self *NumericSorter) Expression() Expressioner {
 	var _arg0 *C.GtkNumericSorter // out
@@ -148,7 +148,7 @@ func (self *NumericSorter) Expression() Expressioner {
 //
 // The function returns the following values:
 //
-//    - sortType: order of the numbers.
+//   - sortType: order of the numbers.
 //
 func (self *NumericSorter) SortOrder() SortType {
 	var _arg0 *C.GtkNumericSorter // out
@@ -172,12 +172,12 @@ func (self *NumericSorter) SortOrder() SortType {
 // Unless an expression is set on self, the sorter will always compare items as
 // invalid.
 //
-// The expression must have a return type that can be compared numerically, such
-// as G_TYPE_INT or G_TYPE_DOUBLE.
+// The expression must have a return type that can be compared numerically,
+// such as G_TYPE_INT or G_TYPE_DOUBLE.
 //
 // The function takes the following parameters:
 //
-//    - expression (optional): GtkExpression, or NULL.
+//   - expression (optional): GtkExpression, or NULL.
 //
 func (self *NumericSorter) SetExpression(expression Expressioner) {
 	var _arg0 *C.GtkNumericSorter // out
@@ -197,7 +197,7 @@ func (self *NumericSorter) SetExpression(expression Expressioner) {
 //
 // The function takes the following parameters:
 //
-//    - sortOrder: whether to sort smaller numbers first.
+//   - sortOrder: whether to sort smaller numbers first.
 //
 func (self *NumericSorter) SetSortOrder(sortOrder SortType) {
 	var _arg0 *C.GtkNumericSorter // out

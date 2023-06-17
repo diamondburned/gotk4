@@ -43,9 +43,9 @@ func init() {
 	})
 }
 
-// DBusObject type is the base type for D-Bus objects on both the service side
-// (see BusObjectSkeleton) and the client side (see BusObjectProxy). It is
-// essentially just a container of interfaces.
+// DBusObject type is the base type for D-Bus objects on both the service
+// side (see BusObjectSkeleton) and the client side (see BusObjectProxy).
+// It is essentially just a container of interfaces.
 //
 // DBusObject wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -103,12 +103,12 @@ func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) 
 //
 // The function takes the following parameters:
 //
-//    - interfaceName d-Bus interface name.
+//   - interfaceName d-Bus interface name.
 //
 // The function returns the following values:
 //
-//    - dBusInterface (optional): NULL if not found, otherwise a BusInterface
-//      that must be freed with g_object_unref().
+//   - dBusInterface (optional): NULL if not found, otherwise a BusInterface
+//     that must be freed with g_object_unref().
 //
 func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _arg0 *C.GDBusObject    // out
@@ -136,8 +136,8 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 //
 // The function returns the following values:
 //
-//    - list of BusInterface instances. The returned list must be freed by
-//      g_list_free() after each element has been freed with g_object_unref().
+//   - list of BusInterface instances. The returned list must be freed by
+//     g_list_free() after each element has been freed with g_object_unref().
 //
 func (object *DBusObject) Interfaces() []*DBusInterface {
 	var _arg0 *C.GDBusObject // out
@@ -165,7 +165,7 @@ func (object *DBusObject) Interfaces() []*DBusInterface {
 //
 // The function returns the following values:
 //
-//    - utf8: string owned by object. Do not free.
+//   - utf8: string owned by object. Do not free.
 //
 func (object *DBusObject) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
@@ -188,12 +188,12 @@ func (object *DBusObject) ObjectPath() string {
 //
 // The function takes the following parameters:
 //
-//    - interfaceName d-Bus interface name.
+//   - interfaceName d-Bus interface name.
 //
 // The function returns the following values:
 //
-//    - dBusInterface (optional): NULL if not found, otherwise a BusInterface
-//      that must be freed with g_object_unref().
+//   - dBusInterface (optional): NULL if not found, otherwise a BusInterface
+//     that must be freed with g_object_unref().
 //
 func (object *DBusObject) iface(interfaceName string) *DBusInterface {
 	gclass := (*C.GDBusObjectIface)(coreglib.PeekParentClass(object))
@@ -224,8 +224,8 @@ func (object *DBusObject) iface(interfaceName string) *DBusInterface {
 //
 // The function returns the following values:
 //
-//    - list of BusInterface instances. The returned list must be freed by
-//      g_list_free() after each element has been freed with g_object_unref().
+//   - list of BusInterface instances. The returned list must be freed by
+//     g_list_free() after each element has been freed with g_object_unref().
 //
 func (object *DBusObject) interfaces() []*DBusInterface {
 	gclass := (*C.GDBusObjectIface)(coreglib.PeekParentClass(object))
@@ -256,7 +256,7 @@ func (object *DBusObject) interfaces() []*DBusInterface {
 //
 // The function returns the following values:
 //
-//    - utf8: string owned by object. Do not free.
+//   - utf8: string owned by object. Do not free.
 //
 func (object *DBusObject) objectPath() string {
 	gclass := (*C.GDBusObjectIface)(coreglib.PeekParentClass(object))

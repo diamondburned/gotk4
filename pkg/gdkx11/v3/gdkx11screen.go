@@ -31,9 +31,9 @@ func init() {
 //
 // The function returns the following values:
 //
-//    - gint returns the screen number specified by the --display command line
-//      option or the DISPLAY environment variable when gdk_init() calls
-//      XOpenDisplay().
+//   - gint returns the screen number specified by the --display command
+//     line option or the DISPLAY environment variable when gdk_init() calls
+//     XOpenDisplay().
 //
 func X11GetDefaultScreen() int {
 	var _cret C.gint // in
@@ -72,14 +72,14 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 	return coreglib.ConnectGeneratedClosure(screen, "window-manager-changed", false, unsafe.Pointer(C._gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged), f)
 }
 
-// CurrentDesktop returns the current workspace for screen when running under a
-// window manager that supports multiple workspaces, as described in the
+// CurrentDesktop returns the current workspace for screen when running under
+// a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
 //
 // The function returns the following values:
 //
-//    - guint32: current workspace, or 0 if workspaces are not supported.
+//   - guint32: current workspace, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkScreen // out
@@ -104,7 +104,7 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 //
 // The function returns the following values:
 //
-//    - guint32: number of workspaces, or 0 if workspaces are not supported.
+//   - guint32: number of workspaces, or 0 if workspaces are not supported.
 //
 func (screen *X11Screen) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkScreen // out
@@ -126,7 +126,7 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 //
 // The function returns the following values:
 //
-//    - gint: position of screen among the screens of its display.
+//   - gint: position of screen among the screens of its display.
 //
 func (screen *X11Screen) ScreenNumber() int {
 	var _arg0 *C.GdkScreen // out
@@ -148,9 +148,9 @@ func (screen *X11Screen) ScreenNumber() int {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the window manager screen screen, or "unknown" if the
-//      window manager is unknown. The string is owned by GDK and should not be
-//      freed.
+//   - utf8: name of the window manager screen screen, or "unknown" if the
+//     window manager is unknown. The string is owned by GDK and should not be
+//     freed.
 //
 func (screen *X11Screen) WindowManagerName() string {
 	var _arg0 *C.GdkScreen // out

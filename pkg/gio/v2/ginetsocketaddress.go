@@ -80,12 +80,12 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - address: Address.
-//    - port number.
+//   - address: Address.
+//   - port number.
 //
 // The function returns the following values:
 //
-//    - inetSocketAddress: new SocketAddress.
+//   - inetSocketAddress: new SocketAddress.
 //
 func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress {
 	var _arg1 *C.GInetAddress   // out
@@ -114,13 +114,13 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 //
 // The function takes the following parameters:
 //
-//    - address: string form of an IP address.
-//    - port number.
+//   - address: string form of an IP address.
+//   - port number.
 //
 // The function returns the following values:
 //
-//    - inetSocketAddress (optional): new SocketAddress, or NULL if address
-//      cannot be parsed.
+//   - inetSocketAddress (optional): new SocketAddress, or NULL if address
+//     cannot be parsed.
 //
 func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
 	var _arg1 *C.char           // out
@@ -148,8 +148,8 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 //
 // The function returns the following values:
 //
-//    - inetAddress for address, which must be g_object_ref()'d if it will be
-//      stored.
+//   - inetAddress for address, which must be g_object_ref()'d if it will be
+//     stored.
 //
 func (address *InetSocketAddress) Address() *InetAddress {
 	var _arg0 *C.GInetSocketAddress // out
@@ -172,7 +172,7 @@ func (address *InetSocketAddress) Address() *InetAddress {
 //
 // The function returns the following values:
 //
-//    - guint32: flowinfo field.
+//   - guint32: flowinfo field.
 //
 func (address *InetSocketAddress) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
@@ -194,7 +194,7 @@ func (address *InetSocketAddress) Flowinfo() uint32 {
 //
 // The function returns the following values:
 //
-//    - guint16: port for address.
+//   - guint16: port for address.
 //
 func (address *InetSocketAddress) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
@@ -217,7 +217,7 @@ func (address *InetSocketAddress) Port() uint16 {
 //
 // The function returns the following values:
 //
-//    - guint32: scope id field.
+//   - guint32: scope id field.
 //
 func (address *InetSocketAddress) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out

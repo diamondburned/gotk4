@@ -45,8 +45,8 @@ type SocketListenerOverrides struct {
 	Changed func()
 	// The function takes the following parameters:
 	//
-	//    - event
-	//    - socket
+	//   - event
+	//   - socket
 	//
 	Event func(event SocketListenerEvent, socket *Socket)
 }
@@ -64,8 +64,8 @@ func defaultSocketListenerOverrides(v *SocketListener) SocketListenerOverrides {
 // Add addresses and ports to listen on using g_socket_listener_add_address()
 // and g_socket_listener_add_inet_port(). These will be listened on until
 // g_socket_listener_close() is called. Dropping your final reference to the
-// Listener will not cause g_socket_listener_close() to be called implicitly, as
-// some references to the Listener may be held internally.
+// Listener will not cause g_socket_listener_close() to be called implicitly,
+// as some references to the Listener may be held internally.
 //
 // If you want to implement a network server, also look at Service and
 // SocketService which are subclasses of Listener that make this even easier.
@@ -122,13 +122,13 @@ func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, s
 	return coreglib.ConnectGeneratedClosure(listener, "event", false, unsafe.Pointer(C._gotk4_gio2_SocketListener_ConnectEvent), f)
 }
 
-// NewSocketListener creates a new Listener with no sockets to listen for. New
-// listeners can be added with e.g. g_socket_listener_add_address() or
+// NewSocketListener creates a new Listener with no sockets to listen for.
+// New listeners can be added with e.g. g_socket_listener_add_address() or
 // g_socket_listener_add_inet_port().
 //
 // The function returns the following values:
 //
-//    - socketListener: new Listener.
+//   - socketListener: new Listener.
 //
 func NewSocketListener() *SocketListener {
 	var _cret *C.GSocketListener // in
@@ -154,13 +154,13 @@ func NewSocketListener() *SocketListener {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - sourceObject (optional): location where #GObject pointer will be stored,
-//      or NULL.
-//    - socketConnection on success, NULL on error.
+//   - sourceObject (optional): location where #GObject pointer will be stored,
+//     or NULL.
+//   - socketConnection on success, NULL on error.
 //
 func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
@@ -202,8 +202,8 @@ func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional) or NULL.
+//   - callback (optional): ReadyCallback.
 //
 func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
@@ -233,12 +233,12 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - sourceObject (optional): optional #GObject identifying this source.
-//    - socketConnection on success, NULL on error.
+//   - sourceObject (optional): optional #GObject identifying this source.
+//   - socketConnection on success, NULL on error.
 //
 func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
@@ -284,13 +284,13 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Ob
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 // The function returns the following values:
 //
-//    - sourceObject (optional): location where #GObject pointer will be stored,
-//      or NULL.
-//    - socket on success, NULL on error.
+//   - sourceObject (optional): location where #GObject pointer will be stored,
+//     or NULL.
+//   - socket on success, NULL on error.
 //
 func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
@@ -333,8 +333,8 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Obj
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional) or NULL.
+//   - callback (optional): ReadyCallback.
 //
 func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
@@ -364,12 +364,12 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - sourceObject (optional): optional #GObject identifying this source.
-//    - socket on success, NULL on error.
+//   - sourceObject (optional): optional #GObject identifying this source.
+//   - socket on success, NULL on error.
 //
 func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
@@ -403,35 +403,35 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreg
 // AddAddress creates a socket of type type and protocol protocol, binds it to
 // address and adds it to the set of sockets we're accepting sockets from.
 //
-// Note that adding an IPv6 address, depending on the platform, may or may not
-// result in a listener that also accepts IPv4 connections. For more
+// Note that adding an IPv6 address, depending on the platform, may or may
+// not result in a listener that also accepts IPv4 connections. For more
 // deterministic behavior, see g_socket_listener_add_inet_port().
 //
 // source_object will be passed out in the various calls to accept to identify
 // this particular source, which is useful if you're listening on multiple
 // addresses and do different things depending on what address is connected to.
 //
-// If successful and effective_address is non-NULL then it will be set to the
-// address that the binding actually occurred at. This is helpful for
+// If successful and effective_address is non-NULL then it will be set to
+// the address that the binding actually occurred at. This is helpful for
 // determining the port number that was used for when requesting a binding to
 // port 0 (ie: "any port"). This address, if requested, belongs to the caller
 // and must be freed.
 //
-// Call g_socket_listener_close() to stop listening on address; this will not be
-// done automatically when you drop your final reference to listener, as
-// references may be held internally.
+// Call g_socket_listener_close() to stop listening on address; this will
+// not be done automatically when you drop your final reference to listener,
+// as references may be held internally.
 //
 // The function takes the following parameters:
 //
-//    - address: Address.
-//    - typ: Type.
-//    - protocol: Protocol.
-//    - sourceObject (optional): optional #GObject identifying this source.
+//   - address: Address.
+//   - typ: Type.
+//   - protocol: Protocol.
+//   - sourceObject (optional): optional #GObject identifying this source.
 //
 // The function returns the following values:
 //
-//    - effectiveAddress (optional): location to store the address that was bound
-//      to, or NULL.
+//   - effectiveAddress (optional): location to store the address that was bound
+//     to, or NULL.
 //
 func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *coreglib.Object) (SocketAddresser, error) {
 	var _arg0 *C.GSocketListener // out
@@ -495,11 +495,11 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 //
 // The function takes the following parameters:
 //
-//    - sourceObject (optional): optional #GObject identifying this source.
+//   - sourceObject (optional): optional #GObject identifying this source.
 //
 // The function returns the following values:
 //
-//    - guint16: port number, or 0 in case of failure.
+//   - guint16: port number, or 0 in case of failure.
 //
 func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (uint16, error) {
 	var _arg0 *C.GSocketListener // out
@@ -535,14 +535,14 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (u
 // this particular source, which is useful if you're listening on multiple
 // addresses and do different things depending on what address is connected to.
 //
-// Call g_socket_listener_close() to stop listening on port; this will not be
-// done automatically when you drop your final reference to listener, as
-// references may be held internally.
+// Call g_socket_listener_close() to stop listening on port; this will not
+// be done automatically when you drop your final reference to listener,
+// as references may be held internally.
 //
 // The function takes the following parameters:
 //
-//    - port: IP port number (non-zero).
-//    - sourceObject (optional): optional #GObject identifying this source.
+//   - port: IP port number (non-zero).
+//   - sourceObject (optional): optional #GObject identifying this source.
 //
 func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.Object) error {
 	var _arg0 *C.GSocketListener // out
@@ -584,8 +584,8 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.
 //
 // The function takes the following parameters:
 //
-//    - socket: listening #GSocket.
-//    - sourceObject (optional): optional #GObject identifying this source.
+//   - socket: listening #GSocket.
+//   - sourceObject (optional): optional #GObject identifying this source.
 //
 func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *coreglib.Object) error {
 	var _arg0 *C.GSocketListener // out
@@ -631,7 +631,7 @@ func (listener *SocketListener) Close() {
 //
 // The function takes the following parameters:
 //
-//    - listenBacklog: integer.
+//   - listenBacklog: integer.
 //
 func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
@@ -659,8 +659,8 @@ func (listener *SocketListener) changed() {
 
 // The function takes the following parameters:
 //
-//    - event
-//    - socket
+//   - event
+//   - socket
 //
 func (listener *SocketListener) event(event SocketListenerEvent, socket *Socket) {
 	gclass := (*C.GSocketListenerClass)(coreglib.PeekParentClass(listener))

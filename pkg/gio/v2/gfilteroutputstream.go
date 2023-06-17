@@ -99,7 +99,7 @@ func BaseFilterOutputStream(obj FilterOutputStreamer) *FilterOutputStream {
 //
 // The function returns the following values:
 //
-//    - outputStream: Stream.
+//   - outputStream: Stream.
 //
 func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 	var _arg0 *C.GFilterOutputStream // out
@@ -138,7 +138,7 @@ func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the base stream will be closed.
+//   - ok: TRUE if the base stream will be closed.
 //
 func (stream *FilterOutputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterOutputStream // out
@@ -163,7 +163,7 @@ func (stream *FilterOutputStream) CloseBaseStream() bool {
 //
 // The function takes the following parameters:
 //
-//    - closeBase: TRUE to close the base stream.
+//   - closeBase: TRUE to close the base stream.
 //
 func (stream *FilterOutputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterOutputStream // out

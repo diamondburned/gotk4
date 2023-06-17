@@ -25,10 +25,10 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - window: Window.
-//    - x: x coordinate of location to place upper left corner of window.
-//    - y: y coordinate of location to place upper left corner of window.
+//   - cr: cairo context.
+//   - window: Window.
+//   - x: x coordinate of location to place upper left corner of window.
+//   - y: y coordinate of location to place upper left corner of window.
 //
 func CairoSetSourceWindow(cr *cairo.Context, window Windower, x, y float64) {
 	var _arg1 *C.cairo_t   // out

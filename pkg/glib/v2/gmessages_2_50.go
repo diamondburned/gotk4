@@ -48,20 +48,20 @@ func (l LogWriterOutput) String() string {
 // Writer functions must ignore fields which they do not recognise, unless they
 // can write arbitrary binary output, as field values may be arbitrary binary.
 //
-// log_level is guaranteed to be included in fields as the PRIORITY field, but
-// is provided separately for convenience of deciding whether or where to output
-// the log entry.
+// log_level is guaranteed to be included in fields as the PRIORITY field,
+// but is provided separately for convenience of deciding whether or where to
+// output the log entry.
 //
 // Writer functions should return G_LOG_WRITER_HANDLED if they handled the log
 // message successfully or if they deliberately ignored it. If there was an
-// error handling the message (for example, if the writer function is meant to
-// send messages to a remote logging server and there is a network error), it
-// should return G_LOG_WRITER_UNHANDLED. This allows writer functions to be
+// error handling the message (for example, if the writer function is meant
+// to send messages to a remote logging server and there is a network error),
+// it should return G_LOG_WRITER_UNHANDLED. This allows writer functions to be
 // chained and fall back to simpler handlers in case of failure.
 type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
 
-// LogStructuredArray: log a message with structured data. The message will be
-// passed through to the log writer set by the application using
+// LogStructuredArray: log a message with structured data. The message
+// will be passed through to the log writer set by the application using
 // g_log_set_writer_func(). If the message is fatal (i.e. its log level is
 // G_LOG_LEVEL_ERROR), the program will be aborted at the end of this function.
 //
@@ -72,8 +72,8 @@ type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOut
 //
 // The function takes the following parameters:
 //
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: key–value pairs of structured data to add to the log message.
+//   - logLevel: log level, either from LevelFlags, or a user-defined level.
+//   - fields: key–value pairs of structured data to add to the log message.
 //
 func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 	var _arg1 C.GLogLevelFlags // out
@@ -96,9 +96,9 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 	runtime.KeepAlive(fields)
 }
 
-// LogVariant: log a message with structured data, accepting the data within a
-// #GVariant. This version is especially useful for use in other languages, via
-// introspection.
+// LogVariant: log a message with structured data, accepting the data within
+// a #GVariant. This version is especially useful for use in other languages,
+// via introspection.
 //
 // The only mandatory item in the fields dictionary is the "MESSAGE" which must
 // contain the text shown to the user.
@@ -106,9 +106,9 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 // The values in the fields dictionary are likely to be of type String
 // (VARIANT_TYPE_STRING). Array of bytes (VARIANT_TYPE_BYTESTRING) is also
 // supported. In this case the message is handled as binary and will be
-// forwarded to the log writer as such. The size of the array should not be
-// higher than G_MAXSSIZE. Otherwise it will be truncated to this size. For
-// other types g_variant_print() will be used to convert the value into a
+// forwarded to the log writer as such. The size of the array should not
+// be higher than G_MAXSSIZE. Otherwise it will be truncated to this size.
+// For other types g_variant_print() will be used to convert the value into a
 // string.
 //
 // For more details on its usage and about the parameters, see
@@ -116,10 +116,10 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 //
 // The function takes the following parameters:
 //
-//    - logDomain (optional): log domain, usually G_LOG_DOMAIN.
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: dictionary (#GVariant of the type G_VARIANT_TYPE_VARDICT)
-//      containing the key-value pairs of message data.
+//   - logDomain (optional): log domain, usually G_LOG_DOMAIN.
+//   - logLevel: log level, either from LevelFlags, or a user-defined level.
+//   - fields: dictionary (#GVariant of the type G_VARIANT_TYPE_VARDICT)
+//     containing the key-value pairs of message data.
 //
 func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	var _arg1 *C.gchar         // out
@@ -140,8 +140,8 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 }
 
 // LogWriterDefault: format a structured log message and output it to the
-// default log destination for the platform. On Linux, this is typically the
-// systemd journal, falling back to stdout or stderr if running from the
+// default log destination for the platform. On Linux, this is typically
+// the systemd journal, falling back to stdout or stderr if running from the
 // terminal or if output is being redirected to a file.
 //
 // Support for other platform-specific logging mechanisms may be added in
@@ -161,14 +161,14 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 //
 // The function takes the following parameters:
 //
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: key–value pairs of structured data forming the log message.
-//    - userData (optional): user data passed to g_log_set_writer_func().
+//   - logLevel: log level, either from LevelFlags, or a user-defined level.
+//   - fields: key–value pairs of structured data forming the log message.
+//   - userData (optional): user data passed to g_log_set_writer_func().
 //
 // The function returns the following values:
 //
-//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
-//      otherwise.
+//   - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
+//     otherwise.
 //
 func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData unsafe.Pointer) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
@@ -202,8 +202,8 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData unsafe
 }
 
 // LogWriterFormatFields: format a structured log message as a string suitable
-// for outputting to the terminal (or elsewhere). This will include the values
-// of all fields it knows how to interpret, which includes MESSAGE and
+// for outputting to the terminal (or elsewhere). This will include the
+// values of all fields it knows how to interpret, which includes MESSAGE and
 // GLIB_DOMAIN (see the documentation for g_log_structured()). It does not
 // include values from unknown fields.
 //
@@ -213,15 +213,15 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData unsafe
 //
 // The function takes the following parameters:
 //
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: key–value pairs of structured data forming the log message.
-//    - useColor: TRUE to use ANSI color escape sequences when formatting the
-//      message, FALSE to not.
+//   - logLevel: log level, either from LevelFlags, or a user-defined level.
+//   - fields: key–value pairs of structured data forming the log message.
+//   - useColor: TRUE to use ANSI color escape sequences when formatting the
+//     message, FALSE to not.
 //
 // The function returns the following values:
 //
-//    - utf8: string containing the formatted log message, in the character set
-//      of the current locale.
+//   - utf8: string containing the formatted log message, in the character set
+//     of the current locale.
 //
 func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
 	var _arg1 C.GLogLevelFlags // out
@@ -257,8 +257,8 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 	return _utf8
 }
 
-// LogWriterIsJournald: check whether the given output_fd file descriptor is a
-// connection to the systemd journal, or something else (like a log file or
+// LogWriterIsJournald: check whether the given output_fd file descriptor is
+// a connection to the systemd journal, or something else (like a log file or
 // stdout or stderr).
 //
 // Invalid file descriptors are accepted and return FALSE, which allows for the
@@ -268,11 +268,11 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 //
 // The function takes the following parameters:
 //
-//    - outputFd: output file descriptor to check.
+//   - outputFd: output file descriptor to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if output_fd points to the journal, FALSE otherwise.
+//   - ok: TRUE if output_fd points to the journal, FALSE otherwise.
 //
 func LogWriterIsJournald(outputFd int) bool {
 	var _arg1 C.gint     // out
@@ -293,9 +293,9 @@ func LogWriterIsJournald(outputFd int) bool {
 }
 
 // LogWriterJournald: format a structured log message and send it to the systemd
-// journal as a set of key–value pairs. All fields are sent to the journal, but
-// if a field has length zero (indicating program-specific data) then only its
-// key will be sent.
+// journal as a set of key–value pairs. All fields are sent to the journal,
+// but if a field has length zero (indicating program-specific data) then only
+// its key will be sent.
 //
 // This is suitable for use as a WriterFunc.
 //
@@ -304,14 +304,14 @@ func LogWriterIsJournald(outputFd int) bool {
 //
 // The function takes the following parameters:
 //
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: key–value pairs of structured data forming the log message.
-//    - userData (optional): user data passed to g_log_set_writer_func().
+//   - logLevel: log level, either from LevelFlags, or a user-defined level.
+//   - fields: key–value pairs of structured data forming the log message.
+//   - userData (optional): user data passed to g_log_set_writer_func().
 //
 // The function returns the following values:
 //
-//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
-//      otherwise.
+//   - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
+//     otherwise.
 //
 func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData unsafe.Pointer) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
@@ -346,8 +346,8 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData unsaf
 
 // LogWriterStandardStreams: format a structured log message and print it to
 // either stdout or stderr, depending on its log level. G_LOG_LEVEL_INFO and
-// G_LOG_LEVEL_DEBUG messages are sent to stdout, or to stderr if requested by
-// g_log_writer_default_set_use_stderr(); all other log levels are sent to
+// G_LOG_LEVEL_DEBUG messages are sent to stdout, or to stderr if requested
+// by g_log_writer_default_set_use_stderr(); all other log levels are sent to
 // stderr. Only fields which are understood by this function are included in the
 // formatted string which is printed.
 //
@@ -360,14 +360,14 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData unsaf
 //
 // The function takes the following parameters:
 //
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - fields: key–value pairs of structured data forming the log message.
-//    - userData (optional): user data passed to g_log_set_writer_func().
+//   - logLevel: log level, either from LevelFlags, or a user-defined level.
+//   - fields: key–value pairs of structured data forming the log message.
+//   - userData (optional): user data passed to g_log_set_writer_func().
 //
 // The function returns the following values:
 //
-//    - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
-//      otherwise.
+//   - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
+//     otherwise.
 //
 func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData unsafe.Pointer) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
@@ -406,11 +406,11 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 //
 // The function takes the following parameters:
 //
-//    - outputFd: output file descriptor to check.
+//   - outputFd: output file descriptor to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if ANSI color escapes are supported, FALSE otherwise.
+//   - ok: TRUE if ANSI color escapes are supported, FALSE otherwise.
 //
 func LogWriterSupportsColor(outputFd int) bool {
 	var _arg1 C.gint     // out

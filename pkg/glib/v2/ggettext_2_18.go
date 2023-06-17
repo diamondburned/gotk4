@@ -11,15 +11,15 @@ import (
 // #include <glib.h>
 import "C"
 
-// Dgettext: this function is a wrapper of dgettext() which does not translate
-// the message if the default domain as set with textdomain() has no
+// Dgettext: this function is a wrapper of dgettext() which does not
+// translate the message if the default domain as set with textdomain() has no
 // translations for the current locale.
 //
 // The advantage of using this function over dgettext() proper is that libraries
 // using this function (like GTK+) will not use translations if the application
-// using the library does not have translations for the current locale. This
-// results in a consistent English-only interface instead of one having partial
-// translations. For this feature to work, the call to textdomain() and
+// using the library does not have translations for the current locale.
+// This results in a consistent English-only interface instead of one having
+// partial translations. For this feature to work, the call to textdomain() and
 // setlocale() should precede any g_dgettext() invocations. For GTK+, it means
 // calling textdomain() before gtk_init or its variants.
 //
@@ -45,13 +45,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - domain (optional): translation domain to use, or NULL to use the domain
-//      set with textdomain().
-//    - msgid: message to translate.
+//   - domain (optional): translation domain to use, or NULL to use the domain
+//     set with textdomain().
+//   - msgid: message to translate.
 //
 // The function returns the following values:
 //
-//    - utf8: translated string.
+//   - utf8: translated string.
 //
 func Dgettext(domain, msgid string) string {
 	var _arg1 *C.gchar // out
@@ -76,23 +76,23 @@ func Dgettext(domain, msgid string) string {
 	return _utf8
 }
 
-// Dngettext: this function is a wrapper of dngettext() which does not translate
-// the message if the default domain as set with textdomain() has no
+// Dngettext: this function is a wrapper of dngettext() which does not
+// translate the message if the default domain as set with textdomain() has no
 // translations for the current locale.
 //
 // See g_dgettext() for details of how this differs from dngettext() proper.
 //
 // The function takes the following parameters:
 //
-//    - domain (optional): translation domain to use, or NULL to use the domain
-//      set with textdomain().
-//    - msgid: message to translate.
-//    - msgidPlural: plural form of the message.
-//    - n: quantity for which translation is needed.
+//   - domain (optional): translation domain to use, or NULL to use the domain
+//     set with textdomain().
+//   - msgid: message to translate.
+//   - msgidPlural: plural form of the message.
+//   - n: quantity for which translation is needed.
 //
 // The function returns the following values:
 //
-//    - utf8: translated string.
+//   - utf8: translated string.
 //
 func Dngettext(domain, msgid, msgidPlural string, n uint32) string {
 	var _arg1 *C.gchar // out
@@ -136,14 +136,14 @@ func Dngettext(domain, msgid, msgidPlural string, n uint32) string {
 //
 // The function takes the following parameters:
 //
-//    - domain (optional): translation domain to use, or NULL to use the domain
-//      set with textdomain().
-//    - context: message context.
-//    - msgid: message.
+//   - domain (optional): translation domain to use, or NULL to use the domain
+//     set with textdomain().
+//   - context: message context.
+//   - msgid: message.
 //
 // The function returns the following values:
 //
-//    - utf8: translated string.
+//   - utf8: translated string.
 //
 func Dpgettext2(domain, context, msgid string) string {
 	var _arg1 *C.gchar // out

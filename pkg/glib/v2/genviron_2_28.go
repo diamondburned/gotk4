@@ -15,15 +15,15 @@ import "C"
 // The list is NULL terminated and each item in the list is of the form
 // 'NAME=VALUE'.
 //
-// This is equivalent to direct access to the 'environ' global variable, except
-// portable.
+// This is equivalent to direct access to the 'environ' global variable,
+// except portable.
 //
 // The return value is freshly allocated and it should be freed with
 // g_strfreev() when it is no longer needed.
 //
 // The function returns the following values:
 //
-//    - filenames: the list of environment variables.
+//   - filenames: the list of environment variables.
 //
 func GetEnviron() []string {
 	var _cret **C.gchar // in

@@ -47,8 +47,7 @@ func defaultSeparatorToolItemOverrides(v *SeparatorToolItem) SeparatorToolItemOv
 //
 // Use gtk_separator_tool_item_new() to create a new SeparatorToolItem.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkSeparatorToolItem has a single CSS node with name separator.
 type SeparatorToolItem struct {
@@ -112,7 +111,7 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - separatorToolItem: new SeparatorToolItem.
+//   - separatorToolItem: new SeparatorToolItem.
 //
 func NewSeparatorToolItem() *SeparatorToolItem {
 	var _cret *C.GtkToolItem // in
@@ -131,7 +130,7 @@ func NewSeparatorToolItem() *SeparatorToolItem {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if item is drawn as a line, or just blank.
+//   - ok: TRUE if item is drawn as a line, or just blank.
 //
 func (item *SeparatorToolItem) Draw() bool {
 	var _arg0 *C.GtkSeparatorToolItem // out
@@ -157,7 +156,7 @@ func (item *SeparatorToolItem) Draw() bool {
 //
 // The function takes the following parameters:
 //
-//    - draw: whether item is drawn as a vertical line.
+//   - draw: whether item is drawn as a vertical line.
 //
 func (item *SeparatorToolItem) SetDraw(draw bool) {
 	var _arg0 *C.GtkSeparatorToolItem // out

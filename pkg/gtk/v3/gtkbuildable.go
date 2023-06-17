@@ -131,9 +131,9 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
-//    - child to add.
-//    - typ (optional): kind of child or NULL.
+//   - builder: Builder.
+//   - child to add.
+//   - typ (optional): kind of child or NULL.
 //
 func (buildable *Buildable) AddChild(builder *Builder, child *coreglib.Object, typ string) {
 	var _arg0 *C.GtkBuildable // out
@@ -163,12 +163,12 @@ func (buildable *Buildable) AddChild(builder *Builder, child *coreglib.Object, t
 //
 // The function takes the following parameters:
 //
-//    - builder used to construct this object.
-//    - name of child to construct.
+//   - builder used to construct this object.
+//   - name of child to construct.
 //
 // The function returns the following values:
 //
-//    - object: constructed child.
+//   - object: constructed child.
 //
 func (buildable *Buildable) ConstructChild(builder *Builder, name string) *coreglib.Object {
 	var _arg0 *C.GtkBuildable // out
@@ -198,10 +198,10 @@ func (buildable *Buildable) ConstructChild(builder *Builder, name string) *coreg
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
-//    - child (optional) object or NULL for non-child tags.
-//    - tagname: name of the tag.
-//    - data (optional): user data created in custom_tag_start.
+//   - builder: Builder.
+//   - child (optional) object or NULL for non-child tags.
+//   - tagname: name of the tag.
+//   - data (optional): user data created in custom_tag_start.
 //
 func (buildable *Buildable) CustomFinished(builder *Builder, child *coreglib.Object, tagname string, data unsafe.Pointer) {
 	var _arg0 *C.GtkBuildable // out
@@ -232,10 +232,10 @@ func (buildable *Buildable) CustomFinished(builder *Builder, child *coreglib.Obj
 //
 // The function takes the following parameters:
 //
-//    - builder used to construct this object.
-//    - child (optional) object or NULL for non-child tags.
-//    - tagname: name of tag.
-//    - data (optional): user data that will be passed in to parser functions.
+//   - builder used to construct this object.
+//   - child (optional) object or NULL for non-child tags.
+//   - tagname: name of tag.
+//   - data (optional): user data that will be passed in to parser functions.
 //
 func (buildable *Buildable) CustomTagEnd(builder *Builder, child *coreglib.Object, tagname string, data *unsafe.Pointer) {
 	var _arg0 *C.GtkBuildable // out
@@ -267,16 +267,16 @@ func (buildable *Buildable) CustomTagEnd(builder *Builder, child *coreglib.Objec
 //
 // The function takes the following parameters:
 //
-//    - builder used to construct this object.
-//    - child (optional) object or NULL for non-child tags.
-//    - tagname: name of tag.
+//   - builder used to construct this object.
+//   - child (optional) object or NULL for non-child tags.
+//   - tagname: name of tag.
 //
 // The function returns the following values:
 //
-//    - parser to fill in.
-//    - data (optional): return location for user data that will be passed in to
-//      parser functions.
-//    - ok: TRUE if a object has a custom implementation, FALSE if it doesn't.
+//   - parser to fill in.
+//   - data (optional): return location for user data that will be passed in to
+//     parser functions.
+//   - ok: TRUE if a object has a custom implementation, FALSE if it doesn't.
 //
 func (buildable *Buildable) CustomTagStart(builder *Builder, child *coreglib.Object, tagname string) (*glib.MarkupParser, unsafe.Pointer, bool) {
 	var _arg0 *C.GtkBuildable // out
@@ -319,12 +319,12 @@ func (buildable *Buildable) CustomTagStart(builder *Builder, child *coreglib.Obj
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
-//    - childname: name of child.
+//   - builder: Builder.
+//   - childname: name of child.
 //
 // The function returns the following values:
 //
-//    - object: internal child of the buildable object.
+//   - object: internal child of the buildable object.
 //
 func (buildable *Buildable) InternalChild(builder *Builder, childname string) *coreglib.Object {
 	var _arg0 *C.GtkBuildable // out
@@ -356,7 +356,7 @@ func (buildable *Buildable) InternalChild(builder *Builder, childname string) *c
 //
 // The function returns the following values:
 //
-//    - utf8: name set with gtk_buildable_set_name().
+//   - utf8: name set with gtk_buildable_set_name().
 //
 func (buildable *Buildable) Name() string {
 	var _arg0 *C.GtkBuildable // out
@@ -381,7 +381,7 @@ func (buildable *Buildable) Name() string {
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
+//   - builder: Builder.
 //
 func (buildable *Buildable) ParserFinished(builder *Builder) {
 	var _arg0 *C.GtkBuildable // out
@@ -400,9 +400,9 @@ func (buildable *Buildable) ParserFinished(builder *Builder) {
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
-//    - name of property.
-//    - value of property.
+//   - builder: Builder.
+//   - name of property.
+//   - value of property.
 //
 func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, value *coreglib.Value) {
 	var _arg0 *C.GtkBuildable // out
@@ -427,7 +427,7 @@ func (buildable *Buildable) SetBuildableProperty(builder *Builder, name string, 
 //
 // The function takes the following parameters:
 //
-//    - name to set.
+//   - name to set.
 //
 func (buildable *Buildable) SetName(name string) {
 	var _arg0 *C.GtkBuildable // out
@@ -447,9 +447,9 @@ func (buildable *Buildable) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
-//    - child to add.
-//    - typ (optional): kind of child or NULL.
+//   - builder: Builder.
+//   - child to add.
+//   - typ (optional): kind of child or NULL.
 //
 func (buildable *Buildable) addChild(builder *Builder, child *coreglib.Object, typ string) {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -482,12 +482,12 @@ func (buildable *Buildable) addChild(builder *Builder, child *coreglib.Object, t
 //
 // The function takes the following parameters:
 //
-//    - builder used to construct this object.
-//    - name of child to construct.
+//   - builder used to construct this object.
+//   - name of child to construct.
 //
 // The function returns the following values:
 //
-//    - object: constructed child.
+//   - object: constructed child.
 //
 func (buildable *Buildable) constructChild(builder *Builder, name string) *coreglib.Object {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -520,10 +520,10 @@ func (buildable *Buildable) constructChild(builder *Builder, name string) *coreg
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
-//    - child (optional) object or NULL for non-child tags.
-//    - tagname: name of the tag.
-//    - data (optional): user data created in custom_tag_start.
+//   - builder: Builder.
+//   - child (optional) object or NULL for non-child tags.
+//   - tagname: name of the tag.
+//   - data (optional): user data created in custom_tag_start.
 //
 func (buildable *Buildable) customFinished(builder *Builder, child *coreglib.Object, tagname string, data unsafe.Pointer) {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -557,10 +557,10 @@ func (buildable *Buildable) customFinished(builder *Builder, child *coreglib.Obj
 //
 // The function takes the following parameters:
 //
-//    - builder used to construct this object.
-//    - child (optional) object or NULL for non-child tags.
-//    - tagname: name of tag.
-//    - data (optional): user data that will be passed in to parser functions.
+//   - builder used to construct this object.
+//   - child (optional) object or NULL for non-child tags.
+//   - tagname: name of tag.
+//   - data (optional): user data that will be passed in to parser functions.
 //
 func (buildable *Buildable) customTagEnd(builder *Builder, child *coreglib.Object, tagname string, data *unsafe.Pointer) {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -595,16 +595,16 @@ func (buildable *Buildable) customTagEnd(builder *Builder, child *coreglib.Objec
 //
 // The function takes the following parameters:
 //
-//    - builder used to construct this object.
-//    - child (optional) object or NULL for non-child tags.
-//    - tagname: name of tag.
+//   - builder used to construct this object.
+//   - child (optional) object or NULL for non-child tags.
+//   - tagname: name of tag.
 //
 // The function returns the following values:
 //
-//    - parser to fill in.
-//    - data (optional): return location for user data that will be passed in to
-//      parser functions.
-//    - ok: TRUE if a object has a custom implementation, FALSE if it doesn't.
+//   - parser to fill in.
+//   - data (optional): return location for user data that will be passed in to
+//     parser functions.
+//   - ok: TRUE if a object has a custom implementation, FALSE if it doesn't.
 //
 func (buildable *Buildable) customTagStart(builder *Builder, child *coreglib.Object, tagname string) (*glib.MarkupParser, unsafe.Pointer, bool) {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -650,12 +650,12 @@ func (buildable *Buildable) customTagStart(builder *Builder, child *coreglib.Obj
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
-//    - childname: name of child.
+//   - builder: Builder.
+//   - childname: name of child.
 //
 // The function returns the following values:
 //
-//    - object: internal child of the buildable object.
+//   - object: internal child of the buildable object.
 //
 func (buildable *Buildable) internalChild(builder *Builder, childname string) *coreglib.Object {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -690,7 +690,7 @@ func (buildable *Buildable) internalChild(builder *Builder, childname string) *c
 //
 // The function returns the following values:
 //
-//    - utf8: name set with gtk_buildable_set_name().
+//   - utf8: name set with gtk_buildable_set_name().
 //
 func (buildable *Buildable) name() string {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -718,7 +718,7 @@ func (buildable *Buildable) name() string {
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
+//   - builder: Builder.
 //
 func (buildable *Buildable) parserFinished(builder *Builder) {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -740,9 +740,9 @@ func (buildable *Buildable) parserFinished(builder *Builder) {
 //
 // The function takes the following parameters:
 //
-//    - builder: Builder.
-//    - name of property.
-//    - value of property.
+//   - builder: Builder.
+//   - name of property.
+//   - value of property.
 //
 func (buildable *Buildable) setBuildableProperty(builder *Builder, name string, value *coreglib.Value) {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
@@ -770,7 +770,7 @@ func (buildable *Buildable) setBuildableProperty(builder *Builder, name string, 
 //
 // The function takes the following parameters:
 //
-//    - name to set.
+//   - name to set.
 //
 func (buildable *Buildable) setName(name string) {
 	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))

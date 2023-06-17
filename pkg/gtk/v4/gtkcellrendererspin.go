@@ -26,15 +26,15 @@ func init() {
 
 // CellRendererSpin renders a spin button in a cell
 //
-// CellRendererSpin renders text in a cell like CellRendererText from which it
-// is derived. But while CellRendererText offers a simple entry to edit the
+// CellRendererSpin renders text in a cell like CellRendererText from which
+// it is derived. But while CellRendererText offers a simple entry to edit the
 // text, CellRendererSpin offers a SpinButton widget. Of course, that means that
 // the text has to be parseable as a floating point number.
 //
-// The range of the spinbutton is taken from the adjustment property of the cell
-// renderer, which can be set explicitly or mapped to a column in the tree
-// model, like all properties of cell renders. CellRendererSpin also has
-// properties for the CellRendererSpin:climb-rate and the number of
+// The range of the spinbutton is taken from the adjustment property of the
+// cell renderer, which can be set explicitly or mapped to a column in the
+// tree model, like all properties of cell renders. CellRendererSpin also
+// has properties for the CellRendererSpin:climb-rate and the number of
 // CellRendererSpin:digits to display. Other SpinButton properties can be set in
 // a handler for the CellRenderer::editing-started signal.
 //
@@ -68,7 +68,7 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - cellRendererSpin: new CellRendererSpin.
+//   - cellRendererSpin: new CellRendererSpin.
 //
 func NewCellRendererSpin() *CellRendererSpin {
 	var _cret *C.GtkCellRenderer // in

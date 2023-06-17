@@ -40,8 +40,8 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 //
 // On the X window system, this sharing is realized by an XSettings
 // (http://www.freedesktop.org/wiki/Specifications/xsettings-spec) manager that
-// is usually part of the desktop environment, along with utilities that let the
-// user change these settings. In the absence of an Xsettings manager, GTK+
+// is usually part of the desktop environment, along with utilities that let
+// the user change these settings. In the absence of an Xsettings manager, GTK+
 // reads default values for settings from settings.ini files in /etc/gtk-3.0,
 // $XDG_CONFIG_DIRS/gtk-3.0 and $XDG_CONFIG_HOME/gtk-3.0. These files must be
 // valid key files (see File), and have a section called Settings. Themes can
@@ -55,16 +55,16 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // to individual widgets may not be available before the widget type has been
 // realized at least once. The following example demonstrates a way to do this:
 //
-//      gtk_init (&argc, &argv);
+//    gtk_init (&argc, &argv);
 //
-//      // make sure the type is realized
-//      g_type_class_unref (g_type_class_ref (GTK_TYPE_IMAGE_MENU_ITEM));
+//    // make sure the type is realized
+//    g_type_class_unref (g_type_class_ref (GTK_TYPE_IMAGE_MENU_ITEM));
 //
-//      g_object_set (gtk_settings_get_default (), "gtk-enable-animations", FALSE, NULL);
+//    g_object_set (gtk_settings_get_default (), "gtk-enable-animations", FALSE, NULL);
 //
 // There is one GtkSettings instance per screen. It can be obtained with
-// gtk_settings_get_for_screen(), but in many cases, it is more convenient to
-// use gtk_widget_get_settings(). gtk_settings_get_default() returns the
+// gtk_settings_get_for_screen(), but in many cases, it is more convenient
+// to use gtk_widget_get_settings(). gtk_settings_get_default() returns the
 // GtkSettings instance for the default screen.
 type Settings struct {
 	_ [0]func() // equal guard
@@ -112,7 +112,7 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name of the setting to reset.
+//   - name of the setting to reset.
 //
 func (settings *Settings) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
@@ -131,9 +131,9 @@ func (settings *Settings) ResetProperty(name string) {
 //
 // The function takes the following parameters:
 //
-//    - name
-//    - vDouble
-//    - origin
+//   - name
+//   - vDouble
+//   - origin
 //
 func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin string) {
 	var _arg0 *C.GtkSettings // out
@@ -159,9 +159,9 @@ func (settings *Settings) SetDoubleProperty(name string, vDouble float64, origin
 //
 // The function takes the following parameters:
 //
-//    - name
-//    - vLong
-//    - origin
+//   - name
+//   - vLong
+//   - origin
 //
 func (settings *Settings) SetLongProperty(name string, vLong int32, origin string) {
 	var _arg0 *C.GtkSettings // out
@@ -187,8 +187,8 @@ func (settings *Settings) SetLongProperty(name string, vLong int32, origin strin
 //
 // The function takes the following parameters:
 //
-//    - name
-//    - svalue
+//   - name
+//   - svalue
 //
 func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 	var _arg0 *C.GtkSettings      // out
@@ -210,9 +210,9 @@ func (settings *Settings) SetPropertyValue(name string, svalue *SettingsValue) {
 //
 // The function takes the following parameters:
 //
-//    - name
-//    - vString
-//    - origin
+//   - name
+//   - vString
+//   - origin
 //
 func (settings *Settings) SetStringProperty(name, vString, origin string) {
 	var _arg0 *C.GtkSettings // out
@@ -240,8 +240,8 @@ func (settings *Settings) SetStringProperty(name, vString, origin string) {
 //
 // The function returns the following values:
 //
-//    - settings (optional) object. If there is no default screen, then returns
-//      NULL.
+//   - settings (optional) object. If there is no default screen, then returns
+//     NULL.
 //
 func SettingsGetDefault() *Settings {
 	var _cret *C.GtkSettings // in

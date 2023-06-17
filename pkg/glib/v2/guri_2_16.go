@@ -30,15 +30,15 @@ const URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS = "!$&'()*+,;="
 //
 // The function takes the following parameters:
 //
-//    - unescaped input string.
-//    - reservedCharsAllowed (optional): string of reserved characters that are
-//      allowed to be used, or NULL.
-//    - allowUtf8: TRUE if the result can include UTF-8 characters.
+//   - unescaped input string.
+//   - reservedCharsAllowed (optional): string of reserved characters that are
+//     allowed to be used, or NULL.
+//   - allowUtf8: TRUE if the result can include UTF-8 characters.
 //
 // The function returns the following values:
 //
-//    - utf8: escaped version of unescaped. The returned string should be freed
-//      when no longer needed.
+//   - utf8: escaped version of unescaped. The returned string should be freed
+//     when no longer needed.
 //
 func URIEscapeString(unescaped, reservedCharsAllowed string, allowUtf8 bool) string {
 	var _arg1 *C.char    // out
@@ -78,12 +78,12 @@ func URIEscapeString(unescaped, reservedCharsAllowed string, allowUtf8 bool) str
 //
 // The function takes the following parameters:
 //
-//    - uri: valid URI.
+//   - uri: valid URI.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): ‘scheme’ component of the URI, or NULL on error. The
-//      returned string should be freed when no longer needed.
+//   - utf8 (optional): ‘scheme’ component of the URI, or NULL on error.
+//     The returned string should be freed when no longer needed.
 //
 func URIParseScheme(uri string) string {
 	var _arg1 *C.char // out
@@ -118,17 +118,17 @@ func URIParseScheme(uri string) string {
 //
 // The function takes the following parameters:
 //
-//    - escapedString (optional): string, may be NULL.
-//    - escapedStringEnd (optional): pointer to end of escaped_string, may be
-//      NULL.
-//    - illegalCharacters (optional): optional string of illegal characters not
-//      to be allowed, may be NULL.
+//   - escapedString (optional): string, may be NULL.
+//   - escapedStringEnd (optional): pointer to end of escaped_string, may be
+//     NULL.
+//   - illegalCharacters (optional): optional string of illegal characters not
+//     to be allowed, may be NULL.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): unescaped version of escaped_string, or NULL on error.
-//      The returned string should be freed when no longer needed. As a special
-//      case if NULL is given for escaped_string, this function will return NULL.
+//   - utf8 (optional): unescaped version of escaped_string, or NULL on error.
+//     The returned string should be freed when no longer needed. As a special
+//     case if NULL is given for escaped_string, this function will return NULL.
 //
 func URIUnescapeSegment(escapedString, escapedStringEnd, illegalCharacters string) string {
 	var _arg1 *C.char // out
@@ -174,14 +174,14 @@ func URIUnescapeSegment(escapedString, escapedStringEnd, illegalCharacters strin
 //
 // The function takes the following parameters:
 //
-//    - escapedString: escaped string to be unescaped.
-//    - illegalCharacters (optional): string of illegal characters not to be
-//      allowed, or NULL.
+//   - escapedString: escaped string to be unescaped.
+//   - illegalCharacters (optional): string of illegal characters not to be
+//     allowed, or NULL.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): unescaped version of escaped_string. The returned string
-//      should be freed when no longer needed.
+//   - utf8 (optional): unescaped version of escaped_string. The returned string
+//     should be freed when no longer needed.
 //
 func URIUnescapeString(escapedString, illegalCharacters string) string {
 	var _arg1 *C.char // out

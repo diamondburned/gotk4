@@ -31,9 +31,9 @@ func init() {
 // EventControllerMotion: GtkEventControllerMotion is an event controller
 // tracking the pointer position.
 //
-// The event controller offers gtk.EventControllerMotion::enter and
-// gtk.EventControllerMotion::leave signals, as well as
-// gtk.EventControllerMotion:is-pointer and
+// The event controller offers gtk.EventControllerMotion::enter
+// and gtk.EventControllerMotion::leave signals,
+// as well as gtk.EventControllerMotion:is-pointer and
 // gtk.EventControllerMotion:contains-pointer properties which are updated to
 // reflect changes in the pointer position as it moves over the widget.
 type EventControllerMotion struct {
@@ -77,7 +77,7 @@ func (self *EventControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.
 //
 // The function returns the following values:
 //
-//    - eventControllerMotion: new GtkEventControllerMotion.
+//   - eventControllerMotion: new GtkEventControllerMotion.
 //
 func NewEventControllerMotion() *EventControllerMotion {
 	var _cret *C.GtkEventController // in
@@ -95,7 +95,7 @@ func NewEventControllerMotion() *EventControllerMotion {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a pointer is within self or one of its children.
+//   - ok: TRUE if a pointer is within self or one of its children.
 //
 func (self *EventControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out
@@ -119,7 +119,7 @@ func (self *EventControllerMotion) ContainsPointer() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a pointer is within self but not one of its children.
+//   - ok: TRUE if a pointer is within self but not one of its children.
 //
 func (self *EventControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion // out

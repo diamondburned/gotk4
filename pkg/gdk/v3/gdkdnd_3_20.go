@@ -69,8 +69,8 @@ func (d DragCancelReason) String() string {
 //
 // The function takes the following parameters:
 //
-//    - context: DragContext.
-//    - success: whether the drag was ultimatively successful.
+//   - context: DragContext.
+//   - success: whether the drag was ultimatively successful.
 //
 func DragDropDone(context *DragContext, success bool) {
 	var _arg1 *C.GdkDragContext // out

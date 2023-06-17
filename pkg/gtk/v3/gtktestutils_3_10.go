@@ -24,7 +24,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - widget to wait for.
+//   - widget to wait for.
 //
 func TestWidgetWaitForDraw(widget Widgetter) {
 	var _arg1 *C.GtkWidget // out

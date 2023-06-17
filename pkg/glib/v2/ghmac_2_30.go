@@ -18,14 +18,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - digestType to use for the HMAC.
-//    - key to use in the HMAC.
-//    - data: binary blob to compute the HMAC of.
+//   - digestType to use for the HMAC.
+//   - key to use in the HMAC.
+//   - data: binary blob to compute the HMAC of.
 //
 // The function returns the following values:
 //
-//    - utf8: HMAC of the binary data as a string in hexadecimal. The returned
-//      string should be freed with g_free() when done using it.
+//   - utf8: HMAC of the binary data as a string in hexadecimal. The returned
+//     string should be freed with g_free() when done using it.
 //
 func ComputeHMACForData(digestType ChecksumType, key, data []byte) string {
 	var _arg1 C.GChecksumType // out
@@ -64,15 +64,15 @@ func ComputeHMACForData(digestType ChecksumType, key, data []byte) string {
 //
 // The function takes the following parameters:
 //
-//    - digestType to use for the HMAC.
-//    - key to use in the HMAC.
-//    - str: string to compute the HMAC for.
-//    - length of the string, or -1 if the string is nul-terminated.
+//   - digestType to use for the HMAC.
+//   - key to use in the HMAC.
+//   - str: string to compute the HMAC for.
+//   - length of the string, or -1 if the string is nul-terminated.
 //
 // The function returns the following values:
 //
-//    - utf8: HMAC as a hexadecimal string. The returned string should be freed
-//      with g_free() when done using it.
+//   - utf8: HMAC as a hexadecimal string. The returned string should be freed
+//     with g_free() when done using it.
 //
 func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
 	var _arg1 C.GChecksumType // out

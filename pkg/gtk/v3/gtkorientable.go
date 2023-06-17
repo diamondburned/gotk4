@@ -79,7 +79,7 @@ func marshalOrientable(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - orientation of the orientable.
+//   - orientation of the orientable.
 //
 func (orientable *Orientable) Orientation() Orientation {
 	var _arg0 *C.GtkOrientable // out
@@ -101,7 +101,7 @@ func (orientable *Orientable) Orientation() Orientation {
 //
 // The function takes the following parameters:
 //
-//    - orientation orientable’s new orientation.
+//   - orientation orientable’s new orientation.
 //
 func (orientable *Orientable) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkOrientable // out

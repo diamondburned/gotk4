@@ -3,7 +3,6 @@
 package gendata
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -348,36 +347,36 @@ var Filters = []FilterMatcher{
 	FileFilter("gfiledescriptorbased."),
 	FileFilter("gunix"),
 
-	FileFilter("gasyncqueue."),
-	FileFilter("gatomic."),
-	FileFilter("gbacktrace."),
-	FileFilter("gbase64."),
-	FileFilter("gbitlock."),
-	FileFilter("gdataset."),
-	FileFilter("gdate."),
-	FileFilter("gerror."), // already handled internally
-	FileFilter("ghook."),
-	FileFilter("glib-unix."),
-	FileFilter("glist."),
-	FileFilter("gmacros."),
-	FileFilter("gmem."),
-	FileFilter("gnetworking."), // needs header
-	FileFilter("gprintf."),
-	FileFilter("grcbox."),
-	FileFilter("grefcount."),
-	FileFilter("grefstring."),
-	FileFilter("gsettingsbackend."),
-	FileFilter("gslice."),
-	FileFilter("gslist."),
-	FileFilter("gstdio."),
-	FileFilter("gstrfuncs."),
-	FileFilter("gstringchunk."),
-	FileFilter("gstring."),
-	FileFilter("gstrvbuilder."),
-	FileFilter("gtestutils."),
-	FileFilter("gthread."),
-	FileFilter("gthreadpool."),
-	FileFilter("gtrashstack."),
+	FileFilterNamespace("GLib", "gasyncqueue."),
+	FileFilterNamespace("GLib", "gatomic."),
+	FileFilterNamespace("GLib", "gbacktrace."),
+	FileFilterNamespace("GLib", "gbase64."),
+	FileFilterNamespace("GLib", "gbitlock."),
+	FileFilterNamespace("GLib", "gdataset."),
+	FileFilterNamespace("GLib", "gdate."),
+	FileFilterNamespace("GLib", "gerror."), // already handled internally
+	FileFilterNamespace("GLib", "ghook."),
+	FileFilterNamespace("GLib", "glib-unix."),
+	FileFilterNamespace("GLib", "glist."),
+	FileFilterNamespace("GLib", "gmacros."),
+	FileFilterNamespace("GLib", "gmem."),
+	FileFilterNamespace("GLib", "gnetworking."), // needs header
+	FileFilterNamespace("GLib", "gprintf."),
+	FileFilterNamespace("GLib", "grcbox."),
+	FileFilterNamespace("GLib", "grefcount."),
+	FileFilterNamespace("GLib", "grefstring."),
+	FileFilterNamespace("GLib", "gslice."),
+	FileFilterNamespace("GLib", "gslist."),
+	FileFilterNamespace("GLib", "gstdio."),
+	FileFilterNamespace("GLib", "gstrfuncs."),
+	FileFilterNamespace("GLib", "gstringchunk."),
+	FileFilterNamespace("GLib", "gstring."),
+	FileFilterNamespace("GLib", "gstrvbuilder."),
+	FileFilterNamespace("GLib", "gtestutils."),
+	FileFilterNamespace("GLib", "gthread."),
+	FileFilterNamespace("GLib", "gthreadpool."),
+	FileFilterNamespace("GLib", "gtrashstack."),
+	FileFilterNamespace("Gio", "gsettingsbackend."),
 
 	// Header-specific.
 	FileFilter("gskglrenderer."),
@@ -430,7 +429,7 @@ func ImportGError(nsgen *girgen.NamespaceGenerator) error {
 func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.Files["gvariant.go"]
 	if !ok {
-		return nil
+		fg = nsgen.MakeFile("")
 	}
 
 	h := fg.Header()
@@ -500,7 +499,7 @@ func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 func GLibDateTime(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.Files["gdatetime.go"]
 	if !ok {
-		return nil
+		fg = nsgen.MakeFile("")
 	}
 
 	h := fg.Header()
@@ -545,7 +544,7 @@ func GLibDateTime(nsgen *girgen.NamespaceGenerator) error {
 func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.Files["garray.go"]
 	if !ok {
-		return nil
+		fg = nsgen.MakeFile("")
 	}
 
 	h := fg.Header()
@@ -750,7 +749,7 @@ func GLibAliases(nsgen *girgen.NamespaceGenerator) error {
 func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.File("gmessages.go")
 	if !ok {
-		return errors.New("missing file gmessages.go")
+		fg = nsgen.MakeFile("")
 	}
 
 	h := fg.Header()
@@ -973,7 +972,7 @@ const cGTKMessageDialogNew2 = `
 func GtkNewMessageDialog(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.File("gtkmessagedialog.go")
 	if !ok {
-		return errors.New("missing file gtkmessagedialog.go")
+		fg = nsgen.MakeFile("")
 	}
 
 	h := fg.Header()

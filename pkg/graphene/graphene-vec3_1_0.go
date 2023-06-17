@@ -12,12 +12,12 @@ import (
 // #include <graphene-gobject.h>
 import "C"
 
-// Vec3One provides a constant pointer to a vector with three components, all
-// sets to 1.
+// Vec3One provides a constant pointer to a vector with three components,
+// all sets to 1.
 //
 // The function returns the following values:
 //
-//    - vec3: constant vector.
+//   - vec3: constant vector.
 //
 func Vec3One() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
@@ -36,7 +36,7 @@ func Vec3One() *Vec3 {
 //
 // The function returns the following values:
 //
-//    - vec3: constant vector.
+//   - vec3: constant vector.
 //
 func Vec3XAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
@@ -55,7 +55,7 @@ func Vec3XAxis() *Vec3 {
 //
 // The function returns the following values:
 //
-//    - vec3: constant vector.
+//   - vec3: constant vector.
 //
 func Vec3YAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
@@ -74,7 +74,7 @@ func Vec3YAxis() *Vec3 {
 //
 // The function returns the following values:
 //
-//    - vec3: constant vector.
+//   - vec3: constant vector.
 //
 func Vec3ZAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
@@ -88,12 +88,12 @@ func Vec3ZAxis() *Vec3 {
 	return _vec3
 }
 
-// Vec3Zero provides a constant pointer to a vector with three components, all
-// sets to 0.
+// Vec3Zero provides a constant pointer to a vector with three components,
+// all sets to 0.
 //
 // The function returns the following values:
 //
-//    - vec3: constant vector.
+//   - vec3: constant vector.
 //
 func Vec3Zero() *Vec3 {
 	var _cret *C.graphene_vec3_t // in

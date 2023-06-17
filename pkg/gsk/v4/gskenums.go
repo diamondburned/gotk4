@@ -418,13 +418,13 @@ func (s SerializationError) String() string {
 
 // TransformCategory categories of matrices relevant for GSK and GTK.
 //
-// Note that any category includes matrices of all later categories. So if you
-// want to for example check if a matrix is a 2D matrix, category >=
+// Note that any category includes matrices of all later categories.
+// So if you want to for example check if a matrix is a 2D matrix, category >=
 // GSK_TRANSFORM_CATEGORY_2D is the way to do this.
 //
-// Also keep in mind that rounding errors may cause matrices to not conform to
-// their categories. Otherwise, matrix operations done via multiplication will
-// not worsen categories. So for the matrix multiplication C = A * B,
+// Also keep in mind that rounding errors may cause matrices to not conform
+// to their categories. Otherwise, matrix operations done via multiplication
+// will not worsen categories. So for the matrix multiplication C = A * B,
 // category(C) = MIN (category(A), category(B)).
 type TransformCategory C.gint
 

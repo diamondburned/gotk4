@@ -43,17 +43,17 @@ func init() {
 type ApplicationCommandLineOverrides struct {
 	// Stdin gets the stdin of the invoking process.
 	//
-	// The Stream can be used to read data passed to the standard input of the
-	// invoking process. This doesn't work on all platforms. Presently, it is
-	// only available on UNIX when using a D-Bus daemon capable of passing file
-	// descriptors. If stdin is not available then NULL will be returned. In the
-	// future, support may be expanded to other platforms.
+	// The Stream can be used to read data passed to the standard input of
+	// the invoking process. This doesn't work on all platforms. Presently,
+	// it is only available on UNIX when using a D-Bus daemon capable of passing
+	// file descriptors. If stdin is not available then NULL will be returned.
+	// In the future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
 	//
 	// The function returns the following values:
 	//
-	//    - inputStream (optional) for stdin.
+	//   - inputStream (optional) for stdin.
 	//
 	Stdin func() InputStreamer
 	// The function takes the following parameters:
@@ -72,31 +72,31 @@ func defaultApplicationCommandLineOverrides(v *ApplicationCommandLine) Applicati
 	}
 }
 
-// ApplicationCommandLine represents a command-line invocation of an
-// application. It is created by #GApplication and emitted in the
+// ApplicationCommandLine represents a command-line invocation of
+// an application. It is created by #GApplication and emitted in the
 // #GApplication::command-line signal and virtual function.
 //
 // The class contains the list of arguments that the program was invoked with.
-// It is also possible to query if the commandline invocation was local (ie: the
-// current process is running in direct response to the invocation) or remote
-// (ie: some other process forwarded the commandline to this process).
+// It is also possible to query if the commandline invocation was local (ie:
+// the current process is running in direct response to the invocation) or
+// remote (ie: some other process forwarded the commandline to this process).
 //
-// The GApplicationCommandLine object can provide the argc and argv parameters
-// for use with the Context command-line parsing API, with the
-// g_application_command_line_get_arguments() function. See
+// The GApplicationCommandLine object can provide the argc and argv
+// parameters for use with the Context command-line parsing API,
+// with the g_application_command_line_get_arguments() function. See
 // [gapplication-example-cmdline3.c][gapplication-example-cmdline3] for an
 // example.
 //
-// The exit status of the originally-invoked process may be set and messages can
-// be printed to stdout or stderr of that process. The lifecycle of the
-// originally-invoked process is tied to the lifecycle of this object (ie: the
-// process exits when the last reference is dropped).
+// The exit status of the originally-invoked process may be set and messages
+// can be printed to stdout or stderr of that process. The lifecycle of the
+// originally-invoked process is tied to the lifecycle of this object (ie:
+// the process exits when the last reference is dropped).
 //
 // The main use for CommandLine (and the #GApplication::command-line signal) is
-// 'Emacs server' like use cases: You can set the EDITOR environment variable to
-// have e.g. git use your favourite editor to edit commit messages, and if you
-// already have an instance of the editor running, the editing will happen in
-// the running instance, instead of opening a new one. An important aspect of
+// 'Emacs server' like use cases: You can set the EDITOR environment variable
+// to have e.g. git use your favourite editor to edit commit messages, and if
+// you already have an instance of the editor running, the editing will happen
+// in the running instance, instead of opening a new one. An important aspect of
 // this use case is that the process that gets started by git does not return
 // until the editing is done.
 //
@@ -136,8 +136,8 @@ func defaultApplicationCommandLineOverrides(v *ApplicationCommandLine) Applicati
 //    }
 //
 // In this example the commandline is not completely handled before the
-// #GApplication::command-line handler returns. Instead, we keep a reference to
-// the CommandLine object and handle it later (in this example, in an idle).
+// #GApplication::command-line handler returns. Instead, we keep a reference
+// to the CommandLine object and handle it later (in this example, in an idle).
 // Note that it is necessary to hold the application until you are done with the
 // commandline.
 //
@@ -201,11 +201,11 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - arg: argument from cmdline.
+//   - arg: argument from cmdline.
 //
 // The function returns the following values:
 //
-//    - file: new #GFile.
+//   - file: new #GFile.
 //
 func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -240,7 +240,7 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 //
 // The function returns the following values:
 //
-//    - filenames: the string array containing the arguments (the argv).
+//   - filenames: the string array containing the arguments (the argv).
 //
 func (cmdline *ApplicationCommandLine) Arguments() []string {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -278,7 +278,7 @@ func (cmdline *ApplicationCommandLine) Arguments() []string {
 //
 // The function returns the following values:
 //
-//    - filename (optional): current directory, or NULL.
+//   - filename (optional): current directory, or NULL.
 //
 func (cmdline *ApplicationCommandLine) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -304,8 +304,8 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 // data.
 //
 // The remote application usually does not send an environment. Use
-// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it is
-// possible that the environment is still not available (due to invocation
+// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it
+// is possible that the environment is still not available (due to invocation
 // messages from other applications).
 //
 // The return value should not be modified or freed and is valid for as long as
@@ -316,7 +316,7 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 //
 // The function returns the following values:
 //
-//    - filenames: the environment strings, or NULL if they were not sent.
+//   - filenames: the environment strings, or NULL if they were not sent.
 //
 func (cmdline *ApplicationCommandLine) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -351,7 +351,7 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 //
 // The function returns the following values:
 //
-//    - gint: exit status.
+//   - gint: exit status.
 //
 func (cmdline *ApplicationCommandLine) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -373,7 +373,7 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the invocation was remote.
+//   - ok: TRUE if the invocation was remote.
 //
 func (cmdline *ApplicationCommandLine) IsRemote() bool {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -406,7 +406,7 @@ func (cmdline *ApplicationCommandLine) IsRemote() bool {
 //
 // The function returns the following values:
 //
-//    - variantDict with the options.
+//   - variantDict with the options.
 //
 func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -442,7 +442,7 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 //
 // The function returns the following values:
 //
-//    - variant (optional): platform data, or NULL.
+//   - variant (optional): platform data, or NULL.
 //
 func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -470,17 +470,17 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 
 // Stdin gets the stdin of the invoking process.
 //
-// The Stream can be used to read data passed to the standard input of the
-// invoking process. This doesn't work on all platforms. Presently, it is only
-// available on UNIX when using a D-Bus daemon capable of passing file
-// descriptors. If stdin is not available then NULL will be returned. In the
-// future, support may be expanded to other platforms.
+// The Stream can be used to read data passed to the standard input of
+// the invoking process. This doesn't work on all platforms. Presently,
+// it is only available on UNIX when using a D-Bus daemon capable of passing
+// file descriptors. If stdin is not available then NULL will be returned.
+// In the future, support may be expanded to other platforms.
 //
 // You must only call this function once per commandline invocation.
 //
 // The function returns the following values:
 //
-//    - inputStream (optional) for stdin.
+//   - inputStream (optional) for stdin.
 //
 func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -518,8 +518,8 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 // non-utf8 data.
 //
 // The remote application usually does not send an environment. Use
-// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it is
-// possible that the environment is still not available (due to invocation
+// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it
+// is possible that the environment is still not available (due to invocation
 // messages from other applications).
 //
 // The return value should not be modified or freed and is valid for as long as
@@ -527,11 +527,11 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 //
 // The function takes the following parameters:
 //
-//    - name: environment variable to get.
+//   - name: environment variable to get.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value of the variable, or NULL if unset or unsent.
+//   - utf8 (optional): value of the variable, or NULL if unset or unsent.
 //
 func (cmdline *ApplicationCommandLine) env(name string) string {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -562,11 +562,11 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 // function when the handler returns. This is the usual way of setting the exit
 // status.
 //
-// In the event that you want the remote invocation to continue running and want
-// to decide on the exit status in the future, you can use this call. For the
-// case of a remote invocation, the remote process will typically exit when the
-// last reference is dropped on cmdline. The exit status of the remote process
-// will be equal to the last value that was set with this function.
+// In the event that you want the remote invocation to continue running and
+// want to decide on the exit status in the future, you can use this call.
+// For the case of a remote invocation, the remote process will typically exit
+// when the last reference is dropped on cmdline. The exit status of the remote
+// process will be equal to the last value that was set with this function.
 //
 // In the case that the commandline invocation is local, the situation is
 // slightly more complicated. If the commandline invocation results in the
@@ -577,7 +577,7 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 //
 // The function takes the following parameters:
 //
-//    - exitStatus: exit status.
+//   - exitStatus: exit status.
 //
 func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
@@ -593,17 +593,17 @@ func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 
 // Stdin gets the stdin of the invoking process.
 //
-// The Stream can be used to read data passed to the standard input of the
-// invoking process. This doesn't work on all platforms. Presently, it is only
-// available on UNIX when using a D-Bus daemon capable of passing file
-// descriptors. If stdin is not available then NULL will be returned. In the
-// future, support may be expanded to other platforms.
+// The Stream can be used to read data passed to the standard input of
+// the invoking process. This doesn't work on all platforms. Presently,
+// it is only available on UNIX when using a D-Bus daemon capable of passing
+// file descriptors. If stdin is not available then NULL will be returned.
+// In the future, support may be expanded to other platforms.
 //
 // You must only call this function once per commandline invocation.
 //
 // The function returns the following values:
 //
-//    - inputStream (optional) for stdin.
+//   - inputStream (optional) for stdin.
 //
 func (cmdline *ApplicationCommandLine) stdin() InputStreamer {
 	gclass := (*C.GApplicationCommandLineClass)(coreglib.PeekParentClass(cmdline))

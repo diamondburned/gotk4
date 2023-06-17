@@ -16,9 +16,9 @@ import "C"
 //
 // This function includes algorithmic Hangul Jamo composition, but it is not
 // exactly the inverse of g_unichar_decompose(). No composition can have either
-// of a or b equal to zero. To be precise, this function composes if and only if
-// there exists a Primary Composite P which is canonically equivalent to the
-// sequence <a,b>. See the Unicode Standard for the definition of Primary
+// of a or b equal to zero. To be precise, this function composes if and only
+// if there exists a Primary Composite P which is canonically equivalent to
+// the sequence <a,b>. See the Unicode Standard for the definition of Primary
 // Composite.
 //
 // If a and b do not compose a new character, ch is set to zero.
@@ -27,13 +27,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - a: unicode character.
-//    - b: unicode character.
+//   - a: unicode character.
+//   - b: unicode character.
 //
 // The function returns the following values:
 //
-//    - ch: return location for the composed character.
-//    - ok: TRUE if the characters could be composed.
+//   - ch: return location for the composed character.
+//   - ok: TRUE if the characters could be composed.
 //
 func UnicharCompose(a, b uint32) (uint32, bool) {
 	var _arg1 C.gunichar // out
@@ -78,13 +78,13 @@ func UnicharCompose(a, b uint32) (uint32, bool) {
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
+//   - ch: unicode character.
 //
 // The function returns the following values:
 //
-//    - a: return location for the first component of ch.
-//    - b: return location for the second component of ch.
-//    - ok: TRUE if the character could be decomposed.
+//   - a: return location for the first component of ch.
+//   - b: return location for the second component of ch.
+//   - ok: TRUE if the character could be decomposed.
 //
 func UnicharDecompose(ch uint32) (a, b uint32, ok bool) {
 	var _arg1 C.gunichar // out
@@ -117,24 +117,24 @@ func UnicharDecompose(ch uint32) (a, b uint32, ok bool) {
 // The decomposed sequence is placed in result. Only up to result_len characters
 // are written into result. The length of the full decomposition (irrespective
 // of result_len) is returned by the function. For canonical decomposition,
-// currently all decompositions are of length at most 4, but this may change in
-// the future (very unlikely though). At any rate, Unicode does guarantee that a
-// buffer of length 18 is always enough for both compatibility and canonical
-// decompositions, so that is the size recommended. This is provided as
-// G_UNICHAR_MAX_DECOMPOSITION_LENGTH.
+// currently all decompositions are of length at most 4, but this may change
+// in the future (very unlikely though). At any rate, Unicode does guarantee
+// that a buffer of length 18 is always enough for both compatibility and
+// canonical decompositions, so that is the size recommended. This is provided
+// as G_UNICHAR_MAX_DECOMPOSITION_LENGTH.
 //
 // See UAX#15 (http://unicode.org/reports/tr15/) for details.
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
-//    - compat: whether perform canonical or compatibility decomposition.
-//    - resultLen: length of result.
+//   - ch: unicode character.
+//   - compat: whether perform canonical or compatibility decomposition.
+//   - resultLen: length of result.
 //
 // The function returns the following values:
 //
-//    - result (optional): location to store decomposed result, or NULL.
-//    - gsize: length of the full decomposition.
+//   - result (optional): location to store decomposed result, or NULL.
+//   - gsize: length of the full decomposition.
 //
 func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint) {
 	var _arg1 C.gunichar // out
@@ -174,13 +174,13 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint
 //
 // The function takes the following parameters:
 //
-//    - iso15924: unicode script.
+//   - iso15924: unicode script.
 //
 // The function returns the following values:
 //
-//    - unicodeScript: unicode script for iso15924, or of
-//      G_UNICODE_SCRIPT_INVALID_CODE if iso15924 is zero and
-//      G_UNICODE_SCRIPT_UNKNOWN if iso15924 is unknown.
+//   - unicodeScript: unicode script for iso15924, or of
+//     G_UNICODE_SCRIPT_INVALID_CODE if iso15924 is zero and
+//     G_UNICODE_SCRIPT_UNKNOWN if iso15924 is unknown.
 //
 func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 	var _arg1 C.guint32        // out
@@ -209,13 +209,13 @@ func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 //
 // The function takes the following parameters:
 //
-//    - script: unicode script.
+//   - script: unicode script.
 //
 // The function returns the following values:
 //
-//    - guint32: ISO 15924 code for script, encoded as an integer, of zero if
-//      script is G_UNICODE_SCRIPT_INVALID_CODE or ISO 15924 code 'Zzzz' (script
-//      code for UNKNOWN) if script is not understood.
+//   - guint32: ISO 15924 code for script, encoded as an integer, of zero if
+//     script is G_UNICODE_SCRIPT_INVALID_CODE or ISO 15924 code 'Zzzz' (script
+//     code for UNKNOWN) if script is not understood.
 //
 func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 	var _arg1 C.GUnicodeScript // out
@@ -238,14 +238,14 @@ func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 //
 // The function takes the following parameters:
 //
-//    - str: UTF-8 encoded string.
-//    - startPos: character offset within str.
-//    - endPos: another character offset within str.
+//   - str: UTF-8 encoded string.
+//   - startPos: character offset within str.
+//   - endPos: another character offset within str.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated copy of the requested substring. Free with g_free()
-//      when no longer needed.
+//   - utf8: newly allocated copy of the requested substring. Free with g_free()
+//     when no longer needed.
 //
 func UTF8Substring(str string, startPos, endPos int32) string {
 	var _arg1 *C.gchar // out

@@ -24,14 +24,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - connection: BusConnection.
-//    - busName (optional) bus name which exports the menu model or NULL if
-//      connection is not a message bus connection.
-//    - objectPath: object path at which the menu model is exported.
+//   - connection: BusConnection.
+//   - busName (optional) bus name which exports the menu model or NULL if
+//     connection is not a message bus connection.
+//   - objectPath: object path at which the menu model is exported.
 //
 // The function returns the following values:
 //
-//    - dBusMenuModel object. Free with g_object_unref().
+//   - dBusMenuModel object. Free with g_object_unref().
 //
 func DBusMenuModelGet(connection *DBusConnection, busName, objectPath string) *DBusMenuModel {
 	var _arg1 *C.GDBusConnection // out

@@ -384,12 +384,12 @@ func NewDateTimeUTC(year int, month int, day int, hour int, minute int, seconds 
 //
 // The function takes the following parameters:
 //
-//    - timespan: Span.
+//   - timespan: Span.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -425,12 +425,12 @@ func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 //
 // The function takes the following parameters:
 //
-//    - days: number of days.
+//   - days: number of days.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) AddDays(days int) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -464,17 +464,17 @@ func (datetime *DateTime) AddDays(days int) *DateTime {
 //
 // The function takes the following parameters:
 //
-//    - years: number of years to add.
-//    - months: number of months to add.
-//    - days: number of days to add.
-//    - hours: number of hours to add.
-//    - minutes: number of minutes to add.
-//    - seconds: number of seconds to add.
+//   - years: number of years to add.
+//   - months: number of months to add.
+//   - days: number of days to add.
+//   - hours: number of hours to add.
+//   - minutes: number of minutes to add.
+//   - seconds: number of seconds to add.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) AddFull(years int, months int, days int, hours int, minutes int, seconds float64) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -523,12 +523,12 @@ func (datetime *DateTime) AddFull(years int, months int, days int, hours int, mi
 //
 // The function takes the following parameters:
 //
-//    - hours: number of hours to add.
+//   - hours: number of hours to add.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) AddHours(hours int) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -562,12 +562,12 @@ func (datetime *DateTime) AddHours(hours int) *DateTime {
 //
 // The function takes the following parameters:
 //
-//    - minutes: number of minutes to add.
+//   - minutes: number of minutes to add.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -599,19 +599,19 @@ func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
 // AddMonths creates a copy of datetime and adds the specified number of months
 // to the copy. Add negative values to subtract months.
 //
-// The day of the month of the resulting Time is clamped to the number of days
-// in the updated calendar month. For example, if adding 1 month to 31st January
-// 2018, the result would be 28th February 2018. In 2020 (a leap year), the
-// result would be 29th February.
+// The day of the month of the resulting Time is clamped to the number of
+// days in the updated calendar month. For example, if adding 1 month to 31st
+// January 2018, the result would be 28th February 2018. In 2020 (a leap year),
+// the result would be 29th February.
 //
 // The function takes the following parameters:
 //
-//    - months: number of months.
+//   - months: number of months.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) AddMonths(months int) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -645,12 +645,12 @@ func (datetime *DateTime) AddMonths(months int) *DateTime {
 //
 // The function takes the following parameters:
 //
-//    - seconds: number of seconds to add.
+//   - seconds: number of seconds to add.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -684,12 +684,12 @@ func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
 //
 // The function takes the following parameters:
 //
-//    - weeks: number of weeks.
+//   - weeks: number of weeks.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -726,12 +726,12 @@ func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
 //
 // The function takes the following parameters:
 //
-//    - years: number of years.
+//   - years: number of years.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) AddYears(years int) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -765,11 +765,11 @@ func (datetime *DateTime) AddYears(years int) *DateTime {
 //
 // The function takes the following parameters:
 //
-//    - dt2: second Time to compare.
+//   - dt2: second Time to compare.
 //
 // The function returns the following values:
 //
-//    - gint: -1, 0 or 1 if dt1 is less than, equal to or greater than dt2.
+//   - gint: -1, 0 or 1 if dt1 is less than, equal to or greater than dt2.
 //
 func (dt1 *DateTime) Compare(dt2 *DateTime) int {
 	var _arg0 C.gconstpointer // out
@@ -790,18 +790,18 @@ func (dt1 *DateTime) Compare(dt2 *DateTime) int {
 	return _gint
 }
 
-// Difference calculates the difference in time between end and begin. The Span
-// that is returned is effectively end - begin (ie: positive if the first
+// Difference calculates the difference in time between end and begin. The
+// Span that is returned is effectively end - begin (ie: positive if the first
 // parameter is larger).
 //
 // The function takes the following parameters:
 //
-//    - begin: Time.
+//   - begin: Time.
 //
 // The function returns the following values:
 //
-//    - timeSpan: difference between the two Time, as a time span expressed in
-//      microseconds.
+//   - timeSpan: difference between the two Time, as a time span expressed in
+//     microseconds.
 //
 func (end *DateTime) Difference(begin *DateTime) TimeSpan {
 	var _arg0 *C.GDateTime // out
@@ -831,11 +831,11 @@ func (end *DateTime) Difference(begin *DateTime) TimeSpan {
 //
 // The function takes the following parameters:
 //
-//    - dt2: Time.
+//   - dt2: Time.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if dt1 and dt2 are equal.
+//   - ok: TRUE if dt1 and dt2 are equal.
 //
 func (dt1 *DateTime) Equal(dt2 *DateTime) bool {
 	var _arg0 C.gconstpointer // out
@@ -862,8 +862,8 @@ func (dt1 *DateTime) Equal(dt2 *DateTime) bool {
 //
 // The format strings understood by this function are a subset of the strftime()
 // format language as specified by C99. The \D, \U and \W conversions are not
-// supported, nor is the 'E' modifier. The GNU extensions \k, \l, \s and \P are
-// supported, however, as are the '0', '_' and '-' modifiers. The Python
+// supported, nor is the 'E' modifier. The GNU extensions \k, \l, \s and \P
+// are supported, however, as are the '0', '_' and '-' modifiers. The Python
 // extension \f is also supported.
 //
 // In contrast to strftime(), this function always produces a UTF-8 string,
@@ -992,8 +992,8 @@ func (dt1 *DateTime) Equal(dt2 *DateTime) bool {
 // the specifier.
 //
 // Additionally, when O is used with B, b, or h, it produces the alternative
-// form of a month name. The alternative form should be used when the month name
-// is used without a day number (e.g., standalone). It is required in some
+// form of a month name. The alternative form should be used when the month
+// name is used without a day number (e.g., standalone). It is required in some
 // languages (Baltic, Slavic, Greek, and more) due to their grammatical rules.
 // For other languages there is no difference. \OB is a GNU and BSD strftime()
 // extension expected to be added to the future POSIX specification, \Ob and \Oh
@@ -1001,14 +1001,14 @@ func (dt1 *DateTime) Equal(dt2 *DateTime) bool {
 //
 // The function takes the following parameters:
 //
-//    - format: valid UTF-8 string, containing the format for the Time.
+//   - format: valid UTF-8 string, containing the format for the Time.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string formatted to the requested format
-//      or NULL in the case that there was an error (such as a format specifier
-//      not being supported in the current locale). The string should be freed
-//      with g_free().
+//   - utf8 (optional): newly allocated string formatted to the requested format
+//     or NULL in the case that there was an error (such as a format specifier
+//     not being supported in the current locale). The string should be freed
+//     with g_free().
 //
 func (datetime *DateTime) Format(format string) string {
 	var _arg0 *C.GDateTime // out
@@ -1041,9 +1041,9 @@ func (datetime *DateTime) Format(format string) string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string formatted in ISO 8601 format or
-//      NULL in the case that there was an error. The string should be freed with
-//      g_free().
+//   - utf8 (optional): newly allocated string formatted in ISO 8601 format or
+//     NULL in the case that there was an error. The string should be freed with
+//     g_free().
 //
 func (datetime *DateTime) FormatISO8601() string {
 	var _arg0 *C.GDateTime // out
@@ -1069,7 +1069,7 @@ func (datetime *DateTime) FormatISO8601() string {
 //
 // The function returns the following values:
 //
-//    - gint: day of the month.
+//   - gint: day of the month.
 //
 func (datetime *DateTime) DayOfMonth() int {
 	var _arg0 *C.GDateTime // out
@@ -1092,7 +1092,7 @@ func (datetime *DateTime) DayOfMonth() int {
 //
 // The function returns the following values:
 //
-//    - gint: day of the week.
+//   - gint: day of the week.
 //
 func (datetime *DateTime) DayOfWeek() int {
 	var _arg0 *C.GDateTime // out
@@ -1115,7 +1115,7 @@ func (datetime *DateTime) DayOfWeek() int {
 //
 // The function returns the following values:
 //
-//    - gint: day of the year.
+//   - gint: day of the year.
 //
 func (datetime *DateTime) DayOfYear() int {
 	var _arg0 *C.GDateTime // out
@@ -1137,7 +1137,7 @@ func (datetime *DateTime) DayOfYear() int {
 //
 // The function returns the following values:
 //
-//    - gint: hour of the day.
+//   - gint: hour of the day.
 //
 func (datetime *DateTime) Hour() int {
 	var _arg0 *C.GDateTime // out
@@ -1159,7 +1159,7 @@ func (datetime *DateTime) Hour() int {
 //
 // The function returns the following values:
 //
-//    - gint: microsecond of the second.
+//   - gint: microsecond of the second.
 //
 func (datetime *DateTime) Microsecond() int {
 	var _arg0 *C.GDateTime // out
@@ -1181,7 +1181,7 @@ func (datetime *DateTime) Microsecond() int {
 //
 // The function returns the following values:
 //
-//    - gint: minute of the hour.
+//   - gint: minute of the hour.
 //
 func (datetime *DateTime) Minute() int {
 	var _arg0 *C.GDateTime // out
@@ -1204,7 +1204,7 @@ func (datetime *DateTime) Minute() int {
 //
 // The function returns the following values:
 //
-//    - gint: month represented by datetime.
+//   - gint: month represented by datetime.
 //
 func (datetime *DateTime) Month() int {
 	var _arg0 *C.GDateTime // out
@@ -1226,7 +1226,7 @@ func (datetime *DateTime) Month() int {
 //
 // The function returns the following values:
 //
-//    - gint: second represented by datetime.
+//   - gint: second represented by datetime.
 //
 func (datetime *DateTime) Second() int {
 	var _arg0 *C.GDateTime // out
@@ -1249,7 +1249,7 @@ func (datetime *DateTime) Second() int {
 //
 // The function returns the following values:
 //
-//    - gdouble: number of seconds.
+//   - gdouble: number of seconds.
 //
 func (datetime *DateTime) Seconds() float64 {
 	var _arg0 *C.GDateTime // out
@@ -1271,7 +1271,7 @@ func (datetime *DateTime) Seconds() float64 {
 //
 // The function returns the following values:
 //
-//    - timeZone: time zone.
+//   - timeZone: time zone.
 //
 func (datetime *DateTime) Timezone() *TimeZone {
 	var _arg0 *C.GDateTime // out
@@ -1304,8 +1304,8 @@ func (datetime *DateTime) Timezone() *TimeZone {
 //
 // The function returns the following values:
 //
-//    - utf8: time zone abbreviation. The returned string is owned by the Time
-//      and it should not be modified or freed.
+//   - utf8: time zone abbreviation. The returned string is owned by the Time
+//     and it should not be modified or freed.
 //
 func (datetime *DateTime) TimezoneAbbreviation() string {
 	var _arg0 *C.GDateTime // out
@@ -1334,8 +1334,8 @@ func (datetime *DateTime) TimezoneAbbreviation() string {
 //
 // The function returns the following values:
 //
-//    - timeSpan: number of microseconds that should be added to UTC to get the
-//      local time.
+//   - timeSpan: number of microseconds that should be added to UTC to get the
+//     local time.
 //
 func (datetime *DateTime) UTCOffset() TimeSpan {
 	var _arg0 *C.GDateTime // out
@@ -1369,9 +1369,9 @@ func (datetime *DateTime) UTCOffset() TimeSpan {
 // year. For other days, the number is such that every day within a complete
 // week (Monday to Sunday) is contained within the same week-numbering year.
 //
-// For Monday, Tuesday and Wednesday occurring near the end of the year, this
-// may mean that the week-numbering year is one greater than the calendar year
-// (so that these days have the same week-numbering year as the Thursday
+// For Monday, Tuesday and Wednesday occurring near the end of the year,
+// this may mean that the week-numbering year is one greater than the calendar
+// year (so that these days have the same week-numbering year as the Thursday
 // occurring early in the next year).
 //
 // For Friday, Saturday and Sunday occurring near the start of the year, this
@@ -1383,12 +1383,12 @@ func (datetime *DateTime) UTCOffset() TimeSpan {
 // calendar year containing the majority of the days in the current week (Monday
 // to Sunday).
 //
-// Note that January 1 0001 in the proleptic Gregorian calendar is a Monday, so
-// this function never returns 0.
+// Note that January 1 0001 in the proleptic Gregorian calendar is a Monday,
+// so this function never returns 0.
 //
 // The function returns the following values:
 //
-//    - gint: ISO 8601 week-numbering year for datetime.
+//   - gint: ISO 8601 week-numbering year for datetime.
 //
 func (datetime *DateTime) WeekNumberingYear() int {
 	var _arg0 *C.GDateTime // out
@@ -1423,7 +1423,7 @@ func (datetime *DateTime) WeekNumberingYear() int {
 //
 // The function returns the following values:
 //
-//    - gint: ISO 8601 week number for datetime.
+//   - gint: ISO 8601 week number for datetime.
 //
 func (datetime *DateTime) WeekOfYear() int {
 	var _arg0 *C.GDateTime // out
@@ -1445,7 +1445,7 @@ func (datetime *DateTime) WeekOfYear() int {
 //
 // The function returns the following values:
 //
-//    - gint: year represented by datetime.
+//   - gint: year represented by datetime.
 //
 func (datetime *DateTime) Year() int {
 	var _arg0 *C.GDateTime // out
@@ -1467,9 +1467,9 @@ func (datetime *DateTime) Year() int {
 //
 // The function returns the following values:
 //
-//    - year (optional): return location for the gregorian year, or NULL.
-//    - month (optional): return location for the month of the year, or NULL.
-//    - day (optional): return location for the day of the month, or NULL.
+//   - year (optional): return location for the gregorian year, or NULL.
+//   - month (optional): return location for the month of the year, or NULL.
+//   - day (optional): return location for the day of the month, or NULL.
 //
 func (datetime *DateTime) Ymd() (year int, month int, day int) {
 	var _arg0 *C.GDateTime // out
@@ -1497,7 +1497,7 @@ func (datetime *DateTime) Ymd() (year int, month int, day int) {
 //
 // The function returns the following values:
 //
-//    - guint containing the hash.
+//   - guint containing the hash.
 //
 func (datetime *DateTime) Hash() uint {
 	var _arg0 C.gconstpointer // out
@@ -1520,7 +1520,7 @@ func (datetime *DateTime) Hash() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if daylight savings time is in effect.
+//   - ok: TRUE if daylight savings time is in effect.
 //
 func (datetime *DateTime) IsDaylightSavings() bool {
 	var _arg0 *C.GDateTime // out
@@ -1548,8 +1548,8 @@ func (datetime *DateTime) IsDaylightSavings() bool {
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) ToLocal() *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -1592,11 +1592,11 @@ func (datetime *DateTime) ToLocal() *DateTime {
 //
 // The function takes the following parameters:
 //
-//    - tv to modify.
+//   - tv to modify.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if successful, else FALSE.
+//   - ok: TRUE if successful, else FALSE.
 //
 func (datetime *DateTime) ToTimeval(tv *TimeVal) bool {
 	var _arg0 *C.GDateTime // out
@@ -1628,12 +1628,12 @@ func (datetime *DateTime) ToTimeval(tv *TimeVal) bool {
 //
 // The function takes the following parameters:
 //
-//    - tz: new Zone.
+//   - tz: new Zone.
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) ToTimezone(tz *TimeZone) *DateTime {
 	var _arg0 *C.GDateTime // out
@@ -1670,7 +1670,7 @@ func (datetime *DateTime) ToTimezone(tz *TimeZone) *DateTime {
 //
 // The function returns the following values:
 //
-//    - gint64: unix time corresponding to datetime.
+//   - gint64: unix time corresponding to datetime.
 //
 func (datetime *DateTime) ToUnix() int64 {
 	var _arg0 *C.GDateTime // out
@@ -1696,8 +1696,8 @@ func (datetime *DateTime) ToUnix() int64 {
 //
 // The function returns the following values:
 //
-//    - dateTime (optional): newly created Time which should be freed with
-//      g_date_time_unref(), or NULL.
+//   - dateTime (optional): newly created Time which should be freed with
+//     g_date_time_unref(), or NULL.
 //
 func (datetime *DateTime) ToUTC() *DateTime {
 	var _arg0 *C.GDateTime // out

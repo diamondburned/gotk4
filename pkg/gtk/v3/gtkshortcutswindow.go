@@ -60,9 +60,9 @@ func defaultShortcutsWindowOverrides(v *ShortcutsWindow) ShortcutsWindowOverride
 // Additionally, the shortcuts can be filtered by the current view, to avoid
 // showing information that is not relevant in the current application context.
 //
-// The recommended way to construct a GtkShortcutsWindow is with GtkBuilder, by
-// populating a ShortcutsWindow with one or more ShortcutsSection objects, which
-// contain ShortcutsGroups that in turn contain objects of class
+// The recommended way to construct a GtkShortcutsWindow is with GtkBuilder,
+// by populating a ShortcutsWindow with one or more ShortcutsSection objects,
+// which contain ShortcutsGroups that in turn contain objects of class
 // ShortcutsShortcut.
 //
 // A simple example:

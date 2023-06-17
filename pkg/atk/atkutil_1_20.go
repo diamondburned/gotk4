@@ -14,7 +14,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8: version string for ATK.
+//   - utf8: version string for ATK.
 //
 func GetVersion() string {
 	var _cret *C.gchar // in

@@ -82,11 +82,11 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): selection model to filter, or NULL.
+//   - model (optional): selection model to filter, or NULL.
 //
 // The function returns the following values:
 //
-//    - selectionFilterModel: new GtkSelectionFilterModel.
+//   - selectionFilterModel: new GtkSelectionFilterModel.
 //
 func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 	var _arg1 *C.GtkSelectionModel       // out
@@ -110,7 +110,7 @@ func NewSelectionFilterModel(model SelectionModeller) *SelectionFilterModel {
 //
 // The function returns the following values:
 //
-//    - selectionModel (optional): model that gets filtered.
+//   - selectionModel (optional): model that gets filtered.
 //
 func (self *SelectionFilterModel) Model() *SelectionModel {
 	var _arg0 *C.GtkSelectionFilterModel // out
@@ -138,7 +138,7 @@ func (self *SelectionFilterModel) Model() *SelectionModel {
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to be filtered.
+//   - model (optional) to be filtered.
 //
 func (self *SelectionFilterModel) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkSelectionFilterModel // out

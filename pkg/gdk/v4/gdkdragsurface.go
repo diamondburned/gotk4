@@ -64,12 +64,12 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - width: unconstrained drag_surface width to layout.
-//    - height: unconstrained drag_surface height to layout.
+//   - width: unconstrained drag_surface width to layout.
+//   - height: unconstrained drag_surface height to layout.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if it failed to be presented, otherwise TRUE.
+//   - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
 func (dragSurface *DragSurface) Present(width, height int) bool {
 	var _arg0 *C.GdkDragSurface // out

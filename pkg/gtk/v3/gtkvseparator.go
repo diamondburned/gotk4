@@ -36,8 +36,8 @@ func defaultVSeparatorOverrides(v *VSeparator) VSeparatorOverrides {
 	return VSeparatorOverrides{}
 }
 
-// VSeparator widget is a vertical separator, used to group the widgets within a
-// window. It displays a vertical line with a shadow to make it appear sunken
+// VSeparator widget is a vertical separator, used to group the widgets within
+// a window. It displays a vertical line with a shadow to make it appear sunken
 // into the interface.
 //
 // GtkVSeparator has been deprecated, use Separator instead.
@@ -100,7 +100,7 @@ func marshalVSeparator(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - vSeparator: new VSeparator.
+//   - vSeparator: new VSeparator.
 //
 func NewVSeparator() *VSeparator {
 	var _cret *C.GtkWidget // in

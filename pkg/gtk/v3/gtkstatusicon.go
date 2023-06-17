@@ -81,16 +81,16 @@ type StatusIconOverrides struct {
 	ButtonReleaseEvent func(event *gdk.EventButton) bool
 	// The function takes the following parameters:
 	//
-	//    - button
-	//    - activateTime
+	//   - button
+	//   - activateTime
 	//
 	PopupMenu func(button uint, activateTime uint32)
 	// The function takes the following parameters:
 	//
-	//    - x
-	//    - y
-	//    - keyboardMode
-	//    - tooltip
+	//   - x
+	//   - y
+	//   - keyboardMode
+	//   - tooltip
 	//
 	// The function returns the following values:
 	//
@@ -125,33 +125,33 @@ func defaultStatusIconOverrides(v *StatusIcon) StatusIconOverrides {
 // message, or something along those lines. The basic idea is that creating an
 // icon in the notification area is less annoying than popping up a dialog.
 //
-// A StatusIcon object can be used to display an icon in a “system tray”. The
-// icon can have a tooltip, and the user can interact with it by activating it
-// or popping up a context menu.
+// A StatusIcon object can be used to display an icon in a “system tray”.
+// The icon can have a tooltip, and the user can interact with it by activating
+// it or popping up a context menu.
 //
-// It is very important to notice that status icons depend on the existence of a
-// notification area being available to the user; you should not use status
-// icons as the only way to convey critical information regarding your
-// application, as the notification area may not exist on the user's
-// environment, or may have been removed. You should always check that a status
-// icon has been embedded into a notification area by using
+// It is very important to notice that status icons depend on the existence
+// of a notification area being available to the user; you should not use
+// status icons as the only way to convey critical information regarding
+// your application, as the notification area may not exist on the user's
+// environment, or may have been removed. You should always check that
+// a status icon has been embedded into a notification area by using
 // gtk_status_icon_is_embedded(), and gracefully recover if the function returns
 // FALSE.
 //
 // On X11, the implementation follows the FreeDesktop System Tray Specification
 // (http://www.freedesktop.org/wiki/Specifications/systemtray-spec).
-// Implementations of the “tray” side of this specification can be found e.g. in
-// the GNOME 2 and KDE panel applications.
+// Implementations of the “tray” side of this specification can be found e.g.
+// in the GNOME 2 and KDE panel applications.
 //
 // Note that a GtkStatusIcon is not a widget, but just a #GObject. Making it a
 // widget would be impractical, since the system tray on Windows doesn’t allow
 // to embed arbitrary widgets.
 //
-// GtkStatusIcon has been deprecated in 3.14. You should consider using
-// notifications or more modern platform-specific APIs instead. GLib provides
-// the #GNotification API which works well with Application on multiple
-// platforms and environments, and should be the preferred mechanism to notify
-// the users of transient status updates. See this HowDoI
+// GtkStatusIcon has been deprecated in 3.14. You should consider
+// using notifications or more modern platform-specific APIs instead.
+// GLib provides the #GNotification API which works well with Application
+// on multiple platforms and environments, and should be the preferred
+// mechanism to notify the users of transient status updates. See this HowDoI
 // (https://wiki.gnome.org/HowDoI/GNotification) for code examples.
 type StatusIcon struct {
 	_ [0]func() // equal guard
@@ -218,8 +218,8 @@ func marshalStatusIcon(p uintptr) (interface{}, error) {
 	return wrapStatusIcon(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectActivate gets emitted when the user activates the status icon. If and
-// how status icons can activated is platform-dependent.
+// ConnectActivate gets emitted when the user activates the status icon.
+// If and how status icons can activated is platform-dependent.
 //
 // Unlike most G_SIGNAL_ACTION signals, this signal is meant to be used by
 // applications and should be wrapped by language bindings.
@@ -298,7 +298,7 @@ func (statusIcon *StatusIcon) ConnectSizeChanged(f func(size int) (ok bool)) cor
 //
 // The function returns the following values:
 //
-//    - statusIcon: new StatusIcon.
+//   - statusIcon: new StatusIcon.
 //
 func NewStatusIcon() *StatusIcon {
 	var _cret *C.GtkStatusIcon // in
@@ -322,11 +322,11 @@ func NewStatusIcon() *StatusIcon {
 //
 // The function takes the following parameters:
 //
-//    - filename: filename.
+//   - filename: filename.
 //
 // The function returns the following values:
 //
-//    - statusIcon: new StatusIcon.
+//   - statusIcon: new StatusIcon.
 //
 func NewStatusIconFromFile(filename string) *StatusIcon {
 	var _arg1 *C.gchar         // out
@@ -353,11 +353,11 @@ func NewStatusIconFromFile(filename string) *StatusIcon {
 //
 // The function takes the following parameters:
 //
-//    - icon: #GIcon.
+//   - icon: #GIcon.
 //
 // The function returns the following values:
 //
-//    - statusIcon: new StatusIcon.
+//   - statusIcon: new StatusIcon.
 //
 func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 	var _arg1 *C.GIcon         // out
@@ -384,11 +384,11 @@ func NewStatusIconFromGIcon(icon gio.Iconner) *StatusIcon {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//   - iconName: icon name.
 //
 // The function returns the following values:
 //
-//    - statusIcon: new StatusIcon.
+//   - statusIcon: new StatusIcon.
 //
 func NewStatusIconFromIconName(iconName string) *StatusIcon {
 	var _arg1 *C.gchar         // out
@@ -417,11 +417,11 @@ func NewStatusIconFromIconName(iconName string) *StatusIcon {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: Pixbuf.
+//   - pixbuf: Pixbuf.
 //
 // The function returns the following values:
 //
-//    - statusIcon: new StatusIcon.
+//   - statusIcon: new StatusIcon.
 //
 func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 	var _arg1 *C.GdkPixbuf     // out
@@ -439,9 +439,9 @@ func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 	return _statusIcon
 }
 
-// NewStatusIconFromStock creates a status icon displaying a stock icon. Sample
-// stock icon names are K_STOCK_OPEN, K_STOCK_QUIT. You can register your own
-// stock icon names, see gtk_icon_factory_add_default() and
+// NewStatusIconFromStock creates a status icon displaying a stock icon.
+// Sample stock icon names are K_STOCK_OPEN, K_STOCK_QUIT. You can register
+// your own stock icon names, see gtk_icon_factory_add_default() and
 // gtk_icon_factory_add().
 //
 // Deprecated: Use #GNotification and Application to provide status
@@ -449,11 +449,11 @@ func NewStatusIconFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) *StatusIcon {
 //
 // The function takes the following parameters:
 //
-//    - stockId: stock icon id.
+//   - stockId: stock icon id.
 //
 // The function returns the following values:
 //
-//    - statusIcon: new StatusIcon.
+//   - statusIcon: new StatusIcon.
 //
 func NewStatusIconFromStock(stockId string) *StatusIcon {
 	var _arg1 *C.gchar         // out
@@ -479,10 +479,10 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 // See gtk_status_icon_position_menu() for a more convenient alternative for
 // positioning menus.
 //
-// Note that some platforms do not allow GTK+ to provide this information, and
-// even on platforms that do allow it, the information is not reliable unless
-// the status icon is embedded in a notification area, see
-// gtk_status_icon_is_embedded().
+// Note that some platforms do not allow GTK+ to provide this information,
+// and even on platforms that do allow it, the information is not
+// reliable unless the status icon is embedded in a notification area,
+// see gtk_status_icon_is_embedded().
 //
 // Deprecated: Use #GNotification and Application to provide status
 // notifications; there is no direct replacement for this function, as the
@@ -490,15 +490,15 @@ func NewStatusIconFromStock(stockId string) *StatusIcon {
 //
 // The function returns the following values:
 //
-//    - screen (optional): return location for the screen, or NULL if the
-//      information is not needed.
-//    - area (optional): return location for the area occupied by the status
-//      icon, or NULL.
-//    - orientation (optional): return location for the orientation of the panel
-//      in which the status icon is embedded, or NULL. A panel at the top or
-//      bottom of the screen is horizontal, a panel at the left or right is
-//      vertical.
-//    - ok: TRUE if the location information has been filled in.
+//   - screen (optional): return location for the screen, or NULL if the
+//     information is not needed.
+//   - area (optional): return location for the area occupied by the status
+//     icon, or NULL.
+//   - orientation (optional): return location for the orientation of the panel
+//     in which the status icon is embedded, or NULL. A panel at the top or
+//     bottom of the screen is horizontal, a panel at the left or right is
+//     vertical.
+//   - ok: TRUE if the location information has been filled in.
 //
 func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientation, bool) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -546,7 +546,7 @@ func (statusIcon *StatusIcon) Geometry() (*gdk.Screen, *gdk.Rectangle, Orientati
 //
 // The function returns the following values:
 //
-//    - icon (optional): displayed icon, or NULL if the image is empty.
+//   - icon (optional): displayed icon, or NULL if the image is empty.
 //
 func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 	var _arg0 *C.GtkStatusIcon // out
@@ -579,7 +579,7 @@ func (statusIcon *StatusIcon) GIcon() *gio.Icon {
 //
 // The function returns the following values:
 //
-//    - ok: current value of has-tooltip on status_icon.
+//   - ok: current value of has-tooltip on status_icon.
 //
 func (statusIcon *StatusIcon) HasTooltip() bool {
 	var _arg0 *C.GtkStatusIcon // out
@@ -599,8 +599,8 @@ func (statusIcon *StatusIcon) HasTooltip() bool {
 	return _ok
 }
 
-// IconName gets the name of the icon being displayed by the StatusIcon. The
-// storage type of the status icon must be GTK_IMAGE_EMPTY or
+// IconName gets the name of the icon being displayed by the StatusIcon.
+// The storage type of the status icon must be GTK_IMAGE_EMPTY or
 // GTK_IMAGE_ICON_NAME (see gtk_status_icon_get_storage_type()). The returned
 // string is owned by the StatusIcon and should not be freed or modified.
 //
@@ -609,8 +609,8 @@ func (statusIcon *StatusIcon) HasTooltip() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the displayed icon, or NULL if the image is
-//      empty.
+//   - utf8 (optional): name of the displayed icon, or NULL if the image is
+//     empty.
 //
 func (statusIcon *StatusIcon) IconName() string {
 	var _arg0 *C.GtkStatusIcon // out
@@ -630,8 +630,8 @@ func (statusIcon *StatusIcon) IconName() string {
 	return _utf8
 }
 
-// Pixbuf gets the Pixbuf being displayed by the StatusIcon. The storage type of
-// the status icon must be GTK_IMAGE_EMPTY or GTK_IMAGE_PIXBUF (see
+// Pixbuf gets the Pixbuf being displayed by the StatusIcon. The storage
+// type of the status icon must be GTK_IMAGE_EMPTY or GTK_IMAGE_PIXBUF (see
 // gtk_status_icon_get_storage_type()). The caller of this function does not own
 // a reference to the returned pixbuf.
 //
@@ -640,7 +640,7 @@ func (statusIcon *StatusIcon) IconName() string {
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): displayed pixbuf, or NULL if the image is empty.
+//   - pixbuf (optional): displayed pixbuf, or NULL if the image is empty.
 //
 func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GtkStatusIcon // out
@@ -678,7 +678,7 @@ func (statusIcon *StatusIcon) Pixbuf() *gdkpixbuf.Pixbuf {
 //
 // The function returns the following values:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 	var _arg0 *C.GtkStatusIcon // out
@@ -715,7 +715,7 @@ func (statusIcon *StatusIcon) Screen() *gdk.Screen {
 //
 // The function returns the following values:
 //
-//    - gint: size that is available for the image.
+//   - gint: size that is available for the image.
 //
 func (statusIcon *StatusIcon) Size() int {
 	var _arg0 *C.GtkStatusIcon // out
@@ -742,8 +742,8 @@ func (statusIcon *StatusIcon) Size() int {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): stock id of the displayed stock icon, or NULL if the
-//      image is empty.
+//   - utf8 (optional): stock id of the displayed stock icon, or NULL if the
+//     image is empty.
 //
 func (statusIcon *StatusIcon) Stock() string {
 	var _arg0 *C.GtkStatusIcon // out
@@ -773,7 +773,7 @@ func (statusIcon *StatusIcon) Stock() string {
 //
 // The function returns the following values:
 //
-//    - imageType: image representation being used.
+//   - imageType: image representation being used.
 //
 func (statusIcon *StatusIcon) StorageType() ImageType {
 	var _arg0 *C.GtkStatusIcon // out
@@ -798,7 +798,7 @@ func (statusIcon *StatusIcon) StorageType() ImageType {
 //
 // The function returns the following values:
 //
-//    - utf8: title of the status icon.
+//   - utf8: title of the status icon.
 //
 func (statusIcon *StatusIcon) Title() string {
 	var _arg0 *C.GtkStatusIcon // out
@@ -823,8 +823,8 @@ func (statusIcon *StatusIcon) Title() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): tooltip text, or NULL. You should free the returned
-//      string with g_free() when done.
+//   - utf8 (optional): tooltip text, or NULL. You should free the returned
+//     string with g_free() when done.
 //
 func (statusIcon *StatusIcon) TooltipMarkup() string {
 	var _arg0 *C.GtkStatusIcon // out
@@ -852,8 +852,8 @@ func (statusIcon *StatusIcon) TooltipMarkup() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): tooltip text, or NULL. You should free the returned
-//      string with g_free() when done.
+//   - utf8 (optional): tooltip text, or NULL. You should free the returned
+//     string with g_free() when done.
 //
 func (statusIcon *StatusIcon) TooltipText() string {
 	var _arg0 *C.GtkStatusIcon // out
@@ -883,7 +883,7 @@ func (statusIcon *StatusIcon) TooltipText() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the status icon is visible.
+//   - ok: TRUE if the status icon is visible.
 //
 func (statusIcon *StatusIcon) Visible() bool {
 	var _arg0 *C.GtkStatusIcon // out
@@ -907,12 +907,12 @@ func (statusIcon *StatusIcon) Visible() bool {
 // platform.
 //
 // It returns a window ID for the widget in the underlying status icon
-// implementation. This is useful for the Galago notification service, which can
-// send a window ID in the protocol in order for the server to position
+// implementation. This is useful for the Galago notification service, which
+// can send a window ID in the protocol in order for the server to position
 // notification windows pointing to a status icon reliably.
 //
-// This function is not intended for other use cases which are more likely to be
-// met by one of the non-X11 specific methods, such as
+// This function is not intended for other use cases which are more
+// likely to be met by one of the non-X11 specific methods, such as
 // gtk_status_icon_position_menu().
 //
 // Deprecated: Use #GNotification and Application to provide status
@@ -920,8 +920,8 @@ func (statusIcon *StatusIcon) Visible() bool {
 //
 // The function returns the following values:
 //
-//    - guint32: 32 bit unsigned integer identifier for the underlying X11
-//      Window.
+//   - guint32: 32 bit unsigned integer identifier for the underlying X11
+//     Window.
 //
 func (statusIcon *StatusIcon) X11WindowID() uint32 {
 	var _arg0 *C.GtkStatusIcon // out
@@ -947,7 +947,7 @@ func (statusIcon *StatusIcon) X11WindowID() uint32 {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the status icon is embedded in a notification area.
+//   - ok: TRUE if the status icon is embedded in a notification area.
 //
 func (statusIcon *StatusIcon) IsEmbedded() bool {
 	var _arg0 *C.GtkStatusIcon // out
@@ -976,7 +976,7 @@ func (statusIcon *StatusIcon) IsEmbedded() bool {
 //
 // The function takes the following parameters:
 //
-//    - filename: filename.
+//   - filename: filename.
 //
 func (statusIcon *StatusIcon) SetFromFile(filename string) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1000,7 +1000,7 @@ func (statusIcon *StatusIcon) SetFromFile(filename string) {
 //
 // The function takes the following parameters:
 //
-//    - icon: GIcon.
+//   - icon: GIcon.
 //
 func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1023,7 +1023,7 @@ func (statusIcon *StatusIcon) SetFromGIcon(icon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name.
+//   - iconName: icon name.
 //
 func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1047,7 +1047,7 @@ func (statusIcon *StatusIcon) SetFromIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf (optional) or NULL.
+//   - pixbuf (optional) or NULL.
 //
 func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1070,7 +1070,7 @@ func (statusIcon *StatusIcon) SetFromPixbuf(pixbuf *gdkpixbuf.Pixbuf) {
 //
 // The function takes the following parameters:
 //
-//    - stockId: stock icon id.
+//   - stockId: stock icon id.
 //
 func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1089,13 +1089,13 @@ func (statusIcon *StatusIcon) SetFromStock(stockId string) {
 // See StatusIcon:has-tooltip for more information.
 //
 // Deprecated: Use #GNotification and Application to provide status
-// notifications; there is no direct replacement for this function, but
-// notifications can display an arbitrary amount of text using
+// notifications; there is no direct replacement for this function,
+// but notifications can display an arbitrary amount of text using
 // g_notification_set_body().
 //
 // The function takes the following parameters:
 //
-//    - hasTooltip: whether or not status_icon has a tooltip.
+//   - hasTooltip: whether or not status_icon has a tooltip.
 //
 func (statusIcon *StatusIcon) SetHasTooltip(hasTooltip bool) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1116,13 +1116,13 @@ func (statusIcon *StatusIcon) SetHasTooltip(hasTooltip bool) {
 // be shown to the user.
 //
 // Deprecated: Use #GNotification and Application to provide status
-// notifications; there is no direct replacement for this function, as
-// notifications are associated with a unique application identifier by
+// notifications; there is no direct replacement for this function,
+// as notifications are associated with a unique application identifier by
 // #GApplication.
 //
 // The function takes the following parameters:
 //
-//    - name: name.
+//   - name: name.
 //
 func (statusIcon *StatusIcon) SetName(name string) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1146,7 +1146,7 @@ func (statusIcon *StatusIcon) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 func (statusIcon *StatusIcon) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1170,7 +1170,7 @@ func (statusIcon *StatusIcon) SetScreen(screen *gdk.Screen) {
 //
 // The function takes the following parameters:
 //
-//    - title: title.
+//   - title: title.
 //
 func (statusIcon *StatusIcon) SetTitle(title string) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1198,7 +1198,7 @@ func (statusIcon *StatusIcon) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - markup (optional) contents of the tooltip for status_icon, or NULL.
+//   - markup (optional) contents of the tooltip for status_icon, or NULL.
 //
 func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1227,7 +1227,7 @@ func (statusIcon *StatusIcon) SetTooltipMarkup(markup string) {
 //
 // The function takes the following parameters:
 //
-//    - text contents of the tooltip for status_icon.
+//   - text contents of the tooltip for status_icon.
 //
 func (statusIcon *StatusIcon) SetTooltipText(text string) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1250,7 +1250,7 @@ func (statusIcon *StatusIcon) SetTooltipText(text string) {
 //
 // The function takes the following parameters:
 //
-//    - visible: TRUE to show the status icon, FALSE to hide it.
+//   - visible: TRUE to show the status icon, FALSE to hide it.
 //
 func (statusIcon *StatusIcon) SetVisible(visible bool) {
 	var _arg0 *C.GtkStatusIcon // out
@@ -1336,8 +1336,8 @@ func (statusIcon *StatusIcon) buttonReleaseEvent(event *gdk.EventButton) bool {
 
 // The function takes the following parameters:
 //
-//    - button
-//    - activateTime
+//   - button
+//   - activateTime
 //
 func (statusIcon *StatusIcon) popupMenu(button uint, activateTime uint32) {
 	gclass := (*C.GtkStatusIconClass)(coreglib.PeekParentClass(statusIcon))
@@ -1359,10 +1359,10 @@ func (statusIcon *StatusIcon) popupMenu(button uint, activateTime uint32) {
 
 // The function takes the following parameters:
 //
-//    - x
-//    - y
-//    - keyboardMode
-//    - tooltip
+//   - x
+//   - y
+//   - keyboardMode
+//   - tooltip
 //
 // The function returns the following values:
 //

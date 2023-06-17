@@ -131,10 +131,10 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 // implementation or with mozRequestAnimationFrame in Firefox, for example.
 //
 // A frame clock is idle until someone requests a frame with
-// gdk.FrameClock.RequestPhase(). At some later point that makes sense for the
-// synchronization being implemented, the clock will process a frame and emit
-// signals for each phase that has been requested. (See the signals of the
-// GdkFrameClock class for documentation of the phases.
+// gdk.FrameClock.RequestPhase(). At some later point that makes sense
+// for the synchronization being implemented, the clock will process a
+// frame and emit signals for each phase that has been requested. (See the
+// signals of the GdkFrameClock class for documentation of the phases.
 // GDK_FRAME_CLOCK_PHASE_UPDATE and the gdkframeclock::update signal are most
 // interesting for application writers, and are used to update the animations,
 // using the frame time given by gdk.FrameClock.GetFrameTime.
@@ -144,8 +144,8 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 // g_get_monotonic_time(). The frame time does not advance during the time a
 // frame is being painted, and outside of a frame, an attempt is made so that
 // all calls to gdk.FrameClock.GetFrameTime() that are called at a “similar”
-// time get the same value. This means that if different animations are timed by
-// looking at the difference in time between an initial value from
+// time get the same value. This means that if different animations are
+// timed by looking at the difference in time between an initial value from
 // gdk.FrameClock.GetFrameTime() and the value inside the gdkframeclock::update
 // signal of the clock, they will stay exactly synchronized.
 type FrameClock struct {
@@ -248,8 +248,8 @@ func (frameClock *FrameClock) ConnectUpdate(f func()) coreglib.SignalHandle {
 
 // BeginUpdating starts updates for an animation.
 //
-// Until a matching call to gdk.FrameClock.EndUpdating() is made, the frame
-// clock will continually request a new frame with the
+// Until a matching call to gdk.FrameClock.EndUpdating() is made,
+// the frame clock will continually request a new frame with the
 // GDK_FRAME_CLOCK_PHASE_UPDATE phase. This function may be called multiple
 // times and frames will be requested until gdk_frame_clock_end_updating() is
 // called the same number of times.
@@ -278,9 +278,9 @@ func (frameClock *FrameClock) EndUpdating() {
 //
 // The function returns the following values:
 //
-//    - frameTimings (optional): GdkFrameTimings for the frame currently being
-//      processed, or even no frame is being processed, for the previous frame.
-//      Before any frames have been processed, returns NULL.
+//   - frameTimings (optional): GdkFrameTimings for the frame currently being
+//     processed, or even no frame is being processed, for the previous frame.
+//     Before any frames have been processed, returns NULL.
 //
 func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
@@ -312,7 +312,7 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 //
 // The function returns the following values:
 //
-//    - gdouble: current fps, as a double.
+//   - gdouble: current fps, as a double.
 //
 func (frameClock *FrameClock) FPS() float64 {
 	var _arg0 *C.GdkFrameClock // out
@@ -335,9 +335,9 @@ func (frameClock *FrameClock) FPS() float64 {
 //
 // The function returns the following values:
 //
-//    - gint64: inside frame processing, the value of the frame counter for the
-//      current frame. Outside of frame processing, the frame counter for the
-//      last frame.
+//   - gint64: inside frame processing, the value of the frame counter for the
+//     current frame. Outside of frame processing, the frame counter for the
+//     last frame.
 //
 func (frameClock *FrameClock) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameClock // out
@@ -364,8 +364,8 @@ func (frameClock *FrameClock) FrameCounter() int64 {
 //
 // The function returns the following values:
 //
-//    - gint64: timestamp in microseconds, in the timescale of of
-//      g_get_monotonic_time().
+//   - gint64: timestamp in microseconds, in the timescale of of
+//     g_get_monotonic_time().
 //
 func (frameClock *FrameClock) FrameTime() int64 {
 	var _arg0 *C.GdkFrameClock // out
@@ -387,15 +387,15 @@ func (frameClock *FrameClock) FrameTime() int64 {
 // history.
 //
 // GdkFrameClock internally keeps a history of GdkFrameTimings objects for
-// recent frames that can be retrieved with gdk.FrameClock.GetTimings(). The set
-// of stored frames is the set from the counter values given by
+// recent frames that can be retrieved with gdk.FrameClock.GetTimings().
+// The set of stored frames is the set from the counter values given by
 // gdk.FrameClock.GetHistoryStart() and gdk.FrameClock.GetFrameCounter(),
 // inclusive.
 //
 // The function returns the following values:
 //
-//    - gint64: frame counter value for the oldest frame that is available in the
-//      internal frame history of the GdkFrameClock.
+//   - gint64: frame counter value for the oldest frame that is available in the
+//     internal frame history of the GdkFrameClock.
 //
 func (frameClock *FrameClock) HistoryStart() int64 {
 	var _arg0 *C.GdkFrameClock // out
@@ -417,22 +417,22 @@ func (frameClock *FrameClock) HistoryStart() int64 {
 //
 // Using the frame history stored in the frame clock, finds the last known
 // presentation time and refresh interval, and assuming that presentation times
-// are separated by the refresh interval, predicts a presentation time that is a
-// multiple of the refresh interval after the last presentation time, and later
-// than base_time.
+// are separated by the refresh interval, predicts a presentation time that
+// is a multiple of the refresh interval after the last presentation time,
+// and later than base_time.
 //
 // The function takes the following parameters:
 //
-//    - baseTime: base time for determining a presentaton time.
+//   - baseTime: base time for determining a presentaton time.
 //
 // The function returns the following values:
 //
-//    - refreshIntervalReturn (optional): location to store the determined
-//      refresh interval, or NULL. A default refresh interval of 1/60th of a
-//      second will be stored if no history is present.
-//    - presentationTimeReturn: location to store the next candidate presentation
-//      time after the given base time. 0 will be will be stored if no history is
-//      present.
+//   - refreshIntervalReturn (optional): location to store the determined
+//     refresh interval, or NULL. A default refresh interval of 1/60th of a
+//     second will be stored if no history is present.
+//   - presentationTimeReturn: location to store the next candidate presentation
+//     time after the given base time. 0 will be will be stored if no history is
+//     present.
 //
 func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn, presentationTimeReturn int64) {
 	var _arg0 *C.GdkFrameClock // out
@@ -464,12 +464,12 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 //
 // The function takes the following parameters:
 //
-//    - frameCounter: frame counter value identifying the frame to be received.
+//   - frameCounter: frame counter value identifying the frame to be received.
 //
 // The function returns the following values:
 //
-//    - frameTimings (optional): GdkFrameTimings object for the specified frame,
-//      or NULL if it is not available. See gdk.FrameClock.GetHistoryStart().
+//   - frameTimings (optional): GdkFrameTimings object for the specified frame,
+//     or NULL if it is not available. See gdk.FrameClock.GetHistoryStart().
 //
 func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
@@ -503,15 +503,15 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 //
 // The signal corresponding the requested phase will be emitted the next time
 // the frame clock processes. Multiple calls to gdk_frame_clock_request_phase()
-// will be combined together and only one frame processed. If you are displaying
-// animated content and want to continually request the
+// will be combined together and only one frame processed. If you are
+// displaying animated content and want to continually request the
 // GDK_FRAME_CLOCK_PHASE_UPDATE phase for a period of time, you should use
 // gdk.FrameClock.BeginUpdating() instead, since this allows GTK to adjust
 // system parameters to get maximally smooth animations.
 //
 // The function takes the following parameters:
 //
-//    - phase that is requested.
+//   - phase that is requested.
 //
 func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 	var _arg0 *C.GdkFrameClock     // out

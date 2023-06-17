@@ -56,16 +56,16 @@ func (c Colorspace) String() string {
 
 // PixbufAlphaMode: control the alpha channel for drawables.
 //
-// These values can be passed to gdk_pixbuf_xlib_render_to_drawable_alpha() in
-// gdk-pixbuf-xlib to control how the alpha channel of an image should be
+// These values can be passed to gdk_pixbuf_xlib_render_to_drawable_alpha()
+// in gdk-pixbuf-xlib to control how the alpha channel of an image should be
 // handled.
 //
 // This function can create a bilevel clipping mask (black and white) and use it
 // while painting the image.
 //
-// In the future, when the X Window System gets an alpha channel extension, it
-// will be possible to do full alpha compositing onto arbitrary drawables. For
-// now both cases fall back to a bilevel clipping mask.
+// In the future, when the X Window System gets an alpha channel extension,
+// it will be possible to do full alpha compositing onto arbitrary drawables.
+// For now both cases fall back to a bilevel clipping mask.
 //
 // Deprecated: There is no user of GdkPixbufAlphaMode in GdkPixbuf, and the Xlib
 // utility functions have been split out to their own library, gdk-pixbuf-xlib.

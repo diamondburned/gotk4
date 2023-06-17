@@ -19,7 +19,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8: valid D-Bus GUID. Free with g_free().
+//   - utf8: valid D-Bus GUID. Free with g_free().
 //
 func DBusGenerateGUID() string {
 	var _cret *C.gchar // in
@@ -41,11 +41,11 @@ func DBusGenerateGUID() string {
 //
 // The function takes the following parameters:
 //
-//    - str: string to check.
+//   - str: string to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if string is a guid, FALSE otherwise.
+//   - ok: TRUE if string is a guid, FALSE otherwise.
 //
 func DBusIsGUID(str string) bool {
 	var _arg1 *C.gchar   // out
@@ -70,11 +70,11 @@ func DBusIsGUID(str string) bool {
 //
 // The function takes the following parameters:
 //
-//    - str: string to check.
+//   - str: string to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if valid, FALSE otherwise.
+//   - ok: TRUE if valid, FALSE otherwise.
 //
 func DBusIsInterfaceName(str string) bool {
 	var _arg1 *C.gchar   // out
@@ -100,11 +100,11 @@ func DBusIsInterfaceName(str string) bool {
 //
 // The function takes the following parameters:
 //
-//    - str: string to check.
+//   - str: string to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if valid, FALSE otherwise.
+//   - ok: TRUE if valid, FALSE otherwise.
 //
 func DBusIsMemberName(str string) bool {
 	var _arg1 *C.gchar   // out
@@ -130,11 +130,11 @@ func DBusIsMemberName(str string) bool {
 //
 // The function takes the following parameters:
 //
-//    - str: string to check.
+//   - str: string to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if valid, FALSE otherwise.
+//   - ok: TRUE if valid, FALSE otherwise.
 //
 func DBusIsName(str string) bool {
 	var _arg1 *C.gchar   // out
@@ -159,11 +159,11 @@ func DBusIsName(str string) bool {
 //
 // The function takes the following parameters:
 //
-//    - str: string to check.
+//   - str: string to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if valid, FALSE otherwise.
+//   - ok: TRUE if valid, FALSE otherwise.
 //
 func DBusIsUniqueName(str string) bool {
 	var _arg1 *C.gchar   // out

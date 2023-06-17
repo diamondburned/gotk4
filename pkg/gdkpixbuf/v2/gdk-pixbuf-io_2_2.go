@@ -88,9 +88,9 @@ type PixbufModulePreparedFunc func(pixbuf *Pixbuf, anim *PixbufAnimation)
 // the size of the loaded image is known.
 //
 // The function is expected to set width and height to the desired size to which
-// the image should be scaled. If a module has no efficient way to achieve the
-// desired scaling during the loading of the image, it may either ignore the
-// size request, or only approximate it - gdk-pixbuf will then perform the
+// the image should be scaled. If a module has no efficient way to achieve
+// the desired scaling during the loading of the image, it may either ignore
+// the size request, or only approximate it - gdk-pixbuf will then perform the
 // required scaling on the completely loaded image.
 //
 // If the function sets width or height to zero, the module should interpret
@@ -111,7 +111,7 @@ type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x, y, width, height int)
 //
 // The function returns the following values:
 //
-//    - sList: list of support image formats.
+//   - sList: list of support image formats.
 //
 func PixbufGetFormats() []*PixbufFormat {
 	var _cret *C.GSList // in
@@ -156,8 +156,8 @@ func marshalPixbufFormat(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - pixbufFormat: newly allocated copy of a GdkPixbufFormat. Use
-//      gdk_pixbuf_format_free() to free the resources when done.
+//   - pixbufFormat: newly allocated copy of a GdkPixbufFormat. Use
+//     gdk_pixbuf_format_free() to free the resources when done.
 //
 func (format *PixbufFormat) Copy() *PixbufFormat {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -185,7 +185,7 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 //
 // The function returns the following values:
 //
-//    - utf8: description of the format.
+//   - utf8: description of the format.
 //
 func (format *PixbufFormat) Description() string {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -209,7 +209,7 @@ func (format *PixbufFormat) Description() string {
 //
 // The function returns the following values:
 //
-//    - utf8s: array of filename extensions.
+//   - utf8s: array of filename extensions.
 //
 func (format *PixbufFormat) Extensions() []string {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -249,7 +249,7 @@ func (format *PixbufFormat) Extensions() []string {
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the license of the pixbuf format.
+//   - utf8: string describing the license of the pixbuf format.
 //
 func (format *PixbufFormat) License() string {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -272,7 +272,7 @@ func (format *PixbufFormat) License() string {
 //
 // The function returns the following values:
 //
-//    - utf8s: array of mime types.
+//   - utf8s: array of mime types.
 //
 func (format *PixbufFormat) MIMETypes() []string {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -308,7 +308,7 @@ func (format *PixbufFormat) MIMETypes() []string {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the format.
+//   - utf8: name of the format.
 //
 func (format *PixbufFormat) Name() string {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -333,7 +333,7 @@ func (format *PixbufFormat) Name() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether this image format is disabled.
+//   - ok: whether this image format is disabled.
 //
 func (format *PixbufFormat) IsDisabled() bool {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -360,11 +360,11 @@ func (format *PixbufFormat) IsDisabled() bool {
 //
 // The function takes the following parameters:
 //
-//    - optionKey: name of an option.
+//   - optionKey: name of an option.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the specified option is supported.
+//   - ok: TRUE if the specified option is supported.
 //
 func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -396,7 +396,7 @@ func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether this image format is scalable.
+//   - ok: whether this image format is scalable.
 //
 func (format *PixbufFormat) IsScalable() bool {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -420,7 +420,7 @@ func (format *PixbufFormat) IsScalable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether pixbufs can be saved in the given format.
+//   - ok: whether pixbufs can be saved in the given format.
 //
 func (format *PixbufFormat) IsWritable() bool {
 	var _arg0 *C.GdkPixbufFormat // out
@@ -450,7 +450,7 @@ func (format *PixbufFormat) IsWritable() bool {
 //
 // The function takes the following parameters:
 //
-//    - disabled: TRUE to disable the format format.
+//   - disabled: TRUE to disable the format format.
 //
 func (format *PixbufFormat) SetDisabled(disabled bool) {
 	var _arg0 *C.GdkPixbufFormat // out

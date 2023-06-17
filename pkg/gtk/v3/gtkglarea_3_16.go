@@ -51,8 +51,8 @@ type GLAreaOverrides struct {
 	Render func(context gdk.GLContexter) bool
 	// The function takes the following parameters:
 	//
-	//    - width
-	//    - height
+	//   - width
+	//   - height
 	//
 	Resize func(width, height int)
 }
@@ -66,13 +66,13 @@ func defaultGLAreaOverrides(v *GLArea) GLAreaOverrides {
 
 // GLArea is a widget that allows drawing with OpenGL.
 //
-// GLArea sets up its own GLContext for the window it creates, and creates a
-// custom GL framebuffer that the widget will do GL rendering onto. It also
-// ensures that this framebuffer is the default GL rendering target when
+// GLArea sets up its own GLContext for the window it creates, and creates
+// a custom GL framebuffer that the widget will do GL rendering onto.
+// It also ensures that this framebuffer is the default GL rendering target when
 // rendering.
 //
-// In order to draw, you have to connect to the GLArea::render signal, or
-// subclass GLArea and override the GtkGLAreaClass.render() virtual function.
+// In order to draw, you have to connect to the GLArea::render signal,
+// or subclass GLArea and override the GtkGLAreaClass.render() virtual function.
 //
 // The GLArea widget ensures that the GLContext is associated with the widget's
 // drawing area, and it is kept updated when the size and position of the
@@ -83,39 +83,39 @@ func defaultGLAreaOverrides(v *GLArea) GLAreaOverrides {
 // The simplest way to draw using OpenGL commands in a GLArea is to create a
 // widget instance and connect to the GLArea::render signal:
 //
-//      static void
-//      on_realize (GtkGLarea *area)
-//      {
-//        // We need to make the context current if we want to
-//        // call GL API
-//        gtk_gl_area_make_current (area);
+//    static void
+//    on_realize (GtkGLarea *area)
+//    {
+//      // We need to make the context current if we want to
+//      // call GL API
+//      gtk_gl_area_make_current (area);
 //
-//        // If there were errors during the initialization or
-//        // when trying to make the context current, this
-//        // function will return a #GError for you to catch
-//        if (gtk_gl_area_get_error (area) != NULL)
+//      // If there were errors during the initialization or
+//      // when trying to make the context current, this
+//      // function will return a #GError for you to catch
+//      if (gtk_gl_area_get_error (area) != NULL)
+//        return;
+//
+//      // You can also use gtk_gl_area_set_error() in order
+//      // to show eventual initialization errors on the
+//      // GtkGLArea widget itself
+//      GError *internal_error = NULL;
+//      init_buffer_objects (&error);
+//      if (error != NULL)
+//        {
+//          gtk_gl_area_set_error (area, error);
+//          g_error_free (error);
 //          return;
+//        }
 //
-//        // You can also use gtk_gl_area_set_error() in order
-//        // to show eventual initialization errors on the
-//        // GtkGLArea widget itself
-//        GError *internal_error = NULL;
-//        init_buffer_objects (&error);
-//        if (error != NULL)
-//          {
-//            gtk_gl_area_set_error (area, error);
-//            g_error_free (error);
-//            return;
-//          }
-//
-//        init_shaders (&error);
-//        if (error != NULL)
-//          {
-//            gtk_gl_area_set_error (area, error);
-//            g_error_free (error);
-//            return;
-//          }
-//      }
+//      init_shaders (&error);
+//      if (error != NULL)
+//        {
+//          gtk_gl_area_set_error (area, error);
+//          g_error_free (error);
+//          return;
+//        }
+//    }
 //
 // If you need to change the options for creating the GLContext you should use
 // the GLArea::create-context signal.
@@ -175,9 +175,9 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return wrapGLArea(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectCreateContext signal is emitted when the widget is being realized, and
-// allows you to override how the GL context is created. This is useful when you
-// want to reuse an existing GL context, or if you want to try creating
+// ConnectCreateContext signal is emitted when the widget is being realized,
+// and allows you to override how the GL context is created. This is useful
+// when you want to reuse an existing GL context, or if you want to try creating
 // different kinds of GL options.
 //
 // If context creation fails then the signal handler can use
@@ -213,7 +213,7 @@ func (area *GLArea) ConnectResize(f func(width, height int)) coreglib.SignalHand
 //
 // The function returns the following values:
 //
-//    - glArea: new GLArea.
+//   - glArea: new GLArea.
 //
 func NewGLArea() *GLArea {
 	var _cret *C.GtkWidget // in
@@ -246,7 +246,7 @@ func (area *GLArea) AttachBuffers() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the area is auto rendering, FALSE otherwise.
+//   - ok: TRUE if the area is auto rendering, FALSE otherwise.
 //
 func (area *GLArea) AutoRender() bool {
 	var _arg0 *C.GtkGLArea // out
@@ -270,7 +270,7 @@ func (area *GLArea) AutoRender() bool {
 //
 // The function returns the following values:
 //
-//    - glContext: GLContext.
+//   - glContext: GLContext.
 //
 func (area *GLArea) Context() gdk.GLContexter {
 	var _arg0 *C.GtkGLArea    // out
@@ -308,7 +308,7 @@ func (area *GLArea) Context() gdk.GLContexter {
 //
 // The function returns the following values:
 //
-//    - err (optional) or NULL.
+//   - err (optional) or NULL.
 //
 func (area *GLArea) Error() error {
 	var _arg0 *C.GtkGLArea // out
@@ -332,7 +332,7 @@ func (area *GLArea) Error() error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the area has an alpha component, FALSE otherwise.
+//   - ok: TRUE if the area has an alpha component, FALSE otherwise.
 //
 func (area *GLArea) HasAlpha() bool {
 	var _arg0 *C.GtkGLArea // out
@@ -356,7 +356,7 @@ func (area *GLArea) HasAlpha() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the area has a depth buffer, FALSE otherwise.
+//   - ok: TRUE if the area has a depth buffer, FALSE otherwise.
 //
 func (area *GLArea) HasDepthBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
@@ -380,7 +380,7 @@ func (area *GLArea) HasDepthBuffer() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the area has a stencil buffer, FALSE otherwise.
+//   - ok: TRUE if the area has a stencil buffer, FALSE otherwise.
 //
 func (area *GLArea) HasStencilBuffer() bool {
 	var _arg0 *C.GtkGLArea // out
@@ -405,8 +405,8 @@ func (area *GLArea) HasStencilBuffer() bool {
 //
 // The function returns the following values:
 //
-//    - major: return location for the required major version.
-//    - minor: return location for the required minor version.
+//   - major: return location for the required major version.
+//   - minor: return location for the required minor version.
 //
 func (area *GLArea) RequiredVersion() (major, minor int) {
 	var _arg0 *C.GtkGLArea // out
@@ -431,8 +431,8 @@ func (area *GLArea) RequiredVersion() (major, minor int) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GLArea should create an OpenGL ES context and FALSE
-//      otherwise.
+//   - ok: TRUE if the GLArea should create an OpenGL ES context and FALSE
+//     otherwise.
 //
 func (area *GLArea) UseES() bool {
 	var _arg0 *C.GtkGLArea // out
@@ -486,15 +486,15 @@ func (area *GLArea) QueueRender() {
 // emitted every time the widget draws. This is the default and is useful if
 // drawing the widget is faster.
 //
-// If auto_render is FALSE the data from previous rendering is kept around and
-// will be used for drawing the widget the next time, unless the window is
+// If auto_render is FALSE the data from previous rendering is kept around
+// and will be used for drawing the widget the next time, unless the window is
 // resized. In order to force a rendering gtk_gl_area_queue_render() must be
 // called. This mode is useful when the scene changes seldomly, but takes a long
 // time to redraw.
 //
 // The function takes the following parameters:
 //
-//    - autoRender: boolean.
+//   - autoRender: boolean.
 //
 func (area *GLArea) SetAutoRender(autoRender bool) {
 	var _arg0 *C.GtkGLArea // out
@@ -516,7 +516,7 @@ func (area *GLArea) SetAutoRender(autoRender bool) {
 //
 // The function takes the following parameters:
 //
-//    - err (optional): new #GError, or NULL to unset the error.
+//   - err (optional): new #GError, or NULL to unset the error.
 //
 func (area *GLArea) SetError(err error) {
 	var _arg0 *C.GtkGLArea // out
@@ -541,7 +541,7 @@ func (area *GLArea) SetError(err error) {
 //
 // The function takes the following parameters:
 //
-//    - hasAlpha: TRUE to add an alpha component.
+//   - hasAlpha: TRUE to add an alpha component.
 //
 func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 	var _arg0 *C.GtkGLArea // out
@@ -563,7 +563,7 @@ func (area *GLArea) SetHasAlpha(hasAlpha bool) {
 //
 // The function takes the following parameters:
 //
-//    - hasDepthBuffer: TRUE to add a depth buffer.
+//   - hasDepthBuffer: TRUE to add a depth buffer.
 //
 func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 	var _arg0 *C.GtkGLArea // out
@@ -585,7 +585,7 @@ func (area *GLArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 //
 // The function takes the following parameters:
 //
-//    - hasStencilBuffer: TRUE to add a stencil buffer.
+//   - hasStencilBuffer: TRUE to add a stencil buffer.
 //
 func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 	var _arg0 *C.GtkGLArea // out
@@ -608,8 +608,8 @@ func (area *GLArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 //
 // The function takes the following parameters:
 //
-//    - major version.
-//    - minor version.
+//   - major version.
+//   - minor version.
 //
 func (area *GLArea) SetRequiredVersion(major, minor int) {
 	var _arg0 *C.GtkGLArea // out
@@ -634,7 +634,7 @@ func (area *GLArea) SetRequiredVersion(major, minor int) {
 //
 // The function takes the following parameters:
 //
-//    - useEs: whether to use OpenGL or OpenGL ES.
+//   - useEs: whether to use OpenGL or OpenGL ES.
 //
 func (area *GLArea) SetUseES(useEs bool) {
 	var _arg0 *C.GtkGLArea // out
@@ -680,8 +680,8 @@ func (area *GLArea) render(context gdk.GLContexter) bool {
 
 // The function takes the following parameters:
 //
-//    - width
-//    - height
+//   - width
+//   - height
 //
 func (area *GLArea) resize(width, height int) {
 	gclass := (*C.GtkGLAreaClass)(coreglib.PeekParentClass(area))

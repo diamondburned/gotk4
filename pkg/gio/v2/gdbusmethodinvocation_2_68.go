@@ -14,8 +14,8 @@ import "C"
 // In code that needs to be backwards-compatible with older GLib, use TRUE
 // instead, often written like this:
 //
-//    g_dbus_method_invocation_return_error (invocation, ...);
-//    return TRUE;    // handled.
+//	g_dbus_method_invocation_return_error (invocation, ...);
+//	return TRUE;    // handled.
 const DBUS_METHOD_INVOCATION_HANDLED = true
 
 // DBUS_METHOD_INVOCATION_UNHANDLED: value returned by handlers of the signals

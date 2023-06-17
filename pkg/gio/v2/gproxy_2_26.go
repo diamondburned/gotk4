@@ -42,13 +42,13 @@ func init() {
 	})
 }
 
-// PROXY_EXTENSION_POINT_NAME: extension point for proxy functionality. See
-// [Extending GIO][extending-gio].
+// PROXY_EXTENSION_POINT_NAME: extension point for proxy functionality.
+// See [Extending GIO][extending-gio].
 const PROXY_EXTENSION_POINT_NAME = "gio-proxy"
 
 // Proxy handles connecting to a remote host via a given type of proxy server.
-// It is implemented by the 'gio-proxy' extension point. The extensions are
-// named after their proxy protocol name. As an example, a SOCKS5 proxy
+// It is implemented by the 'gio-proxy' extension point. The extensions
+// are named after their proxy protocol name. As an example, a SOCKS5 proxy
 // implementation can be retrieved with the name 'socks5' using the function
 // g_io_extension_point_get_extension_by_name().
 //
@@ -67,10 +67,10 @@ var (
 type Proxier interface {
 	coreglib.Objector
 
-	// ConnectProxy: given connection to communicate with a proxy (eg, a
-	// Connection that is connected to the proxy server), this does the
-	// necessary handshake to connect to proxy_address, and if required, wraps
-	// the OStream to handle proxy payload.
+	// ConnectProxy: given connection to communicate with a proxy (eg,
+	// a Connection that is connected to the proxy server), this does the
+	// necessary handshake to connect to proxy_address, and if required,
+	// wraps the OStream to handle proxy payload.
 	ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error)
 	// ConnectAsync asynchronous version of g_proxy_connect().
 	ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback)
@@ -100,14 +100,14 @@ func marshalProxy(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): #GCancellable.
-//    - connection: OStream.
-//    - proxyAddress: Address.
+//   - ctx (optional): #GCancellable.
+//   - connection: OStream.
+//   - proxyAddress: Address.
 //
 // The function returns the following values:
 //
-//    - ioStream that will replace connection. This might be the same as
-//      connection, in which case a reference will be added.
+//   - ioStream that will replace connection. This might be the same as
+//     connection, in which case a reference will be added.
 //
 func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) {
 	var _arg0 *C.GProxy        // out
@@ -163,10 +163,10 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): #GCancellable.
-//    - connection: OStream.
-//    - proxyAddress: Address.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional): #GCancellable.
+//   - connection: OStream.
+//   - proxyAddress: Address.
+//   - callback (optional): ReadyCallback.
 //
 func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxy             // out
@@ -201,11 +201,11 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - ioStream: OStream.
+//   - ioStream: OStream.
 //
 func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _arg0 *C.GProxy       // out
@@ -247,16 +247,16 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	return _ioStream, _goerr
 }
 
-// SupportsHostname: some proxy protocols expect to be passed a hostname, which
-// they will resolve to an IP address themselves. Others, like SOCKS4, do not
-// allow this. This function will return FALSE if proxy is implementing such a
-// protocol. When FALSE is returned, the caller should resolve the destination
+// SupportsHostname: some proxy protocols expect to be passed a hostname,
+// which they will resolve to an IP address themselves. Others, like SOCKS4, do
+// not allow this. This function will return FALSE if proxy is implementing such
+// a protocol. When FALSE is returned, the caller should resolve the destination
 // hostname first, and then pass a Address containing the stringified IP address
 // to g_proxy_connect() or g_proxy_connect_async().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if hostname resolution is supported.
+//   - ok: TRUE if hostname resolution is supported.
 //
 func (proxy *Proxy) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
@@ -283,14 +283,14 @@ func (proxy *Proxy) SupportsHostname() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): #GCancellable.
-//    - connection: OStream.
-//    - proxyAddress: Address.
+//   - ctx (optional): #GCancellable.
+//   - connection: OStream.
+//   - proxyAddress: Address.
 //
 // The function returns the following values:
 //
-//    - ioStream that will replace connection. This might be the same as
-//      connection, in which case a reference will be added.
+//   - ioStream that will replace connection. This might be the same as
+//     connection, in which case a reference will be added.
 //
 func (proxy *Proxy) connectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) {
 	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
@@ -349,10 +349,10 @@ func (proxy *Proxy) connectProxy(ctx context.Context, connection IOStreamer, pro
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): #GCancellable.
-//    - connection: OStream.
-//    - proxyAddress: Address.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional): #GCancellable.
+//   - connection: OStream.
+//   - proxyAddress: Address.
+//   - callback (optional): ReadyCallback.
 //
 func (proxy *Proxy) connectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback) {
 	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
@@ -390,11 +390,11 @@ func (proxy *Proxy) connectAsync(ctx context.Context, connection IOStreamer, pro
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - ioStream: OStream.
+//   - ioStream: OStream.
 //
 func (proxy *Proxy) connectFinish(result AsyncResulter) (IOStreamer, error) {
 	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
@@ -439,16 +439,16 @@ func (proxy *Proxy) connectFinish(result AsyncResulter) (IOStreamer, error) {
 	return _ioStream, _goerr
 }
 
-// supportsHostname: some proxy protocols expect to be passed a hostname, which
-// they will resolve to an IP address themselves. Others, like SOCKS4, do not
-// allow this. This function will return FALSE if proxy is implementing such a
-// protocol. When FALSE is returned, the caller should resolve the destination
+// supportsHostname: some proxy protocols expect to be passed a hostname,
+// which they will resolve to an IP address themselves. Others, like SOCKS4, do
+// not allow this. This function will return FALSE if proxy is implementing such
+// a protocol. When FALSE is returned, the caller should resolve the destination
 // hostname first, and then pass a Address containing the stringified IP address
 // to g_proxy_connect() or g_proxy_connect_async().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if hostname resolution is supported.
+//   - ok: TRUE if hostname resolution is supported.
 //
 func (proxy *Proxy) supportsHostname() bool {
 	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
@@ -476,11 +476,11 @@ func (proxy *Proxy) supportsHostname() bool {
 //
 // The function takes the following parameters:
 //
-//    - protocol: proxy protocol name (e.g. http, socks, etc).
+//   - protocol: proxy protocol name (e.g. http, socks, etc).
 //
 // The function returns the following values:
 //
-//    - proxy (optional): return a #GProxy or NULL if protocol is not supported.
+//   - proxy (optional): return a #GProxy or NULL if protocol is not supported.
 //
 func ProxyGetDefaultForProtocol(protocol string) *Proxy {
 	var _arg1 *C.gchar  // out

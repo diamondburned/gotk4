@@ -372,7 +372,7 @@ type FontOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - fontDescription: newly-allocated PangoFontDescription object.
+	//   - fontDescription: newly-allocated PangoFontDescription object.
 	//
 	Describe func() *FontDescription
 	// The function returns the following values:
@@ -382,11 +382,11 @@ type FontOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - language tag.
+	//   - language tag.
 	//
 	// The function returns the following values:
 	//
-	//    - coverage: newly-allocated PangoCoverage object.
+	//   - coverage: newly-allocated PangoCoverage object.
 	//
 	Coverage func(language *Language) *Coverage
 	// FontMap gets the font map for which the font was created.
@@ -402,38 +402,38 @@ type FontOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - fontMap (optional): PangoFontMap for the font, or NULL if font is
-	//      NULL.
+	//   - fontMap (optional): PangoFontMap for the font, or NULL if font is
+	//     NULL.
 	//
 	FontMap func() FontMapper
 	// GlyphExtents gets the logical and ink extents of a glyph within a font.
 	//
-	// The coordinate system for each rectangle has its origin at the base line
-	// and horizontal origin of the character with increasing coordinates
-	// extending to the right and down. The macros PANGO_ASCENT(),
+	// The coordinate system for each rectangle has its origin at the
+	// base line and horizontal origin of the character with increasing
+	// coordinates extending to the right and down. The macros PANGO_ASCENT(),
 	// PANGO_DESCENT(), PANGO_LBEARING(), and PANGO_RBEARING() can be used to
-	// convert from the extents rectangle to more traditional font metrics. The
-	// units of the rectangles are in 1/PANGO_SCALE of a device unit.
+	// convert from the extents rectangle to more traditional font metrics.
+	// The units of the rectangles are in 1/PANGO_SCALE of a device unit.
 	//
 	// If font is NULL, this function gracefully sets some sane values in the
 	// output variables and returns.
 	//
 	// The function takes the following parameters:
 	//
-	//    - glyph index.
+	//   - glyph index.
 	//
 	// The function returns the following values:
 	//
-	//    - inkRect (optional): rectangle used to store the extents of the glyph
-	//      as drawn or NULL to indicate that the result is not needed.
-	//    - logicalRect (optional): rectangle used to store the logical extents
-	//      of the glyph or NULL to indicate that the result is not needed.
+	//   - inkRect (optional): rectangle used to store the extents of the glyph
+	//     as drawn or NULL to indicate that the result is not needed.
+	//   - logicalRect (optional): rectangle used to store the logical extents
+	//     of the glyph or NULL to indicate that the result is not needed.
 	//
 	GlyphExtents func(glyph Glyph) (inkRect, logicalRect *Rectangle)
 	// Metrics gets overall metric information for a font.
 	//
-	// Since the metrics may be substantially different for different scripts, a
-	// language tag can be provided to indicate that the metrics should be
+	// Since the metrics may be substantially different for different scripts,
+	// a language tag can be provided to indicate that the metrics should be
 	// retrieved that correspond to the script(s) used by that language.
 	//
 	// If font is NULL, this function gracefully sets some sane values in the
@@ -441,14 +441,14 @@ type FontOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - language (optional) tag used to determine which script to get the
-	//      metrics for, or NULL to indicate to get the metrics for the entire
-	//      font.
+	//   - language (optional) tag used to determine which script to get the
+	//     metrics for, or NULL to indicate to get the metrics for the entire
+	//     font.
 	//
 	// The function returns the following values:
 	//
-	//    - fontMetrics: PangoFontMetrics object. The caller must call
-	//      pango.FontMetrics.Unref() when finished using the object.
+	//   - fontMetrics: PangoFontMetrics object. The caller must call
+	//     pango.FontMetrics.Unref() when finished using the object.
 	//
 	Metrics func(language *Language) *FontMetrics
 }
@@ -554,7 +554,7 @@ func BaseFont(obj Fonter) *Font {
 //
 // The function returns the following values:
 //
-//    - fontDescription: newly-allocated PangoFontDescription object.
+//   - fontDescription: newly-allocated PangoFontDescription object.
 //
 func (font *Font) Describe() *FontDescription {
 	var _arg0 *C.PangoFont            // out
@@ -585,7 +585,7 @@ func (font *Font) Describe() *FontDescription {
 //
 // The function returns the following values:
 //
-//    - fontDescription: newly-allocated PangoFontDescription object.
+//   - fontDescription: newly-allocated PangoFontDescription object.
 //
 func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 	var _arg0 *C.PangoFont            // out
@@ -613,11 +613,11 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 //
 // The function takes the following parameters:
 //
-//    - language tag.
+//   - language tag.
 //
 // The function returns the following values:
 //
-//    - coverage: newly-allocated PangoCoverage object.
+//   - coverage: newly-allocated PangoCoverage object.
 //
 func (font *Font) Coverage(language *Language) *Coverage {
 	var _arg0 *C.PangoFont     // out
@@ -642,7 +642,7 @@ func (font *Font) Coverage(language *Language) *Coverage {
 //
 // The function returns the following values:
 //
-//    - fontFace: PangoFontFace.
+//   - fontFace: PangoFontFace.
 //
 func (font *Font) Face() FontFacer {
 	var _arg0 *C.PangoFont     // out
@@ -689,7 +689,7 @@ func (font *Font) Face() FontFacer {
 //
 // The function returns the following values:
 //
-//    - fontMap (optional): PangoFontMap for the font, or NULL if font is NULL.
+//   - fontMap (optional): PangoFontMap for the font, or NULL if font is NULL.
 //
 func (font *Font) FontMap() FontMapper {
 	var _arg0 *C.PangoFont    // out
@@ -726,9 +726,9 @@ func (font *Font) FontMap() FontMapper {
 
 // GlyphExtents gets the logical and ink extents of a glyph within a font.
 //
-// The coordinate system for each rectangle has its origin at the base line and
-// horizontal origin of the character with increasing coordinates extending to
-// the right and down. The macros PANGO_ASCENT(), PANGO_DESCENT(),
+// The coordinate system for each rectangle has its origin at the base
+// line and horizontal origin of the character with increasing coordinates
+// extending to the right and down. The macros PANGO_ASCENT(), PANGO_DESCENT(),
 // PANGO_LBEARING(), and PANGO_RBEARING() can be used to convert from the
 // extents rectangle to more traditional font metrics. The units of the
 // rectangles are in 1/PANGO_SCALE of a device unit.
@@ -738,14 +738,14 @@ func (font *Font) FontMap() FontMapper {
 //
 // The function takes the following parameters:
 //
-//    - glyph index.
+//   - glyph index.
 //
 // The function returns the following values:
 //
-//    - inkRect (optional): rectangle used to store the extents of the glyph as
-//      drawn or NULL to indicate that the result is not needed.
-//    - logicalRect (optional): rectangle used to store the logical extents of
-//      the glyph or NULL to indicate that the result is not needed.
+//   - inkRect (optional): rectangle used to store the extents of the glyph as
+//     drawn or NULL to indicate that the result is not needed.
+//   - logicalRect (optional): rectangle used to store the logical extents of
+//     the glyph or NULL to indicate that the result is not needed.
 //
 func (font *Font) GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 	var _arg0 *C.PangoFont     // out
@@ -784,13 +784,13 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - language (optional) tag used to determine which script to get the metrics
-//      for, or NULL to indicate to get the metrics for the entire font.
+//   - language (optional) tag used to determine which script to get the metrics
+//     for, or NULL to indicate to get the metrics for the entire font.
 //
 // The function returns the following values:
 //
-//    - fontMetrics: PangoFontMetrics object. The caller must call
-//      pango.FontMetrics.Unref() when finished using the object.
+//   - fontMetrics: PangoFontMetrics object. The caller must call
+//     pango.FontMetrics.Unref() when finished using the object.
 //
 func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _arg0 *C.PangoFont        // out
@@ -827,7 +827,7 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 //
 // The function takes the following parameters:
 //
-//    - wc: unicode character.
+//   - wc: unicode character.
 //
 // The function returns the following values:
 //
@@ -859,7 +859,7 @@ func (font *Font) HasChar(wc uint32) bool {
 //
 // The function returns the following values:
 //
-//    - fontDescription: newly-allocated PangoFontDescription object.
+//   - fontDescription: newly-allocated PangoFontDescription object.
 //
 func (font *Font) describe() *FontDescription {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
@@ -917,11 +917,11 @@ func (font *Font) describeAbsolute() *FontDescription {
 //
 // The function takes the following parameters:
 //
-//    - language tag.
+//   - language tag.
 //
 // The function returns the following values:
 //
-//    - coverage: newly-allocated PangoCoverage object.
+//   - coverage: newly-allocated PangoCoverage object.
 //
 func (font *Font) coverage(language *Language) *Coverage {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
@@ -958,7 +958,7 @@ func (font *Font) coverage(language *Language) *Coverage {
 //
 // The function returns the following values:
 //
-//    - fontMap (optional): PangoFontMap for the font, or NULL if font is NULL.
+//   - fontMap (optional): PangoFontMap for the font, or NULL if font is NULL.
 //
 func (font *Font) fontMap() FontMapper {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
@@ -998,9 +998,9 @@ func (font *Font) fontMap() FontMapper {
 
 // glyphExtents gets the logical and ink extents of a glyph within a font.
 //
-// The coordinate system for each rectangle has its origin at the base line and
-// horizontal origin of the character with increasing coordinates extending to
-// the right and down. The macros PANGO_ASCENT(), PANGO_DESCENT(),
+// The coordinate system for each rectangle has its origin at the base
+// line and horizontal origin of the character with increasing coordinates
+// extending to the right and down. The macros PANGO_ASCENT(), PANGO_DESCENT(),
 // PANGO_LBEARING(), and PANGO_RBEARING() can be used to convert from the
 // extents rectangle to more traditional font metrics. The units of the
 // rectangles are in 1/PANGO_SCALE of a device unit.
@@ -1010,14 +1010,14 @@ func (font *Font) fontMap() FontMapper {
 //
 // The function takes the following parameters:
 //
-//    - glyph index.
+//   - glyph index.
 //
 // The function returns the following values:
 //
-//    - inkRect (optional): rectangle used to store the extents of the glyph as
-//      drawn or NULL to indicate that the result is not needed.
-//    - logicalRect (optional): rectangle used to store the logical extents of
-//      the glyph or NULL to indicate that the result is not needed.
+//   - inkRect (optional): rectangle used to store the extents of the glyph as
+//     drawn or NULL to indicate that the result is not needed.
+//   - logicalRect (optional): rectangle used to store the logical extents of
+//     the glyph or NULL to indicate that the result is not needed.
 //
 func (font *Font) glyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
@@ -1059,13 +1059,13 @@ func (font *Font) glyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - language (optional) tag used to determine which script to get the metrics
-//      for, or NULL to indicate to get the metrics for the entire font.
+//   - language (optional) tag used to determine which script to get the metrics
+//     for, or NULL to indicate to get the metrics for the entire font.
 //
 // The function returns the following values:
 //
-//    - fontMetrics: PangoFontMetrics object. The caller must call
-//      pango.FontMetrics.Unref() when finished using the object.
+//   - fontMetrics: PangoFontMetrics object. The caller must call
+//     pango.FontMetrics.Unref() when finished using the object.
 //
 func (font *Font) metrics(language *Language) *FontMetrics {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
@@ -1107,9 +1107,9 @@ type FontFaceOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - fontDescription: newly-created PangoFontDescription structure holding
-	//      the description of the face. Use pango.FontDescription.Free() to free
-	//      the result.
+	//   - fontDescription: newly-created PangoFontDescription structure holding
+	//     the description of the face. Use pango.FontDescription.Free() to free
+	//     the result.
 	//
 	Describe func() *FontDescription
 	// FaceName gets a name representing the style of this face among the
@@ -1118,15 +1118,15 @@ type FontFaceOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - utf8: face name for the face. This string is owned by the face object
-	//      and must not be modified or freed.
+	//   - utf8: face name for the face. This string is owned by the face object
+	//     and must not be modified or freed.
 	//
 	FaceName func() string
 	// Family gets the PangoFontFamily that face belongs to.
 	//
 	// The function returns the following values:
 	//
-	//    - fontFamily: PangoFontFamily.
+	//   - fontFamily: PangoFontFamily.
 	//
 	Family func() FontFamilier
 	// IsSynthesized returns whether a PangoFontFace is synthesized by the
@@ -1135,20 +1135,20 @@ type FontFaceOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: whether face is synthesized.
+	//   - ok: whether face is synthesized.
 	//
 	IsSynthesized func() bool
 	// ListSizes: list the available sizes for a font.
 	//
-	// This is only applicable to bitmap fonts. For scalable fonts, stores NULL
-	// at the location pointed to by sizes and 0 at the location pointed to by
-	// n_sizes. The sizes returned are in Pango units and are sorted in
+	// This is only applicable to bitmap fonts. For scalable fonts, stores
+	// NULL at the location pointed to by sizes and 0 at the location pointed
+	// to by n_sizes. The sizes returned are in Pango units and are sorted in
 	// ascending order.
 	//
 	// The function returns the following values:
 	//
-	//    - sizes (optional): location to store a pointer to an array of int.
-	//      This array should be freed with g_free().
+	//   - sizes (optional): location to store a pointer to an array of int.
+	//     This array should be freed with g_free().
 	//
 	ListSizes func() []int
 }
@@ -1248,9 +1248,9 @@ func BaseFontFace(obj FontFacer) *FontFace {
 //
 // The function returns the following values:
 //
-//    - fontDescription: newly-created PangoFontDescription structure holding the
-//      description of the face. Use pango.FontDescription.Free() to free the
-//      result.
+//   - fontDescription: newly-created PangoFontDescription structure holding
+//     the description of the face. Use pango.FontDescription.Free() to free the
+//     result.
 //
 func (face *FontFace) Describe() *FontDescription {
 	var _arg0 *C.PangoFontFace        // out
@@ -1280,8 +1280,8 @@ func (face *FontFace) Describe() *FontDescription {
 //
 // The function returns the following values:
 //
-//    - utf8: face name for the face. This string is owned by the face object and
-//      must not be modified or freed.
+//   - utf8: face name for the face. This string is owned by the face object and
+//     must not be modified or freed.
 //
 func (face *FontFace) FaceName() string {
 	var _arg0 *C.PangoFontFace // out
@@ -1303,7 +1303,7 @@ func (face *FontFace) FaceName() string {
 //
 // The function returns the following values:
 //
-//    - fontFamily: PangoFontFamily.
+//   - fontFamily: PangoFontFamily.
 //
 func (face *FontFace) Family() FontFamilier {
 	var _arg0 *C.PangoFontFace   // out
@@ -1343,7 +1343,7 @@ func (face *FontFace) Family() FontFamilier {
 //
 // The function returns the following values:
 //
-//    - ok: whether face is synthesized.
+//   - ok: whether face is synthesized.
 //
 func (face *FontFace) IsSynthesized() bool {
 	var _arg0 *C.PangoFontFace // out
@@ -1371,8 +1371,8 @@ func (face *FontFace) IsSynthesized() bool {
 //
 // The function returns the following values:
 //
-//    - sizes (optional): location to store a pointer to an array of int. This
-//      array should be freed with g_free().
+//   - sizes (optional): location to store a pointer to an array of int.
+//     This array should be freed with g_free().
 //
 func (face *FontFace) ListSizes() []int {
 	var _arg0 *C.PangoFontFace // out
@@ -1406,9 +1406,9 @@ func (face *FontFace) ListSizes() []int {
 //
 // The function returns the following values:
 //
-//    - fontDescription: newly-created PangoFontDescription structure holding the
-//      description of the face. Use pango.FontDescription.Free() to free the
-//      result.
+//   - fontDescription: newly-created PangoFontDescription structure holding
+//     the description of the face. Use pango.FontDescription.Free() to free the
+//     result.
 //
 func (face *FontFace) describe() *FontDescription {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
@@ -1441,8 +1441,8 @@ func (face *FontFace) describe() *FontDescription {
 //
 // The function returns the following values:
 //
-//    - utf8: face name for the face. This string is owned by the face object and
-//      must not be modified or freed.
+//   - utf8: face name for the face. This string is owned by the face object and
+//     must not be modified or freed.
 //
 func (face *FontFace) faceName() string {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
@@ -1467,7 +1467,7 @@ func (face *FontFace) faceName() string {
 //
 // The function returns the following values:
 //
-//    - fontFamily: PangoFontFamily.
+//   - fontFamily: PangoFontFamily.
 //
 func (face *FontFace) family() FontFamilier {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
@@ -1510,7 +1510,7 @@ func (face *FontFace) family() FontFamilier {
 //
 // The function returns the following values:
 //
-//    - ok: whether face is synthesized.
+//   - ok: whether face is synthesized.
 //
 func (face *FontFace) isSynthesized() bool {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
@@ -1541,8 +1541,8 @@ func (face *FontFace) isSynthesized() bool {
 //
 // The function returns the following values:
 //
-//    - sizes (optional): location to store a pointer to an array of int. This
-//      array should be freed with g_free().
+//   - sizes (optional): location to store a pointer to an array of int.
+//     This array should be freed with g_free().
 //
 func (face *FontFace) listSizes() []int {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
@@ -1579,13 +1579,13 @@ type FontFamilyOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - name (optional) of a face. If the name is NULL, the family's default
-	//      face (fontconfig calls it "Regular") will be returned.
+	//   - name (optional) of a face. If the name is NULL, the family's default
+	//     face (fontconfig calls it "Regular") will be returned.
 	//
 	// The function returns the following values:
 	//
-	//    - fontFace (optional): PangoFontFace, or NULL if no face with the given
-	//      name exists.
+	//   - fontFace (optional): PangoFontFace, or NULL if no face with the given
+	//     name exists.
 	//
 	Face func(name string) FontFacer
 	// Name gets the name of the family.
@@ -1596,8 +1596,8 @@ type FontFamilyOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - utf8: name of the family. This string is owned by the family object
-	//      and must not be modified or freed.
+	//   - utf8: name of the family. This string is owned by the family object
+	//     and must not be modified or freed.
 	//
 	Name func() string
 	// IsMonospace: monospace font is a font designed for text display where the
@@ -1610,13 +1610,13 @@ type FontFamilyOverrides struct {
 	// character is typically double-width in a monospace font.
 	//
 	// The best way to find out the grid-cell size is to call
-	// pango.FontMetrics.GetApproximateDigitWidth(), since the results of
-	// pango.FontMetrics.GetApproximateCharWidth() may be affected by
+	// pango.FontMetrics.GetApproximateDigitWidth(), since the results
+	// of pango.FontMetrics.GetApproximateCharWidth() may be affected by
 	// double-width characters.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the family is monospace.
+	//   - ok: TRUE if the family is monospace.
 	//
 	IsMonospace func() bool
 	// IsVariable: variable font is a font which has axes that can be modified
@@ -1624,7 +1624,7 @@ type FontFamilyOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if the family is variable.
+	//   - ok: TRUE if the family is variable.
 	//
 	IsVariable func() bool
 	// ListFaces lists the different font faces that make up family.
@@ -1634,9 +1634,9 @@ type FontFamilyOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - faces (optional): location to store an array of pointers to
-	//      PangoFontFace objects, or NULL. This array should be freed with
-	//      g_free() when it is no longer needed.
+	//   - faces (optional): location to store an array of pointers to
+	//     PangoFontFace objects, or NULL. This array should be freed with
+	//     g_free() when it is no longer needed.
 	//
 	ListFaces func() []FontFacer
 }
@@ -1737,13 +1737,13 @@ func BaseFontFamily(obj FontFamilier) *FontFamily {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of a face. If the name is NULL, the family's default face
-//      (fontconfig calls it "Regular") will be returned.
+//   - name (optional) of a face. If the name is NULL, the family's default face
+//     (fontconfig calls it "Regular") will be returned.
 //
 // The function returns the following values:
 //
-//    - fontFace (optional): PangoFontFace, or NULL if no face with the given
-//      name exists.
+//   - fontFace (optional): PangoFontFace, or NULL if no face with the given
+//     name exists.
 //
 func (family *FontFamily) Face(name string) FontFacer {
 	var _arg0 *C.PangoFontFamily // out
@@ -1789,8 +1789,8 @@ func (family *FontFamily) Face(name string) FontFacer {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the family. This string is owned by the family object and
-//      must not be modified or freed.
+//   - utf8: name of the family. This string is owned by the family object and
+//     must not be modified or freed.
 //
 func (family *FontFamily) Name() string {
 	var _arg0 *C.PangoFontFamily // out
@@ -1824,7 +1824,7 @@ func (family *FontFamily) Name() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the family is monospace.
+//   - ok: TRUE if the family is monospace.
 //
 func (family *FontFamily) IsMonospace() bool {
 	var _arg0 *C.PangoFontFamily // out
@@ -1849,7 +1849,7 @@ func (family *FontFamily) IsMonospace() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the family is variable.
+//   - ok: TRUE if the family is variable.
 //
 func (family *FontFamily) IsVariable() bool {
 	var _arg0 *C.PangoFontFamily // out
@@ -1876,9 +1876,9 @@ func (family *FontFamily) IsVariable() bool {
 //
 // The function returns the following values:
 //
-//    - faces (optional): location to store an array of pointers to PangoFontFace
-//      objects, or NULL. This array should be freed with g_free() when it is no
-//      longer needed.
+//   - faces (optional): location to store an array of pointers to PangoFontFace
+//     objects, or NULL. This array should be freed with g_free() when it is no
+//     longer needed.
 //
 func (family *FontFamily) ListFaces() []FontFacer {
 	var _arg0 *C.PangoFontFamily // out
@@ -1926,13 +1926,13 @@ func (family *FontFamily) ListFaces() []FontFacer {
 //
 // The function takes the following parameters:
 //
-//    - name (optional) of a face. If the name is NULL, the family's default face
-//      (fontconfig calls it "Regular") will be returned.
+//   - name (optional) of a face. If the name is NULL, the family's default face
+//     (fontconfig calls it "Regular") will be returned.
 //
 // The function returns the following values:
 //
-//    - fontFace (optional): PangoFontFace, or NULL if no face with the given
-//      name exists.
+//   - fontFace (optional): PangoFontFace, or NULL if no face with the given
+//     name exists.
 //
 func (family *FontFamily) face(name string) FontFacer {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
@@ -1981,8 +1981,8 @@ func (family *FontFamily) face(name string) FontFacer {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the family. This string is owned by the family object and
-//      must not be modified or freed.
+//   - utf8: name of the family. This string is owned by the family object and
+//     must not be modified or freed.
 //
 func (family *FontFamily) name() string {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
@@ -2019,7 +2019,7 @@ func (family *FontFamily) name() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the family is monospace.
+//   - ok: TRUE if the family is monospace.
 //
 func (family *FontFamily) isMonospace() bool {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
@@ -2047,7 +2047,7 @@ func (family *FontFamily) isMonospace() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the family is variable.
+//   - ok: TRUE if the family is variable.
 //
 func (family *FontFamily) isVariable() bool {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
@@ -2077,9 +2077,9 @@ func (family *FontFamily) isVariable() bool {
 //
 // The function returns the following values:
 //
-//    - faces (optional): location to store an array of pointers to PangoFontFace
-//      objects, or NULL. This array should be freed with g_free() when it is no
-//      longer needed.
+//   - faces (optional): location to store an array of pointers to PangoFontFace
+//     objects, or NULL. This array should be freed with g_free() when it is no
+//     longer needed.
 //
 func (family *FontFamily) listFaces() []FontFacer {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
@@ -2182,8 +2182,8 @@ func NewFontDescription() *FontDescription {
 // determines if new_match is a match at all.
 //
 // Approximate matching is done for weight and style; other style attributes
-// must match exactly. Style attributes are all attributes other than family and
-// size-related attributes. Approximate matching for style considers
+// must match exactly. Style attributes are all attributes other than family
+// and size-related attributes. Approximate matching for style considers
 // PANGO_STYLE_OBLIQUE and PANGO_STYLE_ITALIC as matches, but not as good a
 // match as when the styles are equal.
 //
@@ -2191,12 +2191,12 @@ func NewFontDescription() *FontDescription {
 //
 // The function takes the following parameters:
 //
-//    - oldMatch (optional): PangoFontDescription, or NULL.
-//    - newMatch: PangoFontDescription.
+//   - oldMatch (optional): PangoFontDescription, or NULL.
+//   - newMatch: PangoFontDescription.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if new_match is a better match.
+//   - ok: TRUE if new_match is a better match.
 //
 func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *FontDescription) bool {
 	var _arg0 *C.PangoFontDescription // out
@@ -2228,9 +2228,9 @@ func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *Fo
 //
 // The function returns the following values:
 //
-//    - fontDescription (optional): newly allocated PangoFontDescription, which
-//      should be freed with pango.FontDescription.Free(), or NULL if desc was
-//      NULL.
+//   - fontDescription (optional): newly allocated PangoFontDescription,
+//     which should be freed with pango.FontDescription.Free(), or NULL if desc
+//     was NULL.
 //
 func (desc *FontDescription) Copy() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
@@ -2268,9 +2268,9 @@ func (desc *FontDescription) Copy() *FontDescription {
 //
 // The function returns the following values:
 //
-//    - fontDescription (optional): newly allocated PangoFontDescription, which
-//      should be freed with pango.FontDescription.Free(), or NULL if desc was
-//      NULL.
+//   - fontDescription (optional): newly allocated PangoFontDescription,
+//     which should be freed with pango.FontDescription.Free(), or NULL if desc
+//     was NULL.
 //
 func (desc *FontDescription) CopyStatic() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
@@ -2301,17 +2301,17 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 // Equal compares two font descriptions for equality.
 //
 // Two font descriptions are considered equal if the fonts they describe are
-// provably identical. This means that their masks do not have to match, as long
-// as other fields are all the same. (Two font descriptions may result in
-// identical fonts being loaded, but still compare FALSE.).
+// provably identical. This means that their masks do not have to match,
+// as long as other fields are all the same. (Two font descriptions may result
+// in identical fonts being loaded, but still compare FALSE.).
 //
 // The function takes the following parameters:
 //
-//    - desc2: another PangoFontDescription.
+//   - desc2: another PangoFontDescription.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two font descriptions are identical, FALSE otherwise.
+//   - ok: TRUE if the two font descriptions are identical, FALSE otherwise.
 //
 func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 	var _arg0 *C.PangoFontDescription // out
@@ -2340,9 +2340,9 @@ func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): family name field for the font description, or NULL if
-//      not previously set. This has the same life-time as the font description
-//      itself and should not be freed.
+//   - utf8 (optional): family name field for the font description, or NULL if
+//     not previously set. This has the same life-time as the font description
+//     itself and should not be freed.
 //
 func (desc *FontDescription) Family() string {
 	var _arg0 *C.PangoFontDescription // out
@@ -2368,9 +2368,9 @@ func (desc *FontDescription) Family() string {
 //
 // The function returns the following values:
 //
-//    - gravity field for the font description. Use
-//      pango.FontDescription.GetSetFields() to find out if the field was
-//      explicitly set or not.
+//   - gravity field for the font description. Use
+//     pango.FontDescription.GetSetFields() to find out if the field was
+//     explicitly set or not.
 //
 func (desc *FontDescription) Gravity() Gravity {
 	var _arg0 *C.PangoFontDescription // out
@@ -2392,8 +2392,8 @@ func (desc *FontDescription) Gravity() Gravity {
 //
 // The function returns the following values:
 //
-//    - fontMask: bitmask with bits set corresponding to the fields in desc that
-//      have been set.
+//   - fontMask: bitmask with bits set corresponding to the fields in desc that
+//     have been set.
 //
 func (desc *FontDescription) SetFields() FontMask {
 	var _arg0 *C.PangoFontDescription // out
@@ -2417,11 +2417,11 @@ func (desc *FontDescription) SetFields() FontMask {
 //
 // The function returns the following values:
 //
-//    - gint: size field for the font description in points or device units. You
-//      must call pango.FontDescription.GetSizeIsAbsolute() to find out which is
-//      the case. Returns 0 if the size field has not previously been set or it
-//      has been set to 0 explicitly. Use pango.FontDescription.GetSetFields() to
-//      find out if the field was explicitly set or not.
+//   - gint: size field for the font description in points or device units.
+//     You must call pango.FontDescription.GetSizeIsAbsolute() to find out which
+//     is the case. Returns 0 if the size field has not previously been set or
+//     it has been set to 0 explicitly. Use pango.FontDescription.GetSetFields()
+//     to find out if the field was explicitly set or not.
 //
 func (desc *FontDescription) Size() int {
 	var _arg0 *C.PangoFontDescription // out
@@ -2447,9 +2447,9 @@ func (desc *FontDescription) Size() int {
 //
 // The function returns the following values:
 //
-//    - ok: whether the size for the font description is in points or device
-//      units. Use pango.FontDescription.GetSetFields() to find out if the size
-//      field of the font description was explicitly set or not.
+//   - ok: whether the size for the font description is in points or device
+//     units. Use pango.FontDescription.GetSetFields() to find out if the size
+//     field of the font description was explicitly set or not.
 //
 func (desc *FontDescription) SizeIsAbsolute() bool {
 	var _arg0 *C.PangoFontDescription // out
@@ -2475,9 +2475,9 @@ func (desc *FontDescription) SizeIsAbsolute() bool {
 //
 // The function returns the following values:
 //
-//    - stretch field for the font description. Use
-//      pango.FontDescription.GetSetFields() to find out if the field was
-//      explicitly set or not.
+//   - stretch field for the font description. Use
+//     pango.FontDescription.GetSetFields() to find out if the field was
+//     explicitly set or not.
 //
 func (desc *FontDescription) Stretch() Stretch {
 	var _arg0 *C.PangoFontDescription // out
@@ -2501,9 +2501,9 @@ func (desc *FontDescription) Stretch() Stretch {
 //
 // The function returns the following values:
 //
-//    - style field for the font description. Use
-//      pango.FontDescription.GetSetFields() to find out if the field was
-//      explicitly set or not.
+//   - style field for the font description. Use
+//     pango.FontDescription.GetSetFields() to find out if the field was
+//     explicitly set or not.
 //
 func (desc *FontDescription) Style() Style {
 	var _arg0 *C.PangoFontDescription // out
@@ -2527,9 +2527,9 @@ func (desc *FontDescription) Style() Style {
 //
 // The function returns the following values:
 //
-//    - variant field for the font description. Use
-//      pango.FontDescription.GetSetFields() to find out if the field was
-//      explicitly set or not.
+//   - variant field for the font description. Use
+//     pango.FontDescription.GetSetFields() to find out if the field was
+//     explicitly set or not.
 //
 func (desc *FontDescription) Variant() Variant {
 	var _arg0 *C.PangoFontDescription // out
@@ -2553,9 +2553,9 @@ func (desc *FontDescription) Variant() Variant {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) variations field for the font description, or NULL if not
-//      previously set. This has the same life-time as the font description
-//      itself and should not be freed.
+//   - utf8 (optional) variations field for the font description, or NULL if
+//     not previously set. This has the same life-time as the font description
+//     itself and should not be freed.
 //
 func (desc *FontDescription) Variations() string {
 	var _arg0 *C.PangoFontDescription // out
@@ -2581,9 +2581,9 @@ func (desc *FontDescription) Variations() string {
 //
 // The function returns the following values:
 //
-//    - weight field for the font description. Use
-//      pango.FontDescription.GetSetFields() to find out if the field was
-//      explicitly set or not.
+//   - weight field for the font description. Use
+//     pango.FontDescription.GetSetFields() to find out if the field was
+//     explicitly set or not.
 //
 func (desc *FontDescription) Weight() Weight {
 	var _arg0 *C.PangoFontDescription // out
@@ -2608,7 +2608,7 @@ func (desc *FontDescription) Weight() Weight {
 //
 // The function returns the following values:
 //
-//    - guint: hash value.
+//   - guint: hash value.
 //
 func (desc *FontDescription) Hash() uint {
 	var _arg0 *C.PangoFontDescription // out
@@ -2637,9 +2637,9 @@ func (desc *FontDescription) Hash() uint {
 //
 // The function takes the following parameters:
 //
-//    - descToMerge (optional): PangoFontDescription to merge from, or NULL.
-//    - replaceExisting: if TRUE, replace fields in desc with the corresponding
-//      values from desc_to_merge, even if they are already exist.
+//   - descToMerge (optional): PangoFontDescription to merge from, or NULL.
+//   - replaceExisting: if TRUE, replace fields in desc with the corresponding
+//     values from desc_to_merge, even if they are already exist.
 //
 func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting bool) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2670,9 +2670,9 @@ func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting
 //
 // The function takes the following parameters:
 //
-//    - descToMerge: PangoFontDescription to merge from.
-//    - replaceExisting: if TRUE, replace fields in desc with the corresponding
-//      values from desc_to_merge, even if they are already exist.
+//   - descToMerge: PangoFontDescription to merge from.
+//   - replaceExisting: if TRUE, replace fields in desc with the corresponding
+//     values from desc_to_merge, even if they are already exist.
 //
 func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceExisting bool) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2698,9 +2698,9 @@ func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceEx
 //
 // The function takes the following parameters:
 //
-//    - size: new size, in Pango units. There are PANGO_SCALE Pango units in one
-//      device unit. For an output backend where a device unit is a pixel, a size
-//      value of 10 * PANGO_SCALE gives a 10 pixel font.
+//   - size: new size, in Pango units. There are PANGO_SCALE Pango units in
+//     one device unit. For an output backend where a device unit is a pixel,
+//     a size value of 10 * PANGO_SCALE gives a 10 pixel font.
 //
 func (desc *FontDescription) SetAbsoluteSize(size float64) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2722,7 +2722,7 @@ func (desc *FontDescription) SetAbsoluteSize(size float64) {
 //
 // The function takes the following parameters:
 //
-//    - family: string representing the family name.
+//   - family: string representing the family name.
 //
 func (desc *FontDescription) SetFamily(family string) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2748,7 +2748,7 @@ func (desc *FontDescription) SetFamily(family string) {
 //
 // The function takes the following parameters:
 //
-//    - family: string representing the family name.
+//   - family: string representing the family name.
 //
 func (desc *FontDescription) SetFamilyStatic(family string) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2765,8 +2765,8 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 
 // SetGravity sets the gravity field of a font description.
 //
-// The gravity field specifies how the glyphs should be rotated. If gravity is
-// PANGO_GRAVITY_AUTO, this actually unsets the gravity mask on the font
+// The gravity field specifies how the glyphs should be rotated. If gravity
+// is PANGO_GRAVITY_AUTO, this actually unsets the gravity mask on the font
 // description.
 //
 // This function is seldom useful to the user. Gravity should normally be set on
@@ -2774,7 +2774,7 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 //
 // The function takes the following parameters:
 //
-//    - gravity for the font description.
+//   - gravity for the font description.
 //
 func (desc *FontDescription) SetGravity(gravity Gravity) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2794,13 +2794,13 @@ func (desc *FontDescription) SetGravity(gravity Gravity) {
 //
 // The function takes the following parameters:
 //
-//    - size of the font in points, scaled by PANGO_SCALE. (That is, a size value
-//      of 10 * PANGO_SCALE is a 10 point font. The conversion factor between
-//      points and device units depends on system configuration and the output
-//      device. For screen display, a logical DPI of 96 is common, in which case
-//      a 10 point font corresponds to a 10 * (96 / 72) = 13.3 pixel font. Use
-//      pango.FontDescription.SetAbsoluteSize() if you need a particular size in
-//      device units.
+//   - size of the font in points, scaled by PANGO_SCALE. (That is, a size value
+//     of 10 * PANGO_SCALE is a 10 point font. The conversion factor between
+//     points and device units depends on system configuration and the output
+//     device. For screen display, a logical DPI of 96 is common, in which
+//     case a 10 point font corresponds to a 10 * (96 / 72) = 13.3 pixel font.
+//     Use pango.FontDescription.SetAbsoluteSize() if you need a particular size
+//     in device units.
 //
 func (desc *FontDescription) SetSize(size int) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2820,7 +2820,7 @@ func (desc *FontDescription) SetSize(size int) {
 //
 // The function takes the following parameters:
 //
-//    - stretch for the font description.
+//   - stretch for the font description.
 //
 func (desc *FontDescription) SetStretch(stretch Stretch) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2836,8 +2836,8 @@ func (desc *FontDescription) SetStretch(stretch Stretch) {
 
 // SetStyle sets the style field of a PangoFontDescription.
 //
-// The pango.Style enumeration describes whether the font is slanted and the
-// manner in which it is slanted; it can be either NGO_STYLE_NORMAL,
+// The pango.Style enumeration describes whether the font is slanted and
+// the manner in which it is slanted; it can be either NGO_STYLE_NORMAL,
 // NGO_STYLE_ITALIC, or NGO_STYLE_OBLIQUE.
 //
 // Most fonts will either have a italic style or an oblique style, but not both,
@@ -2846,7 +2846,7 @@ func (desc *FontDescription) SetStretch(stretch Stretch) {
 //
 // The function takes the following parameters:
 //
-//    - style for the font description.
+//   - style for the font description.
 //
 func (desc *FontDescription) SetStyle(style Style) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2867,7 +2867,7 @@ func (desc *FontDescription) SetStyle(style Style) {
 //
 // The function takes the following parameters:
 //
-//    - variant type for the font description.
+//   - variant type for the font description.
 //
 func (desc *FontDescription) SetVariant(variant Variant) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2894,12 +2894,12 @@ func (desc *FontDescription) SetVariant(variant Variant) {
 // a floating point number. Unknown axes are ignored, and values are clamped to
 // their allowed range.
 //
-// Pango does not currently have a way to find supported axes of a font. Both
-// harfbuzz or freetype have API for this.
+// Pango does not currently have a way to find supported axes of a font.
+// Both harfbuzz or freetype have API for this.
 //
 // The function takes the following parameters:
 //
-//    - variations: string representing the variations.
+//   - variations: string representing the variations.
 //
 func (desc *FontDescription) SetVariations(variations string) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2918,13 +2918,13 @@ func (desc *FontDescription) SetVariations(variations string) {
 //
 // This is like pango.FontDescription.SetVariations(), except that no copy of
 // variations is made. The caller must make sure that the string passed in stays
-// around until desc has been freed or the name is set again. This function can
-// be used if variations is a static string such as a C string literal, or if
-// desc is only needed temporarily.
+// around until desc has been freed or the name is set again. This function
+// can be used if variations is a static string such as a C string literal,
+// or if desc is only needed temporarily.
 //
 // The function takes the following parameters:
 //
-//    - variations: string representing the variations.
+//   - variations: string representing the variations.
 //
 func (desc *FontDescription) SetVariationsStatic(variations string) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2947,7 +2947,7 @@ func (desc *FontDescription) SetVariationsStatic(variations string) {
 //
 // The function takes the following parameters:
 //
-//    - weight for the font description.
+//   - weight for the font description.
 //
 func (desc *FontDescription) SetWeight(weight Weight) {
 	var _arg0 *C.PangoFontDescription // out
@@ -2969,7 +2969,7 @@ func (desc *FontDescription) SetWeight(weight Weight) {
 //
 // The function returns the following values:
 //
-//    - utf8: new string that must be freed with g_free().
+//   - utf8: new string that must be freed with g_free().
 //
 func (desc *FontDescription) ToFilename() string {
 	var _arg0 *C.PangoFontDescription // out
@@ -2990,14 +2990,14 @@ func (desc *FontDescription) ToFilename() string {
 
 // String creates a string representation of a font description.
 //
-// See pango.FontDescription.FromString for a description of the format of the
-// string representation. The family list in the string description will only
-// have a terminating comma if the last word of the list is a valid style
+// See pango.FontDescription.FromString for a description of the format of
+// the string representation. The family list in the string description will
+// only have a terminating comma if the last word of the list is a valid style
 // option.
 //
 // The function returns the following values:
 //
-//    - utf8: new string that must be freed with g_free().
+//   - utf8: new string that must be freed with g_free().
 //
 func (desc *FontDescription) String() string {
 	var _arg0 *C.PangoFontDescription // out
@@ -3022,7 +3022,7 @@ func (desc *FontDescription) String() string {
 //
 // The function takes the following parameters:
 //
-//    - toUnset: bitmask of fields in the desc to unset.
+//   - toUnset: bitmask of fields in the desc to unset.
 //
 func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 	var _arg0 *C.PangoFontDescription // out
@@ -3068,9 +3068,9 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 // "Upside-Down", "North", "Rotated-Left", "East", "Rotated-Right", "West".
 //
 // Any one of the options may be absent. If FAMILY-LIST is absent, then the
-// family_name field of the resulting font description will be initialized to
-// NULL. If STYLE-OPTIONS is missing, then all style options will be set to the
-// default values. If SIZE is missing, the size in the resulting font
+// family_name field of the resulting font description will be initialized
+// to NULL. If STYLE-OPTIONS is missing, then all style options will be set
+// to the default values. If SIZE is missing, the size in the resulting font
 // description will be set to 0.
 //
 // A typical example:
@@ -3079,11 +3079,11 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 //
 // The function takes the following parameters:
 //
-//    - str: string representation of a font description.
+//   - str: string representation of a font description.
 //
 // The function returns the following values:
 //
-//    - fontDescription: new PangoFontDescription.
+//   - fontDescription: new PangoFontDescription.
 //
 func FontDescriptionFromString(str string) *FontDescription {
 	var _arg1 *C.char                 // out
@@ -3160,7 +3160,7 @@ func marshalFontMetrics(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gint: character width, in Pango units.
+//   - gint: character width, in Pango units.
 //
 func (metrics *FontMetrics) ApproximateCharWidth() int {
 	var _arg0 *C.PangoFontMetrics // out
@@ -3188,7 +3188,7 @@ func (metrics *FontMetrics) ApproximateCharWidth() int {
 //
 // The function returns the following values:
 //
-//    - gint: digit width, in Pango units.
+//   - gint: digit width, in Pango units.
 //
 func (metrics *FontMetrics) ApproximateDigitWidth() int {
 	var _arg0 *C.PangoFontMetrics // out
@@ -3214,7 +3214,7 @@ func (metrics *FontMetrics) ApproximateDigitWidth() int {
 //
 // The function returns the following values:
 //
-//    - gint: ascent, in Pango units.
+//   - gint: ascent, in Pango units.
 //
 func (metrics *FontMetrics) Ascent() int {
 	var _arg0 *C.PangoFontMetrics // out
@@ -3241,7 +3241,7 @@ func (metrics *FontMetrics) Ascent() int {
 //
 // The function returns the following values:
 //
-//    - gint: descent, in Pango units.
+//   - gint: descent, in Pango units.
 //
 func (metrics *FontMetrics) Descent() int {
 	var _arg0 *C.PangoFontMetrics // out
@@ -3267,7 +3267,7 @@ func (metrics *FontMetrics) Descent() int {
 //
 // The function returns the following values:
 //
-//    - gint: height, in Pango units.
+//   - gint: height, in Pango units.
 //
 func (metrics *FontMetrics) Height() int {
 	var _arg0 *C.PangoFontMetrics // out
@@ -3292,7 +3292,7 @@ func (metrics *FontMetrics) Height() int {
 //
 // The function returns the following values:
 //
-//    - gint: suggested strikethrough position, in Pango units.
+//   - gint: suggested strikethrough position, in Pango units.
 //
 func (metrics *FontMetrics) StrikethroughPosition() int {
 	var _arg0 *C.PangoFontMetrics // out
@@ -3315,7 +3315,7 @@ func (metrics *FontMetrics) StrikethroughPosition() int {
 //
 // The function returns the following values:
 //
-//    - gint: suggested strikethrough thickness, in Pango units.
+//   - gint: suggested strikethrough thickness, in Pango units.
 //
 func (metrics *FontMetrics) StrikethroughThickness() int {
 	var _arg0 *C.PangoFontMetrics // out
@@ -3341,7 +3341,7 @@ func (metrics *FontMetrics) StrikethroughThickness() int {
 //
 // The function returns the following values:
 //
-//    - gint: suggested underline position, in Pango units.
+//   - gint: suggested underline position, in Pango units.
 //
 func (metrics *FontMetrics) UnderlinePosition() int {
 	var _arg0 *C.PangoFontMetrics // out
@@ -3363,7 +3363,7 @@ func (metrics *FontMetrics) UnderlinePosition() int {
 //
 // The function returns the following values:
 //
-//    - gint: suggested underline thickness, in Pango units.
+//   - gint: suggested underline thickness, in Pango units.
 //
 func (metrics *FontMetrics) UnderlineThickness() int {
 	var _arg0 *C.PangoFontMetrics // out

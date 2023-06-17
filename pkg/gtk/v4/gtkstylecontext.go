@@ -109,10 +109,10 @@ func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
 
 // StyleContext: GtkStyleContext stores styling information affecting a widget.
 //
-// In order to construct the final style information, GtkStyleContext queries
-// information from all attached GtkStyleProviders. Style providers can be
-// either attached explicitly to the context through
-// gtk.StyleContext.AddProvider(), or to the display through
+// In order to construct the final style information, GtkStyleContext
+// queries information from all attached GtkStyleProviders.
+// Style providers can be either attached explicitly to the context
+// through gtk.StyleContext.AddProvider(), or to the display through
 // gtk.StyleContext().AddProviderForDisplay. The resulting style is a
 // combination of all providers’ information in priority order.
 //
@@ -121,29 +121,27 @@ func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
 // will also be updated automatically if any of these settings change on the
 // widget.
 //
-//
-// Style Classes
+// # Style Classes
 //
 // Widgets can add style classes to their context, which can be used to
 // associate different styles by class. The documentation for individual widgets
 // lists which style classes it uses itself, and which style classes may be
 // added by applications to affect their appearance.
 //
-//
-// Custom styling in UI libraries and applications
+// # Custom styling in UI libraries and applications
 //
 // If you are developing a library with custom widgets that render differently
-// than standard components, you may need to add a GtkStyleProvider yourself
-// with the GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority, either a
-// GtkCssProvider or a custom object implementing the GtkStyleProvider
+// than standard components, you may need to add a GtkStyleProvider
+// yourself with the GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority, either
+// a GtkCssProvider or a custom object implementing the GtkStyleProvider
 // interface. This way themes may still attempt to style your UI elements in a
 // different way if needed so.
 //
-// If you are using custom styling on an applications, you probably want then to
-// make your style information prevail to the theme’s, so you must use a
+// If you are using custom styling on an applications, you probably want then
+// to make your style information prevail to the theme’s, so you must use a
 // GtkStyleProvider with the GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority,
-// keep in mind that the user settings in XDG_CONFIG_HOME/gtk-4.0/gtk.css will
-// still take precedence over your changes, as it uses the
+// keep in mind that the user settings in XDG_CONFIG_HOME/gtk-4.0/gtk.css
+// will still take precedence over your changes, as it uses the
 // GTK_STYLE_PROVIDER_PRIORITY_USER priority.
 type StyleContext struct {
 	_ [0]func() // equal guard
@@ -194,14 +192,13 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 //
 //    entry.search { ... }
 //
-//
 // While any widget defining a “search” class would be matched by:
 //
 //    .search { ... }.
 //
 // The function takes the following parameters:
 //
-//    - className class name to use in styling.
+//   - className class name to use in styling.
 //
 func (context *StyleContext) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
@@ -223,17 +220,17 @@ func (context *StyleContext) AddClass(className string) {
 // the widget to which context belongs. If you want to affect the style of all
 // widgets, use gtk.StyleContext().AddProviderForDisplay.
 //
-// Note: If both priorities are the same, a GtkStyleProvider added through this
-// function takes precedence over another added through
+// Note: If both priorities are the same, a GtkStyleProvider added
+// through this function takes precedence over another added through
 // gtk.StyleContext().AddProviderForDisplay.
 //
 // The function takes the following parameters:
 //
-//    - provider: GtkStyleProvider.
-//    - priority of the style provider. The lower it is, the earlier it will be
-//      used in the style construction. Typically this will be in the range
-//      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
-//      GTK_STYLE_PROVIDER_PRIORITY_USER.
+//   - provider: GtkStyleProvider.
+//   - priority of the style provider. The lower it is, the earlier it
+//     will be used in the style construction. Typically this will be
+//     in the range between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//     GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint) {
 	var _arg0 *C.GtkStyleContext  // out
@@ -254,7 +251,7 @@ func (context *StyleContext) AddProvider(provider StyleProviderer, priority uint
 //
 // The function returns the following values:
 //
-//    - border: return value for the border settings.
+//   - border: return value for the border settings.
 //
 func (context *StyleContext) Border() *Border {
 	var _arg0 *C.GtkStyleContext // out
@@ -276,7 +273,7 @@ func (context *StyleContext) Border() *Border {
 //
 // The function returns the following values:
 //
-//    - color: return value for the foreground color.
+//   - color: return value for the foreground color.
 //
 func (context *StyleContext) Color() *gdk.RGBA {
 	var _arg0 *C.GtkStyleContext // out
@@ -298,7 +295,7 @@ func (context *StyleContext) Color() *gdk.RGBA {
 //
 // The function returns the following values:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 func (context *StyleContext) Display() *gdk.Display {
 	var _arg0 *C.GtkStyleContext // out
@@ -325,7 +322,7 @@ func (context *StyleContext) Display() *gdk.Display {
 //
 // The function returns the following values:
 //
-//    - margin: return value for the margin settings.
+//   - margin: return value for the margin settings.
 //
 func (context *StyleContext) Margin() *Border {
 	var _arg0 *C.GtkStyleContext // out
@@ -347,7 +344,7 @@ func (context *StyleContext) Margin() *Border {
 //
 // The function returns the following values:
 //
-//    - padding: return value for the padding settings.
+//   - padding: return value for the padding settings.
 //
 func (context *StyleContext) Padding() *Border {
 	var _arg0 *C.GtkStyleContext // out
@@ -369,7 +366,7 @@ func (context *StyleContext) Padding() *Border {
 //
 // The function returns the following values:
 //
-//    - gint: scale.
+//   - gint: scale.
 //
 func (context *StyleContext) Scale() int {
 	var _arg0 *C.GtkStyleContext // out
@@ -395,7 +392,7 @@ func (context *StyleContext) Scale() int {
 //
 // The function returns the following values:
 //
-//    - stateFlags: state flags.
+//   - stateFlags: state flags.
 //
 func (context *StyleContext) State() StateFlags {
 	var _arg0 *C.GtkStyleContext // out
@@ -417,11 +414,11 @@ func (context *StyleContext) State() StateFlags {
 //
 // The function takes the following parameters:
 //
-//    - className class name.
+//   - className class name.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if context has class_name defined.
+//   - ok: TRUE if context has class_name defined.
 //
 func (context *StyleContext) HasClass(className string) bool {
 	var _arg0 *C.GtkStyleContext // out
@@ -449,12 +446,12 @@ func (context *StyleContext) HasClass(className string) bool {
 //
 // The function takes the following parameters:
 //
-//    - colorName: color name to lookup.
+//   - colorName: color name to lookup.
 //
 // The function returns the following values:
 //
-//    - color: return location for the looked up color.
-//    - ok: TRUE if color_name was found and resolved, FALSE otherwise.
+//   - color: return location for the looked up color.
+//   - ok: TRUE if color_name was found and resolved, FALSE otherwise.
 //
 func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkStyleContext // out
@@ -485,7 +482,7 @@ func (context *StyleContext) LookupColor(colorName string) (*gdk.RGBA, bool) {
 //
 // The function takes the following parameters:
 //
-//    - className class name to remove.
+//   - className class name to remove.
 //
 func (context *StyleContext) RemoveClass(className string) {
 	var _arg0 *C.GtkStyleContext // out
@@ -504,7 +501,7 @@ func (context *StyleContext) RemoveClass(className string) {
 //
 // The function takes the following parameters:
 //
-//    - provider: GtkStyleProvider.
+//   - provider: GtkStyleProvider.
 //
 func (context *StyleContext) RemoveProvider(provider StyleProviderer) {
 	var _arg0 *C.GtkStyleContext  // out
@@ -557,7 +554,7 @@ func (context *StyleContext) Save() {
 //
 // The function takes the following parameters:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 func (context *StyleContext) SetDisplay(display *gdk.Display) {
 	var _arg0 *C.GtkStyleContext // out
@@ -575,7 +572,7 @@ func (context *StyleContext) SetDisplay(display *gdk.Display) {
 //
 // The function takes the following parameters:
 //
-//    - scale: scale.
+//   - scale: scale.
 //
 func (context *StyleContext) SetScale(scale int) {
 	var _arg0 *C.GtkStyleContext // out
@@ -593,7 +590,7 @@ func (context *StyleContext) SetScale(scale int) {
 //
 // The function takes the following parameters:
 //
-//    - flags: state to represent.
+//   - flags: state to represent.
 //
 func (context *StyleContext) SetState(flags StateFlags) {
 	var _arg0 *C.GtkStyleContext // out
@@ -614,16 +611,16 @@ func (context *StyleContext) SetState(flags StateFlags) {
 // Depending on the flags, more information may be included.
 //
 // This function is intended for testing and debugging of the CSS implementation
-// in GTK. There are no guarantees about the format of the returned string, it
-// may change.
+// in GTK. There are no guarantees about the format of the returned string,
+// it may change.
 //
 // The function takes the following parameters:
 //
-//    - flags flags that determine what to print.
+//   - flags flags that determine what to print.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string representing context.
+//   - utf8: newly allocated string representing context.
 //
 func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	var _arg0 *C.GtkStyleContext          // out
@@ -669,12 +666,12 @@ func (context *StyleContext) changed() {
 //
 // The function takes the following parameters:
 //
-//    - display: GdkDisplay.
-//    - provider: GtkStyleProvider.
-//    - priority of the style provider. The lower it is, the earlier it will be
-//      used in the style construction. Typically this will be in the range
-//      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
-//      GTK_STYLE_PROVIDER_PRIORITY_USER.
+//   - display: GdkDisplay.
+//   - provider: GtkStyleProvider.
+//   - priority of the style provider. The lower it is, the earlier it
+//     will be used in the style construction. Typically this will be
+//     in the range between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//     GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkDisplay       // out
@@ -696,8 +693,8 @@ func StyleContextAddProviderForDisplay(display *gdk.Display, provider StyleProvi
 //
 // The function takes the following parameters:
 //
-//    - display: GdkDisplay.
-//    - provider: GtkStyleProvider.
+//   - display: GdkDisplay.
+//   - provider: GtkStyleProvider.
 //
 func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StyleProviderer) {
 	var _arg1 *C.GdkDisplay       // out

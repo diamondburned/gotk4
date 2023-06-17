@@ -30,12 +30,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - filename: absolute pathname in the GLib file name encoding.
+//   - filename: absolute pathname in the GLib file name encoding.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string containing a rendition of the basename of
-//      the filename in valid UTF-8.
+//   - utf8: newly allocated string containing a rendition of the basename of
+//     the filename in valid UTF-8.
 //
 func FilenameDisplayBasename(filename string) string {
 	var _arg1 *C.gchar // out
@@ -55,8 +55,8 @@ func FilenameDisplayBasename(filename string) string {
 	return _utf8
 }
 
-// FilenameDisplayName converts a filename into a valid UTF-8 string. The
-// conversion is not necessarily reversible, so you should keep the original
+// FilenameDisplayName converts a filename into a valid UTF-8 string.
+// The conversion is not necessarily reversible, so you should keep the original
 // around and use the return value of this function only for display purposes.
 // Unlike g_filename_to_utf8(), the result is guaranteed to be non-NULL even if
 // the filename actually isn't in the GLib file name encoding.
@@ -73,12 +73,12 @@ func FilenameDisplayBasename(filename string) string {
 //
 // The function takes the following parameters:
 //
-//    - filename: pathname hopefully in the GLib file name encoding.
+//   - filename: pathname hopefully in the GLib file name encoding.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string containing a rendition of the filename in
-//      valid UTF-8.
+//   - utf8: newly allocated string containing a rendition of the filename in
+//     valid UTF-8.
 //
 func FilenameDisplayName(filename string) string {
 	var _arg1 *C.gchar // out
@@ -104,17 +104,17 @@ func FilenameDisplayName(filename string) string {
 // displayable representation of a filename, see g_filename_display_name().
 //
 // On Unix, the character sets are determined by consulting the environment
-// variables G_FILENAME_ENCODING and G_BROKEN_FILENAMES. On Windows, the
-// character set used in the GLib API is always UTF-8 and said environment
+// variables G_FILENAME_ENCODING and G_BROKEN_FILENAMES. On Windows,
+// the character set used in the GLib API is always UTF-8 and said environment
 // variables have no effect.
 //
 // G_FILENAME_ENCODING may be set to a comma-separated list of character set
-// names. The special token "\locale" is taken to mean the character set for the
-// [current locale][setlocale]. If G_FILENAME_ENCODING is not set, but
-// G_BROKEN_FILENAMES is, the character set of the current locale is taken as
-// the filename encoding. If neither environment variable is set, UTF-8 is taken
-// as the filename encoding, but the character set of the current locale is also
-// put in the list of encodings.
+// names. The special token "\locale" is taken to mean the character set
+// for the [current locale][setlocale]. If G_FILENAME_ENCODING is not set,
+// but G_BROKEN_FILENAMES is, the character set of the current locale is taken
+// as the filename encoding. If neither environment variable is set, UTF-8 is
+// taken as the filename encoding, but the character set of the current locale
+// is also put in the list of encodings.
 //
 // The returned charsets belong to GLib and must not be freed.
 //
@@ -124,9 +124,9 @@ func FilenameDisplayName(filename string) string {
 //
 // The function returns the following values:
 //
-//    - filenameCharsets: return location for the NULL-terminated list of
-//      encoding names.
-//    - ok: TRUE if the filename encoding is UTF-8.
+//   - filenameCharsets: return location for the NULL-terminated list of
+//     encoding names.
+//   - ok: TRUE if the filename encoding is UTF-8.
 //
 func GetFilenameCharsets() ([]string, bool) {
 	var _arg1 **C.gchar  // in
@@ -158,17 +158,17 @@ func GetFilenameCharsets() ([]string, bool) {
 }
 
 // URIListExtractURIs splits an URI list conforming to the text/uri-list mime
-// type defined in RFC 2483 into individual URIs, discarding any comments. The
-// URIs are not validated.
+// type defined in RFC 2483 into individual URIs, discarding any comments.
+// The URIs are not validated.
 //
 // The function takes the following parameters:
 //
-//    - uriList: URI list.
+//   - uriList: URI list.
 //
 // The function returns the following values:
 //
-//    - utf8s: newly allocated NULL-terminated list of strings holding the
-//      individual URIs. The array should be freed with g_strfreev().
+//   - utf8s: newly allocated NULL-terminated list of strings holding the
+//     individual URIs. The array should be freed with g_strfreev().
 //
 func URIListExtractURIs(uriList string) []string {
 	var _arg1 *C.gchar  // out

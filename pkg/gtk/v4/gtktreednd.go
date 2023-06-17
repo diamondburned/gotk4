@@ -49,12 +49,12 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - treeModel: TreeModel.
-//    - path: row in tree_model.
+//   - treeModel: TreeModel.
+//   - path: row in tree_model.
 //
 // The function returns the following values:
 //
-//    - contentProvider: new ContentProvider.
+//   - contentProvider: new ContentProvider.
 //
 func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.ContentProvider {
 	var _arg1 *C.GtkTreeModel       // out
@@ -87,14 +87,14 @@ func TreeCreateRowDragContent(treeModel TreeModeller, path *TreePath) *gdk.Conte
 //
 // The function takes the following parameters:
 //
-//    - value: #GValue.
+//   - value: #GValue.
 //
 // The function returns the following values:
 //
-//    - treeModel (optional): TreeModel.
-//    - path (optional): row in tree_model.
-//    - ok: TRUE if selection_data had target type GTK_TYPE_TREE_ROW_DATA is
-//      otherwise valid.
+//   - treeModel (optional): TreeModel.
+//   - path (optional): row in tree_model.
+//   - ok: TRUE if selection_data had target type GTK_TYPE_TREE_ROW_DATA is
+//     otherwise valid.
 //
 func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 	var _arg1 *C.GValue       // out
@@ -175,12 +175,12 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - dest: row to drop in front of.
-//    - value: data to drop.
+//   - dest: row to drop in front of.
+//   - value: data to drop.
 //
 // The function returns the following values:
 //
-//    - ok: whether a new row was created before position dest.
+//   - ok: whether a new row was created before position dest.
 //
 func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *coreglib.Value) bool {
 	var _arg0 *C.GtkTreeDragDest // out
@@ -214,12 +214,12 @@ func (dragDest *TreeDragDest) DragDataReceived(dest *TreePath, value *coreglib.V
 //
 // The function takes the following parameters:
 //
-//    - destPath: destination row.
-//    - value: data being dropped.
+//   - destPath: destination row.
+//   - value: data being dropped.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a drop is possible before dest_path.
+//   - ok: TRUE if a drop is possible before dest_path.
 //
 func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *coreglib.Value) bool {
 	var _arg0 *C.GtkTreeDragDest // out
@@ -253,12 +253,12 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *coregli
 //
 // The function takes the following parameters:
 //
-//    - dest: row to drop in front of.
-//    - value: data to drop.
+//   - dest: row to drop in front of.
+//   - value: data to drop.
 //
 // The function returns the following values:
 //
-//    - ok: whether a new row was created before position dest.
+//   - ok: whether a new row was created before position dest.
 //
 func (dragDest *TreeDragDest) dragDataReceived(dest *TreePath, value *coreglib.Value) bool {
 	gclass := (*C.GtkTreeDragDestIface)(coreglib.PeekParentClass(dragDest))
@@ -295,12 +295,12 @@ func (dragDest *TreeDragDest) dragDataReceived(dest *TreePath, value *coreglib.V
 //
 // The function takes the following parameters:
 //
-//    - destPath: destination row.
-//    - value: data being dropped.
+//   - destPath: destination row.
+//   - value: data being dropped.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a drop is possible before dest_path.
+//   - ok: TRUE if a drop is possible before dest_path.
 //
 func (dragDest *TreeDragDest) rowDropPossible(destPath *TreePath, value *coreglib.Value) bool {
 	gclass := (*C.GtkTreeDragDestIface)(coreglib.PeekParentClass(dragDest))
@@ -376,11 +376,11 @@ func marshalTreeDragSource(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - path: row that was being dragged.
+//   - path: row that was being dragged.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the row was successfully deleted.
+//   - ok: TRUE if the row was successfully deleted.
 //
 func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
@@ -408,11 +408,11 @@ func (dragSource *TreeDragSource) DragDataDelete(path *TreePath) bool {
 //
 // The function takes the following parameters:
 //
-//    - path: row that was dragged.
+//   - path: row that was dragged.
 //
 // The function returns the following values:
 //
-//    - contentProvider (optional) for the given path or NULL if none exists.
+//   - contentProvider (optional) for the given path or NULL if none exists.
 //
 func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvider {
 	var _arg0 *C.GtkTreeDragSource  // out
@@ -440,17 +440,17 @@ func (dragSource *TreeDragSource) DragDataGet(path *TreePath) *gdk.ContentProvid
 	return _contentProvider
 }
 
-// RowDraggable asks the TreeDragSource whether a particular row can be used as
-// the source of a DND operation. If the source doesn’t implement this
+// RowDraggable asks the TreeDragSource whether a particular row can be used
+// as the source of a DND operation. If the source doesn’t implement this
 // interface, the row is assumed draggable.
 //
 // The function takes the following parameters:
 //
-//    - path: row on which user is initiating a drag.
+//   - path: row on which user is initiating a drag.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the row can be dragged.
+//   - ok: TRUE if the row can be dragged.
 //
 func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 	var _arg0 *C.GtkTreeDragSource // out
@@ -480,11 +480,11 @@ func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 //
 // The function takes the following parameters:
 //
-//    - path: row that was being dragged.
+//   - path: row that was being dragged.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the row was successfully deleted.
+//   - ok: TRUE if the row was successfully deleted.
 //
 func (dragSource *TreeDragSource) dragDataDelete(path *TreePath) bool {
 	gclass := (*C.GtkTreeDragSourceIface)(coreglib.PeekParentClass(dragSource))
@@ -515,11 +515,11 @@ func (dragSource *TreeDragSource) dragDataDelete(path *TreePath) bool {
 //
 // The function takes the following parameters:
 //
-//    - path: row that was dragged.
+//   - path: row that was dragged.
 //
 // The function returns the following values:
 //
-//    - contentProvider (optional) for the given path or NULL if none exists.
+//   - contentProvider (optional) for the given path or NULL if none exists.
 //
 func (dragSource *TreeDragSource) dragDataGet(path *TreePath) *gdk.ContentProvider {
 	gclass := (*C.GtkTreeDragSourceIface)(coreglib.PeekParentClass(dragSource))
@@ -550,17 +550,17 @@ func (dragSource *TreeDragSource) dragDataGet(path *TreePath) *gdk.ContentProvid
 	return _contentProvider
 }
 
-// rowDraggable asks the TreeDragSource whether a particular row can be used as
-// the source of a DND operation. If the source doesn’t implement this
+// rowDraggable asks the TreeDragSource whether a particular row can be used
+// as the source of a DND operation. If the source doesn’t implement this
 // interface, the row is assumed draggable.
 //
 // The function takes the following parameters:
 //
-//    - path: row on which user is initiating a drag.
+//   - path: row on which user is initiating a drag.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the row can be dragged.
+//   - ok: TRUE if the row can be dragged.
 //
 func (dragSource *TreeDragSource) rowDraggable(path *TreePath) bool {
 	gclass := (*C.GtkTreeDragSourceIface)(coreglib.PeekParentClass(dragSource))

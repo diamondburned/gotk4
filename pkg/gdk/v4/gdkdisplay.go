@@ -123,11 +123,11 @@ func (display *Display) Close() {
 //
 // The function takes the following parameters:
 //
-//    - device: GdkDevice.
+//   - device: GdkDevice.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if there is a grab in effect for device.
+//   - ok: TRUE if there is a grab in effect for device.
 //
 func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 	var _arg0 *C.GdkDisplay // out
@@ -154,8 +154,8 @@ func (display *Display) DeviceIsGrabbed(device Devicer) bool {
 //
 // This happens automatically when the main loop blocks waiting for new events,
 // but if your application is drawing without returning control to the main
-// loop, you may need to call this function explicitly. A common case where this
-// function needs to be called is when an application is executing drawing
+// loop, you may need to call this function explicitly. A common case where
+// this function needs to be called is when an application is executing drawing
 // commands from a thread other than the thread where the main loop is running.
 //
 // This is most useful for X11. On windowing systems where requests are handled
@@ -174,8 +174,8 @@ func (display *Display) Flush() {
 //
 // The function returns the following values:
 //
-//    - appLaunchContext: new GdkAppLaunchContext for display. Free with
-//      g_object_unref() when done.
+//   - appLaunchContext: new GdkAppLaunchContext for display. Free with
+//     g_object_unref() when done.
 //
 func (display *Display) AppLaunchContext() *AppLaunchContext {
 	var _arg0 *C.GdkDisplay          // out
@@ -197,7 +197,7 @@ func (display *Display) AppLaunchContext() *AppLaunchContext {
 //
 // The function returns the following values:
 //
-//    - clipboard display's clipboard.
+//   - clipboard display's clipboard.
 //
 func (display *Display) Clipboard() *Clipboard {
 	var _arg0 *C.GdkDisplay   // out
@@ -222,7 +222,7 @@ func (display *Display) Clipboard() *Clipboard {
 //
 // The function returns the following values:
 //
-//    - seat (optional): default seat.
+//   - seat (optional): default seat.
 //
 func (display *Display) DefaultSeat() Seater {
 	var _arg0 *C.GdkDisplay // out
@@ -262,11 +262,11 @@ func (display *Display) DefaultSeat() Seater {
 //
 // The function takes the following parameters:
 //
-//    - surface: GdkSurface.
+//   - surface: GdkSurface.
 //
 // The function returns the following values:
 //
-//    - monitor with the largest overlap with surface.
+//   - monitor with the largest overlap with surface.
 //
 func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 	var _arg0 *C.GdkDisplay // out
@@ -297,7 +297,7 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 //
 // The function returns the following values:
 //
-//    - listModel of GdkMonitor.
+//   - listModel of GdkMonitor.
 //
 func (self *Display) Monitors() *gio.ListModel {
 	var _arg0 *C.GdkDisplay // out
@@ -324,8 +324,8 @@ func (self *Display) Monitors() *gio.ListModel {
 //
 // The function returns the following values:
 //
-//    - utf8: string representing the display name. This string is owned by GDK
-//      and should not be modified or freed.
+//   - utf8: string representing the display name. This string is owned by GDK
+//     and should not be modified or freed.
 //
 func (display *Display) Name() string {
 	var _arg0 *C.GdkDisplay // out
@@ -350,7 +350,7 @@ func (display *Display) Name() string {
 //
 // The function returns the following values:
 //
-//    - clipboard: primary clipboard.
+//   - clipboard: primary clipboard.
 //
 func (display *Display) PrimaryClipboard() *Clipboard {
 	var _arg0 *C.GdkDisplay   // out
@@ -373,13 +373,13 @@ func (display *Display) PrimaryClipboard() *Clipboard {
 //
 // The function takes the following parameters:
 //
-//    - name of the setting.
-//    - value: location to store the value of the setting.
+//   - name of the setting.
+//   - value: location to store the value of the setting.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the setting existed and a value was stored in value, FALSE
-//      otherwise.
+//   - ok: TRUE if the setting existed and a value was stored in value, FALSE
+//     otherwise.
 //
 func (display *Display) Setting(name string, value *coreglib.Value) bool {
 	var _arg0 *C.GdkDisplay // out
@@ -411,7 +411,7 @@ func (display *Display) Setting(name string, value *coreglib.Value) bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): startup notification ID for display, or NULL.
+//   - utf8 (optional): startup notification ID for display, or NULL.
 //
 func (display *Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
@@ -435,7 +435,7 @@ func (display *Display) StartupNotificationID() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the display is closed.
+//   - ok: TRUE if the display is closed.
 //
 func (display *Display) IsClosed() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -467,8 +467,8 @@ func (display *Display) IsClosed() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether surfaces with RGBA visuals can reasonably be expected to have
-//      their alpha channels drawn correctly on the screen.
+//   - ok: whether surfaces with RGBA visuals can reasonably be expected to have
+//     their alpha channels drawn correctly on the screen.
 //
 func (display *Display) IsComposited() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -501,8 +501,8 @@ func (display *Display) IsComposited() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if surfaces are created with an alpha channel or FALSE if the
-//      display does not support this functionality.
+//   - ok: TRUE if surfaces are created with an alpha channel or FALSE if the
+//     display does not support this functionality.
 //
 func (display *Display) IsRGBA() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -526,7 +526,7 @@ func (display *Display) IsRGBA() bool {
 //
 // The function returns the following values:
 //
-//    - list: the list of seats known to the GdkDisplay.
+//   - list: the list of seats known to the GdkDisplay.
 //
 func (display *Display) ListSeats() []Seater {
 	var _arg0 *C.GdkDisplay // out
@@ -577,13 +577,13 @@ func (display *Display) ListSeats() []Seater {
 //
 // The function takes the following parameters:
 //
-//    - keycode: keycode.
+//   - keycode: keycode.
 //
 // The function returns the following values:
 //
-//    - keys (optional): return location for array of GdkKeymapKey, or NULL.
-//    - keyvals (optional): return location for array of keyvals, or NULL.
-//    - ok: TRUE if there were any entries.
+//   - keys (optional): return location for array of GdkKeymapKey, or NULL.
+//   - keyvals (optional): return location for array of keyvals, or NULL.
+//   - ok: TRUE if there were any entries.
 //
 func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay   // out
@@ -655,12 +655,12 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 //
 // The function takes the following parameters:
 //
-//    - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
+//   - keyval: keyval, such as GDK_KEY_a, GDK_KEY_Up, GDK_KEY_Return, etc.
 //
 // The function returns the following values:
 //
-//    - keys: return location for an array of GdkKeymapKey.
-//    - ok: TRUE if keys were found and returned.
+//   - keys: return location for an array of GdkKeymapKey.
+//   - ok: TRUE if keys were found and returned.
 //
 func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 	var _arg0 *C.GdkDisplay   // out
@@ -703,14 +703,14 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 // NotifyStartupComplete indicates to the GUI environment that the application
 // has finished loading, using a given identifier.
 //
-// GTK will call this function automatically for gtk.Window with custom
-// startup-notification identifier unless
+// GTK will call this function automatically for gtk.Window
+// with custom startup-notification identifier unless
 // gtk.Window.SetAutoStartupNotification() is called to disable that feature.
 //
 // The function takes the following parameters:
 //
-//    - startupId: startup-notification identifier, for which notification
-//      process should be completed.
+//   - startupId: startup-notification identifier, for which notification
+//     process should be completed.
 //
 func (display *Display) NotifyStartupComplete(startupId string) {
 	var _arg0 *C.GdkDisplay // out
@@ -733,7 +733,7 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 //
 // The function takes the following parameters:
 //
-//    - event: GdkEvent.
+//   - event: GdkEvent.
 //
 func (display *Display) PutEvent(event Eventer) {
 	var _arg0 *C.GdkDisplay // out
@@ -756,7 +756,7 @@ func (display *Display) PutEvent(event Eventer) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if surfaces with modified input shape are supported.
+//   - ok: TRUE if surfaces with modified input shape are supported.
 //
 func (display *Display) SupportsInputShapes() bool {
 	var _arg0 *C.GdkDisplay // out
@@ -779,8 +779,8 @@ func (display *Display) SupportsInputShapes() bool {
 // Sync flushes any requests queued for the windowing system and waits until all
 // requests have been handled.
 //
-// This is often used for making sure that the display is synchronized with the
-// current state of the program. Calling gdk.Display.Sync() before
+// This is often used for making sure that the display is synchronized
+// with the current state of the program. Calling gdk.Display.Sync() before
 // gdkx11.Display.ErrorTrapPop() makes sure that any errors generated from
 // earlier requests are handled before the error trap is removed.
 //
@@ -802,32 +802,32 @@ func (display *Display) Sync() {
 // application use are returned in consumed_modifiers.
 //
 // The effective_group is the group that was actually used for the translation;
-// some keys such as Enter are not affected by the active keyboard group. The
-// level is derived from state.
+// some keys such as Enter are not affected by the active keyboard group.
+// The level is derived from state.
 //
-// consumed_modifiers gives modifiers that should be masked out from state when
-// comparing this key press to a keyboard shortcut. For instance, on a US
-// keyboard, the plus symbol is shifted, so when comparing a key press to a
+// consumed_modifiers gives modifiers that should be masked out from state
+// when comparing this key press to a keyboard shortcut. For instance, on a
+// US keyboard, the plus symbol is shifted, so when comparing a key press to a
 // <Control>plus accelerator <Shift> should be masked out.
 //
-// This function should rarely be needed, since GdkEventKey already contains the
-// translated keyval. It is exported for the benefit of virtualized test
+// This function should rarely be needed, since GdkEventKey already contains
+// the translated keyval. It is exported for the benefit of virtualized test
 // environments.
 //
 // The function takes the following parameters:
 //
-//    - keycode: keycode.
-//    - state: modifier state.
-//    - group: active keyboard group.
+//   - keycode: keycode.
+//   - state: modifier state.
+//   - group: active keyboard group.
 //
 // The function returns the following values:
 //
-//    - keyval (optional): return location for keyval, or NULL.
-//    - effectiveGroup (optional): return location for effective group, or NULL.
-//    - level (optional): return location for level, or NULL.
-//    - consumed (optional): return location for modifiers that were used to
-//      determine the group or level, or NULL.
-//    - ok: TRUE if there was a keyval bound to keycode/state/group.
+//   - keyval (optional): return location for keyval, or NULL.
+//   - effectiveGroup (optional): return location for effective group, or NULL.
+//   - level (optional): return location for level, or NULL.
+//   - consumed (optional): return location for modifiers that were used to
+//     determine the group or level, or NULL.
+//   - ok: TRUE if there was a keyval bound to keycode/state/group.
 //
 func (display *Display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup, level int, consumed ModifierType, ok bool) {
 	var _arg0 *C.GdkDisplay     // out
@@ -875,7 +875,7 @@ func (display *Display) TranslateKey(keycode uint, state ModifierType, group int
 //
 // The function returns the following values:
 //
-//    - display (optional): GdkDisplay, or NULL if there is no default display.
+//   - display (optional): GdkDisplay, or NULL if there is no default display.
 //
 func DisplayGetDefault() *Display {
 	var _cret *C.GdkDisplay // in
@@ -895,12 +895,12 @@ func DisplayGetDefault() *Display {
 //
 // The function takes the following parameters:
 //
-//    - displayName: name of the display to open.
+//   - displayName: name of the display to open.
 //
 // The function returns the following values:
 //
-//    - display (optional): GdkDisplay, or NULL if the display could not be
-//      opened.
+//   - display (optional): GdkDisplay, or NULL if the display could not be
+//     opened.
 //
 func DisplayOpen(displayName string) *Display {
 	var _arg1 *C.char       // out

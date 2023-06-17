@@ -31,8 +31,8 @@ func init() {
 // Not every value in this enumeration makes sense for every usage of
 // PangoDirection; for example, the return value of unichar_direction and
 // find_base_dir cannot be PANGO_DIRECTION_WEAK_LTR or PANGO_DIRECTION_WEAK_RTL,
-// since every character is either neutral or has a strong direction; on the
-// other hand PANGO_DIRECTION_NEUTRAL doesn't make sense to pass to
+// since every character is either neutral or has a strong direction;
+// on the other hand PANGO_DIRECTION_NEUTRAL doesn't make sense to pass to
 // itemize_with_base_dir.
 //
 // The PANGO_DIRECTION_TTB_LTR, PANGO_DIRECTION_TTB_RTL values come from an

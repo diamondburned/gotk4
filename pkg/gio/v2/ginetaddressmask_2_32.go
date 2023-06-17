@@ -84,12 +84,12 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - addr: Address.
-//    - length: number of bits of addr to use.
+//   - addr: Address.
+//   - length: number of bits of addr to use.
 //
 // The function returns the following values:
 //
-//    - inetAddressMask: new AddressMask, or NULL on error.
+//   - inetAddressMask: new AddressMask, or NULL on error.
 //
 func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error) {
 	var _arg1 *C.GInetAddress     // out
@@ -116,18 +116,18 @@ func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error
 }
 
 // NewInetAddressMaskFromString parses mask_string as an IP address and
-// (optional) length, and creates a new AddressMask. The length, if present, is
-// delimited by a "/". If it is not present, then the length is assumed to be
+// (optional) length, and creates a new AddressMask. The length, if present,
+// is delimited by a "/". If it is not present, then the length is assumed to be
 // the full length of the address.
 //
 // The function takes the following parameters:
 //
-//    - maskString: IP address or address/length string.
+//   - maskString: IP address or address/length string.
 //
 // The function returns the following values:
 //
-//    - inetAddressMask: new AddressMask corresponding to string, or NULL on
-//      error.
+//   - inetAddressMask: new AddressMask corresponding to string, or NULL on
+//     error.
 //
 func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	var _arg1 *C.gchar            // out
@@ -155,11 +155,11 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 //
 // The function takes the following parameters:
 //
-//    - mask2: another AddressMask.
+//   - mask2: another AddressMask.
 //
 // The function returns the following values:
 //
-//    - ok: whether mask and mask2 are the same mask.
+//   - ok: whether mask and mask2 are the same mask.
 //
 func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
@@ -186,7 +186,7 @@ func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 //
 // The function returns the following values:
 //
-//    - inetAddress mask's base address.
+//   - inetAddress mask's base address.
 //
 func (mask *InetAddressMask) Address() *InetAddress {
 	var _arg0 *C.GInetAddressMask // out
@@ -208,7 +208,7 @@ func (mask *InetAddressMask) Address() *InetAddress {
 //
 // The function returns the following values:
 //
-//    - socketFamily of mask's address.
+//   - socketFamily of mask's address.
 //
 func (mask *InetAddressMask) Family() SocketFamily {
 	var _arg0 *C.GInetAddressMask // out
@@ -230,7 +230,7 @@ func (mask *InetAddressMask) Family() SocketFamily {
 //
 // The function returns the following values:
 //
-//    - guint mask's length.
+//   - guint mask's length.
 //
 func (mask *InetAddressMask) Length() uint {
 	var _arg0 *C.GInetAddressMask // out
@@ -252,11 +252,11 @@ func (mask *InetAddressMask) Length() uint {
 //
 // The function takes the following parameters:
 //
-//    - address: Address.
+//   - address: Address.
 //
 // The function returns the following values:
 //
-//    - ok: whether address falls within the range described by mask.
+//   - ok: whether address falls within the range described by mask.
 //
 func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 	var _arg0 *C.GInetAddressMask // out
@@ -283,7 +283,7 @@ func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 //
 // The function returns the following values:
 //
-//    - utf8: string corresponding to mask.
+//   - utf8: string corresponding to mask.
 //
 func (mask *InetAddressMask) String() string {
 	var _arg0 *C.GInetAddressMask // out

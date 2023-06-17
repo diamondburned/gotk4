@@ -64,8 +64,8 @@ const STYLE_PROVIDER_PRIORITY_THEME = 200
 // word.
 const STYLE_PROVIDER_PRIORITY_USER = 800
 
-// StyleProvider is an interface used to provide style information to a
-// StyleContext. See gtk_style_context_add_provider() and
+// StyleProvider is an interface used to provide style information
+// to a StyleContext. See gtk_style_context_add_provider() and
 // gtk_style_context_add_provider_for_screen().
 //
 // StyleProvider wraps an interface. This means the user can get the
@@ -83,11 +83,11 @@ var (
 type StyleProviderer interface {
 	coreglib.Objector
 
-	// IconFactory returns the IconFactory defined to be in use for path, or
-	// NULL if none is defined.
+	// IconFactory returns the IconFactory defined to be in use for path,
+	// or NULL if none is defined.
 	IconFactory(path *WidgetPath) *IconFactory
-	// Style returns the style settings affecting a widget defined by path, or
-	// NULL if provider doesn’t contemplate styling path.
+	// Style returns the style settings affecting a widget defined by path,
+	// or NULL if provider doesn’t contemplate styling path.
 	Style(path *WidgetPath) *StyleProperties
 }
 
@@ -110,11 +110,11 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - path to query.
+//   - path to query.
 //
 // The function returns the following values:
 //
-//    - iconFactory (optional): icon factory to use for path, or NULL.
+//   - iconFactory (optional): icon factory to use for path, or NULL.
 //
 func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 	var _arg0 *C.GtkStyleProvider // out
@@ -145,11 +145,11 @@ func (provider *StyleProvider) IconFactory(path *WidgetPath) *IconFactory {
 //
 // The function takes the following parameters:
 //
-//    - path to query.
+//   - path to query.
 //
 // The function returns the following values:
 //
-//    - styleProperties (optional) containing the style settings affecting path.
+//   - styleProperties (optional) containing the style settings affecting path.
 //
 func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 	var _arg0 *C.GtkStyleProvider   // out
@@ -179,11 +179,11 @@ func (provider *StyleProvider) Style(path *WidgetPath) *StyleProperties {
 //
 // The function takes the following parameters:
 //
-//    - path to query.
+//   - path to query.
 //
 // The function returns the following values:
 //
-//    - iconFactory (optional): icon factory to use for path, or NULL.
+//   - iconFactory (optional): icon factory to use for path, or NULL.
 //
 func (provider *StyleProvider) iconFactory(path *WidgetPath) *IconFactory {
 	gclass := (*C.GtkStyleProviderIface)(coreglib.PeekParentClass(provider))
@@ -217,11 +217,11 @@ func (provider *StyleProvider) iconFactory(path *WidgetPath) *IconFactory {
 //
 // The function takes the following parameters:
 //
-//    - path to query.
+//   - path to query.
 //
 // The function returns the following values:
 //
-//    - styleProperties (optional) containing the style settings affecting path.
+//   - styleProperties (optional) containing the style settings affecting path.
 //
 func (provider *StyleProvider) style(path *WidgetPath) *StyleProperties {
 	gclass := (*C.GtkStyleProviderIface)(coreglib.PeekParentClass(provider))

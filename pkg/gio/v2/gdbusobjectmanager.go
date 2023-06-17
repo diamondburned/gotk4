@@ -77,8 +77,8 @@ var (
 type DBusObjectManagerer interface {
 	coreglib.Objector
 
-	// Interface gets the interface proxy for interface_name at object_path, if
-	// any.
+	// Interface gets the interface proxy for interface_name at object_path,
+	// if any.
 	Interface(objectPath, interfaceName string) *DBusInterface
 	// GetObject gets the BusObjectProxy at object_path, if any.
 	GetObject(objectPath string) *DBusObject
@@ -140,12 +140,12 @@ func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjecto
 //
 // The function takes the following parameters:
 //
-//    - objectPath: object path to look up.
-//    - interfaceName d-Bus interface name to look up.
+//   - objectPath: object path to look up.
+//   - interfaceName d-Bus interface name to look up.
 //
 // The function returns the following values:
 //
-//    - dBusInterface instance or NULL. Free with g_object_unref().
+//   - dBusInterface instance or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *DBusInterface {
 	var _arg0 *C.GDBusObjectManager // out
@@ -175,11 +175,11 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *D
 //
 // The function takes the following parameters:
 //
-//    - objectPath: object path to look up.
+//   - objectPath: object path to look up.
 //
 // The function returns the following values:
 //
-//    - dBusObject or NULL. Free with g_object_unref().
+//   - dBusObject or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 	var _arg0 *C.GDBusObjectManager // out
@@ -205,7 +205,7 @@ func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 //
 // The function returns the following values:
 //
-//    - utf8: string owned by manager. Do not free.
+//   - utf8: string owned by manager. Do not free.
 //
 func (manager *DBusObjectManager) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
@@ -227,8 +227,8 @@ func (manager *DBusObjectManager) ObjectPath() string {
 //
 // The function returns the following values:
 //
-//    - list of BusObject objects. The returned list should be freed with
-//      g_list_free() after each element has been freed with g_object_unref().
+//   - list of BusObject objects. The returned list should be freed with
+//     g_list_free() after each element has been freed with g_object_unref().
 //
 func (manager *DBusObjectManager) Objects() []*DBusObject {
 	var _arg0 *C.GDBusObjectManager // out
@@ -256,12 +256,12 @@ func (manager *DBusObjectManager) Objects() []*DBusObject {
 //
 // The function takes the following parameters:
 //
-//    - objectPath: object path to look up.
-//    - interfaceName d-Bus interface name to look up.
+//   - objectPath: object path to look up.
+//   - interfaceName d-Bus interface name to look up.
 //
 // The function returns the following values:
 //
-//    - dBusInterface instance or NULL. Free with g_object_unref().
+//   - dBusInterface instance or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) iface(objectPath, interfaceName string) *DBusInterface {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
@@ -294,11 +294,11 @@ func (manager *DBusObjectManager) iface(objectPath, interfaceName string) *DBusI
 //
 // The function takes the following parameters:
 //
-//    - objectPath: object path to look up.
+//   - objectPath: object path to look up.
 //
 // The function returns the following values:
 //
-//    - dBusObject or NULL. Free with g_object_unref().
+//   - dBusObject or NULL. Free with g_object_unref().
 //
 func (manager *DBusObjectManager) getObject(objectPath string) *DBusObject {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
@@ -327,7 +327,7 @@ func (manager *DBusObjectManager) getObject(objectPath string) *DBusObject {
 //
 // The function returns the following values:
 //
-//    - utf8: string owned by manager. Do not free.
+//   - utf8: string owned by manager. Do not free.
 //
 func (manager *DBusObjectManager) objectPath() string {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
@@ -352,8 +352,8 @@ func (manager *DBusObjectManager) objectPath() string {
 //
 // The function returns the following values:
 //
-//    - list of BusObject objects. The returned list should be freed with
-//      g_list_free() after each element has been freed with g_object_unref().
+//   - list of BusObject objects. The returned list should be freed with
+//     g_list_free() after each element has been freed with g_object_unref().
 //
 func (manager *DBusObjectManager) objects() []*DBusObject {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
@@ -382,8 +382,8 @@ func (manager *DBusObjectManager) objects() []*DBusObject {
 
 // The function takes the following parameters:
 //
-//    - object
-//    - interface_
+//   - object
+//   - interface_
 //
 func (manager *DBusObjectManager) interfaceAdded(object DBusObjector, interface_ DBusInterfacer) {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
@@ -405,8 +405,8 @@ func (manager *DBusObjectManager) interfaceAdded(object DBusObjector, interface_
 
 // The function takes the following parameters:
 //
-//    - object
-//    - interface_
+//   - object
+//   - interface_
 //
 func (manager *DBusObjectManager) interfaceRemoved(object DBusObjector, interface_ DBusInterfacer) {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))

@@ -81,8 +81,8 @@ func init() {
 
 // TLSDatabaseOverrides contains methods that are overridable.
 type TLSDatabaseOverrides struct {
-	// CreateCertificateHandle: create a handle string for the certificate. The
-	// database will only be able to create a handle for certificates that
+	// CreateCertificateHandle: create a handle string for the certificate.
+	// The database will only be able to create a handle for certificates that
 	// originate from the database. In cases where the database cannot create a
 	// handle for a certificate, NULL will be returned.
 	//
@@ -92,18 +92,18 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - certificate for which to create a handle.
+	//   - certificate for which to create a handle.
 	//
 	// The function returns the following values:
 	//
-	//    - utf8 (optional): newly allocated string containing the handle.
+	//   - utf8 (optional): newly allocated string containing the handle.
 	//
 	CreateCertificateHandle func(certificate TLSCertificater) string
 	// LookupCertificateForHandle: look up a certificate by its handle.
 	//
 	// The handle should have been created by calling
-	// g_tls_database_create_certificate_handle() on a Database object of the
-	// same TLS backend. The handle is designed to remain valid across
+	// g_tls_database_create_certificate_handle() on a Database object of
+	// the same TLS backend. The handle is designed to remain valid across
 	// instantiations of the database.
 	//
 	// If the handle is no longer valid, or does not point to a certificate in
@@ -115,19 +115,19 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional) or NULL.
-	//    - handle: certificate handle.
-	//    - interaction (optional): used to interact with the user if necessary.
-	//    - flags flags which affect the lookup.
+	//   - ctx (optional) or NULL.
+	//   - handle: certificate handle.
+	//   - interaction (optional): used to interact with the user if necessary.
+	//   - flags flags which affect the lookup.
 	//
 	// The function returns the following values:
 	//
-	//    - tlsCertificate (optional): newly allocated Certificate, or NULL. Use
-	//      g_object_unref() to release the certificate.
+	//   - tlsCertificate (optional): newly allocated Certificate, or NULL.
+	//     Use g_object_unref() to release the certificate.
 	//
 	LookupCertificateForHandle func(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
-	// LookupCertificateForHandleFinish: finish an asynchronous lookup of a
-	// certificate by its handle. See
+	// LookupCertificateForHandleFinish: finish an
+	// asynchronous lookup of a certificate by its handle. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
 	//
 	// If the handle is no longer valid, or does not point to a certificate in
@@ -135,12 +135,12 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - tlsCertificate: newly allocated Certificate object. Use
-	//      g_object_unref() to release the certificate.
+	//   - tlsCertificate: newly allocated Certificate object. Use
+	//     g_object_unref() to release the certificate.
 	//
 	LookupCertificateForHandleFinish func(result AsyncResulter) (TLSCertificater, error)
 	// LookupCertificateIssuer: look up the issuer of certificate in the
@@ -155,15 +155,15 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional) or NULL.
-	//    - certificate: Certificate.
-	//    - interaction (optional): used to interact with the user if necessary.
-	//    - flags which affect the lookup operation.
+	//   - ctx (optional) or NULL.
+	//   - certificate: Certificate.
+	//   - interaction (optional): used to interact with the user if necessary.
+	//   - flags which affect the lookup operation.
 	//
 	// The function returns the following values:
 	//
-	//    - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
-	//      g_object_unref() to release the certificate.
+	//   - tlsCertificate: newly allocated issuer Certificate, or NULL.
+	//     Use g_object_unref() to release the certificate.
 	//
 	LookupCertificateIssuer func(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
 	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
@@ -172,12 +172,12 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
-	//      g_object_unref() to release the certificate.
+	//   - tlsCertificate: newly allocated issuer Certificate, or NULL.
+	//     Use g_object_unref() to release the certificate.
 	//
 	LookupCertificateIssuerFinish func(result AsyncResulter) (TLSCertificater, error)
 	// LookupCertificatesIssuedBy: look up certificates issued by this issuer in
@@ -189,16 +189,16 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional) or NULL.
-	//    - issuerRawDn which holds the DER encoded issuer DN.
-	//    - interaction (optional): used to interact with the user if necessary.
-	//    - flags flags which affect the lookup operation.
+	//   - ctx (optional) or NULL.
+	//   - issuerRawDn which holds the DER encoded issuer DN.
+	//   - interaction (optional): used to interact with the user if necessary.
+	//   - flags flags which affect the lookup operation.
 	//
 	// The function returns the following values:
 	//
-	//    - list: newly allocated list of Certificate objects. Use
-	//      g_object_unref() on each certificate, and g_list_free() on the
-	//      release the list.
+	//   - list: newly allocated list of Certificate objects. Use
+	//     g_object_unref() on each certificate, and g_list_free() on the
+	//     release the list.
 	//
 	LookupCertificatesIssuedBy func(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error)
 	// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
@@ -207,34 +207,34 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - list: newly allocated list of Certificate objects. Use
-	//      g_object_unref() on each certificate, and g_list_free() on the
-	//      release the list.
+	//   - list: newly allocated list of Certificate objects. Use
+	//     g_object_unref() on each certificate, and g_list_free() on the
+	//     release the list.
 	//
 	LookupCertificatesIssuedByFinish func(result AsyncResulter) ([]TLSCertificater, error)
 	// VerifyChain determines the validity of a certificate chain after looking
 	// up and adding any missing certificates to the chain.
 	//
 	// chain is a chain of Certificate objects each pointing to the next
-	// certificate in the chain by its Certificate:issuer property. The chain
-	// may initially consist of one or more certificates. After the verification
-	// process is complete, chain may be modified by adding missing
+	// certificate in the chain by its Certificate:issuer property.
+	// The chain may initially consist of one or more certificates. After the
+	// verification process is complete, chain may be modified by adding missing
 	// certificates, or removing extra certificates. If a certificate anchor was
 	// found, then it is added to the chain.
 	//
-	// purpose describes the purpose (or usage) for which the certificate is
-	// being used. Typically purpose will be set to
+	// purpose describes the purpose (or usage) for which the
+	// certificate is being used. Typically purpose will be set to
 	// TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER which means that the certificate
 	// is being used to authenticate a server (and we are acting as the client).
 	//
 	// The identity is used to ensure the server certificate is valid for the
 	// expected peer identity. If the identity does not match the certificate,
-	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value. If
-	// identity is NULL, that bit will never be set in the return value. The
+	// G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value.
+	// If identity is NULL, that bit will never be set in the return value. The
 	// peer identity may also be used to check for pinned certificates (trust
 	// exceptions) in the database. These may override the normal verification
 	// process on a host-by-host basis.
@@ -255,21 +255,21 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional) or NULL.
-	//    - chain: Certificate chain.
-	//    - purpose that this certificate chain will be used for.
-	//    - identity (optional): expected peer identity.
-	//    - interaction (optional): used to interact with the user if necessary.
-	//    - flags: additional verify flags.
+	//   - ctx (optional) or NULL.
+	//   - chain: Certificate chain.
+	//   - purpose that this certificate chain will be used for.
+	//   - identity (optional): expected peer identity.
+	//   - interaction (optional): used to interact with the user if necessary.
+	//   - flags: additional verify flags.
 	//
 	// The function returns the following values:
 	//
-	//    - tlsCertificateFlags: appropriate CertificateFlags which represents
-	//      the result of verification.
+	//   - tlsCertificateFlags: appropriate CertificateFlags which represents
+	//     the result of verification.
 	//
 	VerifyChain func(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
-	// VerifyChainFinish: finish an asynchronous verify chain operation. See
-	// g_tls_database_verify_chain() for more information.
+	// VerifyChainFinish: finish an asynchronous verify chain operation.
+	// See g_tls_database_verify_chain() for more information.
 	//
 	// If chain is found to be valid, then the return value will be 0. If chain
 	// is found to be invalid, then the return value will indicate the problems
@@ -281,12 +281,12 @@ type TLSDatabaseOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - tlsCertificateFlags: appropriate CertificateFlags which represents
-	//      the result of verification.
+	//   - tlsCertificateFlags: appropriate CertificateFlags which represents
+	//     the result of verification.
 	//
 	VerifyChainFinish func(result AsyncResulter) (TLSCertificateFlags, error)
 }
@@ -309,11 +309,11 @@ func defaultTLSDatabaseOverrides(v *TLSDatabase) TLSDatabaseOverrides {
 // certificate or key store. It is an abstract base class which TLS library
 // specific subtypes override.
 //
-// A Database may be accessed from multiple threads by the TLS backend. All
-// implementations are required to be fully thread-safe.
+// A Database may be accessed from multiple threads by the TLS backend.
+// All implementations are required to be fully thread-safe.
 //
-// Most common client applications will not directly interact with Database. It
-// is used internally by Connection.
+// Most common client applications will not directly interact with Database.
+// It is used internally by Connection.
 type TLSDatabase struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -412,17 +412,17 @@ func BaseTLSDatabase(obj TLSDatabaser) *TLSDatabase {
 // from the database. In cases where the database cannot create a handle for a
 // certificate, NULL will be returned.
 //
-// This handle should be stable across various instances of the application, and
-// between applications. If a certificate is modified in the database, then it
-// is not guaranteed that this handle will continue to point to it.
+// This handle should be stable across various instances of the application,
+// and between applications. If a certificate is modified in the database,
+// then it is not guaranteed that this handle will continue to point to it.
 //
 // The function takes the following parameters:
 //
-//    - certificate for which to create a handle.
+//   - certificate for which to create a handle.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string containing the handle.
+//   - utf8 (optional): newly allocated string containing the handle.
 //
 func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) string {
 	var _arg0 *C.GTlsDatabase    // out
@@ -462,15 +462,15 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - handle: certificate handle.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags flags which affect the lookup.
+//   - ctx (optional) or NULL.
+//   - handle: certificate handle.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup.
 //
 // The function returns the following values:
 //
-//    - tlsCertificate (optional): newly allocated Certificate, or NULL. Use
-//      g_object_unref() to release the certificate.
+//   - tlsCertificate (optional): newly allocated Certificate, or NULL.
+//     Use g_object_unref() to release the certificate.
 //
 func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase           // out
@@ -533,11 +533,11 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - handle: certificate handle.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags flags which affect the lookup.
-//    - callback (optional) to call when the operation completes.
+//   - ctx (optional) or NULL.
+//   - handle: certificate handle.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup.
+//   - callback (optional) to call when the operation completes.
 //
 func (self *TLSDatabase) LookupCertificateForHandleAsync(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
@@ -583,12 +583,12 @@ func (self *TLSDatabase) LookupCertificateForHandleAsync(ctx context.Context, ha
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - tlsCertificate: newly allocated Certificate object. Use g_object_unref()
-//      to release the certificate.
+//   - tlsCertificate: newly allocated Certificate object. Use g_object_unref()
+//     to release the certificate.
 //
 func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase    // out
@@ -640,15 +640,15 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - certificate: Certificate.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags which affect the lookup operation.
+//   - ctx (optional) or NULL.
+//   - certificate: Certificate.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags which affect the lookup operation.
 //
 // The function returns the following values:
 //
-//    - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
-//      g_object_unref() to release the certificate.
+//   - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
+//     g_object_unref() to release the certificate.
 //
 func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase           // out
@@ -711,11 +711,11 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - certificate: Certificate.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags which affect the lookup operation.
-//    - callback (optional) to call when the operation completes.
+//   - ctx (optional) or NULL.
+//   - certificate: Certificate.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags which affect the lookup operation.
+//   - callback (optional) to call when the operation completes.
 //
 func (self *TLSDatabase) LookupCertificateIssuerAsync(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
@@ -757,12 +757,12 @@ func (self *TLSDatabase) LookupCertificateIssuerAsync(ctx context.Context, certi
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
-//      g_object_unref() to release the certificate.
+//   - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
+//     g_object_unref() to release the certificate.
 //
 func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase    // out
@@ -813,15 +813,15 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - issuerRawDn which holds the DER encoded issuer DN.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags flags which affect the lookup operation.
+//   - ctx (optional) or NULL.
+//   - issuerRawDn which holds the DER encoded issuer DN.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup operation.
 //
 // The function returns the following values:
 //
-//    - list: newly allocated list of Certificate objects. Use g_object_unref()
-//      on each certificate, and g_list_free() on the release the list.
+//   - list: newly allocated list of Certificate objects. Use g_object_unref()
+//     on each certificate, and g_list_free() on the release the list.
 //
 func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase           // out
@@ -888,21 +888,21 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 	return _list, _goerr
 }
 
-// LookupCertificatesIssuedByAsync: asynchronously look up certificates issued
-// by this issuer in the database. See
+// LookupCertificatesIssuedByAsync: asynchronously look up
+// certificates issued by this issuer in the database. See
 // g_tls_database_lookup_certificates_issued_by() for more information.
 //
-// The database may choose to hold a reference to the issuer byte array for the
-// duration of of this asynchronous operation. The byte array should not be
+// The database may choose to hold a reference to the issuer byte array for
+// the duration of of this asynchronous operation. The byte array should not be
 // modified during this time.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - issuerRawDn which holds the DER encoded issuer DN.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags flags which affect the lookup operation.
-//    - callback (optional) to call when the operation completes.
+//   - ctx (optional) or NULL.
+//   - issuerRawDn which holds the DER encoded issuer DN.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup operation.
+//   - callback (optional) to call when the operation completes.
 //
 func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
@@ -948,12 +948,12 @@ func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, is
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - list: newly allocated list of Certificate objects. Use g_object_unref()
-//      on each certificate, and g_list_free() on the release the list.
+//   - list: newly allocated list of Certificate objects. Use g_object_unref()
+//     on each certificate, and g_list_free() on the release the list.
 //
 func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase // out
@@ -1011,8 +1011,8 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 // extra certificates. If a certificate anchor was found, then it is added to
 // the chain.
 //
-// purpose describes the purpose (or usage) for which the certificate is being
-// used. Typically purpose will be set to
+// purpose describes the purpose (or usage) for which the
+// certificate is being used. Typically purpose will be set to
 // TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER which means that the certificate is
 // being used to authenticate a server (and we are acting as the client).
 //
@@ -1020,8 +1020,8 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 // expected peer identity. If the identity does not match the certificate,
 // G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value. If identity
 // is NULL, that bit will never be set in the return value. The peer identity
-// may also be used to check for pinned certificates (trust exceptions) in the
-// database. These may override the normal verification process on a
+// may also be used to check for pinned certificates (trust exceptions) in
+// the database. These may override the normal verification process on a
 // host-by-host basis.
 //
 // Currently there are no flags, and G_TLS_DATABASE_VERIFY_NONE should be used.
@@ -1038,17 +1038,17 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - chain: Certificate chain.
-//    - purpose that this certificate chain will be used for.
-//    - identity (optional): expected peer identity.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags: additional verify flags.
+//   - ctx (optional) or NULL.
+//   - chain: Certificate chain.
+//   - purpose that this certificate chain will be used for.
+//   - identity (optional): expected peer identity.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags: additional verify flags.
 //
 // The function returns the following values:
 //
-//    - tlsCertificateFlags: appropriate CertificateFlags which represents the
-//      result of verification.
+//   - tlsCertificateFlags: appropriate CertificateFlags which represents the
+//     result of verification.
 //
 func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase           // out
@@ -1099,18 +1099,18 @@ func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater,
 }
 
 // VerifyChainAsync: asynchronously determines the validity of a certificate
-// chain after looking up and adding any missing certificates to the chain. See
-// g_tls_database_verify_chain() for more information.
+// chain after looking up and adding any missing certificates to the chain.
+// See g_tls_database_verify_chain() for more information.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - chain: Certificate chain.
-//    - purpose that this certificate chain will be used for.
-//    - identity (optional): expected peer identity.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags: additional verify flags.
-//    - callback (optional) to call when the operation completes.
+//   - ctx (optional) or NULL.
+//   - chain: Certificate chain.
+//   - purpose that this certificate chain will be used for.
+//   - identity (optional): expected peer identity.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags: additional verify flags.
+//   - callback (optional) to call when the operation completes.
 //
 func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
@@ -1167,12 +1167,12 @@ func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertific
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - tlsCertificateFlags: appropriate CertificateFlags which represents the
-//      result of verification.
+//   - tlsCertificateFlags: appropriate CertificateFlags which represents the
+//     result of verification.
 //
 func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase        // out
@@ -1203,17 +1203,17 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 // from the database. In cases where the database cannot create a handle for a
 // certificate, NULL will be returned.
 //
-// This handle should be stable across various instances of the application, and
-// between applications. If a certificate is modified in the database, then it
-// is not guaranteed that this handle will continue to point to it.
+// This handle should be stable across various instances of the application,
+// and between applications. If a certificate is modified in the database,
+// then it is not guaranteed that this handle will continue to point to it.
 //
 // The function takes the following parameters:
 //
-//    - certificate for which to create a handle.
+//   - certificate for which to create a handle.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string containing the handle.
+//   - utf8 (optional): newly allocated string containing the handle.
 //
 func (self *TLSDatabase) createCertificateHandle(certificate TLSCertificater) string {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1256,15 +1256,15 @@ func (self *TLSDatabase) createCertificateHandle(certificate TLSCertificater) st
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - handle: certificate handle.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags flags which affect the lookup.
+//   - ctx (optional) or NULL.
+//   - handle: certificate handle.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup.
 //
 // The function returns the following values:
 //
-//    - tlsCertificate (optional): newly allocated Certificate, or NULL. Use
-//      g_object_unref() to release the certificate.
+//   - tlsCertificate (optional): newly allocated Certificate, or NULL.
+//     Use g_object_unref() to release the certificate.
 //
 func (self *TLSDatabase) lookupCertificateForHandle(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1330,11 +1330,11 @@ func (self *TLSDatabase) lookupCertificateForHandle(ctx context.Context, handle 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - handle: certificate handle.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags flags which affect the lookup.
-//    - callback (optional) to call when the operation completes.
+//   - ctx (optional) or NULL.
+//   - handle: certificate handle.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup.
+//   - callback (optional) to call when the operation completes.
 //
 func (self *TLSDatabase) lookupCertificateForHandleAsync(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1383,12 +1383,12 @@ func (self *TLSDatabase) lookupCertificateForHandleAsync(ctx context.Context, ha
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - tlsCertificate: newly allocated Certificate object. Use g_object_unref()
-//      to release the certificate.
+//   - tlsCertificate: newly allocated Certificate object. Use g_object_unref()
+//     to release the certificate.
 //
 func (self *TLSDatabase) lookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1443,15 +1443,15 @@ func (self *TLSDatabase) lookupCertificateForHandleFinish(result AsyncResulter) 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - certificate: Certificate.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags which affect the lookup operation.
+//   - ctx (optional) or NULL.
+//   - certificate: Certificate.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags which affect the lookup operation.
 //
 // The function returns the following values:
 //
-//    - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
-//      g_object_unref() to release the certificate.
+//   - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
+//     g_object_unref() to release the certificate.
 //
 func (self *TLSDatabase) lookupCertificateIssuer(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1517,11 +1517,11 @@ func (self *TLSDatabase) lookupCertificateIssuer(ctx context.Context, certificat
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - certificate: Certificate.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags which affect the lookup operation.
-//    - callback (optional) to call when the operation completes.
+//   - ctx (optional) or NULL.
+//   - certificate: Certificate.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags which affect the lookup operation.
+//   - callback (optional) to call when the operation completes.
 //
 func (self *TLSDatabase) lookupCertificateIssuerAsync(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1566,12 +1566,12 @@ func (self *TLSDatabase) lookupCertificateIssuerAsync(ctx context.Context, certi
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
-//      g_object_unref() to release the certificate.
+//   - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
+//     g_object_unref() to release the certificate.
 //
 func (self *TLSDatabase) lookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1625,15 +1625,15 @@ func (self *TLSDatabase) lookupCertificateIssuerFinish(result AsyncResulter) (TL
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - issuerRawDn which holds the DER encoded issuer DN.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags flags which affect the lookup operation.
+//   - ctx (optional) or NULL.
+//   - issuerRawDn which holds the DER encoded issuer DN.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup operation.
 //
 // The function returns the following values:
 //
-//    - list: newly allocated list of Certificate objects. Use g_object_unref()
-//      on each certificate, and g_list_free() on the release the list.
+//   - list: newly allocated list of Certificate objects. Use g_object_unref()
+//     on each certificate, and g_list_free() on the release the list.
 //
 func (self *TLSDatabase) lookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1703,21 +1703,21 @@ func (self *TLSDatabase) lookupCertificatesIssuedBy(ctx context.Context, issuerR
 	return _list, _goerr
 }
 
-// lookupCertificatesIssuedByAsync: asynchronously look up certificates issued
-// by this issuer in the database. See
+// lookupCertificatesIssuedByAsync: asynchronously look up
+// certificates issued by this issuer in the database. See
 // g_tls_database_lookup_certificates_issued_by() for more information.
 //
-// The database may choose to hold a reference to the issuer byte array for the
-// duration of of this asynchronous operation. The byte array should not be
+// The database may choose to hold a reference to the issuer byte array for
+// the duration of of this asynchronous operation. The byte array should not be
 // modified during this time.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - issuerRawDn which holds the DER encoded issuer DN.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags flags which affect the lookup operation.
-//    - callback (optional) to call when the operation completes.
+//   - ctx (optional) or NULL.
+//   - issuerRawDn which holds the DER encoded issuer DN.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup operation.
+//   - callback (optional) to call when the operation completes.
 //
 func (self *TLSDatabase) lookupCertificatesIssuedByAsync(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1766,12 +1766,12 @@ func (self *TLSDatabase) lookupCertificatesIssuedByAsync(ctx context.Context, is
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - list: newly allocated list of Certificate objects. Use g_object_unref()
-//      on each certificate, and g_list_free() on the release the list.
+//   - list: newly allocated list of Certificate objects. Use g_object_unref()
+//     on each certificate, and g_list_free() on the release the list.
 //
 func (self *TLSDatabase) lookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1832,8 +1832,8 @@ func (self *TLSDatabase) lookupCertificatesIssuedByFinish(result AsyncResulter) 
 // extra certificates. If a certificate anchor was found, then it is added to
 // the chain.
 //
-// purpose describes the purpose (or usage) for which the certificate is being
-// used. Typically purpose will be set to
+// purpose describes the purpose (or usage) for which the
+// certificate is being used. Typically purpose will be set to
 // TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER which means that the certificate is
 // being used to authenticate a server (and we are acting as the client).
 //
@@ -1841,8 +1841,8 @@ func (self *TLSDatabase) lookupCertificatesIssuedByFinish(result AsyncResulter) 
 // expected peer identity. If the identity does not match the certificate,
 // G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return value. If identity
 // is NULL, that bit will never be set in the return value. The peer identity
-// may also be used to check for pinned certificates (trust exceptions) in the
-// database. These may override the normal verification process on a
+// may also be used to check for pinned certificates (trust exceptions) in
+// the database. These may override the normal verification process on a
 // host-by-host basis.
 //
 // Currently there are no flags, and G_TLS_DATABASE_VERIFY_NONE should be used.
@@ -1859,17 +1859,17 @@ func (self *TLSDatabase) lookupCertificatesIssuedByFinish(result AsyncResulter) 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - chain: Certificate chain.
-//    - purpose that this certificate chain will be used for.
-//    - identity (optional): expected peer identity.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags: additional verify flags.
+//   - ctx (optional) or NULL.
+//   - chain: Certificate chain.
+//   - purpose that this certificate chain will be used for.
+//   - identity (optional): expected peer identity.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags: additional verify flags.
 //
 // The function returns the following values:
 //
-//    - tlsCertificateFlags: appropriate CertificateFlags which represents the
-//      result of verification.
+//   - tlsCertificateFlags: appropriate CertificateFlags which represents the
+//     result of verification.
 //
 func (self *TLSDatabase) verifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1923,18 +1923,18 @@ func (self *TLSDatabase) verifyChain(ctx context.Context, chain TLSCertificater,
 }
 
 // verifyChainAsync: asynchronously determines the validity of a certificate
-// chain after looking up and adding any missing certificates to the chain. See
-// g_tls_database_verify_chain() for more information.
+// chain after looking up and adding any missing certificates to the chain.
+// See g_tls_database_verify_chain() for more information.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - chain: Certificate chain.
-//    - purpose that this certificate chain will be used for.
-//    - identity (optional): expected peer identity.
-//    - interaction (optional): used to interact with the user if necessary.
-//    - flags: additional verify flags.
-//    - callback (optional) to call when the operation completes.
+//   - ctx (optional) or NULL.
+//   - chain: Certificate chain.
+//   - purpose that this certificate chain will be used for.
+//   - identity (optional): expected peer identity.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags: additional verify flags.
+//   - callback (optional) to call when the operation completes.
 //
 func (self *TLSDatabase) verifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -1994,12 +1994,12 @@ func (self *TLSDatabase) verifyChainAsync(ctx context.Context, chain TLSCertific
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - tlsCertificateFlags: appropriate CertificateFlags which represents the
-//      result of verification.
+//   - tlsCertificateFlags: appropriate CertificateFlags which represents the
+//     result of verification.
 //
 func (self *TLSDatabase) verifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
@@ -2028,8 +2028,8 @@ func (self *TLSDatabase) verifyChainFinish(result AsyncResulter) (TLSCertificate
 	return _tlsCertificateFlags, _goerr
 }
 
-// TLSDatabaseClass class for Database. Derived classes should implement the
-// various virtual methods. _async and _finish methods have a default
+// TLSDatabaseClass class for Database. Derived classes should implement
+// the various virtual methods. _async and _finish methods have a default
 // implementation that runs the corresponding sync method in a thread.
 //
 // An instance of this type is always passed by reference.

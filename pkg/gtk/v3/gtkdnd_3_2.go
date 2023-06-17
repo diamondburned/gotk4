@@ -23,11 +23,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context for a drag (This must be called with a context for the source
-//      side of a drag).
-//    - icon: #GIcon.
-//    - hotX: x offset of the hotspot within the icon.
-//    - hotY: y offset of the hotspot within the icon.
+//   - context for a drag (This must be called with a context for the source
+//     side of a drag).
+//   - icon: #GIcon.
+//   - hotX: x offset of the hotspot within the icon.
+//   - hotY: y offset of the hotspot within the icon.
 //
 func DragSetIconGIcon(context *gdk.DragContext, icon gio.Iconner, hotX, hotY int) {
 	var _arg1 *C.GdkDragContext // out

@@ -80,7 +80,7 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 //
 // The function returns the following values:
 //
-//    - _range: new Range copy of src.
+//   - _range: new Range copy of src.
 //
 func (src *Range) Copy() *Range {
 	var _arg0 *C.AtkRange // out
@@ -108,7 +108,7 @@ func (src *Range) Copy() *Range {
 //
 // The function returns the following values:
 //
-//    - utf8: human-readable description of range.
+//   - utf8: human-readable description of range.
 //
 func (_range *Range) Description() string {
 	var _arg0 *C.AtkRange // out
@@ -130,7 +130,7 @@ func (_range *Range) Description() string {
 //
 // The function returns the following values:
 //
-//    - gdouble: lower limit of range.
+//   - gdouble: lower limit of range.
 //
 func (_range *Range) LowerLimit() float64 {
 	var _arg0 *C.AtkRange // out
@@ -152,7 +152,7 @@ func (_range *Range) LowerLimit() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: upper limit of range.
+//   - gdouble: upper limit of range.
 //
 func (_range *Range) UpperLimit() float64 {
 	var _arg0 *C.AtkRange // out

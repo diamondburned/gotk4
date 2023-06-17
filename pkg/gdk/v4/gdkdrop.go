@@ -44,9 +44,9 @@ func init() {
 // using one of the GdkDrop methods for this purpose: gdk.Drop.ReadAsync() or
 // gdk.Drop.ReadValueAsync().
 //
-// GTK provides a higher level abstraction based on top of these functions, and
-// so they are not normally needed in GTK applications. See the "Drag and Drop"
-// section of the GTK documentation for more information.
+// GTK provides a higher level abstraction based on top of these functions,
+// and so they are not normally needed in GTK applications. See the "Drag and
+// Drop" section of the GTK documentation for more information.
 type Drop struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -93,7 +93,7 @@ func BaseDrop(obj Dropper) *Drop {
 //
 // The function takes the following parameters:
 //
-//    - action performed by the destination or 0 if the drop failed.
+//   - action performed by the destination or 0 if the drop failed.
 //
 func (self *Drop) Finish(action DragAction) {
 	var _arg0 *C.GdkDrop      // out
@@ -110,20 +110,20 @@ func (self *Drop) Finish(action DragAction) {
 // Actions returns the possible actions for this GdkDrop.
 //
 // If this value contains multiple actions - i.e. gdk.DragAction().IsUnique
-// returns FALSE for the result - gdk.Drop.Finish() must choose the action to
-// use when accepting the drop. This will only happen if you passed
+// returns FALSE for the result - gdk.Drop.Finish() must choose the action
+// to use when accepting the drop. This will only happen if you passed
 // GDK_ACTION_ASK as one of the possible actions in gdk.Drop.Status().
 // GDK_ACTION_ASK itself will not be included in the actions returned by this
 // function.
 //
-// This value may change over the lifetime of the gdk.Drop both as a response to
-// source side actions as well as to calls to gdk.Drop.Status() or
+// This value may change over the lifetime of the gdk.Drop both as a response
+// to source side actions as well as to calls to gdk.Drop.Status() or
 // gdk.Drop.Finish(). The source side will not change this value anymore once a
 // drop has started.
 //
 // The function returns the following values:
 //
-//    - dragAction: possible GdkDragActions.
+//   - dragAction: possible GdkDragActions.
 //
 func (self *Drop) Actions() DragAction {
 	var _arg0 *C.GdkDrop      // out
@@ -145,7 +145,7 @@ func (self *Drop) Actions() DragAction {
 //
 // The function returns the following values:
 //
-//    - device: GdkDevice performing the drop.
+//   - device: GdkDevice performing the drop.
 //
 func (self *Drop) Device() Devicer {
 	var _arg0 *C.GdkDrop   // out
@@ -183,7 +183,7 @@ func (self *Drop) Device() Devicer {
 //
 // The function returns the following values:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 func (self *Drop) Display() *Display {
 	var _arg0 *C.GdkDrop    // out
@@ -208,7 +208,7 @@ func (self *Drop) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - drag (optional): corresponding GdkDrag.
+//   - drag (optional): corresponding GdkDrag.
 //
 func (self *Drop) Drag() Dragger {
 	var _arg0 *C.GdkDrop // out
@@ -246,7 +246,7 @@ func (self *Drop) Drag() Dragger {
 //
 // The function returns the following values:
 //
-//    - contentFormats: possible GdkContentFormats.
+//   - contentFormats: possible GdkContentFormats.
 //
 func (self *Drop) Formats() *ContentFormats {
 	var _arg0 *C.GdkDrop           // out
@@ -275,7 +275,7 @@ func (self *Drop) Formats() *ContentFormats {
 //
 // The function returns the following values:
 //
-//    - surface: GdkSurface performing the drop.
+//   - surface: GdkSurface performing the drop.
 //
 func (self *Drop) Surface() Surfacer {
 	var _arg0 *C.GdkDrop    // out
@@ -314,11 +314,11 @@ func (self *Drop) Surface() Surfacer {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - mimeTypes: pointer to an array of mime types.
-//    - ioPriority: i/O priority for the read operation.
-//    - callback (optional): GAsyncReadyCallback to call when the request is
-//      satisfied.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - mimeTypes: pointer to an array of mime types.
+//   - ioPriority: i/O priority for the read operation.
+//   - callback (optional): GAsyncReadyCallback to call when the request is
+//     satisfied.
 //
 func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
@@ -363,21 +363,21 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 
 // ReadFinish finishes an async drop read operation.
 //
-// Note that you must not use blocking read calls on the returned stream in the
-// GTK thread, since some platforms might require communication with GTK to
-// complete the data transfer. You can use async APIs such as
+// Note that you must not use blocking read calls on the returned stream
+// in the GTK thread, since some platforms might require communication
+// with GTK to complete the data transfer. You can use async APIs such as
 // g_input_stream_read_bytes_async().
 //
 // See gdk.Drop.ReadAsync().
 //
 // The function takes the following parameters:
 //
-//    - result: GAsyncResult.
+//   - result: GAsyncResult.
 //
 // The function returns the following values:
 //
-//    - outMimeType: return location for the used mime type.
-//    - inputStream (optional): GInputStream, or NULL.
+//   - outMimeType: return location for the used mime type.
+//   - inputStream (optional): GInputStream, or NULL.
 //
 func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkDrop      // out
@@ -428,16 +428,16 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 // When the operation is finished callback will be called. You must then call
 // gdk.Drop.ReadValueFinish() to get the resulting GValue.
 //
-// For local drag'n'drop operations that are available in the given GType, the
-// value will be copied directly. Otherwise, GDK will try to use
+// For local drag'n'drop operations that are available in the given GType,
+// the value will be copied directly. Otherwise, GDK will try to use
 // gdk.ContentDeserializeAsync() to convert the data.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - typ: GType to read.
-//    - ioPriority: i/O priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - typ: GType to read.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkDrop            // out
@@ -474,11 +474,11 @@ func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPrior
 //
 // The function takes the following parameters:
 //
-//    - result: GAsyncResult.
+//   - result: GAsyncResult.
 //
 // The function returns the following values:
 //
-//    - value: GValue containing the result.
+//   - value: GValue containing the result.
 //
 func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, error) {
 	var _arg0 *C.GdkDrop      // out
@@ -520,10 +520,10 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, er
 //
 // The function takes the following parameters:
 //
-//    - actions: supported actions of the destination, or 0 to indicate that a
-//      drop will not be accepted.
-//    - preferred: unique action that's a member of actions indicating the
-//      preferred action.
+//   - actions: supported actions of the destination, or 0 to indicate that a
+//     drop will not be accepted.
+//   - preferred: unique action that's a member of actions indicating the
+//     preferred action.
 //
 func (self *Drop) Status(actions, preferred DragAction) {
 	var _arg0 *C.GdkDrop      // out

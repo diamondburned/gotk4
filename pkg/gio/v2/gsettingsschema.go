@@ -52,7 +52,7 @@ func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - variant: default value for the key.
+//   - variant: default value for the key.
 //
 func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	var _arg0 *C.GSettingsSchemaKey // out
@@ -91,7 +91,7 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): description for key, or NULL.
+//   - utf8 (optional): description for key, or NULL.
 //
 func (key *SettingsSchemaKey) Description() string {
 	var _arg0 *C.GSettingsSchemaKey // out
@@ -115,7 +115,7 @@ func (key *SettingsSchemaKey) Description() string {
 //
 // The function returns the following values:
 //
-//    - utf8: name of key.
+//   - utf8: name of key.
 //
 func (key *SettingsSchemaKey) Name() string {
 	var _arg0 *C.GSettingsSchemaKey // out
@@ -153,8 +153,8 @@ func (key *SettingsSchemaKey) Name() string {
 // If the string is 'flags' then the variant contains an array. Each item in the
 // array is a value that may appear zero or one times in an array to be used as
 // the value for this key. For example, if the variant contained the array ['x',
-// 'y'] then the valid values for the key would be [], ['x'], ['y'], ['x', 'y']
-// and ['y', 'x'].
+// 'y'] then the valid values for the key would be [], ['x'], ['y'], ['x',
+// 'y'] and ['y', 'x'].
 //
 // Finally, if the string is 'range' then the variant contains a pair of
 // like-typed values -- the minimum and maximum permissible values for this key.
@@ -170,7 +170,7 @@ func (key *SettingsSchemaKey) Name() string {
 //
 // The function returns the following values:
 //
-//    - variant describing the range.
+//   - variant describing the range.
 //
 func (key *SettingsSchemaKey) Range() *glib.Variant {
 	var _arg0 *C.GSettingsSchemaKey // out
@@ -208,7 +208,7 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): summary for key, or NULL.
+//   - utf8 (optional): summary for key, or NULL.
 //
 func (key *SettingsSchemaKey) Summary() string {
 	var _arg0 *C.GSettingsSchemaKey // out
@@ -232,7 +232,7 @@ func (key *SettingsSchemaKey) Summary() string {
 //
 // The function returns the following values:
 //
-//    - variantType: type of key.
+//   - variantType: type of key.
 //
 func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 	var _arg0 *C.GSettingsSchemaKey // out
@@ -258,11 +258,11 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 //
 // The function takes the following parameters:
 //
-//    - value to check.
+//   - value to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if value is valid for key.
+//   - ok: TRUE if value is valid for key.
 //
 func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	var _arg0 *C.GSettingsSchemaKey // out

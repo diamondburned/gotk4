@@ -16,7 +16,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - quark: error quark used for FileChooser errors.
+//   - quark: error quark used for FileChooser errors.
 //
 func FileChooserErrorQuark() glib.Quark {
 	var _cret C.GQuark // in

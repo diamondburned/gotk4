@@ -118,12 +118,12 @@ func marshalHBox(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - homogeneous: TRUE if all children are to be given equal space allotments.
-//    - spacing: number of pixels to place by default between children.
+//   - homogeneous: TRUE if all children are to be given equal space allotments.
+//   - spacing: number of pixels to place by default between children.
 //
 // The function returns the following values:
 //
-//    - hBox: new HBox.
+//   - hBox: new HBox.
 //
 func NewHBox(homogeneous bool, spacing int) *HBox {
 	var _arg1 C.gboolean   // out

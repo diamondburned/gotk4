@@ -12,8 +12,8 @@ import "C"
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_TRASH_DELETION_DATE = "trash::deletion-date"
 
-// FILE_ATTRIBUTE_TRASH_ORIG_PATH: key in the "trash" namespace. When requested
-// against items in trash:///, will return the original path to the file before
-// it was trashed. Corresponding AttributeType is
+// FILE_ATTRIBUTE_TRASH_ORIG_PATH: key in the "trash" namespace.
+// When requested against items in trash:///, will return the original
+// path to the file before it was trashed. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
 const FILE_ATTRIBUTE_TRASH_ORIG_PATH = "trash::orig-path"

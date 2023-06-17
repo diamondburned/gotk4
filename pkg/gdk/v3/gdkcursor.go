@@ -424,11 +424,11 @@ func BaseCursor(obj Cursorrer) *Cursor {
 //
 // The function takes the following parameters:
 //
-//    - cursorType: cursor to create.
+//   - cursorType: cursor to create.
 //
 // The function returns the following values:
 //
-//    - cursor: new Cursor.
+//   - cursor: new Cursor.
 //
 func NewCursor(cursorType CursorType) *Cursor {
 	var _arg1 C.GdkCursorType // out
@@ -450,12 +450,12 @@ func NewCursor(cursorType CursorType) *Cursor {
 //
 // The function takes the following parameters:
 //
-//    - display for which the cursor will be created.
-//    - cursorType: cursor to create.
+//   - display for which the cursor will be created.
+//   - cursorType: cursor to create.
 //
 // The function returns the following values:
 //
-//    - cursor (optional): new Cursor, or NULL on failure.
+//   - cursor (optional): new Cursor, or NULL on failure.
 //
 func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 	var _arg1 *C.GdkDisplay   // out
@@ -556,13 +556,13 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 //
 // The function takes the following parameters:
 //
-//    - display for which the cursor will be created.
-//    - name of the cursor.
+//   - display for which the cursor will be created.
+//   - name of the cursor.
 //
 // The function returns the following values:
 //
-//    - cursor (optional): new Cursor, or NULL if there is no cursor with the
-//      given name.
+//   - cursor (optional): new Cursor, or NULL if there is no cursor with the
+//     given name.
 //
 func NewCursorFromName(display *Display, name string) *Cursor {
 	var _arg1 *C.GdkDisplay // out
@@ -588,11 +588,11 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 
 // NewCursorFromPixbuf creates a new cursor from a pixbuf.
 //
-// Not all GDK backends support RGBA cursors. If they are not supported, a
-// monochrome approximation will be displayed. The functions
-// gdk_display_supports_cursor_alpha() and gdk_display_supports_cursor_color()
-// can be used to determine whether RGBA cursors are supported;
-// gdk_display_get_default_cursor_size() and
+// Not all GDK backends support RGBA cursors. If they are not
+// supported, a monochrome approximation will be displayed.
+// The functions gdk_display_supports_cursor_alpha() and
+// gdk_display_supports_cursor_color() can be used to determine whether
+// RGBA cursors are supported; gdk_display_get_default_cursor_size() and
 // gdk_display_get_maximal_cursor_size() give information about cursor sizes.
 //
 // If x or y are -1, the pixbuf must have options named “x_hot” and “y_hot”,
@@ -604,14 +604,14 @@ func NewCursorFromName(display *Display, name string) *Cursor {
 //
 // The function takes the following parameters:
 //
-//    - display for which the cursor will be created.
-//    - pixbuf containing the cursor image.
-//    - x: horizontal offset of the “hotspot” of the cursor.
-//    - y: vertical offset of the “hotspot” of the cursor.
+//   - display for which the cursor will be created.
+//   - pixbuf containing the cursor image.
+//   - x: horizontal offset of the “hotspot” of the cursor.
+//   - y: vertical offset of the “hotspot” of the cursor.
 //
 // The function returns the following values:
 //
-//    - cursor: new Cursor.
+//   - cursor: new Cursor.
 //
 func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *Cursor {
 	var _arg1 *C.GdkDisplay // out
@@ -640,11 +640,11 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *
 
 // NewCursorFromSurface creates a new cursor from a cairo image surface.
 //
-// Not all GDK backends support RGBA cursors. If they are not supported, a
-// monochrome approximation will be displayed. The functions
-// gdk_display_supports_cursor_alpha() and gdk_display_supports_cursor_color()
-// can be used to determine whether RGBA cursors are supported;
-// gdk_display_get_default_cursor_size() and
+// Not all GDK backends support RGBA cursors. If they are not
+// supported, a monochrome approximation will be displayed.
+// The functions gdk_display_supports_cursor_alpha() and
+// gdk_display_supports_cursor_color() can be used to determine whether
+// RGBA cursors are supported; gdk_display_get_default_cursor_size() and
 // gdk_display_get_maximal_cursor_size() give information about cursor sizes.
 //
 // On the X backend, support for RGBA cursors requires a sufficently new version
@@ -652,14 +652,14 @@ func NewCursorFromPixbuf(display *Display, pixbuf *gdkpixbuf.Pixbuf, x, y int) *
 //
 // The function takes the following parameters:
 //
-//    - display for which the cursor will be created.
-//    - surface: cairo image surface containing the cursor pixel data.
-//    - x: horizontal offset of the “hotspot” of the cursor.
-//    - y: vertical offset of the “hotspot” of the cursor.
+//   - display for which the cursor will be created.
+//   - surface: cairo image surface containing the cursor pixel data.
+//   - x: horizontal offset of the “hotspot” of the cursor.
+//   - y: vertical offset of the “hotspot” of the cursor.
 //
 // The function returns the following values:
 //
-//    - cursor: new Cursor.
+//   - cursor: new Cursor.
 //
 func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64) *Cursor {
 	var _arg1 *C.GdkDisplay      // out
@@ -690,7 +690,7 @@ func NewCursorFromSurface(display *Display, surface *cairo.Surface, x, y float64
 //
 // The function returns the following values:
 //
-//    - cursorType: CursorType.
+//   - cursorType: CursorType.
 //
 func (cursor *Cursor) CursorType() CursorType {
 	var _arg0 *C.GdkCursor    // out
@@ -712,7 +712,7 @@ func (cursor *Cursor) CursorType() CursorType {
 //
 // The function returns the following values:
 //
-//    - display associated to cursor.
+//   - display associated to cursor.
 //
 func (cursor *Cursor) Display() *Display {
 	var _arg0 *C.GdkCursor  // out
@@ -738,7 +738,7 @@ func (cursor *Cursor) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional) representing cursor, or NULL.
+//   - pixbuf (optional) representing cursor, or NULL.
 //
 func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 	var _arg0 *C.GdkCursor // out
@@ -777,9 +777,9 @@ func (cursor *Cursor) Image() *gdkpixbuf.Pixbuf {
 //
 // The function returns the following values:
 //
-//    - xHot (optional): location to store the hotspot x position, or NULL.
-//    - yHot (optional): location to store the hotspot y position, or NULL.
-//    - surface (optional): #cairo_surface_t representing cursor, or NULL.
+//   - xHot (optional): location to store the hotspot x position, or NULL.
+//   - yHot (optional): location to store the hotspot y position, or NULL.
+//   - surface (optional): #cairo_surface_t representing cursor, or NULL.
 //
 func (cursor *Cursor) Surface() (xHot, yHot float64, surface *cairo.Surface) {
 	var _arg0 *C.GdkCursor       // out

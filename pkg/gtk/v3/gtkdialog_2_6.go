@@ -16,8 +16,8 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// AlternativeDialogButtonOrder returns TRUE if dialogs are expected to use an
-// alternative button order on the screen screen. See
+// AlternativeDialogButtonOrder returns TRUE if dialogs are expected
+// to use an alternative button order on the screen screen. See
 // gtk_dialog_set_alternative_button_order() for more details about alternative
 // button order.
 //
@@ -30,11 +30,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - screen (optional) or NULL to use the default screen.
+//   - screen (optional) or NULL to use the default screen.
 //
 // The function returns the following values:
 //
-//    - ok: whether the alternative button order should be used.
+//   - ok: whether the alternative button order should be used.
 //
 func AlternativeDialogButtonOrder(screen *gdk.Screen) bool {
 	var _arg1 *C.GdkScreen // out

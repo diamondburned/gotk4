@@ -47,11 +47,11 @@ type ActionGroupOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - actionName: name of the action.
+	//   - actionName: name of the action.
 	//
 	// The function returns the following values:
 	//
-	//    - action: action, or NULL if no action by that name exists.
+	//   - action: action, or NULL if no action by that name exists.
 	//
 	Action func(actionName string) *Action
 }
@@ -65,8 +65,8 @@ func defaultActionGroupOverrides(v *ActionGroup) ActionGroupOverrides {
 // ActionGroup actions are organised into groups. An action group is essentially
 // a map from names to Action objects.
 //
-// All actions that would make sense to use in a particular context should be in
-// a single group. Multiple action groups may be used for a particular user
+// All actions that would make sense to use in a particular context should be
+// in a single group. Multiple action groups may be used for a particular user
 // interface. In fact, it is expected that most nontrivial applications will
 // make use of multiple groups. For example, in an application that can edit
 // multiple documents, one group holding global actions (e.g. quit, about, new),
@@ -74,18 +74,16 @@ func defaultActionGroupOverrides(v *ActionGroup) ActionGroupOverrides {
 // save, cut/copy/paste, etc). Each window’s menus would be constructed from a
 // combination of two action groups.
 //
+// # Accelerators
 //
-// Accelerators
-//
-// Accelerators are handled by the GTK+ accelerator map. All actions are
-// assigned an accelerator path (which normally has the form
+// Accelerators are handled by the GTK+ accelerator map. All actions
+// are assigned an accelerator path (which normally has the form
 // <Actions>/group-name/action-name) and a shortcut is associated with this
 // accelerator path. All menuitems and toolitems take on this accelerator path.
 // The GTK+ accelerator map code makes sure that the correct shortcut is
 // displayed next to the menu item.
 //
-//
-// GtkActionGroup as GtkBuildable
+// # GtkActionGroup as GtkBuildable
 //
 // The ActionGroup implementation of the Buildable interface accepts Action
 // objects as <child> elements in UI definitions.
@@ -93,8 +91,8 @@ func defaultActionGroupOverrides(v *ActionGroup) ActionGroupOverrides {
 // Note that it is probably more common to define actions and action groups in
 // the code, since they are directly related to what the code can do.
 //
-// The GtkActionGroup implementation of the GtkBuildable interface supports a
-// custom <accelerator> element, which has attributes named “key“ and
+// The GtkActionGroup implementation of the GtkBuildable interface supports
+// a custom <accelerator> element, which has attributes named “key“ and
 // “modifiers“ and allows to specify accelerators. This is similar to the
 // <accelerator> element of Widget, the main difference is that it doesn’t allow
 // you to specify a signal.
@@ -204,11 +202,11 @@ func (actionGroup *ActionGroup) ConnectPreActivate(f func(action *Action)) coreg
 //
 // The function takes the following parameters:
 //
-//    - name of the action group.
+//   - name of the action group.
 //
 // The function returns the following values:
 //
-//    - actionGroup: new ActionGroup.
+//   - actionGroup: new ActionGroup.
 //
 func NewActionGroup(name string) *ActionGroup {
 	var _arg1 *C.gchar          // out
@@ -228,9 +226,9 @@ func NewActionGroup(name string) *ActionGroup {
 }
 
 // AddAction adds an action object to the action group. Note that this function
-// does not set up the accel path of the action, which can lead to problems if a
-// user tries to modify the accelerator of a menuitem associated with the
-// action. Therefore you must either set the accel path yourself with
+// does not set up the accel path of the action, which can lead to problems
+// if a user tries to modify the accelerator of a menuitem associated with
+// the action. Therefore you must either set the accel path yourself with
 // gtk_action_set_accel_path(), or use gtk_action_group_add_action_with_accel
 // (..., NULL).
 //
@@ -238,7 +236,7 @@ func NewActionGroup(name string) *ActionGroup {
 //
 // The function takes the following parameters:
 //
-//    - action: action.
+//   - action: action.
 //
 func (actionGroup *ActionGroup) AddAction(action *Action) {
 	var _arg0 *C.GtkActionGroup // out
@@ -264,10 +262,10 @@ func (actionGroup *ActionGroup) AddAction(action *Action) {
 //
 // The function takes the following parameters:
 //
-//    - action to add.
-//    - accelerator (optional) for the action, in the format understood by
-//      gtk_accelerator_parse(), or "" for no accelerator, or NULL to use the
-//      stock accelerator.
+//   - action to add.
+//   - accelerator (optional) for the action, in the format understood by
+//     gtk_accelerator_parse(), or "" for no accelerator, or NULL to use the
+//     stock accelerator.
 //
 func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator string) {
 	var _arg0 *C.GtkActionGroup // out
@@ -293,8 +291,8 @@ func (actionGroup *ActionGroup) AddActionWithAccel(action *Action, accelerator s
 //
 // The function returns the following values:
 //
-//    - accelGroup: accelerator group associated with this action group or NULL
-//      if there is none.
+//   - accelGroup: accelerator group associated with this action group or NULL
+//     if there is none.
 //
 func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 	var _arg0 *C.GtkActionGroup // out
@@ -318,11 +316,11 @@ func (actionGroup *ActionGroup) AccelGroup() *AccelGroup {
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action.
+//   - actionName: name of the action.
 //
 // The function returns the following values:
 //
-//    - action: action, or NULL if no action by that name exists.
+//   - action: action, or NULL if no action by that name exists.
 //
 func (actionGroup *ActionGroup) Action(actionName string) *Action {
 	var _arg0 *C.GtkActionGroup // out
@@ -350,7 +348,7 @@ func (actionGroup *ActionGroup) Action(actionName string) *Action {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the action group.
+//   - utf8: name of the action group.
 //
 func (actionGroup *ActionGroup) Name() string {
 	var _arg0 *C.GtkActionGroup // out
@@ -368,15 +366,15 @@ func (actionGroup *ActionGroup) Name() string {
 	return _utf8
 }
 
-// Sensitive returns TRUE if the group is sensitive. The constituent actions can
-// only be logically sensitive (see gtk_action_is_sensitive()) if they are
+// Sensitive returns TRUE if the group is sensitive. The constituent actions
+// can only be logically sensitive (see gtk_action_is_sensitive()) if they are
 // sensitive (see gtk_action_get_sensitive()) and their group is sensitive.
 //
 // Deprecated: since version 3.10.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the group is sensitive.
+//   - ok: TRUE if the group is sensitive.
 //
 func (actionGroup *ActionGroup) Sensitive() bool {
 	var _arg0 *C.GtkActionGroup // out
@@ -404,7 +402,7 @@ func (actionGroup *ActionGroup) Sensitive() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the group is visible.
+//   - ok: TRUE if the group is visible.
 //
 func (actionGroup *ActionGroup) Visible() bool {
 	var _arg0 *C.GtkActionGroup // out
@@ -430,7 +428,7 @@ func (actionGroup *ActionGroup) Visible() bool {
 //
 // The function returns the following values:
 //
-//    - list: allocated list of the action objects in the action group.
+//   - list: allocated list of the action objects in the action group.
 //
 func (actionGroup *ActionGroup) ListActions() []*Action {
 	var _arg0 *C.GtkActionGroup // out
@@ -460,7 +458,7 @@ func (actionGroup *ActionGroup) ListActions() []*Action {
 //
 // The function takes the following parameters:
 //
-//    - action: action.
+//   - action: action.
 //
 func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 	var _arg0 *C.GtkActionGroup // out
@@ -481,7 +479,7 @@ func (actionGroup *ActionGroup) RemoveAction(action *Action) {
 //
 // The function takes the following parameters:
 //
-//    - accelGroup (optional) to set or NULL.
+//   - accelGroup (optional) to set or NULL.
 //
 func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkActionGroup // out
@@ -503,7 +501,7 @@ func (actionGroup *ActionGroup) SetAccelGroup(accelGroup *AccelGroup) {
 //
 // The function takes the following parameters:
 //
-//    - sensitive: new sensitivity.
+//   - sensitive: new sensitivity.
 //
 func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkActionGroup // out
@@ -529,7 +527,7 @@ func (actionGroup *ActionGroup) SetSensitive(sensitive bool) {
 //
 // The function takes the following parameters:
 //
-//    - fn: TranslateFunc.
+//   - fn: TranslateFunc.
 //
 func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 	var _arg0 *C.GtkActionGroup  // out
@@ -547,8 +545,8 @@ func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 	runtime.KeepAlive(fn)
 }
 
-// SetTranslationDomain sets the translation domain and uses g_dgettext() for
-// translating the label and tooltip of ActionEntrys added by
+// SetTranslationDomain sets the translation domain and uses g_dgettext()
+// for translating the label and tooltip of ActionEntrys added by
 // gtk_action_group_add_actions().
 //
 // If you’re not using gettext() for localization, see
@@ -558,8 +556,8 @@ func (actionGroup *ActionGroup) SetTranslateFunc(fn TranslateFunc) {
 //
 // The function takes the following parameters:
 //
-//    - domain (optional): translation domain to use for g_dgettext() calls, or
-//      NULL to use the domain set with textdomain().
+//   - domain (optional): translation domain to use for g_dgettext() calls,
+//     or NULL to use the domain set with textdomain().
 //
 func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkActionGroup // out
@@ -582,7 +580,7 @@ func (actionGroup *ActionGroup) SetTranslationDomain(domain string) {
 //
 // The function takes the following parameters:
 //
-//    - visible: new visiblity.
+//   - visible: new visiblity.
 //
 func (actionGroup *ActionGroup) SetVisible(visible bool) {
 	var _arg0 *C.GtkActionGroup // out
@@ -606,11 +604,11 @@ func (actionGroup *ActionGroup) SetVisible(visible bool) {
 //
 // The function takes the following parameters:
 //
-//    - str: string.
+//   - str: string.
 //
 // The function returns the following values:
 //
-//    - utf8: translation of string.
+//   - utf8: translation of string.
 //
 func (actionGroup *ActionGroup) TranslateString(str string) string {
 	var _arg0 *C.GtkActionGroup // out
@@ -638,11 +636,11 @@ func (actionGroup *ActionGroup) TranslateString(str string) string {
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action.
+//   - actionName: name of the action.
 //
 // The function returns the following values:
 //
-//    - action: action, or NULL if no action by that name exists.
+//   - action: action, or NULL if no action by that name exists.
 //
 func (actionGroup *ActionGroup) action(actionName string) *Action {
 	gclass := (*C.GtkActionGroupClass)(coreglib.PeekParentClass(actionGroup))

@@ -82,7 +82,7 @@ type ContainerOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - widget to be placed inside container.
+	//   - widget to be placed inside container.
 	//
 	Add         func(widget Widgetter)
 	CheckResize func()
@@ -93,7 +93,7 @@ type ContainerOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - gType: #GType.
+	//   - gType: #GType.
 	//
 	ChildType func() coreglib.Type
 	// The function takes the following parameters:
@@ -106,26 +106,26 @@ type ContainerOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - child of container.
+	//   - child of container.
 	//
 	// The function returns the following values:
 	//
-	//    - widgetPath: newly created WidgetPath.
+	//   - widgetPath: newly created WidgetPath.
 	//
 	PathForChild func(child Widgetter) *WidgetPath
 	// Remove removes widget from container. widget must be inside container.
-	// Note that container will own a reference to widget, and that this may be
-	// the last reference held; so removing a widget from its container can
-	// destroy that widget. If you want to use widget again, you need to add a
-	// reference to it before removing it from a container, using
-	// g_object_ref(). If you don’t want to use widget again it’s usually more
-	// efficient to simply destroy it directly using gtk_widget_destroy() since
-	// this will remove it from the container and help break any circular
+	// Note that container will own a reference to widget, and that this
+	// may be the last reference held; so removing a widget from its
+	// container can destroy that widget. If you want to use widget again,
+	// you need to add a reference to it before removing it from a container,
+	// using g_object_ref(). If you don’t want to use widget again it’s usually
+	// more efficient to simply destroy it directly using gtk_widget_destroy()
+	// since this will remove it from the container and help break any circular
 	// reference count cycles.
 	//
 	// The function takes the following parameters:
 	//
-	//    - widget: current child of container.
+	//   - widget: current child of container.
 	//
 	Remove func(widget Widgetter)
 	// SetFocusChild: sets, or unsets if child is NULL, the focused child of
@@ -135,13 +135,13 @@ type ContainerOverrides struct {
 	// container. Implementations of Container can override the default
 	// behaviour by overriding the class closure of this signal.
 	//
-	// This is function is mostly meant to be used by widgets. Applications can
-	// use gtk_widget_grab_focus() to manually set the focus to a specific
+	// This is function is mostly meant to be used by widgets. Applications
+	// can use gtk_widget_grab_focus() to manually set the focus to a specific
 	// widget.
 	//
 	// The function takes the following parameters:
 	//
-	//    - child (optional) or NULL.
+	//   - child (optional) or NULL.
 	//
 	SetFocusChild func(child Widgetter)
 }
@@ -169,28 +169,27 @@ func defaultContainerOverrides(v *Container) ContainerOverrides {
 // of the abstract GtkContainer base class.
 //
 // The first type of container widget has a single child widget and derives from
-// Bin. These containers are decorators, which add some kind of functionality to
-// the child. For example, a Button makes its child into a clickable button; a
-// Frame draws a frame around its child and a Window places its child widget
+// Bin. These containers are decorators, which add some kind of functionality
+// to the child. For example, a Button makes its child into a clickable button;
+// a Frame draws a frame around its child and a Window places its child widget
 // inside a top-level window.
 //
 // The second type of container can have more than one child; its purpose is to
-// manage layout. This means that these containers assign sizes and positions to
-// their children. For example, a HBox arranges its children in a horizontal
+// manage layout. This means that these containers assign sizes and positions
+// to their children. For example, a HBox arranges its children in a horizontal
 // row, and a Grid arranges the widgets it contains in a two-dimensional grid.
 //
 // For implementations of Container the virtual method ContainerClass.forall()
-// is always required, since it's used for drawing and other internal operations
-// on the children. If the Container implementation expect to have non internal
-// children it's needed to implement both ContainerClass.add() and
-// ContainerClass.remove(). If the GtkContainer implementation has internal
-// children, they should be added with gtk_widget_set_parent() on init() and
-// removed with gtk_widget_unparent() in the WidgetClass.destroy()
+// is always required, since it's used for drawing and other internal
+// operations on the children. If the Container implementation expect to have
+// non internal children it's needed to implement both ContainerClass.add()
+// and ContainerClass.remove(). If the GtkContainer implementation has
+// internal children, they should be added with gtk_widget_set_parent() on
+// init() and removed with gtk_widget_unparent() in the WidgetClass.destroy()
 // implementation. See more about implementing custom widgets at
 // https://wiki.gnome.org/HowDoI/CustomWidgets
 //
-//
-// Height for width geometry management
+// # Height for width geometry management
 //
 // GTK+ uses a height-for-width (and width-for-height) geometry management
 // system. Height-for-width means that a widget can change how much vertical
@@ -198,10 +197,10 @@ func defaultContainerOverrides(v *Container) ContainerOverrides {
 // (and similar for width-for-height).
 //
 // There are some things to keep in mind when implementing container widgets
-// that make use of GTK+’s height for width geometry management system. First,
-// it’s important to note that a container must prioritize one of its
-// dimensions, that is to say that a widget or container can only have a
-// SizeRequestMode that is GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH or
+// that make use of GTK+’s height for width geometry management system.
+// First, it’s important to note that a container must prioritize one of
+// its dimensions, that is to say that a widget or container can only
+// have a SizeRequestMode that is GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH or
 // GTK_SIZE_REQUEST_WIDTH_FOR_HEIGHT. However, every widget and container must
 // be able to respond to the APIs for both dimensions, i.e. even if a widget has
 // a request mode that is height-for-width, it is possible that its parent will
@@ -210,8 +209,8 @@ func defaultContainerOverrides(v *Container) ContainerOverrides {
 // To ensure that everything works properly, here are some guidelines to follow
 // when implementing height-for-width (or width-for-height) containers.
 //
-// Each request mode involves 2 virtual methods. Height-for-width apis run
-// through gtk_widget_get_preferred_width() and then through
+// Each request mode involves 2 virtual methods. Height-for-width
+// apis run through gtk_widget_get_preferred_width() and then through
 // gtk_widget_get_preferred_height_for_width(). When handling requests in the
 // opposite SizeRequestMode it is important that every widget request at least
 // enough space to display all of its content at all times.
@@ -241,9 +240,9 @@ func defaultContainerOverrides(v *Container) ContainerOverrides {
 //         }
 //    }
 //
-// Height for width requests are generally implemented in terms of a virtual
-// allocation of widgets in the input orientation. Assuming an height-for-width
-// request mode, a container would implement the
+// Height for width requests are generally implemented in terms of a
+// virtual allocation of widgets in the input orientation. Assuming
+// an height-for-width request mode, a container would implement the
 // get_preferred_height_for_width() virtual function by first calling
 // gtk_widget_get_preferred_width() for each of its children.
 //
@@ -257,30 +256,29 @@ func defaultContainerOverrides(v *Container) ContainerOverrides {
 // child by using gtk_widget_get_preferred_height_for_width() and using the
 // sizes stored in the RequestedSize array.
 //
-// To allocate a height-for-width container, it’s again important to consider
-// that a container must prioritize one dimension over the other. So if a
-// container is a height-for-width container it must first allocate all widgets
-// horizontally using a RequestedSize array and
+// To allocate a height-for-width container, it’s again important to
+// consider that a container must prioritize one dimension over the other.
+// So if a container is a height-for-width container it must first
+// allocate all widgets horizontally using a RequestedSize array and
 // gtk_distribute_natural_allocation() and then add any extra space (if and
 // where appropriate) for the widget to expand.
 //
-// After adding all the expand space, the container assumes it was allocated
-// sufficient height to fit all of its content. At this time, the container must
-// use the total horizontal sizes of each widget to request the height-for-width
-// of each of its children and store the requests in a RequestedSize array for
-// any widgets that stack vertically (for tabular containers this can be
-// generalized into the heights and widths of rows and columns). The vertical
-// space must then again be distributed using
+// After adding all the expand space, the container assumes it was
+// allocated sufficient height to fit all of its content. At this time,
+// the container must use the total horizontal sizes of each widget to request
+// the height-for-width of each of its children and store the requests in a
+// RequestedSize array for any widgets that stack vertically (for tabular
+// containers this can be generalized into the heights and widths of rows
+// and columns). The vertical space must then again be distributed using
 // gtk_distribute_natural_allocation() while this time considering the allocated
-// height of the widget minus any vertical spacing that the container adds. Then
-// vertical expand space should be added where appropriate and available and the
-// container should go on to actually allocating the child widgets.
+// height of the widget minus any vertical spacing that the container adds.
+// Then vertical expand space should be added where appropriate and available
+// and the container should go on to actually allocating the child widgets.
 //
 // See [GtkWidget’s geometry management section][geometry-management] to learn
 // more about implementing height-for-width geometry management for widgets.
 //
-//
-// Child properties
+// # Child properties
 //
 // GtkContainer introduces child properties. These are object properties that
 // are not specific to either the container or the contained widget, but rather
@@ -293,16 +291,15 @@ func defaultContainerOverrides(v *Container) ContainerOverrides {
 // child properties.
 //
 // To set the value of a child property, use gtk_container_child_set_property(),
-// gtk_container_child_set() or gtk_container_child_set_valist(). To obtain the
-// value of a child property, use gtk_container_child_get_property(),
+// gtk_container_child_set() or gtk_container_child_set_valist(). To obtain
+// the value of a child property, use gtk_container_child_get_property(),
 // gtk_container_child_get() or gtk_container_child_get_valist(). To emit
 // notification about child property changes, use gtk_widget_child_notify().
 //
+// # GtkContainer as GtkBuildable
 //
-// GtkContainer as GtkBuildable
-//
-// The GtkContainer implementation of the GtkBuildable interface supports a
-// <packing> element for children, which can contain multiple <property>
+// The GtkContainer implementation of the GtkBuildable interface supports
+// a <packing> element for children, which can contain multiple <property>
 // elements that specify child properties for the child.
 //
 // Since 2.16, child properties can also be marked as translatable using the
@@ -442,20 +439,20 @@ func (container *Container) ConnectSetFocusChild(f func(object Widgetter)) coreg
 	return coreglib.ConnectGeneratedClosure(container, "set-focus-child", false, unsafe.Pointer(C._gotk4_gtk3_Container_ConnectSetFocusChild), f)
 }
 
-// Add adds widget to container. Typically used for simple containers such as
-// Window, Frame, or Button; for more complicated layout containers such as Box
-// or Grid, this function will pick default packing parameters that may not be
-// correct. So consider functions such as gtk_box_pack_start() and
-// gtk_grid_attach() as an alternative to gtk_container_add() in those cases. A
-// widget may be added to only one container at a time; you can’t place the same
-// widget inside two different containers.
+// Add adds widget to container. Typically used for simple containers such
+// as Window, Frame, or Button; for more complicated layout containers such
+// as Box or Grid, this function will pick default packing parameters that
+// may not be correct. So consider functions such as gtk_box_pack_start() and
+// gtk_grid_attach() as an alternative to gtk_container_add() in those cases.
+// A widget may be added to only one container at a time; you can’t place the
+// same widget inside two different containers.
 //
 // Note that some containers, such as ScrolledWindow or ListBox, may add
 // intermediate children between the added widget and the container.
 //
 // The function takes the following parameters:
 //
-//    - widget to be placed inside container.
+//   - widget to be placed inside container.
 //
 func (container *Container) Add(widget Widgetter) {
 	var _arg0 *C.GtkContainer // out
@@ -482,9 +479,9 @@ func (container *Container) CheckResize() {
 //
 // The function takes the following parameters:
 //
-//    - child: widget which is a child of container.
-//    - propertyName: name of the property to get.
-//    - value: location to return the value.
+//   - child: widget which is a child of container.
+//   - propertyName: name of the property to get.
+//   - value: location to return the value.
 //
 func (container *Container) ChildGetProperty(child Widgetter, propertyName string, value *coreglib.Value) {
 	var _arg0 *C.GtkContainer // out
@@ -514,9 +511,9 @@ func (container *Container) ChildGetProperty(child Widgetter, propertyName strin
 //
 // The function takes the following parameters:
 //
-//    - child widget.
-//    - childProperty: name of a child property installed on the class of
-//      container.
+//   - child widget.
+//   - childProperty: name of a child property installed on the class of
+//     container.
 //
 func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 	var _arg0 *C.GtkContainer // out
@@ -538,9 +535,9 @@ func (container *Container) ChildNotify(child Widgetter, childProperty string) {
 //
 // The function takes the following parameters:
 //
-//    - child: widget which is a child of container.
-//    - propertyName: name of the property to set.
-//    - value to set the property to.
+//   - child: widget which is a child of container.
+//   - propertyName: name of the property to set.
+//   - value to set the property to.
 //
 func (container *Container) ChildSetProperty(child Widgetter, propertyName string, value *coreglib.Value) {
 	var _arg0 *C.GtkContainer // out
@@ -568,7 +565,7 @@ func (container *Container) ChildSetProperty(child Widgetter, propertyName strin
 //
 // The function returns the following values:
 //
-//    - gType: #GType.
+//   - gType: #GType.
 //
 func (container *Container) ChildType() coreglib.Type {
 	var _arg0 *C.GtkContainer // out
@@ -588,15 +585,15 @@ func (container *Container) ChildType() coreglib.Type {
 
 // Forall invokes callback on each direct child of container, including children
 // that are considered “internal” (implementation details of the container).
-// “Internal” children generally weren’t added by the user of the container, but
-// were added by the container implementation itself.
+// “Internal” children generally weren’t added by the user of the container,
+// but were added by the container implementation itself.
 //
 // Most applications should use gtk_container_foreach(), rather than
 // gtk_container_forall().
 //
 // The function takes the following parameters:
 //
-//    - callback: callback.
+//   - callback: callback.
 //
 func (container *Container) Forall(callback Callback) {
 	var _arg0 *C.GtkContainer // out
@@ -615,8 +612,8 @@ func (container *Container) Forall(callback Callback) {
 
 // ForEach invokes callback on each non-internal child of container. See
 // gtk_container_forall() for details on what constitutes an “internal” child.
-// For all practical purposes, this function should iterate over precisely those
-// child widgets that were added to the container by the application with
+// For all practical purposes, this function should iterate over precisely
+// those child widgets that were added to the container by the application with
 // explicit add() calls.
 //
 // It is permissible to remove the child from the callback handler.
@@ -626,7 +623,7 @@ func (container *Container) Forall(callback Callback) {
 //
 // The function takes the following parameters:
 //
-//    - callback: callback.
+//   - callback: callback.
 //
 func (container *Container) ForEach(callback Callback) {
 	var _arg0 *C.GtkContainer // out
@@ -648,7 +645,7 @@ func (container *Container) ForEach(callback Callback) {
 //
 // The function returns the following values:
 //
-//    - guint: current border width.
+//   - guint: current border width.
 //
 func (container *Container) BorderWidth() uint {
 	var _arg0 *C.GtkContainer // out
@@ -671,7 +668,7 @@ func (container *Container) BorderWidth() uint {
 //
 // The function returns the following values:
 //
-//    - list: newly-allocated list of the container’s non-internal children.
+//   - list: newly-allocated list of the container’s non-internal children.
 //
 func (container *Container) Children() []Widgetter {
 	var _arg0 *C.GtkContainer // out
@@ -721,11 +718,11 @@ func (container *Container) Children() []Widgetter {
 //
 // The function returns the following values:
 //
-//    - focusableWidgets: location to store the focus chain of the container, or
-//      NULL. You should free this list using g_list_free() when you are done
-//      with it, however no additional reference count is added to the individual
-//      widgets in the focus chain.
-//    - ok: TRUE if the focus chain of the container has been set explicitly.
+//   - focusableWidgets: location to store the focus chain of the container,
+//     or NULL. You should free this list using g_list_free() when you are done
+//     with it, however no additional reference count is added to the individual
+//     widgets in the focus chain.
+//   - ok: TRUE if the focus chain of the container has been set explicitly.
 //
 func (container *Container) FocusChain() ([]Widgetter, bool) {
 	var _arg0 *C.GtkContainer // out
@@ -770,14 +767,14 @@ func (container *Container) FocusChain() ([]Widgetter, bool) {
 	return _focusableWidgets, _ok
 }
 
-// FocusChild returns the current focus child widget inside container. This is
-// not the currently focused widget. That can be obtained by calling
+// FocusChild returns the current focus child widget inside container.
+// This is not the currently focused widget. That can be obtained by calling
 // gtk_window_get_focus().
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget which will receive the focus inside
-//      container when the container is focused, or NULL if none is set.
+//   - widget (optional): child widget which will receive the focus inside
+//     container when the container is focused, or NULL if none is set.
 //
 func (container *Container) FocusChild() Widgetter {
 	var _arg0 *C.GtkContainer // out
@@ -815,8 +812,8 @@ func (container *Container) FocusChild() Widgetter {
 //
 // The function returns the following values:
 //
-//    - adjustment (optional): horizontal focus adjustment, or NULL if none has
-//      been set.
+//   - adjustment (optional): horizontal focus adjustment, or NULL if none has
+//     been set.
 //
 func (container *Container) FocusHAdjustment() *Adjustment {
 	var _arg0 *C.GtkContainer  // out
@@ -841,8 +838,8 @@ func (container *Container) FocusHAdjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - adjustment (optional): vertical focus adjustment, or NULL if none has
-//      been set.
+//   - adjustment (optional): vertical focus adjustment, or NULL if none has
+//     been set.
 //
 func (container *Container) FocusVAdjustment() *Adjustment {
 	var _arg0 *C.GtkContainer  // out
@@ -867,11 +864,11 @@ func (container *Container) FocusVAdjustment() *Adjustment {
 //
 // The function takes the following parameters:
 //
-//    - child of container.
+//   - child of container.
 //
 // The function returns the following values:
 //
-//    - widgetPath: newly created WidgetPath.
+//   - widgetPath: newly created WidgetPath.
 //
 func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 	var _arg0 *C.GtkContainer  // out
@@ -906,7 +903,7 @@ func (container *Container) PathForChild(child Widgetter) *WidgetPath {
 //
 // The function returns the following values:
 //
-//    - resizeMode: current resize mode.
+//   - resizeMode: current resize mode.
 //
 func (container *Container) ResizeMode() ResizeMode {
 	var _arg0 *C.GtkContainer // out
@@ -924,16 +921,16 @@ func (container *Container) ResizeMode() ResizeMode {
 	return _resizeMode
 }
 
-// PropagateDraw: when a container receives a call to the draw function, it must
-// send synthetic Widget::draw calls to all children that don’t have their own
-// Windows. This function provides a convenient way of doing this. A container,
-// when it receives a call to its Widget::draw function, calls
+// PropagateDraw: when a container receives a call to the draw function,
+// it must send synthetic Widget::draw calls to all children that don’t have
+// their own Windows. This function provides a convenient way of doing this.
+// A container, when it receives a call to its Widget::draw function, calls
 // gtk_container_propagate_draw() once for each child, passing in the cr the
 // container received.
 //
-// gtk_container_propagate_draw() takes care of translating the origin of cr,
-// and deciding whether the draw needs to be sent to the child. It is a
-// convenient and optimized way of getting the same effect as calling
+// gtk_container_propagate_draw() takes care of translating the origin
+// of cr, and deciding whether the draw needs to be sent to the child.
+// It is a convenient and optimized way of getting the same effect as calling
 // gtk_widget_draw() on the child directly.
 //
 // In most cases, a container can simply either inherit the Widget::draw
@@ -942,10 +939,10 @@ func (container *Container) ResizeMode() ResizeMode {
 //
 // The function takes the following parameters:
 //
-//    - child of container.
-//    - cr: cairo context as passed to the container. If you want to use cr in
-//      container’s draw function, consider using cairo_save() and
-//      cairo_restore() before calling this function.
+//   - child of container.
+//   - cr: cairo context as passed to the container. If you want to use
+//     cr in container’s draw function, consider using cairo_save() and
+//     cairo_restore() before calling this function.
 //
 func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 	var _arg0 *C.GtkContainer // out
@@ -962,9 +959,9 @@ func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 	runtime.KeepAlive(cr)
 }
 
-// Remove removes widget from container. widget must be inside container. Note
-// that container will own a reference to widget, and that this may be the last
-// reference held; so removing a widget from its container can destroy that
+// Remove removes widget from container. widget must be inside container.
+// Note that container will own a reference to widget, and that this may be the
+// last reference held; so removing a widget from its container can destroy that
 // widget. If you want to use widget again, you need to add a reference to it
 // before removing it from a container, using g_object_ref(). If you don’t want
 // to use widget again it’s usually more efficient to simply destroy it directly
@@ -973,7 +970,7 @@ func (container *Container) PropagateDraw(child Widgetter, cr *cairo.Context) {
 //
 // The function takes the following parameters:
 //
-//    - widget: current child of container.
+//   - widget: current child of container.
 //
 func (container *Container) Remove(widget Widgetter) {
 	var _arg0 *C.GtkContainer // out
@@ -1001,15 +998,15 @@ func (container *Container) ResizeChildren() {
 //
 // The border width of a container is the amount of space to leave around the
 // outside of the container. The only exception to this is Window; because
-// toplevel windows can’t leave space outside, they leave the space inside. The
-// border is added on all sides of the container. To add space to only one side,
-// use a specific Widget:margin property on the child widget, for example
+// toplevel windows can’t leave space outside, they leave the space inside.
+// The border is added on all sides of the container. To add space to only one
+// side, use a specific Widget:margin property on the child widget, for example
 // Widget:margin-top.
 //
 // The function takes the following parameters:
 //
-//    - borderWidth: amount of blank space to leave outside the container. Valid
-//      values are in the range 0-65535 pixels.
+//   - borderWidth: amount of blank space to leave outside the container.
+//     Valid values are in the range 0-65535 pixels.
 //
 func (container *Container) SetBorderWidth(borderWidth uint) {
 	var _arg0 *C.GtkContainer // out
@@ -1037,7 +1034,7 @@ func (container *Container) SetBorderWidth(borderWidth uint) {
 //
 // The function takes the following parameters:
 //
-//    - focusableWidgets: the new focus chain.
+//   - focusableWidgets: the new focus chain.
 //
 func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 	var _arg0 *C.GtkContainer // out
@@ -1069,7 +1066,7 @@ func (container *Container) SetFocusChain(focusableWidgets []Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) or NULL.
+//   - child (optional) or NULL.
 //
 func (container *Container) SetFocusChild(child Widgetter) {
 	var _arg0 *C.GtkContainer // out
@@ -1086,9 +1083,9 @@ func (container *Container) SetFocusChild(child Widgetter) {
 }
 
 // SetFocusHAdjustment hooks up an adjustment to focus handling in a container,
-// so when a child of the container is focused, the adjustment is scrolled to
-// show that widget. This function sets the horizontal alignment. See
-// gtk_scrolled_window_get_hadjustment() for a typical way of obtaining the
+// so when a child of the container is focused, the adjustment is scrolled
+// to show that widget. This function sets the horizontal alignment.
+// See gtk_scrolled_window_get_hadjustment() for a typical way of obtaining the
 // adjustment and gtk_container_set_focus_vadjustment() for setting the vertical
 // adjustment.
 //
@@ -1097,8 +1094,8 @@ func (container *Container) SetFocusChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment which should be adjusted when the focus is moved among the
-//      descendents of container.
+//   - adjustment which should be adjusted when the focus is moved among the
+//     descendents of container.
 //
 func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkContainer  // out
@@ -1113,10 +1110,10 @@ func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
 }
 
 // SetFocusVAdjustment hooks up an adjustment to focus handling in a container,
-// so when a child of the container is focused, the adjustment is scrolled to
-// show that widget. This function sets the vertical alignment. See
-// gtk_scrolled_window_get_vadjustment() for a typical way of obtaining the
-// adjustment and gtk_container_set_focus_hadjustment() for setting the
+// so when a child of the container is focused, the adjustment is scrolled
+// to show that widget. This function sets the vertical alignment.
+// See gtk_scrolled_window_get_vadjustment() for a typical way of obtaining
+// the adjustment and gtk_container_set_focus_hadjustment() for setting the
 // horizontal adjustment.
 //
 // The adjustments have to be in pixel units and in the same coordinate system
@@ -1124,8 +1121,8 @@ func (container *Container) SetFocusHAdjustment(adjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment which should be adjusted when the focus is moved among the
-//      descendents of container.
+//   - adjustment which should be adjusted when the focus is moved among the
+//     descendents of container.
 //
 func (container *Container) SetFocusVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkContainer  // out
@@ -1149,7 +1146,7 @@ func (container *Container) SetFocusVAdjustment(adjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - needsRedraws: new value for the container’s reallocate_redraws flag.
+//   - needsRedraws: new value for the container’s reallocate_redraws flag.
 //
 func (container *Container) SetReallocateRedraws(needsRedraws bool) {
 	var _arg0 *C.GtkContainer // out
@@ -1176,7 +1173,7 @@ func (container *Container) SetReallocateRedraws(needsRedraws bool) {
 //
 // The function takes the following parameters:
 //
-//    - resizeMode: new resize mode.
+//   - resizeMode: new resize mode.
 //
 func (container *Container) SetResizeMode(resizeMode ResizeMode) {
 	var _arg0 *C.GtkContainer // out
@@ -1204,20 +1201,20 @@ func (container *Container) UnsetFocusChain() {
 	runtime.KeepAlive(container)
 }
 
-// Add adds widget to container. Typically used for simple containers such as
-// Window, Frame, or Button; for more complicated layout containers such as Box
-// or Grid, this function will pick default packing parameters that may not be
-// correct. So consider functions such as gtk_box_pack_start() and
-// gtk_grid_attach() as an alternative to gtk_container_add() in those cases. A
-// widget may be added to only one container at a time; you can’t place the same
-// widget inside two different containers.
+// Add adds widget to container. Typically used for simple containers such
+// as Window, Frame, or Button; for more complicated layout containers such
+// as Box or Grid, this function will pick default packing parameters that
+// may not be correct. So consider functions such as gtk_box_pack_start() and
+// gtk_grid_attach() as an alternative to gtk_container_add() in those cases.
+// A widget may be added to only one container at a time; you can’t place the
+// same widget inside two different containers.
 //
 // Note that some containers, such as ScrolledWindow or ListBox, may add
 // intermediate children between the added widget and the container.
 //
 // The function takes the following parameters:
 //
-//    - widget to be placed inside container.
+//   - widget to be placed inside container.
 //
 func (container *Container) add(widget Widgetter) {
 	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
@@ -1253,7 +1250,7 @@ func (container *Container) checkResize() {
 //
 // The function returns the following values:
 //
-//    - gType: #GType.
+//   - gType: #GType.
 //
 func (container *Container) childType() coreglib.Type {
 	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
@@ -1303,16 +1300,16 @@ func (container *Container) compositeName(child Widgetter) string {
 
 // Forall invokes callback on each direct child of container, including children
 // that are considered “internal” (implementation details of the container).
-// “Internal” children generally weren’t added by the user of the container, but
-// were added by the container implementation itself.
+// “Internal” children generally weren’t added by the user of the container,
+// but were added by the container implementation itself.
 //
 // Most applications should use gtk_container_foreach(), rather than
 // gtk_container_forall().
 //
 // The function takes the following parameters:
 //
-//    - includeInternals
-//    - callback: callback.
+//   - includeInternals
+//   - callback: callback.
 //
 func (container *Container) forall(includeInternals bool, callback Callback) {
 	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
@@ -1342,11 +1339,11 @@ func (container *Container) forall(includeInternals bool, callback Callback) {
 //
 // The function takes the following parameters:
 //
-//    - child of container.
+//   - child of container.
 //
 // The function returns the following values:
 //
-//    - widgetPath: newly created WidgetPath.
+//   - widgetPath: newly created WidgetPath.
 //
 func (container *Container) pathForChild(child Widgetter) *WidgetPath {
 	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
@@ -1376,9 +1373,9 @@ func (container *Container) pathForChild(child Widgetter) *WidgetPath {
 	return _widgetPath
 }
 
-// Remove removes widget from container. widget must be inside container. Note
-// that container will own a reference to widget, and that this may be the last
-// reference held; so removing a widget from its container can destroy that
+// Remove removes widget from container. widget must be inside container.
+// Note that container will own a reference to widget, and that this may be the
+// last reference held; so removing a widget from its container can destroy that
 // widget. If you want to use widget again, you need to add a reference to it
 // before removing it from a container, using g_object_ref(). If you don’t want
 // to use widget again it’s usually more efficient to simply destroy it directly
@@ -1387,7 +1384,7 @@ func (container *Container) pathForChild(child Widgetter) *WidgetPath {
 //
 // The function takes the following parameters:
 //
-//    - widget: current child of container.
+//   - widget: current child of container.
 //
 func (container *Container) remove(widget Widgetter) {
 	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
@@ -1416,7 +1413,7 @@ func (container *Container) remove(widget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) or NULL.
+//   - child (optional) or NULL.
 //
 func (container *Container) setFocusChild(child Widgetter) {
 	gclass := (*C.GtkContainerClass)(coreglib.PeekParentClass(container))
@@ -1455,10 +1452,10 @@ func (c *ContainerClass) ParentClass() *WidgetClass {
 	return _v
 }
 
-// HandleBorderWidth modifies a subclass of ContainerClass to automatically add
-// and remove the border-width setting on GtkContainer. This allows the subclass
-// to ignore the border width in its size request and allocate methods. The
-// intent is for a subclass to invoke this in its class_init function.
+// HandleBorderWidth modifies a subclass of ContainerClass to automatically
+// add and remove the border-width setting on GtkContainer. This allows the
+// subclass to ignore the border width in its size request and allocate methods.
+// The intent is for a subclass to invoke this in its class_init function.
 //
 // gtk_container_class_handle_border_width() is necessary because it would break
 // API too badly to make this behavior the default. So subclasses must “opt in”

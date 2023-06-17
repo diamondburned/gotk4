@@ -39,8 +39,8 @@ func init() {
 type OverlayOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - widget
-	//    - allocation
+	//   - widget
+	//   - allocation
 	//
 	// The function returns the following values:
 	//
@@ -53,8 +53,8 @@ func defaultOverlayOverrides(v *Overlay) OverlayOverrides {
 	}
 }
 
-// Overlay is a container which contains a single main child, on top of which it
-// can place “overlay” widgets. The position of each overlay widget is
+// Overlay is a container which contains a single main child, on top of which
+// it can place “overlay” widgets. The position of each overlay widget is
 // determined by its Widget:halign and Widget:valign properties. E.g. a widget
 // with both alignments set to GTK_ALIGN_START will be placed at the top left
 // corner of the GtkOverlay container, whereas an overlay with halign set to
@@ -68,15 +68,13 @@ func defaultOverlayOverrides(v *Overlay) OverlayOverrides {
 // An overlay’s minimum and natural sizes are those of its main child. The sizes
 // of overlay children are not considered when measuring these preferred sizes.
 //
-//
-// GtkOverlay as GtkBuildable
+// # GtkOverlay as GtkBuildable
 //
 // The GtkOverlay implementation of the GtkBuildable interface supports placing
 // a child as an overlay by specifying “overlay” as the “type” attribute of a
 // <child> element.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkOverlay has a single CSS node with the name “overlay”. Overlay children
 // whose alignments cause them to be positioned at an edge get the style classes
@@ -137,8 +135,8 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return wrapOverlay(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectGetChildPosition signal is emitted to determine the position and size
-// of any overlay child widgets. A handler for this signal should fill
+// ConnectGetChildPosition signal is emitted to determine the position and
+// size of any overlay child widgets. A handler for this signal should fill
 // allocation with the desired position and size for widget, relative to the
 // 'main' child of overlay.
 //
@@ -155,7 +153,7 @@ func (overlay *Overlay) ConnectGetChildPosition(f func(widget Widgetter) (alloca
 //
 // The function returns the following values:
 //
-//    - overlay: new Overlay object.
+//   - overlay: new Overlay object.
 //
 func NewOverlay() *Overlay {
 	var _cret *C.GtkWidget // in
@@ -179,7 +177,7 @@ func NewOverlay() *Overlay {
 //
 // The function takes the following parameters:
 //
-//    - widget to be added to the container.
+//   - widget to be added to the container.
 //
 func (overlay *Overlay) AddOverlay(widget Widgetter) {
 	var _arg0 *C.GtkOverlay // out
@@ -198,11 +196,11 @@ func (overlay *Overlay) AddOverlay(widget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - widget: overlay child of Overlay.
+//   - widget: overlay child of Overlay.
 //
 // The function returns the following values:
 //
-//    - ok: whether the widget is a pass through child.
+//   - ok: whether the widget is a pass through child.
 //
 func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 	var _arg0 *C.GtkOverlay // out
@@ -235,9 +233,9 @@ func (overlay *Overlay) OverlayPassThrough(widget Widgetter) bool {
 //
 // The function takes the following parameters:
 //
-//    - child: overlaid Widget to move.
-//    - index_: new index for child in the list of overlay children of overlay,
-//      starting from 0. If negative, indicates the end of the list.
+//   - child: overlaid Widget to move.
+//   - index_: new index for child in the list of overlay children of overlay,
+//     starting from 0. If negative, indicates the end of the list.
 //
 func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 	var _arg0 *C.GtkOverlay // out
@@ -259,8 +257,8 @@ func (overlay *Overlay) ReorderOverlay(child Widgetter, index_ int) {
 //
 // The function takes the following parameters:
 //
-//    - widget: overlay child of Overlay.
-//    - passThrough: whether the child should pass the input through.
+//   - widget: overlay child of Overlay.
+//   - passThrough: whether the child should pass the input through.
 //
 func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool) {
 	var _arg0 *C.GtkOverlay // out
@@ -281,8 +279,8 @@ func (overlay *Overlay) SetOverlayPassThrough(widget Widgetter, passThrough bool
 
 // The function takes the following parameters:
 //
-//    - widget
-//    - allocation
+//   - widget
+//   - allocation
 //
 // The function returns the following values:
 //

@@ -28,11 +28,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: StyleContext.
-//    - cr: #cairo_t.
-//    - pixbuf containing the icon to draw.
-//    - x: x position for the pixbuf.
-//    - y: y position for the pixbuf.
+//   - context: StyleContext.
+//   - cr: #cairo_t.
+//   - pixbuf containing the icon to draw.
+//   - x: x position for the pixbuf.
+//   - y: y position for the pixbuf.
 //
 func RenderIcon(context *StyleContext, cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64) {
 	var _arg1 *C.GtkStyleContext // out

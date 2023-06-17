@@ -71,13 +71,13 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 }
 
 // SetCustom replaces the widget packed into the tooltip with custom_widget.
-// custom_widget does not get destroyed when the tooltip goes away. By default a
-// box with a Image and Label is embedded in the tooltip, which can be
+// custom_widget does not get destroyed when the tooltip goes away. By default
+// a box with a Image and Label is embedded in the tooltip, which can be
 // configured using gtk_tooltip_set_markup() and gtk_tooltip_set_icon().
 //
 // The function takes the following parameters:
 //
-//    - customWidget (optional) or NULL to unset the old custom widget.
+//   - customWidget (optional) or NULL to unset the old custom widget.
 //
 func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 	var _arg0 *C.GtkTooltip // out
@@ -98,7 +98,7 @@ func (tooltip *Tooltip) SetCustom(customWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - paintable (optional) or NULL.
+//   - paintable (optional) or NULL.
 //
 func (tooltip *Tooltip) SetIcon(paintable gdk.Paintabler) {
 	var _arg0 *C.GtkTooltip   // out
@@ -114,13 +114,13 @@ func (tooltip *Tooltip) SetIcon(paintable gdk.Paintabler) {
 	runtime.KeepAlive(paintable)
 }
 
-// SetIconFromGIcon sets the icon of the tooltip (which is in front of the text)
-// to be the icon indicated by gicon with the size indicated by size. If gicon
-// is NULL, the image will be hidden.
+// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
+// text) to be the icon indicated by gicon with the size indicated by size.
+// If gicon is NULL, the image will be hidden.
 //
 // The function takes the following parameters:
 //
-//    - gicon (optional) representing the icon, or NULL.
+//   - gicon (optional) representing the icon, or NULL.
 //
 func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner) {
 	var _arg0 *C.GtkTooltip // out
@@ -142,7 +142,7 @@ func (tooltip *Tooltip) SetIconFromGIcon(gicon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name, or NULL.
+//   - iconName (optional): icon name, or NULL.
 //
 func (tooltip *Tooltip) SetIconFromIconName(iconName string) {
 	var _arg0 *C.GtkTooltip // out
@@ -166,7 +166,7 @@ func (tooltip *Tooltip) SetIconFromIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - markup (optional): string with Pango markup or NLL.
+//   - markup (optional): string with Pango markup or NLL.
 //
 func (tooltip *Tooltip) SetMarkup(markup string) {
 	var _arg0 *C.GtkTooltip // out
@@ -189,7 +189,7 @@ func (tooltip *Tooltip) SetMarkup(markup string) {
 //
 // The function takes the following parameters:
 //
-//    - text (optional) string or NULL.
+//   - text (optional) string or NULL.
 //
 func (tooltip *Tooltip) SetText(text string) {
 	var _arg0 *C.GtkTooltip // out
@@ -210,13 +210,13 @@ func (tooltip *Tooltip) SetText(text string) {
 // apply, to be rect (in widget coordinates). This is especially useful for
 // properly setting tooltips on TreeView rows and cells, IconViews, etc.
 //
-// For setting tooltips on TreeView, please refer to the convenience functions
-// for this: gtk_tree_view_set_tooltip_row() and
+// For setting tooltips on TreeView, please refer to the convenience
+// functions for this: gtk_tree_view_set_tooltip_row() and
 // gtk_tree_view_set_tooltip_cell().
 //
 // The function takes the following parameters:
 //
-//    - rect: Rectangle.
+//   - rect: Rectangle.
 //
 func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkTooltip   // out

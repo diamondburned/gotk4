@@ -175,7 +175,7 @@ func (sw *Switch) ConnectStateSet(f func(state bool) (ok bool)) coreglib.SignalH
 //
 // The function returns the following values:
 //
-//    - _switch: newly created Switch instance.
+//   - _switch: newly created Switch instance.
 //
 func NewSwitch() *Switch {
 	var _cret *C.GtkWidget // in
@@ -193,7 +193,7 @@ func NewSwitch() *Switch {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the Switch is active, and FALSE otherwise.
+//   - ok: TRUE if the Switch is active, and FALSE otherwise.
 //
 func (sw *Switch) Active() bool {
 	var _arg0 *C.GtkSwitch // out
@@ -217,7 +217,7 @@ func (sw *Switch) Active() bool {
 //
 // The function returns the following values:
 //
-//    - ok: underlying state.
+//   - ok: underlying state.
 //
 func (sw *Switch) State() bool {
 	var _arg0 *C.GtkSwitch // out
@@ -241,7 +241,7 @@ func (sw *Switch) State() bool {
 //
 // The function takes the following parameters:
 //
-//    - isActive: TRUE if sw should be active, and FALSE otherwise.
+//   - isActive: TRUE if sw should be active, and FALSE otherwise.
 //
 func (sw *Switch) SetActive(isActive bool) {
 	var _arg0 *C.GtkSwitch // out
@@ -259,15 +259,15 @@ func (sw *Switch) SetActive(isActive bool) {
 
 // SetState sets the underlying state of the Switch.
 //
-// Normally, this is the same as Switch:active, unless the switch is set up for
-// delayed state changes. This function is typically called from a
+// Normally, this is the same as Switch:active, unless the switch is set
+// up for delayed state changes. This function is typically called from a
 // Switch::state-set signal handler.
 //
 // See Switch::state-set for details.
 //
 // The function takes the following parameters:
 //
-//    - state: new state.
+//   - state: new state.
 //
 func (sw *Switch) SetState(state bool) {
 	var _arg0 *C.GtkSwitch // out

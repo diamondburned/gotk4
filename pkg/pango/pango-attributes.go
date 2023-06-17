@@ -110,14 +110,14 @@ const (
 	// AttrTypeAllowBreaks: whether breaks are allowed (pango.AttrInt). Since
 	// 1.44.
 	AttrTypeAllowBreaks
-	// AttrTypeShow: how to render invisible characters (pango.AttrInt). Since
-	// 1.44.
+	// AttrTypeShow: how to render invisible characters (pango.AttrInt).
+	// Since 1.44.
 	AttrTypeShow
 	// AttrTypeInsertHyphens: whether to insert hyphens at intra-word line
 	// breaks (pango.AttrInt). Since 1.44.
 	AttrTypeInsertHyphens
-	// AttrTypeOverline: whether the text has an overline (pango.AttrInt). Since
-	// 1.46.
+	// AttrTypeOverline: whether the text has an overline (pango.AttrInt).
+	// Since 1.46.
 	AttrTypeOverline
 	// AttrTypeOverlineColor: overline color (pango.AttrColor). Since 1.46.
 	AttrTypeOverlineColor
@@ -204,11 +204,11 @@ func (a AttrType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - name: identifier for the type.
+//   - name: identifier for the type.
 //
 // The function returns the following values:
 //
-//    - attrType: new type ID.
+//   - attrType: new type ID.
 //
 func AttrTypeRegister(name string) AttrType {
 	var _arg1 *C.gchar        // out
@@ -238,14 +238,14 @@ const (
 	UnderlineSingle
 	// UnderlineDouble: double underline should be drawn.
 	UnderlineDouble
-	// UnderlineLow: single underline should be drawn at a position beneath the
-	// ink extents of the text being underlined. This should be used only for
-	// underlining single characters, such as for keyboard accelerators.
+	// UnderlineLow: single underline should be drawn at a position beneath
+	// the ink extents of the text being underlined. This should be used only
+	// for underlining single characters, such as for keyboard accelerators.
 	// PANGO_UNDERLINE_SINGLE should be used for extended portions of text.
 	UnderlineLow
-	// UnderlineError: wavy underline should be drawn below. This underline is
-	// typically used to indicate an error such as a possible mispelling; in
-	// some cases a contrasting color may automatically be used. This type of
+	// UnderlineError: wavy underline should be drawn below. This underline
+	// is typically used to indicate an error such as a possible mispelling;
+	// in some cases a contrasting color may automatically be used. This type of
 	// underlining is available since Pango 1.4.
 	UnderlineError
 	// UnderlineSingleLine: like PANGO_UNDERLINE_SINGLE, but drawn continuously
@@ -357,14 +357,14 @@ type AttrFilterFunc func(attribute *Attribute) (ok bool)
 //
 // The function takes the following parameters:
 //
-//    - red value (ranging from 0 to 65535).
-//    - green value.
-//    - blue value.
+//   - red value (ranging from 0 to 65535).
+//   - green value.
+//   - blue value.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrBackground(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
@@ -398,12 +398,12 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - family or comma separated list of families.
+//   - family or comma separated list of families.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrFamily(family string) *Attribute {
 	var _arg1 *C.char           // out
@@ -432,14 +432,14 @@ func NewAttrFamily(family string) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - red value (ranging from 0 to 65535).
-//    - green value.
-//    - blue value.
+//   - red value (ranging from 0 to 65535).
+//   - green value.
+//   - blue value.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrForeground(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
@@ -473,13 +473,13 @@ func NewAttrForeground(red, green, blue uint16) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - rise: amount that the text should be displaced vertically, in Pango
-//      units. Positive values displace the text upwards.
+//   - rise: amount that the text should be displaced vertically, in Pango
+//     units. Positive values displace the text upwards.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrRise(rise int) *Attribute {
 	var _arg1 C.int             // out
@@ -510,12 +510,12 @@ func NewAttrRise(rise int) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - scaleFactor: factor to scale the font.
+//   - scaleFactor: factor to scale the font.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrScale(scaleFactor float64) *Attribute {
 	var _arg1 C.double          // out
@@ -543,12 +543,12 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - stretch: stretch.
+//   - stretch: stretch.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrStretch(stretch Stretch) *Attribute {
 	var _arg1 C.PangoStretch    // out
@@ -576,12 +576,12 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - strikethrough: TRUE if the text should be struck-through.
+//   - strikethrough: TRUE if the text should be struck-through.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	var _arg1 C.gboolean        // out
@@ -611,12 +611,12 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - style: slant style.
+//   - style: slant style.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrStyle(style Style) *Attribute {
 	var _arg1 C.PangoStyle      // out
@@ -644,12 +644,12 @@ func NewAttrStyle(style Style) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - underline style.
+//   - underline style.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrUnderline(underline Underline) *Attribute {
 	var _arg1 C.PangoUnderline  // out
@@ -677,12 +677,12 @@ func NewAttrUnderline(underline Underline) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - variant: variant.
+//   - variant: variant.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrVariant(variant Variant) *Attribute {
 	var _arg1 C.PangoVariant    // out
@@ -710,12 +710,12 @@ func NewAttrVariant(variant Variant) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - weight: weight.
+//   - weight: weight.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrWeight(weight Weight) *Attribute {
 	var _arg1 C.PangoWeight     // out
@@ -759,18 +759,18 @@ func NewAttrWeight(weight Weight) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - markupText: markup to parse (see the Pango Markup docs).
-//    - length of markup_text, or -1 if nul-terminated.
-//    - accelMarker: character that precedes an accelerator, or 0 for none.
+//   - markupText: markup to parse (see the Pango Markup docs).
+//   - length of markup_text, or -1 if nul-terminated.
+//   - accelMarker: character that precedes an accelerator, or 0 for none.
 //
 // The function returns the following values:
 //
-//    - attrList (optional) address of return location for a PangoAttrList, or
-//      NULL.
-//    - text (optional) address of return location for text with tags stripped,
-//      or NULL.
-//    - accelChar (optional) address of return location for accelerator char, or
-//      NULL.
+//   - attrList (optional) address of return location for a PangoAttrList,
+//     or NULL.
+//   - text (optional) address of return location for text with tags stripped,
+//     or NULL.
+//   - accelChar (optional) address of return location for accelerator char,
+//     or NULL.
 //
 func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
 	var _arg1 *C.char          // out
@@ -820,8 +820,8 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 // AttrClass: PangoAttrClass structure stores the type and operations for a
 // particular type of attribute.
 //
-// The functions in this structure should not be called directly. Instead, one
-// should use the wrapper functions provided for PangoAttribute.
+// The functions in this structure should not be called directly. Instead,
+// one should use the wrapper functions provided for PangoAttribute.
 //
 // An instance of this type is always passed by reference.
 type AttrClass struct {
@@ -936,17 +936,17 @@ func (a *AttrFontDesc) Desc() *FontDescription {
 
 // NewAttrFontDesc: create a new font description attribute.
 //
-// This attribute allows setting family, style, weight, variant, stretch, and
-// size simultaneously.
+// This attribute allows setting family, style, weight, variant, stretch,
+// and size simultaneously.
 //
 // The function takes the following parameters:
 //
-//    - desc: font description.
+//   - desc: font description.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrFontDesc(desc *FontDescription) *Attribute {
 	var _arg1 *C.PangoFontDescription // out
@@ -1008,8 +1008,8 @@ func (a *AttrInt) SetValue(value int) {
 // AttrIterator: PangoAttrIterator is used to iterate through a PangoAttrList.
 //
 // A new iterator is created with pango.AttrList.GetIterator(). Once the
-// iterator is created, it can be advanced through the style changes in the text
-// using pango.AttrIterator.Next(). At each style change, the range of the
+// iterator is created, it can be advanced through the style changes in the
+// text using pango.AttrIterator.Next(). At each style change, the range of the
 // current style segment and the attributes currently in effect can be queried.
 //
 // An instance of this type is always passed by reference.
@@ -1031,8 +1031,8 @@ func marshalAttrIterator(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - attrIterator: newly allocated PangoAttrIterator, which should be freed
-//      with pango.AttrIterator.Destroy().
+//   - attrIterator: newly allocated PangoAttrIterator, which should be freed
+//     with pango.AttrIterator.Destroy().
 //
 func (iterator *AttrIterator) Copy() *AttrIterator {
 	var _arg0 *C.PangoAttrIterator // out
@@ -1072,12 +1072,12 @@ func (iterator *AttrIterator) Destroy() {
 //
 // The function takes the following parameters:
 //
-//    - typ: type of attribute to find.
+//   - typ: type of attribute to find.
 //
 // The function returns the following values:
 //
-//    - attribute (optional): current attribute of the given type, or NULL if no
-//      attribute of that type applies to the current location.
+//   - attribute (optional): current attribute of the given type, or NULL if no
+//     attribute of that type applies to the current location.
 //
 func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 	var _arg0 *C.PangoAttrIterator // out
@@ -1104,9 +1104,9 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 //
 // The function returns the following values:
 //
-//    - sList: a list of all attributes for the current range. To free this
-//      value, call pango.Attribute.Destroy() on each value and g_slist_free() on
-//      the list.
+//   - sList: a list of all attributes for the current range. To free this
+//     value, call pango.Attribute.Destroy() on each value and g_slist_free() on
+//     the list.
 //
 func (iterator *AttrIterator) Attrs() []*Attribute {
 	var _arg0 *C.PangoAttrIterator // out
@@ -1140,7 +1140,7 @@ func (iterator *AttrIterator) Attrs() []*Attribute {
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if the iterator is at the end of the list, otherwise TRUE.
+//   - ok: FALSE if the iterator is at the end of the list, otherwise TRUE.
 //
 func (iterator *AttrIterator) Next() bool {
 	var _arg0 *C.PangoAttrIterator // out
@@ -1167,8 +1167,8 @@ func (iterator *AttrIterator) Next() bool {
 //
 // The function returns the following values:
 //
-//    - start: location to store the start of the range.
-//    - end: location to store the end of the range.
+//   - start: location to store the start of the range.
+//   - end: location to store the end of the range.
 //
 func (iterator *AttrIterator) Range() (start int, end int) {
 	var _arg0 *C.PangoAttrIterator // out
@@ -1222,12 +1222,12 @@ func (a *AttrLanguage) Value() *Language {
 //
 // The function takes the following parameters:
 //
-//    - language tag.
+//   - language tag.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrLanguage(language *Language) *Attribute {
 	var _arg1 *C.PangoLanguage  // out
@@ -1309,8 +1309,8 @@ func NewAttrList() *AttrList {
 //
 // The function takes the following parameters:
 //
-//    - attr: attribute to insert. Ownership of this value is assumed by the
-//      list.
+//   - attr: attribute to insert. Ownership of this value is assumed by the
+//     list.
 //
 func (list *AttrList) Change(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
@@ -1329,9 +1329,9 @@ func (list *AttrList) Change(attr *Attribute) {
 //
 // The function returns the following values:
 //
-//    - attrList (optional): newly allocated PangoAttrList, with a reference
-//      count of one, which should be freed with pango.AttrList.Unref(). Returns
-//      NULL if list was NULL.
+//   - attrList (optional): newly allocated PangoAttrList, with a reference
+//     count of one, which should be freed with pango.AttrList.Unref(). Returns
+//     NULL if list was NULL.
 //
 func (list *AttrList) Copy() *AttrList {
 	var _arg0 *C.PangoAttrList // out
@@ -1365,11 +1365,11 @@ func (list *AttrList) Copy() *AttrList {
 //
 // The function takes the following parameters:
 //
-//    - otherList: other PangoAttrList.
+//   - otherList: other PangoAttrList.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the lists are equal, FALSE if they aren't.
+//   - ok: TRUE if the lists are equal, FALSE if they aren't.
 //
 func (list *AttrList) Equal(otherList *AttrList) bool {
 	var _arg0 *C.PangoAttrList // out
@@ -1397,13 +1397,13 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 //
 // The function takes the following parameters:
 //
-//    - fn: callback function; returns TRUE if an attribute should be filtered
-//      out.
+//   - fn: callback function; returns TRUE if an attribute should be filtered
+//     out.
 //
 // The function returns the following values:
 //
-//    - attrList (optional): new PangoAttrList or NULL if no attributes of the
-//      given types were found.
+//   - attrList (optional): new PangoAttrList or NULL if no attributes of the
+//     given types were found.
 //
 func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var _arg0 *C.PangoAttrList      // out
@@ -1439,8 +1439,8 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 //
 // The function returns the following values:
 //
-//    - sList: a list of all attributes in list. To free this value, call
-//      pango.Attribute.Destroy on each value and g_slist_free() on the list.
+//   - sList: a list of all attributes in list. To free this value, call
+//     pango.Attribute.Destroy on each value and g_slist_free() on the list.
 //
 func (list *AttrList) Attributes() []*Attribute {
 	var _arg0 *C.PangoAttrList // out
@@ -1470,13 +1470,13 @@ func (list *AttrList) Attributes() []*Attribute {
 	return _sList
 }
 
-// Iterator: create a iterator initialized to the beginning of the list. list
-// must not be modified until this iterator is freed.
+// Iterator: create a iterator initialized to the beginning of the list.
+// list must not be modified until this iterator is freed.
 //
 // The function returns the following values:
 //
-//    - attrIterator: newly allocated PangoAttrIterator, which should be freed
-//      with pango.AttrIterator.Destroy().
+//   - attrIterator: newly allocated PangoAttrIterator, which should be freed
+//     with pango.AttrIterator.Destroy().
 //
 func (list *AttrList) Iterator() *AttrIterator {
 	var _arg0 *C.PangoAttrList     // out
@@ -1506,8 +1506,8 @@ func (list *AttrList) Iterator() *AttrIterator {
 //
 // The function takes the following parameters:
 //
-//    - attr: attribute to insert. Ownership of this value is assumed by the
-//      list.
+//   - attr: attribute to insert. Ownership of this value is assumed by the
+//     list.
 //
 func (list *AttrList) Insert(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
@@ -1528,8 +1528,8 @@ func (list *AttrList) Insert(attr *Attribute) {
 //
 // The function takes the following parameters:
 //
-//    - attr: attribute to insert. Ownership of this value is assumed by the
-//      list.
+//   - attr: attribute to insert. Ownership of this value is assumed by the
+//     list.
 //
 func (list *AttrList) InsertBefore(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
@@ -1547,8 +1547,8 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 // Splice: this function opens up a hole in list, fills it in with attributes
 // from the left, and then merges other on top of the hole.
 //
-// This operation is equivalent to stretching every attribute that applies at
-// position pos in list by an amount len, and then calling
+// This operation is equivalent to stretching every attribute that
+// applies at position pos in list by an amount len, and then calling
 // pango.AttrList.Change() with a copy of each attribute in other in sequence
 // (offset in position by pos).
 //
@@ -1557,11 +1557,11 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 //
 // The function takes the following parameters:
 //
-//    - other PangoAttrList.
-//    - pos: position in list at which to insert other.
-//    - len: length of the spliced segment. (Note that this must be specified
-//      since the attributes in other may only be present at some subsection of
-//      this range).
+//   - other PangoAttrList.
+//   - pos: position in list at which to insert other.
+//   - len: length of the spliced segment. (Note that this must be specified
+//     since the attributes in other may only be present at some subsection of
+//     this range).
 //
 func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 	var _arg0 *C.PangoAttrList // out
@@ -1596,9 +1596,9 @@ func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 //
 // The function takes the following parameters:
 //
-//    - pos: position of the change.
-//    - remove: number of removed bytes.
-//    - add: number of added bytes.
+//   - pos: position of the change.
+//   - remove: number of removed bytes.
+//   - add: number of added bytes.
 //
 func (list *AttrList) Update(pos int, remove int, add int) {
 	var _arg0 *C.PangoAttrList // out
@@ -1634,18 +1634,18 @@ type attrShape struct {
 // NewAttrShape: create a new shape attribute.
 //
 // A shape is used to impose a particular ink and logical rectangle on the
-// result of shaping a particular glyph. This might be used, for instance, for
-// embedding a picture or a widget inside a PangoLayout.
+// result of shaping a particular glyph. This might be used, for instance,
+// for embedding a picture or a widget inside a PangoLayout.
 //
 // The function takes the following parameters:
 //
-//    - inkRect: ink rectangle to assign to each character.
-//    - logicalRect: logical rectangle to assign to each character.
+//   - inkRect: ink rectangle to assign to each character.
+//   - logicalRect: logical rectangle to assign to each character.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
 	var _arg1 *C.PangoRectangle // out
@@ -1713,12 +1713,12 @@ func (a *AttrSize) SetSize(size int) {
 //
 // The function takes the following parameters:
 //
-//    - size: font size, in PANGO_SCALEths of a point.
+//   - size: font size, in PANGO_SCALEths of a point.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrSize(size int) *Attribute {
 	var _arg1 C.int             // out
@@ -1837,8 +1837,8 @@ func (a *Attribute) SetEndIndex(endIndex uint) {
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func (attr *Attribute) Copy() *Attribute {
 	var _arg0 *C.PangoAttribute // out
@@ -1877,11 +1877,11 @@ func (attr *Attribute) Destroy() {
 //
 // The function takes the following parameters:
 //
-//    - attr2: another PangoAttribute.
+//   - attr2: another PangoAttribute.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two attributes have the same value.
+//   - ok: TRUE if the two attributes have the same value.
 //
 func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 	var _arg0 *C.PangoAttribute // out
@@ -1904,14 +1904,14 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 	return _ok
 }
 
-// Init initializes attr's klass to klass, it's start_index to
-// PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING and end_index to
+// Init initializes attr's klass to klass, it's start_index
+// to PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING and end_index to
 // PANGO_ATTR_INDEX_TO_TEXT_END such that the attribute applies to the entire
 // text by default.
 //
 // The function takes the following parameters:
 //
-//    - klass: PangoAttrClass.
+//   - klass: PangoAttrClass.
 //
 func (attr *Attribute) Init(klass *AttrClass) {
 	var _arg0 *C.PangoAttribute // out
@@ -2013,8 +2013,8 @@ func (c *Color) SetBlue(blue uint16) {
 //
 // The function returns the following values:
 //
-//    - color (optional): newly allocated PangoColor, which should be freed with
-//      pango.Color.Free(), or NULL if src was NULL.
+//   - color (optional): newly allocated PangoColor, which should be freed with
+//     pango.Color.Free(), or NULL if src was NULL.
 //
 func (src *Color) Copy() *Color {
 	var _arg0 *C.PangoColor // out
@@ -2045,19 +2045,19 @@ func (src *Color) Copy() *Color {
 // Parse: fill in the fields of a color from a string specification.
 //
 // The string can either one of a large set of standard names. (Taken from the
-// CSS Color specification (https://www.w3.org/TR/css-color-4/#named-colors), or
-// it can be a value in the form #rgb, #rrggbb, #rrrgggbbb or #rrrrggggbbbb,
+// CSS Color specification (https://www.w3.org/TR/css-color-4/#named-colors),
+// or it can be a value in the form #rgb, #rrggbb, #rrrgggbbb or #rrrrggggbbbb,
 // where r, g and b are hex digits of the red, green, and blue components of the
 // color, respectively. (White in the four forms is #fff, #ffffff, #fffffffff
 // and #ffffffffffff.).
 //
 // The function takes the following parameters:
 //
-//    - spec: string specifying the new color.
+//   - spec: string specifying the new color.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if parsing of the specifier succeeded, otherwise false.
+//   - ok: TRUE if parsing of the specifier succeeded, otherwise false.
 //
 func (color *Color) Parse(spec string) bool {
 	var _arg0 *C.PangoColor // out
@@ -2086,8 +2086,8 @@ func (color *Color) Parse(spec string) bool {
 // ParseWithAlpha: fill in the fields of a color from a string specification.
 //
 // The string can either one of a large set of standard names. (Taken from the
-// CSS Color specification (https://www.w3.org/TR/css-color-4/#named-colors), or
-// it can be a hexadecimal value in the form #rgb, #rrggbb, #rrrgggbbb or
+// CSS Color specification (https://www.w3.org/TR/css-color-4/#named-colors),
+// or it can be a hexadecimal value in the form #rgb, #rrggbb, #rrrgggbbb or
 // #rrrrggggbbbb where r, g and b are hex digits of the red, green, and blue
 // components of the color, respectively. (White in the four forms is #fff,
 // #ffffff, #fffffffff and #ffffffffffff.)
@@ -2099,12 +2099,12 @@ func (color *Color) Parse(spec string) bool {
 //
 // The function takes the following parameters:
 //
-//    - spec: string specifying the new color.
+//   - spec: string specifying the new color.
 //
 // The function returns the following values:
 //
-//    - alpha (optional): return location for alpha, or NULL.
-//    - ok: TRUE if parsing of the specifier succeeded, otherwise false.
+//   - alpha (optional): return location for alpha, or NULL.
+//   - ok: TRUE if parsing of the specifier succeeded, otherwise false.
 //
 func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _arg0 *C.PangoColor // out
@@ -2140,7 +2140,7 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated text string that must be freed with g_free().
+//   - utf8: newly-allocated text string that must be freed with g_free().
 //
 func (color *Color) String() string {
 	var _arg0 *C.PangoColor // out

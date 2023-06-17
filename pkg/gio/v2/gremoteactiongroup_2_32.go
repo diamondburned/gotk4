@@ -37,8 +37,8 @@ func init() {
 // transmit action invocations to other processes or receive action invocations
 // in the local process from other processes.
 //
-// The interface has _full variants of the two methods on Group used to activate
-// actions: g_action_group_activate_action() and
+// The interface has _full variants of the two methods on Group
+// used to activate actions: g_action_group_activate_action() and
 // g_action_group_change_action_state(). These variants allow a "platform data"
 // #GVariant to be specified: a dictionary providing context for the action
 // invocation (for example: timestamps, startup notification IDs, etc).
@@ -96,9 +96,9 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action to activate.
-//    - parameter (optional): optional parameter to the activation.
-//    - platformData: platform data to send.
+//   - actionName: name of the action to activate.
+//   - parameter (optional): optional parameter to the activation.
+//   - platformData: platform data to send.
 //
 func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
@@ -133,9 +133,9 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action to change the state of.
-//    - value: new requested value for the state.
-//    - platformData: platform data to send.
+//   - actionName: name of the action to change the state of.
+//   - value: new requested value for the state.
+//   - platformData: platform data to send.
 //
 func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
@@ -168,9 +168,9 @@ func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value,
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action to activate.
-//    - parameter (optional): optional parameter to the activation.
-//    - platformData: platform data to send.
+//   - actionName: name of the action to activate.
+//   - parameter (optional): optional parameter to the activation.
+//   - platformData: platform data to send.
 //
 func (remote *RemoteActionGroup) activateActionFull(actionName string, parameter, platformData *glib.Variant) {
 	gclass := (*C.GRemoteActionGroupInterface)(coreglib.PeekParentClass(remote))
@@ -208,9 +208,9 @@ func (remote *RemoteActionGroup) activateActionFull(actionName string, parameter
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action to change the state of.
-//    - value: new requested value for the state.
-//    - platformData: platform data to send.
+//   - actionName: name of the action to change the state of.
+//   - value: new requested value for the state.
+//   - platformData: platform data to send.
 //
 func (remote *RemoteActionGroup) changeActionStateFull(actionName string, value, platformData *glib.Variant) {
 	gclass := (*C.GRemoteActionGroupInterface)(coreglib.PeekParentClass(remote))

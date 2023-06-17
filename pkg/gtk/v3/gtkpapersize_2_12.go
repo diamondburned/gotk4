@@ -19,12 +19,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - includeCustom: whether to include custom paper sizes as defined in the
-//      page setup dialog.
+//   - includeCustom: whether to include custom paper sizes as defined in the
+//     page setup dialog.
 //
 // The function returns the following values:
 //
-//    - list: newly allocated list of newly allocated PaperSize objects.
+//   - list: newly allocated list of newly allocated PaperSize objects.
 //
 func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 	var _arg1 C.gboolean // out

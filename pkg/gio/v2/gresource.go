@@ -49,7 +49,7 @@ func (staticResource *StaticResource) Fini() {
 //
 // The function returns the following values:
 //
-//    - resource: #GResource.
+//   - resource: #GResource.
 //
 func (staticResource *StaticResource) Resource() *Resource {
 	var _arg0 *C.GStaticResource // out

@@ -64,7 +64,7 @@ func (gesture *GestureRotate) ConnectAngleChanged(f func(angle, angleDelta float
 //
 // The function returns the following values:
 //
-//    - gestureRotate: newly created GtkGestureRotate.
+//   - gestureRotate: newly created GtkGestureRotate.
 //
 func NewGestureRotate() *GestureRotate {
 	var _cret *C.GtkGesture // in
@@ -80,13 +80,13 @@ func NewGestureRotate() *GestureRotate {
 
 // AngleDelta gets the angle delta in radians.
 //
-// If gesture is active, this function returns the angle difference in radians
-// since the gesture was first recognized. If gesture is not active, 0 is
-// returned.
+// If gesture is active, this function returns the angle difference in
+// radians since the gesture was first recognized. If gesture is not active,
+// 0 is returned.
 //
 // The function returns the following values:
 //
-//    - gdouble: angle delta in radians.
+//   - gdouble: angle delta in radians.
 //
 func (gesture *GestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate // out

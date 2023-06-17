@@ -17,12 +17,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - hint: gravity hint value.
+//   - hint: gravity hint value.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrGravityHint(hint GravityHint) *Attribute {
 	var _arg1 C.PangoGravityHint // out
@@ -50,12 +50,12 @@ func NewAttrGravityHint(hint GravityHint) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - gravity value; should not be PANGO_GRAVITY_AUTO.
+//   - gravity value; should not be PANGO_GRAVITY_AUTO.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrGravity(gravity Gravity) *Attribute {
 	var _arg1 C.PangoGravity    // out

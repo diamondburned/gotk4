@@ -50,9 +50,9 @@ func init() {
 // these properties.
 //
 // The action will be looked up in action groups that are found among the
-// widgets ancestors. Most commonly, these will be the actions with the “win.”
-// or “app.” prefix that are associated with the ApplicationWindow or
-// Application, but other action groups that are added with
+// widgets ancestors. Most commonly, these will be the actions with the
+// “win.” or “app.” prefix that are associated with the ApplicationWindow
+// or Application, but other action groups that are added with
 // gtk_widget_insert_action_group() will be consulted as well.
 //
 // Actionable wraps an interface. This means the user can get the
@@ -113,7 +113,7 @@ func marshalActionable(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): action name, or NULL if none is set.
+//   - utf8 (optional): action name, or NULL if none is set.
 //
 func (actionable *Actionable) ActionName() string {
 	var _arg0 *C.GtkActionable // out
@@ -139,7 +139,7 @@ func (actionable *Actionable) ActionName() string {
 //
 // The function returns the following values:
 //
-//    - variant: current target value.
+//   - variant: current target value.
 //
 func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	var _arg0 *C.GtkActionable // out
@@ -177,7 +177,7 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - actionName (optional): action name, or NULL.
+//   - actionName (optional): action name, or NULL.
 //
 func (actionable *Actionable) SetActionName(actionName string) {
 	var _arg0 *C.GtkActionable // out
@@ -199,9 +199,9 @@ func (actionable *Actionable) SetActionName(actionName string) {
 // If target_value is NULL then the target value is unset.
 //
 // The target value has two purposes. First, it is used as the parameter to
-// activation of the action associated with the Actionable widget. Second, it is
-// used to determine if the widget should be rendered as “active” — the widget
-// is active if the state is equal to the given target.
+// activation of the action associated with the Actionable widget. Second,
+// it is used to determine if the widget should be rendered as “active” — the
+// widget is active if the state is equal to the given target.
 //
 // Consider the example of associating a set of buttons with a #GAction with
 // string state in a typical “radio button” situation. Each button will be
@@ -214,7 +214,7 @@ func (actionable *Actionable) SetActionName(actionName string) {
 //
 // The function takes the following parameters:
 //
-//    - targetValue (optional) to set as the target value, or NULL.
+//   - targetValue (optional) to set as the target value, or NULL.
 //
 func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var _arg0 *C.GtkActionable // out
@@ -243,7 +243,7 @@ func (actionable *Actionable) SetActionTargetValue(targetValue *glib.Variant) {
 //
 // The function takes the following parameters:
 //
-//    - detailedActionName: detailed action name.
+//   - detailedActionName: detailed action name.
 //
 func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	var _arg0 *C.GtkActionable // out
@@ -264,7 +264,7 @@ func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): action name, or NULL if none is set.
+//   - utf8 (optional): action name, or NULL if none is set.
 //
 func (actionable *Actionable) actionName() string {
 	gclass := (*C.GtkActionableInterface)(coreglib.PeekParentClass(actionable))
@@ -293,7 +293,7 @@ func (actionable *Actionable) actionName() string {
 //
 // The function returns the following values:
 //
-//    - variant: current target value.
+//   - variant: current target value.
 //
 func (actionable *Actionable) actionTargetValue() *glib.Variant {
 	gclass := (*C.GtkActionableInterface)(coreglib.PeekParentClass(actionable))
@@ -334,7 +334,7 @@ func (actionable *Actionable) actionTargetValue() *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - actionName (optional): action name, or NULL.
+//   - actionName (optional): action name, or NULL.
 //
 func (actionable *Actionable) setActionName(actionName string) {
 	gclass := (*C.GtkActionableInterface)(coreglib.PeekParentClass(actionable))
@@ -359,9 +359,9 @@ func (actionable *Actionable) setActionName(actionName string) {
 // If target_value is NULL then the target value is unset.
 //
 // The target value has two purposes. First, it is used as the parameter to
-// activation of the action associated with the Actionable widget. Second, it is
-// used to determine if the widget should be rendered as “active” — the widget
-// is active if the state is equal to the given target.
+// activation of the action associated with the Actionable widget. Second,
+// it is used to determine if the widget should be rendered as “active” — the
+// widget is active if the state is equal to the given target.
 //
 // Consider the example of associating a set of buttons with a #GAction with
 // string state in a typical “radio button” situation. Each button will be
@@ -374,7 +374,7 @@ func (actionable *Actionable) setActionName(actionName string) {
 //
 // The function takes the following parameters:
 //
-//    - targetValue (optional) to set as the target value, or NULL.
+//   - targetValue (optional) to set as the target value, or NULL.
 //
 func (actionable *Actionable) setActionTargetValue(targetValue *glib.Variant) {
 	gclass := (*C.GtkActionableInterface)(coreglib.PeekParentClass(actionable))

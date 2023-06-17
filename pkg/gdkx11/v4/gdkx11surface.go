@@ -30,12 +30,12 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - surface used for communication with the server. The surface must have
-//      GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will result.
+//   - surface used for communication with the server. The surface must have
+//     GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will result.
 //
 // The function returns the following values:
 //
-//    - guint32: time stamp.
+//   - guint32: time stamp.
 //
 func X11GetServerTime(surface *X11Surface) uint32 {
 	var _arg1 *C.GdkSurface // out
@@ -78,7 +78,7 @@ func marshalX11Surface(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - guint32: current workspace of surface.
+//   - guint32: current workspace of surface.
 //
 func (surface *X11Surface) Desktop() uint32 {
 	var _arg0 *C.GdkSurface // out
@@ -100,7 +100,7 @@ func (surface *X11Surface) Desktop() uint32 {
 //
 // The function returns the following values:
 //
-//    - ret: group of this surface;.
+//   - ret: group of this surface;.
 //
 func (surface *X11Surface) Group() gdk.Surfacer {
 	var _arg0 *C.GdkSurface // out
@@ -148,14 +148,14 @@ func (surface *X11Surface) MoveToCurrentDesktop() {
 	runtime.KeepAlive(surface)
 }
 
-// MoveToDesktop moves the surface to the given workspace when running unde a
-// window manager that supports multiple workspaces, as described in the
+// MoveToDesktop moves the surface to the given workspace when running unde
+// a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
 //
 // The function takes the following parameters:
 //
-//    - desktop: number of the workspace to move the surface to.
+//   - desktop: number of the workspace to move the surface to.
 //
 func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkSurface // out
@@ -178,7 +178,7 @@ func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 //
 // The function takes the following parameters:
 //
-//    - frameSyncEnabled: whether frame-synchronization should be enabled.
+//   - frameSyncEnabled: whether frame-synchronization should be enabled.
 //
 func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkSurface // out
@@ -199,7 +199,7 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 //
 // The function takes the following parameters:
 //
-//    - leader: Surface.
+//   - leader: Surface.
 //
 func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	var _arg0 *C.GdkSurface // out
@@ -218,7 +218,7 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 //
 // The function takes the following parameters:
 //
-//    - skipsPager: TRUE to skip pagers.
+//   - skipsPager: TRUE to skip pagers.
 //
 func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 	var _arg0 *C.GdkSurface // out
@@ -239,7 +239,7 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 //
 // The function takes the following parameters:
 //
-//    - skipsTaskbar: TRUE to skip taskbars.
+//   - skipsTaskbar: TRUE to skip taskbars.
 //
 func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 	var _arg0 *C.GdkSurface // out
@@ -256,8 +256,8 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 }
 
 // SetThemeVariant: GTK applications can request a dark theme variant. In order
-// to make other applications - namely window managers using GTK for themeing -
-// aware of this choice, GTK uses this function to export the requested theme
+// to make other applications - namely window managers using GTK for themeing
+// - aware of this choice, GTK uses this function to export the requested theme
 // variant as _GTK_THEME_VARIANT property on toplevel surfaces.
 //
 // Note that this property is automatically updated by GTK, so this function
@@ -266,7 +266,7 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 //
 // The function takes the following parameters:
 //
-//    - variant: theme variant to export.
+//   - variant: theme variant to export.
 //
 func (surface *X11Surface) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkSurface // out
@@ -286,7 +286,7 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 //
 // The function takes the following parameters:
 //
-//    - urgent: TRUE to indicate urgenct attention needed.
+//   - urgent: TRUE to indicate urgenct attention needed.
 //
 func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 	var _arg0 *C.GdkSurface // out
@@ -315,7 +315,7 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: XServer timestamp to which the property should be set.
+//   - timestamp: XServer timestamp to which the property should be set.
 //
 func (surface *X11Surface) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkSurface // out
@@ -335,8 +335,8 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 //
 // The function takes the following parameters:
 //
-//    - name: property name, will be interned as an X atom.
-//    - value (optional): property value, or NULL to delete.
+//   - name: property name, will be interned as an X atom.
+//   - value (optional): property value, or NULL to delete.
 //
 func (surface *X11Surface) SetUTF8Property(name, value string) {
 	var _arg0 *C.GdkSurface // out

@@ -102,7 +102,7 @@ func BaseLayoutChild(obj LayoutChilder) *LayoutChild {
 //
 // The function returns the following values:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 	var _arg0 *C.GtkLayoutChild // out
@@ -141,7 +141,7 @@ func (layoutChild *LayoutChild) ChildWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - layoutManager: GtkLayoutManager.
+//   - layoutManager: GtkLayoutManager.
 //
 func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	var _arg0 *C.GtkLayoutChild   // out

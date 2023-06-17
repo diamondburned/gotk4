@@ -40,7 +40,7 @@ func (queue *Queue) Clear() {
 //
 // The function returns the following values:
 //
-//    - guint: number of items in queue.
+//   - guint: number of items in queue.
 //
 func (queue *Queue) Length() uint {
 	var _arg0 *C.GQueue // out
@@ -62,12 +62,12 @@ func (queue *Queue) Length() uint {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) to find.
+//   - data (optional) to find.
 //
 // The function returns the following values:
 //
-//    - gint: position of the first element in queue which contains data, or -1
-//      if no element in queue contains data.
+//   - gint: position of the first element in queue which contains data,
+//     or -1 if no element in queue contains data.
 //
 func (queue *Queue) Index(data unsafe.Pointer) int {
 	var _arg0 *C.GQueue       // out
@@ -104,7 +104,7 @@ func (queue *Queue) Init() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the queue is empty.
+//   - ok: TRUE if the queue is empty.
 //
 func (queue *Queue) IsEmpty() bool {
 	var _arg0 *C.GQueue  // out
@@ -128,8 +128,8 @@ func (queue *Queue) IsEmpty() bool {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): data of the first element in the queue, or NULL if
-//      the queue is empty.
+//   - gpointer (optional): data of the first element in the queue, or NULL if
+//     the queue is empty.
 //
 func (queue *Queue) PeekHead() unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
@@ -151,12 +151,12 @@ func (queue *Queue) PeekHead() unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - n of the element.
+//   - n of the element.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): data for the n'th element of queue, or NULL if n is
-//      off the end of queue.
+//   - gpointer (optional): data for the n'th element of queue, or NULL if n is
+//     off the end of queue.
 //
 func (queue *Queue) PeekNth(n uint) unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
@@ -181,8 +181,8 @@ func (queue *Queue) PeekNth(n uint) unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): data of the last element in the queue, or NULL if
-//      the queue is empty.
+//   - gpointer (optional): data of the last element in the queue, or NULL if
+//     the queue is empty.
 //
 func (queue *Queue) PeekTail() unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
@@ -204,8 +204,8 @@ func (queue *Queue) PeekTail() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): data of the first element in the queue, or NULL if
-//      the queue is empty.
+//   - gpointer (optional): data of the first element in the queue, or NULL if
+//     the queue is empty.
 //
 func (queue *Queue) PopHead() unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
@@ -227,11 +227,11 @@ func (queue *Queue) PopHead() unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - n of the element.
+//   - n of the element.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional) element's data, or NULL if n is off the end of queue.
+//   - gpointer (optional) element's data, or NULL if n is off the end of queue.
 //
 func (queue *Queue) PopNth(n uint) unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
@@ -256,8 +256,8 @@ func (queue *Queue) PopNth(n uint) unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): data of the last element in the queue, or NULL if
-//      the queue is empty.
+//   - gpointer (optional): data of the last element in the queue, or NULL if
+//     the queue is empty.
 //
 func (queue *Queue) PopTail() unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
@@ -279,7 +279,7 @@ func (queue *Queue) PopTail() unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) for the new element.
+//   - data (optional) for the new element.
 //
 func (queue *Queue) PushHead(data unsafe.Pointer) {
 	var _arg0 *C.GQueue  // out
@@ -297,9 +297,9 @@ func (queue *Queue) PushHead(data unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) for the new element.
-//    - n to insert the new element. If n is negative or larger than the number
-//      of elements in the queue, the element is added to the end of the queue.
+//   - data (optional) for the new element.
+//   - n to insert the new element. If n is negative or larger than the number
+//     of elements in the queue, the element is added to the end of the queue.
 //
 func (queue *Queue) PushNth(data unsafe.Pointer, n int) {
 	var _arg0 *C.GQueue  // out
@@ -320,7 +320,7 @@ func (queue *Queue) PushNth(data unsafe.Pointer, n int) {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) for the new element.
+//   - data (optional) for the new element.
 //
 func (queue *Queue) PushTail(data unsafe.Pointer) {
 	var _arg0 *C.GQueue  // out
@@ -338,11 +338,11 @@ func (queue *Queue) PushTail(data unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) to remove.
+//   - data (optional) to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if data was found and removed from queue.
+//   - ok: TRUE if data was found and removed from queue.
 //
 func (queue *Queue) Remove(data unsafe.Pointer) bool {
 	var _arg0 *C.GQueue       // out
@@ -369,11 +369,11 @@ func (queue *Queue) Remove(data unsafe.Pointer) bool {
 //
 // The function takes the following parameters:
 //
-//    - data (optional) to remove.
+//   - data (optional) to remove.
 //
 // The function returns the following values:
 //
-//    - guint: number of elements removed from queue.
+//   - guint: number of elements removed from queue.
 //
 func (queue *Queue) RemoveAll(data unsafe.Pointer) uint {
 	var _arg0 *C.GQueue       // out

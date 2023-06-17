@@ -20,14 +20,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - red value (ranging from 0 to 65535).
-//    - green value.
-//    - blue value.
+//   - red value (ranging from 0 to 65535).
+//   - green value.
+//   - blue value.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
@@ -64,14 +64,14 @@ func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - red value (ranging from 0 to 65535).
-//    - green value.
-//    - blue value.
+//   - red value (ranging from 0 to 65535).
+//   - green value.
+//   - blue value.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
@@ -105,12 +105,12 @@ func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - size: font size, in PANGO_SCALEths of a device unit.
+//   - size: font size, in PANGO_SCALEths of a device unit.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrSizeAbsolute(size int) *Attribute {
 	var _arg1 C.int             // out

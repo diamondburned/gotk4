@@ -86,18 +86,18 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 // hostname and port.
 //
 // Note that depending on the configuration of the machine, a hostname of
-// localhost may refer to the IPv4 loopback address only, or to both IPv4 and
-// IPv6; use g_network_address_new_loopback() to create a Address that is
+// localhost may refer to the IPv4 loopback address only, or to both IPv4
+// and IPv6; use g_network_address_new_loopback() to create a Address that is
 // guaranteed to resolve to both addresses.
 //
 // The function takes the following parameters:
 //
-//    - hostname: hostname.
-//    - port: port.
+//   - hostname: hostname.
+//   - port: port.
 //
 // The function returns the following values:
 //
-//    - networkAddress: new Address.
+//   - networkAddress: new Address.
 //
 func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	var _arg1 *C.gchar              // out
@@ -133,11 +133,11 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 //
 // The function takes the following parameters:
 //
-//    - port: port.
+//   - port: port.
 //
 // The function returns the following values:
 //
-//    - networkAddress: new Address.
+//   - networkAddress: new Address.
 //
 func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 	var _arg1 C.guint16             // out
@@ -160,7 +160,7 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 //
 // The function returns the following values:
 //
-//    - utf8 addr's hostname.
+//   - utf8 addr's hostname.
 //
 func (addr *NetworkAddress) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
@@ -182,7 +182,7 @@ func (addr *NetworkAddress) Hostname() string {
 //
 // The function returns the following values:
 //
-//    - guint16 addr's port (which may be 0).
+//   - guint16 addr's port (which may be 0).
 //
 func (addr *NetworkAddress) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
@@ -204,7 +204,7 @@ func (addr *NetworkAddress) Port() uint16 {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) addr's scheme (NULL if not built from URI).
+//   - utf8 (optional) addr's scheme (NULL if not built from URI).
 //
 func (addr *NetworkAddress) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out

@@ -189,8 +189,8 @@ type DBusObjectManagerClientFlags C.guint
 const (
 	// DBusObjectManagerClientFlagsNone: no flags set.
 	DBusObjectManagerClientFlagsNone DBusObjectManagerClientFlags = 0b0
-	// DBusObjectManagerClientFlagsDoNotAutoStart: if not set and the manager is
-	// for a well-known name, then request the bus to launch an owner for the
+	// DBusObjectManagerClientFlagsDoNotAutoStart: if not set and the manager
+	// is for a well-known name, then request the bus to launch an owner for the
 	// name if no-one owns the name. This flag can only be used in managers for
 	// well-known names.
 	DBusObjectManagerClientFlagsDoNotAutoStart DBusObjectManagerClientFlags = 0b1

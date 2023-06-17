@@ -32,10 +32,10 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - stream: GInputStream from which to load the pixbuf.
-//    - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//      loaded.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - stream: GInputStream from which to load the pixbuf.
+//   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
+//     loaded.
 //
 func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
@@ -72,13 +72,13 @@ func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, cal
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - stream: GInputStream from which to load the pixbuf.
-//    - width the image should have or -1 to not constrain the width.
-//    - height the image should have or -1 to not constrain the height.
-//    - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
-//    - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//      loaded.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - stream: GInputStream from which to load the pixbuf.
+//   - width the image should have or -1 to not constrain the width.
+//   - height the image should have or -1 to not constrain the height.
+//   - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
+//   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
+//     loaded.
 //
 func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
@@ -119,7 +119,7 @@ func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStream
 //
 // The function takes the following parameters:
 //
-//    - asyncResult: GAsyncResult.
+//   - asyncResult: GAsyncResult.
 //
 func PixbufSaveToStreamFinish(asyncResult gio.AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out

@@ -43,9 +43,9 @@ func init() {
 // A class may implement both the #GInitable and Initable interfaces.
 //
 // Users of objects implementing this are not intended to use the interface
-// method directly; instead it will be used automatically in various ways. For C
-// applications you generally just call g_async_initable_new_async() directly,
-// or indirectly via a foo_thing_new_async() wrapper. This will call
+// method directly; instead it will be used automatically in various ways.
+// For C applications you generally just call g_async_initable_new_async()
+// directly, or indirectly via a foo_thing_new_async() wrapper. This will call
 // g_async_initable_init_async() under the cover, calling back with NULL and a
 // set GError on failure.
 //
@@ -184,10 +184,10 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 // call g_async_initable_init_finish() to get the result of the initialization.
 //
 // Implementations may also support cancellation. If cancellable is not NULL,
-// then initialization can be cancelled by triggering the cancellable object
-// from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL, and the
-// object doesn't support cancellable initialization, the error
+// then initialization can be cancelled by triggering the cancellable
+// object from another thread. If the operation was cancelled, the error
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL,
+// and the object doesn't support cancellable initialization, the error
 // G_IO_ERROR_NOT_SUPPORTED will be returned.
 //
 // As with #GInitable, if the object is not initialized, or initialization
@@ -197,8 +197,8 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 // but this must not be relied on.
 //
 // Callers should not assume that a class which implements Initable can be
-// initialized multiple times; for more information, see g_initable_init(). If a
-// class explicitly supports being initialized multiple times, implementation
+// initialized multiple times; for more information, see g_initable_init(). If
+// a class explicitly supports being initialized multiple times, implementation
 // requires yielding all subsequent calls to init_async() on the results of the
 // first call.
 //
@@ -210,9 +210,9 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - ioPriority: [I/O priority][io-priority] of the operation.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the operation.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable     // out
@@ -240,12 +240,12 @@ func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, ca
 	runtime.KeepAlive(callback)
 }
 
-// InitFinish finishes asynchronous initialization and returns the result. See
-// g_async_initable_init_async().
+// InitFinish finishes asynchronous initialization and returns the result.
+// See g_async_initable_init_async().
 //
 // The function takes the following parameters:
 //
-//    - res: Result.
+//   - res: Result.
 //
 func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 	var _arg0 *C.GAsyncInitable // out
@@ -273,12 +273,12 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - res from the callback.
+//   - res from the callback.
 //
 // The function returns the following values:
 //
-//    - object: newly created #GObject, or NULL on error. Free with
-//      g_object_unref().
+//   - object: newly created #GObject, or NULL on error. Free with
+//     g_object_unref().
 //
 func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, error) {
 	var _arg0 *C.GAsyncInitable // out
@@ -316,10 +316,10 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 // call g_async_initable_init_finish() to get the result of the initialization.
 //
 // Implementations may also support cancellation. If cancellable is not NULL,
-// then initialization can be cancelled by triggering the cancellable object
-// from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL, and the
-// object doesn't support cancellable initialization, the error
+// then initialization can be cancelled by triggering the cancellable
+// object from another thread. If the operation was cancelled, the error
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL,
+// and the object doesn't support cancellable initialization, the error
 // G_IO_ERROR_NOT_SUPPORTED will be returned.
 //
 // As with #GInitable, if the object is not initialized, or initialization
@@ -329,8 +329,8 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 // but this must not be relied on.
 //
 // Callers should not assume that a class which implements Initable can be
-// initialized multiple times; for more information, see g_initable_init(). If a
-// class explicitly supports being initialized multiple times, implementation
+// initialized multiple times; for more information, see g_initable_init(). If
+// a class explicitly supports being initialized multiple times, implementation
 // requires yielding all subsequent calls to init_async() on the results of the
 // first call.
 //
@@ -342,9 +342,9 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - ioPriority: [I/O priority][io-priority] of the operation.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the operation.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (initable *AsyncInitable) initAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GAsyncInitableIface)(coreglib.PeekParentClass(initable))
@@ -375,12 +375,12 @@ func (initable *AsyncInitable) initAsync(ctx context.Context, ioPriority int, ca
 	runtime.KeepAlive(callback)
 }
 
-// initFinish finishes asynchronous initialization and returns the result. See
-// g_async_initable_init_async().
+// initFinish finishes asynchronous initialization and returns the result.
+// See g_async_initable_init_async().
 //
 // The function takes the following parameters:
 //
-//    - res: Result.
+//   - res: Result.
 //
 func (initable *AsyncInitable) initFinish(res AsyncResulter) error {
 	gclass := (*C.GAsyncInitableIface)(coreglib.PeekParentClass(initable))

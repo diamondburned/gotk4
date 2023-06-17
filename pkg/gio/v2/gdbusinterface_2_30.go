@@ -78,8 +78,8 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - dBusObject (optional) or NULL. The returned reference should be freed
-//      with g_object_unref().
+//   - dBusObject (optional) or NULL. The returned reference should be freed
+//     with g_object_unref().
 //
 func (interface_ *DBusInterface) GetObject() *DBusObject {
 	var _arg0 *C.GDBusInterface // out
@@ -104,7 +104,7 @@ func (interface_ *DBusInterface) GetObject() *DBusObject {
 //
 // The function returns the following values:
 //
-//    - dBusInterfaceInfo Do not free.
+//   - dBusInterfaceInfo Do not free.
 //
 func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
@@ -135,7 +135,7 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 //
 // The function takes the following parameters:
 //
-//    - object (optional) or NULL.
+//   - object (optional) or NULL.
 //
 func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg0 *C.GDBusInterface // out
@@ -155,8 +155,8 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 //
 // The function returns the following values:
 //
-//    - dBusObject (optional) or NULL. The returned reference should be freed
-//      with g_object_unref().
+//   - dBusObject (optional) or NULL. The returned reference should be freed
+//     with g_object_unref().
 //
 func (interface_ *DBusInterface) dupObject() *DBusObject {
 	gclass := (*C.GDBusInterfaceIface)(coreglib.PeekParentClass(interface_))
@@ -184,7 +184,7 @@ func (interface_ *DBusInterface) dupObject() *DBusObject {
 //
 // The function returns the following values:
 //
-//    - dBusInterfaceInfo Do not free.
+//   - dBusInterfaceInfo Do not free.
 //
 func (interface_ *DBusInterface) info() *DBusInterfaceInfo {
 	gclass := (*C.GDBusInterfaceIface)(coreglib.PeekParentClass(interface_))
@@ -218,7 +218,7 @@ func (interface_ *DBusInterface) info() *DBusInterfaceInfo {
 //
 // The function takes the following parameters:
 //
-//    - object (optional) or NULL.
+//   - object (optional) or NULL.
 //
 func (interface_ *DBusInterface) setObject(object DBusObjector) {
 	gclass := (*C.GDBusInterfaceIface)(coreglib.PeekParentClass(interface_))

@@ -57,13 +57,12 @@ func defaultToolButtonOverrides(v *ToolButton) ToolButtonOverrides {
 // stock item. Otherwise, the button does not have a label.
 //
 // The icon of a ToolButton is determined by the properties
-// ToolButton:icon-widget and ToolButton:stock-id. If ToolButton:icon-widget is
-// non-NULL, then that widget is used as the icon. Otherwise, if
+// ToolButton:icon-widget and ToolButton:stock-id. If ToolButton:icon-widget
+// is non-NULL, then that widget is used as the icon. Otherwise, if
 // ToolButton:stock-id is non-NULL, the icon is determined by the stock item.
 // Otherwise, the button does not have a icon.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkToolButton has a single CSS node with name toolbutton.
 type ToolButton struct {
@@ -158,13 +157,13 @@ func (button *ToolButton) ConnectClicked(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - iconWidget (optional): widget that will be used as the button contents,
-//      or NULL.
-//    - label (optional): string that will be used as label, or NULL.
+//   - iconWidget (optional): widget that will be used as the button contents,
+//     or NULL.
+//   - label (optional): string that will be used as label, or NULL.
 //
 // The function returns the following values:
 //
-//    - toolButton: new ToolButton.
+//   - toolButton: new ToolButton.
 //
 func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 	var _arg1 *C.GtkWidget   // out
@@ -201,11 +200,11 @@ func NewToolButton(iconWidget Widgetter, label string) *ToolButton {
 //
 // The function takes the following parameters:
 //
-//    - stockId: name of the stock item.
+//   - stockId: name of the stock item.
 //
 // The function returns the following values:
 //
-//    - toolButton: new ToolButton.
+//   - toolButton: new ToolButton.
 //
 func NewToolButtonFromStock(stockId string) *ToolButton {
 	var _arg1 *C.gchar       // out
@@ -229,7 +228,7 @@ func NewToolButtonFromStock(stockId string) *ToolButton {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name or NULL if the tool button has no themed icon.
+//   - utf8 (optional): icon name or NULL if the tool button has no themed icon.
 //
 func (button *ToolButton) IconName() string {
 	var _arg0 *C.GtkToolButton // out
@@ -254,7 +253,7 @@ func (button *ToolButton) IconName() string {
 //
 // The function returns the following values:
 //
-//    - widget (optional) used as icon on button, or NULL.
+//   - widget (optional) used as icon on button, or NULL.
 //
 func (button *ToolButton) IconWidget() Widgetter {
 	var _arg0 *C.GtkToolButton // out
@@ -293,7 +292,7 @@ func (button *ToolButton) IconWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): label, or NULL.
+//   - utf8 (optional): label, or NULL.
 //
 func (button *ToolButton) Label() string {
 	var _arg0 *C.GtkToolButton // out
@@ -318,7 +317,7 @@ func (button *ToolButton) Label() string {
 //
 // The function returns the following values:
 //
-//    - widget (optional) used as label on button, or NULL.
+//   - widget (optional) used as label on button, or NULL.
 //
 func (button *ToolButton) LabelWidget() Widgetter {
 	var _arg0 *C.GtkToolButton // out
@@ -359,7 +358,7 @@ func (button *ToolButton) LabelWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the stock item for button.
+//   - utf8: name of the stock item for button.
 //
 func (button *ToolButton) StockID() string {
 	var _arg0 *C.GtkToolButton // out
@@ -377,14 +376,14 @@ func (button *ToolButton) StockID() string {
 	return _utf8
 }
 
-// UseUnderline returns whether underscores in the label property are used as
-// mnemonics on menu items on the overflow menu. See
+// UseUnderline returns whether underscores in the label property
+// are used as mnemonics on menu items on the overflow menu. See
 // gtk_tool_button_set_use_underline().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if underscores in the label property are used as mnemonics on
-//      menu items on the overflow menu.
+//   - ok: TRUE if underscores in the label property are used as mnemonics on
+//     menu items on the overflow menu.
 //
 func (button *ToolButton) UseUnderline() bool {
 	var _arg0 *C.GtkToolButton // out
@@ -411,7 +410,7 @@ func (button *ToolButton) UseUnderline() bool {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): name of the themed icon.
+//   - iconName (optional): name of the themed icon.
 //
 func (button *ToolButton) SetIconName(iconName string) {
 	var _arg0 *C.GtkToolButton // out
@@ -434,7 +433,7 @@ func (button *ToolButton) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - iconWidget (optional): widget used as icon, or NULL.
+//   - iconWidget (optional): widget used as icon, or NULL.
 //
 func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
@@ -452,14 +451,14 @@ func (button *ToolButton) SetIconWidget(iconWidget Widgetter) {
 
 // SetLabel sets label as the label used for the tool button. The
 // ToolButton:label property only has an effect if not overridden by a non-NULL
-// ToolButton:label-widget property. If both the ToolButton:label-widget and
-// ToolButton:label properties are NULL, the label is determined by the
+// ToolButton:label-widget property. If both the ToolButton:label-widget
+// and ToolButton:label properties are NULL, the label is determined by the
 // ToolButton:stock-id property. If the ToolButton:stock-id property is also
 // NULL, button will not have a label.
 //
 // The function takes the following parameters:
 //
-//    - label (optional): string that will be used as label, or NULL.
+//   - label (optional): string that will be used as label, or NULL.
 //
 func (button *ToolButton) SetLabel(label string) {
 	var _arg0 *C.GtkToolButton // out
@@ -476,15 +475,15 @@ func (button *ToolButton) SetLabel(label string) {
 	runtime.KeepAlive(label)
 }
 
-// SetLabelWidget sets label_widget as the widget that will be used as the label
-// for button. If label_widget is NULL the ToolButton:label property is used as
-// label. If ToolButton:label is also NULL, the label in the stock item
-// determined by the ToolButton:stock-id property is used as label. If
-// ToolButton:stock-id is also NULL, button does not have a label.
+// SetLabelWidget sets label_widget as the widget that will be used as the
+// label for button. If label_widget is NULL the ToolButton:label property is
+// used as label. If ToolButton:label is also NULL, the label in the stock
+// item determined by the ToolButton:stock-id property is used as label.
+// If ToolButton:stock-id is also NULL, button does not have a label.
 //
 // The function takes the following parameters:
 //
-//    - labelWidget (optional): widget used as label, or NULL.
+//   - labelWidget (optional): widget used as label, or NULL.
 //
 func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 	var _arg0 *C.GtkToolButton // out
@@ -509,7 +508,7 @@ func (button *ToolButton) SetLabelWidget(labelWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - stockId (optional): name of a stock item, or NULL.
+//   - stockId (optional): name of a stock item, or NULL.
 //
 func (button *ToolButton) SetStockID(stockId string) {
 	var _arg0 *C.GtkToolButton // out
@@ -526,9 +525,9 @@ func (button *ToolButton) SetStockID(stockId string) {
 	runtime.KeepAlive(stockId)
 }
 
-// SetUseUnderline: if set, an underline in the label property indicates that
-// the next character should be used for the mnemonic accelerator key in the
-// overflow menu. For example, if the label property is “_Open” and
+// SetUseUnderline: if set, an underline in the label property indicates
+// that the next character should be used for the mnemonic accelerator key
+// in the overflow menu. For example, if the label property is “_Open” and
 // use_underline is TRUE, the label on the tool button will be “Open” and the
 // item on the overflow menu will have an underlined “O”.
 //
@@ -537,7 +536,7 @@ func (button *ToolButton) SetStockID(stockId string) {
 //
 // The function takes the following parameters:
 //
-//    - useUnderline: whether the button label has the form “_Open”.
+//   - useUnderline: whether the button label has the form “_Open”.
 //
 func (button *ToolButton) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkToolButton // out

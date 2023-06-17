@@ -36,8 +36,8 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - smClientId (optional): client id assigned by the session manager when the
-//      connection was opened, or NULL to remove the property.
+//   - smClientId (optional): client id assigned by the session manager when the
+//     connection was opened, or NULL to remove the property.
 //
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.char // out
@@ -100,7 +100,7 @@ func (display *X11Display) ConnectXevent(f func(xevent unsafe.Pointer) (ok bool)
 //
 // The function returns the following values:
 //
-//    - gint: x error code or 0 on success.
+//   - gint: x error code or 0 on success.
 //
 func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
@@ -120,8 +120,8 @@ func (display *X11Display) ErrorTrapPop() int {
 
 // ErrorTrapPopIgnored pops the error trap pushed by
 // gdk_x11_display_error_trap_push(). Does not block to see if an error
-// occurred; merely records the range of requests to ignore errors for, and
-// ignores those errors if they arrive asynchronously.
+// occurred; merely records the range of requests to ignore errors for,
+// and ignores those errors if they arrive asynchronously.
 func (display *X11Display) ErrorTrapPopIgnored() {
 	var _arg0 *C.GdkDisplay // out
 
@@ -132,8 +132,8 @@ func (display *X11Display) ErrorTrapPopIgnored() {
 }
 
 // ErrorTrapPush begins a range of X requests on display for which X error
-// events will be ignored. Unignored errors (when no trap is pushed) will abort
-// the application. Use gdk_x11_display_error_trap_pop() or
+// events will be ignored. Unignored errors (when no trap is pushed)
+// will abort the application. Use gdk_x11_display_error_trap_pop() or
 // gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
 // function.
 func (display *X11Display) ErrorTrapPush() {
@@ -151,7 +151,7 @@ func (display *X11Display) ErrorTrapPush() {
 //
 // The function returns the following values:
 //
-//    - surface: default group leader surface for display.
+//   - surface: default group leader surface for display.
 //
 func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	var _arg0 *C.GdkDisplay // out
@@ -189,9 +189,9 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 //
 // The function returns the following values:
 //
-//    - major: return location for the GLX major version.
-//    - minor: return location for the GLX minor version.
-//    - ok: TRUE if GLX is available.
+//   - major: return location for the GLX major version.
+//   - minor: return location for the GLX minor version.
+//   - ok: TRUE if GLX is available.
 //
 func (display *X11Display) GLXVersion() (major, minor int, ok bool) {
 	var _arg0 *C.GdkDisplay // out
@@ -229,8 +229,8 @@ func (display *X11Display) GLXVersion() (major, minor int, ok bool) {
 //
 // The function returns the following values:
 //
-//    - monitor: primary monitor, or any monitor if no primary monitor is
-//      configured by the user.
+//   - monitor: primary monitor, or any monitor if no primary monitor is
+//     configured by the user.
 //
 func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 	var _arg0 *C.GdkDisplay // out
@@ -257,7 +257,7 @@ func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 //
 // The function returns the following values:
 //
-//    - x11Screen: X11Screen.
+//   - x11Screen: X11Screen.
 //
 func (display *X11Display) Screen() *X11Screen {
 	var _arg0 *C.GdkDisplay   // out
@@ -279,7 +279,7 @@ func (display *X11Display) Screen() *X11Screen {
 //
 // The function returns the following values:
 //
-//    - utf8: startup notification ID for display.
+//   - utf8: startup notification ID for display.
 //
 func (display *X11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
@@ -297,13 +297,13 @@ func (display *X11Display) StartupNotificationID() string {
 	return _utf8
 }
 
-// UserTime returns the timestamp of the last user interaction on display. The
-// timestamp is taken from events caused by user interaction such as key presses
-// or pointer movements. See gdk_x11_surface_set_user_time().
+// UserTime returns the timestamp of the last user interaction on display.
+// The timestamp is taken from events caused by user interaction such as key
+// presses or pointer movements. See gdk_x11_surface_set_user_time().
 //
 // The function returns the following values:
 //
-//    - guint32: timestamp of the last user interaction.
+//   - guint32: timestamp of the last user interaction.
 //
 func (display *X11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
@@ -338,16 +338,16 @@ func (display *X11Display) Grab() {
 // be taken.
 //
 // If the windowing system supports it, existing cursors created with
-// gdk_cursor_new_from_name() are updated to reflect the theme change. Custom
-// cursors constructed with gdk_cursor_new_from_texture() will have to be
-// handled by the application (GTK applications can learn about cursor theme
+// gdk_cursor_new_from_name() are updated to reflect the theme change.
+// Custom cursors constructed with gdk_cursor_new_from_texture() will have to
+// be handled by the application (GTK applications can learn about cursor theme
 // changes by listening for change notification for the corresponding Setting).
 //
 // The function takes the following parameters:
 //
-//    - theme (optional): name of the cursor theme to use, or NULL to unset a
-//      previously set value.
-//    - size: cursor size to use, or 0 to keep the previous size.
+//   - theme (optional): name of the cursor theme to use, or NULL to unset a
+//     previously set value.
+//   - size: cursor size to use, or 0 to keep the previous size.
 //
 func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
@@ -377,13 +377,13 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 // is taken to be the X11 timestamp of the event that triggered the application
 // to be launched and the GDK current event time is set accordingly.
 //
-// The startup ID is also what is used to signal that the startup is complete
-// (for example, when opening a window or when calling
+// The startup ID is also what is used to signal that the startup
+// is complete (for example, when opening a window or when calling
 // gdk_display_notify_startup_complete()).
 //
 // The function takes the following parameters:
 //
-//    - startupId: startup notification ID (must be valid utf8).
+//   - startupId: startup notification ID (must be valid utf8).
 //
 func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
@@ -398,17 +398,17 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	runtime.KeepAlive(startupId)
 }
 
-// SetSurfaceScale forces a specific window scale for all windows on this
-// display, instead of using the default or user configured scale. This is can
-// be used to disable scaling support by setting scale to 1, or to
-// programmatically set the window scale.
+// SetSurfaceScale forces a specific window scale for all windows on
+// this display, instead of using the default or user configured scale.
+// This is can be used to disable scaling support by setting scale to 1,
+// or to programmatically set the window scale.
 //
 // Once the scale is set by this call it will not change in response to later
 // user configuration changes.
 //
 // The function takes the following parameters:
 //
-//    - scale: new scale value.
+//   - scale: new scale value.
 //
 func (display *X11Display) SetSurfaceScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
@@ -427,15 +427,15 @@ func (display *X11Display) SetSurfaceScale(scale int) {
 //
 // The function takes the following parameters:
 //
-//    - str: nul-terminated string.
+//   - str: nul-terminated string.
 //
 // The function returns the following values:
 //
-//    - encoding: location to store the encoding (to be used as the type for the
-//      property).
-//    - format: location to store the format of the property.
-//    - ctext: location to store newly allocated data for the property.
-//    - gint: 0 upon success, non-zero upon failure.
+//   - encoding: location to store the encoding (to be used as the type for the
+//     property).
+//   - format: location to store the format of the property.
+//   - ctext: location to store newly allocated data for the property.
+//   - gint: 0 upon success, non-zero upon failure.
 //
 func (display *X11Display) StringToCompoundText(str string) (encoding string, format int, ctext []byte, gint int) {
 	var _arg0 *C.GdkDisplay // out
@@ -483,14 +483,14 @@ func (display *X11Display) Ungrab() {
 //
 // The function takes the following parameters:
 //
-//    - str: UTF-8 string.
+//   - str: UTF-8 string.
 //
 // The function returns the following values:
 //
-//    - encoding: location to store resulting encoding.
-//    - format: location to store format of the result.
-//    - ctext: location to store the data of the result.
-//    - ok: TRUE if the conversion succeeded, otherwise FALSE.
+//   - encoding: location to store resulting encoding.
+//   - format: location to store format of the result.
+//   - ctext: location to store the data of the result.
+//   - ok: TRUE if the conversion succeeded, otherwise FALSE.
 //
 func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, bool) {
 	var _arg0 *C.GdkDisplay // out
@@ -531,12 +531,12 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 //
 // The function takes the following parameters:
 //
-//    - displayName (optional): name of the X display. See the XOpenDisplay() for
-//      details.
+//   - displayName (optional): name of the X display. See the XOpenDisplay() for
+//     details.
 //
 // The function returns the following values:
 //
-//    - display (optional): new display or NULL on error.
+//   - display (optional): new display or NULL on error.
 //
 func X11DisplayOpen(displayName string) *gdk.Display {
 	var _arg1 *C.char       // out
@@ -571,8 +571,8 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 //
 // The function takes the following parameters:
 //
-//    - display: Display.
-//    - programClass: string.
+//   - display: Display.
+//   - programClass: string.
 //
 func X11DisplaySetProgramClass(display *gdk.Display, programClass string) {
 	var _arg1 *C.GdkDisplay // out

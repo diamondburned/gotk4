@@ -69,11 +69,11 @@ func NewQuaternionAlloc() *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_quaternion_t.
+//   - b: #graphene_quaternion_t.
 //
 // The function returns the following values:
 //
-//    - res: result of the operation.
+//   - res: result of the operation.
 //
 func (a *Quaternion) Add(b *Quaternion) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -98,11 +98,11 @@ func (a *Quaternion) Add(b *Quaternion) *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_quaternion_t.
+//   - b: #graphene_quaternion_t.
 //
 // The function returns the following values:
 //
-//    - gfloat: value of the dot products.
+//   - gfloat: value of the dot products.
 //
 func (a *Quaternion) Dot(b *Quaternion) float32 {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -127,11 +127,11 @@ func (a *Quaternion) Dot(b *Quaternion) float32 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_quaternion_t.
+//   - b: #graphene_quaternion_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the quaternions are equal.
+//   - ok: true if the quaternions are equal.
 //
 func (a *Quaternion) Equal(b *Quaternion) bool {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -158,14 +158,14 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 //
 // The function takes the following parameters:
 //
-//    - x: first component of the quaternion.
-//    - y: second component of the quaternion.
-//    - z: third component of the quaternion.
-//    - w: fourth component of the quaternion.
+//   - x: first component of the quaternion.
+//   - y: second component of the quaternion.
+//   - z: third component of the quaternion.
+//   - w: fourth component of the quaternion.
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized quaternion.
+//   - quaternion: initialized quaternion.
 //
 func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -200,12 +200,12 @@ func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternio
 //
 // The function takes the following parameters:
 //
-//    - angle: rotation on a given axis, in degrees.
-//    - axis of rotation, expressed as a vector.
+//   - angle: rotation on a given axis, in degrees.
+//   - axis of rotation, expressed as a vector.
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized quaternion.
+//   - quaternion: initialized quaternion.
 //
 func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -236,13 +236,13 @@ func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - degX: rotation angle on the X axis (yaw), in degrees.
-//    - degY: rotation angle on the Y axis (pitch), in degrees.
-//    - degZ: rotation angle on the Z axis (roll), in degrees.
+//   - degX: rotation angle on the X axis (yaw), in degrees.
+//   - degY: rotation angle on the Y axis (pitch), in degrees.
+//   - degZ: rotation angle on the Z axis (roll), in degrees.
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized quaternion.
+//   - quaternion: initialized quaternion.
 //
 func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -274,11 +274,11 @@ func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Q
 //
 // The function takes the following parameters:
 //
-//    - e: #graphene_euler_t.
+//   - e: #graphene_euler_t.
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized #graphene_quaternion_t.
+//   - quaternion: initialized #graphene_quaternion_t.
 //
 func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -304,11 +304,11 @@ func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - m: #graphene_matrix_t.
+//   - m: #graphene_matrix_t.
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized quaternion.
+//   - quaternion: initialized quaternion.
 //
 func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -334,11 +334,11 @@ func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_quaternion_t.
+//   - src: #graphene_quaternion_t.
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized quaternion.
+//   - quaternion: initialized quaternion.
 //
 func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -366,13 +366,13 @@ func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - radX: rotation angle on the X axis (yaw), in radians.
-//    - radY: rotation angle on the Y axis (pitch), in radians.
-//    - radZ: rotation angle on the Z axis (roll), in radians.
+//   - radX: rotation angle on the X axis (yaw), in radians.
+//   - radY: rotation angle on the Y axis (pitch), in radians.
+//   - radZ: rotation angle on the Z axis (roll), in radians.
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized quaternion.
+//   - quaternion: initialized quaternion.
 //
 func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -403,11 +403,11 @@ func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_vec4_t.
+//   - src: #graphene_vec4_t.
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized quaternion.
+//   - quaternion: initialized quaternion.
 //
 func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -433,7 +433,7 @@ func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 //
 // The function returns the following values:
 //
-//    - quaternion: initialized quaternion.
+//   - quaternion: initialized quaternion.
 //
 func (q *Quaternion) InitIdentity() *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -456,7 +456,7 @@ func (q *Quaternion) InitIdentity() *Quaternion {
 //
 // The function returns the following values:
 //
-//    - res: return location for the inverted quaternion.
+//   - res: return location for the inverted quaternion.
 //
 func (q *Quaternion) Invert() *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -478,11 +478,11 @@ func (q *Quaternion) Invert() *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_quaternion_t.
+//   - b: #graphene_quaternion_t.
 //
 // The function returns the following values:
 //
-//    - res: result of the operation.
+//   - res: result of the operation.
 //
 func (a *Quaternion) Multiply(b *Quaternion) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -507,7 +507,7 @@ func (a *Quaternion) Multiply(b *Quaternion) *Quaternion {
 //
 // The function returns the following values:
 //
-//    - res: return location for the normalized quaternion.
+//   - res: return location for the normalized quaternion.
 //
 func (q *Quaternion) Normalize() *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -530,11 +530,11 @@ func (q *Quaternion) Normalize() *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - factor: scaling factor.
+//   - factor: scaling factor.
 //
 // The function returns the following values:
 //
-//    - res: result of the operation.
+//   - res: result of the operation.
 //
 func (q *Quaternion) Scale(factor float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -561,12 +561,12 @@ func (q *Quaternion) Scale(factor float32) *Quaternion {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_quaternion_t.
-//    - factor: linear interpolation factor.
+//   - b: #graphene_quaternion_t.
+//   - factor: linear interpolation factor.
 //
 // The function returns the following values:
 //
-//    - res: return location for the interpolated quaternion.
+//   - res: return location for the interpolated quaternion.
 //
 func (a *Quaternion) Slerp(b *Quaternion, factor float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -594,8 +594,8 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) *Quaternion {
 //
 // The function returns the following values:
 //
-//    - angle: return location for the angle, in degrees.
-//    - axis: return location for the rotation axis.
+//   - angle: return location for the angle, in degrees.
+//   - axis: return location for the rotation axis.
 //
 func (q *Quaternion) ToAngleVec3() (float32, *Vec3) {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -621,12 +621,12 @@ func (q *Quaternion) ToAngleVec3() (float32, *Vec3) {
 //
 // The function returns the following values:
 //
-//    - degX (optional): return location for the rotation angle on the X axis
-//      (yaw), in degrees.
-//    - degY (optional): return location for the rotation angle on the Y axis
-//      (pitch), in degrees.
-//    - degZ (optional): return location for the rotation angle on the Z axis
-//      (roll), in degrees.
+//   - degX (optional): return location for the rotation angle on the X axis
+//     (yaw), in degrees.
+//   - degY (optional): return location for the rotation angle on the Y axis
+//     (pitch), in degrees.
+//   - degZ (optional): return location for the rotation angle on the Z axis
+//     (roll), in degrees.
 //
 func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -655,7 +655,7 @@ func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 //
 // The function returns the following values:
 //
-//    - m: #graphene_matrix_t.
+//   - m: #graphene_matrix_t.
 //
 func (q *Quaternion) ToMatrix() *Matrix {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -678,12 +678,12 @@ func (q *Quaternion) ToMatrix() *Matrix {
 //
 // The function returns the following values:
 //
-//    - radX (optional): return location for the rotation angle on the X axis
-//      (yaw), in radians.
-//    - radY (optional): return location for the rotation angle on the Y axis
-//      (pitch), in radians.
-//    - radZ (optional): return location for the rotation angle on the Z axis
-//      (roll), in radians.
+//   - radX (optional): return location for the rotation angle on the X axis
+//     (yaw), in radians.
+//   - radY (optional): return location for the rotation angle on the Y axis
+//     (pitch), in radians.
+//   - radZ (optional): return location for the rotation angle on the Z axis
+//     (roll), in radians.
 //
 func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 	var _arg0 *C.graphene_quaternion_t // out
@@ -712,7 +712,7 @@ func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 //
 // The function returns the following values:
 //
-//    - res: return location for a #graphene_vec4_t.
+//   - res: return location for a #graphene_vec4_t.
 //
 func (q *Quaternion) ToVec4() *Vec4 {
 	var _arg0 *C.graphene_quaternion_t // out

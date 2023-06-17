@@ -17,25 +17,25 @@ import (
 import "C"
 
 // PixbufGetFromSurface transfers image data from a #cairo_surface_t and
-// converts it to an RGB(A) representation inside a Pixbuf. This allows you to
-// efficiently read individual pixels from cairo surfaces. For Windows, use
-// gdk_pixbuf_get_from_window() instead.
+// converts it to an RGB(A) representation inside a Pixbuf. This allows you
+// to efficiently read individual pixels from cairo surfaces. For Windows,
+// use gdk_pixbuf_get_from_window() instead.
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the surface contains one.
 //
 // The function takes the following parameters:
 //
-//    - surface to copy from.
-//    - srcX: source X coordinate within surface.
-//    - srcY: source Y coordinate within surface.
-//    - width: width in pixels of region to get.
-//    - height: height in pixels of region to get.
+//   - surface to copy from.
+//   - srcX: source X coordinate within surface.
+//   - srcY: source Y coordinate within surface.
+//   - width: width in pixels of region to get.
+//   - height: height in pixels of region to get.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf with a reference count of 1, or
-//      NULL on error.
+//   - pixbuf (optional): newly-created pixbuf with a reference count of 1,
+//     or NULL on error.
 //
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.cairo_surface_t // out
@@ -105,16 +105,16 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int)
 //
 // The function takes the following parameters:
 //
-//    - window: source window.
-//    - srcX: source X coordinate within window.
-//    - srcY: source Y coordinate within window.
-//    - width: width in pixels of region to get.
-//    - height: height in pixels of region to get.
+//   - window: source window.
+//   - srcX: source X coordinate within window.
+//   - srcY: source Y coordinate within window.
+//   - width: width in pixels of region to get.
+//   - height: height in pixels of region to get.
 //
 // The function returns the following values:
 //
-//    - pixbuf (optional): newly-created pixbuf with a reference count of 1, or
-//      NULL on error.
+//   - pixbuf (optional): newly-created pixbuf with a reference count of 1,
+//     or NULL on error.
 //
 func PixbufGetFromWindow(window Windower, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkWindow // out

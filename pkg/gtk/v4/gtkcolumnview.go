@@ -38,9 +38,9 @@ func init() {
 // [propertyGtk.ColumnView:show-column-separators] properties offer a simple way
 // to display separators between the rows or columns.
 //
-// GtkColumnView allows the user to select items according to the selection
-// characteristics of the model. For models that allow multiple selected items,
-// it is possible to turn on *rubberband selection*, using
+// GtkColumnView allows the user to select items according to the
+// selection characteristics of the model. For models that allow multiple
+// selected items, it is possible to turn on *rubberband selection*, using
 // gtk.ColumnView:enable-rubberband.
 //
 // The column view supports sorting that can be customized by the user by
@@ -70,22 +70,20 @@ func init() {
 //    ┊
 //    ╰── [rubberband]
 //
-//
 // GtkColumnView uses a single CSS node named columnview. It may carry the
 // .column-separators style class, when gtk.ColumnView:show-column-separators
-// property is set. Header widgets appear below a node with name header. The
-// rows are contained in a GtkListView widget, so there is a listview node with
-// the same structure as for a standalone GtkListView widget. If
-// gtk.ColumnView:show-row-separators is set, it will be passed on to the list
-// view, causing its CSS node to carry the .separators style class. For
-// rubberband selection, a node with name rubberband is used.
+// property is set. Header widgets appear below a node with name header.
+// The rows are contained in a GtkListView widget, so there is a listview
+// node with the same structure as for a standalone GtkListView widget.
+// If gtk.ColumnView:show-row-separators is set, it will be passed on to the
+// list view, causing its CSS node to carry the .separators style class.
+// For rubberband selection, a node with name rubberband is used.
 //
-// The main columnview node may also carry style classes to select the style of
-// list presentation (section-list-widget.html#list-styles): .rich-list,
+// The main columnview node may also carry style classes to select the style
+// of list presentation (section-list-widget.html#list-styles): .rich-list,
 // .navigation-sidebar or .data-table.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkColumnView uses the GTK_ACCESSIBLE_ROLE_TREE_GRID role, header title
 // widgets are using the GTK_ACCESSIBLE_ROLE_COLUMN_HEADER role. The row widgets
@@ -135,8 +133,8 @@ func marshalColumnView(p uintptr) (interface{}, error) {
 // ConnectActivate is emitted when a row has been activated by the user, usually
 // via activating the GtkListBase|list.activate-item action.
 //
-// This allows for a convenient way to handle activation in a columnview. See
-// gtk.ListItem.SetActivatable() for details on how to use this signal.
+// This allows for a convenient way to handle activation in a columnview.
+// See gtk.ListItem.SetActivatable() for details on how to use this signal.
 func (self *ColumnView) ConnectActivate(f func(position uint)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "activate", false, unsafe.Pointer(C._gotk4_gtk4_ColumnView_ConnectActivate), f)
 }
@@ -148,11 +146,11 @@ func (self *ColumnView) ConnectActivate(f func(position uint)) coreglib.SignalHa
 //
 // The function takes the following parameters:
 //
-//    - model (optional): list model to use, or NULL.
+//   - model (optional): list model to use, or NULL.
 //
 // The function returns the following values:
 //
-//    - columnView: new GtkColumnView.
+//   - columnView: new GtkColumnView.
 //
 func NewColumnView(model SelectionModeller) *ColumnView {
 	var _arg1 *C.GtkSelectionModel // out
@@ -177,8 +175,8 @@ func NewColumnView(model SelectionModeller) *ColumnView {
 //
 // The function takes the following parameters:
 //
-//    - column: GtkColumnViewColumn that hasn't been added to a GtkColumnView
-//      yet.
+//   - column: GtkColumnViewColumn that hasn't been added to a GtkColumnView
+//     yet.
 //
 func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
@@ -199,7 +197,7 @@ func (self *ColumnView) AppendColumn(column *ColumnViewColumn) {
 //
 // The function returns the following values:
 //
-//    - listModel: list managing the columns.
+//   - listModel: list managing the columns.
 //
 func (self *ColumnView) Columns() *gio.ListModel {
 	var _arg0 *C.GtkColumnView // out
@@ -227,7 +225,7 @@ func (self *ColumnView) Columns() *gio.ListModel {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if rubberband selection is enabled.
+//   - ok: TRUE if rubberband selection is enabled.
 //
 func (self *ColumnView) EnableRubberband() bool {
 	var _arg0 *C.GtkColumnView // out
@@ -251,7 +249,7 @@ func (self *ColumnView) EnableRubberband() bool {
 //
 // The function returns the following values:
 //
-//    - selectionModel (optional): model in use.
+//   - selectionModel (optional): model in use.
 //
 func (self *ColumnView) Model() *SelectionModel {
 	var _arg0 *C.GtkColumnView     // out
@@ -275,7 +273,7 @@ func (self *ColumnView) Model() *SelectionModel {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if columns are reorderable.
+//   - ok: TRUE if columns are reorderable.
 //
 func (self *ColumnView) Reorderable() bool {
 	var _arg0 *C.GtkColumnView // out
@@ -300,7 +298,7 @@ func (self *ColumnView) Reorderable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the list shows column separators.
+//   - ok: TRUE if the list shows column separators.
 //
 func (self *ColumnView) ShowColumnSeparators() bool {
 	var _arg0 *C.GtkColumnView // out
@@ -325,7 +323,7 @@ func (self *ColumnView) ShowColumnSeparators() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the list shows separators.
+//   - ok: TRUE if the list shows separators.
 //
 func (self *ColumnView) ShowRowSeparators() bool {
 	var _arg0 *C.GtkColumnView // out
@@ -350,7 +348,7 @@ func (self *ColumnView) ShowRowSeparators() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if rows are activated on single click.
+//   - ok: TRUE if rows are activated on single click.
 //
 func (self *ColumnView) SingleClickActivate() bool {
 	var _arg0 *C.GtkColumnView // out
@@ -373,8 +371,8 @@ func (self *ColumnView) SingleClickActivate() bool {
 // Sorter returns a special sorter that reflects the users sorting choices in
 // the column view.
 //
-// To allow users to customizable sorting by clicking on column headers, this
-// sorter needs to be set on the sort model underneath the model that is
+// To allow users to customizable sorting by clicking on column headers,
+// this sorter needs to be set on the sort model underneath the model that is
 // displayed by the view.
 //
 // See gtk.ColumnViewColumn.SetSorter() for setting up per-column sorting.
@@ -390,7 +388,7 @@ func (self *ColumnView) SingleClickActivate() bool {
 //
 // The function returns the following values:
 //
-//    - sorter (optional): GtkSorter of self.
+//   - sorter (optional): GtkSorter of self.
 //
 func (self *ColumnView) Sorter() *Sorter {
 	var _arg0 *C.GtkColumnView // out
@@ -416,8 +414,8 @@ func (self *ColumnView) Sorter() *Sorter {
 //
 // The function takes the following parameters:
 //
-//    - position to insert column at.
-//    - column: GtkColumnViewColumn to insert.
+//   - position to insert column at.
+//   - column: GtkColumnViewColumn to insert.
 //
 func (self *ColumnView) InsertColumn(position uint, column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
@@ -438,7 +436,7 @@ func (self *ColumnView) InsertColumn(position uint, column *ColumnViewColumn) {
 //
 // The function takes the following parameters:
 //
-//    - column: GtkColumnViewColumn that's part of self.
+//   - column: GtkColumnViewColumn that's part of self.
 //
 func (self *ColumnView) RemoveColumn(column *ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView       // out
@@ -457,7 +455,7 @@ func (self *ColumnView) RemoveColumn(column *ColumnViewColumn) {
 //
 // The function takes the following parameters:
 //
-//    - enableRubberband: TRUE to enable rubberband selection.
+//   - enableRubberband: TRUE to enable rubberband selection.
 //
 func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 	var _arg0 *C.GtkColumnView // out
@@ -479,7 +477,7 @@ func (self *ColumnView) SetEnableRubberband(enableRubberband bool) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to use or NULL for none.
+//   - model (optional) to use or NULL for none.
 //
 func (self *ColumnView) SetModel(model SelectionModeller) {
 	var _arg0 *C.GtkColumnView     // out
@@ -499,7 +497,7 @@ func (self *ColumnView) SetModel(model SelectionModeller) {
 //
 // The function takes the following parameters:
 //
-//    - reorderable: whether columns should be reorderable.
+//   - reorderable: whether columns should be reorderable.
 //
 func (self *ColumnView) SetReorderable(reorderable bool) {
 	var _arg0 *C.GtkColumnView // out
@@ -520,7 +518,7 @@ func (self *ColumnView) SetReorderable(reorderable bool) {
 //
 // The function takes the following parameters:
 //
-//    - showColumnSeparators: TRUE to show column separators.
+//   - showColumnSeparators: TRUE to show column separators.
 //
 func (self *ColumnView) SetShowColumnSeparators(showColumnSeparators bool) {
 	var _arg0 *C.GtkColumnView // out
@@ -541,7 +539,7 @@ func (self *ColumnView) SetShowColumnSeparators(showColumnSeparators bool) {
 //
 // The function takes the following parameters:
 //
-//    - showRowSeparators: TRUE to show row separators.
+//   - showRowSeparators: TRUE to show row separators.
 //
 func (self *ColumnView) SetShowRowSeparators(showRowSeparators bool) {
 	var _arg0 *C.GtkColumnView // out
@@ -562,7 +560,7 @@ func (self *ColumnView) SetShowRowSeparators(showRowSeparators bool) {
 //
 // The function takes the following parameters:
 //
-//    - singleClickActivate: TRUE to activate items on single click.
+//   - singleClickActivate: TRUE to activate items on single click.
 //
 func (self *ColumnView) SetSingleClickActivate(singleClickActivate bool) {
 	var _arg0 *C.GtkColumnView // out
@@ -592,8 +590,8 @@ func (self *ColumnView) SetSingleClickActivate(singleClickActivate bool) {
 //
 // The function takes the following parameters:
 //
-//    - column (optional): GtkColumnViewColumn to sort by, or NULL.
-//    - direction to sort in.
+//   - column (optional): GtkColumnViewColumn to sort by, or NULL.
+//   - direction to sort in.
 //
 func (self *ColumnView) SortByColumn(column *ColumnViewColumn, direction SortType) {
 	var _arg0 *C.GtkColumnView       // out

@@ -81,11 +81,11 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): transient parent of the window, or NULL.
+//   - parent (optional): transient parent of the window, or NULL.
 //
 // The function returns the following values:
 //
-//    - mountOperation: new MountOperation.
+//   - mountOperation: new MountOperation.
 //
 func NewMountOperation(parent *Window) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
@@ -109,7 +109,7 @@ func NewMountOperation(parent *Window) *MountOperation {
 //
 // The function returns the following values:
 //
-//    - window: transient parent for windows shown by op.
+//   - window: transient parent for windows shown by op.
 //
 func (op *MountOperation) Parent() *Window {
 	var _arg0 *C.GtkMountOperation // out
@@ -131,7 +131,7 @@ func (op *MountOperation) Parent() *Window {
 //
 // The function returns the following values:
 //
-//    - screen on which windows of op are shown.
+//   - screen on which windows of op are shown.
 //
 func (op *MountOperation) Screen() *gdk.Screen {
 	var _arg0 *C.GtkMountOperation // out
@@ -159,7 +159,7 @@ func (op *MountOperation) Screen() *gdk.Screen {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if op is currently displaying a window.
+//   - ok: TRUE if op is currently displaying a window.
 //
 func (op *MountOperation) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
@@ -183,7 +183,7 @@ func (op *MountOperation) IsShowing() bool {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): transient parent of the window, or NULL.
+//   - parent (optional): transient parent of the window, or NULL.
 //
 func (op *MountOperation) SetParent(parent *Window) {
 	var _arg0 *C.GtkMountOperation // out
@@ -203,7 +203,7 @@ func (op *MountOperation) SetParent(parent *Window) {
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 func (op *MountOperation) SetScreen(screen *gdk.Screen) {
 	var _arg0 *C.GtkMountOperation // out

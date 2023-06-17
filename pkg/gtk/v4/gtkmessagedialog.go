@@ -111,7 +111,6 @@ func (b ButtonsType) String() string {
 //                      G_CALLBACK (gtk_window_destroy),
 //                      NULL);
 //
-//
 // You might do a non-modal GtkMessageDialog simply by omitting the
 // GTK_DIALOG_MODAL flag:
 //
@@ -130,9 +129,7 @@ func (b ButtonsType) String() string {
 //                      G_CALLBACK (gtk_window_destroy),
 //                      NULL);
 //
-//
-//
-// GtkMessageDialog as GtkBuildable
+// # GtkMessageDialog as GtkBuildable
 //
 // The GtkMessageDialog implementation of the GtkBuildable interface exposes the
 // message area as an internal child with the name “message_area”.
@@ -206,7 +203,7 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - widget: GtkBox corresponding to the “message area” in the message_dialog.
+//   - widget: GtkBox corresponding to the “message area” in the message_dialog.
 //
 func (messageDialog *MessageDialog) MessageArea() Widgetter {
 	var _arg0 *C.GtkMessageDialog // out
@@ -244,7 +241,7 @@ func (messageDialog *MessageDialog) MessageArea() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - str: string with Pango markup.
+//   - str: string with Pango markup.
 //
 func (messageDialog *MessageDialog) SetMarkup(str string) {
 	var _arg0 *C.GtkMessageDialog // out

@@ -93,15 +93,15 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 // cancelled from another thread, the signal will be emitted in the thread that
 // cancelled the operation, not the thread that is running the operation.
 //
-// Note that disconnecting from this signal (or any signal) in a multi-threaded
-// program is prone to race conditions. For instance it is possible that a
-// signal handler may be invoked even after a call to
+// Note that disconnecting from this signal (or any signal) in a
+// multi-threaded program is prone to race conditions. For instance it
+// is possible that a signal handler may be invoked even after a call to
 // g_signal_handler_disconnect() for that handler has already returned.
 //
-// There is also a problem when cancellation happens right before connecting to
-// the signal. If this happens the signal will unexpectedly not be emitted, and
-// checking before connecting to the signal leaves a race condition where this
-// is still happening.
+// There is also a problem when cancellation happens right before connecting
+// to the signal. If this happens the signal will unexpectedly not be emitted,
+// and checking before connecting to the signal leaves a race condition where
+// this is still happening.
 //
 // In order to make it safe and easy to connect handlers there are two helper
 // functions: g_cancellable_connect() and g_cancellable_disconnect() which
@@ -109,27 +109,27 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 //
 // An example of how to us this:
 //
-//        // Make sure we don't do unnecessary work if already cancelled
-//        if (g_cancellable_set_error_if_cancelled (cancellable, error))
-//          return;
+//    // Make sure we don't do unnecessary work if already cancelled
+//    if (g_cancellable_set_error_if_cancelled (cancellable, error))
+//      return;
 //
-//        // Set up all the data needed to be able to handle cancellation
-//        // of the operation
-//        my_data = my_data_new (...);
+//    // Set up all the data needed to be able to handle cancellation
+//    // of the operation
+//    my_data = my_data_new (...);
 //
-//        id = 0;
-//        if (cancellable)
-//          id = g_cancellable_connect (cancellable,
-//        			      G_CALLBACK (cancelled_handler)
-//        			      data, NULL);
+//    id = 0;
+//    if (cancellable)
+//      id = g_cancellable_connect (cancellable,
+//    			      G_CALLBACK (cancelled_handler)
+//    			      data, NULL);
 //
-//        // cancellable operation here...
+//    // cancellable operation here...
 //
-//        g_cancellable_disconnect (cancellable, id);
+//    g_cancellable_disconnect (cancellable, id);
 //
-//        // cancelled_handler is never called after this, it is now safe
-//        // to free the data
-//        my_data_free (my_data);
+//    // cancelled_handler is never called after this, it is now safe
+//    // to free the data
+//    my_data_free (my_data);
 //
 // Note that the cancelled signal is emitted in the thread that the user
 // cancelled from, which may be the main thread. So, the cancellable signal
@@ -148,7 +148,7 @@ func (cancellable *Cancellable) ConnectCancelled(f func()) coreglib.SignalHandle
 //
 // The function returns the following values:
 //
-//    - cancellable: #GCancellable.
+//   - cancellable: #GCancellable.
 //
 func NewCancellable() *Cancellable {
 	var _cret *C.GCancellable // in
@@ -167,8 +167,8 @@ func NewCancellable() *Cancellable {
 // conditions in the documentation for that signal if you are planning to
 // connect to it.)
 //
-// This function is thread-safe. In other words, you can safely call it from a
-// thread other than the one running the operation that was passed the
+// This function is thread-safe. In other words, you can safely call it from
+// a thread other than the one running the operation that was passed the
 // cancellable.
 //
 // If cancellable is NULL, this function returns immediately for convenience.
@@ -194,15 +194,15 @@ func (cancellable *Cancellable) Cancel() {
 // finished. Calling this function from a #GCancellable::cancelled signal
 // handler will therefore result in a deadlock.
 //
-// This avoids a race condition where a thread cancels at the same time as the
-// cancellable operation is finished and the signal handler is removed. See
-// #GCancellable::cancelled for details on how to use this.
+// This avoids a race condition where a thread cancels at the same time as
+// the cancellable operation is finished and the signal handler is removed.
+// See #GCancellable::cancelled for details on how to use this.
 //
 // If cancellable is NULL or handler_id is 0 this function does nothing.
 //
 // The function takes the following parameters:
 //
-//    - handlerId: handler id of the handler to be disconnected, or 0.
+//   - handlerId: handler id of the handler to be disconnected, or 0.
 //
 func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
@@ -222,8 +222,8 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 // implement cancellable operations on Unix systems. The returned fd will turn
 // readable when cancellable is cancelled.
 //
-// You are not supposed to read from the fd yourself, just check for readable
-// status. Reading to unset the readable status is done with
+// You are not supposed to read from the fd yourself, just check for
+// readable status. Reading to unset the readable status is done with
 // g_cancellable_reset().
 //
 // After a successful return from this function, you should use
@@ -234,8 +234,8 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 //
 // The function returns the following values:
 //
-//    - gint: valid file descriptor. -1 if the file descriptor is not supported,
-//      or on errors.
+//   - gint: valid file descriptor. -1 if the file descriptor is not supported,
+//     or on errors.
 //
 func (cancellable *Cancellable) Fd() int {
 	var _arg0 *C.GCancellable // out
@@ -259,8 +259,8 @@ func (cancellable *Cancellable) Fd() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if cancellable is cancelled, FALSE if called with NULL or if
-//      item is not cancelled.
+//   - ok: TRUE if cancellable is cancelled, FALSE if called with NULL or if
+//     item is not cancelled.
 //
 func (cancellable *Cancellable) IsCancelled() bool {
 	var _arg0 *C.GCancellable // out
@@ -317,8 +317,8 @@ func (cancellable *Cancellable) PushCurrent() {
 // ReleaseFd releases a resources previously allocated by g_cancellable_get_fd()
 // or g_cancellable_make_pollfd().
 //
-// For compatibility reasons with older releases, calling this function is not
-// strictly required, the resources will be automatically freed when the
+// For compatibility reasons with older releases, calling this function is
+// not strictly required, the resources will be automatically freed when the
 // cancellable is finalized. However, the cancellable will block scarce file
 // descriptors until it is finalized if this function is not called. This can
 // cause the application to run out of file descriptors when many #GCancellables
@@ -340,10 +340,10 @@ func (cancellable *Cancellable) ReleaseFd() {
 // behavior of this function is undefined.
 //
 // Note that it is generally not a good idea to reuse an existing cancellable
-// for more operations after it has been cancelled once, as this function might
-// tempt you to do. The recommended practice is to drop the reference to a
-// cancellable after cancelling it, and let it die with the outstanding async
-// operations. You should create a fresh cancellable for further async
+// for more operations after it has been cancelled once, as this function
+// might tempt you to do. The recommended practice is to drop the reference
+// to a cancellable after cancelling it, and let it die with the outstanding
+// async operations. You should create a fresh cancellable for further async
 // operations.
 func (cancellable *Cancellable) Reset() {
 	var _arg0 *C.GCancellable // out
@@ -390,7 +390,7 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 //
 // The function returns the following values:
 //
-//    - source: new #GSource.
+//   - source: new #GSource.
 //
 func (cancellable *Cancellable) NewSource() *glib.Source {
 	var _arg0 *C.GCancellable // out
@@ -434,8 +434,8 @@ func (cancellable *Cancellable) cancelled() {
 //
 // The function returns the following values:
 //
-//    - cancellable (optional) from the top of the stack, or NULL if the stack is
-//      empty.
+//   - cancellable (optional) from the top of the stack, or NULL if the stack is
+//     empty.
 //
 func CancellableGetCurrent() *Cancellable {
 	var _cret *C.GCancellable // in

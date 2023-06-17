@@ -83,7 +83,7 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - overlayLayout: newly created instance.
+//   - overlayLayout: newly created instance.
 //
 func NewOverlayLayout() *OverlayLayout {
 	var _cret *C.GtkLayoutManager // in
@@ -148,7 +148,7 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - ok: whether the child is clipped.
+//   - ok: whether the child is clipped.
 //
 func (child *OverlayLayoutChild) ClipOverlay() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
@@ -172,7 +172,7 @@ func (child *OverlayLayoutChild) ClipOverlay() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the child is measured.
+//   - ok: whether the child is measured.
 //
 func (child *OverlayLayoutChild) Measure() bool {
 	var _arg0 *C.GtkOverlayLayoutChild // out
@@ -196,7 +196,7 @@ func (child *OverlayLayoutChild) Measure() bool {
 //
 // The function takes the following parameters:
 //
-//    - clipOverlay: whether to clip this child.
+//   - clipOverlay: whether to clip this child.
 //
 func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out
@@ -216,7 +216,7 @@ func (child *OverlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 //
 // The function takes the following parameters:
 //
-//    - measure: whether to measure this child.
+//   - measure: whether to measure this child.
 //
 func (child *OverlayLayoutChild) SetMeasure(measure bool) {
 	var _arg0 *C.GtkOverlayLayoutChild // out

@@ -39,8 +39,7 @@ func init() {
 // It is possible to associate multiple GtkStackSwitcher widgets with the same
 // GtkStack widget.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkStackSwitcher has a single CSS node named stackswitcher and style class
 // .stack-switcher.
@@ -48,8 +47,7 @@ func init() {
 // When circumstances require it, GtkStackSwitcher adds the .needs-attention
 // style class to the widgets representing the stack pages.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkStackSwitcher uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role and uses the
 // GTK_ACCESSIBLE_ROLE_TAB for its buttons.
@@ -90,7 +88,7 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - stackSwitcher: new GtkStackSwitcher.
+//   - stackSwitcher: new GtkStackSwitcher.
 //
 func NewStackSwitcher() *StackSwitcher {
 	var _cret *C.GtkWidget // in
@@ -108,7 +106,7 @@ func NewStackSwitcher() *StackSwitcher {
 //
 // The function returns the following values:
 //
-//    - stack (optional): stack, or NULL if none has been set explicitly.
+//   - stack (optional): stack, or NULL if none has been set explicitly.
 //
 func (switcher *StackSwitcher) Stack() *Stack {
 	var _arg0 *C.GtkStackSwitcher // out
@@ -132,7 +130,7 @@ func (switcher *StackSwitcher) Stack() *Stack {
 //
 // The function takes the following parameters:
 //
-//    - stack (optional): GtkStack.
+//   - stack (optional): GtkStack.
 //
 func (switcher *StackSwitcher) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSwitcher // out

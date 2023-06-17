@@ -93,9 +93,9 @@ type MenuShellOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - child to add.
-	//    - position in the item list where child is added. Positions are
-	//      numbered from 0 to n-1.
+	//   - child to add.
+	//   - position in the item list where child is added. Positions are
+	//     numbered from 0 to n-1.
 	//
 	Insert func(child Widgetter, position int)
 	// The function takes the following parameters:
@@ -110,7 +110,7 @@ type MenuShellOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - menuItem to select.
+	//   - menuItem to select.
 	//
 	SelectItem    func(menuItem Widgetter)
 	SelectionDone func()
@@ -138,8 +138,7 @@ func defaultMenuShellOverrides(v *MenuShell) MenuShellOverrides {
 // functions. A MenuItem can have a submenu associated with it, allowing for
 // nested hierarchical menus.
 //
-//
-// Terminology
+// # Terminology
 //
 // A menu item can be “selected”, this means that it is displayed in the
 // prelight state, and if it has a submenu, that submenu will be popped up.
@@ -148,8 +147,8 @@ func defaultMenuShellOverrides(v *MenuShell) MenuShellOverrides {
 // it. A menubar is not active until the user clicks on one of its menuitems.
 // When a menu is active, passing the mouse over a submenu will pop it up.
 //
-// There is also is a concept of the current menu and a current menu item. The
-// current menu item is the selected menu item that is furthest down in the
+// There is also is a concept of the current menu and a current menu item.
+// The current menu item is the selected menu item that is furthest down in the
 // hierarchy. (Every active menu shell does not necessarily contain a selected
 // menu item, but if it does, then the parent menu shell must also contain a
 // selected menu item.) The current menu is the menu that contains the current
@@ -313,9 +312,9 @@ func (menuShell *MenuShell) ConnectSelectionDone(f func()) coreglib.SignalHandle
 //
 // The function takes the following parameters:
 //
-//    - menuItem to activate.
-//    - forceDeactivate: if TRUE, force the deactivation of the menu shell after
-//      the menu item is activated.
+//   - menuItem to activate.
+//   - forceDeactivate: if TRUE, force the deactivation of the menu shell after
+//     the menu item is activated.
 //
 func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate bool) {
 	var _arg0 *C.GtkMenuShell // out
@@ -338,7 +337,7 @@ func (menuShell *MenuShell) ActivateItem(menuItem Widgetter, forceDeactivate boo
 //
 // The function takes the following parameters:
 //
-//    - child to add.
+//   - child to add.
 //
 func (menuShell *MenuShell) Append(child *MenuItem) {
 	var _arg0 *C.GtkMenuShell // out
@@ -377,16 +376,16 @@ func (menuShell *MenuShell) Append(child *MenuItem) {
 // with a “quit” action and inserted it with the name “mygroup” then you would
 // use the action name “mygroup.quit” in your Model.
 //
-// For most cases you are probably better off using gtk_menu_new_from_model() or
-// gtk_menu_bar_new_from_model() or just directly passing the Model to
+// For most cases you are probably better off using gtk_menu_new_from_model()
+// or gtk_menu_bar_new_from_model() or just directly passing the Model to
 // gtk_application_set_app_menu() or gtk_application_set_menubar().
 //
 // The function takes the following parameters:
 //
-//    - model (optional) to bind to or NULL to remove binding.
-//    - actionNamespace (optional): namespace for actions in model.
-//    - withSeparators: TRUE if toplevel items in shell should have separators
-//      between them.
+//   - model (optional) to bind to or NULL to remove binding.
+//   - actionNamespace (optional): namespace for actions in model.
+//   - withSeparators: TRUE if toplevel items in shell should have separators
+//     between them.
 //
 func (menuShell *MenuShell) BindModel(model gio.MenuModeller, actionNamespace string, withSeparators bool) {
 	var _arg0 *C.GtkMenuShell // out
@@ -452,7 +451,7 @@ func (menuShell *MenuShell) Deselect() {
 //
 // The function returns the following values:
 //
-//    - widget: parent MenuShell.
+//   - widget: parent MenuShell.
 //
 func (menuShell *MenuShell) ParentShell() Widgetter {
 	var _arg0 *C.GtkMenuShell // out
@@ -490,7 +489,7 @@ func (menuShell *MenuShell) ParentShell() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget: currently selected item.
+//   - widget: currently selected item.
 //
 func (menuShell *MenuShell) SelectedItem() Widgetter {
 	var _arg0 *C.GtkMenuShell // out
@@ -529,7 +528,7 @@ func (menuShell *MenuShell) SelectedItem() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the menu shell will take the keyboard focus on popup.
+//   - ok: TRUE if the menu shell will take the keyboard focus on popup.
 //
 func (menuShell *MenuShell) TakeFocus() bool {
 	var _arg0 *C.GtkMenuShell // out
@@ -554,9 +553,9 @@ func (menuShell *MenuShell) TakeFocus() bool {
 //
 // The function takes the following parameters:
 //
-//    - child to add.
-//    - position in the item list where child is added. Positions are numbered
-//      from 0 to n-1.
+//   - child to add.
+//   - position in the item list where child is added. Positions are numbered
+//     from 0 to n-1.
 //
 func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 	var _arg0 *C.GtkMenuShell // out
@@ -577,7 +576,7 @@ func (menuShell *MenuShell) Insert(child Widgetter, position int) {
 //
 // The function takes the following parameters:
 //
-//    - child to add.
+//   - child to add.
 //
 func (menuShell *MenuShell) Prepend(child Widgetter) {
 	var _arg0 *C.GtkMenuShell // out
@@ -596,9 +595,9 @@ func (menuShell *MenuShell) Prepend(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - searchSensitive: if TRUE, search for the first selectable menu item,
-//      otherwise select nothing if the first item isn’t sensitive. This should
-//      be FALSE if the menu is being popped up initially.
+//   - searchSensitive: if TRUE, search for the first selectable menu item,
+//     otherwise select nothing if the first item isn’t sensitive. This should
+//     be FALSE if the menu is being popped up initially.
 //
 func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 	var _arg0 *C.GtkMenuShell // out
@@ -618,7 +617,7 @@ func (menuShell *MenuShell) SelectFirst(searchSensitive bool) {
 //
 // The function takes the following parameters:
 //
-//    - menuItem to select.
+//   - menuItem to select.
 //
 func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 	var _arg0 *C.GtkMenuShell // out
@@ -639,9 +638,9 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 // Setting take_focus to FALSE is useful only for special applications like
 // virtual keyboard implementations which should not take keyboard focus.
 //
-// The take_focus state of a menu or menu bar is automatically propagated to
-// submenus whenever a submenu is popped up, so you don’t have to worry about
-// recursively setting it for your entire menu hierarchy. Only when
+// The take_focus state of a menu or menu bar is automatically propagated
+// to submenus whenever a submenu is popped up, so you don’t have to worry
+// about recursively setting it for your entire menu hierarchy. Only when
 // programmatically picking a submenu and popping it up manually, the take_focus
 // property of the submenu needs to be set explicitly.
 //
@@ -659,8 +658,8 @@ func (menuShell *MenuShell) SelectItem(menuItem Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - takeFocus: TRUE if the menu shell should take the keyboard focus on
-//      popup.
+//   - takeFocus: TRUE if the menu shell should take the keyboard focus on
+//     popup.
 //
 func (menuShell *MenuShell) SetTakeFocus(takeFocus bool) {
 	var _arg0 *C.GtkMenuShell // out
@@ -749,9 +748,9 @@ func (menuShell *MenuShell) popupDelay() int {
 //
 // The function takes the following parameters:
 //
-//    - child to add.
-//    - position in the item list where child is added. Positions are numbered
-//      from 0 to n-1.
+//   - child to add.
+//   - position in the item list where child is added. Positions are numbered
+//     from 0 to n-1.
 //
 func (menuShell *MenuShell) insert(child Widgetter, position int) {
 	gclass := (*C.GtkMenuShellClass)(coreglib.PeekParentClass(menuShell))
@@ -820,7 +819,7 @@ func (menuShell *MenuShell) moveSelected(distance int) bool {
 //
 // The function takes the following parameters:
 //
-//    - menuItem to select.
+//   - menuItem to select.
 //
 func (menuShell *MenuShell) selectItem(menuItem Widgetter) {
 	gclass := (*C.GtkMenuShellClass)(coreglib.PeekParentClass(menuShell))

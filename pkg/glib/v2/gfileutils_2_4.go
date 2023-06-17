@@ -13,18 +13,18 @@ import (
 // #include <glib.h>
 import "C"
 
-// FileReadLink reads the contents of the symbolic link filename like the POSIX
-// readlink() function. The returned string is in the encoding used for
+// FileReadLink reads the contents of the symbolic link filename like the
+// POSIX readlink() function. The returned string is in the encoding used for
 // filenames. Use g_filename_to_utf8() to convert it to UTF-8.
 //
 // The function takes the following parameters:
 //
-//    - filename: symbolic link.
+//   - filename: symbolic link.
 //
 // The function returns the following values:
 //
-//    - ret: newly-allocated string with the contents of the symbolic link, or
-//      NULL if an error occurred.
+//   - ret: newly-allocated string with the contents of the symbolic link,
+//     or NULL if an error occurred.
 //
 func FileReadLink(filename string) (string, error) {
 	var _arg1 *C.gchar  // out

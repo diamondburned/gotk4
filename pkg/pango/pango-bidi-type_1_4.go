@@ -16,13 +16,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - text to process. Must be valid UTF-8.
-//    - length of text in bytes (may be -1 if text is nul-terminated).
+//   - text to process. Must be valid UTF-8.
+//   - length of text in bytes (may be -1 if text is nul-terminated).
 //
 // The function returns the following values:
 //
-//    - direction corresponding to the first strong character. If no such
-//      character is found, then PANGO_DIRECTION_NEUTRAL is returned.
+//   - direction corresponding to the first strong character. If no such
+//     character is found, then PANGO_DIRECTION_NEUTRAL is returned.
 //
 func FindBaseDir(text string, length int) Direction {
 	var _arg1 *C.gchar         // out

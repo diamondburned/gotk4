@@ -107,11 +107,11 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 //
 // The function takes the following parameters:
 //
-//    - value to add.
+//   - value to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if value was not part of self and self was changed.
+//   - ok: TRUE if value was not part of self and self was changed.
 //
 func (self *Bitset) Add(value uint) bool {
 	var _arg0 *C.GtkBitset // out
@@ -139,8 +139,8 @@ func (self *Bitset) Add(value uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - start: first value to add.
-//    - nItems: number of consecutive values to add.
+//   - start: first value to add.
+//   - nItems: number of consecutive values to add.
 //
 func (self *Bitset) AddRange(start uint, nItems uint) {
 	var _arg0 *C.GtkBitset // out
@@ -162,8 +162,8 @@ func (self *Bitset) AddRange(start uint, nItems uint) {
 //
 // The function takes the following parameters:
 //
-//    - first value to add.
-//    - last value to add.
+//   - first value to add.
+//   - last value to add.
 //
 func (self *Bitset) AddRangeClosed(first uint, last uint) {
 	var _arg0 *C.GtkBitset // out
@@ -186,10 +186,10 @@ func (self *Bitset) AddRangeClosed(first uint, last uint) {
 //
 // The function takes the following parameters:
 //
-//    - start: first value to add.
-//    - width of the rectangle.
-//    - height of the rectangle.
-//    - stride: row stride of the grid.
+//   - start: first value to add.
+//   - width of the rectangle.
+//   - height of the rectangle.
+//   - stride: row stride of the grid.
 //
 func (self *Bitset) AddRectangle(start uint, width uint, height uint, stride uint) {
 	var _arg0 *C.GtkBitset // out
@@ -216,11 +216,11 @@ func (self *Bitset) AddRectangle(start uint, width uint, height uint, stride uin
 //
 // The function takes the following parameters:
 //
-//    - value to check.
+//   - value to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self contains value.
+//   - ok: TRUE if self contains value.
 //
 func (self *Bitset) Contains(value uint) bool {
 	var _arg0 *C.GtkBitset // out
@@ -247,7 +247,7 @@ func (self *Bitset) Contains(value uint) bool {
 //
 // The function returns the following values:
 //
-//    - bitset: new bitset that contains the same values as self.
+//   - bitset: new bitset that contains the same values as self.
 //
 func (self *Bitset) Copy() *Bitset {
 	var _arg0 *C.GtkBitset // out
@@ -282,7 +282,7 @@ func (self *Bitset) Copy() *Bitset {
 //
 // The function takes the following parameters:
 //
-//    - other: GtkBitset to compute the difference from.
+//   - other: GtkBitset to compute the difference from.
 //
 func (self *Bitset) Difference(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
@@ -300,11 +300,11 @@ func (self *Bitset) Difference(other *Bitset) {
 //
 // The function takes the following parameters:
 //
-//    - other GtkBitset.
+//   - other GtkBitset.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self and other contain the same values.
+//   - ok: TRUE if self and other contain the same values.
 //
 func (self *Bitset) Equals(other *Bitset) bool {
 	var _arg0 *C.GtkBitset // out
@@ -333,7 +333,7 @@ func (self *Bitset) Equals(other *Bitset) bool {
 //
 // The function returns the following values:
 //
-//    - guint: largest value in self.
+//   - guint: largest value in self.
 //
 func (self *Bitset) Maximum() uint {
 	var _arg0 *C.GtkBitset // out
@@ -357,7 +357,7 @@ func (self *Bitset) Maximum() uint {
 //
 // The function returns the following values:
 //
-//    - guint: smallest value in self.
+//   - guint: smallest value in self.
 //
 func (self *Bitset) Minimum() uint {
 	var _arg0 *C.GtkBitset // out
@@ -381,11 +381,11 @@ func (self *Bitset) Minimum() uint {
 //
 // The function takes the following parameters:
 //
-//    - nth: index of the item to get.
+//   - nth: index of the item to get.
 //
 // The function returns the following values:
 //
-//    - guint: value of the nth item in self.
+//   - guint: value of the nth item in self.
 //
 func (self *Bitset) Nth(nth uint) uint {
 	var _arg0 *C.GtkBitset // out
@@ -416,7 +416,7 @@ func (self *Bitset) Nth(nth uint) uint {
 //
 // The function returns the following values:
 //
-//    - guint64: number of values in the set.
+//   - guint64: number of values in the set.
 //
 func (self *Bitset) Size() uint64 {
 	var _arg0 *C.GtkBitset // out
@@ -443,12 +443,12 @@ func (self *Bitset) Size() uint64 {
 //
 // The function takes the following parameters:
 //
-//    - first element to include.
-//    - last element to include.
+//   - first element to include.
+//   - last element to include.
 //
 // The function returns the following values:
 //
-//    - guint64: number of values in the set from first to last.
+//   - guint64: number of values in the set from first to last.
 //
 func (self *Bitset) SizeInRange(first uint, last uint) uint64 {
 	var _arg0 *C.GtkBitset // out
@@ -481,7 +481,7 @@ func (self *Bitset) SizeInRange(first uint, last uint) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - other: GtkBitset to intersect with.
+//   - other: GtkBitset to intersect with.
 //
 func (self *Bitset) Intersect(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
@@ -499,7 +499,7 @@ func (self *Bitset) Intersect(other *Bitset) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self is empty.
+//   - ok: TRUE if self is empty.
 //
 func (self *Bitset) IsEmpty() bool {
 	var _arg0 *C.GtkBitset // out
@@ -523,11 +523,11 @@ func (self *Bitset) IsEmpty() bool {
 //
 // The function takes the following parameters:
 //
-//    - value to add.
+//   - value to add.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if value was part of self and self was changed.
+//   - ok: TRUE if value was part of self and self was changed.
 //
 func (self *Bitset) Remove(value uint) bool {
 	var _arg0 *C.GtkBitset // out
@@ -565,8 +565,8 @@ func (self *Bitset) RemoveAll() {
 //
 // The function takes the following parameters:
 //
-//    - start: first value to remove.
-//    - nItems: number of consecutive values to remove.
+//   - start: first value to remove.
+//   - nItems: number of consecutive values to remove.
 //
 func (self *Bitset) RemoveRange(start uint, nItems uint) {
 	var _arg0 *C.GtkBitset // out
@@ -588,8 +588,8 @@ func (self *Bitset) RemoveRange(start uint, nItems uint) {
 //
 // The function takes the following parameters:
 //
-//    - first value to remove.
-//    - last value to remove.
+//   - first value to remove.
+//   - last value to remove.
 //
 func (self *Bitset) RemoveRangeClosed(first uint, last uint) {
 	var _arg0 *C.GtkBitset // out
@@ -612,10 +612,10 @@ func (self *Bitset) RemoveRangeClosed(first uint, last uint) {
 //
 // The function takes the following parameters:
 //
-//    - start: first value to remove.
-//    - width of the rectangle.
-//    - height of the rectangle.
-//    - stride: row stride of the grid.
+//   - start: first value to remove.
+//   - width of the rectangle.
+//   - height of the rectangle.
+//   - stride: row stride of the grid.
 //
 func (self *Bitset) RemoveRectangle(start uint, width uint, height uint, stride uint) {
 	var _arg0 *C.GtkBitset // out
@@ -644,7 +644,7 @@ func (self *Bitset) RemoveRectangle(start uint, width uint, height uint, stride 
 //
 // The function takes the following parameters:
 //
-//    - amount to shift all values to the left.
+//   - amount to shift all values to the left.
 //
 func (self *Bitset) ShiftLeft(amount uint) {
 	var _arg0 *C.GtkBitset // out
@@ -664,7 +664,7 @@ func (self *Bitset) ShiftLeft(amount uint) {
 //
 // The function takes the following parameters:
 //
-//    - amount to shift all values to the right.
+//   - amount to shift all values to the right.
 //
 func (self *Bitset) ShiftRight(amount uint) {
 	var _arg0 *C.GtkBitset // out
@@ -681,9 +681,9 @@ func (self *Bitset) ShiftRight(amount uint) {
 // Splice: this is a support function for GListModel handling, by mirroring the
 // GlistModel::items-changed signal.
 //
-// First, it "cuts" the values from position to removed from the bitset. That
-// is, it removes all those values and shifts all larger values to the left by
-// removed places.
+// First, it "cuts" the values from position to removed from the bitset.
+// That is, it removes all those values and shifts all larger values to the left
+// by removed places.
 //
 // Then, it "pastes" new room into the bitset by shifting all values larger than
 // position by added spaces to the right. This frees up space that can then be
@@ -691,9 +691,9 @@ func (self *Bitset) ShiftRight(amount uint) {
 //
 // The function takes the following parameters:
 //
-//    - position at which to slice.
-//    - removed: number of values to remove.
-//    - added: number of values to add.
+//   - position at which to slice.
+//   - removed: number of values to remove.
+//   - added: number of values to add.
 //
 func (self *Bitset) Splice(position uint, removed uint, added uint) {
 	var _arg0 *C.GtkBitset // out
@@ -722,7 +722,7 @@ func (self *Bitset) Splice(position uint, removed uint, added uint) {
 //
 // The function takes the following parameters:
 //
-//    - other: GtkBitset to subtract.
+//   - other: GtkBitset to subtract.
 //
 func (self *Bitset) Subtract(other *Bitset) {
 	var _arg0 *C.GtkBitset // out
@@ -745,7 +745,7 @@ func (self *Bitset) Subtract(other *Bitset) {
 //
 // The function takes the following parameters:
 //
-//    - other: GtkBitset to union with.
+//   - other: GtkBitset to union with.
 //
 func (self *Bitset) Union(other *Bitset) {
 	var _arg0 *C.GtkBitset // out

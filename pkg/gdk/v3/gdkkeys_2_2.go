@@ -17,11 +17,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - display: Display.
+//   - display: Display.
 //
 // The function returns the following values:
 //
-//    - keymap attached to display.
+//   - keymap attached to display.
 //
 func KeymapGetForDisplay(display *Display) *Keymap {
 	var _arg1 *C.GdkDisplay // out

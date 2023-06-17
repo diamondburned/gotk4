@@ -12,8 +12,8 @@ import (
 // #include <glib.h>
 import "C"
 
-// UserDirectory: these are logical ids for special directories which are
-// defined depending on the platform used. You should use
+// UserDirectory: these are logical ids for special directories
+// which are defined depending on the platform used. You should use
 // g_get_user_special_dir() to retrieve the full path associated to the logical
 // id.
 //
@@ -81,13 +81,13 @@ func (u UserDirectory) String() string {
 //
 // The function takes the following parameters:
 //
-//    - directory: logical id of special directory.
+//   - directory: logical id of special directory.
 //
 // The function returns the following values:
 //
-//    - filename: path to the specified special directory, or NULL if the logical
-//      id was not found. The returned string is owned by GLib and should not be
-//      modified or freed.
+//   - filename: path to the specified special directory, or NULL if the logical
+//     id was not found. The returned string is owned by GLib and should not be
+//     modified or freed.
 //
 func GetUserSpecialDir(directory UserDirectory) string {
 	var _arg1 C.GUserDirectory // out

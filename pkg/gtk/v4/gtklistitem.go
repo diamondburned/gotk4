@@ -37,8 +37,8 @@ func init() {
 // 1. The unbound stage where the listitem is not currently connected to an item
 // in the list. In that case, the gtk.ListItem:item property is set to NULL.
 //
-// 2. The bound stage where the listitem references an item from the list. The
-// gtk.ListItem:item property is not NULL.
+// 2. The bound stage where the listitem references an item from the list.
+// The gtk.ListItem:item property is not NULL.
 type ListItem struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -63,7 +63,7 @@ func marshalListItem(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the item is activatable.
+//   - ok: TRUE if the item is activatable.
 //
 func (self *ListItem) Activatable() bool {
 	var _arg0 *C.GtkListItem // out
@@ -88,7 +88,7 @@ func (self *ListItem) Activatable() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child.
+//   - widget (optional): child.
 //
 func (self *ListItem) Child() Widgetter {
 	var _arg0 *C.GtkListItem // out
@@ -127,7 +127,7 @@ func (self *ListItem) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - object (optional): item displayed.
+//   - object (optional): item displayed.
 //
 func (self *ListItem) Item() *coreglib.Object {
 	var _arg0 *C.GtkListItem // out
@@ -151,7 +151,7 @@ func (self *ListItem) Item() *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - guint: position of this item.
+//   - guint: position of this item.
 //
 func (self *ListItem) Position() uint {
 	var _arg0 *C.GtkListItem // out
@@ -176,7 +176,7 @@ func (self *ListItem) Position() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the item is selectable.
+//   - ok: TRUE if the item is selectable.
 //
 func (self *ListItem) Selectable() bool {
 	var _arg0 *C.GtkListItem // out
@@ -203,7 +203,7 @@ func (self *ListItem) Selectable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the item is selected.
+//   - ok: TRUE if the item is selected.
 //
 func (self *ListItem) Selected() bool {
 	var _arg0 *C.GtkListItem // out
@@ -234,7 +234,7 @@ func (self *ListItem) Selected() bool {
 //
 // The function takes the following parameters:
 //
-//    - activatable: if the item should be activatable.
+//   - activatable: if the item should be activatable.
 //
 func (self *ListItem) SetActivatable(activatable bool) {
 	var _arg0 *C.GtkListItem // out
@@ -257,7 +257,7 @@ func (self *ListItem) SetActivatable(activatable bool) {
 //
 // The function takes the following parameters:
 //
-//    - child (optional): list item's child or NULL to unset.
+//   - child (optional): list item's child or NULL to unset.
 //
 func (self *ListItem) SetChild(child Widgetter) {
 	var _arg0 *C.GtkListItem // out
@@ -275,8 +275,8 @@ func (self *ListItem) SetChild(child Widgetter) {
 
 // SetSelectable sets self to be selectable.
 //
-// If an item is selectable, clicking on the item or using the keyboard will try
-// to select or unselect the item. If this succeeds is up to the model to
+// If an item is selectable, clicking on the item or using the keyboard will
+// try to select or unselect the item. If this succeeds is up to the model to
 // determine, as it is managing the selected state.
 //
 // Note that this means that making an item non-selectable has no influence on
@@ -287,7 +287,7 @@ func (self *ListItem) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - selectable: if the item should be selectable.
+//   - selectable: if the item should be selectable.
 //
 func (self *ListItem) SetSelectable(selectable bool) {
 	var _arg0 *C.GtkListItem // out

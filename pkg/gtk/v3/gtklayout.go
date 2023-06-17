@@ -38,17 +38,17 @@ func defaultLayoutOverrides(v *Layout) LayoutOverrides {
 	return LayoutOverrides{}
 }
 
-// Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t do
-// anything except paint a blank background by default. It’s different in that
-// it supports scrolling natively due to implementing Scrollable, and can
+// Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t
+// do anything except paint a blank background by default. It’s different in
+// that it supports scrolling natively due to implementing Scrollable, and can
 // contain child widgets since it’s a Container.
 //
 // If you just want to draw, a DrawingArea is a better choice since it has lower
-// overhead. If you just need to position child widgets at specific points, then
-// Fixed provides that functionality on its own.
+// overhead. If you just need to position child widgets at specific points,
+// then Fixed provides that functionality on its own.
 //
-// When handling expose events on a Layout, you must draw to the Window returned
-// by gtk_layout_get_bin_window(), rather than to the one returned by
+// When handling expose events on a Layout, you must draw to the Window
+// returned by gtk_layout_get_bin_window(), rather than to the one returned by
 // gtk_widget_get_window() as you would for a DrawingArea.
 type Layout struct {
 	_ [0]func() // equal guard
@@ -106,18 +106,18 @@ func marshalLayout(p uintptr) (interface{}, error) {
 	return wrapLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewLayout creates a new Layout. Unless you have a specific adjustment you’d
-// like the layout to use for scrolling, pass NULL for hadjustment and
+// NewLayout creates a new Layout. Unless you have a specific adjustment
+// you’d like the layout to use for scrolling, pass NULL for hadjustment and
 // vadjustment.
 //
 // The function takes the following parameters:
 //
-//    - hadjustment (optional): horizontal scroll adjustment, or NULL.
-//    - vadjustment (optional): vertical scroll adjustment, or NULL.
+//   - hadjustment (optional): horizontal scroll adjustment, or NULL.
+//   - vadjustment (optional): vertical scroll adjustment, or NULL.
 //
 // The function returns the following values:
 //
-//    - layout: new Layout.
+//   - layout: new Layout.
 //
 func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 	var _arg1 *C.GtkAdjustment // out
@@ -146,7 +146,7 @@ func NewLayout(hadjustment, vadjustment *Adjustment) *Layout {
 //
 // The function returns the following values:
 //
-//    - window: Window.
+//   - window: Window.
 //
 func (layout *Layout) BinWindow() gdk.Windower {
 	var _arg0 *C.GtkLayout // out
@@ -191,7 +191,7 @@ func (layout *Layout) BinWindow() gdk.Windower {
 //
 // The function returns the following values:
 //
-//    - adjustment: horizontal scroll adjustment.
+//   - adjustment: horizontal scroll adjustment.
 //
 func (layout *Layout) HAdjustment() *Adjustment {
 	var _arg0 *C.GtkLayout     // out
@@ -214,8 +214,8 @@ func (layout *Layout) HAdjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - width (optional): location to store the width set on layout, or NULL.
-//    - height (optional): location to store the height set on layout, or NULL.
+//   - width (optional): location to store the width set on layout, or NULL.
+//   - height (optional): location to store the height set on layout, or NULL.
 //
 func (layout *Layout) Size() (width, height uint) {
 	var _arg0 *C.GtkLayout // out
@@ -247,7 +247,7 @@ func (layout *Layout) Size() (width, height uint) {
 //
 // The function returns the following values:
 //
-//    - adjustment: vertical scroll adjustment.
+//   - adjustment: vertical scroll adjustment.
 //
 func (layout *Layout) VAdjustment() *Adjustment {
 	var _arg0 *C.GtkLayout     // out
@@ -269,9 +269,9 @@ func (layout *Layout) VAdjustment() *Adjustment {
 //
 // The function takes the following parameters:
 //
-//    - childWidget: current child of layout.
-//    - x: x position to move to.
-//    - y: y position to move to.
+//   - childWidget: current child of layout.
+//   - x: x position to move to.
+//   - y: y position to move to.
 //
 func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 	var _arg0 *C.GtkLayout // out
@@ -296,9 +296,9 @@ func (layout *Layout) Move(childWidget Widgetter, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - childWidget: child widget.
-//    - x: x position of child widget.
-//    - y: y position of child widget.
+//   - childWidget: child widget.
+//   - x: x position of child widget.
+//   - y: y position of child widget.
 //
 func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 	var _arg0 *C.GtkLayout // out
@@ -326,7 +326,7 @@ func (layout *Layout) Put(childWidget Widgetter, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment (optional): new scroll adjustment.
+//   - adjustment (optional): new scroll adjustment.
 //
 func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out
@@ -346,8 +346,8 @@ func (layout *Layout) SetHAdjustment(adjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - width of entire scrollable area.
-//    - height of entire scrollable area.
+//   - width of entire scrollable area.
+//   - height of entire scrollable area.
 //
 func (layout *Layout) SetSize(width, height uint) {
 	var _arg0 *C.GtkLayout // out
@@ -372,7 +372,7 @@ func (layout *Layout) SetSize(width, height uint) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment (optional): new scroll adjustment.
+//   - adjustment (optional): new scroll adjustment.
 //
 func (layout *Layout) SetVAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkLayout     // out

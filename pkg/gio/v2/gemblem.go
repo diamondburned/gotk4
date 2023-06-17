@@ -25,11 +25,11 @@ func init() {
 	})
 }
 
-// Emblem is an implementation of #GIcon that supports having an emblem, which
-// is an icon with additional properties. It can than be added to a Icon.
+// Emblem is an implementation of #GIcon that supports having an emblem,
+// which is an icon with additional properties. It can than be added to a Icon.
 //
-// Currently, only metainformation about the emblem's origin is supported. More
-// may be added in the future.
+// Currently, only metainformation about the emblem's origin is supported.
+// More may be added in the future.
 type Emblem struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -58,11 +58,11 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - icon: GIcon containing the icon.
+//   - icon: GIcon containing the icon.
 //
 // The function returns the following values:
 //
-//    - emblem: new #GEmblem.
+//   - emblem: new #GEmblem.
 //
 func NewEmblem(icon Iconner) *Emblem {
 	var _arg1 *C.GIcon   // out
@@ -84,12 +84,12 @@ func NewEmblem(icon Iconner) *Emblem {
 //
 // The function takes the following parameters:
 //
-//    - icon: GIcon containing the icon.
-//    - origin: GEmblemOrigin enum defining the emblem's origin.
+//   - icon: GIcon containing the icon.
+//   - origin: GEmblemOrigin enum defining the emblem's origin.
 //
 // The function returns the following values:
 //
-//    - emblem: new #GEmblem.
+//   - emblem: new #GEmblem.
 //
 func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 	var _arg1 *C.GIcon        // out
@@ -114,8 +114,8 @@ func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 //
 // The function returns the following values:
 //
-//    - icon The returned object belongs to the emblem and should not be modified
-//      or freed.
+//   - icon The returned object belongs to the emblem and should not be modified
+//     or freed.
 //
 func (emblem *Emblem) GetIcon() *Icon {
 	var _arg0 *C.GEmblem // out
@@ -137,7 +137,7 @@ func (emblem *Emblem) GetIcon() *Icon {
 //
 // The function returns the following values:
 //
-//    - emblemOrigin: origin of the emblem.
+//   - emblemOrigin: origin of the emblem.
 //
 func (emblem *Emblem) Origin() EmblemOrigin {
 	var _arg0 *C.GEmblem      // out

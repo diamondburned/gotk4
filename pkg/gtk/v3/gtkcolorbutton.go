@@ -50,8 +50,7 @@ func defaultColorButtonOverrides(v *ColorButton) ColorButtonOverrides {
 // allows to open a color selection dialog to change the color. It is suitable
 // widget for selecting a color in a preference dialog.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkColorButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .color style class.
@@ -153,13 +152,13 @@ func (button *ColorButton) ConnectColorSet(f func()) coreglib.SignalHandle {
 // NewColorButton creates a new color button.
 //
 // This returns a widget in the form of a small button containing a swatch
-// representing the current selected color. When the button is clicked, a
-// color-selection dialog will open, allowing the user to select a color. The
-// swatch will be updated to reflect the new color when the user finishes.
+// representing the current selected color. When the button is clicked,
+// a color-selection dialog will open, allowing the user to select a color.
+// The swatch will be updated to reflect the new color when the user finishes.
 //
 // The function returns the following values:
 //
-//    - colorButton: new color button.
+//   - colorButton: new color button.
 //
 func NewColorButton() *ColorButton {
 	var _cret *C.GtkWidget // in
@@ -179,11 +178,11 @@ func NewColorButton() *ColorButton {
 //
 // The function takes the following parameters:
 //
-//    - color to set the current color with.
+//   - color to set the current color with.
 //
 // The function returns the following values:
 //
-//    - colorButton: new color button.
+//   - colorButton: new color button.
 //
 func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 	var _arg1 *C.GdkColor  // out
@@ -205,11 +204,11 @@ func NewColorButtonWithColor(color *gdk.Color) *ColorButton {
 //
 // The function takes the following parameters:
 //
-//    - rgba to set the current color with.
+//   - rgba to set the current color with.
 //
 // The function returns the following values:
 //
-//    - colorButton: new color button.
+//   - colorButton: new color button.
 //
 func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 	var _arg1 *C.GdkRGBA   // out
@@ -233,7 +232,7 @@ func NewColorButtonWithRGBA(rgba *gdk.RGBA) *ColorButton {
 //
 // The function returns the following values:
 //
-//    - guint16: integer between 0 and 65535.
+//   - guint16: integer between 0 and 65535.
 //
 func (button *ColorButton) Alpha() uint16 {
 	var _arg0 *C.GtkColorButton // out
@@ -257,7 +256,7 @@ func (button *ColorButton) Alpha() uint16 {
 //
 // The function returns the following values:
 //
-//    - color to fill in with the current color.
+//   - color to fill in with the current color.
 //
 func (button *ColorButton) Color() *gdk.Color {
 	var _arg0 *C.GtkColorButton // out
@@ -279,7 +278,7 @@ func (button *ColorButton) Color() *gdk.Color {
 //
 // The function returns the following values:
 //
-//    - utf8: internal string, do not free the return value.
+//   - utf8: internal string, do not free the return value.
 //
 func (button *ColorButton) Title() string {
 	var _arg0 *C.GtkColorButton // out
@@ -303,7 +302,7 @@ func (button *ColorButton) Title() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the color sample uses alpha channel, FALSE if not.
+//   - ok: TRUE if the color sample uses alpha channel, FALSE if not.
 //
 func (button *ColorButton) UseAlpha() bool {
 	var _arg0 *C.GtkColorButton // out
@@ -329,7 +328,7 @@ func (button *ColorButton) UseAlpha() bool {
 //
 // The function takes the following parameters:
 //
-//    - alpha: integer between 0 and 65535.
+//   - alpha: integer between 0 and 65535.
 //
 func (button *ColorButton) SetAlpha(alpha uint16) {
 	var _arg0 *C.GtkColorButton // out
@@ -349,7 +348,7 @@ func (button *ColorButton) SetAlpha(alpha uint16) {
 //
 // The function takes the following parameters:
 //
-//    - color to set the current color with.
+//   - color to set the current color with.
 //
 func (button *ColorButton) SetColor(color *gdk.Color) {
 	var _arg0 *C.GtkColorButton // out
@@ -367,7 +366,7 @@ func (button *ColorButton) SetColor(color *gdk.Color) {
 //
 // The function takes the following parameters:
 //
-//    - title: string containing new window title.
+//   - title: string containing new window title.
 //
 func (button *ColorButton) SetTitle(title string) {
 	var _arg0 *C.GtkColorButton // out
@@ -389,7 +388,7 @@ func (button *ColorButton) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - useAlpha: TRUE if color button should use alpha channel, FALSE if not.
+//   - useAlpha: TRUE if color button should use alpha channel, FALSE if not.
 //
 func (button *ColorButton) SetUseAlpha(useAlpha bool) {
 	var _arg0 *C.GtkColorButton // out

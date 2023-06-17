@@ -42,16 +42,16 @@ func defaultLockButtonOverrides(v *LockButton) LockButtonOverrides {
 // dialogs to allow users to obtain and revoke authorizations needed to operate
 // the controls. The required authorization is represented by a #GPermission
 // object. Concrete implementations of #GPermission may use PolicyKit or some
-// other authorization framework. To obtain a PolicyKit-based #GPermission, use
-// polkit_permission_new().
+// other authorization framework. To obtain a PolicyKit-based #GPermission,
+// use polkit_permission_new().
 //
 // If the user is not currently allowed to perform the action, but can obtain
 // the permission, the widget looks like this:
 //
 // ! (lockbutton-locked.png)
 //
-// and the user can click the button to request the permission. Depending on the
-// platform, this may pop up an authentication dialog or ask the user to
+// and the user can click the button to request the permission. Depending on
+// the platform, this may pop up an authentication dialog or ask the user to
 // authenticate in some other way. Once the user has obtained the permission,
 // the widget changes to this:
 //
@@ -64,8 +64,8 @@ func defaultLockButtonOverrides(v *LockButton) LockButtonOverrides {
 //
 // If the user has the permission and cannot drop it, the button is hidden.
 //
-// The text (and tooltips) that are shown in the various cases can be adjusted
-// with the LockButton:text-lock, LockButton:text-unlock,
+// The text (and tooltips) that are shown in the various cases can be
+// adjusted with the LockButton:text-lock, LockButton:text-unlock,
 // LockButton:tooltip-lock, LockButton:tooltip-unlock and
 // LockButton:tooltip-not-authorized properties.
 type LockButton struct {
@@ -143,11 +143,11 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - permission (optional): #GPermission.
+//   - permission (optional): #GPermission.
 //
 // The function returns the following values:
 //
-//    - lockButton: new LockButton.
+//   - lockButton: new LockButton.
 //
 func NewLockButton(permission gio.Permissioner) *LockButton {
 	var _arg1 *C.GPermission // out
@@ -171,7 +171,7 @@ func NewLockButton(permission gio.Permissioner) *LockButton {
 //
 // The function returns the following values:
 //
-//    - permission of button.
+//   - permission of button.
 //
 func (button *LockButton) Permission() gio.Permissioner {
 	var _arg0 *C.GtkLockButton // out
@@ -209,7 +209,7 @@ func (button *LockButton) Permission() gio.Permissioner {
 //
 // The function takes the following parameters:
 //
-//    - permission (optional) object, or NULL.
+//   - permission (optional) object, or NULL.
 //
 func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	var _arg0 *C.GtkLockButton // out

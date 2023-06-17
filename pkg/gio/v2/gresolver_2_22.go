@@ -18,7 +18,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - resolver: default #GResolver.
+//   - resolver: default #GResolver.
 //
 func ResolverGetDefault() Resolverer {
 	var _cret *C.GResolver // in

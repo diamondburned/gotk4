@@ -25,12 +25,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - context: StyleContext.
-//    - cr: #cairo_t.
-//    - x: x origin of the rectangle.
-//    - y: y origin of the rectangle.
-//    - width: rectangle width.
-//    - height: rectangle height.
+//   - context: StyleContext.
+//   - cr: #cairo_t.
+//   - x: x origin of the rectangle.
+//   - y: y origin of the rectangle.
+//   - width: rectangle width.
+//   - height: rectangle height.
 //
 func RenderBackground(context *StyleContext, cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.GtkStyleContext // out

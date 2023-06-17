@@ -32,8 +32,8 @@ func init() {
 	})
 }
 
-// GestureMultiPress is a Gesture implementation able to recognize multiple
-// clicks on a nearby zone, which can be listened for through the
+// GestureMultiPress is a Gesture implementation able to recognize
+// multiple clicks on a nearby zone, which can be listened for through the
 // GestureMultiPress::pressed signal. Whenever time or distance between clicks
 // exceed the GTK+ defaults, GestureMultiPress::stopped is emitted, and the
 // click counter is reset.
@@ -73,9 +73,9 @@ func (gesture *GestureMultiPress) ConnectPressed(f func(nPress int, x, y float64
 }
 
 // ConnectReleased: this signal is emitted when a button or touch is released.
-// n_press will report the number of press that is paired to this event, note
-// that GestureMultiPress::stopped may have been emitted between the press and
-// its release, n_press will only start over at the next press.
+// n_press will report the number of press that is paired to this event,
+// note that GestureMultiPress::stopped may have been emitted between the press
+// and its release, n_press will only start over at the next press.
 func (gesture *GestureMultiPress) ConnectReleased(f func(nPress int, x, y float64)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "released", false, unsafe.Pointer(C._gotk4_gtk3_GestureMultiPress_ConnectReleased), f)
 }
@@ -91,11 +91,11 @@ func (gesture *GestureMultiPress) ConnectStopped(f func()) coreglib.SignalHandle
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - gestureMultiPress: newly created GestureMultiPress.
+//   - gestureMultiPress: newly created GestureMultiPress.
 //
 func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	var _arg1 *C.GtkWidget  // out
@@ -113,15 +113,15 @@ func NewGestureMultiPress(widget Widgetter) *GestureMultiPress {
 	return _gestureMultiPress
 }
 
-// Area: if an area was set through gtk_gesture_multi_press_set_area(), this
-// function will return TRUE and fill in rect with the press area. See
-// gtk_gesture_multi_press_set_area() for more details on what the press area
-// represents.
+// Area: if an area was set through gtk_gesture_multi_press_set_area(),
+// this function will return TRUE and fill in rect with the press area.
+// See gtk_gesture_multi_press_set_area() for more details on what the press
+// area represents.
 //
 // The function returns the following values:
 //
-//    - rect: return location for the press area.
-//    - ok: TRUE if rect was filled with the press area.
+//   - rect: return location for the press area.
+//   - ok: TRUE if rect was filled with the press area.
 //
 func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGestureMultiPress // out
@@ -154,7 +154,7 @@ func (gesture *GestureMultiPress) Area() (*gdk.Rectangle, bool) {
 //
 // The function takes the following parameters:
 //
-//    - rect (optional): rectangle to receive coordinates on.
+//   - rect (optional): rectangle to receive coordinates on.
 //
 func (gesture *GestureMultiPress) SetArea(rect *gdk.Rectangle) {
 	var _arg0 *C.GtkGestureMultiPress // out

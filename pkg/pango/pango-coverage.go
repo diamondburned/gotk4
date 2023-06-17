@@ -39,8 +39,8 @@ const (
 	// CoverageNone: character is not representable with the font.
 	CoverageNone CoverageLevel = iota
 	// CoverageFallback: character is represented in a way that may be
-	// comprehensible but is not the correct graphical form. For instance, a
-	// Hangul character represented as a a sequence of Jamos, or a Latin
+	// comprehensible but is not the correct graphical form. For instance,
+	// a Hangul character represented as a a sequence of Jamos, or a Latin
 	// transliteration of a Cyrillic word.
 	CoverageFallback
 	// CoverageApproximate: character is represented as basically the correct
@@ -100,9 +100,9 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - coverage: newly allocated PangoCoverage, initialized to
-//      PANGO_COVERAGE_NONE with a reference count of one, which should be freed
-//      with pango_coverage_unref().
+//   - coverage: newly allocated PangoCoverage, initialized to
+//     PANGO_COVERAGE_NONE with a reference count of one, which should be freed
+//     with pango_coverage_unref().
 //
 func NewCoverage() *Coverage {
 	var _cret *C.PangoCoverage // in
@@ -120,8 +120,8 @@ func NewCoverage() *Coverage {
 //
 // The function returns the following values:
 //
-//    - ret: newly allocated PangoCoverage, with a reference count of one, which
-//      should be freed with pango_coverage_unref().
+//   - ret: newly allocated PangoCoverage, with a reference count of one,
+//     which should be freed with pango_coverage_unref().
 //
 func (coverage *Coverage) Copy() *Coverage {
 	var _arg0 *C.PangoCoverage // out
@@ -143,11 +143,11 @@ func (coverage *Coverage) Copy() *Coverage {
 //
 // The function takes the following parameters:
 //
-//    - index_: index to check.
+//   - index_: index to check.
 //
 // The function returns the following values:
 //
-//    - coverageLevel: coverage level of coverage for character index_.
+//   - coverageLevel: coverage level of coverage for character index_.
 //
 func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
@@ -176,7 +176,7 @@ func (coverage *Coverage) Get(index_ int) CoverageLevel {
 //
 // The function takes the following parameters:
 //
-//    - other PangoCoverage.
+//   - other PangoCoverage.
 //
 func (coverage *Coverage) Max(other *Coverage) {
 	var _arg0 *C.PangoCoverage // out
@@ -194,8 +194,8 @@ func (coverage *Coverage) Max(other *Coverage) {
 //
 // The function takes the following parameters:
 //
-//    - index_: index to modify.
-//    - level: new level for index_.
+//   - index_: index to modify.
+//   - level: new level for index_.
 //
 func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	var _arg0 *C.PangoCoverage     // out
@@ -218,7 +218,7 @@ func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 //
 // The function returns the following values:
 //
-//    - bytes: location to store result (must be freed with g_free()).
+//   - bytes: location to store result (must be freed with g_free()).
 //
 func (coverage *Coverage) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
@@ -246,12 +246,12 @@ func (coverage *Coverage) ToBytes() []byte {
 //
 // The function takes the following parameters:
 //
-//    - bytes: binary data representing a PangoCoverage.
+//   - bytes: binary data representing a PangoCoverage.
 //
 // The function returns the following values:
 //
-//    - coverage (optional): newly allocated PangoCoverage, or NULL if the data
-//      was invalid.
+//   - coverage (optional): newly allocated PangoCoverage, or NULL if the data
+//     was invalid.
 //
 func CoverageFromBytes(bytes []byte) *Coverage {
 	var _arg1 *C.guchar // out

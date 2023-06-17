@@ -19,12 +19,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - num: #guint.
+//   - num: #guint.
 //
 // The function returns the following values:
 //
-//    - guint: smallest prime number from a built-in array of primes which is
-//      larger than num.
+//   - guint: smallest prime number from a built-in array of primes which is
+//     larger than num.
 //
 func SpacedPrimesClosest(num uint) uint {
 	var _arg1 C.guint // out

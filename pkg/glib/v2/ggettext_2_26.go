@@ -11,21 +11,21 @@ import (
 // #include <glib.h>
 import "C"
 
-// Dcgettext: this is a variant of g_dgettext() that allows specifying a locale
-// category instead of always using LC_MESSAGES. See g_dgettext() for more
-// information about how this functions differs from calling dcgettext()
+// Dcgettext: this is a variant of g_dgettext() that allows specifying a
+// locale category instead of always using LC_MESSAGES. See g_dgettext() for
+// more information about how this functions differs from calling dcgettext()
 // directly.
 //
 // The function takes the following parameters:
 //
-//    - domain (optional): translation domain to use, or NULL to use the domain
-//      set with textdomain().
-//    - msgid: message to translate.
-//    - category: locale category.
+//   - domain (optional): translation domain to use, or NULL to use the domain
+//     set with textdomain().
+//   - msgid: message to translate.
+//   - category: locale category.
 //
 // The function returns the following values:
 //
-//    - utf8: translated string for the given locale category.
+//   - utf8: translated string for the given locale category.
 //
 func Dcgettext(domain, msgid string, category int) string {
 	var _arg1 *C.gchar // out

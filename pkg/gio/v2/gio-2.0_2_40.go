@@ -36,12 +36,12 @@ func init() {
 // Call g_app_info_monitor_get() to get a InfoMonitor and connect to the
 // "changed" signal.
 //
-// In the usual case, applications should try to make note of the change (doing
-// things like invalidating caches) but not act on it. In particular,
+// In the usual case, applications should try to make note of the change
+// (doing things like invalidating caches) but not act on it. In particular,
 // applications should avoid making calls to Info APIs in response to the change
 // signal, deferring these until the time that the data is actually required.
-// The exception to this case is when application information is actually being
-// displayed on the screen (eg: during a search or when the list of all
+// The exception to this case is when application information is actually
+// being displayed on the screen (eg: during a search or when the list of all
 // applications is shown). The reason for this is that changes to the list of
 // installed applications often come in groups (like during system updates) and
 // rescanning the list on every change is pointless and expensive.
@@ -70,8 +70,8 @@ func (v *AppInfoMonitor) ConnectChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "changed", false, unsafe.Pointer(C._gotk4_gio2_AppInfoMonitor_ConnectChanged), f)
 }
 
-// Notification is a mechanism for creating a notification to be shown to the
-// user -- typically as a pop-up notification presented by the desktop
+// Notification is a mechanism for creating a notification to be shown to
+// the user -- typically as a pop-up notification presented by the desktop
 // environment shell.
 //
 // The key difference between #GNotification and other similar APIs is that, if
@@ -84,8 +84,8 @@ func (v *AppInfoMonitor) ConnectChanged(f func()) coreglib.SignalHandle {
 // D-Bus service, using #GApplication.
 //
 // User interaction with a notification (either the default action, or buttons)
-// must be associated with actions on the application (ie: "app." actions). It
-// is not possible to route user interaction through the notification itself,
+// must be associated with actions on the application (ie: "app." actions).
+// It is not possible to route user interaction through the notification itself,
 // because the object will not exist if the application is autostarted as a
 // result of a notification being clicked.
 //
@@ -117,11 +117,11 @@ func marshalNotification(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title of the notification.
+//   - title of the notification.
 //
 // The function returns the following values:
 //
-//    - notification: new #GNotification instance.
+//   - notification: new #GNotification instance.
 //
 func NewNotification(title string) *Notification {
 	var _arg1 *C.gchar         // out
@@ -150,8 +150,8 @@ func NewNotification(title string) *Notification {
 //
 // The function takes the following parameters:
 //
-//    - label of the button.
-//    - detailedAction: detailed action name.
+//   - label of the button.
+//   - detailedAction: detailed action name.
 //
 func (notification *Notification) AddButton(label, detailedAction string) {
 	var _arg0 *C.GNotification // out
@@ -170,17 +170,17 @@ func (notification *Notification) AddButton(label, detailedAction string) {
 	runtime.KeepAlive(detailedAction)
 }
 
-// AddButtonWithTarget adds a button to notification that activates action when
-// clicked. action must be an application-wide action (it must start with
+// AddButtonWithTarget adds a button to notification that activates action
+// when clicked. action must be an application-wide action (it must start with
 // "app.").
 //
 // If target is non-NULL, action will be activated with target as its parameter.
 //
 // The function takes the following parameters:
 //
-//    - label of the button.
-//    - action name.
-//    - target (optional) to use as action's parameter, or NULL.
+//   - label of the button.
+//   - action name.
+//   - target (optional) to use as action's parameter, or NULL.
 //
 func (notification *Notification) AddButtonWithTarget(label, action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
@@ -208,7 +208,7 @@ func (notification *Notification) AddButtonWithTarget(label, action string, targ
 //
 // The function takes the following parameters:
 //
-//    - body (optional): new body for notification, or NULL.
+//   - body (optional): new body for notification, or NULL.
 //
 func (notification *Notification) SetBody(body string) {
 	var _arg0 *C.GNotification // out
@@ -228,10 +228,10 @@ func (notification *Notification) SetBody(body string) {
 // SetDefaultAction sets the default action of notification to detailed_action.
 // This action is activated when the notification is clicked on.
 //
-// The action in detailed_action must be an application-wide action (it must
-// start with "app."). If detailed_action contains a target, the given action
-// will be activated with that target as its parameter. See
-// g_action_parse_detailed_name() for a description of the format for
+// The action in detailed_action must be an application-wide action
+// (it must start with "app."). If detailed_action contains a target,
+// the given action will be activated with that target as its parameter.
+// See g_action_parse_detailed_name() for a description of the format for
 // detailed_action.
 //
 // When no default action is set, the application that the notification was sent
@@ -239,7 +239,7 @@ func (notification *Notification) SetBody(body string) {
 //
 // The function takes the following parameters:
 //
-//    - detailedAction: detailed action name.
+//   - detailedAction: detailed action name.
 //
 func (notification *Notification) SetDefaultAction(detailedAction string) {
 	var _arg0 *C.GNotification // out
@@ -265,8 +265,8 @@ func (notification *Notification) SetDefaultAction(detailedAction string) {
 //
 // The function takes the following parameters:
 //
-//    - action name.
-//    - target (optional) to use as action's parameter, or NULL.
+//   - action name.
+//   - target (optional) to use as action's parameter, or NULL.
 //
 func (notification *Notification) SetDefaultActionAndTarget(action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
@@ -290,7 +290,7 @@ func (notification *Notification) SetDefaultActionAndTarget(action string, targe
 //
 // The function takes the following parameters:
 //
-//    - icon to be shown in notification, as a #GIcon.
+//   - icon to be shown in notification, as a #GIcon.
 //
 func (notification *Notification) SetIcon(icon Iconner) {
 	var _arg0 *C.GNotification // out
@@ -309,7 +309,7 @@ func (notification *Notification) SetIcon(icon Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - priority: Priority.
+//   - priority: Priority.
 //
 func (notification *Notification) SetPriority(priority NotificationPriority) {
 	var _arg0 *C.GNotification        // out
@@ -327,7 +327,7 @@ func (notification *Notification) SetPriority(priority NotificationPriority) {
 //
 // The function takes the following parameters:
 //
-//    - title: new title for notification.
+//   - title: new title for notification.
 //
 func (notification *Notification) SetTitle(title string) {
 	var _arg0 *C.GNotification // out
@@ -349,7 +349,7 @@ func (notification *Notification) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - urgent: TRUE if notification is urgent.
+//   - urgent: TRUE if notification is urgent.
 //
 func (notification *Notification) SetUrgent(urgent bool) {
 	var _arg0 *C.GNotification // out

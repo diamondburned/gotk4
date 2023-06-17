@@ -21,11 +21,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - display for which the clipboard is to be retrieved.
+//   - display for which the clipboard is to be retrieved.
 //
 // The function returns the following values:
 //
-//    - clipboard: default clipboard object.
+//   - clipboard: default clipboard object.
 //
 func ClipboardGetDefault(display *gdk.Display) *Clipboard {
 	var _arg1 *C.GdkDisplay   // out

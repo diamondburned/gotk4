@@ -41,14 +41,14 @@ type FileMonitorOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - ok always TRUE.
+	//   - ok always TRUE.
 	//
 	Cancel func() bool
 	// The function takes the following parameters:
 	//
-	//    - file
-	//    - otherFile
-	//    - eventType
+	//   - file
+	//   - otherFile
+	//   - eventType
 	//
 	Changed func(file, otherFile Filer, eventType FileMonitorEvent)
 }
@@ -139,8 +139,8 @@ func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 // ConnectChanged is emitted when file has been changed.
 //
 // If using G_FILE_MONITOR_WATCH_MOVES on a directory monitor, and the
-// information is available (and if supported by the backend), event_type may be
-// G_FILE_MONITOR_EVENT_RENAMED, G_FILE_MONITOR_EVENT_MOVED_IN or
+// information is available (and if supported by the backend), event_type
+// may be G_FILE_MONITOR_EVENT_RENAMED, G_FILE_MONITOR_EVENT_MOVED_IN or
 // G_FILE_MONITOR_EVENT_MOVED_OUT.
 //
 // In all cases file will be a child of the monitored directory. For renames,
@@ -150,15 +150,15 @@ func BaseFileMonitor(obj FileMonitorrer) *FileMonitor {
 // file is the name of the file that used to be in this directory and other_file
 // is the name of the file at its new location.
 //
-// It makes sense to treat G_FILE_MONITOR_EVENT_MOVED_IN as equivalent to
-// G_FILE_MONITOR_EVENT_CREATED and G_FILE_MONITOR_EVENT_MOVED_OUT as equivalent
-// to G_FILE_MONITOR_EVENT_DELETED, with extra information.
-// G_FILE_MONITOR_EVENT_RENAMED is equivalent to a delete/create pair. This is
-// exactly how the events will be reported in the case that the
+// It makes sense to treat G_FILE_MONITOR_EVENT_MOVED_IN as equivalent
+// to G_FILE_MONITOR_EVENT_CREATED and G_FILE_MONITOR_EVENT_MOVED_OUT as
+// equivalent to G_FILE_MONITOR_EVENT_DELETED, with extra information.
+// G_FILE_MONITOR_EVENT_RENAMED is equivalent to a delete/create pair.
+// This is exactly how the events will be reported in the case that the
 // G_FILE_MONITOR_WATCH_MOVES flag is not in use.
 //
-// If using the deprecated flag G_FILE_MONITOR_SEND_MOVED flag and event_type is
-// FILE_MONITOR_EVENT_MOVED, file will be set to a #GFile containing the old
+// If using the deprecated flag G_FILE_MONITOR_SEND_MOVED flag and event_type
+// is FILE_MONITOR_EVENT_MOVED, file will be set to a #GFile containing the old
 // path, and other_file will be set to a #GFile containing the new path.
 //
 // In all the other cases, other_file will be set to LL.
@@ -170,7 +170,7 @@ func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventTy
 //
 // The function returns the following values:
 //
-//    - ok always TRUE.
+//   - ok always TRUE.
 //
 func (monitor *FileMonitor) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
@@ -199,9 +199,9 @@ func (monitor *FileMonitor) Cancel() bool {
 //
 // The function takes the following parameters:
 //
-//    - child: #GFile.
-//    - otherFile: #GFile.
-//    - eventType: set of MonitorEvent flags.
+//   - child: #GFile.
+//   - otherFile: #GFile.
+//   - eventType: set of MonitorEvent flags.
 //
 func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
@@ -225,7 +225,7 @@ func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMoni
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if monitor is canceled. FALSE otherwise.
+//   - ok: TRUE if monitor is canceled. FALSE otherwise.
 //
 func (monitor *FileMonitor) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
@@ -250,8 +250,8 @@ func (monitor *FileMonitor) IsCancelled() bool {
 //
 // The function takes the following parameters:
 //
-//    - limitMsecs: non-negative integer with the limit in milliseconds to poll
-//      for changes.
+//   - limitMsecs: non-negative integer with the limit in milliseconds to poll
+//     for changes.
 //
 func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
@@ -269,7 +269,7 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 //
 // The function returns the following values:
 //
-//    - ok always TRUE.
+//   - ok always TRUE.
 //
 func (monitor *FileMonitor) cancel() bool {
 	gclass := (*C.GFileMonitorClass)(coreglib.PeekParentClass(monitor))
@@ -294,9 +294,9 @@ func (monitor *FileMonitor) cancel() bool {
 
 // The function takes the following parameters:
 //
-//    - file
-//    - otherFile
-//    - eventType
+//   - file
+//   - otherFile
+//   - eventType
 //
 func (monitor *FileMonitor) changed(file, otherFile Filer, eventType FileMonitorEvent) {
 	gclass := (*C.GFileMonitorClass)(coreglib.PeekParentClass(monitor))

@@ -29,15 +29,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - itemText: valid UTF-8 text to shape.
-//    - itemLength: length (in bytes) of item_text. -1 means nul-terminated text.
-//    - paragraphText (optional): text of the paragraph (see details). May be
-//      NULL.
-//    - paragraphLength: length (in bytes) of paragraph_text. -1 means
-//      nul-terminated text.
-//    - analysis: PangoAnalysis structure from itemize.
-//    - glyphs: glyph string in which to store results.
-//    - flags influencing the shaping process.
+//   - itemText: valid UTF-8 text to shape.
+//   - itemLength: length (in bytes) of item_text. -1 means nul-terminated text.
+//   - paragraphText (optional): text of the paragraph (see details). May be
+//     NULL.
+//   - paragraphLength: length (in bytes) of paragraph_text. -1 means
+//     nul-terminated text.
+//   - analysis: PangoAnalysis structure from itemize.
+//   - glyphs: glyph string in which to store results.
+//   - flags influencing the shaping process.
 //
 func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
 	var _arg1 *C.char             // out

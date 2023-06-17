@@ -172,9 +172,9 @@ const (
 	ApplicationIsService ApplicationFlags = 0b1
 	// ApplicationIsLauncher: don't try to become the primary instance.
 	ApplicationIsLauncher ApplicationFlags = 0b10
-	// ApplicationHandlesOpen: this application handles opening files (in the
-	// primary instance). Note that this flag only affects the default
-	// implementation of local_command_line(), and has no effect if
+	// ApplicationHandlesOpen: this application handles opening files
+	// (in the primary instance). Note that this flag only affects the
+	// default implementation of local_command_line(), and has no effect if
 	// G_APPLICATION_HANDLES_COMMAND_LINE is given. See g_application_run() for
 	// details.
 	ApplicationHandlesOpen ApplicationFlags = 0b100
@@ -184,16 +184,16 @@ const (
 	// for details.
 	ApplicationHandlesCommandLine ApplicationFlags = 0b1000
 	// ApplicationSendEnvironment: send the environment of the launching process
-	// to the primary instance. Set this flag if your application is expected to
-	// behave differently depending on certain environment variables. For
-	// instance, an editor might be expected to use the GIT_COMMITTER_NAME
+	// to the primary instance. Set this flag if your application is expected
+	// to behave differently depending on certain environment variables.
+	// For instance, an editor might be expected to use the GIT_COMMITTER_NAME
 	// environment variable when editing a git commit message. The environment
-	// is available to the #GApplication::command-line signal handler, via
-	// g_application_command_line_getenv().
+	// is available to the #GApplication::command-line signal handler,
+	// via g_application_command_line_getenv().
 	ApplicationSendEnvironment ApplicationFlags = 0b10000
 	// ApplicationNonUnique: make no attempts to do any of the typical
-	// single-instance application negotiation, even if the application ID is
-	// given. The application neither attempts to become the owner of the
+	// single-instance application negotiation, even if the application ID
+	// is given. The application neither attempts to become the owner of the
 	// application ID nor does it check if an existing owner already exists.
 	// Everything occurs in the local process. Since: 2.30.
 	ApplicationNonUnique ApplicationFlags = 0b100000

@@ -15,14 +15,14 @@ import "C"
 // Programs that want to be portable to Windows should typically use this
 // function and g_getenv() instead of using the environ array from the C library
 // directly. On Windows, the strings in the environ array are in system codepage
-// encoding, while in most of the typical use cases for environment variables in
-// GLib-using programs you want the UTF-8 encoding that this function and
+// encoding, while in most of the typical use cases for environment variables
+// in GLib-using programs you want the UTF-8 encoding that this function and
 // g_getenv() provide.
 //
 // The function returns the following values:
 //
-//    - filenames: a NULL-terminated list of strings which must be freed with
-//      g_strfreev().
+//   - filenames: a NULL-terminated list of strings which must be freed with
+//     g_strfreev().
 //
 func Listenv() []string {
 	var _cret **C.gchar // in

@@ -18,7 +18,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - gint64: monotonic time, in microseconds.
+//   - gint64: monotonic time, in microseconds.
 //
 func GetMonotonicTime() int64 {
 	var _cret C.gint64 // in
@@ -43,7 +43,7 @@ func GetMonotonicTime() int64 {
 //
 // The function returns the following values:
 //
-//    - gint64: number of microseconds since January 1, 1970 UTC.
+//   - gint64: number of microseconds since January 1, 1970 UTC.
 //
 func GetRealTime() int64 {
 	var _cret C.gint64 // in

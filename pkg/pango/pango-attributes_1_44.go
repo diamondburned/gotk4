@@ -20,12 +20,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - allowBreaks: TRUE if we line breaks are allowed.
+//   - allowBreaks: TRUE if we line breaks are allowed.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	var _arg1 C.gboolean        // out
@@ -53,17 +53,17 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 
 // NewAttrInsertHyphens: create a new insert-hyphens attribute.
 //
-// Pango will insert hyphens when breaking lines in the middle of a word. This
-// attribute can be used to suppress the hyphen.
+// Pango will insert hyphens when breaking lines in the middle of a word.
+// This attribute can be used to suppress the hyphen.
 //
 // The function takes the following parameters:
 //
-//    - insertHyphens: TRUE if hyphens should be inserted.
+//   - insertHyphens: TRUE if hyphens should be inserted.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	var _arg1 C.gboolean        // out
@@ -94,12 +94,12 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - flags: PangoShowFlags to apply.
+//   - flags: PangoShowFlags to apply.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrShow(flags ShowFlags) *Attribute {
 	var _arg1 C.PangoShowFlags  // out

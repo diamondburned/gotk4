@@ -33,9 +33,9 @@ func DisableSetlocale() {
 	C.gtk_disable_setlocale()
 }
 
-// GetDefaultLanguage returns the Language for the default language currently in
-// effect. (Note that this can change over the life of an application.) The
-// default language is derived from the current locale. It determines, for
+// GetDefaultLanguage returns the Language for the default language currently
+// in effect. (Note that this can change over the life of an application.)
+// The default language is derived from the current locale. It determines, for
 // example, whether GTK uses the right-to-left or left-to-right text direction.
 //
 // This function is equivalent to pango_language_get_default(). See that
@@ -43,7 +43,7 @@ func DisableSetlocale() {
 //
 // The function returns the following values:
 //
-//    - language: default language as a Language, must not be freed.
+//   - language: default language as a Language, must not be freed.
 //
 func GetDefaultLanguage() *pango.Language {
 	var _cret *C.PangoLanguage // in
@@ -60,16 +60,16 @@ func GetDefaultLanguage() *pango.Language {
 // GetLocaleDirection: get the direction of the current locale. This is the
 // expected reading direction for text and UI.
 //
-// This function depends on the current locale being set with setlocale() and
-// will default to setting the GTK_TEXT_DIR_LTR direction otherwise.
+// This function depends on the current locale being set with setlocale()
+// and will default to setting the GTK_TEXT_DIR_LTR direction otherwise.
 // GTK_TEXT_DIR_NONE will never be returned.
 //
 // GTK sets the default text direction according to the locale during
 // gtk_init(), and you should normally use gtk_widget_get_direction() or
 // gtk_widget_get_default_direction() to obtain the current direction.
 //
-// This function is only needed rare cases when the locale is changed after GTK
-// has already been initialized. In this case, you can use it to update the
+// This function is only needed rare cases when the locale is changed after
+// GTK has already been initialized. In this case, you can use it to update the
 // default text direction as follows:
 //
 //    setlocale (LC_ALL, new_locale);
@@ -78,7 +78,7 @@ func GetDefaultLanguage() *pango.Language {
 //
 // The function returns the following values:
 //
-//    - textDirection of the current locale.
+//   - textDirection of the current locale.
 //
 func GetLocaleDirection() TextDirection {
 	var _cret C.GtkTextDirection // in
@@ -104,8 +104,8 @@ func GetLocaleDirection() TextDirection {
 // textual interface you want to call gtk_init_check() instead.
 //
 // GTK calls signal (SIGPIPE, SIG_IGN) during initialization, to ignore SIGPIPE
-// signals, since these are almost never wanted in graphical applications. If
-// you do need to handle SIGPIPE for some reason, reset the handler after
+// signals, since these are almost never wanted in graphical applications.
+// If you do need to handle SIGPIPE for some reason, reset the handler after
 // gtk_init(), but notice that other libraries (e.g. libdbus or gvfs) might do
 // similar things.
 func Init() {
@@ -121,8 +121,8 @@ func Init() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the windowing system has been successfully initialized, FALSE
-//      otherwise.
+//   - ok: TRUE if the windowing system has been successfully initialized,
+//     FALSE otherwise.
 //
 func InitCheck() bool {
 	var _cret C.gboolean // in
@@ -143,7 +143,7 @@ func InitCheck() bool {
 //
 // The function returns the following values:
 //
-//    - ok: initialization status.
+//   - ok: initialization status.
 //
 func IsInitialized() bool {
 	var _cret C.gboolean // in

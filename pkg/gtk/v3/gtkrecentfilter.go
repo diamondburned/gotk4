@@ -102,8 +102,8 @@ func (r RecentFilterFlags) Has(other RecentFilterFlags) bool {
 	return (r & other) == other
 }
 
-// RecentFilterFunc: type of function that is used with custom filters, see
-// gtk_recent_filter_add_custom().
+// RecentFilterFunc: type of function that is used with custom filters,
+// see gtk_recent_filter_add_custom().
 type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
 
 // RecentFilter can be used to restrict the files being shown in a
@@ -113,8 +113,8 @@ type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
 // (with gtk_recent_filter_add_application()), or by a custom filter function
 // (with gtk_recent_filter_add_custom()).
 //
-// Filtering by mime type handles aliasing and subclassing of mime types; e.g. a
-// filter for text/plain also matches a file with mime type application/rtf,
+// Filtering by mime type handles aliasing and subclassing of mime types; e.g.
+// a filter for text/plain also matches a file with mime type application/rtf,
 // since application/rtf is a subclass of text/plain. Note that RecentFilter
 // allows wildcards for the subtype of a mime type, so you can e.g. filter for
 // image/\*.
@@ -125,13 +125,12 @@ type RecentFilterFunc func(filterInfo *RecentFilterInfo) (ok bool)
 //
 // Recently used files are supported since GTK+ 2.10.
 //
+// # GtkRecentFilter as GtkBuildable
 //
-// GtkRecentFilter as GtkBuildable
-//
-// The GtkRecentFilter implementation of the GtkBuildable interface supports
-// adding rules using the <mime-types>, <patterns> and <applications> elements
-// and listing the rules within. Specifying a <mime-type>, <pattern> or
-// <application> has the same effect as calling
+// The GtkRecentFilter implementation of the GtkBuildable interface
+// supports adding rules using the <mime-types>, <patterns> and
+// <applications> elements and listing the rules within. Specifying a
+// <mime-type>, <pattern> or <application> has the same effect as calling
 // gtk_recent_filter_add_mime_type(), gtk_recent_filter_add_pattern() or
 // gtk_recent_filter_add_application().
 //
@@ -180,9 +179,9 @@ func marshalRecentFilter(p uintptr) (interface{}, error) {
 	return wrapRecentFilter(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewRecentFilter creates a new RecentFilter with no rules added to it. Such
-// filter does not accept any recently used resources, so is not particularly
-// useful until you add rules with gtk_recent_filter_add_pattern(),
+// NewRecentFilter creates a new RecentFilter with no rules added to it.
+// Such filter does not accept any recently used resources, so is not
+// particularly useful until you add rules with gtk_recent_filter_add_pattern(),
 // gtk_recent_filter_add_mime_type(), gtk_recent_filter_add_application(),
 // gtk_recent_filter_add_age(). To create a filter that accepts any recently
 // used resource, use:
@@ -192,7 +191,7 @@ func marshalRecentFilter(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - recentFilter: new RecentFilter.
+//   - recentFilter: new RecentFilter.
 //
 func NewRecentFilter() *RecentFilter {
 	var _cret *C.GtkRecentFilter // in
@@ -206,12 +205,12 @@ func NewRecentFilter() *RecentFilter {
 	return _recentFilter
 }
 
-// AddAge adds a rule that allows resources based on their age - that is, the
-// number of days elapsed since they were last modified.
+// AddAge adds a rule that allows resources based on their age - that is,
+// the number of days elapsed since they were last modified.
 //
 // The function takes the following parameters:
 //
-//    - days: number of days.
+//   - days: number of days.
 //
 func (filter *RecentFilter) AddAge(days int) {
 	var _arg0 *C.GtkRecentFilter // out
@@ -230,7 +229,7 @@ func (filter *RecentFilter) AddAge(days int) {
 //
 // The function takes the following parameters:
 //
-//    - application name.
+//   - application name.
 //
 func (filter *RecentFilter) AddApplication(application string) {
 	var _arg0 *C.GtkRecentFilter // out
@@ -253,10 +252,10 @@ func (filter *RecentFilter) AddApplication(application string) {
 //
 // The function takes the following parameters:
 //
-//    - needed: bitfield of flags indicating the information that the custom
-//      filter function needs.
-//    - fn: callback function; if the function returns TRUE, then the file will
-//      be displayed.
+//   - needed: bitfield of flags indicating the information that the custom
+//     filter function needs.
+//   - fn: callback function; if the function returns TRUE, then the file will
+//     be displayed.
 //
 func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterFunc) {
 	var _arg0 *C.GtkRecentFilter     // out
@@ -282,7 +281,7 @@ func (filter *RecentFilter) AddCustom(needed RecentFilterFlags, fn RecentFilterF
 //
 // The function takes the following parameters:
 //
-//    - group name.
+//   - group name.
 //
 func (filter *RecentFilter) AddGroup(group string) {
 	var _arg0 *C.GtkRecentFilter // out
@@ -302,7 +301,7 @@ func (filter *RecentFilter) AddGroup(group string) {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: MIME type.
+//   - mimeType: MIME type.
 //
 func (filter *RecentFilter) AddMIMEType(mimeType string) {
 	var _arg0 *C.GtkRecentFilter // out
@@ -322,7 +321,7 @@ func (filter *RecentFilter) AddMIMEType(mimeType string) {
 //
 // The function takes the following parameters:
 //
-//    - pattern: file pattern.
+//   - pattern: file pattern.
 //
 func (filter *RecentFilter) AddPattern(pattern string) {
 	var _arg0 *C.GtkRecentFilter // out
@@ -348,8 +347,8 @@ func (filter *RecentFilter) AddPixbufFormats() {
 	runtime.KeepAlive(filter)
 }
 
-// Filter tests whether a file should be displayed according to filter. The
-// RecentFilterInfo filter_info should include the fields returned from
+// Filter tests whether a file should be displayed according to filter.
+// The RecentFilterInfo filter_info should include the fields returned from
 // gtk_recent_filter_get_needed(), and must set the RecentFilterInfo.contains
 // field of filter_info to indicate which fields have been set.
 //
@@ -358,11 +357,11 @@ func (filter *RecentFilter) AddPixbufFormats() {
 //
 // The function takes the following parameters:
 //
-//    - filterInfo containing information about a recently used resource.
+//   - filterInfo containing information about a recently used resource.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the file should be displayed.
+//   - ok: TRUE if the file should be displayed.
 //
 func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 	var _arg0 *C.GtkRecentFilter     // out
@@ -390,8 +389,8 @@ func (filter *RecentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the filter, or NULL. The returned string is
-//      owned by the filter object and should not be freed.
+//   - utf8 (optional): name of the filter, or NULL. The returned string is
+//     owned by the filter object and should not be freed.
 //
 func (filter *RecentFilter) Name() string {
 	var _arg0 *C.GtkRecentFilter // out
@@ -419,8 +418,8 @@ func (filter *RecentFilter) Name() string {
 //
 // The function returns the following values:
 //
-//    - recentFilterFlags: bitfield of flags indicating needed fields when
-//      calling gtk_recent_filter_filter().
+//   - recentFilterFlags: bitfield of flags indicating needed fields when
+//     calling gtk_recent_filter_filter().
 //
 func (filter *RecentFilter) Needed() RecentFilterFlags {
 	var _arg0 *C.GtkRecentFilter     // out
@@ -444,7 +443,7 @@ func (filter *RecentFilter) Needed() RecentFilterFlags {
 //
 // The function takes the following parameters:
 //
-//    - name: then human readable name of filter.
+//   - name: then human readable name of filter.
 //
 func (filter *RecentFilter) SetName(name string) {
 	var _arg0 *C.GtkRecentFilter // out

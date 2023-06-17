@@ -11,13 +11,13 @@ import (
 // #include <glib.h>
 import "C"
 
-// LogWriterDefaultSetUseStderr: configure whether the built-in log functions
-// (g_log_default_handler() for the old-style API, and both
+// LogWriterDefaultSetUseStderr: configure whether the built-in log
+// functions (g_log_default_handler() for the old-style API, and both
 // g_log_writer_default() and g_log_writer_standard_streams() for the structured
 // API) will output all log messages to stderr.
 //
-// By default, log messages of levels G_LOG_LEVEL_INFO and G_LOG_LEVEL_DEBUG are
-// sent to stdout, and other log messages are sent to stderr. This is
+// By default, log messages of levels G_LOG_LEVEL_INFO and G_LOG_LEVEL_DEBUG
+// are sent to stdout, and other log messages are sent to stderr. This is
 // problematic for applications that intend to reserve stdout for structured
 // output such as JSON or XML.
 //
@@ -27,8 +27,8 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - useStderr: if TRUE, use stderr for log messages that would normally have
-//      appeared on stdout.
+//   - useStderr: if TRUE, use stderr for log messages that would normally have
+//     appeared on stdout.
 //
 func LogWriterDefaultSetUseStderr(useStderr bool) {
 	var _arg1 C.gboolean // out
@@ -52,23 +52,23 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 // This can be used when implementing log writers with the same filtering
 // behaviour as the default, but a different destination or output format:
 //
-//      if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
-//        {
-//          gchar *result = expensive_computation (my_object);
+//    if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
+//      {
+//        gchar *result = expensive_computation (my_object);
 //
-//          g_debug ("my_object result: s", result);
-//          g_free (result);
-//        }.
+//        g_debug ("my_object result: s", result);
+//        g_free (result);
+//      }.
 //
 // The function takes the following parameters:
 //
-//    - logLevel: log level, either from LevelFlags, or a user-defined level.
-//    - logDomain (optional): log domain.
+//   - logLevel: log level, either from LevelFlags, or a user-defined level.
+//   - logDomain (optional): log domain.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the log message would be dropped by GLib's default log
-//      handlers.
+//   - ok: TRUE if the log message would be dropped by GLib's default log
+//     handlers.
 //
 func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	var _arg1 C.GLogLevelFlags // out

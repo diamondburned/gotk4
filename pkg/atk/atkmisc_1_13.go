@@ -19,7 +19,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - misc: singleton instance of AtkMisc for this application.
+//   - misc: singleton instance of AtkMisc for this application.
 //
 func MiscGetInstance() *Misc {
 	var _cret *C.AtkMisc // in

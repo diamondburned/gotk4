@@ -19,11 +19,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
+//   - cr: cairo context.
 //
 // The function returns the following values:
 //
-//    - drawingContext (optional) if any is set.
+//   - drawingContext (optional) if any is set.
 //
 func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext {
 	var _arg1 *C.cairo_t           // out

@@ -163,7 +163,7 @@ func (checkMenuItem *CheckMenuItem) ConnectToggled(f func()) coreglib.SignalHand
 //
 // The function returns the following values:
 //
-//    - checkMenuItem: new CheckMenuItem.
+//   - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItem() *CheckMenuItem {
 	var _cret *C.GtkWidget // in
@@ -181,11 +181,11 @@ func NewCheckMenuItem() *CheckMenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label: string to use for the label.
+//   - label: string to use for the label.
 //
 // The function returns the following values:
 //
-//    - checkMenuItem: new CheckMenuItem.
+//   - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
@@ -210,11 +210,11 @@ func NewCheckMenuItemWithLabel(label string) *CheckMenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the character.
+//   - label: text of the button, with an underscore in front of the character.
 //
 // The function returns the following values:
 //
-//    - checkMenuItem: new CheckMenuItem.
+//   - checkMenuItem: new CheckMenuItem.
 //
 func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 	var _arg1 *C.gchar     // out
@@ -238,7 +238,7 @@ func NewCheckMenuItemWithMnemonic(label string) *CheckMenuItem {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the menu item is checked.
+//   - ok: TRUE if the menu item is checked.
 //
 func (checkMenuItem *CheckMenuItem) Active() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
@@ -262,7 +262,7 @@ func (checkMenuItem *CheckMenuItem) Active() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether check_menu_item looks like a RadioMenuItem.
+//   - ok: whether check_menu_item looks like a RadioMenuItem.
 //
 func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
@@ -287,7 +287,7 @@ func (checkMenuItem *CheckMenuItem) DrawAsRadio() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if inconsistent.
+//   - ok: TRUE if inconsistent.
 //
 func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 	var _arg0 *C.GtkCheckMenuItem // out
@@ -311,7 +311,7 @@ func (checkMenuItem *CheckMenuItem) Inconsistent() bool {
 //
 // The function takes the following parameters:
 //
-//    - isActive: boolean value indicating whether the check box is active.
+//   - isActive: boolean value indicating whether the check box is active.
 //
 func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
@@ -331,7 +331,7 @@ func (checkMenuItem *CheckMenuItem) SetActive(isActive bool) {
 //
 // The function takes the following parameters:
 //
-//    - drawAsRadio: whether check_menu_item is drawn like a RadioMenuItem.
+//   - drawAsRadio: whether check_menu_item is drawn like a RadioMenuItem.
 //
 func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	var _arg0 *C.GtkCheckMenuItem // out
@@ -347,18 +347,18 @@ func (checkMenuItem *CheckMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 	runtime.KeepAlive(drawAsRadio)
 }
 
-// SetInconsistent: if the user has selected a range of elements (such as some
-// text or spreadsheet cells) that are affected by a boolean setting, and the
-// current values in that range are inconsistent, you may want to display the
-// check in an “in between” state. This function turns on “in between” display.
-// Normally you would turn off the inconsistent state again if the user
-// explicitly selects a setting. This has to be done manually,
-// gtk_check_menu_item_set_inconsistent() only affects visual appearance, it
-// doesn’t affect the semantics of the widget.
+// SetInconsistent: if the user has selected a range of elements (such as
+// some text or spreadsheet cells) that are affected by a boolean setting,
+// and the current values in that range are inconsistent, you may want to
+// display the check in an “in between” state. This function turns on “in
+// between” display. Normally you would turn off the inconsistent state again
+// if the user explicitly selects a setting. This has to be done manually,
+// gtk_check_menu_item_set_inconsistent() only affects visual appearance,
+// it doesn’t affect the semantics of the widget.
 //
 // The function takes the following parameters:
 //
-//    - setting: TRUE to display an “inconsistent” third state check.
+//   - setting: TRUE to display an “inconsistent” third state check.
 //
 func (checkMenuItem *CheckMenuItem) SetInconsistent(setting bool) {
 	var _arg0 *C.GtkCheckMenuItem // out

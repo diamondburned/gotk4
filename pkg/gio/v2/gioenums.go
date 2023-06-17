@@ -294,13 +294,13 @@ func (f FileMonitorEvent) String() string {
 
 // FileType indicates the file's on-disk type.
 //
-// On Windows systems a file will never have G_FILE_TYPE_SYMBOLIC_LINK type; use
-// Info and G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK to determine whether a file is
-// a symlink or not. This is due to the fact that NTFS does not have a single
-// filesystem object type for symbolic links - it has files that symlink to
-// files, and directories that symlink to directories. Type enumeration cannot
-// precisely represent this important distinction, which is why all Windows
-// symlinks will continue to be reported as G_FILE_TYPE_REGULAR or
+// On Windows systems a file will never have G_FILE_TYPE_SYMBOLIC_LINK type;
+// use Info and G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK to determine whether a
+// file is a symlink or not. This is due to the fact that NTFS does not have a
+// single filesystem object type for symbolic links - it has files that symlink
+// to files, and directories that symlink to directories. Type enumeration
+// cannot precisely represent this important distinction, which is why all
+// Windows symlinks will continue to be reported as G_FILE_TYPE_REGULAR or
 // G_FILE_TYPE_DIRECTORY.
 type FileType C.gint
 
@@ -314,8 +314,8 @@ const (
 	// FileTypeSymbolicLink: file handle represents a symbolic link (Unix
 	// systems).
 	FileTypeSymbolicLink
-	// FileTypeSpecial: file is a "special" file, such as a socket, fifo, block
-	// device, or character device.
+	// FileTypeSpecial: file is a "special" file, such as a socket, fifo,
+	// block device, or character device.
 	FileTypeSpecial
 	// FileTypeShortcut: file is a shortcut (Windows systems).
 	FileTypeShortcut
@@ -385,10 +385,10 @@ func (f FilesystemPreviewType) String() string {
 
 // IOErrorEnum: error codes returned by GIO functions.
 //
-// Note that this domain may be extended in future GLib releases. In general,
-// new error codes either only apply to new APIs, or else replace
-// G_IO_ERROR_FAILED in cases that were not explicitly distinguished before. You
-// should therefore avoid writing code like
+// Note that this domain may be extended in future GLib releases.
+// In general, new error codes either only apply to new APIs, or else replace
+// G_IO_ERROR_FAILED in cases that were not explicitly distinguished before.
+// You should therefore avoid writing code like
 //
 //    if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED))
 //      {
@@ -499,14 +499,14 @@ const (
 	IOErrorProxyAuthFailed IOErrorEnum = 41
 	// IOErrorProxyNeedAuth: proxy server needs authentication. Since 2.26.
 	IOErrorProxyNeedAuth IOErrorEnum = 42
-	// IOErrorProxyNotAllowed: proxy connection is not allowed by ruleset. Since
-	// 2.26.
+	// IOErrorProxyNotAllowed: proxy connection is not allowed by ruleset.
+	// Since 2.26.
 	IOErrorProxyNotAllowed IOErrorEnum = 43
 	// IOErrorBrokenPipe: broken pipe. Since 2.36.
 	IOErrorBrokenPipe IOErrorEnum = 44
-	// IOErrorConnectionClosed: connection closed by peer. Note that this is the
-	// same code as G_IO_ERROR_BROKEN_PIPE; before 2.44 some "connection closed"
-	// errors returned G_IO_ERROR_BROKEN_PIPE, but others returned
+	// IOErrorConnectionClosed: connection closed by peer. Note that this is
+	// the same code as G_IO_ERROR_BROKEN_PIPE; before 2.44 some "connection
+	// closed" errors returned G_IO_ERROR_BROKEN_PIPE, but others returned
 	// G_IO_ERROR_FAILED. Now they should all return the same value, which has
 	// this more logical name. Since 2.44.
 	IOErrorConnectionClosed IOErrorEnum = 44
@@ -656,8 +656,8 @@ func (m MountOperationResult) String() string {
 
 // PasswordSave is used to indicate the lifespan of a saved password.
 //
-// #Gvfs stores passwords in the Gnome keyring when this flag allows it to, and
-// later retrieves it again from there.
+// #Gvfs stores passwords in the Gnome keyring when this flag allows it to,
+// and later retrieves it again from there.
 type PasswordSave C.gint
 
 const (
@@ -743,8 +743,8 @@ func (a AppInfoCreateFlags) Has(other AppInfoCreateFlags) bool {
 	return (a & other) == other
 }
 
-// AskPasswordFlags are used to request specific information from the user, or
-// to notify the user of their choices in an authentication situation.
+// AskPasswordFlags are used to request specific information from the user,
+// or to notify the user of their choices in an authentication situation.
 type AskPasswordFlags C.guint
 
 const (
@@ -939,13 +939,13 @@ const (
 	// FileCreatePrivate: create a file that can only be accessed by the current
 	// user.
 	FileCreatePrivate FileCreateFlags = 0b1
-	// FileCreateReplaceDestination: replace the destination as if it didn't
-	// exist before. Don't try to keep any old permissions, replace instead of
-	// following links. This is generally useful if you're doing a "copy over"
-	// rather than a "save new version of" replace operation. You can think of
-	// it as "unlink destination" before writing to it, although the
-	// implementation may not be exactly like that. This flag can only be used
-	// with g_file_replace() and its variants, including
+	// FileCreateReplaceDestination: replace the destination as if it
+	// didn't exist before. Don't try to keep any old permissions, replace
+	// instead of following links. This is generally useful if you're doing
+	// a "copy over" rather than a "save new version of" replace operation.
+	// You can think of it as "unlink destination" before writing to it,
+	// although the implementation may not be exactly like that. This flag
+	// can only be used with g_file_replace() and its variants, including
 	// g_file_replace_contents(). Since 2.20.
 	FileCreateReplaceDestination FileCreateFlags = 0b10
 )
@@ -1006,8 +1006,8 @@ const (
 	// FileMonitorWatchHardLinks: watch for changes to the file made via another
 	// hard link. Since 2.36.
 	FileMonitorWatchHardLinks FileMonitorFlags = 0b100
-	// FileMonitorWatchMoves: watch for rename operations on a monitored
-	// directory. This causes G_FILE_MONITOR_EVENT_RENAMED,
+	// FileMonitorWatchMoves: watch for rename operations on a
+	// monitored directory. This causes G_FILE_MONITOR_EVENT_RENAMED,
 	// G_FILE_MONITOR_EVENT_MOVED_IN and G_FILE_MONITOR_EVENT_MOVED_OUT events
 	// to be emitted when possible. Since: 2.46.
 	FileMonitorWatchMoves FileMonitorFlags = 0b1000

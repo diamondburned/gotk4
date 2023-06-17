@@ -49,8 +49,7 @@ func defaultFontButtonOverrides(v *FontButton) FontButtonOverrides {
 // to open a font chooser dialog to change the font. It is suitable widget for
 // selecting a font in a preference dialog.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkFontButton has a single CSS node with name button and style class .font.
 type FontButton struct {
@@ -152,7 +151,7 @@ func (fontButton *FontButton) ConnectFontSet(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - fontButton: new font picker widget.
+//   - fontButton: new font picker widget.
 //
 func NewFontButton() *FontButton {
 	var _cret *C.GtkWidget // in
@@ -170,11 +169,11 @@ func NewFontButton() *FontButton {
 //
 // The function takes the following parameters:
 //
-//    - fontname: name of font to display in font chooser dialog.
+//   - fontname: name of font to display in font chooser dialog.
 //
 // The function returns the following values:
 //
-//    - fontButton: new font picker widget.
+//   - fontButton: new font picker widget.
 //
 func NewFontButtonWithFont(fontname string) *FontButton {
 	var _arg1 *C.gchar     // out
@@ -195,15 +194,15 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 
 // FontName retrieves the name of the currently selected font. This name
 // includes style and size information as well. If you want to render something
-// with the font, use this string with pango_font_description_from_string() . If
-// you’re interested in peeking certain values (family name, style, size,
+// with the font, use this string with pango_font_description_from_string() .
+// If you’re interested in peeking certain values (family name, style, size,
 // weight) just query these properties from the FontDescription object.
 //
 // Deprecated: Use gtk_font_chooser_get_font() instead.
 //
 // The function returns the following values:
 //
-//    - utf8: internal copy of the font name which must not be freed.
+//   - utf8: internal copy of the font name which must not be freed.
 //
 func (fontButton *FontButton) FontName() string {
 	var _arg0 *C.GtkFontButton // out
@@ -225,7 +224,7 @@ func (fontButton *FontButton) FontName() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether the font size will be shown in the label.
+//   - ok: whether the font size will be shown in the label.
 //
 func (fontButton *FontButton) ShowSize() bool {
 	var _arg0 *C.GtkFontButton // out
@@ -250,7 +249,7 @@ func (fontButton *FontButton) ShowSize() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the font style will be shown in the label.
+//   - ok: whether the font style will be shown in the label.
 //
 func (fontButton *FontButton) ShowStyle() bool {
 	var _arg0 *C.GtkFontButton // out
@@ -274,7 +273,7 @@ func (fontButton *FontButton) ShowStyle() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: internal copy of the title string which must not be freed.
+//   - utf8: internal copy of the title string which must not be freed.
 //
 func (fontButton *FontButton) Title() string {
 	var _arg0 *C.GtkFontButton // out
@@ -296,7 +295,7 @@ func (fontButton *FontButton) Title() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether the selected font is used in the label.
+//   - ok: whether the selected font is used in the label.
 //
 func (fontButton *FontButton) UseFont() bool {
 	var _arg0 *C.GtkFontButton // out
@@ -320,7 +319,7 @@ func (fontButton *FontButton) UseFont() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the selected size is used in the label.
+//   - ok: whether the selected size is used in the label.
 //
 func (fontButton *FontButton) UseSize() bool {
 	var _arg0 *C.GtkFontButton // out
@@ -347,11 +346,11 @@ func (fontButton *FontButton) UseSize() bool {
 //
 // The function takes the following parameters:
 //
-//    - fontname: name of font to display in font chooser dialog.
+//   - fontname: name of font to display in font chooser dialog.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE.
+//   - ok: TRUE.
 //
 func (fontButton *FontButton) SetFontName(fontname string) bool {
 	var _arg0 *C.GtkFontButton // out
@@ -380,7 +379,7 @@ func (fontButton *FontButton) SetFontName(fontname string) bool {
 //
 // The function takes the following parameters:
 //
-//    - showSize: TRUE if font size should be displayed in dialog.
+//   - showSize: TRUE if font size should be displayed in dialog.
 //
 func (fontButton *FontButton) SetShowSize(showSize bool) {
 	var _arg0 *C.GtkFontButton // out
@@ -401,7 +400,7 @@ func (fontButton *FontButton) SetShowSize(showSize bool) {
 //
 // The function takes the following parameters:
 //
-//    - showStyle: TRUE if font style should be displayed in label.
+//   - showStyle: TRUE if font style should be displayed in label.
 //
 func (fontButton *FontButton) SetShowStyle(showStyle bool) {
 	var _arg0 *C.GtkFontButton // out
@@ -421,7 +420,7 @@ func (fontButton *FontButton) SetShowStyle(showStyle bool) {
 //
 // The function takes the following parameters:
 //
-//    - title: string containing the font chooser dialog title.
+//   - title: string containing the font chooser dialog title.
 //
 func (fontButton *FontButton) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
@@ -441,7 +440,7 @@ func (fontButton *FontButton) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - useFont: if TRUE, font name will be written using font chosen.
+//   - useFont: if TRUE, font name will be written using font chosen.
 //
 func (fontButton *FontButton) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
@@ -462,7 +461,7 @@ func (fontButton *FontButton) SetUseFont(useFont bool) {
 //
 // The function takes the following parameters:
 //
-//    - useSize: if TRUE, font name will be written using the selected size.
+//   - useSize: if TRUE, font name will be written using the selected size.
 //
 func (fontButton *FontButton) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out

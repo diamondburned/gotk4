@@ -27,15 +27,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - script to query.
-//    - wide: TRUE for wide characters as returned by g_unichar_iswide().
-//    - baseGravity: base gravity of the paragraph.
-//    - hint: orientation hint.
+//   - script to query.
+//   - wide: TRUE for wide characters as returned by g_unichar_iswide().
+//   - baseGravity: base gravity of the paragraph.
+//   - hint: orientation hint.
 //
 // The function returns the following values:
 //
-//    - gravity: resolved gravity suitable to use for a run of text with script
-//      and wide.
+//   - gravity: resolved gravity suitable to use for a run of text with script
+//     and wide.
 //
 func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out

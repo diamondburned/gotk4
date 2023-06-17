@@ -54,7 +54,7 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - workarea to be filled with the monitor workarea.
+//   - workarea to be filled with the monitor workarea.
 //
 func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
 	var _arg0 *C.GdkMonitor  // out

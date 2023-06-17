@@ -148,15 +148,14 @@ const VOLUME_IDENTIFIER_KIND_UUID = "uuid"
 // successfully. If an error is present when g_volume_mount_finish() is called,
 // then it will be filled with any error information.
 //
-//
-// Volume Identifiers
+// # Volume Identifiers
 //
 // It is sometimes necessary to directly access the underlying operating system
 // object behind a volume (e.g. for passing a volume to an application via the
-// commandline). For this purpose, GIO allows to obtain an 'identifier' for the
-// volume. There can be different kinds of identifiers, such as Hal UDIs,
-// filesystem labels, traditional Unix devices (e.g. /dev/sda2), UUIDs. GIO uses
-// predefined strings as names for the different kinds of identifiers:
+// commandline). For this purpose, GIO allows to obtain an 'identifier' for
+// the volume. There can be different kinds of identifiers, such as Hal UDIs,
+// filesystem labels, traditional Unix devices (e.g. /dev/sda2), UUIDs.
+// GIO uses predefined strings as names for the different kinds of identifiers:
 // VOLUME_IDENTIFIER_KIND_UUID, VOLUME_IDENTIFIER_KIND_LABEL, etc. Use
 // g_volume_get_identifier() to obtain an identifier for a volume.
 //
@@ -253,7 +252,7 @@ func (volume *Volume) ConnectRemoved(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the volume can be ejected. FALSE otherwise.
+//   - ok: TRUE if the volume can be ejected. FALSE otherwise.
 //
 func (volume *Volume) CanEject() bool {
 	var _arg0 *C.GVolume // out
@@ -277,7 +276,7 @@ func (volume *Volume) CanEject() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the volume can be mounted. FALSE otherwise.
+//   - ok: TRUE if the volume can be mounted. FALSE otherwise.
 //
 func (volume *Volume) CanMount() bool {
 	var _arg0 *C.GVolume // out
@@ -305,9 +304,9 @@ func (volume *Volume) CanMount() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
 //
 func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
@@ -335,15 +334,15 @@ func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callba
 	runtime.KeepAlive(callback)
 }
 
-// EjectFinish finishes ejecting a volume. If any errors occurred during the
-// operation, error will be set to contain the errors and FALSE will be
+// EjectFinish finishes ejecting a volume. If any errors occurred during
+// the operation, error will be set to contain the errors and FALSE will be
 // returned.
 //
 // Deprecated: Use g_volume_eject_with_operation_finish() instead.
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
@@ -366,16 +365,16 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// EjectWithOperation ejects a volume. This is an asynchronous operation, and is
-// finished by calling g_volume_eject_with_operation_finish() with the volume
-// and Result data returned in the callback.
+// EjectWithOperation ejects a volume. This is an asynchronous operation,
+// and is finished by calling g_volume_eject_with_operation_finish() with the
+// volume and Result data returned in the callback.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
@@ -414,7 +413,7 @@ func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmount
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
@@ -437,14 +436,14 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier] that
-// volume has. Use g_volume_get_identifier() to obtain the identifiers
+// EnumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
+// that volume has. Use g_volume_get_identifier() to obtain the identifiers
 // themselves.
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings containing kinds of identifiers.
-//      Use g_strfreev() to free.
+//   - utf8s: NULL-terminated array of strings containing kinds of identifiers.
+//     Use g_strfreev() to free.
 //
 func (volume *Volume) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
@@ -492,8 +491,8 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 //
 // The function returns the following values:
 //
-//    - file (optional): activation root of volume or NULL. Use g_object_unref()
-//      to free.
+//   - file (optional): activation root of volume or NULL. Use g_object_unref()
+//     to free.
 //
 func (volume *Volume) ActivationRoot() *File {
 	var _arg0 *C.GVolume // out
@@ -517,9 +516,9 @@ func (volume *Volume) ActivationRoot() *File {
 //
 // The function returns the following values:
 //
-//    - drive (optional) or NULL if volume is not associated with a drive. The
-//      returned object should be unreffed with g_object_unref() when no longer
-//      needed.
+//   - drive (optional) or NULL if volume is not associated with a drive.
+//     The returned object should be unreffed with g_object_unref() when no
+//     longer needed.
 //
 func (volume *Volume) Drive() *Drive {
 	var _arg0 *C.GVolume // out
@@ -543,8 +542,8 @@ func (volume *Volume) Drive() *Drive {
 //
 // The function returns the following values:
 //
-//    - icon: #GIcon. The returned object should be unreffed with
-//      g_object_unref() when no longer needed.
+//   - icon: #GIcon. The returned object should be unreffed with
+//     g_object_unref() when no longer needed.
 //
 func (volume *Volume) Icon() *Icon {
 	var _arg0 *C.GVolume // out
@@ -568,12 +567,12 @@ func (volume *Volume) Icon() *Icon {
 //
 // The function takes the following parameters:
 //
-//    - kind of identifier to return.
+//   - kind of identifier to return.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string containing the requested
-//      identifier, or NULL if the #GVolume doesn't have this kind of identifier.
+//   - utf8 (optional): newly allocated string containing the requested
+//     identifier, or NULL if the #GVolume doesn't have this kind of identifier.
 //
 func (volume *Volume) Identifier(kind string) string {
 	var _arg0 *C.GVolume // out
@@ -602,8 +601,8 @@ func (volume *Volume) Identifier(kind string) string {
 //
 // The function returns the following values:
 //
-//    - mount (optional) or NULL if volume isn't mounted. The returned object
-//      should be unreffed with g_object_unref() when no longer needed.
+//   - mount (optional) or NULL if volume isn't mounted. The returned object
+//     should be unreffed with g_object_unref() when no longer needed.
 //
 func (volume *Volume) GetMount() *Mount {
 	var _arg0 *C.GVolume // out
@@ -627,8 +626,8 @@ func (volume *Volume) GetMount() *Mount {
 //
 // The function returns the following values:
 //
-//    - utf8: name for the given volume. The returned string should be freed with
-//      g_free() when no longer needed.
+//   - utf8: name for the given volume. The returned string should be freed with
+//     g_free() when no longer needed.
 //
 func (volume *Volume) Name() string {
 	var _arg0 *C.GVolume // out
@@ -651,8 +650,8 @@ func (volume *Volume) Name() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): sorting key for volume or NULL if no such key is
-//      available.
+//   - utf8 (optional): sorting key for volume or NULL if no such key is
+//     available.
 //
 func (volume *Volume) SortKey() string {
 	var _arg0 *C.GVolume // out
@@ -676,8 +675,8 @@ func (volume *Volume) SortKey() string {
 //
 // The function returns the following values:
 //
-//    - icon: #GIcon. The returned object should be unreffed with
-//      g_object_unref() when no longer needed.
+//   - icon: #GIcon. The returned object should be unreffed with
+//     g_object_unref() when no longer needed.
 //
 func (volume *Volume) SymbolicIcon() *Icon {
 	var _arg0 *C.GVolume // out
@@ -701,8 +700,8 @@ func (volume *Volume) SymbolicIcon() *Icon {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): UUID for volume or NULL if no UUID can be computed. The
-//      returned string should be freed with g_free() when no longer needed.
+//   - utf8 (optional): UUID for volume or NULL if no UUID can be computed.
+//     The returned string should be freed with g_free() when no longer needed.
 //
 func (volume *Volume) UUID() string {
 	var _arg0 *C.GVolume // out
@@ -729,10 +728,10 @@ func (volume *Volume) UUID() string {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the operation.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
@@ -765,8 +764,8 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 	runtime.KeepAlive(callback)
 }
 
-// MountFinish finishes mounting a volume. If any errors occurred during the
-// operation, error will be set to contain the errors and FALSE will be
+// MountFinish finishes mounting a volume. If any errors occurred during
+// the operation, error will be set to contain the errors and FALSE will be
 // returned.
 //
 // If the mount operation succeeded, g_volume_get_mount() on volume is
@@ -775,7 +774,7 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (volume *Volume) MountFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
@@ -802,7 +801,7 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the volume should be automatically mounted.
+//   - ok: TRUE if the volume should be automatically mounted.
 //
 func (volume *Volume) ShouldAutomount() bool {
 	var _arg0 *C.GVolume // out
@@ -826,7 +825,7 @@ func (volume *Volume) ShouldAutomount() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the volume can be ejected. FALSE otherwise.
+//   - ok: TRUE if the volume can be ejected. FALSE otherwise.
 //
 func (volume *Volume) canEject() bool {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -853,7 +852,7 @@ func (volume *Volume) canEject() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the volume can be mounted. FALSE otherwise.
+//   - ok: TRUE if the volume can be mounted. FALSE otherwise.
 //
 func (volume *Volume) canMount() bool {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -896,9 +895,9 @@ func (volume *Volume) changed() {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
 //
 func (volume *Volume) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -929,15 +928,15 @@ func (volume *Volume) eject(ctx context.Context, flags MountUnmountFlags, callba
 	runtime.KeepAlive(callback)
 }
 
-// ejectFinish finishes ejecting a volume. If any errors occurred during the
-// operation, error will be set to contain the errors and FALSE will be
+// ejectFinish finishes ejecting a volume. If any errors occurred during
+// the operation, error will be set to contain the errors and FALSE will be
 // returned.
 //
 // Deprecated: Use g_volume_eject_with_operation_finish() instead.
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (volume *Volume) ejectFinish(result AsyncResulter) error {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -963,16 +962,16 @@ func (volume *Volume) ejectFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// ejectWithOperation ejects a volume. This is an asynchronous operation, and is
-// finished by calling g_volume_eject_with_operation_finish() with the volume
-// and Result data returned in the callback.
+// ejectWithOperation ejects a volume. This is an asynchronous operation,
+// and is finished by calling g_volume_eject_with_operation_finish() with the
+// volume and Result data returned in the callback.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the unmount if required for eject.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (volume *Volume) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1014,7 +1013,7 @@ func (volume *Volume) ejectWithOperation(ctx context.Context, flags MountUnmount
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (volume *Volume) ejectWithOperationFinish(result AsyncResulter) error {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1040,14 +1039,14 @@ func (volume *Volume) ejectWithOperationFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// enumerateIdentifiers gets the kinds of [identifiers][volume-identifier] that
-// volume has. Use g_volume_get_identifier() to obtain the identifiers
+// enumerateIdentifiers gets the kinds of [identifiers][volume-identifier]
+// that volume has. Use g_volume_get_identifier() to obtain the identifiers
 // themselves.
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings containing kinds of identifiers.
-//      Use g_strfreev() to free.
+//   - utf8s: NULL-terminated array of strings containing kinds of identifiers.
+//     Use g_strfreev() to free.
 //
 func (volume *Volume) enumerateIdentifiers() []string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1098,8 +1097,8 @@ func (volume *Volume) enumerateIdentifiers() []string {
 //
 // The function returns the following values:
 //
-//    - file (optional): activation root of volume or NULL. Use g_object_unref()
-//      to free.
+//   - file (optional): activation root of volume or NULL. Use g_object_unref()
+//     to free.
 //
 func (volume *Volume) activationRoot() *File {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1126,9 +1125,9 @@ func (volume *Volume) activationRoot() *File {
 //
 // The function returns the following values:
 //
-//    - drive (optional) or NULL if volume is not associated with a drive. The
-//      returned object should be unreffed with g_object_unref() when no longer
-//      needed.
+//   - drive (optional) or NULL if volume is not associated with a drive.
+//     The returned object should be unreffed with g_object_unref() when no
+//     longer needed.
 //
 func (volume *Volume) drive() *Drive {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1155,8 +1154,8 @@ func (volume *Volume) drive() *Drive {
 //
 // The function returns the following values:
 //
-//    - icon: #GIcon. The returned object should be unreffed with
-//      g_object_unref() when no longer needed.
+//   - icon: #GIcon. The returned object should be unreffed with
+//     g_object_unref() when no longer needed.
 //
 func (volume *Volume) icon() *Icon {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1183,12 +1182,12 @@ func (volume *Volume) icon() *Icon {
 //
 // The function takes the following parameters:
 //
-//    - kind of identifier to return.
+//   - kind of identifier to return.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string containing the requested
-//      identifier, or NULL if the #GVolume doesn't have this kind of identifier.
+//   - utf8 (optional): newly allocated string containing the requested
+//     identifier, or NULL if the #GVolume doesn't have this kind of identifier.
 //
 func (volume *Volume) identifier(kind string) string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1220,8 +1219,8 @@ func (volume *Volume) identifier(kind string) string {
 //
 // The function returns the following values:
 //
-//    - mount (optional) or NULL if volume isn't mounted. The returned object
-//      should be unreffed with g_object_unref() when no longer needed.
+//   - mount (optional) or NULL if volume isn't mounted. The returned object
+//     should be unreffed with g_object_unref() when no longer needed.
 //
 func (volume *Volume) mount() *Mount {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1248,8 +1247,8 @@ func (volume *Volume) mount() *Mount {
 //
 // The function returns the following values:
 //
-//    - utf8: name for the given volume. The returned string should be freed with
-//      g_free() when no longer needed.
+//   - utf8: name for the given volume. The returned string should be freed with
+//     g_free() when no longer needed.
 //
 func (volume *Volume) name() string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1275,8 +1274,8 @@ func (volume *Volume) name() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): sorting key for volume or NULL if no such key is
-//      available.
+//   - utf8 (optional): sorting key for volume or NULL if no such key is
+//     available.
 //
 func (volume *Volume) sortKey() string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1303,8 +1302,8 @@ func (volume *Volume) sortKey() string {
 //
 // The function returns the following values:
 //
-//    - icon: #GIcon. The returned object should be unreffed with
-//      g_object_unref() when no longer needed.
+//   - icon: #GIcon. The returned object should be unreffed with
+//     g_object_unref() when no longer needed.
 //
 func (volume *Volume) symbolicIcon() *Icon {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1331,8 +1330,8 @@ func (volume *Volume) symbolicIcon() *Icon {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): UUID for volume or NULL if no UUID can be computed. The
-//      returned string should be freed with g_free() when no longer needed.
+//   - utf8 (optional): UUID for volume or NULL if no UUID can be computed.
+//     The returned string should be freed with g_free() when no longer needed.
 //
 func (volume *Volume) uuiD() string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1356,8 +1355,8 @@ func (volume *Volume) uuiD() string {
 	return _utf8
 }
 
-// mountFinish finishes mounting a volume. If any errors occurred during the
-// operation, error will be set to contain the errors and FALSE will be
+// mountFinish finishes mounting a volume. If any errors occurred during
+// the operation, error will be set to contain the errors and FALSE will be
 // returned.
 //
 // If the mount operation succeeded, g_volume_get_mount() on volume is
@@ -1366,7 +1365,7 @@ func (volume *Volume) uuiD() string {
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (volume *Volume) mountFinish(result AsyncResulter) error {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1398,10 +1397,10 @@ func (volume *Volume) mountFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - flags affecting the operation.
-//    - mountOperation (optional) or NULL to avoid user interaction.
-//    - callback (optional) or NULL.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
 //
 func (volume *Volume) mountFn(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
@@ -1453,7 +1452,7 @@ func (volume *Volume) removed() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the volume should be automatically mounted.
+//   - ok: TRUE if the volume should be automatically mounted.
 //
 func (volume *Volume) shouldAutomount() bool {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))

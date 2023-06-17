@@ -36,9 +36,9 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - parent (optional) window.
-//    - uri to show.
-//    - timestamp to prevent focus stealing.
+//   - parent (optional) window.
+//   - uri to show.
+//   - timestamp to prevent focus stealing.
 //
 func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) error {
 	var _arg1 *C.GtkWindow // out

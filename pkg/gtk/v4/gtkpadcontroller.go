@@ -71,8 +71,8 @@ func (p PadActionType) String() string {
 // perform no action. GtkPadController is provided to map those to GAction
 // objects, thus letting the application give them a more semantic meaning.
 //
-// Buttons and sensors are not constrained to triggering a single action, some
-// GDK_SOURCE_TABLET_PAD devices feature multiple "modes". All these input
+// Buttons and sensors are not constrained to triggering a single action,
+// some GDK_SOURCE_TABLET_PAD devices feature multiple "modes". All these input
 // elements have one current mode, which may determine the final action being
 // triggered.
 //
@@ -101,9 +101,8 @@ func (p PadActionType) String() string {
 //    …
 //    pad_controller = gtk_pad_controller_new (action_group, NULL);
 //
-//
-// The actions belonging to rings/strips will be activated with a parameter of
-// type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
+// The actions belonging to rings/strips will be activated with a parameter
+// of type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
 // required that those are made stateful and accepting this GVariantType.
 type PadController struct {
 	_ [0]func() // equal guard
@@ -134,8 +133,8 @@ func marshalPadController(p uintptr) (interface{}, error) {
 // non-NULL pad argument on the same toplevel window, as execution order is not
 // guaranteed.
 //
-// The GtkPadController is created with no mapped actions. In order to map pad
-// events to actions, use gtk.PadController.SetActionEntries() or
+// The GtkPadController is created with no mapped actions. In order to
+// map pad events to actions, use gtk.PadController.SetActionEntries() or
 // gtk.PadController.SetAction().
 //
 // Be aware that pad events will only be delivered to GtkWindows, so adding a
@@ -143,12 +142,12 @@ func marshalPadController(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - group: GActionGroup to trigger actions from.
-//    - pad (optional): GDK_SOURCE_TABLET_PAD device, or NULL to handle all pads.
+//   - group: GActionGroup to trigger actions from.
+//   - pad (optional): GDK_SOURCE_TABLET_PAD device, or NULL to handle all pads.
 //
 // The function returns the following values:
 //
-//    - padController: newly created GtkPadController.
+//   - padController: newly created GtkPadController.
 //
 func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 	var _arg1 *C.GActionGroup     // out
@@ -183,12 +182,12 @@ func NewPadController(group gio.ActionGrouper, pad gdk.Devicer) *PadController {
 //
 // The function takes the following parameters:
 //
-//    - typ: type of pad feature that will trigger this action.
-//    - index: 0-indexed button/ring/strip number that will trigger this action.
-//    - mode that will trigger this action, or -1 for all modes.
-//    - label: human readable description of this action, this string should be
-//      deemed user-visible.
-//    - actionName: action name that will be activated in the Group.
+//   - typ: type of pad feature that will trigger this action.
+//   - index: 0-indexed button/ring/strip number that will trigger this action.
+//   - mode that will trigger this action, or -1 for all modes.
+//   - label: human readable description of this action, this string should be
+//     deemed user-visible.
+//   - actionName: action name that will be activated in the Group.
 //
 func (controller *PadController) SetAction(typ PadActionType, index, mode int, label, actionName string) {
 	var _arg0 *C.GtkPadController // out
@@ -223,7 +222,7 @@ func (controller *PadController) SetAction(typ PadActionType, index, mode int, l
 //
 // The function takes the following parameters:
 //
-//    - entries: action entries to set on controller.
+//   - entries: action entries to set on controller.
 //
 func (controller *PadController) SetActionEntries(entries []PadActionEntry) {
 	var _arg0 *C.GtkPadController  // out

@@ -40,8 +40,7 @@ func defaultFontChooserDialogOverrides(v *FontChooserDialog) FontChooserDialogOv
 // FontChooserDialog widget is a dialog for selecting a font. It implements the
 // FontChooser interface.
 //
-//
-// GtkFontChooserDialog as GtkBuildable
+// # GtkFontChooserDialog as GtkBuildable
 //
 // The GtkFontChooserDialog implementation of the Buildable interface exposes
 // the buttons with the names “select_button” and “cancel_button”.
@@ -111,12 +110,12 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title (optional): title of the dialog, or NULL.
-//    - parent (optional): transient parent of the dialog, or NULL.
+//   - title (optional): title of the dialog, or NULL.
+//   - parent (optional): transient parent of the dialog, or NULL.
 //
 // The function returns the following values:
 //
-//    - fontChooserDialog: new FontChooserDialog.
+//   - fontChooserDialog: new FontChooserDialog.
 //
 func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog {
 	var _arg1 *C.gchar     // out

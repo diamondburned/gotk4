@@ -60,8 +60,8 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return wrapGestureLongPress(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectCancelled: this signal is emitted whenever a press moved too far, or
-// was released before GestureLongPress::pressed happened.
+// ConnectCancelled: this signal is emitted whenever a press moved too far,
+// or was released before GestureLongPress::pressed happened.
 func (v *GestureLongPress) ConnectCancelled(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "cancelled", false, unsafe.Pointer(C._gotk4_gtk3_GestureLongPress_ConnectCancelled), f)
 }
@@ -77,11 +77,11 @@ func (v *GestureLongPress) ConnectPressed(f func(x, y float64)) coreglib.SignalH
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - gestureLongPress: newly created GestureLongPress.
+//   - gestureLongPress: newly created GestureLongPress.
 //
 func NewGestureLongPress(widget Widgetter) *GestureLongPress {
 	var _arg1 *C.GtkWidget  // out

@@ -123,10 +123,10 @@ func (f FileChooserError) String() string {
 // trying to adapt an existing file selector to expose a standard programming
 // interface.
 //
-// FileChooser allows for shortcuts to various places in the filesystem. In the
-// default implementation these are displayed in the left pane. It may be a bit
-// confusing at first that these shortcuts come from various sources and in
-// various flavours, so lets explain the terminology here:
+// FileChooser allows for shortcuts to various places in the filesystem.
+// In the default implementation these are displayed in the left pane. It may be
+// a bit confusing at first that these shortcuts come from various sources and
+// in various flavours, so lets explain the terminology here:
 //
 // - Bookmarks: are created by the user, by dragging folders from the right pane
 // to the left pane, or by using the “Add”. Bookmarks can be renamed and deleted
@@ -139,13 +139,12 @@ func (f FileChooserError) String() string {
 // - Volumes: are provided by the underlying filesystem abstraction. They are
 // the “roots” of the filesystem.
 //
+// # File Names and Encodings
 //
-// File Names and Encodings
-//
-// When the user is finished selecting files in a FileChooser, your program can
-// get the selected names either as filenames or as URIs. For URIs, the normal
-// escaping rules are applied if the URI contains non-ASCII characters. However,
-// filenames are always returned in the character set specified by the
+// When the user is finished selecting files in a FileChooser, your program
+// can get the selected names either as filenames or as URIs. For URIs, the
+// normal escaping rules are applied if the URI contains non-ASCII characters.
+// However, filenames are always returned in the character set specified by the
 // G_FILENAME_ENCODING environment variable. Please see the GLib documentation
 // for more details about this variable.
 //
@@ -155,8 +154,7 @@ func (f FileChooserError) String() string {
 // to UTF-8, which all GTK+ widgets expect. You should use g_filename_to_utf8()
 // to convert filenames into strings that can be passed to GTK+ widgets.
 //
-//
-// Adding a Preview Widget
+// # Adding a Preview Widget
 //
 // You can add a custom preview widget to a file chooser and then get
 // notification about when the preview needs to be updated. To install a preview
@@ -172,7 +170,6 @@ func (f FileChooserError) String() string {
 //
 // Example: Using a Preview Widget
 //
-//
 //      GtkWidget *toggle;
 //
 //      ...
@@ -182,9 +179,9 @@ func (f FileChooserError) String() string {
 //      gtk_file_chooser_set_extra_widget (my_file_chooser, toggle);
 //    }
 //
-// If you want to set more than one extra widget in the file chooser, you can a
-// container such as a Box or a Grid and include your widgets in it. Then, set
-// the container as the whole extra widget.
+// If you want to set more than one extra widget in the file chooser, you can
+// a container such as a Box or a Grid and include your widgets in it. Then,
+// set the container as the whole extra widget.
 //
 // FileChooser wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -311,8 +308,8 @@ type FileChooserer interface {
 	SelectFilename(filename string) bool
 	// SelectURI selects the file to by uri.
 	SelectURI(uri string) bool
-	// SetAction sets the type of operation that the chooser is performing; the
-	// user interface is adapted to suit the selected action.
+	// SetAction sets the type of operation that the chooser is performing;
+	// the user interface is adapted to suit the selected action.
 	SetAction(action FileChooserAction)
 	// SetChoice selects an option in a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
@@ -337,9 +334,9 @@ type FileChooserer interface {
 	// SetExtraWidget sets an application-supplied widget to provide extra
 	// options to the user.
 	SetExtraWidget(extraWidget Widgetter)
-	// SetFile sets file as the current filename for the file chooser, by
-	// changing to the file’s parent folder and actually selecting the file in
-	// list.
+	// SetFile sets file as the current filename for the file chooser,
+	// by changing to the file’s parent folder and actually selecting the file
+	// in list.
 	SetFile(file gio.Filer) error
 	// SetFilename sets filename as the current filename for the file chooser,
 	// by changing to the file’s parent folder and actually selecting the file
@@ -419,19 +416,19 @@ func marshalFileChooser(p uintptr) (interface{}, error) {
 //
 // Most applications just need to turn on the
 // FileChooser:do-overwrite-confirmation property (or call the
-// gtk_file_chooser_set_do_overwrite_confirmation() function), and they will
-// automatically get a stock confirmation dialog. Applications which need to
-// customize this behavior should do that, and also connect to the
+// gtk_file_chooser_set_do_overwrite_confirmation() function), and they
+// will automatically get a stock confirmation dialog. Applications which
+// need to customize this behavior should do that, and also connect to the
 // FileChooser::confirm-overwrite signal.
 //
-// A signal handler for this signal must return a FileChooserConfirmation value,
-// which indicates the action to take. If the handler determines that the user
-// wants to select a different filename, it should return
-// GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN. If it determines that the user is
-// satisfied with his choice of file name, it should return
-// GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME. On the other hand, if it
-// determines that the stock confirmation dialog should be used, it should
-// return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM. The following example
+// A signal handler for this signal must return a FileChooserConfirmation
+// value, which indicates the action to take. If the handler determines
+// that the user wants to select a different filename, it should return
+// GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN. If it determines that
+// the user is satisfied with his choice of file name, it should return
+// GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME. On the other hand,
+// if it determines that the stock confirmation dialog should be used,
+// it should return GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM. The following example
 // illustrates this.
 //
 // Custom confirmation
@@ -499,8 +496,8 @@ func (chooser *FileChooser) ConnectFileActivated(f func()) coreglib.SignalHandle
 	return coreglib.ConnectGeneratedClosure(chooser, "file-activated", false, unsafe.Pointer(C._gotk4_gtk3_FileChooser_ConnectFileActivated), f)
 }
 
-// ConnectSelectionChanged: this signal is emitted when there is a change in the
-// set of selected files in a FileChooser. This can happen when the user
+// ConnectSelectionChanged: this signal is emitted when there is a change in
+// the set of selected files in a FileChooser. This can happen when the user
 // modifies the selection with the mouse or the keyboard, or when explicitly
 // calling functions to change the selection.
 //
@@ -542,21 +539,21 @@ func (chooser *FileChooser) ConnectUpdatePreview(f func()) coreglib.SignalHandle
 }
 
 // AddChoice adds a 'choice' to the file chooser. This is typically implemented
-// as a combobox or, for boolean choices, as a checkbutton. You can select a
-// value using gtk_file_chooser_set_choice() before the dialog is shown, and you
-// can obtain the user-selected value in the ::response signal handler using
-// gtk_file_chooser_get_choice().
+// as a combobox or, for boolean choices, as a checkbutton. You can select
+// a value using gtk_file_chooser_set_choice() before the dialog is shown,
+// and you can obtain the user-selected value in the ::response signal handler
+// using gtk_file_chooser_get_choice().
 //
 // Compare gtk_file_chooser_set_extra_widget().
 //
 // The function takes the following parameters:
 //
-//    - id for the added choice.
-//    - label: user-visible label for the added choice.
-//    - options (optional) ids for the options of the choice, or NULL for a
-//      boolean choice.
-//    - optionLabels (optional): user-visible labels for the options, must be the
-//      same length as options.
+//   - id for the added choice.
+//   - label: user-visible label for the added choice.
+//   - options (optional) ids for the options of the choice, or NULL for a
+//     boolean choice.
+//   - optionLabels (optional): user-visible labels for the options, must be the
+//     same length as options.
 //
 func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []string) {
 	var _arg0 *C.GtkFileChooser // out
@@ -614,7 +611,7 @@ func (chooser *FileChooser) AddChoice(id, label string, options, optionLabels []
 //
 // The function takes the following parameters:
 //
-//    - filter: FileFilter.
+//   - filter: FileFilter.
 //
 func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
@@ -629,14 +626,14 @@ func (chooser *FileChooser) AddFilter(filter *FileFilter) {
 	runtime.KeepAlive(filter)
 }
 
-// AddShortcutFolder adds a folder to be displayed with the shortcut folders in
-// a file chooser. Note that shortcut folders do not get saved, as they are
-// provided by the application. For example, you can use this to add a
+// AddShortcutFolder adds a folder to be displayed with the shortcut folders
+// in a file chooser. Note that shortcut folders do not get saved, as they
+// are provided by the application. For example, you can use this to add a
 // “/usr/share/mydrawprogram/Clipart” folder to the volume list.
 //
 // The function takes the following parameters:
 //
-//    - folder: filename of the folder to add.
+//   - folder: filename of the folder to add.
 //
 func (chooser *FileChooser) AddShortcutFolder(folder string) error {
 	var _arg0 *C.GtkFileChooser // out
@@ -661,13 +658,13 @@ func (chooser *FileChooser) AddShortcutFolder(folder string) error {
 }
 
 // AddShortcutFolderURI adds a folder URI to be displayed with the shortcut
-// folders in a file chooser. Note that shortcut folders do not get saved, as
-// they are provided by the application. For example, you can use this to add a
-// “file:///usr/share/mydrawprogram/Clipart” folder to the volume list.
+// folders in a file chooser. Note that shortcut folders do not get saved,
+// as they are provided by the application. For example, you can use this to add
+// a “file:///usr/share/mydrawprogram/Clipart” folder to the volume list.
 //
 // The function takes the following parameters:
 //
-//    - uri: URI of the folder to add.
+//   - uri: URI of the folder to add.
 //
 func (chooser *FileChooser) AddShortcutFolderURI(uri string) error {
 	var _arg0 *C.GtkFileChooser // out
@@ -691,12 +688,12 @@ func (chooser *FileChooser) AddShortcutFolderURI(uri string) error {
 	return _goerr
 }
 
-// Action gets the type of operation that the file chooser is performing; see
-// gtk_file_chooser_set_action().
+// Action gets the type of operation that the file chooser is performing;
+// see gtk_file_chooser_set_action().
 //
 // The function returns the following values:
 //
-//    - fileChooserAction: action that the file selector is performing.
+//   - fileChooserAction: action that the file selector is performing.
 //
 func (chooser *FileChooser) Action() FileChooserAction {
 	var _arg0 *C.GtkFileChooser      // out
@@ -718,11 +715,11 @@ func (chooser *FileChooser) Action() FileChooserAction {
 //
 // The function takes the following parameters:
 //
-//    - id: ID of the choice to get.
+//   - id: ID of the choice to get.
 //
 // The function returns the following values:
 //
-//    - utf8: ID of the currenly selected option.
+//   - utf8: ID of the currenly selected option.
 //
 func (chooser *FileChooser) Choice(id string) string {
 	var _arg0 *C.GtkFileChooser // out
@@ -744,12 +741,12 @@ func (chooser *FileChooser) Choice(id string) string {
 	return _utf8
 }
 
-// CreateFolders gets whether file choser will offer to create new folders. See
-// gtk_file_chooser_set_create_folders().
+// CreateFolders gets whether file choser will offer to create new folders.
+// See gtk_file_chooser_set_create_folders().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the Create Folder button should be displayed.
+//   - ok: TRUE if the Create Folder button should be displayed.
 //
 func (chooser *FileChooser) CreateFolders() bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -769,25 +766,25 @@ func (chooser *FileChooser) CreateFolders() bool {
 	return _ok
 }
 
-// CurrentFolder gets the current folder of chooser as a local filename. See
-// gtk_file_chooser_set_current_folder().
+// CurrentFolder gets the current folder of chooser as a local filename.
+// See gtk_file_chooser_set_current_folder().
 //
-// Note that this is the folder that the file chooser is currently displaying
-// (e.g. "/home/username/Documents"), which is not the same as the
-// currently-selected folder if the chooser is in
-// GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER mode (e.g.
+// Note that this is the folder that the file chooser is
+// currently displaying (e.g. "/home/username/Documents"),
+// which is not the same as the currently-selected folder if the
+// chooser is in GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER mode (e.g.
 // "/home/username/Documents/selected-folder/". To get the currently-selected
 // folder in that mode, use gtk_file_chooser_get_uri() as the usual way to get
 // the selection.
 //
 // The function returns the following values:
 //
-//    - filename (optional): full path of the current folder, or NULL if the
-//      current path cannot be represented as a local filename. Free with
-//      g_free(). This function will also return NULL if the file chooser was
-//      unable to load the last folder that was requested from it; for example,
-//      as would be for calling gtk_file_chooser_set_current_folder() on a
-//      nonexistent folder.
+//   - filename (optional): full path of the current folder, or NULL if the
+//     current path cannot be represented as a local filename. Free with
+//     g_free(). This function will also return NULL if the file chooser was
+//     unable to load the last folder that was requested from it; for example,
+//     as would be for calling gtk_file_chooser_set_current_folder() on a
+//     nonexistent folder.
 //
 func (chooser *FileChooser) CurrentFolder() string {
 	var _arg0 *C.GtkFileChooser // out
@@ -813,7 +810,7 @@ func (chooser *FileChooser) CurrentFolder() string {
 //
 // The function returns the following values:
 //
-//    - file for the current folder.
+//   - file for the current folder.
 //
 func (chooser *FileChooser) CurrentFolderFile() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
@@ -839,21 +836,21 @@ func (chooser *FileChooser) CurrentFolderFile() *gio.File {
 // CurrentFolderURI gets the current folder of chooser as an URI. See
 // gtk_file_chooser_set_current_folder_uri().
 //
-// Note that this is the folder that the file chooser is currently displaying
-// (e.g. "file:///home/username/Documents"), which is not the same as the
-// currently-selected folder if the chooser is in
-// GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER mode (e.g.
+// Note that this is the folder that the file chooser is
+// currently displaying (e.g. "file:///home/username/Documents"),
+// which is not the same as the currently-selected folder if the
+// chooser is in GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER mode (e.g.
 // "file:///home/username/Documents/selected-folder/". To get the
 // currently-selected folder in that mode, use gtk_file_chooser_get_uri() as the
 // usual way to get the selection.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): URI for the current folder. Free with g_free(). This
-//      function will also return NULL if the file chooser was unable to load the
-//      last folder that was requested from it; for example, as would be for
-//      calling gtk_file_chooser_set_current_folder_uri() on a nonexistent
-//      folder.
+//   - utf8 (optional): URI for the current folder. Free with g_free().
+//     This function will also return NULL if the file chooser was unable to
+//     load the last folder that was requested from it; for example, as would be
+//     for calling gtk_file_chooser_set_current_folder_uri() on a nonexistent
+//     folder.
 //
 func (chooser *FileChooser) CurrentFolderURI() string {
 	var _arg0 *C.GtkFileChooser // out
@@ -885,11 +882,11 @@ func (chooser *FileChooser) CurrentFolderURI() string {
 //
 // The function returns the following values:
 //
-//    - utf8: raw text from the file chooser’s “Name” entry. Free this with
-//      g_free(). Note that this string is not a full pathname or URI; it is
-//      whatever the contents of the entry are. Note also that this string is in
-//      UTF-8 encoding, which is not necessarily the system’s encoding for
-//      filenames.
+//   - utf8: raw text from the file chooser’s “Name” entry. Free this with
+//     g_free(). Note that this string is not a full pathname or URI; it is
+//     whatever the contents of the entry are. Note also that this string is
+//     in UTF-8 encoding, which is not necessarily the system’s encoding for
+//     filenames.
 //
 func (chooser *FileChooser) CurrentName() string {
 	var _arg0 *C.GtkFileChooser // out
@@ -913,8 +910,8 @@ func (chooser *FileChooser) CurrentName() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the file chooser will present a confirmation dialog; FALSE
-//      otherwise.
+//   - ok: TRUE if the file chooser will present a confirmation dialog; FALSE
+//     otherwise.
 //
 func (chooser *FileChooser) DoOverwriteConfirmation() bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -939,7 +936,7 @@ func (chooser *FileChooser) DoOverwriteConfirmation() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional): current extra widget, or NULL.
+//   - widget (optional): current extra widget, or NULL.
 //
 func (chooser *FileChooser) ExtraWidget() Widgetter {
 	var _arg0 *C.GtkFileChooser // out
@@ -972,16 +969,16 @@ func (chooser *FileChooser) ExtraWidget() Widgetter {
 	return _widget
 }
 
-// File gets the #GFile for the currently selected file in the file selector. If
-// multiple files are selected, one of the files will be returned at random.
+// File gets the #GFile for the currently selected file in the file selector.
+// If multiple files are selected, one of the files will be returned at random.
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
 //
 // The function returns the following values:
 //
-//    - file: selected #GFile. You own the returned file; use g_object_unref() to
-//      release it.
+//   - file: selected #GFile. You own the returned file; use g_object_unref() to
+//     release it.
 //
 func (chooser *FileChooser) File() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
@@ -1013,9 +1010,9 @@ func (chooser *FileChooser) File() *gio.File {
 //
 // The function returns the following values:
 //
-//    - filename (optional): currently selected filename, or NULL if no file is
-//      selected, or the selected file can't be represented with a local
-//      filename. Free with g_free().
+//   - filename (optional): currently selected filename, or NULL if no file
+//     is selected, or the selected file can't be represented with a local
+//     filename. Free with g_free().
 //
 func (chooser *FileChooser) Filename() string {
 	var _arg0 *C.GtkFileChooser // out
@@ -1043,9 +1040,9 @@ func (chooser *FileChooser) Filename() string {
 //
 // The function returns the following values:
 //
-//    - sList: List containing the filenames of all selected files and subfolders
-//      in the current folder. Free the returned list with g_slist_free(), and
-//      the filenames with g_free().
+//   - sList: List containing the filenames of all selected files and subfolders
+//     in the current folder. Free the returned list with g_slist_free(),
+//     and the filenames with g_free().
 //
 func (chooser *FileChooser) Filenames() []string {
 	var _arg0 *C.GtkFileChooser // out
@@ -1075,9 +1072,9 @@ func (chooser *FileChooser) Filenames() []string {
 //
 // The function returns the following values:
 //
-//    - sList: List containing a #GFile for each selected file and subfolder in
-//      the current folder. Free the returned list with g_slist_free(), and the
-//      files with g_object_unref().
+//   - sList: List containing a #GFile for each selected file and subfolder in
+//     the current folder. Free the returned list with g_slist_free(), and the
+//     files with g_object_unref().
 //
 func (chooser *FileChooser) Files() []*gio.File {
 	var _arg0 *C.GtkFileChooser // out
@@ -1110,7 +1107,7 @@ func (chooser *FileChooser) Files() []*gio.File {
 //
 // The function returns the following values:
 //
-//    - fileFilter (optional): current filter, or NULL.
+//   - fileFilter (optional): current filter, or NULL.
 //
 func (chooser *FileChooser) Filter() *FileFilter {
 	var _arg0 *C.GtkFileChooser // out
@@ -1135,7 +1132,7 @@ func (chooser *FileChooser) Filter() *FileFilter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if only local files can be selected.
+//   - ok: TRUE if only local files can be selected.
 //
 func (chooser *FileChooser) LocalOnly() bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1160,8 +1157,8 @@ func (chooser *FileChooser) LocalOnly() bool {
 //
 // The function returns the following values:
 //
-//    - file (optional) for the file to preview, or NULL if no file is selected.
-//      Free with g_object_unref().
+//   - file (optional) for the file to preview, or NULL if no file is selected.
+//     Free with g_object_unref().
 //
 func (chooser *FileChooser) PreviewFile() *gio.File {
 	var _arg0 *C.GtkFileChooser // out
@@ -1191,9 +1188,9 @@ func (chooser *FileChooser) PreviewFile() *gio.File {
 //
 // The function returns the following values:
 //
-//    - filename (optional) to preview, or NULL if no file is selected, or if the
-//      selected file cannot be represented as a local filename. Free with
-//      g_free().
+//   - filename (optional) to preview, or NULL if no file is selected,
+//     or if the selected file cannot be represented as a local filename.
+//     Free with g_free().
 //
 func (chooser *FileChooser) PreviewFilename() string {
 	var _arg0 *C.GtkFileChooser // out
@@ -1219,8 +1216,8 @@ func (chooser *FileChooser) PreviewFilename() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): URI for the file to preview, or NULL if no file is
-//      selected. Free with g_free().
+//   - utf8 (optional): URI for the file to preview, or NULL if no file is
+//     selected. Free with g_free().
 //
 func (chooser *FileChooser) PreviewURI() string {
 	var _arg0 *C.GtkFileChooser // out
@@ -1246,7 +1243,7 @@ func (chooser *FileChooser) PreviewURI() string {
 //
 // The function returns the following values:
 //
-//    - widget (optional): current preview widget, or NULL.
+//   - widget (optional): current preview widget, or NULL.
 //
 func (chooser *FileChooser) PreviewWidget() Widgetter {
 	var _arg0 *C.GtkFileChooser // out
@@ -1285,7 +1282,7 @@ func (chooser *FileChooser) PreviewWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the preview widget is active for the current filename.
+//   - ok: TRUE if the preview widget is active for the current filename.
 //
 func (chooser *FileChooser) PreviewWidgetActive() bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1310,7 +1307,7 @@ func (chooser *FileChooser) PreviewWidgetActive() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if multiple files can be selected.
+//   - ok: TRUE if multiple files can be selected.
 //
 func (chooser *FileChooser) SelectMultiple() bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1335,7 +1332,7 @@ func (chooser *FileChooser) SelectMultiple() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if hidden files and folders are displayed.
+//   - ok: TRUE if hidden files and folders are displayed.
 //
 func (chooser *FileChooser) ShowHidden() bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1363,9 +1360,9 @@ func (chooser *FileChooser) ShowHidden() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): currently selected URI, or NULL if no file is selected.
-//      If gtk_file_chooser_set_local_only() is set to TRUE (the default) a local
-//      URI will be returned for any FUSE locations. Free with g_free().
+//   - utf8 (optional): currently selected URI, or NULL if no file is selected.
+//     If gtk_file_chooser_set_local_only() is set to TRUE (the default) a local
+//     URI will be returned for any FUSE locations. Free with g_free().
 //
 func (chooser *FileChooser) URI() string {
 	var _arg0 *C.GtkFileChooser // out
@@ -1391,9 +1388,9 @@ func (chooser *FileChooser) URI() string {
 //
 // The function returns the following values:
 //
-//    - sList containing the URIs of all selected files and subfolders in the
-//      current folder. Free the returned list with g_slist_free(), and the
-//      filenames with g_free().
+//   - sList containing the URIs of all selected files and subfolders in the
+//     current folder. Free the returned list with g_slist_free(), and the
+//     filenames with g_free().
 //
 func (chooser *FileChooser) URIs() []string {
 	var _arg0 *C.GtkFileChooser // out
@@ -1423,8 +1420,8 @@ func (chooser *FileChooser) URIs() []string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the file chooser is set to display a label with the name of
-//      the previewed file, FALSE otherwise.
+//   - ok: TRUE if the file chooser is set to display a label with the name of
+//     the previewed file, FALSE otherwise.
 //
 func (chooser *FileChooser) UsePreviewLabel() bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1449,9 +1446,9 @@ func (chooser *FileChooser) UsePreviewLabel() bool {
 //
 // The function returns the following values:
 //
-//    - sList: a List containing the current set of user selectable filters. The
-//      contents of the list are owned by GTK+, but you must free the list itself
-//      with g_slist_free() when you are done with it.
+//   - sList: a List containing the current set of user selectable filters.
+//     The contents of the list are owned by GTK+, but you must free the list
+//     itself with g_slist_free() when you are done with it.
 //
 func (chooser *FileChooser) ListFilters() []*FileFilter {
 	var _arg0 *C.GtkFileChooser // out
@@ -1480,9 +1477,9 @@ func (chooser *FileChooser) ListFilters() []*FileFilter {
 //
 // The function returns the following values:
 //
-//    - sList (optional): list of folder URIs, or NULL if there are no shortcut
-//      folders. Free the returned list with g_slist_free(), and the URIs with
-//      g_free().
+//   - sList (optional): list of folder URIs, or NULL if there are no shortcut
+//     folders. Free the returned list with g_slist_free(), and the URIs with
+//     g_free().
 //
 func (chooser *FileChooser) ListShortcutFolderURIs() []string {
 	var _arg0 *C.GtkFileChooser // out
@@ -1514,9 +1511,9 @@ func (chooser *FileChooser) ListShortcutFolderURIs() []string {
 //
 // The function returns the following values:
 //
-//    - sList (optional): list of folder filenames, or NULL if there are no
-//      shortcut folders. Free the returned list with g_slist_free(), and the
-//      filenames with g_free().
+//   - sList (optional): list of folder filenames, or NULL if there are no
+//     shortcut folders. Free the returned list with g_slist_free(), and the
+//     filenames with g_free().
 //
 func (chooser *FileChooser) ListShortcutFolders() []string {
 	var _arg0 *C.GtkFileChooser // out
@@ -1548,7 +1545,7 @@ func (chooser *FileChooser) ListShortcutFolders() []string {
 //
 // The function takes the following parameters:
 //
-//    - id: ID of the choice to remove.
+//   - id: ID of the choice to remove.
 //
 func (chooser *FileChooser) RemoveChoice(id string) {
 	var _arg0 *C.GtkFileChooser // out
@@ -1568,7 +1565,7 @@ func (chooser *FileChooser) RemoveChoice(id string) {
 //
 // The function takes the following parameters:
 //
-//    - filter: FileFilter.
+//   - filter: FileFilter.
 //
 func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
@@ -1587,7 +1584,7 @@ func (chooser *FileChooser) RemoveFilter(filter *FileFilter) {
 //
 // The function takes the following parameters:
 //
-//    - folder: filename of the folder to remove.
+//   - folder: filename of the folder to remove.
 //
 func (chooser *FileChooser) RemoveShortcutFolder(folder string) error {
 	var _arg0 *C.GtkFileChooser // out
@@ -1616,7 +1613,7 @@ func (chooser *FileChooser) RemoveShortcutFolder(folder string) error {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI of the folder to remove.
+//   - uri: URI of the folder to remove.
 //
 func (chooser *FileChooser) RemoveShortcutFolderURI(uri string) error {
 	var _arg0 *C.GtkFileChooser // out
@@ -1650,12 +1647,12 @@ func (chooser *FileChooser) SelectAll() {
 	runtime.KeepAlive(chooser)
 }
 
-// SelectFile selects the file referred to by file. An internal function. See
-// _gtk_file_chooser_select_uri().
+// SelectFile selects the file referred to by file. An internal function.
+// See _gtk_file_chooser_select_uri().
 //
 // The function takes the following parameters:
 //
-//    - file to select.
+//   - file to select.
 //
 func (chooser *FileChooser) SelectFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
@@ -1684,13 +1681,13 @@ func (chooser *FileChooser) SelectFile(file gio.Filer) error {
 //
 // The function takes the following parameters:
 //
-//    - filename to select.
+//   - filename to select.
 //
 // The function returns the following values:
 //
-//    - ok: not useful.
+//   - ok: not useful.
 //
-//      See also: gtk_file_chooser_set_filename().
+//     See also: gtk_file_chooser_set_filename().
 //
 func (chooser *FileChooser) SelectFilename(filename string) bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1720,11 +1717,11 @@ func (chooser *FileChooser) SelectFilename(filename string) bool {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to select.
+//   - uri: URI to select.
 //
 // The function returns the following values:
 //
-//    - ok: not useful.
+//   - ok: not useful.
 //
 func (chooser *FileChooser) SelectURI(uri string) bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1748,15 +1745,15 @@ func (chooser *FileChooser) SelectURI(uri string) bool {
 	return _ok
 }
 
-// SetAction sets the type of operation that the chooser is performing; the user
-// interface is adapted to suit the selected action. For example, an option to
-// create a new folder might be shown if the action is
-// GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
+// SetAction sets the type of operation that the chooser is performing;
+// the user interface is adapted to suit the selected action.
+// For example, an option to create a new folder might be shown if
+// the action is GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
 // GTK_FILE_CHOOSER_ACTION_OPEN.
 //
 // The function takes the following parameters:
 //
-//    - action that the file selector is performing.
+//   - action that the file selector is performing.
 //
 func (chooser *FileChooser) SetAction(action FileChooserAction) {
 	var _arg0 *C.GtkFileChooser      // out
@@ -1776,8 +1773,8 @@ func (chooser *FileChooser) SetAction(action FileChooserAction) {
 //
 // The function takes the following parameters:
 //
-//    - id: ID of the choice to set.
-//    - option: ID of the option to select.
+//   - id: ID of the choice to set.
+//   - option: ID of the option to select.
 //
 func (chooser *FileChooser) SetChoice(id, option string) {
 	var _arg0 *C.GtkFileChooser // out
@@ -1796,13 +1793,13 @@ func (chooser *FileChooser) SetChoice(id, option string) {
 	runtime.KeepAlive(option)
 }
 
-// SetCreateFolders sets whether file choser will offer to create new folders.
-// This is only relevant if the action is not set to be
+// SetCreateFolders sets whether file choser will offer to create
+// new folders. This is only relevant if the action is not set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN.
 //
 // The function takes the following parameters:
 //
-//    - createFolders: TRUE if the Create Folder button should be displayed.
+//   - createFolders: TRUE if the Create Folder button should be displayed.
 //
 func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 	var _arg0 *C.GtkFileChooser // out
@@ -1822,17 +1819,17 @@ func (chooser *FileChooser) SetCreateFolders(createFolders bool) {
 // The user will be shown the full contents of the current folder, plus user
 // interface elements for navigating to other folders.
 //
-// In general, you should not use this function. See the [section on setting up
-// a file chooser dialog][gtkfilechooserdialog-setting-up] for the rationale
+// In general, you should not use this function. See the [section on setting
+// up a file chooser dialog][gtkfilechooserdialog-setting-up] for the rationale
 // behind this.
 //
 // The function takes the following parameters:
 //
-//    - filename: full path of the new current folder.
+//   - filename: full path of the new current folder.
 //
 // The function returns the following values:
 //
-//    - ok: not useful.
+//   - ok: not useful.
 //
 func (chooser *FileChooser) SetCurrentFolder(filename string) bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1861,7 +1858,7 @@ func (chooser *FileChooser) SetCurrentFolder(filename string) bool {
 //
 // The function takes the following parameters:
 //
-//    - file for the new folder.
+//   - file for the new folder.
 //
 func (chooser *FileChooser) SetCurrentFolderFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
@@ -1888,17 +1885,17 @@ func (chooser *FileChooser) SetCurrentFolderFile(file gio.Filer) error {
 // will be shown the full contents of the current folder, plus user interface
 // elements for navigating to other folders.
 //
-// In general, you should not use this function. See the [section on setting up
-// a file chooser dialog][gtkfilechooserdialog-setting-up] for the rationale
+// In general, you should not use this function. See the [section on setting
+// up a file chooser dialog][gtkfilechooserdialog-setting-up] for the rationale
 // behind this.
 //
 // The function takes the following parameters:
 //
-//    - uri: URI for the new current folder.
+//   - uri: URI for the new current folder.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the folder could be changed successfully, FALSE otherwise.
+//   - ok: TRUE if the folder could be changed successfully, FALSE otherwise.
 //
 func (chooser *FileChooser) SetCurrentFolderURI(uri string) bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -1929,13 +1926,13 @@ func (chooser *FileChooser) SetCurrentFolderURI(uri string) bool {
 // for the name.
 //
 // If you want to preselect a particular existing file, you should use
-// gtk_file_chooser_set_filename() or gtk_file_chooser_set_uri() instead. Please
-// see the documentation for those functions for an example of using
+// gtk_file_chooser_set_filename() or gtk_file_chooser_set_uri() instead.
+// Please see the documentation for those functions for an example of using
 // gtk_file_chooser_set_current_name() as well.
 //
 // The function takes the following parameters:
 //
-//    - name to use, as a UTF-8 string.
+//   - name to use, as a UTF-8 string.
 //
 func (chooser *FileChooser) SetCurrentName(name string) {
 	var _arg0 *C.GtkFileChooser // out
@@ -1964,7 +1961,7 @@ func (chooser *FileChooser) SetCurrentName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - doOverwriteConfirmation: whether to confirm overwriting in save mode.
+//   - doOverwriteConfirmation: whether to confirm overwriting in save mode.
 //
 func (chooser *FileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
 	var _arg0 *C.GtkFileChooser // out
@@ -1985,7 +1982,7 @@ func (chooser *FileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation b
 //
 // The function takes the following parameters:
 //
-//    - extraWidget: widget for extra options.
+//   - extraWidget: widget for extra options.
 //
 func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2005,19 +2002,19 @@ func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
 // also appear in the dialog’s file name entry.
 //
 // If the file name isn’t in the current folder of chooser, then the current
-// folder of chooser will be changed to the folder containing filename. This is
-// equivalent to a sequence of gtk_file_chooser_unselect_all() followed by
-// gtk_file_chooser_select_filename().
+// folder of chooser will be changed to the folder containing filename.
+// This is equivalent to a sequence of gtk_file_chooser_unselect_all() followed
+// by gtk_file_chooser_select_filename().
 //
 // Note that the file must exist, or nothing will be done except for the
 // directory change.
 //
-// If you are implementing a save dialog, you should use this function if you
-// already have a file name to which the user may save; for example, when the
-// user opens an existing file and then does Save As... If you don’t have a file
-// name already — for example, if the user just created a new file and is saving
-// it for the first time, do not call this function. Instead, use something
-// similar to this:
+// If you are implementing a save dialog, you should use this function if
+// you already have a file name to which the user may save; for example,
+// when the user opens an existing file and then does Save As... If you don’t
+// have a file name already — for example, if the user just created a new file
+// and is saving it for the first time, do not call this function. Instead,
+// use something similar to this:
 //
 //    if (document_is_new)
 //      {
@@ -2033,7 +2030,7 @@ func (chooser *FileChooser) SetExtraWidget(extraWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - file to set as current.
+//   - file to set as current.
 //
 func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	var _arg0 *C.GtkFileChooser // out
@@ -2056,9 +2053,9 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 	return _goerr
 }
 
-// SetFilename sets filename as the current filename for the file chooser, by
-// changing to the file’s parent folder and actually selecting the file in list;
-// all other files will be unselected. If the chooser is in
+// SetFilename sets filename as the current filename for the file chooser,
+// by changing to the file’s parent folder and actually selecting the
+// file in list; all other files will be unselected. If the chooser is in
 // GTK_FILE_CHOOSER_ACTION_SAVE mode, the file’s base name will also appear in
 // the dialog’s file name entry.
 //
@@ -2066,11 +2063,11 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 // directory change.
 //
 // You should use this function only when implementing a save dialog for which
-// you already have a file name to which the user may save. For example, when
-// the user opens an existing file and then does Save As... to save a copy or a
-// modified version. If you don’t have a file name already — for example, if the
-// user just created a new file and is saving it for the first time, do not call
-// this function. Instead, use something similar to this:
+// you already have a file name to which the user may save. For example,
+// when the user opens an existing file and then does Save As... to save a copy
+// or a modified version. If you don’t have a file name already — for example,
+// if the user just created a new file and is saving it for the first time,
+// do not call this function. Instead, use something similar to this:
 //
 //    if (document_is_new)
 //      {
@@ -2089,11 +2086,11 @@ func (chooser *FileChooser) SetFile(file gio.Filer) error {
 //
 // The function takes the following parameters:
 //
-//    - filename to set as current.
+//   - filename to set as current.
 //
 // The function returns the following values:
 //
-//    - ok: not useful.
+//   - ok: not useful.
 //
 func (chooser *FileChooser) SetFilename(filename string) bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -2125,7 +2122,7 @@ func (chooser *FileChooser) SetFilename(filename string) bool {
 //
 // The function takes the following parameters:
 //
-//    - filter: FileFilter.
+//   - filter: FileFilter.
 //
 func (chooser *FileChooser) SetFilter(filter *FileFilter) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2151,7 +2148,7 @@ func (chooser *FileChooser) SetFilter(filter *FileFilter) {
 //
 // The function takes the following parameters:
 //
-//    - localOnly: TRUE if only local files can be selected.
+//   - localOnly: TRUE if only local files can be selected.
 //
 func (chooser *FileChooser) SetLocalOnly(localOnly bool) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2182,7 +2179,7 @@ func (chooser *FileChooser) SetLocalOnly(localOnly bool) {
 //
 // The function takes the following parameters:
 //
-//    - previewWidget: widget for displaying preview.
+//   - previewWidget: widget for displaying preview.
 //
 func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgetter) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2204,7 +2201,7 @@ func (chooser *FileChooser) SetPreviewWidget(previewWidget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - active: whether to display the user-specified preview widget.
+//   - active: whether to display the user-specified preview widget.
 //
 func (chooser *FileChooser) SetPreviewWidgetActive(active bool) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2220,13 +2217,13 @@ func (chooser *FileChooser) SetPreviewWidgetActive(active bool) {
 	runtime.KeepAlive(active)
 }
 
-// SetSelectMultiple sets whether multiple files can be selected in the file
-// selector. This is only relevant if the action is set to be
+// SetSelectMultiple sets whether multiple files can be selected in
+// the file selector. This is only relevant if the action is set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 //
 // The function takes the following parameters:
 //
-//    - selectMultiple: TRUE if multiple files can be selected.
+//   - selectMultiple: TRUE if multiple files can be selected.
 //
 func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2247,7 +2244,7 @@ func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
 //
 // The function takes the following parameters:
 //
-//    - showHidden: TRUE if hidden files and folders should be displayed.
+//   - showHidden: TRUE if hidden files and folders should be displayed.
 //
 func (chooser *FileChooser) SetShowHidden(showHidden bool) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2264,19 +2261,19 @@ func (chooser *FileChooser) SetShowHidden(showHidden bool) {
 }
 
 // SetURI sets the file referred to by uri as the current file for the file
-// chooser, by changing to the URI’s parent folder and actually selecting the
-// URI in the list. If the chooser is GTK_FILE_CHOOSER_ACTION_SAVE mode, the
-// URI’s base name will also appear in the dialog’s file name entry.
+// chooser, by changing to the URI’s parent folder and actually selecting
+// the URI in the list. If the chooser is GTK_FILE_CHOOSER_ACTION_SAVE mode,
+// the URI’s base name will also appear in the dialog’s file name entry.
 //
 // Note that the URI must exist, or nothing will be done except for the
 // directory change.
 //
 // You should use this function only when implementing a save dialog for which
-// you already have a file name to which the user may save. For example, when
-// the user opens an existing file and then does Save As... to save a copy or a
-// modified version. If you don’t have a file name already — for example, if the
-// user just created a new file and is saving it for the first time, do not call
-// this function. Instead, use something similar to this:
+// you already have a file name to which the user may save. For example,
+// when the user opens an existing file and then does Save As... to save a copy
+// or a modified version. If you don’t have a file name already — for example,
+// if the user just created a new file and is saving it for the first time,
+// do not call this function. Instead, use something similar to this:
 //
 //    if (document_is_new)
 //      {
@@ -2295,11 +2292,11 @@ func (chooser *FileChooser) SetShowHidden(showHidden bool) {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to set as current.
+//   - uri: URI to set as current.
 //
 // The function returns the following values:
 //
-//    - ok: not useful.
+//   - ok: not useful.
 //
 func (chooser *FileChooser) SetURI(uri string) bool {
 	var _arg0 *C.GtkFileChooser // out
@@ -2323,8 +2320,8 @@ func (chooser *FileChooser) SetURI(uri string) bool {
 	return _ok
 }
 
-// SetUsePreviewLabel sets whether the file chooser should display a stock label
-// with the name of the file that is being previewed; the default is TRUE.
+// SetUsePreviewLabel sets whether the file chooser should display a stock
+// label with the name of the file that is being previewed; the default is TRUE.
 // Applications that want to draw the whole preview area themselves should set
 // this to FALSE and display the name themselves in their preview widget.
 //
@@ -2332,8 +2329,8 @@ func (chooser *FileChooser) SetURI(uri string) bool {
 //
 // The function takes the following parameters:
 //
-//    - useLabel: whether to display a stock label with the name of the previewed
-//      file.
+//   - useLabel: whether to display a stock label with the name of the previewed
+//     file.
 //
 func (chooser *FileChooser) SetUsePreviewLabel(useLabel bool) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2359,13 +2356,13 @@ func (chooser *FileChooser) UnselectAll() {
 	runtime.KeepAlive(chooser)
 }
 
-// UnselectFile unselects the file referred to by file. If the file is not in
-// the current directory, does not exist, or is otherwise not currently
+// UnselectFile unselects the file referred to by file. If the file is not
+// in the current directory, does not exist, or is otherwise not currently
 // selected, does nothing.
 //
 // The function takes the following parameters:
 //
-//    - file: #GFile.
+//   - file: #GFile.
 //
 func (chooser *FileChooser) UnselectFile(file gio.Filer) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2385,7 +2382,7 @@ func (chooser *FileChooser) UnselectFile(file gio.Filer) {
 //
 // The function takes the following parameters:
 //
-//    - filename to unselect.
+//   - filename to unselect.
 //
 func (chooser *FileChooser) UnselectFilename(filename string) {
 	var _arg0 *C.GtkFileChooser // out
@@ -2406,7 +2403,7 @@ func (chooser *FileChooser) UnselectFilename(filename string) {
 //
 // The function takes the following parameters:
 //
-//    - uri: URI to unselect.
+//   - uri: URI to unselect.
 //
 func (chooser *FileChooser) UnselectURI(uri string) {
 	var _arg0 *C.GtkFileChooser // out

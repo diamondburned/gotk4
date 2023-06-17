@@ -69,30 +69,30 @@ type FileInputStreamOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-	//    - attributes: file attribute query string.
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - attributes: file attribute query string.
 	//
 	// The function returns the following values:
 	//
-	//    - fileInfo or NULL on error.
+	//   - fileInfo or NULL on error.
 	//
 	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error)
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: Result.
+	//   - result: Result.
 	//
 	// The function returns the following values:
 	//
-	//    - fileInfo: Info.
+	//   - fileInfo: Info.
 	//
 	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error)
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional)
-	//    - offset
-	//    - typ
+	//   - ctx (optional)
+	//   - offset
+	//   - typ
 	//
 	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
 	// The function returns the following values:
@@ -112,11 +112,11 @@ func defaultFileInputStreamOverrides(v *FileInputStream) FileInputStreamOverride
 
 // FileInputStream provides input streams that take their content from a file.
 //
-// GFileInputStream implements #GSeekable, which allows the input stream to jump
-// to arbitrary positions in the file, provided the filesystem of the file
-// allows it. To find the position of a file input stream, use
-// g_seekable_tell(). To find out if a file input stream supports seeking, use
-// g_seekable_can_seek(). To position a file input stream, use
+// GFileInputStream implements #GSeekable, which allows the input stream
+// to jump to arbitrary positions in the file, provided the filesystem
+// of the file allows it. To find the position of a file input stream,
+// use g_seekable_tell(). To find out if a file input stream supports seeking,
+// use g_seekable_can_seek(). To position a file input stream, use
 // g_seekable_seek().
 type FileInputStream struct {
 	_ [0]func() // equal guard
@@ -186,19 +186,19 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 }
 
 // QueryInfo queries a file input stream the given attributes. This function
-// blocks while querying the stream. For the asynchronous (non-blocking) version
-// of this function, see g_file_input_stream_query_info_async(). While the
-// stream is blocked, the stream will set the pending flag internally, and any
-// other operations on the stream will fail with G_IO_ERROR_PENDING.
+// blocks while querying the stream. For the asynchronous (non-blocking)
+// version of this function, see g_file_input_stream_query_info_async().
+// While the stream is blocked, the stream will set the pending flag internally,
+// and any other operations on the stream will fail with G_IO_ERROR_PENDING.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - attributes: file attribute query string.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
 //
 // The function returns the following values:
 //
-//    - fileInfo or NULL on error.
+//   - fileInfo or NULL on error.
 //
 func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
@@ -232,8 +232,8 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 	return _fileInfo, _goerr
 }
 
-// QueryInfoAsync queries the stream information asynchronously. When the
-// operation is finished callback will be called. You can then call
+// QueryInfoAsync queries the stream information asynchronously. When
+// the operation is finished callback will be called. You can then call
 // g_file_input_stream_query_info_finish() to get the result of the operation.
 //
 // For the synchronous version of this function, see
@@ -245,10 +245,10 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - attributes: file attribute query string.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
@@ -284,11 +284,11 @@ func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes st
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - fileInfo: Info.
+//   - fileInfo: Info.
 //
 func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
@@ -338,19 +338,19 @@ func (stream *FileInputStream) canSeek() bool {
 }
 
 // queryInfo queries a file input stream the given attributes. This function
-// blocks while querying the stream. For the asynchronous (non-blocking) version
-// of this function, see g_file_input_stream_query_info_async(). While the
-// stream is blocked, the stream will set the pending flag internally, and any
-// other operations on the stream will fail with G_IO_ERROR_PENDING.
+// blocks while querying the stream. For the asynchronous (non-blocking)
+// version of this function, see g_file_input_stream_query_info_async().
+// While the stream is blocked, the stream will set the pending flag internally,
+// and any other operations on the stream will fail with G_IO_ERROR_PENDING.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - attributes: file attribute query string.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
 //
 // The function returns the following values:
 //
-//    - fileInfo or NULL on error.
+//   - fileInfo or NULL on error.
 //
 func (stream *FileInputStream) queryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
@@ -387,8 +387,8 @@ func (stream *FileInputStream) queryInfo(ctx context.Context, attributes string)
 	return _fileInfo, _goerr
 }
 
-// queryInfoAsync queries the stream information asynchronously. When the
-// operation is finished callback will be called. You can then call
+// queryInfoAsync queries the stream information asynchronously. When
+// the operation is finished callback will be called. You can then call
 // g_file_input_stream_query_info_finish() to get the result of the operation.
 //
 // For the synchronous version of this function, see
@@ -400,10 +400,10 @@ func (stream *FileInputStream) queryInfo(ctx context.Context, attributes string)
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - attributes: file attribute query string.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (stream *FileInputStream) queryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
@@ -442,11 +442,11 @@ func (stream *FileInputStream) queryInfoAsync(ctx context.Context, attributes st
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 // The function returns the following values:
 //
-//    - fileInfo: Info.
+//   - fileInfo: Info.
 //
 func (stream *FileInputStream) queryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
@@ -477,9 +477,9 @@ func (stream *FileInputStream) queryInfoFinish(result AsyncResulter) (*FileInfo,
 
 // The function takes the following parameters:
 //
-//    - ctx (optional)
-//    - offset
-//    - typ
+//   - ctx (optional)
+//   - offset
+//   - typ
 //
 func (stream *FileInputStream) seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))

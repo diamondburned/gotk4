@@ -22,12 +22,12 @@ import "C"
 // code, and COUNTRY is an ISO-3166 country code. For instance, sv_FI for
 // Swedish as written in Finland or pt_BR for Portuguese as written in Brazil.
 //
-// On Windows, the C library does not use any such environment variables, and
-// setting them won't affect the behavior of functions like ctime(). The user
-// sets the locale through the Regional Options in the Control Panel. The C
-// library (in the setlocale() function) does not use country and language
-// codes, but country and language names spelled out in English. However, this
-// function does check the above environment variables, and does return a
+// On Windows, the C library does not use any such environment variables,
+// and setting them won't affect the behavior of functions like ctime().
+// The user sets the locale through the Regional Options in the Control Panel.
+// The C library (in the setlocale() function) does not use country and language
+// codes, but country and language names spelled out in English. However,
+// this function does check the above environment variables, and does return a
 // Unix-style locale string based on either said environment variables or the
 // thread's current locale.
 //
@@ -39,7 +39,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - language: default language as a PangoLanguage, must not be freed.
+//   - language: default language as a PangoLanguage, must not be freed.
 //
 func LanguageGetDefault() *Language {
 	var _cret *C.PangoLanguage // in

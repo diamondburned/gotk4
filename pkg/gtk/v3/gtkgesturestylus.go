@@ -79,11 +79,11 @@ func (gesture *GestureStylus) ConnectUp(f func(object, p0 float64)) coreglib.Sig
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - gestureStylus: newly created stylus gesture.
+//   - gestureStylus: newly created stylus gesture.
 //
 func NewGestureStylus(widget Widgetter) *GestureStylus {
 	var _arg1 *C.GtkWidget  // out
@@ -101,18 +101,18 @@ func NewGestureStylus(widget Widgetter) *GestureStylus {
 	return _gestureStylus
 }
 
-// Axis returns the current value for the requested axis. This function must be
-// called from either the GestureStylus:down, GestureStylus:motion,
+// Axis returns the current value for the requested axis. This function
+// must be called from either the GestureStylus:down, GestureStylus:motion,
 // GestureStylus:up or GestureStylus:proximity signals.
 //
 // The function takes the following parameters:
 //
-//    - axis: requested device axis.
+//   - axis: requested device axis.
 //
 // The function returns the following values:
 //
-//    - value: return location for the axis value.
-//    - ok if there is a current value for the axis.
+//   - value: return location for the axis value.
+//   - ok if there is a current value for the axis.
 //
 func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus // out
@@ -145,7 +145,7 @@ func (gesture *GestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 //
 // The function returns the following values:
 //
-//    - deviceTool (optional): current stylus tool.
+//   - deviceTool (optional): current stylus tool.
 //
 func (gesture *GestureStylus) DeviceTool() *gdk.DeviceTool {
 	var _arg0 *C.GtkGestureStylus // out

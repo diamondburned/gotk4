@@ -64,7 +64,7 @@ func (gesture *GestureZoom) ConnectScaleChanged(f func(scale float64)) coreglib.
 //
 // The function returns the following values:
 //
-//    - gestureZoom: newly created GtkGestureZoom.
+//   - gestureZoom: newly created GtkGestureZoom.
 //
 func NewGestureZoom() *GestureZoom {
 	var _cret *C.GtkGesture // in
@@ -80,13 +80,13 @@ func NewGestureZoom() *GestureZoom {
 
 // ScaleDelta gets the scale delta.
 //
-// If gesture is active, this function returns the zooming difference since the
-// gesture was recognized (hence the starting point is considered 1:1). If
-// gesture is not active, 1 is returned.
+// If gesture is active, this function returns the zooming difference since
+// the gesture was recognized (hence the starting point is considered 1:1).
+// If gesture is not active, 1 is returned.
 //
 // The function returns the following values:
 //
-//    - gdouble: scale delta.
+//   - gdouble: scale delta.
 //
 func (gesture *GestureZoom) ScaleDelta() float64 {
 	var _arg0 *C.GtkGestureZoom // out

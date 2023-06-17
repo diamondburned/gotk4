@@ -101,7 +101,7 @@ func marshalSeekable(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if seekable can be seeked. FALSE otherwise.
+//   - ok: TRUE if seekable can be seeked. FALSE otherwise.
 //
 func (seekable *Seekable) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
@@ -126,7 +126,7 @@ func (seekable *Seekable) CanSeek() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream can be truncated, FALSE otherwise.
+//   - ok: TRUE if the stream can be truncated, FALSE otherwise.
 //
 func (seekable *Seekable) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
@@ -163,9 +163,9 @@ func (seekable *Seekable) CanTruncate() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - offset: #goffset.
-//    - typ: Type.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - offset: #goffset.
+//   - typ: Type.
 //
 func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	var _arg0 *C.GSeekable    // out
@@ -202,7 +202,7 @@ func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekT
 //
 // The function returns the following values:
 //
-//    - gint64: offset from the beginning of the buffer.
+//   - gint64: offset from the beginning of the buffer.
 //
 func (seekable *Seekable) Tell() int64 {
 	var _arg0 *C.GSeekable // out
@@ -232,8 +232,8 @@ func (seekable *Seekable) Tell() int64 {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - offset: new length for seekable, in bytes.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - offset: new length for seekable, in bytes.
 //
 func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 	var _arg0 *C.GSeekable    // out
@@ -267,7 +267,7 @@ func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if seekable can be seeked. FALSE otherwise.
+//   - ok: TRUE if seekable can be seeked. FALSE otherwise.
 //
 func (seekable *Seekable) canSeek() bool {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
@@ -295,7 +295,7 @@ func (seekable *Seekable) canSeek() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the stream can be truncated, FALSE otherwise.
+//   - ok: TRUE if the stream can be truncated, FALSE otherwise.
 //
 func (seekable *Seekable) canTruncate() bool {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
@@ -335,9 +335,9 @@ func (seekable *Seekable) canTruncate() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - offset: #goffset.
-//    - typ: Type.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - offset: #goffset.
+//   - typ: Type.
 //
 func (seekable *Seekable) seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
@@ -377,7 +377,7 @@ func (seekable *Seekable) seek(ctx context.Context, offset int64, typ glib.SeekT
 //
 // The function returns the following values:
 //
-//    - gint64: offset from the beginning of the buffer.
+//   - gint64: offset from the beginning of the buffer.
 //
 func (seekable *Seekable) tell() int64 {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
@@ -410,8 +410,8 @@ func (seekable *Seekable) tell() int64 {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - offset: new length for seekable, in bytes.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - offset: new length for seekable, in bytes.
 //
 func (seekable *Seekable) truncateFn(ctx context.Context, offset int64) error {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))

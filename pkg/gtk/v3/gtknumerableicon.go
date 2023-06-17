@@ -92,7 +92,7 @@ func marshalNumerableIcon(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - icon (optional) or NULL.
+//   - icon (optional) or NULL.
 //
 func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -124,7 +124,7 @@ func (self *NumerableIcon) BackgroundGIcon() *gio.Icon {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): icon name, or NULL.
+//   - utf8 (optional): icon name, or NULL.
 //
 func (self *NumerableIcon) BackgroundIconName() string {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -150,7 +150,7 @@ func (self *NumerableIcon) BackgroundIconName() string {
 //
 // The function returns the following values:
 //
-//    - gint: currently displayed value.
+//   - gint: currently displayed value.
 //
 func (self *NumerableIcon) Count() int {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -174,7 +174,7 @@ func (self *NumerableIcon) Count() int {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): currently displayed label.
+//   - utf8 (optional): currently displayed label.
 //
 func (self *NumerableIcon) Label() string {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -201,8 +201,8 @@ func (self *NumerableIcon) Label() string {
 //
 // The function returns the following values:
 //
-//    - styleContext (optional) or NULL. This object is internal to GTK+ and
-//      should not be unreffed. Use g_object_ref() if you want to keep it around.
+//   - styleContext (optional) or NULL. This object is internal to GTK+ and
+//     should not be unreffed. Use g_object_ref() if you want to keep it around.
 //
 func (self *NumerableIcon) StyleContext() *StyleContext {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -226,16 +226,16 @@ func (self *NumerableIcon) StyleContext() *StyleContext {
 // If icon is NULL, self will go back using style information or default theming
 // for its background image.
 //
-// If this method is called and an icon name was already set as background for
-// the icon, icon will be used, i.e. the last method called between
-// gtk_numerable_icon_set_background_gicon() and
+// If this method is called and an icon name was already set as
+// background for the icon, icon will be used, i.e. the last method
+// called between gtk_numerable_icon_set_background_gicon() and
 // gtk_numerable_icon_set_background_icon_name() has always priority.
 //
 // Deprecated: since version 3.14.
 //
 // The function takes the following parameters:
 //
-//    - icon (optional) or NULL.
+//   - icon (optional) or NULL.
 //
 func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -256,16 +256,16 @@ func (self *NumerableIcon) SetBackgroundGIcon(icon gio.Iconner) {
 // self will go back using style information or default theming for its
 // background image.
 //
-// If this method is called and a #GIcon was already set as background for the
-// icon, icon_name will be used, i.e. the last method called between
-// gtk_numerable_icon_set_background_icon_name() and
+// If this method is called and a #GIcon was already set as background
+// for the icon, icon_name will be used, i.e. the last method
+// called between gtk_numerable_icon_set_background_icon_name() and
 // gtk_numerable_icon_set_background_gicon() has always priority.
 //
 // Deprecated: since version 3.14.
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name, or NULL.
+//   - iconName (optional): icon name, or NULL.
 //
 func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -286,8 +286,8 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 //
 // The numeric value is always clamped to make it two digits, i.e. between -99
 // and 99. Setting a count of zero removes the emblem. If this method is called,
-// and a label was already set on the icon, it will automatically be reset to
-// NULL before rendering the number, i.e. the last method called between
+// and a label was already set on the icon, it will automatically be reset
+// to NULL before rendering the number, i.e. the last method called between
 // gtk_numerable_icon_set_count() and gtk_numerable_icon_set_label() has always
 // priority.
 //
@@ -295,7 +295,7 @@ func (self *NumerableIcon) SetBackgroundIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - count: number between -99 and 99.
+//   - count: number between -99 and 99.
 //
 func (self *NumerableIcon) SetCount(count int) {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -317,16 +317,16 @@ func (self *NumerableIcon) SetCount(count int) {
 // U+2160 - U+217F. Strings longer than two characters will likely not be
 // rendered very well.
 //
-// If this method is called, and a number was already set on the icon, it will
-// automatically be reset to zero before rendering the label, i.e. the last
-// method called between gtk_numerable_icon_set_label() and
+// If this method is called, and a number was already set on the icon,
+// it will automatically be reset to zero before rendering the label,
+// i.e. the last method called between gtk_numerable_icon_set_label() and
 // gtk_numerable_icon_set_count() has always priority.
 //
 // Deprecated: since version 3.14.
 //
 // The function takes the following parameters:
 //
-//    - label (optional): short label, or NULL.
+//   - label (optional): short label, or NULL.
 //
 func (self *NumerableIcon) SetLabel(label string) {
 	var _arg0 *C.GtkNumerableIcon // out
@@ -350,7 +350,7 @@ func (self *NumerableIcon) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - style: StyleContext.
+//   - style: StyleContext.
 //
 func (self *NumerableIcon) SetStyleContext(style *StyleContext) {
 	var _arg0 *C.GtkNumerableIcon // out

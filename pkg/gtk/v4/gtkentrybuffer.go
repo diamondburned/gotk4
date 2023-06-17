@@ -66,25 +66,25 @@ type EntryBufferOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - position at which to delete text.
-	//    - nChars: number of characters to delete.
+	//   - position at which to delete text.
+	//   - nChars: number of characters to delete.
 	//
 	// The function returns the following values:
 	//
-	//    - guint: number of characters deleted.
+	//   - guint: number of characters deleted.
 	//
 	DeleteText func(position, nChars uint) uint
 	// The function takes the following parameters:
 	//
-	//    - position
-	//    - nChars
+	//   - position
+	//   - nChars
 	//
 	DeletedText func(position, nChars uint)
 	// Length retrieves the length in characters of the buffer.
 	//
 	// The function returns the following values:
 	//
-	//    - guint: number of characters in the buffer.
+	//   - guint: number of characters in the buffer.
 	//
 	Length func() uint
 	// The function takes the following parameters:
@@ -96,28 +96,28 @@ type EntryBufferOverrides struct {
 	// buffer, at position position.
 	//
 	// If n_chars is negative, then characters from chars will be inserted until
-	// a null-terminator is found. If position or n_chars are out of bounds, or
-	// the maximum buffer text length is exceeded, then they are coerced to sane
-	// values.
+	// a null-terminator is found. If position or n_chars are out of bounds,
+	// or the maximum buffer text length is exceeded, then they are coerced to
+	// sane values.
 	//
 	// Note that the position and length are in characters, not in bytes.
 	//
 	// The function takes the following parameters:
 	//
-	//    - position at which to insert text.
-	//    - chars: text to insert into the buffer.
-	//    - nChars: length of the text in characters, or -1.
+	//   - position at which to insert text.
+	//   - chars: text to insert into the buffer.
+	//   - nChars: length of the text in characters, or -1.
 	//
 	// The function returns the following values:
 	//
-	//    - guint: number of characters actually inserted.
+	//   - guint: number of characters actually inserted.
 	//
 	InsertText func(position uint, chars string, nChars uint) uint
 	// The function takes the following parameters:
 	//
-	//    - position
-	//    - chars
-	//    - nChars
+	//   - position
+	//   - chars
+	//   - nChars
 	//
 	InsertedText func(position uint, chars string, nChars uint)
 }
@@ -224,12 +224,12 @@ func (buffer *EntryBuffer) ConnectInsertedText(f func(position uint, chars strin
 //
 // The function takes the following parameters:
 //
-//    - initialChars (optional): initial buffer text, or NULL.
-//    - nInitialChars: number of characters in initial_chars, or -1.
+//   - initialChars (optional): initial buffer text, or NULL.
+//   - nInitialChars: number of characters in initial_chars, or -1.
 //
 // The function returns the following values:
 //
-//    - entryBuffer: new GtkEntryBuffer object.
+//   - entryBuffer: new GtkEntryBuffer object.
 //
 func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 	var _arg1 *C.char           // out
@@ -265,12 +265,12 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer {
 //
 // The function takes the following parameters:
 //
-//    - position at which to delete text.
-//    - nChars: number of characters to delete.
+//   - position at which to delete text.
+//   - nChars: number of characters to delete.
 //
 // The function returns the following values:
 //
-//    - guint: number of characters deleted.
+//   - guint: number of characters deleted.
 //
 func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -298,8 +298,8 @@ func (buffer *EntryBuffer) DeleteText(position uint, nChars int) uint {
 //
 // The function takes the following parameters:
 //
-//    - position at which text was deleted.
-//    - nChars: number of characters deleted.
+//   - position at which text was deleted.
+//   - nChars: number of characters deleted.
 //
 func (buffer *EntryBuffer) EmitDeletedText(position, nChars uint) {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -320,9 +320,9 @@ func (buffer *EntryBuffer) EmitDeletedText(position, nChars uint) {
 //
 // The function takes the following parameters:
 //
-//    - position at which text was inserted.
-//    - chars: text that was inserted.
-//    - nChars: number of characters inserted.
+//   - position at which text was inserted.
+//   - chars: text that was inserted.
+//   - nChars: number of characters inserted.
 //
 func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars uint) {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -349,7 +349,7 @@ func (buffer *EntryBuffer) EmitInsertedText(position uint, chars string, nChars 
 //
 // The function returns the following values:
 //
-//    - gsize: byte length of the buffer.
+//   - gsize: byte length of the buffer.
 //
 func (buffer *EntryBuffer) Bytes() uint {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -371,7 +371,7 @@ func (buffer *EntryBuffer) Bytes() uint {
 //
 // The function returns the following values:
 //
-//    - guint: number of characters in the buffer.
+//   - guint: number of characters in the buffer.
 //
 func (buffer *EntryBuffer) Length() uint {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -393,8 +393,8 @@ func (buffer *EntryBuffer) Length() uint {
 //
 // The function returns the following values:
 //
-//    - gint: maximum allowed number of characters in EntryBuffer, or 0 if there
-//      is no maximum.
+//   - gint: maximum allowed number of characters in EntryBuffer, or 0 if there
+//     is no maximum.
 //
 func (buffer *EntryBuffer) MaxLength() int {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -419,9 +419,9 @@ func (buffer *EntryBuffer) MaxLength() int {
 //
 // The function returns the following values:
 //
-//    - utf8: pointer to the contents of the widget as a string. This string
-//      points to internally allocated storage in the buffer and must not be
-//      freed, modified or stored.
+//   - utf8: pointer to the contents of the widget as a string. This string
+//     points to internally allocated storage in the buffer and must not be
+//     freed, modified or stored.
 //
 func (buffer *EntryBuffer) Text() string {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -450,13 +450,13 @@ func (buffer *EntryBuffer) Text() string {
 //
 // The function takes the following parameters:
 //
-//    - position at which to insert text.
-//    - chars: text to insert into the buffer.
-//    - nChars: length of the text in characters, or -1.
+//   - position at which to insert text.
+//   - chars: text to insert into the buffer.
+//   - nChars: length of the text in characters, or -1.
 //
 // The function returns the following values:
 //
-//    - guint: number of characters actually inserted.
+//   - guint: number of characters actually inserted.
 //
 func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) uint {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -491,9 +491,9 @@ func (buffer *EntryBuffer) InsertText(position uint, chars string, nChars int) u
 //
 // The function takes the following parameters:
 //
-//    - maxLength: maximum length of the entry buffer, or 0 for no maximum.
-//      (other than the maximum length of entries.) The value passed in will be
-//      clamped to the range 0-65536.
+//   - maxLength: maximum length of the entry buffer, or 0 for no maximum.
+//     (other than the maximum length of entries.) The value passed in will be
+//     clamped to the range 0-65536.
 //
 func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -516,8 +516,8 @@ func (buffer *EntryBuffer) SetMaxLength(maxLength int) {
 //
 // The function takes the following parameters:
 //
-//    - chars: new text.
-//    - nChars: number of characters in text, or -1.
+//   - chars: new text.
+//   - nChars: number of characters in text, or -1.
 //
 func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 	var _arg0 *C.GtkEntryBuffer // out
@@ -547,12 +547,12 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 //
 // The function takes the following parameters:
 //
-//    - position at which to delete text.
-//    - nChars: number of characters to delete.
+//   - position at which to delete text.
+//   - nChars: number of characters to delete.
 //
 // The function returns the following values:
 //
-//    - guint: number of characters deleted.
+//   - guint: number of characters deleted.
 //
 func (buffer *EntryBuffer) deleteText(position, nChars uint) uint {
 	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
@@ -581,8 +581,8 @@ func (buffer *EntryBuffer) deleteText(position, nChars uint) uint {
 
 // The function takes the following parameters:
 //
-//    - position
-//    - nChars
+//   - position
+//   - nChars
 //
 func (buffer *EntryBuffer) deletedText(position, nChars uint) {
 	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
@@ -606,7 +606,7 @@ func (buffer *EntryBuffer) deletedText(position, nChars uint) {
 //
 // The function returns the following values:
 //
-//    - guint: number of characters in the buffer.
+//   - guint: number of characters in the buffer.
 //
 func (buffer *EntryBuffer) length() uint {
 	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
@@ -664,13 +664,13 @@ func (buffer *EntryBuffer) text(nBytes *uint) string {
 //
 // The function takes the following parameters:
 //
-//    - position at which to insert text.
-//    - chars: text to insert into the buffer.
-//    - nChars: length of the text in characters, or -1.
+//   - position at which to insert text.
+//   - chars: text to insert into the buffer.
+//   - nChars: length of the text in characters, or -1.
 //
 // The function returns the following values:
 //
-//    - guint: number of characters actually inserted.
+//   - guint: number of characters actually inserted.
 //
 func (buffer *EntryBuffer) insertText(position uint, chars string, nChars uint) uint {
 	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
@@ -703,9 +703,9 @@ func (buffer *EntryBuffer) insertText(position uint, chars string, nChars uint) 
 
 // The function takes the following parameters:
 //
-//    - position
-//    - chars
-//    - nChars
+//   - position
+//   - chars
+//   - nChars
 //
 func (buffer *EntryBuffer) insertedText(position uint, chars string, nChars uint) {
 	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))

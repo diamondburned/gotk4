@@ -118,8 +118,8 @@ func init() {
 // Note that in horizontal context GTK_ALIGN_START and GTK_ALIGN_END are
 // interpreted relative to text direction.
 //
-// GTK_ALIGN_BASELINE support for it is optional for containers and widgets, and
-// it is only supported for vertical alignment. When its not supported by a
+// GTK_ALIGN_BASELINE support for it is optional for containers and widgets,
+// and it is only supported for vertical alignment. When its not supported by a
 // child or a container it is treated as GTK_ALIGN_FILL.
 type Align C.gint
 
@@ -667,9 +667,9 @@ func (n NumberUpLayout) String() string {
 	}
 }
 
-// Orientation represents the orientation of widgets and other objects which can
-// be switched between horizontal and vertical orientation on the fly, like
-// Toolbar or GesturePan.
+// Orientation represents the orientation of widgets and other objects which
+// can be switched between horizontal and vertical orientation on the fly,
+// like Toolbar or GesturePan.
 type Orientation C.gint
 
 const (
@@ -730,8 +730,8 @@ func (p PackDirection) String() string {
 	}
 }
 
-// PackType represents the packing location Box children. (See: VBox, HBox, and
-// ButtonBox).
+// PackType represents the packing location Box children. (See: VBox, HBox,
+// and ButtonBox).
 type PackType C.gint
 
 const (
@@ -1391,8 +1391,8 @@ func (t TextDirection) String() string {
 }
 
 // ToolbarStyle: used to customize the appearance of a Toolbar. Note that
-// setting the toolbar style overrides the user’s preferences for the default
-// toolbar style. Note that if the button has only a label set and
+// setting the toolbar style overrides the user’s preferences for the
+// default toolbar style. Note that if the button has only a label set and
 // GTK_TOOLBAR_ICONS is used, the label will be visible, and vice versa.
 type ToolbarStyle C.gint
 

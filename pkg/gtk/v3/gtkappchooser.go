@@ -39,8 +39,8 @@ func init() {
 // applications are those that claim to handle the content type itself, while
 // fallback also includes applications that handle a more generic content type.
 // GIO also knows the default and last-used application for a given content
-// type. The AppChooserWidget provides detailed control over whether the shown
-// list of applications should include default, recommended or fallback
+// type. The AppChooserWidget provides detailed control over whether the
+// shown list of applications should include default, recommended or fallback
 // applications.
 //
 // To obtain the application that has been selected in a AppChooser, use
@@ -97,8 +97,8 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - appInfo (optional) for the currently selected application, or NULL if
-//      none is selected. Free with g_object_unref().
+//   - appInfo (optional) for the currently selected application, or NULL if
+//     none is selected. Free with g_object_unref().
 //
 func (self *AppChooser) AppInfo() *gio.AppInfo {
 	var _arg0 *C.GtkAppChooser // out
@@ -128,7 +128,7 @@ func (self *AppChooser) AppInfo() *gio.AppInfo {
 //
 // The function returns the following values:
 //
-//    - utf8: content type of self. Free with g_free().
+//   - utf8: content type of self. Free with g_free().
 //
 func (self *AppChooser) ContentType() string {
 	var _arg0 *C.GtkAppChooser // out

@@ -86,7 +86,7 @@ type ContentProviderOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - value: GValue to fill.
+	//   - value: GValue to fill.
 	//
 	Value func(value *coreglib.Value) error
 	// RefFormats gets the formats that the provider can provide its current
@@ -94,7 +94,7 @@ type ContentProviderOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - contentFormats formats of the provider.
+	//   - contentFormats formats of the provider.
 	//
 	RefFormats func() *ContentFormats
 	// RefStorableFormats gets the formats that the provider suggests other
@@ -106,7 +106,7 @@ type ContentProviderOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - contentFormats: storable formats of the provider.
+	//   - contentFormats: storable formats of the provider.
 	//
 	RefStorableFormats func() *ContentFormats
 	// WriteMIMETypeFinish finishes an asynchronous write operation.
@@ -115,7 +115,7 @@ type ContentProviderOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result: GAsyncResult.
+	//   - result: GAsyncResult.
 	//
 	WriteMIMETypeFinish func(result gio.AsyncResulter) error
 }
@@ -217,12 +217,12 @@ func (provider *ContentProvider) ConnectContentChanged(f func()) coreglib.Signal
 //
 // The function takes the following parameters:
 //
-//    - mimeType: mime type.
-//    - bytes: GBytes with the data for mime_type.
+//   - mimeType: mime type.
+//   - bytes: GBytes with the data for mime_type.
 //
 // The function returns the following values:
 //
-//    - contentProvider: new GdkContentProvider.
+//   - contentProvider: new GdkContentProvider.
 //
 func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProvider {
 	var _arg1 *C.char               // out
@@ -249,11 +249,11 @@ func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) *ContentProv
 //
 // The function takes the following parameters:
 //
-//    - value: GValue.
+//   - value: GValue.
 //
 // The function returns the following values:
 //
-//    - contentProvider: new GdkContentProvider.
+//   - contentProvider: new GdkContentProvider.
 //
 func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 	var _arg1 *C.GValue             // out
@@ -278,9 +278,9 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 // providers in the given order and the first one supporting a format will be
 // chosen to provide it.
 //
-// This allows an easy way to support providing data in different formats. For
-// example, an image may be provided by its file and by the image contents with
-// a call such as
+// This allows an easy way to support providing data in different formats.
+// For example, an image may be provided by its file and by the image contents
+// with a call such as
 //
 //    gdk_content_provider_new_union ((GdkContentProvider *[2]) {
 //                                      gdk_content_provider_new_typed (G_TYPE_FILE, file),
@@ -289,11 +289,11 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 //
 // The function takes the following parameters:
 //
-//    - providers (optional): The ContentProviders to present the union of.
+//   - providers (optional): The ContentProviders to present the union of.
 //
 // The function returns the following values:
 //
-//    - contentProvider: new GdkContentProvider.
+//   - contentProvider: new GdkContentProvider.
 //
 func NewContentProviderUnion(providers []*ContentProvider) *ContentProvider {
 	var _arg1 **C.GdkContentProvider // out
@@ -336,13 +336,13 @@ func (provider *ContentProvider) ContentChanged() {
 //
 // The value will have been initialized to the GType the value should be
 // provided in. This given GType does not need to be listed in the formats
-// returned by gdk.ContentProvider.RefFormats(). However, if the given GType is
-// not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will be
+// returned by gdk.ContentProvider.RefFormats(). However, if the given GType
+// is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will be
 // reported.
 //
 // The function takes the following parameters:
 //
-//    - value: GValue to fill.
+//   - value: GValue to fill.
 //
 func (provider *ContentProvider) Value(value *coreglib.Value) error {
 	var _arg0 *C.GdkContentProvider // out
@@ -370,7 +370,7 @@ func (provider *ContentProvider) Value(value *coreglib.Value) error {
 //
 // The function returns the following values:
 //
-//    - contentFormats formats of the provider.
+//   - contentFormats formats of the provider.
 //
 func (provider *ContentProvider) RefFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
@@ -403,7 +403,7 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 //
 // The function returns the following values:
 //
-//    - contentFormats: storable formats of the provider.
+//   - contentFormats: storable formats of the provider.
 //
 func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	var _arg0 *C.GdkContentProvider // out
@@ -433,19 +433,19 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 // When the operation is finished callback will be called. You must then call
 // gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
 //
-// The given mime type does not need to be listed in the formats returned by
-// gdk.ContentProvider.RefFormats(). However, if the given GType is not
+// The given mime type does not need to be listed in the formats returned
+// by gdk.ContentProvider.RefFormats(). However, if the given GType is not
 // supported, IO_ERROR_NOT_SUPPORTED will be reported.
 //
 // The given stream will not be closed.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - mimeType: mime type to provide the data in.
-//    - stream: GOutputStream to write to.
-//    - ioPriority: i/O priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - mimeType: mime type to provide the data in.
+//   - stream: GOutputStream to write to.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkContentProvider // out
@@ -486,7 +486,7 @@ func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeTyp
 //
 // The function takes the following parameters:
 //
-//    - result: GAsyncResult.
+//   - result: GAsyncResult.
 //
 func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) error {
 	var _arg0 *C.GdkContentProvider // out
@@ -560,13 +560,13 @@ func (provider *ContentProvider) detachClipboard(clipboard *Clipboard) {
 //
 // The value will have been initialized to the GType the value should be
 // provided in. This given GType does not need to be listed in the formats
-// returned by gdk.ContentProvider.RefFormats(). However, if the given GType is
-// not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will be
+// returned by gdk.ContentProvider.RefFormats(). However, if the given GType
+// is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will be
 // reported.
 //
 // The function takes the following parameters:
 //
-//    - value: GValue to fill.
+//   - value: GValue to fill.
 //
 func (provider *ContentProvider) value(value *coreglib.Value) error {
 	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
@@ -597,7 +597,7 @@ func (provider *ContentProvider) value(value *coreglib.Value) error {
 //
 // The function returns the following values:
 //
-//    - contentFormats formats of the provider.
+//   - contentFormats formats of the provider.
 //
 func (provider *ContentProvider) refFormats() *ContentFormats {
 	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
@@ -633,7 +633,7 @@ func (provider *ContentProvider) refFormats() *ContentFormats {
 //
 // The function returns the following values:
 //
-//    - contentFormats: storable formats of the provider.
+//   - contentFormats: storable formats of the provider.
 //
 func (provider *ContentProvider) refStorableFormats() *ContentFormats {
 	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
@@ -666,19 +666,19 @@ func (provider *ContentProvider) refStorableFormats() *ContentFormats {
 // When the operation is finished callback will be called. You must then call
 // gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
 //
-// The given mime type does not need to be listed in the formats returned by
-// gdk.ContentProvider.RefFormats(). However, if the given GType is not
+// The given mime type does not need to be listed in the formats returned
+// by gdk.ContentProvider.RefFormats(). However, if the given GType is not
 // supported, IO_ERROR_NOT_SUPPORTED will be reported.
 //
 // The given stream will not be closed.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - mimeType: mime type to provide the data in.
-//    - stream: GOutputStream to write to.
-//    - ioPriority: i/O priority of the request.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - mimeType: mime type to provide the data in.
+//   - stream: GOutputStream to write to.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (provider *ContentProvider) writeMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
 	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
@@ -722,7 +722,7 @@ func (provider *ContentProvider) writeMIMETypeAsync(ctx context.Context, mimeTyp
 //
 // The function takes the following parameters:
 //
-//    - result: GAsyncResult.
+//   - result: GAsyncResult.
 //
 func (provider *ContentProvider) writeMIMETypeFinish(result gio.AsyncResulter) error {
 	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))

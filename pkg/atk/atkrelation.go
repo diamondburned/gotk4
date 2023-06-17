@@ -31,12 +31,12 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - name: string which is the (non-localized) name of an ATK relation type.
+//   - name: string which is the (non-localized) name of an ATK relation type.
 //
 // The function returns the following values:
 //
-//    - relationType enumerated type corresponding to the specified name, or
-//      K_RELATION_NULL if no matching relation type is found.
+//   - relationType enumerated type corresponding to the specified name,
+//     or K_RELATION_NULL if no matching relation type is found.
 //
 func RelationTypeForName(name string) RelationType {
 	var _arg1 *C.gchar          // out
@@ -60,11 +60,11 @@ func RelationTypeForName(name string) RelationType {
 //
 // The function takes the following parameters:
 //
-//    - typ whose name is required.
+//   - typ whose name is required.
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the AtkRelationType.
+//   - utf8: string describing the AtkRelationType.
 //
 func RelationTypeGetName(typ RelationType) string {
 	var _arg1 C.AtkRelationType // out
@@ -86,11 +86,11 @@ func RelationTypeGetName(typ RelationType) string {
 //
 // The function takes the following parameters:
 //
-//    - name string.
+//   - name string.
 //
 // The function returns the following values:
 //
-//    - relationType associated with name.
+//   - relationType associated with name.
 //
 func RelationTypeRegister(name string) RelationType {
 	var _arg1 *C.gchar          // out
@@ -160,12 +160,12 @@ func marshalRelation(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - targets: array of pointers to Objects.
-//    - relationship with which to create the new Relation.
+//   - targets: array of pointers to Objects.
+//   - relationship with which to create the new Relation.
 //
 // The function returns the following values:
 //
-//    - relation: pointer to a new Relation.
+//   - relation: pointer to a new Relation.
 //
 func NewRelation(targets []*AtkObject, relationship RelationType) *Relation {
 	var _arg1 **C.AtkObject // out
@@ -195,12 +195,12 @@ func NewRelation(targets []*AtkObject, relationship RelationType) *Relation {
 	return _relation
 }
 
-// AddTarget adds the specified AtkObject to the target for the relation, if it
-// is not already present. See also atk_object_add_relationship().
+// AddTarget adds the specified AtkObject to the target for the relation,
+// if it is not already present. See also atk_object_add_relationship().
 //
 // The function takes the following parameters:
 //
-//    - target: Object.
+//   - target: Object.
 //
 func (relation *Relation) AddTarget(target *AtkObject) {
 	var _arg0 *C.AtkRelation // out
@@ -218,7 +218,7 @@ func (relation *Relation) AddTarget(target *AtkObject) {
 //
 // The function returns the following values:
 //
-//    - relationType: type of relation.
+//   - relationType: type of relation.
 //
 func (relation *Relation) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
@@ -241,11 +241,11 @@ func (relation *Relation) RelationType() RelationType {
 //
 // The function takes the following parameters:
 //
-//    - target: Object.
+//   - target: Object.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the removal is successful.
+//   - ok: TRUE if the removal is successful.
 //
 func (relation *Relation) RemoveTarget(target *AtkObject) bool {
 	var _arg0 *C.AtkRelation // out

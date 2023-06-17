@@ -18,12 +18,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - mimeType: mime type string.
+//   - mimeType: mime type string.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): newly allocated string with content type or NULL. Free
-//      with g_free().
+//   - utf8 (optional): newly allocated string with content type or NULL.
+//     Free with g_free().
 //
 func ContentTypeFromMIMEType(mimeType string) string {
 	var _arg1 *C.gchar // out
@@ -49,9 +49,9 @@ func ContentTypeFromMIMEType(mimeType string) string {
 // by looking at the files it contains. The result is an array of content types,
 // with the best guess coming first.
 //
-// The types returned all have the form x-content/foo, e.g. x-content/audio-cdda
-// (for audio CDs) or x-content/image-dcf (for a camera memory card). See the
-// shared-mime-info
+// The types returned all have the form x-content/foo, e.g.
+// x-content/audio-cdda (for audio CDs) or x-content/image-dcf
+// (for a camera memory card). See the shared-mime-info
 // (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
 // specification for more on x-content types.
 //
@@ -60,12 +60,12 @@ func ContentTypeFromMIMEType(mimeType string) string {
 //
 // The function takes the following parameters:
 //
-//    - root of the tree to guess a type for.
+//   - root of the tree to guess a type for.
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of zero or more content types. Free with
-//      g_strfreev().
+//   - utf8s: NULL-terminated array of zero or more content types. Free with
+//     g_strfreev().
 //
 func ContentTypeGuessForTree(root Filer) []string {
 	var _arg1 *C.GFile  // out

@@ -15,11 +15,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - uc: unicode character.
+//   - uc: unicode character.
 //
 // The function returns the following values:
 //
-//    - gint: combining class of the character.
+//   - gint: combining class of the character.
 //
 func UnicharCombiningClass(uc uint32) int {
 	var _arg1 C.gunichar // out
@@ -46,11 +46,11 @@ func UnicharCombiningClass(uc uint32) int {
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
+//   - ch: unicode character.
 //
 // The function returns the following values:
 //
-//    - unicodeScript for the character.
+//   - unicodeScript for the character.
 //
 func UnicharGetScript(ch uint32) UnicodeScript {
 	var _arg1 C.gunichar       // out
@@ -78,11 +78,11 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 //
 // The function takes the following parameters:
 //
-//    - c: unicode character.
+//   - c: unicode character.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if c is a mark character.
+//   - ok: TRUE if c is a mark character.
 //
 func UnicharIsmark(c uint32) bool {
 	var _arg1 C.gunichar // out
@@ -114,11 +114,11 @@ func UnicharIsmark(c uint32) bool {
 //
 // The function takes the following parameters:
 //
-//    - c: unicode character.
+//   - c: unicode character.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the character has zero width.
+//   - ok: TRUE if the character has zero width.
 //
 func UnicharIszerowidth(c uint32) bool {
 	var _arg1 C.gunichar // out

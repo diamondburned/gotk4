@@ -34,8 +34,8 @@ func defaultNoOpObjectOverrides(v *NoOpObject) NoOpObjectOverrides {
 	return NoOpObjectOverrides{}
 }
 
-// NoOpObject is an AtkObject which purports to implement all ATK interfaces. It
-// is the type of AtkObject which is created if an accessible object is
+// NoOpObject is an AtkObject which purports to implement all ATK interfaces.
+// It is the type of AtkObject which is created if an accessible object is
 // requested for an object type for which no factory type is specified.
 type NoOpObject struct {
 	_ [0]func() // equal guard
@@ -134,11 +134,11 @@ func marshalNoOpObject(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - obj: #GObject.
+//   - obj: #GObject.
 //
 // The function returns the following values:
 //
-//    - noOpObject: default (non-functioning stub) Object.
+//   - noOpObject: default (non-functioning stub) Object.
 //
 func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
 	var _arg1 *C.GObject   // out

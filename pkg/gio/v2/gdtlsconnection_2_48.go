@@ -181,27 +181,27 @@ func marshalDTLSConnection(p uintptr) (interface{}, error) {
 // certificate has been received. You can examine peer_cert's certification path
 // by calling g_tls_certificate_get_issuer() on it.
 //
-// For a client-side connection, peer_cert is the server's certificate, and the
-// signal will only be emitted if the certificate was not acceptable according
-// to conn's ClientConnection:validation_flags. If you would like the
-// certificate to be accepted despite errors, return TRUE from the signal
+// For a client-side connection, peer_cert is the server's certificate,
+// and the signal will only be emitted if the certificate was not acceptable
+// according to conn's ClientConnection:validation_flags. If you would like
+// the certificate to be accepted despite errors, return TRUE from the signal
 // handler. Otherwise, if no handler accepts the certificate, the handshake will
 // fail with G_TLS_ERROR_BAD_CERTIFICATE.
 //
-// For a server-side connection, peer_cert is the certificate presented by the
-// client, if this was requested via the server's
+// For a server-side connection, peer_cert is the certificate
+// presented by the client, if this was requested via the server's
 // ServerConnection:authentication_mode. On the server side, the signal is
 // always emitted when the client presents a certificate, and the certificate
 // will only be accepted if a handler returns TRUE.
 //
-// Note that if this signal is emitted as part of asynchronous I/O in the main
-// thread, then you should not attempt to interact with the user before
+// Note that if this signal is emitted as part of asynchronous I/O in the
+// main thread, then you should not attempt to interact with the user before
 // returning from the signal handler. If you want to let the user decide whether
 // or not to accept the certificate, you would have to return FALSE from the
 // signal handler on the first attempt, and then after the connection attempt
-// returns a G_TLS_ERROR_BAD_CERTIFICATE, you can interact with the user, and if
-// the user decides to accept the certificate, remember that fact, create a new
-// connection, and return TRUE from the signal handler the next time.
+// returns a G_TLS_ERROR_BAD_CERTIFICATE, you can interact with the user,
+// and if the user decides to accept the certificate, remember that fact, create
+// a new connection, and return TRUE from the signal handler the next time.
 //
 // If you are doing I/O in another thread, you do not need to worry about this,
 // and can simply block in the signal handler until the UI thread returns an
@@ -231,7 +231,7 @@ func (conn *DTLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertific
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (conn *DTLSConnection) Close(ctx context.Context) error {
 	var _arg0 *C.GDtlsConnection // out
@@ -263,9 +263,9 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the close operation is complete.
+//   - ctx (optional) or NULL.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the close operation is complete.
 //
 func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
@@ -298,7 +298,7 @@ func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, call
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
@@ -326,13 +326,13 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - peerCert peer's Certificate.
-//    - errors problems with peer_cert.
+//   - peerCert peer's Certificate.
+//   - errors problems with peer_cert.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if one of the signal handlers has returned TRUE to accept
-//      peer_cert.
+//   - ok: TRUE if one of the signal handlers has returned TRUE to accept
+//     peer_cert.
 //
 func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	var _arg0 *C.GDtlsConnection     // out
@@ -363,7 +363,7 @@ func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, erro
 //
 // The function returns the following values:
 //
-//    - tlsCertificate (optional) conn's certificate, or NULL.
+//   - tlsCertificate (optional) conn's certificate, or NULL.
 //
 func (conn *DTLSConnection) Certificate() TLSCertificater {
 	var _arg0 *C.GDtlsConnection // out
@@ -399,24 +399,24 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 // ChannelBindingData: query the TLS backend for TLS channel binding data of
 // type for conn.
 //
-// This call retrieves TLS channel binding data as specified in RFC 5056
-// (https://tools.ietf.org/html/rfc5056), RFC 5929
-// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data is
-// returned in data. The data is resized by the callee using Array buffer
-// management and will be freed when the data is destroyed by
-// g_byte_array_unref(). If data is NULL, it will only check whether TLS backend
-// is able to fetch the data (e.g. whether type is supported by the TLS
-// backend). It does not guarantee that the data will be available though. That
-// could happen if TLS connection does not support type or the binding data is
-// not available yet due to additional negotiation or input required.
+// This call retrieves TLS channel binding data as specified
+// in RFC 5056 (https://tools.ietf.org/html/rfc5056), RFC 5929
+// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding
+// data is returned in data. The data is resized by the callee using
+// Array buffer management and will be freed when the data is destroyed by
+// g_byte_array_unref(). If data is NULL, it will only check whether TLS
+// backend is able to fetch the data (e.g. whether type is supported by the
+// TLS backend). It does not guarantee that the data will be available though.
+// That could happen if TLS connection does not support type or the binding data
+// is not available yet due to additional negotiation or input required.
 //
 // The function takes the following parameters:
 //
-//    - typ type of data to fetch.
+//   - typ type of data to fetch.
 //
 // The function returns the following values:
 //
-//    - data (optional) is filled with the binding data, or NULL.
+//   - data (optional) is filled with the binding data, or NULL.
 //
 func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GDtlsConnection       // out
@@ -448,7 +448,7 @@ func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byt
 //
 // The function returns the following values:
 //
-//    - tlsDatabase (optional): certificate database that conn uses or NULL.
+//   - tlsDatabase (optional): certificate database that conn uses or NULL.
 //
 func (conn *DTLSConnection) Database() TLSDatabaser {
 	var _arg0 *C.GDtlsConnection // out
@@ -481,13 +481,13 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 	return _tlsDatabase
 }
 
-// Interaction: get the object that will be used to interact with the user. It
-// will be used for things like prompting the user for passwords. If NULL is
+// Interaction: get the object that will be used to interact with the user.
+// It will be used for things like prompting the user for passwords. If NULL is
 // returned, then no user interaction will occur for this connection.
 //
 // The function returns the following values:
 //
-//    - tlsInteraction (optional): interaction object.
+//   - tlsInteraction (optional): interaction object.
 //
 func (conn *DTLSConnection) Interaction() *TLSInteraction {
 	var _arg0 *C.GDtlsConnection // out
@@ -510,14 +510,14 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 // NegotiatedProtocol gets the name of the application-layer protocol negotiated
 // during the handshake.
 //
-// If the peer did not use the ALPN extension, or did not advertise a protocol
-// that matched one of conn's protocols, or the TLS backend does not support
-// ALPN, then this will be NULL. See
+// If the peer did not use the ALPN extension, or did not advertise
+// a protocol that matched one of conn's protocols, or the TLS
+// backend does not support ALPN, then this will be NULL. See
 // g_dtls_connection_set_advertised_protocols().
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): negotiated protocol, or NULL.
+//   - utf8 (optional): negotiated protocol, or NULL.
 //
 func (conn *DTLSConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GDtlsConnection // out
@@ -537,13 +537,13 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 	return _utf8
 }
 
-// PeerCertificate gets conn's peer's certificate after the handshake has
-// completed or failed. (It is not set during the emission of
+// PeerCertificate gets conn's peer's certificate after the handshake
+// has completed or failed. (It is not set during the emission of
 // Connection::accept-certificate.).
 //
 // The function returns the following values:
 //
-//    - tlsCertificate (optional) conn's peer's certificate, or NULL.
+//   - tlsCertificate (optional) conn's peer's certificate, or NULL.
 //
 func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 	var _arg0 *C.GDtlsConnection // out
@@ -582,7 +582,7 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 //
 // The function returns the following values:
 //
-//    - tlsCertificateFlags conn's peer's certificate errors.
+//   - tlsCertificateFlags conn's peer's certificate errors.
 //
 func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	var _arg0 *C.GDtlsConnection     // out
@@ -609,7 +609,7 @@ func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 //
 // The function returns the following values:
 //
-//    - tlsRehandshakeMode: G_TLS_REHANDSHAKE_SAFELY.
+//   - tlsRehandshakeMode: G_TLS_REHANDSHAKE_SAFELY.
 //
 func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	var _arg0 *C.GDtlsConnection    // out
@@ -627,13 +627,13 @@ func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	return _tlsRehandshakeMode
 }
 
-// RequireCloseNotify tests whether or not conn expects a proper TLS close
-// notification when the connection is closed. See
+// RequireCloseNotify tests whether or not conn expects a proper
+// TLS close notification when the connection is closed. See
 // g_dtls_connection_set_require_close_notify() for details.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if conn requires a proper TLS close notification.
+//   - ok: TRUE if conn requires a proper TLS close notification.
 //
 func (conn *DTLSConnection) RequireCloseNotify() bool {
 	var _arg0 *C.GDtlsConnection // out
@@ -671,16 +671,16 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 // explicitly unless you want clearer error reporting.
 //
 // Previously, calling g_dtls_connection_handshake() after the initial handshake
-// would trigger a rehandshake; however, this usage was deprecated in GLib 2.60
-// because rehandshaking was removed from the TLS protocol in TLS 1.3. Since
-// GLib 2.64, calling this function after the initial handshake will no longer
-// do anything.
+// would trigger a rehandshake; however, this usage was deprecated in GLib
+// 2.60 because rehandshaking was removed from the TLS protocol in TLS 1.3.
+// Since GLib 2.64, calling this function after the initial handshake will no
+// longer do anything.
 //
 // Connection::accept_certificate may be emitted during the handshake.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 	var _arg0 *C.GDtlsConnection // out
@@ -712,9 +712,9 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the handshake is complete.
+//   - ctx (optional) or NULL.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the handshake is complete.
 //
 func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
@@ -747,7 +747,7 @@ func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, 
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
@@ -770,10 +770,10 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// SetAdvertisedProtocols sets the list of application-layer protocols to
-// advertise that the caller is willing to speak on this connection. The
-// Application-Layer Protocol Negotiation (ALPN) extension will be used to
-// negotiate a compatible protocol with the peer; use
+// SetAdvertisedProtocols sets the list of application-layer protocols
+// to advertise that the caller is willing to speak on this connection.
+// The Application-Layer Protocol Negotiation (ALPN) extension will
+// be used to negotiate a compatible protocol with the peer; use
 // g_dtls_connection_get_negotiated_protocol() to find the negotiated protocol
 // after the handshake. Specifying NULL for the the value of protocols will
 // disable ALPN negotiation.
@@ -784,8 +784,8 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
-//      "http/1.1", "h2"), or NULL.
+//   - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
+//     "http/1.1", "h2"), or NULL.
 //
 func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GDtlsConnection // out
@@ -822,14 +822,14 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 // connection to get a list of Certificate Authorities that the server will
 // accept certificates from.
 //
-// (It is also possible that a server will allow the connection with or without
-// a certificate; in that case, if you don't provide a certificate, you can tell
-// that the server requested one by the fact that
+// (It is also possible that a server will allow the connection with or
+// without a certificate; in that case, if you don't provide a certificate,
+// you can tell that the server requested one by the fact that
 // g_dtls_client_connection_get_accepted_cas() will return non-NULL.).
 //
 // The function takes the following parameters:
 //
-//    - certificate to use for conn.
+//   - certificate to use for conn.
 //
 func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg0 *C.GDtlsConnection // out
@@ -843,17 +843,17 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	runtime.KeepAlive(certificate)
 }
 
-// SetDatabase sets the certificate database that is used to verify peer
-// certificates. This is set to the default database by default. See
-// g_tls_backend_get_default_database(). If set to NULL, then peer certificate
-// validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
-// Connection::accept-certificate will always be emitted on client-side
-// connections, unless that bit is not set in
+// SetDatabase sets the certificate database that is used to verify
+// peer certificates. This is set to the default database by default.
+// See g_tls_backend_get_default_database(). If set to NULL, then peer
+// certificate validation will always set the G_TLS_CERTIFICATE_UNKNOWN_CA
+// error (meaning Connection::accept-certificate will always be
+// emitted on client-side connections, unless that bit is not set in
 // ClientConnection:validation-flags).
 //
 // The function takes the following parameters:
 //
-//    - database (optional): Database.
+//   - database (optional): Database.
 //
 func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg0 *C.GDtlsConnection // out
@@ -878,7 +878,7 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 //
 // The function takes the following parameters:
 //
-//    - interaction (optional) object, or NULL.
+//   - interaction (optional) object, or NULL.
 //
 func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _arg0 *C.GDtlsConnection // out
@@ -905,7 +905,7 @@ func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 //
 // The function takes the following parameters:
 //
-//    - mode: rehandshaking mode.
+//   - mode: rehandshaking mode.
 //
 func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	var _arg0 *C.GDtlsConnection    // out
@@ -926,13 +926,13 @@ func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 // the connection is closed without proper notification (since this may indicate
 // a network error, or man-in-the-middle attack).
 //
-// In some protocols, the application will know whether or not the connection
-// was closed cleanly based on application-level data (because the
-// application-level data includes a length field, or is somehow
+// In some protocols, the application will know whether or not the
+// connection was closed cleanly based on application-level data (because
+// the application-level data includes a length field, or is somehow
 // self-delimiting); in this case, the close notify is redundant and may be
 // omitted. You can use g_dtls_connection_set_require_close_notify() to tell
-// conn to allow an "unannounced" connection close, in which case the close will
-// show up as a 0-length read, as in a non-TLS Based, and it is up to the
+// conn to allow an "unannounced" connection close, in which case the close
+// will show up as a 0-length read, as in a non-TLS Based, and it is up to the
 // application to check that the data has been fully received.
 //
 // Note that this only affects the behavior when the peer closes the connection;
@@ -943,7 +943,7 @@ func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 //
 // The function takes the following parameters:
 //
-//    - requireCloseNotify: whether or not to require close notification.
+//   - requireCloseNotify: whether or not to require close notification.
 //
 func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _arg0 *C.GDtlsConnection // out
@@ -961,12 +961,12 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 
 // Shutdown: shut down part or all of a DTLS connection.
 //
-// If shutdown_read is TRUE then the receiving side of the connection is shut
-// down, and further reading is disallowed. Subsequent calls to
+// If shutdown_read is TRUE then the receiving side of the connection
+// is shut down, and further reading is disallowed. Subsequent calls to
 // g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
 //
-// If shutdown_write is TRUE then the sending side of the connection is shut
-// down, and further writing is disallowed. Subsequent calls to
+// If shutdown_write is TRUE then the sending side of the connection
+// is shut down, and further writing is disallowed. Subsequent calls to
 // g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
 //
 // It is allowed for both shutdown_read and shutdown_write to be TRUE — this is
@@ -978,9 +978,9 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - shutdownRead: TRUE to stop reception of incoming datagrams.
-//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//   - ctx (optional) or NULL.
+//   - shutdownRead: TRUE to stop reception of incoming datagrams.
+//   - shutdownWrite: TRUE to stop sending outgoing datagrams.
 //
 func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error {
 	var _arg0 *C.GDtlsConnection // out
@@ -1022,11 +1022,11 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - shutdownRead: TRUE to stop reception of incoming datagrams.
-//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the shutdown operation is complete.
+//   - ctx (optional) or NULL.
+//   - shutdownRead: TRUE to stop reception of incoming datagrams.
+//   - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the shutdown operation is complete.
 //
 func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
@@ -1069,7 +1069,7 @@ func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shu
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
@@ -1094,8 +1094,8 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 
 // The function takes the following parameters:
 //
-//    - peerCert
-//    - errors
+//   - peerCert
+//   - errors
 //
 // The function returns the following values:
 //
@@ -1128,8 +1128,8 @@ func (connection *DTLSConnection) acceptCertificate(peerCert TLSCertificater, er
 
 // The function takes the following parameters:
 //
-//    - typ
-//    - data
+//   - typ
+//   - data
 //
 func (conn *DTLSConnection) bindingData(typ TLSChannelBindingType, data []byte) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
@@ -1165,14 +1165,14 @@ func (conn *DTLSConnection) bindingData(typ TLSChannelBindingType, data []byte) 
 // negotiatedProtocol gets the name of the application-layer protocol negotiated
 // during the handshake.
 //
-// If the peer did not use the ALPN extension, or did not advertise a protocol
-// that matched one of conn's protocols, or the TLS backend does not support
-// ALPN, then this will be NULL. See
+// If the peer did not use the ALPN extension, or did not advertise
+// a protocol that matched one of conn's protocols, or the TLS
+// backend does not support ALPN, then this will be NULL. See
 // g_dtls_connection_set_advertised_protocols().
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): negotiated protocol, or NULL.
+//   - utf8 (optional): negotiated protocol, or NULL.
 //
 func (conn *DTLSConnection) negotiatedProtocol() string {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
@@ -1213,16 +1213,16 @@ func (conn *DTLSConnection) negotiatedProtocol() string {
 // explicitly unless you want clearer error reporting.
 //
 // Previously, calling g_dtls_connection_handshake() after the initial handshake
-// would trigger a rehandshake; however, this usage was deprecated in GLib 2.60
-// because rehandshaking was removed from the TLS protocol in TLS 1.3. Since
-// GLib 2.64, calling this function after the initial handshake will no longer
-// do anything.
+// would trigger a rehandshake; however, this usage was deprecated in GLib
+// 2.60 because rehandshaking was removed from the TLS protocol in TLS 1.3.
+// Since GLib 2.64, calling this function after the initial handshake will no
+// longer do anything.
 //
 // Connection::accept_certificate may be emitted during the handshake.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (conn *DTLSConnection) handshake(ctx context.Context) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
@@ -1257,9 +1257,9 @@ func (conn *DTLSConnection) handshake(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the handshake is complete.
+//   - ctx (optional) or NULL.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the handshake is complete.
 //
 func (conn *DTLSConnection) handshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
@@ -1295,7 +1295,7 @@ func (conn *DTLSConnection) handshakeAsync(ctx context.Context, ioPriority int, 
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (conn *DTLSConnection) handshakeFinish(result AsyncResulter) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
@@ -1321,10 +1321,10 @@ func (conn *DTLSConnection) handshakeFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// setAdvertisedProtocols sets the list of application-layer protocols to
-// advertise that the caller is willing to speak on this connection. The
-// Application-Layer Protocol Negotiation (ALPN) extension will be used to
-// negotiate a compatible protocol with the peer; use
+// setAdvertisedProtocols sets the list of application-layer protocols
+// to advertise that the caller is willing to speak on this connection.
+// The Application-Layer Protocol Negotiation (ALPN) extension will
+// be used to negotiate a compatible protocol with the peer; use
 // g_dtls_connection_get_negotiated_protocol() to find the negotiated protocol
 // after the handshake. Specifying NULL for the the value of protocols will
 // disable ALPN negotiation.
@@ -1335,8 +1335,8 @@ func (conn *DTLSConnection) handshakeFinish(result AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
-//      "http/1.1", "h2"), or NULL.
+//   - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
+//     "http/1.1", "h2"), or NULL.
 //
 func (conn *DTLSConnection) setAdvertisedProtocols(protocols []string) {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
@@ -1367,12 +1367,12 @@ func (conn *DTLSConnection) setAdvertisedProtocols(protocols []string) {
 
 // Shutdown: shut down part or all of a DTLS connection.
 //
-// If shutdown_read is TRUE then the receiving side of the connection is shut
-// down, and further reading is disallowed. Subsequent calls to
+// If shutdown_read is TRUE then the receiving side of the connection
+// is shut down, and further reading is disallowed. Subsequent calls to
 // g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
 //
-// If shutdown_write is TRUE then the sending side of the connection is shut
-// down, and further writing is disallowed. Subsequent calls to
+// If shutdown_write is TRUE then the sending side of the connection
+// is shut down, and further writing is disallowed. Subsequent calls to
 // g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
 //
 // It is allowed for both shutdown_read and shutdown_write to be TRUE — this is
@@ -1384,9 +1384,9 @@ func (conn *DTLSConnection) setAdvertisedProtocols(protocols []string) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - shutdownRead: TRUE to stop reception of incoming datagrams.
-//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//   - ctx (optional) or NULL.
+//   - shutdownRead: TRUE to stop reception of incoming datagrams.
+//   - shutdownWrite: TRUE to stop sending outgoing datagrams.
 //
 func (conn *DTLSConnection) shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
@@ -1431,11 +1431,11 @@ func (conn *DTLSConnection) shutdown(ctx context.Context, shutdownRead, shutdown
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - shutdownRead: TRUE to stop reception of incoming datagrams.
-//    - shutdownWrite: TRUE to stop sending outgoing datagrams.
-//    - ioPriority: [I/O priority][io-priority] of the request.
-//    - callback (optional) to call when the shutdown operation is complete.
+//   - ctx (optional) or NULL.
+//   - shutdownRead: TRUE to stop reception of incoming datagrams.
+//   - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the shutdown operation is complete.
 //
 func (conn *DTLSConnection) shutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
@@ -1481,7 +1481,7 @@ func (conn *DTLSConnection) shutdownAsync(ctx context.Context, shutdownRead, shu
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (conn *DTLSConnection) shutdownFinish(result AsyncResulter) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))

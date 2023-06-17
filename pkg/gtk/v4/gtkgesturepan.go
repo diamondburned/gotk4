@@ -28,8 +28,8 @@ func init() {
 
 // GesturePan: GtkGesturePan is a GtkGesture for pan gestures.
 //
-// These are drags that are locked to happen along one axis. The axis that a
-// GtkGesturePan handles is defined at construct time, and can be changed
+// These are drags that are locked to happen along one axis. The axis that
+// a GtkGesturePan handles is defined at construct time, and can be changed
 // through gtk.GesturePan.SetOrientation().
 //
 // When the gesture starts to be recognized, GtkGesturePan will attempt to
@@ -77,11 +77,11 @@ func (gesture *GesturePan) ConnectPan(f func(direction PanDirection, offset floa
 //
 // The function takes the following parameters:
 //
-//    - orientation: expected orientation.
+//   - orientation: expected orientation.
 //
 // The function returns the following values:
 //
-//    - gesturePan: newly created GtkGesturePan.
+//   - gesturePan: newly created GtkGesturePan.
 //
 func NewGesturePan(orientation Orientation) *GesturePan {
 	var _arg1 C.GtkOrientation // out
@@ -104,7 +104,7 @@ func NewGesturePan(orientation Orientation) *GesturePan {
 //
 // The function returns the following values:
 //
-//    - orientation: expected orientation for pan gestures.
+//   - orientation: expected orientation for pan gestures.
 //
 func (gesture *GesturePan) Orientation() Orientation {
 	var _arg0 *C.GtkGesturePan // out
@@ -126,7 +126,7 @@ func (gesture *GesturePan) Orientation() Orientation {
 //
 // The function takes the following parameters:
 //
-//    - orientation: expected orientation.
+//   - orientation: expected orientation.
 //
 func (gesture *GesturePan) SetOrientation(orientation Orientation) {
 	var _arg0 *C.GtkGesturePan // out

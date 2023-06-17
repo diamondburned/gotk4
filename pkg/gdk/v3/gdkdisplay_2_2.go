@@ -18,7 +18,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - display (optional) or NULL if there is no default display.
+//   - display (optional) or NULL if there is no default display.
 //
 func DisplayGetDefault() *Display {
 	var _cret *C.GdkDisplay // in
@@ -38,11 +38,11 @@ func DisplayGetDefault() *Display {
 //
 // The function takes the following parameters:
 //
-//    - displayName: name of the display to open.
+//   - displayName: name of the display to open.
 //
 // The function returns the following values:
 //
-//    - display (optional) or NULL if the display could not be opened.
+//   - display (optional) or NULL if the display could not be opened.
 //
 func DisplayOpen(displayName string) *Display {
 	var _arg1 *C.gchar      // out

@@ -122,16 +122,16 @@ func (adjustment *Adjustment) ConnectValueChanged(f func()) coreglib.SignalHandl
 //
 // The function takes the following parameters:
 //
-//    - value: initial value.
-//    - lower: minimum value.
-//    - upper: maximum value.
-//    - stepIncrement: step increment.
-//    - pageIncrement: page increment.
-//    - pageSize: page size.
+//   - value: initial value.
+//   - lower: minimum value.
+//   - upper: maximum value.
+//   - stepIncrement: step increment.
+//   - pageIncrement: page increment.
+//   - pageSize: page size.
 //
 // The function returns the following values:
 //
-//    - adjustment: new GtkAdjustment.
+//   - adjustment: new GtkAdjustment.
 //
 func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) *Adjustment {
 	var _arg1 C.double         // out
@@ -175,8 +175,8 @@ func NewAdjustment(value, lower, upper, stepIncrement, pageIncrement, pageSize f
 //
 // The function takes the following parameters:
 //
-//    - lower value.
-//    - upper value.
+//   - lower value.
+//   - upper value.
 //
 func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 	var _arg0 *C.GtkAdjustment // out
@@ -201,12 +201,12 @@ func (adjustment *Adjustment) ClampPage(lower, upper float64) {
 //
 // The function takes the following parameters:
 //
-//    - value: new value.
-//    - lower: new minimum value.
-//    - upper: new maximum value.
-//    - stepIncrement: new step increment.
-//    - pageIncrement: new page increment.
-//    - pageSize: new page size.
+//   - value: new value.
+//   - lower: new minimum value.
+//   - upper: new maximum value.
+//   - stepIncrement: new step increment.
+//   - pageIncrement: new page increment.
+//   - pageSize: new page size.
 //
 func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, pageIncrement, pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
@@ -239,7 +239,7 @@ func (adjustment *Adjustment) Configure(value, lower, upper, stepIncrement, page
 //
 // The function returns the following values:
 //
-//    - gdouble: current minimum value of the adjustment.
+//   - gdouble: current minimum value of the adjustment.
 //
 func (adjustment *Adjustment) Lower() float64 {
 	var _arg0 *C.GtkAdjustment // out
@@ -261,7 +261,7 @@ func (adjustment *Adjustment) Lower() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: minimum increment of adjustment.
+//   - gdouble: minimum increment of adjustment.
 //
 func (adjustment *Adjustment) MinimumIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
@@ -283,7 +283,7 @@ func (adjustment *Adjustment) MinimumIncrement() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: current page increment of the adjustment.
+//   - gdouble: current page increment of the adjustment.
 //
 func (adjustment *Adjustment) PageIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
@@ -305,7 +305,7 @@ func (adjustment *Adjustment) PageIncrement() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: current page size of the adjustment.
+//   - gdouble: current page size of the adjustment.
 //
 func (adjustment *Adjustment) PageSize() float64 {
 	var _arg0 *C.GtkAdjustment // out
@@ -327,7 +327,7 @@ func (adjustment *Adjustment) PageSize() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: current step increment of the adjustment.
+//   - gdouble: current step increment of the adjustment.
 //
 func (adjustment *Adjustment) StepIncrement() float64 {
 	var _arg0 *C.GtkAdjustment // out
@@ -349,7 +349,7 @@ func (adjustment *Adjustment) StepIncrement() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: current maximum value of the adjustment.
+//   - gdouble: current maximum value of the adjustment.
 //
 func (adjustment *Adjustment) Upper() float64 {
 	var _arg0 *C.GtkAdjustment // out
@@ -371,7 +371,7 @@ func (adjustment *Adjustment) Upper() float64 {
 //
 // The function returns the following values:
 //
-//    - gdouble: current value of the adjustment.
+//   - gdouble: current value of the adjustment.
 //
 func (adjustment *Adjustment) Value() float64 {
 	var _arg0 *C.GtkAdjustment // out
@@ -393,8 +393,8 @@ func (adjustment *Adjustment) Value() float64 {
 //
 // When setting multiple adjustment properties via their individual setters,
 // multiple gtk.Adjustment::changed signals will be emitted. However, since the
-// emission of the gtk.Adjustment::changed signal is tied to the emission of the
-// ::notify signals of the changed properties, it’s possible to compress the
+// emission of the gtk.Adjustment::changed signal is tied to the emission of
+// the ::notify signals of the changed properties, it’s possible to compress the
 // gtk.Adjustment::changed signals into one by calling g_object_freeze_notify()
 // and g_object_thaw_notify() around the calls to the individual setters.
 //
@@ -403,7 +403,7 @@ func (adjustment *Adjustment) Value() float64 {
 //
 // The function takes the following parameters:
 //
-//    - lower: new minimum value.
+//   - lower: new minimum value.
 //
 func (adjustment *Adjustment) SetLower(lower float64) {
 	var _arg0 *C.GtkAdjustment // out
@@ -424,7 +424,7 @@ func (adjustment *Adjustment) SetLower(lower float64) {
 //
 // The function takes the following parameters:
 //
-//    - pageIncrement: new page increment.
+//   - pageIncrement: new page increment.
 //
 func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
@@ -445,7 +445,7 @@ func (adjustment *Adjustment) SetPageIncrement(pageIncrement float64) {
 //
 // The function takes the following parameters:
 //
-//    - pageSize: new page size.
+//   - pageSize: new page size.
 //
 func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 	var _arg0 *C.GtkAdjustment // out
@@ -466,7 +466,7 @@ func (adjustment *Adjustment) SetPageSize(pageSize float64) {
 //
 // The function takes the following parameters:
 //
-//    - stepIncrement: new step increment.
+//   - stepIncrement: new step increment.
 //
 func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 	var _arg0 *C.GtkAdjustment // out
@@ -490,7 +490,7 @@ func (adjustment *Adjustment) SetStepIncrement(stepIncrement float64) {
 //
 // The function takes the following parameters:
 //
-//    - upper: new maximum value.
+//   - upper: new maximum value.
 //
 func (adjustment *Adjustment) SetUpper(upper float64) {
 	var _arg0 *C.GtkAdjustment // out
@@ -509,13 +509,13 @@ func (adjustment *Adjustment) SetUpper(upper float64) {
 // The value is clamped to lie between gtk.Adjustment:lower and
 // gtk.Adjustment:upper.
 //
-// Note that for adjustments which are used in a GtkScrollbar, the effective
-// range of allowed values goes from gtk.Adjustment:lower to
+// Note that for adjustments which are used in a GtkScrollbar,
+// the effective range of allowed values goes from gtk.Adjustment:lower to
 // gtk.Adjustment:upper - gtk.Adjustment:page-size.
 //
 // The function takes the following parameters:
 //
-//    - value: new value.
+//   - value: new value.
 //
 func (adjustment *Adjustment) SetValue(value float64) {
 	var _arg0 *C.GtkAdjustment // out

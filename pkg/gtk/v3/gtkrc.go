@@ -371,8 +371,8 @@ func (r RCFlags) Has(other RCFlags) bool {
 //
 // The function takes the following parameters:
 //
-//    - filename: pathname to the file. If filename is not absolute, it is
-//      searched in the current directory.
+//   - filename: pathname to the file. If filename is not absolute, it is
+//     searched in the current directory.
 //
 func RCAddDefaultFile(filename string) {
 	var _arg1 *C.gchar // out
@@ -384,19 +384,19 @@ func RCAddDefaultFile(filename string) {
 	runtime.KeepAlive(filename)
 }
 
-// RCFindModuleInPath searches for a theme engine in the GTK+ search path. This
-// function is not useful for applications and should not be used.
+// RCFindModuleInPath searches for a theme engine in the GTK+ search path.
+// This function is not useful for applications and should not be used.
 //
 // Deprecated: Use CssProvider instead.
 //
 // The function takes the following parameters:
 //
-//    - moduleFile: name of a theme engine.
+//   - moduleFile: name of a theme engine.
 //
 // The function returns the following values:
 //
-//    - filename: filename, if found (must be freed with g_free()), otherwise
-//      NULL.
+//   - filename: filename, if found (must be freed with g_free()), otherwise
+//     NULL.
 //
 func RCFindModuleInPath(moduleFile string) string {
 	var _arg1 *C.gchar // out
@@ -424,14 +424,14 @@ func RCFindModuleInPath(moduleFile string) string {
 //
 // The function takes the following parameters:
 //
-//    - settings: Settings.
-//    - scanner: scanner used to get line number information for the warning
-//      message, or NULL.
-//    - pixmapFile: name of the pixmap file to locate.
+//   - settings: Settings.
+//   - scanner: scanner used to get line number information for the warning
+//     message, or NULL.
+//   - pixmapFile: name of the pixmap file to locate.
 //
 // The function returns the following values:
 //
-//    - filename: filename.
+//   - filename: filename.
 //
 func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile string) string {
 	var _arg1 *C.GtkSettings // out
@@ -464,9 +464,9 @@ func RCFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile st
 //
 // The function returns the following values:
 //
-//    - filenames: A NULL-terminated array of filenames. This memory is owned by
-//      GTK+ and must not be freed by the application. If you want to store this
-//      information, you should make a copy.
+//   - filenames: A NULL-terminated array of filenames. This memory is owned by
+//     GTK+ and must not be freed by the application. If you want to store this
+//     information, you should make a copy.
 //
 func RCGetDefaultFiles() []string {
 	var _cret **C.gchar // in
@@ -500,8 +500,8 @@ func RCGetDefaultFiles() []string {
 //
 // The function returns the following values:
 //
-//    - filename: newly-allocated string containing the name of the file listing
-//      the IM modules available for loading.
+//   - filename: newly-allocated string containing the name of the file listing
+//     the IM modules available for loading.
 //
 func RCGetIMModuleFile() string {
 	var _cret *C.gchar // in
@@ -525,8 +525,8 @@ func RCGetIMModuleFile() string {
 //
 // The function returns the following values:
 //
-//    - filename: newly-allocated string containing the path in which to look for
-//      IM modules.
+//   - filename: newly-allocated string containing the path in which to look for
+//     IM modules.
 //
 func RCGetIMModulePath() string {
 	var _cret *C.gchar // in
@@ -541,15 +541,15 @@ func RCGetIMModulePath() string {
 	return _filename
 }
 
-// RCGetModuleDir returns a directory in which GTK+ looks for theme engines. For
-// full information about the search for theme engines, see the docs for
+// RCGetModuleDir returns a directory in which GTK+ looks for theme engines.
+// For full information about the search for theme engines, see the docs for
 // GTK_PATH in [Running GTK+ Applications][gtk-running].
 //
 // Deprecated: Use CssProvider instead.
 //
 // The function returns the following values:
 //
-//    - filename: directory. (Must be freed with g_free()).
+//   - filename: directory. (Must be freed with g_free()).
 //
 func RCGetModuleDir() string {
 	var _cret *C.gchar // in
@@ -573,12 +573,12 @@ func RCGetModuleDir() string {
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - style: resulting style. No refcount is added to the returned style, so if
-//      you want to save this style around, you should add a reference yourself.
+//   - style: resulting style. No refcount is added to the returned style, so if
+//     you want to save this style around, you should add a reference yourself.
 //
 func RCGetStyle(widget Widgetter) *Style {
 	var _arg1 *C.GtkWidget // out
@@ -614,21 +614,21 @@ func RCGetStyle(widget Widgetter) *Style {
 //
 // The function takes the following parameters:
 //
-//    - settings Settings object.
-//    - widgetPath (optional): widget path to use when looking up the style, or
-//      NULL if no matching against the widget path should be done.
-//    - classPath (optional) class path to use when looking up the style, or NULL
-//      if no matching against the class path should be done.
-//    - typ: type that will be used along with parent types of this type when
-//      matching against class styles, or TYPE_NONE.
+//   - settings Settings object.
+//   - widgetPath (optional): widget path to use when looking up the style,
+//     or NULL if no matching against the widget path should be done.
+//   - classPath (optional) class path to use when looking up the style,
+//     or NULL if no matching against the class path should be done.
+//   - typ: type that will be used along with parent types of this type when
+//     matching against class styles, or TYPE_NONE.
 //
 // The function returns the following values:
 //
-//    - style (optional) created by matching with the supplied paths, or NULL if
-//      nothing matching was specified and the default style should be used. The
-//      returned value is owned by GTK+ as part of an internal cache, so you must
-//      call g_object_ref() on the returned value if you want to keep a reference
-//      to it.
+//   - style (optional) created by matching with the supplied paths, or NULL
+//     if nothing matching was specified and the default style should be used.
+//     The returned value is owned by GTK+ as part of an internal cache,
+//     so you must call g_object_ref() on the returned value if you want to keep
+//     a reference to it.
 //
 func RCGetStyleByPaths(settings *Settings, widgetPath, classPath string, typ coreglib.Type) *Style {
 	var _arg1 *C.GtkSettings // out
@@ -670,7 +670,7 @@ func RCGetStyleByPaths(settings *Settings, widgetPath, classPath string, typ cor
 //
 // The function returns the following values:
 //
-//    - utf8: directory (must be freed with g_free()).
+//   - utf8: directory (must be freed with g_free()).
 //
 func RCGetThemeDir() string {
 	var _cret *C.gchar // in
@@ -691,8 +691,8 @@ func RCGetThemeDir() string {
 //
 // The function takes the following parameters:
 //
-//    - filename of a file to parse. If filename is not absolute, it is searched
-//      in the current directory.
+//   - filename of a file to parse. If filename is not absolute, it is searched
+//     in the current directory.
 //
 func RCParse(filename string) {
 	var _arg1 *C.gchar // out
@@ -713,13 +713,13 @@ func RCParse(filename string) {
 //
 // The function takes the following parameters:
 //
-//    - scanner: #GScanner.
+//   - scanner: #GScanner.
 //
 // The function returns the following values:
 //
-//    - color: pointer to a Color in which to store the result.
-//    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
-//      expected but not found.
+//   - color: pointer to a Color in which to store the result.
+//   - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
+//     expected but not found.
 //
 func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint) {
 	var _arg1 *C.GScanner // out
@@ -747,14 +747,14 @@ func RCParseColor(scanner *glib.Scanner) (*gdk.Color, uint) {
 //
 // The function takes the following parameters:
 //
-//    - scanner (must be initialized for parsing an RC file).
-//    - priority: pointer to PathPriorityType variable in which to store the
-//      result.
+//   - scanner (must be initialized for parsing an RC file).
+//   - priority: pointer to PathPriorityType variable in which to store the
+//     result.
 //
 // The function returns the following values:
 //
-//    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
-//      expected but not found.
+//   - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
+//     expected but not found.
 //
 func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 	var _arg1 *C.GScanner            // out
@@ -782,13 +782,13 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 //
 // The function takes the following parameters:
 //
-//    - scanner (must be initialized for parsing an RC file).
+//   - scanner (must be initialized for parsing an RC file).
 //
 // The function returns the following values:
 //
-//    - state: pointer to a StateType variable in which to store the result.
-//    - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
-//      expected but not found.
+//   - state: pointer to a StateType variable in which to store the result.
+//   - guint: G_TOKEN_NONE if parsing succeeded, otherwise the token that was
+//     expected but not found.
 //
 func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 	var _arg1 *C.GScanner    // out
@@ -815,7 +815,7 @@ func RCParseState(scanner *glib.Scanner) (StateType, uint) {
 //
 // The function takes the following parameters:
 //
-//    - rcString: string to parse.
+//   - rcString: string to parse.
 //
 func RCParseString(rcString string) {
 	var _arg1 *C.gchar // out
@@ -835,7 +835,7 @@ func RCParseString(rcString string) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the files were reread.
+//   - ok: TRUE if the files were reread.
 //
 func RCReparseAll() bool {
 	var _cret C.gboolean // in
@@ -859,12 +859,12 @@ func RCReparseAll() bool {
 //
 // The function takes the following parameters:
 //
-//    - settings: Settings.
-//    - forceLoad: load whether or not anything changed.
+//   - settings: Settings.
+//   - forceLoad: load whether or not anything changed.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the files were reread.
+//   - ok: TRUE if the files were reread.
 //
 func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 	var _arg1 *C.GtkSettings // out
@@ -896,7 +896,7 @@ func RCReparseAllForSettings(settings *Settings, forceLoad bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - filenames: a NULL-terminated list of filenames.
+//   - filenames: a NULL-terminated list of filenames.
 //
 func RCSetDefaultFiles(filenames []string) {
 	var _arg1 **C.gchar // out
@@ -926,8 +926,8 @@ type RCStyleOverrides struct {
 	Merge func(src *RCStyle)
 	// The function takes the following parameters:
 	//
-	//    - settings
-	//    - scanner
+	//   - settings
+	//   - scanner
 	//
 	// The function returns the following values:
 	//
@@ -996,7 +996,7 @@ func marshalRCStyle(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - rcStyle: newly-created RcStyle.
+//   - rcStyle: newly-created RcStyle.
 //
 func NewRCStyle() *RCStyle {
 	var _cret *C.GtkRcStyle // in
@@ -1017,7 +1017,7 @@ func NewRCStyle() *RCStyle {
 //
 // The function returns the following values:
 //
-//    - rcStyle: resulting RcStyle.
+//   - rcStyle: resulting RcStyle.
 //
 func (orig *RCStyle) Copy() *RCStyle {
 	var _arg0 *C.GtkRcStyle // out
@@ -1054,8 +1054,8 @@ func (dest *RCStyle) merge(src *RCStyle) {
 
 // The function takes the following parameters:
 //
-//    - settings
-//    - scanner
+//   - settings
+//   - scanner
 //
 // The function returns the following values:
 //

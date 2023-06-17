@@ -19,7 +19,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - guint: GTK+ debug flags.
+//   - guint: GTK+ debug flags.
 //
 func GetDebugFlags() uint {
 	var _cret C.guint // in

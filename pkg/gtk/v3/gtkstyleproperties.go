@@ -102,7 +102,7 @@ func marshalStyleProperties(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - styleProperties: new StyleProperties.
+//   - styleProperties: new StyleProperties.
 //
 func NewStyleProperties() *StyleProperties {
 	var _cret *C.GtkStyleProperties // in
@@ -135,13 +135,13 @@ func (props *StyleProperties) Clear() {
 //
 // The function takes the following parameters:
 //
-//    - property: style property name.
-//    - state to retrieve the property value for.
+//   - property: style property name.
+//   - state to retrieve the property value for.
 //
 // The function returns the following values:
 //
-//    - value: return location for the style property value.
-//    - ok: TRUE if the property exists in props, FALSE otherwise.
+//   - value: return location for the style property value.
+//   - ok: TRUE if the property exists in props, FALSE otherwise.
 //
 func (props *StyleProperties) Property(property string, state StateFlags) (coreglib.Value, bool) {
 	var _arg0 *C.GtkStyleProperties // out
@@ -180,11 +180,11 @@ func (props *StyleProperties) Property(property string, state StateFlags) (coreg
 //
 // The function takes the following parameters:
 //
-//    - name: color name to lookup.
+//   - name: color name to lookup.
 //
 // The function returns the following values:
 //
-//    - symbolicColor: mapped color.
+//   - symbolicColor: mapped color.
 //
 func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 	var _arg0 *C.GtkStyleProperties // out
@@ -220,8 +220,8 @@ func (props *StyleProperties) LookupColor(name string) *SymbolicColor {
 //
 // The function takes the following parameters:
 //
-//    - name: color name.
-//    - color to map name to.
+//   - name: color name.
+//   - color to map name to.
 //
 func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 	var _arg0 *C.GtkStyleProperties // out
@@ -247,8 +247,8 @@ func (props *StyleProperties) MapColor(name string, color *SymbolicColor) {
 //
 // The function takes the following parameters:
 //
-//    - propsToMerge: second StyleProperties.
-//    - replace: whether to replace values or not.
+//   - propsToMerge: second StyleProperties.
+//   - replace: whether to replace values or not.
 //
 func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool) {
 	var _arg0 *C.GtkStyleProperties // out
@@ -273,9 +273,9 @@ func (props *StyleProperties) Merge(propsToMerge *StyleProperties, replace bool)
 //
 // The function takes the following parameters:
 //
-//    - property: styling property to set.
-//    - state to set the value for.
-//    - value: new value for the property.
+//   - property: styling property to set.
+//   - state to set the value for.
+//   - value: new value for the property.
 //
 func (props *StyleProperties) SetProperty(property string, state StateFlags, value *coreglib.Value) {
 	var _arg0 *C.GtkStyleProperties // out
@@ -302,8 +302,8 @@ func (props *StyleProperties) SetProperty(property string, state StateFlags, val
 //
 // The function takes the following parameters:
 //
-//    - property to unset.
-//    - state to unset.
+//   - property to unset.
+//   - state to unset.
 //
 func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
 	var _arg0 *C.GtkStyleProperties // out
@@ -321,9 +321,9 @@ func (props *StyleProperties) UnsetProperty(property string, state StateFlags) {
 	runtime.KeepAlive(state)
 }
 
-// Gradient is a boxed type that represents a gradient. It is the result of
-// parsing a [gradient expression][gtkcssprovider-gradients]. To obtain the
-// gradient represented by a GtkGradient, it has to be resolved with
+// Gradient is a boxed type that represents a gradient. It is the result
+// of parsing a [gradient expression][gtkcssprovider-gradients]. To obtain
+// the gradient represented by a GtkGradient, it has to be resolved with
 // gtk_gradient_resolve(), which replaces all symbolic color references by the
 // colors they refer to (in a given context) and constructs a #cairo_pattern_t
 // value.
@@ -427,8 +427,8 @@ func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 f
 //
 // The function takes the following parameters:
 //
-//    - offset for the color stop.
-//    - color to use.
+//   - offset for the color stop.
+//   - color to use.
 //
 func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	var _arg0 *C.GtkGradient      // out
@@ -445,8 +445,8 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	runtime.KeepAlive(color)
 }
 
-// Resolve: if gradient is resolvable, resolved_gradient will be filled in with
-// the resolved gradient as a cairo_pattern_t, and TRUE will be returned.
+// Resolve: if gradient is resolvable, resolved_gradient will be filled in
+// with the resolved gradient as a cairo_pattern_t, and TRUE will be returned.
 // Generally, if gradient can’t be resolved, it is due to it being defined on
 // top of a named color that doesn't exist in props.
 //
@@ -454,12 +454,12 @@ func (gradient *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 //
 // The function takes the following parameters:
 //
-//    - props to use when resolving named colors.
+//   - props to use when resolving named colors.
 //
 // The function returns the following values:
 //
-//    - resolvedGradient: return location for the resolved pattern.
-//    - ok: TRUE if the gradient has been resolved.
+//   - resolvedGradient: return location for the resolved pattern.
+//   - ok: TRUE if the gradient has been resolved.
 //
 func (gradient *Gradient) Resolve(props *StyleProperties) (*cairo.Pattern, bool) {
 	var _arg0 *C.GtkGradient        // out
@@ -527,7 +527,7 @@ func (gradient *Gradient) ResolveForContext(context *StyleContext) *cairo.Patter
 //
 // The function returns the following values:
 //
-//    - utf8: string representation for gradient.
+//   - utf8: string representation for gradient.
 //
 func (gradient *Gradient) String() string {
 	var _arg0 *C.GtkGradient // out
@@ -557,8 +557,8 @@ type stylePropertiesClass struct {
 }
 
 // SymbolicColor is a boxed type that represents a symbolic color. It is the
-// result of parsing a [color expression][gtkcssprovider-symbolic-colors]. To
-// obtain the color represented by a GtkSymbolicColor, it has to be resolved
+// result of parsing a [color expression][gtkcssprovider-symbolic-colors].
+// To obtain the color represented by a GtkSymbolicColor, it has to be resolved
 // with gtk_symbolic_color_resolve(), which replaces all symbolic color
 // references by the colors they refer to (in a given context) and evaluates
 // mix, shade and other expressions, resulting in a RGBA value.
@@ -751,12 +751,12 @@ func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
 //
 // The function takes the following parameters:
 //
-//    - props (optional) to use when resolving named colors, or NULL.
+//   - props (optional) to use when resolving named colors, or NULL.
 //
 // The function returns the following values:
 //
-//    - resolvedColor: return location for the resolved color.
-//    - ok: TRUE if the color has been resolved.
+//   - resolvedColor: return location for the resolved color.
+//   - ok: TRUE if the color has been resolved.
 //
 func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
 	var _arg0 *C.GtkSymbolicColor   // out
@@ -794,7 +794,7 @@ func (color *SymbolicColor) Resolve(props *StyleProperties) (*gdk.RGBA, bool) {
 //
 // The function returns the following values:
 //
-//    - utf8: new string representing color.
+//   - utf8: new string representing color.
 //
 func (color *SymbolicColor) String() string {
 	var _arg0 *C.GtkSymbolicColor // out

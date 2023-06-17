@@ -52,8 +52,7 @@ func defaultCellViewOverrides(v *CellView) CellViewOverrides {
 // individual heights (left-to-right menus should be allocated vertically since
 // they all share the same height but may have variable widths).
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkCellView has a single CSS node with name cellview.
 type CellView struct {
@@ -118,7 +117,7 @@ func marshalCellView(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - cellView: newly created CellView widget.
+//   - cellView: newly created CellView widget.
 //
 func NewCellView() *CellView {
 	var _cret *C.GtkWidget // in
@@ -135,18 +134,18 @@ func NewCellView() *CellView {
 // NewCellViewWithContext creates a new CellView widget with a specific CellArea
 // to layout cells and a specific CellAreaContext.
 //
-// Specifying the same context for a handfull of cells lets the underlying area
-// synchronize the geometry for those cells, in this way alignments with
+// Specifying the same context for a handfull of cells lets the underlying
+// area synchronize the geometry for those cells, in this way alignments with
 // cellviews for other rows are possible.
 //
 // The function takes the following parameters:
 //
-//    - area to layout cells.
-//    - context in which to calculate cell geometry.
+//   - area to layout cells.
+//   - context in which to calculate cell geometry.
 //
 // The function returns the following values:
 //
-//    - cellView: newly created CellView widget.
+//   - cellView: newly created CellView widget.
 //
 func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView {
 	var _arg1 *C.GtkCellArea        // out
@@ -173,11 +172,11 @@ func NewCellViewWithContext(area CellAreaer, context *CellAreaContext) *CellView
 //
 // The function takes the following parameters:
 //
-//    - markup: text to display in the cell view.
+//   - markup: text to display in the cell view.
 //
 // The function returns the following values:
 //
-//    - cellView: newly created CellView widget.
+//   - cellView: newly created CellView widget.
 //
 func NewCellViewWithMarkup(markup string) *CellView {
 	var _arg1 *C.gchar     // out
@@ -201,11 +200,11 @@ func NewCellViewWithMarkup(markup string) *CellView {
 //
 // The function takes the following parameters:
 //
-//    - pixbuf: image to display in the cell view.
+//   - pixbuf: image to display in the cell view.
 //
 // The function returns the following values:
 //
-//    - cellView: newly created CellView widget.
+//   - cellView: newly created CellView widget.
 //
 func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 	var _arg1 *C.GdkPixbuf // out
@@ -228,11 +227,11 @@ func NewCellViewWithPixbuf(pixbuf *gdkpixbuf.Pixbuf) *CellView {
 //
 // The function takes the following parameters:
 //
-//    - text to display in the cell view.
+//   - text to display in the cell view.
 //
 // The function returns the following values:
 //
-//    - cellView: newly created CellView widget.
+//   - cellView: newly created CellView widget.
 //
 func NewCellViewWithText(text string) *CellView {
 	var _arg1 *C.gchar     // out
@@ -251,12 +250,12 @@ func NewCellViewWithText(text string) *CellView {
 	return _cellView
 }
 
-// DisplayedRow returns a TreePath referring to the currently displayed row. If
-// no row is currently displayed, NULL is returned.
+// DisplayedRow returns a TreePath referring to the currently displayed row.
+// If no row is currently displayed, NULL is returned.
 //
 // The function returns the following values:
 //
-//    - treePath (optional): currently displayed row or NULL.
+//   - treePath (optional): currently displayed row or NULL.
 //
 func (cellView *CellView) DisplayedRow() *TreePath {
 	var _arg0 *C.GtkCellView // out
@@ -287,7 +286,7 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 //
 // The function returns the following values:
 //
-//    - ok: whether cell_view draws all of its cells in a sensitive state.
+//   - ok: whether cell_view draws all of its cells in a sensitive state.
 //
 func (cellView *CellView) DrawSensitive() bool {
 	var _arg0 *C.GtkCellView // out
@@ -312,7 +311,7 @@ func (cellView *CellView) DrawSensitive() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether cell_view requests space to fit the entire TreeModel.
+//   - ok: whether cell_view requests space to fit the entire TreeModel.
 //
 func (cellView *CellView) FitModel() bool {
 	var _arg0 *C.GtkCellView // out
@@ -336,7 +335,7 @@ func (cellView *CellView) FitModel() bool {
 //
 // The function returns the following values:
 //
-//    - treeModel (optional) used or NULL.
+//   - treeModel (optional) used or NULL.
 //
 func (cellView *CellView) Model() *TreeModel {
 	var _arg0 *C.GtkCellView  // out
@@ -366,12 +365,12 @@ func (cellView *CellView) Model() *TreeModel {
 //
 // The function takes the following parameters:
 //
-//    - path: TreePath.
+//   - path: TreePath.
 //
 // The function returns the following values:
 //
-//    - requisition: return location for the size.
-//    - ok: TRUE.
+//   - requisition: return location for the size.
+//   - ok: TRUE.
 //
 func (cellView *CellView) SizeOfRow(path *TreePath) (*Requisition, bool) {
 	var _arg0 *C.GtkCellView   // out
@@ -403,7 +402,7 @@ func (cellView *CellView) SizeOfRow(path *TreePath) (*Requisition, bool) {
 //
 // The function takes the following parameters:
 //
-//    - color: new background color.
+//   - color: new background color.
 //
 func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
 	var _arg0 *C.GtkCellView // out
@@ -421,7 +420,7 @@ func (cellView *CellView) SetBackgroundColor(color *gdk.Color) {
 //
 // The function takes the following parameters:
 //
-//    - rgba: new background color.
+//   - rgba: new background color.
 //
 func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 	var _arg0 *C.GtkCellView // out
@@ -443,7 +442,7 @@ func (cellView *CellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 //
 // The function takes the following parameters:
 //
-//    - path (optional) or NULL to unset.
+//   - path (optional) or NULL to unset.
 //
 func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 	var _arg0 *C.GtkCellView // out
@@ -466,7 +465,7 @@ func (cellView *CellView) SetDisplayedRow(path *TreePath) {
 //
 // The function takes the following parameters:
 //
-//    - drawSensitive: whether to draw all cells in a sensitive state.
+//   - drawSensitive: whether to draw all cells in a sensitive state.
 //
 func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 	var _arg0 *C.GtkCellView // out
@@ -491,7 +490,7 @@ func (cellView *CellView) SetDrawSensitive(drawSensitive bool) {
 //
 // The function takes the following parameters:
 //
-//    - fitModel: whether cell_view should request space for the whole model.
+//   - fitModel: whether cell_view should request space for the whole model.
 //
 func (cellView *CellView) SetFitModel(fitModel bool) {
 	var _arg0 *C.GtkCellView // out
@@ -513,7 +512,7 @@ func (cellView *CellView) SetFitModel(fitModel bool) {
 //
 // The function takes the following parameters:
 //
-//    - model (optional): TreeModel.
+//   - model (optional): TreeModel.
 //
 func (cellView *CellView) SetModel(model TreeModeller) {
 	var _arg0 *C.GtkCellView  // out

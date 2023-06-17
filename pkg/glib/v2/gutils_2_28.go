@@ -14,17 +14,17 @@ import "C"
 // the local system.
 //
 // This is determined using the mechanisms described in the XDG Base Directory
-// Specification (http://www.freedesktop.org/Standards/basedir-spec). This is
-// the directory specified in the XDG_RUNTIME_DIR environment variable. In the
-// case that this variable is not set, we return the value of
+// Specification (http://www.freedesktop.org/Standards/basedir-spec).
+// This is the directory specified in the XDG_RUNTIME_DIR environment variable.
+// In the case that this variable is not set, we return the value of
 // g_get_user_cache_dir(), after verifying that it exists.
 //
-// The return value is cached and modifying it at runtime is not supported, as
-// it’s not thread-safe to modify environment variables at runtime.
+// The return value is cached and modifying it at runtime is not supported,
+// as it’s not thread-safe to modify environment variables at runtime.
 //
 // The function returns the following values:
 //
-//    - filename: string owned by GLib that must not be modified or freed.
+//   - filename: string owned by GLib that must not be modified or freed.
 //
 func GetUserRuntimeDir() string {
 	var _cret *C.gchar // in

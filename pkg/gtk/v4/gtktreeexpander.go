@@ -47,8 +47,8 @@ func defaultTreeExpanderOverrides(v *TreeExpander) TreeExpanderOverrides {
 // managing expanded state.
 //
 // The GtkTreeListModel must be set to not be passthrough. Then it will provide
-// gtk.TreeListRow items which can be set via gtk.TreeExpander.SetListRow() on
-// the expander. The expander will then watch that row item automatically.
+// gtk.TreeListRow items which can be set via gtk.TreeExpander.SetListRow()
+// on the expander. The expander will then watch that row item automatically.
 // gtk.TreeExpander.SetChild() sets the widget that displays the actual row
 // contents.
 //
@@ -59,7 +59,6 @@ func defaultTreeExpanderOverrides(v *TreeExpander) TreeExpanderOverrides {
 //    ├── [expander]
 //    ╰── <child>
 //
-//
 // GtkTreeExpander has zero or one CSS nodes with the name "expander" that
 // should display the expander icon. The node will be :checked when it is
 // expanded. If the node is not expandable, an "indent" node will be displayed
@@ -67,11 +66,10 @@ func defaultTreeExpanderOverrides(v *TreeExpander) TreeExpanderOverrides {
 //
 // For every level of depth, another "indent" node is prepended.
 //
+// # Accessibility
 //
-// Accessibility
-//
-// GtkTreeExpander uses the GTK_ACCESSIBLE_ROLE_GROUP role. The expander icon is
-// represented as a GTK_ACCESSIBLE_ROLE_BUTTON, labelled by the expander's
+// GtkTreeExpander uses the GTK_ACCESSIBLE_ROLE_GROUP role. The expander icon
+// is represented as a GTK_ACCESSIBLE_ROLE_BUTTON, labelled by the expander's
 // child, and toggling it will change the GTK_ACCESSIBLE_STATE_EXPANDED state.
 type TreeExpander struct {
 	_ [0]func() // equal guard
@@ -126,7 +124,7 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - treeExpander: new GtkTreeExpander.
+//   - treeExpander: new GtkTreeExpander.
 //
 func NewTreeExpander() *TreeExpander {
 	var _cret *C.GtkWidget // in
@@ -144,7 +142,7 @@ func NewTreeExpander() *TreeExpander {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child displayed by self.
+//   - widget (optional): child displayed by self.
 //
 func (self *TreeExpander) Child() Widgetter {
 	var _arg0 *C.GtkTreeExpander // out
@@ -185,7 +183,7 @@ func (self *TreeExpander) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - object (optional): item of the row.
+//   - object (optional): item of the row.
 //
 func (self *TreeExpander) Item() *coreglib.Object {
 	var _arg0 *C.GtkTreeExpander // out
@@ -207,7 +205,7 @@ func (self *TreeExpander) Item() *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - treeListRow (optional): list row displayed by self.
+//   - treeListRow (optional): list row displayed by self.
 //
 func (self *TreeExpander) ListRow() *TreeListRow {
 	var _arg0 *C.GtkTreeExpander // out
@@ -231,7 +229,7 @@ func (self *TreeExpander) ListRow() *TreeListRow {
 //
 // The function takes the following parameters:
 //
-//    - child (optional): GtkWidget, or NULL.
+//   - child (optional): GtkWidget, or NULL.
 //
 func (self *TreeExpander) SetChild(child Widgetter) {
 	var _arg0 *C.GtkTreeExpander // out
@@ -251,7 +249,7 @@ func (self *TreeExpander) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - listRow (optional): GtkTreeListRow, or NULL.
+//   - listRow (optional): GtkTreeListRow, or NULL.
 //
 func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 	var _arg0 *C.GtkTreeExpander // out

@@ -233,10 +233,10 @@ func (i *Item) SetNumChars(numChars int) {
 
 // ApplyAttrs: add attributes to a PangoItem.
 //
-// The idea is that you have attributes that don't affect itemization, such as
-// font features, so you filter them out using pango.AttrList.Filter(), itemize
-// your text, then reapply the attributes to the resulting items using this
-// function.
+// The idea is that you have attributes that don't affect itemization,
+// such as font features, so you filter them out using pango.AttrList.Filter(),
+// itemize your text, then reapply the attributes to the resulting items using
+// this function.
 //
 // The iter should be positioned before the range of the item, and will be
 // advanced past it. This function is meant to be called in a loop over the
@@ -244,7 +244,7 @@ func (i *Item) SetNumChars(numChars int) {
 //
 // The function takes the following parameters:
 //
-//    - iter: PangoAttrIterator.
+//   - iter: PangoAttrIterator.
 //
 func (item *Item) ApplyAttrs(iter *AttrIterator) {
 	var _arg0 *C.PangoItem         // out
@@ -262,8 +262,8 @@ func (item *Item) ApplyAttrs(iter *AttrIterator) {
 //
 // The function returns the following values:
 //
-//    - ret (optional): newly allocated PangoItem, which should be freed with
-//      pango.Item.Free(), or NULL if item was NULL.
+//   - ret (optional): newly allocated PangoItem, which should be freed with
+//     pango.Item.Free(), or NULL if item was NULL.
 //
 func (item *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
@@ -304,14 +304,14 @@ func (item *Item) Copy() *Item {
 //
 // The function takes the following parameters:
 //
-//    - splitIndex: byte index of position to split item, relative to the start
-//      of the item.
-//    - splitOffset: number of chars between start of orig and split_index.
+//   - splitIndex: byte index of position to split item, relative to the start
+//     of the item.
+//   - splitOffset: number of chars between start of orig and split_index.
 //
 // The function returns the following values:
 //
-//    - item: new item representing text before split_index, which should be
-//      freed with pango.Item.Free().
+//   - item: new item representing text before split_index, which should be
+//     freed with pango.Item.Free().
 //
 func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out

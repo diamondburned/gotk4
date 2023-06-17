@@ -81,48 +81,48 @@ type VFSOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - path: string containing a VFS path.
+	//   - path: string containing a VFS path.
 	//
 	// The function returns the following values:
 	//
-	//    - file: #GFile. Free the returned object with g_object_unref().
+	//   - file: #GFile. Free the returned object with g_object_unref().
 	//
 	FileForPath func(path string) *File
 	// FileForURI gets a #GFile for uri.
 	//
-	// This operation never fails, but the returned object might not support any
-	// I/O operation if the URI is malformed or if the URI scheme is not
+	// This operation never fails, but the returned object might not support
+	// any I/O operation if the URI is malformed or if the URI scheme is not
 	// supported.
 	//
 	// The function takes the following parameters:
 	//
-	//    - uri: string containing a URI.
+	//   - uri: string containing a URI.
 	//
 	// The function returns the following values:
 	//
-	//    - file: #GFile. Free the returned object with g_object_unref().
+	//   - file: #GFile. Free the returned object with g_object_unref().
 	//
 	FileForURI func(uri string) *File
 	// SupportedURISchemes gets a list of URI schemes supported by vfs.
 	//
 	// The function returns the following values:
 	//
-	//    - utf8s: NULL-terminated array of strings. The returned array belongs
-	//      to GIO and must not be freed or modified.
+	//   - utf8s: NULL-terminated array of strings. The returned array belongs
+	//     to GIO and must not be freed or modified.
 	//
 	SupportedURISchemes func() []string
 	// IsActive checks if the VFS is active.
 	//
 	// The function returns the following values:
 	//
-	//    - ok: TRUE if construction of the vfs was successful and it is now
-	//      active.
+	//   - ok: TRUE if construction of the vfs was successful and it is now
+	//     active.
 	//
 	IsActive func() bool
 	// The function takes the following parameters:
 	//
-	//    - source
-	//    - dest
+	//   - source
+	//   - dest
 	//
 	LocalFileMoved func(source, dest string)
 	// The function takes the following parameters:
@@ -130,24 +130,24 @@ type VFSOverrides struct {
 	LocalFileRemoved func(filename string)
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional)
-	//    - filename
-	//    - info
-	//    - flags
+	//   - ctx (optional)
+	//   - filename
+	//   - info
+	//   - flags
 	//
 	LocalFileSetAttributes func(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
-	// ParseName: this operation never fails, but the returned object might not
-	// support any I/O operations if the parse_name cannot be parsed by the
+	// ParseName: this operation never fails, but the returned object might
+	// not support any I/O operations if the parse_name cannot be parsed by the
 	// #GVfs module.
 	//
 	// The function takes the following parameters:
 	//
-	//    - parseName: string to be parsed by the VFS module.
+	//   - parseName: string to be parsed by the VFS module.
 	//
 	// The function returns the following values:
 	//
-	//    - file for the given parse_name. Free the returned object with
-	//      g_object_unref().
+	//   - file for the given parse_name. Free the returned object with
+	//     g_object_unref().
 	//
 	ParseName func(parseName string) *File
 }
@@ -244,11 +244,11 @@ func marshalVFS(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - path: string containing a VFS path.
+//   - path: string containing a VFS path.
 //
 // The function returns the following values:
 //
-//    - file: #GFile. Free the returned object with g_object_unref().
+//   - file: #GFile. Free the returned object with g_object_unref().
 //
 func (vfs *VFS) FileForPath(path string) *File {
 	var _arg0 *C.GVfs  // out
@@ -277,11 +277,11 @@ func (vfs *VFS) FileForPath(path string) *File {
 //
 // The function takes the following parameters:
 //
-//    - uri: string containing a URI.
+//   - uri: string containing a URI.
 //
 // The function returns the following values:
 //
-//    - file: #GFile. Free the returned object with g_object_unref().
+//   - file: #GFile. Free the returned object with g_object_unref().
 //
 func (vfs *VFS) FileForURI(uri string) *File {
 	var _arg0 *C.GVfs  // out
@@ -307,8 +307,8 @@ func (vfs *VFS) FileForURI(uri string) *File {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings. The returned array belongs to
-//      GIO and must not be freed or modified.
+//   - utf8s: NULL-terminated array of strings. The returned array belongs to
+//     GIO and must not be freed or modified.
 //
 func (vfs *VFS) SupportedURISchemes() []string {
 	var _arg0 *C.GVfs   // out
@@ -342,7 +342,7 @@ func (vfs *VFS) SupportedURISchemes() []string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if construction of the vfs was successful and it is now active.
+//   - ok: TRUE if construction of the vfs was successful and it is now active.
 //
 func (vfs *VFS) IsActive() bool {
 	var _arg0 *C.GVfs    // out
@@ -368,12 +368,12 @@ func (vfs *VFS) IsActive() bool {
 //
 // The function takes the following parameters:
 //
-//    - parseName: string to be parsed by the VFS module.
+//   - parseName: string to be parsed by the VFS module.
 //
 // The function returns the following values:
 //
-//    - file for the given parse_name. Free the returned object with
-//      g_object_unref().
+//   - file for the given parse_name. Free the returned object with
+//     g_object_unref().
 //
 func (vfs *VFS) ParseName(parseName string) *File {
 	var _arg0 *C.GVfs  // out
@@ -406,11 +406,11 @@ func (vfs *VFS) ParseName(parseName string) *File {
 // g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
 //
 // When g_file_parse_name() is called with a parse name obtained from such file,
-// parse_name_func will be called to allow the #GFile to be created again. In
-// that case, it's responsibility of parse_name_func to make sure the parse name
-// matches what the custom #GFile implementation returned when
-// g_file_get_parse_name() was previously called. The implementation of
-// parse_name_func should not be blocking, and must not call
+// parse_name_func will be called to allow the #GFile to be created again.
+// In that case, it's responsibility of parse_name_func to make sure the
+// parse name matches what the custom #GFile implementation returned when
+// g_file_get_parse_name() was previously called. The implementation
+// of parse_name_func should not be blocking, and must not call
 // g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
 //
 // It's an error to call this function twice with the same scheme. To unregister
@@ -418,14 +418,14 @@ func (vfs *VFS) ParseName(parseName string) *File {
 //
 // The function takes the following parameters:
 //
-//    - scheme: URI scheme, e.g. "http".
-//    - uriFunc (optional): FileLookupFunc.
-//    - parseNameFunc (optional): FileLookupFunc.
+//   - scheme: URI scheme, e.g. "http".
+//   - uriFunc (optional): FileLookupFunc.
+//   - parseNameFunc (optional): FileLookupFunc.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if scheme was successfully registered, or FALSE if a handler for
-//      scheme already exists.
+//   - ok: TRUE if scheme was successfully registered, or FALSE if a handler for
+//     scheme already exists.
 //
 func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileLookupFunc) bool {
 	var _arg0 *C.GVfs              // out
@@ -472,12 +472,12 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileL
 //
 // The function takes the following parameters:
 //
-//    - scheme: URI scheme, e.g. "http".
+//   - scheme: URI scheme, e.g. "http".
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if scheme was successfully unregistered, or FALSE if a handler
-//      for scheme does not exist.
+//   - ok: TRUE if scheme was successfully unregistered, or FALSE if a handler
+//     for scheme does not exist.
 //
 func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	var _arg0 *C.GVfs    // out
@@ -522,11 +522,11 @@ func (vfs *VFS) addWritableNamespaces(list *FileAttributeInfoList) {
 //
 // The function takes the following parameters:
 //
-//    - path: string containing a VFS path.
+//   - path: string containing a VFS path.
 //
 // The function returns the following values:
 //
-//    - file: #GFile. Free the returned object with g_object_unref().
+//   - file: #GFile. Free the returned object with g_object_unref().
 //
 func (vfs *VFS) fileForPath(path string) *File {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
@@ -558,11 +558,11 @@ func (vfs *VFS) fileForPath(path string) *File {
 //
 // The function takes the following parameters:
 //
-//    - uri: string containing a URI.
+//   - uri: string containing a URI.
 //
 // The function returns the following values:
 //
-//    - file: #GFile. Free the returned object with g_object_unref().
+//   - file: #GFile. Free the returned object with g_object_unref().
 //
 func (vfs *VFS) fileForURI(uri string) *File {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
@@ -591,8 +591,8 @@ func (vfs *VFS) fileForURI(uri string) *File {
 //
 // The function returns the following values:
 //
-//    - utf8s: NULL-terminated array of strings. The returned array belongs to
-//      GIO and must not be freed or modified.
+//   - utf8s: NULL-terminated array of strings. The returned array belongs to
+//     GIO and must not be freed or modified.
 //
 func (vfs *VFS) supportedURISchemes() []string {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
@@ -629,7 +629,7 @@ func (vfs *VFS) supportedURISchemes() []string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if construction of the vfs was successful and it is now active.
+//   - ok: TRUE if construction of the vfs was successful and it is now active.
 //
 func (vfs *VFS) isActive() bool {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
@@ -654,8 +654,8 @@ func (vfs *VFS) isActive() bool {
 
 // The function takes the following parameters:
 //
-//    - source
-//    - dest
+//   - source
+//   - dest
 //
 func (vfs *VFS) localFileMoved(source, dest string) {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
@@ -697,10 +697,10 @@ func (vfs *VFS) localFileRemoved(filename string) {
 
 // The function takes the following parameters:
 //
-//    - ctx (optional)
-//    - filename
-//    - info
-//    - flags
+//   - ctx (optional)
+//   - filename
+//   - info
+//   - flags
 //
 func (vfs *VFS) localFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
@@ -746,12 +746,12 @@ func (vfs *VFS) localFileSetAttributes(ctx context.Context, filename string, inf
 //
 // The function takes the following parameters:
 //
-//    - parseName: string to be parsed by the VFS module.
+//   - parseName: string to be parsed by the VFS module.
 //
 // The function returns the following values:
 //
-//    - file for the given parse_name. Free the returned object with
-//      g_object_unref().
+//   - file for the given parse_name. Free the returned object with
+//     g_object_unref().
 //
 func (vfs *VFS) parseName(parseName string) *File {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
@@ -780,8 +780,8 @@ func (vfs *VFS) parseName(parseName string) *File {
 //
 // The function returns the following values:
 //
-//    - vfs which will be the local file system #GVfs if no other implementation
-//      is available.
+//   - vfs which will be the local file system #GVfs if no other implementation
+//     is available.
 //
 func VFSGetDefault() *VFS {
 	var _cret *C.GVfs // in
@@ -799,7 +799,7 @@ func VFSGetDefault() *VFS {
 //
 // The function returns the following values:
 //
-//    - vfs: #GVfs.
+//   - vfs: #GVfs.
 //
 func VFSGetLocal() *VFS {
 	var _cret *C.GVfs // in

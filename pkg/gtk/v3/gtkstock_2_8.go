@@ -67,8 +67,8 @@ const STOCK_LEAVE_FULLSCREEN = "gtk-leave-fullscreen"
 //
 // The function takes the following parameters:
 //
-//    - domain: translation domain for which func shall be used.
-//    - fn: TranslateFunc.
+//   - domain: translation domain for which func shall be used.
+//   - fn: TranslateFunc.
 //
 func StockSetTranslateFunc(domain string, fn TranslateFunc) {
 	var _arg1 *C.gchar           // out

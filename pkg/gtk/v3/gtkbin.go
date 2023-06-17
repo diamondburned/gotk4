@@ -117,7 +117,7 @@ func BaseBin(obj Binner) *Bin {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child of bin, or NULL if it does not have a child.
+//   - widget (optional): child of bin, or NULL if it does not have a child.
 //
 func (bin *Bin) Child() Widgetter {
 	var _arg0 *C.GtkBin    // out

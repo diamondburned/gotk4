@@ -45,23 +45,23 @@ import "C"
 // ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType (including
 // e.g. TYPE_OBJECT and TYPE_BOXED derived-types) not in the table above.
 //
-// Note that if gvalue is of type TYPE_VARIANT and its value is NULL, the empty
-// #GVariant instance (never NULL) for type is returned (e.g. 0 for scalar
-// types, the empty string for string types, '/' for object path types, the
-// empty array for any array type and so on).
+// Note that if gvalue is of type TYPE_VARIANT and its value is NULL,
+// the empty #GVariant instance (never NULL) for type is returned (e.g. 0 for
+// scalar types, the empty string for string types, '/' for object path types,
+// the empty array for any array type and so on).
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
 //
 // The function takes the following parameters:
 //
-//    - gvalue to convert to a #GVariant.
-//    - typ: Type.
+//   - gvalue to convert to a #GVariant.
+//   - typ: Type.
 //
 // The function returns the following values:
 //
-//    - variant (never floating) of Type type holding the data from gvalue or an
-//      empty #GVariant in case of failure. Free with g_variant_unref().
+//   - variant (never floating) of Type type holding the data from gvalue or an
+//     empty #GVariant in case of failure. Free with g_variant_unref().
 //
 func DBusGValueToGVariant(gvalue *coreglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
@@ -92,22 +92,22 @@ func DBusGValueToGVariant(gvalue *coreglib.Value, typ *glib.VariantType) *glib.V
 // it is consumed.
 //
 // The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
-// this function is essentially its reverse form. So, a #GVariant containing any
-// basic or string array type will be converted to a #GValue containing a basic
-// value or string array. Any other #GVariant (handle, variant, tuple, dict
-// entry) will be converted to a #GValue containing that #GVariant.
+// this function is essentially its reverse form. So, a #GVariant containing
+// any basic or string array type will be converted to a #GValue containing a
+// basic value or string array. Any other #GVariant (handle, variant, tuple,
+// dict entry) will be converted to a #GValue containing that #GVariant.
 //
 // The conversion never fails - a valid #GValue is always returned in
 // out_gvalue.
 //
 // The function takes the following parameters:
 //
-//    - value: #GVariant.
+//   - value: #GVariant.
 //
 // The function returns the following values:
 //
-//    - outGvalue: return location pointing to a zero-filled (uninitialized)
-//      #GValue.
+//   - outGvalue: return location pointing to a zero-filled (uninitialized)
+//     #GValue.
 //
 func DBusGVariantToGValue(value *glib.Variant) coreglib.Value {
 	var _arg1 *C.GVariant // out

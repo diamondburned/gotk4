@@ -49,8 +49,8 @@ const (
 	// other enumeration values.
 	SorterChangeDifferent SorterChange = iota
 	// SorterChangeInverted: sort order was inverted. Comparisons that returned
-	// GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice versa. Other
-	// comparisons return the same values as before.
+	// GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice versa.
+	// Other comparisons return the same values as before.
 	SorterChangeInverted
 	// SorterChangeLessStrict: sorter is less strict: Comparisons may now return
 	// GTK_ORDERING_EQUAL that did not do so before.
@@ -129,13 +129,13 @@ type SorterOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - item1 (optional): first item to compare.
-	//    - item2 (optional): second item to compare.
+	//   - item1 (optional): first item to compare.
+	//   - item2 (optional): second item to compare.
 	//
 	// The function returns the following values:
 	//
-	//    - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER
-	//      if item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
+	//   - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER
+	//     if item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
 	//
 	Compare func(item1, item2 *coreglib.Object) Ordering
 	// Order gets the order that self conforms to.
@@ -146,7 +146,7 @@ type SorterOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - sorterOrder: order.
+	//   - sorterOrder: order.
 	//
 	Order func() SorterOrder
 }
@@ -160,15 +160,14 @@ func defaultSorterOverrides(v *Sorter) SorterOverrides {
 
 // Sorter: GtkSorter is an object to describe sorting criteria.
 //
-//
-// Its primary user is gtk.SortListModel
+// # Its primary user is gtk.SortListModel
 //
 // The model will use a sorter to determine the order in which its items should
 // appear by calling gtk.Sorter.Compare() for pairs of items.
 //
-// Sorters may change their sorting behavior through their lifetime. In that
-// case, they will emit the gtk.Sorter::changed signal to notify that the sort
-// order is no longer valid and should be updated by calling
+// Sorters may change their sorting behavior through their lifetime.
+// In that case, they will emit the gtk.Sorter::changed signal to notify
+// that the sort order is no longer valid and should be updated by calling
 // gtk_sorter_compare() again.
 //
 // GTK provides various pre-made sorter implementations for common sorting
@@ -252,7 +251,7 @@ func (self *Sorter) ConnectChanged(f func(change SorterChange)) coreglib.SignalH
 //
 // The function takes the following parameters:
 //
-//    - change: how the sorter changed.
+//   - change: how the sorter changed.
 //
 func (self *Sorter) Changed(change SorterChange) {
 	var _arg0 *C.GtkSorter      // out
@@ -280,13 +279,13 @@ func (self *Sorter) Changed(change SorterChange) {
 //
 // The function takes the following parameters:
 //
-//    - item1: first item to compare.
-//    - item2: second item to compare.
+//   - item1: first item to compare.
+//   - item2: second item to compare.
 //
 // The function returns the following values:
 //
-//    - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER if
-//      item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
+//   - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER if
+//     item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
 //
 func (self *Sorter) Compare(item1, item2 *coreglib.Object) Ordering {
 	var _arg0 *C.GtkSorter  // out
@@ -318,7 +317,7 @@ func (self *Sorter) Compare(item1, item2 *coreglib.Object) Ordering {
 //
 // The function returns the following values:
 //
-//    - sorterOrder: order.
+//   - sorterOrder: order.
 //
 func (self *Sorter) Order() SorterOrder {
 	var _arg0 *C.GtkSorter     // out
@@ -350,13 +349,13 @@ func (self *Sorter) Order() SorterOrder {
 //
 // The function takes the following parameters:
 //
-//    - item1 (optional): first item to compare.
-//    - item2 (optional): second item to compare.
+//   - item1 (optional): first item to compare.
+//   - item2 (optional): second item to compare.
 //
 // The function returns the following values:
 //
-//    - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER if
-//      item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
+//   - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER if
+//     item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
 //
 func (self *Sorter) compare(item1, item2 *coreglib.Object) Ordering {
 	gclass := (*C.GtkSorterClass)(coreglib.PeekParentClass(self))
@@ -391,7 +390,7 @@ func (self *Sorter) compare(item1, item2 *coreglib.Object) Ordering {
 //
 // The function returns the following values:
 //
-//    - sorterOrder: order.
+//   - sorterOrder: order.
 //
 func (self *Sorter) order() SorterOrder {
 	gclass := (*C.GtkSorterClass)(coreglib.PeekParentClass(self))

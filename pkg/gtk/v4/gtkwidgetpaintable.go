@@ -43,15 +43,15 @@ func defaultWidgetPaintableOverrides(v *WidgetPaintable) WidgetPaintableOverride
 // where it does not have a size (like when it is hidden) and report no size in
 // that case.
 //
-// Of course, GtkWidgetPaintable allows you to monitor widgets for size changes
-// by emitting the gdk.Paintable::invalidate-size signal whenever the size of
-// the widget changes as well as for visual changes by emitting the
+// Of course, GtkWidgetPaintable allows you to monitor widgets for size
+// changes by emitting the gdk.Paintable::invalidate-size signal whenever the
+// size of the widget changes as well as for visual changes by emitting the
 // gdk.Paintable::invalidate-contents signal whenever the widget changes.
 //
 // You can use a GtkWidgetPaintable everywhere a GdkPaintable is allowed,
-// including using it on a GtkPicture (or one of its parents) that it was set on
-// itself via gtk_picture_set_paintable(). The paintable will take care of
-// recursion when this happens. If you do this however, ensure that the
+// including using it on a GtkPicture (or one of its parents) that it was set
+// on itself via gtk_picture_set_paintable(). The paintable will take care
+// of recursion when this happens. If you do this however, ensure that the
 // gtk.Picture:can-shrink property is set to TRUE or you might end up with an
 // infinitely growing widget.
 type WidgetPaintable struct {
@@ -98,11 +98,11 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - widget (optional): GtkWidget or NULL.
+//   - widget (optional): GtkWidget or NULL.
 //
 // The function returns the following values:
 //
-//    - widgetPaintable: new GtkWidgetPaintable.
+//   - widgetPaintable: new GtkWidgetPaintable.
 //
 func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 	var _arg1 *C.GtkWidget    // out
@@ -126,7 +126,7 @@ func NewWidgetPaintable(widget Widgetter) *WidgetPaintable {
 //
 // The function returns the following values:
 //
-//    - widget (optional): observed widget.
+//   - widget (optional): observed widget.
 //
 func (self *WidgetPaintable) Widget() Widgetter {
 	var _arg0 *C.GtkWidgetPaintable // out
@@ -163,7 +163,7 @@ func (self *WidgetPaintable) Widget() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - widget (optional) to observe or NULL.
+//   - widget (optional) to observe or NULL.
 //
 func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	var _arg0 *C.GtkWidgetPaintable // out

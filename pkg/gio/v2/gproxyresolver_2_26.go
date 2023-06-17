@@ -42,8 +42,8 @@ func init() {
 	})
 }
 
-// ProxyResolver provides synchronous and asynchronous network proxy resolution.
-// Resolver is used within Client through the method
+// ProxyResolver provides synchronous and asynchronous network proxy
+// resolution. Resolver is used within Client through the method
 // g_socket_connectable_proxy_enumerate().
 //
 // Implementations of Resolver based on libproxy and GNOME settings can be found
@@ -95,7 +95,7 @@ func marshalProxyResolver(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if resolver is supported.
+//   - ok: TRUE if resolver is supported.
 //
 func (resolver *ProxyResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
@@ -115,14 +115,14 @@ func (resolver *ProxyResolver) IsSupported() bool {
 	return _ok
 }
 
-// Lookup looks into the system proxy configuration to determine what proxy, if
-// any, to use to connect to uri. The returned proxy URIs are of the form
+// Lookup looks into the system proxy configuration to determine what proxy,
+// if any, to use to connect to uri. The returned proxy URIs are of the form
 // <protocol>://[user[:password]@]host:port or direct://, where <protocol> could
 // be http, rtsp, socks or other proxying protocol.
 //
-// If you don't know what network protocol is being used on the socket, you
-// should use none as the URI protocol. In this case, the resolver might still
-// return a generic proxy type (such as SOCKS), but would not return
+// If you don't know what network protocol is being used on the socket,
+// you should use none as the URI protocol. In this case, the resolver might
+// still return a generic proxy type (such as SOCKS), but would not return
 // protocol-specific proxy types (such as http).
 //
 // direct:// is used when no proxy is needed. Direct connection should not be
@@ -130,13 +130,13 @@ func (resolver *ProxyResolver) IsSupported() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - uri: URI representing the destination to connect to.
+//   - ctx (optional) or NULL.
+//   - uri: URI representing the destination to connect to.
 //
 // The function returns the following values:
 //
-//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
-//      g_strfreev().
+//   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+//     g_strfreev().
 //
 func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
@@ -189,9 +189,9 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - uri: URI representing the destination to connect to.
-//    - callback (optional) to call after resolution completes.
+//   - ctx (optional) or NULL.
+//   - uri: URI representing the destination to connect to.
+//   - callback (optional) to call after resolution completes.
 //
 func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver     // out
@@ -226,12 +226,12 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 //
 // The function takes the following parameters:
 //
-//    - result passed to your ReadyCallback.
+//   - result passed to your ReadyCallback.
 //
 // The function returns the following values:
 //
-//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
-//      g_strfreev().
+//   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+//     g_strfreev().
 //
 func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
@@ -277,7 +277,7 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if resolver is supported.
+//   - ok: TRUE if resolver is supported.
 //
 func (resolver *ProxyResolver) isSupported() bool {
 	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
@@ -300,14 +300,14 @@ func (resolver *ProxyResolver) isSupported() bool {
 	return _ok
 }
 
-// Lookup looks into the system proxy configuration to determine what proxy, if
-// any, to use to connect to uri. The returned proxy URIs are of the form
+// Lookup looks into the system proxy configuration to determine what proxy,
+// if any, to use to connect to uri. The returned proxy URIs are of the form
 // <protocol>://[user[:password]@]host:port or direct://, where <protocol> could
 // be http, rtsp, socks or other proxying protocol.
 //
-// If you don't know what network protocol is being used on the socket, you
-// should use none as the URI protocol. In this case, the resolver might still
-// return a generic proxy type (such as SOCKS), but would not return
+// If you don't know what network protocol is being used on the socket,
+// you should use none as the URI protocol. In this case, the resolver might
+// still return a generic proxy type (such as SOCKS), but would not return
 // protocol-specific proxy types (such as http).
 //
 // direct:// is used when no proxy is needed. Direct connection should not be
@@ -315,13 +315,13 @@ func (resolver *ProxyResolver) isSupported() bool {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - uri: URI representing the destination to connect to.
+//   - ctx (optional) or NULL.
+//   - uri: URI representing the destination to connect to.
 //
 // The function returns the following values:
 //
-//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
-//      g_strfreev().
+//   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+//     g_strfreev().
 //
 func (resolver *ProxyResolver) lookup(ctx context.Context, uri string) ([]string, error) {
 	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
@@ -377,9 +377,9 @@ func (resolver *ProxyResolver) lookup(ctx context.Context, uri string) ([]string
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - uri: URI representing the destination to connect to.
-//    - callback (optional) to call after resolution completes.
+//   - ctx (optional) or NULL.
+//   - uri: URI representing the destination to connect to.
+//   - callback (optional) to call after resolution completes.
 //
 func (resolver *ProxyResolver) lookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
 	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
@@ -417,12 +417,12 @@ func (resolver *ProxyResolver) lookupAsync(ctx context.Context, uri string, call
 //
 // The function takes the following parameters:
 //
-//    - result passed to your ReadyCallback.
+//   - result passed to your ReadyCallback.
 //
 // The function returns the following values:
 //
-//    - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
-//      g_strfreev().
+//   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+//     g_strfreev().
 //
 func (resolver *ProxyResolver) lookupFinish(result AsyncResulter) ([]string, error) {
 	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
@@ -469,8 +469,8 @@ func (resolver *ProxyResolver) lookupFinish(result AsyncResulter) ([]string, err
 //
 // The function returns the following values:
 //
-//    - proxyResolver: default Resolver, which will be a dummy object if no proxy
-//      resolver is available.
+//   - proxyResolver: default Resolver, which will be a dummy object if no proxy
+//     resolver is available.
 //
 func ProxyResolverGetDefault() *ProxyResolver {
 	var _cret *C.GProxyResolver // in

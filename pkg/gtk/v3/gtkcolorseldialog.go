@@ -95,11 +95,11 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title: string containing the title text for the dialog.
+//   - title: string containing the title text for the dialog.
 //
 // The function returns the following values:
 //
-//    - colorSelectionDialog: ColorSelectionDialog.
+//   - colorSelectionDialog: ColorSelectionDialog.
 //
 func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 	var _arg1 *C.gchar     // out
@@ -122,7 +122,7 @@ func NewColorSelectionDialog(title string) *ColorSelectionDialog {
 //
 // The function returns the following values:
 //
-//    - widget: embedded ColorSelection.
+//   - widget: embedded ColorSelection.
 //
 func (colorsel *ColorSelectionDialog) ColorSelection() Widgetter {
 	var _arg0 *C.GtkColorSelectionDialog // out

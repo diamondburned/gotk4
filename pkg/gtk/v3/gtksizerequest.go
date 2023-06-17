@@ -24,15 +24,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - extraSpace: extra space to redistribute among children after subtracting
-//      minimum sizes and any child padding from the overall allocation.
-//    - nRequestedSizes: number of requests to fit into the allocation.
-//    - sizes: array of structs with a client pointer and a minimum/natural size
-//      in the orientation of the allocation.
+//   - extraSpace: extra space to redistribute among children after subtracting
+//     minimum sizes and any child padding from the overall allocation.
+//   - nRequestedSizes: number of requests to fit into the allocation.
+//   - sizes: array of structs with a client pointer and a minimum/natural size
+//     in the orientation of the allocation.
 //
 // The function returns the following values:
 //
-//    - gint: remainder of extra_space after redistributing space to sizes.
+//   - gint: remainder of extra_space after redistributing space to sizes.
 //
 func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
 	var _arg1 C.gint              // out

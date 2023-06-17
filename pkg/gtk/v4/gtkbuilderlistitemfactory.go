@@ -75,12 +75,12 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - scope (optional) to use when instantiating.
-//    - bytes: GBytes containing the ui file to instantiate.
+//   - scope (optional) to use when instantiating.
+//   - bytes: GBytes containing the ui file to instantiate.
 //
 // The function returns the following values:
 //
-//    - builderListItemFactory: new GtkBuilderListItemFactory.
+//   - builderListItemFactory: new GtkBuilderListItemFactory.
 //
 func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
@@ -109,12 +109,12 @@ func NewBuilderListItemFactoryFromBytes(scope BuilderScoper, bytes *glib.Bytes) 
 //
 // The function takes the following parameters:
 //
-//    - scope (optional) to use when instantiating.
-//    - resourcePath: valid path to a resource that contains the data.
+//   - scope (optional) to use when instantiating.
+//   - resourcePath: valid path to a resource that contains the data.
 //
 // The function returns the following values:
 //
-//    - builderListItemFactory: new GtkBuilderListItemFactory.
+//   - builderListItemFactory: new GtkBuilderListItemFactory.
 //
 func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath string) *BuilderListItemFactory {
 	var _arg1 *C.GtkBuilderScope    // out
@@ -143,7 +143,7 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScoper, resourcePath str
 //
 // The function returns the following values:
 //
-//    - bytes: GtkBuilder data.
+//   - bytes: GtkBuilder data.
 //
 func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 	var _arg0 *C.GtkBuilderListItemFactory // out
@@ -172,7 +172,7 @@ func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): path to the resource or NULL if none.
+//   - utf8 (optional): path to the resource or NULL if none.
 //
 func (self *BuilderListItemFactory) Resource() string {
 	var _arg0 *C.GtkBuilderListItemFactory // out
@@ -196,7 +196,7 @@ func (self *BuilderListItemFactory) Resource() string {
 //
 // The function returns the following values:
 //
-//    - builderScope (optional): scope used when constructing listitems.
+//   - builderScope (optional): scope used when constructing listitems.
 //
 func (self *BuilderListItemFactory) Scope() *BuilderScope {
 	var _arg0 *C.GtkBuilderListItemFactory // out

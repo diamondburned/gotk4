@@ -24,15 +24,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - lookupKey (optional): key to look up.
+//   - hashTable: Table.
+//   - lookupKey (optional): key to look up.
 //
 // The function returns the following values:
 //
-//    - stolenKey (optional): return location for the original key.
-//    - stolenValue (optional): return location for the value associated with the
-//      key.
-//    - ok: TRUE if the key was found in the Table.
+//   - stolenKey (optional): return location for the original key.
+//   - stolenValue (optional): return location for the value associated with the
+//     key.
+//   - ok: TRUE if the key was found in the Table.
 //
 func HashTableStealExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (stolenKey, stolenValue unsafe.Pointer, ok bool) {
 	var _arg1 *C.GHashTable   // out

@@ -105,23 +105,23 @@ func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable boo
 // CanReach attempts to determine whether or not the host pointed to by
 // connectable can be reached, without actually trying to connect to it.
 //
-// This may return TRUE even when Monitor:network-available is FALSE, if, for
-// example, monitor can determine that connectable refers to a host on a local
-// network.
+// This may return TRUE even when Monitor:network-available is FALSE, if,
+// for example, monitor can determine that connectable refers to a host on a
+// local network.
 //
 // If monitor believes that an attempt to connect to connectable will succeed,
 // it will return TRUE. Otherwise, it will return FALSE and set error to an
 // appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
 //
-// Note that although this does not attempt to connect to connectable, it may
-// still block for a brief period of time (eg, trying to do multicast DNS on the
-// local network), so if you do not want to block, you should use
+// Note that although this does not attempt to connect to connectable,
+// it may still block for a brief period of time (eg, trying to do multicast
+// DNS on the local network), so if you do not want to block, you should use
 // g_network_monitor_can_reach_async().
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - connectable: Connectable.
+//   - ctx (optional) or NULL.
+//   - connectable: Connectable.
 //
 func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectabler) error {
 	var _arg0 *C.GNetworkMonitor    // out
@@ -162,9 +162,9 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - connectable: Connectable.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional) or NULL.
+//   - connectable: Connectable.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor    // out
@@ -197,7 +197,7 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 	var _arg0 *C.GNetworkMonitor // out
@@ -226,11 +226,11 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 // If Monitor:network-available is FALSE, then the connectivity state will be
 // G_NETWORK_CONNECTIVITY_LOCAL.
 //
-// If Monitor:network-available is TRUE, then the connectivity state will be
-// G_NETWORK_CONNECTIVITY_FULL (if there is full Internet connectivity),
-// G_NETWORK_CONNECTIVITY_LIMITED (if the host has a default route, but appears
-// to be unable to actually reach the full Internet), or
-// G_NETWORK_CONNECTIVITY_PORTAL (if the host is trapped behind a "captive
+// If Monitor:network-available is TRUE, then the connectivity state will
+// be G_NETWORK_CONNECTIVITY_FULL (if there is full Internet connectivity),
+// G_NETWORK_CONNECTIVITY_LIMITED (if the host has a default route,
+// but appears to be unable to actually reach the full Internet),
+// or G_NETWORK_CONNECTIVITY_PORTAL (if the host is trapped behind a "captive
 // portal" that requires some sort of login or acknowledgement before allowing
 // full Internet access).
 //
@@ -242,7 +242,7 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - networkConnectivity: network connectivity state.
+//   - networkConnectivity: network connectivity state.
 //
 func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 	var _arg0 *C.GNetworkMonitor     // out
@@ -267,7 +267,7 @@ func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 //
 // The function returns the following values:
 //
-//    - ok: whether the network is available.
+//   - ok: whether the network is available.
 //
 func (monitor *NetworkMonitor) NetworkAvailable() bool {
 	var _arg0 *C.GNetworkMonitor // out
@@ -292,7 +292,7 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the connection is metered.
+//   - ok: whether the connection is metered.
 //
 func (monitor *NetworkMonitor) NetworkMetered() bool {
 	var _arg0 *C.GNetworkMonitor // out
@@ -315,23 +315,23 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 // canReach attempts to determine whether or not the host pointed to by
 // connectable can be reached, without actually trying to connect to it.
 //
-// This may return TRUE even when Monitor:network-available is FALSE, if, for
-// example, monitor can determine that connectable refers to a host on a local
-// network.
+// This may return TRUE even when Monitor:network-available is FALSE, if,
+// for example, monitor can determine that connectable refers to a host on a
+// local network.
 //
 // If monitor believes that an attempt to connect to connectable will succeed,
 // it will return TRUE. Otherwise, it will return FALSE and set error to an
 // appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
 //
-// Note that although this does not attempt to connect to connectable, it may
-// still block for a brief period of time (eg, trying to do multicast DNS on the
-// local network), so if you do not want to block, you should use
+// Note that although this does not attempt to connect to connectable,
+// it may still block for a brief period of time (eg, trying to do multicast
+// DNS on the local network), so if you do not want to block, you should use
 // g_network_monitor_can_reach_async().
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - connectable: Connectable.
+//   - ctx (optional) or NULL.
+//   - connectable: Connectable.
 //
 func (monitor *NetworkMonitor) canReach(ctx context.Context, connectable SocketConnectabler) error {
 	gclass := (*C.GNetworkMonitorInterface)(coreglib.PeekParentClass(monitor))
@@ -375,9 +375,9 @@ func (monitor *NetworkMonitor) canReach(ctx context.Context, connectable SocketC
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - connectable: Connectable.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional) or NULL.
+//   - connectable: Connectable.
+//   - callback (optional) to call when the request is satisfied.
 //
 func (monitor *NetworkMonitor) canReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	gclass := (*C.GNetworkMonitorInterface)(coreglib.PeekParentClass(monitor))
@@ -413,7 +413,7 @@ func (monitor *NetworkMonitor) canReachAsync(ctx context.Context, connectable So
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (monitor *NetworkMonitor) canReachFinish(result AsyncResulter) error {
 	gclass := (*C.GNetworkMonitorInterface)(coreglib.PeekParentClass(monitor))
@@ -462,8 +462,8 @@ func (monitor *NetworkMonitor) networkChanged(networkAvailable bool) {
 //
 // The function returns the following values:
 //
-//    - networkMonitor which will be a dummy object if no network monitor is
-//      available.
+//   - networkMonitor which will be a dummy object if no network monitor is
+//     available.
 //
 func NetworkMonitorGetDefault() *NetworkMonitor {
 	var _cret *C.GNetworkMonitor // in

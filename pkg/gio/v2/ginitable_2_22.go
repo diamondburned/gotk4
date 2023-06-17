@@ -31,9 +31,9 @@ func init() {
 	})
 }
 
-// Initable is implemented by objects that can fail during initialization. If an
-// object implements this interface then it must be initialized as the first
-// thing after construction, either via g_initable_init() or
+// Initable is implemented by objects that can fail during initialization.
+// If an object implements this interface then it must be initialized as
+// the first thing after construction, either via g_initable_init() or
 // g_async_initable_init_async() (the latter is only available if it also
 // implements Initable).
 //
@@ -43,11 +43,11 @@ func init() {
 // fail with g_critical() or g_warning(), but this must not be relied on.
 //
 // Users of objects implementing this are not intended to use the interface
-// method directly, instead it will be used automatically in various ways. For C
-// applications you generally just call g_initable_new() directly, or indirectly
-// via a foo_thing_new() wrapper. This will call g_initable_init() under the
-// cover, returning NULL and setting a #GError on failure (at which point the
-// instance is unreferenced).
+// method directly, instead it will be used automatically in various ways.
+// For C applications you generally just call g_initable_new() directly,
+// or indirectly via a foo_thing_new() wrapper. This will call g_initable_init()
+// under the cover, returning NULL and setting a #GError on failure (at which
+// point the instance is unreferenced).
 //
 // For bindings in languages where the native constructor supports exceptions
 // the binding could check for objects implementing GInitable during normal
@@ -94,10 +94,10 @@ func marshalInitable(p uintptr) (interface{}, error) {
 // construction, either with this function or g_async_initable_init_async().
 //
 // Implementations may also support cancellation. If cancellable is not NULL,
-// then initialization can be cancelled by triggering the cancellable object
-// from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL and the
-// object doesn't support cancellable initialization the error
+// then initialization can be cancelled by triggering the cancellable
+// object from another thread. If the operation was cancelled, the error
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL
+// and the object doesn't support cancellable initialization the error
 // G_IO_ERROR_NOT_SUPPORTED will be returned.
 //
 // If the object is not initialized, or initialization returns with an error,
@@ -125,7 +125,7 @@ func marshalInitable(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (initable *Initable) Init(ctx context.Context) error {
 	var _arg0 *C.GInitable    // out
@@ -161,10 +161,10 @@ func (initable *Initable) Init(ctx context.Context) error {
 // construction, either with this function or g_async_initable_init_async().
 //
 // Implementations may also support cancellation. If cancellable is not NULL,
-// then initialization can be cancelled by triggering the cancellable object
-// from another thread. If the operation was cancelled, the error
-// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL and the
-// object doesn't support cancellable initialization the error
+// then initialization can be cancelled by triggering the cancellable
+// object from another thread. If the operation was cancelled, the error
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL
+// and the object doesn't support cancellable initialization the error
 // G_IO_ERROR_NOT_SUPPORTED will be returned.
 //
 // If the object is not initialized, or initialization returns with an error,
@@ -192,7 +192,7 @@ func (initable *Initable) Init(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //
 func (initable *Initable) init(ctx context.Context) error {
 	gclass := (*C.GInitableIface)(coreglib.PeekParentClass(initable))

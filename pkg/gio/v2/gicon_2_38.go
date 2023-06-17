@@ -20,11 +20,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - value created with g_icon_serialize().
+//   - value created with g_icon_serialize().
 //
 // The function returns the following values:
 //
-//    - icon (optional) or NULL when deserialization fails.
+//   - icon (optional) or NULL when deserialization fails.
 //
 func IconDeserialize(value *glib.Variant) *Icon {
 	var _arg1 *C.GVariant // out

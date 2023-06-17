@@ -82,7 +82,7 @@ func marshalPopup(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if popup will autohide.
+//   - ok: TRUE if popup will autohide.
 //
 func (popup *Popup) Autohide() bool {
 	var _arg0 *C.GdkPopup // out
@@ -106,7 +106,7 @@ func (popup *Popup) Autohide() bool {
 //
 // The function returns the following values:
 //
-//    - surface: parent surface.
+//   - surface: parent surface.
 //
 func (popup *Popup) Parent() Surfacer {
 	var _arg0 *C.GdkPopup   // out
@@ -144,7 +144,7 @@ func (popup *Popup) Parent() Surfacer {
 //
 // The function returns the following values:
 //
-//    - gint: x coordinate of popup position.
+//   - gint: x coordinate of popup position.
 //
 func (popup *Popup) PositionX() int {
 	var _arg0 *C.GdkPopup // out
@@ -166,7 +166,7 @@ func (popup *Popup) PositionX() int {
 //
 // The function returns the following values:
 //
-//    - gint: y coordinate of popup position.
+//   - gint: y coordinate of popup position.
 //
 func (popup *Popup) PositionY() int {
 	var _arg0 *C.GdkPopup // out
@@ -191,7 +191,7 @@ func (popup *Popup) PositionY() int {
 //
 // The function returns the following values:
 //
-//    - gravity: current rectangle anchor value of popup.
+//   - gravity: current rectangle anchor value of popup.
 //
 func (popup *Popup) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
@@ -216,7 +216,7 @@ func (popup *Popup) RectAnchor() Gravity {
 //
 // The function returns the following values:
 //
-//    - gravity: current surface anchor value of popup.
+//   - gravity: current surface anchor value of popup.
 //
 func (popup *Popup) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopup  // out
@@ -239,26 +239,26 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 // If the popup was previously now showing, it will be showed, otherwise it will
 // change position according to layout.
 //
-// After calling this function, the result should be handled in response to the
-// gdksurface::layout signal being emitted. The resulting popup position can be
-// queried using gdk.Popup.GetPositionX(), gdk.Popup.GetPositionY(), and the
-// resulting size will be sent as parameters in the layout signal. Use
-// gdk.Popup.GetRectAnchor() and gdk.Popup.GetSurfaceAnchor() to get the
+// After calling this function, the result should be handled in response to
+// the gdksurface::layout signal being emitted. The resulting popup position
+// can be queried using gdk.Popup.GetPositionX(), gdk.Popup.GetPositionY(),
+// and the resulting size will be sent as parameters in the layout signal.
+// Use gdk.Popup.GetRectAnchor() and gdk.Popup.GetSurfaceAnchor() to get the
 // resulting anchors.
 //
-// Presenting may fail, for example if the popup is set to autohide and is
-// immediately hidden upon being presented. If presenting failed, the
+// Presenting may fail, for example if the popup is set to autohide and
+// is immediately hidden upon being presented. If presenting failed, the
 // gdk.Surface::layout signal will not me emitted.
 //
 // The function takes the following parameters:
 //
-//    - width: unconstrained popup width to layout.
-//    - height: unconstrained popup height to layout.
-//    - layout: GdkPopupLayout object used to layout.
+//   - width: unconstrained popup width to layout.
+//   - height: unconstrained popup height to layout.
+//   - layout: GdkPopupLayout object used to layout.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if it failed to be presented, otherwise TRUE.
+//   - ok: FALSE if it failed to be presented, otherwise TRUE.
 //
 func (popup *Popup) Present(width, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup       // out

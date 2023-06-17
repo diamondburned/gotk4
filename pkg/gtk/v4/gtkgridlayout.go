@@ -39,16 +39,16 @@ func defaultGridLayoutOverrides(v *GridLayout) GridLayoutOverrides {
 // GridLayout: GtkGridLayout is a layout manager which arranges child widgets in
 // rows and columns.
 //
-// Children have an "attach point" defined by the horizontal and vertical index
-// of the cell they occupy; children can span multiple rows or columns. The
-// layout properties for setting the attach points and spans are set using the
-// gtk.GridLayoutChild associated to each child widget.
+// Children have an "attach point" defined by the horizontal and vertical
+// index of the cell they occupy; children can span multiple rows or columns.
+// The layout properties for setting the attach points and spans are set using
+// the gtk.GridLayoutChild associated to each child widget.
 //
 // The behaviour of GtkGridLayout when several children occupy the same grid
 // cell is undefined.
 //
-// GtkGridLayout can be used like a GtkBoxLayout if all children are attached to
-// the same row or column; however, if you only ever need a single row or
+// GtkGridLayout can be used like a GtkBoxLayout if all children are attached
+// to the same row or column; however, if you only ever need a single row or
 // column, you should consider using GtkBoxLayout.
 type GridLayout struct {
 	_ [0]func() // equal guard
@@ -91,7 +91,7 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gridLayout: newly created GtkGridLayout.
+//   - gridLayout: newly created GtkGridLayout.
 //
 func NewGridLayout() *GridLayout {
 	var _cret *C.GtkLayoutManager // in
@@ -109,7 +109,7 @@ func NewGridLayout() *GridLayout {
 //
 // The function returns the following values:
 //
-//    - gint: global baseline row.
+//   - gint: global baseline row.
 //
 func (grid *GridLayout) BaselineRow() int {
 	var _arg0 *C.GtkGridLayout // out
@@ -132,7 +132,7 @@ func (grid *GridLayout) BaselineRow() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the columns are homogeneous, and FALSE otherwise.
+//   - ok: TRUE if the columns are homogeneous, and FALSE otherwise.
 //
 func (grid *GridLayout) ColumnHomogeneous() bool {
 	var _arg0 *C.GtkGridLayout // out
@@ -157,7 +157,7 @@ func (grid *GridLayout) ColumnHomogeneous() bool {
 //
 // The function returns the following values:
 //
-//    - guint: spacing between consecutive columns.
+//   - guint: spacing between consecutive columns.
 //
 func (grid *GridLayout) ColumnSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
@@ -177,16 +177,16 @@ func (grid *GridLayout) ColumnSpacing() uint {
 
 // RowBaselinePosition returns the baseline position of row.
 //
-// If no value has been set with gtk.GridLayout.SetRowBaselinePosition(), the
-// default value of GTK_BASELINE_POSITION_CENTER is returned.
+// If no value has been set with gtk.GridLayout.SetRowBaselinePosition(),
+// the default value of GTK_BASELINE_POSITION_CENTER is returned.
 //
 // The function takes the following parameters:
 //
-//    - row index.
+//   - row index.
 //
 // The function returns the following values:
 //
-//    - baselinePosition: baseline position of row.
+//   - baselinePosition: baseline position of row.
 //
 func (grid *GridLayout) RowBaselinePosition(row int) BaselinePosition {
 	var _arg0 *C.GtkGridLayout      // out
@@ -211,7 +211,7 @@ func (grid *GridLayout) RowBaselinePosition(row int) BaselinePosition {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the rows are homogeneous, and FALSE otherwise.
+//   - ok: TRUE if the rows are homogeneous, and FALSE otherwise.
 //
 func (grid *GridLayout) RowHomogeneous() bool {
 	var _arg0 *C.GtkGridLayout // out
@@ -235,7 +235,7 @@ func (grid *GridLayout) RowHomogeneous() bool {
 //
 // The function returns the following values:
 //
-//    - guint: spacing between consecutive rows.
+//   - guint: spacing between consecutive rows.
 //
 func (grid *GridLayout) RowSpacing() uint {
 	var _arg0 *C.GtkGridLayout // out
@@ -261,7 +261,7 @@ func (grid *GridLayout) RowSpacing() uint {
 //
 // The function takes the following parameters:
 //
-//    - row index.
+//   - row index.
 //
 func (grid *GridLayout) SetBaselineRow(row int) {
 	var _arg0 *C.GtkGridLayout // out
@@ -280,7 +280,7 @@ func (grid *GridLayout) SetBaselineRow(row int) {
 //
 // The function takes the following parameters:
 //
-//    - homogeneous: TRUE to make columns homogeneous.
+//   - homogeneous: TRUE to make columns homogeneous.
 //
 func (grid *GridLayout) SetColumnHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGridLayout // out
@@ -301,7 +301,7 @@ func (grid *GridLayout) SetColumnHomogeneous(homogeneous bool) {
 //
 // The function takes the following parameters:
 //
-//    - spacing: amount of space between columns, in pixels.
+//   - spacing: amount of space between columns, in pixels.
 //
 func (grid *GridLayout) SetColumnSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
@@ -320,8 +320,8 @@ func (grid *GridLayout) SetColumnSpacing(spacing uint) {
 //
 // The function takes the following parameters:
 //
-//    - row index.
-//    - pos: GtkBaselinePosition.
+//   - row index.
+//   - pos: GtkBaselinePosition.
 //
 func (grid *GridLayout) SetRowBaselinePosition(row int, pos BaselinePosition) {
 	var _arg0 *C.GtkGridLayout      // out
@@ -342,7 +342,7 @@ func (grid *GridLayout) SetRowBaselinePosition(row int, pos BaselinePosition) {
 //
 // The function takes the following parameters:
 //
-//    - homogeneous: TRUE to make rows homogeneous.
+//   - homogeneous: TRUE to make rows homogeneous.
 //
 func (grid *GridLayout) SetRowHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkGridLayout // out
@@ -362,7 +362,7 @@ func (grid *GridLayout) SetRowHomogeneous(homogeneous bool) {
 //
 // The function takes the following parameters:
 //
-//    - spacing: amount of space between rows, in pixels.
+//   - spacing: amount of space between rows, in pixels.
 //
 func (grid *GridLayout) SetRowSpacing(spacing uint) {
 	var _arg0 *C.GtkGridLayout // out
@@ -426,7 +426,7 @@ func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gint: column number.
+//   - gint: column number.
 //
 func (child *GridLayoutChild) Column() int {
 	var _arg0 *C.GtkGridLayoutChild // out
@@ -448,7 +448,7 @@ func (child *GridLayoutChild) Column() int {
 //
 // The function returns the following values:
 //
-//    - gint: number of columns.
+//   - gint: number of columns.
 //
 func (child *GridLayoutChild) ColumnSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
@@ -470,7 +470,7 @@ func (child *GridLayoutChild) ColumnSpan() int {
 //
 // The function returns the following values:
 //
-//    - gint: row number.
+//   - gint: row number.
 //
 func (child *GridLayoutChild) Row() int {
 	var _arg0 *C.GtkGridLayoutChild // out
@@ -492,7 +492,7 @@ func (child *GridLayoutChild) Row() int {
 //
 // The function returns the following values:
 //
-//    - gint: number of row.
+//   - gint: number of row.
 //
 func (child *GridLayoutChild) RowSpan() int {
 	var _arg0 *C.GtkGridLayoutChild // out
@@ -514,7 +514,7 @@ func (child *GridLayoutChild) RowSpan() int {
 //
 // The function takes the following parameters:
 //
-//    - column: attach point for child.
+//   - column: attach point for child.
 //
 func (child *GridLayoutChild) SetColumn(column int) {
 	var _arg0 *C.GtkGridLayoutChild // out
@@ -532,7 +532,7 @@ func (child *GridLayoutChild) SetColumn(column int) {
 //
 // The function takes the following parameters:
 //
-//    - span of child.
+//   - span of child.
 //
 func (child *GridLayoutChild) SetColumnSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out
@@ -550,7 +550,7 @@ func (child *GridLayoutChild) SetColumnSpan(span int) {
 //
 // The function takes the following parameters:
 //
-//    - row for child.
+//   - row for child.
 //
 func (child *GridLayoutChild) SetRow(row int) {
 	var _arg0 *C.GtkGridLayoutChild // out
@@ -568,7 +568,7 @@ func (child *GridLayoutChild) SetRow(row int) {
 //
 // The function takes the following parameters:
 //
-//    - span of child.
+//   - span of child.
 //
 func (child *GridLayoutChild) SetRowSpan(span int) {
 	var _arg0 *C.GtkGridLayoutChild // out

@@ -37,20 +37,20 @@ func init() {
 // MiscOverrides contains methods that are overridable.
 type MiscOverrides struct {
 	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
-	// (This method is implemented by the toolkit ATK implementation layer; for
-	// instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
+	// (This method is implemented by the toolkit ATK implementation layer;
+	// for instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
 	//
 	// Deprecated: Since 2.12.
 	ThreadsEnter func()
-	// ThreadsLeave: release the thread mutex for the GUI toolkit, if one
-	// exists. This method, and atk_misc_threads_enter, are needed in some
-	// situations by threaded application code which services ATK requests,
-	// since fulfilling ATK requests often requires calling into the GUI
-	// toolkit. If a long-running or potentially blocking call takes place
-	// inside such a block, it should be bracketed by
+	// ThreadsLeave: release the thread mutex for the GUI toolkit,
+	// if one exists. This method, and atk_misc_threads_enter, are needed
+	// in some situations by threaded application code which services ATK
+	// requests, since fulfilling ATK requests often requires calling
+	// into the GUI toolkit. If a long-running or potentially blocking
+	// call takes place inside such a block, it should be bracketed by
 	// atk_misc_threads_leave/atk_misc_threads_enter calls. (This method is
-	// implemented by the toolkit ATK implementation layer; for instance, for
-	// GTK+, GAIL implements this via GDK_THREADS_LEAVE).
+	// implemented by the toolkit ATK implementation layer; for instance,
+	// for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 	//
 	// Deprecated: Since 2.12.
 	ThreadsLeave func()
@@ -127,9 +127,9 @@ func (misc *Misc) ThreadsEnter() {
 // ThreadsLeave: release the thread mutex for the GUI toolkit, if one exists.
 // This method, and atk_misc_threads_enter, are needed in some situations by
 // threaded application code which services ATK requests, since fulfilling ATK
-// requests often requires calling into the GUI toolkit. If a long-running or
-// potentially blocking call takes place inside such a block, it should be
-// bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
+// requests often requires calling into the GUI toolkit. If a long-running
+// or potentially blocking call takes place inside such a block, it should
+// be bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
 // method is implemented by the toolkit ATK implementation layer; for instance,
 // for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 //
@@ -163,9 +163,9 @@ func (misc *Misc) threadsEnter() {
 // threadsLeave: release the thread mutex for the GUI toolkit, if one exists.
 // This method, and atk_misc_threads_enter, are needed in some situations by
 // threaded application code which services ATK requests, since fulfilling ATK
-// requests often requires calling into the GUI toolkit. If a long-running or
-// potentially blocking call takes place inside such a block, it should be
-// bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
+// requests often requires calling into the GUI toolkit. If a long-running
+// or potentially blocking call takes place inside such a block, it should
+// be bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
 // method is implemented by the toolkit ATK implementation layer; for instance,
 // for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
 //

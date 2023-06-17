@@ -38,9 +38,9 @@ func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOv
 	return ApplicationWindowOverrides{}
 }
 
-// ApplicationWindow is a Window subclass that offers some extra functionality
-// for better integration with Application features. Notably, it can handle both
-// the application menu as well as the menubar. See
+// ApplicationWindow is a Window subclass that offers some extra
+// functionality for better integration with Application features. Notably,
+// it can handle both the application menu as well as the menubar. See
 // gtk_application_set_app_menu() and gtk_application_set_menubar().
 //
 // This class implements the Group and Map interfaces, to let you add
@@ -58,17 +58,17 @@ func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOv
 // actions locally (if GDK threads are enabled).
 //
 // The settings Settings:gtk-shell-shows-app-menu and
-// Settings:gtk-shell-shows-menubar tell GTK+ whether the desktop environment is
-// showing the application menu and menubar models outside the application as
-// part of the desktop shell. For instance, on OS X, both menus will be
+// Settings:gtk-shell-shows-menubar tell GTK+ whether the desktop environment
+// is showing the application menu and menubar models outside the application
+// as part of the desktop shell. For instance, on OS X, both menus will be
 // displayed remotely; on Windows neither will be. gnome-shell (starting with
 // version 3.4) will display the application menu, but not the menubar.
 //
 // If the desktop environment does not display the menubar, then
 // ApplicationWindow will automatically show a MenuBar for it. This behaviour
-// can be overridden with the ApplicationWindow:show-menubar property. If the
-// desktop environment does not display the application menu, then it will
-// automatically be included in the menubar or in the windows client-side
+// can be overridden with the ApplicationWindow:show-menubar property.
+// If the desktop environment does not display the application menu, then it
+// will automatically be included in the menubar or in the windows client-side
 // decorations.
 //
 // A GtkApplicationWindow with a menubar
@@ -95,8 +95,7 @@ func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOv
 //
 //    GtkWidget *window = gtk_application_window_new (app);
 //
-//
-// Handling fallback yourself
+// # Handling fallback yourself
 //
 // A simple example (https://git.gnome.org/browse/gtk+/tree/examples/sunny.c)
 //
@@ -110,8 +109,8 @@ func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOv
 // Attribute values can be translated using gettext, like other Builder content.
 // <attribute> elements can be marked for translation with a translatable="yes"
 // attribute. It is also possible to specify message context and translator
-// comments, using the context and comments attributes. To make use of this, the
-// Builder must have been given the gettext domain to use.
+// comments, using the context and comments attributes. To make use of this,
+// the Builder must have been given the gettext domain to use.
 //
 // The following attributes are used when constructing menu items:
 //
@@ -213,11 +212,11 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - application: Application.
+//   - application: Application.
 //
 // The function returns the following values:
 //
-//    - applicationWindow: newly created ApplicationWindow.
+//   - applicationWindow: newly created ApplicationWindow.
 //
 func NewApplicationWindow(application *Application) *ApplicationWindow {
 	var _arg1 *C.GtkApplication // out
@@ -240,7 +239,7 @@ func NewApplicationWindow(application *Application) *ApplicationWindow {
 //
 // The function returns the following values:
 //
-//    - shortcutsWindow (optional): help overlay associated with window, or NULL.
+//   - shortcutsWindow (optional): help overlay associated with window, or NULL.
 //
 func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 	var _arg0 *C.GtkApplicationWindow // out
@@ -265,8 +264,8 @@ func (window *ApplicationWindow) HelpOverlay() *ShortcutsWindow {
 //
 // The function returns the following values:
 //
-//    - guint: unique ID for window, or 0 if the window has not yet been added to
-//      a Application.
+//   - guint: unique ID for window, or 0 if the window has not yet been added to
+//     a Application.
 //
 func (window *ApplicationWindow) ID() uint {
 	var _arg0 *C.GtkApplicationWindow // out
@@ -289,7 +288,7 @@ func (window *ApplicationWindow) ID() uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if window will display a menubar when needed.
+//   - ok: TRUE if window will display a menubar when needed.
 //
 func (window *ApplicationWindow) ShowMenubar() bool {
 	var _arg0 *C.GtkApplicationWindow // out
@@ -309,14 +308,14 @@ func (window *ApplicationWindow) ShowMenubar() bool {
 	return _ok
 }
 
-// SetHelpOverlay associates a shortcuts window with the application window, and
-// sets up an action with the name win.show-help-overlay to present it.
+// SetHelpOverlay associates a shortcuts window with the application window,
+// and sets up an action with the name win.show-help-overlay to present it.
 //
 // window takes resposibility for destroying help_overlay.
 //
 // The function takes the following parameters:
 //
-//    - helpOverlay (optional): ShortcutsWindow.
+//   - helpOverlay (optional): ShortcutsWindow.
 //
 func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 	var _arg0 *C.GtkApplicationWindow // out
@@ -337,7 +336,7 @@ func (window *ApplicationWindow) SetHelpOverlay(helpOverlay *ShortcutsWindow) {
 //
 // The function takes the following parameters:
 //
-//    - showMenubar: whether to show a menubar when needed.
+//   - showMenubar: whether to show a menubar when needed.
 //
 func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
 	var _arg0 *C.GtkApplicationWindow // out

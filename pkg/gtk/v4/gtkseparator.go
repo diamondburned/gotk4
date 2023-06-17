@@ -32,14 +32,12 @@ func init() {
 // A GtkSeparator can be used to group the widgets within a window. It displays
 // a line with a shadow to make it appear sunken into the interface.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkSeparator has a single CSS node with name separator. The node gets one of
 // the .horizontal or .vertical style classes.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkSeparator uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
 type Separator struct {
@@ -87,11 +85,11 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - orientation separator’s orientation.
+//   - orientation separator’s orientation.
 //
 // The function returns the following values:
 //
-//    - separator: new GtkSeparator.
+//   - separator: new GtkSeparator.
 //
 func NewSeparator(orientation Orientation) *Separator {
 	var _arg1 C.GtkOrientation // out

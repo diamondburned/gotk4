@@ -134,19 +134,19 @@ type VolumeMonitorOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - list of connected #GDrive objects.
+	//   - list of connected #GDrive objects.
 	//
 	ConnectedDrives func() []*Drive
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid()).
 	//
 	// The function takes the following parameters:
 	//
-	//    - uuid: UUID to look for.
+	//   - uuid: UUID to look for.
 	//
 	// The function returns the following values:
 	//
-	//    - mount (optional) or NULL if no such mount is available. Free the
-	//      returned object with g_object_unref().
+	//   - mount (optional) or NULL if no such mount is available. Free the
+	//     returned object with g_object_unref().
 	//
 	MountForUUID func(uuid string) *Mount
 	// Mounts gets a list of the mounts on the system.
@@ -156,7 +156,7 @@ type VolumeMonitorOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - list of #GMount objects.
+	//   - list of #GMount objects.
 	//
 	Mounts func() []*Mount
 	// VolumeForUUID finds a #GVolume object by its UUID (see
@@ -164,12 +164,12 @@ type VolumeMonitorOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - uuid: UUID to look for.
+	//   - uuid: UUID to look for.
 	//
 	// The function returns the following values:
 	//
-	//    - volume (optional) or NULL if no such volume is available. Free the
-	//      returned object with g_object_unref().
+	//   - volume (optional) or NULL if no such volume is available. Free the
+	//     returned object with g_object_unref().
 	//
 	VolumeForUUID func(uuid string) *Volume
 	// Volumes gets a list of the volumes on the system.
@@ -179,7 +179,7 @@ type VolumeMonitorOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - list of #GVolume objects.
+	//   - list of #GVolume objects.
 	//
 	Volumes func() []*Volume
 	// The function takes the following parameters:
@@ -414,7 +414,7 @@ func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer))
 //
 // The function returns the following values:
 //
-//    - list of connected #GDrive objects.
+//   - list of connected #GDrive objects.
 //
 func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 	var _arg0 *C.GVolumeMonitor // out
@@ -442,12 +442,12 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 //
 // The function takes the following parameters:
 //
-//    - uuid: UUID to look for.
+//   - uuid: UUID to look for.
 //
 // The function returns the following values:
 //
-//    - mount (optional) or NULL if no such mount is available. Free the returned
-//      object with g_object_unref().
+//   - mount (optional) or NULL if no such mount is available. Free the returned
+//     object with g_object_unref().
 //
 func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 	var _arg0 *C.GVolumeMonitor // out
@@ -478,7 +478,7 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 //
 // The function returns the following values:
 //
-//    - list of #GMount objects.
+//   - list of #GMount objects.
 //
 func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 	var _arg0 *C.GVolumeMonitor // out
@@ -506,12 +506,12 @@ func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 //
 // The function takes the following parameters:
 //
-//    - uuid: UUID to look for.
+//   - uuid: UUID to look for.
 //
 // The function returns the following values:
 //
-//    - volume (optional) or NULL if no such volume is available. Free the
-//      returned object with g_object_unref().
+//   - volume (optional) or NULL if no such volume is available. Free the
+//     returned object with g_object_unref().
 //
 func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 	var _arg0 *C.GVolumeMonitor // out
@@ -542,7 +542,7 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 //
 // The function returns the following values:
 //
-//    - list of #GVolume objects.
+//   - list of #GVolume objects.
 //
 func (volumeMonitor *VolumeMonitor) Volumes() []*Volume {
 	var _arg0 *C.GVolumeMonitor // out
@@ -658,7 +658,7 @@ func (volumeMonitor *VolumeMonitor) driveStopButton(drive Driver) {
 //
 // The function returns the following values:
 //
-//    - list of connected #GDrive objects.
+//   - list of connected #GDrive objects.
 //
 func (volumeMonitor *VolumeMonitor) connectedDrives() []*Drive {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
@@ -689,12 +689,12 @@ func (volumeMonitor *VolumeMonitor) connectedDrives() []*Drive {
 //
 // The function takes the following parameters:
 //
-//    - uuid: UUID to look for.
+//   - uuid: UUID to look for.
 //
 // The function returns the following values:
 //
-//    - mount (optional) or NULL if no such mount is available. Free the returned
-//      object with g_object_unref().
+//   - mount (optional) or NULL if no such mount is available. Free the returned
+//     object with g_object_unref().
 //
 func (volumeMonitor *VolumeMonitor) mountForUUID(uuid string) *Mount {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
@@ -728,7 +728,7 @@ func (volumeMonitor *VolumeMonitor) mountForUUID(uuid string) *Mount {
 //
 // The function returns the following values:
 //
-//    - list of #GMount objects.
+//   - list of #GMount objects.
 //
 func (volumeMonitor *VolumeMonitor) mounts() []*Mount {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
@@ -759,12 +759,12 @@ func (volumeMonitor *VolumeMonitor) mounts() []*Mount {
 //
 // The function takes the following parameters:
 //
-//    - uuid: UUID to look for.
+//   - uuid: UUID to look for.
 //
 // The function returns the following values:
 //
-//    - volume (optional) or NULL if no such volume is available. Free the
-//      returned object with g_object_unref().
+//   - volume (optional) or NULL if no such volume is available. Free the
+//     returned object with g_object_unref().
 //
 func (volumeMonitor *VolumeMonitor) volumeForUUID(uuid string) *Volume {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
@@ -798,7 +798,7 @@ func (volumeMonitor *VolumeMonitor) volumeForUUID(uuid string) *Volume {
 //
 // The function returns the following values:
 //
-//    - list of #GVolume objects.
+//   - list of #GVolume objects.
 //
 func (volumeMonitor *VolumeMonitor) volumes() []*Volume {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
@@ -944,9 +944,9 @@ func (volumeMonitor *VolumeMonitor) volumeRemoved(volume Volumer) {
 	runtime.KeepAlive(volume)
 }
 
-// VolumeMonitorAdoptOrphanMount: this function should be called by any Monitor
-// implementation when a new #GMount object is created that is not associated
-// with a #GVolume object. It must be called just before emitting the
+// VolumeMonitorAdoptOrphanMount: this function should be called by any
+// Monitor implementation when a new #GMount object is created that is not
+// associated with a #GVolume object. It must be called just before emitting the
 // mount_added signal.
 //
 // If the return value is not NULL, the caller must associate the returned
@@ -955,18 +955,18 @@ func (volumeMonitor *VolumeMonitor) volumeRemoved(volume Volumer) {
 // "removed" signal on the returned object and give up its reference when
 // handling that signal
 //
-// Similarly, if implementing g_volume_monitor_adopt_orphan_mount(), the
-// implementor must take a reference to mount and return it in its
+// Similarly, if implementing g_volume_monitor_adopt_orphan_mount(),
+// the implementor must take a reference to mount and return it in its
 // g_volume_get_mount() implemented. Also, the implementor must listen for the
 // "unmounted" signal on mount and give up its reference upon handling that
 // signal.
 //
 // There are two main use cases for this function.
 //
-// One is when implementing a user space file system driver that reads blocks of
-// a block device that is already represented by the native volume monitor (for
-// example a CD Audio file system driver). Such a driver will generate its own
-// #GMount object that needs to be associated with the #GVolume object that
+// One is when implementing a user space file system driver that reads blocks
+// of a block device that is already represented by the native volume monitor
+// (for example a CD Audio file system driver). Such a driver will generate its
+// own #GMount object that needs to be associated with the #GVolume object that
 // represents the volume.
 //
 // The other is for implementing a Monitor whose sole purpose is to return
@@ -980,12 +980,12 @@ func (volumeMonitor *VolumeMonitor) volumeRemoved(volume Volumer) {
 //
 // The function takes the following parameters:
 //
-//    - mount object to find a parent for.
+//   - mount object to find a parent for.
 //
 // The function returns the following values:
 //
-//    - volume object that is the parent for mount or NULL if no wants to adopt
-//      the #GMount.
+//   - volume object that is the parent for mount or NULL if no wants to adopt
+//     the #GMount.
 //
 func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 	var _arg1 *C.GMount  // out
@@ -1007,8 +1007,8 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 //
 // The function returns the following values:
 //
-//    - volumeMonitor: reference to the Monitor used by gio. Call
-//      g_object_unref() when done with it.
+//   - volumeMonitor: reference to the Monitor used by gio. Call
+//     g_object_unref() when done with it.
 //
 func VolumeMonitorGet() *VolumeMonitor {
 	var _cret *C.GVolumeMonitor // in

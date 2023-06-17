@@ -26,14 +26,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
-//    - cr: cairo context to draw to.
-//    - location where to draw the cursor (location->width is ignored).
-//    - isPrimary: if the cursor should be the primary cursor color.
-//    - direction: whether the cursor is left-to-right or right-to-left. Should
-//      never be K_TEXT_DIR_NONE.
-//    - drawArrow: TRUE to draw a directional arrow on the cursor. Should be
-//      FALSE unless the cursor is split.
+//   - widget: Widget.
+//   - cr: cairo context to draw to.
+//   - location where to draw the cursor (location->width is ignored).
+//   - isPrimary: if the cursor should be the primary cursor color.
+//   - direction: whether the cursor is left-to-right or right-to-left. Should
+//     never be K_TEXT_DIR_NONE.
+//   - drawArrow: TRUE to draw a directional arrow on the cursor. Should be
+//     FALSE unless the cursor is split.
 //
 func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
 	var _arg1 *C.GtkWidget       // out
@@ -74,12 +74,12 @@ func DrawInsertionCursor(widget Widgetter, cr *cairo.Context, location *gdk.Rect
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
-//    - provider: StyleProvider.
-//    - priority of the style provider. The lower it is, the earlier it will be
-//      used in the style construction. Typically this will be in the range
-//      between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
-//      GTK_STYLE_PROVIDER_PRIORITY_USER.
+//   - screen: Screen.
+//   - provider: StyleProvider.
+//   - priority of the style provider. The lower it is, the earlier it
+//     will be used in the style construction. Typically this will be
+//     in the range between GTK_STYLE_PROVIDER_PRIORITY_FALLBACK and
+//     GTK_STYLE_PROVIDER_PRIORITY_USER.
 //
 func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProviderer, priority uint) {
 	var _arg1 *C.GdkScreen        // out
@@ -101,8 +101,8 @@ func StyleContextAddProviderForScreen(screen *gdk.Screen, provider StyleProvider
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
-//    - provider: StyleProvider.
+//   - screen: Screen.
+//   - provider: StyleProvider.
 //
 func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProviderer) {
 	var _arg1 *C.GdkScreen        // out
@@ -125,7 +125,7 @@ func StyleContextRemoveProviderForScreen(screen *gdk.Screen, provider StyleProvi
 //
 // The function takes the following parameters:
 //
-//    - screen: Screen.
+//   - screen: Screen.
 //
 func StyleContextResetWidgets(screen *gdk.Screen) {
 	var _arg1 *C.GdkScreen // out

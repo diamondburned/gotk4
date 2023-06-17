@@ -74,8 +74,8 @@ type MenuItemOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - utf8: text in the menu_item label. This is the internal string used
-	//      by the label, and must not be modified.
+	//   - utf8: text in the menu_item label. This is the internal string used
+	//     by the label, and must not be modified.
 	//
 	Label func() string
 	// Select emits the MenuItem::select signal on the given item.
@@ -84,7 +84,7 @@ type MenuItemOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - label: text you want to set.
+	//   - label: text you want to set.
 	//
 	SetLabel func(label string)
 	// ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
@@ -92,7 +92,7 @@ type MenuItemOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - allocation to use as signal data.
+	//   - allocation to use as signal data.
 	//
 	ToggleSizeAllocate func(allocation int)
 }
@@ -110,8 +110,8 @@ func defaultMenuItemOverrides(v *MenuItem) MenuItemOverrides {
 }
 
 // MenuItem widget and the derived widgets are the only valid children for
-// menus. Their function is to correctly handle highlighting, alignment, events
-// and submenus.
+// menus. Their function is to correctly handle highlighting, alignment,
+// events and submenus.
 //
 // As a GtkMenuItem derives from Bin it can hold any valid child widget,
 // although only a few are really useful.
@@ -126,8 +126,8 @@ func defaultMenuItemOverrides(v *MenuItem) MenuItemOverrides {
 //    ├── <child>
 //    ╰── [arrow.right]
 //
-// GtkMenuItem has a single CSS node with name menuitem. If the menuitem has a
-// submenu, it gets another CSS node with name arrow, which has the .left or
+// GtkMenuItem has a single CSS node with name menuitem. If the menuitem has
+// a submenu, it gets another CSS node with name arrow, which has the .left or
 // .right style class.
 type MenuItem struct {
 	_ [0]func() // equal guard
@@ -264,7 +264,7 @@ func (menuItem *MenuItem) ConnectToggleSizeRequest(f func(object unsafe.Pointer)
 //
 // The function returns the following values:
 //
-//    - menuItem: newly created MenuItem.
+//   - menuItem: newly created MenuItem.
 //
 func NewMenuItem() *MenuItem {
 	var _cret *C.GtkWidget // in
@@ -282,11 +282,11 @@ func NewMenuItem() *MenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label: text for the label.
+//   - label: text for the label.
 //
 // The function returns the following values:
 //
-//    - menuItem: newly created MenuItem.
+//   - menuItem: newly created MenuItem.
 //
 func NewMenuItemWithLabel(label string) *MenuItem {
 	var _arg1 *C.gchar     // out
@@ -312,12 +312,12 @@ func NewMenuItemWithLabel(label string) *MenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the mnemonic
-//      character.
+//   - label: text of the button, with an underscore in front of the mnemonic
+//     character.
 //
 // The function returns the following values:
 //
-//    - menuItem: new MenuItem.
+//   - menuItem: new MenuItem.
 //
 func NewMenuItemWithMnemonic(label string) *MenuItem {
 	var _arg1 *C.gchar     // out
@@ -363,8 +363,8 @@ func (menuItem *MenuItem) Deselect() {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): accelerator path corresponding to this menu item’s
-//      functionality, or NULL if not set.
+//   - utf8 (optional): accelerator path corresponding to this menu item’s
+//     functionality, or NULL if not set.
 //
 func (menuItem *MenuItem) AccelPath() string {
 	var _arg0 *C.GtkMenuItem // out
@@ -388,8 +388,8 @@ func (menuItem *MenuItem) AccelPath() string {
 //
 // The function returns the following values:
 //
-//    - utf8: text in the menu_item label. This is the internal string used by
-//      the label, and must not be modified.
+//   - utf8: text in the menu_item label. This is the internal string used by
+//     the label, and must not be modified.
 //
 func (menuItem *MenuItem) Label() string {
 	var _arg0 *C.GtkMenuItem // out
@@ -412,7 +412,7 @@ func (menuItem *MenuItem) Label() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if menu_item always reserves space for the submenu indicator.
+//   - ok: TRUE if menu_item always reserves space for the submenu indicator.
 //
 func (menuItem *MenuItem) ReserveIndicator() bool {
 	var _arg0 *C.GtkMenuItem // out
@@ -439,8 +439,8 @@ func (menuItem *MenuItem) ReserveIndicator() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the menu item will appear at the far right if added to a menu
-//      bar.
+//   - ok: TRUE if the menu item will appear at the far right if added to a menu
+//     bar.
 //
 func (menuItem *MenuItem) RightJustified() bool {
 	var _arg0 *C.GtkMenuItem // out
@@ -465,7 +465,7 @@ func (menuItem *MenuItem) RightJustified() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional): submenu for this menu item, or NULL if none.
+//   - widget (optional): submenu for this menu item, or NULL if none.
 //
 func (menuItem *MenuItem) Submenu() Widgetter {
 	var _arg0 *C.GtkMenuItem // out
@@ -503,8 +503,8 @@ func (menuItem *MenuItem) Submenu() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if an embedded underline in the label indicates the mnemonic
-//      accelerator key.
+//   - ok: TRUE if an embedded underline in the label indicates the mnemonic
+//     accelerator key.
 //
 func (menuItem *MenuItem) UseUnderline() bool {
 	var _arg0 *C.GtkMenuItem // out
@@ -536,10 +536,10 @@ func (menuItem *MenuItem) Select() {
 
 // SetAccelPath: set the accelerator path on menu_item, through which runtime
 // changes of the menu item’s accelerator caused by the user can be identified
-// and saved to persistent storage (see gtk_accel_map_save() on this). To set up
-// a default accelerator for this menu item, call gtk_accel_map_add_entry() with
-// the same accel_path. See also gtk_accel_map_add_entry() on the specifics of
-// accelerator paths, and gtk_menu_set_accel_path() for a more convenient
+// and saved to persistent storage (see gtk_accel_map_save() on this). To set
+// up a default accelerator for this menu item, call gtk_accel_map_add_entry()
+// with the same accel_path. See also gtk_accel_map_add_entry() on the specifics
+// of accelerator paths, and gtk_menu_set_accel_path() for a more convenient
 // variant of this function.
 //
 // This function is basically a convenience wrapper that handles calling
@@ -555,8 +555,8 @@ func (menuItem *MenuItem) Select() {
 //
 // The function takes the following parameters:
 //
-//    - accelPath (optional): accelerator path, corresponding to this menu item’s
-//      functionality, or NULL to unset the current path.
+//   - accelPath (optional): accelerator path, corresponding to this menu item’s
+//     functionality, or NULL to unset the current path.
 //
 func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkMenuItem // out
@@ -577,7 +577,7 @@ func (menuItem *MenuItem) SetAccelPath(accelPath string) {
 //
 // The function takes the following parameters:
 //
-//    - label: text you want to set.
+//   - label: text you want to set.
 //
 func (menuItem *MenuItem) SetLabel(label string) {
 	var _arg0 *C.GtkMenuItem // out
@@ -599,7 +599,7 @@ func (menuItem *MenuItem) SetLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - reserve: new value.
+//   - reserve: new value.
 //
 func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 	var _arg0 *C.GtkMenuItem // out
@@ -616,8 +616,8 @@ func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 }
 
 // SetRightJustified sets whether the menu item appears justified at the right
-// side of a menu bar. This was traditionally done for “Help” menu items, but is
-// now considered a bad idea. (If the widget layout is reversed for a
+// side of a menu bar. This was traditionally done for “Help” menu items,
+// but is now considered a bad idea. (If the widget layout is reversed for a
 // right-to-left language like Hebrew or Arabic, right-justified-menu-items
 // appear at the left.)
 //
@@ -626,8 +626,8 @@ func (menuItem *MenuItem) SetReserveIndicator(reserve bool) {
 //
 // The function takes the following parameters:
 //
-//    - rightJustified: if TRUE the menu item will appear at the far right if
-//      added to a menu bar.
+//   - rightJustified: if TRUE the menu item will appear at the far right if
+//     added to a menu bar.
 //
 func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 	var _arg0 *C.GtkMenuItem // out
@@ -648,7 +648,7 @@ func (menuItem *MenuItem) SetRightJustified(rightJustified bool) {
 //
 // The function takes the following parameters:
 //
-//    - submenu (optional): submenu, or NULL.
+//   - submenu (optional): submenu, or NULL.
 //
 func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 	var _arg0 *C.GtkMenuItem // out
@@ -669,7 +669,7 @@ func (menuItem *MenuItem) SetSubmenu(submenu *Menu) {
 //
 // The function takes the following parameters:
 //
-//    - setting: TRUE if underlines in the text indicate mnemonics.
+//   - setting: TRUE if underlines in the text indicate mnemonics.
 //
 func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 	var _arg0 *C.GtkMenuItem // out
@@ -690,7 +690,7 @@ func (menuItem *MenuItem) SetUseUnderline(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - allocation to use as signal data.
+//   - allocation to use as signal data.
 //
 func (menuItem *MenuItem) ToggleSizeAllocate(allocation int) {
 	var _arg0 *C.GtkMenuItem // out
@@ -746,8 +746,8 @@ func (menuItem *MenuItem) deselect() {
 //
 // The function returns the following values:
 //
-//    - utf8: text in the menu_item label. This is the internal string used by
-//      the label, and must not be modified.
+//   - utf8: text in the menu_item label. This is the internal string used by
+//     the label, and must not be modified.
 //
 func (menuItem *MenuItem) label() string {
 	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
@@ -785,7 +785,7 @@ func (menuItem *MenuItem) sel() {
 //
 // The function takes the following parameters:
 //
-//    - label: text you want to set.
+//   - label: text you want to set.
 //
 func (menuItem *MenuItem) setLabel(label string) {
 	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))
@@ -808,7 +808,7 @@ func (menuItem *MenuItem) setLabel(label string) {
 //
 // The function takes the following parameters:
 //
-//    - allocation to use as signal data.
+//   - allocation to use as signal data.
 //
 func (menuItem *MenuItem) toggleSizeAllocate(allocation int) {
 	gclass := (*C.GtkMenuItemClass)(coreglib.PeekParentClass(menuItem))

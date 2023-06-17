@@ -19,12 +19,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: string to escape.
-//    - length of string.
+//   - str: string to escape.
+//   - length of string.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated escaped string.
+//   - utf8: newly-allocated escaped string.
 //
 func RegexEscapeNUL(str string, length int) string {
 	var _arg1 *C.gchar // out

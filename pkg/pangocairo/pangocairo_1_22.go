@@ -28,11 +28,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
+//   - cr: cairo context.
 //
 // The function returns the following values:
 //
-//    - context: newly created PangoContext. Free with g_object_unref().
+//   - context: newly created PangoContext. Free with g_object_unref().
 //
 func CreateContext(cr *cairo.Context) *pango.Context {
 	var _arg1 *C.cairo_t      // out
@@ -57,8 +57,8 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 
 // ShowGlyphItem draws the glyphs in glyph_item in the specified cairo context,
 //
-// embedding the text associated with the glyphs in the output if the output
-// format supports it (PDF for example), otherwise it acts similar to
+// embedding the text associated with the glyphs in the output if the
+// output format supports it (PDF for example), otherwise it acts similar to
 // show_glyph_string.
 //
 // The origin of the glyphs (the left edge of the baseline) will be drawn at the
@@ -69,9 +69,9 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - text: UTF-8 text that glyph_item refers to.
-//    - glyphItem: PangoGlyphItem.
+//   - cr: cairo context.
+//   - text: UTF-8 text that glyph_item refers to.
+//   - glyphItem: PangoGlyphItem.
 //
 func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 	var _arg1 *C.cairo_t        // out

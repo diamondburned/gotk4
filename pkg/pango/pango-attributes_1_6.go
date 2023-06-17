@@ -17,13 +17,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - letterSpacing: amount of extra space to add between graphemes of the
-//      text, in Pango units.
+//   - letterSpacing: amount of extra space to add between graphemes of the
+//     text, in Pango units.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 	var _arg1 C.int             // out

@@ -63,8 +63,8 @@ const (
 	BuilderErrorVersionMismatch
 	// BuilderErrorDuplicateID: object id occurred twice.
 	BuilderErrorDuplicateID
-	// BuilderErrorObjectTypeRefused: specified object type is of the same type
-	// or derived from the type of the composite class being extended with
+	// BuilderErrorObjectTypeRefused: specified object type is of the same
+	// type or derived from the type of the composite class being extended with
 	// builder XML.
 	BuilderErrorObjectTypeRefused
 	// BuilderErrorTemplateMismatch: wrong type was specified in a composite
@@ -128,11 +128,11 @@ type BuilderOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - typeName: type name to lookup.
+	//   - typeName: type name to lookup.
 	//
 	// The function returns the following values:
 	//
-	//    - gType found for type_name or TYPE_INVALID if no type was found.
+	//   - gType found for type_name or TYPE_INVALID if no type was found.
 	//
 	TypeFromName func(typeName string) coreglib.Type
 }
@@ -144,13 +144,13 @@ func defaultBuilderOverrides(v *Builder) BuilderOverrides {
 }
 
 // Builder is an auxiliary object that reads textual descriptions of a user
-// interface and instantiates the described objects. To create a GtkBuilder from
-// a user interface description, call gtk_builder_new_from_file(),
+// interface and instantiates the described objects. To create a GtkBuilder
+// from a user interface description, call gtk_builder_new_from_file(),
 // gtk_builder_new_from_resource() or gtk_builder_new_from_string().
 //
 // In the (unusual) case that you want to add user interface descriptions from
-// multiple sources to the same GtkBuilder you can call gtk_builder_new() to get
-// an empty builder and populate it by (multiple) calls to
+// multiple sources to the same GtkBuilder you can call gtk_builder_new()
+// to get an empty builder and populate it by (multiple) calls to
 // gtk_builder_add_from_file(), gtk_builder_add_from_resource() or
 // gtk_builder_add_from_string().
 //
@@ -161,10 +161,10 @@ func defaultBuilderOverrides(v *Builder) BuilderOverrides {
 // responsibility of the user to call gtk_widget_destroy() to get rid of them
 // and all the widgets they contain.
 //
-// The functions gtk_builder_get_object() and gtk_builder_get_objects() can be
-// used to access the widgets in the interface by the names assigned to them
-// inside the UI description. Toplevel windows returned by these functions will
-// stay around until the user explicitly destroys them with
+// The functions gtk_builder_get_object() and gtk_builder_get_objects() can
+// be used to access the widgets in the interface by the names assigned
+// to them inside the UI description. Toplevel windows returned by these
+// functions will stay around until the user explicitly destroys them with
 // gtk_widget_destroy(). Other widgets will either be part of a larger hierarchy
 // constructed by the builder (in which case you should not have to worry about
 // their lifecycle), or without a parent, in which case they have to be added to
@@ -174,13 +174,12 @@ func defaultBuilderOverrides(v *Builder) BuilderOverrides {
 // The function gtk_builder_connect_signals() and variants thereof can be used
 // to connect handlers to the named signals in the description.
 //
-//
-// GtkBuilder UI Definitions
+// # GtkBuilder UI Definitions
 //
 // GtkBuilder parses textual descriptions of user interfaces which are specified
 // in an XML format which can be roughly described by the RELAX NG schema below.
-// We refer to these descriptions as “GtkBuilder UI definitions” or just “UI
-// definitions” if the context is clear. Do not confuse GtkBuilder UI
+// We refer to these descriptions as “GtkBuilder UI definitions” or just
+// “UI definitions” if the context is clear. Do not confuse GtkBuilder UI
 // Definitions with [GtkUIManager UI Definitions][XML-UI], which are more
 // limited in scope. It is common to use .ui as the filename extension for files
 // containing GtkBuilder UI definitions.
@@ -194,18 +193,18 @@ func defaultBuilderOverrides(v *Builder) BuilderOverrides {
 // gtk_builder_set_translation_domain() on the builder. Objects are described by
 // <object> elements, which can contain <property> elements to set properties,
 // <signal> elements which connect signals to handlers, and <child> elements,
-// which describe child objects (most often widgets inside a container, but also
-// e.g. actions in an action group, or columns in a tree model). A <child>
-// element contains an <object> element which describes the child object. The
-// target toolkit version(s) are described by <requires> elements, the “lib”
-// attribute specifies the widget library in question (currently the only
-// supported value is “gtk+”) and the “version” attribute specifies the target
-// version in the form “<major>.<minor>”. The builder will error out if the
-// version requirements are not met.
+// which describe child objects (most often widgets inside a container,
+// but also e.g. actions in an action group, or columns in a tree model).
+// A <child> element contains an <object> element which describes the child
+// object. The target toolkit version(s) are described by <requires> elements,
+// the “lib” attribute specifies the widget library in question (currently the
+// only supported value is “gtk+”) and the “version” attribute specifies the
+// target version in the form “<major>.<minor>”. The builder will error out if
+// the version requirements are not met.
 //
-// Typically, the specific kind of object represented by an <object> element is
-// specified by the “class” attribute. If the type has not been loaded yet, GTK+
-// tries to find the get_type() function from the class name by applying
+// Typically, the specific kind of object represented by an <object> element
+// is specified by the “class” attribute. If the type has not been loaded yet,
+// GTK+ tries to find the get_type() function from the class name by applying
 // heuristics. This works in most cases, but if necessary, it is possible to
 // specify the name of the get_type() function explictly with the "type-func"
 // attribute. As a special case, GtkBuilder allows to use an object that has
@@ -215,8 +214,8 @@ func defaultBuilderOverrides(v *Builder) BuilderOverrides {
 //
 // Objects may be given a name with the “id” attribute, which allows the
 // application to retrieve them from the builder with gtk_builder_get_object().
-// An id is also necessary to use the object as property value in other parts of
-// the UI definition. GTK+ reserves ids starting and ending with ___ (3
+// An id is also necessary to use the object as property value in other parts
+// of the UI definition. GTK+ reserves ids starting and ending with ___ (3
 // underscores) for its own purposes.
 //
 // Setting properties of objects is pretty straightforward with the <property>
@@ -224,8 +223,8 @@ func defaultBuilderOverrides(v *Builder) BuilderOverrides {
 // content of the element specifies the value. If the “translatable” attribute
 // is set to a true value, GTK+ uses gettext() (or dgettext() if the builder has
 // a translation domain set) to find a translation for the value. This happens
-// before the value is parsed, so it can be used for properties of any type, but
-// it is probably most useful for string properties. It is also possible to
+// before the value is parsed, so it can be used for properties of any type,
+// but it is probably most useful for string properties. It is also possible to
 // specify a context to disambiguate short strings, and comments which may help
 // the translators.
 //
@@ -238,38 +237,38 @@ func defaultBuilderOverrides(v *Builder) BuilderOverrides {
 // e.g. “GTK_VISIBLE|GTK_REALIZED”) and colors (in a format understood by
 // gdk_rgba_parse()).
 //
-// GVariants can be specified in the format understood by g_variant_parse(), and
-// pixbufs can be specified as a filename of an image file to load.
+// GVariants can be specified in the format understood by g_variant_parse(),
+// and pixbufs can be specified as a filename of an image file to load.
 //
-// Objects can be referred to by their name and by default refer to objects
-// declared in the local xml fragment and objects exposed via
+// Objects can be referred to by their name and by default refer to
+// objects declared in the local xml fragment and objects exposed via
 // gtk_builder_expose_object(). In general, GtkBuilder allows forward references
 // to objects — declared in the local xml; an object doesn’t have to be
-// constructed before it can be referred to. The exception to this rule is that
-// an object has to be constructed before it can be used as the value of a
+// constructed before it can be referred to. The exception to this rule is
+// that an object has to be constructed before it can be used as the value of a
 // construct-only property.
 //
 // It is also possible to bind a property value to another object's property
-// value using the attributes "bind-source" to specify the source object of the
-// binding, "bind-property" to specify the source property and optionally
+// value using the attributes "bind-source" to specify the source object of
+// the binding, "bind-property" to specify the source property and optionally
 // "bind-flags" to specify the binding flags. Internally builder implements this
 // using GBinding objects. For more information see g_object_bind_property()
 //
 // Signal handlers are set up with the <signal> element. The “name” attribute
-// specifies the name of the signal, and the “handler” attribute specifies the
-// function to connect to the signal. By default, GTK+ tries to find the handler
-// using g_module_symbol(), but this can be changed by passing a custom
-// BuilderConnectFunc to gtk_builder_connect_signals_full(). The remaining
-// attributes, “after”, “swapped” and “object”, have the same meaning as the
-// corresponding parameters of the g_signal_connect_object() or
+// specifies the name of the signal, and the “handler” attribute specifies
+// the function to connect to the signal. By default, GTK+ tries to find
+// the handler using g_module_symbol(), but this can be changed by passing
+// a custom BuilderConnectFunc to gtk_builder_connect_signals_full().
+// The remaining attributes, “after”, “swapped” and “object”, have the same
+// meaning as the corresponding parameters of the g_signal_connect_object() or
 // g_signal_connect_data() functions. A “last_modification_time” attribute is
 // also allowed, but it does not have a meaning to the builder.
 //
 // Sometimes it is necessary to refer to widgets which have implicitly been
-// constructed by GTK+ as part of a composite widget, to set properties on them
-// or to add further children (e.g. the vbox of a Dialog). This can be achieved
-// by setting the “internal-child” property of the <child> element to a true
-// value. Note that GtkBuilder still requires an <object> element for the
+// constructed by GTK+ as part of a composite widget, to set properties on
+// them or to add further children (e.g. the vbox of a Dialog). This can be
+// achieved by setting the “internal-child” property of the <child> element to
+// a true value. Note that GtkBuilder still requires an <object> element for the
 // internal child, even if it has already been constructed.
 //
 // A number of widgets have different places where a child can be added (e.g.
@@ -302,11 +301,11 @@ func defaultBuilderOverrides(v *Builder) BuilderOverrides {
 //      </object>
 //    </interface>
 //
-// Beyond this general structure, several object classes define their own XML
-// DTD fragments for filling in the ANY placeholders in the DTD above. Note that
-// a custom element in a <child> element gets parsed by the custom tag handler
-// of the parent object, while a custom element in an <object> element gets
-// parsed by the custom tag handler of the object.
+// Beyond this general structure, several object classes define their own
+// XML DTD fragments for filling in the ANY placeholders in the DTD above.
+// Note that a custom element in a <child> element gets parsed by the custom tag
+// handler of the parent object, while a custom element in an <object> element
+// gets parsed by the custom tag handler of the object.
 //
 // These XML fragments are explained in the documentation of the respective
 // objects.
@@ -357,8 +356,8 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 
 // NewBuilder creates a new empty builder object.
 //
-// This function is only useful if you intend to make multiple calls to
-// gtk_builder_add_from_file(), gtk_builder_add_from_resource() or
+// This function is only useful if you intend to make multiple calls
+// to gtk_builder_add_from_file(), gtk_builder_add_from_resource() or
 // gtk_builder_add_from_string() in order to merge multiple UI descriptions into
 // a single builder.
 //
@@ -367,7 +366,7 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - builder: new (empty) Builder object.
+//   - builder: new (empty) Builder object.
 //
 func NewBuilder() *Builder {
 	var _cret *C.GtkBuilder // in
@@ -390,11 +389,11 @@ func NewBuilder() *Builder {
 //
 // The function takes the following parameters:
 //
-//    - filename of user interface description file.
+//   - filename of user interface description file.
 //
 // The function returns the following values:
 //
-//    - builder containing the described interface.
+//   - builder containing the described interface.
 //
 func NewBuilderFromFile(filename string) *Builder {
 	var _arg1 *C.gchar      // out
@@ -416,16 +415,16 @@ func NewBuilderFromFile(filename string) *Builder {
 // NewBuilderFromResource builds the [GtkBuilder UI definition][BUILDER-UI] at
 // resource_path.
 //
-// If there is an error locating the resource or parsing the description, then
-// the program will be aborted.
+// If there is an error locating the resource or parsing the description,
+// then the program will be aborted.
 //
 // The function takes the following parameters:
 //
-//    - resourcePath resource path.
+//   - resourcePath resource path.
 //
 // The function returns the following values:
 //
-//    - builder containing the described interface.
+//   - builder containing the described interface.
 //
 func NewBuilderFromResource(resourcePath string) *Builder {
 	var _arg1 *C.gchar      // out
@@ -450,18 +449,18 @@ func NewBuilderFromResource(resourcePath string) *Builder {
 // If string is NULL-terminated, then length should be -1. If length is not -1,
 // then it is the length of string.
 //
-// If there is an error parsing string then the program will be aborted. You
-// should not attempt to parse user interface description from untrusted
+// If there is an error parsing string then the program will be aborted.
+// You should not attempt to parse user interface description from untrusted
 // sources.
 //
 // The function takes the following parameters:
 //
-//    - str: user interface (XML) description.
-//    - length of string, or -1.
+//   - str: user interface (XML) description.
+//   - length of string, or -1.
 //
 // The function returns the following values:
 //
-//    - builder containing the interface described by string.
+//   - builder containing the interface described by string.
 //
 func NewBuilderFromString(str string, length int) *Builder {
 	var _arg1 *C.gchar      // out
@@ -491,20 +490,20 @@ func NewBuilderFromString(str string, length int) *Builder {
 // If an error occurs, 0 will be returned and error will be assigned a #GError
 // from the K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
 //
-// It’s not really reasonable to attempt to handle failures of this call. You
-// should not use this function with untrusted files (ie: files that are not
-// part of your application). Broken Builder files can easily crash your
+// It’s not really reasonable to attempt to handle failures of this call.
+// You should not use this function with untrusted files (ie: files that are
+// not part of your application). Broken Builder files can easily crash your
 // program, and it’s possible that memory was leaked leading up to the reported
 // failure. The only reasonable thing to do when an error is detected is to call
 // g_error().
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file to parse.
+//   - filename: name of the file to parse.
 //
 // The function returns the following values:
 //
-//    - guint: positive value on success, 0 if an error occurred.
+//   - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddFromFile(filename string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -544,11 +543,11 @@ func (builder *Builder) AddFromFile(filename string) (uint, error) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path of the resource file to parse.
+//   - resourcePath: path of the resource file to parse.
 //
 // The function returns the following values:
 //
-//    - guint: positive value on success, 0 if an error occurred.
+//   - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -588,12 +587,12 @@ func (builder *Builder) AddFromResource(resourcePath string) (uint, error) {
 //
 // The function takes the following parameters:
 //
-//    - buffer: string to parse.
-//    - length of buffer (may be -1 if buffer is nul-terminated).
+//   - buffer: string to parse.
+//   - length of buffer (may be -1 if buffer is nul-terminated).
 //
 // The function returns the following values:
 //
-//    - guint: positive value on success, 0 if an error occurred.
+//   - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -630,18 +629,18 @@ func (builder *Builder) AddFromString(buffer string, length uint) (uint, error) 
 // Upon errors 0 will be returned and error will be assigned a #GError from the
 // K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
 //
-// If you are adding an object that depends on an object that is not its child
-// (for instance a TreeView that depends on its TreeModel), you have to
+// If you are adding an object that depends on an object that is not its
+// child (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file to parse.
-//    - objectIds: nul-terminated array of objects to build.
+//   - filename: name of the file to parse.
+//   - objectIds: nul-terminated array of objects to build.
 //
 // The function returns the following values:
 //
-//    - guint: positive value on success, 0 if an error occurred.
+//   - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -690,18 +689,18 @@ func (builder *Builder) AddObjectsFromFile(filename string, objectIds []string) 
 // Upon errors 0 will be returned and error will be assigned a #GError from the
 // K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
 //
-// If you are adding an object that depends on an object that is not its child
-// (for instance a TreeView that depends on its TreeModel), you have to
+// If you are adding an object that depends on an object that is not its
+// child (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: path of the resource file to parse.
-//    - objectIds: nul-terminated array of objects to build.
+//   - resourcePath: path of the resource file to parse.
+//   - objectIds: nul-terminated array of objects to build.
 //
 // The function returns the following values:
 //
-//    - guint: positive value on success, 0 if an error occurred.
+//   - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -750,19 +749,19 @@ func (builder *Builder) AddObjectsFromResource(resourcePath string, objectIds []
 // Upon errors 0 will be returned and error will be assigned a #GError from the
 // K_BUILDER_ERROR or MARKUP_ERROR domain.
 //
-// If you are adding an object that depends on an object that is not its child
-// (for instance a TreeView that depends on its TreeModel), you have to
+// If you are adding an object that depends on an object that is not its
+// child (for instance a TreeView that depends on its TreeModel), you have to
 // explicitly list all of them in object_ids.
 //
 // The function takes the following parameters:
 //
-//    - buffer: string to parse.
-//    - length of buffer (may be -1 if buffer is nul-terminated).
-//    - objectIds: nul-terminated array of objects to build.
+//   - buffer: string to parse.
+//   - length of buffer (may be -1 if buffer is nul-terminated).
+//   - objectIds: nul-terminated array of objects to build.
 //
 // The function returns the following values:
 //
-//    - guint: positive value on success, 0 if an error occurred.
+//   - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectIds []string) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -821,8 +820,8 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 // callbacks which are referenced by the loaded XML, this function will require
 // that #GModule be supported on the platform.
 //
-// If you rely on #GModule support to lookup callbacks in the symbol table, the
-// following details should be noted:
+// If you rely on #GModule support to lookup callbacks in the symbol table,
+// the following details should be noted:
 //
 // When compiling applications for Windows, you must declare signal callbacks
 // with MODULE_EXPORT, or they will not be put in the symbol table. On Linux and
@@ -831,7 +830,7 @@ func (builder *Builder) AddObjectsFromString(buffer string, length uint, objectI
 //
 // The function takes the following parameters:
 //
-//    - userData (optional): user data to pass back with all signals.
+//   - userData (optional): user data to pass back with all signals.
 //
 func (builder *Builder) ConnectSignals(userData unsafe.Pointer) {
 	var _arg0 *C.GtkBuilder // out
@@ -850,8 +849,8 @@ func (builder *Builder) ConnectSignals(userData unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - name of the object exposed to the builder.
-//    - object to expose.
+//   - name of the object exposed to the builder.
+//   - object to expose.
 //
 func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 	var _arg0 *C.GtkBuilder // out
@@ -877,14 +876,14 @@ func (builder *Builder) ExposeObject(name string, object *coreglib.Object) {
 //
 // The function takes the following parameters:
 //
-//    - widget that is being extended.
-//    - templateType: type that the template is for.
-//    - buffer: string to parse.
-//    - length of buffer (may be -1 if buffer is nul-terminated).
+//   - widget that is being extended.
+//   - templateType: type that the template is for.
+//   - buffer: string to parse.
+//   - length of buffer (may be -1 if buffer is nul-terminated).
 //
 // The function returns the following values:
 //
-//    - guint: positive value on success, 0 if an error occurred.
+//   - guint: positive value on success, 0 if an error occurred.
 //
 func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType coreglib.Type, buffer string, length uint) (uint, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -931,7 +930,7 @@ func (builder *Builder) ExtendWithTemplate(widget Widgetter, templateType coregl
 //
 // The function returns the following values:
 //
-//    - application (optional) being used by the builder, or NULL.
+//   - application (optional) being used by the builder, or NULL.
 //
 func (builder *Builder) Application() *Application {
 	var _arg0 *C.GtkBuilder     // out
@@ -956,12 +955,12 @@ func (builder *Builder) Application() *Application {
 //
 // The function takes the following parameters:
 //
-//    - name of object to get.
+//   - name of object to get.
 //
 // The function returns the following values:
 //
-//    - object (optional) named name or NULL if it could not be found in the
-//      object tree.
+//   - object (optional) named name or NULL if it could not be found in the
+//     object tree.
 //
 func (builder *Builder) GetObject(name string) *coreglib.Object {
 	var _arg0 *C.GtkBuilder // out
@@ -991,8 +990,8 @@ func (builder *Builder) GetObject(name string) *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - sList: newly-allocated List containing all the objects constructed by the
-//      Builder instance. It should be freed by g_slist_free().
+//   - sList: newly-allocated List containing all the objects constructed by the
+//     Builder instance. It should be freed by g_slist_free().
 //
 func (builder *Builder) Objects() []*coreglib.Object {
 	var _arg0 *C.GtkBuilder // out
@@ -1020,8 +1019,8 @@ func (builder *Builder) Objects() []*coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - utf8: translation domain. This string is owned by the builder object and
-//      must not be modified or freed.
+//   - utf8: translation domain. This string is owned by the builder object and
+//     must not be modified or freed.
 //
 func (builder *Builder) TranslationDomain() string {
 	var _arg0 *C.GtkBuilder // out
@@ -1045,11 +1044,11 @@ func (builder *Builder) TranslationDomain() string {
 //
 // The function takes the following parameters:
 //
-//    - typeName: type name to lookup.
+//   - typeName: type name to lookup.
 //
 // The function returns the following values:
 //
-//    - gType found for type_name or TYPE_INVALID if no type was found.
+//   - gType found for type_name or TYPE_INVALID if no type was found.
 //
 func (builder *Builder) TypeFromName(typeName string) coreglib.Type {
 	var _arg0 *C.GtkBuilder // out
@@ -1078,7 +1077,7 @@ func (builder *Builder) TypeFromName(typeName string) coreglib.Type {
 //
 // The function takes the following parameters:
 //
-//    - application: Application.
+//   - application: Application.
 //
 func (builder *Builder) SetApplication(application *Application) {
 	var _arg0 *C.GtkBuilder     // out
@@ -1097,7 +1096,7 @@ func (builder *Builder) SetApplication(application *Application) {
 //
 // The function takes the following parameters:
 //
-//    - domain (optional): translation domain or NULL.
+//   - domain (optional): translation domain or NULL.
 //
 func (builder *Builder) SetTranslationDomain(domain string) {
 	var _arg0 *C.GtkBuilder // out
@@ -1115,8 +1114,8 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 }
 
 // ValueFromStringType: like gtk_builder_value_from_string(), this function
-// demarshals a value from a string, but takes a #GType instead of Spec. This
-// function calls g_value_init() on the value argument, so it need not be
+// demarshals a value from a string, but takes a #GType instead of Spec.
+// This function calls g_value_init() on the value argument, so it need not be
 // initialised beforehand.
 //
 // Upon errors FALSE will be returned and error will be assigned a #GError from
@@ -1124,12 +1123,12 @@ func (builder *Builder) SetTranslationDomain(domain string) {
 //
 // The function takes the following parameters:
 //
-//    - typ of the value.
-//    - str: string representation of the value.
+//   - typ of the value.
+//   - str: string representation of the value.
 //
 // The function returns the following values:
 //
-//    - value to store the result in.
+//   - value to store the result in.
 //
 func (builder *Builder) ValueFromStringType(typ coreglib.Type, str string) (coreglib.Value, error) {
 	var _arg0 *C.GtkBuilder // out
@@ -1165,11 +1164,11 @@ func (builder *Builder) ValueFromStringType(typ coreglib.Type, str string) (core
 //
 // The function takes the following parameters:
 //
-//    - typeName: type name to lookup.
+//   - typeName: type name to lookup.
 //
 // The function returns the following values:
 //
-//    - gType found for type_name or TYPE_INVALID if no type was found.
+//   - gType found for type_name or TYPE_INVALID if no type was found.
 //
 func (builder *Builder) typeFromName(typeName string) coreglib.Type {
 	gclass := (*C.GtkBuilderClass)(coreglib.PeekParentClass(builder))

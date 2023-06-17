@@ -69,11 +69,11 @@ func NewPlaneAlloc() *Plane {
 //
 // The function takes the following parameters:
 //
-//    - point: #graphene_point3d_t.
+//   - point: #graphene_point3d_t.
 //
 // The function returns the following values:
 //
-//    - gfloat: distance of the given #graphene_point3d_t from the plane.
+//   - gfloat: distance of the given #graphene_point3d_t from the plane.
 //
 func (p *Plane) Distance(point *Point3D) float32 {
 	var _arg0 *C.graphene_plane_t   // out
@@ -98,11 +98,11 @@ func (p *Plane) Distance(point *Point3D) float32 {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_plane_t.
+//   - b: #graphene_plane_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the given planes are equal.
+//   - ok: true if the given planes are equal.
 //
 func (a *Plane) Equal(b *Plane) bool {
 	var _arg0 *C.graphene_plane_t // out
@@ -130,7 +130,7 @@ func (a *Plane) Equal(b *Plane) bool {
 //
 // The function returns the following values:
 //
-//    - gfloat: constant value of the plane.
+//   - gfloat: constant value of the plane.
 //
 func (p *Plane) Constant() float32 {
 	var _arg0 *C.graphene_plane_t // out
@@ -153,7 +153,7 @@ func (p *Plane) Constant() float32 {
 //
 // The function returns the following values:
 //
-//    - normal: return location for the normal vector.
+//   - normal: return location for the normal vector.
 //
 func (p *Plane) Normal() *Vec3 {
 	var _arg0 *C.graphene_plane_t // out
@@ -176,14 +176,14 @@ func (p *Plane) Normal() *Vec3 {
 //
 // The function takes the following parameters:
 //
-//    - normal (optional): unit length normal vector defining the plane pointing
-//      towards the origin; if unset, we use the X axis by default.
-//    - constant: distance from the origin to the plane along the normal vector;
-//      the sign determines the half-space occupied by the plane.
+//   - normal (optional): unit length normal vector defining the plane pointing
+//     towards the origin; if unset, we use the X axis by default.
+//   - constant: distance from the origin to the plane along the normal vector;
+//     the sign determines the half-space occupied by the plane.
 //
 // The function returns the following values:
 //
-//    - plane: initialized plane.
+//   - plane: initialized plane.
 //
 func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	var _arg0 *C.graphene_plane_t // out
@@ -214,11 +214,11 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_plane_t.
+//   - src: #graphene_plane_t.
 //
 // The function returns the following values:
 //
-//    - plane: initialized plane.
+//   - plane: initialized plane.
 //
 func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	var _arg0 *C.graphene_plane_t // out
@@ -244,12 +244,12 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 //
 // The function takes the following parameters:
 //
-//    - normal vector defining the plane pointing towards the origin.
-//    - point: #graphene_point3d_t.
+//   - normal vector defining the plane pointing towards the origin.
+//   - point: #graphene_point3d_t.
 //
 // The function returns the following values:
 //
-//    - plane: initialized plane.
+//   - plane: initialized plane.
 //
 func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	var _arg0 *C.graphene_plane_t   // out
@@ -281,13 +281,13 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 //
 // The function takes the following parameters:
 //
-//    - a: #graphene_point3d_t.
-//    - b: #graphene_point3d_t.
-//    - c: #graphene_point3d_t.
+//   - a: #graphene_point3d_t.
+//   - b: #graphene_point3d_t.
+//   - c: #graphene_point3d_t.
 //
 // The function returns the following values:
 //
-//    - plane: initialized plane.
+//   - plane: initialized plane.
 //
 func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 	var _arg0 *C.graphene_plane_t   // out
@@ -319,12 +319,12 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 //
 // The function takes the following parameters:
 //
-//    - src containing the normal vector in its first three components, and the
-//      distance in its fourth component.
+//   - src containing the normal vector in its first three components, and the
+//     distance in its fourth component.
 //
 // The function returns the following values:
 //
-//    - plane: initialized plane.
+//   - plane: initialized plane.
 //
 func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	var _arg0 *C.graphene_plane_t // out
@@ -350,7 +350,7 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 //
 // The function returns the following values:
 //
-//    - res: return location for the negated plane.
+//   - res: return location for the negated plane.
 //
 func (p *Plane) Negate() *Plane {
 	var _arg0 *C.graphene_plane_t // out
@@ -373,7 +373,7 @@ func (p *Plane) Negate() *Plane {
 //
 // The function returns the following values:
 //
-//    - res: return location for the normalized plane.
+//   - res: return location for the normalized plane.
 //
 func (p *Plane) Normalize() *Plane {
 	var _arg0 *C.graphene_plane_t // out
@@ -401,12 +401,12 @@ func (p *Plane) Normalize() *Plane {
 //
 // The function takes the following parameters:
 //
-//    - matrix: #graphene_matrix_t.
-//    - normalMatrix (optional): #graphene_matrix_t.
+//   - matrix: #graphene_matrix_t.
+//   - normalMatrix (optional): #graphene_matrix_t.
 //
 // The function returns the following values:
 //
-//    - res: transformed plane.
+//   - res: transformed plane.
 //
 func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) *Plane {
 	var _arg0 *C.graphene_plane_t  // out

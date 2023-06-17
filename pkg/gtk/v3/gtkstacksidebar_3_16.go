@@ -40,12 +40,11 @@ func defaultStackSidebarOverrides(v *StackSidebar) StackSidebarOverrides {
 // StackSidebar enables you to quickly and easily provide a consistent "sidebar"
 // object for your user interface.
 //
-// In order to use a GtkStackSidebar, you simply use a GtkStack to organize your
-// UI flow, and add the sidebar to your sidebar area. You can use
+// In order to use a GtkStackSidebar, you simply use a GtkStack to organize
+// your UI flow, and add the sidebar to your sidebar area. You can use
 // gtk_stack_sidebar_set_stack() to connect the StackSidebar to the Stack.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkStackSidebar has a single CSS node with name stacksidebar and style class
 // .sidebar.
@@ -106,7 +105,7 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - stackSidebar: new StackSidebar.
+//   - stackSidebar: new StackSidebar.
 //
 func NewStackSidebar() *StackSidebar {
 	var _cret *C.GtkWidget // in
@@ -124,8 +123,8 @@ func NewStackSidebar() *StackSidebar {
 //
 // The function returns the following values:
 //
-//    - stack (optional): associated Stack or NULL if none has been set
-//      explicitly.
+//   - stack (optional): associated Stack or NULL if none has been set
+//     explicitly.
 //
 func (sidebar *StackSidebar) Stack() *Stack {
 	var _arg0 *C.GtkStackSidebar // out
@@ -152,7 +151,7 @@ func (sidebar *StackSidebar) Stack() *Stack {
 //
 // The function takes the following parameters:
 //
-//    - stack: Stack.
+//   - stack: Stack.
 //
 func (sidebar *StackSidebar) SetStack(stack *Stack) {
 	var _arg0 *C.GtkStackSidebar // out

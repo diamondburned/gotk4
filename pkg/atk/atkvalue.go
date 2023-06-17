@@ -133,11 +133,11 @@ func (v ValueType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - valueType whose localized name is required.
+//   - valueType whose localized name is required.
 //
 // The function returns the following values:
 //
-//    - utf8: localized string describing the ValueType.
+//   - utf8: localized string describing the ValueType.
 //
 func ValueTypeGetLocalizedName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
@@ -160,11 +160,11 @@ func ValueTypeGetLocalizedName(valueType ValueType) string {
 //
 // The function takes the following parameters:
 //
-//    - valueType whose name is required.
+//   - valueType whose name is required.
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the ValueType.
+//   - utf8: string describing the ValueType.
 //
 func ValueTypeGetName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
@@ -182,12 +182,12 @@ func ValueTypeGetName(valueType ValueType) string {
 	return _utf8
 }
 
-// Value should be implemented for components which either display a value from
-// a bounded range, or which allow the user to specify a value from a bounded
-// range, or both. For instance, most sliders and range controls, as well as
-// dials, should have Object representations which implement Value on the
-// component's behalf. KValues may be read-only, in which case attempts to alter
-// the value return would fail.
+// Value should be implemented for components which either display a value
+// from a bounded range, or which allow the user to specify a value from a
+// bounded range, or both. For instance, most sliders and range controls,
+// as well as dials, should have Object representations which implement Value on
+// the component's behalf. KValues may be read-only, in which case attempts to
+// alter the value return would fail.
 //
 // <refsect1 id="current-value-text"> <title>On the subject of current value
 // text</title> <para> In addition to providing the current value, implementors
@@ -218,8 +218,8 @@ func ValueTypeGetName(valueType ValueType) string {
 // it is still expected that implementors will expose the value text using the
 // above API. </para>
 //
-// <para> Value should NOT be implemented for widgets whose displayed value is
-// not reflective of a meaningful amount. For instance, a progress pulse
+// <para> Value should NOT be implemented for widgets whose displayed value
+// is not reflective of a meaningful amount. For instance, a progress pulse
 // indicator whose value alternates between 0.0 and 1.0 to indicate that some
 // process is still taking place should not implement Value because the current
 // value does not reflect progress towards completion. </para> </refsect2>
@@ -232,8 +232,8 @@ func ValueTypeGetName(valueType ValueType) string {
 // communicated visually to the end user: </para> <itemizedlist> <listitem>The
 // existence of distinct ranges such as "weak", "acceptable", and "strong"
 // indicated by color, bar tick marks, and/or on-screen text.</listitem>
-// <listitem>Where the current value stands within a given subrange, for
-// instance illustrating progression from very "weak" towards nearly
+// <listitem>Where the current value stands within a given subrange,
+// for instance illustrating progression from very "weak" towards nearly
 // "acceptable" through changes in shade and/or position on the bar within the
 // "weak" subrange.</listitem> </itemizedlist> <para> If both of the above do
 // not apply to the widget, it should be sufficient to expose the numeric value,
@@ -260,9 +260,9 @@ func ValueTypeGetName(valueType ValueType) string {
 // <listitem>ATK_VALUE_VERY_LOW</listitem> <listitem>ATK_VALUE_LOW</listitem>
 // <listitem>ATK_VALUE_MEDIUM</listitem> <listitem>ATK_VALUE_HIGH</listitem>
 // <listitem>ATK_VALUE_VERY_HIGH</listitem>
-// <listitem>ATK_VALUE_VERY_BAD</listitem> <listitem>ATK_VALUE_BAD</listitem>
-// <listitem>ATK_VALUE_GOOD</listitem> <listitem>ATK_VALUE_VERY_GOOD</listitem>
-// <listitem>ATK_VALUE_BEST</listitem>
+// <listitem>ATK_VALUE_VERY_BAD</listitem>
+// <listitem>ATK_VALUE_BAD</listitem> <listitem>ATK_VALUE_GOOD</listitem>
+// <listitem>ATK_VALUE_VERY_GOOD</listitem> <listitem>ATK_VALUE_BEST</listitem>
 // <listitem>ATK_VALUE_SUBSUBOPTIMAL</listitem>
 // <listitem>ATK_VALUE_SUBOPTIMAL</listitem>
 // <listitem>ATK_VALUE_OPTIMAL</listitem> </itemizedlist> <para> Proposals for
@@ -349,7 +349,7 @@ func (obj *Value) ConnectValueChanged(f func(value float64, text string)) coregl
 //
 // The function returns the following values:
 //
-//    - value representing the current accessible value.
+//   - value representing the current accessible value.
 //
 func (obj *Value) CurrentValue() coreglib.Value {
 	var _arg0 *C.AtkValue // out
@@ -373,8 +373,8 @@ func (obj *Value) CurrentValue() coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - gdouble: minimum increment by which the value of this object may be
-//      changed. zero if undefined.
+//   - gdouble: minimum increment by which the value of this object may be
+//     changed. zero if undefined.
 //
 func (obj *Value) Increment() float64 {
 	var _arg0 *C.AtkValue // out
@@ -398,7 +398,7 @@ func (obj *Value) Increment() float64 {
 //
 // The function returns the following values:
 //
-//    - value representing the maximum accessible value.
+//   - value representing the maximum accessible value.
 //
 func (obj *Value) MaximumValue() coreglib.Value {
 	var _arg0 *C.AtkValue // out
@@ -424,8 +424,8 @@ func (obj *Value) MaximumValue() coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - value representing the minimum increment by which the accessible value
-//      may be changed.
+//   - value representing the minimum increment by which the accessible value
+//     may be changed.
 //
 func (obj *Value) MinimumIncrement() coreglib.Value {
 	var _arg0 *C.AtkValue // out
@@ -449,7 +449,7 @@ func (obj *Value) MinimumIncrement() coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - value representing the minimum accessible value.
+//   - value representing the minimum accessible value.
 //
 func (obj *Value) MinimumValue() coreglib.Value {
 	var _arg0 *C.AtkValue // out
@@ -471,9 +471,9 @@ func (obj *Value) MinimumValue() coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - _range (optional): newly allocated Range that represents the minimum,
-//      maximum and descriptor (if available) of obj. NULL if that range is not
-//      defined.
+//   - _range (optional): newly allocated Range that represents the minimum,
+//     maximum and descriptor (if available) of obj. NULL if that range is not
+//     defined.
 //
 func (obj *Value) Range() *Range {
 	var _arg0 *C.AtkValue // out
@@ -504,8 +504,8 @@ func (obj *Value) Range() *Range {
 //
 // The function returns the following values:
 //
-//    - sList of Range which each of the subranges defined for this object. Free
-//      the returns list with g_slist_free().
+//   - sList of Range which each of the subranges defined for this object.
+//     Free the returns list with g_slist_free().
 //
 func (obj *Value) SubRanges() []*Range {
 	var _arg0 *C.AtkValue // out
@@ -536,14 +536,14 @@ func (obj *Value) SubRanges() []*Range {
 }
 
 // ValueAndText gets the current value and the human readable text alternative
-// of obj. text is a newly created string, that must be freed by the caller. Can
-// be NULL if no descriptor is available.
+// of obj. text is a newly created string, that must be freed by the caller.
+// Can be NULL if no descriptor is available.
 //
 // The function returns the following values:
 //
-//    - value address of #gdouble to put the current value of obj.
-//    - text (optional) address of #gchar to put the human readable text
-//      alternative for value.
+//   - value address of #gdouble to put the current value of obj.
+//   - text (optional) address of #gchar to put the human readable text
+//     alternative for value.
 //
 func (obj *Value) ValueAndText() (float64, string) {
 	var _arg0 *C.AtkValue // out
@@ -573,11 +573,11 @@ func (obj *Value) ValueAndText() (float64, string) {
 //
 // The function takes the following parameters:
 //
-//    - value which is the desired new accessible value.
+//   - value which is the desired new accessible value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if new value is successfully set, FALSE otherwise.
+//   - ok: TRUE if new value is successfully set, FALSE otherwise.
 //
 func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 	var _arg0 *C.AtkValue // out
@@ -607,15 +607,15 @@ func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 // component). If the value changes due this call, it is possible that the text
 // could change, and will trigger an Value::value-changed signal emission.
 //
-// Note for implementors: the deprecated atk_value_set_current_value() method
-// returned TRUE or FALSE depending if the value was assigned or not. In the
-// practice several implementors were not able to decide it, and returned TRUE
-// in any case. For that reason it is not required anymore to return if the
+// Note for implementors: the deprecated atk_value_set_current_value()
+// method returned TRUE or FALSE depending if the value was assigned or not.
+// In the practice several implementors were not able to decide it, and returned
+// TRUE in any case. For that reason it is not required anymore to return if the
 // value was properly assigned or not.
 //
 // The function takes the following parameters:
 //
-//    - newValue: double which is the desired new accessible value.
+//   - newValue: double which is the desired new accessible value.
 //
 func (obj *Value) SetValue(newValue float64) {
 	var _arg0 *C.AtkValue // out
@@ -635,7 +635,7 @@ func (obj *Value) SetValue(newValue float64) {
 //
 // The function returns the following values:
 //
-//    - value representing the current accessible value.
+//   - value representing the current accessible value.
 //
 func (obj *Value) currentValue() coreglib.Value {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -662,8 +662,8 @@ func (obj *Value) currentValue() coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - gdouble: minimum increment by which the value of this object may be
-//      changed. zero if undefined.
+//   - gdouble: minimum increment by which the value of this object may be
+//     changed. zero if undefined.
 //
 func (obj *Value) increment() float64 {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -690,7 +690,7 @@ func (obj *Value) increment() float64 {
 //
 // The function returns the following values:
 //
-//    - value representing the maximum accessible value.
+//   - value representing the maximum accessible value.
 //
 func (obj *Value) maximumValue() coreglib.Value {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -719,8 +719,8 @@ func (obj *Value) maximumValue() coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - value representing the minimum increment by which the accessible value
-//      may be changed.
+//   - value representing the minimum increment by which the accessible value
+//     may be changed.
 //
 func (obj *Value) minimumIncrement() coreglib.Value {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -747,7 +747,7 @@ func (obj *Value) minimumIncrement() coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - value representing the minimum accessible value.
+//   - value representing the minimum accessible value.
 //
 func (obj *Value) minimumValue() coreglib.Value {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -772,9 +772,9 @@ func (obj *Value) minimumValue() coreglib.Value {
 //
 // The function returns the following values:
 //
-//    - _range (optional): newly allocated Range that represents the minimum,
-//      maximum and descriptor (if available) of obj. NULL if that range is not
-//      defined.
+//   - _range (optional): newly allocated Range that represents the minimum,
+//     maximum and descriptor (if available) of obj. NULL if that range is not
+//     defined.
 //
 func (obj *Value) _range() *Range {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -808,8 +808,8 @@ func (obj *Value) _range() *Range {
 //
 // The function returns the following values:
 //
-//    - sList of Range which each of the subranges defined for this object. Free
-//      the returns list with g_slist_free().
+//   - sList of Range which each of the subranges defined for this object.
+//     Free the returns list with g_slist_free().
 //
 func (obj *Value) subRanges() []*Range {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -843,14 +843,14 @@ func (obj *Value) subRanges() []*Range {
 }
 
 // valueAndText gets the current value and the human readable text alternative
-// of obj. text is a newly created string, that must be freed by the caller. Can
-// be NULL if no descriptor is available.
+// of obj. text is a newly created string, that must be freed by the caller.
+// Can be NULL if no descriptor is available.
 //
 // The function returns the following values:
 //
-//    - value address of #gdouble to put the current value of obj.
-//    - text (optional) address of #gchar to put the human readable text
-//      alternative for value.
+//   - value address of #gdouble to put the current value of obj.
+//   - text (optional) address of #gchar to put the human readable text
+//     alternative for value.
 //
 func (obj *Value) valueAndText() (float64, string) {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -883,11 +883,11 @@ func (obj *Value) valueAndText() (float64, string) {
 //
 // The function takes the following parameters:
 //
-//    - value which is the desired new accessible value.
+//   - value which is the desired new accessible value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if new value is successfully set, FALSE otherwise.
+//   - ok: TRUE if new value is successfully set, FALSE otherwise.
 //
 func (obj *Value) setCurrentValue(value *coreglib.Value) bool {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
@@ -920,15 +920,15 @@ func (obj *Value) setCurrentValue(value *coreglib.Value) bool {
 // component). If the value changes due this call, it is possible that the text
 // could change, and will trigger an Value::value-changed signal emission.
 //
-// Note for implementors: the deprecated atk_value_set_current_value() method
-// returned TRUE or FALSE depending if the value was assigned or not. In the
-// practice several implementors were not able to decide it, and returned TRUE
-// in any case. For that reason it is not required anymore to return if the
+// Note for implementors: the deprecated atk_value_set_current_value()
+// method returned TRUE or FALSE depending if the value was assigned or not.
+// In the practice several implementors were not able to decide it, and returned
+// TRUE in any case. For that reason it is not required anymore to return if the
 // value was properly assigned or not.
 //
 // The function takes the following parameters:
 //
-//    - newValue: double which is the desired new accessible value.
+//   - newValue: double which is the desired new accessible value.
 //
 func (obj *Value) setValue(newValue float64) {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))

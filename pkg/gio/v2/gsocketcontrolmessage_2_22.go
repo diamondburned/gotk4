@@ -49,7 +49,7 @@ type SocketControlMessageOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - gint: integer describing the level.
+	//   - gint: integer describing the level.
 	//
 	Level func() int
 	// Size returns the space required for the control message, not including
@@ -57,7 +57,7 @@ type SocketControlMessageOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - gsize: number of bytes required.
+	//   - gsize: number of bytes required.
 	//
 	Size func() uint
 	// The function returns the following values:
@@ -71,7 +71,7 @@ type SocketControlMessageOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - data: buffer to write data to.
+	//   - data: buffer to write data to.
 	//
 	Serialize func(data unsafe.Pointer)
 }
@@ -85,8 +85,8 @@ func defaultSocketControlMessageOverrides(v *SocketControlMessage) SocketControl
 	}
 }
 
-// SocketControlMessage is a special-purpose utility message that can be sent to
-// or received from a #GSocket. These types of messages are often called
+// SocketControlMessage is a special-purpose utility message that can be sent
+// to or received from a #GSocket. These types of messages are often called
 // "ancillary data".
 //
 // The message can represent some sort of special instruction to or information
@@ -99,9 +99,9 @@ func defaultSocketControlMessageOverrides(v *SocketControlMessage) SocketControl
 // To extend the set of control message that can be sent, subclass this class
 // and override the get_size, get_level, get_type and serialize methods.
 //
-// To extend the set of control messages that can be received, subclass this
-// class and implement the deserialize method. Also, make sure your class is
-// registered with the GType typesystem before calling
+// To extend the set of control messages that can be received,
+// subclass this class and implement the deserialize method. Also, make
+// sure your class is registered with the GType typesystem before calling
 // g_socket_receive_message() to read such a message.
 type SocketControlMessage struct {
 	_ [0]func() // equal guard
@@ -181,7 +181,7 @@ func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
 //
 // The function returns the following values:
 //
-//    - gint: integer describing the level.
+//   - gint: integer describing the level.
 //
 func (message *SocketControlMessage) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
@@ -204,7 +204,7 @@ func (message *SocketControlMessage) Level() int {
 //
 // The function returns the following values:
 //
-//    - gint: integer describing the type of control message.
+//   - gint: integer describing the type of control message.
 //
 func (message *SocketControlMessage) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
@@ -227,7 +227,7 @@ func (message *SocketControlMessage) MsgType() int {
 //
 // The function returns the following values:
 //
-//    - gsize: number of bytes required.
+//   - gsize: number of bytes required.
 //
 func (message *SocketControlMessage) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
@@ -252,7 +252,7 @@ func (message *SocketControlMessage) Size() uint {
 //
 // The function takes the following parameters:
 //
-//    - data: buffer to write data to.
+//   - data: buffer to write data to.
 //
 func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
 	var _arg0 *C.GSocketControlMessage // out
@@ -271,7 +271,7 @@ func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
 //
 // The function returns the following values:
 //
-//    - gint: integer describing the level.
+//   - gint: integer describing the level.
 //
 func (message *SocketControlMessage) level() int {
 	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
@@ -297,7 +297,7 @@ func (message *SocketControlMessage) level() int {
 //
 // The function returns the following values:
 //
-//    - gsize: number of bytes required.
+//   - gsize: number of bytes required.
 //
 func (message *SocketControlMessage) size() uint {
 	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
@@ -346,7 +346,7 @@ func (message *SocketControlMessage) typ() int {
 //
 // The function takes the following parameters:
 //
-//    - data: buffer to write data to.
+//   - data: buffer to write data to.
 //
 func (message *SocketControlMessage) serialize(data unsafe.Pointer) {
 	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
@@ -364,8 +364,8 @@ func (message *SocketControlMessage) serialize(data unsafe.Pointer) {
 }
 
 // SocketControlMessageDeserialize tries to deserialize a socket control message
-// of a given level and type. This will ask all known (to GType) subclasses of
-// ControlMessage if they can understand this kind of message and if so
+// of a given level and type. This will ask all known (to GType) subclasses
+// of ControlMessage if they can understand this kind of message and if so
 // deserialize it into a ControlMessage.
 //
 // If there is no implementation for this kind of control message, NULL will be
@@ -373,13 +373,13 @@ func (message *SocketControlMessage) serialize(data unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - level: socket level.
-//    - typ: socket control message type for the given level.
-//    - data: pointer to the message data.
+//   - level: socket level.
+//   - typ: socket control message type for the given level.
+//   - data: pointer to the message data.
 //
 // The function returns the following values:
 //
-//    - socketControlMessage: deserialized message or NULL.
+//   - socketControlMessage: deserialized message or NULL.
 //
 func SocketControlMessageDeserialize(level, typ int, data []byte) SocketControlMessager {
 	var _arg1 C.int      // out

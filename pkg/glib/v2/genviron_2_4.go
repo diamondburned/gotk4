@@ -20,25 +20,25 @@ import "C"
 //
 // You should be mindful of the fact that environment variable handling in UNIX
 // is not thread-safe, and your program may crash if one thread calls g_setenv()
-// while another thread is calling getenv(). (And note that many functions, such
-// as gettext(), call getenv() internally.) This function is only safe to use at
-// the very start of your program, before creating any other threads (or
+// while another thread is calling getenv(). (And note that many functions,
+// such as gettext(), call getenv() internally.) This function is only safe to
+// use at the very start of your program, before creating any other threads (or
 // creating objects that create worker threads of their own).
 //
-// If you need to set up the environment for a child process, you can use
-// g_get_environ() to get an environment array, modify that with
+// If you need to set up the environment for a child process, you can
+// use g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
 //
 // The function takes the following parameters:
 //
-//    - variable: environment variable to set, must not contain '='.
-//    - value for to set the variable to.
-//    - overwrite: whether to change the variable if it already exists.
+//   - variable: environment variable to set, must not contain '='.
+//   - value for to set the variable to.
+//   - overwrite: whether to change the variable if it already exists.
 //
 // The function returns the following values:
 //
-//    - ok: FALSE if the environment variable couldn't be set.
+//   - ok: FALSE if the environment variable couldn't be set.
 //
 func Setenv(variable, value string, overwrite bool) bool {
 	var _arg1 *C.gchar   // out
@@ -73,21 +73,21 @@ func Setenv(variable, value string, overwrite bool) bool {
 // Note that on some systems, when variables are overwritten, the memory used
 // for the previous variables and its value isn't reclaimed.
 //
-// You should be mindful of the fact that environment variable handling in UNIX
-// is not thread-safe, and your program may crash if one thread calls
+// You should be mindful of the fact that environment variable handling in
+// UNIX is not thread-safe, and your program may crash if one thread calls
 // g_unsetenv() while another thread is calling getenv(). (And note that many
 // functions, such as gettext(), call getenv() internally.) This function is
 // only safe to use at the very start of your program, before creating any other
 // threads (or creating objects that create worker threads of their own).
 //
-// If you need to set up the environment for a child process, you can use
-// g_get_environ() to get an environment array, modify that with
+// If you need to set up the environment for a child process, you can
+// use g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
 //
 // The function takes the following parameters:
 //
-//    - variable: environment variable to remove, must not contain '='.
+//   - variable: environment variable to remove, must not contain '='.
 //
 func Unsetenv(variable string) {
 	var _arg1 *C.gchar // out

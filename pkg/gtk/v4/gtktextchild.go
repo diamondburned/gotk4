@@ -81,7 +81,7 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - textChildAnchor: new GtkTextChildAnchor.
+//   - textChildAnchor: new GtkTextChildAnchor.
 //
 func NewTextChildAnchor() *TextChildAnchor {
 	var _cret *C.GtkTextChildAnchor // in
@@ -104,7 +104,7 @@ func NewTextChildAnchor() *TextChildAnchor {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the child anchor has been deleted from its buffer.
+//   - ok: TRUE if the child anchor has been deleted from its buffer.
 //
 func (anchor *TextChildAnchor) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor // out
@@ -130,7 +130,7 @@ func (anchor *TextChildAnchor) Deleted() bool {
 //
 // The function returns the following values:
 //
-//    - widgets: an array of widgets anchored at anchor.
+//   - widgets: an array of widgets anchored at anchor.
 //
 func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	var _arg0 *C.GtkTextChildAnchor // out

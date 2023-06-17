@@ -33,7 +33,7 @@ func init() {
 //
 // The function returns the following values:
 //
-//    - quark: #GQuark.
+//   - quark: #GQuark.
 //
 func ResourceErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
@@ -52,9 +52,9 @@ func ResourceErrorQuark() glib.Quark {
 // Menu is a simple implementation of Model. You populate a #GMenu by adding
 // Item instances to it.
 //
-// There are some convenience functions to allow you to directly add items
-// (avoiding Item) for the common cases. To add a regular item, use
-// g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
+// There are some convenience functions to allow you to directly add
+// items (avoiding Item) for the common cases. To add a regular item,
+// use g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
 // submenu, use g_menu_insert_submenu().
 type Menu struct {
 	_ [0]func() // equal guard
@@ -83,7 +83,7 @@ func marshalMenu(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - menu: new #GMenu.
+//   - menu: new #GMenu.
 //
 func NewMenu() *Menu {
 	var _cret *C.GMenu // in
@@ -103,8 +103,8 @@ func NewMenu() *Menu {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - detailedAction (optional): detailed action string, or NULL.
+//   - label (optional): section label, or NULL.
+//   - detailedAction (optional): detailed action string, or NULL.
 //
 func (menu *Menu) Append(label, detailedAction string) {
 	var _arg0 *C.GMenu // out
@@ -133,7 +133,7 @@ func (menu *Menu) Append(label, detailedAction string) {
 //
 // The function takes the following parameters:
 //
-//    - item to append.
+//   - item to append.
 //
 func (menu *Menu) AppendItem(item *MenuItem) {
 	var _arg0 *C.GMenu     // out
@@ -153,8 +153,8 @@ func (menu *Menu) AppendItem(item *MenuItem) {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - section with the items of the section.
+//   - label (optional): section label, or NULL.
+//   - section with the items of the section.
 //
 func (menu *Menu) AppendSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
@@ -180,8 +180,8 @@ func (menu *Menu) AppendSection(label string, section MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - submenu with the items of the submenu.
+//   - label (optional): section label, or NULL.
+//   - submenu with the items of the submenu.
 //
 func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
@@ -223,9 +223,9 @@ func (menu *Menu) Freeze() {
 //
 // The function takes the following parameters:
 //
-//    - position at which to insert the item.
-//    - label (optional): section label, or NULL.
-//    - detailedAction (optional): detailed action string, or NULL.
+//   - position at which to insert the item.
+//   - label (optional): section label, or NULL.
+//   - detailedAction (optional): detailed action string, or NULL.
 //
 func (menu *Menu) Insert(position int, label, detailedAction string) {
 	var _arg0 *C.GMenu // out
@@ -254,12 +254,12 @@ func (menu *Menu) Insert(position int, label, detailedAction string) {
 // InsertItem inserts item into menu.
 //
 // The "insertion" is actually done by copying all of the attribute and link
-// values of item and using them to form a new item within menu. As such, item
-// itself is not really inserted, but rather, a menu item that is exactly the
-// same as the one presently described by item.
+// values of item and using them to form a new item within menu. As such,
+// item itself is not really inserted, but rather, a menu item that is exactly
+// the same as the one presently described by item.
 //
-// This means that item is essentially useless after the insertion occurs. Any
-// changes you make to it are ignored unless it is inserted again (at which
+// This means that item is essentially useless after the insertion occurs.
+// Any changes you make to it are ignored unless it is inserted again (at which
 // point its updated values will be copied).
 //
 // You should probably just free item once you're done.
@@ -270,8 +270,8 @@ func (menu *Menu) Insert(position int, label, detailedAction string) {
 //
 // The function takes the following parameters:
 //
-//    - position at which to insert the item.
-//    - item to insert.
+//   - position at which to insert the item.
+//   - item to insert.
 //
 func (menu *Menu) InsertItem(position int, item *MenuItem) {
 	var _arg0 *C.GMenu     // out
@@ -294,9 +294,9 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 //
 // The function takes the following parameters:
 //
-//    - position at which to insert the item.
-//    - label (optional): section label, or NULL.
-//    - section with the items of the section.
+//   - position at which to insert the item.
+//   - label (optional): section label, or NULL.
+//   - section with the items of the section.
 //
 func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
@@ -325,9 +325,9 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 //
 // The function takes the following parameters:
 //
-//    - position at which to insert the item.
-//    - label (optional): section label, or NULL.
-//    - submenu with the items of the submenu.
+//   - position at which to insert the item.
+//   - label (optional): section label, or NULL.
+//   - submenu with the items of the submenu.
 //
 func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
@@ -350,14 +350,14 @@ func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller
 	runtime.KeepAlive(submenu)
 }
 
-// Prepend: convenience function for prepending a normal menu item to the start
-// of menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
+// Prepend: convenience function for prepending a normal menu item to the
+// start of menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
 // flexible alternative.
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - detailedAction (optional): detailed action string, or NULL.
+//   - label (optional): section label, or NULL.
+//   - detailedAction (optional): detailed action string, or NULL.
 //
 func (menu *Menu) Prepend(label, detailedAction string) {
 	var _arg0 *C.GMenu // out
@@ -386,7 +386,7 @@ func (menu *Menu) Prepend(label, detailedAction string) {
 //
 // The function takes the following parameters:
 //
-//    - item to prepend.
+//   - item to prepend.
 //
 func (menu *Menu) PrependItem(item *MenuItem) {
 	var _arg0 *C.GMenu     // out
@@ -406,8 +406,8 @@ func (menu *Menu) PrependItem(item *MenuItem) {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - section with the items of the section.
+//   - label (optional): section label, or NULL.
+//   - section with the items of the section.
 //
 func (menu *Menu) PrependSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
@@ -433,8 +433,8 @@ func (menu *Menu) PrependSection(label string, section MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - submenu with the items of the submenu.
+//   - label (optional): section label, or NULL.
+//   - submenu with the items of the submenu.
 //
 func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
@@ -467,7 +467,7 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - position of the item to remove.
+//   - position of the item to remove.
 //
 func (menu *Menu) Remove(position int) {
 	var _arg0 *C.GMenu // out
@@ -522,12 +522,12 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - detailedAction (optional): detailed action string, or NULL.
+//   - label (optional): section label, or NULL.
+//   - detailedAction (optional): detailed action string, or NULL.
 //
 // The function returns the following values:
 //
-//    - menuItem: new Item.
+//   - menuItem: new Item.
 //
 func NewMenuItem(label, detailedAction string) *MenuItem {
 	var _arg1 *C.gchar     // out
@@ -562,12 +562,12 @@ func NewMenuItem(label, detailedAction string) *MenuItem {
 //
 // The function takes the following parameters:
 //
-//    - model: Model.
-//    - itemIndex: index of an item in model.
+//   - model: Model.
+//   - itemIndex: index of an item in model.
 //
 // The function returns the following values:
 //
-//    - menuItem: new Item.
+//   - menuItem: new Item.
 //
 func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg1 *C.GMenuModel // out
@@ -593,16 +593,16 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 // This is a convenience API around g_menu_item_new() and
 // g_menu_item_set_section().
 //
-// The effect of having one menu appear as a section of another is exactly as it
-// sounds: the items from section become a direct part of the menu that
+// The effect of having one menu appear as a section of another is exactly
+// as it sounds: the items from section become a direct part of the menu that
 // menu_item is added to.
 //
 // Visual separation is typically displayed between two non-empty sections. If
 // label is non-NULL then it will be encorporated into this visual indication.
 // This allows for labeled subsections of a menu.
 //
-// As a simple example, consider a typical "Edit" menu from a simple program. It
-// probably contains an "Undo" and "Redo" item, followed by a separator,
+// As a simple example, consider a typical "Edit" menu from a simple program.
+// It probably contains an "Undo" and "Redo" item, followed by a separator,
 // followed by "Cut", "Copy" and "Paste".
 //
 // This would be accomplished by creating three #GMenu instances. The first
@@ -625,8 +625,8 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 //
 // The following example is exactly equivalent. It is more illustrative of the
 // exact relationship between the menus and items (keeping in mind that the
-// 'link' element defines a new menu that is linked to the containing one). The
-// style of the second example is more verbose and difficult to read (and
+// 'link' element defines a new menu that is linked to the containing one).
+// The style of the second example is more verbose and difficult to read (and
 // therefore not recommended except for the purpose of understanding what is
 // really going on).
 //
@@ -648,12 +648,12 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - section with the items of the section.
+//   - label (optional): section label, or NULL.
+//   - section with the items of the section.
 //
 // The function returns the following values:
 //
-//    - menuItem: new Item.
+//   - menuItem: new Item.
 //
 func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
@@ -684,12 +684,12 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 //
 // The function takes the following parameters:
 //
-//    - label (optional): section label, or NULL.
-//    - submenu with the items of the submenu.
+//   - label (optional): section label, or NULL.
+//   - submenu with the items of the submenu.
 //
 // The function returns the following values:
 //
-//    - menuItem: new Item.
+//   - menuItem: new Item.
 //
 func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
@@ -720,12 +720,12 @@ func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 //
 // The function takes the following parameters:
 //
-//    - attribute name to query.
-//    - expectedType (optional): expected type of the attribute.
+//   - attribute name to query.
+//   - expectedType (optional): expected type of the attribute.
 //
 // The function returns the following values:
 //
-//    - variant (optional): attribute value, or NULL.
+//   - variant (optional): attribute value, or NULL.
 //
 func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuItem    // out
@@ -764,11 +764,11 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 //
 // The function takes the following parameters:
 //
-//    - link name to query.
+//   - link name to query.
 //
 // The function returns the following values:
 //
-//    - menuModel (optional): link, or NULL.
+//   - menuModel (optional): link, or NULL.
 //
 func (menuItem *MenuItem) Link(link string) MenuModeller {
 	var _arg0 *C.GMenuItem  // out
@@ -816,9 +816,9 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 // otherwise.
 //
 // Normal menu items (ie: not submenu, section or other custom item types) are
-// expected to have the "action" attribute set to identify the action that they
-// are associated with. The state type of the action help to determine the
-// disposition of the menu item. See #GAction and Group for an overview of
+// expected to have the "action" attribute set to identify the action that
+// they are associated with. The state type of the action help to determine
+// the disposition of the menu item. See #GAction and Group for an overview of
 // actions.
 //
 // In general, clicking on the menu item will result in activation of the named
@@ -843,8 +843,8 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 //
 // The function takes the following parameters:
 //
-//    - action (optional): name of the action for this item.
-//    - targetValue (optional) to use as the action target.
+//   - action (optional): name of the action for this item.
+//   - targetValue (optional) to use as the action target.
 //
 func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
@@ -877,8 +877,8 @@ func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *gl
 //
 // must consist only of lowercase ASCII characters, digits and '-'.
 //
-// If value is non-NULL then it is used as the new value for the attribute. If
-// value is NULL then the attribute is unset. If the value #GVariant is
+// If value is non-NULL then it is used as the new value for the attribute.
+// If value is NULL then the attribute is unset. If the value #GVariant is
 // floating, it is consumed.
 //
 // See also g_menu_item_set_attribute() for a more convenient way to do the
@@ -886,8 +886,8 @@ func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *gl
 //
 // The function takes the following parameters:
 //
-//    - attribute to set.
-//    - value (optional) to use as the value, or NULL.
+//   - attribute to set.
+//   - value (optional) to use as the value, or NULL.
 //
 func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
@@ -922,7 +922,7 @@ func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Varian
 //
 // The function takes the following parameters:
 //
-//    - detailedAction: "detailed" action string.
+//   - detailedAction: "detailed" action string.
 //
 func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 	var _arg0 *C.GMenuItem // out
@@ -950,7 +950,7 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 //
 // The function takes the following parameters:
 //
-//    - icon or NULL.
+//   - icon or NULL.
 //
 func (menuItem *MenuItem) SetIcon(icon Iconner) {
 	var _arg0 *C.GMenuItem // out
@@ -971,7 +971,7 @@ func (menuItem *MenuItem) SetIcon(icon Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - label (optional) to set, or NULL to unset.
+//   - label (optional) to set, or NULL to unset.
 //
 func (menuItem *MenuItem) SetLabel(label string) {
 	var _arg0 *C.GMenuItem // out
@@ -990,19 +990,19 @@ func (menuItem *MenuItem) SetLabel(label string) {
 
 // SetLink creates a link from menu_item to model if non-NULL, or unsets it.
 //
-// Links are used to establish a relationship between a particular menu item and
-// another menu. For example, G_MENU_LINK_SUBMENU is used to associate a submenu
-// with a particular menu item, and G_MENU_LINK_SECTION is used to create a
-// section. Other types of link can be used, but there is no guarantee that
-// clients will be able to make sense of them. Link types are restricted to
-// lowercase characters, numbers and '-'. Furthermore, the names must begin with
-// a lowercase character, must not end with a '-', and must not contain
+// Links are used to establish a relationship between a particular menu item
+// and another menu. For example, G_MENU_LINK_SUBMENU is used to associate
+// a submenu with a particular menu item, and G_MENU_LINK_SECTION is used to
+// create a section. Other types of link can be used, but there is no guarantee
+// that clients will be able to make sense of them. Link types are restricted
+// to lowercase characters, numbers and '-'. Furthermore, the names must begin
+// with a lowercase character, must not end with a '-', and must not contain
 // consecutive dashes.
 //
 // The function takes the following parameters:
 //
-//    - link: type of link to establish or unset.
-//    - model (optional) to link to (or NULL to unset).
+//   - link: type of link to establish or unset.
+//   - model (optional) to link to (or NULL to unset).
 //
 func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
@@ -1024,14 +1024,14 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 
 // SetSection sets or unsets the "section" link of menu_item to section.
 //
-// The effect of having one menu appear as a section of another is exactly as it
-// sounds: the items from section become a direct part of the menu that
+// The effect of having one menu appear as a section of another is exactly
+// as it sounds: the items from section become a direct part of the menu that
 // menu_item is added to. See g_menu_item_new_section() for more information
 // about what it means for a menu item to be a section.
 //
 // The function takes the following parameters:
 //
-//    - section (optional) or NULL.
+//   - section (optional) or NULL.
 //
 func (menuItem *MenuItem) SetSection(section MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
@@ -1057,7 +1057,7 @@ func (menuItem *MenuItem) SetSection(section MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - submenu (optional) or NULL.
+//   - submenu (optional) or NULL.
 //
 func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 	var _arg0 *C.GMenuItem  // out

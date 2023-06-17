@@ -39,9 +39,9 @@ func defaultRecentActionOverrides(v *RecentAction) RecentActionOverrides {
 // RecentAction represents a list of recently used files, which can be shown by
 // widgets such as RecentChooserDialog or RecentChooserMenu.
 //
-// To construct a submenu showing recently used files, use a RecentAction as the
-// action for a <menuitem>. To construct a menu toolbutton showing the recently
-// used files in the popup menu, use a RecentAction as the action for a
+// To construct a submenu showing recently used files, use a RecentAction as
+// the action for a <menuitem>. To construct a menu toolbutton showing the
+// recently used files in the popup menu, use a RecentAction as the action for a
 // <toolitem> element.
 type RecentAction struct {
 	_ [0]func() // equal guard
@@ -90,23 +90,23 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 	return wrapRecentAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewRecentAction creates a new RecentAction object. To add the action to a
-// ActionGroup and set the accelerator for the action, call
+// NewRecentAction creates a new RecentAction object. To add the
+// action to a ActionGroup and set the accelerator for the action, call
 // gtk_action_group_add_action_with_accel().
 //
 // Deprecated: since version 3.10.
 //
 // The function takes the following parameters:
 //
-//    - name: unique name for the action.
-//    - label (optional) displayed in menu items and on buttons, or NULL.
-//    - tooltip (optional) for the action, or NULL.
-//    - stockId (optional): stock icon to display in widgets representing the
-//      action, or NULL.
+//   - name: unique name for the action.
+//   - label (optional) displayed in menu items and on buttons, or NULL.
+//   - tooltip (optional) for the action, or NULL.
+//   - stockId (optional): stock icon to display in widgets representing the
+//     action, or NULL.
 //
 // The function returns the following values:
 //
-//    - recentAction: newly created RecentAction.
+//   - recentAction: newly created RecentAction.
 //
 func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 	var _arg1 *C.gchar     // out
@@ -151,16 +151,16 @@ func NewRecentAction(name, label, tooltip, stockId string) *RecentAction {
 //
 // The function takes the following parameters:
 //
-//    - name: unique name for the action.
-//    - label (optional) displayed in menu items and on buttons, or NULL.
-//    - tooltip (optional) for the action, or NULL.
-//    - stockId (optional): stock icon to display in widgets representing the
-//      action, or NULL.
-//    - manager (optional) or NULL for using the default RecentManager.
+//   - name: unique name for the action.
+//   - label (optional) displayed in menu items and on buttons, or NULL.
+//   - tooltip (optional) for the action, or NULL.
+//   - stockId (optional): stock icon to display in widgets representing the
+//     action, or NULL.
+//   - manager (optional) or NULL for using the default RecentManager.
 //
 // The function returns the following values:
 //
-//    - recentAction: newly created RecentAction.
+//   - recentAction: newly created RecentAction.
 //
 func NewRecentActionForManager(name, label, tooltip, stockId string, manager *RecentManager) *RecentAction {
 	var _arg1 *C.gchar            // out
@@ -209,7 +209,7 @@ func NewRecentActionForManager(name, label, tooltip, stockId string, manager *Re
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if numbers should be shown.
+//   - ok: TRUE if numbers should be shown.
 //
 func (action *RecentAction) ShowNumbers() bool {
 	var _arg0 *C.GtkRecentAction // out
@@ -238,7 +238,7 @@ func (action *RecentAction) ShowNumbers() bool {
 //
 // The function takes the following parameters:
 //
-//    - showNumbers: TRUE if the shown items should be numbered.
+//   - showNumbers: TRUE if the shown items should be numbered.
 //
 func (action *RecentAction) SetShowNumbers(showNumbers bool) {
 	var _arg0 *C.GtkRecentAction // out

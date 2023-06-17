@@ -61,8 +61,8 @@ type ScaleOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - x (optional): location to store X offset of layout, or NULL.
-	//    - y (optional): location to store Y offset of layout, or NULL.
+	//   - x (optional): location to store X offset of layout, or NULL.
+	//   - y (optional): location to store Y offset of layout, or NULL.
 	//
 	LayoutOffsets func() (x, y int)
 }
@@ -75,23 +75,22 @@ func defaultScaleOverrides(v *Scale) ScaleOverrides {
 	}
 }
 
-// Scale is a slider control used to select a numeric value. To use it, you’ll
-// probably want to investigate the methods on its base class, Range, in
-// addition to the methods for GtkScale itself. To set the value of a scale, you
-// would normally use gtk_range_set_value(). To detect changes to the value, you
-// would normally use the Range::value-changed signal.
+// Scale is a slider control used to select a numeric value. To use it,
+// you’ll probably want to investigate the methods on its base class, Range,
+// in addition to the methods for GtkScale itself. To set the value of a scale,
+// you would normally use gtk_range_set_value(). To detect changes to the value,
+// you would normally use the Range::value-changed signal.
 //
 // Note that using the same upper and lower bounds for the Scale (through the
 // Range methods) will hide the slider itself. This is useful for applications
 // that want to show an undeterminate value on the scale, without changing the
 // layout of the application (such as movie or music players).
 //
+// # GtkScale as GtkBuildable
 //
-// GtkScale as GtkBuildable
-//
-// GtkScale supports a custom <marks> element, which can contain multiple <mark>
-// elements. The “value” and “position” attributes have the same meaning as
-// gtk_scale_add_mark() parameters of the same name. If the element is not
+// GtkScale supports a custom <marks> element, which can contain multiple
+// <mark> elements. The “value” and “position” attributes have the same meaning
+// as gtk_scale_add_mark() parameters of the same name. If the element is not
 // empty, its content is taken as the markup to show at the mark. It can be
 // translated with the usual ”translatable” and “context” attributes.
 //
@@ -210,8 +209,8 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return wrapScale(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectFormatValue: signal which allows you to change how the scale value is
-// displayed. Connect a signal handler which returns an allocated string
+// ConnectFormatValue: signal which allows you to change how the scale value
+// is displayed. Connect a signal handler which returns an allocated string
 // representing value. That string will then be used to display the scale's
 // value.
 //
@@ -236,13 +235,13 @@ func (scale *Scale) ConnectFormatValue(f func(value float64) (utf8 string)) core
 //
 // The function takes the following parameters:
 //
-//    - orientation scale’s orientation.
-//    - adjustment (optional) which sets the range of the scale, or NULL to
-//      create a new adjustment.
+//   - orientation scale’s orientation.
+//   - adjustment (optional) which sets the range of the scale, or NULL to
+//     create a new adjustment.
 //
 // The function returns the following values:
 //
-//    - scale: new Scale.
+//   - scale: new Scale.
 //
 func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 	var _arg1 C.GtkOrientation // out
@@ -270,20 +269,20 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale {
 // the increment step. step must be nonzero; it’s the distance the slider moves
 // when using the arrow keys to adjust the scale value.
 //
-// Note that the way in which the precision is derived works best if step is a
-// power of ten. If the resulting precision is not suitable for your needs, use
-// gtk_scale_set_digits() to correct it.
+// Note that the way in which the precision is derived works best if step is
+// a power of ten. If the resulting precision is not suitable for your needs,
+// use gtk_scale_set_digits() to correct it.
 //
 // The function takes the following parameters:
 //
-//    - orientation scale’s orientation.
-//    - min: minimum value.
-//    - max: maximum value.
-//    - step increment (tick size) used with keyboard shortcuts.
+//   - orientation scale’s orientation.
+//   - min: minimum value.
+//   - max: maximum value.
+//   - step increment (tick size) used with keyboard shortcuts.
 //
 // The function returns the following values:
 //
-//    - scale: new Scale.
+//   - scale: new Scale.
 //
 func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
 	var _arg1 C.GtkOrientation // out
@@ -312,9 +311,9 @@ func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
 
 // AddMark adds a mark at value.
 //
-// A mark is indicated visually by drawing a tick mark next to the scale, and
-// GTK+ makes it easy for the user to position the scale exactly at the marks
-// value.
+// A mark is indicated visually by drawing a tick mark next to the scale,
+// and GTK+ makes it easy for the user to position the scale exactly at the
+// marks value.
 //
 // If markup is not NULL, text is shown next to the tick mark.
 //
@@ -322,14 +321,14 @@ func NewScaleWithRange(orientation Orientation, min, max, step float64) *Scale {
 //
 // The function takes the following parameters:
 //
-//    - value at which the mark is placed, must be between the lower and upper
-//      limits of the scales’ adjustment.
-//    - position: where to draw the mark. For a horizontal scale, K_POS_TOP and
-//      GTK_POS_LEFT are drawn above the scale, anything else below. For a
-//      vertical scale, K_POS_LEFT and GTK_POS_TOP are drawn to the left of the
-//      scale, anything else to the right.
-//    - markup (optional): text to be shown at the mark, using [Pango
-//      markup][PangoMarkupFormat], or NULL.
+//   - value at which the mark is placed, must be between the lower and upper
+//     limits of the scales’ adjustment.
+//   - position: where to draw the mark. For a horizontal scale, K_POS_TOP
+//     and GTK_POS_LEFT are drawn above the scale, anything else below. For a
+//     vertical scale, K_POS_LEFT and GTK_POS_TOP are drawn to the left of the
+//     scale, anything else to the right.
+//   - markup (optional): text to be shown at the mark, using [Pango
+//     markup][PangoMarkupFormat], or NULL.
 //
 func (scale *Scale) AddMark(value float64, position PositionType, markup string) {
 	var _arg0 *C.GtkScale       // out
@@ -366,7 +365,7 @@ func (scale *Scale) ClearMarks() {
 //
 // The function returns the following values:
 //
-//    - gint: number of decimal places that are displayed.
+//   - gint: number of decimal places that are displayed.
 //
 func (scale *Scale) Digits() int {
 	var _arg0 *C.GtkScale // out
@@ -389,7 +388,7 @@ func (scale *Scale) Digits() int {
 //
 // The function returns the following values:
 //
-//    - ok: whether the current value is displayed as a string.
+//   - ok: whether the current value is displayed as a string.
 //
 func (scale *Scale) DrawValue() bool {
 	var _arg0 *C.GtkScale // out
@@ -413,7 +412,7 @@ func (scale *Scale) DrawValue() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the scale has an origin.
+//   - ok: TRUE if the scale has an origin.
 //
 func (scale *Scale) HasOrigin() bool {
 	var _arg0 *C.GtkScale // out
@@ -438,8 +437,8 @@ func (scale *Scale) HasOrigin() bool {
 //
 // The function returns the following values:
 //
-//    - layout (optional) for this scale, or NULL if the Scale:draw-value
-//      property is FALSE.
+//   - layout (optional) for this scale, or NULL if the Scale:draw-value
+//     property is FALSE.
 //
 func (scale *Scale) Layout() *pango.Layout {
 	var _arg0 *C.GtkScale    // out
@@ -472,8 +471,8 @@ func (scale *Scale) Layout() *pango.Layout {
 //
 // The function returns the following values:
 //
-//    - x (optional): location to store X offset of layout, or NULL.
-//    - y (optional): location to store Y offset of layout, or NULL.
+//   - x (optional): location to store X offset of layout, or NULL.
+//   - y (optional): location to store Y offset of layout, or NULL.
 //
 func (scale *Scale) LayoutOffsets() (x, y int) {
 	var _arg0 *C.GtkScale // out
@@ -498,7 +497,7 @@ func (scale *Scale) LayoutOffsets() (x, y int) {
 //
 // The function returns the following values:
 //
-//    - positionType: position in which the current value is displayed.
+//   - positionType: position in which the current value is displayed.
 //
 func (scale *Scale) ValuePos() PositionType {
 	var _arg0 *C.GtkScale       // out
@@ -528,8 +527,8 @@ func (scale *Scale) ValuePos() PositionType {
 //
 // The function takes the following parameters:
 //
-//    - digits: number of decimal places to display, e.g. use 1 to display 1.0, 2
-//      to display 1.00, etc.
+//   - digits: number of decimal places to display, e.g. use 1 to display 1.0,
+//     2 to display 1.00, etc.
 //
 func (scale *Scale) SetDigits(digits int) {
 	var _arg0 *C.GtkScale // out
@@ -548,7 +547,7 @@ func (scale *Scale) SetDigits(digits int) {
 //
 // The function takes the following parameters:
 //
-//    - drawValue: TRUE to draw the value.
+//   - drawValue: TRUE to draw the value.
 //
 func (scale *Scale) SetDrawValue(drawValue bool) {
 	var _arg0 *C.GtkScale // out
@@ -570,7 +569,7 @@ func (scale *Scale) SetDrawValue(drawValue bool) {
 //
 // The function takes the following parameters:
 //
-//    - hasOrigin: TRUE if the scale has an origin.
+//   - hasOrigin: TRUE if the scale has an origin.
 //
 func (scale *Scale) SetHasOrigin(hasOrigin bool) {
 	var _arg0 *C.GtkScale // out
@@ -590,7 +589,7 @@ func (scale *Scale) SetHasOrigin(hasOrigin bool) {
 //
 // The function takes the following parameters:
 //
-//    - pos: position in which the current value is displayed.
+//   - pos: position in which the current value is displayed.
 //
 func (scale *Scale) SetValuePos(pos PositionType) {
 	var _arg0 *C.GtkScale       // out
@@ -651,8 +650,8 @@ func (scale *Scale) formatValue(value float64) string {
 //
 // The function returns the following values:
 //
-//    - x (optional): location to store X offset of layout, or NULL.
-//    - y (optional): location to store Y offset of layout, or NULL.
+//   - x (optional): location to store X offset of layout, or NULL.
+//   - y (optional): location to store Y offset of layout, or NULL.
 //
 func (scale *Scale) layoutOffsets() (x, y int) {
 	gclass := (*C.GtkScaleClass)(coreglib.PeekParentClass(scale))

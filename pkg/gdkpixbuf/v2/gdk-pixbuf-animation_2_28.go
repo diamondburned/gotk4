@@ -31,10 +31,10 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object.
-//    - stream from which to load the animation.
-//    - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//      loaded.
+//   - ctx (optional): optional #GCancellable object.
+//   - stream from which to load the animation.
+//   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
+//     loaded.
 //
 func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out

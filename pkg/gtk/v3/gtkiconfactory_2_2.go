@@ -18,9 +18,9 @@ import "C"
 // IconSizeLookupForSettings obtains the pixel size of a semantic icon size,
 // possibly modified by user preferences for a particular Settings. Normally
 // size would be K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t
-// normally needed, gtk_widget_render_icon_pixbuf() is the usual way to get an
-// icon for rendering, then just look at the size of the rendered pixbuf. The
-// rendered pixbuf may not even correspond to the width/height returned by
+// normally needed, gtk_widget_render_icon_pixbuf() is the usual way to get
+// an icon for rendering, then just look at the size of the rendered pixbuf.
+// The rendered pixbuf may not even correspond to the width/height returned by
 // gtk_icon_size_lookup(), because themes are free to render the pixbuf however
 // they like, including changing the usual size.
 //
@@ -28,14 +28,14 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - settings object, used to determine which set of user preferences to used.
-//    - size: icon size (IconSize).
+//   - settings object, used to determine which set of user preferences to used.
+//   - size: icon size (IconSize).
 //
 // The function returns the following values:
 //
-//    - width (optional): location to store icon width.
-//    - height (optional): location to store icon height.
-//    - ok: TRUE if size was a valid size.
+//   - width (optional): location to store icon width.
+//   - height (optional): location to store icon height.
+//   - ok: TRUE if size was a valid size.
 //
 func IconSizeLookupForSettings(settings *Settings, size int) (width, height int, ok bool) {
 	var _arg1 *C.GtkSettings // out

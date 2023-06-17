@@ -35,13 +35,13 @@ func init() {
 	})
 }
 
-// ListModel is an interface that represents a mutable list of #GObjects. Its
-// main intention is as a model for various widgets in user interfaces, such as
-// list views, but it can also be used as a convenient method of returning lists
-// of data, with support for updates.
+// ListModel is an interface that represents a mutable list of #GObjects.
+// Its main intention is as a model for various widgets in user interfaces, such
+// as list views, but it can also be used as a convenient method of returning
+// lists of data, with support for updates.
 //
-// Each object in the list may also report changes in itself via some mechanism
-// (normally the #GObject::notify signal). Taken together with the
+// Each object in the list may also report changes in itself via some
+// mechanism (normally the #GObject::notify signal). Taken together with the
 // Model::items-changed signal, this provides for a list that can change its
 // membership, and in which the members can change their individual properties.
 //
@@ -72,8 +72,8 @@ func init() {
 // of laziness in the implementation of the list and to reduce the required
 // number of signal connections at a given time.
 //
-// This interface is intended only to be used from a single thread. The thread
-// in which it is appropriate to use it depends on the particular
+// This interface is intended only to be used from a single thread.
+// The thread in which it is appropriate to use it depends on the particular
 // implementation, but typically it will be from the thread that owns the
 // [thread-default main context][g-main-context-push-thread-default] in effect
 // at the time that the model was created.
@@ -137,7 +137,7 @@ func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)
 //
 // The function returns the following values:
 //
-//    - gType of the items contained in list.
+//   - gType of the items contained in list.
 //
 func (list *ListModel) ItemType() coreglib.Type {
 	var _arg0 *C.GListModel // out
@@ -163,7 +163,7 @@ func (list *ListModel) ItemType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - guint: number of items in list.
+//   - guint: number of items in list.
 //
 func (list *ListModel) NItems() uint {
 	var _arg0 *C.GListModel // out
@@ -189,11 +189,11 @@ func (list *ListModel) NItems() uint {
 //
 // The function takes the following parameters:
 //
-//    - position of the item to fetch.
+//   - position of the item to fetch.
 //
 // The function returns the following values:
 //
-//    - object (optional) at position.
+//   - object (optional) at position.
 //
 func (list *ListModel) Item(position uint) *coreglib.Object {
 	var _arg0 *C.GListModel // out
@@ -223,23 +223,23 @@ func (list *ListModel) Item(position uint) *coreglib.Object {
 // handlers connected to this signal might query the new state of the list.
 //
 // Implementations must only make changes to the model (as visible to its
-// consumer) in places that will not cause problems for that consumer. For
-// models that are driven directly by a write API (such as Store), changes can
-// be reported in response to uses of that API. For models that represent remote
-// data, changes should only be made from a fresh mainloop dispatch. It is
-// particularly not permitted to make changes in response to a call to the Model
-// consumer API.
+// consumer) in places that will not cause problems for that consumer.
+// For models that are driven directly by a write API (such as Store), changes
+// can be reported in response to uses of that API. For models that represent
+// remote data, changes should only be made from a fresh mainloop dispatch.
+// It is particularly not permitted to make changes in response to a call to the
+// Model consumer API.
 //
-// Stated another way: in general, it is assumed that code making a series of
-// accesses to the model via the API, without returning to the mainloop, and
-// without calling other code, will continue to view the same contents of the
-// model.
+// Stated another way: in general, it is assumed that code making a series
+// of accesses to the model via the API, without returning to the mainloop,
+// and without calling other code, will continue to view the same contents of
+// the model.
 //
 // The function takes the following parameters:
 //
-//    - position at which list changed.
-//    - removed: number of items removed.
-//    - added: number of items added.
+//   - position at which list changed.
+//   - removed: number of items removed.
+//   - added: number of items added.
 //
 func (list *ListModel) ItemsChanged(position, removed, added uint) {
 	var _arg0 *C.GListModel // out
@@ -267,11 +267,11 @@ func (list *ListModel) ItemsChanged(position, removed, added uint) {
 //
 // The function takes the following parameters:
 //
-//    - position of the item to fetch.
+//   - position of the item to fetch.
 //
 // The function returns the following values:
 //
-//    - object (optional) at position.
+//   - object (optional) at position.
 //
 func (list *ListModel) item(position uint) *coreglib.Object {
 	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))
@@ -303,7 +303,7 @@ func (list *ListModel) item(position uint) *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - gType of the items contained in list.
+//   - gType of the items contained in list.
 //
 func (list *ListModel) itemType() coreglib.Type {
 	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))
@@ -332,7 +332,7 @@ func (list *ListModel) itemType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - guint: number of items in list.
+//   - guint: number of items in list.
 //
 func (list *ListModel) nItems() uint {
 	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))

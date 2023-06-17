@@ -79,16 +79,16 @@ func defaultSearchEntryOverrides(v *SearchEntry) SearchEntryOverrides {
 // purpose.
 //
 // To make filtering appear more reactive, it is a good idea to not react to
-// every change in the entry text immediately, but only after a short delay. To
-// support this, SearchEntry emits the SearchEntry::search-changed signal which
-// can be used instead of the Editable::changed signal.
+// every change in the entry text immediately, but only after a short delay.
+// To support this, SearchEntry emits the SearchEntry::search-changed signal
+// which can be used instead of the Editable::changed signal.
 //
 // The SearchEntry::previous-match, SearchEntry::next-match and
 // SearchEntry::stop-search signals can be used to implement moving between
 // search results and ending the search.
 //
-// Often, GtkSearchEntry will be fed events by means of being placed inside a
-// SearchBar. If that is not the case, you can use
+// Often, GtkSearchEntry will be fed events by means of being
+// placed inside a SearchBar. If that is not the case, you can use
 // gtk_search_entry_handle_event() to pass events.
 type SearchEntry struct {
 	_ [0]func() // equal guard
@@ -175,8 +175,8 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 	return wrapSearchEntry(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectNextMatch signal is a [keybinding signal][GtkBindingSignal] which gets
-// emitted when the user initiates a move to the next match for the current
+// ConnectNextMatch signal is a [keybinding signal][GtkBindingSignal] which
+// gets emitted when the user initiates a move to the next match for the current
 // search string.
 //
 // Applications should connect to it, to implement moving between matches.
@@ -219,7 +219,7 @@ func (entry *SearchEntry) ConnectStopSearch(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - searchEntry: new SearchEntry.
+//   - searchEntry: new SearchEntry.
 //
 func NewSearchEntry() *SearchEntry {
 	var _cret *C.GtkWidget // in
@@ -245,12 +245,12 @@ func NewSearchEntry() *SearchEntry {
 //
 // The function takes the following parameters:
 //
-//    - event: key event.
+//   - event: key event.
 //
 // The function returns the following values:
 //
-//    - ok: GDK_EVENT_STOP if the key press event resulted in a search beginning
-//      or continuing, GDK_EVENT_PROPAGATE otherwise.
+//   - ok: GDK_EVENT_STOP if the key press event resulted in a search beginning
+//     or continuing, GDK_EVENT_PROPAGATE otherwise.
 //
 func (entry *SearchEntry) HandleEvent(event *gdk.Event) bool {
 	var _arg0 *C.GtkSearchEntry // out

@@ -103,18 +103,18 @@ func (p PaintableFlags) Has(other PaintableFlags) bool {
 // Paintable: GdkPaintable is a simple interface used by GTK to represent
 // content that can be painted.
 //
-// The content of a GdkPaintable can be painted anywhere at any size without
-// requiring any sort of layout. The interface is inspired by similar concepts
-// elsewhere, such as ClutterContent
-// (https://developer.gnome.org/clutter/stable/ClutterContent.html), HTML/CSS
-// Paint Sources (https://www.w3.org/TR/css-images-4/#paint-source), or SVG
-// Paint Servers (https://www.w3.org/TR/SVG2/pservers.html).
+// The content of a GdkPaintable can be painted anywhere at any
+// size without requiring any sort of layout. The interface is
+// inspired by similar concepts elsewhere, such as ClutterContent
+// (https://developer.gnome.org/clutter/stable/ClutterContent.html),
+// HTML/CSS Paint Sources (https://www.w3.org/TR/css-images-4/#paint-source),
+// or SVG Paint Servers (https://www.w3.org/TR/SVG2/pservers.html).
 //
 // A GdkPaintable can be snapshot at any time and size using
 // gdk.Paintable.Snapshot(). How the paintable interprets that size and if it
 // scales or centers itself into the given rectangle is implementation defined,
-// though if you are implementing a GdkPaintable and don't know what to do, it
-// is suggested that you scale your paintable ignoring any potential aspect
+// though if you are implementing a GdkPaintable and don't know what to do,
+// it is suggested that you scale your paintable ignoring any potential aspect
 // ratio.
 //
 // The contents that a GdkPaintable produces may depend on the gdksnapshot
@@ -122,26 +122,26 @@ func (p PaintableFlags) Has(other PaintableFlags) bool {
 // on higher resolution screens or when OpenGL is available. A GdkPaintable will
 // however always produce the same output for the same snapshot.
 //
-// A GdkPaintable may change its contents, meaning that it will now produce a
-// different output with the same snapshot. Once that happens, it will call
-// gdk.Paintable.InvalidateContents() which will emit the
-// gdkpaintable::invalidate-contents signal. If a paintable is known to never
-// change its contents, it will set the GDK_PAINTABLE_STATIC_CONTENTS flag. If a
-// consumer cannot deal with changing contents, it may call
+// A GdkPaintable may change its contents, meaning that it will now
+// produce a different output with the same snapshot. Once that happens,
+// it will call gdk.Paintable.InvalidateContents() which will emit the
+// gdkpaintable::invalidate-contents signal. If a paintable is known to
+// never change its contents, it will set the GDK_PAINTABLE_STATIC_CONTENTS
+// flag. If a consumer cannot deal with changing contents, it may call
 // gdk.Paintable.GetCurrentImage() which will return a static paintable and use
 // that.
 //
-// A paintable can report an intrinsic (or preferred) size or aspect ratio it
-// wishes to be rendered at, though it doesn't have to. Consumers of the
-// interface can use this information to layout thepaintable appropriately. Just
-// like the contents, the size of a paintable can change. A paintable will
-// indicate this by calling gdk.Paintable.InvalidateSize() which will emit the
-// gdkpaintable::invalidate-size signal. And just like for contents, if a
-// paintable is known to never change its size, it will set the
+// A paintable can report an intrinsic (or preferred) size or aspect ratio
+// it wishes to be rendered at, though it doesn't have to. Consumers of the
+// interface can use this information to layout thepaintable appropriately.
+// Just like the contents, the size of a paintable can change. A paintable
+// will indicate this by calling gdk.Paintable.InvalidateSize() which will
+// emit the gdkpaintable::invalidate-size signal. And just like for contents,
+// if a paintable is known to never change its size, it will set the
 // GDK_PAINTABLE_STATIC_SIZE flag.
 //
-// Besides API for applications, there are some functions that are only useful
-// for implementing subclasses and should not be used by applications:
+// Besides API for applications, there are some functions that are only
+// useful for implementing subclasses and should not be used by applications:
 // gdk.Paintable.InvalidateContents(), gdk.Paintable.InvalidateSize(),
 // gdk.Paintable().NewEmpty.
 //
@@ -239,17 +239,17 @@ func (paintable *Paintable) ConnectInvalidateSize(f func()) coreglib.SignalHandl
 //
 // The function takes the following parameters:
 //
-//    - specifiedWidth: width paintable could be drawn into or 0.0 if unknown.
-//    - specifiedHeight: height paintable could be drawn into or 0.0 if unknown.
-//    - defaultWidth: width paintable would be drawn into if no other constraints
-//      were given.
-//    - defaultHeight: height paintable would be drawn into if no other
-//      constraints were given.
+//   - specifiedWidth: width paintable could be drawn into or 0.0 if unknown.
+//   - specifiedHeight: height paintable could be drawn into or 0.0 if unknown.
+//   - defaultWidth: width paintable would be drawn into if no other constraints
+//     were given.
+//   - defaultHeight: height paintable would be drawn into if no other
+//     constraints were given.
 //
 // The function returns the following values:
 //
-//    - concreteWidth will be set to the concrete width computed.
-//    - concreteHeight will be set to the concrete height computed.
+//   - concreteWidth will be set to the concrete width computed.
+//   - concreteHeight will be set to the concrete height computed.
 //
 func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight, defaultWidth, defaultHeight float64) (concreteWidth, concreteHeight float64) {
 	var _arg0 *C.GdkPaintable // out
@@ -285,14 +285,14 @@ func (paintable *Paintable) ComputeConcreteSize(specifiedWidth, specifiedHeight,
 // CurrentImage gets an immutable paintable for the current contents displayed
 // by paintable.
 //
-// This is useful when you want to retain the current state of an animation, for
-// example to take a screenshot of a running animation.
+// This is useful when you want to retain the current state of an animation,
+// for example to take a screenshot of a running animation.
 //
 // If the paintable is already immutable, it will return itself.
 //
 // The function returns the following values:
 //
-//    - ret: immutable paintable for the current contents of paintable.
+//   - ret: immutable paintable for the current contents of paintable.
 //
 func (paintable *Paintable) CurrentImage() *Paintable {
 	var _arg0 *C.GdkPaintable // out
@@ -318,7 +318,7 @@ func (paintable *Paintable) CurrentImage() *Paintable {
 //
 // The function returns the following values:
 //
-//    - paintableFlags: GdkPaintableFlags for this paintable.
+//   - paintableFlags: GdkPaintableFlags for this paintable.
 //
 func (paintable *Paintable) Flags() PaintableFlags {
 	var _arg0 *C.GdkPaintable     // out
@@ -356,7 +356,7 @@ func (paintable *Paintable) Flags() PaintableFlags {
 //
 // The function returns the following values:
 //
-//    - gdouble: intrinsic aspect ratio of paintable or 0 if none.
+//   - gdouble: intrinsic aspect ratio of paintable or 0 if none.
 //
 func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 	var _arg0 *C.GdkPaintable // out
@@ -388,7 +388,7 @@ func (paintable *Paintable) IntrinsicAspectRatio() float64 {
 //
 // The function returns the following values:
 //
-//    - gint: intrinsic height of paintable or 0 if none.
+//   - gint: intrinsic height of paintable or 0 if none.
 //
 func (paintable *Paintable) IntrinsicHeight() int {
 	var _arg0 *C.GdkPaintable // out
@@ -420,7 +420,7 @@ func (paintable *Paintable) IntrinsicHeight() int {
 //
 // The function returns the following values:
 //
-//    - gint: intrinsic width of paintable or 0 if none.
+//   - gint: intrinsic width of paintable or 0 if none.
 //
 func (paintable *Paintable) IntrinsicWidth() int {
 	var _arg0 *C.GdkPaintable // out
@@ -483,9 +483,9 @@ func (paintable *Paintable) InvalidateSize() {
 //
 // The function takes the following parameters:
 //
-//    - snapshot: GdkSnapshot to snapshot to.
-//    - width to snapshot in.
-//    - height to snapshot in.
+//   - snapshot: GdkSnapshot to snapshot to.
+//   - width to snapshot in.
+//   - height to snapshot in.
 //
 func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64) {
 	var _arg0 *C.GdkPaintable // out
@@ -508,14 +508,14 @@ func (paintable *Paintable) Snapshot(snapshot Snapshotter, width, height float64
 // currentImage gets an immutable paintable for the current contents displayed
 // by paintable.
 //
-// This is useful when you want to retain the current state of an animation, for
-// example to take a screenshot of a running animation.
+// This is useful when you want to retain the current state of an animation,
+// for example to take a screenshot of a running animation.
 //
 // If the paintable is already immutable, it will return itself.
 //
 // The function returns the following values:
 //
-//    - ret: immutable paintable for the current contents of paintable.
+//   - ret: immutable paintable for the current contents of paintable.
 //
 func (paintable *Paintable) currentImage() *Paintable {
 	gclass := (*C.GdkPaintableInterface)(coreglib.PeekParentClass(paintable))
@@ -544,7 +544,7 @@ func (paintable *Paintable) currentImage() *Paintable {
 //
 // The function returns the following values:
 //
-//    - paintableFlags: GdkPaintableFlags for this paintable.
+//   - paintableFlags: GdkPaintableFlags for this paintable.
 //
 func (paintable *Paintable) flags() PaintableFlags {
 	gclass := (*C.GdkPaintableInterface)(coreglib.PeekParentClass(paintable))
@@ -585,7 +585,7 @@ func (paintable *Paintable) flags() PaintableFlags {
 //
 // The function returns the following values:
 //
-//    - gdouble: intrinsic aspect ratio of paintable or 0 if none.
+//   - gdouble: intrinsic aspect ratio of paintable or 0 if none.
 //
 func (paintable *Paintable) intrinsicAspectRatio() float64 {
 	gclass := (*C.GdkPaintableInterface)(coreglib.PeekParentClass(paintable))
@@ -620,7 +620,7 @@ func (paintable *Paintable) intrinsicAspectRatio() float64 {
 //
 // The function returns the following values:
 //
-//    - gint: intrinsic height of paintable or 0 if none.
+//   - gint: intrinsic height of paintable or 0 if none.
 //
 func (paintable *Paintable) intrinsicHeight() int {
 	gclass := (*C.GdkPaintableInterface)(coreglib.PeekParentClass(paintable))
@@ -655,7 +655,7 @@ func (paintable *Paintable) intrinsicHeight() int {
 //
 // The function returns the following values:
 //
-//    - gint: intrinsic width of paintable or 0 if none.
+//   - gint: intrinsic width of paintable or 0 if none.
 //
 func (paintable *Paintable) intrinsicWidth() int {
 	gclass := (*C.GdkPaintableInterface)(coreglib.PeekParentClass(paintable))
@@ -683,9 +683,9 @@ func (paintable *Paintable) intrinsicWidth() int {
 //
 // The function takes the following parameters:
 //
-//    - snapshot: GdkSnapshot to snapshot to.
-//    - width to snapshot in.
-//    - height to snapshot in.
+//   - snapshot: GdkSnapshot to snapshot to.
+//   - width to snapshot in.
+//   - height to snapshot in.
 //
 func (paintable *Paintable) snapshot(snapshot Snapshotter, width, height float64) {
 	gclass := (*C.GdkPaintableInterface)(coreglib.PeekParentClass(paintable))
@@ -712,18 +712,18 @@ func (paintable *Paintable) snapshot(snapshot Snapshotter, width, height float64
 // draws nothing.
 //
 // This is often useful for implementing the
-// PaintableInterface.get_current_image() virtual function when the paintable is
-// in an incomplete state (like a gtk.MediaStream before receiving the first
+// PaintableInterface.get_current_image() virtual function when the paintable
+// is in an incomplete state (like a gtk.MediaStream before receiving the first
 // frame).
 //
 // The function takes the following parameters:
 //
-//    - intrinsicWidth: intrinsic width to report. Can be 0 for no width.
-//    - intrinsicHeight: intrinsic height to report. Can be 0 for no height.
+//   - intrinsicWidth: intrinsic width to report. Can be 0 for no width.
+//   - intrinsicHeight: intrinsic height to report. Can be 0 for no height.
 //
 // The function returns the following values:
 //
-//    - paintable: GdkPaintable.
+//   - paintable: GdkPaintable.
 //
 func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) *Paintable {
 	var _arg1 C.int           // out
@@ -750,8 +750,8 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) *Paintable {
 // Note that apart from the PaintableInterface.snapshot() function, no virtual
 // function of this interface is mandatory to implement, though it is a good
 // idea to implement PaintableInterface.get_current_image() for non-static
-// paintables and PaintableInterface.get_flags() if the image is not dynamic as
-// the default implementation returns no flags and that will make the
+// paintables and PaintableInterface.get_flags() if the image is not dynamic
+// as the default implementation returns no flags and that will make the
 // implementation likely quite slow.
 //
 // An instance of this type is always passed by reference.

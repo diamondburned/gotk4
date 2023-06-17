@@ -24,7 +24,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - language (optional): NULL-terminated array of PangoLanguage*.
+//   - language (optional): NULL-terminated array of PangoLanguage*.
 //
 func LanguageGetPreferred() *Language {
 	var _cret **C.PangoLanguage // in

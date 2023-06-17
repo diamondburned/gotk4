@@ -33,10 +33,10 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional GCancellable object, NULL to ignore.
-//    - filename: name of the file to identify.
-//    - callback (optional): GAsyncReadyCallback to call when the file info is
-//      available.
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - filename: name of the file to identify.
+//   - callback (optional): GAsyncReadyCallback to call when the file info is
+//     available.
 //
 func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
@@ -67,14 +67,14 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 //
 // The function takes the following parameters:
 //
-//    - asyncResult: GAsyncResult.
+//   - asyncResult: GAsyncResult.
 //
 // The function returns the following values:
 //
-//    - width: return location for the width of the image, or NULL.
-//    - height: return location for the height of the image, or NULL.
-//    - pixbufFormat (optional): GdkPixbufFormat describing the image format of
-//      the file.
+//   - width: return location for the width of the image, or NULL.
+//   - height: return location for the height of the image, or NULL.
+//   - pixbufFormat (optional): GdkPixbufFormat describing the image format of
+//     the file.
 //
 func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width, height int, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out

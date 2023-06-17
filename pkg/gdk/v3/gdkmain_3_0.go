@@ -6,8 +6,8 @@ package gdk
 // #include <gdk/gdk.h>
 import "C"
 
-// DisableMultidevice disables multidevice support in GDK. This call must happen
-// prior to gdk_display_open(), gtk_init(), gtk_init_with_args() or
+// DisableMultidevice disables multidevice support in GDK. This call must
+// happen prior to gdk_display_open(), gtk_init(), gtk_init_with_args() or
 // gtk_init_check() in order to take effect.
 //
 // Most common GTK+ applications won’t ever need to call this. Only applications

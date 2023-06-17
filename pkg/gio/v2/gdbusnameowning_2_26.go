@@ -31,7 +31,7 @@ type BusNameLostCallback func(connection *DBusConnection, name string)
 //
 // The function takes the following parameters:
 //
-//    - ownerId: identifier obtained from g_bus_own_name().
+//   - ownerId: identifier obtained from g_bus_own_name().
 //
 func BusUnownName(ownerId uint) {
 	var _arg1 C.guint // out

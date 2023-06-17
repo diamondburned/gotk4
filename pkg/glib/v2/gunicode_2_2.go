@@ -25,13 +25,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: UTF-8 encoded string.
-//    - len: maximum length of str to use, in bytes. If len < 0, then the string
-//      is nul-terminated.
+//   - str: UTF-8 encoded string.
+//   - len: maximum length of str to use, in bytes. If len < 0, then the string
+//     is nul-terminated.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string which is the reverse of str.
+//   - utf8: newly-allocated string which is the reverse of str.
 //
 func UTF8Strreverse(str string, len int) string {
 	var _arg1 *C.gchar // out

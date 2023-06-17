@@ -34,8 +34,8 @@ func init() {
 	})
 }
 
-// SocketConnectable objects that describe one or more potential socket
-// endpoints implement Connectable. Callers can then use
+// SocketConnectable objects that describe one or more potential
+// socket endpoints implement Connectable. Callers can then use
 // g_socket_connectable_enumerate() to get a AddressEnumerator to try out each
 // socket address in turn until one succeeds, as shown in the sample code below.
 //
@@ -130,7 +130,7 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - socketAddressEnumerator: new AddressEnumerator.
+//   - socketAddressEnumerator: new AddressEnumerator.
 //
 func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 	var _arg0 *C.GSocketConnectable       // out
@@ -172,7 +172,7 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 //
 // The function returns the following values:
 //
-//    - socketAddressEnumerator: new AddressEnumerator.
+//   - socketAddressEnumerator: new AddressEnumerator.
 //
 func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorrer {
 	var _arg0 *C.GSocketConnectable       // out
@@ -211,12 +211,12 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 // suitable for use in user interfaces as it exposes too much information for a
 // user.
 //
-// If the Connectable implementation does not support string formatting, the
-// implementation’s type name will be returned as a fallback.
+// If the Connectable implementation does not support string formatting,
+// the implementation’s type name will be returned as a fallback.
 //
 // The function returns the following values:
 //
-//    - utf8: formatted string.
+//   - utf8: formatted string.
 //
 func (connectable *SocketConnectable) String() string {
 	var _arg0 *C.GSocketConnectable // out
@@ -239,7 +239,7 @@ func (connectable *SocketConnectable) String() string {
 //
 // The function returns the following values:
 //
-//    - socketAddressEnumerator: new AddressEnumerator.
+//   - socketAddressEnumerator: new AddressEnumerator.
 //
 func (connectable *SocketConnectable) enumerate() SocketAddressEnumeratorrer {
 	gclass := (*C.GSocketConnectableIface)(coreglib.PeekParentClass(connectable))
@@ -284,7 +284,7 @@ func (connectable *SocketConnectable) enumerate() SocketAddressEnumeratorrer {
 //
 // The function returns the following values:
 //
-//    - socketAddressEnumerator: new AddressEnumerator.
+//   - socketAddressEnumerator: new AddressEnumerator.
 //
 func (connectable *SocketConnectable) proxyEnumerate() SocketAddressEnumeratorrer {
 	gclass := (*C.GSocketConnectableIface)(coreglib.PeekParentClass(connectable))
@@ -326,12 +326,12 @@ func (connectable *SocketConnectable) proxyEnumerate() SocketAddressEnumeratorre
 // suitable for use in user interfaces as it exposes too much information for a
 // user.
 //
-// If the Connectable implementation does not support string formatting, the
-// implementation’s type name will be returned as a fallback.
+// If the Connectable implementation does not support string formatting,
+// the implementation’s type name will be returned as a fallback.
 //
 // The function returns the following values:
 //
-//    - utf8: formatted string.
+//   - utf8: formatted string.
 //
 func (connectable *SocketConnectable) str() string {
 	gclass := (*C.GSocketConnectableIface)(coreglib.PeekParentClass(connectable))

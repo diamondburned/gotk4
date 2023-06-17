@@ -31,28 +31,28 @@ func init() {
 	})
 }
 
-// EventControllerScroll is an event controller meant to handle scroll events
-// from mice and touchpads. It is capable of handling both discrete and
-// continuous scroll events, abstracting them both on the
+// EventControllerScroll is an event controller meant to handle scroll
+// events from mice and touchpads. It is capable of handling both
+// discrete and continuous scroll events, abstracting them both on the
 // EventControllerScroll::scroll signal (deltas in the discrete case are
 // multiples of 1).
 //
-// In the case of continuous scroll events, EventControllerScroll encloses all
-// EventControllerScroll::scroll events between two
+// In the case of continuous scroll events, EventControllerScroll
+// encloses all EventControllerScroll::scroll events between two
 // EventControllerScroll::scroll-begin and EventControllerScroll::scroll-end
 // signals.
 //
-// The behavior of the event controller can be modified by the flags given at
-// creation time, or modified at a later point through
+// The behavior of the event controller can be modified by the flags
+// given at creation time, or modified at a later point through
 // gtk_event_controller_scroll_set_flags() (e.g. because the scrolling
 // conditions of the widget changed).
 //
 // The controller can be set up to emit motion for either/both vertical and
 // horizontal scroll events through K_EVENT_CONTROLLER_SCROLL_VERTICAL,
-// K_EVENT_CONTROLLER_SCROLL_HORIZONTAL and K_EVENT_CONTROLLER_SCROLL_BOTH. If
-// any axis is disabled, the respective EventControllerScroll::scroll delta will
-// be 0. Vertical scroll events will be translated to horizontal motion for the
-// devices incapable of horizontal scrolling.
+// K_EVENT_CONTROLLER_SCROLL_HORIZONTAL and K_EVENT_CONTROLLER_SCROLL_BOTH.
+// If any axis is disabled, the respective EventControllerScroll::scroll delta
+// will be 0. Vertical scroll events will be translated to horizontal motion for
+// the devices incapable of horizontal scrolling.
 //
 // The event controller can also be forced to emit discrete events on all
 // devices through K_EVENT_CONTROLLER_SCROLL_DISCRETE. This can be used to
@@ -117,12 +117,12 @@ func (controller *EventControllerScroll) ConnectScrollEnd(f func()) coreglib.Sig
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
-//    - flags: behavior flags.
+//   - widget: Widget.
+//   - flags: behavior flags.
 //
 // The function returns the following values:
 //
-//    - eventControllerScroll: new EventControllerScroll.
+//   - eventControllerScroll: new EventControllerScroll.
 //
 func NewEventControllerScroll(widget Widgetter, flags EventControllerScrollFlags) *EventControllerScroll {
 	var _arg1 *C.GtkWidget                    // out
@@ -147,7 +147,7 @@ func NewEventControllerScroll(widget Widgetter, flags EventControllerScrollFlags
 //
 // The function returns the following values:
 //
-//    - eventControllerScrollFlags: controller flags.
+//   - eventControllerScrollFlags: controller flags.
 //
 func (controller *EventControllerScroll) Flags() EventControllerScrollFlags {
 	var _arg0 *C.GtkEventControllerScroll     // out
@@ -169,7 +169,7 @@ func (controller *EventControllerScroll) Flags() EventControllerScrollFlags {
 //
 // The function takes the following parameters:
 //
-//    - flags: behavior flags.
+//   - flags: behavior flags.
 //
 func (controller *EventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
 	var _arg0 *C.GtkEventControllerScroll     // out

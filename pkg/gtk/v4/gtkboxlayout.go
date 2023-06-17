@@ -38,8 +38,8 @@ func defaultBoxLayoutOverrides(v *BoxLayout) BoxLayoutOverrides {
 // single row or column.
 //
 // Whether it is a row or column depends on the value of its
-// gtk.Orientable:orientation property. Within the other dimension all children
-// all allocated the same size. The GtkBoxLayout will respect the
+// gtk.Orientable:orientation property. Within the other dimension all
+// children all allocated the same size. The GtkBoxLayout will respect the
 // gtk.Widget:halign and gtk.Widget:valign properties of each child widget.
 //
 // If you want all children to be assigned the same size, you can use the
@@ -96,11 +96,11 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - orientation for the new layout.
+//   - orientation for the new layout.
 //
 // The function returns the following values:
 //
-//    - boxLayout: new box layout.
+//   - boxLayout: new box layout.
 //
 func NewBoxLayout(orientation Orientation) *BoxLayout {
 	var _arg1 C.GtkOrientation    // out
@@ -123,7 +123,7 @@ func NewBoxLayout(orientation Orientation) *BoxLayout {
 //
 // The function returns the following values:
 //
-//    - baselinePosition: baseline position.
+//   - baselinePosition: baseline position.
 //
 func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBoxLayout       // out
@@ -145,7 +145,7 @@ func (boxLayout *BoxLayout) BaselinePosition() BaselinePosition {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the layout is homogeneous.
+//   - ok: TRUE if the layout is homogeneous.
 //
 func (boxLayout *BoxLayout) Homogeneous() bool {
 	var _arg0 *C.GtkBoxLayout // out
@@ -169,7 +169,7 @@ func (boxLayout *BoxLayout) Homogeneous() bool {
 //
 // The function returns the following values:
 //
-//    - guint: spacing of the layout.
+//   - guint: spacing of the layout.
 //
 func (boxLayout *BoxLayout) Spacing() uint {
 	var _arg0 *C.GtkBoxLayout // out
@@ -196,7 +196,7 @@ func (boxLayout *BoxLayout) Spacing() uint {
 //
 // The function takes the following parameters:
 //
-//    - position: GtkBaselinePosition.
+//   - position: GtkBaselinePosition.
 //
 func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBoxLayout       // out
@@ -215,7 +215,7 @@ func (boxLayout *BoxLayout) SetBaselinePosition(position BaselinePosition) {
 //
 // The function takes the following parameters:
 //
-//    - homogeneous: TRUE to set the box layout as homogeneous.
+//   - homogeneous: TRUE to set the box layout as homogeneous.
 //
 func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBoxLayout // out
@@ -235,7 +235,7 @@ func (boxLayout *BoxLayout) SetHomogeneous(homogeneous bool) {
 //
 // The function takes the following parameters:
 //
-//    - spacing to apply between children.
+//   - spacing to apply between children.
 //
 func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
 	var _arg0 *C.GtkBoxLayout // out

@@ -27,8 +27,8 @@ func init() {
 
 // The function takes the following parameters:
 //
-//    - property
-//    - value
+//   - property
+//   - value
 //
 func AccessiblePropertyInitValue(property AccessibleProperty, value *coreglib.Value) {
 	var _arg1 C.GtkAccessibleProperty // out
@@ -44,8 +44,8 @@ func AccessiblePropertyInitValue(property AccessibleProperty, value *coreglib.Va
 
 // The function takes the following parameters:
 //
-//    - relation
-//    - value
+//   - relation
+//   - value
 //
 func AccessibleRelationInitValue(relation AccessibleRelation, value *coreglib.Value) {
 	var _arg1 C.GtkAccessibleRelation // out
@@ -61,8 +61,8 @@ func AccessibleRelationInitValue(relation AccessibleRelation, value *coreglib.Va
 
 // The function takes the following parameters:
 //
-//    - state
-//    - value
+//   - state
+//   - value
 //
 func AccessibleStateInitValue(state AccessibleState, value *coreglib.Value) {
 	var _arg1 C.GtkAccessibleState // out
@@ -81,18 +81,17 @@ func AccessibleStateInitValue(state AccessibleState, value *coreglib.Value) {
 //
 // Every accessible implementation has:
 //
-//    - a “role”, represented by a value of the gtk.AccessibleRole
-//      enumeration
-//    - an “attribute”, represented by a set of gtk.AccessibleState,
-//      gtk.AccessibleProperty and gtk.AccessibleRelation values
+//   - a “role”, represented by a value of the gtk.AccessibleRole enumeration
+//   - an “attribute”, represented by a set of gtk.AccessibleState,
+//     gtk.AccessibleProperty and gtk.AccessibleRelation values
 //
 // The role cannot be changed after instantiating a GtkAccessible
 // implementation.
 //
-// The attributes are updated every time a UI element's state changes in a way
-// that should be reflected by assistive technologies. For instance, if a
-// GtkWidget visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will also
-// change to reflect the gtk.Widget:visible property.
+// The attributes are updated every time a UI element's state changes in a
+// way that should be reflected by assistive technologies. For instance,
+// if a GtkWidget visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will
+// also change to reflect the gtk.Widget:visible property.
 //
 // Accessible wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -142,7 +141,7 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - accessibleRole: GtkAccessibleRole.
+//   - accessibleRole: GtkAccessibleRole.
 //
 func (self *Accessible) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkAccessible    // out
@@ -164,7 +163,7 @@ func (self *Accessible) AccessibleRole() AccessibleRole {
 //
 // The function takes the following parameters:
 //
-//    - property: GtkAccessibleProperty.
+//   - property: GtkAccessibleProperty.
 //
 func (self *Accessible) ResetProperty(property AccessibleProperty) {
 	var _arg0 *C.GtkAccessible        // out
@@ -182,7 +181,7 @@ func (self *Accessible) ResetProperty(property AccessibleProperty) {
 //
 // The function takes the following parameters:
 //
-//    - relation: GtkAccessibleRelation.
+//   - relation: GtkAccessibleRelation.
 //
 func (self *Accessible) ResetRelation(relation AccessibleRelation) {
 	var _arg0 *C.GtkAccessible        // out
@@ -200,7 +199,7 @@ func (self *Accessible) ResetRelation(relation AccessibleRelation) {
 //
 // The function takes the following parameters:
 //
-//    - state: GtkAccessibleState.
+//   - state: GtkAccessibleState.
 //
 func (self *Accessible) ResetState(state AccessibleState) {
 	var _arg0 *C.GtkAccessible     // out
@@ -223,8 +222,8 @@ func (self *Accessible) ResetState(state AccessibleState) {
 //
 // The function takes the following parameters:
 //
-//    - properties: array of GtkAccessibleProperty.
-//    - values: array of GValues, one for each property.
+//   - properties: array of GtkAccessibleProperty.
+//   - values: array of GValues, one for each property.
 //
 func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values []coreglib.Value) {
 	var _arg0 *C.GtkAccessible         // out
@@ -262,8 +261,8 @@ func (self *Accessible) UpdateProperty(properties []AccessibleProperty, values [
 //
 // The function takes the following parameters:
 //
-//    - relations: array of GtkAccessibleRelation.
-//    - values: array of GValues, one for each relation.
+//   - relations: array of GtkAccessibleRelation.
+//   - values: array of GValues, one for each relation.
 //
 func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []coreglib.Value) {
 	var _arg0 *C.GtkAccessible         // out
@@ -301,8 +300,8 @@ func (self *Accessible) UpdateRelation(relations []AccessibleRelation, values []
 //
 // The function takes the following parameters:
 //
-//    - states: array of GtkAccessibleState.
-//    - values: array of GValues, one for each state.
+//   - states: array of GtkAccessibleState.
+//   - values: array of GValues, one for each state.
 //
 func (self *Accessible) UpdateState(states []AccessibleState, values []coreglib.Value) {
 	var _arg0 *C.GtkAccessible      // out

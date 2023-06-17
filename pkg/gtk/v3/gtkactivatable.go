@@ -34,24 +34,22 @@ func init() {
 }
 
 // Activatable widgets can be connected to a Action and reflects the state of
-// its action. A Activatable can also provide feedback through its action, as
-// they are responsible for activating their related actions.
+// its action. A Activatable can also provide feedback through its action,
+// as they are responsible for activating their related actions.
 //
+// # Implementing GtkActivatable
 //
-// Implementing GtkActivatable
-//
-// When extending a class that is already Activatable; it is only necessary to
-// implement the Activatable->sync_action_properties() and Activatable->update()
-// methods and chain up to the parent implementation, however when introducing a
-// new Activatable class; the Activatable:related-action and
-// Activatable:use-action-appearance properties need to be handled by the
-// implementor. Handling these properties is mostly a matter of installing the
-// action pointer and boolean flag on your instance, and calling
-// gtk_activatable_do_set_related_action() and
+// When extending a class that is already Activatable; it is only
+// necessary to implement the Activatable->sync_action_properties()
+// and Activatable->update() methods and chain up to the parent
+// implementation, however when introducing a new Activatable class;
+// the Activatable:related-action and Activatable:use-action-appearance
+// properties need to be handled by the implementor. Handling these properties
+// is mostly a matter of installing the action pointer and boolean flag on
+// your instance, and calling gtk_activatable_do_set_related_action() and
 // gtk_activatable_sync_action_properties() at the appropriate times.
 //
-// A class fragment implementing Activatable
-//
+// # A class fragment implementing Activatable
 //
 //    enum {
 //    ...
@@ -293,10 +291,7 @@ type Activatabler interface {
 	SetRelatedAction(action *Action)
 	// SetUseActionAppearance sets whether this activatable should reset its
 	// layout and appearance when setting the related action or when the action
-	// changes appearance > Activatable implementors need to handle the >
-	// Activatable:use-action-appearance property and call >
-	// gtk_activatable_sync_action_properties() to update activatable > if
-	// needed.
+	// changes appearance.
 	SetUseActionAppearance(useAppearance bool)
 	// SyncActionProperties: this is called to update the activatable
 	// completely, this is called internally when the Activatable:related-action
@@ -335,7 +330,7 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - action to set.
+//   - action to set.
 //
 func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 	var _arg0 *C.GtkActivatable // out
@@ -355,7 +350,7 @@ func (activatable *Activatable) DoSetRelatedAction(action *Action) {
 //
 // The function returns the following values:
 //
-//    - action: related Action if one is set.
+//   - action: related Action if one is set.
 //
 func (activatable *Activatable) RelatedAction() *Action {
 	var _arg0 *C.GtkActivatable // out
@@ -373,15 +368,15 @@ func (activatable *Activatable) RelatedAction() *Action {
 	return _action
 }
 
-// UseActionAppearance gets whether this activatable should reset its layout and
-// appearance when setting the related action or when the action changes
+// UseActionAppearance gets whether this activatable should reset its layout
+// and appearance when setting the related action or when the action changes
 // appearance.
 //
 // Deprecated: since version 3.10.
 //
 // The function returns the following values:
 //
-//    - ok: whether activatable uses its actions appearance.
+//   - ok: whether activatable uses its actions appearance.
 //
 func (activatable *Activatable) UseActionAppearance() bool {
 	var _arg0 *C.GtkActivatable // out
@@ -410,7 +405,7 @@ func (activatable *Activatable) UseActionAppearance() bool {
 //
 // The function takes the following parameters:
 //
-//    - action to set.
+//   - action to set.
 //
 func (activatable *Activatable) SetRelatedAction(action *Action) {
 	var _arg0 *C.GtkActivatable // out
@@ -436,7 +431,7 @@ func (activatable *Activatable) SetRelatedAction(action *Action) {
 //
 // The function takes the following parameters:
 //
-//    - useAppearance: whether to use the actions appearance.
+//   - useAppearance: whether to use the actions appearance.
 //
 func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 	var _arg0 *C.GtkActivatable // out
@@ -461,7 +456,7 @@ func (activatable *Activatable) SetUseActionAppearance(useAppearance bool) {
 //
 // The function takes the following parameters:
 //
-//    - action (optional): related Action or NULL.
+//   - action (optional): related Action or NULL.
 //
 func (activatable *Activatable) SyncActionProperties(action *Action) {
 	var _arg0 *C.GtkActivatable // out
@@ -486,7 +481,7 @@ func (activatable *Activatable) SyncActionProperties(action *Action) {
 //
 // The function takes the following parameters:
 //
-//    - action (optional): related Action or NULL.
+//   - action (optional): related Action or NULL.
 //
 func (activatable *Activatable) syncActionProperties(action *Action) {
 	gclass := (*C.GtkActivatableIface)(coreglib.PeekParentClass(activatable))
@@ -507,8 +502,8 @@ func (activatable *Activatable) syncActionProperties(action *Action) {
 
 // The function takes the following parameters:
 //
-//    - action
-//    - propertyName
+//   - action
+//   - propertyName
 //
 func (activatable *Activatable) update(action *Action, propertyName string) {
 	gclass := (*C.GtkActivatableIface)(coreglib.PeekParentClass(activatable))

@@ -71,7 +71,7 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - display of context.
+//   - display of context.
 //
 func (context *AppLaunchContext) Display() *Display {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -91,8 +91,8 @@ func (context *AppLaunchContext) Display() *Display {
 
 // SetDesktop sets the workspace on which applications will be launched.
 //
-// This only works when running under a window manager that supports multiple
-// workspaces, as described in the Extended Window Manager Hints
+// This only works when running under a window manager that supports
+// multiple workspaces, as described in the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec).
 //
 // When the workspace is not specified or desktop is set to -1, it is up to the
@@ -100,7 +100,7 @@ func (context *AppLaunchContext) Display() *Display {
 //
 // The function takes the following parameters:
 //
-//    - desktop: number of a workspace, or -1.
+//   - desktop: number of a workspace, or -1.
 //
 func (context *AppLaunchContext) SetDesktop(desktop int) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -123,7 +123,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 //
 // The function takes the following parameters:
 //
-//    - icon (optional) or NULL.
+//   - icon (optional) or NULL.
 //
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -145,14 +145,14 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 // The icon_name will be interpreted in the same way as the Icon field in
 // desktop files. See also gdk.AppLaunchContext.SetIcon()().
 //
-// If both icon and icon_name are set, the icon_name takes priority. If neither
-// icon or icon_name is set, the icon is taken from either the file that is
-// passed to launched application or from the GAppInfo for the launched
+// If both icon and icon_name are set, the icon_name takes priority.
+// If neither icon or icon_name is set, the icon is taken from either the file
+// that is passed to launched application or from the GAppInfo for the launched
 // application itself.
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name, or NULL.
+//   - iconName (optional): icon name, or NULL.
 //
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
@@ -180,7 +180,7 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - timestamp: timestamp.
+//   - timestamp: timestamp.
 //
 func (context *AppLaunchContext) SetTimestamp(timestamp uint32) {
 	var _arg0 *C.GdkAppLaunchContext // out

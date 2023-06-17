@@ -73,11 +73,11 @@ func (gesture *GestureSwipe) ConnectSwipe(f func(velocityX, velocityY float64)) 
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - gestureSwipe: newly created GestureSwipe.
+//   - gestureSwipe: newly created GestureSwipe.
 //
 func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 	var _arg1 *C.GtkWidget  // out
@@ -101,9 +101,9 @@ func NewGestureSwipe(widget Widgetter) *GestureSwipe {
 //
 // The function returns the following values:
 //
-//    - velocityX: return value for the velocity in the X axis, in pixels/sec.
-//    - velocityY: return value for the velocity in the Y axis, in pixels/sec.
-//    - ok: whether velocity could be calculated.
+//   - velocityX: return value for the velocity in the X axis, in pixels/sec.
+//   - velocityY: return value for the velocity in the Y axis, in pixels/sec.
+//   - ok: whether velocity could be calculated.
 //
 func (gesture *GestureSwipe) Velocity() (velocityX, velocityY float64, ok bool) {
 	var _arg0 *C.GtkGestureSwipe // out

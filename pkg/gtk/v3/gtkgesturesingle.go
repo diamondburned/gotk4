@@ -30,9 +30,9 @@ func init() {
 }
 
 // GestureSingle is a subclass of Gesture, optimized (although not restricted)
-// for dealing with mouse and single-touch gestures. Under interaction, these
-// gestures stick to the first interacting sequence, which is accessible through
-// gtk_gesture_single_get_current_sequence() while the gesture is being
+// for dealing with mouse and single-touch gestures. Under interaction,
+// these gestures stick to the first interacting sequence, which is accessible
+// through gtk_gesture_single_get_current_sequence() while the gesture is being
 // interacted with.
 //
 // By default gestures react to both GDK_BUTTON_PRIMARY and touch events,
@@ -69,7 +69,7 @@ func marshalGestureSingle(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - guint: button number, or 0 for any button.
+//   - guint: button number, or 0 for any button.
 //
 func (gesture *GestureSingle) Button() uint {
 	var _arg0 *C.GtkGestureSingle // out
@@ -92,7 +92,7 @@ func (gesture *GestureSingle) Button() uint {
 //
 // The function returns the following values:
 //
-//    - guint: current button number.
+//   - guint: current button number.
 //
 func (gesture *GestureSingle) CurrentButton() uint {
 	var _arg0 *C.GtkGestureSingle // out
@@ -115,7 +115,7 @@ func (gesture *GestureSingle) CurrentButton() uint {
 //
 // The function returns the following values:
 //
-//    - eventSequence (optional): current sequence.
+//   - eventSequence (optional): current sequence.
 //
 func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGestureSingle // out
@@ -141,12 +141,12 @@ func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 	return _eventSequence
 }
 
-// Exclusive gets whether a gesture is exclusive. For more information, see
-// gtk_gesture_single_set_exclusive().
+// Exclusive gets whether a gesture is exclusive. For more information,
+// see gtk_gesture_single_set_exclusive().
 //
 // The function returns the following values:
 //
-//    - ok: whether the gesture is exclusive.
+//   - ok: whether the gesture is exclusive.
 //
 func (gesture *GestureSingle) Exclusive() bool {
 	var _arg0 *C.GtkGestureSingle // out
@@ -170,7 +170,7 @@ func (gesture *GestureSingle) Exclusive() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the gesture only handles touch events.
+//   - ok: TRUE if the gesture only handles touch events.
 //
 func (gesture *GestureSingle) TouchOnly() bool {
 	var _arg0 *C.GtkGestureSingle // out
@@ -196,7 +196,7 @@ func (gesture *GestureSingle) TouchOnly() bool {
 //
 // The function takes the following parameters:
 //
-//    - button number to listen to, or 0 for any button.
+//   - button number to listen to, or 0 for any button.
 //
 func (gesture *GestureSingle) SetButton(button uint) {
 	var _arg0 *C.GtkGestureSingle // out
@@ -216,7 +216,7 @@ func (gesture *GestureSingle) SetButton(button uint) {
 //
 // The function takes the following parameters:
 //
-//    - exclusive: TRUE to make gesture exclusive.
+//   - exclusive: TRUE to make gesture exclusive.
 //
 func (gesture *GestureSingle) SetExclusive(exclusive bool) {
 	var _arg0 *C.GtkGestureSingle // out
@@ -238,7 +238,7 @@ func (gesture *GestureSingle) SetExclusive(exclusive bool) {
 //
 // The function takes the following parameters:
 //
-//    - touchOnly: whether gesture handles only touch events.
+//   - touchOnly: whether gesture handles only touch events.
 //
 func (gesture *GestureSingle) SetTouchOnly(touchOnly bool) {
 	var _arg0 *C.GtkGestureSingle // out

@@ -28,8 +28,8 @@ func init() {
 
 // WaylandDevice: wayland implementation of GdkDevice.
 //
-// Beyond the regular gdk.Device API, the Wayland implementation provides access
-// to Wayland objects such as the wl_seat with
+// Beyond the regular gdk.Device API, the Wayland implementation
+// provides access to Wayland objects such as the wl_seat with
 // gdkwayland.WaylandDevice.GetWlSeat(), the wl_keyboard with
 // gdkwayland.WaylandDevice.GetWlKeyboard() and the wl_pointer with
 // gdkwayland.WaylandDevice.GetWlPointer().
@@ -64,7 +64,7 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): /dev/input/event* path of this device.
+//   - utf8 (optional): /dev/input/event* path of this device.
 //
 func (device *WaylandDevice) NodePath() string {
 	var _arg0 *C.GdkDevice // out

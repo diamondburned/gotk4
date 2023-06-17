@@ -48,8 +48,8 @@ func defaultFixedOverrides(v *Fixed) FixedOverrides {
 // - Themes, which may change widget sizes.
 //
 // - Fonts other than the one you used to write the app will of course change
-// the size of widgets containing text; keep in mind that users may use a larger
-// font because of difficulty reading the default, or they may be using a
+// the size of widgets containing text; keep in mind that users may use a
+// larger font because of difficulty reading the default, or they may be using a
 // different OS that provides different fonts.
 //
 // - Translation of text into other languages changes its size. Also, display of
@@ -58,8 +58,8 @@ func defaultFixedOverrides(v *Fixed) FixedOverrides {
 // In addition, GtkFixed does not pay attention to text direction and thus may
 // produce unwanted results if your app is run under right-to-left languages
 // such as Hebrew or Arabic. That is: normally GTK will order containers
-// appropriately for the text direction, e.g. to put labels to the right of the
-// thing they label when using an RTL language, but it can’t do that with
+// appropriately for the text direction, e.g. to put labels to the right of
+// the thing they label when using an RTL language, but it can’t do that with
 // GtkFixed. So if you need to reorder widgets depending on the text direction,
 // you would need to manually detect it and adjust child positions accordingly.
 //
@@ -67,8 +67,8 @@ func defaultFixedOverrides(v *Fixed) FixedOverrides {
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
 //
-// If you know none of these things are an issue for your application, and
-// prefer the simplicity of GtkFixed, by all means use the widget. But you
+// If you know none of these things are an issue for your application,
+// and prefer the simplicity of GtkFixed, by all means use the widget. But you
 // should be aware of the tradeoffs.
 type Fixed struct {
 	_ [0]func() // equal guard
@@ -123,7 +123,7 @@ func marshalFixed(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - fixed: new GtkFixed.
+//   - fixed: new GtkFixed.
 //
 func NewFixed() *Fixed {
 	var _cret *C.GtkWidget // in
@@ -144,12 +144,12 @@ func NewFixed() *Fixed {
 //
 // The function takes the following parameters:
 //
-//    - widget: child of fixed.
+//   - widget: child of fixed.
 //
 // The function returns the following values:
 //
-//    - x: horizontal position of the widget.
-//    - y: vertical position of the widget.
+//   - x: horizontal position of the widget.
+//   - y: vertical position of the widget.
 //
 func (fixed *Fixed) ChildPosition(widget Widgetter) (x, y float64) {
 	var _arg0 *C.GtkFixed  // out
@@ -178,12 +178,12 @@ func (fixed *Fixed) ChildPosition(widget Widgetter) (x, y float64) {
 //
 // The function takes the following parameters:
 //
-//    - widget: GtkWidget, child of fixed.
+//   - widget: GtkWidget, child of fixed.
 //
 // The function returns the following values:
 //
-//    - transform (optional): GskTransform or NULL in case no transform has been
-//      set on widget.
+//   - transform (optional): GskTransform or NULL in case no transform has been
+//     set on widget.
 //
 func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	var _arg0 *C.GtkFixed     // out
@@ -218,9 +218,9 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 //
 // The function takes the following parameters:
 //
-//    - widget: child widget.
-//    - x: horizontal position to move the widget to.
-//    - y: vertical position to move the widget to.
+//   - widget: child widget.
+//   - x: horizontal position to move the widget to.
+//   - y: vertical position to move the widget to.
 //
 func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
 	var _arg0 *C.GtkFixed  // out
@@ -244,9 +244,9 @@ func (fixed *Fixed) Move(widget Widgetter, x, y float64) {
 //
 // The function takes the following parameters:
 //
-//    - widget to add.
-//    - x: horizontal position to place the widget at.
-//    - y: vertical position to place the widget at.
+//   - widget to add.
+//   - x: horizontal position to place the widget at.
+//   - y: vertical position to place the widget at.
 //
 func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
 	var _arg0 *C.GtkFixed  // out
@@ -270,7 +270,7 @@ func (fixed *Fixed) Put(widget Widgetter, x, y float64) {
 //
 // The function takes the following parameters:
 //
-//    - widget: child widget to remove.
+//   - widget: child widget to remove.
 //
 func (fixed *Fixed) Remove(widget Widgetter) {
 	var _arg0 *C.GtkFixed  // out
@@ -291,9 +291,9 @@ func (fixed *Fixed) Remove(widget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - widget: GtkWidget, child of fixed.
-//    - transform (optional): transformation assigned to widget or NULL to reset
-//      widget's transform.
+//   - widget: GtkWidget, child of fixed.
+//   - transform (optional): transformation assigned to widget or NULL to reset
+//     widget's transform.
 //
 func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform) {
 	var _arg0 *C.GtkFixed     // out

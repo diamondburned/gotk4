@@ -110,14 +110,14 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 // two identical tools will share the same hardware_id, but will have different
 // serial numbers (see gdk_device_tool_get_serial()).
 //
-// This is a more concrete (and device specific) method to identify a DeviceTool
-// than gdk_device_tool_get_tool_type(), as a tablet may support multiple
-// devices with the same DeviceToolType, but having different hardware
+// This is a more concrete (and device specific) method to identify a
+// DeviceTool than gdk_device_tool_get_tool_type(), as a tablet may support
+// multiple devices with the same DeviceToolType, but having different hardware
 // identificators.
 //
 // The function returns the following values:
 //
-//    - guint64: hardware identificator of this tool.
+//   - guint64: hardware identificator of this tool.
 //
 func (tool *DeviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
@@ -140,7 +140,7 @@ func (tool *DeviceTool) HardwareID() uint64 {
 //
 // The function returns the following values:
 //
-//    - guint64: serial ID for this tool.
+//   - guint64: serial ID for this tool.
 //
 func (tool *DeviceTool) Serial() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
@@ -162,8 +162,8 @@ func (tool *DeviceTool) Serial() uint64 {
 //
 // The function returns the following values:
 //
-//    - deviceToolType: physical type for this tool. This can be used to figure
-//      out what sort of pen is being used, such as an airbrush or a pencil.
+//   - deviceToolType: physical type for this tool. This can be used to figure
+//     out what sort of pen is being used, such as an airbrush or a pencil.
 //
 func (tool *DeviceTool) ToolType() DeviceToolType {
 	var _arg0 *C.GdkDeviceTool    // out
@@ -241,7 +241,7 @@ func (context *DragContext) ConnectDropPerformed(f func(time int)) coreglib.Sign
 //
 // The function returns the following values:
 //
-//    - dragAction: DragAction flags.
+//   - dragAction: DragAction flags.
 //
 func (context *DragContext) Actions() DragAction {
 	var _arg0 *C.GdkDragContext // out
@@ -263,7 +263,7 @@ func (context *DragContext) Actions() DragAction {
 //
 // The function returns the following values:
 //
-//    - window: Window.
+//   - window: Window.
 //
 func (context *DragContext) DestWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
@@ -301,7 +301,7 @@ func (context *DragContext) DestWindow() Windower {
 //
 // The function returns the following values:
 //
-//    - device associated to context.
+//   - device associated to context.
 //
 func (context *DragContext) Device() Devicer {
 	var _arg0 *C.GdkDragContext // out
@@ -343,7 +343,7 @@ func (context *DragContext) Device() Devicer {
 //
 // The function returns the following values:
 //
-//    - window (optional): drag window, or NULL.
+//   - window (optional): drag window, or NULL.
 //
 func (context *DragContext) DragWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
@@ -380,7 +380,7 @@ func (context *DragContext) DragWindow() Windower {
 //
 // The function returns the following values:
 //
-//    - dragProtocol: drag protocol.
+//   - dragProtocol: drag protocol.
 //
 func (context *DragContext) Protocol() DragProtocol {
 	var _arg0 *C.GdkDragContext // out
@@ -402,7 +402,7 @@ func (context *DragContext) Protocol() DragProtocol {
 //
 // The function returns the following values:
 //
-//    - dragAction: DragAction value.
+//   - dragAction: DragAction value.
 //
 func (context *DragContext) SelectedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
@@ -424,7 +424,7 @@ func (context *DragContext) SelectedAction() DragAction {
 //
 // The function returns the following values:
 //
-//    - window: Window.
+//   - window: Window.
 //
 func (context *DragContext) SourceWindow() Windower {
 	var _arg0 *C.GdkDragContext // out
@@ -462,7 +462,7 @@ func (context *DragContext) SourceWindow() Windower {
 //
 // The function returns the following values:
 //
-//    - dragAction: DragAction value.
+//   - dragAction: DragAction value.
 //
 func (context *DragContext) SuggestedAction() DragAction {
 	var _arg0 *C.GdkDragContext // out
@@ -503,12 +503,12 @@ func (context *DragContext) SuggestedAction() DragAction {
 //
 // The function takes the following parameters:
 //
-//    - ipcWindow: window to use for IPC messaging/events.
-//    - actions supported by the drag source.
+//   - ipcWindow: window to use for IPC messaging/events.
+//   - actions supported by the drag source.
 //
 // The function returns the following values:
 //
-//    - ok if the drag and drop operation is managed.
+//   - ok if the drag and drop operation is managed.
 //
 func (context *DragContext) ManageDND(ipcWindow Windower, actions DragAction) bool {
 	var _arg0 *C.GdkDragContext // out
@@ -539,7 +539,7 @@ func (context *DragContext) ManageDND(ipcWindow Windower, actions DragAction) bo
 //
 // The function takes the following parameters:
 //
-//    - device: Device.
+//   - device: Device.
 //
 func (context *DragContext) SetDevice(device Devicer) {
 	var _arg0 *C.GdkDragContext // out
@@ -559,8 +559,8 @@ func (context *DragContext) SetDevice(device Devicer) {
 //
 // The function takes the following parameters:
 //
-//    - hotX: x coordinate of the drag window hotspot.
-//    - hotY: y coordinate of the drag window hotspot.
+//   - hotX: x coordinate of the drag window hotspot.
+//   - hotY: y coordinate of the drag window hotspot.
 //
 func (context *DragContext) SetHotspot(hotX, hotY int) {
 	var _arg0 *C.GdkDragContext // out

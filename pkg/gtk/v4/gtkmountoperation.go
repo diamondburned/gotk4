@@ -41,9 +41,9 @@ func defaultMountOperationOverrides(v *MountOperation) MountOperationOverrides {
 // The functions and objects described here make working with GTK and GIO more
 // convenient.
 //
-// GtkMountOperation is needed when mounting volumes: It is an implementation of
-// GMountOperation that can be used with GIO functions for mounting volumes such
-// as g_file_mount_enclosing_volume(), g_file_mount_mountable(),
+// GtkMountOperation is needed when mounting volumes: It is an implementation
+// of GMountOperation that can be used with GIO functions for mounting
+// volumes such as g_file_mount_enclosing_volume(), g_file_mount_mountable(),
 // g_volume_mount(), g_mount_unmount_with_operation() and others.
 //
 // When necessary, GtkMountOperation shows dialogs to let the user enter
@@ -89,11 +89,11 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): transient parent of the window, or NULL.
+//   - parent (optional): transient parent of the window, or NULL.
 //
 // The function returns the following values:
 //
-//    - mountOperation: new GtkMountOperation.
+//   - mountOperation: new GtkMountOperation.
 //
 func NewMountOperation(parent *Window) *MountOperation {
 	var _arg1 *C.GtkWindow       // out
@@ -118,7 +118,7 @@ func NewMountOperation(parent *Window) *MountOperation {
 //
 // The function returns the following values:
 //
-//    - display on which windows of op are shown.
+//   - display on which windows of op are shown.
 //
 func (op *MountOperation) Display() *gdk.Display {
 	var _arg0 *C.GtkMountOperation // out
@@ -145,7 +145,7 @@ func (op *MountOperation) Display() *gdk.Display {
 //
 // The function returns the following values:
 //
-//    - window: transient parent for windows shown by op.
+//   - window: transient parent for windows shown by op.
 //
 func (op *MountOperation) Parent() *Window {
 	var _arg0 *C.GtkMountOperation // out
@@ -168,7 +168,7 @@ func (op *MountOperation) Parent() *Window {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if op is currently displaying a window.
+//   - ok: TRUE if op is currently displaying a window.
 //
 func (op *MountOperation) IsShowing() bool {
 	var _arg0 *C.GtkMountOperation // out
@@ -192,7 +192,7 @@ func (op *MountOperation) IsShowing() bool {
 //
 // The function takes the following parameters:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 func (op *MountOperation) SetDisplay(display *gdk.Display) {
 	var _arg0 *C.GtkMountOperation // out
@@ -211,7 +211,7 @@ func (op *MountOperation) SetDisplay(display *gdk.Display) {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional): transient parent of the window, or NULL.
+//   - parent (optional): transient parent of the window, or NULL.
 //
 func (op *MountOperation) SetParent(parent *Window) {
 	var _arg0 *C.GtkMountOperation // out

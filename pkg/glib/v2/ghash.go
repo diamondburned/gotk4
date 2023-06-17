@@ -27,14 +27,14 @@ func init() {
 }
 
 // HRFunc specifies the type of the function passed to
-// g_hash_table_foreach_remove(). It is called with each key/value pair,
-// together with the user_data parameter passed to
+// g_hash_table_foreach_remove(). It is called with each
+// key/value pair, together with the user_data parameter passed to
 // g_hash_table_foreach_remove(). It should return TRUE if the key/value pair
 // should be removed from the Table.
 type HRFunc func(key, value unsafe.Pointer) (ok bool)
 
-// DirectEqual compares two #gpointer arguments and returns TRUE if they are
-// equal. It can be passed to g_hash_table_new() as the key_equal_func
+// DirectEqual compares two #gpointer arguments and returns TRUE if they
+// are equal. It can be passed to g_hash_table_new() as the key_equal_func
 // parameter, when using opaque pointers compared by pointer value as keys in a
 // Table.
 //
@@ -43,12 +43,12 @@ type HRFunc func(key, value unsafe.Pointer) (ok bool)
 //
 // The function takes the following parameters:
 //
-//    - v1 (optional): key.
-//    - v2 (optional): key to compare with v1.
+//   - v1 (optional): key.
+//   - v2 (optional): key to compare with v1.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two keys match.
+//   - ok: TRUE if the two keys match.
 //
 func DirectEqual(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
@@ -80,11 +80,11 @@ func DirectEqual(v1, v2 unsafe.Pointer) bool {
 //
 // The function takes the following parameters:
 //
-//    - v (optional): #gpointer key.
+//   - v (optional): #gpointer key.
 //
 // The function returns the following values:
 //
-//    - guint: hash value corresponding to the key.
+//   - guint: hash value corresponding to the key.
 //
 func DirectHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
@@ -106,18 +106,18 @@ func DirectHash(v unsafe.Pointer) uint {
 // they are equal. It can be passed to g_hash_table_new() as the key_equal_func
 // parameter, when using non-NULL pointers to integers as keys in a Table.
 //
-// Note that this function acts on pointers to #gint, not on #gint directly: if
-// your hash table's keys are of the form GINT_TO_POINTER (n), use
+// Note that this function acts on pointers to #gint, not on #gint directly:
+// if your hash table's keys are of the form GINT_TO_POINTER (n), use
 // g_direct_equal() instead.
 //
 // The function takes the following parameters:
 //
-//    - v1: pointer to a #gint key.
-//    - v2: pointer to a #gint key to compare with v1.
+//   - v1: pointer to a #gint key.
+//   - v2: pointer to a #gint key to compare with v1.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two keys match.
+//   - ok: TRUE if the two keys match.
 //
 func IntEqual(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
@@ -144,17 +144,17 @@ func IntEqual(v1, v2 unsafe.Pointer) bool {
 // g_hash_table_new() as the hash_func parameter, when using non-NULL pointers
 // to integer values as keys in a Table.
 //
-// Note that this function acts on pointers to #gint, not on #gint directly: if
-// your hash table's keys are of the form GINT_TO_POINTER (n), use
+// Note that this function acts on pointers to #gint, not on #gint directly:
+// if your hash table's keys are of the form GINT_TO_POINTER (n), use
 // g_direct_hash() instead.
 //
 // The function takes the following parameters:
 //
-//    - v: pointer to a #gint key.
+//   - v: pointer to a #gint key.
 //
 // The function returns the following values:
 //
-//    - guint: hash value corresponding to the key.
+//   - guint: hash value corresponding to the key.
 //
 func IntHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
@@ -182,12 +182,12 @@ func IntHash(v unsafe.Pointer) uint {
 //
 // The function takes the following parameters:
 //
-//    - v1: key.
-//    - v2: key to compare with v1.
+//   - v1: key.
+//   - v2: key to compare with v1.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two keys match.
+//   - ok: TRUE if the two keys match.
 //
 func StrEqual(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
@@ -220,16 +220,16 @@ func StrEqual(v1, v2 unsafe.Pointer) bool {
 // It can be passed to g_hash_table_new() as the hash_func parameter, when using
 // non-NULL strings as keys in a Table.
 //
-// Note that this function may not be a perfect fit for all use cases. For
-// example, it produces some hash collisions with strings as short as 2.
+// Note that this function may not be a perfect fit for all use cases.
+// For example, it produces some hash collisions with strings as short as 2.
 //
 // The function takes the following parameters:
 //
-//    - v: string key.
+//   - v: string key.
 //
 // The function returns the following values:
 //
-//    - guint: hash value corresponding to the key.
+//   - guint: hash value corresponding to the key.
 //
 func StrHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
@@ -266,15 +266,15 @@ func marshalHashTable(p uintptr) (interface{}, error) {
 	return &HashTable{&hashTable{(*C.GHashTable)(b)}}, nil
 }
 
-// HashTableDestroy destroys all keys and values in the Table and decrements its
-// reference count by 1. If keys and/or values are dynamically allocated, you
-// should either free them first or create the Table with destroy notifiers
+// HashTableDestroy destroys all keys and values in the Table and decrements
+// its reference count by 1. If keys and/or values are dynamically allocated,
+// you should either free them first or create the Table with destroy notifiers
 // using g_hash_table_new_full(). In the latter case the destroy functions you
 // supplied will be called on all keys and values during the destruction phase.
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
+//   - hashTable: Table.
 //
 func HashTableDestroy(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	var _arg1 *C.GHashTable // out
@@ -305,13 +305,13 @@ func HashTableDestroy(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - key (optional) to insert.
-//    - value (optional) to associate with the key.
+//   - hashTable: Table.
+//   - key (optional) to insert.
+//   - value (optional) to associate with the key.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key did not exist yet.
+//   - ok: TRUE if the key did not exist yet.
 //
 func HashTableInsert(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable // out
@@ -345,19 +345,19 @@ func HashTableInsert(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value uns
 	return _ok
 }
 
-// HashTableLookup looks up a key in a Table. Note that this function cannot
-// distinguish between a key that is not present and one which is present and
-// has the value NULL. If you need this distinction, use
+// HashTableLookup looks up a key in a Table. Note that this function
+// cannot distinguish between a key that is not present and one which
+// is present and has the value NULL. If you need this distinction, use
 // g_hash_table_lookup_extended().
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - key (optional) to look up.
+//   - hashTable: Table.
+//   - key (optional) to look up.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): associated value, or NULL if the key is not found.
+//   - gpointer (optional): associated value, or NULL if the key is not found.
 //
 func HashTableLookup(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) unsafe.Pointer {
 	var _arg1 *C.GHashTable   // out
@@ -396,14 +396,14 @@ func HashTableLookup(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poi
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - lookupKey (optional): key to look up.
+//   - hashTable: Table.
+//   - lookupKey (optional): key to look up.
 //
 // The function returns the following values:
 //
-//    - origKey (optional): return location for the original key.
-//    - value (optional): return location for the value associated with the key.
-//    - ok: TRUE if the key was found in the Table.
+//   - origKey (optional): return location for the original key.
+//   - value (optional): return location for the value associated with the key.
+//   - ok: TRUE if the key was found in the Table.
 //
 func HashTableLookupExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (origKey, value unsafe.Pointer, ok bool) {
 	var _arg1 *C.GHashTable   // out
@@ -448,12 +448,12 @@ func HashTableLookupExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookup
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - key (optional) to remove.
+//   - hashTable: Table.
+//   - key (optional) to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key was found and removed from the Table.
+//   - ok: TRUE if the key was found and removed from the Table.
 //
 func HashTableRemove(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable   // out
@@ -484,25 +484,25 @@ func HashTableRemove(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poi
 	return _ok
 }
 
-// HashTableReplace inserts a new key and value into a Table similar to
-// g_hash_table_insert(). The difference is that if the key already exists in
-// the Table, it gets replaced by the new key. If you supplied a
-// value_destroy_func when creating the Table, the old value is freed using that
-// function. If you supplied a key_destroy_func when creating the Table, the old
-// key is freed using that function.
+// HashTableReplace inserts a new key and value into a Table similar
+// to g_hash_table_insert(). The difference is that if the key already
+// exists in the Table, it gets replaced by the new key. If you supplied a
+// value_destroy_func when creating the Table, the old value is freed using
+// that function. If you supplied a key_destroy_func when creating the Table,
+// the old key is freed using that function.
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - key (optional) to insert.
-//    - value (optional) to associate with the key.
+//   - hashTable: Table.
+//   - key (optional) to insert.
+//   - value (optional) to associate with the key.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key did not exist yet.
+//   - ok: TRUE if the key did not exist yet.
 //
 func HashTableReplace(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable // out
@@ -540,11 +540,11 @@ func HashTableReplace(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value un
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
+//   - hashTable: Table.
 //
 // The function returns the following values:
 //
-//    - guint: number of key/value pairs in the Table.
+//   - guint: number of key/value pairs in the Table.
 //
 func HashTableSize(hashTable map[unsafe.Pointer]unsafe.Pointer) uint {
 	var _arg1 *C.GHashTable // out
@@ -575,12 +575,12 @@ func HashTableSize(hashTable map[unsafe.Pointer]unsafe.Pointer) uint {
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - key (optional) to remove.
+//   - hashTable: Table.
+//   - key (optional) to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key was found and removed from the Table.
+//   - ok: TRUE if the key was found and removed from the Table.
 //
 func HashTableSteal(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable   // out
@@ -646,7 +646,7 @@ type hashTableIter struct {
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
+//   - hashTable: Table.
 //
 func (iter *HashTableIter) Init(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	var _arg0 *C.GHashTableIter // out
@@ -674,9 +674,9 @@ func (iter *HashTableIter) Init(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 //
 // The function returns the following values:
 //
-//    - key (optional): location to store the key.
-//    - value (optional): location to store the value.
-//    - ok: FALSE if the end of the Table has been reached.
+//   - key (optional): location to store the key.
+//   - value (optional): location to store the value.
+//   - ok: FALSE if the end of the Table has been reached.
 //
 func (iter *HashTableIter) Next() (key unsafe.Pointer, value unsafe.Pointer, ok bool) {
 	var _arg0 *C.GHashTableIter // out
@@ -736,7 +736,7 @@ func (iter *HashTableIter) Remove() {
 //
 // The function takes the following parameters:
 //
-//    - value (optional) to replace with.
+//   - value (optional) to replace with.
 //
 func (iter *HashTableIter) Replace(value unsafe.Pointer) {
 	var _arg0 *C.GHashTableIter // out

@@ -53,7 +53,6 @@ func defaultEditableLabelOverrides(v *EditableLabel) EditableLabelOverrides {
 //        ├── label
 //        ╰── text
 //
-//
 // GtkEditableLabel has a main node with the name editablelabel. When the entry
 // is in editing mode, it gets the .editing style class.
 //
@@ -134,11 +133,11 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - str: text for the label.
+//   - str: text for the label.
 //
 // The function returns the following values:
 //
-//    - editableLabel: new GtkEditableLabel.
+//   - editableLabel: new GtkEditableLabel.
 //
 func NewEditableLabel(str string) *EditableLabel {
 	var _arg1 *C.char      // out
@@ -161,7 +160,7 @@ func NewEditableLabel(str string) *EditableLabel {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if self is currently in editing mode.
+//   - ok: TRUE if self is currently in editing mode.
 //
 func (self *EditableLabel) Editing() bool {
 	var _arg0 *C.GtkEditableLabel // out
@@ -199,7 +198,7 @@ func (self *EditableLabel) StartEditing() {
 //
 // The function takes the following parameters:
 //
-//    - commit: whether to set the edited text on the label.
+//   - commit: whether to set the edited text on the label.
 //
 func (self *EditableLabel) StopEditing(commit bool) {
 	var _arg0 *C.GtkEditableLabel // out

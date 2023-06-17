@@ -35,7 +35,7 @@ func init() {
 //
 // The function returns the following values:
 //
-//    - registry: default implementation of the ObjectFactory/type registry.
+//   - registry: default implementation of the ObjectFactory/type registry.
 //
 func GetDefaultRegistry() *Registry {
 	var _cret *C.AtkRegistry // in
@@ -58,9 +58,9 @@ func defaultRegistryOverrides(v *Registry) RegistryOverrides {
 }
 
 // Registry is normally used to create appropriate ATK "peers" for user
-// interface components. Application developers usually need only interact with
-// the AtkRegistry by associating appropriate ATK implementation classes with
-// GObject classes via the atk_registry_set_factory_type call, passing the
+// interface components. Application developers usually need only interact
+// with the AtkRegistry by associating appropriate ATK implementation classes
+// with GObject classes via the atk_registry_set_factory_type call, passing the
 // appropriate GType for application custom widget classes.
 type Registry struct {
 	_ [0]func() // equal guard
@@ -102,11 +102,11 @@ func marshalRegistry(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - typ with which to look up the associated ObjectFactory.
+//   - typ with which to look up the associated ObjectFactory.
 //
 // The function returns the following values:
 //
-//    - objectFactory appropriate for creating Objects appropriate for type.
+//   - objectFactory appropriate for creating Objects appropriate for type.
 //
 func (registry *Registry) Factory(typ coreglib.Type) *ObjectFactory {
 	var _arg0 *C.AtkRegistry      // out
@@ -132,11 +132,11 @@ func (registry *Registry) Factory(typ coreglib.Type) *ObjectFactory {
 //
 // The function takes the following parameters:
 //
-//    - typ with which to look up the associated ObjectFactory subclass.
+//   - typ with which to look up the associated ObjectFactory subclass.
 //
 // The function returns the following values:
 //
-//    - gType associated with type type.
+//   - gType associated with type type.
 //
 func (registry *Registry) FactoryType(typ coreglib.Type) coreglib.Type {
 	var _arg0 *C.AtkRegistry // out
@@ -157,15 +157,15 @@ func (registry *Registry) FactoryType(typ coreglib.Type) coreglib.Type {
 	return _gType
 }
 
-// SetFactoryType: associate an ObjectFactory subclass with a #GType. Note: The
-// associated factory_type will thereafter be responsible for the creation of
-// new Object implementations for instances appropriate for type.
+// SetFactoryType: associate an ObjectFactory subclass with a #GType. Note:
+// The associated factory_type will thereafter be responsible for the creation
+// of new Object implementations for instances appropriate for type.
 //
 // The function takes the following parameters:
 //
-//    - typ: Object type.
-//    - factoryType type to associate with type. Must implement AtkObject
-//      appropriate for type.
+//   - typ: Object type.
+//   - factoryType type to associate with type. Must implement AtkObject
+//     appropriate for type.
 //
 func (registry *Registry) SetFactoryType(typ, factoryType coreglib.Type) {
 	var _arg0 *C.AtkRegistry // out

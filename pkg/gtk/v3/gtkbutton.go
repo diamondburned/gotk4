@@ -101,8 +101,7 @@ func defaultButtonOverrides(v *Button) ButtonOverrides {
 // The Button widget can hold any valid child widget. That is, it can hold
 // almost any other standard Widget. The most commonly used child is the Label.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkButton has a single CSS node with name button. The node will get the style
 // classes .image-button or .text-button, if the content is just an image or
@@ -253,7 +252,7 @@ func (button *Button) ConnectReleased(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - button: newly created Button widget.
+//   - button: newly created Button widget.
 //
 func NewButton() *Button {
 	var _cret *C.GtkWidget // in
@@ -279,12 +278,12 @@ func NewButton() *Button {
 //
 // The function takes the following parameters:
 //
-//    - iconName (optional): icon name or NULL.
-//    - size: icon size (IconSize).
+//   - iconName (optional): icon name or NULL.
+//   - size: icon size (IconSize).
 //
 // The function returns the following values:
 //
-//    - button: new Button displaying the themed icon.
+//   - button: new Button displaying the themed icon.
 //
 func NewButtonFromIconName(iconName string, size int) *Button {
 	var _arg1 *C.gchar      // out
@@ -308,8 +307,8 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 	return _button
 }
 
-// NewButtonFromStock creates a new Button containing the image and text from a
-// [stock item][gtkstock]. Some stock ids have preprocessor macros like
+// NewButtonFromStock creates a new Button containing the image and text from
+// a [stock item][gtkstock]. Some stock ids have preprocessor macros like
 // K_STOCK_OK and K_STOCK_APPLY.
 //
 // If stock_id is unknown, then it will be treated as a mnemonic label (as for
@@ -320,11 +319,11 @@ func NewButtonFromIconName(iconName string, size int) *Button {
 //
 // The function takes the following parameters:
 //
-//    - stockId: name of the stock item.
+//   - stockId: name of the stock item.
 //
 // The function returns the following values:
 //
-//    - button: new Button.
+//   - button: new Button.
 //
 func NewButtonFromStock(stockId string) *Button {
 	var _arg1 *C.gchar     // out
@@ -348,11 +347,11 @@ func NewButtonFromStock(stockId string) *Button {
 //
 // The function takes the following parameters:
 //
-//    - label: text you want the Label to hold.
+//   - label: text you want the Label to hold.
 //
 // The function returns the following values:
 //
-//    - button: newly created Button widget.
+//   - button: newly created Button widget.
 //
 func NewButtonWithLabel(label string) *Button {
 	var _arg1 *C.gchar     // out
@@ -372,19 +371,19 @@ func NewButtonWithLabel(label string) *Button {
 }
 
 // NewButtonWithMnemonic creates a new Button containing a label. If characters
-// in label are preceded by an underscore, they are underlined. If you need a
-// literal underscore character in a label, use “__” (two underscores). The
-// first underlined character represents a keyboard accelerator called a
+// in label are preceded by an underscore, they are underlined. If you need
+// a literal underscore character in a label, use “__” (two underscores).
+// The first underlined character represents a keyboard accelerator called a
 // mnemonic. Pressing Alt and that key activates the button.
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the mnemonic
-//      character.
+//   - label: text of the button, with an underscore in front of the mnemonic
+//     character.
 //
 // The function returns the following values:
 //
-//    - button: new Button.
+//   - button: new Button.
 //
 func NewButtonWithMnemonic(label string) *Button {
 	var _arg1 *C.gchar     // out
@@ -432,8 +431,8 @@ func (button *Button) Enter() {
 //
 // The function returns the following values:
 //
-//    - xalign: return location for horizontal alignment.
-//    - yalign: return location for vertical alignment.
+//   - xalign: return location for horizontal alignment.
+//   - yalign: return location for vertical alignment.
 //
 func (button *Button) Alignment() (xalign, yalign float32) {
 	var _arg0 *C.GtkButton // out
@@ -459,7 +458,7 @@ func (button *Button) Alignment() (xalign, yalign float32) {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the button will always show the image.
+//   - ok: TRUE if the button will always show the image.
 //
 func (button *Button) AlwaysShowImage() bool {
 	var _arg0 *C.GtkButton // out
@@ -484,7 +483,7 @@ func (button *Button) AlwaysShowImage() bool {
 //
 // The function returns the following values:
 //
-//    - window button’s event window.
+//   - window button’s event window.
 //
 func (button *Button) EventWindow() gdk.Windower {
 	var _arg0 *C.GtkButton // out
@@ -525,7 +524,7 @@ func (button *Button) EventWindow() gdk.Windower {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the button grabs focus when it is clicked with the mouse.
+//   - ok: TRUE if the button grabs focus when it is clicked with the mouse.
 //
 func (button *Button) FocusOnClick() bool {
 	var _arg0 *C.GtkButton // out
@@ -545,13 +544,13 @@ func (button *Button) FocusOnClick() bool {
 	return _ok
 }
 
-// Image gets the widget that is currenty set as the image of button. This may
-// have been explicitly set by gtk_button_set_image() or constructed by
+// Image gets the widget that is currenty set as the image of button.
+// This may have been explicitly set by gtk_button_set_image() or constructed by
 // gtk_button_new_from_stock().
 //
 // The function returns the following values:
 //
-//    - widget (optional) or NULL in case there is no image.
+//   - widget (optional) or NULL in case there is no image.
 //
 func (button *Button) Image() Widgetter {
 	var _arg0 *C.GtkButton // out
@@ -589,7 +588,7 @@ func (button *Button) Image() Widgetter {
 //
 // The function returns the following values:
 //
-//    - positionType: position.
+//   - positionType: position.
 //
 func (button *Button) ImagePosition() PositionType {
 	var _arg0 *C.GtkButton      // out
@@ -614,8 +613,8 @@ func (button *Button) ImagePosition() PositionType {
 //
 // The function returns the following values:
 //
-//    - utf8: text of the label widget. This string is owned by the widget and
-//      must not be modified or freed.
+//   - utf8: text of the label widget. This string is owned by the widget and
+//     must not be modified or freed.
 //
 func (button *Button) Label() string {
 	var _arg0 *C.GtkButton // out
@@ -637,7 +636,7 @@ func (button *Button) Label() string {
 //
 // The function returns the following values:
 //
-//    - reliefStyle: current ReliefStyle.
+//   - reliefStyle: current ReliefStyle.
 //
 func (button *Button) Relief() ReliefStyle {
 	var _arg0 *C.GtkButton     // out
@@ -661,8 +660,8 @@ func (button *Button) Relief() ReliefStyle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the button label is used to select a stock item instead of
-//      being used directly as the label text.
+//   - ok: TRUE if the button label is used to select a stock item instead of
+//     being used directly as the label text.
 //
 func (button *Button) UseStock() bool {
 	var _arg0 *C.GtkButton // out
@@ -687,8 +686,8 @@ func (button *Button) UseStock() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if an embedded underline in the button label indicates the
-//      mnemonic accelerator keys.
+//   - ok: TRUE if an embedded underline in the button label indicates the
+//     mnemonic accelerator keys.
 //
 func (button *Button) UseUnderline() bool {
 	var _arg0 *C.GtkButton // out
@@ -752,10 +751,10 @@ func (button *Button) Released() {
 //
 // The function takes the following parameters:
 //
-//    - xalign: horizontal position of the child, 0.0 is left aligned, 1.0 is
-//      right aligned.
-//    - yalign: vertical position of the child, 0.0 is top aligned, 1.0 is bottom
-//      aligned.
+//   - xalign: horizontal position of the child, 0.0 is left aligned, 1.0 is
+//     right aligned.
+//   - yalign: vertical position of the child, 0.0 is top aligned, 1.0 is bottom
+//     aligned.
 //
 func (button *Button) SetAlignment(xalign, yalign float32) {
 	var _arg0 *C.GtkButton // out
@@ -780,7 +779,7 @@ func (button *Button) SetAlignment(xalign, yalign float32) {
 //
 // The function takes the following parameters:
 //
-//    - alwaysShow: TRUE if the menuitem should always show the image.
+//   - alwaysShow: TRUE if the menuitem should always show the image.
 //
 func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkButton // out
@@ -805,7 +804,7 @@ func (button *Button) SetAlwaysShowImage(alwaysShow bool) {
 //
 // The function takes the following parameters:
 //
-//    - focusOnClick: whether the button grabs focus when clicked with the mouse.
+//   - focusOnClick: whether the button grabs focus when clicked with the mouse.
 //
 func (button *Button) SetFocusOnClick(focusOnClick bool) {
 	var _arg0 *C.GtkButton // out
@@ -827,8 +826,8 @@ func (button *Button) SetFocusOnClick(focusOnClick bool) {
 //
 // The function takes the following parameters:
 //
-//    - image (optional): widget to set as the image for the button, or NULL to
-//      unset.
+//   - image (optional): widget to set as the image for the button, or NULL to
+//     unset.
 //
 func (button *Button) SetImage(image Widgetter) {
 	var _arg0 *C.GtkButton // out
@@ -849,7 +848,7 @@ func (button *Button) SetImage(image Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - position: position.
+//   - position: position.
 //
 func (button *Button) SetImagePosition(position PositionType) {
 	var _arg0 *C.GtkButton      // out
@@ -870,7 +869,7 @@ func (button *Button) SetImagePosition(position PositionType) {
 //
 // The function takes the following parameters:
 //
-//    - label: string.
+//   - label: string.
 //
 func (button *Button) SetLabel(label string) {
 	var _arg0 *C.GtkButton // out
@@ -886,13 +885,13 @@ func (button *Button) SetLabel(label string) {
 }
 
 // SetRelief sets the relief style of the edges of the given Button widget. Two
-// styles exist, GTK_RELIEF_NORMAL and GTK_RELIEF_NONE. The default style is, as
-// one can guess, GTK_RELIEF_NORMAL. The deprecated value GTK_RELIEF_HALF
+// styles exist, GTK_RELIEF_NORMAL and GTK_RELIEF_NONE. The default style is,
+// as one can guess, GTK_RELIEF_NORMAL. The deprecated value GTK_RELIEF_HALF
 // behaves the same as GTK_RELIEF_NORMAL.
 //
 // The function takes the following parameters:
 //
-//    - relief: gtkReliefStyle as described above.
+//   - relief: gtkReliefStyle as described above.
 //
 func (button *Button) SetRelief(relief ReliefStyle) {
 	var _arg0 *C.GtkButton     // out
@@ -913,7 +912,7 @@ func (button *Button) SetRelief(relief ReliefStyle) {
 //
 // The function takes the following parameters:
 //
-//    - useStock: TRUE if the button should use a stock item.
+//   - useStock: TRUE if the button should use a stock item.
 //
 func (button *Button) SetUseStock(useStock bool) {
 	var _arg0 *C.GtkButton // out
@@ -934,7 +933,7 @@ func (button *Button) SetUseStock(useStock bool) {
 //
 // The function takes the following parameters:
 //
-//    - useUnderline: TRUE if underlines in the text indicate mnemonics.
+//   - useUnderline: TRUE if underlines in the text indicate mnemonics.
 //
 func (button *Button) SetUseUnderline(useUnderline bool) {
 	var _arg0 *C.GtkButton // out

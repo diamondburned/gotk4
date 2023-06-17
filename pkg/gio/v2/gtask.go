@@ -34,121 +34,119 @@ func init() {
 
 // Task represents and manages a cancellable "task".
 //
+// # Asynchronous operations
 //
-// Asynchronous operations
-//
-// The most common usage of #GTask is as a Result, to manage data during an
-// asynchronous operation. You call g_task_new() in the "start" method, followed
-// by g_task_set_task_data() and the like if you need to keep some additional
-// data associated with the task, and then pass the task object around through
-// your asynchronous operation. Eventually, you will call a method such as
-// g_task_return_pointer() or g_task_return_error(), which will save the value
-// you give it and then invoke the task's callback function in the
-// [thread-default main context][g-main-context-push-thread-default] where it
-// was created (waiting until the next iteration of the main loop first, if
-// necessary). The caller will pass the #GTask back to the operation's finish
+// The most common usage of #GTask is as a Result, to manage data during
+// an asynchronous operation. You call g_task_new() in the "start" method,
+// followed by g_task_set_task_data() and the like if you need to keep some
+// additional data associated with the task, and then pass the task object
+// around through your asynchronous operation. Eventually, you will call a
+// method such as g_task_return_pointer() or g_task_return_error(), which will
+// save the value you give it and then invoke the task's callback function in
+// the [thread-default main context][g-main-context-push-thread-default] where
+// it was created (waiting until the next iteration of the main loop first,
+// if necessary). The caller will pass the #GTask back to the operation's finish
 // function (as a Result), and you can use g_task_propagate_pointer() or the
 // like to extract the return value.
 //
 // Here is an example for using GTask as a GAsyncResult:
 //
-//        static void
-//        bake_cake_thread (GTask         *task,
-//                          gpointer       source_object,
-//                          gpointer       task_data,
-//                          GCancellable  *cancellable)
+//    static void
+//    bake_cake_thread (GTask         *task,
+//                      gpointer       source_object,
+//                      gpointer       task_data,
+//                      GCancellable  *cancellable)
+//    {
+//      Baker *self = source_object;
+//      CakeData *cake_data = task_data;
+//      Cake *cake;
+//      GError *error = NULL;
+//
+//      cake = bake_cake (baker, cake_data->radius, cake_data->flavor,
+//                        cake_data->frosting, cake_data->message,
+//                        &error);
+//      if (error)
 //        {
-//          Baker *self = source_object;
-//          CakeData *cake_data = task_data;
-//          Cake *cake;
-//          GError *error = NULL;
-//
-//          cake = bake_cake (baker, cake_data->radius, cake_data->flavor,
-//                            cake_data->frosting, cake_data->message,
-//                            &error);
-//          if (error)
-//            {
-//              g_task_return_error (task, error);
-//              return;
-//            }
-//
-//          // If the task has already been cancelled, then we don't want to add
-//          // the cake to the cake cache. Likewise, we don't  want to have the
-//          // task get cancelled in the middle of updating the cache.
-//          // g_task_set_return_on_cancel() will return TRUE here if it managed
-//          // to disable return-on-cancel, or FALSE if the task was cancelled
-//          // before it could.
-//          if (g_task_set_return_on_cancel (task, FALSE))
-//            {
-//              // If the caller cancels at this point, their
-//              // GAsyncReadyCallback won't be invoked until we return,
-//              // so we don't have to worry that this code will run at
-//              // the same time as that code does. But if there were
-//              // other functions that might look at the cake cache,
-//              // then we'd probably need a GMutex here as well.
-//              baker_add_cake_to_cache (baker, cake);
-//              g_task_return_pointer (task, cake, g_object_unref);
-//            }
+//          g_task_return_error (task, error);
+//          return;
 //        }
 //
-//        void
-//        baker_bake_cake_async (Baker               *self,
-//                               guint                radius,
-//                               CakeFlavor           flavor,
-//                               CakeFrostingType     frosting,
-//                               const char          *message,
-//                               GCancellable        *cancellable,
-//                               GAsyncReadyCallback  callback,
-//                               gpointer             user_data)
+//      // If the task has already been cancelled, then we don't want to add
+//      // the cake to the cake cache. Likewise, we don't  want to have the
+//      // task get cancelled in the middle of updating the cache.
+//      // g_task_set_return_on_cancel() will return TRUE here if it managed
+//      // to disable return-on-cancel, or FALSE if the task was cancelled
+//      // before it could.
+//      if (g_task_set_return_on_cancel (task, FALSE))
 //        {
-//          CakeData *cake_data;
-//          GTask *task;
-//
-//          cake_data = g_slice_new (CakeData);
-//
-//          ...
-//
-//          task = g_task_new (self, cancellable, callback, user_data);
-//          g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
-//          g_task_set_return_on_cancel (task, TRUE);
-//          g_task_run_in_thread (task, bake_cake_thread);
+//          // If the caller cancels at this point, their
+//          // GAsyncReadyCallback won't be invoked until we return,
+//          // so we don't have to worry that this code will run at
+//          // the same time as that code does. But if there were
+//          // other functions that might look at the cake cache,
+//          // then we'd probably need a GMutex here as well.
+//          baker_add_cake_to_cache (baker, cake);
+//          g_task_return_pointer (task, cake, g_object_unref);
 //        }
+//    }
 //
-//        Cake *
-//        baker_bake_cake_sync (Baker               *self,
-//                              guint                radius,
-//                              CakeFlavor           flavor,
-//                              CakeFrostingType     frosting,
-//                              const char          *message,
-//                              GCancellable        *cancellable,
-//                              GError             **error)
-//        {
-//          CakeData *cake_data;
-//          GTask *task;
-//          Cake *cake;
+//    void
+//    baker_bake_cake_async (Baker               *self,
+//                           guint                radius,
+//                           CakeFlavor           flavor,
+//                           CakeFrostingType     frosting,
+//                           const char          *message,
+//                           GCancellable        *cancellable,
+//                           GAsyncReadyCallback  callback,
+//                           gpointer             user_data)
+//    {
+//      CakeData *cake_data;
+//      GTask *task;
 //
-//          cake_data = g_slice_new (CakeData);
+//      cake_data = g_slice_new (CakeData);
 //
-//          ...
+//      ...
 //
-//          task = g_task_new (self, cancellable, NULL, NULL);
-//          g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
-//          g_task_set_return_on_cancel (task, TRUE);
-//          g_task_run_in_thread_sync (task, bake_cake_thread);
+//      task = g_task_new (self, cancellable, callback, user_data);
+//      g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+//      g_task_set_return_on_cancel (task, TRUE);
+//      g_task_run_in_thread (task, bake_cake_thread);
+//    }
 //
-//          cake = g_task_propagate_pointer (task, error);
-//          g_object_unref (task);
-//          return cake;
-//        }
+//    Cake *
+//    baker_bake_cake_sync (Baker               *self,
+//                          guint                radius,
+//                          CakeFlavor           flavor,
+//                          CakeFrostingType     frosting,
+//                          const char          *message,
+//                          GCancellable        *cancellable,
+//                          GError             **error)
+//    {
+//      CakeData *cake_data;
+//      GTask *task;
+//      Cake *cake;
 //
+//      cake_data = g_slice_new (CakeData);
 //
-// Porting from GSimpleAsyncResult
+//      ...
+//
+//      task = g_task_new (self, cancellable, NULL, NULL);
+//      g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+//      g_task_set_return_on_cancel (task, TRUE);
+//      g_task_run_in_thread_sync (task, bake_cake_thread);
+//
+//      cake = g_task_propagate_pointer (task, error);
+//      g_object_unref (task);
+//      return cake;
+//    }
+//
+// # Porting from GSimpleAsyncResult
 //
 // #GTask's API attempts to be simpler than AsyncResult's in several ways:
 //
-// - You can save task-specific data with g_task_set_task_data(), and retrieve
-// it later with g_task_get_task_data(). This replaces the abuse of
-// g_simple_async_result_set_op_res_gpointer() for the same purpose with
+// - You can save task-specific data with g_task_set_task_data(), and
+// retrieve it later with g_task_get_task_data(). This replaces the abuse
+// of g_simple_async_result_set_op_res_gpointer() for the same purpose with
 // AsyncResult.
 //
 // - In addition to the task data, #GTask also keeps track of the
@@ -156,18 +154,18 @@ func init() {
 // so tasks that consist of a chain of simpler asynchronous operations will have
 // easy access to those values when starting each sub-task.
 //
-// - g_task_return_error_if_cancelled() provides simplified handling for
-// cancellation. In addition, cancellation overrides any other #GTask return
-// value by default, like AsyncResult does when
+// - g_task_return_error_if_cancelled() provides simplified handling
+// for cancellation. In addition, cancellation overrides any other
+// #GTask return value by default, like AsyncResult does when
 // g_simple_async_result_set_check_cancellable() is called. (You can use
-// g_task_set_check_cancellable() to turn off that behavior.) On the other hand,
-// g_task_run_in_thread() guarantees that it will always run your task_func,
-// even if the task's #GCancellable is already cancelled before the task gets a
-// chance to run; you can start your task_func with a
+// g_task_set_check_cancellable() to turn off that behavior.) On the other
+// hand, g_task_run_in_thread() guarantees that it will always run your
+// task_func, even if the task's #GCancellable is already cancelled before
+// the task gets a chance to run; you can start your task_func with a
 // g_task_return_error_if_cancelled() check if you need the old behavior.
 //
-// - The "return" methods (eg, g_task_return_pointer()) automatically cause the
-// task to be "completed" as well, and there is no need to worry about the
+// - The "return" methods (eg, g_task_return_pointer()) automatically cause
+// the task to be "completed" as well, and there is no need to worry about the
 // "complete" vs "complete in idle" distinction. (#GTask automatically figures
 // out whether the task's callback can be invoked directly, or if it needs to be
 // sent to another Context, or delayed until the next iteration of the current
@@ -182,14 +180,14 @@ func init() {
 // - With AsyncResult, it was common to call
 // g_simple_async_result_propagate_error() from the _finish() wrapper function,
 // and have virtual method implementations only deal with successful returns.
-// This behavior is deprecated, because it makes it difficult for a subclass to
-// chain to a parent class's async methods. Instead, the wrapper function should
-// just be a simple wrapper, and the virtual method should call an appropriate
-// g_task_propagate_ function. Note that wrapper methods can now use
-// g_async_result_legacy_propagate_error() to do old-style AsyncResult
-// error-returning behavior, and g_async_result_is_tagged() to check if a result
-// is tagged as having come from the _async() wrapper function (for
-// "short-circuit" results, such as when passing 0 to
+// This behavior is deprecated, because it makes it difficult for a subclass
+// to chain to a parent class's async methods. Instead, the wrapper function
+// should just be a simple wrapper, and the virtual method should call
+// an appropriate g_task_propagate_ function. Note that wrapper methods
+// can now use g_async_result_legacy_propagate_error() to do old-style
+// AsyncResult error-returning behavior, and g_async_result_is_tagged()
+// to check if a result is tagged as having come from the _async() wrapper
+// function (for "short-circuit" results, such as when passing 0 to
 // g_input_stream_read_async()).
 type Task struct {
 	_ [0]func() // equal guard
@@ -215,31 +213,31 @@ func marshalTask(p uintptr) (interface{}, error) {
 	return wrapTask(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// NewTask creates a #GTask acting on source_object, which will eventually be
-// used to invoke callback in the current [thread-default main
+// NewTask creates a #GTask acting on source_object, which will eventually
+// be used to invoke callback in the current [thread-default main
 // context][g-main-context-push-thread-default].
 //
-// Call this in the "start" method of your asynchronous method, and pass the
-// #GTask around throughout the asynchronous operation. You can use
+// Call this in the "start" method of your asynchronous method, and pass
+// the #GTask around throughout the asynchronous operation. You can use
 // g_task_set_task_data() to attach task-specific data to the object, which you
 // can retrieve later via g_task_get_task_data().
 //
-// By default, if cancellable is cancelled, then the return value of the task
-// will always be G_IO_ERROR_CANCELLED, even if the task had already completed
-// before the cancellation. This allows for simplified handling in cases where
-// cancellation may imply that other objects that the task depends on have been
-// destroyed. If you do not want this behavior, you can use
+// By default, if cancellable is cancelled, then the return value of the
+// task will always be G_IO_ERROR_CANCELLED, even if the task had already
+// completed before the cancellation. This allows for simplified handling in
+// cases where cancellation may imply that other objects that the task depends
+// on have been destroyed. If you do not want this behavior, you can use
 // g_task_set_check_cancellable() to change it.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): optional #GCancellable object, NULL to ignore.
-//    - sourceObject (optional) that owns this task, or NULL.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - sourceObject (optional) that owns this task, or NULL.
+//   - callback (optional): ReadyCallback.
 //
 // The function returns the following values:
 //
-//    - task: #GTask.
+//   - task: #GTask.
 //
 func NewTask(ctx context.Context, sourceObject *coreglib.Object, callback AsyncReadyCallback) *Task {
 	var _arg2 *C.GCancellable       // out
@@ -275,7 +273,7 @@ func NewTask(ctx context.Context, sourceObject *coreglib.Object, callback AsyncR
 //
 // The function returns the following values:
 //
-//    - cancellable task's #GCancellable.
+//   - cancellable task's #GCancellable.
 //
 func (task *Task) Cancellable() *Cancellable {
 	var _arg0 *C.GTask        // out
@@ -322,7 +320,7 @@ func (task *Task) CheckCancellable() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task has completed, FALSE otherwise.
+//   - ok: TRUE if the task has completed, FALSE otherwise.
 //
 func (task *Task) Completed() bool {
 	var _arg0 *C.GTask   // out
@@ -342,8 +340,8 @@ func (task *Task) Completed() bool {
 	return _ok
 }
 
-// Context gets the Context that task will return its result in (that is, the
-// context that was the [thread-default main
+// Context gets the Context that task will return its result
+// in (that is, the context that was the [thread-default main
 // context][g-main-context-push-thread-default] at the point when task was
 // created).
 //
@@ -352,7 +350,7 @@ func (task *Task) Completed() bool {
 //
 // The function returns the following values:
 //
-//    - mainContext task's Context.
+//   - mainContext task's Context.
 //
 func (task *Task) Context() *glib.MainContext {
 	var _arg0 *C.GTask        // out
@@ -381,7 +379,7 @@ func (task *Task) Context() *glib.MainContext {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) task’s name, or NULL.
+//   - utf8 (optional) task’s name, or NULL.
 //
 func (task *Task) Name() string {
 	var _arg0 *C.GTask // out
@@ -405,7 +403,7 @@ func (task *Task) Name() string {
 //
 // The function returns the following values:
 //
-//    - gint task's priority.
+//   - gint task's priority.
 //
 func (task *Task) Priority() int {
 	var _arg0 *C.GTask // out
@@ -451,7 +449,7 @@ func (task *Task) ReturnOnCancel() bool {
 //
 // The function returns the following values:
 //
-//    - object (optional) task's source object, or NULL.
+//   - object (optional) task's source object, or NULL.
 //
 func (task *Task) SourceObject() *coreglib.Object {
 	var _arg0 *C.GTask   // out
@@ -473,7 +471,7 @@ func (task *Task) SourceObject() *coreglib.Object {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional) task's source tag.
+//   - gpointer (optional) task's source tag.
 //
 func (task *Task) SourceTag() unsafe.Pointer {
 	var _arg0 *C.GTask   // out
@@ -495,7 +493,7 @@ func (task *Task) SourceTag() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional) task's task_data.
+//   - gpointer (optional) task's task_data.
 //
 func (task *Task) TaskData() unsafe.Pointer {
 	var _arg0 *C.GTask   // out
@@ -517,7 +515,7 @@ func (task *Task) TaskData() unsafe.Pointer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the task resulted in an error, FALSE otherwise.
+//   - ok: TRUE if the task resulted in an error, FALSE otherwise.
 //
 func (task *Task) HadError() bool {
 	var _arg0 *C.GTask   // out
@@ -572,7 +570,7 @@ func (task *Task) PropagateBoolean() error {
 //
 // The function returns the following values:
 //
-//    - gssize: task result, or -1 on error.
+//   - gssize: task result, or -1 on error.
 //
 func (task *Task) PropagateInt() (int, error) {
 	var _arg0 *C.GTask  // out
@@ -606,7 +604,7 @@ func (task *Task) PropagateInt() (int, error) {
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): task result, or NULL on error.
+//   - gpointer (optional): task result, or NULL on error.
 //
 func (task *Task) PropagatePointer() (unsafe.Pointer, error) {
 	var _arg0 *C.GTask   // out
@@ -642,7 +640,7 @@ func (task *Task) PropagatePointer() (unsafe.Pointer, error) {
 //
 // The function returns the following values:
 //
-//    - value: return location for the #GValue.
+//   - value: return location for the #GValue.
 //
 func (task *Task) PropagateValue() (coreglib.Value, error) {
 	var _arg0 *C.GTask  // out
@@ -670,7 +668,7 @@ func (task *Task) PropagateValue() (coreglib.Value, error) {
 //
 // The function takes the following parameters:
 //
-//    - result result of a task function.
+//   - result result of a task function.
 //
 func (task *Task) ReturnBoolean(result bool) {
 	var _arg0 *C.GTask   // out
@@ -686,8 +684,8 @@ func (task *Task) ReturnBoolean(result bool) {
 	runtime.KeepAlive(result)
 }
 
-// ReturnError sets task's result to error (which task assumes ownership of) and
-// completes the task (see g_task_return_pointer() for more discussion of
+// ReturnError sets task's result to error (which task assumes ownership of)
+// and completes the task (see g_task_return_pointer() for more discussion of
 // exactly what this means).
 //
 // Note that since the task takes ownership of error, and since the task may be
@@ -699,7 +697,7 @@ func (task *Task) ReturnBoolean(result bool) {
 //
 // The function takes the following parameters:
 //
-//    - err result of a task function.
+//   - err result of a task function.
 //
 func (task *Task) ReturnError(err error) {
 	var _arg0 *C.GTask  // out
@@ -715,13 +713,13 @@ func (task *Task) ReturnError(err error) {
 	runtime.KeepAlive(err)
 }
 
-// ReturnErrorIfCancelled checks if task's #GCancellable has been cancelled, and
-// if so, sets task's error accordingly and completes the task (see
+// ReturnErrorIfCancelled checks if task's #GCancellable has been cancelled,
+// and if so, sets task's error accordingly and completes the task (see
 // g_task_return_pointer() for more discussion of exactly what this means).
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if task has been cancelled, FALSE if not.
+//   - ok: TRUE if task has been cancelled, FALSE if not.
 //
 func (task *Task) ReturnErrorIfCancelled() bool {
 	var _arg0 *C.GTask   // out
@@ -746,7 +744,7 @@ func (task *Task) ReturnErrorIfCancelled() bool {
 //
 // The function takes the following parameters:
 //
-//    - result: integer (#gssize) result of a task function.
+//   - result: integer (#gssize) result of a task function.
 //
 func (task *Task) ReturnInt(result int) {
 	var _arg0 *C.GTask // out
@@ -772,7 +770,7 @@ func (task *Task) ReturnInt(result int) {
 //
 // The function takes the following parameters:
 //
-//    - result (optional) result of a task function.
+//   - result (optional) result of a task function.
 //
 func (task *Task) ReturnValue(result *coreglib.Value) {
 	var _arg0 *C.GTask  // out
@@ -788,15 +786,15 @@ func (task *Task) ReturnValue(result *coreglib.Value) {
 	runtime.KeepAlive(result)
 }
 
-// SetCheckCancellable sets or clears task's check-cancellable flag. If this is
-// TRUE (the default), then g_task_propagate_pointer(), etc, and
-// g_task_had_error() will check the task's #GCancellable first, and if it has
-// been cancelled, then they will consider the task to have returned an
+// SetCheckCancellable sets or clears task's check-cancellable flag.
+// If this is TRUE (the default), then g_task_propagate_pointer(), etc,
+// and g_task_had_error() will check the task's #GCancellable first, and if
+// it has been cancelled, then they will consider the task to have returned an
 // "Operation was cancelled" error (G_IO_ERROR_CANCELLED), regardless of any
 // other error or return value the task may have had.
 //
-// If check_cancellable is FALSE, then the #GTask will not check the cancellable
-// itself, and it is up to task's owner to do this (eg, via
+// If check_cancellable is FALSE, then the #GTask will not check the
+// cancellable itself, and it is up to task's owner to do this (eg, via
 // g_task_return_error_if_cancelled()).
 //
 // If you are using g_task_set_return_on_cancel() as well, then you must leave
@@ -804,8 +802,8 @@ func (task *Task) ReturnValue(result *coreglib.Value) {
 //
 // The function takes the following parameters:
 //
-//    - checkCancellable: whether #GTask will check the state of its
-//      #GCancellable for you.
+//   - checkCancellable: whether #GTask will check the state of its
+//     #GCancellable for you.
 //
 func (task *Task) SetCheckCancellable(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
@@ -824,16 +822,16 @@ func (task *Task) SetCheckCancellable(checkCancellable bool) {
 // SetName sets task’s name, used in debugging and profiling. The name defaults
 // to NULL.
 //
-// The task name should describe in a human readable way what the task does. For
-// example, ‘Open file’ or ‘Connect to network host’. It is used to set the name
-// of the #GSource used for idle completion of the task.
+// The task name should describe in a human readable way what the task does.
+// For example, ‘Open file’ or ‘Connect to network host’. It is used to set the
+// name of the #GSource used for idle completion of the task.
 //
 // This function may only be called before the task is first used in a thread
 // other than the one it was constructed in.
 //
 // The function takes the following parameters:
 //
-//    - name (optional): human readable name for the task, or NULL to unset it.
+//   - name (optional): human readable name for the task, or NULL to unset it.
 //
 func (task *Task) SetName(name string) {
 	var _arg0 *C.GTask // out
@@ -859,7 +857,7 @@ func (task *Task) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - priority: [priority][io-priority] of the request.
+//   - priority: [priority][io-priority] of the request.
 //
 func (task *Task) SetPriority(priority int) {
 	var _arg0 *C.GTask // out
@@ -873,8 +871,8 @@ func (task *Task) SetPriority(priority int) {
 	runtime.KeepAlive(priority)
 }
 
-// SetReturnOnCancel sets or clears task's return-on-cancel flag. This is only
-// meaningful for tasks run via g_task_run_in_thread() or
+// SetReturnOnCancel sets or clears task's return-on-cancel flag.
+// This is only meaningful for tasks run via g_task_run_in_thread() or
 // g_task_run_in_thread_sync().
 //
 // If return_on_cancel is TRUE, then cancelling task's #GCancellable will
@@ -882,17 +880,17 @@ func (task *Task) SetPriority(priority int) {
 // g_task_return_error_if_cancelled() and then returned.
 //
 // This allows you to create a cancellable wrapper around an uninterruptible
-// function. The ThreadFunc just needs to be careful that it does not modify any
-// externally-visible state after it has been cancelled. To do that, the thread
-// should call g_task_set_return_on_cancel() again to (atomically) set
-// return-on-cancel FALSE before making externally-visible changes; if the task
-// gets cancelled before the return-on-cancel flag could be changed,
+// function. The ThreadFunc just needs to be careful that it does not modify
+// any externally-visible state after it has been cancelled. To do that,
+// the thread should call g_task_set_return_on_cancel() again to (atomically)
+// set return-on-cancel FALSE before making externally-visible changes;
+// if the task gets cancelled before the return-on-cancel flag could be changed,
 // g_task_set_return_on_cancel() will indicate this by returning FALSE.
 //
-// You can disable and re-enable this flag multiple times if you wish. If the
-// task's #GCancellable is cancelled while return-on-cancel is FALSE, then
-// calling g_task_set_return_on_cancel() to set it TRUE again will cause the
-// task to be cancelled at that point.
+// You can disable and re-enable this flag multiple times if you wish.
+// If the task's #GCancellable is cancelled while return-on-cancel is FALSE,
+// then calling g_task_set_return_on_cancel() to set it TRUE again will cause
+// the task to be cancelled at that point.
 //
 // If the task's #GCancellable is already cancelled before you call
 // g_task_run_in_thread()/g_task_run_in_thread_sync(), then the ThreadFunc will
@@ -901,13 +899,13 @@ func (task *Task) SetPriority(priority int) {
 //
 // The function takes the following parameters:
 //
-//    - returnOnCancel: whether the task returns automatically when it is
-//      cancelled.
+//   - returnOnCancel: whether the task returns automatically when it is
+//     cancelled.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if task's return-on-cancel flag was changed to match
-//      return_on_cancel. FALSE if task has already been cancelled.
+//   - ok: TRUE if task's return-on-cancel flag was changed to match
+//     return_on_cancel. FALSE if task has already been cancelled.
 //
 func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
@@ -933,14 +931,14 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 }
 
 // SetSourceTag sets task's source tag. You can use this to tag a task return
-// value with a particular pointer (usually a pointer to the function doing the
-// tagging) and then later check it using g_task_get_source_tag() (or
+// value with a particular pointer (usually a pointer to the function doing
+// the tagging) and then later check it using g_task_get_source_tag() (or
 // g_async_result_is_tagged()) in the task's "finish" function, to figure out if
 // the response came from a particular place.
 //
 // The function takes the following parameters:
 //
-//    - sourceTag (optional): opaque pointer indicating the source of this task.
+//   - sourceTag (optional): opaque pointer indicating the source of this task.
 //
 func (task *Task) SetSourceTag(sourceTag unsafe.Pointer) {
 	var _arg0 *C.GTask   // out

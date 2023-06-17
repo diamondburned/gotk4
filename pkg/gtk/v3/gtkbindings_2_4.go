@@ -22,12 +22,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - object (generally must be a widget).
-//    - event: EventKey.
+//   - object (generally must be a widget).
+//   - event: EventKey.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a matching key binding was found.
+//   - ok: TRUE if a matching key binding was found.
 //
 func BindingsActivateEvent(object *coreglib.Object, event *gdk.EventKey) bool {
 	var _arg1 *C.GObject     // out

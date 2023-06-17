@@ -11,9 +11,9 @@ import (
 // #include <glib.h>
 import "C"
 
-// FormatSizeForDisplay formats a size (for example the size of a file) into a
-// human readable string. Sizes are rounded to the nearest size prefix (KB, MB,
-// GB) and are displayed rounded to the nearest tenth. E.g. the file size
+// FormatSizeForDisplay formats a size (for example the size of a file) into
+// a human readable string. Sizes are rounded to the nearest size prefix (KB,
+// MB, GB) and are displayed rounded to the nearest tenth. E.g. the file size
 // 3292528 bytes will be converted into the string "3.1 MB".
 //
 // The prefix units base is 1024 (i.e. 1 KB is 1024 bytes).
@@ -25,12 +25,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - size in bytes.
+//   - size in bytes.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated formatted string containing a human readable file
-//      size.
+//   - utf8: newly-allocated formatted string containing a human readable file
+//     size.
 //
 func FormatSizeForDisplay(size int64) string {
 	var _arg1 C.goffset // out

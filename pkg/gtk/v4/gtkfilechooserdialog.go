@@ -29,8 +29,8 @@ func init() {
 //
 // !An example GtkFileChooserDialog (filechooser.png)
 //
-// This widget works by putting a gtk.FileChooserWidget inside a gtk.Dialog. It
-// exposes the gtk.FileChooser interface, so you can use all of the
+// This widget works by putting a gtk.FileChooserWidget inside a gtk.Dialog.
+// It exposes the gtk.FileChooser interface, so you can use all of the
 // gtk.FileChooser functions on the file chooser dialog as well as those for
 // gtk.Dialog.
 //
@@ -41,8 +41,7 @@ func init() {
 // gtk.FileChooserNative API, which will use a platform-specific dialog if
 // available and fall back to GtkFileChooserDialog otherwise.
 //
-//
-// Typical usage
+// # Typical usage
 //
 // In the simplest of cases, you can the following code to use
 // GtkFileChooserDialog to select a file for opening:
@@ -81,7 +80,6 @@ func init() {
 //      g_signal_connect (dialog, "response",
 //                        G_CALLBACK (on_open_response),
 //                        NULL);
-//
 //
 // To use a dialog for saving, you can use this:
 //
@@ -127,16 +125,14 @@ func init() {
 //                        G_CALLBACK (on_save_response),
 //                        NULL);
 //
-//
-//
-// Setting up a file chooser dialog
+// # Setting up a file chooser dialog
 //
 // There are various cases in which you may need to use a GtkFileChooserDialog:
 //
 // - To select a file for opening, use GTK_FILE_CHOOSER_ACTION_OPEN.
 //
-// - To save a file for the first time, use GTK_FILE_CHOOSER_ACTION_SAVE, and
-// suggest a name such as “Untitled” with gtk.FileChooser.SetCurrentName().
+// - To save a file for the first time, use GTK_FILE_CHOOSER_ACTION_SAVE,
+// and suggest a name such as “Untitled” with gtk.FileChooser.SetCurrentName().
 //
 // - To save a file under a different name, use GTK_FILE_CHOOSER_ACTION_SAVE,
 // and set the existing file with gtk.FileChooser.SetFile().
@@ -148,11 +144,10 @@ func init() {
 // when it is appropriate to use gtk,filechooser.SetFile, i.e. when you are
 // doing a “Save As” command and you already have a file saved somewhere.
 //
+// # Response Codes
 //
-// Response Codes
-//
-// GtkFileChooserDialog inherits from gtk.Dialog, so buttons that go in its
-// action area have response codes such as GTK_RESPONSE_ACCEPT and
+// GtkFileChooserDialog inherits from gtk.Dialog, so buttons that go in
+// its action area have response codes such as GTK_RESPONSE_ACCEPT and
 // GTK_RESPONSE_CANCEL. For example, you could call gtk.FileChooserDialog.New as
 // follows:
 //
@@ -168,12 +163,11 @@ func init() {
 //                                          GTK_RESPONSE_ACCEPT,
 //                                          NULL);
 //
-//
-// This will create buttons for “Cancel” and “Open” that use predefined response
-// identifiers from gtk.ResponseType. For most dialog boxes you can use your own
-// custom response codes rather than the ones in gtk.ResponseType, but
-// GtkFileChooserDialog assumes that its “accept”-type action, e.g. an “Open” or
-// “Save” button, will have one of the following response codes:
+// This will create buttons for “Cancel” and “Open” that use predefined
+// response identifiers from gtk.ResponseType. For most dialog boxes you can
+// use your own custom response codes rather than the ones in gtk.ResponseType,
+// but GtkFileChooserDialog assumes that its “accept”-type action, e.g.
+// an “Open” or “Save” button, will have one of the following response codes:
 //
 // - GTK_RESPONSE_ACCEPT
 //
@@ -183,8 +177,8 @@ func init() {
 //
 // - GTK_RESPONSE_APPLY
 //
-// This is because GtkFileChooserDialog must intercept responses and switch to
-// folders if appropriate, rather than letting the dialog terminate — the
+// This is because GtkFileChooserDialog must intercept responses and switch
+// to folders if appropriate, rather than letting the dialog terminate — the
 // implementation uses these known response codes to know which responses can be
 // blocked if appropriate.
 //

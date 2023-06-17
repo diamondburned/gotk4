@@ -52,8 +52,7 @@ func init() {
 // a BusAuthObserver and connect to the signals you are interested in. Note that
 // new signals may be added in the future
 //
-//
-// Controlling Authentication Mechanisms
+// # Controlling Authentication Mechanisms
 //
 // By default, a BusServer or server-side BusConnection will allow any
 // authentication mechanism to be used. If you only want to allow D-Bus
@@ -115,7 +114,7 @@ func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(strea
 //
 // The function returns the following values:
 //
-//    - dBusAuthObserver Free with g_object_unref().
+//   - dBusAuthObserver Free with g_object_unref().
 //
 func NewDBusAuthObserver() *DBusAuthObserver {
 	var _cret *C.GDBusAuthObserver // in
@@ -133,12 +132,12 @@ func NewDBusAuthObserver() *DBusAuthObserver {
 //
 // The function takes the following parameters:
 //
-//    - mechanism: name of the mechanism, e.g. DBUS_COOKIE_SHA1.
+//   - mechanism: name of the mechanism, e.g. DBUS_COOKIE_SHA1.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if mechanism can be used to authenticate the other peer, FALSE
-//      if not.
+//   - ok: TRUE if mechanism can be used to authenticate the other peer,
+//     FALSE if not.
 //
 func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 	var _arg0 *C.GDBusAuthObserver // out
@@ -167,12 +166,12 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 //
 // The function takes the following parameters:
 //
-//    - stream for the BusConnection.
-//    - credentials (optional) credentials received from the peer or NULL.
+//   - stream for the BusConnection.
+//   - credentials (optional) credentials received from the peer or NULL.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the peer is authorized, FALSE if not.
+//   - ok: TRUE if the peer is authorized, FALSE if not.
 //
 func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, credentials *Credentials) bool {
 	var _arg0 *C.GDBusAuthObserver // out
@@ -200,13 +199,13 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 	return _ok
 }
 
-// DBusConnection type is used for D-Bus connections to remote peers such as a
-// message buses. It is a low-level API that offers a lot of flexibility. For
-// instance, it lets you establish a connection over any transport that can by
-// represented as a OStream.
+// DBusConnection type is used for D-Bus connections to remote peers such as
+// a message buses. It is a low-level API that offers a lot of flexibility.
+// For instance, it lets you establish a connection over any transport that can
+// by represented as a OStream.
 //
-// This class is rarely used directly in D-Bus clients. If you are writing a
-// D-Bus client, it is often easier to use the g_bus_own_name(),
+// This class is rarely used directly in D-Bus clients. If you are writing
+// a D-Bus client, it is often easier to use the g_bus_own_name(),
 // g_bus_watch_name() or g_dbus_proxy_new_for_bus() APIs.
 //
 // As an exception to the usual GLib rule that a particular object must not be
@@ -215,8 +214,8 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 // return the same BusConnection when called from any thread.
 //
 // Most of the ways to obtain a BusConnection automatically initialize it (i.e.
-// connect to D-Bus): for instance, g_dbus_connection_new() and g_bus_get(), and
-// the synchronous versions of those methods, give you an initialized
+// connect to D-Bus): for instance, g_dbus_connection_new() and g_bus_get(),
+// and the synchronous versions of those methods, give you an initialized
 // connection. Language bindings for GIO should use g_initable_new() or
 // g_async_initable_new_async(), which also initialize the connection.
 //
@@ -228,26 +227,22 @@ func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, 
 // In particular, if initialization fails with a #GError, the only valid thing
 // you can do with that BusConnection is to free it with g_object_unref().
 //
-//
-// An example D-Bus server
+// # An example D-Bus server
 //
 // Here is an example for a D-Bus server: gdbus-example-server.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-server.c)
 //
-//
-// An example for exporting a subtree
+// # An example for exporting a subtree
 //
 // Here is an example for exporting a subtree: gdbus-example-subtree.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-subtree.c)
 //
-//
-// An example for file descriptor passing
+// # An example for file descriptor passing
 //
 // Here is an example for passing UNIX file descriptors: gdbus-unix-fd-client.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-unix-fd-client.c)
 //
-//
-// An example for exporting a GObject
+// # An example for exporting a GObject
 //
 // Here is an example for exporting a #GObject: gdbus-example-export.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c).
@@ -281,8 +276,7 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 
 // ConnectClosed is emitted when the connection is closed.
 //
-//
-// The cause of this event can be
+// # The cause of this event can be
 //
 // - If g_dbus_connection_close() is called. In this case remote_peer_vanished
 // is set to FALSE and error is NULL.
@@ -304,11 +298,11 @@ func (connection *DBusConnection) ConnectClosed(f func(remotePeerVanished bool, 
 //
 // The function takes the following parameters:
 //
-//    - res obtained from the ReadyCallback passed to g_dbus_connection_new().
+//   - res obtained from the ReadyCallback passed to g_dbus_connection_new().
 //
 // The function returns the following values:
 //
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
+//   - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
@@ -336,11 +330,11 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 //
 // The function takes the following parameters:
 //
-//    - res obtained from the ReadyCallback passed to g_dbus_connection_new().
+//   - res obtained from the ReadyCallback passed to g_dbus_connection_new().
 //
 // The function returns the following values:
 //
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
+//   - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
@@ -363,9 +357,9 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 	return _dBusConnection, _goerr
 }
 
-// NewDBusConnectionForAddressSync: synchronously connects and sets up a D-Bus
-// client connection for exchanging D-Bus messages with an endpoint specified by
-// address which must be in the D-Bus address format
+// NewDBusConnectionForAddressSync: synchronously connects and sets
+// up a D-Bus client connection for exchanging D-Bus messages with an
+// endpoint specified by address which must be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // This constructor can only be used to initiate client-side connections - use
@@ -381,14 +375,14 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - address d-Bus address.
-//    - flags describing how to make the connection.
-//    - observer (optional) or NULL.
+//   - ctx (optional) or NULL.
+//   - address d-Bus address.
+//   - flags describing how to make the connection.
+//   - observer (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
+//   - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
 	var _arg4 *C.GCancellable        // out
@@ -444,15 +438,15 @@ func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - stream: OStream.
-//    - guid (optional): GUID to use if authenticating as a server or NULL.
-//    - flags describing how to make the connection.
-//    - observer (optional) or NULL.
+//   - ctx (optional) or NULL.
+//   - stream: OStream.
+//   - guid (optional): GUID to use if authenticating as a server or NULL.
+//   - flags describing how to make the connection.
+//   - observer (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
+//   - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
 	var _arg5 *C.GCancellable        // out
@@ -497,21 +491,21 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 }
 
 // AddFilter adds a message filter. Filters are handlers that are run on all
-// incoming and outgoing messages, prior to standard dispatch. Filters are run
-// in the order that they were added. The same handler can be added as a filter
-// more than once, in which case it will be run more than once. Filters added
-// during a filter callback won't be run on the message being processed. Filter
-// functions are allowed to modify and even drop messages.
+// incoming and outgoing messages, prior to standard dispatch. Filters are
+// run in the order that they were added. The same handler can be added as a
+// filter more than once, in which case it will be run more than once. Filters
+// added during a filter callback won't be run on the message being processed.
+// Filter functions are allowed to modify and even drop messages.
 //
-// Note that filters are run in a dedicated message handling thread so they
-// can't block and, generally, can't do anything but signal a worker thread.
-// Also note that filters are rarely needed - use API such as
-// g_dbus_connection_send_message_with_reply(),
+// Note that filters are run in a dedicated message handling thread
+// so they can't block and, generally, can't do anything but signal
+// a worker thread. Also note that filters are rarely needed -
+// use API such as g_dbus_connection_send_message_with_reply(),
 // g_dbus_connection_signal_subscribe() or g_dbus_connection_call() instead.
 //
-// If a filter consumes an incoming message the message is not dispatched
-// anywhere else - not even the standard dispatch machinery (that API such as
-// g_dbus_connection_signal_subscribe() and
+// If a filter consumes an incoming message the message is not
+// dispatched anywhere else - not even the standard dispatch machinery
+// (that API such as g_dbus_connection_signal_subscribe() and
 // g_dbus_connection_send_message_with_reply() relies on) will see the message.
 // Similarly, if a filter consumes an outgoing message, the message will not be
 // sent to the other peer.
@@ -524,12 +518,12 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 //
 // The function takes the following parameters:
 //
-//    - filterFunction: filter function.
+//   - filterFunction: filter function.
 //
 // The function returns the following values:
 //
-//    - guint: filter identifier that can be used with
-//      g_dbus_connection_remove_filter().
+//   - guint: filter identifier that can be used with
+//     g_dbus_connection_remove_filter().
 //
 func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
 	var _arg0 *C.GDBusConnection           // out
@@ -562,11 +556,11 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 // G_IO_ERROR_CANCELLED. If parameters contains a value not compatible with the
 // D-Bus protocol, the operation fails with G_IO_ERROR_INVALID_ARGUMENT.
 //
-// If reply_type is non-NULL then the reply will be checked for having this type
-// and an error will be raised if it does not match. Said another way, if you
-// give a reply_type then any non-NULL return value will be of this type. Unless
-// it’s G_VARIANT_TYPE_UNIT, the reply_type will be a tuple containing one or
-// more values.
+// If reply_type is non-NULL then the reply will be checked for having this
+// type and an error will be raised if it does not match. Said another way,
+// if you give a reply_type then any non-NULL return value will be of this type.
+// Unless it’s G_VARIANT_TYPE_UNIT, the reply_type will be a tuple containing
+// one or more values.
 //
 // If the parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
@@ -586,11 +580,11 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //                            (GAsyncReadyCallback) two_strings_done,
 //                            NULL);
 //
-// This is an asynchronous method. When the operation is finished, callback will
-// be invoked in the [thread-default main
+// This is an asynchronous method. When the operation is finished,
+// callback will be invoked in the [thread-default main
 // context][g-main-context-push-thread-default] of the thread you are calling
-// this method from. You can then call g_dbus_connection_call_finish() to get
-// the result of the operation. See g_dbus_connection_call_sync() for the
+// this method from. You can then call g_dbus_connection_call_finish() to
+// get the result of the operation. See g_dbus_connection_call_sync() for the
 // synchronous version of this function.
 //
 // If callback is NULL then the D-Bus method call message will be sent with the
@@ -598,21 +592,21 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - busName (optional): unique or well-known bus name or NULL if connection
-//      is not a message bus connection.
-//    - objectPath: path of remote object.
-//    - interfaceName d-Bus interface to invoke method on.
-//    - methodName: name of the method to invoke.
-//    - parameters (optional) tuple with parameters for the method or NULL if not
-//      passing parameters.
-//    - replyType (optional): expected type of the reply (which will be a tuple),
-//      or NULL.
-//    - flags from the BusCallFlags enumeration.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//      G_MAXINT for no timeout.
-//    - callback (optional) to call when the request is satisfied or NULL if you
-//      don't care about the result of the method invocation.
+//   - ctx (optional) or NULL.
+//   - busName (optional): unique or well-known bus name or NULL if connection
+//     is not a message bus connection.
+//   - objectPath: path of remote object.
+//   - interfaceName d-Bus interface to invoke method on.
+//   - methodName: name of the method to invoke.
+//   - parameters (optional) tuple with parameters for the method or NULL if not
+//     passing parameters.
+//   - replyType (optional): expected type of the reply (which will be a tuple),
+//     or NULL.
+//   - flags from the BusCallFlags enumeration.
+//   - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//     G_MAXINT for no timeout.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result of the method invocation.
 //
 func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
@@ -675,12 +669,12 @@ func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath,
 //
 // The function takes the following parameters:
 //
-//    - res obtained from the ReadyCallback passed to g_dbus_connection_call().
+//   - res obtained from the ReadyCallback passed to g_dbus_connection_call().
 //
 // The function returns the following values:
 //
-//    - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
-//      with return values. Free with g_variant_unref().
+//   - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
+//     with return values. Free with g_variant_unref().
 //
 func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
@@ -720,9 +714,9 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 // G_IO_ERROR_CANCELLED. If parameters contains a value not compatible with the
 // D-Bus protocol, the operation fails with G_IO_ERROR_INVALID_ARGUMENT.
 //
-// If reply_type is non-NULL then the reply will be checked for having this type
-// and an error will be raised if it does not match. Said another way, if you
-// give a reply_type then any non-NULL return value will be of this type.
+// If reply_type is non-NULL then the reply will be checked for having this
+// type and an error will be raised if it does not match. Said another way,
+// if you give a reply_type then any non-NULL return value will be of this type.
 //
 // If the parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
@@ -746,23 +740,23 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - busName (optional): unique or well-known bus name or NULL if connection
-//      is not a message bus connection.
-//    - objectPath: path of remote object.
-//    - interfaceName d-Bus interface to invoke method on.
-//    - methodName: name of the method to invoke.
-//    - parameters (optional) tuple with parameters for the method or NULL if not
-//      passing parameters.
-//    - replyType (optional): expected type of the reply, or NULL.
-//    - flags from the BusCallFlags enumeration.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//      G_MAXINT for no timeout.
+//   - ctx (optional) or NULL.
+//   - busName (optional): unique or well-known bus name or NULL if connection
+//     is not a message bus connection.
+//   - objectPath: path of remote object.
+//   - interfaceName d-Bus interface to invoke method on.
+//   - methodName: name of the method to invoke.
+//   - parameters (optional) tuple with parameters for the method or NULL if not
+//     passing parameters.
+//   - replyType (optional): expected type of the reply, or NULL.
+//   - flags from the BusCallFlags enumeration.
+//   - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//     G_MAXINT for no timeout.
 //
 // The function returns the following values:
 //
-//    - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
-//      with return values. Free with g_variant_unref().
+//   - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
+//     with return values. Free with g_variant_unref().
 //
 func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
@@ -836,10 +830,10 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectP
 // (this might only happen if the other end of a shared message bus connection
 // disconnects, see BusConnection:exit-on-close).
 //
-// Once the connection is closed, operations such as sending a message will
-// return with the error G_IO_ERROR_CLOSED. Closing a connection will not
-// automatically flush the connection so queued messages may be lost. Use
-// g_dbus_connection_flush() if you need such guarantees.
+// Once the connection is closed, operations such as sending a message
+// will return with the error G_IO_ERROR_CLOSED. Closing a connection will
+// not automatically flush the connection so queued messages may be lost.
+// Use g_dbus_connection_flush() if you need such guarantees.
 //
 // If connection is already closed, this method fails with G_IO_ERROR_CLOSED.
 //
@@ -847,18 +841,18 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectP
 // in the [thread-default main context][g-main-context-push-thread-default] of
 // the thread that connection was constructed in.
 //
-// This is an asynchronous method. When the operation is finished, callback will
-// be invoked in the [thread-default main
+// This is an asynchronous method. When the operation is finished,
+// callback will be invoked in the [thread-default main
 // context][g-main-context-push-thread-default] of the thread you are calling
-// this method from. You can then call g_dbus_connection_close_finish() to get
-// the result of the operation. See g_dbus_connection_close_sync() for the
+// this method from. You can then call g_dbus_connection_close_finish() to
+// get the result of the operation. See g_dbus_connection_close_sync() for the
 // synchronous version.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - callback (optional) to call when the request is satisfied or NULL if you
-//      don't care about the result.
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result.
 //
 func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
@@ -887,7 +881,7 @@ func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReady
 //
 // The function takes the following parameters:
 //
-//    - res obtained from the ReadyCallback passed to g_dbus_connection_close().
+//   - res obtained from the ReadyCallback passed to g_dbus_connection_close().
 //
 func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 	var _arg0 *C.GDBusConnection // out
@@ -916,7 +910,7 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 	var _arg0 *C.GDBusConnection // out
@@ -947,19 +941,19 @@ func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 //
 // If the parameters GVariant is floating, it is consumed.
 //
-// This can only fail if parameters is not compatible with the D-Bus protocol
-// (G_IO_ERROR_INVALID_ARGUMENT), or if connection has been closed
+// This can only fail if parameters is not compatible with the D-Bus
+// protocol (G_IO_ERROR_INVALID_ARGUMENT), or if connection has been closed
 // (G_IO_ERROR_CLOSED).
 //
 // The function takes the following parameters:
 //
-//    - destinationBusName (optional): unique bus name for the destination for
-//      the signal or NULL to emit to all listeners.
-//    - objectPath: path of remote object.
-//    - interfaceName d-Bus interface to emit a signal on.
-//    - signalName: name of the signal to emit.
-//    - parameters (optional) tuple with parameters for the signal or NULL if not
-//      passing parameters.
+//   - destinationBusName (optional): unique bus name for the destination for
+//     the signal or NULL to emit to all listeners.
+//   - objectPath: path of remote object.
+//   - interfaceName d-Bus interface to emit a signal on.
+//   - signalName: name of the signal to emit.
+//   - parameters (optional) tuple with parameters for the signal or NULL if not
+//     passing parameters.
 //
 func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, interfaceName, signalName string, parameters *glib.Variant) error {
 	var _arg0 *C.GDBusConnection // out
@@ -1015,22 +1009,22 @@ func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, int
 // g_dbus_connection_unexport_action_group() with the return value of this
 // function.
 //
-// The thread default main context is taken at the time of this call. All
-// incoming action activations and state change requests are reported from this
-// context. Any changes on the action group that cause it to emit signals must
-// also come from this same context. Since incoming action activations and state
-// change requests are rather likely to cause changes on the action group, this
-// effectively limits a given action group to being exported from only one main
-// context.
+// The thread default main context is taken at the time of this call.
+// All incoming action activations and state change requests are reported from
+// this context. Any changes on the action group that cause it to emit signals
+// must also come from this same context. Since incoming action activations and
+// state change requests are rather likely to cause changes on the action group,
+// this effectively limits a given action group to being exported from only one
+// main context.
 //
 // The function takes the following parameters:
 //
-//    - objectPath d-Bus object path.
-//    - actionGroup: Group.
+//   - objectPath d-Bus object path.
+//   - actionGroup: Group.
 //
 // The function returns the following values:
 //
-//    - guint: ID of the export (never zero), or 0 in case of failure.
+//   - guint: ID of the export (never zero), or 0 in case of failure.
 //
 func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
@@ -1074,12 +1068,12 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 //
 // The function takes the following parameters:
 //
-//    - objectPath d-Bus object path.
-//    - menu: Model.
+//   - objectPath d-Bus object path.
+//   - menu: Model.
 //
 // The function returns the following values:
 //
-//    - guint: ID of the export (never zero), or 0 in case of failure.
+//   - guint: ID of the export (never zero), or 0 in case of failure.
 //
 func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
@@ -1109,25 +1103,25 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	return _guint, _goerr
 }
 
-// Flush: asynchronously flushes connection, that is, writes all queued outgoing
-// message to the transport and then flushes the transport (using
+// Flush: asynchronously flushes connection, that is, writes all queued
+// outgoing message to the transport and then flushes the transport (using
 // g_output_stream_flush_async()). This is useful in programs that wants to emit
 // a D-Bus signal and then exit immediately. Without flushing the connection,
 // there is no guaranteed that the message has been sent to the networking
 // buffers in the OS kernel.
 //
-// This is an asynchronous method. When the operation is finished, callback will
-// be invoked in the [thread-default main
+// This is an asynchronous method. When the operation is finished,
+// callback will be invoked in the [thread-default main
 // context][g-main-context-push-thread-default] of the thread you are calling
-// this method from. You can then call g_dbus_connection_flush_finish() to get
-// the result of the operation. See g_dbus_connection_flush_sync() for the
+// this method from. You can then call g_dbus_connection_flush_finish() to
+// get the result of the operation. See g_dbus_connection_flush_sync() for the
 // synchronous version.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - callback (optional) to call when the request is satisfied or NULL if you
-//      don't care about the result.
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result.
 //
 func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
@@ -1156,7 +1150,7 @@ func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReady
 //
 // The function takes the following parameters:
 //
-//    - res obtained from the ReadyCallback passed to g_dbus_connection_flush().
+//   - res obtained from the ReadyCallback passed to g_dbus_connection_flush().
 //
 func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 	var _arg0 *C.GDBusConnection // out
@@ -1185,7 +1179,7 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 	var _arg0 *C.GDBusConnection // out
@@ -1216,8 +1210,8 @@ func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 //
 // The function returns the following values:
 //
-//    - dBusCapabilityFlags: zero or more flags from the BusCapabilityFlags
-//      enumeration.
+//   - dBusCapabilityFlags: zero or more flags from the BusCapabilityFlags
+//     enumeration.
 //
 func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
 	var _arg0 *C.GDBusConnection     // out
@@ -1240,8 +1234,8 @@ func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
 //
 // The function returns the following values:
 //
-//    - ok: whether the process is terminated when connection is closed by the
-//      remote peer.
+//   - ok: whether the process is terminated when connection is closed by the
+//     remote peer.
 //
 func (connection *DBusConnection) ExitOnClose() bool {
 	var _arg0 *C.GDBusConnection // out
@@ -1265,8 +1259,8 @@ func (connection *DBusConnection) ExitOnClose() bool {
 //
 // The function returns the following values:
 //
-//    - dBusConnectionFlags: zero or more flags from the BusConnectionFlags
-//      enumeration.
+//   - dBusConnectionFlags: zero or more flags from the BusConnectionFlags
+//     enumeration.
 //
 func (connection *DBusConnection) Flags() DBusConnectionFlags {
 	var _arg0 *C.GDBusConnection     // out
@@ -1289,7 +1283,7 @@ func (connection *DBusConnection) Flags() DBusConnectionFlags {
 //
 // The function returns the following values:
 //
-//    - utf8: GUID. Do not free this string, it is owned by connection.
+//   - utf8: GUID. Do not free this string, it is owned by connection.
 //
 func (connection *DBusConnection) GUID() string {
 	var _arg0 *C.GDBusConnection // out
@@ -1307,16 +1301,16 @@ func (connection *DBusConnection) GUID() string {
 	return _utf8
 }
 
-// LastSerial retrieves the last serial number assigned to a BusMessage on the
-// current thread. This includes messages sent via both low-level API such as
-// g_dbus_connection_send_message() as well as high-level API such as
-// g_dbus_connection_emit_signal(), g_dbus_connection_call() or
+// LastSerial retrieves the last serial number assigned to a BusMessage
+// on the current thread. This includes messages sent via both low-level
+// API such as g_dbus_connection_send_message() as well as high-level API
+// such as g_dbus_connection_emit_signal(), g_dbus_connection_call() or
 // g_dbus_proxy_call().
 //
 // The function returns the following values:
 //
-//    - guint32: last used serial or zero when no message has been sent within
-//      the current thread.
+//   - guint32: last used serial or zero when no message has been sent within
+//     the current thread.
 //
 func (connection *DBusConnection) LastSerial() uint32 {
 	var _arg0 *C.GDBusConnection // out
@@ -1334,8 +1328,8 @@ func (connection *DBusConnection) LastSerial() uint32 {
 	return _guint32
 }
 
-// PeerCredentials gets the credentials of the authenticated peer. This will
-// always return NULL unless connection acted as a server (e.g.
+// PeerCredentials gets the credentials of the authenticated peer.
+// This will always return NULL unless connection acted as a server (e.g.
 // G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER was passed) when set up and the
 // client passed credentials as part of the authentication process.
 //
@@ -1345,8 +1339,8 @@ func (connection *DBusConnection) LastSerial() uint32 {
 //
 // The function returns the following values:
 //
-//    - credentials (optional) or NULL if not available. Do not free this object,
-//      it is owned by connection.
+//   - credentials (optional) or NULL if not available. Do not free this object,
+//     it is owned by connection.
 //
 func (connection *DBusConnection) PeerCredentials() *Credentials {
 	var _arg0 *C.GDBusConnection // out
@@ -1373,7 +1367,7 @@ func (connection *DBusConnection) PeerCredentials() *Credentials {
 //
 // The function returns the following values:
 //
-//    - ioStream: stream used for IO.
+//   - ioStream: stream used for IO.
 //
 func (connection *DBusConnection) Stream() IOStreamer {
 	var _arg0 *C.GDBusConnection // out
@@ -1413,8 +1407,8 @@ func (connection *DBusConnection) Stream() IOStreamer {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): unique name or NULL if connection is not a message bus
-//      connection. Do not free this string, it is owned by connection.
+//   - utf8 (optional): unique name or NULL if connection is not a message bus
+//     connection. Do not free this string, it is owned by connection.
 //
 func (connection *DBusConnection) UniqueName() string {
 	var _arg0 *C.GDBusConnection // out
@@ -1438,7 +1432,7 @@ func (connection *DBusConnection) UniqueName() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the connection is closed, FALSE otherwise.
+//   - ok: TRUE if the connection is closed, FALSE otherwise.
 //
 func (connection *DBusConnection) IsClosed() bool {
 	var _arg0 *C.GDBusConnection // out
@@ -1463,16 +1457,16 @@ func (connection *DBusConnection) IsClosed() bool {
 //
 // The function takes the following parameters:
 //
-//    - objectPath: object path to register at.
-//    - interfaceInfo: introspection data for the interface.
-//    - methodCallClosure (optional) for handling incoming method calls.
-//    - getPropertyClosure (optional) for getting a property.
-//    - setPropertyClosure (optional) for setting a property.
+//   - objectPath: object path to register at.
+//   - interfaceInfo: introspection data for the interface.
+//   - methodCallClosure (optional) for handling incoming method calls.
+//   - getPropertyClosure (optional) for getting a property.
+//   - setPropertyClosure (optional) for setting a property.
 //
 // The function returns the following values:
 //
-//    - guint: 0 if error is set, otherwise a registration ID (never 0) that can
-//      be used with g_dbus_connection_unregister_object() .
+//   - guint: 0 if error is set, otherwise a registration ID (never 0) that can
+//     be used with g_dbus_connection_unregister_object() .
 //
 func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure coreglib.AnyClosure) (uint, error) {
 	var _arg0 *C.GDBusConnection    // out
@@ -1513,16 +1507,16 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 
 // RemoveFilter removes a filter.
 //
-// Note that since filters run in a different thread, there is a race condition
-// where it is possible that the filter will be running even after calling
-// g_dbus_connection_remove_filter(), so you cannot just free data that the
-// filter might be using. Instead, you should pass a Notify to
+// Note that since filters run in a different thread, there is a race
+// condition where it is possible that the filter will be running even after
+// calling g_dbus_connection_remove_filter(), so you cannot just free data
+// that the filter might be using. Instead, you should pass a Notify to
 // g_dbus_connection_add_filter(), which will be called when it is guaranteed
 // that the data is no longer needed.
 //
 // The function takes the following parameters:
 //
-//    - filterId: identifier obtained from g_dbus_connection_add_filter().
+//   - filterId: identifier obtained from g_dbus_connection_add_filter().
 //
 func (connection *DBusConnection) RemoveFilter(filterId uint) {
 	var _arg0 *C.GDBusConnection // out
@@ -1539,19 +1533,19 @@ func (connection *DBusConnection) RemoveFilter(filterId uint) {
 // SendMessage: asynchronously sends message to the peer represented by
 // connection.
 //
-// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
-// serial number will be assigned by connection and set on message via
+// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag,
+// the serial number will be assigned by connection and set on message via
 // g_dbus_message_set_serial(). If out_serial is not NULL, then the serial
 // number used will be written to this location prior to submitting the message
 // to the underlying transport. While it has a volatile qualifier, this is a
 // historical artifact and the argument passed to it should not be volatile.
 //
-// If connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
-// If message is not well-formed, the operation fails with
+// If connection is closed then the operation will fail with
+// G_IO_ERROR_CLOSED. If message is not well-formed, the operation fails with
 // G_IO_ERROR_INVALID_ARGUMENT.
 //
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for
+// an example of how to use this low-level API to send and receive UNIX file
 // descriptors.
 //
 // Note that message must be unlocked, unless flags contain the
@@ -1559,13 +1553,13 @@ func (connection *DBusConnection) RemoveFilter(filterId uint) {
 //
 // The function takes the following parameters:
 //
-//    - message: BusMessage.
-//    - flags affecting how the message is sent.
+//   - message: BusMessage.
+//   - flags affecting how the message is sent.
 //
 // The function returns the following values:
 //
-//    - outSerial (optional): return location for serial number assigned to
-//      message when sending it or NULL.
+//   - outSerial (optional): return location for serial number assigned to
+//     message when sending it or NULL.
 //
 func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
 	var _arg0 *C.GDBusConnection      // out
@@ -1597,8 +1591,8 @@ func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSe
 // SendMessageWithReply: asynchronously sends message to the peer represented by
 // connection.
 //
-// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
-// serial number will be assigned by connection and set on message via
+// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag,
+// the serial number will be assigned by connection and set on message via
 // g_dbus_message_set_serial(). If out_serial is not NULL, then the serial
 // number used will be written to this location prior to submitting the message
 // to the underlying transport. While it has a volatile qualifier, this is a
@@ -1609,35 +1603,35 @@ func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSe
 // G_IO_ERROR_CANCELLED. If message is not well-formed, the operation fails with
 // G_IO_ERROR_INVALID_ARGUMENT.
 //
-// This is an asynchronous method. When the operation is finished, callback will
-// be invoked in the [thread-default main
-// context][g-main-context-push-thread-default] of the thread you are calling
-// this method from. You can then call
-// g_dbus_connection_send_message_with_reply_finish() to get the result of the
-// operation. See g_dbus_connection_send_message_with_reply_sync() for the
+// This is an asynchronous method. When the operation is
+// finished, callback will be invoked in the [thread-default
+// main context][g-main-context-push-thread-default] of the
+// thread you are calling this method from. You can then call
+// g_dbus_connection_send_message_with_reply_finish() to get the result of
+// the operation. See g_dbus_connection_send_message_with_reply_sync() for the
 // synchronous version.
 //
 // Note that message must be unlocked, unless flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
 //
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for
+// an example of how to use this low-level API to send and receive UNIX file
 // descriptors.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - message: BusMessage.
-//    - flags affecting how the message is sent.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//      G_MAXINT for no timeout.
-//    - callback (optional) to call when the request is satisfied or NULL if you
-//      don't care about the result.
+//   - ctx (optional) or NULL.
+//   - message: BusMessage.
+//   - flags affecting how the message is sent.
+//   - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//     G_MAXINT for no timeout.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result.
 //
 // The function returns the following values:
 //
-//    - outSerial (optional): return location for serial number assigned to
-//      message when sending it or NULL.
+//   - outSerial (optional): return location for serial number assigned to
+//     message when sending it or NULL.
 //
 func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, callback AsyncReadyCallback) uint32 {
 	var _arg0 *C.GDBusConnection      // out
@@ -1681,23 +1675,23 @@ func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, mess
 // SendMessageWithReplyFinish finishes an operation started with
 // g_dbus_connection_send_message_with_reply().
 //
-// Note that error is only set if a local in-process error occurred. That is to
-// say that the returned BusMessage object may be of type
+// Note that error is only set if a local in-process error occurred.
+// That is to say that the returned BusMessage object may be of type
 // G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode this
 // to a #GError.
 //
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for
+// an example of how to use this low-level API to send and receive UNIX file
 // descriptors.
 //
 // The function takes the following parameters:
 //
-//    - res obtained from the ReadyCallback passed to
-//      g_dbus_connection_send_message_with_reply().
+//   - res obtained from the ReadyCallback passed to
+//     g_dbus_connection_send_message_with_reply().
 //
 // The function returns the following values:
 //
-//    - dBusMessage: locked BusMessage or NULL if error is set.
+//   - dBusMessage: locked BusMessage or NULL if error is set.
 //
 func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) (*DBusMessage, error) {
 	var _arg0 *C.GDBusConnection // out
@@ -1728,8 +1722,8 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 // timeout is reached. See g_dbus_connection_send_message_with_reply() for the
 // asynchronous version of this method.
 //
-// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the
-// serial number will be assigned by connection and set on message via
+// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag,
+// the serial number will be assigned by connection and set on message via
 // g_dbus_message_set_serial(). If out_serial is not NULL, then the serial
 // number used will be written to this location prior to submitting the message
 // to the underlying transport. While it has a volatile qualifier, this is a
@@ -1740,13 +1734,13 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 // G_IO_ERROR_CANCELLED. If message is not well-formed, the operation fails with
 // G_IO_ERROR_INVALID_ARGUMENT.
 //
-// Note that error is only set if a local in-process error occurred. That is to
-// say that the returned BusMessage object may be of type
+// Note that error is only set if a local in-process error occurred.
+// That is to say that the returned BusMessage object may be of type
 // G_DBUS_MESSAGE_TYPE_ERROR. Use g_dbus_message_to_gerror() to transcode this
 // to a #GError.
 //
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for
+// an example of how to use this low-level API to send and receive UNIX file
 // descriptors.
 //
 // Note that message must be unlocked, unless flags contain the
@@ -1754,18 +1748,18 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - message: BusMessage.
-//    - flags affecting how the message is sent.
-//    - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
-//      G_MAXINT for no timeout.
+//   - ctx (optional) or NULL.
+//   - message: BusMessage.
+//   - flags affecting how the message is sent.
+//   - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//     G_MAXINT for no timeout.
 //
 // The function returns the following values:
 //
-//    - outSerial (optional): return location for serial number assigned to
-//      message when sending it or NULL.
-//    - dBusMessage: locked BusMessage that is the reply to message or NULL if
-//      error is set.
+//   - outSerial (optional): return location for serial number assigned to
+//     message when sending it or NULL.
+//   - dBusMessage: locked BusMessage that is the reply to message or NULL if
+//     error is set.
 //
 func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int) (uint32, *DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
@@ -1812,15 +1806,15 @@ func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, 
 // details.
 //
 // Note that this function should be used with care. Most modern UNIX desktops
-// tie the notion of a user session with the session bus, and expect all of a
-// user's applications to quit when their bus connection goes away. If you are
-// setting exit_on_close to FALSE for the shared session bus connection, you
-// should make sure that your application exits when the user session ends.
+// tie the notion of a user session with the session bus, and expect all of
+// a user's applications to quit when their bus connection goes away. If you
+// are setting exit_on_close to FALSE for the shared session bus connection,
+// you should make sure that your application exits when the user session ends.
 //
 // The function takes the following parameters:
 //
-//    - exitOnClose: whether the process should be terminated when connection is
-//      closed by the remote peer.
+//   - exitOnClose: whether the process should be terminated when connection is
+//     closed by the remote peer.
 //
 func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 	var _arg0 *C.GDBusConnection // out
@@ -1860,12 +1854,12 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 // synchronously when the signal is unsubscribed from, and may be called after
 // connection has been destroyed.)
 //
-// As callback is potentially invoked in a different thread from where it’s
-// emitted, it’s possible for this to happen after
-// g_dbus_connection_signal_unsubscribe() has been called in another thread. Due
-// to this, user_data should have a strong reference which is freed with
-// user_data_free_func, rather than pointing to data whose lifecycle is tied to
-// the signal subscription. For example, if a #GObject is used to store the
+// As callback is potentially invoked in a different thread from
+// where it’s emitted, it’s possible for this to happen after
+// g_dbus_connection_signal_unsubscribe() has been called in another thread.
+// Due to this, user_data should have a strong reference which is freed with
+// user_data_free_func, rather than pointing to data whose lifecycle is tied
+// to the signal subscription. For example, if a #GObject is used to store the
 // subscription ID from g_dbus_connection_signal_subscribe(), a strong reference
 // to that #GObject must be passed to user_data, and g_object_unref() passed to
 // user_data_free_func. You are responsible for breaking the resulting reference
@@ -1885,23 +1879,23 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 //
 // The function takes the following parameters:
 //
-//    - sender (optional) name to match on (unique or well-known name) or NULL to
-//      listen from all senders.
-//    - interfaceName (optional) d-Bus interface name to match on or NULL to
-//      match on all interfaces.
-//    - member (optional) d-Bus signal name to match on or NULL to match on all
-//      signals.
-//    - objectPath (optional): object path to match on or NULL to match on all
-//      object paths.
-//    - arg0 (optional) contents of first string argument to match on or NULL to
-//      match on all kinds of arguments.
-//    - flags describing how arg0 is used in subscribing to the signal.
-//    - callback to invoke when there is a signal matching the requested data.
+//   - sender (optional) name to match on (unique or well-known name) or NULL to
+//     listen from all senders.
+//   - interfaceName (optional) d-Bus interface name to match on or NULL to
+//     match on all interfaces.
+//   - member (optional) d-Bus signal name to match on or NULL to match on all
+//     signals.
+//   - objectPath (optional): object path to match on or NULL to match on all
+//     object paths.
+//   - arg0 (optional) contents of first string argument to match on or NULL to
+//     match on all kinds of arguments.
+//   - flags describing how arg0 is used in subscribing to the signal.
+//   - callback to invoke when there is a signal matching the requested data.
 //
 // The function returns the following values:
 //
-//    - guint: subscription identifier that can be used with
-//      g_dbus_connection_signal_unsubscribe().
+//   - guint: subscription identifier that can be used with
+//     g_dbus_connection_signal_unsubscribe().
 //
 func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member, objectPath, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
 	var _arg0 *C.GDBusConnection    // out
@@ -1964,14 +1958,14 @@ func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member,
 // Note that there may still be D-Bus traffic to process (relating to this
 // signal subscription) in the current thread-default Context after this
 // function has returned. You should continue to iterate the Context until the
-// Notify function passed to g_dbus_connection_signal_subscribe() is called, in
-// order to avoid memory leaks through callbacks queued on the Context after
+// Notify function passed to g_dbus_connection_signal_subscribe() is called,
+// in order to avoid memory leaks through callbacks queued on the Context after
 // it’s stopped being iterated.
 //
 // The function takes the following parameters:
 //
-//    - subscriptionId: subscription id obtained from
-//      g_dbus_connection_signal_subscribe().
+//   - subscriptionId: subscription id obtained from
+//     g_dbus_connection_signal_subscribe().
 //
 func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint) {
 	var _arg0 *C.GDBusConnection // out
@@ -2007,7 +2001,7 @@ func (connection *DBusConnection) StartMessageProcessing() {
 //
 // The function takes the following parameters:
 //
-//    - exportId: ID from g_dbus_connection_export_action_group().
+//   - exportId: ID from g_dbus_connection_export_action_group().
 //
 func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
@@ -2030,7 +2024,7 @@ func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
 //
 // The function takes the following parameters:
 //
-//    - exportId: ID from g_dbus_connection_export_menu_model().
+//   - exportId: ID from g_dbus_connection_export_menu_model().
 //
 func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
@@ -2048,12 +2042,12 @@ func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
 //
 // The function takes the following parameters:
 //
-//    - registrationId: registration id obtained from
-//      g_dbus_connection_register_object().
+//   - registrationId: registration id obtained from
+//     g_dbus_connection_register_object().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the object was unregistered, FALSE otherwise.
+//   - ok: TRUE if the object was unregistered, FALSE otherwise.
 //
 func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
@@ -2080,12 +2074,12 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - registrationId: subtree registration id obtained from
-//      g_dbus_connection_register_subtree().
+//   - registrationId: subtree registration id obtained from
+//     g_dbus_connection_register_subtree().
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the subtree was unregistered, FALSE otherwise.
+//   - ok: TRUE if the subtree was unregistered, FALSE otherwise.
 //
 func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
@@ -2133,7 +2127,7 @@ func marshalDBusMessage(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - dBusMessage Free with g_object_unref().
+//   - dBusMessage Free with g_object_unref().
 //
 func NewDBusMessage() *DBusMessage {
 	var _cret *C.GDBusMessage // in
@@ -2147,8 +2141,8 @@ func NewDBusMessage() *DBusMessage {
 	return _dBusMessage
 }
 
-// NewDBusMessageFromBlob creates a new BusMessage from the data stored at blob.
-// The byte order that the message was in can be retrieved using
+// NewDBusMessageFromBlob creates a new BusMessage from the data stored
+// at blob. The byte order that the message was in can be retrieved using
 // g_dbus_message_get_byte_order().
 //
 // If the blob cannot be parsed, contains invalid fields, or contains invalid
@@ -2156,13 +2150,13 @@ func NewDBusMessage() *DBusMessage {
 //
 // The function takes the following parameters:
 //
-//    - blob representing a binary D-Bus message.
-//    - capabilities describing what protocol features are supported.
+//   - blob representing a binary D-Bus message.
+//   - capabilities describing what protocol features are supported.
 //
 // The function returns the following values:
 //
-//    - dBusMessage: new BusMessage or NULL if error is set. Free with
-//      g_object_unref().
+//   - dBusMessage: new BusMessage or NULL if error is set. Free with
+//     g_object_unref().
 //
 func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBusMessage, error) {
 	var _arg1 *C.guchar // out
@@ -2196,14 +2190,14 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBu
 //
 // The function takes the following parameters:
 //
-//    - name (optional): valid D-Bus name or NULL.
-//    - path: valid object path.
-//    - interface_ (optional): valid D-Bus interface name or NULL.
-//    - method: valid method name.
+//   - name (optional): valid D-Bus name or NULL.
+//   - path: valid object path.
+//   - interface_ (optional): valid D-Bus interface name or NULL.
+//   - method: valid method name.
 //
 // The function returns the following values:
 //
-//    - dBusMessage Free with g_object_unref().
+//   - dBusMessage Free with g_object_unref().
 //
 func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessage {
 	var _arg1 *C.gchar        // out
@@ -2242,13 +2236,13 @@ func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessag
 //
 // The function takes the following parameters:
 //
-//    - path: valid object path.
-//    - interface_: valid D-Bus interface name.
-//    - signal: valid signal name.
+//   - path: valid object path.
+//   - interface_: valid D-Bus interface name.
+//   - signal: valid signal name.
 //
 // The function returns the following values:
 //
-//    - dBusMessage Free with g_object_unref().
+//   - dBusMessage Free with g_object_unref().
 //
 func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 	var _arg1 *C.gchar        // out
@@ -2283,8 +2277,8 @@ func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 //
 // The function returns the following values:
 //
-//    - dBusMessage: new BusMessage or NULL if error is set. Free with
-//      g_object_unref().
+//   - dBusMessage: new BusMessage or NULL if error is set. Free with
+//     g_object_unref().
 //
 func (message *DBusMessage) Copy() (*DBusMessage, error) {
 	var _arg0 *C.GDBusMessage // out
@@ -2311,8 +2305,8 @@ func (message *DBusMessage) Copy() (*DBusMessage, error) {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string item or NULL if the first item in the body of
-//      message is not a string.
+//   - utf8 (optional): string item or NULL if the first item in the body of
+//     message is not a string.
 //
 func (message *DBusMessage) Arg0() string {
 	var _arg0 *C.GDBusMessage // out
@@ -2336,8 +2330,8 @@ func (message *DBusMessage) Arg0() string {
 //
 // The function returns the following values:
 //
-//    - variant (optional) or NULL if the body is empty. Do not free, it is owned
-//      by message.
+//   - variant (optional) or NULL if the body is empty. Do not free, it is owned
+//     by message.
 //
 func (message *DBusMessage) Body() *glib.Variant {
 	var _arg0 *C.GDBusMessage // out
@@ -2368,7 +2362,7 @@ func (message *DBusMessage) Body() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - dBusMessageByteOrder: byte order.
+//   - dBusMessageByteOrder: byte order.
 //
 func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
 	var _arg0 *C.GDBusMessage         // out
@@ -2391,7 +2385,7 @@ func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value.
+//   - utf8 (optional): value.
 //
 func (message *DBusMessage) Destination() string {
 	var _arg0 *C.GDBusMessage // out
@@ -2416,7 +2410,7 @@ func (message *DBusMessage) Destination() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value.
+//   - utf8 (optional): value.
 //
 func (message *DBusMessage) ErrorName() string {
 	var _arg0 *C.GDBusMessage // out
@@ -2440,8 +2434,8 @@ func (message *DBusMessage) ErrorName() string {
 //
 // The function returns the following values:
 //
-//    - dBusMessageFlags flags that are set (typically values from the
-//      BusMessageFlags enumeration bitwise ORed together).
+//   - dBusMessageFlags flags that are set (typically values from the
+//     BusMessageFlags enumeration bitwise ORed together).
 //
 func (message *DBusMessage) Flags() DBusMessageFlags {
 	var _arg0 *C.GDBusMessage     // out
@@ -2466,13 +2460,13 @@ func (message *DBusMessage) Flags() DBusMessageFlags {
 //
 // The function takes the following parameters:
 //
-//    - headerField: 8-bit unsigned integer (typically a value from the
-//      BusMessageHeaderField enumeration).
+//   - headerField: 8-bit unsigned integer (typically a value from the
+//     BusMessageHeaderField enumeration).
 //
 // The function returns the following values:
 //
-//    - variant (optional) with the value if the header was found, NULL
-//      otherwise. Do not free, it is owned by message.
+//   - variant (optional) with the value if the header was found, NULL
+//     otherwise. Do not free, it is owned by message.
 //
 func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	var _arg0 *C.GDBusMessage           // out
@@ -2506,9 +2500,9 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 //
 // The function returns the following values:
 //
-//    - guint8s: array of header fields terminated by
-//      G_DBUS_MESSAGE_HEADER_FIELD_INVALID. Each element is a #guchar. Free with
-//      g_free().
+//   - guint8s: array of header fields terminated by
+//     G_DBUS_MESSAGE_HEADER_FIELD_INVALID. Each element is a #guchar. Free with
+//     g_free().
 //
 func (message *DBusMessage) HeaderFields() []byte {
 	var _arg0 *C.GDBusMessage // out
@@ -2543,7 +2537,7 @@ func (message *DBusMessage) HeaderFields() []byte {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value.
+//   - utf8 (optional): value.
 //
 func (message *DBusMessage) Interface() string {
 	var _arg0 *C.GDBusMessage // out
@@ -2569,7 +2563,7 @@ func (message *DBusMessage) Interface() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if message is locked, FALSE otherwise.
+//   - ok: TRUE if message is locked, FALSE otherwise.
 //
 func (message *DBusMessage) Locked() bool {
 	var _arg0 *C.GDBusMessage // out
@@ -2594,7 +2588,7 @@ func (message *DBusMessage) Locked() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value.
+//   - utf8 (optional): value.
 //
 func (message *DBusMessage) Member() string {
 	var _arg0 *C.GDBusMessage // out
@@ -2618,8 +2612,8 @@ func (message *DBusMessage) Member() string {
 //
 // The function returns the following values:
 //
-//    - dBusMessageType: 8-bit unsigned integer (typically a value from the
-//      BusMessageType enumeration).
+//   - dBusMessageType: 8-bit unsigned integer (typically a value from the
+//     BusMessageType enumeration).
 //
 func (message *DBusMessage) MessageType() DBusMessageType {
 	var _arg0 *C.GDBusMessage    // out
@@ -2642,7 +2636,7 @@ func (message *DBusMessage) MessageType() DBusMessageType {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value.
+//   - utf8 (optional): value.
 //
 func (message *DBusMessage) Path() string {
 	var _arg0 *C.GDBusMessage // out
@@ -2667,7 +2661,7 @@ func (message *DBusMessage) Path() string {
 //
 // The function returns the following values:
 //
-//    - guint32: value.
+//   - guint32: value.
 //
 func (message *DBusMessage) ReplySerial() uint32 {
 	var _arg0 *C.GDBusMessage // out
@@ -2690,7 +2684,7 @@ func (message *DBusMessage) ReplySerial() uint32 {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value.
+//   - utf8 (optional): value.
 //
 func (message *DBusMessage) Sender() string {
 	var _arg0 *C.GDBusMessage // out
@@ -2714,7 +2708,7 @@ func (message *DBusMessage) Sender() string {
 //
 // The function returns the following values:
 //
-//    - guint32: #guint32.
+//   - guint32: #guint32.
 //
 func (message *DBusMessage) Serial() uint32 {
 	var _arg0 *C.GDBusMessage // out
@@ -2737,7 +2731,7 @@ func (message *DBusMessage) Serial() uint32 {
 //
 // The function returns the following values:
 //
-//    - utf8: value.
+//   - utf8: value.
 //
 func (message *DBusMessage) Signature() string {
 	var _arg0 *C.GDBusMessage // out
@@ -2770,12 +2764,12 @@ func (message *DBusMessage) Lock() {
 //
 // The function takes the following parameters:
 //
-//    - errorName: valid D-Bus error name.
-//    - errorMessage d-Bus error message.
+//   - errorName: valid D-Bus error name.
+//   - errorMessage d-Bus error message.
 //
 // The function returns the following values:
 //
-//    - dBusMessage Free with g_object_unref().
+//   - dBusMessage Free with g_object_unref().
 //
 func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMessage string) *DBusMessage {
 	var _arg0 *C.GDBusMessage // out
@@ -2806,7 +2800,7 @@ func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMess
 //
 // The function returns the following values:
 //
-//    - dBusMessage Free with g_object_unref().
+//   - dBusMessage Free with g_object_unref().
 //
 func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 	var _arg0 *C.GDBusMessage // out
@@ -2858,11 +2852,11 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 //
 // The function takes the following parameters:
 //
-//    - indent: indentation level.
+//   - indent: indentation level.
 //
 // The function returns the following values:
 //
-//    - utf8: string that should be freed with g_free().
+//   - utf8: string that should be freed with g_free().
 //
 func (message *DBusMessage) Print(indent uint) string {
 	var _arg0 *C.GDBusMessage // out
@@ -2892,7 +2886,7 @@ func (message *DBusMessage) Print(indent uint) string {
 //
 // The function takes the following parameters:
 //
-//    - body: either NULL or a #GVariant that is a tuple.
+//   - body: either NULL or a #GVariant that is a tuple.
 //
 func (message *DBusMessage) SetBody(body *glib.Variant) {
 	var _arg0 *C.GDBusMessage // out
@@ -2910,7 +2904,7 @@ func (message *DBusMessage) SetBody(body *glib.Variant) {
 //
 // The function takes the following parameters:
 //
-//    - byteOrder: byte order.
+//   - byteOrder: byte order.
 //
 func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	var _arg0 *C.GDBusMessage         // out
@@ -2929,7 +2923,7 @@ func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 //
 // The function takes the following parameters:
 //
-//    - value (optional) to set.
+//   - value (optional) to set.
 //
 func (message *DBusMessage) SetDestination(value string) {
 	var _arg0 *C.GDBusMessage // out
@@ -2951,7 +2945,7 @@ func (message *DBusMessage) SetDestination(value string) {
 //
 // The function takes the following parameters:
 //
-//    - value to set.
+//   - value to set.
 //
 func (message *DBusMessage) SetErrorName(value string) {
 	var _arg0 *C.GDBusMessage // out
@@ -2972,8 +2966,8 @@ func (message *DBusMessage) SetErrorName(value string) {
 //
 // The function takes the following parameters:
 //
-//    - flags flags for message that are set (typically values from the
-//      BusMessageFlags enumeration bitwise ORed together).
+//   - flags flags for message that are set (typically values from the
+//     BusMessageFlags enumeration bitwise ORed together).
 //
 func (message *DBusMessage) SetFlags(flags DBusMessageFlags) {
 	var _arg0 *C.GDBusMessage     // out
@@ -2993,10 +2987,10 @@ func (message *DBusMessage) SetFlags(flags DBusMessageFlags) {
 //
 // The function takes the following parameters:
 //
-//    - headerField: 8-bit unsigned integer (typically a value from the
-//      BusMessageHeaderField enumeration).
-//    - value (optional) to set the header field or NULL to clear the header
-//      field.
+//   - headerField: 8-bit unsigned integer (typically a value from the
+//     BusMessageHeaderField enumeration).
+//   - value (optional) to set the header field or NULL to clear the header
+//     field.
 //
 func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
 	var _arg0 *C.GDBusMessage           // out
@@ -3020,7 +3014,7 @@ func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value 
 //
 // The function takes the following parameters:
 //
-//    - value (optional) to set.
+//   - value (optional) to set.
 //
 func (message *DBusMessage) SetInterface(value string) {
 	var _arg0 *C.GDBusMessage // out
@@ -3042,7 +3036,7 @@ func (message *DBusMessage) SetInterface(value string) {
 //
 // The function takes the following parameters:
 //
-//    - value (optional) to set.
+//   - value (optional) to set.
 //
 func (message *DBusMessage) SetMember(value string) {
 	var _arg0 *C.GDBusMessage // out
@@ -3063,8 +3057,8 @@ func (message *DBusMessage) SetMember(value string) {
 //
 // The function takes the following parameters:
 //
-//    - typ: 8-bit unsigned integer (typically a value from the BusMessageType
-//      enumeration).
+//   - typ: 8-bit unsigned integer (typically a value from the BusMessageType
+//     enumeration).
 //
 func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 	var _arg0 *C.GDBusMessage    // out
@@ -3083,7 +3077,7 @@ func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 //
 // The function takes the following parameters:
 //
-//    - value (optional) to set.
+//   - value (optional) to set.
 //
 func (message *DBusMessage) SetPath(value string) {
 	var _arg0 *C.GDBusMessage // out
@@ -3105,7 +3099,7 @@ func (message *DBusMessage) SetPath(value string) {
 //
 // The function takes the following parameters:
 //
-//    - value to set.
+//   - value to set.
 //
 func (message *DBusMessage) SetReplySerial(value uint32) {
 	var _arg0 *C.GDBusMessage // out
@@ -3124,7 +3118,7 @@ func (message *DBusMessage) SetReplySerial(value uint32) {
 //
 // The function takes the following parameters:
 //
-//    - value (optional) to set.
+//   - value (optional) to set.
 //
 func (message *DBusMessage) SetSender(value string) {
 	var _arg0 *C.GDBusMessage // out
@@ -3145,7 +3139,7 @@ func (message *DBusMessage) SetSender(value string) {
 //
 // The function takes the following parameters:
 //
-//    - serial: #guint32.
+//   - serial: #guint32.
 //
 func (message *DBusMessage) SetSerial(serial uint32) {
 	var _arg0 *C.GDBusMessage // out
@@ -3164,7 +3158,7 @@ func (message *DBusMessage) SetSerial(serial uint32) {
 //
 // The function takes the following parameters:
 //
-//    - value (optional) to set.
+//   - value (optional) to set.
 //
 func (message *DBusMessage) SetSignature(value string) {
 	var _arg0 *C.GDBusMessage // out
@@ -3186,12 +3180,12 @@ func (message *DBusMessage) SetSignature(value string) {
 //
 // The function takes the following parameters:
 //
-//    - capabilities describing what protocol features are supported.
+//   - capabilities describing what protocol features are supported.
 //
 // The function returns the following values:
 //
-//    - guint8s: pointer to a valid binary D-Bus message of out_size bytes
-//      generated by message or NULL if error is set. Free with g_free().
+//   - guint8s: pointer to a valid binary D-Bus message of out_size bytes
+//     generated by message or NULL if error is set. Free with g_free().
 //
 func (message *DBusMessage) ToBlob(capabilities DBusCapabilityFlags) ([]byte, error) {
 	var _arg0 *C.GDBusMessage        // out
@@ -3223,8 +3217,8 @@ func (message *DBusMessage) ToBlob(capabilities DBusCapabilityFlags) ([]byte, er
 // ToGError: if message is not of type G_DBUS_MESSAGE_TYPE_ERROR does nothing
 // and returns FALSE.
 //
-// Otherwise this method encodes the error in message as a #GError using
-// g_dbus_error_set_dbus_error() using the information in the
+// Otherwise this method encodes the error in message as a #GError
+// using g_dbus_error_set_dbus_error() using the information in the
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of message as well as the
 // first string item in message's body.
 func (message *DBusMessage) ToGError() error {
@@ -3245,8 +3239,8 @@ func (message *DBusMessage) ToGError() error {
 	return _goerr
 }
 
-// DBusMethodInvocation instances of the BusMethodInvocation class are used when
-// handling D-Bus method calls. It provides a way to asynchronously return
+// DBusMethodInvocation instances of the BusMethodInvocation class are used
+// when handling D-Bus method calls. It provides a way to asynchronously return
 // results and errors.
 //
 // The normal way to obtain a BusMethodInvocation object is to receive it as an
@@ -3275,7 +3269,7 @@ func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - dBusConnection Do not free, it is owned by invocation.
+//   - dBusConnection Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3301,7 +3295,7 @@ func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
 //
 // The function returns the following values:
 //
-//    - utf8: string. Do not free, it is owned by invocation.
+//   - utf8: string. Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) InterfaceName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3319,17 +3313,17 @@ func (invocation *DBusMethodInvocation) InterfaceName() string {
 	return _utf8
 }
 
-// Message gets the BusMessage for the method invocation. This is useful if you
-// need to use low-level protocol features, such as UNIX file descriptor
+// Message gets the BusMessage for the method invocation. This is useful if
+// you need to use low-level protocol features, such as UNIX file descriptor
 // passing, that cannot be properly expressed in the #GVariant API.
 //
-// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
-// example of how to use this low-level API to send and receive UNIX file
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for
+// an example of how to use this low-level API to send and receive UNIX file
 // descriptors.
 //
 // The function returns the following values:
 //
-//    - dBusMessage Do not free, it is owned by invocation.
+//   - dBusMessage Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) Message() *DBusMessage {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3349,15 +3343,15 @@ func (invocation *DBusMethodInvocation) Message() *DBusMessage {
 
 // MethodInfo gets information about the method call, if any.
 //
-// If this method invocation is a property Get, Set or GetAll call that has been
-// redirected to the method call handler then NULL will be returned. See
-// g_dbus_method_invocation_get_property_info() and BusInterfaceVTable for more
-// information.
+// If this method invocation is a property Get, Set or GetAll call that has
+// been redirected to the method call handler then NULL will be returned.
+// See g_dbus_method_invocation_get_property_info() and BusInterfaceVTable for
+// more information.
 //
 // The function returns the following values:
 //
-//    - dBusMethodInfo (optional) or NULL. Do not free, it is owned by
-//      invocation.
+//   - dBusMethodInfo (optional) or NULL. Do not free, it is owned by
+//     invocation.
 //
 func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3388,7 +3382,7 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 //
 // The function returns the following values:
 //
-//    - utf8: string. Do not free, it is owned by invocation.
+//   - utf8: string. Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) MethodName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3410,7 +3404,7 @@ func (invocation *DBusMethodInvocation) MethodName() string {
 //
 // The function returns the following values:
 //
-//    - utf8: string. Do not free, it is owned by invocation.
+//   - utf8: string. Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) ObjectPath() string {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3434,7 +3428,7 @@ func (invocation *DBusMethodInvocation) ObjectPath() string {
 //
 // The function returns the following values:
 //
-//    - variant tuple. Do not unref this because it is owned by invocation.
+//   - variant tuple. Do not unref this because it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3473,7 +3467,7 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - dBusPropertyInfo (optional) or NULL.
+//   - dBusPropertyInfo (optional) or NULL.
 //
 func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3504,7 +3498,7 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 //
 // The function returns the following values:
 //
-//    - utf8: string. Do not free, it is owned by invocation.
+//   - utf8: string. Do not free, it is owned by invocation.
 //
 func (invocation *DBusMethodInvocation) Sender() string {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3529,8 +3523,8 @@ func (invocation *DBusMethodInvocation) Sender() string {
 //
 // The function takes the following parameters:
 //
-//    - errorName: valid D-Bus error name.
-//    - errorMessage: valid D-Bus error message.
+//   - errorName: valid D-Bus error name.
+//   - errorMessage: valid D-Bus error message.
 //
 func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage string) {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3558,9 +3552,9 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage 
 //
 // The function takes the following parameters:
 //
-//    - domain for the #GError error domain.
-//    - code: error code.
-//    - message: error message.
+//   - domain for the #GError error domain.
+//   - code: error code.
+//   - message: error message.
 //
 func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string) {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3592,7 +3586,7 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 //
 // The function takes the following parameters:
 //
-//    - err: #GError.
+//   - err: #GError.
 //
 func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3609,8 +3603,8 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 	runtime.KeepAlive(err)
 }
 
-// ReturnValue finishes handling a D-Bus method call by returning parameters. If
-// the parameters GVariant is floating, it is consumed.
+// ReturnValue finishes handling a D-Bus method call by returning parameters.
+// If the parameters GVariant is floating, it is consumed.
 //
 // It is an error if parameters is not of the right format: it must be a tuple
 // containing the out-parameters of the D-Bus method. Even if the method has a
@@ -3640,8 +3634,8 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 //
 // The function takes the following parameters:
 //
-//    - parameters (optional) tuple with out parameters for the method or NULL if
-//      not passing any parameters.
+//   - parameters (optional) tuple with out parameters for the method or NULL if
+//     not passing any parameters.
 //
 func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	var _arg0 *C.GDBusMethodInvocation // out
@@ -3658,17 +3652,17 @@ func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	runtime.KeepAlive(parameters)
 }
 
-// DBusServer is a helper for listening to and accepting D-Bus connections. This
-// can be used to create a new D-Bus server, allowing two peers to use the D-Bus
-// protocol for their own specialized communication. A server instance provided
-// in this way will not perform message routing or implement the
+// DBusServer is a helper for listening to and accepting D-Bus connections.
+// This can be used to create a new D-Bus server, allowing two peers to use the
+// D-Bus protocol for their own specialized communication. A server instance
+// provided in this way will not perform message routing or implement the
 // org.freedesktop.DBus interface.
 //
 // To just export an object on a well-known name on a message bus, such as the
 // session or system bus, you should instead use g_bus_own_name().
 //
-// An example of peer-to-peer communication with GDBus can be found in
-// gdbus-example-peer.c
+// An example of peer-to-peer communication with
+// GDBus can be found in gdbus-example-peer.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
 //
 // Note that a minimal BusServer will accept connections from any peer. In many
@@ -3701,8 +3695,8 @@ func marshalDBusServer(p uintptr) (interface{}, error) {
 	return wrapDBusServer(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectNewConnection is emitted when a new authenticated connection has been
-// made. Use g_dbus_connection_get_peer_credentials() to figure out what
+// ConnectNewConnection is emitted when a new authenticated connection has
+// been made. Use g_dbus_connection_get_peer_credentials() to figure out what
 // identity (if any), was authenticated.
 //
 // If you want to accept the connection, take a reference to the connection
@@ -3711,9 +3705,9 @@ func marshalDBusServer(p uintptr) (interface{}, error) {
 // peer may disconnect at any time - a typical thing to do when accepting a
 // connection is to listen to the BusConnection::closed signal.
 //
-// If BusServer:flags contains G_DBUS_SERVER_FLAGS_RUN_IN_THREAD then the signal
-// is emitted in a new thread dedicated to the connection. Otherwise the signal
-// is emitted in the [thread-default main
+// If BusServer:flags contains G_DBUS_SERVER_FLAGS_RUN_IN_THREAD then
+// the signal is emitted in a new thread dedicated to the connection.
+// Otherwise the signal is emitted in the [thread-default main
 // context][g-main-context-push-thread-default] of the thread that server was
 // constructed in.
 //
@@ -3747,15 +3741,15 @@ func (server *DBusServer) ConnectNewConnection(f func(connection *DBusConnection
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - address d-Bus address.
-//    - flags flags from the BusServerFlags enumeration.
-//    - guid d-Bus GUID.
-//    - observer (optional) or NULL.
+//   - ctx (optional) or NULL.
+//   - address d-Bus address.
+//   - flags flags from the BusServerFlags enumeration.
+//   - guid d-Bus GUID.
+//   - observer (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - dBusServer or NULL if error is set. Free with g_object_unref().
+//   - dBusServer or NULL if error is set. Free with g_object_unref().
 //
 func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlags, guid string, observer *DBusAuthObserver) (*DBusServer, error) {
 	var _arg5 *C.GCancellable      // out
@@ -3804,7 +3798,7 @@ func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlag
 //
 // The function returns the following values:
 //
-//    - utf8 d-Bus address string. Do not free, the string is owned by server.
+//   - utf8 d-Bus address string. Do not free, the string is owned by server.
 //
 func (server *DBusServer) ClientAddress() string {
 	var _arg0 *C.GDBusServer // out
@@ -3826,7 +3820,7 @@ func (server *DBusServer) ClientAddress() string {
 //
 // The function returns the following values:
 //
-//    - dBusServerFlags: set of flags from the BusServerFlags enumeration.
+//   - dBusServerFlags: set of flags from the BusServerFlags enumeration.
 //
 func (server *DBusServer) Flags() DBusServerFlags {
 	var _arg0 *C.GDBusServer     // out
@@ -3848,7 +3842,7 @@ func (server *DBusServer) Flags() DBusServerFlags {
 //
 // The function returns the following values:
 //
-//    - utf8 d-Bus GUID. Do not free this string, it is owned by server.
+//   - utf8 d-Bus GUID. Do not free this string, it is owned by server.
 //
 func (server *DBusServer) GUID() string {
 	var _arg0 *C.GDBusServer // out
@@ -3870,7 +3864,7 @@ func (server *DBusServer) GUID() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if server is active, FALSE otherwise.
+//   - ok: TRUE if server is active, FALSE otherwise.
 //
 func (server *DBusServer) IsActive() bool {
 	var _arg0 *C.GDBusServer // out

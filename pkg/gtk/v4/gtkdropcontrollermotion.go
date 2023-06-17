@@ -32,8 +32,8 @@ func init() {
 // DropControllerMotion: GtkDropControllerMotion is an event controller tracking
 // the pointer during Drag-and-Drop operations.
 //
-// It is modeled after gtk.EventControllerMotion so if you have used that, this
-// should feel really familiar.
+// It is modeled after gtk.EventControllerMotion so if you have used that,
+// this should feel really familiar.
 //
 // This controller is not able to accept drops, use gtk.DropTarget for that
 // purpose.
@@ -78,7 +78,7 @@ func (self *DropControllerMotion) ConnectMotion(f func(x, y float64)) coreglib.S
 //
 // The function returns the following values:
 //
-//    - dropControllerMotion: new GtkDropControllerMotion.
+//   - dropControllerMotion: new GtkDropControllerMotion.
 //
 func NewDropControllerMotion() *DropControllerMotion {
 	var _cret *C.GtkEventController // in
@@ -97,7 +97,7 @@ func NewDropControllerMotion() *DropControllerMotion {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a dragging pointer is within self or one of its children.
+//   - ok: TRUE if a dragging pointer is within self or one of its children.
 //
 func (self *DropControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out
@@ -122,7 +122,7 @@ func (self *DropControllerMotion) ContainsPointer() bool {
 //
 // The function returns the following values:
 //
-//    - drop (optional): GdkDrop currently happening within self or NULL if none.
+//   - drop (optional): GdkDrop currently happening within self or NULL if none.
 //
 func (self *DropControllerMotion) Drop() gdk.Dropper {
 	var _arg0 *C.GtkDropControllerMotion // out
@@ -155,13 +155,13 @@ func (self *DropControllerMotion) Drop() gdk.Dropper {
 	return _drop
 }
 
-// IsPointer returns if a Drag-and-Drop operation is within the widget self, not
-// one of its children.
+// IsPointer returns if a Drag-and-Drop operation is within the widget self,
+// not one of its children.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if a dragging pointer is within self but not one of its
-//      children.
+//   - ok: TRUE if a dragging pointer is within self but not one of its
+//     children.
 //
 func (self *DropControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkDropControllerMotion // out

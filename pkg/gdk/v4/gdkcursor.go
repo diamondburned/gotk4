@@ -39,24 +39,23 @@ func init() {
 // Cursors are not bound to a given gdk.Display, so they can be shared. However,
 // the appearance of cursors may vary when used on different platforms.
 //
+// # Named and texture cursors
 //
-// Named and texture cursors
-//
-// There are multiple ways to create cursors. The platform's own cursors can be
-// created with gdk.Cursor.NewFromName. That function lists the commonly
-// available names that are shared with the CSS specification. Other names may
-// be available, depending on the platform in use. On some platforms, what
-// images are used for named cursors may be influenced by the cursor theme.
+// There are multiple ways to create cursors. The platform's own cursors can
+// be created with gdk.Cursor.NewFromName. That function lists the commonly
+// available names that are shared with the CSS specification. Other names
+// may be available, depending on the platform in use. On some platforms,
+// what images are used for named cursors may be influenced by the cursor theme.
 //
 // Another option to create a cursor is to use gdk.Cursor.NewFromTexture and
 // provide an image to use for the cursor.
 //
-// To ease work with unsupported cursors, a fallback cursor can be provided. If
-// a gdk.Surface cannot use a cursor because of the reasons mentioned above, it
-// will try the fallback cursor. Fallback cursors can themselves have fallback
-// cursors again, so it is possible to provide a chain of progressively easier
-// to support cursors. If none of the provided cursors can be supported, the
-// default cursor will be the ultimate fallback.
+// To ease work with unsupported cursors, a fallback cursor can be provided.
+// If a gdk.Surface cannot use a cursor because of the reasons mentioned above,
+// it will try the fallback cursor. Fallback cursors can themselves have
+// fallback cursors again, so it is possible to provide a chain of progressively
+// easier to support cursors. If none of the provided cursors can be supported,
+// the default cursor will be the ultimate fallback.
 type Cursor struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -83,35 +82,35 @@ func marshalCursor(p uintptr) (interface{}, error) {
 // can be found in the CSS specification:
 //
 // | | | | | | --- | --- | ---- | --- | | "none" | ! (default_cursor.png)
-// "default" | ! (help_cursor.png) "help" | ! (pointer_cursor.png) "pointer" | |
-// ! (context_menu_cursor.png) "context-menu" | ! (progress_cursor.png)
-// "progress" | ! (wait_cursor.png) "wait" | ! (cell_cursor.png) "cell" | | !
-// (crosshair_cursor.png) "crosshair" | ! (text_cursor.png) "text" | !
-// (vertical_text_cursor.png) "vertical-text" | ! (alias_cursor.png) "alias" | |
-// ! (copy_cursor.png) "copy" | ! (no_drop_cursor.png) "no-drop" | !
-// (move_cursor.png) "move" | ! (not_allowed_cursor.png) "not-allowed" | | !
-// (grab_cursor.png) "grab" | ! (grabbing_cursor.png) "grabbing" | !
-// (all_scroll_cursor.png) "all-scroll" | ! (col_resize_cursor.png) "col-resize"
-// | | ! (row_resize_cursor.png) "row-resize" | ! (n_resize_cursor.png)
-// "n-resize" | ! (e_resize_cursor.png) "e-resize" | ! (s_resize_cursor.png)
-// "s-resize" | | ! (w_resize_cursor.png) "w-resize" | ! (ne_resize_cursor.png)
-// "ne-resize" | ! (nw_resize_cursor.png) "nw-resize" | ! (sw_resize_cursor.png)
-// "sw-resize" | | ! (se_resize_cursor.png) "se-resize" | !
-// (ew_resize_cursor.png) "ew-resize" | ! (ns_resize_cursor.png) "ns-resize" | !
-// (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
+// "default" | ! (help_cursor.png) "help" | ! (pointer_cursor.png) "pointer"
+// | | ! (context_menu_cursor.png) "context-menu" | ! (progress_cursor.png)
+// "progress" | ! (wait_cursor.png) "wait" | ! (cell_cursor.png) "cell"
+// | | ! (crosshair_cursor.png) "crosshair" | ! (text_cursor.png) "text"
+// | ! (vertical_text_cursor.png) "vertical-text" | ! (alias_cursor.png)
+// "alias" | | ! (copy_cursor.png) "copy" | ! (no_drop_cursor.png) "no-drop"
+// | ! (move_cursor.png) "move" | ! (not_allowed_cursor.png) "not-allowed"
+// | | ! (grab_cursor.png) "grab" | ! (grabbing_cursor.png) "grabbing"
+// | ! (all_scroll_cursor.png) "all-scroll" | ! (col_resize_cursor.png)
+// "col-resize" | | ! (row_resize_cursor.png) "row-resize" | !
+// (n_resize_cursor.png) "n-resize" | ! (e_resize_cursor.png) "e-resize" | !
+// (s_resize_cursor.png) "s-resize" | | ! (w_resize_cursor.png) "w-resize" | !
+// (ne_resize_cursor.png) "ne-resize" | ! (nw_resize_cursor.png) "nw-resize" | !
+// (sw_resize_cursor.png) "sw-resize" | | ! (se_resize_cursor.png) "se-resize" |
+// ! (ew_resize_cursor.png) "ew-resize" | ! (ns_resize_cursor.png) "ns-resize"
+// | ! (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
 // "nwse-resize" | ! (zoom_in_cursor.png) "zoom-in" | ! (zoom_out_cursor.png)
 // "zoom-out" | |.
 //
 // The function takes the following parameters:
 //
-//    - name of the cursor.
-//    - fallback (optional): NULL or the GdkCursor to fall back to when this one
-//      cannot be supported.
+//   - name of the cursor.
+//   - fallback (optional): NULL or the GdkCursor to fall back to when this one
+//     cannot be supported.
 //
 // The function returns the following values:
 //
-//    - cursor (optional): new GdkCursor, or NULL if there is no cursor with the
-//      given name.
+//   - cursor (optional): new GdkCursor, or NULL if there is no cursor with the
+//     given name.
 //
 func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 	var _arg1 *C.char      // out
@@ -141,15 +140,15 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 //
 // The function takes the following parameters:
 //
-//    - texture providing the pixel data.
-//    - hotspotX: horizontal offset of the “hotspot” of the cursor.
-//    - hotspotY: vertical offset of the “hotspot” of the cursor.
-//    - fallback (optional): NULL or the GdkCursor to fall back to when this one
-//      cannot be supported.
+//   - texture providing the pixel data.
+//   - hotspotX: horizontal offset of the “hotspot” of the cursor.
+//   - hotspotY: vertical offset of the “hotspot” of the cursor.
+//   - fallback (optional): NULL or the GdkCursor to fall back to when this one
+//     cannot be supported.
 //
 // The function returns the following values:
 //
-//    - cursor: new GdkCursor.
+//   - cursor: new GdkCursor.
 //
 func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int, fallback *Cursor) *Cursor {
 	var _arg1 *C.GdkTexture // out
@@ -188,8 +187,8 @@ func NewCursorFromTexture(texture Texturer, hotspotX, hotspotY int, fallback *Cu
 //
 // The function returns the following values:
 //
-//    - ret (optional): fallback of the cursor or NULL to use the default cursor
-//      as fallback.
+//   - ret (optional): fallback of the cursor or NULL to use the default cursor
+//     as fallback.
 //
 func (cursor *Cursor) Fallback() *Cursor {
 	var _arg0 *C.GdkCursor // out
@@ -213,13 +212,13 @@ func (cursor *Cursor) Fallback() *Cursor {
 //
 // The hotspot indicates the pixel that will be directly above the cursor.
 //
-// Note that named cursors may have a nonzero hotspot, but this function will
-// only return the hotspot position for cursors created with
+// Note that named cursors may have a nonzero hotspot, but this function
+// will only return the hotspot position for cursors created with
 // gdk.Cursor.NewFromTexture.
 //
 // The function returns the following values:
 //
-//    - gint: horizontal offset of the hotspot or 0 for named cursors.
+//   - gint: horizontal offset of the hotspot or 0 for named cursors.
 //
 func (cursor *Cursor) HotspotX() int {
 	var _arg0 *C.GdkCursor // out
@@ -241,13 +240,13 @@ func (cursor *Cursor) HotspotX() int {
 //
 // The hotspot indicates the pixel that will be directly above the cursor.
 //
-// Note that named cursors may have a nonzero hotspot, but this function will
-// only return the hotspot position for cursors created with
+// Note that named cursors may have a nonzero hotspot, but this function
+// will only return the hotspot position for cursors created with
 // gdk.Cursor.NewFromTexture.
 //
 // The function returns the following values:
 //
-//    - gint: vertical offset of the hotspot or 0 for named cursors.
+//   - gint: vertical offset of the hotspot or 0 for named cursors.
 //
 func (cursor *Cursor) HotspotY() int {
 	var _arg0 *C.GdkCursor // out
@@ -271,7 +270,7 @@ func (cursor *Cursor) HotspotY() int {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the cursor or NULL if it is not a named cursor.
+//   - utf8 (optional): name of the cursor or NULL if it is not a named cursor.
 //
 func (cursor *Cursor) Name() string {
 	var _arg0 *C.GdkCursor // out
@@ -297,7 +296,7 @@ func (cursor *Cursor) Name() string {
 //
 // The function returns the following values:
 //
-//    - texture (optional) for cursor or NULL if it is a named cursor.
+//   - texture (optional) for cursor or NULL if it is a named cursor.
 //
 func (cursor *Cursor) Texture() Texturer {
 	var _arg0 *C.GdkCursor  // out

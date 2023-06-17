@@ -33,8 +33,8 @@ func init() {
 // The search bar would appear when a search is started through typing on the
 // keyboard, or the application’s search mode is toggled on.
 //
-// For keyboard presses to start a search, the search bar must be told of a
-// widget to capture key events from through
+// For keyboard presses to start a search, the search bar
+// must be told of a widget to capture key events from through
 // gtk.SearchBar.SetKeyCaptureWidget(). This widget will typically be the
 // top-level window, or a parent container of the search bar. Common shortcuts
 // such as Ctrl+F should be handled as an application action, or through the
@@ -43,8 +43,7 @@ func init() {
 // You will also need to tell the search bar about which entry you are using as
 // your search entry using gtk.SearchBar.ConnectEntry().
 //
-//
-// Creating a search bar
+// # Creating a search bar
 //
 // The following example shows you how to create a more complex search entry.
 //
@@ -59,14 +58,12 @@ func init() {
 //             ├── [child]
 //             ╰── [button.close]
 //
-//
 // GtkSearchBar has a main CSS node with name searchbar. It has a child node
 // with name revealer that contains a node with name box. The box node contains
 // both the CSS node of the child widget as well as an optional button node
 // which gets the .close style class applied.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkSearchBar uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
 type SearchBar struct {
@@ -109,7 +106,7 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - searchBar: new GtkSearchBar.
+//   - searchBar: new GtkSearchBar.
 //
 func NewSearchBar() *SearchBar {
 	var _cret *C.GtkWidget // in
@@ -132,7 +129,7 @@ func NewSearchBar() *SearchBar {
 //
 // The function takes the following parameters:
 //
-//    - entry: GtkEditable.
+//   - entry: GtkEditable.
 //
 func (bar *SearchBar) ConnectEntry(entry Editabler) {
 	var _arg0 *C.GtkSearchBar // out
@@ -150,7 +147,7 @@ func (bar *SearchBar) ConnectEntry(entry Editabler) {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of bar.
+//   - widget (optional): child widget of bar.
 //
 func (bar *SearchBar) Child() Widgetter {
 	var _arg0 *C.GtkSearchBar // out
@@ -187,7 +184,7 @@ func (bar *SearchBar) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget: key capture widget.
+//   - widget: key capture widget.
 //
 func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 	var _arg0 *C.GtkSearchBar // out
@@ -225,7 +222,7 @@ func (bar *SearchBar) KeyCaptureWidget() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: whether search mode is toggled on.
+//   - ok: whether search mode is toggled on.
 //
 func (bar *SearchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar // out
@@ -249,7 +246,7 @@ func (bar *SearchBar) SearchMode() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the close button is shown.
+//   - ok: whether the close button is shown.
 //
 func (bar *SearchBar) ShowCloseButton() bool {
 	var _arg0 *C.GtkSearchBar // out
@@ -273,7 +270,7 @@ func (bar *SearchBar) ShowCloseButton() bool {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (bar *SearchBar) SetChild(child Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
@@ -295,15 +292,15 @@ func (bar *SearchBar) SetChild(child Widgetter) {
 // If key events are handled by the search bar, the bar will be shown, and the
 // entry populated with the entered text.
 //
-// Note that despite the name of this function, the events are only 'captured'
-// in the bubble phase, which means that editable child widgets of widget will
-// receive text input before it gets captured. If that is not desired, you can
-// capture and forward the events yourself with
+// Note that despite the name of this function, the events are only
+// 'captured' in the bubble phase, which means that editable child widgets
+// of widget will receive text input before it gets captured. If that
+// is not desired, you can capture and forward the events yourself with
 // gtk.EventControllerKey.Forward().
 //
 // The function takes the following parameters:
 //
-//    - widget (optional): GtkWidget.
+//   - widget (optional): GtkWidget.
 //
 func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 	var _arg0 *C.GtkSearchBar // out
@@ -323,7 +320,7 @@ func (bar *SearchBar) SetKeyCaptureWidget(widget Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - searchMode: new state of the search mode.
+//   - searchMode: new state of the search mode.
 //
 func (bar *SearchBar) SetSearchMode(searchMode bool) {
 	var _arg0 *C.GtkSearchBar // out
@@ -347,7 +344,7 @@ func (bar *SearchBar) SetSearchMode(searchMode bool) {
 //
 // The function takes the following parameters:
 //
-//    - visible: whether the close button will be shown or not.
+//   - visible: whether the close button will be shown or not.
 //
 func (bar *SearchBar) SetShowCloseButton(visible bool) {
 	var _arg0 *C.GtkSearchBar // out

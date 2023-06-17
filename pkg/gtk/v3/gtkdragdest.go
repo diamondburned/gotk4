@@ -33,19 +33,19 @@ func init() {
 type DestDefaults C.guint
 
 const (
-	// DestDefaultMotion: if set for a widget, GTK+, during a drag over this
-	// widget will check if the drag matches this widget’s list of possible
-	// targets and actions. GTK+ will then call gdk_drag_status() as
+	// DestDefaultMotion: if set for a widget, GTK+, during a drag over
+	// this widget will check if the drag matches this widget’s list of
+	// possible targets and actions. GTK+ will then call gdk_drag_status() as
 	// appropriate.
 	DestDefaultMotion DestDefaults = 0b1
-	// DestDefaultHighlight: if set for a widget, GTK+ will draw a highlight on
-	// this widget as long as a drag is over this widget and the widget drag
+	// DestDefaultHighlight: if set for a widget, GTK+ will draw a highlight
+	// on this widget as long as a drag is over this widget and the widget drag
 	// format and action are acceptable.
 	DestDefaultHighlight DestDefaults = 0b10
-	// DestDefaultDrop: if set for a widget, when a drop occurs, GTK+ will will
-	// check if the drag matches this widget’s list of possible targets and
-	// actions. If so, GTK+ will call gtk_drag_get_data() on behalf of the
-	// widget. Whether or not the drop is successful, GTK+ will call
+	// DestDefaultDrop: if set for a widget, when a drop occurs, GTK+ will
+	// will check if the drag matches this widget’s list of possible targets
+	// and actions. If so, GTK+ will call gtk_drag_get_data() on behalf of
+	// the widget. Whether or not the drop is successful, GTK+ will call
 	// gtk_drag_finish(). If the action was a move, then if the drag was
 	// successful, then TRUE will be passed for the delete parameter to
 	// gtk_drag_finish().

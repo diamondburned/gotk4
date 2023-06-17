@@ -30,8 +30,7 @@ func init() {
 // The frame can respect the aspect ratio of the child widget, or use its own
 // aspect ratio.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkAspectFrame uses a CSS node with name frame.
 type AspectFrame struct {
@@ -71,17 +70,17 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - xalign: horizontal alignment of the child within the parent. Ranges from
-//      0.0 (left aligned) to 1.0 (right aligned).
-//    - yalign: vertical alignment of the child within the parent. Ranges from
-//      0.0 (top aligned) to 1.0 (bottom aligned).
-//    - ratio: desired aspect ratio.
-//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken from
-//      the requistion of the child.
+//   - xalign: horizontal alignment of the child within the parent. Ranges from
+//     0.0 (left aligned) to 1.0 (right aligned).
+//   - yalign: vertical alignment of the child within the parent. Ranges from
+//     0.0 (top aligned) to 1.0 (bottom aligned).
+//   - ratio: desired aspect ratio.
+//   - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken from
+//     the requistion of the child.
 //
 // The function returns the following values:
 //
-//    - aspectFrame: new GtkAspectFrame.
+//   - aspectFrame: new GtkAspectFrame.
 //
 func NewAspectFrame(xalign, yalign, ratio float32, obeyChild bool) *AspectFrame {
 	var _arg1 C.float      // out
@@ -114,7 +113,7 @@ func NewAspectFrame(xalign, yalign, ratio float32, obeyChild bool) *AspectFrame 
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of self@.
+//   - widget (optional): child widget of self@.
 //
 func (self *AspectFrame) Child() Widgetter {
 	var _arg0 *C.GtkAspectFrame // out
@@ -152,7 +151,7 @@ func (self *AspectFrame) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: whether to obey the child's size request.
+//   - ok: whether to obey the child's size request.
 //
 func (self *AspectFrame) ObeyChild() bool {
 	var _arg0 *C.GtkAspectFrame // out
@@ -176,7 +175,7 @@ func (self *AspectFrame) ObeyChild() bool {
 //
 // The function returns the following values:
 //
-//    - gfloat: desired aspect ratio.
+//   - gfloat: desired aspect ratio.
 //
 func (self *AspectFrame) Ratio() float32 {
 	var _arg0 *C.GtkAspectFrame // out
@@ -199,7 +198,7 @@ func (self *AspectFrame) Ratio() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: horizontal alignment.
+//   - gfloat: horizontal alignment.
 //
 func (self *AspectFrame) XAlign() float32 {
 	var _arg0 *C.GtkAspectFrame // out
@@ -222,7 +221,7 @@ func (self *AspectFrame) XAlign() float32 {
 //
 // The function returns the following values:
 //
-//    - gfloat: vertical alignment.
+//   - gfloat: vertical alignment.
 //
 func (self *AspectFrame) YAlign() float32 {
 	var _arg0 *C.GtkAspectFrame // out
@@ -244,7 +243,7 @@ func (self *AspectFrame) YAlign() float32 {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (self *AspectFrame) SetChild(child Widgetter) {
 	var _arg0 *C.GtkAspectFrame // out
@@ -265,8 +264,8 @@ func (self *AspectFrame) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken from
-//      the requistion of the child.
+//   - obeyChild: if TRUE, ratio is ignored, and the aspect ratio is taken from
+//     the requistion of the child.
 //
 func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 	var _arg0 *C.GtkAspectFrame // out
@@ -286,7 +285,7 @@ func (self *AspectFrame) SetObeyChild(obeyChild bool) {
 //
 // The function takes the following parameters:
 //
-//    - ratio: aspect ratio of the child.
+//   - ratio: aspect ratio of the child.
 //
 func (self *AspectFrame) SetRatio(ratio float32) {
 	var _arg0 *C.GtkAspectFrame // out
@@ -305,8 +304,8 @@ func (self *AspectFrame) SetRatio(ratio float32) {
 //
 // The function takes the following parameters:
 //
-//    - xalign: horizontal alignment, from 0.0 (left aligned) to 1.0 (right
-//      aligned).
+//   - xalign: horizontal alignment, from 0.0 (left aligned) to 1.0 (right
+//     aligned).
 //
 func (self *AspectFrame) SetXAlign(xalign float32) {
 	var _arg0 *C.GtkAspectFrame // out
@@ -325,8 +324,8 @@ func (self *AspectFrame) SetXAlign(xalign float32) {
 //
 // The function takes the following parameters:
 //
-//    - yalign: horizontal alignment, from 0.0 (top aligned) to 1.0 (bottom
-//      aligned).
+//   - yalign: horizontal alignment, from 0.0 (top aligned) to 1.0 (bottom
+//     aligned).
 //
 func (self *AspectFrame) SetYAlign(yalign float32) {
 	var _arg0 *C.GtkAspectFrame // out

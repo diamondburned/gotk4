@@ -18,8 +18,8 @@ import "C"
 
 // CairoDrawFromGL: main way to draw GL content in GTK.
 //
-// It takes a render buffer ID (source_type == RENDERBUFFER) or a texture id
-// (source_type == TEXTURE) and draws it onto cr with an OVER operation,
+// It takes a render buffer ID (source_type == RENDERBUFFER) or a texture
+// id (source_type == TEXTURE) and draws it onto cr with an OVER operation,
 // respecting the current clip. The top left corner of the rectangle specified
 // by x, y, width and height will be drawn at the current (0,0) position of the
 // cairo_t.
@@ -36,15 +36,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - surface we're rendering for (not necessarily into).
-//    - source: GL ID of the source buffer.
-//    - sourceType: type of the source.
-//    - bufferScale: scale-factor that the source buffer is allocated for.
-//    - x: source x position in source to start copying from in GL coordinates.
-//    - y: source y position in source to start copying from in GL coordinates.
-//    - width of the region to draw.
-//    - height of the region to draw.
+//   - cr: cairo context.
+//   - surface we're rendering for (not necessarily into).
+//   - source: GL ID of the source buffer.
+//   - sourceType: type of the source.
+//   - bufferScale: scale-factor that the source buffer is allocated for.
+//   - x: source x position in source to start copying from in GL coordinates.
+//   - y: source y position in source to start copying from in GL coordinates.
+//   - width of the region to draw.
+//   - height of the region to draw.
 //
 func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bufferScale, x, y, width, height int) {
 	var _arg1 *C.cairo_t    // out
@@ -83,8 +83,8 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bu
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - rectangle: Rectangle.
+//   - cr: cairo context.
+//   - rectangle: Rectangle.
 //
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg1 *C.cairo_t      // out
@@ -102,8 +102,8 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - region: #cairo_region_t.
+//   - cr: cairo context.
+//   - region: #cairo_region_t.
 //
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _arg1 *C.cairo_t        // out
@@ -125,11 +125,11 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 // The function takes the following parameters:
 //
-//    - surface: cairo surface.
+//   - surface: cairo surface.
 //
 // The function returns the following values:
 //
-//    - region: cairo_region_t; must be freed with cairo_region_destroy().
+//   - region: cairo_region_t; must be freed with cairo_region_destroy().
 //
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
@@ -160,10 +160,10 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - pixbuf: Pixbuf.
-//    - pixbufX: x coordinate of location to place upper left corner of pixbuf.
-//    - pixbufY: y coordinate of location to place upper left corner of pixbuf.
+//   - cr: cairo context.
+//   - pixbuf: Pixbuf.
+//   - pixbufX: x coordinate of location to place upper left corner of pixbuf.
+//   - pixbufY: y coordinate of location to place upper left corner of pixbuf.
 //
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
 	var _arg1 *C.cairo_t   // out
@@ -187,8 +187,8 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 //
 // The function takes the following parameters:
 //
-//    - cr: cairo context.
-//    - rgba: RGBA.
+//   - cr: cairo context.
+//   - rgba: RGBA.
 //
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg1 *C.cairo_t // out

@@ -52,8 +52,7 @@ func defaultScaleButtonOverrides(v *ScaleButton) ScaleButtonOverrides {
 // applications, and GTK provides a gtk.VolumeButton subclass that is tailored
 // for this use case.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkScaleButton has a single CSS node with name button. To differentiate it
 // from a plain GtkButton, it gets the .scale style class.
@@ -151,16 +150,16 @@ func (button *ScaleButton) ConnectValueChanged(f func(value float64)) coreglib.S
 //
 // The function takes the following parameters:
 //
-//    - min: minimum value of the scale (usually 0).
-//    - max: maximum value of the scale (usually 100).
-//    - step: stepping of value when a scroll-wheel event, or up/down arrow event
-//      occurs (usually 2).
-//    - icons (optional): NULL-terminated array of icon names, or NULL if you
-//      want to set the list later with gtk_scale_button_set_icons().
+//   - min: minimum value of the scale (usually 0).
+//   - max: maximum value of the scale (usually 100).
+//   - step: stepping of value when a scroll-wheel event, or up/down arrow event
+//     occurs (usually 2).
+//   - icons (optional): NULL-terminated array of icon names, or NULL if you
+//     want to set the list later with gtk_scale_button_set_icons().
 //
 // The function returns the following values:
 //
-//    - scaleButton: new GtkScaleButton.
+//   - scaleButton: new GtkScaleButton.
 //
 func NewScaleButton(min, max, step float64, icons []string) *ScaleButton {
 	var _arg1 C.double     // out
@@ -205,7 +204,7 @@ func NewScaleButton(min, max, step float64, icons []string) *ScaleButton {
 //
 // The function returns the following values:
 //
-//    - adjustment associated with the scale.
+//   - adjustment associated with the scale.
 //
 func (button *ScaleButton) Adjustment() *Adjustment {
 	var _arg0 *C.GtkScaleButton // out
@@ -227,7 +226,7 @@ func (button *ScaleButton) Adjustment() *Adjustment {
 //
 // The function returns the following values:
 //
-//    - ret minus button of the GtkScaleButton.
+//   - ret minus button of the GtkScaleButton.
 //
 func (button *ScaleButton) MinusButton() *Button {
 	var _arg0 *C.GtkScaleButton // out
@@ -249,7 +248,7 @@ func (button *ScaleButton) MinusButton() *Button {
 //
 // The function returns the following values:
 //
-//    - ret plus button of the GtkScaleButton.
+//   - ret plus button of the GtkScaleButton.
 //
 func (button *ScaleButton) PlusButton() *Button {
 	var _arg0 *C.GtkScaleButton // out
@@ -271,7 +270,7 @@ func (button *ScaleButton) PlusButton() *Button {
 //
 // The function returns the following values:
 //
-//    - widget: popup of the GtkScaleButton.
+//   - widget: popup of the GtkScaleButton.
 //
 func (button *ScaleButton) Popup() Widgetter {
 	var _arg0 *C.GtkScaleButton // out
@@ -309,7 +308,7 @@ func (button *ScaleButton) Popup() Widgetter {
 //
 // The function returns the following values:
 //
-//    - gdouble: current value of the scale button.
+//   - gdouble: current value of the scale button.
 //
 func (button *ScaleButton) Value() float64 {
 	var _arg0 *C.GtkScaleButton // out
@@ -334,7 +333,7 @@ func (button *ScaleButton) Value() float64 {
 //
 // The function takes the following parameters:
 //
-//    - adjustment: GtkAdjustment.
+//   - adjustment: GtkAdjustment.
 //
 func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 	var _arg0 *C.GtkScaleButton // out
@@ -352,7 +351,7 @@ func (button *ScaleButton) SetAdjustment(adjustment *Adjustment) {
 //
 // The function takes the following parameters:
 //
-//    - icons: NULL-terminated array of icon names.
+//   - icons: NULL-terminated array of icon names.
 //
 func (button *ScaleButton) SetIcons(icons []string) {
 	var _arg0 *C.GtkScaleButton // out
@@ -388,7 +387,7 @@ func (button *ScaleButton) SetIcons(icons []string) {
 //
 // The function takes the following parameters:
 //
-//    - value: new value of the scale button.
+//   - value: new value of the scale button.
 //
 func (button *ScaleButton) SetValue(value float64) {
 	var _arg0 *C.GtkScaleButton // out

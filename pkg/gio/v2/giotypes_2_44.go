@@ -7,8 +7,8 @@ package gio
 import "C"
 
 // OutputMessage: structure used for scatter/gather data output when sending
-// multiple messages or packets in one go. You generally pass in an array of
-// Vectors and the operation will use all the buffers as if they were one
+// multiple messages or packets in one go. You generally pass in an array
+// of Vectors and the operation will use all the buffers as if they were one
 // buffer.
 //
 // If address is NULL then the message is sent to the default receiver (as

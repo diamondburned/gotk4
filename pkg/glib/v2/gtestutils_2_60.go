@@ -6,11 +6,11 @@ package glib
 // #include <glib.h>
 import "C"
 
-// TEST_OPTION_ISOLATE_DIRS creates a unique temporary directory for each unit
-// test and uses g_set_user_dirs() to set XDG directories to point into
-// subdirectories of it for the duration of the unit test. The directory tree is
-// cleaned up after the test finishes successfully. Note that this doesn’t take
-// effect until g_test_run() is called, so calls to (for example)
+// TEST_OPTION_ISOLATE_DIRS creates a unique temporary directory for each
+// unit test and uses g_set_user_dirs() to set XDG directories to point into
+// subdirectories of it for the duration of the unit test. The directory
+// tree is cleaned up after the test finishes successfully. Note that this
+// doesn’t take effect until g_test_run() is called, so calls to (for example)
 // g_get_user_home_dir() will return the system-wide value when made in a test
 // program’s main() function.
 //
@@ -18,13 +18,13 @@ import "C"
 // when this option is used. The specific subdirectory paths in use are not
 // guaranteed to be stable API — always use a getter function to retrieve them.
 //
-//    - g_get_home_dir()
-//    - g_get_user_cache_dir()
-//    - g_get_system_config_dirs()
-//    - g_get_user_config_dir()
-//    - g_get_system_data_dirs()
-//    - g_get_user_data_dir()
-//    - g_get_user_runtime_dir()
+//   - g_get_home_dir()
+//   - g_get_user_cache_dir()
+//   - g_get_system_config_dirs()
+//   - g_get_user_config_dir()
+//   - g_get_system_data_dirs()
+//   - g_get_user_data_dir()
+//   - g_get_user_runtime_dir()
 //
 // The subdirectories may not be created by the test harness; as with normal
 // calls to functions like g_get_user_cache_dir(), the caller must be prepared

@@ -46,11 +46,11 @@ type TLSPasswordOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - length (optional): location to place the length of the password.
+	//   - length (optional): location to place the length of the password.
 	//
 	// The function returns the following values:
 	//
-	//    - guint8: password value (owned by the password object).
+	//   - guint8: password value (owned by the password object).
 	//
 	Value func(length *uint) *byte
 }
@@ -112,12 +112,12 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - flags: password flags.
-//    - description of what the password is for.
+//   - flags: password flags.
+//   - description of what the password is for.
 //
 // The function returns the following values:
 //
-//    - tlsPassword: newly allocated password object.
+//   - tlsPassword: newly allocated password object.
 //
 func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 	var _arg1 C.GTlsPasswordFlags // out
@@ -144,7 +144,7 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 //
 // The function returns the following values:
 //
-//    - utf8: description of the password.
+//   - utf8: description of the password.
 //
 func (password *TLSPassword) Description() string {
 	var _arg0 *C.GTlsPassword // out
@@ -166,7 +166,7 @@ func (password *TLSPassword) Description() string {
 //
 // The function returns the following values:
 //
-//    - tlsPasswordFlags flags about the password.
+//   - tlsPasswordFlags flags about the password.
 //
 func (password *TLSPassword) Flags() TLSPasswordFlags {
 	var _arg0 *C.GTlsPassword     // out
@@ -191,11 +191,11 @@ func (password *TLSPassword) Flags() TLSPasswordFlags {
 //
 // The function takes the following parameters:
 //
-//    - length (optional): location to place the length of the password.
+//   - length (optional): location to place the length of the password.
 //
 // The function returns the following values:
 //
-//    - guint8: password value (owned by the password object).
+//   - guint8: password value (owned by the password object).
 //
 func (password *TLSPassword) Value(length *uint) *byte {
 	var _arg0 *C.GTlsPassword // out
@@ -218,13 +218,13 @@ func (password *TLSPassword) Value(length *uint) *byte {
 	return _guint8
 }
 
-// Warning: get a user readable translated warning. Usually this warning is a
-// representation of the password flags returned from
+// Warning: get a user readable translated warning. Usually this
+// warning is a representation of the password flags returned from
 // g_tls_password_get_flags().
 //
 // The function returns the following values:
 //
-//    - utf8: warning.
+//   - utf8: warning.
 //
 func (password *TLSPassword) Warning() string {
 	var _arg0 *C.GTlsPassword // out
@@ -247,7 +247,7 @@ func (password *TLSPassword) Warning() string {
 //
 // The function takes the following parameters:
 //
-//    - description of the password.
+//   - description of the password.
 //
 func (password *TLSPassword) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
@@ -266,7 +266,7 @@ func (password *TLSPassword) SetDescription(description string) {
 //
 // The function takes the following parameters:
 //
-//    - flags about the password.
+//   - flags about the password.
 //
 func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 	var _arg0 *C.GTlsPassword     // out
@@ -290,7 +290,7 @@ func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 //
 // The function takes the following parameters:
 //
-//    - value: new password value.
+//   - value: new password value.
 //
 func (password *TLSPassword) SetValue(value []byte) {
 	var _arg0 *C.GTlsPassword // out
@@ -308,13 +308,13 @@ func (password *TLSPassword) SetValue(value []byte) {
 	runtime.KeepAlive(value)
 }
 
-// SetWarning: set a user readable translated warning. Usually this warning is a
-// representation of the password flags returned from
+// SetWarning: set a user readable translated warning. Usually this
+// warning is a representation of the password flags returned from
 // g_tls_password_get_flags().
 //
 // The function takes the following parameters:
 //
-//    - warning: user readable warning.
+//   - warning: user readable warning.
 //
 func (password *TLSPassword) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
@@ -357,11 +357,11 @@ func (password *TLSPassword) defaultWarning() string {
 //
 // The function takes the following parameters:
 //
-//    - length (optional): location to place the length of the password.
+//   - length (optional): location to place the length of the password.
 //
 // The function returns the following values:
 //
-//    - guint8: password value (owned by the password object).
+//   - guint8: password value (owned by the password object).
 //
 func (password *TLSPassword) value(length *uint) *byte {
 	gclass := (*C.GTlsPasswordClass)(coreglib.PeekParentClass(password))

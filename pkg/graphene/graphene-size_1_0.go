@@ -94,11 +94,11 @@ func (s *Size) SetHeight(height float32) {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_size_t.
+//   - b: #graphene_size_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the sizes are equal.
+//   - ok: true if the sizes are equal.
 //
 func (a *Size) Equal(b *Size) bool {
 	var _arg0 *C.graphene_size_t // out
@@ -125,12 +125,12 @@ func (a *Size) Equal(b *Size) bool {
 //
 // The function takes the following parameters:
 //
-//    - width: width.
-//    - height: height.
+//   - width: width.
+//   - height: height.
 //
 // The function returns the following values:
 //
-//    - size: initialized #graphene_size_t.
+//   - size: initialized #graphene_size_t.
 //
 func (s *Size) Init(width float32, height float32) *Size {
 	var _arg0 *C.graphene_size_t // out
@@ -159,11 +159,11 @@ func (s *Size) Init(width float32, height float32) *Size {
 //
 // The function takes the following parameters:
 //
-//    - src: #graphene_size_t.
+//   - src: #graphene_size_t.
 //
 // The function returns the following values:
 //
-//    - size: initialized #graphene_size_t.
+//   - size: initialized #graphene_size_t.
 //
 func (s *Size) InitFromSize(src *Size) *Size {
 	var _arg0 *C.graphene_size_t // out
@@ -189,12 +189,12 @@ func (s *Size) InitFromSize(src *Size) *Size {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_size_t.
-//    - factor: linear interpolation factor.
+//   - b: #graphene_size_t.
+//   - factor: linear interpolation factor.
 //
 // The function returns the following values:
 //
-//    - res: return location for the interpolated size.
+//   - res: return location for the interpolated size.
 //
 func (a *Size) Interpolate(b *Size, factor float64) *Size {
 	var _arg0 *C.graphene_size_t // out
@@ -222,11 +222,11 @@ func (a *Size) Interpolate(b *Size, factor float64) *Size {
 //
 // The function takes the following parameters:
 //
-//    - factor: scaling factor.
+//   - factor: scaling factor.
 //
 // The function returns the following values:
 //
-//    - res: return location for the scaled size.
+//   - res: return location for the scaled size.
 //
 func (s *Size) Scale(factor float32) *Size {
 	var _arg0 *C.graphene_size_t // out
@@ -252,7 +252,7 @@ func (s *Size) Scale(factor float32) *Size {
 //
 // The function returns the following values:
 //
-//    - size: constant size.
+//   - size: constant size.
 //
 func SizeZero() *Size {
 	var _cret *C.graphene_size_t // in

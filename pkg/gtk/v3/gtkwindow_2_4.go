@@ -21,7 +21,7 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - icon: icon.
+//   - icon: icon.
 //
 func WindowSetDefaultIcon(icon *gdkpixbuf.Pixbuf) {
 	var _arg1 *C.GdkPixbuf // out

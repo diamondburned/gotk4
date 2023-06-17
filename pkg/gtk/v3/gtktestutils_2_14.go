@@ -17,8 +17,8 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// TestCreateSimpleWindow: create a simple window with window title window_title
-// and text contents dialog_text. The window will quit any running
+// TestCreateSimpleWindow: create a simple window with window title
+// window_title and text contents dialog_text. The window will quit any running
 // gtk_main()-loop when destroyed, and it will automatically be destroyed upon
 // test function teardown.
 //
@@ -26,12 +26,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - windowTitle: title of the window to be displayed.
-//    - dialogText: text inside the window to be displayed.
+//   - windowTitle: title of the window to be displayed.
+//   - dialogText: text inside the window to be displayed.
 //
 // The function returns the following values:
 //
-//    - widget pointer to the newly created GtkWindow.
+//   - widget pointer to the newly created GtkWindow.
 //
 func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 	var _arg1 *C.gchar     // out
@@ -80,12 +80,12 @@ func TestCreateSimpleWindow(windowTitle, dialogText string) Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - widget: valid label or container widget.
-//    - labelPattern: shell-glob pattern to match a label string.
+//   - widget: valid label or container widget.
+//   - labelPattern: shell-glob pattern to match a label string.
 //
 // The function returns the following values:
 //
-//    - ret: gtkLabel widget if any is found.
+//   - ret: gtkLabel widget if any is found.
 //
 func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 	var _arg1 *C.GtkWidget // out
@@ -132,12 +132,12 @@ func TestFindLabel(widget Widgetter, labelPattern string) Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - baseWidget: valid widget, part of a widget hierarchy.
-//    - widgetType: type of a aearched for sibling widget.
+//   - baseWidget: valid widget, part of a widget hierarchy.
+//   - widgetType: type of a aearched for sibling widget.
 //
 // The function returns the following values:
 //
-//    - widget of type widget_type if any is found.
+//   - widget of type widget_type if any is found.
 //
 func TestFindSibling(baseWidget Widgetter, widgetType coreglib.Type) Widgetter {
 	var _arg1 *C.GtkWidget // out
@@ -174,23 +174,23 @@ func TestFindSibling(baseWidget Widgetter, widgetType coreglib.Type) Widgetter {
 	return _widget
 }
 
-// TestFindWidget: this function will search the descendants of widget for a
-// widget of type widget_type that has a label matching label_pattern next to
-// it. This is most useful for automated GUI testing, e.g. to find the “OK”
-// button in a dialog and synthesize clicks on it. However see
+// TestFindWidget: this function will search the descendants of widget for
+// a widget of type widget_type that has a label matching label_pattern
+// next to it. This is most useful for automated GUI testing, e.g. to find
+// the “OK” button in a dialog and synthesize clicks on it. However see
 // gtk_test_find_label(), gtk_test_find_sibling() and gtk_test_widget_click()
 // for possible caveats involving the search of such widgets and synthesizing
 // widget events.
 //
 // The function takes the following parameters:
 //
-//    - widget: container widget, usually a GtkWindow.
-//    - labelPattern: shell-glob pattern to match a label string.
-//    - widgetType: type of a aearched for label sibling widget.
+//   - widget: container widget, usually a GtkWindow.
+//   - labelPattern: shell-glob pattern to match a label string.
+//   - widgetType: type of a aearched for label sibling widget.
 //
 // The function returns the following values:
 //
-//    - ret (optional): valid widget if any is found or NULL.
+//   - ret (optional): valid widget if any is found or NULL.
 //
 func TestFindWidget(widget Widgetter, labelPattern string, widgetType coreglib.Type) Widgetter {
 	var _arg1 *C.GtkWidget // out
@@ -235,7 +235,7 @@ func TestFindWidget(widget Widgetter, labelPattern string, widgetType coreglib.T
 //
 // The function returns the following values:
 //
-//    - gTypes: 0-terminated array of type ids.
+//   - gTypes: 0-terminated array of type ids.
 //
 func TestListAllTypes() []coreglib.Type {
 	var _cret *C.GType // in
@@ -256,8 +256,8 @@ func TestListAllTypes() []coreglib.Type {
 	return _gTypes
 }
 
-// TestRegisterAllTypes: force registration of all core Gtk+ and Gdk object
-// types. This allowes to refer to any of those object types via
+// TestRegisterAllTypes: force registration of all core Gtk+ and Gdk
+// object types. This allowes to refer to any of those object types via
 // g_type_from_name() after calling this function.
 func TestRegisterAllTypes() {
 	C.gtk_test_register_all_types()
@@ -272,12 +272,12 @@ func TestRegisterAllTypes() {
 //
 // The function takes the following parameters:
 //
-//    - widget: valid widget pointer.
+//   - widget: valid widget pointer.
 //
 // The function returns the following values:
 //
-//    - gdouble: gtk_adjustment_get_value (adjustment) for an adjustment
-//      belonging to widget.
+//   - gdouble: gtk_adjustment_get_value (adjustment) for an adjustment
+//     belonging to widget.
 //
 func TestSliderGetValue(widget Widgetter) float64 {
 	var _arg1 *C.GtkWidget // out
@@ -304,8 +304,8 @@ func TestSliderGetValue(widget Widgetter) float64 {
 //
 // The function takes the following parameters:
 //
-//    - widget: valid widget pointer.
-//    - percentage: value between 0 and 100.
+//   - widget: valid widget pointer.
+//   - percentage: value between 0 and 100.
 //
 func TestSliderSetPerc(widget Widgetter, percentage float64) {
 	var _arg1 *C.GtkWidget // out
@@ -327,14 +327,14 @@ func TestSliderSetPerc(widget Widgetter, percentage float64) {
 //
 // The function takes the following parameters:
 //
-//    - spinner: valid GtkSpinButton widget.
-//    - button: number of the pointer button for the event, usually 1, 2 or 3.
-//    - upwards: TRUE for upwards arrow click, FALSE for downwards arrow click.
+//   - spinner: valid GtkSpinButton widget.
+//   - button: number of the pointer button for the event, usually 1, 2 or 3.
+//   - upwards: TRUE for upwards arrow click, FALSE for downwards arrow click.
 //
 // The function returns the following values:
 //
-//    - ok: whether all actions neccessary for the button click simulation were
-//      carried out successfully.
+//   - ok: whether all actions neccessary for the button click simulation were
+//     carried out successfully.
 //
 func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 	var _arg1 *C.GtkSpinButton // out
@@ -369,11 +369,11 @@ func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - widget: valid widget pointer.
+//   - widget: valid widget pointer.
 //
 // The function returns the following values:
 //
-//    - utf8: new 0-terminated C string, needs to be released with g_free().
+//   - utf8: new 0-terminated C string, needs to be released with g_free().
 //
 func TestTextGet(widget Widgetter) string {
 	var _arg1 *C.GtkWidget // out
@@ -399,8 +399,8 @@ func TestTextGet(widget Widgetter) string {
 //
 // The function takes the following parameters:
 //
-//    - widget: valid widget pointer.
-//    - str: 0-terminated C string.
+//   - widget: valid widget pointer.
+//   - str: 0-terminated C string.
 //
 func TestTextSet(widget Widgetter, str string) {
 	var _arg1 *C.GtkWidget // out
@@ -428,14 +428,14 @@ func TestTextSet(widget Widgetter, str string) {
 //
 // The function takes the following parameters:
 //
-//    - widget: widget to generate a button click on.
-//    - button: number of the pointer button for the event, usually 1, 2 or 3.
-//    - modifiers: keyboard modifiers the event is setup with.
+//   - widget: widget to generate a button click on.
+//   - button: number of the pointer button for the event, usually 1, 2 or 3.
+//   - modifiers: keyboard modifiers the event is setup with.
 //
 // The function returns the following values:
 //
-//    - ok: whether all actions neccessary for the button click simulation were
-//      carried out successfully.
+//   - ok: whether all actions neccessary for the button click simulation were
+//     carried out successfully.
 //
 func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out
@@ -461,9 +461,9 @@ func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) 
 	return _ok
 }
 
-// TestWidgetSendKey: this function will generate keyboard press and release
-// events in the middle of the first GdkWindow found that belongs to widget. For
-// windowless widgets like Button (which returns FALSE from
+// TestWidgetSendKey: this function will generate keyboard press and
+// release events in the middle of the first GdkWindow found that belongs
+// to widget. For windowless widgets like Button (which returns FALSE from
 // gtk_widget_get_has_window()), this will often be an input-only event window.
 // For other widgets, this is usually widget->window. Certain caveats should be
 // considered when using this function, in particular because the mouse pointer
@@ -471,14 +471,14 @@ func TestWidgetClick(widget Widgetter, button uint, modifiers gdk.ModifierType) 
 //
 // The function takes the following parameters:
 //
-//    - widget: widget to generate a key press and release on.
-//    - keyval: gdk keyboard value.
-//    - modifiers: keyboard modifiers the event is setup with.
+//   - widget: widget to generate a key press and release on.
+//   - keyval: gdk keyboard value.
+//   - modifiers: keyboard modifiers the event is setup with.
 //
 // The function returns the following values:
 //
-//    - ok: whether all actions neccessary for the key event simulation were
-//      carried out successfully.
+//   - ok: whether all actions neccessary for the key event simulation were
+//     carried out successfully.
 //
 func TestWidgetSendKey(widget Widgetter, keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 *C.GtkWidget      // out

@@ -16,13 +16,13 @@ import "C"
 
 // AcceleratorGetDefaultModMask gets the modifier mask.
 //
-// The modifier mask determines which modifiers are considered significant for
-// keyboard accelerators. This includes all keyboard modifiers except for
+// The modifier mask determines which modifiers are considered significant
+// for keyboard accelerators. This includes all keyboard modifiers except for
 // GDK_LOCK_MASK.
 //
 // The function returns the following values:
 //
-//    - modifierType: modifier mask for accelerators.
+//   - modifierType: modifier mask for accelerators.
 //
 func AcceleratorGetDefaultModMask() gdk.ModifierType {
 	var _cret C.GdkModifierType // in
@@ -41,12 +41,12 @@ func AcceleratorGetDefaultModMask() gdk.ModifierType {
 //
 // The function takes the following parameters:
 //
-//    - acceleratorKey: accelerator keyval.
-//    - acceleratorMods: accelerator modifier mask.
+//   - acceleratorKey: accelerator keyval.
+//   - acceleratorMods: accelerator modifier mask.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string representing the accelerator.
+//   - utf8: newly-allocated string representing the accelerator.
 //
 func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 C.guint           // out
@@ -80,14 +80,14 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 //
 // The function takes the following parameters:
 //
-//    - display (optional) or NULL to use the default display.
-//    - acceleratorKey: accelerator keyval.
-//    - keycode: accelerator keycode.
-//    - acceleratorMods: accelerator modifier mask.
+//   - display (optional) or NULL to use the default display.
+//   - acceleratorKey: accelerator keyval.
+//   - keycode: accelerator keycode.
+//   - acceleratorMods: accelerator modifier mask.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string representing the accelerator.
+//   - utf8: newly-allocated string representing the accelerator.
 //
 func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
@@ -128,12 +128,12 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey, keycod
 //
 // The function takes the following parameters:
 //
-//    - acceleratorKey: accelerator keyval.
-//    - acceleratorMods: accelerator modifier mask.
+//   - acceleratorKey: accelerator keyval.
+//   - acceleratorMods: accelerator modifier mask.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated accelerator name.
+//   - utf8: newly-allocated accelerator name.
 //
 func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 C.guint           // out
@@ -158,20 +158,20 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 // AcceleratorNameWithKeycode converts an accelerator keyval and modifier mask
 // into a string parseable by gtk_accelerator_parse_with_keycode().
 //
-// This is similar to gtk.AcceleratorName() but handling keycodes. This is only
-// useful for system-level components, applications should use
+// This is similar to gtk.AcceleratorName() but handling keycodes.
+// This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
 //
 // The function takes the following parameters:
 //
-//    - display (optional) or NULL to use the default display.
-//    - acceleratorKey: accelerator keyval.
-//    - keycode: accelerator keycode.
-//    - acceleratorMods: accelerator modifier mask.
+//   - display (optional) or NULL to use the default display.
+//   - acceleratorKey: accelerator keyval.
+//   - keycode: accelerator keycode.
+//   - acceleratorMods: accelerator modifier mask.
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated accelerator name.
+//   - utf8: newly allocated accelerator name.
 //
 func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var _arg1 *C.GdkDisplay     // out
@@ -215,15 +215,15 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 //
 // The function takes the following parameters:
 //
-//    - accelerator: string representing an accelerator.
+//   - accelerator: string representing an accelerator.
 //
 // The function returns the following values:
 //
-//    - acceleratorKey (optional): return location for accelerator keyval, or
-//      NULL.
-//    - acceleratorMods (optional): return location for accelerator modifier
-//      mask, NULL.
-//    - ok
+//   - acceleratorKey (optional): return location for accelerator keyval,
+//     or NULL.
+//   - acceleratorMods (optional): return location for accelerator modifier
+//     mask, NULL.
+//   - ok
 //
 func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	var _arg1 *C.char           // out
@@ -252,12 +252,12 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 
 // AcceleratorParseWithKeycode parses a string representing an accelerator.
 //
-// This is similar to gtk.AcceleratorParse() but handles keycodes as well. This
-// is only useful for system-level components, applications should use
+// This is similar to gtk.AcceleratorParse() but handles keycodes as well.
+// This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
 //
-// If accelerator_codes is given and the result stored in it is non-NULL, the
-// result must be freed with g_free().
+// If accelerator_codes is given and the result stored in it is non-NULL,
+// the result must be freed with g_free().
 //
 // If a keycode is present in the accelerator and no accelerator_codes is given,
 // the parse will fail.
@@ -267,18 +267,18 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 //
 // The function takes the following parameters:
 //
-//    - accelerator: string representing an accelerator.
-//    - display (optional) to look up accelerator_codes in.
+//   - accelerator: string representing an accelerator.
+//   - display (optional) to look up accelerator_codes in.
 //
 // The function returns the following values:
 //
-//    - acceleratorKey (optional): return location for accelerator keyval, or
-//      NULL.
-//    - acceleratorCodes (optional): return location for accelerator keycodes, or
-//      NULL.
-//    - acceleratorMods (optional): return location for accelerator modifier
-//      mask, NULL.
-//    - ok: TRUE if parsing succeeded.
+//   - acceleratorKey (optional): return location for accelerator keyval,
+//     or NULL.
+//   - acceleratorCodes (optional): return location for accelerator keycodes,
+//     or NULL.
+//   - acceleratorMods (optional): return location for accelerator modifier
+//     mask, NULL.
+//   - ok: TRUE if parsing succeeded.
 //
 func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint, []uint, gdk.ModifierType, bool) {
 	var _arg1 *C.char           // out
@@ -331,18 +331,18 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint
 // AcceleratorValid determines whether a given keyval and modifier mask
 // constitute a valid keyboard accelerator.
 //
-// For example, the GDK_KEY_a keyval plus GDK_CONTROL_MASK mark is valid, and
-// matches the “Ctrl+a” accelerator. But, you can't, for instance, use the
+// For example, the GDK_KEY_a keyval plus GDK_CONTROL_MASK mark is valid,
+// and matches the “Ctrl+a” accelerator. But, you can't, for instance, use the
 // GDK_KEY_Control_L keyval as an accelerator.
 //
 // The function takes the following parameters:
 //
-//    - keyval: GDK keyval.
-//    - modifiers: modifier mask.
+//   - keyval: GDK keyval.
+//   - modifiers: modifier mask.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the accelerator is valid.
+//   - ok: TRUE if the accelerator is valid.
 //
 func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	var _arg1 C.guint           // out

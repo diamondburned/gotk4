@@ -72,20 +72,20 @@ func (f FormatSizeFlags) Has(other FormatSizeFlags) bool {
 	return (f & other) == other
 }
 
-// BitNthLSF: find the position of the first bit set in mask, searching from
-// (but not including) nth_bit upwards. Bits are numbered from 0 (least
+// BitNthLSF: find the position of the first bit set in mask, searching
+// from (but not including) nth_bit upwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the 0th bit, set nth_bit to -1.
 //
 // The function takes the following parameters:
 //
-//    - mask containing flags.
-//    - nthBit: index of the bit to start the search from.
+//   - mask containing flags.
+//   - nthBit: index of the bit to start the search from.
 //
 // The function returns the following values:
 //
-//    - gint: index of the first bit set which is higher than nth_bit, or -1 if
-//      no higher bits are set.
+//   - gint: index of the first bit set which is higher than nth_bit, or -1 if
+//     no higher bits are set.
 //
 func BitNthLSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
@@ -113,13 +113,13 @@ func BitNthLSF(mask uint32, nthBit int) int {
 //
 // The function takes the following parameters:
 //
-//    - mask containing flags.
-//    - nthBit: index of the bit to start the search from.
+//   - mask containing flags.
+//   - nthBit: index of the bit to start the search from.
 //
 // The function returns the following values:
 //
-//    - gint: index of the first bit set which is lower than nth_bit, or -1 if no
-//      lower bits are set.
+//   - gint: index of the first bit set which is lower than nth_bit, or -1 if no
+//     lower bits are set.
 //
 func BitNthMSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
@@ -145,11 +145,11 @@ func BitNthMSF(mask uint32, nthBit int) int {
 //
 // The function takes the following parameters:
 //
-//    - number: #guint.
+//   - number: #guint.
 //
 // The function returns the following values:
 //
-//    - guint: number of bits used to hold number.
+//   - guint: number of bits used to hold number.
 //
 func BitStorage(number uint32) uint {
 	var _arg1 C.gulong // out
@@ -169,27 +169,27 @@ func BitStorage(number uint32) uint {
 
 // FindProgramInPath locates the first executable named program in the user's
 // path, in the same way that execvp() would locate it. Returns an allocated
-// string with the absolute path name, or NULL if the program is not found in
-// the path. If program is already an absolute path, returns a copy of program
-// if program exists and is executable, and NULL otherwise. On Windows, if
-// program does not have a file type suffix, tries with the suffixes .exe, .cmd,
-// .bat and .com, and the suffixes in the PATHEXT environment variable.
+// string with the absolute path name, or NULL if the program is not found
+// in the path. If program is already an absolute path, returns a copy of
+// program if program exists and is executable, and NULL otherwise. On Windows,
+// if program does not have a file type suffix, tries with the suffixes .exe,
+// .cmd, .bat and .com, and the suffixes in the PATHEXT environment variable.
 //
 // On Windows, it looks for the file in the same way as CreateProcess() would.
 // This means first in the directory where the executing program was loaded
 // from, then in the current directory, then in the Windows 32-bit system
-// directory, then in the Windows directory, and finally in the directories in
-// the PATH environment variable. If the program is found, the return value
+// directory, then in the Windows directory, and finally in the directories
+// in the PATH environment variable. If the program is found, the return value
 // contains the full name including the type suffix.
 //
 // The function takes the following parameters:
 //
-//    - program name in the GLib file name encoding.
+//   - program name in the GLib file name encoding.
 //
 // The function returns the following values:
 //
-//    - filename (optional): newly-allocated string with the absolute path, or
-//      NULL.
+//   - filename (optional): newly-allocated string with the absolute path,
+//     or NULL.
 //
 func FindProgramInPath(program string) string {
 	var _arg1 *C.gchar // out
@@ -234,7 +234,7 @@ func FindProgramInPath(program string) string {
 //
 // The function returns the following values:
 //
-//    - filename: current user's home directory.
+//   - filename: current user's home directory.
 //
 func GetHomeDir() string {
 	var _cret *C.gchar // in
@@ -258,8 +258,8 @@ func GetHomeDir() string {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): name of the program, or NULL if it has not been set yet.
-//      The returned string belongs to GLib and must not be modified or freed.
+//   - utf8 (optional): name of the program, or NULL if it has not been set yet.
+//     The returned string belongs to GLib and must not be modified or freed.
 //
 func GetPrgname() string {
 	var _cret *C.gchar // in
@@ -282,7 +282,7 @@ func GetPrgname() string {
 //
 // The function returns the following values:
 //
-//    - filename user's real name.
+//   - filename user's real name.
 //
 func GetRealName() string {
 	var _cret *C.gchar // in
@@ -310,7 +310,7 @@ func GetRealName() string {
 //
 // The function returns the following values:
 //
-//    - filename: directory to use for temporary files.
+//   - filename: directory to use for temporary files.
 //
 func GetTmpDir() string {
 	var _cret *C.gchar // in
@@ -331,7 +331,7 @@ func GetTmpDir() string {
 //
 // The function returns the following values:
 //
-//    - filename: user name of the current user.
+//   - filename: user name of the current user.
 //
 func GetUserName() string {
 	var _cret *C.gchar // in
@@ -358,13 +358,13 @@ func GetUserName() string {
 //
 // The function takes the following parameters:
 //
-//    - str (optional): list of debug options separated by colons, spaces, or
-//      commas, or NULL.
-//    - keys: pointer to an array of Key which associate strings with bit flags.
+//   - str (optional): list of debug options separated by colons, spaces,
+//     or commas, or NULL.
+//   - keys: pointer to an array of Key which associate strings with bit flags.
 //
 // The function returns the following values:
 //
-//    - guint: combined set of bit flags.
+//   - guint: combined set of bit flags.
 //
 func ParseDebugString(str string, keys []DebugKey) uint {
 	var _arg1 *C.gchar     // out
@@ -409,7 +409,7 @@ func ParseDebugString(str string, keys []DebugKey) uint {
 //
 // The function takes the following parameters:
 //
-//    - prgname: name of the program.
+//   - prgname: name of the program.
 //
 func SetPrgname(prgname string) {
 	var _arg1 *C.gchar // out

@@ -34,8 +34,8 @@ func init() {
 // only need to use the latter; but you can use this widget as part of a larger
 // widget if you have special needs.
 //
-// GtkAppChooserWidget offers detailed control over what applications are shown,
-// using the gtk.AppChooserWidget:show-default,
+// GtkAppChooserWidget offers detailed control over what applications
+// are shown, using the gtk.AppChooserWidget:show-default,
 // gtk.AppChooserWidget:show-recommended, gtk.AppChooserWidget:show-fallback,
 // gtk.AppChooserWidget:show-other and gtk.AppChooserWidget:show-all properties.
 // See the gtk.AppChooser documentation for more information about these groups
@@ -45,8 +45,7 @@ func init() {
 // gtk.AppChooserWidget::application-selected and
 // gtk.AppChooserWidget::application-activated signals.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkAppChooserWidget has a single CSS node with name appchooser.
 type AppChooserWidget struct {
@@ -125,11 +124,11 @@ func (self *AppChooserWidget) ConnectApplicationSelected(f func(application gio.
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type to show applications for.
+//   - contentType: content type to show applications for.
 //
 // The function returns the following values:
 //
-//    - appChooserWidget: newly created GtkAppChooserWidget.
+//   - appChooserWidget: newly created GtkAppChooserWidget.
 //
 func NewAppChooserWidget(contentType string) *AppChooserWidget {
 	var _arg1 *C.char      // out
@@ -153,7 +152,7 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): value of gtk.AppChooserWidget:default-text.
+//   - utf8 (optional): value of gtk.AppChooserWidget:default-text.
 //
 func (self *AppChooserWidget) DefaultText() string {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -178,7 +177,7 @@ func (self *AppChooserWidget) DefaultText() string {
 //
 // The function returns the following values:
 //
-//    - ok: value of gtk.AppChooserWidget:show-all.
+//   - ok: value of gtk.AppChooserWidget:show-all.
 //
 func (self *AppChooserWidget) ShowAll() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -203,7 +202,7 @@ func (self *AppChooserWidget) ShowAll() bool {
 //
 // The function returns the following values:
 //
-//    - ok: value of gtk.AppChooserWidget:show-default.
+//   - ok: value of gtk.AppChooserWidget:show-default.
 //
 func (self *AppChooserWidget) ShowDefault() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -228,7 +227,7 @@ func (self *AppChooserWidget) ShowDefault() bool {
 //
 // The function returns the following values:
 //
-//    - ok: value of gtk.AppChooserWidget:show-fallback.
+//   - ok: value of gtk.AppChooserWidget:show-fallback.
 //
 func (self *AppChooserWidget) ShowFallback() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -253,7 +252,7 @@ func (self *AppChooserWidget) ShowFallback() bool {
 //
 // The function returns the following values:
 //
-//    - ok: value of gtk.AppChooserWidget:show-other.
+//   - ok: value of gtk.AppChooserWidget:show-other.
 //
 func (self *AppChooserWidget) ShowOther() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -278,7 +277,7 @@ func (self *AppChooserWidget) ShowOther() bool {
 //
 // The function returns the following values:
 //
-//    - ok: value of gtk.AppChooserWidget:show-recommended.
+//   - ok: value of gtk.AppChooserWidget:show-recommended.
 //
 func (self *AppChooserWidget) ShowRecommended() bool {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -303,7 +302,7 @@ func (self *AppChooserWidget) ShowRecommended() bool {
 //
 // The function takes the following parameters:
 //
-//    - text: new value for gtk.AppChooserWidget:default-text.
+//   - text: new value for gtk.AppChooserWidget:default-text.
 //
 func (self *AppChooserWidget) SetDefaultText(text string) {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -323,7 +322,7 @@ func (self *AppChooserWidget) SetDefaultText(text string) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for gtk.AppChooserWidget:show-all.
+//   - setting: new value for gtk.AppChooserWidget:show-all.
 //
 func (self *AppChooserWidget) SetShowAll(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -344,7 +343,7 @@ func (self *AppChooserWidget) SetShowAll(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for gtk.AppChooserWidget:show-default.
+//   - setting: new value for gtk.AppChooserWidget:show-default.
 //
 func (self *AppChooserWidget) SetShowDefault(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -365,7 +364,7 @@ func (self *AppChooserWidget) SetShowDefault(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for gtk.AppChooserWidget:show-fallback.
+//   - setting: new value for gtk.AppChooserWidget:show-fallback.
 //
 func (self *AppChooserWidget) SetShowFallback(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -386,7 +385,7 @@ func (self *AppChooserWidget) SetShowFallback(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for gtk.AppChooserWidget:show-other.
+//   - setting: new value for gtk.AppChooserWidget:show-other.
 //
 func (self *AppChooserWidget) SetShowOther(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out
@@ -407,7 +406,7 @@ func (self *AppChooserWidget) SetShowOther(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for gtk.AppChooserWidget:show-recommended.
+//   - setting: new value for gtk.AppChooserWidget:show-recommended.
 //
 func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	var _arg0 *C.GtkAppChooserWidget // out

@@ -102,7 +102,7 @@ func marshalHPaned(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - hPaned: new HPaned.
+//   - hPaned: new HPaned.
 //
 func NewHPaned() *HPaned {
 	var _cret *C.GtkWidget // in

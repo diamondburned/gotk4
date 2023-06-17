@@ -29,8 +29,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - charset (optional): return location for character set name, or NULL.
-//    - ok: TRUE if the returned charset is UTF-8.
+//   - charset (optional): return location for character set name, or NULL.
+//   - ok: TRUE if the returned charset is UTF-8.
 //
 func GetConsoleCharset() (string, bool) {
 	var _arg1 *C.char    // in

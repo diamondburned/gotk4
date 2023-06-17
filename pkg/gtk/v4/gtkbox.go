@@ -39,8 +39,8 @@ func defaultBoxOverrides(v *Box) BoxOverrides {
 // !An example GtkBox (box.png)
 //
 // Whether it is a row or column depends on the value of its
-// gtk.Orientable:orientation property. Within the other dimension, all children
-// are allocated the same size. Of course, the gtk.Widget:halign and
+// gtk.Orientable:orientation property. Within the other dimension, all
+// children are allocated the same size. Of course, the gtk.Widget:halign and
 // gtk.Widget:valign properties can be used on the children to influence their
 // allocation.
 //
@@ -59,13 +59,11 @@ func defaultBoxOverrides(v *Box) BoxOverrides {
 // Use gtk.Box.ReorderChildAfter() to move a child to a different place in the
 // box.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkBox uses a single CSS node with name box.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Box struct {
@@ -129,12 +127,12 @@ func marshalBox(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - orientation box’s orientation.
-//    - spacing: number of pixels to place by default between children.
+//   - orientation box’s orientation.
+//   - spacing: number of pixels to place by default between children.
 //
 // The function returns the following values:
 //
-//    - box: new GtkBox.
+//   - box: new GtkBox.
 //
 func NewBox(orientation Orientation, spacing int) *Box {
 	var _arg1 C.GtkOrientation // out
@@ -159,7 +157,7 @@ func NewBox(orientation Orientation, spacing int) *Box {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to append.
+//   - child: GtkWidget to append.
 //
 func (box *Box) Append(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
@@ -177,7 +175,7 @@ func (box *Box) Append(child Widgetter) {
 //
 // The function returns the following values:
 //
-//    - baselinePosition: baseline position.
+//   - baselinePosition: baseline position.
 //
 func (box *Box) BaselinePosition() BaselinePosition {
 	var _arg0 *C.GtkBox             // out
@@ -200,7 +198,7 @@ func (box *Box) BaselinePosition() BaselinePosition {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the box is homogeneous.
+//   - ok: TRUE if the box is homogeneous.
 //
 func (box *Box) Homogeneous() bool {
 	var _arg0 *C.GtkBox  // out
@@ -224,7 +222,7 @@ func (box *Box) Homogeneous() bool {
 //
 // The function returns the following values:
 //
-//    - gint: spacing between children.
+//   - gint: spacing between children.
 //
 func (box *Box) Spacing() int {
 	var _arg0 *C.GtkBox // out
@@ -249,8 +247,8 @@ func (box *Box) Spacing() int {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to insert.
-//    - sibling (optional) after which to insert child.
+//   - child: GtkWidget to insert.
+//   - sibling (optional) after which to insert child.
 //
 func (box *Box) InsertChildAfter(child, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
@@ -273,7 +271,7 @@ func (box *Box) InsertChildAfter(child, sibling Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to prepend.
+//   - child: GtkWidget to prepend.
 //
 func (box *Box) Prepend(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
@@ -294,7 +292,7 @@ func (box *Box) Prepend(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child to remove.
+//   - child to remove.
 //
 func (box *Box) Remove(child Widgetter) {
 	var _arg0 *C.GtkBox    // out
@@ -315,8 +313,8 @@ func (box *Box) Remove(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child: GtkWidget to move, must be a child of box.
-//    - sibling (optional) to move child after, or NULL.
+//   - child: GtkWidget to move, must be a child of box.
+//   - sibling (optional) to move child after, or NULL.
 //
 func (box *Box) ReorderChildAfter(child, sibling Widgetter) {
 	var _arg0 *C.GtkBox    // out
@@ -338,13 +336,13 @@ func (box *Box) ReorderChildAfter(child, sibling Widgetter) {
 // SetBaselinePosition sets the baseline position of a box.
 //
 // This affects only horizontal boxes with at least one baseline aligned child.
-// If there is more vertical space available than requested, and the baseline is
-// not allocated by the parent then position is used to allocate the baseline
+// If there is more vertical space available than requested, and the baseline
+// is not allocated by the parent then position is used to allocate the baseline
 // with respect to the extra space available.
 //
 // The function takes the following parameters:
 //
-//    - position: GtkBaselinePosition.
+//   - position: GtkBaselinePosition.
 //
 func (box *Box) SetBaselinePosition(position BaselinePosition) {
 	var _arg0 *C.GtkBox             // out
@@ -363,8 +361,8 @@ func (box *Box) SetBaselinePosition(position BaselinePosition) {
 //
 // The function takes the following parameters:
 //
-//    - homogeneous: boolean value, TRUE to create equal allotments, FALSE for
-//      variable allotments.
+//   - homogeneous: boolean value, TRUE to create equal allotments, FALSE for
+//     variable allotments.
 //
 func (box *Box) SetHomogeneous(homogeneous bool) {
 	var _arg0 *C.GtkBox  // out
@@ -384,7 +382,7 @@ func (box *Box) SetHomogeneous(homogeneous bool) {
 //
 // The function takes the following parameters:
 //
-//    - spacing: number of pixels to put between children.
+//   - spacing: number of pixels to put between children.
 //
 func (box *Box) SetSpacing(spacing int) {
 	var _arg0 *C.GtkBox // out

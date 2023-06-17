@@ -67,7 +67,7 @@ func (tree *Tree) Destroy() {
 //
 // The function returns the following values:
 //
-//    - gint: height of tree.
+//   - gint: height of tree.
 //
 func (tree *Tree) Height() int {
 	var _arg0 *C.GTree // out
@@ -87,13 +87,13 @@ func (tree *Tree) Height() int {
 
 // Insert inserts a key/value pair into a #GTree.
 //
-// Inserts a new key and value into a #GTree as g_tree_insert_node() does, only
-// this function does not return the inserted or set node.
+// Inserts a new key and value into a #GTree as g_tree_insert_node() does,
+// only this function does not return the inserted or set node.
 //
 // The function takes the following parameters:
 //
-//    - key (optional) to insert.
-//    - value (optional) corresponding to the key.
+//   - key (optional) to insert.
+//   - value (optional) corresponding to the key.
 //
 func (tree *Tree) Insert(key unsafe.Pointer, value unsafe.Pointer) {
 	var _arg0 *C.GTree   // out
@@ -116,12 +116,12 @@ func (tree *Tree) Insert(key unsafe.Pointer, value unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - key (optional) to look up.
+//   - key (optional) to look up.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): value corresponding to the key, or NULL if the key
-//      was not found.
+//   - gpointer (optional): value corresponding to the key, or NULL if the key
+//     was not found.
 //
 func (tree *Tree) Lookup(key unsafe.Pointer) unsafe.Pointer {
 	var _arg0 *C.GTree        // out
@@ -148,13 +148,13 @@ func (tree *Tree) Lookup(key unsafe.Pointer) unsafe.Pointer {
 //
 // The function takes the following parameters:
 //
-//    - lookupKey (optional): key to look up.
+//   - lookupKey (optional): key to look up.
 //
 // The function returns the following values:
 //
-//    - origKey (optional) returns the original key.
-//    - value (optional) returns the value associated with the key.
-//    - ok: TRUE if the key was found in the #GTree.
+//   - origKey (optional) returns the original key.
+//   - value (optional) returns the value associated with the key.
+//   - ok: TRUE if the key was found in the #GTree.
 //
 func (tree *Tree) LookupExtended(lookupKey unsafe.Pointer) (origKey unsafe.Pointer, value unsafe.Pointer, ok bool) {
 	var _arg0 *C.GTree        // out
@@ -187,7 +187,7 @@ func (tree *Tree) LookupExtended(lookupKey unsafe.Pointer) (origKey unsafe.Point
 //
 // The function returns the following values:
 //
-//    - gint: number of nodes in tree.
+//   - gint: number of nodes in tree.
 //
 func (tree *Tree) Nnodes() int {
 	var _arg0 *C.GTree // out
@@ -217,12 +217,12 @@ func (tree *Tree) Nnodes() int {
 //
 // The function takes the following parameters:
 //
-//    - key (optional) to remove.
+//   - key (optional) to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key was found (prior to 2.8, this function returned
-//      nothing).
+//   - ok: TRUE if the key was found (prior to 2.8, this function returned
+//     nothing).
 //
 func (tree *Tree) Remove(key unsafe.Pointer) bool {
 	var _arg0 *C.GTree        // out
@@ -250,8 +250,8 @@ func (tree *Tree) Remove(key unsafe.Pointer) bool {
 //
 // The function takes the following parameters:
 //
-//    - key (optional) to insert.
-//    - value (optional) corresponding to the key.
+//   - key (optional) to insert.
+//   - value (optional) corresponding to the key.
 //
 func (tree *Tree) Replace(key unsafe.Pointer, value unsafe.Pointer) {
 	var _arg0 *C.GTree   // out
@@ -275,12 +275,12 @@ func (tree *Tree) Replace(key unsafe.Pointer, value unsafe.Pointer) {
 //
 // The function takes the following parameters:
 //
-//    - key (optional) to remove.
+//   - key (optional) to remove.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key was found (prior to 2.8, this function returned
-//      nothing).
+//   - ok: TRUE if the key was found (prior to 2.8, this function returned
+//     nothing).
 //
 func (tree *Tree) Steal(key unsafe.Pointer) bool {
 	var _arg0 *C.GTree        // out

@@ -94,7 +94,7 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - memoryInputStream: new Stream.
+//   - memoryInputStream: new Stream.
 //
 func NewMemoryInputStream() *MemoryInputStream {
 	var _cret *C.GInputStream // in
@@ -113,11 +113,11 @@ func NewMemoryInputStream() *MemoryInputStream {
 //
 // The function takes the following parameters:
 //
-//    - bytes: #GBytes.
+//   - bytes: #GBytes.
 //
 // The function returns the following values:
 //
-//    - memoryInputStream: new Stream read from bytes.
+//   - memoryInputStream: new Stream read from bytes.
 //
 func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 	var _arg1 *C.GBytes       // out
@@ -139,7 +139,7 @@ func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 //
 // The function takes the following parameters:
 //
-//    - bytes: input data.
+//   - bytes: input data.
 //
 func (stream *MemoryInputStream) AddBytes(bytes *glib.Bytes) {
 	var _arg0 *C.GMemoryInputStream // out

@@ -32,12 +32,12 @@ func init() {
 //
 // !An example GtkAppChooserButton (appchooserbutton.png)
 //
-// Initially, a GtkAppChooserButton selects the first application in its list,
-// which will either be the most-recently used application or, if
-// gtk.AppChooserButton:show-default-item is TRUE, the default application.
+// Initially, a GtkAppChooserButton selects the first application in its
+// list, which will either be the most-recently used application or,
+// if gtk.AppChooserButton:show-default-item is TRUE, the default application.
 //
-// The list of applications shown in a GtkAppChooserButton includes the
-// recommended applications for the given content type. When
+// The list of applications shown in a GtkAppChooserButton includes
+// the recommended applications for the given content type. When
 // gtk.AppChooserButton:show-default-item is set, the default application is
 // also included. To let the user chooser other applications, you can set the
 // gtk.AppChooserButton:show-dialog-item property, which allows to open a full
@@ -51,8 +51,7 @@ func init() {
 // To track changes in the selected application, use the
 // gtk.AppChooserButton::changed signal.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkAppChooserButton has a single CSS node with the name “appchooserbutton”.
 type AppChooserButton struct {
@@ -127,11 +126,11 @@ func (self *AppChooserButton) ConnectCustomItemActivated(f func(itemName string)
 //
 // The function takes the following parameters:
 //
-//    - contentType: content type to show applications for.
+//   - contentType: content type to show applications for.
 //
 // The function returns the following values:
 //
-//    - appChooserButton: newly created GtkAppChooserButton.
+//   - appChooserButton: newly created GtkAppChooserButton.
 //
 func NewAppChooserButton(contentType string) *AppChooserButton {
 	var _arg1 *C.char      // out
@@ -153,17 +152,17 @@ func NewAppChooserButton(contentType string) *AppChooserButton {
 // AppendCustomItem appends a custom item to the list of applications that is
 // shown in the popup.
 //
-// The item name must be unique per-widget. Clients can use the provided name as
-// a detail for the gtk.AppChooserButton::custom-item-activated signal, to add a
-// callback for the activation of a particular custom item in the list.
+// The item name must be unique per-widget. Clients can use the provided name
+// as a detail for the gtk.AppChooserButton::custom-item-activated signal,
+// to add a callback for the activation of a particular custom item in the list.
 //
 // See also gtk.AppChooserButton.AppendSeparator().
 //
 // The function takes the following parameters:
 //
-//    - name of the custom item.
-//    - label for the custom item.
-//    - icon for the custom item.
+//   - name of the custom item.
+//   - label for the custom item.
+//   - icon for the custom item.
 //
 func (self *AppChooserButton) AppendCustomItem(name, label string, icon gio.Iconner) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -200,8 +199,8 @@ func (self *AppChooserButton) AppendSeparator() {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): text to display at the top of the dialog, or NULL, in
-//      which case a default text is displayed.
+//   - utf8 (optional): text to display at the top of the dialog, or NULL,
+//     in which case a default text is displayed.
 //
 func (self *AppChooserButton) Heading() string {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -225,7 +224,7 @@ func (self *AppChooserButton) Heading() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the dialog is modal.
+//   - ok: TRUE if the dialog is modal.
 //
 func (self *AppChooserButton) Modal() bool {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -250,7 +249,7 @@ func (self *AppChooserButton) Modal() bool {
 //
 // The function returns the following values:
 //
-//    - ok: value of gtk.AppChooserButton:show-default-item.
+//   - ok: value of gtk.AppChooserButton:show-default-item.
 //
 func (self *AppChooserButton) ShowDefaultItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -275,7 +274,7 @@ func (self *AppChooserButton) ShowDefaultItem() bool {
 //
 // The function returns the following values:
 //
-//    - ok: value of gtk.AppChooserButton:show-dialog-item.
+//   - ok: value of gtk.AppChooserButton:show-dialog-item.
 //
 func (self *AppChooserButton) ShowDialogItem() bool {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -303,7 +302,7 @@ func (self *AppChooserButton) ShowDialogItem() bool {
 //
 // The function takes the following parameters:
 //
-//    - name of the custom item.
+//   - name of the custom item.
 //
 func (self *AppChooserButton) SetActiveCustomItem(name string) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -324,7 +323,7 @@ func (self *AppChooserButton) SetActiveCustomItem(name string) {
 //
 // The function takes the following parameters:
 //
-//    - heading: string containing Pango markup.
+//   - heading: string containing Pango markup.
 //
 func (self *AppChooserButton) SetHeading(heading string) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -343,7 +342,7 @@ func (self *AppChooserButton) SetHeading(heading string) {
 //
 // The function takes the following parameters:
 //
-//    - modal: TRUE to make the dialog modal.
+//   - modal: TRUE to make the dialog modal.
 //
 func (self *AppChooserButton) SetModal(modal bool) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -364,7 +363,7 @@ func (self *AppChooserButton) SetModal(modal bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for gtk.AppChooserButton:show-default-item.
+//   - setting: new value for gtk.AppChooserButton:show-default-item.
 //
 func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out
@@ -385,7 +384,7 @@ func (self *AppChooserButton) SetShowDefaultItem(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - setting: new value for gtk.AppChooserButton:show-dialog-item.
+//   - setting: new value for gtk.AppChooserButton:show-dialog-item.
 //
 func (self *AppChooserButton) SetShowDialogItem(setting bool) {
 	var _arg0 *C.GtkAppChooserButton // out

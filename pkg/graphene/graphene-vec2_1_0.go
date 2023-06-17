@@ -16,7 +16,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - vec2: one vector.
+//   - vec2: one vector.
 //
 func Vec2One() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
@@ -34,7 +34,7 @@ func Vec2One() *Vec2 {
 //
 // The function returns the following values:
 //
-//    - vec2: x axis vector.
+//   - vec2: x axis vector.
 //
 func Vec2XAxis() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
@@ -52,7 +52,7 @@ func Vec2XAxis() *Vec2 {
 //
 // The function returns the following values:
 //
-//    - vec2: y axis vector.
+//   - vec2: y axis vector.
 //
 func Vec2YAxis() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
@@ -70,7 +70,7 @@ func Vec2YAxis() *Vec2 {
 //
 // The function returns the following values:
 //
-//    - vec2: zero vector.
+//   - vec2: zero vector.
 //
 func Vec2Zero() *Vec2 {
 	var _cret *C.graphene_vec2_t // in

@@ -126,8 +126,8 @@ const (
 	// inherited by the child; otherwise all descriptors except stdin, stdout
 	// and stderr will be closed before calling exec() in the child.
 	SpawnLeaveDescriptorsOpen SpawnFlags = 0b1
-	// SpawnDoNotReapChild: child will not be automatically reaped; you must use
-	// g_child_watch_add() yourself (or call waitpid() or handle SIGCHLD
+	// SpawnDoNotReapChild: child will not be automatically reaped; you must
+	// use g_child_watch_add() yourself (or call waitpid() or handle SIGCHLD
 	// yourself), or the child will become a zombie.
 	SpawnDoNotReapChild SpawnFlags = 0b10
 	// SpawnSearchPath: argv[0] need not be an absolute path, it will be looked
@@ -141,9 +141,9 @@ const (
 	// SpawnChildInheritsStdin: child will inherit the parent's standard input
 	// (by default, the child's standard input is attached to /dev/null).
 	SpawnChildInheritsStdin SpawnFlags = 0b100000
-	// SpawnFileAndArgvZero: first element of argv is the file to execute, while
-	// the remaining elements are the actual argument vector to pass to the
-	// file. Normally g_spawn_async_with_pipes() uses argv[0] as the file to
+	// SpawnFileAndArgvZero: first element of argv is the file to execute,
+	// while the remaining elements are the actual argument vector to pass to
+	// the file. Normally g_spawn_async_with_pipes() uses argv[0] as the file to
 	// execute, and passes all of argv to the child.
 	SpawnFileAndArgvZero SpawnFlags = 0b1000000
 	// SpawnSearchPathFromEnvp: if argv[0] is not an absolute path, it will be
@@ -204,37 +204,37 @@ func (s SpawnFlags) Has(other SpawnFlags) bool {
 }
 
 // SpawnChildSetupFunc specifies the type of the setup function passed to
-// g_spawn_async(), g_spawn_sync() and g_spawn_async_with_pipes(), which can, in
-// very limited ways, be used to affect the child's execution.
+// g_spawn_async(), g_spawn_sync() and g_spawn_async_with_pipes(), which can,
+// in very limited ways, be used to affect the child's execution.
 //
 // On POSIX platforms, the function is called in the child after GLib has
 // performed all the setup it plans to perform, but before calling exec().
 // Actions taken in this function will only affect the child, not the parent.
 //
 // On Windows, the function is called in the parent. Its usefulness on Windows
-// is thus questionable. In many cases executing the child setup function in the
-// parent can have ill effects, and you should be very careful when porting
+// is thus questionable. In many cases executing the child setup function in
+// the parent can have ill effects, and you should be very careful when porting
 // software to Windows that uses child setup functions.
 //
 // However, even on POSIX, you are extremely limited in what you can safely do
-// from a ChildSetupFunc, because any mutexes that were held by other threads in
-// the parent process at the time of the fork() will still be locked in the
+// from a ChildSetupFunc, because any mutexes that were held by other threads
+// in the parent process at the time of the fork() will still be locked in the
 // child process, and they will never be unlocked (since the threads that held
 // them don't exist in the child). POSIX allows only async-signal-safe functions
 // (see signal(7)) to be called in the child between fork() and exec(), which
 // drastically limits the usefulness of child setup functions.
 //
 // In particular, it is not safe to call any function which may call malloc(),
-// which includes POSIX functions such as setenv(). If you need to set up the
-// child environment differently from the parent, you should use
+// which includes POSIX functions such as setenv(). If you need to set
+// up the child environment differently from the parent, you should use
 // g_get_environ(), g_environ_setenv(), and g_environ_unsetenv(), and then pass
 // the complete environment list to the g_spawn... function.
 type SpawnChildSetupFunc func()
 
 // SpawnCommandLineAsync: simple version of g_spawn_async() that parses a
-// command line with g_shell_parse_argv() and passes it to g_spawn_async(). Runs
-// a command line in the background. Unlike g_spawn_async(), the
-// G_SPAWN_SEARCH_PATH flag is enabled, other flags are not. Note that
+// command line with g_shell_parse_argv() and passes it to g_spawn_async().
+// Runs a command line in the background. Unlike g_spawn_async(),
+// the G_SPAWN_SEARCH_PATH flag is enabled, other flags are not. Note that
 // G_SPAWN_SEARCH_PATH can have security implications, so consider using
 // g_spawn_async() directly if appropriate. Possible errors are those from
 // g_shell_parse_argv() and g_spawn_async().
@@ -243,7 +243,7 @@ type SpawnChildSetupFunc func()
 //
 // The function takes the following parameters:
 //
-//    - commandLine: command line.
+//   - commandLine: command line.
 //
 func SpawnCommandLineAsync(commandLine string) error {
 	var _arg1 *C.gchar  // out
@@ -265,11 +265,11 @@ func SpawnCommandLineAsync(commandLine string) error {
 }
 
 // SpawnCommandLineSync: simple version of g_spawn_sync() with little-used
-// parameters removed, taking a command line instead of an argument vector. See
-// g_spawn_sync() for full details. command_line will be parsed by
-// g_shell_parse_argv(). Unlike g_spawn_sync(), the G_SPAWN_SEARCH_PATH flag is
-// enabled. Note that G_SPAWN_SEARCH_PATH can have security implications, so
-// consider using g_spawn_sync() directly if appropriate. Possible errors are
+// parameters removed, taking a command line instead of an argument vector.
+// See g_spawn_sync() for full details. command_line will be parsed by
+// g_shell_parse_argv(). Unlike g_spawn_sync(), the G_SPAWN_SEARCH_PATH flag
+// is enabled. Note that G_SPAWN_SEARCH_PATH can have security implications,
+// so consider using g_spawn_sync() directly if appropriate. Possible errors are
 // those from g_spawn_sync() and those from g_shell_parse_argv().
 //
 // If exit_status is non-NULL, the platform-specific exit status of the child is
@@ -280,21 +280,21 @@ func SpawnCommandLineAsync(commandLine string) error {
 // command_line. Parsing is done according to Unix shell rules, not Windows
 // command interpreter rules. Space is a separator, and backslashes are special.
 // Thus you cannot simply pass a command_line containing canonical Windows
-// paths, like "c:\\program files\\app\\app.exe", as the backslashes will be
-// eaten, and the space will act as a separator. You need to enclose such paths
-// with single quotes, like "'c:\\program files\\app\\app.exe'
+// paths, like "c:\\program files\\app\\app.exe", as the backslashes will
+// be eaten, and the space will act as a separator. You need to enclose
+// such paths with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
 //
 // The function takes the following parameters:
 //
-//    - commandLine: command line.
+//   - commandLine: command line.
 //
 // The function returns the following values:
 //
-//    - standardOutput (optional): return location for child output.
-//    - standardError (optional): return location for child errors.
-//    - exitStatus (optional): return location for child exit status, as returned
-//      by waitpid().
+//   - standardOutput (optional): return location for child output.
+//   - standardError (optional): return location for child errors.
+//   - exitStatus (optional): return location for child exit status, as returned
+//     by waitpid().
 //
 func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar  // out
@@ -360,9 +360,9 @@ func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []b
 // G_SPAWN_STDOUT_TO_DEV_NULL and G_SPAWN_STDERR_TO_DEV_NULL flags when passing
 // NULL for standard_output and standard_error.
 //
-// If exit_status is non-NULL, the platform-specific exit status of the child is
-// stored there; see the documentation of g_spawn_check_exit_status() for how to
-// use and interpret this. Note that it is invalid to pass
+// If exit_status is non-NULL, the platform-specific exit status of the child
+// is stored there; see the documentation of g_spawn_check_exit_status()
+// for how to use and interpret this. Note that it is invalid to pass
 // G_SPAWN_DO_NOT_REAP_CHILD in flags, and on POSIX platforms, the same
 // restrictions as for g_child_watch_source_new() apply.
 //
@@ -375,20 +375,20 @@ func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []b
 //
 // The function takes the following parameters:
 //
-//    - workingDirectory (optional) child's current working directory, or NULL to
-//      inherit parent's.
-//    - argv: child's argument vector.
-//    - envp (optional): child's environment, or NULL to inherit parent's.
-//    - flags from Flags.
-//    - childSetup (optional): function to run in the child just before exec().
+//   - workingDirectory (optional) child's current working directory, or NULL to
+//     inherit parent's.
+//   - argv: child's argument vector.
+//   - envp (optional): child's environment, or NULL to inherit parent's.
+//   - flags from Flags.
+//   - childSetup (optional): function to run in the child just before exec().
 //
 // The function returns the following values:
 //
-//    - standardOutput (optional): return location for child output, or NULL.
-//    - standardError (optional): return location for child error messages, or
-//      NULL.
-//    - exitStatus (optional): return location for child exit status, as returned
-//      by waitpid(), or NULL.
+//   - standardOutput (optional): return location for child output, or NULL.
+//   - standardError (optional): return location for child error messages,
+//     or NULL.
+//   - exitStatus (optional): return location for child exit status, as returned
+//     by waitpid(), or NULL.
 //
 func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar               // out

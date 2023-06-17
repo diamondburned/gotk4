@@ -186,7 +186,7 @@ func (self *NativeDialog) Destroy() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the dialog is set to be modal.
+//   - ok: TRUE if the dialog is set to be modal.
 //
 func (self *NativeDialog) Modal() bool {
 	var _arg0 *C.GtkNativeDialog // out
@@ -210,9 +210,9 @@ func (self *NativeDialog) Modal() bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): title of the dialog, or NULL if none has been set
-//      explicitly. The returned string is owned by the widget and must not be
-//      modified or freed.
+//   - utf8 (optional): title of the dialog, or NULL if none has been set
+//     explicitly. The returned string is owned by the widget and must not be
+//     modified or freed.
 //
 func (self *NativeDialog) Title() string {
 	var _arg0 *C.GtkNativeDialog // out
@@ -236,8 +236,8 @@ func (self *NativeDialog) Title() string {
 //
 // The function returns the following values:
 //
-//    - window (optional): transient parent for this window, or NULL if no
-//      transient parent has been set.
+//   - window (optional): transient parent for this window, or NULL if no
+//     transient parent has been set.
 //
 func (self *NativeDialog) TransientFor() *Window {
 	var _arg0 *C.GtkNativeDialog // out
@@ -261,7 +261,7 @@ func (self *NativeDialog) TransientFor() *Window {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the dialog is visible.
+//   - ok: TRUE if the dialog is visible.
 //
 func (self *NativeDialog) Visible() bool {
 	var _arg0 *C.GtkNativeDialog // out
@@ -298,15 +298,15 @@ func (self *NativeDialog) Hide() {
 
 // SetModal sets a dialog modal or non-modal.
 //
-// Modal dialogs prevent interaction with other windows in the same application.
-// To keep modal dialogs on top of main application windows, use
-// gtk.NativeDialog.SetTransientFor() to make the dialog transient for the
+// Modal dialogs prevent interaction with other windows in the same
+// application. To keep modal dialogs on top of main application windows,
+// use gtk.NativeDialog.SetTransientFor() to make the dialog transient for the
 // parent; most window managers will then disallow lowering the dialog below the
 // parent.
 //
 // The function takes the following parameters:
 //
-//    - modal: whether the window is modal.
+//   - modal: whether the window is modal.
 //
 func (self *NativeDialog) SetModal(modal bool) {
 	var _arg0 *C.GtkNativeDialog // out
@@ -326,7 +326,7 @@ func (self *NativeDialog) SetModal(modal bool) {
 //
 // The function takes the following parameters:
 //
-//    - title of the dialog.
+//   - title of the dialog.
 //
 func (self *NativeDialog) SetTitle(title string) {
 	var _arg0 *C.GtkNativeDialog // out
@@ -351,7 +351,7 @@ func (self *NativeDialog) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - parent (optional) window, or NULL.
+//   - parent (optional) window, or NULL.
 //
 func (self *NativeDialog) SetTransientFor(parent *Window) {
 	var _arg0 *C.GtkNativeDialog // out

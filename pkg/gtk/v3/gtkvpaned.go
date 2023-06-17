@@ -102,7 +102,7 @@ func marshalVPaned(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - vPaned: new VPaned.
+//   - vPaned: new VPaned.
 //
 func NewVPaned() *VPaned {
 	var _cret *C.GtkWidget // in

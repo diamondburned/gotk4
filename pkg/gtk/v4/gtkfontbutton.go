@@ -39,7 +39,6 @@ func init() {
 //    ╰── button.font
 //        ╰── [content]
 //
-//
 // GtkFontButton has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
 type FontButton struct {
@@ -99,7 +98,7 @@ func (fontButton *FontButton) ConnectFontSet(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - fontButton: new font picker widget.
+//   - fontButton: new font picker widget.
 //
 func NewFontButton() *FontButton {
 	var _cret *C.GtkWidget // in
@@ -118,11 +117,11 @@ func NewFontButton() *FontButton {
 //
 // The function takes the following parameters:
 //
-//    - fontname: name of font to display in font chooser dialog.
+//   - fontname: name of font to display in font chooser dialog.
 //
 // The function returns the following values:
 //
-//    - fontButton: new font picker widget.
+//   - fontButton: new font picker widget.
 //
 func NewFontButtonWithFont(fontname string) *FontButton {
 	var _arg1 *C.char      // out
@@ -145,7 +144,7 @@ func NewFontButtonWithFont(fontname string) *FontButton {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the dialog is modal.
+//   - ok: TRUE if the dialog is modal.
 //
 func (fontButton *FontButton) Modal() bool {
 	var _arg0 *C.GtkFontButton // out
@@ -169,7 +168,7 @@ func (fontButton *FontButton) Modal() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: internal copy of the title string which must not be freed.
+//   - utf8: internal copy of the title string which must not be freed.
 //
 func (fontButton *FontButton) Title() string {
 	var _arg0 *C.GtkFontButton // out
@@ -191,7 +190,7 @@ func (fontButton *FontButton) Title() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether the selected font is used in the label.
+//   - ok: whether the selected font is used in the label.
 //
 func (fontButton *FontButton) UseFont() bool {
 	var _arg0 *C.GtkFontButton // out
@@ -215,7 +214,7 @@ func (fontButton *FontButton) UseFont() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether the selected size is used in the label.
+//   - ok: whether the selected size is used in the label.
 //
 func (fontButton *FontButton) UseSize() bool {
 	var _arg0 *C.GtkFontButton // out
@@ -239,7 +238,7 @@ func (fontButton *FontButton) UseSize() bool {
 //
 // The function takes the following parameters:
 //
-//    - modal: TRUE to make the dialog modal.
+//   - modal: TRUE to make the dialog modal.
 //
 func (fontButton *FontButton) SetModal(modal bool) {
 	var _arg0 *C.GtkFontButton // out
@@ -259,7 +258,7 @@ func (fontButton *FontButton) SetModal(modal bool) {
 //
 // The function takes the following parameters:
 //
-//    - title: string containing the font chooser dialog title.
+//   - title: string containing the font chooser dialog title.
 //
 func (fontButton *FontButton) SetTitle(title string) {
 	var _arg0 *C.GtkFontButton // out
@@ -279,7 +278,7 @@ func (fontButton *FontButton) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - useFont: if TRUE, font name will be written using font chosen.
+//   - useFont: if TRUE, font name will be written using font chosen.
 //
 func (fontButton *FontButton) SetUseFont(useFont bool) {
 	var _arg0 *C.GtkFontButton // out
@@ -300,7 +299,7 @@ func (fontButton *FontButton) SetUseFont(useFont bool) {
 //
 // The function takes the following parameters:
 //
-//    - useSize: if TRUE, font name will be written using the selected size.
+//   - useSize: if TRUE, font name will be written using the selected size.
 //
 func (fontButton *FontButton) SetUseSize(useSize bool) {
 	var _arg0 *C.GtkFontButton // out

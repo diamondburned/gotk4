@@ -31,12 +31,12 @@ func init() {
 // These are ancillary objects associated to widgets, which react to GdkEvents,
 // and possibly trigger actions as a consequence.
 //
-// Event controllers are added to a widget with gtk.Widget.AddController(). It
-// is rarely necessary to explicitly remove a controller with
+// Event controllers are added to a widget with gtk.Widget.AddController().
+// It is rarely necessary to explicitly remove a controller with
 // gtk.Widget.RemoveController().
 //
-// See the chapter of input handling (input-handling.html) for an overview of
-// the basic concepts, such as the capture and bubble phases of even
+// See the chapter of input handling (input-handling.html) for an overview
+// of the basic concepts, such as the capture and bubble phases of even
 // propagation.
 type EventController struct {
 	_ [0]func() // equal guard
@@ -82,7 +82,7 @@ func BaseEventController(obj EventControllerer) *EventController {
 //
 // The function returns the following values:
 //
-//    - event (optional) that is currently handled by controller.
+//   - event (optional) that is currently handled by controller.
 //
 func (controller *EventController) CurrentEvent() gdk.Eventer {
 	var _arg0 *C.GtkEventController // out
@@ -120,7 +120,7 @@ func (controller *EventController) CurrentEvent() gdk.Eventer {
 //
 // The function returns the following values:
 //
-//    - device (optional) of the event is currently handled by controller.
+//   - device (optional) of the event is currently handled by controller.
 //
 func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 	var _arg0 *C.GtkEventController // out
@@ -158,8 +158,8 @@ func (controller *EventController) CurrentEventDevice() gdk.Devicer {
 //
 // The function returns the following values:
 //
-//    - modifierType: modifier state of the event is currently handled by
-//      controller.
+//   - modifierType: modifier state of the event is currently handled by
+//     controller.
 //
 func (controller *EventController) CurrentEventState() gdk.ModifierType {
 	var _arg0 *C.GtkEventController // out
@@ -182,7 +182,7 @@ func (controller *EventController) CurrentEventState() gdk.ModifierType {
 //
 // The function returns the following values:
 //
-//    - guint32: timestamp of the event is currently handled by controller.
+//   - guint32: timestamp of the event is currently handled by controller.
 //
 func (controller *EventController) CurrentEventTime() uint32 {
 	var _arg0 *C.GtkEventController // out
@@ -224,7 +224,7 @@ func (controller *EventController) Name() string {
 //
 // The function returns the following values:
 //
-//    - propagationLimit: propagation limit.
+//   - propagationLimit: propagation limit.
 //
 func (controller *EventController) PropagationLimit() PropagationLimit {
 	var _arg0 *C.GtkEventController // out
@@ -247,7 +247,7 @@ func (controller *EventController) PropagationLimit() PropagationLimit {
 //
 // The function returns the following values:
 //
-//    - propagationPhase: propagation phase.
+//   - propagationPhase: propagation phase.
 //
 func (controller *EventController) PropagationPhase() PropagationPhase {
 	var _arg0 *C.GtkEventController // out
@@ -269,7 +269,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 //
 // The function returns the following values:
 //
-//    - widget: GtkWidget.
+//   - widget: GtkWidget.
 //
 func (controller *EventController) Widget() Widgetter {
 	var _arg0 *C.GtkEventController // out
@@ -317,7 +317,7 @@ func (controller *EventController) Reset() {
 //
 // The function takes the following parameters:
 //
-//    - name for controller.
+//   - name for controller.
 //
 func (controller *EventController) SetName(name string) {
 	var _arg0 *C.GtkEventController // out
@@ -339,7 +339,7 @@ func (controller *EventController) SetName(name string) {
 //
 // The function takes the following parameters:
 //
-//    - limit: propagation limit.
+//   - limit: propagation limit.
 //
 func (controller *EventController) SetPropagationLimit(limit PropagationLimit) {
 	var _arg0 *C.GtkEventController // out
@@ -361,7 +361,7 @@ func (controller *EventController) SetPropagationLimit(limit PropagationLimit) {
 //
 // The function takes the following parameters:
 //
-//    - phase: propagation phase.
+//   - phase: propagation phase.
 //
 func (controller *EventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController // out

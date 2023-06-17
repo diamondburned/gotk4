@@ -66,11 +66,11 @@ func NewTriangleAlloc() *Triangle {
 //
 // The function takes the following parameters:
 //
-//    - p: #graphene_point3d_t.
+//   - p: #graphene_point3d_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the point is inside the triangle.
+//   - ok: true if the point is inside the triangle.
 //
 func (t *Triangle) ContainsPoint(p *Point3D) bool {
 	var _arg0 *C.graphene_triangle_t // out
@@ -97,11 +97,11 @@ func (t *Triangle) ContainsPoint(p *Point3D) bool {
 //
 // The function takes the following parameters:
 //
-//    - b: #graphene_triangle_t.
+//   - b: #graphene_triangle_t.
 //
 // The function returns the following values:
 //
-//    - ok: true if the triangles are equal.
+//   - ok: true if the triangles are equal.
 //
 func (a *Triangle) Equal(b *Triangle) bool {
 	var _arg0 *C.graphene_triangle_t // out
@@ -128,7 +128,7 @@ func (a *Triangle) Equal(b *Triangle) bool {
 //
 // The function returns the following values:
 //
-//    - gfloat: area of the triangle.
+//   - gfloat: area of the triangle.
 //
 func (t *Triangle) Area() float32 {
 	var _arg0 *C.graphene_triangle_t // out
@@ -153,25 +153,25 @@ func (t *Triangle) Area() float32 {
 // The point p must lie on the same plane as the triangle t; if the point is not
 // coplanar, the result of this function is undefined.
 //
-// If we place the origin in the coordinates of the triangle's A point, the
-// barycentric coordinates are u, which is on the AC vector; and v which is on
-// the AB vector:
+// If we place the origin in the coordinates of the triangle's A point,
+// the barycentric coordinates are u, which is on the AC vector; and v which is
+// on the AB vector:
 //
 // ! (triangle-barycentric.png)
 //
 // The returned #graphene_vec2_t contains the following values, in order:
 //
-//    - res.x = u
-//    - res.y = v.
+//   - res.x = u
+//   - res.y = v.
 //
 // The function takes the following parameters:
 //
-//    - p (optional): #graphene_point3d_t.
+//   - p (optional): #graphene_point3d_t.
 //
 // The function returns the following values:
 //
-//    - res: return location for the vector with the barycentric coordinates.
-//    - ok: true if the barycentric coordinates are valid.
+//   - res: return location for the vector with the barycentric coordinates.
+//   - ok: true if the barycentric coordinates are valid.
 //
 func (t *Triangle) Barycoords(p *Point3D) (*Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
@@ -203,7 +203,7 @@ func (t *Triangle) Barycoords(p *Point3D) (*Vec2, bool) {
 //
 // The function returns the following values:
 //
-//    - res: return location for the box.
+//   - res: return location for the box.
 //
 func (t *Triangle) BoundingBox() *Box {
 	var _arg0 *C.graphene_triangle_t // out
@@ -230,7 +230,7 @@ func (t *Triangle) BoundingBox() *Box {
 //
 // The function returns the following values:
 //
-//    - res: return location for the coordinates of the midpoint.
+//   - res: return location for the coordinates of the midpoint.
 //
 func (t *Triangle) Midpoint() *Point3D {
 	var _arg0 *C.graphene_triangle_t // out
@@ -252,7 +252,7 @@ func (t *Triangle) Midpoint() *Point3D {
 //
 // The function returns the following values:
 //
-//    - res: return location for the normal vector.
+//   - res: return location for the normal vector.
 //
 func (t *Triangle) Normal() *Vec3 {
 	var _arg0 *C.graphene_triangle_t // out
@@ -275,7 +275,7 @@ func (t *Triangle) Normal() *Vec3 {
 //
 // The function returns the following values:
 //
-//    - res: return location for the plane.
+//   - res: return location for the plane.
 //
 func (t *Triangle) Plane() *Plane {
 	var _arg0 *C.graphene_triangle_t // out
@@ -298,9 +298,9 @@ func (t *Triangle) Plane() *Plane {
 //
 // The function returns the following values:
 //
-//    - a (optional): return location for the coordinates of the first vertex.
-//    - b (optional): return location for the coordinates of the second vertex.
-//    - c (optional): return location for the coordinates of the third vertex.
+//   - a (optional): return location for the coordinates of the first vertex.
+//   - b (optional): return location for the coordinates of the second vertex.
+//   - c (optional): return location for the coordinates of the third vertex.
 //
 func (t *Triangle) Points() (a *Point3D, b *Point3D, c *Point3D) {
 	var _arg0 *C.graphene_triangle_t // out
@@ -332,22 +332,22 @@ func (t *Triangle) Points() (a *Point3D, b *Point3D, c *Point3D) {
 //
 // The UV coordinates will be placed in the res vector:
 //
-//    - res.x = u
-//    - res.y = v
+//   - res.x = u
+//   - res.y = v
 //
 // See also: graphene_triangle_get_barycoords().
 //
 // The function takes the following parameters:
 //
-//    - p (optional): #graphene_point3d_t.
-//    - uvA: UV coordinates of the first point.
-//    - uvB: UV coordinates of the second point.
-//    - uvC: UV coordinates of the third point.
+//   - p (optional): #graphene_point3d_t.
+//   - uvA: UV coordinates of the first point.
+//   - uvB: UV coordinates of the second point.
+//   - uvC: UV coordinates of the third point.
 //
 // The function returns the following values:
 //
-//    - res: vector containing the UV coordinates of the given point p.
-//    - ok: true if the coordinates are valid.
+//   - res: vector containing the UV coordinates of the given point p.
+//   - ok: true if the coordinates are valid.
 //
 func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (*Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
@@ -388,9 +388,9 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (*Vec2, bool)
 //
 // The function returns the following values:
 //
-//    - a (optional): return location for the first vertex.
-//    - b (optional): return location for the second vertex.
-//    - c (optional): return location for the third vertex.
+//   - a (optional): return location for the first vertex.
+//   - b (optional): return location for the second vertex.
+//   - c (optional): return location for the third vertex.
 //
 func (t *Triangle) Vertices() (a *Vec3, b *Vec3, c *Vec3) {
 	var _arg0 *C.graphene_triangle_t // out
@@ -420,13 +420,13 @@ func (t *Triangle) Vertices() (a *Vec3, b *Vec3, c *Vec3) {
 //
 // The function takes the following parameters:
 //
-//    - a: array of 3 floating point values.
-//    - b: array of 3 floating point values.
-//    - c: array of 3 floating point values.
+//   - a: array of 3 floating point values.
+//   - b: array of 3 floating point values.
+//   - c: array of 3 floating point values.
 //
 // The function returns the following values:
 //
-//    - triangle: initialized #graphene_triangle_t.
+//   - triangle: initialized #graphene_triangle_t.
 //
 func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
@@ -458,13 +458,13 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 //
 // The function takes the following parameters:
 //
-//    - a (optional): #graphene_point3d_t.
-//    - b (optional): #graphene_point3d_t.
-//    - c (optional): #graphene_point3d_t.
+//   - a (optional): #graphene_point3d_t.
+//   - b (optional): #graphene_point3d_t.
+//   - c (optional): #graphene_point3d_t.
 //
 // The function returns the following values:
 //
-//    - triangle: initialized #graphene_triangle_t.
+//   - triangle: initialized #graphene_triangle_t.
 //
 func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
@@ -502,13 +502,13 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 //
 // The function takes the following parameters:
 //
-//    - a (optional): #graphene_vec3_t.
-//    - b (optional): #graphene_vec3_t.
-//    - c (optional): #graphene_vec3_t.
+//   - a (optional): #graphene_vec3_t.
+//   - b (optional): #graphene_vec3_t.
+//   - c (optional): #graphene_vec3_t.
 //
 // The function returns the following values:
 //
-//    - triangle: initialized #graphene_triangle_t.
+//   - triangle: initialized #graphene_triangle_t.
 //
 func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out

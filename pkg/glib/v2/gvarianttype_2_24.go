@@ -21,18 +21,18 @@ import "C"
 // If there is no valid type string starting at string, or if the type string
 // does not end before limit then FALSE is returned.
 //
-// For the simple case of checking if a string is a valid type string, see
-// g_variant_type_string_is_valid().
+// For the simple case of checking if a string is a valid type string,
+// see g_variant_type_string_is_valid().
 //
 // The function takes the following parameters:
 //
-//    - str: pointer to any string.
-//    - limit (optional): end of string, or NULL.
+//   - str: pointer to any string.
+//   - limit (optional): end of string, or NULL.
 //
 // The function returns the following values:
 //
-//    - endptr (optional): location to store the end pointer, or NULL.
-//    - ok: TRUE if a valid type string was found.
+//   - endptr (optional): location to store the end pointer, or NULL.
+//   - ok: TRUE if a valid type string was found.
 //
 func VariantTypeStringScan(str, limit string) (string, bool) {
 	var _arg1 *C.gchar   // out

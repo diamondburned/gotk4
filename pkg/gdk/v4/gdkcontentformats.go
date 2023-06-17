@@ -33,12 +33,12 @@ func init() {
 //
 // The function takes the following parameters:
 //
-//    - str: string of a potential mime type.
+//   - str: string of a potential mime type.
 //
 // The function returns the following values:
 //
-//    - utf8: interned string for the canonicalized mime type or NULL if the
-//      string wasn't a valid mime type.
+//   - utf8: interned string for the canonicalized mime type or NULL if the
+//     string wasn't a valid mime type.
 //
 func InternMIMEType(str string) string {
 	var _arg1 *C.char // out
@@ -99,7 +99,7 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 //
 // The function takes the following parameters:
 //
-//    - formats to add.
+//   - formats to add.
 //
 func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
@@ -117,7 +117,7 @@ func (builder *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 //
 // The function takes the following parameters:
 //
-//    - typ: GType.
+//   - typ: GType.
 //
 func (builder *ContentFormatsBuilder) AddGType(typ coreglib.Type) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
@@ -135,7 +135,7 @@ func (builder *ContentFormatsBuilder) AddGType(typ coreglib.Type) {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: mime type.
+//   - mimeType: mime type.
 //
 func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	var _arg0 *C.GdkContentFormatsBuilder // out
@@ -152,16 +152,16 @@ func (builder *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 
 // ToFormats creates a new GdkContentFormats from the given builder.
 //
-// The given GdkContentFormatsBuilder is reset once this function returns; you
-// cannot call this function multiple times on the same builder instance.
+// The given GdkContentFormatsBuilder is reset once this function returns;
+// you cannot call this function multiple times on the same builder instance.
 //
 // This function is intended primarily for bindings. C code should use
 // gdk.ContentFormatsBuilder.FreeToFormats().
 //
 // The function returns the following values:
 //
-//    - contentFormats: newly created GdkContentFormats with all the formats
-//      added to builder.
+//   - contentFormats: newly created GdkContentFormats with all the formats
+//     added to builder.
 //
 func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _arg0 *C.GdkContentFormatsBuilder // out

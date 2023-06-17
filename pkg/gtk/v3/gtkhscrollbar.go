@@ -37,8 +37,8 @@ func defaultHScrollbarOverrides(v *HScrollbar) HScrollbarOverrides {
 	return HScrollbarOverrides{}
 }
 
-// HScrollbar widget is a widget arranged horizontally creating a scrollbar. See
-// Scrollbar for details on scrollbars. Adjustment pointers may be added to
+// HScrollbar widget is a widget arranged horizontally creating a scrollbar.
+// See Scrollbar for details on scrollbars. Adjustment pointers may be added to
 // handle the adjustment of the scrollbar or it may be left NULL in which case
 // one will be created for you. See Scrollbar for a description of what the
 // fields in an adjustment represent for a scrollbar.
@@ -104,11 +104,11 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment (optional) to use, or NULL to create a new adjustment.
+//   - adjustment (optional) to use, or NULL to create a new adjustment.
 //
 // The function returns the following values:
 //
-//    - hScrollbar: new HScrollbar.
+//   - hScrollbar: new HScrollbar.
 //
 func NewHScrollbar(adjustment *Adjustment) *HScrollbar {
 	var _arg1 *C.GtkAdjustment // out

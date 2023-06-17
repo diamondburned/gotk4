@@ -37,8 +37,8 @@ func init() {
 // It’s a low-level object, used to implement high-level objects such as
 // gtk.Window or gtk.Dialog in GTK.
 //
-// The surfaces you see in practice are either gdk.Toplevel or gdk.Popup, and
-// those interfaces provide much of the required API to interact with these
+// The surfaces you see in practice are either gdk.Toplevel or gdk.Popup,
+// and those interfaces provide much of the required API to interact with these
 // surfaces. Other, more specialized surface types exist, but you will rarely
 // interact with them directly.
 type Surface struct {
@@ -118,12 +118,12 @@ func (surface *Surface) ConnectRender(f func(region *cairo.Region) (ok bool)) co
 //
 // The function takes the following parameters:
 //
-//    - parent surface to attach the surface to.
-//    - autohide: whether to hide the surface on outside clicks.
+//   - parent surface to attach the surface to.
+//   - autohide: whether to hide the surface on outside clicks.
 //
 // The function returns the following values:
 //
-//    - surface: new GdkSurface.
+//   - surface: new GdkSurface.
 //
 func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 	var _arg1 *C.GdkSurface // out
@@ -150,11 +150,11 @@ func NewSurfacePopup(parent Surfacer, autohide bool) *Surface {
 //
 // The function takes the following parameters:
 //
-//    - display to create the surface on.
+//   - display to create the surface on.
 //
 // The function returns the following values:
 //
-//    - surface: new GdkSurface.
+//   - surface: new GdkSurface.
 //
 func NewSurfaceToplevel(display *Display) *Surface {
 	var _arg1 *C.GdkDisplay // out
@@ -189,7 +189,7 @@ func (surface *Surface) Beep() {
 //
 // The function returns the following values:
 //
-//    - cairoContext: newly created GdkCairoContext.
+//   - cairoContext: newly created GdkCairoContext.
 //
 func (surface *Surface) CreateCairoContext() CairoContexter {
 	var _arg0 *C.GdkSurface      // out
@@ -232,7 +232,7 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 //
 // The function returns the following values:
 //
-//    - glContext: newly created GdkGLContext, or NULL on error.
+//   - glContext: newly created GdkGLContext, or NULL on error.
 //
 func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _arg0 *C.GdkSurface   // out
@@ -282,20 +282,20 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 // Initially the surface contents are all 0 (transparent if contents have
 // transparency, black otherwise.)
 //
-// This function always returns a valid pointer, but it will return a pointer to
-// a “nil” surface if other is already in an error state or any other error
+// This function always returns a valid pointer, but it will return a pointer
+// to a “nil” surface if other is already in an error state or any other error
 // occurs.
 //
 // The function takes the following parameters:
 //
-//    - content for the new surface.
-//    - width of the new surface.
-//    - height of the new surface.
+//   - content for the new surface.
+//   - width of the new surface.
+//   - height of the new surface.
 //
 // The function returns the following values:
 //
-//    - ret: pointer to the newly allocated surface. The caller owns the surface
-//      and should call cairo_surface_destroy() when done with it.
+//   - ret: pointer to the newly allocated surface. The caller owns the surface
+//     and should call cairo_surface_destroy() when done with it.
 //
 func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, height int) *cairo.Surface {
 	var _arg0 *C.GdkSurface      // out
@@ -331,7 +331,7 @@ func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, heigh
 //
 // The function returns the following values:
 //
-//    - vulkanContext: newly created GdkVulkanContext, or NULL on error.
+//   - vulkanContext: newly created GdkVulkanContext, or NULL on error.
 //
 func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _arg0 *C.GdkSurface       // out
@@ -395,9 +395,9 @@ func (surface *Surface) Destroy() {
 //
 // The function returns the following values:
 //
-//    - cursor (optional): GdkCursor, or NULL. The returned object is owned by
-//      the GdkSurface and should not be unreferenced directly. Use
-//      gdk.Surface.SetCursor() to unset the cursor of the surface.
+//   - cursor (optional): GdkCursor, or NULL. The returned object is owned
+//     by the GdkSurface and should not be unreferenced directly. Use
+//     gdk.Surface.SetCursor() to unset the cursor of the surface.
 //
 func (surface *Surface) Cursor() *Cursor {
 	var _arg0 *C.GdkSurface // out
@@ -425,13 +425,13 @@ func (surface *Surface) Cursor() *Cursor {
 //
 // The function takes the following parameters:
 //
-//    - device: pointer GdkDevice.
+//   - device: pointer GdkDevice.
 //
 // The function returns the following values:
 //
-//    - cursor (optional): GdkCursor, or NULL. The returned object is owned by
-//      the GdkSurface and should not be unreferenced directly. Use
-//      gdk.Surface.SetCursor() to unset the cursor of the surface.
+//   - cursor (optional): GdkCursor, or NULL. The returned object is owned
+//     by the GdkSurface and should not be unreferenced directly. Use
+//     gdk.Surface.SetCursor() to unset the cursor of the surface.
 //
 func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 	var _arg0 *C.GdkSurface // out
@@ -461,14 +461,14 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 //
 // The function takes the following parameters:
 //
-//    - device: pointer GdkDevice to query to.
+//   - device: pointer GdkDevice to query to.
 //
 // The function returns the following values:
 //
-//    - x (optional): return locatio for the X coordinate of device, or NULL.
-//    - y (optional): return location for the Y coordinate of device, or NULL.
-//    - mask (optional): return location for the modifier mask, or NULL.
-//    - ok: TRUE if the device is over the surface.
+//   - x (optional): return locatio for the X coordinate of device, or NULL.
+//   - y (optional): return location for the Y coordinate of device, or NULL.
+//   - mask (optional): return location for the modifier mask, or NULL.
+//   - ok: TRUE if the device is over the surface.
 //
 func (surface *Surface) DevicePosition(device Devicer) (x, y float64, mask ModifierType, ok bool) {
 	var _arg0 *C.GdkSurface     // out
@@ -504,7 +504,7 @@ func (surface *Surface) DevicePosition(device Devicer) (x, y float64, mask Modif
 //
 // The function returns the following values:
 //
-//    - display: GdkDisplay associated with surface.
+//   - display: GdkDisplay associated with surface.
 //
 func (surface *Surface) Display() *Display {
 	var _arg0 *C.GdkSurface // out
@@ -529,7 +529,7 @@ func (surface *Surface) Display() *Display {
 //
 // The function returns the following values:
 //
-//    - frameClock: frame clock.
+//   - frameClock: frame clock.
 //
 func (surface *Surface) FrameClock() FrameClocker {
 	var _arg0 *C.GdkSurface    // out
@@ -570,7 +570,7 @@ func (surface *Surface) FrameClock() FrameClocker {
 //
 // The function returns the following values:
 //
-//    - gint: height of surface.
+//   - gint: height of surface.
 //
 func (surface *Surface) Height() int {
 	var _arg0 *C.GdkSurface // out
@@ -594,7 +594,7 @@ func (surface *Surface) Height() int {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the surface is mapped.
+//   - ok: TRUE if the surface is mapped.
 //
 func (surface *Surface) Mapped() bool {
 	var _arg0 *C.GdkSurface // out
@@ -617,8 +617,8 @@ func (surface *Surface) Mapped() bool {
 // ScaleFactor returns the internal scale factor that maps from surface
 // coordinates to the actual device pixels.
 //
-// On traditional systems this is 1, but on very high density outputs this can
-// be a higher value (often 2). A higher value means that drawing is
+// On traditional systems this is 1, but on very high density outputs this
+// can be a higher value (often 2). A higher value means that drawing is
 // automatically scaled up to a higher resolution, so any code doing drawing
 // will automatically look nicer. However, if you are supplying pixel-based data
 // the scale value can be used to determine whether to use a pixel resource with
@@ -628,7 +628,7 @@ func (surface *Surface) Mapped() bool {
 //
 // The function returns the following values:
 //
-//    - gint: scale factor.
+//   - gint: scale factor.
 //
 func (surface *Surface) ScaleFactor() int {
 	var _arg0 *C.GdkSurface // out
@@ -653,7 +653,7 @@ func (surface *Surface) ScaleFactor() int {
 //
 // The function returns the following values:
 //
-//    - gint: width of surface.
+//   - gint: width of surface.
 //
 func (surface *Surface) Width() int {
 	var _arg0 *C.GdkSurface // out
@@ -689,7 +689,7 @@ func (surface *Surface) Hide() {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the surface is destroyed.
+//   - ok: TRUE if the surface is destroyed.
 //
 func (surface *Surface) IsDestroyed() bool {
 	var _arg0 *C.GdkSurface // out
@@ -746,7 +746,7 @@ func (surface *Surface) RequestLayout() {
 //
 // The function takes the following parameters:
 //
-//    - cursor (optional): GdkCursor.
+//   - cursor (optional): GdkCursor.
 //
 func (surface *Surface) SetCursor(cursor *Cursor) {
 	var _arg0 *C.GdkSurface // out
@@ -773,8 +773,8 @@ func (surface *Surface) SetCursor(cursor *Cursor) {
 //
 // The function takes the following parameters:
 //
-//    - device: pointer GdkDevice.
-//    - cursor: GdkCursor.
+//   - device: pointer GdkDevice.
+//   - cursor: GdkCursor.
 //
 func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 	var _arg0 *C.GdkSurface // out
@@ -797,8 +797,8 @@ func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 // Mouse events which happen while the pointer position corresponds to an unset
 // bit in the mask will be passed on the surface below surface.
 //
-// An input region is typically used with RGBA surfaces. The alpha channel of
-// the surface defines which pixels are invisible and allows for nicely
+// An input region is typically used with RGBA surfaces. The alpha channel
+// of the surface defines which pixels are invisible and allows for nicely
 // antialiased borders, and the input region controls where the surface is
 // “clickable”.
 //
@@ -807,7 +807,7 @@ func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 //
 // The function takes the following parameters:
 //
-//    - region of surface to be reactive.
+//   - region of surface to be reactive.
 //
 func (surface *Surface) SetInputRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
@@ -838,7 +838,7 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 //
 // The function takes the following parameters:
 //
-//    - region (optional): region, or NULL.
+//   - region (optional): region, or NULL.
 //
 func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out

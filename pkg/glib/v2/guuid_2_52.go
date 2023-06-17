@@ -22,11 +22,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: string representing a UUID.
+//   - str: string representing a UUID.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if str is a valid UUID, FALSE otherwise.
+//   - ok: TRUE if str is a valid UUID, FALSE otherwise.
 //
 func UUIDStringIsValid(str string) bool {
 	var _arg1 *C.gchar   // out
@@ -47,14 +47,14 @@ func UUIDStringIsValid(str string) bool {
 	return _ok
 }
 
-// UUIDStringRandom generates a random UUID (RFC 4122 version 4) as a string. It
-// has the same randomness guarantees as #GRand, so must not be used for
+// UUIDStringRandom generates a random UUID (RFC 4122 version 4) as a string.
+// It has the same randomness guarantees as #GRand, so must not be used for
 // cryptographic purposes such as key generation, nonces, salts or one-time
 // pads.
 //
 // The function returns the following values:
 //
-//    - utf8: string that should be freed with g_free().
+//   - utf8: string that should be freed with g_free().
 //
 func UUIDStringRandom() string {
 	var _cret *C.gchar // in

@@ -15,15 +15,15 @@ const DIR_SEPARATOR = 47
 const DIR_SEPARATOR_S = "/"
 
 // GINT16_FORMAT: this is the platform dependent conversion specifier for
-// scanning and printing values of type #gint16. It is a string literal, but
-// doesn't include the percent-sign, such that you can add precision and length
-// modifiers between percent-sign and conversion specifier.
+// scanning and printing values of type #gint16. It is a string literal,
+// but doesn't include the percent-sign, such that you can add precision and
+// length modifiers between percent-sign and conversion specifier.
 //
-//    gint16 in;
-//    gint32 out;
-//    sscanf ("42", "%" G_GINT16_FORMAT, &in)
-//    out = in * 1000;
-//    g_print ("%" G_GINT32_FORMAT, out);.
+//	gint16 in;
+//	gint32 out;
+//	sscanf ("42", "%" G_GINT16_FORMAT, &in)
+//	out = in * 1000;
+//	g_print ("%" G_GINT32_FORMAT, out);.
 const GINT16_FORMAT = "hi"
 
 // GINT32_FORMAT: this is the platform dependent conversion specifier for
@@ -33,9 +33,9 @@ const GINT32_FORMAT = "i"
 // GINT64_FORMAT: this is the platform dependent conversion specifier for
 // scanning and printing values of type #gint64. See also GINT16_FORMAT.
 //
-// Some platforms do not support scanning and printing 64-bit integers, even
-// though the types are supported. On such platforms G_GINT64_FORMAT is not
-// defined. Note that scanf() may not support 64-bit integers, even if
+// Some platforms do not support scanning and printing 64-bit integers,
+// even though the types are supported. On such platforms G_GINT64_FORMAT is
+// not defined. Note that scanf() may not support 64-bit integers, even if
 // G_GINT64_FORMAT is defined. Due to its weak error handling, scanf() is not
 // recommended for parsing anyway; consider using g_ascii_strtoull() instead.
 const GINT64_FORMAT = "li"
@@ -51,9 +51,9 @@ const GUINT32_FORMAT = "u"
 // GUINT64_FORMAT: this is the platform dependent conversion specifier for
 // scanning and printing values of type #guint64. See also GINT16_FORMAT.
 //
-// Some platforms do not support scanning and printing 64-bit integers, even
-// though the types are supported. On such platforms G_GUINT64_FORMAT is not
-// defined. Note that scanf() may not support 64-bit integers, even if
+// Some platforms do not support scanning and printing 64-bit integers,
+// even though the types are supported. On such platforms G_GUINT64_FORMAT
+// is not defined. Note that scanf() may not support 64-bit integers, even if
 // G_GINT64_FORMAT is defined. Due to its weak error handling, scanf() is not
 // recommended for parsing anyway; consider using g_ascii_strtoull() instead.
 const GUINT64_FORMAT = "lu"

@@ -166,14 +166,14 @@ type UIManagerOverrides struct {
 	AddWidget func(widget Widgetter)
 	// The function takes the following parameters:
 	//
-	//    - action
-	//    - proxy
+	//   - action
+	//   - proxy
 	//
 	ConnectProxy func(action *Action, proxy Widgetter)
 	// The function takes the following parameters:
 	//
-	//    - action
-	//    - proxy
+	//   - action
+	//   - proxy
 	//
 	DisconnectProxy func(action *Action, proxy Widgetter)
 	// Action looks up an action by following a path. See
@@ -183,19 +183,19 @@ type UIManagerOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - path: path.
+	//   - path: path.
 	//
 	// The function returns the following values:
 	//
-	//    - action whose proxy widget is found by following the path, or NULL if
-	//      no widget was found.
+	//   - action whose proxy widget is found by following the path, or NULL if
+	//     no widget was found.
 	//
 	Action func(path string) *Action
 	// Widget looks up a widget by following a path. The path consists of the
 	// names specified in the XML description of the UI. separated by “/”.
 	// Elements which don’t have a name or action attribute in the XML (e.g.
-	// <popup>) can be addressed by their XML element name (e.g. "popup"). The
-	// root element ("/ui") can be omitted in the path.
+	// <popup>) can be addressed by their XML element name (e.g. "popup").
+	// The root element ("/ui") can be omitted in the path.
 	//
 	// Note that the widget found by following a path that ends in a <menu>;
 	// element is the menuitem to which the menu is attached, not the menu it
@@ -210,11 +210,11 @@ type UIManagerOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - path: path.
+	//   - path: path.
 	//
 	// The function returns the following values:
 	//
-	//    - widget found by following the path, or NULL if no widget was found.
+	//   - widget found by following the path, or NULL if no widget was found.
 	//
 	Widget func(path string) Widgetter
 	// The function takes the following parameters:
@@ -239,16 +239,15 @@ func defaultUIManagerOverrides(v *UIManager) UIManagerOverrides {
 }
 
 // UIManager: > GtkUIManager is deprecated since GTK+ 3.10. To construct user
-// interfaces > from XML definitions, you should use Builder, Model, et al. To >
-// work with actions, use #GAction, Actionable et al. These newer classes >
-// support richer functionality and integration with various desktop shells. >
-// It should be possible to migrate most/all functionality from GtkUIManager.
+// interfaces > from XML definitions, you should use Builder, Model, et al.
+// To > work with actions, use #GAction, Actionable et al. These newer classes
+// > support richer functionality and integration with various desktop shells.
+// > It should be possible to migrate most/all functionality from GtkUIManager.
 //
 // A UIManager constructs a user interface (menus and toolbars) from one or more
 // UI definitions, which reference actions from one or more action groups.
 //
-//
-// UI Definitions
+// # UI Definitions
 //
 // The UI definitions are specified in an XML format which can be roughly
 // described by the following DTD.
@@ -330,8 +329,8 @@ func defaultUIManagerOverrides(v *UIManager) UIManagerOverrides {
 //    </ui>
 //
 // The constructed widget hierarchy is very similar to the element tree of the
-// XML, with the exception that placeholders are merged into their parents. The
-// correspondence of XML elements to widgets should be almost obvious:
+// XML, with the exception that placeholders are merged into their parents.
+// The correspondence of XML elements to widgets should be almost obvious:
 //
 // - menubar
 //
@@ -369,11 +368,10 @@ func defaultUIManagerOverrides(v *UIManager) UIManagerOverrides {
 //    a keyboard accelerator
 //
 // The “position” attribute determines where a constructed widget is positioned
-// wrt. to its siblings in the partially constructed tree. If it is “top”, the
-// widget is prepended, otherwise it is appended.
+// wrt. to its siblings in the partially constructed tree. If it is “top”,
+// the widget is prepended, otherwise it is appended.
 //
-//
-// UI Merging
+// # UI Merging
 //
 // The most remarkable feature of UIManager is that it can overlay a set of
 // menuitems and toolitems over another one, and demerge them later.
@@ -391,8 +389,7 @@ func defaultUIManagerOverrides(v *UIManager) UIManagerOverrides {
 // <accelerator> elements in the UI definition. This makes it possible to have
 // accelerators for actions even if they have no visible proxies.
 //
-//
-// Smart Separators
+// # Smart Separators
 //
 // The separators created by UIManager are “smart”, i.e. they do not show up in
 // the UI unless they end up between two visible menu or tool items. Separators
@@ -406,8 +403,7 @@ func defaultUIManagerOverrides(v *UIManager) UIManagerOverrides {
 // small, visible separator to an expanding, invisible one. Toolitems following
 // an expanding separator are effectively right-aligned.
 //
-//
-// Empty Menus
+// # Empty Menus
 //
 // Submenus pose similar problems to separators inconnection with merging. It is
 // impossible to know in advance whether they will end up empty after merging.
@@ -420,8 +416,7 @@ func defaultUIManagerOverrides(v *UIManager) UIManagerOverrides {
 // The behaviour is chosen based on the “hide_if_empty” property of the action
 // to which the submenu is associated.
 //
-//
-// GtkUIManager as GtkBuildable
+// # GtkUIManager as GtkBuildable
 //
 // The GtkUIManager implementation of the GtkBuildable interface accepts
 // GtkActionGroup objects as <child> elements in UI definitions.
@@ -536,8 +531,8 @@ func (manager *UIManager) ConnectActionsChanged(f func()) coreglib.SignalHandle 
 	return coreglib.ConnectGeneratedClosure(manager, "actions-changed", false, unsafe.Pointer(C._gotk4_gtk3_UIManager_ConnectActionsChanged), f)
 }
 
-// ConnectAddWidget signal is emitted for each generated menubar and toolbar. It
-// is not emitted for generated popup menus, which can be obtained by
+// ConnectAddWidget signal is emitted for each generated menubar and toolbar.
+// It is not emitted for generated popup menus, which can be obtained by
 // gtk_ui_manager_get_widget().
 func (manager *UIManager) ConnectAddWidget(f func(widget Widgetter)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(manager, "add-widget", false, unsafe.Pointer(C._gotk4_gtk3_UIManager_ConnectAddWidget), f)
@@ -580,7 +575,7 @@ func (manager *UIManager) ConnectPreActivate(f func(action *Action)) coreglib.Si
 //
 // The function returns the following values:
 //
-//    - uiManager: new ui manager object.
+//   - uiManager: new ui manager object.
 //
 func NewUIManager() *UIManager {
 	var _cret *C.GtkUIManager // in
@@ -608,14 +603,14 @@ func NewUIManager() *UIManager {
 //
 // The function takes the following parameters:
 //
-//    - mergeId: merge id for the merged UI, see gtk_ui_manager_new_merge_id().
-//    - path: path.
-//    - name for the added UI element.
-//    - action (optional): name of the action to be proxied, or NULL to add a
-//      separator.
-//    - typ: type of UI element to add.
-//    - top: if TRUE, the UI element is added before its siblings, otherwise it
-//      is added after its siblings.
+//   - mergeId: merge id for the merged UI, see gtk_ui_manager_new_merge_id().
+//   - path: path.
+//   - name for the added UI element.
+//   - action (optional): name of the action to be proxied, or NULL to add a
+//     separator.
+//   - typ: type of UI element to add.
+//   - top: if TRUE, the UI element is added before its siblings, otherwise it
+//     is added after its siblings.
 //
 func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIManagerItemType, top bool) {
 	var _arg0 *C.GtkUIManager        // out
@@ -658,13 +653,13 @@ func (manager *UIManager) AddUi(mergeId uint, path, name, action string, typ UIM
 //
 // The function takes the following parameters:
 //
-//    - filename: name of the file to parse.
+//   - filename: name of the file to parse.
 //
 // The function returns the following values:
 //
-//    - guint: merge id for the merged UI. The merge id can be used to unmerge
-//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
-//      value is 0.
+//   - guint: merge id for the merged UI. The merge id can be used to unmerge
+//     the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
+//     value is 0.
 //
 func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
@@ -698,13 +693,13 @@ func (manager *UIManager) AddUiFromFile(filename string) (uint, error) {
 //
 // The function takes the following parameters:
 //
-//    - resourcePath: resource path of the file to parse.
+//   - resourcePath: resource path of the file to parse.
 //
 // The function returns the following values:
 //
-//    - guint: merge id for the merged UI. The merge id can be used to unmerge
-//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
-//      value is 0.
+//   - guint: merge id for the merged UI. The merge id can be used to unmerge
+//     the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
+//     value is 0.
 //
 func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
@@ -739,14 +734,14 @@ func (manager *UIManager) AddUiFromResource(resourcePath string) (uint, error) {
 //
 // The function takes the following parameters:
 //
-//    - buffer: string to parse.
-//    - length of buffer (may be -1 if buffer is nul-terminated).
+//   - buffer: string to parse.
+//   - length of buffer (may be -1 if buffer is nul-terminated).
 //
 // The function returns the following values:
 //
-//    - guint: merge id for the merged UI. The merge id can be used to unmerge
-//      the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
-//      value is 0.
+//   - guint: merge id for the merged UI. The merge id can be used to unmerge
+//     the UI with gtk_ui_manager_remove_ui(). If an error occurred, the return
+//     value is 0.
 //
 func (manager *UIManager) AddUiFromString(buffer string, length int) (uint, error) {
 	var _arg0 *C.GtkUIManager // out
@@ -807,7 +802,7 @@ func (manager *UIManager) EnsureUpdate() {
 //
 // The function returns the following values:
 //
-//    - accelGroup: AccelGroup.
+//   - accelGroup: AccelGroup.
 //
 func (manager *UIManager) AccelGroup() *AccelGroup {
 	var _arg0 *C.GtkUIManager  // out
@@ -832,12 +827,12 @@ func (manager *UIManager) AccelGroup() *AccelGroup {
 //
 // The function takes the following parameters:
 //
-//    - path: path.
+//   - path: path.
 //
 // The function returns the following values:
 //
-//    - action whose proxy widget is found by following the path, or NULL if no
-//      widget was found.
+//   - action whose proxy widget is found by following the path, or NULL if no
+//     widget was found.
 //
 func (manager *UIManager) Action(path string) *Action {
 	var _arg0 *C.GtkUIManager // out
@@ -865,8 +860,8 @@ func (manager *UIManager) Action(path string) *Action {
 //
 // The function returns the following values:
 //
-//    - list of action groups. The list is owned by GTK+ and should not be
-//      modified.
+//   - list of action groups. The list is owned by GTK+ and should not be
+//     modified.
 //
 func (manager *UIManager) ActionGroups() []*ActionGroup {
 	var _arg0 *C.GtkUIManager // out
@@ -898,7 +893,7 @@ func (manager *UIManager) ActionGroups() []*ActionGroup {
 //
 // The function returns the following values:
 //
-//    - ok: whether tearoff menu items are added.
+//   - ok: whether tearoff menu items are added.
 //
 func (manager *UIManager) AddTearoffs() bool {
 	var _arg0 *C.GtkUIManager // out
@@ -924,13 +919,13 @@ func (manager *UIManager) AddTearoffs() bool {
 //
 // The function takes the following parameters:
 //
-//    - types specifies the types of toplevel widgets to include. Allowed types
-//      are K_UI_MANAGER_MENUBAR, K_UI_MANAGER_TOOLBAR and K_UI_MANAGER_POPUP.
+//   - types specifies the types of toplevel widgets to include. Allowed types
+//     are K_UI_MANAGER_MENUBAR, K_UI_MANAGER_TOOLBAR and K_UI_MANAGER_POPUP.
 //
 // The function returns the following values:
 //
-//    - sList: newly-allocated List of all toplevel widgets of the requested
-//      types. Free the returned list with g_slist_free().
+//   - sList: newly-allocated List of all toplevel widgets of the requested
+//     types. Free the returned list with g_slist_free().
 //
 func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
 	var _arg0 *C.GtkUIManager        // out
@@ -979,8 +974,8 @@ func (manager *UIManager) Toplevels(types UIManagerItemType) []Widgetter {
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string containing an XML representation of the
-//      merged UI.
+//   - utf8: newly allocated string containing an XML representation of the
+//     merged UI.
 //
 func (manager *UIManager) Ui() string {
 	var _arg0 *C.GtkUIManager // out
@@ -1000,8 +995,8 @@ func (manager *UIManager) Ui() string {
 }
 
 // Widget looks up a widget by following a path. The path consists of the names
-// specified in the XML description of the UI. separated by “/”. Elements which
-// don’t have a name or action attribute in the XML (e.g. <popup>) can be
+// specified in the XML description of the UI. separated by “/”. Elements
+// which don’t have a name or action attribute in the XML (e.g. <popup>) can be
 // addressed by their XML element name (e.g. "popup"). The root element ("/ui")
 // can be omitted in the path.
 //
@@ -1017,11 +1012,11 @@ func (manager *UIManager) Ui() string {
 //
 // The function takes the following parameters:
 //
-//    - path: path.
+//   - path: path.
 //
 // The function returns the following values:
 //
-//    - widget found by following the path, or NULL if no widget was found.
+//   - widget found by following the path, or NULL if no widget was found.
 //
 func (manager *UIManager) Widget(path string) Widgetter {
 	var _arg0 *C.GtkUIManager // out
@@ -1070,8 +1065,8 @@ func (manager *UIManager) Widget(path string) Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - actionGroup: action group to be inserted.
-//    - pos: position at which the group will be inserted.
+//   - actionGroup: action group to be inserted.
+//   - pos: position at which the group will be inserted.
 //
 func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
 	var _arg0 *C.GtkUIManager   // out
@@ -1095,7 +1090,7 @@ func (manager *UIManager) InsertActionGroup(actionGroup *ActionGroup, pos int) {
 //
 // The function returns the following values:
 //
-//    - guint: unused merge id.
+//   - guint: unused merge id.
 //
 func (manager *UIManager) NewMergeID() uint {
 	var _arg0 *C.GtkUIManager // out
@@ -1120,7 +1115,7 @@ func (manager *UIManager) NewMergeID() uint {
 //
 // The function takes the following parameters:
 //
-//    - actionGroup: action group to be removed.
+//   - actionGroup: action group to be removed.
 //
 func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 	var _arg0 *C.GtkUIManager   // out
@@ -1140,7 +1135,7 @@ func (manager *UIManager) RemoveActionGroup(actionGroup *ActionGroup) {
 //
 // The function takes the following parameters:
 //
-//    - mergeId: merge id as returned by gtk_ui_manager_add_ui_from_string().
+//   - mergeId: merge id as returned by gtk_ui_manager_add_ui_from_string().
 //
 func (manager *UIManager) RemoveUi(mergeId uint) {
 	var _arg0 *C.GtkUIManager // out
@@ -1165,7 +1160,7 @@ func (manager *UIManager) RemoveUi(mergeId uint) {
 //
 // The function takes the following parameters:
 //
-//    - addTearoffs: whether tearoff menu items are added.
+//   - addTearoffs: whether tearoff menu items are added.
 //
 func (manager *UIManager) SetAddTearoffs(addTearoffs bool) {
 	var _arg0 *C.GtkUIManager // out
@@ -1212,8 +1207,8 @@ func (manager *UIManager) addWidget(widget Widgetter) {
 
 // The function takes the following parameters:
 //
-//    - action
-//    - proxy
+//   - action
+//   - proxy
 //
 func (manager *UIManager) connectProxy(action *Action, proxy Widgetter) {
 	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
@@ -1235,8 +1230,8 @@ func (manager *UIManager) connectProxy(action *Action, proxy Widgetter) {
 
 // The function takes the following parameters:
 //
-//    - action
-//    - proxy
+//   - action
+//   - proxy
 //
 func (manager *UIManager) disconnectProxy(action *Action, proxy Widgetter) {
 	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
@@ -1263,12 +1258,12 @@ func (manager *UIManager) disconnectProxy(action *Action, proxy Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - path: path.
+//   - path: path.
 //
 // The function returns the following values:
 //
-//    - action whose proxy widget is found by following the path, or NULL if no
-//      widget was found.
+//   - action whose proxy widget is found by following the path, or NULL if no
+//     widget was found.
 //
 func (manager *UIManager) action(path string) *Action {
 	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))
@@ -1294,8 +1289,8 @@ func (manager *UIManager) action(path string) *Action {
 }
 
 // Widget looks up a widget by following a path. The path consists of the names
-// specified in the XML description of the UI. separated by “/”. Elements which
-// don’t have a name or action attribute in the XML (e.g. <popup>) can be
+// specified in the XML description of the UI. separated by “/”. Elements
+// which don’t have a name or action attribute in the XML (e.g. <popup>) can be
 // addressed by their XML element name (e.g. "popup"). The root element ("/ui")
 // can be omitted in the path.
 //
@@ -1311,11 +1306,11 @@ func (manager *UIManager) action(path string) *Action {
 //
 // The function takes the following parameters:
 //
-//    - path: path.
+//   - path: path.
 //
 // The function returns the following values:
 //
-//    - widget found by following the path, or NULL if no widget was found.
+//   - widget found by following the path, or NULL if no widget was found.
 //
 func (manager *UIManager) widget(path string) Widgetter {
 	gclass := (*C.GtkUIManagerClass)(coreglib.PeekParentClass(manager))

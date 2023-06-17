@@ -49,8 +49,7 @@ func defaultToggleToolButtonOverrides(v *ToggleToolButton) ToggleToolButtonOverr
 //
 // Use gtk_toggle_tool_button_new() to create a new GtkToggleToolButton.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkToggleToolButton has a single CSS node with name togglebutton.
 type ToggleToolButton struct {
@@ -142,7 +141,7 @@ func (button *ToggleToolButton) ConnectToggled(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - toggleToolButton: newly created ToggleToolButton.
+//   - toggleToolButton: newly created ToggleToolButton.
 //
 func NewToggleToolButton() *ToggleToolButton {
 	var _cret *C.GtkToolItem // in
@@ -166,11 +165,11 @@ func NewToggleToolButton() *ToggleToolButton {
 //
 // The function takes the following parameters:
 //
-//    - stockId: name of the stock item.
+//   - stockId: name of the stock item.
 //
 // The function returns the following values:
 //
-//    - toggleToolButton: new ToggleToolButton.
+//   - toggleToolButton: new ToggleToolButton.
 //
 func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 	var _arg1 *C.gchar       // out
@@ -194,7 +193,7 @@ func NewToggleToolButtonFromStock(stockId string) *ToggleToolButton {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the toggle tool button is pressed in, FALSE if not.
+//   - ok: TRUE if the toggle tool button is pressed in, FALSE if not.
 //
 func (button *ToggleToolButton) Active() bool {
 	var _arg0 *C.GtkToggleToolButton // out
@@ -220,7 +219,7 @@ func (button *ToggleToolButton) Active() bool {
 //
 // The function takes the following parameters:
 //
-//    - isActive: whether button should be active.
+//   - isActive: whether button should be active.
 //
 func (button *ToggleToolButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleToolButton // out

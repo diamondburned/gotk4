@@ -30,18 +30,18 @@ func init() {
 
 // HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
 // instance, if one exists. AtkHyperlinkImpl differs from AtkHyperlink in that
-// AtkHyperlinkImpl is an interface, whereas AtkHyperlink is a object type. The
-// AtkHyperlinkImpl interface allows a client to query an AtkObject for the
-// availability of an associated AtkHyperlink instance, and obtain that
-// instance. It is thus particularly useful in cases where embedded content or
-// inline content within a text object is present, since the embedding text
-// object implements AtkHypertext and the inline/embedded objects are exposed as
-// children which implement AtkHyperlinkImpl, in addition to their being
+// AtkHyperlinkImpl is an interface, whereas AtkHyperlink is a object type.
+// The AtkHyperlinkImpl interface allows a client to query an AtkObject for
+// the availability of an associated AtkHyperlink instance, and obtain that
+// instance. It is thus particularly useful in cases where embedded content
+// or inline content within a text object is present, since the embedding text
+// object implements AtkHypertext and the inline/embedded objects are exposed
+// as children which implement AtkHyperlinkImpl, in addition to their being
 // obtainable via AtkHypertext:getLink followed by AtkHyperlink:getObject.
 //
 // The AtkHyperlinkImpl interface should be supported by objects exposed within
-// the hierarchy as children of an AtkHypertext container which correspond to
-// "links" or embedded content within the text. HTML anchors are not, for
+// the hierarchy as children of an AtkHypertext container which correspond
+// to "links" or embedded content within the text. HTML anchors are not, for
 // instance, normally exposed this way, but embedded images and components which
 // appear inline in the content of a text object are. The AtkHyperlinkIface
 // interface allows a means of determining which children are hyperlinks in this
@@ -88,8 +88,8 @@ func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - hyperlink: atkHyperlink object which points to this implementing
-//      AtkObject.
+//   - hyperlink: atkHyperlink object which points to this implementing
+//     AtkObject.
 //
 func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 	var _arg0 *C.AtkHyperlinkImpl // out
@@ -111,8 +111,8 @@ func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 //
 // The function returns the following values:
 //
-//    - hyperlink: atkHyperlink object which points to this implementing
-//      AtkObject.
+//   - hyperlink: atkHyperlink object which points to this implementing
+//     AtkObject.
 //
 func (impl *HyperlinkImpl) hyperlink() *Hyperlink {
 	gclass := (*C.AtkHyperlinkImplIface)(coreglib.PeekParentClass(impl))

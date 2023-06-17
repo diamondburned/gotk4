@@ -39,9 +39,9 @@ func init() {
 	})
 }
 
-// StreamableContent: interface whereby an object allows its backing content to
-// be streamed to clients. Typical implementors would be images or icons, HTML
-// content, or multimedia display/rendering widgets.
+// StreamableContent: interface whereby an object allows its backing content
+// to be streamed to clients. Typical implementors would be images or icons,
+// HTML content, or multimedia display/rendering widgets.
 //
 // Negotiation of content type is allowed. Clients may examine the backing data
 // and transform, convert, or parse the content in order to present it in an
@@ -50,8 +50,8 @@ func init() {
 // The AtkStreamableContent interface is particularly useful for saving,
 // printing, or post-processing entire documents, or for persisting alternate
 // views of a document. If document content itself is being serialized, stored,
-// or converted, then use of the AtkStreamableContent interface can help address
-// performance issues. Unlike most ATK interfaces, this interface is not
+// or converted, then use of the AtkStreamableContent interface can help
+// address performance issues. Unlike most ATK interfaces, this interface is not
 // strongly tied to the current user-agent view of the a particular document,
 // but may in some cases give access to the underlying model data.
 //
@@ -99,12 +99,12 @@ func marshalStreamableContent(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - i: gint representing the position of the mime type starting from 0.
+//   - i: gint representing the position of the mime type starting from 0.
 //
 // The function returns the following values:
 //
-//    - utf8: gchar* representing the specified mime type; the caller should not
-//      free the character string.
+//   - utf8: gchar* representing the specified mime type; the caller should not
+//     free the character string.
 //
 func (streamable *StreamableContent) MIMEType(i int) string {
 	var _arg0 *C.AtkStreamableContent // out
@@ -129,7 +129,7 @@ func (streamable *StreamableContent) MIMEType(i int) string {
 //
 // The function returns the following values:
 //
-//    - gint which is the number of mime types supported by the object.
+//   - gint which is the number of mime types supported by the object.
 //
 func (streamable *StreamableContent) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
@@ -151,11 +151,11 @@ func (streamable *StreamableContent) NMIMETypes() int {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: gchar* representing the mime type.
+//   - mimeType: gchar* representing the mime type.
 //
 // The function returns the following values:
 //
-//    - ioChannel which contains the content in the specified mime type.
+//   - ioChannel which contains the content in the specified mime type.
 //
 func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
@@ -193,13 +193,13 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: gchar* representing the mime type, or NULL to request a URI for
-//      the default mime type.
+//   - mimeType: gchar* representing the mime type, or NULL to request a URI for
+//     the default mime type.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) returns a string representing a URI, or NULL if no
-//      corresponding URI can be constructed.
+//   - utf8 (optional) returns a string representing a URI, or NULL if no
+//     corresponding URI can be constructed.
 //
 func (streamable *StreamableContent) URI(mimeType string) string {
 	var _arg0 *C.AtkStreamableContent // out
@@ -228,12 +228,12 @@ func (streamable *StreamableContent) URI(mimeType string) string {
 //
 // The function takes the following parameters:
 //
-//    - i: gint representing the position of the mime type starting from 0.
+//   - i: gint representing the position of the mime type starting from 0.
 //
 // The function returns the following values:
 //
-//    - utf8: gchar* representing the specified mime type; the caller should not
-//      free the character string.
+//   - utf8: gchar* representing the specified mime type; the caller should not
+//     free the character string.
 //
 func (streamable *StreamableContent) mimeType(i int) string {
 	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
@@ -261,7 +261,7 @@ func (streamable *StreamableContent) mimeType(i int) string {
 //
 // The function returns the following values:
 //
-//    - gint which is the number of mime types supported by the object.
+//   - gint which is the number of mime types supported by the object.
 //
 func (streamable *StreamableContent) nmimeTypes() int {
 	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
@@ -286,11 +286,11 @@ func (streamable *StreamableContent) nmimeTypes() int {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: gchar* representing the mime type.
+//   - mimeType: gchar* representing the mime type.
 //
 // The function returns the following values:
 //
-//    - ioChannel which contains the content in the specified mime type.
+//   - ioChannel which contains the content in the specified mime type.
 //
 func (streamable *StreamableContent) stream(mimeType string) *glib.IOChannel {
 	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
@@ -331,13 +331,13 @@ func (streamable *StreamableContent) stream(mimeType string) *glib.IOChannel {
 //
 // The function takes the following parameters:
 //
-//    - mimeType: gchar* representing the mime type, or NULL to request a URI for
-//      the default mime type.
+//   - mimeType: gchar* representing the mime type, or NULL to request a URI for
+//     the default mime type.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) returns a string representing a URI, or NULL if no
-//      corresponding URI can be constructed.
+//   - utf8 (optional) returns a string representing a URI, or NULL if no
+//     corresponding URI can be constructed.
 //
 func (streamable *StreamableContent) urI(mimeType string) string {
 	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))

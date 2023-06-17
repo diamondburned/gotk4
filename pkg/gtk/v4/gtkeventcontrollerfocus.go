@@ -30,8 +30,8 @@ func init() {
 // EventControllerFocus: GtkEventControllerFocus is an event controller to keep
 // track of keyboard focus.
 //
-// The event controller offers gtk.EventControllerFocus::enter and
-// gtk.EventControllerFocus::leave signals, as well as
+// The event controller offers gtk.EventControllerFocus::enter
+// and gtk.EventControllerFocus::leave signals, as well as
 // gtk.EventControllerFocus:is-focus and gtk.EventControllerFocus:contains-focus
 // properties which are updated to reflect focus changes inside the widget
 // hierarchy that is rooted at the controllers widget.
@@ -73,8 +73,8 @@ func (self *EventControllerFocus) ConnectEnter(f func()) coreglib.SignalHandle {
 //
 // Note that this means you may not get a ::leave signal even though the focus
 // moves away from the widget, in certain cases (such as when the focus moves
-// from the widget to a descendent). If you are interested in these cases, you
-// can monitor the gtk.EventControllerFocus:is-focus property for changes.
+// from the widget to a descendent). If you are interested in these cases,
+// you can monitor the gtk.EventControllerFocus:is-focus property for changes.
 func (self *EventControllerFocus) ConnectLeave(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "leave", false, unsafe.Pointer(C._gotk4_gtk4_EventControllerFocus_ConnectLeave), f)
 }
@@ -84,7 +84,7 @@ func (self *EventControllerFocus) ConnectLeave(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - eventControllerFocus: new GtkEventControllerFocus.
+//   - eventControllerFocus: new GtkEventControllerFocus.
 //
 func NewEventControllerFocus() *EventControllerFocus {
 	var _cret *C.GtkEventController // in
@@ -102,7 +102,7 @@ func NewEventControllerFocus() *EventControllerFocus {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if focus is within self or one of its children.
+//   - ok: TRUE if focus is within self or one of its children.
 //
 func (self *EventControllerFocus) ContainsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out
@@ -126,7 +126,7 @@ func (self *EventControllerFocus) ContainsFocus() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if focus is within self, but not one of its children.
+//   - ok: TRUE if focus is within self, but not one of its children.
 //
 func (self *EventControllerFocus) IsFocus() bool {
 	var _arg0 *C.GtkEventControllerFocus // out

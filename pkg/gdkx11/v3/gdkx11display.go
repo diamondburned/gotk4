@@ -58,7 +58,7 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - gint: x error code or 0 on success.
+//   - gint: x error code or 0 on success.
 //
 func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
@@ -78,8 +78,8 @@ func (display *X11Display) ErrorTrapPop() int {
 
 // ErrorTrapPopIgnored pops the error trap pushed by
 // gdk_x11_display_error_trap_push(). Does not block to see if an error
-// occurred; merely records the range of requests to ignore errors for, and
-// ignores those errors if they arrive asynchronously.
+// occurred; merely records the range of requests to ignore errors for,
+// and ignores those errors if they arrive asynchronously.
 //
 // See gdk_error_trap_pop_ignored() for the all-displays-at-once equivalent.
 func (display *X11Display) ErrorTrapPopIgnored() {
@@ -92,8 +92,8 @@ func (display *X11Display) ErrorTrapPopIgnored() {
 }
 
 // ErrorTrapPush begins a range of X requests on display for which X error
-// events will be ignored. Unignored errors (when no trap is pushed) will abort
-// the application. Use gdk_x11_display_error_trap_pop() or
+// events will be ignored. Unignored errors (when no trap is pushed)
+// will abort the application. Use gdk_x11_display_error_trap_pop() or
 // gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
 // function.
 //
@@ -111,7 +111,7 @@ func (display *X11Display) ErrorTrapPush() {
 //
 // The function returns the following values:
 //
-//    - utf8: startup notification ID for display.
+//   - utf8: startup notification ID for display.
 //
 func (display *X11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
@@ -129,13 +129,13 @@ func (display *X11Display) StartupNotificationID() string {
 	return _utf8
 }
 
-// UserTime returns the timestamp of the last user interaction on display. The
-// timestamp is taken from events caused by user interaction such as key presses
-// or pointer movements. See gdk_x11_window_set_user_time().
+// UserTime returns the timestamp of the last user interaction on display.
+// The timestamp is taken from events caused by user interaction such as key
+// presses or pointer movements. See gdk_x11_window_set_user_time().
 //
 // The function returns the following values:
 //
-//    - guint32: timestamp of the last user interaction.
+//   - guint32: timestamp of the last user interaction.
 //
 func (display *X11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
@@ -178,9 +178,9 @@ func (display *X11Display) Grab() {
 //
 // The function takes the following parameters:
 //
-//    - theme (optional): name of the cursor theme to use, or NULL to unset a
-//      previously set value.
-//    - size: cursor size to use, or 0 to keep the previous size.
+//   - theme (optional): name of the cursor theme to use, or NULL to unset a
+//     previously set value.
+//   - size: cursor size to use, or 0 to keep the previous size.
 //
 func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
@@ -210,13 +210,13 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 // is taken to be the X11 timestamp of the event that triggered the application
 // to be launched and the GDK current event time is set accordingly.
 //
-// The startup ID is also what is used to signal that the startup is complete
-// (for example, when opening a window or when calling
+// The startup ID is also what is used to signal that the startup
+// is complete (for example, when opening a window or when calling
 // gdk_notify_startup_complete()).
 //
 // The function takes the following parameters:
 //
-//    - startupId: startup notification ID (must be valid utf8).
+//   - startupId: startup notification ID (must be valid utf8).
 //
 func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
@@ -231,17 +231,17 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 	runtime.KeepAlive(startupId)
 }
 
-// SetWindowScale forces a specific window scale for all windows on this
-// display, instead of using the default or user configured scale. This is can
-// be used to disable scaling support by setting scale to 1, or to
-// programmatically set the window scale.
+// SetWindowScale forces a specific window scale for all windows on
+// this display, instead of using the default or user configured scale.
+// This is can be used to disable scaling support by setting scale to 1,
+// or to programmatically set the window scale.
 //
 // Once the scale is set by this call it will not change in response to later
 // user configuration changes.
 //
 // The function takes the following parameters:
 //
-//    - scale: new scale value.
+//   - scale: new scale value.
 //
 func (display *X11Display) SetWindowScale(scale int) {
 	var _arg0 *C.GdkDisplay // out

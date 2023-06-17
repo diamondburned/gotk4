@@ -6,13 +6,13 @@ package gio
 // #include <gio/gio.h>
 import "C"
 
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be polled.
+// FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL: key in the "mountable" namespace
+// for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be polled.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_CAN_POLL = "mountable::can-poll"
 
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_START: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be started.
+// FILE_ATTRIBUTE_MOUNTABLE_CAN_START: key in the "mountable" namespace
+// for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be started.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_CAN_START = "mountable::can-start"
 
@@ -21,23 +21,23 @@ const FILE_ATTRIBUTE_MOUNTABLE_CAN_START = "mountable::can-start"
 // degraded. Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_CAN_START_DEGRADED = "mountable::can-start-degraded"
 
-// FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP: key in the "mountable" namespace for
-// checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be stopped.
+// FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP: key in the "mountable" namespace
+// for checking if a file (of type G_FILE_TYPE_MOUNTABLE) can be stopped.
 // Corresponding AttributeType is G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_CAN_STOP = "mountable::can-stop"
 
 // FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC: key in the "mountable"
-// namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE) is
-// automatically polled for media. Corresponding AttributeType is
+// namespace for checking if a file (of type G_FILE_TYPE_MOUNTABLE)
+// is automatically polled for media. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
 const FILE_ATTRIBUTE_MOUNTABLE_IS_MEDIA_CHECK_AUTOMATIC = "mountable::is-media-check-automatic"
 
-// FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE: key in the "mountable" namespace
-// for getting the StartStopType. Corresponding AttributeType is
+// FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE: key in the "mountable"
+// namespace for getting the StartStopType. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_UINT32.
 const FILE_ATTRIBUTE_MOUNTABLE_START_STOP_TYPE = "mountable::start-stop-type"
 
-// FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE: key in the "mountable" namespace
-// for getting the unix device file. Corresponding AttributeType is
+// FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE: key in the "mountable"
+// namespace for getting the unix device file. Corresponding AttributeType is
 // G_FILE_ATTRIBUTE_TYPE_STRING.
 const FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE = "mountable::unix-device-file"

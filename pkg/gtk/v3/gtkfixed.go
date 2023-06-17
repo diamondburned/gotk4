@@ -49,8 +49,8 @@ func defaultFixedOverrides(v *Fixed) FixedOverrides {
 // - Themes, which may change widget sizes.
 //
 // - Fonts other than the one you used to write the app will of course change
-// the size of widgets containing text; keep in mind that users may use a larger
-// font because of difficulty reading the default, or they may be using a
+// the size of widgets containing text; keep in mind that users may use a
+// larger font because of difficulty reading the default, or they may be using a
 // different OS that provides different fonts.
 //
 // - Translation of text into other languages changes its size. Also, display of
@@ -126,7 +126,7 @@ func marshalFixed(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - fixed: new Fixed.
+//   - fixed: new Fixed.
 //
 func NewFixed() *Fixed {
 	var _cret *C.GtkWidget // in
@@ -144,9 +144,9 @@ func NewFixed() *Fixed {
 //
 // The function takes the following parameters:
 //
-//    - widget: child widget.
-//    - x: horizontal position to move the widget to.
-//    - y: vertical position to move the widget to.
+//   - widget: child widget.
+//   - x: horizontal position to move the widget to.
+//   - y: vertical position to move the widget to.
 //
 func (fixed *Fixed) Move(widget Widgetter, x, y int) {
 	var _arg0 *C.GtkFixed  // out
@@ -170,9 +170,9 @@ func (fixed *Fixed) Move(widget Widgetter, x, y int) {
 //
 // The function takes the following parameters:
 //
-//    - widget to add.
-//    - x: horizontal position to place the widget at.
-//    - y: vertical position to place the widget at.
+//   - widget to add.
+//   - x: horizontal position to place the widget at.
+//   - y: vertical position to place the widget at.
 //
 func (fixed *Fixed) Put(widget Widgetter, x, y int) {
 	var _arg0 *C.GtkFixed  // out

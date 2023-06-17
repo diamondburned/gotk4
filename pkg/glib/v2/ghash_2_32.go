@@ -11,13 +11,13 @@ import (
 // #include <glib.h>
 import "C"
 
-// HashTableAdd: this is a convenience function for using a Table as a set. It
-// is equivalent to calling g_hash_table_replace() with key as both the key and
-// the value.
+// HashTableAdd: this is a convenience function for using a Table as a set.
+// It is equivalent to calling g_hash_table_replace() with key as both the key
+// and the value.
 //
-// In particular, this means that if key already exists in the hash table, then
-// the old copy of key in the hash table is freed and key replaces it in the
-// table.
+// In particular, this means that if key already exists in the hash table,
+// then the old copy of key in the hash table is freed and key replaces it in
+// the table.
 //
 // When a hash table only ever contains keys that have themselves as the
 // corresponding value it is able to be stored more efficiently. See the
@@ -28,12 +28,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - key (optional) to insert.
+//   - hashTable: Table.
+//   - key (optional) to insert.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key did not exist yet.
+//   - ok: TRUE if the key did not exist yet.
 //
 func HashTableAdd(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable // out
@@ -68,12 +68,12 @@ func HashTableAdd(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointe
 //
 // The function takes the following parameters:
 //
-//    - hashTable: Table.
-//    - key (optional) to check.
+//   - hashTable: Table.
+//   - key (optional) to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if key is in hash_table, FALSE otherwise.
+//   - ok: TRUE if key is in hash_table, FALSE otherwise.
 //
 func HashTableContains(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable   // out

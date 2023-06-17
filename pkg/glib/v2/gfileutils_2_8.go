@@ -19,11 +19,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - args: NULL-terminated array of strings containing the path elements.
+//   - args: NULL-terminated array of strings containing the path elements.
 //
 // The function returns the following values:
 //
-//    - filename: newly-allocated string that must be freed with g_free().
+//   - filename: newly-allocated string that must be freed with g_free().
 //
 func BuildFilenamev(args []string) string {
 	var _arg1 **C.gchar // out
@@ -60,12 +60,12 @@ func BuildFilenamev(args []string) string {
 //
 // The function takes the following parameters:
 //
-//    - separator: string used to separator the elements of the path.
-//    - args: NULL-terminated array of strings containing the path elements.
+//   - separator: string used to separator the elements of the path.
+//   - args: NULL-terminated array of strings containing the path elements.
 //
 // The function returns the following values:
 //
-//    - filename: newly-allocated string that must be freed with g_free().
+//   - filename: newly-allocated string that must be freed with g_free().
 //
 func BuildPathv(separator string, args []string) string {
 	var _arg1 *C.gchar  // out
@@ -107,9 +107,9 @@ func BuildPathv(separator string, args []string) string {
 //
 // The function takes the following parameters:
 //
-//    - filename: name of a file to write contents to, in the GLib file name
-//      encoding.
-//    - contents: string to write to the file.
+//   - filename: name of a file to write contents to, in the GLib file name
+//     encoding.
+//   - contents: string to write to the file.
 //
 func FileSetContents(filename, contents string) error {
 	var _arg1 *C.gchar // out
@@ -142,13 +142,13 @@ func FileSetContents(filename, contents string) error {
 //
 // The function takes the following parameters:
 //
-//    - pathname in the GLib file name encoding.
-//    - mode permissions to use for newly created directories.
+//   - pathname in the GLib file name encoding.
+//   - mode permissions to use for newly created directories.
 //
 // The function returns the following values:
 //
-//    - gint: 0 if the directory already exists, or was successfully created.
-//      Returns -1 if an error occurred, with errno set.
+//   - gint: 0 if the directory already exists, or was successfully created.
+//     Returns -1 if an error occurred, with errno set.
 //
 func MkdirWithParents(pathname string, mode int) int {
 	var _arg1 *C.gchar // out

@@ -36,8 +36,8 @@ func defaultRecentChooserDialogOverrides(v *RecentChooserDialog) RecentChooserDi
 	return RecentChooserDialogOverrides{}
 }
 
-// RecentChooserDialog is a dialog box suitable for displaying the recently used
-// documents. This widgets works by putting a RecentChooserWidget inside a
+// RecentChooserDialog is a dialog box suitable for displaying the recently
+// used documents. This widgets works by putting a RecentChooserWidget inside a
 // Dialog. It exposes the RecentChooserIface interface, so you can use all the
 // RecentChooser functions on the recent chooser dialog as well as those for
 // Dialog.
@@ -45,8 +45,7 @@ func defaultRecentChooserDialogOverrides(v *RecentChooserDialog) RecentChooserDi
 // Note that RecentChooserDialog does not have any methods of its own. Instead,
 // you should use the functions that work on a RecentChooser.
 //
-//
-// Typical usage
+// # Typical usage
 //
 // In the simplest of cases, you can use the following code to use a
 // RecentChooserDialog to select a recently used file:

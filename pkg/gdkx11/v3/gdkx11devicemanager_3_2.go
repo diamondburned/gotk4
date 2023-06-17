@@ -17,13 +17,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - deviceManager: DeviceManager.
-//    - deviceId: device ID, as understood by the XInput2 protocol.
+//   - deviceManager: DeviceManager.
+//   - deviceId: device ID, as understood by the XInput2 protocol.
 //
 // The function returns the following values:
 //
-//    - x11DeviceCore (optional) wrapping the device ID, or NULL if the given ID
-//      doesn’t currently represent a device.
+//   - x11DeviceCore (optional) wrapping the device ID, or NULL if the given ID
+//     doesn’t currently represent a device.
 //
 func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceId int) *X11DeviceCore {
 	var _arg1 *C.GdkDeviceManager // out

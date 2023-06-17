@@ -53,8 +53,7 @@ func defaultFileChooserWidgetOverrides(v *FileChooserWidget) FileChooserWidgetOv
 // interface, and you should use the methods of this interface to interact with
 // the widget.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkFileChooserWidget has a single CSS node with name filechooser.
 type FileChooserWidget struct {
@@ -133,9 +132,9 @@ func (v *FileChooserWidget) ConnectDesktopFolder(f func()) coreglib.SignalHandle
 // ConnectDownFolder signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when the user asks for it.
 //
-// This is used to make the file chooser go to a child of the current folder in
-// the file hierarchy. The subfolder that will be used is displayed in the path
-// bar widget of the file chooser. For example, if the path bar is showing
+// This is used to make the file chooser go to a child of the current folder
+// in the file hierarchy. The subfolder that will be used is displayed in the
+// path bar widget of the file chooser. For example, if the path bar is showing
 // "/foo/bar/baz", with bar currently displayed, then this will cause the file
 // chooser to switch to the "baz" subfolder.
 //
@@ -161,9 +160,9 @@ func (v *FileChooserWidget) ConnectHomeFolder(f func()) coreglib.SignalHandle {
 // This is used to make the file chooser show a "Location" prompt which the user
 // can use to manually type the name of the file he wishes to select.
 //
-// The default bindings for this signal are Control + L with a path string of ""
-// (the empty string). It is also bound to / with a path string of "/" (a
-// slash): this lets you type / and immediately type a path name. On Unix
+// The default bindings for this signal are Control + L with a path string
+// of "" (the empty string). It is also bound to / with a path string of "/"
+// (a slash): this lets you type / and immediately type a path name. On Unix
 // systems, this is bound to ~ (tilde) with a path string of "~" itself for
 // access to home directories.
 func (v *FileChooserWidget) ConnectLocationPopup(f func(path string)) coreglib.SignalHandle {
@@ -205,9 +204,9 @@ func (v *FileChooserWidget) ConnectPlacesShortcut(f func()) coreglib.SignalHandl
 // ConnectQuickBookmark signal is a [keybinding signal][GtkBindingSignal] which
 // gets emitted when the user asks for it.
 //
-// This is used to make the file chooser switch to the bookmark specified in the
-// bookmark_index parameter. For example, if you have three bookmarks, you can
-// pass 0, 1, 2 to this signal to switch to each of them, respectively.
+// This is used to make the file chooser switch to the bookmark specified in
+// the bookmark_index parameter. For example, if you have three bookmarks,
+// you can pass 0, 1, 2 to this signal to switch to each of them, respectively.
 //
 // The default binding for this signal is Alt + 1, Alt + 2, etc. until Alt + 0.
 // Note that in the default binding, that Alt + 1 is actually defined to switch
@@ -264,11 +263,11 @@ func (v *FileChooserWidget) ConnectUpFolder(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - action: open or save mode for the widget.
+//   - action: open or save mode for the widget.
 //
 // The function returns the following values:
 //
-//    - fileChooserWidget: new FileChooserWidget.
+//   - fileChooserWidget: new FileChooserWidget.
 //
 func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget {
 	var _arg1 C.GtkFileChooserAction // out

@@ -56,8 +56,8 @@ func init() {
 
 // ActionOverrides contains methods that are overridable.
 type ActionOverrides struct {
-	// Activate emits the “activate” signal on the specified action, if it isn't
-	// insensitive. This gets called by the proxy widgets when they get
+	// Activate emits the “activate” signal on the specified action, if it
+	// isn't insensitive. This gets called by the proxy widgets when they get
 	// activated.
 	//
 	// It can also be used to manually activate an action.
@@ -76,7 +76,7 @@ type ActionOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - widget: menu item provided by the action, or NULL.
+	//   - widget: menu item provided by the action, or NULL.
 	//
 	CreateMenu func() Widgetter
 	// CreateMenuItem creates a menu item widget that proxies for the given
@@ -87,7 +87,7 @@ type ActionOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - widget: menu item connected to the action.
+	//   - widget: menu item connected to the action.
 	//
 	CreateMenuItem func() Widgetter
 	// CreateToolItem creates a toolbar item widget that proxies for the given
@@ -98,7 +98,7 @@ type ActionOverrides struct {
 	//
 	// The function returns the following values:
 	//
-	//    - widget: toolbar item connected to the action.
+	//   - widget: toolbar item connected to the action.
 	//
 	CreateToolItem func() Widgetter
 	// The function takes the following parameters:
@@ -125,8 +125,8 @@ func defaultActionOverrides(v *Action) ActionOverrides {
 // information how it should be presented in the interface. Each action provides
 // methods to create icons, menu items and toolbar items representing itself.
 //
-// As well as the callback that is called when the action gets activated, the
-// following also gets associated with the action:
+// As well as the callback that is called when the action gets activated,
+// the following also gets associated with the action:
 //
 // - a name (not translated, for path lookup)
 //
@@ -152,11 +152,11 @@ func defaultActionOverrides(v *Action) ActionOverrides {
 // be implemented as Action subclasses.
 //
 // Each action can have one or more proxy widgets. To act as an action proxy,
-// widget needs to implement Activatable interface. Proxies mirror the state of
-// the action and should change when the action’s state changes. Properties that
-// are always mirrored by proxies are Action:sensitive and Action:visible.
-// Action:gicon, Action:icon-name, Action:label, Action:short-label and
-// Action:stock-id properties are only mirorred if proxy widget has
+// widget needs to implement Activatable interface. Proxies mirror the state
+// of the action and should change when the action’s state changes. Properties
+// that are always mirrored by proxies are Action:sensitive and Action:visible.
+// Action:gicon, Action:icon-name, Action:label, Action:short-label
+// and Action:stock-id properties are only mirorred if proxy widget has
 // Activatable:use-action-appearance property set to TRUE.
 //
 // When the proxy is activated, it should activate its action.
@@ -231,8 +231,8 @@ func (action *Action) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(action, "activate", false, unsafe.Pointer(C._gotk4_gtk3_Action_ConnectActivate), f)
 }
 
-// NewAction creates a new Action object. To add the action to a ActionGroup and
-// set the accelerator for the action, call
+// NewAction creates a new Action object. To add the action to
+// a ActionGroup and set the accelerator for the action, call
 // gtk_action_group_add_action_with_accel(). See the [UI Definition
 // section][XML-UI] for information on allowed action names.
 //
@@ -241,15 +241,15 @@ func (action *Action) ConnectActivate(f func()) coreglib.SignalHandle {
 //
 // The function takes the following parameters:
 //
-//    - name: unique name for the action.
-//    - label (optional) displayed in menu items and on buttons, or NULL.
-//    - tooltip (optional) for the action, or NULL.
-//    - stockId (optional): stock icon to display in widgets representing the
-//      action, or NULL.
+//   - name: unique name for the action.
+//   - label (optional) displayed in menu items and on buttons, or NULL.
+//   - tooltip (optional) for the action, or NULL.
+//   - stockId (optional): stock icon to display in widgets representing the
+//     action, or NULL.
 //
 // The function returns the following values:
 //
-//    - action: new Action.
+//   - action: new Action.
 //
 func NewAction(name, label, tooltip, stockId string) *Action {
 	var _arg1 *C.gchar     // out
@@ -317,13 +317,13 @@ func (action *Action) BlockActivate() {
 	runtime.KeepAlive(action)
 }
 
-// ConnectAccelerator installs the accelerator for action if action has an accel
-// path and group. See gtk_action_set_accel_path() and
+// ConnectAccelerator installs the accelerator for action if action
+// has an accel path and group. See gtk_action_set_accel_path() and
 // gtk_action_set_accel_group()
 //
-// Since multiple proxies may independently trigger the installation of the
-// accelerator, the action counts the number of times this function has been
-// called and doesn’t remove the accelerator until
+// Since multiple proxies may independently trigger the installation
+// of the accelerator, the action counts the number of times this
+// function has been called and doesn’t remove the accelerator until
 // gtk_action_disconnect_accelerator() has been called as many times.
 //
 // Deprecated: Use #GAction and the accelerator group on an associated Menu
@@ -345,11 +345,11 @@ func (action *Action) ConnectAccelerator() {
 //
 // The function takes the following parameters:
 //
-//    - iconSize: size of the icon (IconSize) that should be created.
+//   - iconSize: size of the icon (IconSize) that should be created.
 //
 // The function returns the following values:
 //
-//    - widget that displays the icon for this action.
+//   - widget that displays the icon for this action.
 //
 func (action *Action) CreateIcon(iconSize int) Widgetter {
 	var _arg0 *C.GtkAction  // out
@@ -395,7 +395,7 @@ func (action *Action) CreateIcon(iconSize int) Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget: menu item provided by the action, or NULL.
+//   - widget: menu item provided by the action, or NULL.
 //
 func (action *Action) CreateMenu() Widgetter {
 	var _arg0 *C.GtkAction // out
@@ -435,7 +435,7 @@ func (action *Action) CreateMenu() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget: menu item connected to the action.
+//   - widget: menu item connected to the action.
 //
 func (action *Action) CreateMenuItem() Widgetter {
 	var _arg0 *C.GtkAction // out
@@ -477,7 +477,7 @@ func (action *Action) CreateMenuItem() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget: toolbar item connected to the action.
+//   - widget: toolbar item connected to the action.
 //
 func (action *Action) CreateToolItem() Widgetter {
 	var _arg0 *C.GtkAction // out
@@ -532,8 +532,8 @@ func (action *Action) DisconnectAccelerator() {
 //
 // The function returns the following values:
 //
-//    - utf8: accel path for this action, or NULL if none is set. The returned
-//      string is owned by GTK+ and must not be freed or modified.
+//   - utf8: accel path for this action, or NULL if none is set. The returned
+//     string is owned by GTK+ and must not be freed or modified.
 //
 func (action *Action) AccelPath() string {
 	var _arg0 *C.GtkAction // out
@@ -558,7 +558,7 @@ func (action *Action) AccelPath() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the menu item proxies will always show their image.
+//   - ok: TRUE if the menu item proxies will always show their image.
 //
 func (action *Action) AlwaysShowImage() bool {
 	var _arg0 *C.GtkAction // out
@@ -585,7 +585,7 @@ func (action *Action) AlwaysShowImage() bool {
 //
 // The function returns the following values:
 //
-//    - icon action’s #GIcon if one is set.
+//   - icon action’s #GIcon if one is set.
 //
 func (action *Action) GIcon() *gio.Icon {
 	var _arg0 *C.GtkAction // out
@@ -615,7 +615,7 @@ func (action *Action) GIcon() *gio.Icon {
 //
 // The function returns the following values:
 //
-//    - utf8: icon name.
+//   - utf8: icon name.
 //
 func (action *Action) IconName() string {
 	var _arg0 *C.GtkAction // out
@@ -640,7 +640,7 @@ func (action *Action) IconName() string {
 //
 // The function returns the following values:
 //
-//    - ok: whether action is important.
+//   - ok: whether action is important.
 //
 func (action *Action) IsImportant() bool {
 	var _arg0 *C.GtkAction // out
@@ -662,13 +662,13 @@ func (action *Action) IsImportant() bool {
 
 // Label gets the label text of action.
 //
-// Deprecated: Use #GAction instead, and get a label from a menu item with
-// g_menu_item_get_attribute_value(). For Actionable widgets, use the
+// Deprecated: Use #GAction instead, and get a label from a menu item
+// with g_menu_item_get_attribute_value(). For Actionable widgets, use the
 // widget-specific API to get a label.
 //
 // The function returns the following values:
 //
-//    - utf8: label text.
+//   - utf8: label text.
 //
 func (action *Action) Label() string {
 	var _arg0 *C.GtkAction // out
@@ -692,8 +692,8 @@ func (action *Action) Label() string {
 //
 // The function returns the following values:
 //
-//    - utf8: name of the action. The string belongs to GTK+ and should not be
-//      freed.
+//   - utf8: name of the action. The string belongs to GTK+ and should not be
+//     freed.
 //
 func (action *Action) Name() string {
 	var _arg0 *C.GtkAction // out
@@ -718,8 +718,8 @@ func (action *Action) Name() string {
 //
 // The function returns the following values:
 //
-//    - sList of proxy widgets. The list is owned by GTK+ and must not be
-//      modified.
+//   - sList of proxy widgets. The list is owned by GTK+ and must not be
+//     modified.
 //
 func (action *Action) Proxies() []Widgetter {
 	var _arg0 *C.GtkAction // out
@@ -767,7 +767,7 @@ func (action *Action) Proxies() []Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the action itself is sensitive.
+//   - ok: TRUE if the action itself is sensitive.
 //
 func (action *Action) Sensitive() bool {
 	var _arg0 *C.GtkAction // out
@@ -793,7 +793,7 @@ func (action *Action) Sensitive() bool {
 //
 // The function returns the following values:
 //
-//    - utf8: short label text.
+//   - utf8: short label text.
 //
 func (action *Action) ShortLabel() string {
 	var _arg0 *C.GtkAction // out
@@ -817,7 +817,7 @@ func (action *Action) ShortLabel() string {
 //
 // The function returns the following values:
 //
-//    - utf8: stock id.
+//   - utf8: stock id.
 //
 func (action *Action) StockID() string {
 	var _arg0 *C.GtkAction // out
@@ -842,7 +842,7 @@ func (action *Action) StockID() string {
 //
 // The function returns the following values:
 //
-//    - utf8: tooltip text.
+//   - utf8: tooltip text.
 //
 func (action *Action) Tooltip() string {
 	var _arg0 *C.GtkAction // out
@@ -869,7 +869,7 @@ func (action *Action) Tooltip() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the action itself is visible.
+//   - ok: TRUE if the action itself is visible.
 //
 func (action *Action) Visible() bool {
 	var _arg0 *C.GtkAction // out
@@ -896,7 +896,7 @@ func (action *Action) Visible() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether action is visible when horizontal.
+//   - ok: whether action is visible when horizontal.
 //
 func (action *Action) VisibleHorizontal() bool {
 	var _arg0 *C.GtkAction // out
@@ -923,7 +923,7 @@ func (action *Action) VisibleHorizontal() bool {
 //
 // The function returns the following values:
 //
-//    - ok: whether action is visible when horizontal.
+//   - ok: whether action is visible when horizontal.
 //
 func (action *Action) VisibleVertical() bool {
 	var _arg0 *C.GtkAction // out
@@ -949,8 +949,8 @@ func (action *Action) VisibleVertical() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the action and its associated action group are both
-//      sensitive.
+//   - ok: TRUE if the action and its associated action group are both
+//     sensitive.
 //
 func (action *Action) IsSensitive() bool {
 	var _arg0 *C.GtkAction // out
@@ -977,7 +977,7 @@ func (action *Action) IsSensitive() bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the action and its associated action group are both visible.
+//   - ok: TRUE if the action and its associated action group are both visible.
 //
 func (action *Action) IsVisible() bool {
 	var _arg0 *C.GtkAction // out
@@ -1005,7 +1005,7 @@ func (action *Action) IsVisible() bool {
 //
 // The function takes the following parameters:
 //
-//    - accelGroup (optional) or NULL.
+//   - accelGroup (optional) or NULL.
 //
 func (action *Action) SetAccelGroup(accelGroup *AccelGroup) {
 	var _arg0 *C.GtkAction     // out
@@ -1034,7 +1034,7 @@ func (action *Action) SetAccelGroup(accelGroup *AccelGroup) {
 //
 // The function takes the following parameters:
 //
-//    - accelPath: accelerator path.
+//   - accelPath: accelerator path.
 //
 func (action *Action) SetAccelPath(accelPath string) {
 	var _arg0 *C.GtkAction // out
@@ -1060,7 +1060,7 @@ func (action *Action) SetAccelPath(accelPath string) {
 //
 // The function takes the following parameters:
 //
-//    - alwaysShow: TRUE if menuitem proxies should always show their image.
+//   - alwaysShow: TRUE if menuitem proxies should always show their image.
 //
 func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 	var _arg0 *C.GtkAction // out
@@ -1084,7 +1084,7 @@ func (action *Action) SetAlwaysShowImage(alwaysShow bool) {
 //
 // The function takes the following parameters:
 //
-//    - icon to set.
+//   - icon to set.
 //
 func (action *Action) SetGIcon(icon gio.Iconner) {
 	var _arg0 *C.GtkAction // out
@@ -1106,7 +1106,7 @@ func (action *Action) SetGIcon(icon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//    - iconName: icon name to set.
+//   - iconName: icon name to set.
 //
 func (action *Action) SetIconName(iconName string) {
 	var _arg0 *C.GtkAction // out
@@ -1129,7 +1129,7 @@ func (action *Action) SetIconName(iconName string) {
 //
 // The function takes the following parameters:
 //
-//    - isImportant: TRUE to make the action important.
+//   - isImportant: TRUE to make the action important.
 //
 func (action *Action) SetIsImportant(isImportant bool) {
 	var _arg0 *C.GtkAction // out
@@ -1153,7 +1153,7 @@ func (action *Action) SetIsImportant(isImportant bool) {
 //
 // The function takes the following parameters:
 //
-//    - label text to set.
+//   - label text to set.
 //
 func (action *Action) SetLabel(label string) {
 	var _arg0 *C.GtkAction // out
@@ -1168,15 +1168,15 @@ func (action *Action) SetLabel(label string) {
 	runtime.KeepAlive(label)
 }
 
-// SetSensitive sets the :sensitive property of the action to sensitive. Note
-// that this doesn’t necessarily mean effective sensitivity. See
+// SetSensitive sets the :sensitive property of the action to sensitive.
+// Note that this doesn’t necessarily mean effective sensitivity. See
 // gtk_action_is_sensitive() for that.
 //
 // Deprecated: Use g_simple_action_set_enabled() on a Action instead.
 //
 // The function takes the following parameters:
 //
-//    - sensitive: TRUE to make the action sensitive.
+//   - sensitive: TRUE to make the action sensitive.
 //
 func (action *Action) SetSensitive(sensitive bool) {
 	var _arg0 *C.GtkAction // out
@@ -1198,7 +1198,7 @@ func (action *Action) SetSensitive(sensitive bool) {
 //
 // The function takes the following parameters:
 //
-//    - shortLabel: label text to set.
+//   - shortLabel: label text to set.
 //
 func (action *Action) SetShortLabel(shortLabel string) {
 	var _arg0 *C.GtkAction // out
@@ -1219,7 +1219,7 @@ func (action *Action) SetShortLabel(shortLabel string) {
 //
 // The function takes the following parameters:
 //
-//    - stockId: stock id.
+//   - stockId: stock id.
 //
 func (action *Action) SetStockID(stockId string) {
 	var _arg0 *C.GtkAction // out
@@ -1241,7 +1241,7 @@ func (action *Action) SetStockID(stockId string) {
 //
 // The function takes the following parameters:
 //
-//    - tooltip text.
+//   - tooltip text.
 //
 func (action *Action) SetTooltip(tooltip string) {
 	var _arg0 *C.GtkAction // out
@@ -1256,8 +1256,8 @@ func (action *Action) SetTooltip(tooltip string) {
 	runtime.KeepAlive(tooltip)
 }
 
-// SetVisible sets the :visible property of the action to visible. Note that
-// this doesn’t necessarily mean effective visibility. See
+// SetVisible sets the :visible property of the action to visible.
+// Note that this doesn’t necessarily mean effective visibility. See
 // gtk_action_is_visible() for that.
 //
 // Deprecated: Use #GAction instead, and control and monitor the state of
@@ -1265,7 +1265,7 @@ func (action *Action) SetTooltip(tooltip string) {
 //
 // The function takes the following parameters:
 //
-//    - visible: TRUE to make the action visible.
+//   - visible: TRUE to make the action visible.
 //
 func (action *Action) SetVisible(visible bool) {
 	var _arg0 *C.GtkAction // out
@@ -1288,7 +1288,7 @@ func (action *Action) SetVisible(visible bool) {
 //
 // The function takes the following parameters:
 //
-//    - visibleHorizontal: whether the action is visible horizontally.
+//   - visibleHorizontal: whether the action is visible horizontally.
 //
 func (action *Action) SetVisibleHorizontal(visibleHorizontal bool) {
 	var _arg0 *C.GtkAction // out
@@ -1311,7 +1311,7 @@ func (action *Action) SetVisibleHorizontal(visibleHorizontal bool) {
 //
 // The function takes the following parameters:
 //
-//    - visibleVertical: whether the action is visible vertically.
+//   - visibleVertical: whether the action is visible vertically.
 //
 func (action *Action) SetVisibleVertical(visibleVertical bool) {
 	var _arg0 *C.GtkAction // out
@@ -1383,7 +1383,7 @@ func (action *Action) connectProxy(proxy Widgetter) {
 //
 // The function returns the following values:
 //
-//    - widget: menu item provided by the action, or NULL.
+//   - widget: menu item provided by the action, or NULL.
 //
 func (action *Action) createMenu() Widgetter {
 	gclass := (*C.GtkActionClass)(coreglib.PeekParentClass(action))
@@ -1426,7 +1426,7 @@ func (action *Action) createMenu() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget: menu item connected to the action.
+//   - widget: menu item connected to the action.
 //
 func (action *Action) createMenuItem() Widgetter {
 	gclass := (*C.GtkActionClass)(coreglib.PeekParentClass(action))
@@ -1471,7 +1471,7 @@ func (action *Action) createMenuItem() Widgetter {
 //
 // The function returns the following values:
 //
-//    - widget: toolbar item connected to the action.
+//   - widget: toolbar item connected to the action.
 //
 func (action *Action) createToolItem() Widgetter {
 	gclass := (*C.GtkActionClass)(coreglib.PeekParentClass(action))

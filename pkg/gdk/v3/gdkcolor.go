@@ -78,8 +78,8 @@ func (c *Color) Pixel() uint32 {
 	return _v
 }
 
-// Red: red component of the color. This is a value between 0 and 65535, with
-// 65535 indicating full intensity.
+// Red: red component of the color. This is a value between 0 and 65535,
+// with 65535 indicating full intensity.
 func (c *Color) Red() uint16 {
 	valptr := &c.native.red
 	var _v uint16 // out
@@ -110,8 +110,8 @@ func (c *Color) SetPixel(pixel uint32) {
 	*valptr = C.guint32(pixel)
 }
 
-// Red: red component of the color. This is a value between 0 and 65535, with
-// 65535 indicating full intensity.
+// Red: red component of the color. This is a value between 0 and 65535,
+// with 65535 indicating full intensity.
 func (c *Color) SetRed(red uint16) {
 	valptr := &c.native.red
 	*valptr = C.guint16(red)
@@ -137,7 +137,7 @@ func (c *Color) SetBlue(blue uint16) {
 //
 // The function returns the following values:
 //
-//    - ret: copy of color.
+//   - ret: copy of color.
 //
 func (color *Color) Copy() *Color {
 	var _arg0 *C.GdkColor // out
@@ -167,11 +167,11 @@ func (color *Color) Copy() *Color {
 //
 // The function takes the following parameters:
 //
-//    - colorb: another Color.
+//   - colorb: another Color.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two colors compare equal.
+//   - ok: TRUE if the two colors compare equal.
 //
 func (colora *Color) Equal(colorb *Color) bool {
 	var _arg0 *C.GdkColor // out
@@ -200,7 +200,7 @@ func (colora *Color) Equal(colorb *Color) bool {
 //
 // The function returns the following values:
 //
-//    - guint: hash function applied to color.
+//   - guint: hash function applied to color.
 //
 func (color *Color) Hash() uint {
 	var _arg0 *C.GdkColor // out
@@ -228,7 +228,7 @@ func (color *Color) Hash() uint {
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated text string.
+//   - utf8: newly-allocated text string.
 //
 func (color *Color) String() string {
 	var _arg0 *C.GdkColor // out
@@ -261,12 +261,12 @@ func (color *Color) String() string {
 //
 // The function takes the following parameters:
 //
-//    - spec: string specifying the color.
+//   - spec: string specifying the color.
 //
 // The function returns the following values:
 //
-//    - color to fill in.
-//    - ok: TRUE if the parsing succeeded.
+//   - color to fill in.
+//   - ok: TRUE if the parsing succeeded.
 //
 func ColorParse(spec string) (*Color, bool) {
 	var _arg1 *C.gchar   // out

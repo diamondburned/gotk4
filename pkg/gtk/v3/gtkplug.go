@@ -58,9 +58,9 @@ func defaultPlugOverrides(v *Plug) PlugOverrides {
 // been implemented in other toolkits, e.g. Qt, allowing the same level of
 // integration when embedding a Qt widget in GTK+ or vice versa.
 //
-// The Plug and Socket widgets are only available when GTK+ is compiled for the
-// X11 platform and GDK_WINDOWING_X11 is defined. They can only be used on a
-// X11Display. To use Plug and Socket, you need to include the gtk/gtkx.h
+// The Plug and Socket widgets are only available when GTK+ is compiled for
+// the X11 platform and GDK_WINDOWING_X11 is defined. They can only be used on
+// a X11Display. To use Plug and Socket, you need to include the gtk/gtkx.h
 // header.
 type Plug struct {
 	_ [0]func() // equal guard
@@ -129,7 +129,7 @@ func (plug *Plug) ConnectEmbedded(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the plug is embedded in a socket.
+//   - ok: TRUE if the plug is embedded in a socket.
 //
 func (plug *Plug) Embedded() bool {
 	var _arg0 *C.GtkPlug // out
@@ -153,7 +153,7 @@ func (plug *Plug) Embedded() bool {
 //
 // The function returns the following values:
 //
-//    - window (optional) of the socket, or NULL.
+//   - window (optional) of the socket, or NULL.
 //
 func (plug *Plug) SocketWindow() gdk.Windower {
 	var _arg0 *C.GtkPlug   // out

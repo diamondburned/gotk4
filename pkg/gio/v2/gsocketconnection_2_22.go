@@ -95,8 +95,8 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): GCancellable or NULL.
-//    - address specifying the remote address.
+//   - ctx (optional): GCancellable or NULL.
+//   - address specifying the remote address.
 //
 func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context, address SocketAddresser) error {
 	var _arg0 *C.GSocketConnection // out
@@ -136,9 +136,9 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional): GCancellable or NULL.
-//    - address specifying the remote address.
-//    - callback (optional): ReadyCallback.
+//   - ctx (optional): GCancellable or NULL.
+//   - address specifying the remote address.
+//   - callback (optional): ReadyCallback.
 //
 func (connection *SocketConnection) ConnectAsync(ctx context.Context, address SocketAddresser, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketConnection  // out
@@ -170,7 +170,7 @@ func (connection *SocketConnection) ConnectAsync(ctx context.Context, address So
 //
 // The function takes the following parameters:
 //
-//    - result: Result.
+//   - result: Result.
 //
 func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 	var _arg0 *C.GSocketConnection // out
@@ -197,8 +197,8 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - socketAddress or NULL on error. Free the returned object with
-//      g_object_unref().
+//   - socketAddress or NULL on error. Free the returned object with
+//     g_object_unref().
 //
 func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocketConnection // out
@@ -239,16 +239,16 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 
 // RemoteAddress: try to get the remote address of a socket connection.
 //
-// Since GLib 2.40, when used with g_socket_client_connect() or
-// g_socket_client_connect_async(), during emission of
-// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address that
-// will be used for the connection. This allows applications to print e.g.
+// Since GLib 2.40, when used with g_socket_client_connect()
+// or g_socket_client_connect_async(), during emission of
+// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
+// that will be used for the connection. This allows applications to print e.g.
 // "Connecting to example.com (10.42.77.3)...".
 //
 // The function returns the following values:
 //
-//    - socketAddress or NULL on error. Free the returned object with
-//      g_object_unref().
+//   - socketAddress or NULL on error. Free the returned object with
+//     g_object_unref().
 //
 func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocketConnection // out
@@ -287,13 +287,13 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	return _socketAddress, _goerr
 }
 
-// Socket gets the underlying #GSocket object of the connection. This can be
-// useful if you want to do something unusual on it not supported by the
+// Socket gets the underlying #GSocket object of the connection. This can
+// be useful if you want to do something unusual on it not supported by the
 // Connection APIs.
 //
 // The function returns the following values:
 //
-//    - socket or NULL on error.
+//   - socket or NULL on error.
 //
 func (connection *SocketConnection) Socket() *Socket {
 	var _arg0 *C.GSocketConnection // out
@@ -316,7 +316,7 @@ func (connection *SocketConnection) Socket() *Socket {
 //
 // The function returns the following values:
 //
-//    - ok: whether connection is connected.
+//   - ok: whether connection is connected.
 //
 func (connection *SocketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
@@ -344,13 +344,13 @@ func (connection *SocketConnection) IsConnected() bool {
 //
 // The function takes the following parameters:
 //
-//    - family: Family.
-//    - typ: Type.
-//    - protocolId: protocol id.
+//   - family: Family.
+//   - typ: Type.
+//   - protocolId: protocol id.
 //
 // The function returns the following values:
 //
-//    - gType: #GType.
+//   - gType: #GType.
 //
 func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int) coreglib.Type {
 	var _arg1 C.GSocketFamily // out
@@ -382,10 +382,10 @@ func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, prot
 //
 // The function takes the following parameters:
 //
-//    - gType inheriting from G_TYPE_SOCKET_CONNECTION.
-//    - family: Family.
-//    - typ: Type.
-//    - protocol id.
+//   - gType inheriting from G_TYPE_SOCKET_CONNECTION.
+//   - family: Family.
+//   - typ: Type.
+//   - protocol id.
 //
 func SocketConnectionFactoryRegisterType(gType coreglib.Type, family SocketFamily, typ SocketType, protocol int) {
 	var _arg1 C.GType         // out

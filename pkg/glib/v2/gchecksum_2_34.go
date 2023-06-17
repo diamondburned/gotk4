@@ -13,22 +13,22 @@ import (
 // #include <glib.h>
 import "C"
 
-// ComputeChecksumForBytes computes the checksum for a binary data. This is a
-// convenience wrapper for g_checksum_new(), g_checksum_get_string() and
+// ComputeChecksumForBytes computes the checksum for a binary data. This is
+// a convenience wrapper for g_checksum_new(), g_checksum_get_string() and
 // g_checksum_free().
 //
 // The hexadecimal string returned will be in lower case.
 //
 // The function takes the following parameters:
 //
-//    - checksumType: Type.
-//    - data: binary blob to compute the digest of.
+//   - checksumType: Type.
+//   - data: binary blob to compute the digest of.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): digest of the binary data as a string in hexadecimal, or
-//      NULL if g_checksum_new() fails for checksum_type. The returned string
-//      should be freed with g_free() when done using it.
+//   - utf8 (optional): digest of the binary data as a string in hexadecimal,
+//     or NULL if g_checksum_new() fails for checksum_type. The returned string
+//     should be freed with g_free() when done using it.
 //
 func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 	var _arg1 C.GChecksumType // out

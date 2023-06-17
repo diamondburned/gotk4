@@ -67,13 +67,13 @@ type PermissionOverrides struct {
 	// If the permission is acquired then TRUE is returned. Otherwise, FALSE is
 	// returned and error is set appropriately.
 	//
-	// This call is blocking, likely for a very long time (in the case that user
-	// interaction is required). See g_permission_acquire_async() for the
+	// This call is blocking, likely for a very long time (in the case that
+	// user interaction is required). See g_permission_acquire_async() for the
 	// non-blocking version.
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional) or NULL.
+	//   - ctx (optional) or NULL.
 	//
 	Acquire func(ctx context.Context) error
 	// AcquireFinish collects the result of attempting to acquire the permission
@@ -84,7 +84,7 @@ type PermissionOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result given to the ReadyCallback.
+	//   - result given to the ReadyCallback.
 	//
 	AcquireFinish func(result AsyncResulter) error
 	// Release attempts to release the permission represented by permission.
@@ -99,13 +99,13 @@ type PermissionOverrides struct {
 	// If the permission is released then TRUE is returned. Otherwise, FALSE is
 	// returned and error is set appropriately.
 	//
-	// This call is blocking, likely for a very long time (in the case that user
-	// interaction is required). See g_permission_release_async() for the
+	// This call is blocking, likely for a very long time (in the case that
+	// user interaction is required). See g_permission_release_async() for the
 	// non-blocking version.
 	//
 	// The function takes the following parameters:
 	//
-	//    - ctx (optional) or NULL.
+	//   - ctx (optional) or NULL.
 	//
 	Release func(ctx context.Context) error
 	// ReleaseFinish collects the result of attempting to release the permission
@@ -116,7 +116,7 @@ type PermissionOverrides struct {
 	//
 	// The function takes the following parameters:
 	//
-	//    - result given to the ReadyCallback.
+	//   - result given to the ReadyCallback.
 	//
 	ReleaseFinish func(result AsyncResulter) error
 }
@@ -140,8 +140,8 @@ func defaultPermissionOverrides(v *Permission) PermissionOverrides {
 // it.
 //
 // As an example, a #GPermission might represent the ability for the user to
-// write to a #GSettings object. This #GPermission object could then be used to
-// decide if it is appropriate to show a "Click here to unlock" button in a
+// write to a #GSettings object. This #GPermission object could then be used
+// to decide if it is appropriate to show a "Click here to unlock" button in a
 // dialog and to provide the mechanism to invoke when that button is clicked.
 type Permission struct {
 	_ [0]func() // equal guard
@@ -228,13 +228,13 @@ func BasePermission(obj Permissioner) *Permission {
 // If the permission is acquired then TRUE is returned. Otherwise, FALSE is
 // returned and error is set appropriately.
 //
-// This call is blocking, likely for a very long time (in the case that user
-// interaction is required). See g_permission_acquire_async() for the
+// This call is blocking, likely for a very long time (in the case that
+// user interaction is required). See g_permission_acquire_async() for the
 // non-blocking version.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (permission *Permission) Acquire(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
@@ -267,8 +267,8 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - callback (optional) to call when done.
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when done.
 //
 func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
@@ -301,7 +301,7 @@ func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncRe
 //
 // The function takes the following parameters:
 //
-//    - result given to the ReadyCallback.
+//   - result given to the ReadyCallback.
 //
 func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 	var _arg0 *C.GPermission  // out
@@ -330,7 +330,7 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//    - ok: value of the 'allowed' property.
+//   - ok: value of the 'allowed' property.
 //
 func (permission *Permission) Allowed() bool {
 	var _arg0 *C.GPermission // out
@@ -350,13 +350,13 @@ func (permission *Permission) Allowed() bool {
 	return _ok
 }
 
-// CanAcquire gets the value of the 'can-acquire' property. This property is
-// TRUE if it is generally possible to acquire the permission by calling
+// CanAcquire gets the value of the 'can-acquire' property. This property
+// is TRUE if it is generally possible to acquire the permission by calling
 // g_permission_acquire().
 //
 // The function returns the following values:
 //
-//    - ok: value of the 'can-acquire' property.
+//   - ok: value of the 'can-acquire' property.
 //
 func (permission *Permission) CanAcquire() bool {
 	var _arg0 *C.GPermission // out
@@ -376,13 +376,13 @@ func (permission *Permission) CanAcquire() bool {
 	return _ok
 }
 
-// CanRelease gets the value of the 'can-release' property. This property is
-// TRUE if it is generally possible to release the permission by calling
+// CanRelease gets the value of the 'can-release' property. This property
+// is TRUE if it is generally possible to release the permission by calling
 // g_permission_release().
 //
 // The function returns the following values:
 //
-//    - ok: value of the 'can-release' property.
+//   - ok: value of the 'can-release' property.
 //
 func (permission *Permission) CanRelease() bool {
 	var _arg0 *C.GPermission // out
@@ -410,9 +410,9 @@ func (permission *Permission) CanRelease() bool {
 //
 // The function takes the following parameters:
 //
-//    - allowed: new value for the 'allowed' property.
-//    - canAcquire: new value for the 'can-acquire' property.
-//    - canRelease: new value for the 'can-release' property.
+//   - allowed: new value for the 'allowed' property.
+//   - canAcquire: new value for the 'can-acquire' property.
+//   - canRelease: new value for the 'can-release' property.
 //
 func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 	var _arg0 *C.GPermission // out
@@ -450,13 +450,13 @@ func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 // If the permission is released then TRUE is returned. Otherwise, FALSE is
 // returned and error is set appropriately.
 //
-// This call is blocking, likely for a very long time (in the case that user
-// interaction is required). See g_permission_release_async() for the
+// This call is blocking, likely for a very long time (in the case that
+// user interaction is required). See g_permission_release_async() for the
 // non-blocking version.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (permission *Permission) Release(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
@@ -489,8 +489,8 @@ func (permission *Permission) Release(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - callback (optional) to call when done.
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when done.
 //
 func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
@@ -523,7 +523,7 @@ func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncRe
 //
 // The function takes the following parameters:
 //
-//    - result given to the ReadyCallback.
+//   - result given to the ReadyCallback.
 //
 func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	var _arg0 *C.GPermission  // out
@@ -558,13 +558,13 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 // If the permission is acquired then TRUE is returned. Otherwise, FALSE is
 // returned and error is set appropriately.
 //
-// This call is blocking, likely for a very long time (in the case that user
-// interaction is required). See g_permission_acquire_async() for the
+// This call is blocking, likely for a very long time (in the case that
+// user interaction is required). See g_permission_acquire_async() for the
 // non-blocking version.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (permission *Permission) acquire(ctx context.Context) error {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
@@ -600,8 +600,8 @@ func (permission *Permission) acquire(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - callback (optional) to call when done.
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when done.
 //
 func (permission *Permission) acquireAsync(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
@@ -637,7 +637,7 @@ func (permission *Permission) acquireAsync(ctx context.Context, callback AsyncRe
 //
 // The function takes the following parameters:
 //
-//    - result given to the ReadyCallback.
+//   - result given to the ReadyCallback.
 //
 func (permission *Permission) acquireFinish(result AsyncResulter) error {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
@@ -675,13 +675,13 @@ func (permission *Permission) acquireFinish(result AsyncResulter) error {
 // If the permission is released then TRUE is returned. Otherwise, FALSE is
 // returned and error is set appropriately.
 //
-// This call is blocking, likely for a very long time (in the case that user
-// interaction is required). See g_permission_release_async() for the
+// This call is blocking, likely for a very long time (in the case that
+// user interaction is required). See g_permission_release_async() for the
 // non-blocking version.
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
+//   - ctx (optional) or NULL.
 //
 func (permission *Permission) release(ctx context.Context) error {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
@@ -717,8 +717,8 @@ func (permission *Permission) release(ctx context.Context) error {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - callback (optional) to call when done.
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when done.
 //
 func (permission *Permission) releaseAsync(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
@@ -754,7 +754,7 @@ func (permission *Permission) releaseAsync(ctx context.Context, callback AsyncRe
 //
 // The function takes the following parameters:
 //
-//    - result given to the ReadyCallback.
+//   - result given to the ReadyCallback.
 //
 func (permission *Permission) releaseFinish(result AsyncResulter) error {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))

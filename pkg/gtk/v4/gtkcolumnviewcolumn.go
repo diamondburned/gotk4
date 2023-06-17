@@ -70,12 +70,12 @@ func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - title (optional): title to use for this column.
-//    - factory (optional) to populate items with.
+//   - title (optional): title to use for this column.
+//   - factory (optional) to populate items with.
 //
 // The function returns the following values:
 //
-//    - columnViewColumn: new GtkColumnViewColumn using the given factory.
+//   - columnViewColumn: new GtkColumnViewColumn using the given factory.
 //
 func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColumn {
 	var _arg1 *C.char                // out
@@ -108,7 +108,7 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 //
 // The function returns the following values:
 //
-//    - columnView (optional): column view displaying self.
+//   - columnView (optional): column view displaying self.
 //
 func (self *ColumnViewColumn) ColumnView() *ColumnView {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -132,7 +132,7 @@ func (self *ColumnViewColumn) ColumnView() *ColumnView {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if this column expands.
+//   - ok: TRUE if this column expands.
 //
 func (self *ColumnViewColumn) Expand() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -157,7 +157,7 @@ func (self *ColumnViewColumn) Expand() bool {
 //
 // The function returns the following values:
 //
-//    - listItemFactory (optional): factory in use.
+//   - listItemFactory (optional): factory in use.
 //
 func (self *ColumnViewColumn) Factory() *ListItemFactory {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -181,7 +181,7 @@ func (self *ColumnViewColumn) Factory() *ListItemFactory {
 //
 // The function returns the following values:
 //
-//    - gint: fixed with of the column.
+//   - gint: fixed with of the column.
 //
 func (self *ColumnViewColumn) FixedWidth() int {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -204,7 +204,7 @@ func (self *ColumnViewColumn) FixedWidth() int {
 //
 // The function returns the following values:
 //
-//    - menuModel (optional) or NULL.
+//   - menuModel (optional) or NULL.
 //
 func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -241,7 +241,7 @@ func (self *ColumnViewColumn) HeaderMenu() gio.MenuModeller {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if this column is resizable.
+//   - ok: TRUE if this column is resizable.
 //
 func (self *ColumnViewColumn) Resizable() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -265,7 +265,7 @@ func (self *ColumnViewColumn) Resizable() bool {
 //
 // The function returns the following values:
 //
-//    - sorter (optional): GtkSorter of self.
+//   - sorter (optional): GtkSorter of self.
 //
 func (self *ColumnViewColumn) Sorter() *Sorter {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -289,7 +289,7 @@ func (self *ColumnViewColumn) Sorter() *Sorter {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional) column's title.
+//   - utf8 (optional) column's title.
 //
 func (self *ColumnViewColumn) Title() string {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -313,7 +313,7 @@ func (self *ColumnViewColumn) Title() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if this column is visible.
+//   - ok: TRUE if this column is visible.
 //
 func (self *ColumnViewColumn) Visible() bool {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -340,7 +340,7 @@ func (self *ColumnViewColumn) Visible() bool {
 //
 // The function takes the following parameters:
 //
-//    - expand: TRUE if this column should expand to fill available sace.
+//   - expand: TRUE if this column should expand to fill available sace.
 //
 func (self *ColumnViewColumn) SetExpand(expand bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -361,7 +361,7 @@ func (self *ColumnViewColumn) SetExpand(expand bool) {
 //
 // The function takes the following parameters:
 //
-//    - factory (optional) to use or NULL for none.
+//   - factory (optional) to use or NULL for none.
 //
 func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -385,7 +385,7 @@ func (self *ColumnViewColumn) SetFactory(factory *ListItemFactory) {
 //
 // The function takes the following parameters:
 //
-//    - fixedWidth: new fixed width, or -1.
+//   - fixedWidth: new fixed width, or -1.
 //
 func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -404,7 +404,7 @@ func (self *ColumnViewColumn) SetFixedWidth(fixedWidth int) {
 //
 // The function takes the following parameters:
 //
-//    - menu (optional): GMenuModel, or NULL.
+//   - menu (optional): GMenuModel, or NULL.
 //
 func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -424,7 +424,7 @@ func (self *ColumnViewColumn) SetHeaderMenu(menu gio.MenuModeller) {
 //
 // The function takes the following parameters:
 //
-//    - resizable: whether this column should be resizable.
+//   - resizable: whether this column should be resizable.
 //
 func (self *ColumnViewColumn) SetResizable(resizable bool) {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -453,7 +453,7 @@ func (self *ColumnViewColumn) SetResizable(resizable bool) {
 //
 // The function takes the following parameters:
 //
-//    - sorter (optional): GtkSorter to associate with column.
+//   - sorter (optional): GtkSorter to associate with column.
 //
 func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -476,7 +476,7 @@ func (self *ColumnViewColumn) SetSorter(sorter *Sorter) {
 //
 // The function takes the following parameters:
 //
-//    - title (optional): title to use for this column.
+//   - title (optional): title to use for this column.
 //
 func (self *ColumnViewColumn) SetTitle(title string) {
 	var _arg0 *C.GtkColumnViewColumn // out
@@ -497,7 +497,7 @@ func (self *ColumnViewColumn) SetTitle(title string) {
 //
 // The function takes the following parameters:
 //
-//    - visible: whether this column should be visible.
+//   - visible: whether this column should be visible.
 //
 func (self *ColumnViewColumn) SetVisible(visible bool) {
 	var _arg0 *C.GtkColumnViewColumn // out

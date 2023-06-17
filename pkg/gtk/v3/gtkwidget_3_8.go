@@ -12,6 +12,6 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-// TickCallback: callback type for adding a function to update animations. See
-// gtk_widget_add_tick_callback().
+// TickCallback: callback type for adding a function to update animations.
+// See gtk_widget_add_tick_callback().
 type TickCallback func(widget Widgetter, frameClock gdk.FrameClocker) (ok bool)

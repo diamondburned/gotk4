@@ -71,9 +71,9 @@ const (
 	// SettingsBindNoSensitivity: do not try to bind a "sensitivity" property to
 	// the writability of the setting.
 	SettingsBindNoSensitivity SettingsBindFlags = 0b100
-	// SettingsBindGetNoChanges: when set in addition to SETTINGS_BIND_GET, set
-	// the #GObject property value initially from the setting, but do not listen
-	// for changes of the setting.
+	// SettingsBindGetNoChanges: when set in addition to SETTINGS_BIND_GET,
+	// set the #GObject property value initially from the setting, but do not
+	// listen for changes of the setting.
 	SettingsBindGetNoChanges SettingsBindFlags = 0b1000
 	// SettingsBindInvertBoolean: when passed to g_settings_bind(), uses a pair
 	// of mapping functions that invert the boolean value when mapping between
@@ -152,8 +152,8 @@ type SettingsGetMapping func(value *glib.Variant) (result unsafe.Pointer, ok boo
 type SettingsOverrides struct {
 	// The function takes the following parameters:
 	//
-	//    - keys
-	//    - nKeys
+	//   - keys
+	//   - nKeys
 	//
 	// The function returns the following values:
 	//
@@ -184,23 +184,23 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // application settings.
 //
 // Reads and writes can be considered to be non-blocking. Reading settings with
-// #GSettings is typically extremely fast: on approximately the same order of
-// magnitude (but slower than) a Table lookup. Writing settings is also
+// #GSettings is typically extremely fast: on approximately the same order
+// of magnitude (but slower than) a Table lookup. Writing settings is also
 // extremely fast in terms of time to return to your application, but can be
 // extremely expensive for other threads and other processes. Many settings
 // backends (including dconf) have lazy initialisation which means in the common
-// case of the user using their computer without modifying any settings a lot of
-// work can be avoided. For dconf, the D-Bus service doesn't even need to be
+// case of the user using their computer without modifying any settings a lot
+// of work can be avoided. For dconf, the D-Bus service doesn't even need to be
 // started in this case. For this reason, you should only ever modify #GSettings
-// keys in response to explicit user action. Particular care should be paid to
-// ensure that modifications are not made during startup -- for example, when
-// setting the initial value of preferences widgets. The built-in
+// keys in response to explicit user action. Particular care should be paid
+// to ensure that modifications are not made during startup -- for example,
+// when setting the initial value of preferences widgets. The built-in
 // g_settings_bind() functionality is careful not to write settings in response
 // to notify signals as a result of modifications that it makes to widgets.
 //
 // When creating a GSettings instance, you have to specify a schema that
-// describes the keys in your settings and their types and default values, as
-// well as some other information.
+// describes the keys in your settings and their types and default values,
+// as well as some other information.
 //
 // Normally, a schema has a fixed path that determines where the settings are
 // stored in the conceptual global tree of settings. However, schemas can also
@@ -208,30 +208,30 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // path. This is useful e.g. when the schema describes an 'account', and you
 // want to be able to store a arbitrary number of accounts.
 //
-// Paths must start with and end with a forward slash character ('/') and must
-// not contain two sequential slash characters. Paths should be chosen based on
-// a domain name associated with the program or library to which the settings
-// belong. Examples of paths are "/org/gtk/settings/file-chooser/" and
+// Paths must start with and end with a forward slash character ('/') and
+// must not contain two sequential slash characters. Paths should be chosen
+// based on a domain name associated with the program or library to which the
+// settings belong. Examples of paths are "/org/gtk/settings/file-chooser/" and
 // "/ca/desrt/dconf-editor/". Paths should not start with "/apps/", "/desktop/"
 // or "/system/" as they often did in GConf.
 //
 // Unlike other configuration systems (like GConf), GSettings does not restrict
-// keys to basic types like strings and numbers. GSettings stores values as
-// #GVariant, and allows any Type for keys. Key names are restricted to
-// lowercase characters, numbers and '-'. Furthermore, the names must begin with
-// a lowercase character, must not end with a '-', and must not contain
+// keys to basic types like strings and numbers. GSettings stores values
+// as #GVariant, and allows any Type for keys. Key names are restricted to
+// lowercase characters, numbers and '-'. Furthermore, the names must begin
+// with a lowercase character, must not end with a '-', and must not contain
 // consecutive dashes.
 //
 // Similar to GConf, the default values in GSettings schemas can be localized,
-// but the localized values are stored in gettext catalogs and looked up with
-// the domain that is specified in the gettext-domain attribute of the
+// but the localized values are stored in gettext catalogs and looked up
+// with the domain that is specified in the gettext-domain attribute of the
 // <schemalist> or <schema> elements and the category that is specified in the
 // l10n attribute of the <default> element. The string which is translated
 // includes all text in the <default> element, including any surrounding
 // quotation marks.
 //
-// The l10n attribute must be set to messages or time, and sets the [locale
-// category for
+// The l10n attribute must be set to messages
+// or time, and sets the [locale category for
 // translation](https://www.gnu.org/software/gettext/manual/html_node/Aspects.html#index-locale-categories-1).
 // The messages category should be used by default; use time for translatable
 // date or time formats. A translation comment can be added as an XML comment
@@ -262,19 +262,19 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // The [glib-compile-schemas][glib-compile-schemas] tool expects schema files to
 // have the extension .gschema.xml.
 //
-// At runtime, schemas are identified by their id (as specified in the id
-// attribute of the <schema> element). The convention for schema ids is to use a
-// dotted name, similar in style to a D-Bus bus name, e.g.
-// "org.gnome.SessionManager". In particular, if the settings are for a specific
-// service that owns a D-Bus bus name, the D-Bus bus name and schema id should
-// match. For schemas which deal with settings not associated with one named
-// application, the id should not use StudlyCaps, e.g.
+// At runtime, schemas are identified by their id (as specified in the
+// id attribute of the <schema> element). The convention for schema ids
+// is to use a dotted name, similar in style to a D-Bus bus name, e.g.
+// "org.gnome.SessionManager". In particular, if the settings are for a
+// specific service that owns a D-Bus bus name, the D-Bus bus name and schema
+// id should match. For schemas which deal with settings not associated
+// with one named application, the id should not use StudlyCaps, e.g.
 // "org.gnome.font-rendering".
 //
 // In addition to #GVariant types, keys can have types that have enumerated
-// types. These can be described by a <choice>, <enum> or <flags> element, as
-// seen in the [example][schema-enumerated]. The underlying type of such a key
-// is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
+// types. These can be described by a <choice>, <enum> or <flags> element,
+// as seen in the [example][schema-enumerated]. The underlying type of such a
+// key is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
 // g_settings_get_flags(), g_settings_set_flags() access the numeric values
 // corresponding to the string value of enum and flags keys.
 //
@@ -348,16 +348,15 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 //      </schema>
 //    </schemalist>
 //
-//
-// Vendor overrides
+// # Vendor overrides
 //
 // Default values are defined in the schemas that get installed by an
 // application. Sometimes, it is necessary for a vendor or distributor to adjust
 // these defaults. Since patching the XML source for the schema is inconvenient
 // and error-prone, [glib-compile-schemas][glib-compile-schemas] reads so-called
 // vendor override' files. These are keyfiles in the same directory as the XML
-// schema sources which can override default values. The schema id serves as the
-// group name in the key file, and the values are expected in serialized
+// schema sources which can override default values. The schema id serves as
+// the group name in the key file, and the values are expected in serialized
 // GVariant form, as in the following example:
 //
 //    [org.gtk.Example]
@@ -367,8 +366,7 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // glib-compile-schemas expects schema files to have the extension
 // .gschema.override.
 //
-//
-// Binding
+// # Binding
 //
 // A very convenient feature of GSettings lets you bind #GObject properties
 // directly to settings, using g_settings_bind(). Once a GObject property has
@@ -382,8 +380,7 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // writability of the bound setting. If this 'magic' gets in the way, it can be
 // suppressed with the SETTINGS_BIND_NO_SENSITIVITY flag.
 //
-//
-// Relocatable schemas
+// # Relocatable schemas
 //
 // A relocatable schema is one with no path attribute specified on its <schema>
 // element. By using g_settings_new_with_path(), a #GSettings object can be
@@ -393,9 +390,9 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // they must still be valid GSettings paths. Paths could also be constant and
 // used with a globally installed schema originating from a dependency library.
 //
-// For example, a relocatable schema could be used to store geometry information
-// for different windows in an application. If the schema ID was
-// org.foo.MyApp.Window, it could be instantiated for paths
+// For example, a relocatable schema could be used to store geometry
+// information for different windows in an application. If the schema
+// ID was org.foo.MyApp.Window, it could be instantiated for paths
 // /org/foo/MyApp/main/, /org/foo/MyApp/document-1/, /org/foo/MyApp/document-2/,
 // etc. If any of the paths are well-known they can be specified as <child>
 // elements in the parent schema, e.g.:
@@ -404,8 +401,7 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 //      <child name="main" schema="org.foo.MyApp.Window"/>
 //    </schema>
 //
-//
-// Build system integration
+// # Build system integration
 //
 // GSettings comes with autotools integration to simplify compiling and
 // installing schemas. To add GSettings support to an application, add the
@@ -434,14 +430,14 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 //
 // GSettings will use gettext to look up translations for the <summary> and
 // <description> elements, and also any <default> elements which have a l10n
-// attribute set. Translations must not be included in the .gschema.xml file by
-// the build system, for example by using intltool XML rules with a
+// attribute set. Translations must not be included in the .gschema.xml
+// file by the build system, for example by using intltool XML rules with a
 // .gschema.xml.in template.
 //
-// If an enumerated type defined in a C header file is to be used in a GSettings
-// schema, it can either be defined manually using an <enum> element in the
-// schema XML, or it can be extracted automatically from the C header. This
-// approach is preferred, as it ensures the two representations are always
+// If an enumerated type defined in a C header file is to be used in a
+// GSettings schema, it can either be defined manually using an <enum> element
+// in the schema XML, or it can be extracted automatically from the C header.
+// This approach is preferred, as it ensures the two representations are always
 // synchronised. To do so, add the following to the relevant Makefile.am:
 //
 //    gsettings_ENUM_NAMESPACE = org.foo.MyApp
@@ -507,8 +503,8 @@ func marshalSettings(p uintptr) (interface{}, error) {
 }
 
 // ConnectChangeEvent: "change-event" signal is emitted once per change event
-// that affects this settings object. You should connect to this signal only if
-// you are interested in viewing groups of changes before they are split out
+// that affects this settings object. You should connect to this signal only
+// if you are interested in viewing groups of changes before they are split out
 // into multiple emissions of the "changed" signal. For most use cases it is
 // more appropriate to use the "changed" signal.
 //
@@ -537,28 +533,28 @@ func (settings *Settings) ConnectChanged(f func(key string)) coreglib.SignalHand
 	return coreglib.ConnectGeneratedClosure(settings, "changed", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectChanged), f)
 }
 
-// ConnectWritableChangeEvent: "writable-change-event" signal is emitted once
-// per writability change event that affects this settings object. You should
-// connect to this signal if you are interested in viewing groups of changes
-// before they are split out into multiple emissions of the "writable-changed"
-// signal. For most use cases it is more appropriate to use the
-// "writable-changed" signal.
+// ConnectWritableChangeEvent: "writable-change-event" signal is emitted
+// once per writability change event that affects this settings object.
+// You should connect to this signal if you are interested in viewing groups
+// of changes before they are split out into multiple emissions of the
+// "writable-changed" signal. For most use cases it is more appropriate to use
+// the "writable-changed" signal.
 //
 // In the event that the writability change applies only to a single key, key
 // will be set to the #GQuark for that key. In the event that the writability
 // change affects the entire settings object, key will be 0.
 //
 // The default handler for this signal invokes the "writable-changed" and
-// "changed" signals for each affected key. This is done because changes in
-// writability might also imply changes in value (if for example, a new
+// "changed" signals for each affected key. This is done because changes
+// in writability might also imply changes in value (if for example, a new
 // mandatory setting is introduced). If any other connected handler returns TRUE
 // then this default functionality will be suppressed.
 func (settings *Settings) ConnectWritableChangeEvent(f func(key uint) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(settings, "writable-change-event", false, unsafe.Pointer(C._gotk4_gio2_Settings_ConnectWritableChangeEvent), f)
 }
 
-// ConnectWritableChanged: "writable-changed" signal is emitted when the
-// writability of a key has potentially changed. You should call
+// ConnectWritableChanged: "writable-changed" signal is emitted when
+// the writability of a key has potentially changed. You should call
 // g_settings_is_writable() in order to determine the new status.
 //
 // This signal supports detailed connections. You can connect to the detailed
@@ -571,24 +567,24 @@ func (settings *Settings) ConnectWritableChanged(f func(key string)) coreglib.Si
 // NewSettings creates a new #GSettings object with the schema specified by
 // schema_id.
 //
-// It is an error for the schema to not exist: schemas are an essential part of
-// a program, as they provide type information. If schemas need to be
+// It is an error for the schema to not exist: schemas are an essential part
+// of a program, as they provide type information. If schemas need to be
 // dynamically loaded (for example, from an optional runtime dependency),
 // g_settings_schema_source_lookup() can be used to test for their existence
 // before loading them.
 //
-// Signals on the newly created #GSettings object will be dispatched via the
-// thread-default Context in effect at the time of the call to g_settings_new().
-// The new #GSettings will hold a reference on the context. See
-// g_main_context_push_thread_default().
+// Signals on the newly created #GSettings object will be dispatched
+// via the thread-default Context in effect at the time of the call to
+// g_settings_new(). The new #GSettings will hold a reference on the context.
+// See g_main_context_push_thread_default().
 //
 // The function takes the following parameters:
 //
-//    - schemaId: id of the schema.
+//   - schemaId: id of the schema.
 //
 // The function returns the following values:
 //
-//    - settings: new #GSettings object.
+//   - settings: new #GSettings object.
 //
 func NewSettings(schemaId string) *Settings {
 	var _arg1 *C.gchar     // out
@@ -622,12 +618,12 @@ func NewSettings(schemaId string) *Settings {
 //
 // The function takes the following parameters:
 //
-//    - schemaId: id of the schema.
-//    - path to use.
+//   - schemaId: id of the schema.
+//   - path to use.
 //
 // The function returns the following values:
 //
-//    - settings: new #GSettings object.
+//   - settings: new #GSettings object.
 //
 func NewSettingsWithPath(schemaId, path string) *Settings {
 	var _arg1 *C.gchar     // out
@@ -650,9 +646,9 @@ func NewSettingsWithPath(schemaId, path string) *Settings {
 	return _settings
 }
 
-// Apply applies any changes that have been made to the settings. This function
-// does nothing unless settings is in 'delay-apply' mode; see
-// g_settings_delay(). In the normal case settings are always applied
+// Apply applies any changes that have been made to the settings.
+// This function does nothing unless settings is in 'delay-apply' mode;
+// see g_settings_delay(). In the normal case settings are always applied
 // immediately.
 func (settings *Settings) Apply() {
 	var _arg0 *C.GSettings // out
@@ -683,10 +679,10 @@ func (settings *Settings) Apply() {
 //
 // The function takes the following parameters:
 //
-//    - key to bind.
-//    - object: #GObject.
-//    - property: name of the property to bind.
-//    - flags for the binding.
+//   - key to bind.
+//   - object: #GObject.
+//   - property: name of the property to bind.
+//   - flags for the binding.
 //
 func (settings *Settings) Bind(key string, object *coreglib.Object, property string, flags SettingsBindFlags) {
 	var _arg0 *C.GSettings         // out
@@ -729,10 +725,10 @@ func (settings *Settings) Bind(key string, object *coreglib.Object, property str
 //
 // The function takes the following parameters:
 //
-//    - key to bind.
-//    - object: #GObject.
-//    - property: name of a boolean property to bind.
-//    - inverted: whether to 'invert' the value.
+//   - key to bind.
+//   - object: #GObject.
+//   - property: name of a boolean property to bind.
+//   - inverted: whether to 'invert' the value.
 //
 func (settings *Settings) BindWritable(key string, object *coreglib.Object, property string, inverted bool) {
 	var _arg0 *C.GSettings // out
@@ -764,21 +760,21 @@ func (settings *Settings) BindWritable(key string, object *coreglib.Object, prop
 // The action has the same name as the key.
 //
 // The value of the key becomes the state of the action and the action is
-// enabled when the key is writable. Changing the state of the action results in
-// the key being written to. Changes to the value or writability of the key
+// enabled when the key is writable. Changing the state of the action results
+// in the key being written to. Changes to the value or writability of the key
 // cause appropriate change notifications to be emitted for the action.
 //
-// For boolean-valued keys, action activations take no parameter and result in
-// the toggling of the value. For all other types, activations take the new
+// For boolean-valued keys, action activations take no parameter and result
+// in the toggling of the value. For all other types, activations take the new
 // value for the key (which must have the correct type).
 //
 // The function takes the following parameters:
 //
-//    - key: name of a key in settings.
+//   - key: name of a key in settings.
 //
 // The function returns the following values:
 //
-//    - action: new #GAction.
+//   - action: new #GAction.
 //
 func (settings *Settings) CreateAction(key string) *Action {
 	var _arg0 *C.GSettings // out
@@ -821,11 +817,11 @@ func (settings *Settings) Delay() {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - ok: boolean.
+//   - ok: boolean.
 //
 func (settings *Settings) Boolean(key string) bool {
 	var _arg0 *C.GSettings // out
@@ -857,11 +853,11 @@ func (settings *Settings) Boolean(key string) bool {
 //
 // The function takes the following parameters:
 //
-//    - name of the child schema.
+//   - name of the child schema.
 //
 // The function returns the following values:
 //
-//    - ret: 'child' settings object.
+//   - ret: 'child' settings object.
 //
 func (settings *Settings) Child(name string) *Settings {
 	var _arg0 *C.GSettings // out
@@ -893,9 +889,9 @@ func (settings *Settings) Child(name string) *Settings {
 // provided a default value.
 //
 // Comparing the return values of g_settings_get_default_value() and
-// g_settings_get_value() is not sufficient for determining if a value has been
-// set because the user may have explicitly set the value to something that
-// happens to be equal to the default. The difference here is that if the
+// g_settings_get_value() is not sufficient for determining if a value has
+// been set because the user may have explicitly set the value to something
+// that happens to be equal to the default. The difference here is that if the
 // default changes in the future, the user's key will still be set.
 //
 // This function may be useful for adding an indication to a UI of what the
@@ -906,11 +902,11 @@ func (settings *Settings) Child(name string) *Settings {
 //
 // The function takes the following parameters:
 //
-//    - key to get the default value for.
+//   - key to get the default value for.
 //
 // The function returns the following values:
 //
-//    - variant (optional): default value.
+//   - variant (optional): default value.
 //
 func (settings *Settings) DefaultValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
@@ -949,11 +945,11 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - gdouble: double.
+//   - gdouble: double.
 //
 func (settings *Settings) Double(key string) float64 {
 	var _arg0 *C.GSettings // out
@@ -989,11 +985,11 @@ func (settings *Settings) Double(key string) float64 {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - gint: enum value.
+//   - gint: enum value.
 //
 func (settings *Settings) Enum(key string) int {
 	var _arg0 *C.GSettings // out
@@ -1029,11 +1025,11 @@ func (settings *Settings) Enum(key string) int {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - guint flags value.
+//   - guint flags value.
 //
 func (settings *Settings) Flags(key string) uint {
 	var _arg0 *C.GSettings // out
@@ -1060,7 +1056,7 @@ func (settings *Settings) Flags(key string) uint {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if settings has unapplied changes.
+//   - ok: TRUE if settings has unapplied changes.
 //
 func (settings *Settings) HasUnapplied() bool {
 	var _arg0 *C.GSettings // out
@@ -1089,11 +1085,11 @@ func (settings *Settings) HasUnapplied() bool {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - gint: integer.
+//   - gint: integer.
 //
 func (settings *Settings) Int(key string) int {
 	var _arg0 *C.GSettings // out
@@ -1124,11 +1120,11 @@ func (settings *Settings) Int(key string) int {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - gint64: 64-bit integer.
+//   - gint64: 64-bit integer.
 //
 func (settings *Settings) Int64(key string) int64 {
 	var _arg0 *C.GSettings // out
@@ -1172,20 +1168,20 @@ func (settings *Settings) Int64(key string) int64 {
 // function still indicates failure at this point then the application will be
 // aborted.
 //
-// The result parameter for the mapping function is pointed to a #gpointer which
-// is initially set to NULL. The same pointer is given to each invocation of
-// mapping. The final value of that #gpointer is what is returned by this
+// The result parameter for the mapping function is pointed to a #gpointer
+// which is initially set to NULL. The same pointer is given to each invocation
+// of mapping. The final value of that #gpointer is what is returned by this
 // function. NULL is valid; it is returned just as any other value would be.
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
-//    - mapping: function to map the value in the settings database to the value
-//      used by the application.
+//   - key to get the value for.
+//   - mapping: function to map the value in the settings database to the value
+//     used by the application.
 //
 // The function returns the following values:
 //
-//    - gpointer (optional): result, which may be NULL.
+//   - gpointer (optional): result, which may be NULL.
 //
 func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) unsafe.Pointer {
 	var _arg0 *C.GSettings          // out
@@ -1219,7 +1215,7 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) unsafe.
 //
 // The function takes the following parameters:
 //
-//    - key to query the range of.
+//   - key to query the range of.
 //
 // The function returns the following values:
 //
@@ -1258,11 +1254,11 @@ func (settings *Settings) Range(key string) *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - utf8: newly-allocated string.
+//   - utf8: newly-allocated string.
 //
 func (settings *Settings) String(key string) string {
 	var _arg0 *C.GSettings // out
@@ -1292,12 +1288,12 @@ func (settings *Settings) String(key string) string {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - utf8s: a newly-allocated, NULL-terminated array of strings, the value
-//      that is stored at key in settings.
+//   - utf8s: a newly-allocated, NULL-terminated array of strings, the value
+//     that is stored at key in settings.
 //
 func (settings *Settings) Strv(key string) []string {
 	var _arg0 *C.GSettings // out
@@ -1342,11 +1338,11 @@ func (settings *Settings) Strv(key string) []string {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - guint: unsigned integer.
+//   - guint: unsigned integer.
 //
 func (settings *Settings) Uint(key string) uint {
 	var _arg0 *C.GSettings // out
@@ -1377,11 +1373,11 @@ func (settings *Settings) Uint(key string) uint {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - guint64: 64-bit unsigned integer.
+//   - guint64: 64-bit unsigned integer.
 //
 func (settings *Settings) Uint64(key string) uint64 {
 	var _arg0 *C.GSettings // out
@@ -1423,11 +1419,11 @@ func (settings *Settings) Uint64(key string) uint64 {
 //
 // The function takes the following parameters:
 //
-//    - key to get the user value for.
+//   - key to get the user value for.
 //
 // The function returns the following values:
 //
-//    - variant (optional) user's value, if set.
+//   - variant (optional) user's value, if set.
 //
 func (settings *Settings) UserValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
@@ -1464,11 +1460,11 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - key to get the value for.
+//   - key to get the value for.
 //
 // The function returns the following values:
 //
-//    - variant: new #GVariant.
+//   - variant: new #GVariant.
 //
 func (settings *Settings) Value(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
@@ -1500,11 +1496,11 @@ func (settings *Settings) Value(key string) *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - name of a key.
+//   - name of a key.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the key name is writable.
+//   - ok: TRUE if the key name is writable.
 //
 func (settings *Settings) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
@@ -1541,7 +1537,7 @@ func (settings *Settings) IsWritable(name string) bool {
 //
 // The function returns the following values:
 //
-//    - utf8s: list of the children on settings, in no defined order.
+//   - utf8s: list of the children on settings, in no defined order.
 //
 func (settings *Settings) ListChildren() []string {
 	var _arg0 *C.GSettings // out
@@ -1585,7 +1581,7 @@ func (settings *Settings) ListChildren() []string {
 //
 // The function returns the following values:
 //
-//    - utf8s: list of the keys on settings, in no defined order.
+//   - utf8s: list of the keys on settings, in no defined order.
 //
 func (settings *Settings) ListKeys() []string {
 	var _arg0 *C.GSettings // out
@@ -1624,12 +1620,12 @@ func (settings *Settings) ListKeys() []string {
 //
 // The function takes the following parameters:
 //
-//    - key to check.
-//    - value to check.
+//   - key to check.
+//   - value to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if value is valid for key.
+//   - ok: TRUE if value is valid for key.
 //
 func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
@@ -1658,13 +1654,13 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 
 // Reset resets key to its default value.
 //
-// This call resets the key, as much as possible, to its default value. That
-// might be the value specified in the schema or the one set by the
+// This call resets the key, as much as possible, to its default value.
+// That might be the value specified in the schema or the one set by the
 // administrator.
 //
 // The function takes the following parameters:
 //
-//    - key: name of a key.
+//   - key: name of a key.
 //
 func (settings *Settings) Reset(key string) {
 	var _arg0 *C.GSettings // out
@@ -1680,8 +1676,8 @@ func (settings *Settings) Reset(key string) {
 }
 
 // Revert reverts all non-applied changes to the settings. This function does
-// nothing unless settings is in 'delay-apply' mode; see g_settings_delay(). In
-// the normal case settings are always applied immediately.
+// nothing unless settings is in 'delay-apply' mode; see g_settings_delay().
+// In the normal case settings are always applied immediately.
 //
 // Change notifications will be emitted for affected keys.
 func (settings *Settings) Revert() {
@@ -1702,12 +1698,12 @@ func (settings *Settings) Revert() {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
+//   - key: name of the key to set.
+//   - value to set it to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetBoolean(key string, value bool) bool {
 	var _arg0 *C.GSettings // out
@@ -1745,12 +1741,12 @@ func (settings *Settings) SetBoolean(key string, value bool) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
+//   - key: name of the key to set.
+//   - value to set it to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetDouble(key string, value float64) bool {
 	var _arg0 *C.GSettings // out
@@ -1780,8 +1776,8 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 // SetEnum looks up the enumerated type nick for value and writes it to key,
 // within settings.
 //
-// It is a programmer error to give a key that isn't contained in the schema for
-// settings or is not marked as an enumerated type, or for value not to be a
+// It is a programmer error to give a key that isn't contained in the schema
+// for settings or is not marked as an enumerated type, or for value not to be a
 // valid value for the named type.
 //
 // After performing the write, accessing key directly with
@@ -1789,12 +1785,12 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: key, within settings.
-//    - value: enumerated value.
+//   - key: key, within settings.
+//   - value: enumerated value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if the set succeeds.
+//   - ok: TRUE, if the set succeeds.
 //
 func (settings *Settings) SetEnum(key string, value int) bool {
 	var _arg0 *C.GSettings // out
@@ -1833,12 +1829,12 @@ func (settings *Settings) SetEnum(key string, value int) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: key, within settings.
-//    - value flags value.
+//   - key: key, within settings.
+//   - value flags value.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE, if the set succeeds.
+//   - ok: TRUE, if the set succeeds.
 //
 func (settings *Settings) SetFlags(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
@@ -1874,12 +1870,12 @@ func (settings *Settings) SetFlags(key string, value uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
+//   - key: name of the key to set.
+//   - value to set it to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetInt(key string, value int) bool {
 	var _arg0 *C.GSettings // out
@@ -1915,12 +1911,12 @@ func (settings *Settings) SetInt(key string, value int) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
+//   - key: name of the key to set.
+//   - value to set it to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetInt64(key string, value int64) bool {
 	var _arg0 *C.GSettings // out
@@ -1956,12 +1952,12 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
+//   - key: name of the key to set.
+//   - value to set it to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetString(key, value string) bool {
 	var _arg0 *C.GSettings // out
@@ -1999,12 +1995,12 @@ func (settings *Settings) SetString(key, value string) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value (optional) to set it to, or NULL.
+//   - key: name of the key to set.
+//   - value (optional) to set it to, or NULL.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetStrv(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
@@ -2052,12 +2048,12 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
+//   - key: name of the key to set.
+//   - value to set it to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetUint(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
@@ -2093,12 +2089,12 @@ func (settings *Settings) SetUint(key string, value uint) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value to set it to.
+//   - key: name of the key to set.
+//   - value to set it to.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetUint64(key string, value uint64) bool {
 	var _arg0 *C.GSettings // out
@@ -2134,12 +2130,12 @@ func (settings *Settings) SetUint64(key string, value uint64) bool {
 //
 // The function takes the following parameters:
 //
-//    - key: name of the key to set.
-//    - value of the correct type.
+//   - key: name of the key to set.
+//   - value of the correct type.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
+//   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
 //
 func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
@@ -2168,8 +2164,8 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 
 // The function takes the following parameters:
 //
-//    - keys
-//    - nKeys
+//   - keys
+//   - nKeys
 //
 // The function returns the following values:
 //
@@ -2271,8 +2267,8 @@ func (settings *Settings) writableChanged(key string) {
 // SettingsSync ensures that all pending operations are complete for the default
 // backend.
 //
-// Writes made to a #GSettings are handled asynchronously. For this reason, it
-// is very unlikely that the changes have it to disk by the time
+// Writes made to a #GSettings are handled asynchronously. For this reason,
+// it is very unlikely that the changes have it to disk by the time
 // g_settings_set() returns.
 //
 // This call will block until all of the writes have made it to the backend.

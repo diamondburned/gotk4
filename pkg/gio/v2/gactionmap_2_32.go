@@ -89,7 +89,7 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - action: #GAction.
+//   - action: #GAction.
 //
 func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _arg0 *C.GActionMap // out
@@ -141,8 +141,8 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 //
 // The function takes the following parameters:
 //
-//    - entries: pointer to the first item in an array of Entry structs.
-//    - userData (optional): user data for signal connections.
+//   - entries: pointer to the first item in an array of Entry structs.
+//   - userData (optional): user data for signal connections.
 //
 func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData unsafe.Pointer) {
 	var _arg0 *C.GActionMap   // out
@@ -174,11 +174,11 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData uns
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of an action.
+//   - actionName: name of an action.
 //
 // The function returns the following values:
 //
-//    - action (optional) or NULL.
+//   - action (optional) or NULL.
 //
 func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _arg0 *C.GActionMap // out
@@ -208,7 +208,7 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action.
+//   - actionName: name of the action.
 //
 func (actionMap *ActionMap) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
@@ -232,7 +232,7 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 //
 // The function takes the following parameters:
 //
-//    - action: #GAction.
+//   - action: #GAction.
 //
 func (actionMap *ActionMap) addAction(action Actioner) {
 	gclass := (*C.GActionMapInterface)(coreglib.PeekParentClass(actionMap))
@@ -255,11 +255,11 @@ func (actionMap *ActionMap) addAction(action Actioner) {
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of an action.
+//   - actionName: name of an action.
 //
 // The function returns the following values:
 //
-//    - action (optional) or NULL.
+//   - action (optional) or NULL.
 //
 func (actionMap *ActionMap) lookupAction(actionName string) *Action {
 	gclass := (*C.GActionMapInterface)(coreglib.PeekParentClass(actionMap))
@@ -292,7 +292,7 @@ func (actionMap *ActionMap) lookupAction(actionName string) *Action {
 //
 // The function takes the following parameters:
 //
-//    - actionName: name of the action.
+//   - actionName: name of the action.
 //
 func (actionMap *ActionMap) removeAction(actionName string) {
 	gclass := (*C.GActionMapInterface)(coreglib.PeekParentClass(actionMap))

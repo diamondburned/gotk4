@@ -31,8 +31,8 @@ func init() {
 // !An example GtkHeaderBar (headerbar.png)
 //
 // GtkHeaderBar is similar to a horizontal GtkCenterBox. It allows children to
-// be placed at the start or the end. In addition, it allows the window title to
-// be displayed. The title will be centered with respect to the width of the
+// be placed at the start or the end. In addition, it allows the window title
+// to be displayed. The title will be centered with respect to the width of the
 // box, even if the children at either side take up different amounts of space.
 //
 // GtkHeaderBar can add typical window frame controls, such as minimize,
@@ -42,12 +42,11 @@ func init() {
 // titlebar widget of a `GtkWindow (see gtk.Window.SetTitlebar()), as it gives
 // features typical of titlebars while allowing the addition of child widgets.
 //
+// # GtkHeaderBar as GtkBuildable
 //
-// GtkHeaderBar as GtkBuildable
-//
-// The GtkHeaderBar implementation of the GtkBuildable interface supports adding
-// children at the start or end sides by specifying “start” or “end” as the
-// “type” attribute of a <child> element, or setting the title widget by
+// The GtkHeaderBar implementation of the GtkBuildable interface supports
+// adding children at the start or end sides by specifying “start” or “end” as
+// the “type” attribute of a <child> element, or setting the title widget by
 // specifying “title” value.
 //
 // By default the GtkHeaderBar uses a GtkLabel displaying the title of the
@@ -68,7 +67,6 @@ func init() {
 //      </property>
 //    </object>
 //
-//
 // CSS nodes
 //
 //    headerbar
@@ -82,7 +80,6 @@ func init() {
 //                ├── [other children]
 //                ╰── windowcontrols.end
 //
-//
 // A GtkHeaderBar's CSS node is called headerbar. It contains a windowhandle
 // subnode, which contains a box subnode, which contains two box subnodes at the
 // start and end of the header bar, as well as a center node that represents the
@@ -91,8 +88,7 @@ func init() {
 // Each of the boxes contains a windowcontrols subnode, see gtk.WindowControls
 // for details, as well as other children.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkHeaderBar uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type HeaderBar struct {
@@ -132,7 +128,7 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - headerBar: new GtkHeaderBar.
+//   - headerBar: new GtkHeaderBar.
 //
 func NewHeaderBar() *HeaderBar {
 	var _cret *C.GtkWidget // in
@@ -150,7 +146,7 @@ func NewHeaderBar() *HeaderBar {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): decoration layout.
+//   - utf8 (optional): decoration layout.
 //
 func (bar *HeaderBar) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar // out
@@ -175,7 +171,7 @@ func (bar *HeaderBar) DecorationLayout() string {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if title buttons are shown.
+//   - ok: TRUE if title buttons are shown.
 //
 func (bar *HeaderBar) ShowTitleButtons() bool {
 	var _arg0 *C.GtkHeaderBar // out
@@ -201,8 +197,8 @@ func (bar *HeaderBar) ShowTitleButtons() bool {
 //
 // The function returns the following values:
 //
-//    - widget (optional): title widget of the header, or NULL if none has been
-//      set explicitly.
+//   - widget (optional): title widget of the header, or NULL if none has been
+//     set explicitly.
 //
 func (bar *HeaderBar) TitleWidget() Widgetter {
 	var _arg0 *C.GtkHeaderBar // out
@@ -239,7 +235,7 @@ func (bar *HeaderBar) TitleWidget() Widgetter {
 //
 // The function takes the following parameters:
 //
-//    - child to be added to bar.
+//   - child to be added to bar.
 //
 func (bar *HeaderBar) PackEnd(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -257,7 +253,7 @@ func (bar *HeaderBar) PackEnd(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child to be added to bar.
+//   - child to be added to bar.
 //
 func (bar *HeaderBar) PackStart(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -278,7 +274,7 @@ func (bar *HeaderBar) PackStart(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - child to remove.
+//   - child to remove.
 //
 func (bar *HeaderBar) Remove(child Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -306,12 +302,12 @@ func (bar *HeaderBar) Remove(child Widgetter) {
 // Recognized button names are minimize, maximize, close and icon (the window
 // icon).
 //
-// For example, “icon:minimize,maximize,close” specifies a icon on the left, and
-// minimize, maximize and close buttons on the right.
+// For example, “icon:minimize,maximize,close” specifies a icon on the left,
+// and minimize, maximize and close buttons on the right.
 //
 // The function takes the following parameters:
 //
-//    - layout (optional): decoration layout, or NULL to unset the layout.
+//   - layout (optional): decoration layout, or NULL to unset the layout.
 //
 func (bar *HeaderBar) SetDecorationLayout(layout string) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -333,7 +329,7 @@ func (bar *HeaderBar) SetDecorationLayout(layout string) {
 //
 // The function takes the following parameters:
 //
-//    - setting: TRUE to show standard title buttons.
+//   - setting: TRUE to show standard title buttons.
 //
 func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 	var _arg0 *C.GtkHeaderBar // out
@@ -362,7 +358,7 @@ func (bar *HeaderBar) SetShowTitleButtons(setting bool) {
 //
 // The function takes the following parameters:
 //
-//    - titleWidget (optional): widget to use for a title.
+//   - titleWidget (optional): widget to use for a title.
 //
 func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	var _arg0 *C.GtkHeaderBar // out

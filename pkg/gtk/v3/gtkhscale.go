@@ -104,11 +104,11 @@ func marshalHScale(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - adjustment (optional) which sets the range of the scale.
+//   - adjustment (optional) which sets the range of the scale.
 //
 // The function returns the following values:
 //
-//    - hScale: new HScale.
+//   - hScale: new HScale.
 //
 func NewHScale(adjustment *Adjustment) *HScale {
 	var _arg1 *C.GtkAdjustment // out
@@ -133,22 +133,22 @@ func NewHScale(adjustment *Adjustment) *HScale {
 // step. step must be nonzero; it’s the distance the slider moves when using the
 // arrow keys to adjust the scale value.
 //
-// Note that the way in which the precision is derived works best if step is a
-// power of ten. If the resulting precision is not suitable for your needs, use
-// gtk_scale_set_digits() to correct it.
+// Note that the way in which the precision is derived works best if step is
+// a power of ten. If the resulting precision is not suitable for your needs,
+// use gtk_scale_set_digits() to correct it.
 //
 // Deprecated: Use gtk_scale_new_with_range() with GTK_ORIENTATION_HORIZONTAL
 // instead.
 //
 // The function takes the following parameters:
 //
-//    - min: minimum value.
-//    - max: maximum value.
-//    - step increment (tick size) used with keyboard shortcuts.
+//   - min: minimum value.
+//   - max: maximum value.
+//   - step increment (tick size) used with keyboard shortcuts.
 //
 // The function returns the following values:
 //
-//    - hScale: new HScale.
+//   - hScale: new HScale.
 //
 func NewHScaleWithRange(min, max, step float64) *HScale {
 	var _arg1 C.gdouble    // out

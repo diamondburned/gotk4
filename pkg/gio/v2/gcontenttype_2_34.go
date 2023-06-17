@@ -21,12 +21,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
+//   - typ: content type string.
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): registered generic icon name for the given type, or NULL
-//      if unknown. Free with g_free().
+//   - utf8 (optional): registered generic icon name for the given type, or NULL
+//     if unknown. Free with g_free().
 //
 func ContentTypeGetGenericIconName(typ string) string {
 	var _arg1 *C.gchar // out
@@ -52,12 +52,12 @@ func ContentTypeGetGenericIconName(typ string) string {
 //
 // The function takes the following parameters:
 //
-//    - typ: content type string.
+//   - typ: content type string.
 //
 // The function returns the following values:
 //
-//    - icon: symbolic #GIcon corresponding to the content type. Free the
-//      returned object with g_object_unref().
+//   - icon: symbolic #GIcon corresponding to the content type. Free the
+//     returned object with g_object_unref().
 //
 func ContentTypeGetSymbolicIcon(typ string) *Icon {
 	var _arg1 *C.gchar // out

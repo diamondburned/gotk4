@@ -47,19 +47,18 @@ func defaultComboBoxTextOverrides(v *ComboBoxText) ComboBoxTextOverrides {
 // gtk_combo_box_text_insert_text() or gtk_combo_box_text_prepend_text() and
 // remove options with gtk_combo_box_text_remove().
 //
-// If the GtkComboBoxText contains an entry (via the “has-entry” property), its
-// contents can be retrieved using gtk_combo_box_text_get_active_text(). The
+// If the GtkComboBoxText contains an entry (via the “has-entry” property),
+// its contents can be retrieved using gtk_combo_box_text_get_active_text(). The
 // entry itself can be accessed by calling gtk_bin_get_child() on the combo box.
 //
 // You should not call gtk_combo_box_set_model() or attempt to pack more cells
 // into this combo box via its GtkCellLayout interface.
 //
+// # GtkComboBoxText as GtkBuildable
 //
-// GtkComboBoxText as GtkBuildable
-//
-// The GtkComboBoxText implementation of the GtkBuildable interface supports
-// adding items directly using the <items> element and specifying <item>
-// elements for each item. Each <item> element can specify the “id”
+// The GtkComboBoxText implementation of the GtkBuildable interface
+// supports adding items directly using the <items> element and specifying
+// <item> elements for each item. Each <item> element can specify the “id”
 // corresponding to the appended text and also supports the regular translation
 // attributes “translatable”, “context” and “comments”.
 //
@@ -160,7 +159,7 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - comboBoxText: new ComboBoxText.
+//   - comboBoxText: new ComboBoxText.
 //
 func NewComboBoxText() *ComboBoxText {
 	var _cret *C.GtkWidget // in
@@ -179,7 +178,7 @@ func NewComboBoxText() *ComboBoxText {
 //
 // The function returns the following values:
 //
-//    - comboBoxText: new ComboBoxText.
+//   - comboBoxText: new ComboBoxText.
 //
 func NewComboBoxTextWithEntry() *ComboBoxText {
 	var _cret *C.GtkWidget // in
@@ -201,8 +200,8 @@ func NewComboBoxTextWithEntry() *ComboBoxText {
 //
 // The function takes the following parameters:
 //
-//    - id (optional): string ID for this value, or NULL.
-//    - text: string.
+//   - id (optional): string ID for this value, or NULL.
+//   - text: string.
 //
 func (comboBox *ComboBoxText) Append(id, text string) {
 	var _arg0 *C.GtkComboBoxText // out
@@ -230,7 +229,7 @@ func (comboBox *ComboBoxText) Append(id, text string) {
 //
 // The function takes the following parameters:
 //
-//    - text: string.
+//   - text: string.
 //
 func (comboBox *ComboBoxText) AppendText(text string) {
 	var _arg0 *C.GtkComboBoxText // out
@@ -251,8 +250,8 @@ func (comboBox *ComboBoxText) AppendText(text string) {
 //
 // The function returns the following values:
 //
-//    - utf8: newly allocated string containing the currently active text. Must
-//      be freed with g_free().
+//   - utf8: newly allocated string containing the currently active text.
+//     Must be freed with g_free().
 //
 func (comboBox *ComboBoxText) ActiveText() string {
 	var _arg0 *C.GtkComboBoxText // out
@@ -271,17 +270,17 @@ func (comboBox *ComboBoxText) ActiveText() string {
 	return _utf8
 }
 
-// Insert inserts text at position in the list of strings stored in combo_box.
-// If id is non-NULL then it is used as the ID of the row. See
+// Insert inserts text at position in the list of strings stored in
+// combo_box. If id is non-NULL then it is used as the ID of the row. See
 // ComboBox:id-column.
 //
 // If position is negative then text is appended.
 //
 // The function takes the following parameters:
 //
-//    - position: index to insert text.
-//    - id (optional): string ID for this value, or NULL.
-//    - text: string to display.
+//   - position: index to insert text.
+//   - id (optional): string ID for this value, or NULL.
+//   - text: string to display.
 //
 func (comboBox *ComboBoxText) Insert(position int, id, text string) {
 	var _arg0 *C.GtkComboBoxText // out
@@ -315,8 +314,8 @@ func (comboBox *ComboBoxText) Insert(position int, id, text string) {
 //
 // The function takes the following parameters:
 //
-//    - position: index to insert text.
-//    - text: string.
+//   - position: index to insert text.
+//   - text: string.
 //
 func (comboBox *ComboBoxText) InsertText(position int, text string) {
 	var _arg0 *C.GtkComboBoxText // out
@@ -341,8 +340,8 @@ func (comboBox *ComboBoxText) InsertText(position int, text string) {
 //
 // The function takes the following parameters:
 //
-//    - id (optional): string ID for this value, or NULL.
-//    - text: string.
+//   - id (optional): string ID for this value, or NULL.
+//   - text: string.
 //
 func (comboBox *ComboBoxText) Prepend(id, text string) {
 	var _arg0 *C.GtkComboBoxText // out
@@ -370,7 +369,7 @@ func (comboBox *ComboBoxText) Prepend(id, text string) {
 //
 // The function takes the following parameters:
 //
-//    - text: string.
+//   - text: string.
 //
 func (comboBox *ComboBoxText) PrependText(text string) {
 	var _arg0 *C.GtkComboBoxText // out
@@ -389,7 +388,7 @@ func (comboBox *ComboBoxText) PrependText(text string) {
 //
 // The function takes the following parameters:
 //
-//    - position: index of the item to remove.
+//   - position: index of the item to remove.
 //
 func (comboBox *ComboBoxText) Remove(position int) {
 	var _arg0 *C.GtkComboBoxText // out

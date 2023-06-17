@@ -26,8 +26,8 @@ func init() {
 	})
 }
 
-// BidiType: PangoBidiType represents the bidirectional character type of a
-// Unicode character as specified by the <ulink
+// BidiType: PangoBidiType represents the bidirectional character
+// type of a Unicode character as specified by the <ulink
 // url="http://www.unicode.org/reports/tr9/">Unicode bidirectional
 // algorithm</ulink>.
 //
@@ -133,12 +133,12 @@ func (b BidiType) String() string {
 //
 // The function takes the following parameters:
 //
-//    - ch: unicode character.
+//   - ch: unicode character.
 //
 // The function returns the following values:
 //
-//    - bidiType: bidirectional character type, as used in the Unicode
-//      bidirectional algorithm.
+//   - bidiType: bidirectional character type, as used in the Unicode
+//     bidirectional algorithm.
 //
 func BidiTypeForUnichar(ch uint32) BidiType {
 	var _arg1 C.gunichar      // out

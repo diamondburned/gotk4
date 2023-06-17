@@ -62,14 +62,14 @@ func (o Overline) String() string {
 //
 // The function takes the following parameters:
 //
-//    - red value (ranging from 0 to 65535).
-//    - green value.
-//    - blue value.
+//   - red value (ranging from 0 to 65535).
+//   - green value.
+//   - blue value.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
@@ -103,12 +103,12 @@ func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 //
 // The function takes the following parameters:
 //
-//    - overline style.
+//   - overline style.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrOverline(overline Overline) *Attribute {
 	var _arg1 C.PangoOverline   // out

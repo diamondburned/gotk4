@@ -22,11 +22,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - baseIcon to overlay on.
+//   - baseIcon to overlay on.
 //
 // The function returns the following values:
 //
-//    - icon: new #GIcon.
+//   - icon: new #GIcon.
 //
 func NewNumerableIcon(baseIcon gio.Iconner) *gio.Icon {
 	var _arg1 *C.GIcon // out
@@ -57,12 +57,12 @@ func NewNumerableIcon(baseIcon gio.Iconner) *gio.Icon {
 //
 // The function takes the following parameters:
 //
-//    - baseIcon to overlay on.
-//    - context: StyleContext.
+//   - baseIcon to overlay on.
+//   - context: StyleContext.
 //
 // The function returns the following values:
 //
-//    - icon: new #GIcon.
+//   - icon: new #GIcon.
 //
 func NewNumerableIconWithStyleContext(baseIcon gio.Iconner, context *StyleContext) *gio.Icon {
 	var _arg1 *C.GIcon           // out

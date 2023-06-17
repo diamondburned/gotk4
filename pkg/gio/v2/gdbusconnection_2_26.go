@@ -104,8 +104,8 @@ type DBusSubtreeDispatchFunc func(connection *DBusConnection, sender, objectPath
 
 // DBusSubtreeEnumerateFunc: type of the enumerate function in BusSubtreeVTable.
 //
-// This function is called when generating introspection data and also when
-// preparing to dispatch incoming messages in the event that the
+// This function is called when generating introspection data and also
+// when preparing to dispatch incoming messages in the event that the
 // G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES flag is not specified
 // (ie: to verify that the object path is valid).
 //
@@ -124,9 +124,9 @@ type DBusSubtreeEnumerateFunc func(connection *DBusConnection, sender, objectPat
 // This function should return NULL to indicate that there is no object at this
 // node.
 //
-// If this function returns non-NULL, the return value is expected to be a
-// NULL-terminated array of pointers to BusInterfaceInfo structures describing
-// the interfaces implemented by node. This array will have
+// If this function returns non-NULL, the return value is expected to be
+// a NULL-terminated array of pointers to BusInterfaceInfo structures
+// describing the interfaces implemented by node. This array will have
 // g_dbus_interface_info_unref() called on each item before being freed with
 // g_free().
 //
@@ -145,9 +145,9 @@ type DBusSubtreeIntrospectFunc func(connection *DBusConnection, sender, objectPa
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - busType: Type.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional) or NULL.
+//   - busType: Type.
+//   - callback (optional) to call when the request is satisfied.
 //
 func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
@@ -175,8 +175,8 @@ func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 // BusGetFinish finishes an operation started with g_bus_get().
 //
 // The returned object is a singleton, that is, shared with other callers of
-// g_bus_get() and g_bus_get_sync() for bus_type. In the event that you need a
-// private message bus connection, use g_dbus_address_get_for_bus_sync() and
+// g_bus_get() and g_bus_get_sync() for bus_type. In the event that you need
+// a private message bus connection, use g_dbus_address_get_for_bus_sync() and
 // g_dbus_connection_new_for_address().
 //
 // Note that the returned BusConnection object will (usually) have the
@@ -184,11 +184,11 @@ func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 //
 // The function takes the following parameters:
 //
-//    - res obtained from the ReadyCallback passed to g_bus_get().
+//   - res obtained from the ReadyCallback passed to g_bus_get().
 //
 // The function returns the following values:
 //
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
+//   - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
@@ -213,15 +213,15 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 
 // BusGetSync: synchronously connects to the message bus specified by bus_type.
 // Note that the returned object may shared with other callers, e.g. if two
-// separate parts of a process calls this function with the same bus_type, they
-// will share the same object.
+// separate parts of a process calls this function with the same bus_type,
+// they will share the same object.
 //
 // This is a synchronous failable function. See g_bus_get() and
 // g_bus_get_finish() for the asynchronous version.
 //
 // The returned object is a singleton, that is, shared with other callers of
-// g_bus_get() and g_bus_get_sync() for bus_type. In the event that you need a
-// private message bus connection, use g_dbus_address_get_for_bus_sync() and
+// g_bus_get() and g_bus_get_sync() for bus_type. In the event that you need
+// a private message bus connection, use g_dbus_address_get_for_bus_sync() and
 // g_dbus_connection_new_for_address().
 //
 // Note that the returned BusConnection object will (usually) have the
@@ -229,12 +229,12 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - busType: Type.
+//   - ctx (optional) or NULL.
+//   - busType: Type.
 //
 // The function returns the following values:
 //
-//    - dBusConnection or NULL if error is set. Free with g_object_unref().
+//   - dBusConnection or NULL if error is set. Free with g_object_unref().
 //
 func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 	var _arg2 *C.GCancellable    // out
@@ -284,12 +284,12 @@ func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - stream: OStream.
-//    - guid (optional): GUID to use if authenticating as a server or NULL.
-//    - flags describing how to make the connection.
-//    - observer (optional) or NULL.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional) or NULL.
+//   - stream: OStream.
+//   - guid (optional): GUID to use if authenticating as a server or NULL.
+//   - flags describing how to make the connection.
+//   - observer (optional) or NULL.
+//   - callback (optional) to call when the request is satisfied.
 //
 func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
 	var _arg5 *C.GCancellable        // out
@@ -328,9 +328,9 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 	runtime.KeepAlive(callback)
 }
 
-// NewDBusConnectionForAddress: asynchronously connects and sets up a D-Bus
-// client connection for exchanging D-Bus messages with an endpoint specified by
-// address which must be in the D-Bus address format
+// NewDBusConnectionForAddress: asynchronously connects and sets up a
+// D-Bus client connection for exchanging D-Bus messages with an endpoint
+// specified by address which must be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // This constructor can only be used to initiate client-side connections - use
@@ -339,8 +339,8 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 // G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS or
 // G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flags.
 //
-// When the operation is finished, callback will be invoked. You can then call
-// g_dbus_connection_new_for_address_finish() to get the result of the
+// When the operation is finished, callback will be invoked. You can then
+// call g_dbus_connection_new_for_address_finish() to get the result of the
 // operation.
 //
 // If observer is not NULL it may be used to control the authentication process.
@@ -350,11 +350,11 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 //
 // The function takes the following parameters:
 //
-//    - ctx (optional) or NULL.
-//    - address d-Bus address.
-//    - flags describing how to make the connection.
-//    - observer (optional) or NULL.
-//    - callback (optional) to call when the request is satisfied.
+//   - ctx (optional) or NULL.
+//   - address d-Bus address.
+//   - flags describing how to make the connection.
+//   - observer (optional) or NULL.
+//   - callback (optional) to call when the request is satisfied.
 //
 func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
 	var _arg4 *C.GCancellable        // out
@@ -405,8 +405,8 @@ func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBus
 // implementation but it also can be done at a later point to handle the method
 // asynchronously.
 //
-// The usual checks on the validity of the calls is performed. For Get calls, an
-// error is automatically returned if the property does not exist or the
+// The usual checks on the validity of the calls is performed. For Get calls,
+// an error is automatically returned if the property does not exist or the
 // permissions do not allow access. The same checks are performed for Set calls,
 // and the provided value is also checked for being the correct type.
 //
@@ -414,12 +414,12 @@ func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBus
 // handler can be queried with g_dbus_method_invocation_get_property_info() to
 // get a pointer to the BusPropertyInfo of the property.
 //
-// If you have readable properties specified in your interface info, you must
-// ensure that you either provide a non-NULL get_property() function or provide
-// implementations of both the Get and GetAll methods on
-// org.freedesktop.DBus.Properties interface in your method_call function. Note
-// that the required return type of the Get call is (v), not the type of the
-// property. GetAll expects a return value of type a{sv}.
+// If you have readable properties specified in your interface info,
+// you must ensure that you either provide a non-NULL get_property()
+// function or provide implementations of both the Get and GetAll methods on
+// org.freedesktop.DBus.Properties interface in your method_call function.
+// Note that the required return type of the Get call is (v), not the type of
+// the property. GetAll expects a return value of type a{sv}.
 //
 // If you have writable properties specified in your interface info, you must
 // ensure that you either provide a non-NULL set_property() function or provide

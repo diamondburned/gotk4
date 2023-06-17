@@ -77,18 +77,17 @@ func init() {
 //      gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (target));
 //    }
 //
-//
 // GtkDropTarget supports more options, such as:
 //
-//    * rejecting potential drops via the gtk.DropTarget::accept signal
-//      and the gtk.DropTarget.Reject() function to let other drop
-//      targets handle the drop
-//    * tracking an ongoing drag operation before the drop via the
-//      gtk.DropTarget::enter, gtk.DropTarget::motion and
-//      gtk.DropTarget::leave signals
-//    * configuring how to receive data by setting the
-//      gtk.DropTarget:preload property and listening for its
-//      availability via the gtk.DropTarget:value property
+//   - rejecting potential drops via the gtk.DropTarget::accept signal and the
+//     gtk.DropTarget.Reject() function to let other drop targets handle the
+//     drop
+//   - tracking an ongoing drag operation before the drop via the
+//     gtk.DropTarget::enter, gtk.DropTarget::motion and gtk.DropTarget::leave
+//     signals
+//   - configuring how to receive data by setting the gtk.DropTarget:preload
+//     property and listening for its availability via the gtk.DropTarget:value
+//     property
 //
 // However, GtkDropTarget is ultimately modeled in a synchronous way and only
 // supports data transferred via GType. If you want full control over an ongoing
@@ -126,8 +125,8 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 // begin.
 //
 // If the drop is not accepted, FALSE will be returned and the drop target will
-// ignore the drop. If TRUE is returned, the drop is accepted for now but may be
-// rejected later via a call to gtk.DropTarget.Reject() or ultimately by
+// ignore the drop. If TRUE is returned, the drop is accepted for now but may
+// be rejected later via a call to gtk.DropTarget.Reject() or ultimately by
 // returning FALSE from a gtk.DropTarget::drop handler.
 //
 // The default handler for this signal decides whether to accept the drop based
@@ -148,8 +147,8 @@ func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) (ok bool)) coregl
 // zone or not. If it is not in a drop zone, it returns FALSE and no further
 // processing is necessary.
 //
-// Otherwise, the handler returns TRUE. In this case, this handler will accept
-// the drop. The handler is responsible for rading the given value and
+// Otherwise, the handler returns TRUE. In this case, this handler will
+// accept the drop. The handler is responsible for rading the given value and
 // performing the drop operation.
 func (self *DropTarget) ConnectDrop(f func(value coreglib.Value, x, y float64) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "drop", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectDrop), f)
@@ -181,12 +180,12 @@ func (self *DropTarget) ConnectMotion(f func(x, y float64) (dragAction gdk.DragA
 //
 // The function takes the following parameters:
 //
-//    - typ: supported type or G_TYPE_INVALID.
-//    - actions: supported actions.
+//   - typ: supported type or G_TYPE_INVALID.
+//   - actions: supported actions.
 //
 // The function returns the following values:
 //
-//    - dropTarget: new GtkDropTarget.
+//   - dropTarget: new GtkDropTarget.
 //
 func NewDropTarget(typ coreglib.Type, actions gdk.DragAction) *DropTarget {
 	var _arg1 C.GType          // out
@@ -211,7 +210,7 @@ func NewDropTarget(typ coreglib.Type, actions gdk.DragAction) *DropTarget {
 //
 // The function returns the following values:
 //
-//    - dragAction actions that this drop target supports.
+//   - dragAction actions that this drop target supports.
 //
 func (self *DropTarget) Actions() gdk.DragAction {
 	var _arg0 *C.GtkDropTarget // out
@@ -235,7 +234,7 @@ func (self *DropTarget) Actions() gdk.DragAction {
 //
 // The function returns the following values:
 //
-//    - drop (optional): current drop.
+//   - drop (optional): current drop.
 //
 func (self *DropTarget) Drop() gdk.Dropper {
 	var _arg0 *C.GtkDropTarget // out
@@ -274,7 +273,7 @@ func (self *DropTarget) Drop() gdk.Dropper {
 //
 // The function returns the following values:
 //
-//    - contentFormats (optional): supported data formats.
+//   - contentFormats (optional): supported data formats.
 //
 func (self *DropTarget) Formats() *gdk.ContentFormats {
 	var _arg0 *C.GtkDropTarget     // out
@@ -306,8 +305,8 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 //
 // The function returns the following values:
 //
-//    - gTypes (optional): G_TYPE_INVALID-terminated array of types included in
-//      formats or NULL if none.
+//   - gTypes (optional): G_TYPE_INVALID-terminated array of types included in
+//     formats or NULL if none.
 //
 func (self *DropTarget) GTypes() []coreglib.Type {
 	var _arg0 *C.GtkDropTarget // out
@@ -338,7 +337,7 @@ func (self *DropTarget) GTypes() []coreglib.Type {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if drop data should be preloaded.
+//   - ok: TRUE if drop data should be preloaded.
 //
 func (self *DropTarget) Preload() bool {
 	var _arg0 *C.GtkDropTarget // out
@@ -362,7 +361,7 @@ func (self *DropTarget) Preload() bool {
 //
 // The function returns the following values:
 //
-//    - value (optional): current drop data.
+//   - value (optional): current drop data.
 //
 func (self *DropTarget) Value() *coreglib.Value {
 	var _arg0 *C.GtkDropTarget // out
@@ -384,8 +383,8 @@ func (self *DropTarget) Value() *coreglib.Value {
 
 // Reject rejects the ongoing drop operation.
 //
-// If no drop operation is ongoing, i.e when gtk.DropTarget:drop is NULL, this
-// function does nothing.
+// If no drop operation is ongoing, i.e when gtk.DropTarget:drop is NULL,
+// this function does nothing.
 //
 // This function should be used when delaying the decision on whether to accept
 // a drag or not until after reading the data.
@@ -402,7 +401,7 @@ func (self *DropTarget) Reject() {
 //
 // The function takes the following parameters:
 //
-//    - actions: supported actions.
+//   - actions: supported actions.
 //
 func (self *DropTarget) SetActions(actions gdk.DragAction) {
 	var _arg0 *C.GtkDropTarget // out
@@ -420,7 +419,7 @@ func (self *DropTarget) SetActions(actions gdk.DragAction) {
 //
 // The function takes the following parameters:
 //
-//    - types (optional): all supported #GTypes that can be dropped.
+//   - types (optional): all supported #GTypes that can be dropped.
 //
 func (self *DropTarget) SetGTypes(types []coreglib.Type) {
 	var _arg0 *C.GtkDropTarget // out
@@ -447,7 +446,7 @@ func (self *DropTarget) SetGTypes(types []coreglib.Type) {
 //
 // The function takes the following parameters:
 //
-//    - preload: TRUE to preload drop data.
+//   - preload: TRUE to preload drop data.
 //
 func (self *DropTarget) SetPreload(preload bool) {
 	var _arg0 *C.GtkDropTarget // out

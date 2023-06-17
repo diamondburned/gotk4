@@ -49,8 +49,7 @@ func defaultFontChooserWidgetOverrides(v *FontChooserWidget) FontChooserWidgetOv
 // To change the text which is shown in the preview area, use
 // gtk_font_chooser_set_preview_text().
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkFontChooserWidget has a single CSS node with name fontchooser.
 type FontChooserWidget struct {
@@ -119,7 +118,7 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - fontChooserWidget: new FontChooserWidget.
+//   - fontChooserWidget: new FontChooserWidget.
 //
 func NewFontChooserWidget() *FontChooserWidget {
 	var _cret *C.GtkWidget // in

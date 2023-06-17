@@ -37,8 +37,8 @@ func defaultAlignmentOverrides(v *Alignment) AlignmentOverrides {
 	return AlignmentOverrides{}
 }
 
-// Alignment widget controls the alignment and size of its child widget. It has
-// four settings: xscale, yscale, xalign, and yalign.
+// Alignment widget controls the alignment and size of its child widget.
+// It has four settings: xscale, yscale, xalign, and yalign.
 //
 // The scale settings are used to specify how much the child widget should
 // expand to fill the space allocated to the Alignment. The values can range
@@ -46,9 +46,9 @@ func defaultAlignmentOverrides(v *Alignment) AlignmentOverrides {
 // expands to fill all of the available space).
 //
 // The align settings are used to place the child widget within the available
-// area. The values range from 0 (top or left) to 1 (bottom or right). Of
-// course, if the scale settings are both set to 1, the alignment settings have
-// no effect.
+// area. The values range from 0 (top or left) to 1 (bottom or right).
+// Of course, if the scale settings are both set to 1, the alignment settings
+// have no effect.
 //
 // GtkAlignment has been deprecated in 3.14 and should not be used in
 // newly-written code. The desired effect can be achieved by using the
@@ -110,20 +110,20 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - xalign: horizontal alignment of the child widget, from 0 (left) to 1
-//      (right).
-//    - yalign: vertical alignment of the child widget, from 0 (top) to 1
-//      (bottom).
-//    - xscale: amount that the child widget expands horizontally to fill up
-//      unused space, from 0 to 1. A value of 0 indicates that the child widget
-//      should never expand. A value of 1 indicates that the child widget will
-//      expand to fill all of the space allocated for the Alignment.
-//    - yscale: amount that the child widget expands vertically to fill up unused
-//      space, from 0 to 1. The values are similar to xscale.
+//   - xalign: horizontal alignment of the child widget, from 0 (left) to 1
+//     (right).
+//   - yalign: vertical alignment of the child widget, from 0 (top) to 1
+//     (bottom).
+//   - xscale: amount that the child widget expands horizontally to fill up
+//     unused space, from 0 to 1. A value of 0 indicates that the child widget
+//     should never expand. A value of 1 indicates that the child widget will
+//     expand to fill all of the space allocated for the Alignment.
+//   - yscale: amount that the child widget expands vertically to fill up unused
+//     space, from 0 to 1. The values are similar to xscale.
 //
 // The function returns the following values:
 //
-//    - alignment: new Alignment.
+//   - alignment: new Alignment.
 //
 func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 	var _arg1 C.gfloat     // out
@@ -157,14 +157,14 @@ func NewAlignment(xalign, yalign, xscale, yscale float32) *Alignment {
 //
 // The function returns the following values:
 //
-//    - paddingTop (optional): location to store the padding for the top of the
-//      widget, or NULL.
-//    - paddingBottom (optional): location to store the padding for the bottom of
-//      the widget, or NULL.
-//    - paddingLeft (optional): location to store the padding for the left of the
-//      widget, or NULL.
-//    - paddingRight (optional): location to store the padding for the right of
-//      the widget, or NULL.
+//   - paddingTop (optional): location to store the padding for the top of the
+//     widget, or NULL.
+//   - paddingBottom (optional): location to store the padding for the bottom of
+//     the widget, or NULL.
+//   - paddingLeft (optional): location to store the padding for the left of the
+//     widget, or NULL.
+//   - paddingRight (optional): location to store the padding for the right of
+//     the widget, or NULL.
 //
 func (alignment *Alignment) Padding() (paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out
@@ -197,16 +197,16 @@ func (alignment *Alignment) Padding() (paddingTop, paddingBottom, paddingLeft, p
 //
 // The function takes the following parameters:
 //
-//    - xalign: horizontal alignment of the child widget, from 0 (left) to 1
-//      (right).
-//    - yalign: vertical alignment of the child widget, from 0 (top) to 1
-//      (bottom).
-//    - xscale: amount that the child widget expands horizontally to fill up
-//      unused space, from 0 to 1. A value of 0 indicates that the child widget
-//      should never expand. A value of 1 indicates that the child widget will
-//      expand to fill all of the space allocated for the Alignment.
-//    - yscale: amount that the child widget expands vertically to fill up unused
-//      space, from 0 to 1. The values are similar to xscale.
+//   - xalign: horizontal alignment of the child widget, from 0 (left) to 1
+//     (right).
+//   - yalign: vertical alignment of the child widget, from 0 (top) to 1
+//     (bottom).
+//   - xscale: amount that the child widget expands horizontally to fill up
+//     unused space, from 0 to 1. A value of 0 indicates that the child widget
+//     should never expand. A value of 1 indicates that the child widget will
+//     expand to fill all of the space allocated for the Alignment.
+//   - yscale: amount that the child widget expands vertically to fill up unused
+//     space, from 0 to 1. The values are similar to xscale.
 //
 func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 	var _arg0 *C.GtkAlignment // out
@@ -237,10 +237,10 @@ func (alignment *Alignment) Set(xalign, yalign, xscale, yscale float32) {
 //
 // The function takes the following parameters:
 //
-//    - paddingTop: padding at the top of the widget.
-//    - paddingBottom: padding at the bottom of the widget.
-//    - paddingLeft: padding at the left of the widget.
-//    - paddingRight: padding at the right of the widget.
+//   - paddingTop: padding at the top of the widget.
+//   - paddingBottom: padding at the bottom of the widget.
+//   - paddingLeft: padding at the left of the widget.
+//   - paddingRight: padding at the right of the widget.
 //
 func (alignment *Alignment) SetPadding(paddingTop, paddingBottom, paddingLeft, paddingRight uint) {
 	var _arg0 *C.GtkAlignment // out

@@ -24,12 +24,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - str: string to parse.
+//   - str: string to parse.
 //
 // The function returns the following values:
 //
-//    - outTransform: location to put the transform in.
-//    - ok: TRUE if string described a valid transform.
+//   - outTransform: location to put the transform in.
+//   - ok: TRUE if string described a valid transform.
 //
 func TransformParse(str string) (*Transform, bool) {
 	var _arg1 *C.char         // out

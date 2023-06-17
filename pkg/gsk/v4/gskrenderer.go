@@ -89,11 +89,11 @@ func BaseRenderer(obj Rendererer) *Renderer {
 //
 // The function takes the following parameters:
 //
-//    - surface: GdkSurface.
+//   - surface: GdkSurface.
 //
 // The function returns the following values:
 //
-//    - renderer (optional): GskRenderer.
+//   - renderer (optional): GskRenderer.
 //
 func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	var _arg1 *C.GdkSurface  // out
@@ -119,7 +119,7 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 //
 // The function returns the following values:
 //
-//    - surface (optional): GdkSurface.
+//   - surface (optional): GdkSurface.
 //
 func (renderer *Renderer) Surface() gdk.Surfacer {
 	var _arg0 *C.GskRenderer // out
@@ -156,7 +156,7 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the GskRenderer was realized, and FALSE otherwise.
+//   - ok: TRUE if the GskRenderer was realized, and FALSE otherwise.
 //
 func (renderer *Renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
@@ -181,7 +181,7 @@ func (renderer *Renderer) IsRealized() bool {
 //
 // The function takes the following parameters:
 //
-//    - surface: GdkSurface renderer will be used on.
+//   - surface: GdkSurface renderer will be used on.
 //
 func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _arg0 *C.GskRenderer // out
@@ -207,9 +207,9 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 // Render renders the scene graph, described by a tree of GskRenderNode
 // instances, ensuring that the given region gets redrawn.
 //
-// Renderers must ensure that changes of the contents given by the root node as
-// well as the area given by region are redrawn. They are however free to not
-// redraw any pixel outside of region if they can guarantee that it didn't
+// Renderers must ensure that changes of the contents given by the root node
+// as well as the area given by region are redrawn. They are however free to
+// not redraw any pixel outside of region if they can guarantee that it didn't
 // change.
 //
 // The renderer will acquire a reference on the GskRenderNode tree while the
@@ -217,9 +217,9 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 //
 // The function takes the following parameters:
 //
-//    - root: GskRenderNode.
-//    - region (optional): cairo_region_t that must be redrawn or NULL for the
-//      whole window.
+//   - root: GskRenderNode.
+//   - region (optional): cairo_region_t that must be redrawn or NULL for the
+//     whole window.
 //
 func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
@@ -249,12 +249,12 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 //
 // The function takes the following parameters:
 //
-//    - root: GskRenderNode.
-//    - viewport (optional): section to draw or NULL to use root's bounds.
+//   - root: GskRenderNode.
+//   - viewport (optional): section to draw or NULL to use root's bounds.
 //
 // The function returns the following values:
 //
-//    - texture: GdkTexture with the rendered contents of root.
+//   - texture: GdkTexture with the rendered contents of root.
 //
 func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rect) gdk.Texturer {
 	var _arg0 *C.GskRenderer     // out

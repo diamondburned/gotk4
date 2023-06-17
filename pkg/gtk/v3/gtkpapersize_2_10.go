@@ -17,8 +17,8 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - utf8: name of the default paper size. The string is owned by GTK+ and
-//      should not be modified.
+//   - utf8: name of the default paper size. The string is owned by GTK+ and
+//     should not be modified.
 //
 func PaperSizeGetDefault() string {
 	var _cret *C.gchar // in

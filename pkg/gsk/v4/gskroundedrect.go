@@ -63,11 +63,11 @@ func (r *RoundedRect) Corner() [4]graphene.Size {
 //
 // The function takes the following parameters:
 //
-//    - point to check.
+//   - point to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the point is inside the rounded rectangle.
+//   - ok: TRUE if the point is inside the rounded rectangle.
 //
 func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	var _arg0 *C.GskRoundedRect   // out
@@ -95,11 +95,11 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 //
 // The function takes the following parameters:
 //
-//    - rect: rectangle to check.
+//   - rect: rectangle to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the rect is fully contained inside the rounded rectangle.
+//   - ok: TRUE if the rect is fully contained inside the rounded rectangle.
 //
 func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
@@ -128,15 +128,15 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 //
 // The function takes the following parameters:
 //
-//    - bounds: graphene_rect_t describing the bounds.
-//    - topLeft: rounding radius of the top left corner.
-//    - topRight: rounding radius of the top right corner.
-//    - bottomRight: rounding radius of the bottom right corner.
-//    - bottomLeft: rounding radius of the bottom left corner.
+//   - bounds: graphene_rect_t describing the bounds.
+//   - topLeft: rounding radius of the top left corner.
+//   - topRight: rounding radius of the top right corner.
+//   - bottomRight: rounding radius of the bottom right corner.
+//   - bottomLeft: rounding radius of the bottom left corner.
 //
 // The function returns the following values:
 //
-//    - roundedRect: initialized rectangle.
+//   - roundedRect: initialized rectangle.
 //
 func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRight *graphene.Size, bottomRight *graphene.Size, bottomLeft *graphene.Size) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
@@ -176,11 +176,11 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 //
 // The function takes the following parameters:
 //
-//    - src: GskRoundedRect.
+//   - src: GskRoundedRect.
 //
 // The function returns the following values:
 //
-//    - roundedRect: initialized rectangle.
+//   - roundedRect: initialized rectangle.
 //
 func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
@@ -206,12 +206,12 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 //
 // The function takes the following parameters:
 //
-//    - bounds: graphene_rect_t.
-//    - radius: border radius.
+//   - bounds: graphene_rect_t.
+//   - radius: border radius.
 //
 // The function returns the following values:
 //
-//    - roundedRect: initialized rectangle.
+//   - roundedRect: initialized rectangle.
 //
 func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
@@ -240,11 +240,11 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 //
 // The function takes the following parameters:
 //
-//    - rect: rectangle to check.
+//   - rect: rectangle to check.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the rect intersects with the rounded rectangle.
+//   - ok: TRUE if the rect intersects with the rounded rectangle.
 //
 func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
@@ -275,7 +275,7 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the rectangle is rectilinear.
+//   - ok: TRUE if the rectangle is rectilinear.
 //
 func (self *RoundedRect) IsRectilinear() bool {
 	var _arg0 *C.GskRoundedRect // out
@@ -302,7 +302,7 @@ func (self *RoundedRect) IsRectilinear() bool {
 //
 // The function returns the following values:
 //
-//    - roundedRect: normalized rectangle.
+//   - roundedRect: normalized rectangle.
 //
 func (self *RoundedRect) Normalize() *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
@@ -326,12 +326,12 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 //
 // The function takes the following parameters:
 //
-//    - dx: horizontal offset.
-//    - dy: vertical offset.
+//   - dx: horizontal offset.
+//   - dy: vertical offset.
 //
 // The function returns the following values:
 //
-//    - roundedRect: offset rectangle.
+//   - roundedRect: offset rectangle.
 //
 func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
@@ -366,14 +366,14 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 //
 // The function takes the following parameters:
 //
-//    - top: how far to move the top side downwards.
-//    - right: how far to move the right side to the left.
-//    - bottom: how far to move the bottom side upwards.
-//    - left: how far to move the left side to the right.
+//   - top: how far to move the top side downwards.
+//   - right: how far to move the right side to the left.
+//   - bottom: how far to move the bottom side upwards.
+//   - left: how far to move the left side to the right.
 //
 // The function returns the following values:
 //
-//    - roundedRect: resized GskRoundedRect.
+//   - roundedRect: resized GskRoundedRect.
 //
 func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out

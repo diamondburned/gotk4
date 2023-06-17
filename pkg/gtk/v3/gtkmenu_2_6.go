@@ -21,11 +21,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - widget: Widget.
+//   - widget: Widget.
 //
 // The function returns the following values:
 //
-//    - list: list of menus attached to his widget.
+//   - list: list of menus attached to his widget.
 //
 func MenuGetForAttachWidget(widget Widgetter) []Widgetter {
 	var _arg1 *C.GtkWidget // out

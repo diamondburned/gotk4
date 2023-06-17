@@ -25,9 +25,9 @@ import "C"
 // - Application identifiers are composed of 1 or more elements separated by a
 // period (.) character. All elements must contain at least one character.
 //
-// - Each element must only contain the ASCII characters [A-Z][a-z][0-9]_-, with
-// - discouraged in new application identifiers. Each element must not begin
-// with a digit.
+// - Each element must only contain the ASCII characters [A-Z][a-z][0-9]_-,
+// with - discouraged in new application identifiers. Each element must not
+// begin with a digit.
 //
 // - Application identifiers must contain at least one . (period) character (and
 // thus at least two elements).
@@ -36,11 +36,11 @@ import "C"
 //
 // - Application identifiers must not exceed 255 characters.
 //
-// Note that the hyphen (-) character is allowed in application identifiers, but
-// is problematic or not allowed in various specifications and APIs that refer
-// to D-Bus, such as Flatpak application IDs
-// (http://docs.flatpak.org/en/latest/introduction.html#identifiers), the
-// DBusActivatable interface in the Desktop Entry Specification
+// Note that the hyphen (-) character is allowed in application identifiers,
+// but is problematic or not allowed in various specifications
+// and APIs that refer to D-Bus, such as Flatpak application IDs
+// (http://docs.flatpak.org/en/latest/introduction.html#identifiers),
+// the DBusActivatable interface in the Desktop Entry Specification
 // (https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#dbus),
 // and the convention that an application's "main" interface and object path
 // resemble its application identifier and bus name. To avoid situations that
@@ -48,9 +48,9 @@ import "C"
 // identifiers consistently replace hyphens with underscores.
 //
 // Like D-Bus interface names, application identifiers should start with the
-// reversed DNS domain name of the author of the interface (in lower-case), and
-// it is conventional for the rest of the application identifier to consist of
-// words run together, with initial capital letters.
+// reversed DNS domain name of the author of the interface (in lower-case),
+// and it is conventional for the rest of the application identifier to consist
+// of words run together, with initial capital letters.
 //
 // As with D-Bus interface names, if the author's DNS domain name contains
 // hyphen/minus characters they should be replaced by underscores, and if it
@@ -60,11 +60,11 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - applicationId: potential application identifier.
+//   - applicationId: potential application identifier.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if application_id is valid.
+//   - ok: TRUE if application_id is valid.
 //
 func ApplicationIDIsValid(applicationId string) bool {
 	var _arg1 *C.gchar   // out

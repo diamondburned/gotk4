@@ -33,13 +33,11 @@ func init() {
 // The GtkViewport will start scrolling content only if allocated less than the
 // child widget’s minimum size in a given orientation.
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkViewport has a single CSS node with name viewport.
 //
-//
-// Accessibility
+// # Accessibility
 //
 // GtkViewport uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Viewport struct {
@@ -90,12 +88,12 @@ func marshalViewport(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - hadjustment (optional): horizontal adjustment.
-//    - vadjustment (optional): vertical adjustment.
+//   - hadjustment (optional): horizontal adjustment.
+//   - vadjustment (optional): vertical adjustment.
 //
 // The function returns the following values:
 //
-//    - viewport: new GtkViewport.
+//   - viewport: new GtkViewport.
 //
 func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 	var _arg1 *C.GtkAdjustment // out
@@ -124,7 +122,7 @@ func NewViewport(hadjustment, vadjustment *Adjustment) *Viewport {
 //
 // The function returns the following values:
 //
-//    - widget (optional): child widget of viewport.
+//   - widget (optional): child widget of viewport.
 //
 func (viewport *Viewport) Child() Widgetter {
 	var _arg0 *C.GtkViewport // out
@@ -162,7 +160,7 @@ func (viewport *Viewport) Child() Widgetter {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the viewport keeps the focus child scrolled to view.
+//   - ok: TRUE if the viewport keeps the focus child scrolled to view.
 //
 func (viewport *Viewport) ScrollToFocus() bool {
 	var _arg0 *C.GtkViewport // out
@@ -186,7 +184,7 @@ func (viewport *Viewport) ScrollToFocus() bool {
 //
 // The function takes the following parameters:
 //
-//    - child (optional) widget.
+//   - child (optional) widget.
 //
 func (viewport *Viewport) SetChild(child Widgetter) {
 	var _arg0 *C.GtkViewport // out
@@ -207,7 +205,7 @@ func (viewport *Viewport) SetChild(child Widgetter) {
 //
 // The function takes the following parameters:
 //
-//    - scrollToFocus: whether to keep the focus widget scrolled to view.
+//   - scrollToFocus: whether to keep the focus widget scrolled to view.
 //
 func (viewport *Viewport) SetScrollToFocus(scrollToFocus bool) {
 	var _arg0 *C.GtkViewport // out

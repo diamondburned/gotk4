@@ -37,8 +37,8 @@ const (
 	// file.
 	FileMeasureReportAnyError FileMeasureFlags = 0b10
 	// FileMeasureApparentSize: tally usage based on apparent file sizes.
-	// Normally, the block-size is used, if available, as this is a more
-	// accurate representation of disk space used. Compare with du
+	// Normally, the block-size is used, if available, as this is a
+	// more accurate representation of disk space used. Compare with du
 	// --apparent-size.
 	FileMeasureApparentSize FileMeasureFlags = 0b100
 	// FileMeasureNoXdev: do not cross mount point boundaries. Compare with du

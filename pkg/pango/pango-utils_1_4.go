@@ -24,15 +24,15 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - text to itemize.
-//    - length: number of bytes (not characters) to process, or -1 if text is
-//      nul-terminated and the length should be calculated.
-//    - pbaseDir: input base direction, and output resolved direction.
+//   - text to itemize.
+//   - length: number of bytes (not characters) to process, or -1 if text is
+//     nul-terminated and the length should be calculated.
+//   - pbaseDir: input base direction, and output resolved direction.
 //
 // The function returns the following values:
 //
-//    - guint8: newly allocated array of embedding levels, one item per character
-//      (not byte), that should be freed using g_free().
+//   - guint8: newly allocated array of embedding levels, one item per character
+//     (not byte), that should be freed using g_free().
 //
 func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *byte {
 	var _arg1 *C.gchar          // out

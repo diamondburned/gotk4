@@ -103,11 +103,11 @@ func marshalIcon(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - icon2 (optional): pointer to the second #GIcon.
+//   - icon2 (optional): pointer to the second #GIcon.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
+//   - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
 //
 func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg0 *C.GIcon   // out
@@ -134,16 +134,16 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	return _ok
 }
 
-// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can be
-// retrieved back by calling g_icon_deserialize() on the returned value. As
-// serialization will avoid using raw icon data when possible, it only makes
-// sense to transfer the #GVariant between processes on the same machine, (as
-// opposed to over the network), and within the same file system namespace.
+// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+// be retrieved back by calling g_icon_deserialize() on the returned value.
+// As serialization will avoid using raw icon data when possible, it only makes
+// sense to transfer the #GVariant between processes on the same machine,
+// (as opposed to over the network), and within the same file system namespace.
 //
 // The function returns the following values:
 //
-//    - variant (optional) or NULL when serialization fails. The #GVariant will
-//      not be floating.
+//   - variant (optional) or NULL when serialization fails. The #GVariant will
+//     not be floating.
 //
 func (icon *Icon) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
@@ -187,8 +187,8 @@ func (icon *Icon) Serialize() *glib.Variant {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): allocated NUL-terminated UTF8 string or NULL if icon
-//      can't be serialized. Use g_free() to free.
+//   - utf8 (optional): allocated NUL-terminated UTF8 string or NULL if icon
+//     can't be serialized. Use g_free() to free.
 //
 func (icon *Icon) String() string {
 	var _arg0 *C.GIcon // out
@@ -213,11 +213,11 @@ func (icon *Icon) String() string {
 //
 // The function takes the following parameters:
 //
-//    - icon2 (optional): pointer to the second #GIcon.
+//   - icon2 (optional): pointer to the second #GIcon.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
+//   - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
 //
 func (icon1 *Icon) equal(icon2 Iconner) bool {
 	gclass := (*C.GIconIface)(coreglib.PeekParentClass(icon1))
@@ -251,8 +251,8 @@ func (icon1 *Icon) equal(icon2 Iconner) bool {
 //
 // The function returns the following values:
 //
-//    - guint containing a hash for the icon, suitable for use in a Table or
-//      similar data structure.
+//   - guint containing a hash for the icon, suitable for use in a Table or
+//     similar data structure.
 //
 func (icon *Icon) hash() uint {
 	gclass := (*C.GIconIface)(coreglib.PeekParentClass(icon))
@@ -273,16 +273,16 @@ func (icon *Icon) hash() uint {
 	return _guint
 }
 
-// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can be
-// retrieved back by calling g_icon_deserialize() on the returned value. As
-// serialization will avoid using raw icon data when possible, it only makes
-// sense to transfer the #GVariant between processes on the same machine, (as
-// opposed to over the network), and within the same file system namespace.
+// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
+// be retrieved back by calling g_icon_deserialize() on the returned value.
+// As serialization will avoid using raw icon data when possible, it only makes
+// sense to transfer the #GVariant between processes on the same machine,
+// (as opposed to over the network), and within the same file system namespace.
 //
 // The function returns the following values:
 //
-//    - variant (optional) or NULL when serialization fails. The #GVariant will
-//      not be floating.
+//   - variant (optional) or NULL when serialization fails. The #GVariant will
+//     not be floating.
 //
 func (icon *Icon) serialize() *glib.Variant {
 	gclass := (*C.GIconIface)(coreglib.PeekParentClass(icon))
@@ -315,12 +315,12 @@ func (icon *Icon) serialize() *glib.Variant {
 //
 // The function takes the following parameters:
 //
-//    - icon to an icon object.
+//   - icon to an icon object.
 //
 // The function returns the following values:
 //
-//    - guint containing a hash for the icon, suitable for use in a Table or
-//      similar data structure.
+//   - guint containing a hash for the icon, suitable for use in a Table or
+//     similar data structure.
 //
 func IconHash(icon unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
@@ -338,8 +338,8 @@ func IconHash(icon unsafe.Pointer) uint {
 	return _guint
 }
 
-// IconIface is used to implement GIcon types for various different systems. See
-// Icon and Icon for examples of how to implement this interface.
+// IconIface is used to implement GIcon types for various different systems.
+// See Icon and Icon for examples of how to implement this interface.
 //
 // An instance of this type is always passed by reference.
 type IconIface struct {

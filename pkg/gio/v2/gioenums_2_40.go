@@ -58,8 +58,8 @@ func (t TLSCertificateRequestFlags) String() string {
 // stderr the default are for them to inherit the corresponding descriptor from
 // the calling process.
 //
-// Note that it is a programmer error to mix 'incompatible' flags. For example,
-// you may not request both G_SUBPROCESS_FLAGS_STDOUT_PIPE and
+// Note that it is a programmer error to mix 'incompatible' flags.
+// For example, you may not request both G_SUBPROCESS_FLAGS_STDOUT_PIPE and
 // G_SUBPROCESS_FLAGS_STDOUT_SILENCE.
 type SubprocessFlags C.guint
 

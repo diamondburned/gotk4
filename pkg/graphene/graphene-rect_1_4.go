@@ -17,7 +17,7 @@ import "C"
 //
 // The function returns the following values:
 //
-//    - rect: fixed rectangle.
+//   - rect: fixed rectangle.
 //
 func RectZero() *Rect {
 	var _cret *C.graphene_rect_t // in

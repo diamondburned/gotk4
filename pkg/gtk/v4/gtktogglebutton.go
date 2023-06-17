@@ -51,19 +51,18 @@ func defaultToggleButtonOverrides(v *ToggleButton) ToggleButtonOverrides {
 // Clicking again will cause the toggle button to return to its normal state.
 //
 // A toggle button is created by calling either gtk.ToggleButton.New or
-// gtk.ToggleButton.NewWithLabel. If using the former, it is advisable to pack a
-// widget, (such as a GtkLabel and/or a GtkImage), into the toggle button’s
+// gtk.ToggleButton.NewWithLabel. If using the former, it is advisable to pack
+// a widget, (such as a GtkLabel and/or a GtkImage), into the toggle button’s
 // container. (See gtk.Button for more information).
 //
-// The state of a GtkToggleButton can be set specifically using
-// gtk.ToggleButton.SetActive(), and retrieved using
+// The state of a GtkToggleButton can be set specifically
+// using gtk.ToggleButton.SetActive(), and retrieved using
 // gtk.ToggleButton.GetActive().
 //
 // To simply switch the state of a toggle button, use
 // gtk.ToggleButton.Toggled().
 //
-//
-// Grouping
+// # Grouping
 //
 // Toggle buttons can be grouped together, to form mutually exclusive groups -
 // only one of the buttons can be toggled at a time, and toggling another one
@@ -71,8 +70,7 @@ func defaultToggleButtonOverrides(v *ToggleButton) ToggleButtonOverrides {
 //
 // To add a GtkToggleButton to a group, use gtk.ToggleButton.SetGroup().
 //
-//
-// CSS nodes
+// # CSS nodes
 //
 // GtkToggleButton has a single CSS node with name button. To differentiate it
 // from a plain GtkButton, it gets the .toggle style class.
@@ -198,7 +196,7 @@ func (toggleButton *ToggleButton) ConnectToggled(f func()) coreglib.SignalHandle
 //
 // The function returns the following values:
 //
-//    - toggleButton: new toggle button.
+//   - toggleButton: new toggle button.
 //
 func NewToggleButton() *ToggleButton {
 	var _cret *C.GtkWidget // in
@@ -216,11 +214,11 @@ func NewToggleButton() *ToggleButton {
 //
 // The function takes the following parameters:
 //
-//    - label: string containing the message to be placed in the toggle button.
+//   - label: string containing the message to be placed in the toggle button.
 //
 // The function returns the following values:
 //
-//    - toggleButton: new toggle button.
+//   - toggleButton: new toggle button.
 //
 func NewToggleButtonWithLabel(label string) *ToggleButton {
 	var _arg1 *C.char      // out
@@ -246,12 +244,12 @@ func NewToggleButtonWithLabel(label string) *ToggleButton {
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the mnemonic
-//      character.
+//   - label: text of the button, with an underscore in front of the mnemonic
+//     character.
 //
 // The function returns the following values:
 //
-//    - toggleButton: new GtkToggleButton.
+//   - toggleButton: new GtkToggleButton.
 //
 func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 	var _arg1 *C.char      // out
@@ -276,7 +274,7 @@ func NewToggleButtonWithMnemonic(label string) *ToggleButton {
 //
 // The function returns the following values:
 //
-//    - ok: whether the button is pressed.
+//   - ok: whether the button is pressed.
 //
 func (toggleButton *ToggleButton) Active() bool {
 	var _arg0 *C.GtkToggleButton // out
@@ -306,7 +304,7 @@ func (toggleButton *ToggleButton) Active() bool {
 //
 // The function takes the following parameters:
 //
-//    - isActive: TRUE or FALSE.
+//   - isActive: TRUE or FALSE.
 //
 func (toggleButton *ToggleButton) SetActive(isActive bool) {
 	var _arg0 *C.GtkToggleButton // out
@@ -335,7 +333,7 @@ func (toggleButton *ToggleButton) SetActive(isActive bool) {
 //
 // The function takes the following parameters:
 //
-//    - group (optional): another GtkToggleButton to form a group with.
+//   - group (optional): another GtkToggleButton to form a group with.
 //
 func (toggleButton *ToggleButton) SetGroup(group *ToggleButton) {
 	var _arg0 *C.GtkToggleButton // out

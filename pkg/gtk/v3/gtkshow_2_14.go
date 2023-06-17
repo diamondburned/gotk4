@@ -29,9 +29,9 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - screen (optional) to show the uri on or NULL for the default screen.
-//    - uri to show.
-//    - timestamp to prevent focus stealing.
+//   - screen (optional) to show the uri on or NULL for the default screen.
+//   - uri to show.
+//   - timestamp to prevent focus stealing.
 //
 func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) error {
 	var _arg1 *C.GdkScreen // out

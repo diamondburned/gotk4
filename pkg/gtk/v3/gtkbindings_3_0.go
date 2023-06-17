@@ -35,13 +35,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - bindingSet: BindingSet.
-//    - signalDesc: signal description.
+//   - bindingSet: BindingSet.
+//   - signalDesc: signal description.
 //
 // The function returns the following values:
 //
-//    - tokenType: G_TOKEN_NONE if the signal was successfully parsed and added,
-//      the expected token otherwise.
+//   - tokenType: G_TOKEN_NONE if the signal was successfully parsed and added,
+//     the expected token otherwise.
 //
 func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType {
 	var _arg1 *C.GtkBindingSet // out

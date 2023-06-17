@@ -36,14 +36,14 @@ func init() {
 // it asynchronously in a later iteration of the main context.
 type AsyncReadyCallback func(res AsyncResulter)
 
-// FileProgressCallback: when doing file operations that may take a while, such
-// as moving a file or copying a file, a progress callback is used to pass how
-// far along that operation is to the application.
+// FileProgressCallback: when doing file operations that may take a while,
+// such as moving a file or copying a file, a progress callback is used to pass
+// how far along that operation is to the application.
 type FileProgressCallback func(currentNumBytes, totalNumBytes int64)
 
 // FileReadMoreCallback: when loading the partial contents of a file with
-// g_file_load_partial_contents_async(), it may become necessary to determine if
-// any more data from the file should be loaded. A ReadMoreCallback function
+// g_file_load_partial_contents_async(), it may become necessary to determine
+// if any more data from the file should be loaded. A ReadMoreCallback function
 // facilitates this by returning TRUE if more data should be read, or FALSE
 // otherwise.
 type FileReadMoreCallback func(fileContents string, fileSize int64) (ok bool)
@@ -91,19 +91,19 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 
 // EnumerateNamespace checks if the matcher will match all of the keys in a
 // given namespace. This will always return TRUE if a wildcard character is in
-// use (e.g. if matcher was created with "standard::*" and ns is "standard", or
-// if matcher was created using "*" and namespace is anything.)
+// use (e.g. if matcher was created with "standard::*" and ns is "standard",
+// or if matcher was created using "*" and namespace is anything.)
 //
 // TODO: this is awkwardly worded.
 //
 // The function takes the following parameters:
 //
-//    - ns: string containing a file attribute namespace.
+//   - ns: string containing a file attribute namespace.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the matcher matches all of the entries in the given ns, FALSE
-//      otherwise.
+//   - ok: TRUE if the matcher matches all of the entries in the given ns,
+//     FALSE otherwise.
 //
 func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
@@ -131,8 +131,8 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 //
 // The function returns the following values:
 //
-//    - utf8 (optional): string containing the next attribute or, NULL if no more
-//      attribute exist.
+//   - utf8 (optional): string containing the next attribute or, NULL if no more
+//     attribute exist.
 //
 func (matcher *FileAttributeMatcher) EnumerateNext() string {
 	var _arg0 *C.GFileAttributeMatcher // out
@@ -152,17 +152,17 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 	return _utf8
 }
 
-// Matches checks if an attribute will be matched by an attribute matcher. If
-// the matcher was created with the "*" matching string, this function will
+// Matches checks if an attribute will be matched by an attribute matcher.
+// If the matcher was created with the "*" matching string, this function will
 // always return TRUE.
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if attribute matches matcher. FALSE otherwise.
+//   - ok: TRUE if attribute matches matcher. FALSE otherwise.
 //
 func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
@@ -191,11 +191,11 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 //
 // The function takes the following parameters:
 //
-//    - attribute: file attribute key.
+//   - attribute: file attribute key.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the matcher only matches attribute. FALSE otherwise.
+//   - ok: TRUE if the matcher only matches attribute. FALSE otherwise.
 //
 func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
@@ -223,18 +223,18 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 // matcher that supports those attributes.
 //
 // Note that currently it is not possible to remove a single attribute when the
-// matcher matches the whole namespace - or remove a namespace or attribute when
-// the matcher matches everything. This is a limitation of the current
+// matcher matches the whole namespace - or remove a namespace or attribute
+// when the matcher matches everything. This is a limitation of the current
 // implementation, but may be fixed in the future.
 //
 // The function takes the following parameters:
 //
-//    - subtract (optional): matcher to subtract.
+//   - subtract (optional): matcher to subtract.
 //
 // The function returns the following values:
 //
-//    - fileAttributeMatcher (optional): file attribute matcher matching all
-//      attributes of matcher that are not matched by subtract.
+//   - fileAttributeMatcher (optional): file attribute matcher matching all
+//     attributes of matcher that are not matched by subtract.
 //
 func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
@@ -274,8 +274,8 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 //
 // The function returns the following values:
 //
-//    - utf8: string describing the attributes the matcher matches against or
-//      NULL if matcher was NULL.
+//   - utf8: string describing the attributes the matcher matches against or
+//     NULL if matcher was NULL.
 //
 func (matcher *FileAttributeMatcher) String() string {
 	var _arg0 *C.GFileAttributeMatcher // out
@@ -361,7 +361,7 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 //
 // The function returns the following values:
 //
-//    - srvTarget: copy of target.
+//   - srvTarget: copy of target.
 //
 func (target *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
@@ -392,7 +392,7 @@ func (target *SrvTarget) Copy() *SrvTarget {
 //
 // The function returns the following values:
 //
-//    - utf8 target's hostname.
+//   - utf8 target's hostname.
 //
 func (target *SrvTarget) Hostname() string {
 	var _arg0 *C.GSrvTarget // out
@@ -414,7 +414,7 @@ func (target *SrvTarget) Hostname() string {
 //
 // The function returns the following values:
 //
-//    - guint16 target's port.
+//   - guint16 target's port.
 //
 func (target *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
@@ -437,7 +437,7 @@ func (target *SrvTarget) Port() uint16 {
 //
 // The function returns the following values:
 //
-//    - guint16 target's priority.
+//   - guint16 target's priority.
 //
 func (target *SrvTarget) Priority() uint16 {
 	var _arg0 *C.GSrvTarget // out
@@ -460,7 +460,7 @@ func (target *SrvTarget) Priority() uint16 {
 //
 // The function returns the following values:
 //
-//    - guint16 target's weight.
+//   - guint16 target's weight.
 //
 func (target *SrvTarget) Weight() uint16 {
 	var _arg0 *C.GSrvTarget // out

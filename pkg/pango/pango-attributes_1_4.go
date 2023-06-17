@@ -21,13 +21,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - enableFallback: TRUE if we should fall back on other fonts for characters
-//      the active font is missing.
+//   - enableFallback: TRUE if we should fall back on other fonts for characters
+//     the active font is missing.
 //
 // The function returns the following values:
 //
-//    - attribute: newly allocated PangoAttribute, which should be freed with
-//      pango.Attribute.Destroy().
+//   - attribute: newly allocated PangoAttribute, which should be freed with
+//     pango.Attribute.Destroy().
 //
 func NewAttrFallback(enableFallback bool) *Attribute {
 	var _arg1 C.gboolean        // out

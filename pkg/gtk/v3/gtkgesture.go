@@ -39,14 +39,14 @@ func init() {
 // to implement single-touch and pointer-based gestures (using the special NULL
 // EventSequence value for these).
 //
-// The number of touches that a Gesture need to be recognized is controlled by
-// the Gesture:n-points property, if a gesture is keeping track of less or more
-// than that number of sequences, it won't check wether the gesture is
+// The number of touches that a Gesture need to be recognized is controlled
+// by the Gesture:n-points property, if a gesture is keeping track of less or
+// more than that number of sequences, it won't check wether the gesture is
 // recognized.
 //
 // As soon as the gesture has the expected number of touches, the gesture will
-// run the Gesture::check signal regularly on input events until the gesture is
-// recognized, the criteria to consider a gesture as "recognized" is left to
+// run the Gesture::check signal regularly on input events until the gesture
+// is recognized, the criteria to consider a gesture as "recognized" is left to
 // Gesture subclasses.
 //
 // A recognized gesture will then emit the following signals:
@@ -57,8 +57,7 @@ func init() {
 //
 // - Gesture::end when the gesture is no longer recognized.
 //
-//
-// Event propagation
+// # Event propagation
 //
 // In order to receive events, a gesture needs to either set a propagation phase
 // through gtk_event_controller_set_propagation_phase(), or feed those manually
@@ -77,8 +76,7 @@ func init() {
 // toplevel, and gestures that are attached to containers above the widget get a
 // chance to interact with events that have not been handled yet.
 //
-//
-// States of a sequence
+// # States of a sequence
 //
 // Whenever input interaction happens, a single event may trigger a cascade of
 // Gestures, both across the parents of the widget receiving the event and in
@@ -86,8 +84,8 @@ func init() {
 // using those gestures to set the state of touch sequences accordingly in order
 // to enable cooperation of gestures around the EventSequences triggering those.
 //
-// Within a widget, gestures can be grouped through gtk_gesture_group(), grouped
-// gestures synchronize the state of sequences, so calling
+// Within a widget, gestures can be grouped through gtk_gesture_group(),
+// grouped gestures synchronize the state of sequences, so calling
 // gtk_gesture_set_sequence_state() on one will effectively propagate the state
 // throughout the group.
 //
@@ -103,8 +101,8 @@ func init() {
 // If a sequence enters in the K_EVENT_SEQUENCE_CLAIMED state, the gesture group
 // will grab all interaction on the sequence, by:
 //
-// - Setting the same sequence to K_EVENT_SEQUENCE_DENIED on every other gesture
-// group within the widget, and every gesture on parent widgets in the
+// - Setting the same sequence to K_EVENT_SEQUENCE_DENIED on every other
+// gesture group within the widget, and every gesture on parent widgets in the
 // propagation chain.
 //
 // - calling Gesture::cancel on every gesture in widgets underneath in the
@@ -121,8 +119,7 @@ func init() {
 // Sequence states can't be changed freely, see gtk_gesture_set_sequence_state()
 // to know about the possible lifetimes of a EventSequence.
 //
-//
-// Touchpad gestures
+// # Touchpad gestures
 //
 // On the platforms that support it, Gesture will handle transparently touchpad
 // gesture events. The only precautions users of Gesture should do to enable
@@ -173,8 +170,8 @@ func BaseGesture(obj Gesturer) *Gesture {
 	return obj.baseGesture()
 }
 
-// ConnectBegin: this signal is emitted when the gesture is recognized. This
-// means the number of touch sequences matches Gesture:n-points, and the
+// ConnectBegin: this signal is emitted when the gesture is recognized.
+// This means the number of touch sequences matches Gesture:n-points, and the
 // Gesture::check handler(s) returned UE.
 //
 // Note: These conditions may also happen when an extra touch (eg. a third touch
@@ -184,10 +181,10 @@ func (gesture *Gesture) ConnectBegin(f func(sequence *gdk.EventSequence)) coregl
 	return coreglib.ConnectGeneratedClosure(gesture, "begin", false, unsafe.Pointer(C._gotk4_gtk3_Gesture_ConnectBegin), f)
 }
 
-// ConnectCancel: this signal is emitted whenever a sequence is cancelled. This
-// usually happens on active touches when gtk_event_controller_reset() is called
-// on gesture (manually, due to grabs...), or the individual sequence was
-// claimed by parent widgets' controllers (see
+// ConnectCancel: this signal is emitted whenever a sequence is cancelled.
+// This usually happens on active touches when gtk_event_controller_reset()
+// is called on gesture (manually, due to grabs...), or the
+// individual sequence was claimed by parent widgets' controllers (see
 // gtk_gesture_set_sequence_state()).
 //
 // gesture must forget everything about sequence as a reaction to this signal.
@@ -208,8 +205,8 @@ func (gesture *Gesture) ConnectEnd(f func(sequence *gdk.EventSequence)) coreglib
 	return coreglib.ConnectGeneratedClosure(gesture, "end", false, unsafe.Pointer(C._gotk4_gtk3_Gesture_ConnectEnd), f)
 }
 
-// ConnectSequenceStateChanged: this signal is emitted whenever a sequence state
-// changes. See gtk_gesture_set_sequence_state() to know more about the
+// ConnectSequenceStateChanged: this signal is emitted whenever a sequence
+// state changes. See gtk_gesture_set_sequence_state() to know more about the
 // expectable sequence lifetimes.
 func (gesture *Gesture) ConnectSequenceStateChanged(f func(sequence *gdk.EventSequence, state EventSequenceState)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(gesture, "sequence-state-changed", false, unsafe.Pointer(C._gotk4_gtk3_Gesture_ConnectSequenceStateChanged), f)
@@ -226,15 +223,15 @@ func (gesture *Gesture) ConnectUpdate(f func(sequence *gdk.EventSequence)) coreg
 // this function returns TRUE and fills in rect with the bounding box containing
 // all active touches. Otherwise, FALSE will be returned.
 //
-// Note: This function will yield unexpected results on touchpad gestures. Since
-// there is no correlation between physical and pixel distances, these will look
-// as if constrained in an infinitely small area, rect width and height will
-// thus be 0 regardless of the number of touchpoints.
+// Note: This function will yield unexpected results on touchpad gestures.
+// Since there is no correlation between physical and pixel distances,
+// these will look as if constrained in an infinitely small area, rect width and
+// height will thus be 0 regardless of the number of touchpoints.
 //
 // The function returns the following values:
 //
-//    - rect: bounding box containing all active touches.
-//    - ok: TRUE if there are active touches, FALSE otherwise.
+//   - rect: bounding box containing all active touches.
+//   - ok: TRUE if there are active touches, FALSE otherwise.
 //
 func (gesture *Gesture) BoundingBox() (*gdk.Rectangle, bool) {
 	var _arg0 *C.GtkGesture  // out
@@ -258,15 +255,15 @@ func (gesture *Gesture) BoundingBox() (*gdk.Rectangle, bool) {
 }
 
 // BoundingBoxCenter: if there are touch sequences being currently handled by
-// gesture, this function returns TRUE and fills in x and y with the center of
-// the bounding box containing all active touches. Otherwise, FALSE will be
+// gesture, this function returns TRUE and fills in x and y with the center
+// of the bounding box containing all active touches. Otherwise, FALSE will be
 // returned.
 //
 // The function returns the following values:
 //
-//    - x: x coordinate for the bounding box center.
-//    - y: y coordinate for the bounding box center.
-//    - ok: FALSE if no active touches are present, TRUE otherwise.
+//   - x: x coordinate for the bounding box center.
+//   - y: y coordinate for the bounding box center.
+//   - ok: FALSE if no active touches are present, TRUE otherwise.
 //
 func (gesture *Gesture) BoundingBoxCenter() (x, y float64, ok bool) {
 	var _arg0 *C.GtkGesture // out
@@ -292,12 +289,12 @@ func (gesture *Gesture) BoundingBoxCenter() (x, y float64, ok bool) {
 	return _x, _y, _ok
 }
 
-// Device returns the master Device that is currently operating on gesture, or
-// NULL if the gesture is not being interacted.
+// Device returns the master Device that is currently operating on gesture,
+// or NULL if the gesture is not being interacted.
 //
 // The function returns the following values:
 //
-//    - device (optional) or NULL.
+//   - device (optional) or NULL.
 //
 func (gesture *Gesture) Device() gdk.Devicer {
 	var _arg0 *C.GtkGesture // out
@@ -334,7 +331,7 @@ func (gesture *Gesture) Device() gdk.Devicer {
 //
 // The function returns the following values:
 //
-//    - list: list of Gestures, free with g_list_free().
+//   - list: list of Gestures, free with g_list_free().
 //
 func (gesture *Gesture) GetGroup() []Gesturer {
 	var _arg0 *C.GtkGesture // out
@@ -381,11 +378,11 @@ func (gesture *Gesture) GetGroup() []Gesturer {
 //
 // The function takes the following parameters:
 //
-//    - sequence (optional): EventSequence.
+//   - sequence (optional): EventSequence.
 //
 // The function returns the following values:
 //
-//    - event (optional): last event from sequence.
+//   - event (optional): last event from sequence.
 //
 func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) *gdk.Event {
 	var _arg0 *C.GtkGesture       // out
@@ -419,7 +416,7 @@ func (gesture *Gesture) LastEvent(sequence *gdk.EventSequence) *gdk.Event {
 //
 // The function returns the following values:
 //
-//    - eventSequence (optional): last updated sequence.
+//   - eventSequence (optional): last updated sequence.
 //
 func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 	var _arg0 *C.GtkGesture       // out
@@ -445,13 +442,13 @@ func (gesture *Gesture) LastUpdatedSequence() *gdk.EventSequence {
 //
 // The function takes the following parameters:
 //
-//    - sequence (optional) or NULL for pointer events.
+//   - sequence (optional) or NULL for pointer events.
 //
 // The function returns the following values:
 //
-//    - x (optional): return location for X axis of the sequence coordinates.
-//    - y (optional): return location for Y axis of the sequence coordinates.
-//    - ok: TRUE if sequence is currently interpreted.
+//   - x (optional): return location for X axis of the sequence coordinates.
+//   - y (optional): return location for Y axis of the sequence coordinates.
+//   - ok: TRUE if sequence is currently interpreted.
 //
 func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x, y float64, ok bool) {
 	var _arg0 *C.GtkGesture       // out
@@ -486,11 +483,11 @@ func (gesture *Gesture) Point(sequence *gdk.EventSequence) (x, y float64, ok boo
 //
 // The function takes the following parameters:
 //
-//    - sequence: EventSequence.
+//   - sequence: EventSequence.
 //
 // The function returns the following values:
 //
-//    - eventSequenceState: sequence state in gesture.
+//   - eventSequenceState: sequence state in gesture.
 //
 func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
 	var _arg0 *C.GtkGesture           // out
@@ -516,9 +513,9 @@ func (gesture *Gesture) SequenceState(sequence *gdk.EventSequence) EventSequence
 //
 // The function returns the following values:
 //
-//    - list: list of EventSequences, the list elements are owned by GTK+ and
-//      must not be freed or modified, the list itself must be deleted through
-//      g_list_free().
+//   - list: list of EventSequences, the list elements are owned by GTK+ and
+//     must not be freed or modified, the list itself must be deleted through
+//     g_list_free().
 //
 func (gesture *Gesture) Sequences() []*gdk.EventSequence {
 	var _arg0 *C.GtkGesture // out
@@ -547,7 +544,7 @@ func (gesture *Gesture) Sequences() []*gdk.EventSequence {
 //
 // The function returns the following values:
 //
-//    - window (optional): user defined window, or NULL if none.
+//   - window (optional): user defined window, or NULL if none.
 //
 func (gesture *Gesture) Window() gdk.Windower {
 	var _arg0 *C.GtkGesture // out
@@ -583,8 +580,8 @@ func (gesture *Gesture) Window() gdk.Windower {
 // Group adds gesture to the same group than group_gesture. Gestures are by
 // default isolated in their own groups.
 //
-// When gestures are grouped, the state of EventSequences is kept in sync for
-// all of those, so calling gtk_gesture_set_sequence_state(), on one will
+// When gestures are grouped, the state of EventSequences is kept in sync
+// for all of those, so calling gtk_gesture_set_sequence_state(), on one will
 // transfer the same value to the others.
 //
 // Groups also perform an "implicit grabbing" of sequences, if a EventSequence
@@ -594,7 +591,7 @@ func (gesture *Gesture) Window() gdk.Windower {
 //
 // The function takes the following parameters:
 //
-//    - gesture: Gesture.
+//   - gesture: Gesture.
 //
 func (groupGesture *Gesture) Group(gesture Gesturer) {
 	var _arg0 *C.GtkGesture // out
@@ -613,11 +610,11 @@ func (groupGesture *Gesture) Group(gesture Gesturer) {
 //
 // The function takes the following parameters:
 //
-//    - sequence (optional) or NULL.
+//   - sequence (optional) or NULL.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if gesture is handling sequence, FALSE otherwise.
+//   - ok: TRUE if gesture is handling sequence, FALSE otherwise.
 //
 func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var _arg0 *C.GtkGesture       // out
@@ -647,7 +644,7 @@ func (gesture *Gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if gesture is active.
+//   - ok: TRUE if gesture is active.
 //
 func (gesture *Gesture) IsActive() bool {
 	var _arg0 *C.GtkGesture // out
@@ -671,11 +668,11 @@ func (gesture *Gesture) IsActive() bool {
 //
 // The function takes the following parameters:
 //
-//    - other Gesture.
+//   - other Gesture.
 //
 // The function returns the following values:
 //
-//    - ok: whether the gestures are grouped.
+//   - ok: whether the gestures are grouped.
 //
 func (gesture *Gesture) IsGroupedWith(other Gesturer) bool {
 	var _arg0 *C.GtkGesture // out
@@ -705,7 +702,7 @@ func (gesture *Gesture) IsGroupedWith(other Gesturer) bool {
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if gesture is recognized.
+//   - ok: TRUE if gesture is recognized.
 //
 func (gesture *Gesture) IsRecognized() bool {
 	var _arg0 *C.GtkGesture // out
@@ -762,13 +759,13 @@ func (gesture *Gesture) IsRecognized() bool {
 //
 // The function takes the following parameters:
 //
-//    - sequence: EventSequence.
-//    - state: sequence state.
+//   - sequence: EventSequence.
+//   - state: sequence state.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if sequence is handled by gesture, and the state is changed
-//      successfully.
+//   - ok: TRUE if sequence is handled by gesture, and the state is changed
+//     successfully.
 //
 func (gesture *Gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
@@ -800,11 +797,11 @@ func (gesture *Gesture) SetSequenceState(sequence *gdk.EventSequence, state Even
 //
 // The function takes the following parameters:
 //
-//    - state: sequence state.
+//   - state: sequence state.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the state of at least one sequence was changed successfully.
+//   - ok: TRUE if the state of at least one sequence was changed successfully.
 //
 func (gesture *Gesture) SetState(state EventSequenceState) bool {
 	var _arg0 *C.GtkGesture           // out
@@ -833,7 +830,7 @@ func (gesture *Gesture) SetState(state EventSequenceState) bool {
 //
 // The function takes the following parameters:
 //
-//    - window (optional) or NULL.
+//   - window (optional) or NULL.
 //
 func (gesture *Gesture) SetWindow(window gdk.Windower) {
 	var _arg0 *C.GtkGesture // out

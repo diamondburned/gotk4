@@ -14,18 +14,18 @@ import "C"
 // DBusAddressEscapeValue: escape string so it can appear in a D-Bus address as
 // the value part of a key-value pair.
 //
-// For instance, if string is /run/bus-for-:0, this function would return
-// /run/bus-for-3A0, which could be used in a D-Bus address like
+// For instance, if string is /run/bus-for-:0, this function would
+// return /run/bus-for-3A0, which could be used in a D-Bus address like
 // unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0.
 //
 // The function takes the following parameters:
 //
-//    - str: unescaped string to be included in a D-Bus address as the value in a
-//      key-value pair.
+//   - str: unescaped string to be included in a D-Bus address as the value in a
+//     key-value pair.
 //
 // The function returns the following values:
 //
-//    - utf8: copy of string with all non-optionally-escaped bytes escaped.
+//   - utf8: copy of string with all non-optionally-escaped bytes escaped.
 //
 func DBusAddressEscapeValue(str string) string {
 	var _arg1 *C.gchar // out

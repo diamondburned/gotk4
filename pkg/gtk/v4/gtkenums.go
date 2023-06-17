@@ -157,8 +157,8 @@ const (
 	// may be displayed.
 	AccessibleAutocompleteList
 	// AccessibleAutocompleteBoth: when a user is providing input, an element
-	// containing a collection of values that could complete the provided input
-	// may be displayed. If displayed, one value in the collection is
+	// containing a collection of values that could complete the provided
+	// input may be displayed. If displayed, one value in the collection is
 	// automatically selected, and the text needed to complete the automatically
 	// selected value appears after the caret in the input.
 	AccessibleAutocompleteBoth
@@ -254,16 +254,16 @@ const (
 	// AccessiblePropertyMultiLine indicates whether a text box accepts multiple
 	// lines of input or only a single line. Value type: boolean.
 	AccessiblePropertyMultiLine
-	// AccessiblePropertyMultiSelectable indicates that the user may select more
-	// than one item from the current selectable descendants. Value type:
+	// AccessiblePropertyMultiSelectable indicates that the user may select
+	// more than one item from the current selectable descendants. Value type:
 	// boolean.
 	AccessiblePropertyMultiSelectable
 	// AccessiblePropertyOrientation indicates whether the element's orientation
 	// is horizontal, vertical, or unknown/ambiguous. Value type: Orientation.
 	AccessiblePropertyOrientation
 	// AccessiblePropertyPlaceholder defines a short hint (a word or short
-	// phrase) intended to aid the user with data entry when the control has no
-	// value. A hint could be a sample value or a brief description of the
+	// phrase) intended to aid the user with data entry when the control has
+	// no value. A hint could be a sample value or a brief description of the
 	// expected format. Value type: string.
 	AccessiblePropertyPlaceholder
 	// AccessiblePropertyReadOnly indicates that the element is not editable,
@@ -351,15 +351,15 @@ type AccessibleRelation C.gint
 
 const (
 	// AccessibleRelationActiveDescendant identifies the currently active
-	// element when focus is on a composite widget, combobox, textbox, group, or
-	// application. Value type: reference.
+	// element when focus is on a composite widget, combobox, textbox, group,
+	// or application. Value type: reference.
 	AccessibleRelationActiveDescendant AccessibleRelation = iota
 	// AccessibleRelationColCount defines the total number of columns in a
 	// table, grid, or treegrid. Value type: integer.
 	AccessibleRelationColCount
 	// AccessibleRelationColIndex defines an element's column index or position
-	// with respect to the total number of columns within a table, grid, or
-	// treegrid. Value type: integer.
+	// with respect to the total number of columns within a table, grid,
+	// or treegrid. Value type: integer.
 	AccessibleRelationColIndex
 	// AccessibleRelationColIndexText defines a human readable text alternative
 	// of GTK_ACCESSIBLE_RELATION_COL_INDEX. Value type: string.
@@ -381,8 +381,8 @@ const (
 	// AccessibleRelationErrorMessage identifies the element that provides an
 	// error message for an object. Value type: reference.
 	AccessibleRelationErrorMessage
-	// AccessibleRelationFlowTo identifies the next element (or elements) in an
-	// alternate reading order of content which, at the user's discretion,
+	// AccessibleRelationFlowTo identifies the next element (or elements) in
+	// an alternate reading order of content which, at the user's discretion,
 	// allows assistive technology to override the general default of reading in
 	// document source order. Value type: reference.
 	AccessibleRelationFlowTo
@@ -401,8 +401,8 @@ const (
 	// grid, or treegrid. Value type: integer.
 	AccessibleRelationRowCount
 	// AccessibleRelationRowIndex defines an element's row index or position
-	// with respect to the total number of rows within a table, grid, or
-	// treegrid. Value type: integer.
+	// with respect to the total number of rows within a table, grid,
+	// or treegrid. Value type: integer.
 	AccessibleRelationRowIndex
 	// AccessibleRelationRowIndexText defines a human readable text alternative
 	// of aria-rowindex. Value type: string.
@@ -489,8 +489,8 @@ const (
 	AccessibleRoleCheckbox
 	// AccessibleRoleColumnHeader: header in a columned list.
 	AccessibleRoleColumnHeader
-	// AccessibleRoleComboBox: input that controls another element, such as a
-	// list or a grid, that can dynamically pop up to help the user set the
+	// AccessibleRoleComboBox: input that controls another element, such as
+	// a list or a grid, that can dynamically pop up to help the user set the
 	// value of the input.
 	AccessibleRoleComboBox
 	// AccessibleRoleCommand: abstract role.
@@ -616,8 +616,8 @@ const (
 	AccessibleRoleStatus
 	// AccessibleRoleStructure: abstract role.
 	AccessibleRoleStructure
-	// AccessibleRoleSwitch: type of checkbox that represents on/off values, as
-	// opposed to checked/unchecked values.
+	// AccessibleRoleSwitch: type of checkbox that represents on/off values,
+	// as opposed to checked/unchecked values.
 	AccessibleRoleSwitch
 	// AccessibleRoleTab: item in a list of tab used for switching pages.
 	AccessibleRoleTab
@@ -956,8 +956,8 @@ func (a AccessibleTristate) String() string {
 // Alignment only matters if the widget receives a “too large” allocation, for
 // example if you packed the widget with the gtk.Widget:hexpand property inside
 // a GtkBox, then the widget might get extra space. If you have for example a
-// 16x16 icon inside a 32x32 space, the icon could be scaled and stretched, it
-// could be centered, or it could be positioned to one side of the space.
+// 16x16 icon inside a 32x32 space, the icon could be scaled and stretched,
+// it could be centered, or it could be positioned to one side of the space.
 //
 // Note that in horizontal context GTK_ALIGN_START and GTK_ALIGN_END are
 // interpreted relative to text direction.
@@ -1043,9 +1043,9 @@ func (a ArrowType) String() string {
 
 // BaselinePosition: baseline position in a row of widgets.
 //
-// Whenever a container has some form of natural row it may align children in
-// that row along a common typographical baseline. If the amount of vertical
-// space in the row is taller than the total requested height of the
+// Whenever a container has some form of natural row it may align children
+// in that row along a common typographical baseline. If the amount of
+// vertical space in the row is taller than the total requested height of the
 // baseline-aligned children then it can use a GtkBaselinePosition to select
 // where to put the baseline inside the extra available space.
 type BaselinePosition C.gint
@@ -1156,8 +1156,8 @@ const (
 	// direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR languages,
 	// and GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones.
 	ConstraintAttributeStart
-	// ConstraintAttributeEnd: trailing edge of a widget, depending on text
-	// direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR
+	// ConstraintAttributeEnd: trailing edge of a widget, depending on
+	// text direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR
 	// languages, and GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones.
 	ConstraintAttributeEnd
 	// ConstraintAttributeWidth: width of a widget.
@@ -1241,8 +1241,8 @@ func (c ConstraintRelation) String() string {
 // ConstraintStrength: strength of a constraint, expressed as a symbolic
 // constant.
 //
-// The strength of a Constraint can be expressed with any positive integer; the
-// values of this enumeration can be used for readability.
+// The strength of a Constraint can be expressed with any positive integer;
+// the values of this enumeration can be used for readability.
 type ConstraintStrength C.gint
 
 const (
@@ -1448,8 +1448,8 @@ func (e EventSequenceState) String() string {
 
 // IconSize: built-in icon sizes.
 //
-// Icon sizes default to being inherited. Where they cannot be inherited, text
-// size is the default.
+// Icon sizes default to being inherited. Where they cannot be inherited,
+// text size is the default.
 //
 // All widgets which use GtkIconSize set the normal-icons or large-icons style
 // classes correspondingly, and let themes determine the actual size to be used
@@ -1813,11 +1813,11 @@ func (o Ordering) String() string {
 //
 // The function takes the following parameters:
 //
-//    - cmpfuncResult: result of a comparison function.
+//   - cmpfuncResult: result of a comparison function.
 //
 // The function returns the following values:
 //
-//    - ordering: corresponding GtkOrdering.
+//   - ordering: corresponding GtkOrdering.
 //
 func OrderingFromCmpfunc(cmpfuncResult int) Ordering {
 	var _arg1 C.int         // out
@@ -2201,8 +2201,8 @@ const (
 	// This phase runs from the event widget, up to the toplevel.
 	PhaseBubble
 	// PhaseTarget events are delivered in the default widget event handlers,
-	// note that widget implementations must chain up on button, motion, touch
-	// and grab broken handlers for controllers in this phase to be run.
+	// note that widget implementations must chain up on button, motion,
+	// touch and grab broken handlers for controllers in this phase to be run.
 	PhaseTarget
 )
 
@@ -2592,9 +2592,9 @@ const (
 	SystemSettingDPI SystemSetting = iota
 	// SystemSettingFontName setting has changed.
 	SystemSettingFontName
-	// SystemSettingFontConfig: font configuration has changed in a way that
-	// requires text to be redrawn. This can be any of the
-	// Settings:gtk-xft-antialias, Settings:gtk-xft-hinting,
+	// SystemSettingFontConfig: font configuration has changed in
+	// a way that requires text to be redrawn. This can be any of
+	// the Settings:gtk-xft-antialias, Settings:gtk-xft-hinting,
 	// Settings:gtk-xft-hintstyle, Settings:gtk-xft-rgba or
 	// Settings:gtk-fontconfig-timestamp settings.
 	SystemSettingFontConfig
@@ -2875,8 +2875,8 @@ const (
 	PickDefault PickFlags = 0b0
 	// PickInsensitive: include widgets that are insensitive.
 	PickInsensitive PickFlags = 0b1
-	// PickNonTargetable: include widgets that are marked as non-targetable. See
-	// Widget:can-target.
+	// PickNonTargetable: include widgets that are marked as non-targetable.
+	// See Widget:can-target.
 	PickNonTargetable PickFlags = 0b10
 )
 

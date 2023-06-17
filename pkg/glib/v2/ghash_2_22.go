@@ -18,12 +18,12 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - v1: pointer to a #gdouble key.
-//    - v2: pointer to a #gdouble key to compare with v1.
+//   - v1: pointer to a #gdouble key.
+//   - v2: pointer to a #gdouble key to compare with v1.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two keys match.
+//   - ok: TRUE if the two keys match.
 //
 func DoubleEqual(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
@@ -46,18 +46,18 @@ func DoubleEqual(v1, v2 unsafe.Pointer) bool {
 	return _ok
 }
 
-// DoubleHash converts a pointer to a #gdouble to a hash value. It can be passed
-// to g_hash_table_new() as the hash_func parameter, It can be passed to
+// DoubleHash converts a pointer to a #gdouble to a hash value. It can be
+// passed to g_hash_table_new() as the hash_func parameter, It can be passed to
 // g_hash_table_new() as the hash_func parameter, when using non-NULL pointers
 // to doubles as keys in a Table.
 //
 // The function takes the following parameters:
 //
-//    - v: pointer to a #gdouble key.
+//   - v: pointer to a #gdouble key.
 //
 // The function returns the following values:
 //
-//    - guint: hash value corresponding to the key.
+//   - guint: hash value corresponding to the key.
 //
 func DoubleHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
@@ -75,19 +75,19 @@ func DoubleHash(v unsafe.Pointer) uint {
 	return _guint
 }
 
-// Int64Equal compares the two #gint64 values being pointed to and returns TRUE
-// if they are equal. It can be passed to g_hash_table_new() as the
+// Int64Equal compares the two #gint64 values being pointed to and returns
+// TRUE if they are equal. It can be passed to g_hash_table_new() as the
 // key_equal_func parameter, when using non-NULL pointers to 64-bit integers as
 // keys in a Table.
 //
 // The function takes the following parameters:
 //
-//    - v1: pointer to a #gint64 key.
-//    - v2: pointer to a #gint64 key to compare with v1.
+//   - v1: pointer to a #gint64 key.
+//   - v2: pointer to a #gint64 key to compare with v1.
 //
 // The function returns the following values:
 //
-//    - ok: TRUE if the two keys match.
+//   - ok: TRUE if the two keys match.
 //
 func Int64Equal(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
@@ -117,11 +117,11 @@ func Int64Equal(v1, v2 unsafe.Pointer) bool {
 //
 // The function takes the following parameters:
 //
-//    - v: pointer to a #gint64 key.
+//   - v: pointer to a #gint64 key.
 //
 // The function returns the following values:
 //
-//    - guint: hash value corresponding to the key.
+//   - guint: hash value corresponding to the key.
 //
 func Int64Hash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out

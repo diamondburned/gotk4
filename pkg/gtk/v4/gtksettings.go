@@ -84,7 +84,7 @@ func marshalSettings(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//    - name of the setting to reset.
+//   - name of the setting to reset.
 //
 func (settings *Settings) ResetProperty(name string) {
 	var _arg0 *C.GtkSettings // out
@@ -106,8 +106,8 @@ func (settings *Settings) ResetProperty(name string) {
 //
 // The function returns the following values:
 //
-//    - settings (optional): GtkSettings object. If there is no default display,
-//      then returns NULL.
+//   - settings (optional): GtkSettings object. If there is no default display,
+//     then returns NULL.
 //
 func SettingsGetDefault() *Settings {
 	var _cret *C.GtkSettings // in
@@ -128,11 +128,11 @@ func SettingsGetDefault() *Settings {
 //
 // The function takes the following parameters:
 //
-//    - display: GdkDisplay.
+//   - display: GdkDisplay.
 //
 // The function returns the following values:
 //
-//    - settings: GtkSettings object.
+//   - settings: GtkSettings object.
 //
 func SettingsGetForDisplay(display *gdk.Display) *Settings {
 	var _arg1 *C.GdkDisplay  // out

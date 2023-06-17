@@ -82,7 +82,7 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 //
 // The function returns the following values:
 //
-//    - cssLocation: end location of this section.
+//   - cssLocation: end location of this section.
 //
 func (section *CSSSection) EndLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
@@ -107,7 +107,7 @@ func (section *CSSSection) EndLocation() *CSSLocation {
 //
 // The function returns the following values:
 //
-//    - file: GFile from which the section was parsed.
+//   - file: GFile from which the section was parsed.
 //
 func (section *CSSSection) File() *gio.File {
 	var _arg0 *C.GtkCssSection // out
@@ -132,15 +132,15 @@ func (section *CSSSection) File() *gio.File {
 
 // Parent gets the parent section for the given section.
 //
-// The parent section is the section that contains this section. A special case
-// are sections of type GTK_CSS_SECTION_DOCUMENT. Their parent will either be
-// NULL if they are the original CSS document that was loaded by
+// The parent section is the section that contains this section. A special
+// case are sections of type GTK_CSS_SECTION_DOCUMENT. Their parent will
+// either be NULL if they are the original CSS document that was loaded by
 // gtk.CSSProvider.LoadFromFile() or a section of type GTK_CSS_SECTION_IMPORT if
 // it was loaded with an import rule from a different file.
 //
 // The function returns the following values:
 //
-//    - cssSection (optional): parent section.
+//   - cssSection (optional): parent section.
 //
 func (section *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection // out
@@ -172,7 +172,7 @@ func (section *CSSSection) Parent() *CSSSection {
 //
 // The function returns the following values:
 //
-//    - cssLocation: start location of this section.
+//   - cssLocation: start location of this section.
 //
 func (section *CSSSection) StartLocation() *CSSLocation {
 	var _arg0 *C.GtkCssSection  // out
@@ -195,7 +195,7 @@ func (section *CSSSection) StartLocation() *CSSLocation {
 //
 // The function returns the following values:
 //
-//    - utf8: new string.
+//   - utf8: new string.
 //
 func (section *CSSSection) String() string {
 	var _arg0 *C.GtkCssSection // out

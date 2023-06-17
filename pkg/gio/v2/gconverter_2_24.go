@@ -77,28 +77,28 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // producing some output (in outbuf) or consuming some input (from inbuf) or
 // both. If its not possible to do any work an error is returned.
 //
-// Note that a single call may not consume all input (or any input at all). Also
-// a call may produce output even if given no input, due to state stored in the
-// converter producing output.
+// Note that a single call may not consume all input (or any input at all).
+// Also a call may produce output even if given no input, due to state stored in
+// the converter producing output.
 //
-// If any data was either produced or consumed, and then an error happens, then
-// only the successful conversion is reported and the error is returned on the
-// next call.
+// If any data was either produced or consumed, and then an error happens,
+// then only the successful conversion is reported and the error is returned on
+// the next call.
 //
 // A full conversion loop involves calling this method repeatedly, each time
 // giving it new input and space output space. When there is no more input data
-// after the data in inbuf, the flag G_CONVERTER_INPUT_AT_END must be set. The
-// loop will be (unless some error happens) returning G_CONVERTER_CONVERTED each
-// time until all data is consumed and all output is produced, then
-// G_CONVERTER_FINISHED is returned instead. Note, that G_CONVERTER_FINISHED may
-// be returned even if G_CONVERTER_INPUT_AT_END is not set, for instance in a
-// decompression converter where the end of data is detectable from the data
+// after the data in inbuf, the flag G_CONVERTER_INPUT_AT_END must be set.
+// The loop will be (unless some error happens) returning G_CONVERTER_CONVERTED
+// each time until all data is consumed and all output is produced, then
+// G_CONVERTER_FINISHED is returned instead. Note, that G_CONVERTER_FINISHED
+// may be returned even if G_CONVERTER_INPUT_AT_END is not set, for instance in
+// a decompression converter where the end of data is detectable from the data
 // (and there might even be other data after the end of the compressed data).
 //
-// When some data has successfully been converted bytes_read and is set to the
-// number of bytes read from inbuf, and bytes_written is set to indicate how
-// many bytes was written to outbuf. If there are more data to output or consume
-// (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
+// When some data has successfully been converted bytes_read and is set to
+// the number of bytes read from inbuf, and bytes_written is set to indicate
+// how many bytes was written to outbuf. If there are more data to output
+// or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
 // G_CONVERTER_CONVERTED is returned, and if no more data is to be output then
 // G_CONVERTER_FINISHED is returned.
 //
@@ -109,8 +109,8 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // resulting converted data, the application should call the function again with
 // a larger outbuf to continue.
 //
-// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to fully
-// determine what the conversion should produce, and the
+// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input
+// to fully determine what the conversion should produce, and the
 // G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with an
 // incomplete multibyte sequence when converting text, or when a regexp matches
 // up to the end of the input (and may match further input). It may also happen
@@ -123,15 +123,15 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // (or, to fail again with G_IO_ERROR_PARTIAL_INPUT in e.g. a charset conversion
 // where the input is actually partial).
 //
-// After g_converter_convert() has returned G_CONVERTER_FINISHED the converter
-// object is in an invalid state where its not allowed to call
+// After g_converter_convert() has returned G_CONVERTER_FINISHED the
+// converter object is in an invalid state where its not allowed to call
 // g_converter_convert() anymore. At this time you can only free the object or
 // call g_converter_reset() to reset it to the initial state.
 //
 // If the flag G_CONVERTER_FLUSH is set then conversion is modified to try to
-// write out all internal state to the output. The application has to call the
-// function multiple times with the flag set, and when the available input has
-// been consumed and all internal state has been produced then
+// write out all internal state to the output. The application has to call
+// the function multiple times with the flag set, and when the available
+// input has been consumed and all internal state has been produced then
 // G_CONVERTER_FLUSHED (or G_CONVERTER_FINISHED if really at the end) is
 // returned instead of G_CONVERTER_CONVERTED. This is somewhat similar to what
 // happens at the end of the input stream, but done in the middle of the data.
@@ -141,27 +141,27 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // into output such that if you uncompress the compressed data you get back all
 // the input data. Doing this may make the final file larger due to padding
 // though. Another example is a regexp conversion, where if you at the end of
-// the flushed data have a match, but there is also a potential longer match. In
-// the non-flushed case we would ask for more input, but when flushing we treat
-// this as the end of input and do the match.
+// the flushed data have a match, but there is also a potential longer match.
+// In the non-flushed case we would ask for more input, but when flushing we
+// treat this as the end of input and do the match.
 //
-// Flushing is not always possible (like if a charset converter flushes at a
-// partial multibyte sequence). Converters are supposed to try to produce as
-// much output as possible and then return an error (typically
+// Flushing is not always possible (like if a charset converter flushes
+// at a partial multibyte sequence). Converters are supposed to try to
+// produce as much output as possible and then return an error (typically
 // G_IO_ERROR_PARTIAL_INPUT).
 //
 // The function takes the following parameters:
 //
-//    - inbuf: buffer containing the data to convert.
-//    - outbuf: buffer to write converted data in.
-//    - flags controlling the conversion details.
+//   - inbuf: buffer containing the data to convert.
+//   - outbuf: buffer to write converted data in.
+//   - flags controlling the conversion details.
 //
 // The function returns the following values:
 //
-//    - bytesRead will be set to the number of bytes read from inbuf on success.
-//    - bytesWritten will be set to the number of bytes written to outbuf on
-//      success.
-//    - converterResult G_CONVERTER_ERROR on error.
+//   - bytesRead will be set to the number of bytes read from inbuf on success.
+//   - bytesWritten will be set to the number of bytes written to outbuf on
+//     success.
+//   - converterResult G_CONVERTER_ERROR on error.
 //
 func (converter *Converter) Convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	var _arg0 *C.GConverter // out
@@ -224,28 +224,28 @@ func (converter *Converter) Reset() {
 // producing some output (in outbuf) or consuming some input (from inbuf) or
 // both. If its not possible to do any work an error is returned.
 //
-// Note that a single call may not consume all input (or any input at all). Also
-// a call may produce output even if given no input, due to state stored in the
-// converter producing output.
+// Note that a single call may not consume all input (or any input at all).
+// Also a call may produce output even if given no input, due to state stored in
+// the converter producing output.
 //
-// If any data was either produced or consumed, and then an error happens, then
-// only the successful conversion is reported and the error is returned on the
-// next call.
+// If any data was either produced or consumed, and then an error happens,
+// then only the successful conversion is reported and the error is returned on
+// the next call.
 //
 // A full conversion loop involves calling this method repeatedly, each time
 // giving it new input and space output space. When there is no more input data
-// after the data in inbuf, the flag G_CONVERTER_INPUT_AT_END must be set. The
-// loop will be (unless some error happens) returning G_CONVERTER_CONVERTED each
-// time until all data is consumed and all output is produced, then
-// G_CONVERTER_FINISHED is returned instead. Note, that G_CONVERTER_FINISHED may
-// be returned even if G_CONVERTER_INPUT_AT_END is not set, for instance in a
-// decompression converter where the end of data is detectable from the data
+// after the data in inbuf, the flag G_CONVERTER_INPUT_AT_END must be set.
+// The loop will be (unless some error happens) returning G_CONVERTER_CONVERTED
+// each time until all data is consumed and all output is produced, then
+// G_CONVERTER_FINISHED is returned instead. Note, that G_CONVERTER_FINISHED
+// may be returned even if G_CONVERTER_INPUT_AT_END is not set, for instance in
+// a decompression converter where the end of data is detectable from the data
 // (and there might even be other data after the end of the compressed data).
 //
-// When some data has successfully been converted bytes_read and is set to the
-// number of bytes read from inbuf, and bytes_written is set to indicate how
-// many bytes was written to outbuf. If there are more data to output or consume
-// (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
+// When some data has successfully been converted bytes_read and is set to
+// the number of bytes read from inbuf, and bytes_written is set to indicate
+// how many bytes was written to outbuf. If there are more data to output
+// or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
 // G_CONVERTER_CONVERTED is returned, and if no more data is to be output then
 // G_CONVERTER_FINISHED is returned.
 //
@@ -256,8 +256,8 @@ func (converter *Converter) Reset() {
 // resulting converted data, the application should call the function again with
 // a larger outbuf to continue.
 //
-// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input to fully
-// determine what the conversion should produce, and the
+// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input
+// to fully determine what the conversion should produce, and the
 // G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with an
 // incomplete multibyte sequence when converting text, or when a regexp matches
 // up to the end of the input (and may match further input). It may also happen
@@ -270,15 +270,15 @@ func (converter *Converter) Reset() {
 // (or, to fail again with G_IO_ERROR_PARTIAL_INPUT in e.g. a charset conversion
 // where the input is actually partial).
 //
-// After g_converter_convert() has returned G_CONVERTER_FINISHED the converter
-// object is in an invalid state where its not allowed to call
+// After g_converter_convert() has returned G_CONVERTER_FINISHED the
+// converter object is in an invalid state where its not allowed to call
 // g_converter_convert() anymore. At this time you can only free the object or
 // call g_converter_reset() to reset it to the initial state.
 //
 // If the flag G_CONVERTER_FLUSH is set then conversion is modified to try to
-// write out all internal state to the output. The application has to call the
-// function multiple times with the flag set, and when the available input has
-// been consumed and all internal state has been produced then
+// write out all internal state to the output. The application has to call
+// the function multiple times with the flag set, and when the available
+// input has been consumed and all internal state has been produced then
 // G_CONVERTER_FLUSHED (or G_CONVERTER_FINISHED if really at the end) is
 // returned instead of G_CONVERTER_CONVERTED. This is somewhat similar to what
 // happens at the end of the input stream, but done in the middle of the data.
@@ -288,27 +288,27 @@ func (converter *Converter) Reset() {
 // into output such that if you uncompress the compressed data you get back all
 // the input data. Doing this may make the final file larger due to padding
 // though. Another example is a regexp conversion, where if you at the end of
-// the flushed data have a match, but there is also a potential longer match. In
-// the non-flushed case we would ask for more input, but when flushing we treat
-// this as the end of input and do the match.
+// the flushed data have a match, but there is also a potential longer match.
+// In the non-flushed case we would ask for more input, but when flushing we
+// treat this as the end of input and do the match.
 //
-// Flushing is not always possible (like if a charset converter flushes at a
-// partial multibyte sequence). Converters are supposed to try to produce as
-// much output as possible and then return an error (typically
+// Flushing is not always possible (like if a charset converter flushes
+// at a partial multibyte sequence). Converters are supposed to try to
+// produce as much output as possible and then return an error (typically
 // G_IO_ERROR_PARTIAL_INPUT).
 //
 // The function takes the following parameters:
 //
-//    - inbuf (optional): buffer containing the data to convert.
-//    - outbuf (optional): buffer to write converted data in.
-//    - flags controlling the conversion details.
+//   - inbuf (optional): buffer containing the data to convert.
+//   - outbuf (optional): buffer to write converted data in.
+//   - flags controlling the conversion details.
 //
 // The function returns the following values:
 //
-//    - bytesRead will be set to the number of bytes read from inbuf on success.
-//    - bytesWritten will be set to the number of bytes written to outbuf on
-//      success.
-//    - converterResult G_CONVERTER_ERROR on error.
+//   - bytesRead will be set to the number of bytes read from inbuf on success.
+//   - bytesWritten will be set to the number of bytes written to outbuf on
+//     success.
+//   - converterResult G_CONVERTER_ERROR on error.
 //
 func (converter *Converter) convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	gclass := (*C.GConverterIface)(coreglib.PeekParentClass(converter))

@@ -20,8 +20,8 @@ import "C"
 // priority events pending. If the function returns FALSE it is automatically
 // removed from the list of event sources and will not be called again.
 //
-// This variant of g_idle_add_full() calls function with the GDK lock held. It
-// can be thought of a MT-safe version for GTK+ widgets for the following use
+// This variant of g_idle_add_full() calls function with the GDK lock held.
+// It can be thought of a MT-safe version for GTK+ widgets for the following use
 // case, where you have to worry about idle_callback() running in thread A and
 // accessing self after it has been finalized in thread B:
 //
@@ -57,13 +57,13 @@ import "C"
 //
 // The function takes the following parameters:
 //
-//    - priority of the idle source. Typically this will be in the range between
-//      PRIORITY_DEFAULT_IDLE and PRIORITY_HIGH_IDLE.
-//    - function to call.
+//   - priority of the idle source. Typically this will be in the range between
+//     PRIORITY_DEFAULT_IDLE and PRIORITY_HIGH_IDLE.
+//   - function to call.
 //
 // The function returns the following values:
 //
-//    - guint: ID (greater than 0) of the event source.
+//   - guint: ID (greater than 0) of the event source.
 //
 func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out
@@ -96,8 +96,8 @@ func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 // of the first interval.
 //
 // Note that timeout functions may be delayed, due to the processing of other
-// event sources. Thus they should not be relied on for precise timing. After
-// each call to the timeout function, the time of the next timeout is
+// event sources. Thus they should not be relied on for precise timing.
+// After each call to the timeout function, the time of the next timeout is
 // recalculated based on the current time and the given interval (it does not
 // try to “catch up” time lost in delays).
 //
@@ -132,15 +132,15 @@ func ThreadsAddIdle(priority int, function glib.SourceFunc) uint {
 //
 // The function takes the following parameters:
 //
-//    - priority of the timeout source. Typically this will be in the range
-//      between PRIORITY_DEFAULT_IDLE and PRIORITY_HIGH_IDLE.
-//    - interval: time between calls to the function, in milliseconds (1/1000ths
-//      of a second).
-//    - function to call.
+//   - priority of the timeout source. Typically this will be in the range
+//     between PRIORITY_DEFAULT_IDLE and PRIORITY_HIGH_IDLE.
+//   - interval: time between calls to the function, in milliseconds (1/1000ths
+//     of a second).
+//   - function to call.
 //
 // The function returns the following values:
 //
-//    - guint: ID (greater than 0) of the event source.
+//   - guint: ID (greater than 0) of the event source.
 //
 func ThreadsAddTimeout(priority int, interval uint, function glib.SourceFunc) uint {
 	var _arg1 C.gint        // out

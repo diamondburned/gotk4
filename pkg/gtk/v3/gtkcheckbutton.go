@@ -146,7 +146,7 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - checkButton: Widget.
+//   - checkButton: Widget.
 //
 func NewCheckButton() *CheckButton {
 	var _cret *C.GtkWidget // in
@@ -165,11 +165,11 @@ func NewCheckButton() *CheckButton {
 //
 // The function takes the following parameters:
 //
-//    - label: text for the check button.
+//   - label: text for the check button.
 //
 // The function returns the following values:
 //
-//    - checkButton: Widget.
+//   - checkButton: Widget.
 //
 func NewCheckButtonWithLabel(label string) *CheckButton {
 	var _arg1 *C.gchar     // out
@@ -188,18 +188,18 @@ func NewCheckButtonWithLabel(label string) *CheckButton {
 	return _checkButton
 }
 
-// NewCheckButtonWithMnemonic creates a new CheckButton containing a label. The
-// label will be created using gtk_label_new_with_mnemonic(), so underscores in
-// label indicate the mnemonic for the check button.
+// NewCheckButtonWithMnemonic creates a new CheckButton containing a label.
+// The label will be created using gtk_label_new_with_mnemonic(), so underscores
+// in label indicate the mnemonic for the check button.
 //
 // The function takes the following parameters:
 //
-//    - label: text of the button, with an underscore in front of the mnemonic
-//      character.
+//   - label: text of the button, with an underscore in front of the mnemonic
+//     character.
 //
 // The function returns the following values:
 //
-//    - checkButton: new CheckButton.
+//   - checkButton: new CheckButton.
 //
 func NewCheckButtonWithMnemonic(label string) *CheckButton {
 	var _arg1 *C.gchar     // out

@@ -161,7 +161,7 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//    - popoverMenu: new PopoverMenu.
+//   - popoverMenu: new PopoverMenu.
 //
 func NewPopoverMenu() *PopoverMenu {
 	var _cret *C.GtkWidget // in
@@ -175,8 +175,8 @@ func NewPopoverMenu() *PopoverMenu {
 	return _popoverMenu
 }
 
-// OpenSubmenu opens a submenu of the popover. The name must be one of the names
-// given to the submenus of popover with PopoverMenu:submenu, or "main" to
+// OpenSubmenu opens a submenu of the popover. The name must be one of the
+// names given to the submenus of popover with PopoverMenu:submenu, or "main" to
 // switch back to the main menu.
 //
 // ModelButton will open submenus automatically when the ModelButton:menu-name
@@ -185,7 +185,7 @@ func NewPopoverMenu() *PopoverMenu {
 //
 // The function takes the following parameters:
 //
-//    - name of the menu to switch to.
+//   - name of the menu to switch to.
 //
 func (popover *PopoverMenu) OpenSubmenu(name string) {
 	var _arg0 *C.GtkPopoverMenu // out

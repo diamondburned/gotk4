@@ -52,13 +52,13 @@ import (
 // the weird error, you'll see a runtime.adjustpointers routine in the trace.
 // Inspecting the routine closer reveals this following snippet of code:
 //
-//    if f.valid() && 0 < p && p < minLegalPointer && debug.invalidptr != 0 {
-//        // Looks like a junk value in a pointer slot.
-//        // Live analysis wrong?
-//        getg().m.traceback = 2
-//        print("runtime: bad pointer in frame ", funcname(f), " at ", pp, ": ", hex(p), "\n")
-//        throw("invalid pointer found on stack")
-//    }
+//	if f.valid() && 0 < p && p < minLegalPointer && debug.invalidptr != 0 {
+//	    // Looks like a junk value in a pointer slot.
+//	    // Live analysis wrong?
+//	    getg().m.traceback = 2
+//	    print("runtime: bad pointer in frame ", funcname(f), " at ", pp, ": ", hex(p), "\n")
+//	    throw("invalid pointer found on stack")
+//	}
 //
 // The check should make this pretty obvious: one of the conditions are failing,
 // causing the runtime to panic with the "invalid pointer found on stack"
@@ -67,9 +67,9 @@ import (
 //
 // To find out why, let's check what minLegalPointer is:
 //
-//    ―❤―▶ grepr minLegalPointer
-//    ./malloc.go:316:	// minLegalPointer is the smallest possible legal pointer.
-//    ./malloc.go:321:	minLegalPointer uintptr = 4096
+//	―❤―▶ grepr minLegalPointer
+//	./malloc.go:316:	// minLegalPointer is the smallest possible legal pointer.
+//	./malloc.go:321:	minLegalPointer uintptr = 4096
 //
 // There we go! The returned value was 0x31, which is less than 4096, so the
 // runtime trips on that and panics. Now, if we can just add up exactly that

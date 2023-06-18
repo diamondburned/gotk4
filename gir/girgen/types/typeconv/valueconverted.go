@@ -16,8 +16,8 @@ import (
 //
 // Quick convention note:
 //
-//    - {In,Out}Name is for the original name with no modifications.
-//    - {In,Out}Call is used for the C or Go function arguments.
+//   - {In,Out}Name is for the original name with no modifications.
+//   - {In,Out}Call is used for the C or Go function arguments.
 //
 // Usually, these are the same, but they're sometimes different depending on the
 // edge case.
@@ -885,15 +885,14 @@ func (value *ValueConverted) ShouldFree() bool {
 // Generally, if a conversion routine has a no-alloc path, it should check
 // MustRealloc first. If MustRealloc is true, then it must check ShouldFree.
 //
-//    if value.MustAlloc() {
-//        v = &oldValue
-//    } else {
-//        v = malloc()
-//        if value.ShouldFree() {
-//            defer free(v)
-//        }
-//    }
-//
+//	if value.MustAlloc() {
+//	    v = &oldValue
+//	} else {
+//	    v = malloc()
+//	    if value.ShouldFree() {
+//	        defer free(v)
+//	    }
+//	}
 func (value *ValueConverted) MustRealloc() bool {
 	// goGiving is true when we're giving the C value.
 	goGiving := value.ParameterIndex > -1 && !value.ParameterIsOutput()

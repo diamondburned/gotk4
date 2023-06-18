@@ -160,16 +160,16 @@ func (v *Variant) Print(typeAnnotate bool) string {
 // GoValue converts the variant's value to the Go value. It only supports the
 // following types for now:
 //
-//    s: string
-//    b: bool
-//    d: float64
-//    n: int16
-//    i: int32
-//    x: int64
-//    y: byte
-//    q: uint16
-//    u: uint32
-//    t: uint64
+//	s: string
+//	b: bool
+//	d: float64
+//	n: int16
+//	i: int32
+//	x: int64
+//	y: byte
+//	q: uint16
+//	u: uint32
+//	t: uint64
 //
 // Variants with unsupported types will cause the function to return nil.
 func (v *Variant) GoValue() interface{} {

@@ -16,10 +16,10 @@ Examples are put in another repository,
 along with instructions on getting started with using these packages. Refer to
 its README for more information.
 
-As of the time this README was written, most of `pkg/gtk4` and `pkg/gtk3` are
-ready to be used for most purposes. However, memory leaks and sometimes crashes
-may occur in certain parts of the API, while other parts might be completely
-missing. In that case, an issue should be opened.
+As of the time this README was written, most of `pkg/gtk/v4` and `pkg/gtk/v3`
+are ready to be used for most purposes. However, memory leaks and sometimes
+crashes may occur in certain parts of the API, while other parts might be
+completely missing. In that case, an issue should be opened.
 
 ## Contributing to gotk4
 

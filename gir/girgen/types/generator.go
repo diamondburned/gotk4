@@ -75,8 +75,7 @@ func AddCallableHeader(gen FileGenerator, h *file.Header, name string, callable 
 // resolve all arguments of the callback. The function signature may look
 // something like
 //
-//    func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string
-//
+//	func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string
 func CallableCHeader(gen FileGenerator, name string, callable *gir.CallableAttrs) string {
 	return "extern " + callableCHeader(gen, name, callable) + ";"
 }

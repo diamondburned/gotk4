@@ -1,4 +1,4 @@
-{ pkgs ? (import ./pkgs.nix {}) }:
+{ pkgs, ... }:
 
 let env = pkgs.writeShellScriptBin "docker-env" ''
 	set -e

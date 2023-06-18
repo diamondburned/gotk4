@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 )
 
-// https://gitlab.gnome.org/GNOME/gobject-introspection/-/blob/master/docs/gir-1.2.rnc
+// https://gitlab.gnome.org/GNOME/gobject-introspection/-/blob/HEAD/docs/gir-1.2.rnc
 
 type Alias struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 alias"`

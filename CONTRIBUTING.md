@@ -57,9 +57,15 @@ environments.
 ## Updating Nixpkgs
 
 In case a new release of something is added to Nixpkgs Unstable, for example, a
-new Go version, then the `rev` and `sha256` of the `unstable` variable inside
-the [.nix/overlay.nix][shell.nix] file should be updated appropriately. The structure
-of the [shell.nix][shell.nix] file is commented inside the file itself.
+new GTK+ version, then the `sourceNixpkgs.rev` and `sourceNixpkgs.sha256`
+variables inside the [`.nix/default.nix`][] file should be updated
+appropriately.  Some packages, such as Go, do not come directly from Nixpkgs,
+but from [gotk4-nix.git][]; to update the gotk4-nix, then very similarly the
+`gotk4-nix.rev` and `gotk4-nix.sha256` variables inside [`.nix/default.nix`][]
+should be updated.
+
+[`.nix/default.nix`]: ./.nix/default.nix
+[gotk4-nix.git]: https://github.com/diamondburned/gotk4-nix
 
 Care should be taken when updating Nixpkgs, as the output could change
 drastically, and Nixpkgs versions should **never** be downgraded to ensure the
@@ -69,24 +75,27 @@ newly generated code doesn't break existing code.
 
 This project is divided into several parts:
 
-- cmd/ contains executable tools to generate either the whole repository or
-  provide helper tools to ease development.
-  - cmd/gir_generate/ contains the main generator program.
-    - cmd/gir_generate/config.go contains tuning variables such as what is
-	  generated and ignored.
-- gir/ contains the library that provides data structures and low-level wrappers
-  over parsing, reading and storing GIR files.
-    - gir/girgen/ contains the generator code that consumes stored GIR files and
-	  generate Go bindings appropriately.
-- internal/ contains internal libraries that the generated code can use for
-  convenience.
-- pkg/ is the directory for all generated code.
-- gotk4.go contains the `//go:generate` boilerplate.
-- [shell.nix][shell.nix] and [`.nix`][dot-nix] contain the pinned Nixpkgs that
-  ensures constant development environments.
+- [`gir/`][] contains the library that provides data structures and low-level
+  wrappers over parsing, reading and storing GIR files.
+    - [`gir/cmd/`][] contains executable tools to generate either the whole
+      repository or provide helper tools to ease development.
+      - [`cmd/gir-generate/`][] contains the main generator program.
+    - [`gir/girgen/`][] contains the generator code that consumes stored GIR
+      files and generate Go bindings appropriately.
+- [`pkg/`][] is the directory for all generated code.
+- [`gotk4.go`][] contains the `//go:generate` boilerplate.
+- [`shell.nix`][] and [`.nix/`][] contain the pinned Nixpkgs that ensures
+  constant development environments.
 
-[shell.nix]: https://github.com/diamondburned/gotk4/blob/4/shell.nix
-[dot-nix]: https://github.com/diamondburned/gotk4/tree/4/.nix/
+
+[`gir/`]:                  ./gir/
+[`gir/cmd/`]:              ./gir/cmd/
+[`gir/cmd/gir-generate/`]: ./gir/cmd/gir-generate/
+[`gir/girgen/`]:           ./gir/girgen/
+[`pkg/`]:                  ./pkg/
+[`gotk4.go`]:              ./gotk4.go
+[`shell.nix`]:             ./shell.nix
+[`.nix/`]:                 ./.nix/
 
 ## Project Guidelines
 
@@ -99,8 +108,10 @@ contributing to this project.
    code are changed unnecessarily. It would be a given that all contributions
    should also be formatted using `goimports` (or `go fmt` if no imports were
    changed). As a sidenote, `goimports` is included in the Nix shell.
-2. `.gitignore` files should be avoided to not clutter the repository up.
-   Developers using editors that produce scrap files should add them to
-   their own `.git/info/exclude`.
+2. `.gitignore` files should be avoided to not clutter the repository
+   up.  Developers using editors that produce scrap files should add
+   them to their own `~/.config/git/ignore` so that they are not
+   tempted to clutter up the `.gitignore` files in every repository
+   that they contribute to.
 3. Project-wide refactors are large and will consume a lot of time to review, so
    they should be avoided.

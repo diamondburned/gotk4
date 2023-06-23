@@ -258,7 +258,7 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 
 	synopsize := searchOptsBool(opts, synopsize{})
 	if synopsize {
-		cmt = doc.Synopsis(cmt)
+		cmt = doc.Synopsis(cmt) // go/doc.Synopsis is deprecated as of Go 1.19
 	}
 
 	cmt = addPeriod(cmt)
@@ -619,7 +619,7 @@ func docText(p string, col int) string {
 	builder := strings.Builder{}
 	builder.Grow(len(p) + 64)
 
-	doc.ToText(&builder, p, "", "   ", col)
+	doc.ToText(&builder, p, "", "   ", col) // go/doc.ToText is deprecated as of Go 1.19
 	return builder.String()
 }
 

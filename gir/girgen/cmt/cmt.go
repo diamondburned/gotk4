@@ -343,23 +343,14 @@ func nthWord(paragraph string, n int) string {
 	return words[n]
 }
 
-// nthWordSimplePresent checks if the second word has a trailing "s".
-func nthWordSimplePresent(paragraph string, n int) bool {
-	word := nthWord(paragraph, n)
+// wordIsSimplePresent returns whether word is a simple present tense verb
+// (e.g.: "is", "takes", "emits").
+func wordIsSimplePresent(word string) bool {
 	return !strings.EqualFold(word, "this") && strings.HasSuffix(word, "s")
 }
 
-// lowerFirstLetter lower-cases the first letter in the paragraph.
-func lowerFirstWord(paragraph string) string {
-	r, sz := utf8.DecodeRuneInString(paragraph)
-	if sz > 0 {
-		return string(unicode.ToLower(r)) + paragraph[sz:]
-	}
-	return string(paragraph)
-}
-
-// popFirstWord pops the first word off.
-func popFirstWord(paragraph string) string {
+// trimFirstWord trims the first word off.
+func trimFirstWord(paragraph string) string {
 	parts := strings.SplitN(paragraph, " ", 2)
 	if len(parts) < 2 {
 		return ""
@@ -377,7 +368,7 @@ func format(self, cmt string, opts []Option) string {
 	if self != "" {
 		switch strings.ToLower(nthWord(cmt, 0)) {
 		case "a", "an", "the":
-			cmt = popFirstWord(cmt)
+			cmt = trimFirstWord(cmt)
 		}
 
 		var typeNamed bool
@@ -392,26 +383,24 @@ func format(self, cmt string, opts []Option) string {
 			}
 		}
 
+		firstWord := nthWord(cmt, 0)
 		switch {
-		case strings.ToLower(nthWord(cmt, 0)) == "is":
-			fallthrough
-		case strings.ToLower(nthWord(cmt, 0)) == "will":
-			cmt = self + " " + lowerFirstWord(cmt)
-		case strings.ToLower(nthWord(cmt, 0)) == "emitted":
-			cmt = self + " is " + lowerFirstWord(cmt)
-
-		case typeNamed:
-			fallthrough
-		case strings.HasPrefix(cmt, "#") && nthWord(cmt, 1) != "":
-			// Trim the first word away and replace it with the Go name.
-			cmt = self + " " + popFirstWord(cmt)
-		case nthWordSimplePresent(cmt, 0):
-			cmt = self + " " + lowerFirstWord(cmt)
+		case strings.EqualFold(firstWord, "is"), strings.EqualFold(firstWord, "will"):
+			// Turn "Will frob the fnord" into "{name} will frob the fnord".
+			cmt = self + " " + lowerFirstLetter(cmt)
+		case strings.EqualFold(firstWord, "emitted"):
+			// Turn "emitted by Emitter" into "{name} is emitted by Emitter".
+			cmt = self + " is " + lowerFirstLetter(cmt)
+		case typeNamed, strings.HasPrefix(cmt, "#") && nthWord(cmt, 1) != "":
+			// Turn "#CName does stuff" into "GoName does stuff"
+			cmt = self + " " + trimFirstWord(cmt)
+		case wordIsSimplePresent(firstWord):
+			// Turn "Frobs the fnord" into "{name} frobs the fnord".
+			cmt = self + " " + lowerFirstLetter(cmt)
 		default:
 			// Trim the word "this" away to make the sentence gramatically
 			// correct.
-			cmt = strings.TrimPrefix(cmt, "this ")
-			cmt = self + ": " + lowerFirstLetter(cmt)
+			cmt = self + ": " + lowerFirstLetter(strings.TrimPrefix(cmt, "this "))
 		}
 	}
 
@@ -623,24 +612,24 @@ func docText(p string, col int) string {
 	return builder.String()
 }
 
-func openOrCloseCodeblock(paragraph string) bool {
-	return strings.HasPrefix(paragraph, "|[") || strings.HasSuffix(paragraph, "]|")
-}
-
+// lowerFirstLetter lower-cases the first letter in the paragraph.
 func lowerFirstLetter(p string) string {
 	if p == "" {
 		return ""
 	}
 
-	runes := []rune(p)
-	if len(runes) < 2 {
-		return string(unicode.ToLower(runes[0]))
+	r1, r1w := utf8.DecodeRuneInString(p)
+	if unicode.IsLower(r1) {
+		return p
+	}
+	if r1w == len(p) {
+		return strings.ToLower(p)
 	}
 
 	// Edge case: gTK, etc.
-	if unicode.IsUpper(runes[1]) {
+	if r2, _ := utf8.DecodeRuneInString(p[r1w:]); unicode.IsUpper(r2) {
 		return p
 	}
 
-	return string(unicode.ToLower(runes[0])) + string(runes[1:])
+	return strings.ToLower(p[:r1w]) + p[r1w:]
 }

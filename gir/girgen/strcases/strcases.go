@@ -146,7 +146,16 @@ func PascalToGo(pascal string) string {
 		pascal = "New" + strings.TrimSuffix(pascal, "New")
 	}
 
-	pascal = pascalRegex.ReplaceAllStringFunc(pascal, strings.ToUpper)
+	// Use a for loop so that we can handle cases where acronyms are next to
+	// each other, such as "SkuId" -> "SKUId" -> "SKUID".
+	for {
+		pascal2 := pascalRegex.ReplaceAllStringFunc(pascal, strings.ToUpper)
+		if pascal2 == pascal {
+			break
+		}
+		pascal = pascal2
+	}
+
 	pascal = pascalPostReplacer.Replace(pascal)
 
 	return pascal

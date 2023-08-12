@@ -33,6 +33,7 @@ var Main = genmain.Data{
 	Filters:               Filters,
 	ProcessConverters:     ConversionProcessors,
 	DynamicLinkNamespaces: DynamicLinkNamespaces,
+	SingleFile:            true,
 }
 
 type Package struct {

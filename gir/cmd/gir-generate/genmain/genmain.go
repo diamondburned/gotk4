@@ -113,6 +113,9 @@ type Data struct {
 	// using Cgo. It includes important core packages as well as packages that
 	// are small but performance-sensitive.
 	DynamicLinkNamespaces []string
+	// SingleFile, if true, will make all NamespaceGenerators generate a single
+	// output file per package instead of correlating it to the source file.
+	SingleFile bool
 }
 
 // Overlay joins the given list of data into a single Data. The last Data in the
@@ -167,6 +170,7 @@ func Generate(repos gir.Repositories, data Data) {
 
 	gen := girgen.NewGenerator(repos, ModulePath(data.Module, overrides))
 	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
+	gen.Opts.SingleFile = data.SingleFile
 	gen.ApplyPreprocessors(data.Preprocessors)
 	gen.AddPostprocessors(data.Postprocessors)
 	gen.AddFilters(data.Filters)

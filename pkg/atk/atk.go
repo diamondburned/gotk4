@@ -3,11 +3,19228 @@
 package atk
 
 import (
+	"fmt"
+	"runtime"
 	_ "runtime/cgo"
+	"strings"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: atk
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <stdlib.h>
 // #include <atk/atk.h>
+// #include <glib-object.h>
+// extern void _gotk4_atk1_Window_ConnectRestore(gpointer, guintptr);
+// extern void _gotk4_atk1_Window_ConnectResize(gpointer, guintptr);
+// extern void _gotk4_atk1_Window_ConnectMove(gpointer, guintptr);
+// extern void _gotk4_atk1_Window_ConnectMinimize(gpointer, guintptr);
+// extern void _gotk4_atk1_Window_ConnectMaximize(gpointer, guintptr);
+// extern void _gotk4_atk1_Window_ConnectDestroy(gpointer, guintptr);
+// extern void _gotk4_atk1_Window_ConnectDeactivate(gpointer, guintptr);
+// extern void _gotk4_atk1_Window_ConnectCreate(gpointer, guintptr);
+// extern void _gotk4_atk1_Window_ConnectActivate(gpointer, guintptr);
+// extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, gchar*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, gchar*, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextChanged(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextCaretMoved(gpointer, gint, guintptr);
+// extern void _gotk4_atk1_Text_ConnectTextAttributesChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectRowReordered(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectRowInserted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectRowDeleted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectModelChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectColumnReordered(gpointer, guintptr);
+// extern void _gotk4_atk1_Table_ConnectColumnInserted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_Table_ConnectColumnDeleted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_SocketClass_embed(AtkSocket*, gchar*);
+// extern void _gotk4_atk1_Selection_ConnectSelectionChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_Object_ConnectStateChange(gpointer, gchar*, gboolean, guintptr);
+// extern void _gotk4_atk1_Object_ConnectPropertyChange(gpointer, gpointer*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectFocusEvent(gpointer, gboolean, guintptr);
+// extern void _gotk4_atk1_Object_ConnectChildrenChanged(gpointer, guint, gpointer*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectActiveDescendantChanged(gpointer, gpointer*, guintptr);
+// extern void _gotk4_atk1_ObjectFactoryClass_invalidate(AtkObjectFactory*);
+// extern void _gotk4_atk1_ObjectClass_visible_data_changed(AtkObject*);
+// extern void _gotk4_atk1_ObjectClass_state_change(AtkObject*, gchar*, gboolean);
+// extern void _gotk4_atk1_ObjectClass_set_role(AtkObject*, AtkRole);
+// extern void _gotk4_atk1_ObjectClass_set_parent(AtkObject*, AtkObject*);
+// extern void _gotk4_atk1_ObjectClass_set_name(AtkObject*, gchar*);
+// extern void _gotk4_atk1_ObjectClass_set_description(AtkObject*, gchar*);
+// extern void _gotk4_atk1_ObjectClass_remove_property_change_handler(AtkObject*, guint);
+// extern void _gotk4_atk1_ObjectClass_property_change(AtkObject*, AtkPropertyValues*);
+// extern void _gotk4_atk1_ObjectClass_initialize(AtkObject*, gpointer);
+// extern void _gotk4_atk1_ObjectClass_focus_event(AtkObject*, gboolean);
+// extern void _gotk4_atk1_ObjectClass_children_changed(AtkObject*, guint, gpointer);
+// extern void _gotk4_atk1_ObjectClass_active_descendant_changed(AtkObject*, gpointer*);
+// extern void _gotk4_atk1_MiscClass_threads_leave(AtkMisc*);
+// extern void _gotk4_atk1_MiscClass_threads_enter(AtkMisc*);
+// extern void _gotk4_atk1_Hypertext_ConnectLinkSelected(gpointer, gint, guintptr);
+// extern void _gotk4_atk1_Hyperlink_ConnectLinkActivated(gpointer, guintptr);
+// extern void _gotk4_atk1_HyperlinkClass_link_activated(AtkHyperlink*);
+// extern void _gotk4_atk1_Document_ConnectReload(gpointer, guintptr);
+// extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
+// extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
+// extern void _gotk4_atk1_Document_ConnectLoadComplete(gpointer, guintptr);
+// extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, AtkRectangle*, guintptr);
+// extern guint _gotk4_atk1_HyperlinkClass_link_state(AtkHyperlink*);
+// extern gint _gotk4_atk1_ObjectClass_get_n_children(AtkObject*);
+// extern gint _gotk4_atk1_ObjectClass_get_mdi_zorder(AtkObject*);
+// extern gint _gotk4_atk1_ObjectClass_get_index_in_parent(AtkObject*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_start_index(AtkHyperlink*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_n_anchors(AtkHyperlink*);
+// extern gint _gotk4_atk1_HyperlinkClass_get_end_index(AtkHyperlink*);
+// extern gchar* _gotk4_atk1_PlugClass_get_object_id(AtkPlug*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_object_locale(AtkObject*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_name(AtkObject*);
+// extern gchar* _gotk4_atk1_ObjectClass_get_description(AtkObject*);
+// extern gchar* _gotk4_atk1_HyperlinkClass_get_uri(AtkHyperlink*, gint);
+// extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(AtkHyperlink*);
+// extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(AtkHyperlink*);
+// extern AtkStateSet* _gotk4_atk1_ObjectClass_ref_state_set(AtkObject*);
+// extern AtkRole _gotk4_atk1_ObjectClass_get_role(AtkObject*);
+// extern AtkRelationSet* _gotk4_atk1_ObjectClass_ref_relation_set(AtkObject*);
+// extern AtkObject* _gotk4_atk1_ObjectClass_get_parent(AtkObject*);
+// extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(AtkHyperlink*, gint);
+// extern AtkLayer _gotk4_atk1_ObjectClass_get_layer(AtkObject*);
+// AtkHyperlink* _gotk4_atk1_HyperlinkImpl_virtual_get_hyperlink(void* fnptr, AtkHyperlinkImpl* arg0) {
+//   return ((AtkHyperlink* (*)(AtkHyperlinkImpl*))(fnptr))(arg0);
+// };
+// AtkHyperlink* _gotk4_atk1_Hypertext_virtual_get_link(void* fnptr, AtkHypertext* arg0, gint arg1) {
+//   return ((AtkHyperlink* (*)(AtkHypertext*, gint))(fnptr))(arg0, arg1);
+// };
+// AtkLayer _gotk4_atk1_AtkObject_virtual_get_layer(void* fnptr, AtkObject* arg0) {
+//   return ((AtkLayer (*)(AtkObject*))(fnptr))(arg0);
+// };
+// AtkLayer _gotk4_atk1_Component_virtual_get_layer(void* fnptr, AtkComponent* arg0) {
+//   return ((AtkLayer (*)(AtkComponent*))(fnptr))(arg0);
+// };
+// AtkObject* _gotk4_atk1_AtkObject_virtual_get_parent(void* fnptr, AtkObject* arg0) {
+//   return ((AtkObject* (*)(AtkObject*))(fnptr))(arg0);
+// };
+// AtkObject* _gotk4_atk1_Component_virtual_ref_accessible_at_point(void* fnptr, AtkComponent* arg0, gint arg1, gint arg2, AtkCoordType arg3) {
+//   return ((AtkObject* (*)(AtkComponent*, gint, gint, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// AtkObject* _gotk4_atk1_Hyperlink_virtual_get_object(void* fnptr, AtkHyperlink* arg0, gint arg1) {
+//   return ((AtkObject* (*)(AtkHyperlink*, gint))(fnptr))(arg0, arg1);
+// };
+// AtkObject* _gotk4_atk1_Selection_virtual_ref_selection(void* fnptr, AtkSelection* arg0, gint arg1) {
+//   return ((AtkObject* (*)(AtkSelection*, gint))(fnptr))(arg0, arg1);
+// };
+// AtkObject* _gotk4_atk1_TableCell_virtual_get_table(void* fnptr, AtkTableCell* arg0) {
+//   return ((AtkObject* (*)(AtkTableCell*))(fnptr))(arg0);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_get_caption(void* fnptr, AtkTable* arg0) {
+//   return ((AtkObject* (*)(AtkTable*))(fnptr))(arg0);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_get_column_header(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((AtkObject* (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_get_row_header(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((AtkObject* (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_get_summary(void* fnptr, AtkTable* arg0) {
+//   return ((AtkObject* (*)(AtkTable*))(fnptr))(arg0);
+// };
+// AtkObject* _gotk4_atk1_Table_virtual_ref_at(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((AtkObject* (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// AtkRange* _gotk4_atk1_Value_virtual_get_range(void* fnptr, AtkValue* arg0) {
+//   return ((AtkRange* (*)(AtkValue*))(fnptr))(arg0);
+// };
+// AtkRelationSet* _gotk4_atk1_AtkObject_virtual_ref_relation_set(void* fnptr, AtkObject* arg0) {
+//   return ((AtkRelationSet* (*)(AtkObject*))(fnptr))(arg0);
+// };
+// AtkRole _gotk4_atk1_AtkObject_virtual_get_role(void* fnptr, AtkObject* arg0) {
+//   return ((AtkRole (*)(AtkObject*))(fnptr))(arg0);
+// };
+// AtkStateSet* _gotk4_atk1_AtkObject_virtual_ref_state_set(void* fnptr, AtkObject* arg0) {
+//   return ((AtkStateSet* (*)(AtkObject*))(fnptr))(arg0);
+// };
+// AtkTextRange** _gotk4_atk1_Text_virtual_get_bounded_ranges(void* fnptr, AtkText* arg0, AtkTextRectangle* arg1, AtkCoordType arg2, AtkTextClipType arg3, AtkTextClipType arg4) {
+//   return ((AtkTextRange** (*)(AtkText*, AtkTextRectangle*, AtkCoordType, AtkTextClipType, AtkTextClipType))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// GIOChannel* _gotk4_atk1_StreamableContent_virtual_get_stream(void* fnptr, AtkStreamableContent* arg0, gchar* arg1) {
+//   return ((GIOChannel* (*)(AtkStreamableContent*, gchar*))(fnptr))(arg0, arg1);
+// };
+// GSList* _gotk4_atk1_Value_virtual_get_sub_ranges(void* fnptr, AtkValue* arg0) {
+//   return ((GSList* (*)(AtkValue*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_atk1_Action_virtual_do_action(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Action_virtual_set_description(void* fnptr, AtkAction* arg0, gint arg1, gchar* arg2) {
+//   return ((gboolean (*)(AtkAction*, gint, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_atk1_Component_virtual_contains(void* fnptr, AtkComponent* arg0, gint arg1, gint arg2, AtkCoordType arg3) {
+//   return ((gboolean (*)(AtkComponent*, gint, gint, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_atk1_Component_virtual_grab_focus(void* fnptr, AtkComponent* arg0) {
+//   return ((gboolean (*)(AtkComponent*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_atk1_Component_virtual_scroll_to(void* fnptr, AtkComponent* arg0, AtkScrollType arg1) {
+//   return ((gboolean (*)(AtkComponent*, AtkScrollType))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Component_virtual_scroll_to_point(void* fnptr, AtkComponent* arg0, AtkCoordType arg1, gint arg2, gint arg3) {
+//   return ((gboolean (*)(AtkComponent*, AtkCoordType, gint, gint))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_atk1_Component_virtual_set_extents(void* fnptr, AtkComponent* arg0, gint arg1, gint arg2, gint arg3, gint arg4, AtkCoordType arg5) {
+//   return ((gboolean (*)(AtkComponent*, gint, gint, gint, gint, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// gboolean _gotk4_atk1_Component_virtual_set_position(void* fnptr, AtkComponent* arg0, gint arg1, gint arg2, AtkCoordType arg3) {
+//   return ((gboolean (*)(AtkComponent*, gint, gint, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_atk1_Component_virtual_set_size(void* fnptr, AtkComponent* arg0, gint arg1, gint arg2) {
+//   return ((gboolean (*)(AtkComponent*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_atk1_Document_virtual_set_document_attribute(void* fnptr, AtkDocument* arg0, gchar* arg1, gchar* arg2) {
+//   return ((gboolean (*)(AtkDocument*, gchar*, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_atk1_Hyperlink_virtual_is_selected_link(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gboolean (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_atk1_Hyperlink_virtual_is_valid(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gboolean (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_atk1_Image_virtual_set_image_description(void* fnptr, AtkImage* arg0, gchar* arg1) {
+//   return ((gboolean (*)(AtkImage*, gchar*))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_add_selection(void* fnptr, AtkSelection* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkSelection*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_clear_selection(void* fnptr, AtkSelection* arg0) {
+//   return ((gboolean (*)(AtkSelection*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_is_child_selected(void* fnptr, AtkSelection* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkSelection*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_remove_selection(void* fnptr, AtkSelection* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkSelection*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Selection_virtual_select_all_selection(void* fnptr, AtkSelection* arg0) {
+//   return ((gboolean (*)(AtkSelection*))(fnptr))(arg0);
+// };
+// gboolean _gotk4_atk1_TableCell_virtual_get_position(void* fnptr, AtkTableCell* arg0, gint* arg1, gint* arg2) {
+//   return ((gboolean (*)(AtkTableCell*, gint*, gint*))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_atk1_TableCell_virtual_get_row_column_span(void* fnptr, AtkTableCell* arg0, gint* arg1, gint* arg2, gint* arg3, gint* arg4) {
+//   return ((gboolean (*)(AtkTableCell*, gint*, gint*, gint*, gint*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// gboolean _gotk4_atk1_Table_virtual_add_column_selection(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_add_row_selection(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_is_column_selected(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_is_row_selected(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_is_selected(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((gboolean (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_atk1_Table_virtual_remove_column_selection(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Table_virtual_remove_row_selection(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Text_virtual_add_selection(void* fnptr, AtkText* arg0, gint arg1, gint arg2) {
+//   return ((gboolean (*)(AtkText*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gboolean _gotk4_atk1_Text_virtual_remove_selection(void* fnptr, AtkText* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkText*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Text_virtual_scroll_substring_to(void* fnptr, AtkText* arg0, gint arg1, gint arg2, AtkScrollType arg3) {
+//   return ((gboolean (*)(AtkText*, gint, gint, AtkScrollType))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_atk1_Text_virtual_scroll_substring_to_point(void* fnptr, AtkText* arg0, gint arg1, gint arg2, AtkCoordType arg3, gint arg4, gint arg5) {
+//   return ((gboolean (*)(AtkText*, gint, gint, AtkCoordType, gint, gint))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// gboolean _gotk4_atk1_Text_virtual_set_caret_offset(void* fnptr, AtkText* arg0, gint arg1) {
+//   return ((gboolean (*)(AtkText*, gint))(fnptr))(arg0, arg1);
+// };
+// gboolean _gotk4_atk1_Text_virtual_set_selection(void* fnptr, AtkText* arg0, gint arg1, gint arg2, gint arg3) {
+//   return ((gboolean (*)(AtkText*, gint, gint, gint))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_atk1_Value_virtual_set_current_value(void* fnptr, AtkValue* arg0, GValue* arg1) {
+//   return ((gboolean (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Action_virtual_get_description(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Action_virtual_get_keybinding(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Action_virtual_get_localized_name(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Action_virtual_get_name(void* fnptr, AtkAction* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkAction*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_AtkObject_virtual_get_description(void* fnptr, AtkObject* arg0) {
+//   return ((gchar* (*)(AtkObject*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_AtkObject_virtual_get_name(void* fnptr, AtkObject* arg0) {
+//   return ((gchar* (*)(AtkObject*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_AtkObject_virtual_get_object_locale(void* fnptr, AtkObject* arg0) {
+//   return ((gchar* (*)(AtkObject*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_Document_virtual_get_document_attribute_value(void* fnptr, AtkDocument* arg0, gchar* arg1) {
+//   return ((gchar* (*)(AtkDocument*, gchar*))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Document_virtual_get_document_locale(void* fnptr, AtkDocument* arg0) {
+//   return ((gchar* (*)(AtkDocument*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_Document_virtual_get_document_type(void* fnptr, AtkDocument* arg0) {
+//   return ((gchar* (*)(AtkDocument*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_Hyperlink_virtual_get_uri(void* fnptr, AtkHyperlink* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkHyperlink*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Image_virtual_get_image_description(void* fnptr, AtkImage* arg0) {
+//   return ((gchar* (*)(AtkImage*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_Image_virtual_get_image_locale(void* fnptr, AtkImage* arg0) {
+//   return ((gchar* (*)(AtkImage*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_Plug_virtual_get_object_id(void* fnptr, AtkPlug* arg0) {
+//   return ((gchar* (*)(AtkPlug*))(fnptr))(arg0);
+// };
+// gchar* _gotk4_atk1_StreamableContent_virtual_get_mime_type(void* fnptr, AtkStreamableContent* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkStreamableContent*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_StreamableContent_virtual_get_uri(void* fnptr, AtkStreamableContent* arg0, gchar* arg1) {
+//   return ((gchar* (*)(AtkStreamableContent*, gchar*))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Table_virtual_get_column_description(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Table_virtual_get_row_description(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gchar* (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gchar* _gotk4_atk1_Text_virtual_get_selection(void* fnptr, AtkText* arg0, gint arg1, gint* arg2, gint* arg3) {
+//   return ((gchar* (*)(AtkText*, gint, gint*, gint*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gchar* _gotk4_atk1_Text_virtual_get_string_at_offset(void* fnptr, AtkText* arg0, gint arg1, AtkTextGranularity arg2, gint* arg3, gint* arg4) {
+//   return ((gchar* (*)(AtkText*, gint, AtkTextGranularity, gint*, gint*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// gchar* _gotk4_atk1_Text_virtual_get_text(void* fnptr, AtkText* arg0, gint arg1, gint arg2) {
+//   return ((gchar* (*)(AtkText*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gchar* _gotk4_atk1_Text_virtual_get_text_after_offset(void* fnptr, AtkText* arg0, gint arg1, AtkTextBoundary arg2, gint* arg3, gint* arg4) {
+//   return ((gchar* (*)(AtkText*, gint, AtkTextBoundary, gint*, gint*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// gchar* _gotk4_atk1_Text_virtual_get_text_at_offset(void* fnptr, AtkText* arg0, gint arg1, AtkTextBoundary arg2, gint* arg3, gint* arg4) {
+//   return ((gchar* (*)(AtkText*, gint, AtkTextBoundary, gint*, gint*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// gchar* _gotk4_atk1_Text_virtual_get_text_before_offset(void* fnptr, AtkText* arg0, gint arg1, AtkTextBoundary arg2, gint* arg3, gint* arg4) {
+//   return ((gchar* (*)(AtkText*, gint, AtkTextBoundary, gint*, gint*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// gdouble _gotk4_atk1_Component_virtual_get_alpha(void* fnptr, AtkComponent* arg0) {
+//   return ((gdouble (*)(AtkComponent*))(fnptr))(arg0);
+// };
+// gdouble _gotk4_atk1_Value_virtual_get_increment(void* fnptr, AtkValue* arg0) {
+//   return ((gdouble (*)(AtkValue*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Action_virtual_get_n_actions(void* fnptr, AtkAction* arg0) {
+//   return ((gint (*)(AtkAction*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_AtkObject_virtual_get_index_in_parent(void* fnptr, AtkObject* arg0) {
+//   return ((gint (*)(AtkObject*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_AtkObject_virtual_get_mdi_zorder(void* fnptr, AtkObject* arg0) {
+//   return ((gint (*)(AtkObject*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_AtkObject_virtual_get_n_children(void* fnptr, AtkObject* arg0) {
+//   return ((gint (*)(AtkObject*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Component_virtual_get_mdi_zorder(void* fnptr, AtkComponent* arg0) {
+//   return ((gint (*)(AtkComponent*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Document_virtual_get_current_page_number(void* fnptr, AtkDocument* arg0) {
+//   return ((gint (*)(AtkDocument*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Document_virtual_get_page_count(void* fnptr, AtkDocument* arg0) {
+//   return ((gint (*)(AtkDocument*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Hyperlink_virtual_get_end_index(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gint (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Hyperlink_virtual_get_n_anchors(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gint (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Hyperlink_virtual_get_start_index(void* fnptr, AtkHyperlink* arg0) {
+//   return ((gint (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Hypertext_virtual_get_link_index(void* fnptr, AtkHypertext* arg0, gint arg1) {
+//   return ((gint (*)(AtkHypertext*, gint))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Hypertext_virtual_get_n_links(void* fnptr, AtkHypertext* arg0) {
+//   return ((gint (*)(AtkHypertext*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Selection_virtual_get_selection_count(void* fnptr, AtkSelection* arg0) {
+//   return ((gint (*)(AtkSelection*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_StreamableContent_virtual_get_n_mime_types(void* fnptr, AtkStreamableContent* arg0) {
+//   return ((gint (*)(AtkStreamableContent*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_TableCell_virtual_get_column_span(void* fnptr, AtkTableCell* arg0) {
+//   return ((gint (*)(AtkTableCell*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_TableCell_virtual_get_row_span(void* fnptr, AtkTableCell* arg0) {
+//   return ((gint (*)(AtkTableCell*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Table_virtual_get_column_at_index(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gint (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Table_virtual_get_column_extent_at(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((gint (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gint _gotk4_atk1_Table_virtual_get_index_at(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((gint (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gint _gotk4_atk1_Table_virtual_get_n_columns(void* fnptr, AtkTable* arg0) {
+//   return ((gint (*)(AtkTable*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Table_virtual_get_n_rows(void* fnptr, AtkTable* arg0) {
+//   return ((gint (*)(AtkTable*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Table_virtual_get_row_at_index(void* fnptr, AtkTable* arg0, gint arg1) {
+//   return ((gint (*)(AtkTable*, gint))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Table_virtual_get_row_extent_at(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   return ((gint (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// gint _gotk4_atk1_Table_virtual_get_selected_columns(void* fnptr, AtkTable* arg0, gint** arg1) {
+//   return ((gint (*)(AtkTable*, gint**))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Table_virtual_get_selected_rows(void* fnptr, AtkTable* arg0, gint** arg1) {
+//   return ((gint (*)(AtkTable*, gint**))(fnptr))(arg0, arg1);
+// };
+// gint _gotk4_atk1_Text_virtual_get_caret_offset(void* fnptr, AtkText* arg0) {
+//   return ((gint (*)(AtkText*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Text_virtual_get_character_count(void* fnptr, AtkText* arg0) {
+//   return ((gint (*)(AtkText*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Text_virtual_get_n_selections(void* fnptr, AtkText* arg0) {
+//   return ((gint (*)(AtkText*))(fnptr))(arg0);
+// };
+// gint _gotk4_atk1_Text_virtual_get_offset_at_point(void* fnptr, AtkText* arg0, gint arg1, gint arg2, AtkCoordType arg3) {
+//   return ((gint (*)(AtkText*, gint, gint, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gpointer _gotk4_atk1_Document_virtual_get_document(void* fnptr, AtkDocument* arg0) {
+//   return ((gpointer (*)(AtkDocument*))(fnptr))(arg0);
+// };
+// guint _gotk4_atk1_Hyperlink_virtual_link_state(void* fnptr, AtkHyperlink* arg0) {
+//   return ((guint (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// gunichar _gotk4_atk1_Text_virtual_get_character_at_offset(void* fnptr, AtkText* arg0, gint arg1) {
+//   return ((gunichar (*)(AtkText*, gint))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_active_descendant_changed(void* fnptr, AtkObject* arg0, gpointer* arg1) {
+//   ((void (*)(AtkObject*, gpointer*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_children_changed(void* fnptr, AtkObject* arg0, guint arg1, gpointer arg2) {
+//   ((void (*)(AtkObject*, guint, gpointer))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_AtkObject_virtual_focus_event(void* fnptr, AtkObject* arg0, gboolean arg1) {
+//   ((void (*)(AtkObject*, gboolean))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_initialize(void* fnptr, AtkObject* arg0, gpointer arg1) {
+//   ((void (*)(AtkObject*, gpointer))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_property_change(void* fnptr, AtkObject* arg0, AtkPropertyValues* arg1) {
+//   ((void (*)(AtkObject*, AtkPropertyValues*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_remove_property_change_handler(void* fnptr, AtkObject* arg0, guint arg1) {
+//   ((void (*)(AtkObject*, guint))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_set_description(void* fnptr, AtkObject* arg0, gchar* arg1) {
+//   ((void (*)(AtkObject*, gchar*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_set_name(void* fnptr, AtkObject* arg0, gchar* arg1) {
+//   ((void (*)(AtkObject*, gchar*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_set_parent(void* fnptr, AtkObject* arg0, AtkObject* arg1) {
+//   ((void (*)(AtkObject*, AtkObject*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_set_role(void* fnptr, AtkObject* arg0, AtkRole arg1) {
+//   ((void (*)(AtkObject*, AtkRole))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_AtkObject_virtual_state_change(void* fnptr, AtkObject* arg0, gchar* arg1, gboolean arg2) {
+//   ((void (*)(AtkObject*, gchar*, gboolean))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_AtkObject_virtual_visible_data_changed(void* fnptr, AtkObject* arg0) {
+//   ((void (*)(AtkObject*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Component_virtual_bounds_changed(void* fnptr, AtkComponent* arg0, AtkRectangle* arg1) {
+//   ((void (*)(AtkComponent*, AtkRectangle*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Component_virtual_get_extents(void* fnptr, AtkComponent* arg0, gint* arg1, gint* arg2, gint* arg3, gint* arg4, AtkCoordType arg5) {
+//   ((void (*)(AtkComponent*, gint*, gint*, gint*, gint*, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_atk1_Component_virtual_get_position(void* fnptr, AtkComponent* arg0, gint* arg1, gint* arg2, AtkCoordType arg3) {
+//   ((void (*)(AtkComponent*, gint*, gint*, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_atk1_Component_virtual_get_size(void* fnptr, AtkComponent* arg0, gint* arg1, gint* arg2) {
+//   ((void (*)(AtkComponent*, gint*, gint*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Component_virtual_remove_focus_handler(void* fnptr, AtkComponent* arg0, guint arg1) {
+//   ((void (*)(AtkComponent*, guint))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_EditableText_virtual_copy_text(void* fnptr, AtkEditableText* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkEditableText*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_EditableText_virtual_cut_text(void* fnptr, AtkEditableText* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkEditableText*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_EditableText_virtual_delete_text(void* fnptr, AtkEditableText* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkEditableText*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_EditableText_virtual_insert_text(void* fnptr, AtkEditableText* arg0, gchar* arg1, gint arg2, gint* arg3) {
+//   ((void (*)(AtkEditableText*, gchar*, gint, gint*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_atk1_EditableText_virtual_paste_text(void* fnptr, AtkEditableText* arg0, gint arg1) {
+//   ((void (*)(AtkEditableText*, gint))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_EditableText_virtual_set_text_contents(void* fnptr, AtkEditableText* arg0, gchar* arg1) {
+//   ((void (*)(AtkEditableText*, gchar*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Hyperlink_virtual_link_activated(void* fnptr, AtkHyperlink* arg0) {
+//   ((void (*)(AtkHyperlink*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Hypertext_virtual_link_selected(void* fnptr, AtkHypertext* arg0, gint arg1) {
+//   ((void (*)(AtkHypertext*, gint))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Image_virtual_get_image_position(void* fnptr, AtkImage* arg0, gint* arg1, gint* arg2, AtkCoordType arg3) {
+//   ((void (*)(AtkImage*, gint*, gint*, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_atk1_Image_virtual_get_image_size(void* fnptr, AtkImage* arg0, gint* arg1, gint* arg2) {
+//   ((void (*)(AtkImage*, gint*, gint*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Misc_virtual_threads_enter(void* fnptr, AtkMisc* arg0) {
+//   ((void (*)(AtkMisc*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Misc_virtual_threads_leave(void* fnptr, AtkMisc* arg0) {
+//   ((void (*)(AtkMisc*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_ObjectFactory_virtual_invalidate(void* fnptr, AtkObjectFactory* arg0) {
+//   ((void (*)(AtkObjectFactory*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Selection_virtual_selection_changed(void* fnptr, AtkSelection* arg0) {
+//   ((void (*)(AtkSelection*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Socket_virtual_embed(void* fnptr, AtkSocket* arg0, gchar* arg1) {
+//   ((void (*)(AtkSocket*, gchar*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Table_virtual_column_deleted(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_column_inserted(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_column_reordered(void* fnptr, AtkTable* arg0) {
+//   ((void (*)(AtkTable*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Table_virtual_model_changed(void* fnptr, AtkTable* arg0) {
+//   ((void (*)(AtkTable*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Table_virtual_row_deleted(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_row_inserted(void* fnptr, AtkTable* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkTable*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_row_reordered(void* fnptr, AtkTable* arg0) {
+//   ((void (*)(AtkTable*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Table_virtual_set_caption(void* fnptr, AtkTable* arg0, AtkObject* arg1) {
+//   ((void (*)(AtkTable*, AtkObject*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Table_virtual_set_column_description(void* fnptr, AtkTable* arg0, gint arg1, gchar* arg2) {
+//   ((void (*)(AtkTable*, gint, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_set_column_header(void* fnptr, AtkTable* arg0, gint arg1, AtkObject* arg2) {
+//   ((void (*)(AtkTable*, gint, AtkObject*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_set_row_description(void* fnptr, AtkTable* arg0, gint arg1, gchar* arg2) {
+//   ((void (*)(AtkTable*, gint, gchar*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_set_row_header(void* fnptr, AtkTable* arg0, gint arg1, AtkObject* arg2) {
+//   ((void (*)(AtkTable*, gint, AtkObject*))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Table_virtual_set_summary(void* fnptr, AtkTable* arg0, AtkObject* arg1) {
+//   ((void (*)(AtkTable*, AtkObject*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Text_virtual_get_character_extents(void* fnptr, AtkText* arg0, gint arg1, gint* arg2, gint* arg3, gint* arg4, gint* arg5, AtkCoordType arg6) {
+//   ((void (*)(AtkText*, gint, gint*, gint*, gint*, gint*, AtkCoordType))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_atk1_Text_virtual_get_range_extents(void* fnptr, AtkText* arg0, gint arg1, gint arg2, AtkCoordType arg3, AtkTextRectangle* arg4) {
+//   ((void (*)(AtkText*, gint, gint, AtkCoordType, AtkTextRectangle*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_atk1_Text_virtual_text_attributes_changed(void* fnptr, AtkText* arg0) {
+//   ((void (*)(AtkText*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Text_virtual_text_caret_moved(void* fnptr, AtkText* arg0, gint arg1) {
+//   ((void (*)(AtkText*, gint))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Text_virtual_text_changed(void* fnptr, AtkText* arg0, gint arg1, gint arg2) {
+//   ((void (*)(AtkText*, gint, gint))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Text_virtual_text_selection_changed(void* fnptr, AtkText* arg0) {
+//   ((void (*)(AtkText*))(fnptr))(arg0);
+// };
+// void _gotk4_atk1_Value_virtual_get_current_value(void* fnptr, AtkValue* arg0, GValue* arg1) {
+//   ((void (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Value_virtual_get_maximum_value(void* fnptr, AtkValue* arg0, GValue* arg1) {
+//   ((void (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Value_virtual_get_minimum_increment(void* fnptr, AtkValue* arg0, GValue* arg1) {
+//   ((void (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Value_virtual_get_minimum_value(void* fnptr, AtkValue* arg0, GValue* arg1) {
+//   ((void (*)(AtkValue*, GValue*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_atk1_Value_virtual_get_value_and_text(void* fnptr, AtkValue* arg0, gdouble* arg1, gchar** arg2) {
+//   ((void (*)(AtkValue*, gdouble*, gchar**))(fnptr))(arg0, arg1, arg2);
+// };
+// void _gotk4_atk1_Value_virtual_set_value(void* fnptr, AtkValue* arg0, gdouble arg1) {
+//   ((void (*)(AtkValue*, gdouble))(fnptr))(arg0, arg1);
+// };
 import "C"
+
+// GType values.
+var (
+	GTypeCoordType           = coreglib.Type(C.atk_coord_type_get_type())
+	GTypeKeyEventType        = coreglib.Type(C.atk_key_event_type_get_type())
+	GTypeLayer               = coreglib.Type(C.atk_layer_get_type())
+	GTypeRelationType        = coreglib.Type(C.atk_relation_type_get_type())
+	GTypeRole                = coreglib.Type(C.atk_role_get_type())
+	GTypeScrollType          = coreglib.Type(C.atk_scroll_type_get_type())
+	GTypeStateType           = coreglib.Type(C.atk_state_type_get_type())
+	GTypeTextAttribute       = coreglib.Type(C.atk_text_attribute_get_type())
+	GTypeTextBoundary        = coreglib.Type(C.atk_text_boundary_get_type())
+	GTypeTextClipType        = coreglib.Type(C.atk_text_clip_type_get_type())
+	GTypeTextGranularity     = coreglib.Type(C.atk_text_granularity_get_type())
+	GTypeValueType           = coreglib.Type(C.atk_value_type_get_type())
+	GTypeHyperlinkStateFlags = coreglib.Type(C.atk_hyperlink_state_flags_get_type())
+	GTypeAction              = coreglib.Type(C.atk_action_get_type())
+	GTypeComponent           = coreglib.Type(C.atk_component_get_type())
+	GTypeDocument            = coreglib.Type(C.atk_document_get_type())
+	GTypeEditableText        = coreglib.Type(C.atk_editable_text_get_type())
+	GTypeHyperlinkImpl       = coreglib.Type(C.atk_hyperlink_impl_get_type())
+	GTypeHypertext           = coreglib.Type(C.atk_hypertext_get_type())
+	GTypeImage               = coreglib.Type(C.atk_image_get_type())
+	GTypeImplementorIface    = coreglib.Type(C.atk_implementor_get_type())
+	GTypeSelection           = coreglib.Type(C.atk_selection_get_type())
+	GTypeStreamableContent   = coreglib.Type(C.atk_streamable_content_get_type())
+	GTypeTable               = coreglib.Type(C.atk_table_get_type())
+	GTypeTableCell           = coreglib.Type(C.atk_table_cell_get_type())
+	GTypeText                = coreglib.Type(C.atk_text_get_type())
+	GTypeValue               = coreglib.Type(C.atk_value_get_type())
+	GTypeWindow              = coreglib.Type(C.atk_window_get_type())
+	GTypeGObjectAccessible   = coreglib.Type(C.atk_gobject_accessible_get_type())
+	GTypeHyperlink           = coreglib.Type(C.atk_hyperlink_get_type())
+	GTypeMisc                = coreglib.Type(C.atk_misc_get_type())
+	GTypeNoOpObject          = coreglib.Type(C.atk_no_op_object_get_type())
+	GTypeNoOpObjectFactory   = coreglib.Type(C.atk_no_op_object_factory_get_type())
+	GTypeAtkObject           = coreglib.Type(C.atk_object_get_type())
+	GTypeObjectFactory       = coreglib.Type(C.atk_object_factory_get_type())
+	GTypePlug                = coreglib.Type(C.atk_plug_get_type())
+	GTypeRegistry            = coreglib.Type(C.atk_registry_get_type())
+	GTypeRelation            = coreglib.Type(C.atk_relation_get_type())
+	GTypeRelationSet         = coreglib.Type(C.atk_relation_set_get_type())
+	GTypeSocket              = coreglib.Type(C.atk_socket_get_type())
+	GTypeStateSet            = coreglib.Type(C.atk_state_set_get_type())
+	GTypeUtil                = coreglib.Type(C.atk_util_get_type())
+	GTypeRange               = coreglib.Type(C.atk_range_get_type())
+	GTypeRectangle           = coreglib.Type(C.atk_rectangle_get_type())
+	GTypeTextRange           = coreglib.Type(C.atk_text_range_get_type())
+)
+
+func init() {
+	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
+		coreglib.TypeMarshaler{T: GTypeCoordType, F: marshalCoordType},
+		coreglib.TypeMarshaler{T: GTypeKeyEventType, F: marshalKeyEventType},
+		coreglib.TypeMarshaler{T: GTypeLayer, F: marshalLayer},
+		coreglib.TypeMarshaler{T: GTypeRelationType, F: marshalRelationType},
+		coreglib.TypeMarshaler{T: GTypeRole, F: marshalRole},
+		coreglib.TypeMarshaler{T: GTypeScrollType, F: marshalScrollType},
+		coreglib.TypeMarshaler{T: GTypeStateType, F: marshalStateType},
+		coreglib.TypeMarshaler{T: GTypeTextAttribute, F: marshalTextAttribute},
+		coreglib.TypeMarshaler{T: GTypeTextBoundary, F: marshalTextBoundary},
+		coreglib.TypeMarshaler{T: GTypeTextClipType, F: marshalTextClipType},
+		coreglib.TypeMarshaler{T: GTypeTextGranularity, F: marshalTextGranularity},
+		coreglib.TypeMarshaler{T: GTypeValueType, F: marshalValueType},
+		coreglib.TypeMarshaler{T: GTypeHyperlinkStateFlags, F: marshalHyperlinkStateFlags},
+		coreglib.TypeMarshaler{T: GTypeAction, F: marshalAction},
+		coreglib.TypeMarshaler{T: GTypeComponent, F: marshalComponent},
+		coreglib.TypeMarshaler{T: GTypeDocument, F: marshalDocument},
+		coreglib.TypeMarshaler{T: GTypeEditableText, F: marshalEditableText},
+		coreglib.TypeMarshaler{T: GTypeHyperlinkImpl, F: marshalHyperlinkImpl},
+		coreglib.TypeMarshaler{T: GTypeHypertext, F: marshalHypertext},
+		coreglib.TypeMarshaler{T: GTypeImage, F: marshalImage},
+		coreglib.TypeMarshaler{T: GTypeImplementorIface, F: marshalImplementorIface},
+		coreglib.TypeMarshaler{T: GTypeSelection, F: marshalSelection},
+		coreglib.TypeMarshaler{T: GTypeStreamableContent, F: marshalStreamableContent},
+		coreglib.TypeMarshaler{T: GTypeTable, F: marshalTable},
+		coreglib.TypeMarshaler{T: GTypeTableCell, F: marshalTableCell},
+		coreglib.TypeMarshaler{T: GTypeText, F: marshalText},
+		coreglib.TypeMarshaler{T: GTypeValue, F: marshalValue},
+		coreglib.TypeMarshaler{T: GTypeWindow, F: marshalWindow},
+		coreglib.TypeMarshaler{T: GTypeGObjectAccessible, F: marshalGObjectAccessible},
+		coreglib.TypeMarshaler{T: GTypeHyperlink, F: marshalHyperlink},
+		coreglib.TypeMarshaler{T: GTypeMisc, F: marshalMisc},
+		coreglib.TypeMarshaler{T: GTypeNoOpObject, F: marshalNoOpObject},
+		coreglib.TypeMarshaler{T: GTypeNoOpObjectFactory, F: marshalNoOpObjectFactory},
+		coreglib.TypeMarshaler{T: GTypeAtkObject, F: marshalAtkObject},
+		coreglib.TypeMarshaler{T: GTypeObjectFactory, F: marshalObjectFactory},
+		coreglib.TypeMarshaler{T: GTypePlug, F: marshalPlug},
+		coreglib.TypeMarshaler{T: GTypeRegistry, F: marshalRegistry},
+		coreglib.TypeMarshaler{T: GTypeRelation, F: marshalRelation},
+		coreglib.TypeMarshaler{T: GTypeRelationSet, F: marshalRelationSet},
+		coreglib.TypeMarshaler{T: GTypeSocket, F: marshalSocket},
+		coreglib.TypeMarshaler{T: GTypeStateSet, F: marshalStateSet},
+		coreglib.TypeMarshaler{T: GTypeUtil, F: marshalUtil},
+		coreglib.TypeMarshaler{T: GTypeRange, F: marshalRange},
+		coreglib.TypeMarshaler{T: GTypeRectangle, F: marshalRectangle},
+		coreglib.TypeMarshaler{T: GTypeTextRange, F: marshalTextRange},
+	})
+}
+
+// BINARY_AGE: like atk_get_binary_age(), but from the headers used at
+// application compile time, rather than from the library linked against at
+// application run time.
+const BINARY_AGE = 23610
+
+// INTERFACE_AGE: like atk_get_interface_age(), but from the headers used at
+// application compile time, rather than from the library linked against at
+// application run time.
+const INTERFACE_AGE = 1
+
+// MAJOR_VERSION: like atk_get_major_version(), but from the headers used at
+// application compile time, rather than from the library linked against at
+// application run time.
+const MAJOR_VERSION = 2
+
+// MICRO_VERSION: like atk_get_micro_version(), but from the headers used at
+// application compile time, rather than from the library linked against at
+// application run time.
+const MICRO_VERSION = 0
+
+// MINOR_VERSION: like atk_get_minor_version(), but from the headers used at
+// application compile time, rather than from the library linked against at
+// application run time.
+const MINOR_VERSION = 36
+
+// VERSION_MIN_REQUIRED: macro that should be defined by the user prior
+// to including the atk/atk.h header. The definition should be one of the
+// predefined ATK version macros: ATK_VERSION_2_12, ATK_VERSION_2_14,...
+//
+// This macro defines the earliest version of ATK that the package is required
+// to be able to compile against.
+//
+// If the compiler is configured to warn about the use of deprecated functions,
+// then using functions that were deprecated in version ATK_VERSION_MIN_REQUIRED
+// or earlier will cause warnings (but using functions deprecated in later
+// releases will not).
+const VERSION_MIN_REQUIRED = 2
+
+// AttributeSet: this is a singly-linked list (a List) of Attribute. It is
+// used by atk_text_get_run_attributes(), atk_text_get_default_attributes(),
+// atk_editable_text_set_run_attributes(), atk_document_get_attributes() and
+// atk_object_get_attributes().
+type AttributeSet = coreglib.SList
+
+type State = uint64
+
+// CoordType specifies how xy coordinates are to be interpreted.
+// Used by functions such as atk_component_get_position() and
+// atk_text_get_character_extents().
+type CoordType C.gint
+
+const (
+	// XYScreen specifies xy coordinates relative to the screen.
+	XYScreen CoordType = iota
+	// XYWindow specifies xy coordinates relative to the widget's top-level
+	// window.
+	XYWindow
+	// XYParent specifies xy coordinates relative to the widget's immediate
+	// parent. Since: 2.30.
+	XYParent
+)
+
+func marshalCoordType(p uintptr) (interface{}, error) {
+	return CoordType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for CoordType.
+func (c CoordType) String() string {
+	switch c {
+	case XYScreen:
+		return "Screen"
+	case XYWindow:
+		return "Window"
+	case XYParent:
+		return "Parent"
+	default:
+		return fmt.Sprintf("CoordType(%d)", c)
+	}
+}
+
+// KeyEventType specifies the type of a keyboard evemt.
+type KeyEventType C.gint
+
+const (
+	// KeyEventPress specifies a key press event.
+	KeyEventPress KeyEventType = iota
+	// KeyEventRelease specifies a key release event.
+	KeyEventRelease
+	// KeyEventLastDefined: not a valid value; specifies end of enumeration.
+	KeyEventLastDefined
+)
+
+func marshalKeyEventType(p uintptr) (interface{}, error) {
+	return KeyEventType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for KeyEventType.
+func (k KeyEventType) String() string {
+	switch k {
+	case KeyEventPress:
+		return "Press"
+	case KeyEventRelease:
+		return "Release"
+	case KeyEventLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("KeyEventType(%d)", k)
+	}
+}
+
+// Layer describes the layer of a component
+//
+// These enumerated "layer values" are used when determining which UI rendering
+// layer a component is drawn into, which can help in making determinations of
+// when components occlude one another.
+type Layer C.gint
+
+const (
+	// LayerInvalid: object does not have a layer.
+	LayerInvalid Layer = iota
+	// LayerBackground: this layer is reserved for the desktop background.
+	LayerBackground
+	// LayerCanvas: this layer is used for Canvas components.
+	LayerCanvas
+	// LayerWidget: this layer is normally used for components.
+	LayerWidget
+	// LayerMDI: this layer is used for layered components.
+	LayerMDI
+	// LayerPopup: this layer is used for popup components, such as menus.
+	LayerPopup
+	// LayerOverlay: this layer is reserved for future use.
+	LayerOverlay
+	// LayerWindow: this layer is used for toplevel windows.
+	LayerWindow
+)
+
+func marshalLayer(p uintptr) (interface{}, error) {
+	return Layer(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for Layer.
+func (l Layer) String() string {
+	switch l {
+	case LayerInvalid:
+		return "Invalid"
+	case LayerBackground:
+		return "Background"
+	case LayerCanvas:
+		return "Canvas"
+	case LayerWidget:
+		return "Widget"
+	case LayerMDI:
+		return "MDI"
+	case LayerPopup:
+		return "Popup"
+	case LayerOverlay:
+		return "Overlay"
+	case LayerWindow:
+		return "Window"
+	default:
+		return fmt.Sprintf("Layer(%d)", l)
+	}
+}
+
+// RelationType describes the type of the relation.
+type RelationType C.gint
+
+const (
+	// RelationNull: not used, represens "no relationship" or an error
+	// condition.
+	RelationNull RelationType = iota
+	// RelationControlledBy indicates an object controlled by one or more target
+	// objects.
+	RelationControlledBy
+	// RelationControllerFor indicates an object is an controller for one or
+	// more target objects.
+	RelationControllerFor
+	// RelationLabelFor indicates an object is a label for one or more target
+	// objects.
+	RelationLabelFor
+	// RelationLabelledBy indicates an object is labelled by one or more target
+	// objects.
+	RelationLabelledBy
+	// RelationMemberOf indicates an object is a member of a group of one or
+	// more target objects.
+	RelationMemberOf
+	// RelationNodeChildOf indicates an object is a cell in a treetable which is
+	// displayed because a cell in the same column is expanded and identifies
+	// that cell.
+	RelationNodeChildOf
+	// RelationFlowsTo indicates that the object has content that flows
+	// logically to another AtkObject in a sequential way, (for instance
+	// text-flow).
+	RelationFlowsTo
+	// RelationFlowsFrom indicates that the object has content that flows
+	// logically from another AtkObject in a sequential way, (for instance
+	// text-flow).
+	RelationFlowsFrom
+	// RelationSubwindowOf indicates a subwindow attached to a component but
+	// otherwise has no connection in the UI heirarchy to that component.
+	RelationSubwindowOf
+	// RelationEmbeds indicates that the object visually embeds another object's
+	// content, i.e. this object's content flows around another's content.
+	RelationEmbeds
+	// RelationEmbeddedBy: reciprocal of ATK_RELATION_EMBEDS, indicates that
+	// this object's content is visualy embedded in another object.
+	RelationEmbeddedBy
+	// RelationPopupFor indicates that an object is a popup for another object.
+	RelationPopupFor
+	// RelationParentWindowOf indicates that an object is a parent window of
+	// another object.
+	RelationParentWindowOf
+	// RelationDescribedBy: reciprocal of ATK_RELATION_DESCRIPTION_FOR.
+	// Indicates that one or more target objects provide descriptive information
+	// about this object. This relation type is most appropriate for information
+	// that is not essential as its presentation may be user-configurable
+	// and/or limited to an on-demand mechanism such as an assistive technology
+	// command. For brief, essential information such as can be found in a
+	// widget's on-screen label, use ATK_RELATION_LABELLED_BY. For an on-screen
+	// error message, use ATK_RELATION_ERROR_MESSAGE. For lengthy extended
+	// descriptive information contained in an on-screen object, consider using
+	// ATK_RELATION_DETAILS as assistive technologies may provide a means for
+	// the user to navigate to objects containing detailed descriptions so that
+	// their content can be more closely reviewed.
+	RelationDescribedBy
+	// RelationDescriptionFor: reciprocal of ATK_RELATION_DESCRIBED_BY.
+	// Indicates that this object provides descriptive information
+	// about the target object(s). See also ATK_RELATION_DETAILS_FOR and
+	// ATK_RELATION_ERROR_FOR.
+	RelationDescriptionFor
+	// RelationNodeParentOf indicates an object is a cell in a treetable and is
+	// expanded to display other cells in the same column.
+	RelationNodeParentOf
+	// RelationDetails: reciprocal of ATK_RELATION_DETAILS_FOR. Indicates
+	// that this object has a detailed or extended description, the contents
+	// of which can be found in the target object(s). This relation type
+	// is most appropriate for information that is sufficiently lengthy as
+	// to make navigation to the container of that information desirable.
+	// For less verbose information suitable for announcement only,
+	// see ATK_RELATION_DESCRIBED_BY. If the detailed information describes an
+	// error condition, ATK_RELATION_ERROR_FOR should be used instead. Since:
+	// ATK-2.26.
+	RelationDetails
+	// RelationDetailsFor: reciprocal of ATK_RELATION_DETAILS. Indicates
+	// that this object provides a detailed or extended description about
+	// the target object(s). See also ATK_RELATION_DESCRIPTION_FOR and
+	// ATK_RELATION_ERROR_FOR. Since: ATK-2.26.
+	RelationDetailsFor
+	// RelationErrorMessage: reciprocal of ATK_RELATION_ERROR_FOR. Indicates
+	// that this object has one or more errors, the nature of which is described
+	// in the contents of the target object(s). Objects that have this relation
+	// type should also contain ATK_STATE_INVALID_ENTRY in their StateSet.
+	// Since: ATK-2.26.
+	RelationErrorMessage
+	// RelationErrorFor: reciprocal of ATK_RELATION_ERROR_MESSAGE. Indicates
+	// that this object contains an error message describing an invalid
+	// condition in the target object(s). Since: ATK_2.26.
+	RelationErrorFor
+	// RelationLastDefined: not used, this value indicates the end of the
+	// enumeration.
+	RelationLastDefined
+)
+
+func marshalRelationType(p uintptr) (interface{}, error) {
+	return RelationType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for RelationType.
+func (r RelationType) String() string {
+	switch r {
+	case RelationNull:
+		return "Null"
+	case RelationControlledBy:
+		return "ControlledBy"
+	case RelationControllerFor:
+		return "ControllerFor"
+	case RelationLabelFor:
+		return "LabelFor"
+	case RelationLabelledBy:
+		return "LabelledBy"
+	case RelationMemberOf:
+		return "MemberOf"
+	case RelationNodeChildOf:
+		return "NodeChildOf"
+	case RelationFlowsTo:
+		return "FlowsTo"
+	case RelationFlowsFrom:
+		return "FlowsFrom"
+	case RelationSubwindowOf:
+		return "SubwindowOf"
+	case RelationEmbeds:
+		return "Embeds"
+	case RelationEmbeddedBy:
+		return "EmbeddedBy"
+	case RelationPopupFor:
+		return "PopupFor"
+	case RelationParentWindowOf:
+		return "ParentWindowOf"
+	case RelationDescribedBy:
+		return "DescribedBy"
+	case RelationDescriptionFor:
+		return "DescriptionFor"
+	case RelationNodeParentOf:
+		return "NodeParentOf"
+	case RelationDetails:
+		return "Details"
+	case RelationDetailsFor:
+		return "DetailsFor"
+	case RelationErrorMessage:
+		return "ErrorMessage"
+	case RelationErrorFor:
+		return "ErrorFor"
+	case RelationLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("RelationType(%d)", r)
+	}
+}
+
+// RelationTypeForName: get the RelationType type corresponding to a relation
+// name.
+//
+// The function takes the following parameters:
+//
+//   - name: string which is the (non-localized) name of an ATK relation type.
+//
+// The function returns the following values:
+//
+//   - relationType enumerated type corresponding to the specified name,
+//     or K_RELATION_NULL if no matching relation type is found.
+//
+func RelationTypeForName(name string) RelationType {
+	var _arg1 *C.gchar          // out
+	var _cret C.AtkRelationType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_relation_type_for_name(_arg1)
+	runtime.KeepAlive(name)
+
+	var _relationType RelationType // out
+
+	_relationType = RelationType(_cret)
+
+	return _relationType
+}
+
+// RelationTypeGetName gets the description string describing the RelationType
+// type.
+//
+// The function takes the following parameters:
+//
+//   - typ whose name is required.
+//
+// The function returns the following values:
+//
+//   - utf8: string describing the AtkRelationType.
+//
+func RelationTypeGetName(typ RelationType) string {
+	var _arg1 C.AtkRelationType // out
+	var _cret *C.gchar          // in
+
+	_arg1 = C.AtkRelationType(typ)
+
+	_cret = C.atk_relation_type_get_name(_arg1)
+	runtime.KeepAlive(typ)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RelationTypeRegister: associate name with a new RelationType.
+//
+// The function takes the following parameters:
+//
+//   - name string.
+//
+// The function returns the following values:
+//
+//   - relationType associated with name.
+//
+func RelationTypeRegister(name string) RelationType {
+	var _arg1 *C.gchar          // out
+	var _cret C.AtkRelationType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_relation_type_register(_arg1)
+	runtime.KeepAlive(name)
+
+	var _relationType RelationType // out
+
+	_relationType = RelationType(_cret)
+
+	return _relationType
+}
+
+// Role describes the role of an object
+//
+// These are the built-in enumerated roles that UI components can have in ATK.
+// Other roles may be added at runtime, so an AtkRole >= ATK_ROLE_LAST_DEFINED
+// is not necessarily an error.
+type Role C.gint
+
+const (
+	// RoleInvalid: invalid role.
+	RoleInvalid Role = iota
+	// RoleAccelLabel: label which represents an accelerator.
+	RoleAccelLabel
+	// RoleAlert: object which is an alert to the user. Assistive Technologies
+	// typically respond to ATK_ROLE_ALERT by reading the entire onscreen
+	// contents of containers advertising this role. Should be used for warning
+	// dialogs, etc.
+	RoleAlert
+	// RoleAnimation: object which is an animated image.
+	RoleAnimation
+	// RoleArrow: arrow in one of the four cardinal directions.
+	RoleArrow
+	// RoleCalendar: object that displays a calendar and allows the user to
+	// select a date.
+	RoleCalendar
+	// RoleCanvas: object that can be drawn into and is used to trap events.
+	RoleCanvas
+	// RoleCheckBox: choice that can be checked or unchecked and provides a
+	// separate indicator for the current state.
+	RoleCheckBox
+	// RoleCheckMenuItem: menu item with a check box.
+	RoleCheckMenuItem
+	// RoleColorChooser: specialized dialog that lets the user choose a color.
+	RoleColorChooser
+	// RoleColumnHeader: header for a column of data.
+	RoleColumnHeader
+	// RoleComboBox: collapsible list of choices the user can select from.
+	RoleComboBox
+	// RoleDateEditor: object whose purpose is to allow a user to edit a date.
+	RoleDateEditor
+	// RoleDesktopIcon: inconifed internal frame within a DESKTOP_PANE.
+	RoleDesktopIcon
+	// RoleDesktopFrame: pane that supports internal frames and iconified
+	// versions of those internal frames.
+	RoleDesktopFrame
+	// RoleDial: object whose purpose is to allow a user to set a value.
+	RoleDial
+	// RoleDialog: top level window with title bar and a border.
+	RoleDialog
+	// RoleDirectoryPane: pane that allows the user to navigate through and
+	// select the contents of a directory.
+	RoleDirectoryPane
+	// RoleDrawingArea: object used for drawing custom user interface elements.
+	RoleDrawingArea
+	// RoleFileChooser: specialized dialog that lets the user choose a file.
+	RoleFileChooser
+	// RoleFiller: object that fills up space in a user interface.
+	RoleFiller
+	// RoleFontChooser: specialized dialog that lets the user choose a font.
+	RoleFontChooser
+	// RoleFrame: top level window with a title bar, border, menubar, etc.
+	RoleFrame
+	// RoleGlassPane: pane that is guaranteed to be painted on top of all panes
+	// beneath it.
+	RoleGlassPane
+	// RoleHtmlContainer: document container for HTML, whose children represent
+	// the document content.
+	RoleHtmlContainer
+	// RoleIcon: small fixed size picture, typically used to decorate
+	// components.
+	RoleIcon
+	// RoleImage: object whose primary purpose is to display an image.
+	RoleImage
+	// RoleInternalFrame: frame-like object that is clipped by a desktop pane.
+	RoleInternalFrame
+	// RoleLabel: object used to present an icon or short string in an
+	// interface.
+	RoleLabel
+	// RoleLayeredPane: specialized pane that allows its children to be drawn in
+	// layers, providing a form of stacking order.
+	RoleLayeredPane
+	// RoleList: object that presents a list of objects to the user and allows
+	// the user to select one or more of them.
+	RoleList
+	// RoleListItem: object that represents an element of a list.
+	RoleListItem
+	// RoleMenu: object usually found inside a menu bar that contains a list of
+	// actions the user can choose from.
+	RoleMenu
+	// RoleMenuBar: object usually drawn at the top of the primary dialog box of
+	// an application that contains a list of menus the user can choose from.
+	RoleMenuBar
+	// RoleMenuItem: object usually contained in a menu that presents an action
+	// the user can choose.
+	RoleMenuItem
+	// RoleOptionPane: specialized pane whose primary use is inside a DIALOG.
+	RoleOptionPane
+	// RolePageTab: object that is a child of a page tab list.
+	RolePageTab
+	// RolePageTabList: object that presents a series of panels (or page tabs),
+	// one at a time, through some mechanism provided by the object.
+	RolePageTabList
+	// RolePanel: generic container that is often used to group objects.
+	RolePanel
+	// RolePasswordText: text object uses for passwords, or other places where
+	// the text content is not shown visibly to the user.
+	RolePasswordText
+	// RolePopupMenu: temporary window that is usually used to offer the user
+	// a list of choices, and then hides when the user selects one of those
+	// choices.
+	RolePopupMenu
+	// RoleProgressBar: object used to indicate how much of a task has been
+	// completed.
+	RoleProgressBar
+	// RolePushButton: object the user can manipulate to tell the application to
+	// do something.
+	RolePushButton
+	// RoleRadioButton: specialized check box that will cause other radio
+	// buttons in the same group to become unchecked when this one is checked.
+	RoleRadioButton
+	// RoleRadioMenuItem: check menu item which belongs to a group. At each
+	// instant exactly one of the radio menu items from a group is selected.
+	RoleRadioMenuItem
+	// RoleRootPane: specialized pane that has a glass pane and a layered pane
+	// as its children.
+	RoleRootPane
+	// RoleRowHeader: header for a row of data.
+	RoleRowHeader
+	// RoleScrollBar: object usually used to allow a user to incrementally view
+	// a large amount of data.
+	RoleScrollBar
+	// RoleScrollPane: object that allows a user to incrementally view a large
+	// amount of information.
+	RoleScrollPane
+	// RoleSeparator: object usually contained in a menu to provide a visible
+	// and logical separation of the contents in a menu.
+	RoleSeparator
+	// RoleSlider: object that allows the user to select from a bounded range.
+	RoleSlider
+	// RoleSplitPane: specialized panel that presents two other panels at the
+	// same time.
+	RoleSplitPane
+	// RoleSpinButton: object used to get an integer or floating point number
+	// from the user.
+	RoleSpinButton
+	// RoleStatusbar: object which reports messages of minor importance to the
+	// user.
+	RoleStatusbar
+	// RoleTable: object used to represent information in terms of rows and
+	// columns.
+	RoleTable
+	// RoleTableCell: cell in a table.
+	RoleTableCell
+	// RoleTableColumnHeader: header for a column of a table.
+	RoleTableColumnHeader
+	// RoleTableRowHeader: header for a row of a table.
+	RoleTableRowHeader
+	// RoleTearOffMenuItem: menu item used to tear off and reattach its menu.
+	RoleTearOffMenuItem
+	// RoleTerminal: object that represents an accessible terminal. (Since:
+	// 0.6).
+	RoleTerminal
+	// RoleText: interactive widget that supports multiple lines of text and
+	// optionally accepts user input, but whose purpose is not to solicit user
+	// input. Thus ATK_ROLE_TEXT is appropriate for the text view in a plain
+	// text editor but inappropriate for an input field in a dialog box or
+	// web form. For widgets whose purpose is to solicit input from the user,
+	// see ATK_ROLE_ENTRY and ATK_ROLE_PASSWORD_TEXT. For generic objects which
+	// display a brief amount of textual information, see ATK_ROLE_STATIC.
+	RoleText
+	// RoleToggleButton: specialized push button that can be checked or
+	// unchecked, but does not provide a separate indicator for the current
+	// state.
+	RoleToggleButton
+	// RoleToolBar: bar or palette usually composed of push buttons or toggle
+	// buttons.
+	RoleToolBar
+	// RoleToolTip: object that provides information about another object.
+	RoleToolTip
+	// RoleTree: object used to represent hierarchical information to the user.
+	RoleTree
+	// RoleTreeTable: object capable of expanding and collapsing rows as well as
+	// showing multiple columns of data. (Since: 0.7).
+	RoleTreeTable
+	// RoleUnknown: object contains some Accessible information, but its role is
+	// not known.
+	RoleUnknown
+	// RoleViewport: object usually used in a scroll pane.
+	RoleViewport
+	// RoleWindow: top level window with no title or border.
+	RoleWindow
+	// RoleHeader: object that serves as a document header. (Since: 1.1.1).
+	RoleHeader
+	// RoleFooter: object that serves as a document footer. (Since: 1.1.1).
+	RoleFooter
+	// RoleParagraph: object which is contains a paragraph of text content.
+	// (Since: 1.1.1).
+	RoleParagraph
+	// RoleRuler: object which describes margins and tab stops, etc. for text
+	// objects which it controls (should have CONTROLLER_FOR relation to such).
+	// (Since: 1.1.1).
+	RoleRuler
+	// RoleApplication: object is an application object, which may contain
+	// ATK_ROLE_FRAME objects or other types of accessibles. The root accessible
+	// of any application's ATK hierarchy should have ATK_ROLE_APPLICATION.
+	// (Since: 1.1.4).
+	RoleApplication
+	// RoleAutocomplete: object is a dialog or list containing items for
+	// insertion into an entry widget, for instance a list of words for
+	// completion of a text entry. (Since: 1.3).
+	RoleAutocomplete
+	// RoleEditbar: object is an editable text object in a toolbar. (Since:
+	// 1.5).
+	RoleEditbar
+	// RoleEmbedded: object is an embedded container within a document or panel.
+	// This role is a grouping "hint" indicating that the contained objects
+	// share a context. (Since: 1.7.2).
+	RoleEmbedded
+	// RoleEntry: object is a component whose textual content may be entered
+	// or modified by the user, provided ATK_STATE_EDITABLE is present. (Since:
+	// 1.11).
+	RoleEntry
+	// RoleChart: object is a graphical depiction of quantitative data.
+	// It may contain multiple subelements whose attributes and/or description
+	// may be queried to obtain both the quantitative data and information
+	// about how the data is being presented. The LABELLED_BY relation is
+	// particularly important in interpreting objects of this type, as is the
+	// accessible-description property. (Since: 1.11).
+	RoleChart
+	// RoleCaption: object contains descriptive information, usually textual,
+	// about another user interface element such as a table, chart, or image.
+	// (Since: 1.11).
+	RoleCaption
+	// RoleDocumentFrame: object is a visual frame or container which
+	// contains a view of document content. Document frames may occur within
+	// another Document instance, in which case the second document may be
+	// said to be embedded in the containing instance. HTML frames are often
+	// ROLE_DOCUMENT_FRAME. Either this object, or a singleton descendant,
+	// should implement the Document interface. (Since: 1.11).
+	RoleDocumentFrame
+	// RoleHeading: object serves as a heading for content which follows it
+	// in a document. The 'heading level' of the heading, if availabe, may be
+	// obtained by querying the object's attributes.
+	RoleHeading
+	// RolePage: object is a containing instance which encapsulates a page of
+	// information. ATK_ROLE_PAGE is used in documents and content which support
+	// a paginated navigation model. (Since: 1.11).
+	RolePage
+	// RoleSection: object is a containing instance of document content which
+	// constitutes a particular 'logical' section of the document. The type of
+	// content within a section, and the nature of the section division itself,
+	// may be obtained by querying the object's attributes. Sections may be
+	// nested. (Since: 1.11).
+	RoleSection
+	// RoleRedundantObject: object is redundant with another object in the
+	// hierarchy, and is exposed for purely technical reasons. Objects of this
+	// role should normally be ignored by clients. (Since: 1.11).
+	RoleRedundantObject
+	// RoleForm: object is a container for form controls, for instance as
+	// part of a web form or user-input form within a document. This role
+	// is primarily a tag/convenience for clients when navigating complex
+	// documents, it is not expected that ordinary GUI containers will always
+	// have ATK_ROLE_FORM. (Since: 1.12.0).
+	RoleForm
+	// RoleLink: object is a hypertext anchor, i.e. a "link" in a hypertext
+	// document. Such objects are distinct from 'inline' content which may also
+	// use the Hypertext/Hyperlink interfaces to indicate the range/location
+	// within a text object where an inline or embedded object lies. (Since:
+	// 1.12.1).
+	RoleLink
+	// RoleInputMethodWindow: object is a window or similar viewport which is
+	// used to allow composition or input of a 'complex character', in other
+	// words it is an "input method window." (Since: 1.12.1).
+	RoleInputMethodWindow
+	// RoleTableRow: row in a table. (Since: 2.1.0).
+	RoleTableRow
+	// RoleTreeItem: object that represents an element of a tree. (Since:
+	// 2.1.0).
+	RoleTreeItem
+	// RoleDocumentSpreadsheet: document frame which contains a spreadsheet.
+	// (Since: 2.1.0).
+	RoleDocumentSpreadsheet
+	// RoleDocumentPresentation: document frame which contains a presentation or
+	// slide content. (Since: 2.1.0).
+	RoleDocumentPresentation
+	// RoleDocumentText: document frame which contains textual content, such as
+	// found in a word processing application. (Since: 2.1.0).
+	RoleDocumentText
+	// RoleDocumentWeb: document frame which contains HTML or other markup
+	// suitable for display in a web browser. (Since: 2.1.0).
+	RoleDocumentWeb
+	// RoleDocumentEmail: document frame which contains email content to be
+	// displayed or composed either in plain text or HTML. (Since: 2.1.0).
+	RoleDocumentEmail
+	// RoleComment: object found within a document and designed to present a
+	// comment, note, or other annotation. In some cases, this object might not
+	// be visible until activated. (Since: 2.1.0).
+	RoleComment
+	// RoleListBox: non-collapsible list of choices the user can select from.
+	// (Since: 2.1.0).
+	RoleListBox
+	// RoleGrouping: group of related widgets. This group typically has a label.
+	// (Since: 2.1.0).
+	RoleGrouping
+	// RoleImageMap: image map object. Usually a graphic with multiple hotspots,
+	// where each hotspot can be activated resulting in the loading of another
+	// document or section of a document. (Since: 2.1.0).
+	RoleImageMap
+	// RoleNotification: transitory object designed to present a message to the
+	// user, typically at the desktop level rather than inside a particular
+	// application. (Since: 2.1.0).
+	RoleNotification
+	// RoleInfoBar: object designed to present a message to the user within an
+	// existing window. (Since: 2.1.0).
+	RoleInfoBar
+	// RoleLevelBar: bar that serves as a level indicator to, for instance, show
+	// the strength of a password or the state of a battery. (Since: 2.7.3).
+	RoleLevelBar
+	// RoleTitleBar: bar that serves as the title of a window or a dialog.
+	// (Since: 2.12).
+	RoleTitleBar
+	// RoleBlockQuote: object which contains a text section that is quoted from
+	// another source. (Since: 2.12).
+	RoleBlockQuote
+	// RoleAudio: object which represents an audio element. (Since: 2.12).
+	RoleAudio
+	// RoleVideo: object which represents a video element. (Since: 2.12).
+	RoleVideo
+	// RoleDefinition: definition of a term or concept. (Since: 2.12).
+	RoleDefinition
+	// RoleArticle: section of a page that consists of a composition that forms
+	// an independent part of a document, page, or site. Examples: A blog entry,
+	// a news story, a forum post. (Since: 2.12).
+	RoleArticle
+	// RoleLandmark: region of a web page intended as a navigational landmark.
+	// This is designed to allow Assistive Technologies to provide quick
+	// navigation among key regions within a document. (Since: 2.12).
+	RoleLandmark
+	// RoleLog: text widget or container holding log content, such as chat
+	// history and error logs. In this role there is a relationship between the
+	// arrival of new items in the log and the reading order. The log contains
+	// a meaningful sequence and new information is added only to the end of the
+	// log, not at arbitrary points. (Since: 2.12).
+	RoleLog
+	// RoleMarquee: container where non-essential information changes
+	// frequently. Common usages of marquee include stock tickers and ad
+	// banners. The primary difference between a marquee and a log is that logs
+	// usually have a meaningful order or sequence of important content changes.
+	// (Since: 2.12).
+	RoleMarquee
+	// RoleMath: text widget or container that holds a mathematical expression.
+	// (Since: 2.12).
+	RoleMath
+	// RoleRating: widget whose purpose is to display a rating, such as the
+	// number of stars associated with a song in a media player. Objects of this
+	// role should also implement AtkValue. (Since: 2.12).
+	RoleRating
+	// RoleTimer: object containing a numerical counter which indicates an
+	// amount of elapsed time from a start point, or the time remaining until an
+	// end point. (Since: 2.12).
+	RoleTimer
+	// RoleDescriptionList: object that represents a list of term-value groups.
+	// A term-value group represents a individual description and consist of one
+	// or more names (ATK_ROLE_DESCRIPTION_TERM) followed by one or more values
+	// (ATK_ROLE_DESCRIPTION_VALUE). For each list, there should not be more
+	// than one group with the same term name. (Since: 2.12).
+	RoleDescriptionList
+	// RoleDescriptionTerm: object that represents a term or phrase with a
+	// corresponding definition. (Since: 2.12).
+	RoleDescriptionTerm
+	// RoleDescriptionValue: object that represents the description, definition
+	// or value of a term. (Since: 2.12).
+	RoleDescriptionValue
+	// RoleStatic: generic non-container object whose purpose is to display
+	// a brief amount of information to the user and whose role is known by
+	// the implementor but lacks semantic value for the user. Examples in
+	// which ATK_ROLE_STATIC is appropriate include the message displayed in a
+	// message box and an image used as an alternative means to display text.
+	// ATK_ROLE_STATIC should not be applied to widgets which are traditionally
+	// interactive, objects which display a significant amount of content,
+	// or any object which has an accessible relation pointing to another
+	// object. Implementors should expose the displayed information through the
+	// accessible name of the object. If doing so seems inappropriate, it may
+	// indicate that a different role should be used. For labels which describe
+	// another widget, see ATK_ROLE_LABEL. For text views, see ATK_ROLE_TEXT.
+	// For generic containers, see ATK_ROLE_PANEL. For objects whose role is not
+	// known by the implementor, see ATK_ROLE_UNKNOWN. (Since: 2.16).
+	RoleStatic
+	// RoleMathFraction: object that represents a mathematical fraction. (Since:
+	// 2.16).
+	RoleMathFraction
+	// RoleMathRoot: object that represents a mathematical expression displayed
+	// with a radical. (Since: 2.16).
+	RoleMathRoot
+	// RoleSubscript: object that contains text that is displayed as a
+	// subscript. (Since: 2.16).
+	RoleSubscript
+	// RoleSuperscript: object that contains text that is displayed as a
+	// superscript. (Since: 2.16).
+	RoleSuperscript
+	// RoleFootnote: object that contains the text of a footnote. (Since: 2.26).
+	RoleFootnote
+	// RoleContentDeletion: content previously deleted or proposed to be
+	// deleted, e.g. in revision history or a content view providing suggestions
+	// from reviewers. (Since: 2.34).
+	RoleContentDeletion
+	// RoleContentInsertion: content previously inserted or proposed to
+	// be inserted, e.g. in revision history or a content view providing
+	// suggestions from reviewers. (Since: 2.34).
+	RoleContentInsertion
+	// RoleMark: run of content that is marked or highlighted, such as for
+	// reference purposes, or to call it out as having a special purpose.
+	// If the marked content has an associated section in the document
+	// elaborating on the reason for the mark, then ATK_RELATION_DETAILS should
+	// be used on the mark to point to that associated section. In addition,
+	// the reciprocal relation ATK_RELATION_DETAILS_FOR should be used on the
+	// associated content section to point back to the mark. (Since: 2.36).
+	RoleMark
+	// RoleSuggestion: container for content that is called out as a proposed
+	// change from the current version of the document, such as by a reviewer of
+	// the content. This role should include either ATK_ROLE_CONTENT_DELETION
+	// and/or ATK_ROLE_CONTENT_INSERTION children, in any order, to indicate
+	// what the actual change is. (Since: 2.36).
+	RoleSuggestion
+	// RoleLastDefined: not a valid role, used for finding end of the
+	// enumeration.
+	RoleLastDefined
+)
+
+func marshalRole(p uintptr) (interface{}, error) {
+	return Role(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for Role.
+func (r Role) String() string {
+	switch r {
+	case RoleInvalid:
+		return "Invalid"
+	case RoleAccelLabel:
+		return "AcceleratorLabel"
+	case RoleAlert:
+		return "Alert"
+	case RoleAnimation:
+		return "Animation"
+	case RoleArrow:
+		return "Arrow"
+	case RoleCalendar:
+		return "Calendar"
+	case RoleCanvas:
+		return "Canvas"
+	case RoleCheckBox:
+		return "CheckBox"
+	case RoleCheckMenuItem:
+		return "CheckMenuItem"
+	case RoleColorChooser:
+		return "ColorChooser"
+	case RoleColumnHeader:
+		return "ColumnHeader"
+	case RoleComboBox:
+		return "ComboBox"
+	case RoleDateEditor:
+		return "DateEditor"
+	case RoleDesktopIcon:
+		return "DesktopIcon"
+	case RoleDesktopFrame:
+		return "DesktopFrame"
+	case RoleDial:
+		return "Dial"
+	case RoleDialog:
+		return "Dialog"
+	case RoleDirectoryPane:
+		return "DirectoryPane"
+	case RoleDrawingArea:
+		return "DrawingArea"
+	case RoleFileChooser:
+		return "FileChooser"
+	case RoleFiller:
+		return "Filler"
+	case RoleFontChooser:
+		return "FontChooser"
+	case RoleFrame:
+		return "Frame"
+	case RoleGlassPane:
+		return "GlassPane"
+	case RoleHtmlContainer:
+		return "HtmlContainer"
+	case RoleIcon:
+		return "Icon"
+	case RoleImage:
+		return "Image"
+	case RoleInternalFrame:
+		return "InternalFrame"
+	case RoleLabel:
+		return "Label"
+	case RoleLayeredPane:
+		return "LayeredPane"
+	case RoleList:
+		return "List"
+	case RoleListItem:
+		return "ListItem"
+	case RoleMenu:
+		return "Menu"
+	case RoleMenuBar:
+		return "MenuBar"
+	case RoleMenuItem:
+		return "MenuItem"
+	case RoleOptionPane:
+		return "OptionPane"
+	case RolePageTab:
+		return "PageTab"
+	case RolePageTabList:
+		return "PageTabList"
+	case RolePanel:
+		return "Panel"
+	case RolePasswordText:
+		return "PasswordText"
+	case RolePopupMenu:
+		return "PopupMenu"
+	case RoleProgressBar:
+		return "ProgressBar"
+	case RolePushButton:
+		return "PushButton"
+	case RoleRadioButton:
+		return "RadioButton"
+	case RoleRadioMenuItem:
+		return "RadioMenuItem"
+	case RoleRootPane:
+		return "RootPane"
+	case RoleRowHeader:
+		return "RowHeader"
+	case RoleScrollBar:
+		return "ScrollBar"
+	case RoleScrollPane:
+		return "ScrollPane"
+	case RoleSeparator:
+		return "Separator"
+	case RoleSlider:
+		return "Slider"
+	case RoleSplitPane:
+		return "SplitPane"
+	case RoleSpinButton:
+		return "SpinButton"
+	case RoleStatusbar:
+		return "Statusbar"
+	case RoleTable:
+		return "Table"
+	case RoleTableCell:
+		return "TableCell"
+	case RoleTableColumnHeader:
+		return "TableColumnHeader"
+	case RoleTableRowHeader:
+		return "TableRowHeader"
+	case RoleTearOffMenuItem:
+		return "TearOffMenuItem"
+	case RoleTerminal:
+		return "Terminal"
+	case RoleText:
+		return "Text"
+	case RoleToggleButton:
+		return "ToggleButton"
+	case RoleToolBar:
+		return "ToolBar"
+	case RoleToolTip:
+		return "ToolTip"
+	case RoleTree:
+		return "Tree"
+	case RoleTreeTable:
+		return "TreeTable"
+	case RoleUnknown:
+		return "Unknown"
+	case RoleViewport:
+		return "Viewport"
+	case RoleWindow:
+		return "Window"
+	case RoleHeader:
+		return "Header"
+	case RoleFooter:
+		return "Footer"
+	case RoleParagraph:
+		return "Paragraph"
+	case RoleRuler:
+		return "Ruler"
+	case RoleApplication:
+		return "Application"
+	case RoleAutocomplete:
+		return "Autocomplete"
+	case RoleEditbar:
+		return "EditBar"
+	case RoleEmbedded:
+		return "Embedded"
+	case RoleEntry:
+		return "Entry"
+	case RoleChart:
+		return "Chart"
+	case RoleCaption:
+		return "Caption"
+	case RoleDocumentFrame:
+		return "DocumentFrame"
+	case RoleHeading:
+		return "Heading"
+	case RolePage:
+		return "Page"
+	case RoleSection:
+		return "Section"
+	case RoleRedundantObject:
+		return "RedundantObject"
+	case RoleForm:
+		return "Form"
+	case RoleLink:
+		return "Link"
+	case RoleInputMethodWindow:
+		return "InputMethodWindow"
+	case RoleTableRow:
+		return "TableRow"
+	case RoleTreeItem:
+		return "TreeItem"
+	case RoleDocumentSpreadsheet:
+		return "DocumentSpreadsheet"
+	case RoleDocumentPresentation:
+		return "DocumentPresentation"
+	case RoleDocumentText:
+		return "DocumentText"
+	case RoleDocumentWeb:
+		return "DocumentWeb"
+	case RoleDocumentEmail:
+		return "DocumentEmail"
+	case RoleComment:
+		return "Comment"
+	case RoleListBox:
+		return "ListBox"
+	case RoleGrouping:
+		return "Grouping"
+	case RoleImageMap:
+		return "ImageMap"
+	case RoleNotification:
+		return "Notification"
+	case RoleInfoBar:
+		return "InfoBar"
+	case RoleLevelBar:
+		return "LevelBar"
+	case RoleTitleBar:
+		return "TitleBar"
+	case RoleBlockQuote:
+		return "BlockQuote"
+	case RoleAudio:
+		return "Audio"
+	case RoleVideo:
+		return "Video"
+	case RoleDefinition:
+		return "Definition"
+	case RoleArticle:
+		return "Article"
+	case RoleLandmark:
+		return "Landmark"
+	case RoleLog:
+		return "Log"
+	case RoleMarquee:
+		return "Marquee"
+	case RoleMath:
+		return "Math"
+	case RoleRating:
+		return "Rating"
+	case RoleTimer:
+		return "Timer"
+	case RoleDescriptionList:
+		return "DescriptionList"
+	case RoleDescriptionTerm:
+		return "DescriptionTerm"
+	case RoleDescriptionValue:
+		return "DescriptionValue"
+	case RoleStatic:
+		return "Static"
+	case RoleMathFraction:
+		return "MathFraction"
+	case RoleMathRoot:
+		return "MathRoot"
+	case RoleSubscript:
+		return "Subscript"
+	case RoleSuperscript:
+		return "Superscript"
+	case RoleFootnote:
+		return "Footnote"
+	case RoleContentDeletion:
+		return "ContentDeletion"
+	case RoleContentInsertion:
+		return "ContentInsertion"
+	case RoleMark:
+		return "Mark"
+	case RoleSuggestion:
+		return "Suggestion"
+	case RoleLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("Role(%d)", r)
+	}
+}
+
+// RoleForName: get the Role type corresponding to a rolew name.
+//
+// The function takes the following parameters:
+//
+//   - name: string which is the (non-localized) name of an ATK role.
+//
+// The function returns the following values:
+//
+//   - role enumerated type corresponding to the specified name, or
+//     K_ROLE_INVALID if no matching role is found.
+//
+func RoleForName(name string) Role {
+	var _arg1 *C.gchar  // out
+	var _cret C.AtkRole // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_role_for_name(_arg1)
+	runtime.KeepAlive(name)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
+}
+
+// RoleGetLocalizedName gets the localized description string describing the
+// Role role.
+//
+// The function takes the following parameters:
+//
+//   - role whose localized name is required.
+//
+// The function returns the following values:
+//
+//   - utf8: localized string describing the AtkRole.
+//
+func RoleGetLocalizedName(role Role) string {
+	var _arg1 C.AtkRole // out
+	var _cret *C.gchar  // in
+
+	_arg1 = C.AtkRole(role)
+
+	_cret = C.atk_role_get_localized_name(_arg1)
+	runtime.KeepAlive(role)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RoleGetName gets the description string describing the Role role.
+//
+// The function takes the following parameters:
+//
+//   - role whose name is required.
+//
+// The function returns the following values:
+//
+//   - utf8: string describing the AtkRole.
+//
+func RoleGetName(role Role) string {
+	var _arg1 C.AtkRole // out
+	var _cret *C.gchar  // in
+
+	_arg1 = C.AtkRole(role)
+
+	_cret = C.atk_role_get_name(_arg1)
+	runtime.KeepAlive(role)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RoleRegister registers the role specified by name. name must be a meaningful
+// name. So it should not be empty, or consisting on whitespaces.
+//
+// Deprecated: Since 2.12. If your application/toolkit doesn't find a suitable
+// role for a specific object defined at Role, please submit a bug in order to
+// add a new role to the specification.
+//
+// The function takes the following parameters:
+//
+//   - name: character string describing the new role.
+//
+// The function returns the following values:
+//
+//   - role for the new role if added properly. ATK_ROLE_INVALID in case of
+//     error.
+//
+func RoleRegister(name string) Role {
+	var _arg1 *C.gchar  // out
+	var _cret C.AtkRole // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_role_register(_arg1)
+	runtime.KeepAlive(name)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
+}
+
+// ScrollType specifies where an object should be placed on the screen when
+// using scroll_to.
+type ScrollType C.gint
+
+const (
+	// ScrollTopLeft: scroll the object vertically and horizontally to bring its
+	// top left corner to the top left corner of the window.
+	ScrollTopLeft ScrollType = iota
+	// ScrollBottomRight: scroll the object vertically and horizontally to bring
+	// its bottom right corner to the bottom right corner of the window.
+	ScrollBottomRight
+	// ScrollTopEdge: scroll the object vertically to bring its top edge to the
+	// top edge of the window.
+	ScrollTopEdge
+	// ScrollBottomEdge: scroll the object vertically to bring its bottom edge
+	// to the bottom edge of the window.
+	ScrollBottomEdge
+	// ScrollLeftEdge: scroll the object vertically and horizontally to bring
+	// its left edge to the left edge of the window.
+	ScrollLeftEdge
+	// ScrollRightEdge: scroll the object vertically and horizontally to bring
+	// its right edge to the right edge of the window.
+	ScrollRightEdge
+	// ScrollAnywhere: scroll the object vertically and horizontally so that as
+	// much as possible of the object becomes visible. The exact placement is
+	// determined by the application.
+	ScrollAnywhere
+)
+
+func marshalScrollType(p uintptr) (interface{}, error) {
+	return ScrollType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for ScrollType.
+func (s ScrollType) String() string {
+	switch s {
+	case ScrollTopLeft:
+		return "TopLeft"
+	case ScrollBottomRight:
+		return "BottomRight"
+	case ScrollTopEdge:
+		return "TopEdge"
+	case ScrollBottomEdge:
+		return "BottomEdge"
+	case ScrollLeftEdge:
+		return "LeftEdge"
+	case ScrollRightEdge:
+		return "RightEdge"
+	case ScrollAnywhere:
+		return "Anywhere"
+	default:
+		return fmt.Sprintf("ScrollType(%d)", s)
+	}
+}
+
+// StateType: possible types of states of an object.
+type StateType C.gint
+
+const (
+	// StateInvalid indicates an invalid state - probably an error condition.
+	StateInvalid StateType = iota
+	// StateActive indicates a window is currently the active window,
+	// or an object is the active subelement within a container or table.
+	// ATK_STATE_ACTIVE should not be used for objects which have
+	// ATK_STATE_FOCUSABLE or ATK_STATE_SELECTABLE: Those objects should use
+	// ATK_STATE_FOCUSED and ATK_STATE_SELECTED respectively. ATK_STATE_ACTIVE
+	// is a means to indicate that an object which is not focusable and not
+	// selectable is the currently-active item within its parent container.
+	StateActive
+	// StateArmed indicates that the object is 'armed', i.e. will be activated
+	// by if a pointer button-release event occurs within its bounds. Buttons
+	// often enter this state when a pointer click occurs within their bounds,
+	// as a precursor to activation. ATK_STATE_ARMED has been deprecated since
+	// ATK-2.16 and should not be used in newly-written code.
+	StateArmed
+	// StateBusy indicates the current object is busy, i.e. onscreen
+	// representation is in the process of changing, or the object is
+	// temporarily unavailable for interaction due to activity already in
+	// progress. This state may be used by implementors of Document to indicate
+	// that content loading is underway. It also may indicate other 'pending'
+	// conditions; clients may wish to interrogate this object when the
+	// ATK_STATE_BUSY flag is removed.
+	StateBusy
+	// StateChecked indicates this object is currently checked, for instance a
+	// checkbox is 'non-empty'.
+	StateChecked
+	// StateDefunct indicates that this object no longer has a valid backing
+	// widget (for instance, if its peer object has been destroyed).
+	StateDefunct
+	// StateEditable indicates that this object can contain text, and that the
+	// user can change the textual contents of this object by editing those
+	// contents directly. For an object which is expected to be editable due to
+	// its type, but which cannot be edited due to the application or platform
+	// preventing the user from doing so, that object's StateSet should lack
+	// ATK_STATE_EDITABLE and should contain ATK_STATE_READ_ONLY.
+	StateEditable
+	// StateEnabled indicates that this object is enabled, i.e. that it
+	// currently reflects some application state. Objects that are "greyed
+	// out" may lack this state, and may lack the STATE_SENSITIVE if direct
+	// user interaction cannot cause them to acquire STATE_ENABLED. See also:
+	// ATK_STATE_SENSITIVE.
+	StateEnabled
+	// StateExpandable indicates this object allows progressive disclosure of
+	// its children.
+	StateExpandable
+	// StateExpanded indicates this object its expanded - see
+	// ATK_STATE_EXPANDABLE above.
+	StateExpanded
+	// StateFocusable indicates this object can accept keyboard focus, which
+	// means all events resulting from typing on the keyboard will normally be
+	// passed to it when it has focus.
+	StateFocusable
+	// StateFocused indicates this object currently has the keyboard focus.
+	StateFocused
+	// StateHorizontal indicates the orientation of this object is horizontal;
+	// used, for instance, by objects of ATK_ROLE_SCROLL_BAR. For objects where
+	// vertical/horizontal orientation is especially meaningful.
+	StateHorizontal
+	// StateIconified indicates this object is minimized and is represented only
+	// by an icon.
+	StateIconified
+	// StateModal indicates something must be done with this object before the
+	// user can interact with an object in a different window.
+	StateModal
+	// StateMultiLine indicates this (text) object can contain multiple lines of
+	// text.
+	StateMultiLine
+	// StateMultiselectable indicates this object allows more than one of its
+	// children to be selected at the same time, or in the case of text objects,
+	// that the object supports non-contiguous text selections.
+	StateMultiselectable
+	// StateOpaque indicates this object paints every pixel within its
+	// rectangular region.
+	StateOpaque
+	// StatePressed indicates this object is currently pressed.
+	StatePressed
+	// StateResizable indicates the size of this object is not fixed.
+	StateResizable
+	// StateSelectable indicates this object is the child of an object that
+	// allows its children to be selected and that this child is one of those
+	// children that can be selected.
+	StateSelectable
+	// StateSelected indicates this object is the child of an object that allows
+	// its children to be selected and that this child is one of those children
+	// that has been selected.
+	StateSelected
+	// StateSensitive indicates this object is sensitive, e.g. to user
+	// interaction. STATE_SENSITIVE usually accompanies STATE_ENABLED
+	// for user-actionable controls, but may be found in the absence
+	// of STATE_ENABLED if the current visible state of the control is
+	// "disconnected" from the application state. In such cases, direct user
+	// interaction can often result in the object gaining STATE_SENSITIVE,
+	// for instance if a user makes an explicit selection using an object
+	// whose current state is ambiguous or undefined. see STATE_ENABLED,
+	// STATE_INDETERMINATE.
+	StateSensitive
+	// StateShowing indicates this object, the object's parent, the object's
+	// parent's parent, and so on, are all 'shown' to the end-user, i.e. subject
+	// to "exposure" if blocking or obscuring objects do not interpose between
+	// this object and the top of the window stack.
+	StateShowing
+	// StateSingleLine indicates this (text) object can contain only a single
+	// line of text.
+	StateSingleLine
+	// StateStale indicates that the information returned for this object may
+	// no longer be synchronized with the application state. This is implied
+	// if the object has STATE_TRANSIENT, and can also occur towards the end
+	// of the object peer's lifecycle. It can also be used to indicate that the
+	// index associated with this object has changed since the user accessed the
+	// object (in lieu of "index-in-parent-changed" events).
+	StateStale
+	// StateTransient indicates this object is transient, i.e. a snapshot
+	// which may not emit events when its state changes. Data from objects
+	// with ATK_STATE_TRANSIENT should not be cached, since there may be no
+	// notification given when the cached data becomes obsolete.
+	StateTransient
+	// StateVertical indicates the orientation of this object is vertical.
+	StateVertical
+	// StateVisible indicates this object is visible, e.g. has been explicitly
+	// marked for exposure to the user. **note**: ATK_STATE_VISIBLE is no
+	// guarantee that the object is actually unobscured on the screen,
+	// only that it is 'potentially' visible, barring obstruction, being
+	// scrolled or clipped out of the field of view, or having an ancestor
+	// container that has not yet made visible. A widget is potentially onscreen
+	// if it has both ATK_STATE_VISIBLE and ATK_STATE_SHOWING. The absence of
+	// ATK_STATE_VISIBLE and ATK_STATE_SHOWING is semantically equivalent to
+	// saying that an object is 'hidden'. See also ATK_STATE_TRUNCATED, which
+	// applies if an object with ATK_STATE_VISIBLE and ATK_STATE_SHOWING set
+	// lies within a viewport which means that its contents are clipped, e.g.
+	// a truncated spreadsheet cell or an image within a scrolling viewport.
+	// Mostly useful for screen-review and magnification algorithms.
+	StateVisible
+	// StateManagesDescendants indicates that "active-descendant-changed" event
+	// is sent when children become 'active' (i.e. are selected or navigated to
+	// onscreen). Used to prevent need to enumerate all children in very large
+	// containers, like tables. The presence of STATE_MANAGES_DESCENDANTS is an
+	// indication to the client. that the children should not, and need not,
+	// be enumerated by the client. Objects implementing this state are
+	// expected to provide relevant state notifications to listening clients,
+	// for instance notifications of visibility changes and activation of their
+	// contained child objects, without the client having previously requested
+	// references to those children.
+	StateManagesDescendants
+	// StateIndeterminate indicates that the value, or some other quantifiable
+	// property, of this AtkObject cannot be fully determined. In the case of a
+	// large data set in which the total number of items in that set is unknown
+	// (e.g. 1 of 999+), implementors should expose the currently-known set
+	// size (999) along with this state. In the case of a check box, this state
+	// should be used to indicate that the check box is a tri-state check box
+	// which is currently neither checked nor unchecked.
+	StateIndeterminate
+	// StateTruncated indicates that an object is truncated, e.g. a text value
+	// in a speradsheet cell.
+	StateTruncated
+	// StateRequired indicates that explicit user interaction with an object is
+	// required by the user interface, e.g. a required field in a "web-form"
+	// interface.
+	StateRequired
+	// StateInvalidEntry indicates that the object has encountered an error
+	// condition due to failure of input validation. For instance, a form
+	// control may acquire this state in response to invalid or malformed user
+	// input.
+	StateInvalidEntry
+	// StateSupportsAutocompletion indicates that the object in question
+	// implements some form of ¨typeahead¨ or pre-selection behavior whereby
+	// entering the first character of one or more sub-elements causes
+	// those elements to scroll into view or become selected. Subsequent
+	// character input may narrow the selection further as long as one or
+	// more sub-elements match the string. This state is normally only useful
+	// and encountered on objects that implement Selection. In some cases the
+	// typeahead behavior may result in full or partial ¨completion¨ of the
+	// data in the input field, in which case these input events may trigger
+	// text-changed events from the AtkText interface. This state supplants
+	// ATK_ROLE_AUTOCOMPLETE.
+	StateSupportsAutocompletion
+	// StateSelectableText indicates that the object in question supports text
+	// selection. It should only be exposed on objects which implement the Text
+	// interface, in order to distinguish this state from ATK_STATE_SELECTABLE,
+	// which infers that the object in question is a selectable child of an
+	// object which implements Selection. While similar, text selection and
+	// subelement selection are distinct operations.
+	StateSelectableText
+	// StateDefault indicates that the object is the "default" active component,
+	// i.e. the object which is activated by an end-user press of the "Enter" or
+	// "Return" key. Typically a "close" or "submit" button.
+	StateDefault
+	// StateAnimated indicates that the object changes its appearance
+	// dynamically as an inherent part of its presentation. This state may
+	// come and go if an object is only temporarily animated on the way to a
+	// 'final' onscreen presentation. **note**: some applications, notably
+	// content viewers, may not be able to detect all kinds of animated content.
+	// Therefore the absence of this state should not be taken as definitive
+	// evidence that the object's visual representation is static; this state is
+	// advisory.
+	StateAnimated
+	// StateVisited indicates that the object (typically a hyperlink) has
+	// already been 'activated', and/or its backing data has already been
+	// downloaded, rendered, or otherwise "visited".
+	StateVisited
+	// StateCheckable indicates this object has the potential to be checked,
+	// such as a checkbox or toggle-able table cell. Since: ATK-2.12.
+	StateCheckable
+	// StateHasPopup indicates that the object has a popup context menu
+	// or sub-level menu which may or may not be showing. This means that
+	// activation renders conditional content. Note that ordinary tooltips are
+	// not considered popups in this context. Since: ATK-2.12.
+	StateHasPopup
+	// StateHasTooltip indicates this object has a tooltip. Since: ATK-2.16.
+	StateHasTooltip
+	// StateReadOnly indicates that a widget which is ENABLED and SENSITIVE
+	// has a value which can be read, but not modified, by the user. Note
+	// that this state should only be applied to widget types whose value is
+	// normally directly user modifiable, such as check boxes, radio buttons,
+	// spin buttons, text input fields, and combo boxes, as a means to convey
+	// that the expected interaction with that widget is not possible. When the
+	// expected interaction with a widget does not include modification by the
+	// user, as is the case with labels and containers, ATK_STATE_READ_ONLY
+	// should not be applied. See also ATK_STATE_EDITABLE. Since: ATK-2-16.
+	StateReadOnly
+	// StateLastDefined: not a valid state, used for finding end of enumeration.
+	StateLastDefined
+)
+
+func marshalStateType(p uintptr) (interface{}, error) {
+	return StateType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for StateType.
+func (s StateType) String() string {
+	switch s {
+	case StateInvalid:
+		return "Invalid"
+	case StateActive:
+		return "Active"
+	case StateArmed:
+		return "Armed"
+	case StateBusy:
+		return "Busy"
+	case StateChecked:
+		return "Checked"
+	case StateDefunct:
+		return "Defunct"
+	case StateEditable:
+		return "Editable"
+	case StateEnabled:
+		return "Enabled"
+	case StateExpandable:
+		return "Expandable"
+	case StateExpanded:
+		return "Expanded"
+	case StateFocusable:
+		return "Focusable"
+	case StateFocused:
+		return "Focused"
+	case StateHorizontal:
+		return "Horizontal"
+	case StateIconified:
+		return "Iconified"
+	case StateModal:
+		return "Modal"
+	case StateMultiLine:
+		return "MultiLine"
+	case StateMultiselectable:
+		return "Multiselectable"
+	case StateOpaque:
+		return "Opaque"
+	case StatePressed:
+		return "Pressed"
+	case StateResizable:
+		return "Resizable"
+	case StateSelectable:
+		return "Selectable"
+	case StateSelected:
+		return "Selected"
+	case StateSensitive:
+		return "Sensitive"
+	case StateShowing:
+		return "Showing"
+	case StateSingleLine:
+		return "SingleLine"
+	case StateStale:
+		return "Stale"
+	case StateTransient:
+		return "Transient"
+	case StateVertical:
+		return "Vertical"
+	case StateVisible:
+		return "Visible"
+	case StateManagesDescendants:
+		return "ManagesDescendants"
+	case StateIndeterminate:
+		return "Indeterminate"
+	case StateTruncated:
+		return "Truncated"
+	case StateRequired:
+		return "Required"
+	case StateInvalidEntry:
+		return "InvalidEntry"
+	case StateSupportsAutocompletion:
+		return "SupportsAutocompletion"
+	case StateSelectableText:
+		return "SelectableText"
+	case StateDefault:
+		return "Default"
+	case StateAnimated:
+		return "Animated"
+	case StateVisited:
+		return "Visited"
+	case StateCheckable:
+		return "Checkable"
+	case StateHasPopup:
+		return "HasPopup"
+	case StateHasTooltip:
+		return "HasTooltip"
+	case StateReadOnly:
+		return "ReadOnly"
+	case StateLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("StateType(%d)", s)
+	}
+}
+
+// StateTypeForName gets the StateType corresponding to the description string
+// name.
+//
+// The function takes the following parameters:
+//
+//   - name: character string state name.
+//
+// The function returns the following values:
+//
+//   - stateType corresponding to name.
+//
+func StateTypeForName(name string) StateType {
+	var _arg1 *C.gchar       // out
+	var _cret C.AtkStateType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_state_type_for_name(_arg1)
+	runtime.KeepAlive(name)
+
+	var _stateType StateType // out
+
+	_stateType = StateType(_cret)
+
+	return _stateType
+}
+
+// StateTypeGetName gets the description string describing the StateType type.
+//
+// The function takes the following parameters:
+//
+//   - typ whose name is required.
+//
+// The function returns the following values:
+//
+//   - utf8: string describing the AtkStateType.
+//
+func StateTypeGetName(typ StateType) string {
+	var _arg1 C.AtkStateType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkStateType(typ)
+
+	_cret = C.atk_state_type_get_name(_arg1)
+	runtime.KeepAlive(typ)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// StateTypeRegister: register a new object state.
+//
+// The function takes the following parameters:
+//
+//   - name: character string describing the new state.
+//
+// The function returns the following values:
+//
+//   - stateType value for the new state.
+//
+func StateTypeRegister(name string) StateType {
+	var _arg1 *C.gchar       // out
+	var _cret C.AtkStateType // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_state_type_register(_arg1)
+	runtime.KeepAlive(name)
+
+	var _stateType StateType // out
+
+	_stateType = StateType(_cret)
+
+	return _stateType
+}
+
+// TextAttribute describes the text attributes supported.
+type TextAttribute C.gint
+
+const (
+	// TextAttrInvalid: invalid attribute, like bad spelling or grammar.
+	TextAttrInvalid TextAttribute = iota
+	// TextAttrLeftMargin: pixel width of the left margin.
+	TextAttrLeftMargin
+	// TextAttrRightMargin: pixel width of the right margin.
+	TextAttrRightMargin
+	// TextAttrIndent: number of pixels that the text is indented.
+	TextAttrIndent
+	// TextAttrInvisible: either "true" or "false" indicating whether text is
+	// visible or not.
+	TextAttrInvisible
+	// TextAttrEditable: either "true" or "false" indicating whether text is
+	// editable or not.
+	TextAttrEditable
+	// TextAttrPixelsAboveLines pixels of blank space to leave above each
+	// newline-terminated line.
+	TextAttrPixelsAboveLines
+	// TextAttrPixelsBelowLines pixels of blank space to leave below each
+	// newline-terminated line.
+	TextAttrPixelsBelowLines
+	// TextAttrPixelsInsideWrap pixels of blank space to leave between wrapped
+	// lines inside the same newline-terminated line (paragraph).
+	TextAttrPixelsInsideWrap
+	// TextAttrBgFullHeight: "true" or "false" whether to make the background
+	// color for each character the height of the highest font used on the
+	// current line, or the height of the font used for the current character.
+	TextAttrBgFullHeight
+	// TextAttrRise: number of pixels that the characters are risen above the
+	// baseline. See also ATK_TEXT_ATTR_TEXT_POSITION.
+	TextAttrRise
+	// TextAttrUnderline: "none", "single", "double", "low", or "error".
+	TextAttrUnderline
+	// TextAttrStrikethrough: "true" or "false" whether the text is
+	// strikethrough.
+	TextAttrStrikethrough
+	// TextAttrSize: size of the characters in points. eg: 10.
+	TextAttrSize
+	// TextAttrScale: scale of the characters. The value is a string
+	// representation of a double.
+	TextAttrScale
+	// TextAttrWeight: weight of the characters.
+	TextAttrWeight
+	// TextAttrLanguage: language used.
+	TextAttrLanguage
+	// TextAttrFamilyName: font family name.
+	TextAttrFamilyName
+	// TextAttrBgColor: background color. The value is an RGB value of the
+	// format "u,u,u".
+	TextAttrBgColor
+	// TextAttrFgColor: foreground color. The value is an RGB value of the
+	// format "u,u,u".
+	TextAttrFgColor
+	// TextAttrBgStipple: "true" if a Bitmap is set for stippling the background
+	// color.
+	TextAttrBgStipple
+	// TextAttrFgStipple: "true" if a Bitmap is set for stippling the foreground
+	// color.
+	TextAttrFgStipple
+	// TextAttrWrapMode: wrap mode of the text, if any. Values are "none",
+	// "char", "word", or "word_char".
+	TextAttrWrapMode
+	// TextAttrDirection: direction of the text, if set. Values are "none",
+	// "ltr" or "rtl".
+	TextAttrDirection
+	// TextAttrJustification: justification of the text, if set. Values are
+	// "left", "right", "center" or "fill".
+	TextAttrJustification
+	// TextAttrStretch: stretch of the text, if set. Values are
+	// "ultra_condensed", "extra_condensed", "condensed", "semi_condensed",
+	// "normal", "semi_expanded", "expanded", "extra_expanded" or
+	// "ultra_expanded".
+	TextAttrStretch
+	// TextAttrVariant: capitalization variant of the text, if set. Values are
+	// "normal" or "small_caps".
+	TextAttrVariant
+	// TextAttrStyle: slant style of the text, if set. Values are "normal",
+	// "oblique" or "italic".
+	TextAttrStyle
+	// TextAttrTextPosition: vertical position with respect to the baseline.
+	// Values are "baseline", "super", or "sub". Note that a super or sub text
+	// attribute refers to position with respect to the baseline of the prior
+	// character.
+	TextAttrTextPosition
+	// TextAttrLastDefined: not a valid text attribute, used for finding end of
+	// enumeration.
+	TextAttrLastDefined
+)
+
+func marshalTextAttribute(p uintptr) (interface{}, error) {
+	return TextAttribute(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TextAttribute.
+func (t TextAttribute) String() string {
+	switch t {
+	case TextAttrInvalid:
+		return "Invalid"
+	case TextAttrLeftMargin:
+		return "LeftMargin"
+	case TextAttrRightMargin:
+		return "RightMargin"
+	case TextAttrIndent:
+		return "Indent"
+	case TextAttrInvisible:
+		return "Invisible"
+	case TextAttrEditable:
+		return "Editable"
+	case TextAttrPixelsAboveLines:
+		return "PixelsAboveLines"
+	case TextAttrPixelsBelowLines:
+		return "PixelsBelowLines"
+	case TextAttrPixelsInsideWrap:
+		return "PixelsInsideWrap"
+	case TextAttrBgFullHeight:
+		return "BgFullHeight"
+	case TextAttrRise:
+		return "Rise"
+	case TextAttrUnderline:
+		return "Underline"
+	case TextAttrStrikethrough:
+		return "Strikethrough"
+	case TextAttrSize:
+		return "Size"
+	case TextAttrScale:
+		return "Scale"
+	case TextAttrWeight:
+		return "Weight"
+	case TextAttrLanguage:
+		return "Language"
+	case TextAttrFamilyName:
+		return "FamilyName"
+	case TextAttrBgColor:
+		return "BgColor"
+	case TextAttrFgColor:
+		return "FgColor"
+	case TextAttrBgStipple:
+		return "BgStipple"
+	case TextAttrFgStipple:
+		return "FgStipple"
+	case TextAttrWrapMode:
+		return "WrapMode"
+	case TextAttrDirection:
+		return "Direction"
+	case TextAttrJustification:
+		return "Justification"
+	case TextAttrStretch:
+		return "Stretch"
+	case TextAttrVariant:
+		return "Variant"
+	case TextAttrStyle:
+		return "Style"
+	case TextAttrTextPosition:
+		return "TextPosition"
+	case TextAttrLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("TextAttribute(%d)", t)
+	}
+}
+
+// TextAttributeForName: get the TextAttribute type corresponding to a text
+// attribute name.
+//
+// The function takes the following parameters:
+//
+//   - name: string which is the (non-localized) name of an ATK text attribute.
+//
+// The function returns the following values:
+//
+//   - textAttribute enumerated type corresponding to the specified name,
+//     or K_TEXT_ATTRIBUTE_INVALID if no matching text attribute is found.
+//
+func TextAttributeForName(name string) TextAttribute {
+	var _arg1 *C.gchar           // out
+	var _cret C.AtkTextAttribute // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_text_attribute_for_name(_arg1)
+	runtime.KeepAlive(name)
+
+	var _textAttribute TextAttribute // out
+
+	_textAttribute = TextAttribute(_cret)
+
+	return _textAttribute
+}
+
+// TextAttributeGetName gets the name corresponding to the TextAttribute.
+//
+// The function takes the following parameters:
+//
+//   - attr whose name is required.
+//
+// The function returns the following values:
+//
+//   - utf8: string containing the name; this string should not be freed.
+//
+func TextAttributeGetName(attr TextAttribute) string {
+	var _arg1 C.AtkTextAttribute // out
+	var _cret *C.gchar           // in
+
+	_arg1 = C.AtkTextAttribute(attr)
+
+	_cret = C.atk_text_attribute_get_name(_arg1)
+	runtime.KeepAlive(attr)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// TextAttributeGetValue gets the value for the index of the TextAttribute.
+//
+// The function takes the following parameters:
+//
+//   - attr for which a value is required.
+//   - index_: index of the required value.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): string containing the value; this string should not be
+//     freed; NULL is returned if there are no values maintained for the attr
+//     value.
+//
+func TextAttributeGetValue(attr TextAttribute, index_ int) string {
+	var _arg1 C.AtkTextAttribute // out
+	var _arg2 C.gint             // out
+	var _cret *C.gchar           // in
+
+	_arg1 = C.AtkTextAttribute(attr)
+	_arg2 = C.gint(index_)
+
+	_cret = C.atk_text_attribute_get_value(_arg1, _arg2)
+	runtime.KeepAlive(attr)
+	runtime.KeepAlive(index_)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// TextAttributeRegister: associate name with a new TextAttribute.
+//
+// The function takes the following parameters:
+//
+//   - name string.
+//
+// The function returns the following values:
+//
+//   - textAttribute associated with name.
+//
+func TextAttributeRegister(name string) TextAttribute {
+	var _arg1 *C.gchar           // out
+	var _cret C.AtkTextAttribute // in
+
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_text_attribute_register(_arg1)
+	runtime.KeepAlive(name)
+
+	var _textAttribute TextAttribute // out
+
+	_textAttribute = TextAttribute(_cret)
+
+	return _textAttribute
+}
+
+// TextBoundary: text boundary types used for specifying boundaries for regions
+// of text. This enumeration is deprecated since 2.9.4 and should not be used.
+// Use AtkTextGranularity with #atk_text_get_string_at_offset instead.
+type TextBoundary C.gint
+
+const (
+	// TextBoundaryChar: boundary is the boundary between characters (including
+	// non-printing characters).
+	TextBoundaryChar TextBoundary = iota
+	// TextBoundaryWordStart: boundary is the start (i.e. first character) of a
+	// word.
+	TextBoundaryWordStart
+	// TextBoundaryWordEnd: boundary is the end (i.e. last character) of a word.
+	TextBoundaryWordEnd
+	// TextBoundarySentenceStart: boundary is the first character in a sentence.
+	TextBoundarySentenceStart
+	// TextBoundarySentenceEnd: boundary is the last (terminal) character in
+	// a sentence; in languages which use "sentence stop" punctuation such
+	// as English, the boundary is thus the '.', '?', or similar terminal
+	// punctuation character.
+	TextBoundarySentenceEnd
+	// TextBoundaryLineStart: boundary is the initial character of the content
+	// or a character immediately following a newline, linefeed, or return
+	// character.
+	TextBoundaryLineStart
+	// TextBoundaryLineEnd: boundary is the linefeed, or return character.
+	TextBoundaryLineEnd
+)
+
+func marshalTextBoundary(p uintptr) (interface{}, error) {
+	return TextBoundary(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TextBoundary.
+func (t TextBoundary) String() string {
+	switch t {
+	case TextBoundaryChar:
+		return "Char"
+	case TextBoundaryWordStart:
+		return "WordStart"
+	case TextBoundaryWordEnd:
+		return "WordEnd"
+	case TextBoundarySentenceStart:
+		return "SentenceStart"
+	case TextBoundarySentenceEnd:
+		return "SentenceEnd"
+	case TextBoundaryLineStart:
+		return "LineStart"
+	case TextBoundaryLineEnd:
+		return "LineEnd"
+	default:
+		return fmt.Sprintf("TextBoundary(%d)", t)
+	}
+}
+
+// TextClipType describes the type of clipping required.
+type TextClipType C.gint
+
+const (
+	// TextClipNone: no clipping to be done.
+	TextClipNone TextClipType = iota
+	// TextClipMin: text clipped by min coordinate is omitted.
+	TextClipMin
+	// TextClipMax: text clipped by max coordinate is omitted.
+	TextClipMax
+	// TextClipBoth: only text fully within mix/max bound is retained.
+	TextClipBoth
+)
+
+func marshalTextClipType(p uintptr) (interface{}, error) {
+	return TextClipType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TextClipType.
+func (t TextClipType) String() string {
+	switch t {
+	case TextClipNone:
+		return "None"
+	case TextClipMin:
+		return "Min"
+	case TextClipMax:
+		return "Max"
+	case TextClipBoth:
+		return "Both"
+	default:
+		return fmt.Sprintf("TextClipType(%d)", t)
+	}
+}
+
+// TextGranularity: text granularity types used for specifying the granularity
+// of the region of text we are interested in.
+type TextGranularity C.gint
+
+const (
+	// TextGranularityChar: granularity is defined by the boundaries between
+	// characters (including non-printing characters).
+	TextGranularityChar TextGranularity = iota
+	// TextGranularityWord: granularity is defined by the boundaries of a word,
+	// starting at the beginning of the current word and finishing at the
+	// beginning of the following one, if present.
+	TextGranularityWord
+	// TextGranularitySentence: granularity is defined by the boundaries of a
+	// sentence, starting at the beginning of the current sentence and finishing
+	// at the beginning of the following one, if present.
+	TextGranularitySentence
+	// TextGranularityLine: granularity is defined by the boundaries of a line,
+	// starting at the beginning of the current line and finishing at the
+	// beginning of the following one, if present.
+	TextGranularityLine
+	// TextGranularityParagraph: granularity is defined by the boundaries of
+	// a paragraph, starting at the beginning of the current paragraph and
+	// finishing at the beginning of the following one, if present.
+	TextGranularityParagraph
+)
+
+func marshalTextGranularity(p uintptr) (interface{}, error) {
+	return TextGranularity(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TextGranularity.
+func (t TextGranularity) String() string {
+	switch t {
+	case TextGranularityChar:
+		return "Char"
+	case TextGranularityWord:
+		return "Word"
+	case TextGranularitySentence:
+		return "Sentence"
+	case TextGranularityLine:
+		return "Line"
+	case TextGranularityParagraph:
+		return "Paragraph"
+	default:
+		return fmt.Sprintf("TextGranularity(%d)", t)
+	}
+}
+
+// ValueType: default types for a given value. Those are defined in order to
+// easily get localized strings to describe a given value or a given subrange,
+// using atk_value_type_get_localized_name().
+type ValueType C.gint
+
+const (
+	ValueVeryWeak ValueType = iota
+	ValueWeak
+	ValueAcceptable
+	ValueStrong
+	ValueVeryStrong
+	ValueVeryLow
+	ValueLow
+	ValueMedium
+	ValueHigh
+	ValueVeryHigh
+	ValueVeryBad
+	ValueBad
+	ValueGood
+	ValueVeryGood
+	ValueBest
+	ValueLastDefined
+)
+
+func marshalValueType(p uintptr) (interface{}, error) {
+	return ValueType(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for ValueType.
+func (v ValueType) String() string {
+	switch v {
+	case ValueVeryWeak:
+		return "VeryWeak"
+	case ValueWeak:
+		return "Weak"
+	case ValueAcceptable:
+		return "Acceptable"
+	case ValueStrong:
+		return "Strong"
+	case ValueVeryStrong:
+		return "VeryStrong"
+	case ValueVeryLow:
+		return "VeryLow"
+	case ValueLow:
+		return "Low"
+	case ValueMedium:
+		return "Medium"
+	case ValueHigh:
+		return "High"
+	case ValueVeryHigh:
+		return "VeryHigh"
+	case ValueVeryBad:
+		return "VeryBad"
+	case ValueBad:
+		return "Bad"
+	case ValueGood:
+		return "Good"
+	case ValueVeryGood:
+		return "VeryGood"
+	case ValueBest:
+		return "Best"
+	case ValueLastDefined:
+		return "LastDefined"
+	default:
+		return fmt.Sprintf("ValueType(%d)", v)
+	}
+}
+
+// ValueTypeGetLocalizedName gets the localized description string describing
+// the ValueType value_type.
+//
+// The function takes the following parameters:
+//
+//   - valueType whose localized name is required.
+//
+// The function returns the following values:
+//
+//   - utf8: localized string describing the ValueType.
+//
+func ValueTypeGetLocalizedName(valueType ValueType) string {
+	var _arg1 C.AtkValueType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkValueType(valueType)
+
+	_cret = C.atk_value_type_get_localized_name(_arg1)
+	runtime.KeepAlive(valueType)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ValueTypeGetName gets the description string describing the ValueType
+// value_type.
+//
+// The function takes the following parameters:
+//
+//   - valueType whose name is required.
+//
+// The function returns the following values:
+//
+//   - utf8: string describing the ValueType.
+//
+func ValueTypeGetName(valueType ValueType) string {
+	var _arg1 C.AtkValueType // out
+	var _cret *C.gchar       // in
+
+	_arg1 = C.AtkValueType(valueType)
+
+	_cret = C.atk_value_type_get_name(_arg1)
+	runtime.KeepAlive(valueType)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// HyperlinkStateFlags describes the type of link.
+type HyperlinkStateFlags C.guint
+
+const (
+	// HyperlinkIsInline: link is inline.
+	HyperlinkIsInline HyperlinkStateFlags = 0b1
+)
+
+func marshalHyperlinkStateFlags(p uintptr) (interface{}, error) {
+	return HyperlinkStateFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+}
+
+// String returns the names in string for HyperlinkStateFlags.
+func (h HyperlinkStateFlags) String() string {
+	if h == 0 {
+		return "HyperlinkStateFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(17)
+
+	for h != 0 {
+		next := h & (h - 1)
+		bit := h - next
+
+		switch bit {
+		case HyperlinkIsInline:
+			builder.WriteString("Inline|")
+		default:
+			builder.WriteString(fmt.Sprintf("HyperlinkStateFlags(0b%b)|", bit))
+		}
+
+		h = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if h contains other.
+func (h HyperlinkStateFlags) Has(other HyperlinkStateFlags) bool {
+	return (h & other) == other
+}
+
+// Function is a function definition used for padding which has been added to
+// class and interface structures to allow for expansion in the future.
+type Function func() (ok bool)
+
+//export _gotk4_atk1_Function
+func _gotk4_atk1_Function(arg1 C.gpointer) (cret C.gboolean) {
+	var fn Function
+	{
+		v := gbox.Get(uintptr(arg1))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(Function)
+	}
+
+	ok := fn()
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+// KeySnoopFunc is a type of callback which is called whenever a key event
+// occurs, if registered via atk_add_key_event_listener. It allows for
+// pre-emptive interception of key events via the return code as described
+// below.
+type KeySnoopFunc func(event *KeyEventStruct) (gint int)
+
+//export _gotk4_atk1_KeySnoopFunc
+func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret C.gint) {
+	var fn KeySnoopFunc
+	{
+		v := gbox.Get(uintptr(arg2))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(KeySnoopFunc)
+	}
+
+	var _event *KeyEventStruct // out
+
+	_event = (*KeyEventStruct)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	gint := fn(_event)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+// FocusTrackerNotify: cause the focus tracker functions which have been
+// specified to be executed for the object.
+//
+// Deprecated: Focus tracking has been dropped as a feature to be implemented
+// by ATK itself. As Object::focus-event was deprecated in favor of a
+// Object::state-change signal, in order to notify a focus change on your
+// implementation, you can use atk_object_notify_state_change() instead.
+//
+// The function takes the following parameters:
+//
+//   - object: Object.
+//
+func FocusTrackerNotify(object *AtkObject) {
+	var _arg1 *C.AtkObject // out
+
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+
+	C.atk_focus_tracker_notify(_arg1)
+	runtime.KeepAlive(object)
+}
+
+// GetBinaryAge returns the binary age as passed to libtool when building the
+// ATK library the process is running against.
+//
+// The function returns the following values:
+//
+//   - guint: binary age of the ATK library.
+//
+func GetBinaryAge() uint {
+	var _cret C.guint // in
+
+	_cret = C.atk_get_binary_age()
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// GetDefaultRegistry gets a default implementation of the ObjectFactory/type
+// registry. Note: For most toolkit maintainers, this will be the correct
+// registry for registering new Object factories. Following a call to this
+// function, maintainers may call atk_registry_set_factory_type() to associate
+// an ObjectFactory subclass with the GType of objects for whom accessibility
+// information will be provided.
+//
+// The function returns the following values:
+//
+//   - registry: default implementation of the ObjectFactory/type registry.
+//
+func GetDefaultRegistry() *Registry {
+	var _cret *C.AtkRegistry // in
+
+	_cret = C.atk_get_default_registry()
+
+	var _registry *Registry // out
+
+	_registry = wrapRegistry(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _registry
+}
+
+// GetFocusObject gets the currently focused object.
+//
+// The function returns the following values:
+//
+//   - object: currently focused object for the current application.
+//
+func GetFocusObject() *AtkObject {
+	var _cret *C.AtkObject // in
+
+	_cret = C.atk_get_focus_object()
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// GetInterfaceAge returns the interface age as passed to libtool when building
+// the ATK library the process is running against.
+//
+// The function returns the following values:
+//
+//   - guint: interface age of the ATK library.
+//
+func GetInterfaceAge() uint {
+	var _cret C.guint // in
+
+	_cret = C.atk_get_interface_age()
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// GetMajorVersion returns the major version number of the ATK library. (e.g.
+// in ATK version 2.7.4 this is 2.)
+//
+// This function is in the library, so it represents the ATK library your code
+// is running against. In contrast, the K_MAJOR_VERSION macro represents the
+// major version of the ATK headers you have included when compiling your code.
+//
+// The function returns the following values:
+//
+//   - guint: major version number of the ATK library.
+//
+func GetMajorVersion() uint {
+	var _cret C.guint // in
+
+	_cret = C.atk_get_major_version()
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// GetMicroVersion returns the micro version number of the ATK library. (e.g.
+// in ATK version 2.7.4 this is 4.)
+//
+// This function is in the library, so it represents the ATK library your code
+// is are running against. In contrast, the K_MICRO_VERSION macro represents the
+// micro version of the ATK headers you have included when compiling your code.
+//
+// The function returns the following values:
+//
+//   - guint: micro version number of the ATK library.
+//
+func GetMicroVersion() uint {
+	var _cret C.guint // in
+
+	_cret = C.atk_get_micro_version()
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// GetMinorVersion returns the minor version number of the ATK library. (e.g.
+// in ATK version 2.7.4 this is 7.)
+//
+// This function is in the library, so it represents the ATK library your code
+// is are running against. In contrast, the K_MINOR_VERSION macro represents the
+// minor version of the ATK headers you have included when compiling your code.
+//
+// The function returns the following values:
+//
+//   - guint: minor version number of the ATK library.
+//
+func GetMinorVersion() uint {
+	var _cret C.guint // in
+
+	_cret = C.atk_get_minor_version()
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// GetRoot gets the root accessible container for the current application.
+//
+// The function returns the following values:
+//
+//   - object: root accessible container for the current application.
+//
+func GetRoot() *AtkObject {
+	var _cret *C.AtkObject // in
+
+	_cret = C.atk_get_root()
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// GetToolkitName gets name string for the GUI toolkit implementing ATK for this
+// application.
+//
+// The function returns the following values:
+//
+//   - utf8: name string for the GUI toolkit implementing ATK for this
+//     application.
+//
+func GetToolkitName() string {
+	var _cret *C.gchar // in
+
+	_cret = C.atk_get_toolkit_name()
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// GetToolkitVersion gets version string for the GUI toolkit implementing ATK
+// for this application.
+//
+// The function returns the following values:
+//
+//   - utf8: version string for the GUI toolkit implementing ATK for this
+//     application.
+//
+func GetToolkitVersion() string {
+	var _cret *C.gchar // in
+
+	_cret = C.atk_get_toolkit_version()
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// GetVersion gets the current version for ATK.
+//
+// The function returns the following values:
+//
+//   - utf8: version string for ATK.
+//
+func GetVersion() string {
+	var _cret *C.gchar // in
+
+	_cret = C.atk_get_version()
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// RemoveFocusTracker removes the specified focus tracker from the list of
+// functions to be called when any object receives focus.
+//
+// Deprecated: Focus tracking has been dropped as a feature to be implemented by
+// ATK itself. If you need focus tracking on your implementation, subscribe to
+// the Object::state-change "focused" signal.
+//
+// The function takes the following parameters:
+//
+//   - trackerId: id of the focus tracker to remove.
+//
+func RemoveFocusTracker(trackerId uint) {
+	var _arg1 C.guint // out
+
+	_arg1 = C.guint(trackerId)
+
+	C.atk_remove_focus_tracker(_arg1)
+	runtime.KeepAlive(trackerId)
+}
+
+// RemoveGlobalEventListener: listener_id is the value returned by
+// #atk_add_global_event_listener when you registered that event listener.
+//
+// Toolkit implementor note: ATK provides a default implementation for this
+// virtual method. ATK implementors are discouraged from reimplementing this
+// method.
+//
+// Toolkit implementor note: this method is not intended to be used by ATK
+// implementors but by ATK consumers.
+//
+// Removes the specified event listener.
+//
+// The function takes the following parameters:
+//
+//   - listenerId: id of the event listener to remove.
+//
+func RemoveGlobalEventListener(listenerId uint) {
+	var _arg1 C.guint // out
+
+	_arg1 = C.guint(listenerId)
+
+	C.atk_remove_global_event_listener(_arg1)
+	runtime.KeepAlive(listenerId)
+}
+
+// RemoveKeyEventListener: listener_id is the value returned by
+// #atk_add_key_event_listener when you registered that event listener.
+//
+// Removes the specified event listener.
+//
+// The function takes the following parameters:
+//
+//   - listenerId: id of the event listener to remove.
+//
+func RemoveKeyEventListener(listenerId uint) {
+	var _arg1 C.guint // out
+
+	_arg1 = C.guint(listenerId)
+
+	C.atk_remove_key_event_listener(_arg1)
+	runtime.KeepAlive(listenerId)
+}
+
+// Action should be implemented by instances of Object classes with which
+// the user can interact directly, i.e. buttons, checkboxes, scrollbars, e.g.
+// components which are not "passive" providers of UI information.
+//
+// Exceptions: when the user interaction is already covered by another
+// appropriate interface such as EditableText (insert/delete text, etc.) or
+// Value (set value) then these actions should not be exposed by Action as well.
+//
+// Though most UI interactions on components should be invocable via keyboard
+// as well as mouse, there will generally be a close mapping between "mouse
+// actions" that are possible on a component and the AtkActions. Where mouse
+// and keyboard actions are redundant in effect, Action should expose only one
+// action rather than exposing redundant actions if possible. By convention we
+// have been using "mouse centric" terminology for Action names.
+//
+// Action wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Action struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Action)(nil)
+)
+
+// Actioner describes Action's interface methods.
+type Actioner interface {
+	coreglib.Objector
+
+	// DoAction: perform the specified action on the object.
+	DoAction(i int) bool
+	// Description returns a description of the specified action of the object.
+	Description(i int) string
+	// Keybinding gets the keybinding which can be used to activate this action,
+	// if one exists.
+	Keybinding(i int) string
+	// LocalizedName returns the localized name of the specified action of the
+	// object.
+	LocalizedName(i int) string
+	// NActions gets the number of accessible actions available on the object.
+	NActions() int
+	// Name returns a non-localized string naming the specified action of the
+	// object.
+	Name(i int) string
+	// SetDescription sets a description of the specified action of the object.
+	SetDescription(i int, desc string) bool
+}
+
+var _ Actioner = (*Action)(nil)
+
+func wrapAction(obj *coreglib.Object) *Action {
+	return &Action{
+		Object: obj,
+	}
+}
+
+func marshalAction(p uintptr) (interface{}, error) {
+	return wrapAction(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// DoAction: perform the specified action on the object.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (action *Action) DoAction(i int) bool {
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_action_do_action(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Description returns a description of the specified action of the object.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): description string, or NULL if action does not implement
+//     this interface.
+//
+func (action *Action) Description(i int) string {
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_action_get_description(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// Keybinding gets the keybinding which can be used to activate this action,
+// if one exists. The string returned should contain localized, human-readable,
+// key sequences as they would appear when displayed on screen. It must be in
+// the format "mnemonic;sequence;shortcut".
+//
+// - The mnemonic key activates the object if it is presently enabled onscreen.
+// This typically corresponds to the underlined letter within the widget.
+// Example: "n" in a traditional "New..." menu item or the "a" in "Apply" for a
+// button.
+//
+// - The sequence is the full list of keys which invoke the action even if the
+// relevant element is not currently shown on screen. For instance, for a menu
+// item the sequence is the keybindings used to open the parent menus before
+// invoking. The sequence string is colon-delimited. Example: "Alt+F:N" in a
+// traditional "New..." menu item.
+//
+// - The shortcut, if it exists, will invoke the same action without showing
+// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+// traditional "New..." menu item.
+//
+// Example: For a traditional "New..." menu item, the expected return value
+// would be: "N;Alt+F:N;Ctrl+N" for the English locale and "N;Alt+D:N;Strg+N"
+// for the German locale. If, hypothetically, this menu item lacked a mnemonic,
+// it would be represented by ";;Ctrl+N" and ";;Strg+N" respectively.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): keybinding which can be used to activate this action,
+//     or NULL if there is no keybinding for this action.
+//
+func (action *Action) Keybinding(i int) string {
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_action_get_keybinding(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// LocalizedName returns the localized name of the specified action of the
+// object.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): name string, or NULL if action does not implement this
+//     interface.
+//
+func (action *Action) LocalizedName(i int) string {
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_action_get_localized_name(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// NActions gets the number of accessible actions available on the object.
+// If there are more than one, the first one is considered the "default" action
+// of the object.
+//
+// The function returns the following values:
+//
+//   - gint: the number of actions, or 0 if action does not implement this
+//     interface.
+//
+func (action *Action) NActions() int {
+	var _arg0 *C.AtkAction // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+
+	_cret = C.atk_action_get_n_actions(_arg0)
+	runtime.KeepAlive(action)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Name returns a non-localized string naming the specified action of the
+// object. This name is generally not descriptive of the end result of the
+// action, but instead names the 'interaction type' which the object supports.
+// By convention, the above strings should be used to represent the actions
+// which correspond to the common point-and-click interaction techniques of the
+// same name: i.e. "click", "press", "release", "drag", "drop", "popup", etc.
+// The "popup" action should be used to pop up a context menu for the object,
+// if one exists.
+//
+// For technical reasons, some toolkits cannot guarantee that the reported
+// action is actually 'bound' to a nontrivial user event; i.e. the result of
+// some actions via atk_action_do_action() may be NIL.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): name string, or NULL if action does not implement this
+//     interface.
+//
+func (action *Action) Name(i int) string {
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_action_get_name(_arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// SetDescription sets a description of the specified action of the object.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//   - desc: description to be assigned to this action.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the description was successfully set;.
+//
+func (action *Action) SetDescription(i int, desc string) bool {
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.gchar     // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(desc)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.atk_action_set_description(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+	runtime.KeepAlive(desc)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// doAction: perform the specified action on the object.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (action *Action) doAction(i int) bool {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.do_action
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_do_action(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Description returns a description of the specified action of the object.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): description string, or NULL if action does not implement
+//     this interface.
+//
+func (action *Action) description(i int) string {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_description
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_get_description(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// Keybinding gets the keybinding which can be used to activate this action,
+// if one exists. The string returned should contain localized, human-readable,
+// key sequences as they would appear when displayed on screen. It must be in
+// the format "mnemonic;sequence;shortcut".
+//
+// - The mnemonic key activates the object if it is presently enabled onscreen.
+// This typically corresponds to the underlined letter within the widget.
+// Example: "n" in a traditional "New..." menu item or the "a" in "Apply" for a
+// button.
+//
+// - The sequence is the full list of keys which invoke the action even if the
+// relevant element is not currently shown on screen. For instance, for a menu
+// item the sequence is the keybindings used to open the parent menus before
+// invoking. The sequence string is colon-delimited. Example: "Alt+F:N" in a
+// traditional "New..." menu item.
+//
+// - The shortcut, if it exists, will invoke the same action without showing
+// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+// traditional "New..." menu item.
+//
+// Example: For a traditional "New..." menu item, the expected return value
+// would be: "N;Alt+F:N;Ctrl+N" for the English locale and "N;Alt+D:N;Strg+N"
+// for the German locale. If, hypothetically, this menu item lacked a mnemonic,
+// it would be represented by ";;Ctrl+N" and ";;Strg+N" respectively.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): keybinding which can be used to activate this action,
+//     or NULL if there is no keybinding for this action.
+//
+func (action *Action) keybinding(i int) string {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_keybinding
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_get_keybinding(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// localizedName returns the localized name of the specified action of the
+// object.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): name string, or NULL if action does not implement this
+//     interface.
+//
+func (action *Action) localizedName(i int) string {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_localized_name
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_get_localized_name(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// nActions gets the number of accessible actions available on the object.
+// If there are more than one, the first one is considered the "default" action
+// of the object.
+//
+// The function returns the following values:
+//
+//   - gint: the number of actions, or 0 if action does not implement this
+//     interface.
+//
+func (action *Action) nActions() int {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_n_actions
+
+	var _arg0 *C.AtkAction // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+
+	_cret = C._gotk4_atk1_Action_virtual_get_n_actions(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(action)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Name returns a non-localized string naming the specified action of the
+// object. This name is generally not descriptive of the end result of the
+// action, but instead names the 'interaction type' which the object supports.
+// By convention, the above strings should be used to represent the actions
+// which correspond to the common point-and-click interaction techniques of the
+// same name: i.e. "click", "press", "release", "drag", "drop", "popup", etc.
+// The "popup" action should be used to pop up a context menu for the object,
+// if one exists.
+//
+// For technical reasons, some toolkits cannot guarantee that the reported
+// action is actually 'bound' to a nontrivial user event; i.e. the result of
+// some actions via atk_action_do_action() may be NIL.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): name string, or NULL if action does not implement this
+//     interface.
+//
+func (action *Action) name(i int) string {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.get_name
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Action_virtual_get_name(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// setDescription sets a description of the specified action of the object.
+//
+// The function takes the following parameters:
+//
+//   - i: action index corresponding to the action to be performed.
+//   - desc: description to be assigned to this action.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the description was successfully set;.
+//
+func (action *Action) setDescription(i int, desc string) bool {
+	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
+	fnarg := gclass.set_description
+
+	var _arg0 *C.AtkAction // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.gchar     // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.AtkAction)(unsafe.Pointer(coreglib.InternObject(action).Native()))
+	_arg1 = C.gint(i)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(desc)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C._gotk4_atk1_Action_virtual_set_description(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(action)
+	runtime.KeepAlive(i)
+	runtime.KeepAlive(desc)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Component should be implemented by most if not all UI elements with an
+// actual on-screen presence, i.e. components which can be said to have a
+// screen-coordinate bounding box. Virtually all widgets will need to have
+// Component implementations provided for their corresponding Object class.
+// In short, only UI elements which are *not* GUI elements will omit this ATK
+// interface.
+//
+// A possible exception might be textual information with a transparent
+// background, in which case text glyph bounding box information is provided by
+// Text.
+//
+// Component wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Component struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Component)(nil)
+)
+
+// Componenter describes Component's interface methods.
+type Componenter interface {
+	coreglib.Objector
+
+	// Contains checks whether the specified point is within the extent of the
+	// component.
+	Contains(x, y int, coordType CoordType) bool
+	// Alpha returns the alpha value (i.e.
+	Alpha() float64
+	// Extents gets the rectangle which gives the extent of the component.
+	Extents(coordType CoordType) (x, y, width, height int)
+	// Layer gets the layer of the component.
+	Layer() Layer
+	// MDIZOrder gets the zorder of the component.
+	MDIZOrder() int
+	// Position gets the position of component in the form of a point specifying
+	// component's top-left corner.
+	Position(coordType CoordType) (x, y int)
+	// Size gets the size of the component in terms of width and height.
+	Size() (width, height int)
+	// GrabFocus grabs focus for this component.
+	GrabFocus() bool
+	// RefAccessibleAtPoint gets a reference to the accessible child, if one
+	// exists, at the coordinate point specified by x and y.
+	RefAccessibleAtPoint(x, y int, coordType CoordType) *AtkObject
+	// RemoveFocusHandler: remove the handler specified by handler_id from the
+	// list of functions to be executed when this object receives focus events
+	// (in or out).
+	RemoveFocusHandler(handlerId uint)
+	// ScrollTo makes component visible on the screen by scrolling all necessary
+	// parents.
+	ScrollTo(typ ScrollType) bool
+	// ScrollToPoint: move the top-left of component to a given position of the
+	// screen by scrolling all necessary parents.
+	ScrollToPoint(coords CoordType, x, y int) bool
+	// SetExtents sets the extents of component.
+	SetExtents(x, y, width, height int, coordType CoordType) bool
+	// SetPosition sets the position of component.
+	SetPosition(x, y int, coordType CoordType) bool
+	// SetSize: set the size of the component in terms of width and height.
+	SetSize(width, height int) bool
+
+	// Bounds-changed: 'bounds-changed" signal is emitted when the bposition or
+	// size of the component changes.
+	ConnectBoundsChanged(func(arg1 *Rectangle)) coreglib.SignalHandle
+}
+
+var _ Componenter = (*Component)(nil)
+
+func wrapComponent(obj *coreglib.Object) *Component {
+	return &Component{
+		Object: obj,
+	}
+}
+
+func marshalComponent(p uintptr) (interface{}, error) {
+	return wrapComponent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
+// or size of the component changes.
+func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(component, "bounds-changed", false, unsafe.Pointer(C._gotk4_atk1_Component_ConnectBoundsChanged), f)
+}
+
+// Contains checks whether the specified point is within the extent of the
+// component.
+//
+// Toolkit implementor note: ATK provides a default implementation for this
+// virtual method. In general there are little reason to re-implement it.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE or FALSE indicating whether the specified point is within the
+//     extent of the component or not.
+//
+func (component *Component) Contains(x, y int, coordType CoordType) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C.atk_component_contains(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Alpha returns the alpha value (i.e. the opacity) for this component, on a
+// scale from 0 (fully transparent) to 1.0 (fully opaque).
+//
+// The function returns the following values:
+//
+//   - gdouble: alpha value from 0 to 1.0, inclusive.
+//
+func (component *Component) Alpha() float64 {
+	var _arg0 *C.AtkComponent // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	_cret = C.atk_component_get_alpha(_arg0)
+	runtime.KeepAlive(component)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// Extents gets the rectangle which gives the extent of the component.
+//
+// If the extent can not be obtained (e.g. a non-embedded plug or missing
+// support), all of x, y, width, height are set to -1.
+//
+// The function takes the following parameters:
+//
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - x (optional) address of #gint to put x coordinate.
+//   - y (optional) address of #gint to put y coordinate.
+//   - width (optional) address of #gint to put width.
+//   - height (optional) address of #gint to put height.
+//
+func (component *Component) Extents(coordType CoordType) (x, y, width, height int) {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.gint          // in
+	var _arg4 C.gint          // in
+	var _arg5 C.AtkCoordType  // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg5 = C.AtkCoordType(coordType)
+
+	C.atk_component_get_extents(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, _arg5)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coordType)
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+	_width = int(_arg3)
+	_height = int(_arg4)
+
+	return _x, _y, _width, _height
+}
+
+// Layer gets the layer of the component.
+//
+// The function returns the following values:
+//
+//   - layer which is the layer of the component.
+//
+func (component *Component) Layer() Layer {
+	var _arg0 *C.AtkComponent // out
+	var _cret C.AtkLayer      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	_cret = C.atk_component_get_layer(_arg0)
+	runtime.KeepAlive(component)
+
+	var _layer Layer // out
+
+	_layer = Layer(_cret)
+
+	return _layer
+}
+
+// MDIZOrder gets the zorder of the component. The value G_MININT will
+// be returned if the layer of the component is not ATK_LAYER_MDI or
+// ATK_LAYER_WINDOW.
+//
+// The function returns the following values:
+//
+//   - gint which is the zorder of the component, i.e. the depth at which the
+//     component is shown in relation to other components in the same container.
+//
+func (component *Component) MDIZOrder() int {
+	var _arg0 *C.AtkComponent // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	_cret = C.atk_component_get_mdi_zorder(_arg0)
+	runtime.KeepAlive(component)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Position gets the position of component in the form of a point specifying
+// component's top-left corner.
+//
+// If the position can not be obtained (e.g. a non-embedded plug or missing
+// support), x and y are set to -1.
+//
+// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+//
+// The function takes the following parameters:
+//
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - x (optional) address of #gint to put x coordinate position.
+//   - y (optional) address of #gint to put y coordinate position.
+//
+func (component *Component) Position(coordType CoordType) (x, y int) {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.AtkCoordType  // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg3 = C.AtkCoordType(coordType)
+
+	C.atk_component_get_position(_arg0, &_arg1, &_arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coordType)
+
+	var _x int // out
+	var _y int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+
+	return _x, _y
+}
+
+// Size gets the size of the component in terms of width and height.
+//
+// If the size can not be obtained (e.g. a non-embedded plug or missing
+// support), width and height are set to -1.
+//
+// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+//
+// The function returns the following values:
+//
+//   - width (optional) address of #gint to put width of component.
+//   - height (optional) address of #gint to put height of component.
+//
+func (component *Component) Size() (width, height int) {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	C.atk_component_get_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(component)
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(_arg1)
+	_height = int(_arg2)
+
+	return _width, _height
+}
+
+// GrabFocus grabs focus for this component.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (component *Component) GrabFocus() bool {
+	var _arg0 *C.AtkComponent // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	_cret = C.atk_component_grab_focus(_arg0)
+	runtime.KeepAlive(component)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// RefAccessibleAtPoint gets a reference to the accessible child, if one exists,
+// at the coordinate point specified by x and y.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - object (optional): reference to the accessible child, if one exists.
+//
+func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) *AtkObject {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C.atk_component_ref_accessible_at_point(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// RemoveFocusHandler: remove the handler specified by handler_id from the list
+// of functions to be executed when this object receives focus events (in or
+// out).
+//
+// Deprecated: If you need to track when an object gains or lose the focus,
+// use the Object::state-change "focused" notification instead.
+//
+// The function takes the following parameters:
+//
+//   - handlerId: handler id of the focus handler to be removed from component.
+//
+func (component *Component) RemoveFocusHandler(handlerId uint) {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.guint         // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.guint(handlerId)
+
+	C.atk_component_remove_focus_handler(_arg0, _arg1)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(handlerId)
+}
+
+// ScrollTo makes component visible on the screen by scrolling all necessary
+// parents.
+//
+// Contrary to atk_component_set_position, this does not actually move component
+// in its parent, this only makes the parents scroll so that the object shows up
+// on the screen, given its current position within the parents.
+//
+// The function takes the following parameters:
+//
+//   - typ: specify where the object should be made visible.
+//
+// The function returns the following values:
+//
+//   - ok: whether scrolling was successful.
+//
+func (component *Component) ScrollTo(typ ScrollType) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.AtkScrollType // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.AtkScrollType(typ)
+
+	_cret = C.atk_component_scroll_to(_arg0, _arg1)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ScrollToPoint: move the top-left of component to a given position of the
+// screen by scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//   - coords: specify whether coordinates are relative to the screen or to the
+//     parent object.
+//   - x: x-position where to scroll to.
+//   - y: y-position where to scroll to.
+//
+// The function returns the following values:
+//
+//   - ok: whether scrolling was successful.
+//
+func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.AtkCoordType  // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.AtkCoordType(coords)
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
+
+	_cret = C.atk_component_scroll_to_point(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coords)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetExtents sets the extents of component.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+//   - width to set for component.
+//   - height to set for component.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE or FALSE whether the extents were set or not.
+//
+func (component *Component) SetExtents(x, y, width, height int, coordType CoordType) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gint          // out
+	var _arg5 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
+	_arg5 = C.AtkCoordType(coordType)
+
+	_cret = C.atk_component_set_extents(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(coordType)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetPosition sets the position of component.
+//
+// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+// this just moves component in its parent.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the component's top level window.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE or FALSE whether or not the position was set or not.
+//
+func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C.atk_component_set_position(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetSize: set the size of the component in terms of width and height.
+//
+// The function takes the following parameters:
+//
+//   - width to set for component.
+//   - height to set for component.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE or FALSE whether the size was set or not.
+//
+func (component *Component) SetSize(width, height int) bool {
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(width)
+	_arg2 = C.gint(height)
+
+	_cret = C.atk_component_set_size(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+func (component *Component) boundsChanged(bounds *Rectangle) {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.bounds_changed
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 *C.AtkRectangle // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = (*C.AtkRectangle)(gextras.StructNative(unsafe.Pointer(bounds)))
+
+	C._gotk4_atk1_Component_virtual_bounds_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(bounds)
+}
+
+// Contains checks whether the specified point is within the extent of the
+// component.
+//
+// Toolkit implementor note: ATK provides a default implementation for this
+// virtual method. In general there are little reason to re-implement it.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE or FALSE indicating whether the specified point is within the
+//     extent of the component or not.
+//
+func (component *Component) contains(x, y int, coordType CoordType) bool {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.contains
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C._gotk4_atk1_Component_virtual_contains(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Alpha returns the alpha value (i.e. the opacity) for this component, on a
+// scale from 0 (fully transparent) to 1.0 (fully opaque).
+//
+// The function returns the following values:
+//
+//   - gdouble: alpha value from 0 to 1.0, inclusive.
+//
+func (component *Component) alpha() float64 {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.get_alpha
+
+	var _arg0 *C.AtkComponent // out
+	var _cret C.gdouble       // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	_cret = C._gotk4_atk1_Component_virtual_get_alpha(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(component)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// Extents gets the rectangle which gives the extent of the component.
+//
+// If the extent can not be obtained (e.g. a non-embedded plug or missing
+// support), all of x, y, width, height are set to -1.
+//
+// The function takes the following parameters:
+//
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - x (optional) address of #gint to put x coordinate.
+//   - y (optional) address of #gint to put y coordinate.
+//   - width (optional) address of #gint to put width.
+//   - height (optional) address of #gint to put height.
+//
+func (component *Component) extents(coordType CoordType) (x, y, width, height int) {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.get_extents
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.gint          // in
+	var _arg4 C.gint          // in
+	var _arg5 C.AtkCoordType  // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg5 = C.AtkCoordType(coordType)
+
+	C._gotk4_atk1_Component_virtual_get_extents(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2, &_arg3, &_arg4, _arg5)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coordType)
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+	_width = int(_arg3)
+	_height = int(_arg4)
+
+	return _x, _y, _width, _height
+}
+
+// Layer gets the layer of the component.
+//
+// The function returns the following values:
+//
+//   - layer which is the layer of the component.
+//
+func (component *Component) layer() Layer {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.get_layer
+
+	var _arg0 *C.AtkComponent // out
+	var _cret C.AtkLayer      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	_cret = C._gotk4_atk1_Component_virtual_get_layer(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(component)
+
+	var _layer Layer // out
+
+	_layer = Layer(_cret)
+
+	return _layer
+}
+
+// mdizOrder gets the zorder of the component. The value G_MININT will
+// be returned if the layer of the component is not ATK_LAYER_MDI or
+// ATK_LAYER_WINDOW.
+//
+// The function returns the following values:
+//
+//   - gint which is the zorder of the component, i.e. the depth at which the
+//     component is shown in relation to other components in the same container.
+//
+func (component *Component) mdizOrder() int {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.get_mdi_zorder
+
+	var _arg0 *C.AtkComponent // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	_cret = C._gotk4_atk1_Component_virtual_get_mdi_zorder(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(component)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Position gets the position of component in the form of a point specifying
+// component's top-left corner.
+//
+// If the position can not be obtained (e.g. a non-embedded plug or missing
+// support), x and y are set to -1.
+//
+// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+//
+// The function takes the following parameters:
+//
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - x (optional) address of #gint to put x coordinate position.
+//   - y (optional) address of #gint to put y coordinate position.
+//
+func (component *Component) position(coordType CoordType) (x, y int) {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.get_position
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.AtkCoordType  // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg3 = C.AtkCoordType(coordType)
+
+	C._gotk4_atk1_Component_virtual_get_position(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coordType)
+
+	var _x int // out
+	var _y int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+
+	return _x, _y
+}
+
+// Size gets the size of the component in terms of width and height.
+//
+// If the size can not be obtained (e.g. a non-embedded plug or missing
+// support), width and height are set to -1.
+//
+// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+//
+// The function returns the following values:
+//
+//   - width (optional) address of #gint to put width of component.
+//   - height (optional) address of #gint to put height of component.
+//
+func (component *Component) size() (width, height int) {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.get_size
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	C._gotk4_atk1_Component_virtual_get_size(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(component)
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(_arg1)
+	_height = int(_arg2)
+
+	return _width, _height
+}
+
+// grabFocus grabs focus for this component.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (component *Component) grabFocus() bool {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.grab_focus
+
+	var _arg0 *C.AtkComponent // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+
+	_cret = C._gotk4_atk1_Component_virtual_grab_focus(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(component)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// refAccessibleAtPoint gets a reference to the accessible child, if one exists,
+// at the coordinate point specified by x and y.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - object (optional): reference to the accessible child, if one exists.
+//
+func (component *Component) refAccessibleAtPoint(x, y int, coordType CoordType) *AtkObject {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.ref_accessible_at_point
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C._gotk4_atk1_Component_virtual_ref_accessible_at_point(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// removeFocusHandler: remove the handler specified by handler_id from the list
+// of functions to be executed when this object receives focus events (in or
+// out).
+//
+// Deprecated: If you need to track when an object gains or lose the focus,
+// use the Object::state-change "focused" notification instead.
+//
+// The function takes the following parameters:
+//
+//   - handlerId: handler id of the focus handler to be removed from component.
+//
+func (component *Component) removeFocusHandler(handlerId uint) {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.remove_focus_handler
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.guint         // out
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.guint(handlerId)
+
+	C._gotk4_atk1_Component_virtual_remove_focus_handler(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(handlerId)
+}
+
+// scrollTo makes component visible on the screen by scrolling all necessary
+// parents.
+//
+// Contrary to atk_component_set_position, this does not actually move component
+// in its parent, this only makes the parents scroll so that the object shows up
+// on the screen, given its current position within the parents.
+//
+// The function takes the following parameters:
+//
+//   - typ: specify where the object should be made visible.
+//
+// The function returns the following values:
+//
+//   - ok: whether scrolling was successful.
+//
+func (component *Component) scrollTo(typ ScrollType) bool {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.scroll_to
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.AtkScrollType // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.AtkScrollType(typ)
+
+	_cret = C._gotk4_atk1_Component_virtual_scroll_to(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// scrollToPoint: move the top-left of component to a given position of the
+// screen by scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//   - coords: specify whether coordinates are relative to the screen or to the
+//     parent object.
+//   - x: x-position where to scroll to.
+//   - y: y-position where to scroll to.
+//
+// The function returns the following values:
+//
+//   - ok: whether scrolling was successful.
+//
+func (component *Component) scrollToPoint(coords CoordType, x, y int) bool {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.scroll_to_point
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.AtkCoordType  // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.AtkCoordType(coords)
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
+
+	_cret = C._gotk4_atk1_Component_virtual_scroll_to_point(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(coords)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// setExtents sets the extents of component.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+//   - width to set for component.
+//   - height to set for component.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE or FALSE whether the extents were set or not.
+//
+func (component *Component) setExtents(x, y, width, height int, coordType CoordType) bool {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.set_extents
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gint          // out
+	var _arg5 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.gint(width)
+	_arg4 = C.gint(height)
+	_arg5 = C.AtkCoordType(coordType)
+
+	_cret = C._gotk4_atk1_Component_virtual_set_extents(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+	runtime.KeepAlive(coordType)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// setPosition sets the position of component.
+//
+// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+// this just moves component in its parent.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the component's top level window.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE or FALSE whether or not the position was set or not.
+//
+func (component *Component) setPosition(x, y int, coordType CoordType) bool {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.set_position
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkCoordType  // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coordType)
+
+	_cret = C._gotk4_atk1_Component_virtual_set_position(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coordType)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// setSize: set the size of the component in terms of width and height.
+//
+// The function takes the following parameters:
+//
+//   - width to set for component.
+//   - height to set for component.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE or FALSE whether the size was set or not.
+//
+func (component *Component) setSize(width, height int) bool {
+	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
+	fnarg := gclass.set_size
+
+	var _arg0 *C.AtkComponent // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkComponent)(unsafe.Pointer(coreglib.InternObject(component).Native()))
+	_arg1 = C.gint(width)
+	_arg2 = C.gint(height)
+
+	_cret = C._gotk4_atk1_Component_virtual_set_size(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(component)
+	runtime.KeepAlive(width)
+	runtime.KeepAlive(height)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+//export _gotk4_atk1_Component_ConnectBoundsChanged
+func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRectangle, arg2 C.guintptr) {
+	var f func(arg1 *Rectangle)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 *Rectangle))
+	}
+
+	var _arg1 *Rectangle // out
+
+	_arg1 = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	f(_arg1)
+}
+
+// Document interface should be supported by any object whose content is a
+// representation or view of a document. The AtkDocument interface should appear
+// on the toplevel container for the document content; however AtkDocument
+// instances may be nested (i.e. an AtkDocument may be a descendant of another
+// AtkDocument) in those cases where one document contains "embedded content"
+// which can reasonably be considered a document in its own right.
+//
+// Document wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Document struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Document)(nil)
+)
+
+// Documenter describes Document's interface methods.
+type Documenter interface {
+	coreglib.Objector
+
+	// AttributeValue retrieves the value of the given attribute_name inside
+	// document.
+	AttributeValue(attributeName string) string
+	// CurrentPageNumber retrieves the current page number inside document.
+	CurrentPageNumber() int
+	// Document gets a gpointer that points to an instance of the DOM.
+	Document() unsafe.Pointer
+	// DocumentType gets a string indicating the document type.
+	DocumentType() string
+	// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
+	// of the content of this document instance.
+	Locale() string
+	// PageCount retrieves the total number of pages inside document.
+	PageCount() int
+	// SetAttributeValue sets the value for the given attribute_name inside
+	// document.
+	SetAttributeValue(attributeName, attributeValue string) bool
+
+	// Load-complete: 'load-complete' signal is emitted when a pending load of a
+	// static document has completed.
+	ConnectLoadComplete(func()) coreglib.SignalHandle
+	// Load-stopped: 'load-stopped' signal is emitted when a pending load of
+	// document contents is cancelled, paused, or otherwise interrupted by the
+	// user or application logic.
+	ConnectLoadStopped(func()) coreglib.SignalHandle
+	// Page-changed: 'page-changed' signal is emitted when the current page of a
+	// document changes, e.g.
+	ConnectPageChanged(func(pageNumber int)) coreglib.SignalHandle
+	// Reload: 'reload' signal is emitted when the contents of a document is
+	// refreshed from its source.
+	ConnectReload(func()) coreglib.SignalHandle
+}
+
+var _ Documenter = (*Document)(nil)
+
+func wrapDocument(obj *coreglib.Object) *Document {
+	return &Document{
+		Object: obj,
+	}
+}
+
+func marshalDocument(p uintptr) (interface{}, error) {
+	return wrapDocument(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectLoadComplete: 'load-complete' signal is emitted when a pending load of
+// a static document has completed. This signal is to be expected by ATK clients
+// if and when AtkDocument implementors expose ATK_STATE_BUSY. If the state of
+// an AtkObject which implements AtkDocument does not include ATK_STATE_BUSY, it
+// should be safe for clients to assume that the AtkDocument's static contents
+// are fully loaded into the container. (Dynamic document contents should be
+// exposed via other signals.).
+func (document *Document) ConnectLoadComplete(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "load-complete", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectLoadComplete), f)
+}
+
+// ConnectLoadStopped: 'load-stopped' signal is emitted when a pending load of
+// document contents is cancelled, paused, or otherwise interrupted by the user
+// or application logic. It should not however be emitted while waiting for a
+// resource (for instance while blocking on a file or network read) unless a
+// user-significant timeout has occurred.
+func (document *Document) ConnectLoadStopped(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "load-stopped", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectLoadStopped), f)
+}
+
+// ConnectPageChanged: 'page-changed' signal is emitted when the current page of
+// a document changes, e.g. pressing page up/down in a document viewer.
+func (document *Document) ConnectPageChanged(f func(pageNumber int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "page-changed", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectPageChanged), f)
+}
+
+// ConnectReload: 'reload' signal is emitted when the contents of a document
+// is refreshed from its source. Once 'reload' has been emitted, a matching
+// 'load-complete' or 'load-stopped' signal should follow, which clients may
+// await before interrogating ATK for the latest document content.
+func (document *Document) ConnectReload(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "reload", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectReload), f)
+}
+
+// AttributeValue retrieves the value of the given attribute_name inside
+// document.
+//
+// The function takes the following parameters:
+//
+//   - attributeName: character string representing the name of the attribute
+//     whose value is being queried.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): string value associated with the named attribute
+//     for this document, or NULL if a value for attribute_name has not been
+//     specified for this document.
+//
+func (document *Document) AttributeValue(attributeName string) string {
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_document_get_attribute_value(_arg0, _arg1)
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// CurrentPageNumber retrieves the current page number inside document.
+//
+// The function returns the following values:
+//
+//   - gint: current page number inside document, or -1 if not implemented,
+//     not know by the implementor, or irrelevant.
+//
+func (document *Document) CurrentPageNumber() int {
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C.atk_document_get_current_page_number(_arg0)
+	runtime.KeepAlive(document)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Document gets a gpointer that points to an instance of the DOM. It is up
+// to the caller to check atk_document_get_type to determine how to cast this
+// pointer.
+//
+// Deprecated: Since 2.12. document is already a representation of the document.
+// Use it directly, or one of its children, as an instance of the DOM.
+//
+// The function returns the following values:
+//
+//   - gpointer (optional) that points to an instance of the DOM.
+//
+func (document *Document) Document() unsafe.Pointer {
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gpointer     // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C.atk_document_get_document(_arg0)
+	runtime.KeepAlive(document)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
+// DocumentType gets a string indicating the document type.
+//
+// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask for
+// the document type if it applies.
+//
+// The function returns the following values:
+//
+//   - utf8: string indicating the document type.
+//
+func (document *Document) DocumentType() string {
+	var _arg0 *C.AtkDocument // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C.atk_document_get_document_type(_arg0)
+	runtime.KeepAlive(document)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Locale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+// the content of this document instance. Individual text substrings or images
+// within this document may have a different locale, see atk_text_get_attributes
+// and atk_image_get_image_locale.
+//
+// Deprecated: Please use atk_object_get_object_locale() instead.
+//
+// The function returns the following values:
+//
+//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the
+//     document content as a whole, or NULL if the document content does not
+//     specify a locale.
+//
+func (document *Document) Locale() string {
+	var _arg0 *C.AtkDocument // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C.atk_document_get_locale(_arg0)
+	runtime.KeepAlive(document)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// PageCount retrieves the total number of pages inside document.
+//
+// The function returns the following values:
+//
+//   - gint: total page count of document, or -1 if not implemented, not know by
+//     the implementor or irrelevant.
+//
+func (document *Document) PageCount() int {
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C.atk_document_get_page_count(_arg0)
+	runtime.KeepAlive(document)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SetAttributeValue sets the value for the given attribute_name inside
+// document.
+//
+// The function takes the following parameters:
+//
+//   - attributeName: character string representing the name of the attribute
+//     whose value is being set.
+//   - attributeValue: string value to be associated with attribute_name.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if attribute_value is successfully associated with
+//     attribute_name for this document, and FALSE if if the document does not
+//     allow the attribute to be modified.
+//
+func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.gchar       // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C.atk_document_set_attribute_value(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+	runtime.KeepAlive(attributeValue)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// currentPageNumber retrieves the current page number inside document.
+//
+// The function returns the following values:
+//
+//   - gint: current page number inside document, or -1 if not implemented,
+//     not know by the implementor, or irrelevant.
+//
+func (document *Document) currentPageNumber() int {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_current_page_number
+
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_current_page_number(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(document)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Document gets a gpointer that points to an instance of the DOM. It is up
+// to the caller to check atk_document_get_type to determine how to cast this
+// pointer.
+//
+// Deprecated: Since 2.12. document is already a representation of the document.
+// Use it directly, or one of its children, as an instance of the DOM.
+//
+// The function returns the following values:
+//
+//   - gpointer (optional) that points to an instance of the DOM.
+//
+func (document *Document) document() unsafe.Pointer {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_document
+
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gpointer     // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_document(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(document)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
+// documentAttributeValue retrieves the value of the given attribute_name inside
+// document.
+//
+// The function takes the following parameters:
+//
+//   - attributeName: character string representing the name of the attribute
+//     whose value is being queried.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): string value associated with the named attribute
+//     for this document, or NULL if a value for attribute_name has not been
+//     specified for this document.
+//
+func (document *Document) documentAttributeValue(attributeName string) string {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_document_attribute_value
+
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_document_attribute_value(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// documentLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+// locale of the content of this document instance. Individual text
+// substrings or images within this document may have a different locale,
+// see atk_text_get_attributes and atk_image_get_image_locale.
+//
+// Deprecated: Please use atk_object_get_object_locale() instead.
+//
+// The function returns the following values:
+//
+//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the
+//     document content as a whole, or NULL if the document content does not
+//     specify a locale.
+//
+func (document *Document) documentLocale() string {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_document_locale
+
+	var _arg0 *C.AtkDocument // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_document_locale(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(document)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// documentType gets a string indicating the document type.
+//
+// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask for
+// the document type if it applies.
+//
+// The function returns the following values:
+//
+//   - utf8: string indicating the document type.
+//
+func (document *Document) documentType() string {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_document_type
+
+	var _arg0 *C.AtkDocument // out
+	var _cret *C.gchar       // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_document_type(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(document)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// pageCount retrieves the total number of pages inside document.
+//
+// The function returns the following values:
+//
+//   - gint: total page count of document, or -1 if not implemented, not know by
+//     the implementor or irrelevant.
+//
+func (document *Document) pageCount() int {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.get_page_count
+
+	var _arg0 *C.AtkDocument // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+
+	_cret = C._gotk4_atk1_Document_virtual_get_page_count(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(document)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// setDocumentAttribute sets the value for the given attribute_name inside
+// document.
+//
+// The function takes the following parameters:
+//
+//   - attributeName: character string representing the name of the attribute
+//     whose value is being set.
+//   - attributeValue: string value to be associated with attribute_name.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if attribute_value is successfully associated with
+//     attribute_name for this document, and FALSE if if the document does not
+//     allow the attribute to be modified.
+//
+func (document *Document) setDocumentAttribute(attributeName, attributeValue string) bool {
+	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
+	fnarg := gclass.set_document_attribute
+
+	var _arg0 *C.AtkDocument // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.gchar       // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkDocument)(unsafe.Pointer(coreglib.InternObject(document).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(attributeName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(attributeValue)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	_cret = C._gotk4_atk1_Document_virtual_set_document_attribute(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(document)
+	runtime.KeepAlive(attributeName)
+	runtime.KeepAlive(attributeValue)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+//export _gotk4_atk1_Document_ConnectLoadComplete
+func _gotk4_atk1_Document_ConnectLoadComplete(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Document_ConnectLoadStopped
+func _gotk4_atk1_Document_ConnectLoadStopped(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Document_ConnectPageChanged
+func _gotk4_atk1_Document_ConnectPageChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(pageNumber int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(pageNumber int))
+	}
+
+	var _pageNumber int // out
+
+	_pageNumber = int(arg1)
+
+	f(_pageNumber)
+}
+
+//export _gotk4_atk1_Document_ConnectReload
+func _gotk4_atk1_Document_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// EditableText should be implemented by UI components which contain text
+// which the user can edit, via the Object corresponding to that component (see
+// Object).
+//
+// EditableText is a subclass of Text, and as such, an object which implements
+// EditableText is by definition an Text implementor as well.
+//
+// See also: Text.
+//
+// EditableText wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type EditableText struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*EditableText)(nil)
+)
+
+// EditableTexter describes EditableText's interface methods.
+type EditableTexter interface {
+	coreglib.Objector
+
+	// CopyText: copy text from start_pos up to, but not including end_pos to
+	// the clipboard.
+	CopyText(startPos, endPos int)
+	// CutText: copy text from start_pos up to, but not including end_pos to the
+	// clipboard and then delete from the widget.
+	CutText(startPos, endPos int)
+	// DeleteText: delete text start_pos up to, but not including end_pos.
+	DeleteText(startPos, endPos int)
+	// InsertText: insert text at a given position.
+	InsertText(str string, length int, position *int)
+	// PasteText: paste text from clipboard to specified position.
+	PasteText(position int)
+	// SetTextContents: set text contents of text.
+	SetTextContents(str string)
+}
+
+var _ EditableTexter = (*EditableText)(nil)
+
+func wrapEditableText(obj *coreglib.Object) *EditableText {
+	return &EditableText{
+		Object: obj,
+	}
+}
+
+func marshalEditableText(p uintptr) (interface{}, error) {
+	return wrapEditableText(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// CopyText: copy text from start_pos up to, but not including end_pos to the
+// clipboard.
+//
+// The function takes the following parameters:
+//
+//   - startPos: start position.
+//   - endPos: end position.
+//
+func (text *EditableText) CopyText(startPos, endPos int) {
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C.atk_editable_text_copy_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+}
+
+// CutText: copy text from start_pos up to, but not including end_pos to the
+// clipboard and then delete from the widget.
+//
+// The function takes the following parameters:
+//
+//   - startPos: start position.
+//   - endPos: end position.
+//
+func (text *EditableText) CutText(startPos, endPos int) {
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C.atk_editable_text_cut_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+}
+
+// DeleteText: delete text start_pos up to, but not including end_pos.
+//
+// The function takes the following parameters:
+//
+//   - startPos: start position.
+//   - endPos: end position.
+//
+func (text *EditableText) DeleteText(startPos, endPos int) {
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C.atk_editable_text_delete_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+}
+
+// InsertText: insert text at a given position.
+//
+// The function takes the following parameters:
+//
+//   - str: text to insert.
+//   - length of text to insert, in bytes.
+//   - position: caller initializes this to the position at which to insert the
+//     text. After the call it points at the position after the newly inserted
+//     text.
+//
+func (text *EditableText) InsertText(str string, length int, position *int) {
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 *C.gchar           // out
+	var _arg2 C.gint             // out
+	var _arg3 *C.gint            // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(length)
+	_arg3 = (*C.gint)(unsafe.Pointer(position))
+
+	C.atk_editable_text_insert_text(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(position)
+}
+
+// PasteText: paste text from clipboard to specified position.
+//
+// The function takes the following parameters:
+//
+//   - position to paste.
+//
+func (text *EditableText) PasteText(position int) {
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 C.gint             // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(position)
+
+	C.atk_editable_text_paste_text(_arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(position)
+}
+
+// SetTextContents: set text contents of text.
+//
+// The function takes the following parameters:
+//
+//   - str: string to set for text contents of text.
+//
+func (text *EditableText) SetTextContents(str string) {
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 *C.gchar           // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.atk_editable_text_set_text_contents(_arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(str)
+}
+
+// copyText: copy text from start_pos up to, but not including end_pos to the
+// clipboard.
+//
+// The function takes the following parameters:
+//
+//   - startPos: start position.
+//   - endPos: end position.
+//
+func (text *EditableText) copyText(startPos, endPos int) {
+	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.copy_text
+
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C._gotk4_atk1_EditableText_virtual_copy_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+}
+
+// cutText: copy text from start_pos up to, but not including end_pos to the
+// clipboard and then delete from the widget.
+//
+// The function takes the following parameters:
+//
+//   - startPos: start position.
+//   - endPos: end position.
+//
+func (text *EditableText) cutText(startPos, endPos int) {
+	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.cut_text
+
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C._gotk4_atk1_EditableText_virtual_cut_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+}
+
+// deleteText: delete text start_pos up to, but not including end_pos.
+//
+// The function takes the following parameters:
+//
+//   - startPos: start position.
+//   - endPos: end position.
+//
+func (text *EditableText) deleteText(startPos, endPos int) {
+	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.delete_text
+
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startPos)
+	_arg2 = C.gint(endPos)
+
+	C._gotk4_atk1_EditableText_virtual_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startPos)
+	runtime.KeepAlive(endPos)
+}
+
+// insertText: insert text at a given position.
+//
+// The function takes the following parameters:
+//
+//   - str: text to insert.
+//   - length of text to insert, in bytes.
+//   - position: caller initializes this to the position at which to insert the
+//     text. After the call it points at the position after the newly inserted
+//     text.
+//
+func (text *EditableText) insertText(str string, length int, position *int) {
+	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.insert_text
+
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 *C.gchar           // out
+	var _arg2 C.gint             // out
+	var _arg3 *C.gint            // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(length)
+	_arg3 = (*C.gint)(unsafe.Pointer(position))
+
+	C._gotk4_atk1_EditableText_virtual_insert_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(str)
+	runtime.KeepAlive(length)
+	runtime.KeepAlive(position)
+}
+
+// pasteText: paste text from clipboard to specified position.
+//
+// The function takes the following parameters:
+//
+//   - position to paste.
+//
+func (text *EditableText) pasteText(position int) {
+	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.paste_text
+
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 C.gint             // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(position)
+
+	C._gotk4_atk1_EditableText_virtual_paste_text(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(position)
+}
+
+// setTextContents: set text contents of text.
+//
+// The function takes the following parameters:
+//
+//   - str: string to set for text contents of text.
+//
+func (text *EditableText) setTextContents(str string) {
+	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.set_text_contents
+
+	var _arg0 *C.AtkEditableText // out
+	var _arg1 *C.gchar           // out
+
+	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_atk1_EditableText_virtual_set_text_contents(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(str)
+}
+
+// HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
+// instance, if one exists. AtkHyperlinkImpl differs from AtkHyperlink in that
+// AtkHyperlinkImpl is an interface, whereas AtkHyperlink is a object type.
+// The AtkHyperlinkImpl interface allows a client to query an AtkObject for
+// the availability of an associated AtkHyperlink instance, and obtain that
+// instance. It is thus particularly useful in cases where embedded content
+// or inline content within a text object is present, since the embedding text
+// object implements AtkHypertext and the inline/embedded objects are exposed
+// as children which implement AtkHyperlinkImpl, in addition to their being
+// obtainable via AtkHypertext:getLink followed by AtkHyperlink:getObject.
+//
+// The AtkHyperlinkImpl interface should be supported by objects exposed within
+// the hierarchy as children of an AtkHypertext container which correspond
+// to "links" or embedded content within the text. HTML anchors are not, for
+// instance, normally exposed this way, but embedded images and components which
+// appear inline in the content of a text object are. The AtkHyperlinkIface
+// interface allows a means of determining which children are hyperlinks in this
+// sense of the word, and for obtaining their corresponding AtkHyperlink object,
+// from which the embedding range, URI, etc. can be obtained.
+//
+// To some extent this interface exists because, for historical reasons,
+// AtkHyperlink was defined as an object type, not an interface. Thus, in order
+// to interact with AtkObjects via AtkHyperlink semantics, a new interface was
+// required.
+//
+// HyperlinkImpl wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type HyperlinkImpl struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*HyperlinkImpl)(nil)
+)
+
+// HyperlinkImpler describes HyperlinkImpl's interface methods.
+type HyperlinkImpler interface {
+	coreglib.Objector
+
+	// Hyperlink gets the hyperlink associated with this object.
+	Hyperlink() *Hyperlink
+}
+
+var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
+
+func wrapHyperlinkImpl(obj *coreglib.Object) *HyperlinkImpl {
+	return &HyperlinkImpl{
+		Object: obj,
+	}
+}
+
+func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
+	return wrapHyperlinkImpl(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Hyperlink gets the hyperlink associated with this object.
+//
+// The function returns the following values:
+//
+//   - hyperlink: atkHyperlink object which points to this implementing
+//     AtkObject.
+//
+func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
+	var _arg0 *C.AtkHyperlinkImpl // out
+	var _cret *C.AtkHyperlink     // in
+
+	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
+
+	_cret = C.atk_hyperlink_impl_get_hyperlink(_arg0)
+	runtime.KeepAlive(impl)
+
+	var _hyperlink *Hyperlink // out
+
+	_hyperlink = wrapHyperlink(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _hyperlink
+}
+
+// Hyperlink gets the hyperlink associated with this object.
+//
+// The function returns the following values:
+//
+//   - hyperlink: atkHyperlink object which points to this implementing
+//     AtkObject.
+//
+func (impl *HyperlinkImpl) hyperlink() *Hyperlink {
+	gclass := (*C.AtkHyperlinkImplIface)(coreglib.PeekParentClass(impl))
+	fnarg := gclass.get_hyperlink
+
+	var _arg0 *C.AtkHyperlinkImpl // out
+	var _cret *C.AtkHyperlink     // in
+
+	_arg0 = (*C.AtkHyperlinkImpl)(unsafe.Pointer(coreglib.InternObject(impl).Native()))
+
+	_cret = C._gotk4_atk1_HyperlinkImpl_virtual_get_hyperlink(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(impl)
+
+	var _hyperlink *Hyperlink // out
+
+	_hyperlink = wrapHyperlink(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _hyperlink
+}
+
+// Hypertext: interface used for objects which implement linking between
+// multiple resource or content locations, or multiple 'markers' within a single
+// document. A Hypertext instance is associated with one or more Hyperlinks,
+// which are associated with particular offsets within the Hypertext's included
+// content. While this interface is derived from Text, there is no requirement
+// that Hypertext instances have textual content; they may implement Image as
+// well, and Hyperlinks need not have non-zero text offsets.
+//
+// Hypertext wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Hypertext struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Hypertext)(nil)
+)
+
+// Hypertexter describes Hypertext's interface methods.
+type Hypertexter interface {
+	coreglib.Objector
+
+	// Link gets the link in this hypertext document at index link_index.
+	Link(linkIndex int) *Hyperlink
+	// LinkIndex gets the index into the array of hyperlinks that is associated
+	// with the character specified by char_index.
+	LinkIndex(charIndex int) int
+	// NLinks gets the number of links within this hypertext document.
+	NLinks() int
+
+	// Link-selected: "link-selected" signal is emitted by an AtkHyperText
+	// object when one of the hyperlinks associated with the object is selected.
+	ConnectLinkSelected(func(arg1 int)) coreglib.SignalHandle
+}
+
+var _ Hypertexter = (*Hypertext)(nil)
+
+func wrapHypertext(obj *coreglib.Object) *Hypertext {
+	return &Hypertext{
+		Object: obj,
+	}
+}
+
+func marshalHypertext(p uintptr) (interface{}, error) {
+	return wrapHypertext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectLinkSelected: "link-selected" signal is emitted by an AtkHyperText
+// object when one of the hyperlinks associated with the object is selected.
+func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(hypertext, "link-selected", false, unsafe.Pointer(C._gotk4_atk1_Hypertext_ConnectLinkSelected), f)
+}
+
+// Link gets the link in this hypertext document at index link_index.
+//
+// The function takes the following parameters:
+//
+//   - linkIndex: integer specifying the desired link.
+//
+// The function returns the following values:
+//
+//   - hyperlink: link in this hypertext document at index link_index.
+//
+func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
+	var _arg0 *C.AtkHypertext // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkHyperlink // in
+
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	_arg1 = C.gint(linkIndex)
+
+	_cret = C.atk_hypertext_get_link(_arg0, _arg1)
+	runtime.KeepAlive(hypertext)
+	runtime.KeepAlive(linkIndex)
+
+	var _hyperlink *Hyperlink // out
+
+	_hyperlink = wrapHyperlink(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _hyperlink
+}
+
+// LinkIndex gets the index into the array of hyperlinks that is associated with
+// the character specified by char_index.
+//
+// The function takes the following parameters:
+//
+//   - charIndex: character index.
+//
+// The function returns the following values:
+//
+//   - gint: index into the array of hyperlinks in hypertext, or -1 if there is
+//     no hyperlink associated with this character.
+//
+func (hypertext *Hypertext) LinkIndex(charIndex int) int {
+	var _arg0 *C.AtkHypertext // out
+	var _arg1 C.gint          // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	_arg1 = C.gint(charIndex)
+
+	_cret = C.atk_hypertext_get_link_index(_arg0, _arg1)
+	runtime.KeepAlive(hypertext)
+	runtime.KeepAlive(charIndex)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// NLinks gets the number of links within this hypertext document.
+//
+// The function returns the following values:
+//
+//   - gint: number of links within this hypertext document.
+//
+func (hypertext *Hypertext) NLinks() int {
+	var _arg0 *C.AtkHypertext // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+
+	_cret = C.atk_hypertext_get_n_links(_arg0)
+	runtime.KeepAlive(hypertext)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Link gets the link in this hypertext document at index link_index.
+//
+// The function takes the following parameters:
+//
+//   - linkIndex: integer specifying the desired link.
+//
+// The function returns the following values:
+//
+//   - hyperlink: link in this hypertext document at index link_index.
+//
+func (hypertext *Hypertext) link(linkIndex int) *Hyperlink {
+	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
+	fnarg := gclass.get_link
+
+	var _arg0 *C.AtkHypertext // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkHyperlink // in
+
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	_arg1 = C.gint(linkIndex)
+
+	_cret = C._gotk4_atk1_Hypertext_virtual_get_link(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(hypertext)
+	runtime.KeepAlive(linkIndex)
+
+	var _hyperlink *Hyperlink // out
+
+	_hyperlink = wrapHyperlink(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _hyperlink
+}
+
+// linkIndex gets the index into the array of hyperlinks that is associated with
+// the character specified by char_index.
+//
+// The function takes the following parameters:
+//
+//   - charIndex: character index.
+//
+// The function returns the following values:
+//
+//   - gint: index into the array of hyperlinks in hypertext, or -1 if there is
+//     no hyperlink associated with this character.
+//
+func (hypertext *Hypertext) linkIndex(charIndex int) int {
+	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
+	fnarg := gclass.get_link_index
+
+	var _arg0 *C.AtkHypertext // out
+	var _arg1 C.gint          // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	_arg1 = C.gint(charIndex)
+
+	_cret = C._gotk4_atk1_Hypertext_virtual_get_link_index(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(hypertext)
+	runtime.KeepAlive(charIndex)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// nLinks gets the number of links within this hypertext document.
+//
+// The function returns the following values:
+//
+//   - gint: number of links within this hypertext document.
+//
+func (hypertext *Hypertext) nLinks() int {
+	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
+	fnarg := gclass.get_n_links
+
+	var _arg0 *C.AtkHypertext // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+
+	_cret = C._gotk4_atk1_Hypertext_virtual_get_n_links(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(hypertext)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// The function takes the following parameters:
+//
+func (hypertext *Hypertext) linkSelected(linkIndex int) {
+	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
+	fnarg := gclass.link_selected
+
+	var _arg0 *C.AtkHypertext // out
+	var _arg1 C.gint          // out
+
+	_arg0 = (*C.AtkHypertext)(unsafe.Pointer(coreglib.InternObject(hypertext).Native()))
+	_arg1 = C.gint(linkIndex)
+
+	C._gotk4_atk1_Hypertext_virtual_link_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(hypertext)
+	runtime.KeepAlive(linkIndex)
+}
+
+//export _gotk4_atk1_Hypertext_ConnectLinkSelected
+func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(arg1 int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 int))
+	}
+
+	var _arg1 int // out
+
+	_arg1 = int(arg1)
+
+	f(_arg1)
+}
+
+// Image should be implemented by Object subtypes on behalf of components which
+// display image/pixmap information onscreen, and which provide information
+// (other than just widget borders, etc.) via that image content. For instance,
+// icons, buttons with icons, toolbar elements, and image viewing panes
+// typically should implement Image.
+//
+// Image primarily provides two types of information: coordinate information
+// (useful for screen review mode of screenreaders, and for use by onscreen
+// magnifiers), and descriptive information. The descriptive information is
+// provided for alternative, text-only presentation of the most significant
+// information present in the image.
+//
+// Image wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Image struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Image)(nil)
+)
+
+// Imager describes Image's interface methods.
+type Imager interface {
+	coreglib.Objector
+
+	// ImageDescription: get a textual description of this image.
+	ImageDescription() string
+	// ImageLocale retrieves the locale identifier associated to the Image.
+	ImageLocale() string
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	ImagePosition(coordType CoordType) (x, y int)
+	// ImageSize: get the width and height in pixels for the specified image.
+	ImageSize() (width, height int)
+	// SetImageDescription sets the textual description for this image.
+	SetImageDescription(description string) bool
+}
+
+var _ Imager = (*Image)(nil)
+
+func wrapImage(obj *coreglib.Object) *Image {
+	return &Image{
+		Object: obj,
+	}
+}
+
+func marshalImage(p uintptr) (interface{}, error) {
+	return wrapImage(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ImageDescription: get a textual description of this image.
+//
+// The function returns the following values:
+//
+//   - utf8: string representing the image description.
+//
+func (image *Image) ImageDescription() string {
+	var _arg0 *C.AtkImage // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C.atk_image_get_image_description(_arg0)
+	runtime.KeepAlive(image)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ImageLocale retrieves the locale identifier associated to the Image.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+//     used by the image description, or NULL if the image does not specify a
+//     locale.
+//
+func (image *Image) ImageLocale() string {
+	var _arg0 *C.AtkImage // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C.atk_image_get_image_locale(_arg0)
+	runtime.KeepAlive(image)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// ImagePosition gets the position of the image in the form of a point
+// specifying the images top-left corner.
+//
+// If the position can not be obtained (e.g. missing support), x and y are set
+// to -1.
+//
+// The function takes the following parameters:
+//
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - x (optional) address of #gint to put x coordinate position; otherwise,
+//     -1 if value cannot be obtained.
+//   - y (optional) address of #gint to put y coordinate position; otherwise,
+//     -1 if value cannot be obtained.
+//
+func (image *Image) ImagePosition(coordType CoordType) (x, y int) {
+	var _arg0 *C.AtkImage    // out
+	var _arg1 C.gint         // in
+	var _arg2 C.gint         // in
+	var _arg3 C.AtkCoordType // out
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg3 = C.AtkCoordType(coordType)
+
+	C.atk_image_get_image_position(_arg0, &_arg1, &_arg2, _arg3)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(coordType)
+
+	var _x int // out
+	var _y int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+
+	return _x, _y
+}
+
+// ImageSize: get the width and height in pixels for the specified image.
+// The values of width and height are returned as -1 if the values cannot be
+// obtained (for instance, if the object is not onscreen).
+//
+// If the size can not be obtained (e.g. missing support), x and y are set to
+// -1.
+//
+// The function returns the following values:
+//
+//   - width (optional): filled with the image width, or -1 if the value cannot
+//     be obtained.
+//   - height (optional): filled with the image height, or -1 if the value
+//     cannot be obtained.
+//
+func (image *Image) ImageSize() (width, height int) {
+	var _arg0 *C.AtkImage // out
+	var _arg1 C.gint      // in
+	var _arg2 C.gint      // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	C.atk_image_get_image_size(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(image)
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(_arg1)
+	_height = int(_arg2)
+
+	return _width, _height
+}
+
+// SetImageDescription sets the textual description for this image.
+//
+// The function takes the following parameters:
+//
+//   - description: string description to set for image.
+//
+// The function returns the following values:
+//
+//   - ok: boolean TRUE, or FALSE if operation could not be completed.
+//
+func (image *Image) SetImageDescription(description string) bool {
+	var _arg0 *C.AtkImage // out
+	var _arg1 *C.gchar    // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_image_set_image_description(_arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(description)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// imageDescription: get a textual description of this image.
+//
+// The function returns the following values:
+//
+//   - utf8: string representing the image description.
+//
+func (image *Image) imageDescription() string {
+	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
+	fnarg := gclass.get_image_description
+
+	var _arg0 *C.AtkImage // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C._gotk4_atk1_Image_virtual_get_image_description(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(image)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// imageLocale retrieves the locale identifier associated to the Image.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+//     used by the image description, or NULL if the image does not specify a
+//     locale.
+//
+func (image *Image) imageLocale() string {
+	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
+	fnarg := gclass.get_image_locale
+
+	var _arg0 *C.AtkImage // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	_cret = C._gotk4_atk1_Image_virtual_get_image_locale(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(image)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// imagePosition gets the position of the image in the form of a point
+// specifying the images top-left corner.
+//
+// If the position can not be obtained (e.g. missing support), x and y are set
+// to -1.
+//
+// The function takes the following parameters:
+//
+//   - coordType specifies whether the coordinates are relative to the screen or
+//     to the components top level window.
+//
+// The function returns the following values:
+//
+//   - x (optional) address of #gint to put x coordinate position; otherwise,
+//     -1 if value cannot be obtained.
+//   - y (optional) address of #gint to put y coordinate position; otherwise,
+//     -1 if value cannot be obtained.
+//
+func (image *Image) imagePosition(coordType CoordType) (x, y int) {
+	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
+	fnarg := gclass.get_image_position
+
+	var _arg0 *C.AtkImage    // out
+	var _arg1 C.gint         // in
+	var _arg2 C.gint         // in
+	var _arg3 C.AtkCoordType // out
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg3 = C.AtkCoordType(coordType)
+
+	C._gotk4_atk1_Image_virtual_get_image_position(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2, _arg3)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(coordType)
+
+	var _x int // out
+	var _y int // out
+
+	_x = int(_arg1)
+	_y = int(_arg2)
+
+	return _x, _y
+}
+
+// imageSize: get the width and height in pixels for the specified image.
+// The values of width and height are returned as -1 if the values cannot be
+// obtained (for instance, if the object is not onscreen).
+//
+// If the size can not be obtained (e.g. missing support), x and y are set to
+// -1.
+//
+// The function returns the following values:
+//
+//   - width (optional): filled with the image width, or -1 if the value cannot
+//     be obtained.
+//   - height (optional): filled with the image height, or -1 if the value
+//     cannot be obtained.
+//
+func (image *Image) imageSize() (width, height int) {
+	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
+	fnarg := gclass.get_image_size
+
+	var _arg0 *C.AtkImage // out
+	var _arg1 C.gint      // in
+	var _arg2 C.gint      // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+
+	C._gotk4_atk1_Image_virtual_get_image_size(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(image)
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(_arg1)
+	_height = int(_arg2)
+
+	return _width, _height
+}
+
+// setImageDescription sets the textual description for this image.
+//
+// The function takes the following parameters:
+//
+//   - description: string description to set for image.
+//
+// The function returns the following values:
+//
+//   - ok: boolean TRUE, or FALSE if operation could not be completed.
+//
+func (image *Image) setImageDescription(description string) bool {
+	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
+	fnarg := gclass.set_image_description
+
+	var _arg0 *C.AtkImage // out
+	var _arg1 *C.gchar    // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkImage)(unsafe.Pointer(coreglib.InternObject(image).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_atk1_Image_virtual_set_image_description(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(image)
+	runtime.KeepAlive(description)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ImplementorIface: atkImplementor interface is implemented by
+// objects for which AtkObject peers may be obtained via calls to
+// iface->(ref_accessible)(implementor);.
+//
+// ImplementorIface wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type ImplementorIface struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*ImplementorIface)(nil)
+)
+
+// ImplementorIfacer describes ImplementorIface's interface methods.
+type ImplementorIfacer interface {
+	coreglib.Objector
+
+	baseImplementorIface() *ImplementorIface
+}
+
+var _ ImplementorIfacer = (*ImplementorIface)(nil)
+
+func wrapImplementorIface(obj *coreglib.Object) *ImplementorIface {
+	return &ImplementorIface{
+		Object: obj,
+	}
+}
+
+func marshalImplementorIface(p uintptr) (interface{}, error) {
+	return wrapImplementorIface(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func (v *ImplementorIface) baseImplementorIface() *ImplementorIface {
+	return v
+}
+
+// BaseImplementorIface returns the underlying base object.
+func BaseImplementorIface(obj ImplementorIfacer) *ImplementorIface {
+	return obj.baseImplementorIface()
+}
+
+// Selection should be implemented by UI components with children which are
+// exposed by #atk_object_ref_child and #atk_object_get_n_children, if the use
+// of the parent UI component ordinarily involves selection of one or more of
+// the objects corresponding to those Object children - for example, selectable
+// lists.
+//
+// Note that other types of "selection" (for instance text selection)
+// are accomplished a other ATK interfaces - Selection is limited to the
+// selection/deselection of children.
+//
+// Selection wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Selection struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Selection)(nil)
+)
+
+// Selectioner describes Selection's interface methods.
+type Selectioner interface {
+	coreglib.Objector
+
+	// AddSelection adds the specified accessible child of the object to the
+	// object's selection.
+	AddSelection(i int) bool
+	// ClearSelection clears the selection in the object so that no children in
+	// the object are selected.
+	ClearSelection() bool
+	// SelectionCount gets the number of accessible children currently selected.
+	SelectionCount() int
+	// IsChildSelected determines if the current child of this object is
+	// selected Note: callers should not rely on NULL or on a zero value for
+	// indication of whether AtkSelectionIface is implemented, they should use
+	// type checking/interface checking macros or the atk_get_accessible_value()
+	// convenience method.
+	IsChildSelected(i int) bool
+	// RefSelection gets a reference to the accessible object representing the
+	// specified selected child of the object.
+	RefSelection(i int) *AtkObject
+	// RemoveSelection removes the specified child of the object from the
+	// object's selection.
+	RemoveSelection(i int) bool
+	// SelectAllSelection causes every child of the object to be selected if the
+	// object supports multiple selections.
+	SelectAllSelection() bool
+
+	// Selection-changed: "selection-changed" signal is emitted by an object
+	// which implements AtkSelection interface when the selection changes.
+	ConnectSelectionChanged(func()) coreglib.SignalHandle
+}
+
+var _ Selectioner = (*Selection)(nil)
+
+func wrapSelection(obj *coreglib.Object) *Selection {
+	return &Selection{
+		Object: obj,
+	}
+}
+
+func marshalSelection(p uintptr) (interface{}, error) {
+	return wrapSelection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectSelectionChanged: "selection-changed" signal is emitted by an object
+// which implements AtkSelection interface when the selection changes.
+func (selection *Selection) ConnectSelectionChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(selection, "selection-changed", false, unsafe.Pointer(C._gotk4_atk1_Selection_ConnectSelectionChanged), f)
+}
+
+// AddSelection adds the specified accessible child of the object to the
+// object's selection.
+//
+// The function takes the following parameters:
+//
+//   - i specifying the child index.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) AddSelection(i int) bool {
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_selection_add_selection(_arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ClearSelection clears the selection in the object so that no children in the
+// object are selected.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) ClearSelection() bool {
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C.atk_selection_clear_selection(_arg0)
+	runtime.KeepAlive(selection)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SelectionCount gets the number of accessible children currently selected.
+// Note: callers should not rely on NULL or on a zero value for indication
+// of whether AtkSelectionIface is implemented, they should use type
+// checking/interface checking macros or the atk_get_accessible_value()
+// convenience method.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of items selected, or 0 if selection does
+//     not implement this interface.
+//
+func (selection *Selection) SelectionCount() int {
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C.atk_selection_get_selection_count(_arg0)
+	runtime.KeepAlive(selection)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// IsChildSelected determines if the current child of this object is
+// selected Note: callers should not rely on NULL or on a zero value for
+// indication of whether AtkSelectionIface is implemented, they should use
+// type checking/interface checking macros or the atk_get_accessible_value()
+// convenience method.
+//
+// The function takes the following parameters:
+//
+//   - i specifying the child index.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing the specified child is selected, or 0 if
+//     selection does not implement this interface.
+//
+func (selection *Selection) IsChildSelected(i int) bool {
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_selection_is_child_selected(_arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// RefSelection gets a reference to the accessible object representing the
+// specified selected child of the object. Note: callers should not rely on
+// NULL or on a zero value for indication of whether AtkSelectionIface is
+// implemented, they should use type checking/interface checking macros or the
+// atk_get_accessible_value() convenience method.
+//
+// The function takes the following parameters:
+//
+//   - i specifying the index in the selection set. (e.g. the ith selection as
+//     opposed to the ith child).
+//
+// The function returns the following values:
+//
+//   - object (optional) representing the selected accessible, or NULL if
+//     selection does not implement this interface.
+//
+func (selection *Selection) RefSelection(i int) *AtkObject {
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_selection_ref_selection(_arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// RemoveSelection removes the specified child of the object from the object's
+// selection.
+//
+// The function takes the following parameters:
+//
+//   - i specifying the index in the selection set. (e.g. the ith selection as
+//     opposed to the ith child).
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) RemoveSelection(i int) bool {
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_selection_remove_selection(_arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SelectAllSelection causes every child of the object to be selected if the
+// object supports multiple selections.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) SelectAllSelection() bool {
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C.atk_selection_select_all_selection(_arg0)
+	runtime.KeepAlive(selection)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// addSelection adds the specified accessible child of the object to the
+// object's selection.
+//
+// The function takes the following parameters:
+//
+//   - i specifying the child index.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) addSelection(i int) bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.add_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Selection_virtual_add_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// clearSelection clears the selection in the object so that no children in the
+// object are selected.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) clearSelection() bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.clear_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C._gotk4_atk1_Selection_virtual_clear_selection(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(selection)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// selectionCount gets the number of accessible children currently selected.
+// Note: callers should not rely on NULL or on a zero value for indication
+// of whether AtkSelectionIface is implemented, they should use type
+// checking/interface checking macros or the atk_get_accessible_value()
+// convenience method.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of items selected, or 0 if selection does
+//     not implement this interface.
+//
+func (selection *Selection) selectionCount() int {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.get_selection_count
+
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C._gotk4_atk1_Selection_virtual_get_selection_count(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(selection)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// isChildSelected determines if the current child of this object is
+// selected Note: callers should not rely on NULL or on a zero value for
+// indication of whether AtkSelectionIface is implemented, they should use
+// type checking/interface checking macros or the atk_get_accessible_value()
+// convenience method.
+//
+// The function takes the following parameters:
+//
+//   - i specifying the child index.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing the specified child is selected, or 0 if
+//     selection does not implement this interface.
+//
+func (selection *Selection) isChildSelected(i int) bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.is_child_selected
+
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Selection_virtual_is_child_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// refSelection gets a reference to the accessible object representing the
+// specified selected child of the object. Note: callers should not rely on
+// NULL or on a zero value for indication of whether AtkSelectionIface is
+// implemented, they should use type checking/interface checking macros or the
+// atk_get_accessible_value() convenience method.
+//
+// The function takes the following parameters:
+//
+//   - i specifying the index in the selection set. (e.g. the ith selection as
+//     opposed to the ith child).
+//
+// The function returns the following values:
+//
+//   - object (optional) representing the selected accessible, or NULL if
+//     selection does not implement this interface.
+//
+func (selection *Selection) refSelection(i int) *AtkObject {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.ref_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Selection_virtual_ref_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// removeSelection removes the specified child of the object from the object's
+// selection.
+//
+// The function takes the following parameters:
+//
+//   - i specifying the index in the selection set. (e.g. the ith selection as
+//     opposed to the ith child).
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) removeSelection(i int) bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.remove_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _arg1 C.gint          // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Selection_virtual_remove_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(selection)
+	runtime.KeepAlive(i)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// selectAllSelection causes every child of the object to be selected if the
+// object supports multiple selections.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if success, FALSE otherwise.
+//
+func (selection *Selection) selectAllSelection() bool {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.select_all_selection
+
+	var _arg0 *C.AtkSelection // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	_cret = C._gotk4_atk1_Selection_virtual_select_all_selection(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(selection)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (selection *Selection) selectionChanged() {
+	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
+	fnarg := gclass.selection_changed
+
+	var _arg0 *C.AtkSelection // out
+
+	_arg0 = (*C.AtkSelection)(unsafe.Pointer(coreglib.InternObject(selection).Native()))
+
+	C._gotk4_atk1_Selection_virtual_selection_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(selection)
+}
+
+//export _gotk4_atk1_Selection_ConnectSelectionChanged
+func _gotk4_atk1_Selection_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// StreamableContent: interface whereby an object allows its backing content
+// to be streamed to clients. Typical implementors would be images or icons,
+// HTML content, or multimedia display/rendering widgets.
+//
+// Negotiation of content type is allowed. Clients may examine the backing data
+// and transform, convert, or parse the content in order to present it in an
+// alternate form to end-users.
+//
+// The AtkStreamableContent interface is particularly useful for saving,
+// printing, or post-processing entire documents, or for persisting alternate
+// views of a document. If document content itself is being serialized, stored,
+// or converted, then use of the AtkStreamableContent interface can help
+// address performance issues. Unlike most ATK interfaces, this interface is not
+// strongly tied to the current user-agent view of the a particular document,
+// but may in some cases give access to the underlying model data.
+//
+// StreamableContent wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type StreamableContent struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*StreamableContent)(nil)
+)
+
+// StreamableContenter describes StreamableContent's interface methods.
+type StreamableContenter interface {
+	coreglib.Objector
+
+	// MIMEType gets the character string of the specified mime type.
+	MIMEType(i int) string
+	// NMIMETypes gets the number of mime types supported by this object.
+	NMIMETypes() int
+	// Stream gets the content in the specified mime type.
+	Stream(mimeType string) *glib.IOChannel
+	// URI: get a string representing a URI in IETF standard format (see
+	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may
+	// be streamed in the specified mime-type, if one is available.
+	URI(mimeType string) string
+}
+
+var _ StreamableContenter = (*StreamableContent)(nil)
+
+func wrapStreamableContent(obj *coreglib.Object) *StreamableContent {
+	return &StreamableContent{
+		Object: obj,
+	}
+}
+
+func marshalStreamableContent(p uintptr) (interface{}, error) {
+	return wrapStreamableContent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// MIMEType gets the character string of the specified mime type. The first mime
+// type is at position 0, the second at position 1, and so on.
+//
+// The function takes the following parameters:
+//
+//   - i: gint representing the position of the mime type starting from 0.
+//
+// The function returns the following values:
+//
+//   - utf8: gchar* representing the specified mime type; the caller should not
+//     free the character string.
+//
+func (streamable *StreamableContent) MIMEType(i int) string {
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 C.gint                  // out
+	var _cret *C.gchar                // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_streamable_content_get_mime_type(_arg0, _arg1)
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// NMIMETypes gets the number of mime types supported by this object.
+//
+// The function returns the following values:
+//
+//   - gint which is the number of mime types supported by the object.
+//
+func (streamable *StreamableContent) NMIMETypes() int {
+	var _arg0 *C.AtkStreamableContent // out
+	var _cret C.gint                  // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+
+	_cret = C.atk_streamable_content_get_n_mime_types(_arg0)
+	runtime.KeepAlive(streamable)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Stream gets the content in the specified mime type.
+//
+// The function takes the following parameters:
+//
+//   - mimeType: gchar* representing the mime type.
+//
+// The function returns the following values:
+//
+//   - ioChannel which contains the content in the specified mime type.
+//
+func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 *C.gchar                // out
+	var _cret *C.GIOChannel           // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_streamable_content_get_stream(_arg0, _arg1)
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(mimeType)
+
+	var _ioChannel *glib.IOChannel // out
+
+	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
+		},
+	)
+
+	return _ioChannel
+}
+
+// URI: get a string representing a URI in IETF standard format (see
+// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may be
+// streamed in the specified mime-type, if one is available. If mime_type is
+// NULL, the URI for the default (and possibly only) mime-type is returned.
+//
+// Note that it is possible for get_uri to return NULL but for get_stream to
+// work nonetheless, since not all GIOChannels connect to URIs.
+//
+// The function takes the following parameters:
+//
+//   - mimeType: gchar* representing the mime type, or NULL to request a URI for
+//     the default mime type.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional) returns a string representing a URI, or NULL if no
+//     corresponding URI can be constructed.
+//
+func (streamable *StreamableContent) URI(mimeType string) string {
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 *C.gchar                // out
+	var _cret *C.gchar                // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.atk_streamable_content_get_uri(_arg0, _arg1)
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(mimeType)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// mimeType gets the character string of the specified mime type. The first mime
+// type is at position 0, the second at position 1, and so on.
+//
+// The function takes the following parameters:
+//
+//   - i: gint representing the position of the mime type starting from 0.
+//
+// The function returns the following values:
+//
+//   - utf8: gchar* representing the specified mime type; the caller should not
+//     free the character string.
+//
+func (streamable *StreamableContent) mimeType(i int) string {
+	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
+	fnarg := gclass.get_mime_type
+
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 C.gint                  // out
+	var _cret *C.gchar                // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_StreamableContent_virtual_get_mime_type(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// nmimeTypes gets the number of mime types supported by this object.
+//
+// The function returns the following values:
+//
+//   - gint which is the number of mime types supported by the object.
+//
+func (streamable *StreamableContent) nmimeTypes() int {
+	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
+	fnarg := gclass.get_n_mime_types
+
+	var _arg0 *C.AtkStreamableContent // out
+	var _cret C.gint                  // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+
+	_cret = C._gotk4_atk1_StreamableContent_virtual_get_n_mime_types(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(streamable)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Stream gets the content in the specified mime type.
+//
+// The function takes the following parameters:
+//
+//   - mimeType: gchar* representing the mime type.
+//
+// The function returns the following values:
+//
+//   - ioChannel which contains the content in the specified mime type.
+//
+func (streamable *StreamableContent) stream(mimeType string) *glib.IOChannel {
+	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
+	fnarg := gclass.get_stream
+
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 *C.gchar                // out
+	var _cret *C.GIOChannel           // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_atk1_StreamableContent_virtual_get_stream(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(mimeType)
+
+	var _ioChannel *glib.IOChannel // out
+
+	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
+		},
+	)
+
+	return _ioChannel
+}
+
+// urI: get a string representing a URI in IETF standard format (see
+// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content may be
+// streamed in the specified mime-type, if one is available. If mime_type is
+// NULL, the URI for the default (and possibly only) mime-type is returned.
+//
+// Note that it is possible for get_uri to return NULL but for get_stream to
+// work nonetheless, since not all GIOChannels connect to URIs.
+//
+// The function takes the following parameters:
+//
+//   - mimeType: gchar* representing the mime type, or NULL to request a URI for
+//     the default mime type.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional) returns a string representing a URI, or NULL if no
+//     corresponding URI can be constructed.
+//
+func (streamable *StreamableContent) urI(mimeType string) string {
+	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
+	fnarg := gclass.get_uri
+
+	var _arg0 *C.AtkStreamableContent // out
+	var _arg1 *C.gchar                // out
+	var _cret *C.gchar                // in
+
+	_arg0 = (*C.AtkStreamableContent)(unsafe.Pointer(coreglib.InternObject(streamable).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C._gotk4_atk1_StreamableContent_virtual_get_uri(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(streamable)
+	runtime.KeepAlive(mimeType)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// Table should be implemented by components which present elements ordered via
+// rows and columns. It may also be used to present tree-structured information
+// if the nodes of the trees can be said to contain multiple "columns".
+// Individual elements of an Table are typically referred to as "cells". Those
+// cells should implement the interface TableCell, but #Atk doesn't require
+// them to be direct children of the current Table. They can be grand-children,
+// grand-grand-children etc. Table provides the API needed to get a individual
+// cell based on the row and column numbers.
+//
+// Children of Table are frequently "lightweight" objects, that is, they may
+// not have backing widgets in the host UI toolkit. They are therefore often
+// transient.
+//
+// Since tables are often very complex, Table includes provision for offering
+// simplified summary information, as well as row and column headers and
+// captions. Headers and captions are Objects which may implement other
+// interfaces (Text, Image, etc.) as appropriate. Table summaries may themselves
+// be (simplified) Tables, etc.
+//
+// Note for implementors: in the past, Table required that all the cells should
+// be direct children of Table, and provided some index based methods to request
+// the cells. The practice showed that that forcing made Table implementation
+// complex, and hard to expose other kind of children, like rows or captions.
+// Right now, index-based methods are deprecated.
+//
+// Table wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Table struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Table)(nil)
+)
+
+// Tabler describes Table's interface methods.
+type Tabler interface {
+	coreglib.Objector
+
+	// AddColumnSelection adds the specified column to the selection.
+	AddColumnSelection(column int) bool
+	// AddRowSelection adds the specified row to the selection.
+	AddRowSelection(row int) bool
+	// Caption gets the caption for the table.
+	Caption() *AtkObject
+	// ColumnAtIndex gets a #gint representing the column at the specified
+	// index_.
+	ColumnAtIndex(index_ int) int
+	// ColumnDescription gets the description text of the specified column in
+	// the table.
+	ColumnDescription(column int) string
+	// ColumnExtentAt gets the number of columns occupied by the accessible
+	// object at the specified row and column in the table.
+	ColumnExtentAt(row, column int) int
+	// ColumnHeader gets the column header of a specified column in an
+	// accessible table.
+	ColumnHeader(column int) *AtkObject
+	// IndexAt gets a #gint representing the index at the specified row and
+	// column.
+	IndexAt(row, column int) int
+	// NColumns gets the number of columns in the table.
+	NColumns() int
+	// NRows gets the number of rows in the table.
+	NRows() int
+	// RowAtIndex gets a #gint representing the row at the specified index_.
+	RowAtIndex(index_ int) int
+	// RowDescription gets the description text of the specified row in the
+	// table.
+	RowDescription(row int) string
+	// RowExtentAt gets the number of rows occupied by the accessible object at
+	// a specified row and column in the table.
+	RowExtentAt(row, column int) int
+	// RowHeader gets the row header of a specified row in an accessible table.
+	RowHeader(row int) *AtkObject
+	// SelectedColumns gets the selected columns of the table by initializing
+	// **selected with the selected column numbers.
+	SelectedColumns(selected **int) int
+	// SelectedRows gets the selected rows of the table by initializing
+	// **selected with the selected row numbers.
+	SelectedRows(selected **int) int
+	// Summary gets the summary description of the table.
+	Summary() *AtkObject
+	// IsColumnSelected gets a boolean value indicating whether the specified
+	// column is selected.
+	IsColumnSelected(column int) bool
+	// IsRowSelected gets a boolean value indicating whether the specified row
+	// is selected.
+	IsRowSelected(row int) bool
+	// IsSelected gets a boolean value indicating whether the accessible object
+	// at the specified row and column is selected.
+	IsSelected(row, column int) bool
+	// RefAt: get a reference to the table cell at row, column.
+	RefAt(row, column int) *AtkObject
+	// RemoveColumnSelection adds the specified column to the selection.
+	RemoveColumnSelection(column int) bool
+	// RemoveRowSelection removes the specified row from the selection.
+	RemoveRowSelection(row int) bool
+	// SetCaption sets the caption for the table.
+	SetCaption(caption *AtkObject)
+	// SetColumnDescription sets the description text for the specified column
+	// of the table.
+	SetColumnDescription(column int, description string)
+	// SetColumnHeader sets the specified column header to header.
+	SetColumnHeader(column int, header *AtkObject)
+	// SetRowDescription sets the description text for the specified row of
+	// table.
+	SetRowDescription(row int, description string)
+	// SetRowHeader sets the specified row header to header.
+	SetRowHeader(row int, header *AtkObject)
+	// SetSummary sets the summary description of the table.
+	SetSummary(accessible *AtkObject)
+
+	// Column-deleted: "column-deleted" signal is emitted by an object which
+	// implements the AtkTable interface when a column is deleted.
+	ConnectColumnDeleted(func(arg1, arg2 int)) coreglib.SignalHandle
+	// Column-inserted: "column-inserted" signal is emitted by an object which
+	// implements the AtkTable interface when a column is inserted.
+	ConnectColumnInserted(func(arg1, arg2 int)) coreglib.SignalHandle
+	// Column-reordered: "column-reordered" signal is emitted by an object which
+	// implements the AtkTable interface when the columns are reordered.
+	ConnectColumnReordered(func()) coreglib.SignalHandle
+	// Model-changed: "model-changed" signal is emitted by an object which
+	// implements the AtkTable interface when the model displayed by the table
+	// changes.
+	ConnectModelChanged(func()) coreglib.SignalHandle
+	// Row-deleted: "row-deleted" signal is emitted by an object which
+	// implements the AtkTable interface when a row is deleted.
+	ConnectRowDeleted(func(arg1, arg2 int)) coreglib.SignalHandle
+	// Row-inserted: "row-inserted" signal is emitted by an object which
+	// implements the AtkTable interface when a row is inserted.
+	ConnectRowInserted(func(arg1, arg2 int)) coreglib.SignalHandle
+	// Row-reordered: "row-reordered" signal is emitted by an object which
+	// implements the AtkTable interface when the rows are reordered.
+	ConnectRowReordered(func()) coreglib.SignalHandle
+}
+
+var _ Tabler = (*Table)(nil)
+
+func wrapTable(obj *coreglib.Object) *Table {
+	return &Table{
+		Object: obj,
+	}
+}
+
+func marshalTable(p uintptr) (interface{}, error) {
+	return wrapTable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectColumnDeleted: "column-deleted" signal is emitted by an object which
+// implements the AtkTable interface when a column is deleted.
+func (table *Table) ConnectColumnDeleted(f func(arg1, arg2 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(table, "column-deleted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnDeleted), f)
+}
+
+// ConnectColumnInserted: "column-inserted" signal is emitted by an object which
+// implements the AtkTable interface when a column is inserted.
+func (table *Table) ConnectColumnInserted(f func(arg1, arg2 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(table, "column-inserted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnInserted), f)
+}
+
+// ConnectColumnReordered: "column-reordered" signal is emitted by an object
+// which implements the AtkTable interface when the columns are reordered.
+func (table *Table) ConnectColumnReordered(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(table, "column-reordered", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectColumnReordered), f)
+}
+
+// ConnectModelChanged: "model-changed" signal is emitted by an object which
+// implements the AtkTable interface when the model displayed by the table
+// changes.
+func (table *Table) ConnectModelChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(table, "model-changed", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectModelChanged), f)
+}
+
+// ConnectRowDeleted: "row-deleted" signal is emitted by an object which
+// implements the AtkTable interface when a row is deleted.
+func (table *Table) ConnectRowDeleted(f func(arg1, arg2 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(table, "row-deleted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectRowDeleted), f)
+}
+
+// ConnectRowInserted: "row-inserted" signal is emitted by an object which
+// implements the AtkTable interface when a row is inserted.
+func (table *Table) ConnectRowInserted(f func(arg1, arg2 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(table, "row-inserted", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectRowInserted), f)
+}
+
+// ConnectRowReordered: "row-reordered" signal is emitted by an object which
+// implements the AtkTable interface when the rows are reordered.
+func (table *Table) ConnectRowReordered(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(table, "row-reordered", false, unsafe.Pointer(C._gotk4_atk1_Table_ConnectRowReordered), f)
+}
+
+// AddColumnSelection adds the specified column to the selection.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the column was successfully added to the
+//     selection, or 0 if value does not implement this interface.
+//
+func (table *Table) AddColumnSelection(column int) bool {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C.atk_table_add_column_selection(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// AddRowSelection adds the specified row to the selection.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if row was successfully added to selection,
+//     or 0 if value does not implement this interface.
+//
+func (table *Table) AddRowSelection(row int) bool {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C.atk_table_add_row_selection(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Caption gets the caption for the table.
+//
+// The function returns the following values:
+//
+//   - object (optional): atkObject* representing the table caption, or NULL if
+//     value does not implement this interface.
+//
+func (table *Table) Caption() *AtkObject {
+	var _arg0 *C.AtkTable  // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C.atk_table_get_caption(_arg0)
+	runtime.KeepAlive(table)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// ColumnAtIndex gets a #gint representing the column at the specified index_.
+//
+// Deprecated: Since 2.12.
+//
+// The function takes the following parameters:
+//
+//   - index_ representing an index in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the column at the specified index, or -1 if the table
+//     does not implement this method.
+//
+func (table *Table) ColumnAtIndex(index_ int) int {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(index_)
+
+	_cret = C.atk_table_get_column_at_index(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(index_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// ColumnDescription gets the description text of the specified column in the
+// table.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - utf8: gchar* representing the column description, or NULL if value does
+//     not implement this interface.
+//
+func (table *Table) ColumnDescription(column int) string {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C.atk_table_get_column_description(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ColumnExtentAt gets the number of columns occupied by the accessible object
+// at the specified row and column in the table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the column extent at specified position, or 0 if value
+//     does not implement this interface.
+//
+func (table *Table) ColumnExtentAt(row, column int) int {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C.atk_table_get_column_extent_at(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// ColumnHeader gets the column header of a specified column in an accessible
+// table.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in the table.
+//
+// The function returns the following values:
+//
+//   - object (optional): atkObject* representing the specified column header,
+//     or NULL if value does not implement this interface.
+//
+func (table *Table) ColumnHeader(column int) *AtkObject {
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C.atk_table_get_column_header(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// IndexAt gets a #gint representing the index at the specified row and column.
+//
+// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the accessible
+// that represents the cell at (row, column).
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the index at specified position. The value -1 is
+//     returned if the object at row,column is not a child of table or table
+//     does not implement this interface.
+//
+func (table *Table) IndexAt(row, column int) int {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C.atk_table_get_index_at(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// NColumns gets the number of columns in the table.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of columns, or 0 if value does not implement
+//     this interface.
+//
+func (table *Table) NColumns() int {
+	var _arg0 *C.AtkTable // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C.atk_table_get_n_columns(_arg0)
+	runtime.KeepAlive(table)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// NRows gets the number of rows in the table.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of rows, or 0 if value does not implement
+//     this interface.
+//
+func (table *Table) NRows() int {
+	var _arg0 *C.AtkTable // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C.atk_table_get_n_rows(_arg0)
+	runtime.KeepAlive(table)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// RowAtIndex gets a #gint representing the row at the specified index_.
+//
+// Deprecated: since 2.12.
+//
+// The function takes the following parameters:
+//
+//   - index_ representing an index in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the row at the specified index, or -1 if the table does
+//     not implement this method.
+//
+func (table *Table) RowAtIndex(index_ int) int {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(index_)
+
+	_cret = C.atk_table_get_row_at_index(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(index_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// RowDescription gets the description text of the specified row in the table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): gchar* representing the row description, or NULL if
+//     value does not implement this interface.
+//
+func (table *Table) RowDescription(row int) string {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C.atk_table_get_row_description(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// RowExtentAt gets the number of rows occupied by the accessible object at a
+// specified row and column in the table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the row extent at specified position, or 0 if value
+//     does not implement this interface.
+//
+func (table *Table) RowExtentAt(row, column int) int {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C.atk_table_get_row_extent_at(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// RowHeader gets the row header of a specified row in an accessible table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in the table.
+//
+// The function returns the following values:
+//
+//   - object (optional): atkObject* representing the specified row header,
+//     or NULL if value does not implement this interface.
+//
+func (table *Table) RowHeader(row int) *AtkObject {
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C.atk_table_get_row_header(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// SelectedColumns gets the selected columns of the table by initializing
+// **selected with the selected column numbers. This array should be freed by
+// the caller.
+//
+// The function takes the following parameters:
+//
+//   - selected that is to contain the selected columns numbers.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of selected columns, or 0 if value does not
+//     implement this interface.
+//
+func (table *Table) SelectedColumns(selected **int) int {
+	var _arg0 *C.AtkTable // out
+	var _arg1 **C.gint    // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (**C.gint)(unsafe.Pointer(selected))
+
+	_cret = C.atk_table_get_selected_columns(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(selected)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SelectedRows gets the selected rows of the table by initializing **selected
+// with the selected row numbers. This array should be freed by the caller.
+//
+// The function takes the following parameters:
+//
+//   - selected that is to contain the selected row numbers.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of selected rows, or zero if value does not
+//     implement this interface.
+//
+func (table *Table) SelectedRows(selected **int) int {
+	var _arg0 *C.AtkTable // out
+	var _arg1 **C.gint    // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (**C.gint)(unsafe.Pointer(selected))
+
+	_cret = C.atk_table_get_selected_rows(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(selected)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Summary gets the summary description of the table.
+//
+// The function returns the following values:
+//
+//   - object: atkObject* representing a summary description of the table,
+//     or zero if value does not implement this interface.
+//
+func (table *Table) Summary() *AtkObject {
+	var _arg0 *C.AtkTable  // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C.atk_table_get_summary(_arg0)
+	runtime.KeepAlive(table)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// IsColumnSelected gets a boolean value indicating whether the specified column
+// is selected.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the column is selected, or 0 if value does
+//     not implement this interface.
+//
+func (table *Table) IsColumnSelected(column int) bool {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C.atk_table_is_column_selected(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsRowSelected gets a boolean value indicating whether the specified row is
+// selected.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the row is selected, or 0 if value does not
+//     implement this interface.
+//
+func (table *Table) IsRowSelected(row int) bool {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C.atk_table_is_row_selected(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsSelected gets a boolean value indicating whether the accessible object at
+// the specified row and column is selected.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the cell is selected, or 0 if value does not
+//     implement this interface.
+//
+func (table *Table) IsSelected(row, column int) bool {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C.atk_table_is_selected(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// RefAt: get a reference to the table cell at row, column. This cell should
+// implement the interface TableCell.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - object representing the referred to accessible.
+//
+func (table *Table) RefAt(row, column int) *AtkObject {
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C.atk_table_ref_at(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// RemoveColumnSelection adds the specified column to the selection.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the column was successfully removed from the
+//     selection, or 0 if value does not implement this interface.
+//
+func (table *Table) RemoveColumnSelection(column int) bool {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C.atk_table_remove_column_selection(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// RemoveRowSelection removes the specified row from the selection.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the row was successfully removed from the
+//     selection, or 0 if value does not implement this interface.
+//
+func (table *Table) RemoveRowSelection(row int) bool {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C.atk_table_remove_row_selection(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetCaption sets the caption for the table.
+//
+// The function takes the following parameters:
+//
+//   - caption representing the caption to set for table.
+//
+func (table *Table) SetCaption(caption *AtkObject) {
+	var _arg0 *C.AtkTable  // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(caption).Native()))
+
+	C.atk_table_set_caption(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(caption)
+}
+
+// SetColumnDescription sets the description text for the specified column of
+// the table.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//   - description representing the description text to set for the specified
+//     column of the table.
+//
+func (table *Table) SetColumnDescription(column int, description string) {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 *C.gchar    // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.atk_table_set_column_description(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(description)
+}
+
+// SetColumnHeader sets the specified column header to header.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//   - header: Table.
+//
+func (table *Table) SetColumnHeader(column int, header *AtkObject) {
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(header).Native()))
+
+	C.atk_table_set_column_header(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(header)
+}
+
+// SetRowDescription sets the description text for the specified row of table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - description representing the description text to set for the specified
+//     row of table.
+//
+func (table *Table) SetRowDescription(row int, description string) {
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 *C.gchar    // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C.atk_table_set_row_description(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(description)
+}
+
+// SetRowHeader sets the specified row header to header.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - header: Table.
+//
+func (table *Table) SetRowHeader(row int, header *AtkObject) {
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(header).Native()))
+
+	C.atk_table_set_row_header(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(header)
+}
+
+// SetSummary sets the summary description of the table.
+//
+// The function takes the following parameters:
+//
+//   - accessible representing the summary description to set for table.
+//
+func (table *Table) SetSummary(accessible *AtkObject) {
+	var _arg0 *C.AtkTable  // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	C.atk_table_set_summary(_arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(accessible)
+}
+
+// addColumnSelection adds the specified column to the selection.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the column was successfully added to the
+//     selection, or 0 if value does not implement this interface.
+//
+func (table *Table) addColumnSelection(column int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.add_column_selection
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_add_column_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// addRowSelection adds the specified row to the selection.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if row was successfully added to selection,
+//     or 0 if value does not implement this interface.
+//
+func (table *Table) addRowSelection(row int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.add_row_selection
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_add_row_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//   - column
+//   - numDeleted
+//
+func (table *Table) columnDeleted(column, numDeleted int) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.column_deleted
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = C.gint(numDeleted)
+
+	C._gotk4_atk1_Table_virtual_column_deleted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(numDeleted)
+}
+
+// The function takes the following parameters:
+//
+//   - column
+//   - numInserted
+//
+func (table *Table) columnInserted(column, numInserted int) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.column_inserted
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = C.gint(numInserted)
+
+	C._gotk4_atk1_Table_virtual_column_inserted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(numInserted)
+}
+
+func (table *Table) columnReordered() {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.column_reordered
+
+	var _arg0 *C.AtkTable // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	C._gotk4_atk1_Table_virtual_column_reordered(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+}
+
+// Caption gets the caption for the table.
+//
+// The function returns the following values:
+//
+//   - object (optional): atkObject* representing the table caption, or NULL if
+//     value does not implement this interface.
+//
+func (table *Table) caption() *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_caption
+
+	var _arg0 *C.AtkTable  // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_caption(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// columnAtIndex gets a #gint representing the column at the specified index_.
+//
+// Deprecated: Since 2.12.
+//
+// The function takes the following parameters:
+//
+//   - index_ representing an index in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the column at the specified index, or -1 if the table
+//     does not implement this method.
+//
+func (table *Table) columnAtIndex(index_ int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_column_at_index
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(index_)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_column_at_index(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(index_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// columnDescription gets the description text of the specified column in the
+// table.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - utf8: gchar* representing the column description, or NULL if value does
+//     not implement this interface.
+//
+func (table *Table) columnDescription(column int) string {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_column_description
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_column_description(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// columnExtentAt gets the number of columns occupied by the accessible object
+// at the specified row and column in the table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the column extent at specified position, or 0 if value
+//     does not implement this interface.
+//
+func (table *Table) columnExtentAt(row, column int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_column_extent_at
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_column_extent_at(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// columnHeader gets the column header of a specified column in an accessible
+// table.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in the table.
+//
+// The function returns the following values:
+//
+//   - object (optional): atkObject* representing the specified column header,
+//     or NULL if value does not implement this interface.
+//
+func (table *Table) columnHeader(column int) *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_column_header
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_column_header(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// indexAt gets a #gint representing the index at the specified row and column.
+//
+// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the accessible
+// that represents the cell at (row, column).
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the index at specified position. The value -1 is
+//     returned if the object at row,column is not a child of table or table
+//     does not implement this interface.
+//
+func (table *Table) indexAt(row, column int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_index_at
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_index_at(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// nColumns gets the number of columns in the table.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of columns, or 0 if value does not implement
+//     this interface.
+//
+func (table *Table) nColumns() int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_n_columns
+
+	var _arg0 *C.AtkTable // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_n_columns(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// nRows gets the number of rows in the table.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of rows, or 0 if value does not implement
+//     this interface.
+//
+func (table *Table) nRows() int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_n_rows
+
+	var _arg0 *C.AtkTable // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_n_rows(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// rowAtIndex gets a #gint representing the row at the specified index_.
+//
+// Deprecated: since 2.12.
+//
+// The function takes the following parameters:
+//
+//   - index_ representing an index in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the row at the specified index, or -1 if the table does
+//     not implement this method.
+//
+func (table *Table) rowAtIndex(index_ int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_row_at_index
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(index_)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_row_at_index(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(index_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// rowDescription gets the description text of the specified row in the table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): gchar* representing the row description, or NULL if
+//     value does not implement this interface.
+//
+func (table *Table) rowDescription(row int) string {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_row_description
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_row_description(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// rowExtentAt gets the number of rows occupied by the accessible object at a
+// specified row and column in the table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - gint representing the row extent at specified position, or 0 if value
+//     does not implement this interface.
+//
+func (table *Table) rowExtentAt(row, column int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_row_extent_at
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_row_extent_at(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// rowHeader gets the row header of a specified row in an accessible table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in the table.
+//
+// The function returns the following values:
+//
+//   - object (optional): atkObject* representing the specified row header,
+//     or NULL if value does not implement this interface.
+//
+func (table *Table) rowHeader(row int) *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_row_header
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_get_row_header(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _object *AtkObject // out
+
+	if _cret != nil {
+		_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+	}
+
+	return _object
+}
+
+// selectedColumns gets the selected columns of the table by initializing
+// **selected with the selected column numbers. This array should be freed by
+// the caller.
+//
+// The function takes the following parameters:
+//
+//   - selected that is to contain the selected columns numbers.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of selected columns, or 0 if value does not
+//     implement this interface.
+//
+func (table *Table) selectedColumns(selected **int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_selected_columns
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 **C.gint    // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (**C.gint)(unsafe.Pointer(selected))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_selected_columns(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(selected)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// selectedRows gets the selected rows of the table by initializing **selected
+// with the selected row numbers. This array should be freed by the caller.
+//
+// The function takes the following parameters:
+//
+//   - selected that is to contain the selected row numbers.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of selected rows, or zero if value does not
+//     implement this interface.
+//
+func (table *Table) selectedRows(selected **int) int {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_selected_rows
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 **C.gint    // out
+	var _cret C.gint      // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (**C.gint)(unsafe.Pointer(selected))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_selected_rows(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(selected)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Summary gets the summary description of the table.
+//
+// The function returns the following values:
+//
+//   - object: atkObject* representing a summary description of the table,
+//     or zero if value does not implement this interface.
+//
+func (table *Table) summary() *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.get_summary
+
+	var _arg0 *C.AtkTable  // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	_cret = C._gotk4_atk1_Table_virtual_get_summary(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// isColumnSelected gets a boolean value indicating whether the specified column
+// is selected.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the column is selected, or 0 if value does
+//     not implement this interface.
+//
+func (table *Table) isColumnSelected(column int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.is_column_selected
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_is_column_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// isRowSelected gets a boolean value indicating whether the specified row is
+// selected.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the row is selected, or 0 if value does not
+//     implement this interface.
+//
+func (table *Table) isRowSelected(row int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.is_row_selected
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_is_row_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// isSelected gets a boolean value indicating whether the accessible object at
+// the specified row and column is selected.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the cell is selected, or 0 if value does not
+//     implement this interface.
+//
+func (table *Table) isSelected(row, column int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.is_selected
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_is_selected(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (table *Table) modelChanged() {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.model_changed
+
+	var _arg0 *C.AtkTable // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	C._gotk4_atk1_Table_virtual_model_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+}
+
+// refAt: get a reference to the table cell at row, column. This cell should
+// implement the interface TableCell.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - object representing the referred to accessible.
+//
+func (table *Table) refAt(row, column int) *AtkObject {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.ref_at
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_ref_at(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(column)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// removeColumnSelection adds the specified column to the selection.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the column was successfully removed from the
+//     selection, or 0 if value does not implement this interface.
+//
+func (table *Table) removeColumnSelection(column int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.remove_column_selection
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+
+	_cret = C._gotk4_atk1_Table_virtual_remove_column_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// removeRowSelection removes the specified row from the selection.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//
+// The function returns the following values:
+//
+//   - ok: gboolean representing if the row was successfully removed from the
+//     selection, or 0 if value does not implement this interface.
+//
+func (table *Table) removeRowSelection(row int) bool {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.remove_row_selection
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+
+	_cret = C._gotk4_atk1_Table_virtual_remove_row_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// The function takes the following parameters:
+//
+//   - row
+//   - numDeleted
+//
+func (table *Table) rowDeleted(row, numDeleted int) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.row_deleted
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(numDeleted)
+
+	C._gotk4_atk1_Table_virtual_row_deleted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(numDeleted)
+}
+
+// The function takes the following parameters:
+//
+//   - row
+//   - numInserted
+//
+func (table *Table) rowInserted(row, numInserted int) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.row_inserted
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 C.gint      // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = C.gint(numInserted)
+
+	C._gotk4_atk1_Table_virtual_row_inserted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(numInserted)
+}
+
+func (table *Table) rowReordered() {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.row_reordered
+
+	var _arg0 *C.AtkTable // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+
+	C._gotk4_atk1_Table_virtual_row_reordered(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(table)
+}
+
+// setCaption sets the caption for the table.
+//
+// The function takes the following parameters:
+//
+//   - caption representing the caption to set for table.
+//
+func (table *Table) setCaption(caption *AtkObject) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_caption
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(caption).Native()))
+
+	C._gotk4_atk1_Table_virtual_set_caption(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(caption)
+}
+
+// setColumnDescription sets the description text for the specified column of
+// the table.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//   - description representing the description text to set for the specified
+//     column of the table.
+//
+func (table *Table) setColumnDescription(column int, description string) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_column_description
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 *C.gchar    // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C._gotk4_atk1_Table_virtual_set_column_description(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(description)
+}
+
+// setColumnHeader sets the specified column header to header.
+//
+// The function takes the following parameters:
+//
+//   - column representing a column in table.
+//   - header: Table.
+//
+func (table *Table) setColumnHeader(column int, header *AtkObject) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_column_header
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(column)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(header).Native()))
+
+	C._gotk4_atk1_Table_virtual_set_column_header(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(column)
+	runtime.KeepAlive(header)
+}
+
+// setRowDescription sets the description text for the specified row of table.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - description representing the description text to set for the specified
+//     row of table.
+//
+func (table *Table) setRowDescription(row int, description string) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_row_description
+
+	var _arg0 *C.AtkTable // out
+	var _arg1 C.gint      // out
+	var _arg2 *C.gchar    // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	C._gotk4_atk1_Table_virtual_set_row_description(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(description)
+}
+
+// setRowHeader sets the specified row header to header.
+//
+// The function takes the following parameters:
+//
+//   - row representing a row in table.
+//   - header: Table.
+//
+func (table *Table) setRowHeader(row int, header *AtkObject) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_row_header
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 C.gint       // out
+	var _arg2 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = C.gint(row)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(header).Native()))
+
+	C._gotk4_atk1_Table_virtual_set_row_header(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(row)
+	runtime.KeepAlive(header)
+}
+
+// setSummary sets the summary description of the table.
+//
+// The function takes the following parameters:
+//
+//   - accessible representing the summary description to set for table.
+//
+func (table *Table) setSummary(accessible *AtkObject) {
+	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
+	fnarg := gclass.set_summary
+
+	var _arg0 *C.AtkTable  // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkTable)(unsafe.Pointer(coreglib.InternObject(table).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	C._gotk4_atk1_Table_virtual_set_summary(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(table)
+	runtime.KeepAlive(accessible)
+}
+
+//export _gotk4_atk1_Table_ConnectColumnDeleted
+func _gotk4_atk1_Table_ConnectColumnDeleted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
+}
+
+//export _gotk4_atk1_Table_ConnectColumnInserted
+func _gotk4_atk1_Table_ConnectColumnInserted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
+}
+
+//export _gotk4_atk1_Table_ConnectColumnReordered
+func _gotk4_atk1_Table_ConnectColumnReordered(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Table_ConnectModelChanged
+func _gotk4_atk1_Table_ConnectModelChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Table_ConnectRowDeleted
+func _gotk4_atk1_Table_ConnectRowDeleted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
+}
+
+//export _gotk4_atk1_Table_ConnectRowInserted
+func _gotk4_atk1_Table_ConnectRowInserted(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
+}
+
+//export _gotk4_atk1_Table_ConnectRowReordered
+func _gotk4_atk1_Table_ConnectRowReordered(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// TableCell: being Table a component which present elements ordered via rows
+// and columns, an TableCell is the interface which each of those elements,
+// so "cells" should implement.
+//
+// See also Table.
+//
+// TableCell wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type TableCell struct {
+	_ [0]func() // equal guard
+	AtkObject
+}
+
+var (
+	_ coreglib.Objector = (*TableCell)(nil)
+)
+
+// TableCeller describes TableCell's interface methods.
+type TableCeller interface {
+	coreglib.Objector
+
+	// ColumnSpan returns the number of columns occupied by this cell
+	// accessible.
+	ColumnSpan() int
+	// Position retrieves the tabular position of this cell.
+	Position() (row, column int, ok bool)
+	// RowColumnSpan gets the row and column indexes and span of this cell
+	// accessible.
+	RowColumnSpan() (row, column, rowSpan, columnSpan int, ok bool)
+	// RowSpan returns the number of rows occupied by this cell accessible.
+	RowSpan() int
+	// Table returns a reference to the accessible of the containing table.
+	Table() *AtkObject
+}
+
+var _ TableCeller = (*TableCell)(nil)
+
+func wrapTableCell(obj *coreglib.Object) *TableCell {
+	return &TableCell{
+		AtkObject: AtkObject{
+			Object: obj,
+		},
+	}
+}
+
+func marshalTableCell(p uintptr) (interface{}, error) {
+	return wrapTableCell(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ColumnSpan returns the number of columns occupied by this cell accessible.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of columns occupied by this cell, or 0 if
+//     the cell does not implement this method.
+//
+func (cell *TableCell) ColumnSpan() int {
+	var _arg0 *C.AtkTableCell // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C.atk_table_cell_get_column_span(_arg0)
+	runtime.KeepAlive(cell)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Position retrieves the tabular position of this cell.
+//
+// The function returns the following values:
+//
+//   - row of the given cell.
+//   - column of the given cell.
+//   - ok: TRUE if successful; FALSE otherwise.
+//
+func (cell *TableCell) Position() (row, column int, ok bool) {
+	var _arg0 *C.AtkTableCell // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C.atk_table_cell_get_position(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(cell)
+
+	var _row int    // out
+	var _column int // out
+	var _ok bool    // out
+
+	_row = int(_arg1)
+	_column = int(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _row, _column, _ok
+}
+
+// RowColumnSpan gets the row and column indexes and span of this cell
+// accessible.
+//
+// Note: If the object does not implement this function, then, by default,
+// atk will implement this function by calling get_row_span and get_column_span
+// on the object.
+//
+// The function returns the following values:
+//
+//   - row index of the given cell.
+//   - column index of the given cell.
+//   - rowSpan: number of rows occupied by this cell.
+//   - columnSpan: number of columns occupied by this cell.
+//   - ok: TRUE if successful; FALSE otherwise.
+//
+func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int, ok bool) {
+	var _arg0 *C.AtkTableCell // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.gint          // in
+	var _arg4 C.gint          // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C.atk_table_cell_get_row_column_span(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(cell)
+
+	var _row int        // out
+	var _column int     // out
+	var _rowSpan int    // out
+	var _columnSpan int // out
+	var _ok bool        // out
+
+	_row = int(_arg1)
+	_column = int(_arg2)
+	_rowSpan = int(_arg3)
+	_columnSpan = int(_arg4)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _row, _column, _rowSpan, _columnSpan, _ok
+}
+
+// RowSpan returns the number of rows occupied by this cell accessible.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of rows occupied by this cell, or 0 if the
+//     cell does not implement this method.
+//
+func (cell *TableCell) RowSpan() int {
+	var _arg0 *C.AtkTableCell // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C.atk_table_cell_get_row_span(_arg0)
+	runtime.KeepAlive(cell)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Table returns a reference to the accessible of the containing table.
+//
+// The function returns the following values:
+//
+//   - object: atk object for the containing table.
+//
+func (cell *TableCell) Table() *AtkObject {
+	var _arg0 *C.AtkTableCell // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C.atk_table_cell_get_table(_arg0)
+	runtime.KeepAlive(cell)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// columnSpan returns the number of columns occupied by this cell accessible.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of columns occupied by this cell, or 0 if
+//     the cell does not implement this method.
+//
+func (cell *TableCell) columnSpan() int {
+	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
+	fnarg := gclass.get_column_span
+
+	var _arg0 *C.AtkTableCell // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C._gotk4_atk1_TableCell_virtual_get_column_span(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(cell)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Position retrieves the tabular position of this cell.
+//
+// The function returns the following values:
+//
+//   - row of the given cell.
+//   - column of the given cell.
+//   - ok: TRUE if successful; FALSE otherwise.
+//
+func (cell *TableCell) position() (row, column int, ok bool) {
+	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
+	fnarg := gclass.get_position
+
+	var _arg0 *C.AtkTableCell // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C._gotk4_atk1_TableCell_virtual_get_position(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(cell)
+
+	var _row int    // out
+	var _column int // out
+	var _ok bool    // out
+
+	_row = int(_arg1)
+	_column = int(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _row, _column, _ok
+}
+
+// rowColumnSpan gets the row and column indexes and span of this cell
+// accessible.
+//
+// Note: If the object does not implement this function, then, by default,
+// atk will implement this function by calling get_row_span and get_column_span
+// on the object.
+//
+// The function returns the following values:
+//
+//   - row index of the given cell.
+//   - column index of the given cell.
+//   - rowSpan: number of rows occupied by this cell.
+//   - columnSpan: number of columns occupied by this cell.
+//   - ok: TRUE if successful; FALSE otherwise.
+//
+func (cell *TableCell) rowColumnSpan() (row, column, rowSpan, columnSpan int, ok bool) {
+	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
+	fnarg := gclass.get_row_column_span
+
+	var _arg0 *C.AtkTableCell // out
+	var _arg1 C.gint          // in
+	var _arg2 C.gint          // in
+	var _arg3 C.gint          // in
+	var _arg4 C.gint          // in
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C._gotk4_atk1_TableCell_virtual_get_row_column_span(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(cell)
+
+	var _row int        // out
+	var _column int     // out
+	var _rowSpan int    // out
+	var _columnSpan int // out
+	var _ok bool        // out
+
+	_row = int(_arg1)
+	_column = int(_arg2)
+	_rowSpan = int(_arg3)
+	_columnSpan = int(_arg4)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _row, _column, _rowSpan, _columnSpan, _ok
+}
+
+// rowSpan returns the number of rows occupied by this cell accessible.
+//
+// The function returns the following values:
+//
+//   - gint representing the number of rows occupied by this cell, or 0 if the
+//     cell does not implement this method.
+//
+func (cell *TableCell) rowSpan() int {
+	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
+	fnarg := gclass.get_row_span
+
+	var _arg0 *C.AtkTableCell // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C._gotk4_atk1_TableCell_virtual_get_row_span(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(cell)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Table returns a reference to the accessible of the containing table.
+//
+// The function returns the following values:
+//
+//   - object: atk object for the containing table.
+//
+func (cell *TableCell) table() *AtkObject {
+	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
+	fnarg := gclass.get_table
+
+	var _arg0 *C.AtkTableCell // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkTableCell)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
+
+	_cret = C._gotk4_atk1_TableCell_virtual_get_table(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(cell)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// Text should be implemented by Objects on behalf of widgets that have text
+// content which is either attributed or otherwise non-trivial. Objects whose
+// text content is simple, unattributed, and very brief may expose that
+// content via #atk_object_get_name instead; however if the text is editable,
+// multi-line, typically longer than three or four words, attributed,
+// selectable, or if the object already uses the 'name' ATK property for other
+// information, the Text interface should be used to expose the text content.
+// In the case of editable text content, EditableText (a subtype of the Text
+// interface) should be implemented instead.
+//
+//    Text provides not only traversal facilities and change
+//
+// notification for text content, but also caret tracking and glyph bounding
+// box calculations. Note that the text strings are exposed as UTF-8, and are
+// therefore potentially multi-byte, and caret-to-byte offset mapping makes no
+// assumptions about the character length; also bounding box glyph-to-offset
+// mapping may be complex for languages which use ligatures.
+//
+// Text wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Text struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Text)(nil)
+)
+
+// Texter describes Text's interface methods.
+type Texter interface {
+	coreglib.Objector
+
+	// AddSelection adds a selection bounded by the specified offsets.
+	AddSelection(startOffset, endOffset int) bool
+	// BoundedRanges: get the ranges of text in the specified bounding box.
+	BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange
+	// CaretOffset gets the offset of the position of the caret (cursor).
+	CaretOffset() int
+	// CharacterAtOffset gets the specified text.
+	CharacterAtOffset(offset int) uint32
+	// CharacterCount gets the character count.
+	CharacterCount() int
+	// CharacterExtents: if the extent can not be obtained (e.g.
+	CharacterExtents(offset int, coords CoordType) (x, y, width, height int)
+	// NSelections gets the number of selected regions.
+	NSelections() int
+	// OffsetAtPoint gets the offset of the character located at coordinates x
+	// and y.
+	OffsetAtPoint(x, y int, coords CoordType) int
+	// RangeExtents: get the bounding box for text within the specified range.
+	RangeExtents(startOffset, endOffset int, coordType CoordType) *TextRectangle
+	// Selection gets the text from the specified selection.
+	Selection(selectionNum int) (startOffset, endOffset int, utf8 string)
+	// StringAtOffset gets a portion of the text exposed through an Text
+	// according to a given offset and a specific granularity, along with the
+	// start and end offsets defining the boundaries of such a portion of text.
+	StringAtOffset(offset int, granularity TextGranularity) (startOffset, endOffset int, utf8 string)
+	// Text gets the specified text.
+	Text(startOffset, endOffset int) string
+	// TextAfterOffset gets the specified text.
+	TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string)
+	// TextAtOffset gets the specified text.
+	TextAtOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string)
+	// TextBeforeOffset gets the specified text.
+	TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string)
+	// RemoveSelection removes the specified selection.
+	RemoveSelection(selectionNum int) bool
+	// ScrollSubstringTo makes a substring of text visible on the screen by
+	// scrolling all necessary parents.
+	ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool
+	// ScrollSubstringToPoint: move the top-left of a substring of text to a
+	// given position of the screen by scrolling all necessary parents.
+	ScrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool
+	// SetCaretOffset sets the caret (cursor) position to the specified offset.
+	SetCaretOffset(offset int) bool
+	// SetSelection changes the start and end offset of the specified selection.
+	SetSelection(selectionNum, startOffset, endOffset int) bool
+
+	// Text-attributes-changed: "text-attributes-changed" signal is emitted when
+	// the text attributes of the text of an object which implements AtkText
+	// changes.
+	ConnectTextAttributesChanged(func()) coreglib.SignalHandle
+	// Text-caret-moved: "text-caret-moved" signal is emitted when the caret
+	// position of the text of an object which implements AtkText changes.
+	ConnectTextCaretMoved(func(arg1 int)) coreglib.SignalHandle
+	// Text-changed: "text-changed" signal is emitted when the text of the
+	// object which implements the AtkText interface changes, This signal will
+	// have a detail which is either "insert" or "delete" which identifies
+	// whether the text change was an insertion or a deletion.
+	ConnectTextChanged(func(arg1, arg2 int)) coreglib.SignalHandle
+	// Text-insert: "text-insert" signal is emitted when a new text is inserted.
+	ConnectTextInsert(func(arg1, arg2 int, arg3 string)) coreglib.SignalHandle
+	// Text-remove: "text-remove" signal is emitted when a new text is removed.
+	ConnectTextRemove(func(arg1, arg2 int, arg3 string)) coreglib.SignalHandle
+	// Text-selection-changed: "text-selection-changed" signal is emitted when
+	// the selected text of an object which implements AtkText changes.
+	ConnectTextSelectionChanged(func()) coreglib.SignalHandle
+}
+
+var _ Texter = (*Text)(nil)
+
+func wrapText(obj *coreglib.Object) *Text {
+	return &Text{
+		Object: obj,
+	}
+}
+
+func marshalText(p uintptr) (interface{}, error) {
+	return wrapText(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectTextAttributesChanged: "text-attributes-changed" signal is emitted
+// when the text attributes of the text of an object which implements AtkText
+// changes.
+func (text *Text) ConnectTextAttributesChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(text, "text-attributes-changed", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextAttributesChanged), f)
+}
+
+// ConnectTextCaretMoved: "text-caret-moved" signal is emitted when the caret
+// position of the text of an object which implements AtkText changes.
+func (text *Text) ConnectTextCaretMoved(f func(arg1 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(text, "text-caret-moved", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextCaretMoved), f)
+}
+
+// ConnectTextChanged: "text-changed" signal is emitted when the text of the
+// object which implements the AtkText interface changes, This signal will have
+// a detail which is either "insert" or "delete" which identifies whether the
+// text change was an insertion or a deletion.
+func (text *Text) ConnectTextChanged(f func(arg1, arg2 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(text, "text-changed", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextChanged), f)
+}
+
+// ConnectTextInsert: "text-insert" signal is emitted when a new text is
+// inserted. If the signal was not triggered by the user (e.g. typing or pasting
+// text), the "system" detail should be included.
+func (text *Text) ConnectTextInsert(f func(arg1, arg2 int, arg3 string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(text, "text-insert", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextInsert), f)
+}
+
+// ConnectTextRemove: "text-remove" signal is emitted when a new text is
+// removed. If the signal was not triggered by the user (e.g. typing or pasting
+// text), the "system" detail should be included.
+func (text *Text) ConnectTextRemove(f func(arg1, arg2 int, arg3 string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(text, "text-remove", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextRemove), f)
+}
+
+// ConnectTextSelectionChanged: "text-selection-changed" signal is emitted when
+// the selected text of an object which implements AtkText changes.
+func (text *Text) ConnectTextSelectionChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(text, "text-selection-changed", false, unsafe.Pointer(C._gotk4_atk1_Text_ConnectTextSelectionChanged), f)
+}
+
+// AddSelection adds a selection bounded by the specified offsets.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: starting character offset of the selected region.
+//   - endOffset: offset of the first character after the selected region.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (text *Text) AddSelection(startOffset, endOffset int) bool {
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+
+	_cret = C.atk_text_add_selection(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// BoundedRanges: get the ranges of text in the specified bounding box.
+//
+// The function takes the following parameters:
+//
+//   - rect: atkTextRectangle giving the dimensions of the bounding box.
+//   - coordType: specify whether coordinates are relative to the screen or
+//     widget window.
+//   - xClipType: specify the horizontal clip type.
+//   - yClipType: specify the vertical clip type.
+//
+// The function returns the following values:
+//
+//   - textRanges: array of AtkTextRange. The last element of the array returned
+//     by this function will be NULL.
+//
+func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange {
+	var _arg0 *C.AtkText          // out
+	var _arg1 *C.AtkTextRectangle // out
+	var _arg2 C.AtkCoordType      // out
+	var _arg3 C.AtkTextClipType   // out
+	var _arg4 C.AtkTextClipType   // out
+	var _cret **C.AtkTextRange    // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = (*C.AtkTextRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg2 = C.AtkCoordType(coordType)
+	_arg3 = C.AtkTextClipType(xClipType)
+	_arg4 = C.AtkTextClipType(yClipType)
+
+	_cret = C.atk_text_get_bounded_ranges(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(coordType)
+	runtime.KeepAlive(xClipType)
+	runtime.KeepAlive(yClipType)
+
+	var _textRanges []*TextRange // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		var i int
+		var z *C.AtkTextRange
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_textRanges = make([]*TextRange, i)
+		for i := range src {
+			_textRanges[i] = (*TextRange)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(_textRanges[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
+
+	return _textRanges
+}
+
+// CaretOffset gets the offset of the position of the caret (cursor).
+//
+// The function returns the following values:
+//
+//   - gint: character offset of the position of the caret or -1 if the caret is
+//     not located inside the element or in the case of any other failure.
+//
+func (text *Text) CaretOffset() int {
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+
+	_cret = C.atk_text_get_caret_offset(_arg0)
+	runtime.KeepAlive(text)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// CharacterAtOffset gets the specified text.
+//
+// The function takes the following parameters:
+//
+//   - offset: character offset within text.
+//
+// The function returns the following values:
+//
+//   - gunichar: character at offset or 0 in the case of failure.
+//
+func (text *Text) CharacterAtOffset(offset int) uint32 {
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gunichar // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+
+	_cret = C.atk_text_get_character_at_offset(_arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+
+	var _gunichar uint32 // out
+
+	_gunichar = uint32(_cret)
+
+	return _gunichar
+}
+
+// CharacterCount gets the character count.
+//
+// The function returns the following values:
+//
+//   - gint: number of characters or -1 in case of failure.
+//
+func (text *Text) CharacterCount() int {
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+
+	_cret = C.atk_text_get_character_count(_arg0)
+	runtime.KeepAlive(text)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// CharacterExtents: if the extent can not be obtained (e.g. missing support),
+// all of x, y, width, height are set to -1.
+//
+// Get the bounding box containing the glyph representing the character at a
+// particular text offset.
+//
+// The function takes the following parameters:
+//
+//   - offset of the text character for which bounding information is required.
+//   - coords: specify whether coordinates are relative to the screen or widget
+//     window.
+//
+// The function returns the following values:
+//
+//   - x (optional): pointer for the x coordinate of the bounding box.
+//   - y (optional): pointer for the y coordinate of the bounding box.
+//   - width (optional): pointer for the width of the bounding box.
+//   - height (optional): pointer for the height of the bounding box.
+//
+func (text *Text) CharacterExtents(offset int, coords CoordType) (x, y, width, height int) {
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // in
+	var _arg3 C.gint         // in
+	var _arg4 C.gint         // in
+	var _arg5 C.gint         // in
+	var _arg6 C.AtkCoordType // out
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg6 = C.AtkCoordType(coords)
+
+	C.atk_text_get_character_extents(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, _arg6)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(coords)
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(_arg2)
+	_y = int(_arg3)
+	_width = int(_arg4)
+	_height = int(_arg5)
+
+	return _x, _y, _width, _height
+}
+
+// NSelections gets the number of selected regions.
+//
+// The function returns the following values:
+//
+//   - gint: number of selected regions, or -1 in the case of failure.
+//
+func (text *Text) NSelections() int {
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+
+	_cret = C.atk_text_get_n_selections(_arg0)
+	runtime.KeepAlive(text)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// OffsetAtPoint gets the offset of the character located at coordinates x and
+// y. x and y are interpreted as being relative to the screen or this widget's
+// window depending on coords.
+//
+// The function takes the following parameters:
+//
+//   - x: screen x-position of character.
+//   - y: screen y-position of character.
+//   - coords: specify whether coordinates are relative to the screen or widget
+//     window.
+//
+// The function returns the following values:
+//
+//   - gint: offset to the character which is located at the specified x and y
+//     coordinates of -1 in case of failure.
+//
+func (text *Text) OffsetAtPoint(x, y int, coords CoordType) int {
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _arg3 C.AtkCoordType // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coords)
+
+	_cret = C.atk_text_get_offset_at_point(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coords)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// RangeExtents: get the bounding box for text within the specified range.
+//
+// If the extents can not be obtained (e.g. or missing support), the rectangle
+// fields are set to -1.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: offset of the first text character for which boundary
+//     information is required.
+//   - endOffset: offset of the text character after the last character for
+//     which boundary information is required.
+//   - coordType: specify whether coordinates are relative to the screen or
+//     widget window.
+//
+// The function returns the following values:
+//
+//   - rect: pointer to a AtkTextRectangle which is filled in by this function.
+//
+func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) *TextRectangle {
+	var _arg0 *C.AtkText         // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+	var _arg3 C.AtkCoordType     // out
+	var _arg4 C.AtkTextRectangle // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkCoordType(coordType)
+
+	C.atk_text_get_range_extents(_arg0, _arg1, _arg2, _arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(coordType)
+
+	var _rect *TextRectangle // out
+
+	_rect = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+
+	return _rect
+}
+
+// Selection gets the text from the specified selection.
+//
+// The function takes the following parameters:
+//
+//   - selectionNum: selection number. The selected regions are assigned numbers
+//     that correspond to how far the region is from the start of the text. The
+//     selected region closest to the beginning of the text region is assigned
+//     the number 0, etc. Note that adding, moving or deleting a selected region
+//     can change the numbering.
+//
+// The function returns the following values:
+//
+//   - startOffset passes back the starting character offset of the selected
+//     region.
+//   - endOffset passes back the ending character offset (offset immediately
+//     past) of the selected region.
+//   - utf8: newly allocated string containing the selected text. Use g_free()
+//     to free the returned string.
+//
+func (text *Text) Selection(selectionNum int) (startOffset, endOffset int, utf8 string) {
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // in
+	var _arg3 C.gint     // in
+	var _cret *C.gchar   // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
+
+	_cret = C.atk_text_get_selection(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(selectionNum)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg2)
+	_endOffset = int(_arg3)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// StringAtOffset gets a portion of the text exposed through an Text according
+// to a given offset and a specific granularity, along with the start and end
+// offsets defining the boundaries of such a portion of text.
+//
+// If granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset is
+// returned.
+//
+// If granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from the
+// word start at or before the offset to the word start after the offset.
+//
+// The returned string will contain the word at the offset if the offset is
+// inside a word and will contain the word before the offset if the offset is
+// not inside a word.
+//
+// If granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is from
+// the sentence start at or before the offset to the sentence start after the
+// offset.
+//
+// The returned string will contain the sentence at the offset if the offset
+// is inside a sentence and will contain the sentence before the offset if the
+// offset is not inside a sentence.
+//
+// If granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from the
+// line start at or before the offset to the line start after the offset.
+//
+// If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
+// from the start of the paragraph at or before the offset to the start of the
+// following paragraph after the offset.
+//
+// The function takes the following parameters:
+//
+//   - offset: position.
+//   - granularity: TextGranularity.
+//
+// The function returns the following values:
+//
+//   - startOffset: starting character offset of the returned string, or -1 in
+//     the case of error (e.g. invalid offset, not implemented).
+//   - endOffset: offset of the first character after the returned string,
+//     or -1 in the case of error (e.g. invalid offset, not implemented).
+//   - utf8 (optional): newly allocated string containing the text at the offset
+//     bounded by the specified granularity. Use g_free() to free the returned
+//     string. Returns NULL if the offset is invalid or no implementation is
+//     available.
+//
+func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (startOffset, endOffset int, utf8 string) {
+	var _arg0 *C.AtkText           // out
+	var _arg1 C.gint               // out
+	var _arg2 C.AtkTextGranularity // out
+	var _arg3 C.gint               // in
+	var _arg4 C.gint               // in
+	var _cret *C.gchar             // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextGranularity(granularity)
+
+	_cret = C.atk_text_get_string_at_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(granularity)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg3)
+	_endOffset = int(_arg4)
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// Text gets the specified text.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: starting character offset within text.
+//   - endOffset: ending character offset within text, or -1 for the end of the
+//     string.
+//
+// The function returns the following values:
+//
+//   - utf8: newly allocated string containing the text from start_offset up to,
+//     but not including end_offset. Use g_free() to free the returned string.
+//
+func (text *Text) Text(startOffset, endOffset int) string {
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _cret *C.gchar   // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+
+	_cret = C.atk_text_get_text(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// TextAfterOffset gets the specified text.
+//
+// Deprecated: Please use atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//   - offset: position.
+//   - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//   - startOffset: starting character offset of the returned string.
+//   - endOffset: offset of the first character after the returned substring.
+//   - utf8: newly allocated string containing the text after offset bounded by
+//     the specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C.atk_text_get_text_after_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg3)
+	_endOffset = int(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// TextAtOffset gets the specified text.
+//
+// If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the offset is
+// returned.
+//
+// If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string
+// is from the word start at or before the offset to the word start after the
+// offset.
+//
+// The returned string will contain the word at the offset if the offset is
+// inside a word and will contain the word before the offset if the offset is
+// not inside a word.
+//
+// If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned string
+// is from the sentence start at or before the offset to the sentence start
+// after the offset.
+//
+// The returned string will contain the sentence at the offset if the offset
+// is inside a sentence and will contain the sentence before the offset if the
+// offset is not inside a sentence.
+//
+// If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string
+// is from the line start at or before the offset to the line start after the
+// offset.
+//
+// Deprecated: This method is deprecated since ATK version 2.9.4. Please use
+// atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//   - offset: position.
+//   - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//   - startOffset: starting character offset of the returned string.
+//   - endOffset: offset of the first character after the returned substring.
+//   - utf8: newly allocated string containing the text at offset bounded by the
+//     specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C.atk_text_get_text_at_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg3)
+	_endOffset = int(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// TextBeforeOffset gets the specified text.
+//
+// Deprecated: Please use atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//   - offset: position.
+//   - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//   - startOffset: starting character offset of the returned string.
+//   - endOffset: offset of the first character after the returned substring.
+//   - utf8: newly allocated string containing the text before offset bounded by
+//     the specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C.atk_text_get_text_before_offset(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg3)
+	_endOffset = int(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// RemoveSelection removes the specified selection.
+//
+// The function takes the following parameters:
+//
+//   - selectionNum: selection number. The selected regions are assigned numbers
+//     that correspond to how far the region is from the start of the text. The
+//     selected region closest to the beginning of the text region is assigned
+//     the number 0, etc. Note that adding, moving or deleting a selected region
+//     can change the numbering.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (text *Text) RemoveSelection(selectionNum int) bool {
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
+
+	_cret = C.atk_text_remove_selection(_arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(selectionNum)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ScrollSubstringTo makes a substring of text visible on the screen by
+// scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: start offset in the text.
+//   - endOffset: end offset in the text, or -1 for the end of the text.
+//   - typ: specify where the object should be made visible.
+//
+// The function returns the following values:
+//
+//   - ok: whether scrolling was successful.
+//
+func (text *Text) ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool {
+	var _arg0 *C.AtkText      // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkScrollType // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkScrollType(typ)
+
+	_cret = C.atk_text_scroll_substring_to(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ScrollSubstringToPoint: move the top-left of a substring of text to a given
+// position of the screen by scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: start offset in the text.
+//   - endOffset: end offset in the text, or -1 for the end of the text.
+//   - coords: specify whether coordinates are relative to the screen or to the
+//     parent object.
+//   - x: x-position where to scroll to.
+//   - y: y-position where to scroll to.
+//
+// The function returns the following values:
+//
+//   - ok: whether scrolling was successful.
+//
+func (text *Text) ScrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool {
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _arg3 C.AtkCoordType // out
+	var _arg4 C.gint         // out
+	var _arg5 C.gint         // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkCoordType(coords)
+	_arg4 = C.gint(x)
+	_arg5 = C.gint(y)
+
+	_cret = C.atk_text_scroll_substring_to_point(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(coords)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetCaretOffset sets the caret (cursor) position to the specified offset.
+//
+// In the case of rich-text content, this method should either grab focus or
+// move the sequential focus navigation starting point (if the application
+// supports this concept) as if the user had clicked on the new caret position.
+// Typically, this means that the target of this operation is the node
+// containing the new caret position or one of its ancestors. In other words,
+// after this method is called, if the user advances focus, it should move to
+// the first focusable node following the new caret position.
+//
+// Calling this method should also scroll the application viewport in a way
+// that matches the behavior of the application's typical caret motion or tab
+// navigation as closely as possible. This also means that if the application's
+// caret motion or focus navigation does not trigger a scroll operation,
+// this method should not trigger one either. If the application does not have a
+// caret motion or focus navigation operation, this method should try to scroll
+// the new caret position into view while minimizing unnecessary scroll motion.
+//
+// The function takes the following parameters:
+//
+//   - offset: character offset of the new caret position.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (text *Text) SetCaretOffset(offset int) bool {
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+
+	_cret = C.atk_text_set_caret_offset(_arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetSelection changes the start and end offset of the specified selection.
+//
+// The function takes the following parameters:
+//
+//   - selectionNum: selection number. The selected regions are assigned numbers
+//     that correspond to how far the region is from the start of the text. The
+//     selected region closest to the beginning of the text region is assigned
+//     the number 0, etc. Note that adding, moving or deleting a selected region
+//     can change the numbering.
+//   - startOffset: new starting character offset of the selection.
+//   - endOffset: new end position of (e.g. offset immediately past) the
+//     selection.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (text *Text) SetSelection(selectionNum, startOffset, endOffset int) bool {
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _arg3 C.gint     // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
+	_arg2 = C.gint(startOffset)
+	_arg3 = C.gint(endOffset)
+
+	_cret = C.atk_text_set_selection(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(selectionNum)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// addSelection adds a selection bounded by the specified offsets.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: starting character offset of the selected region.
+//   - endOffset: offset of the first character after the selected region.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (text *Text) addSelection(startOffset, endOffset int) bool {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.add_selection
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+
+	_cret = C._gotk4_atk1_Text_virtual_add_selection(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// boundedRanges: get the ranges of text in the specified bounding box.
+//
+// The function takes the following parameters:
+//
+//   - rect: atkTextRectangle giving the dimensions of the bounding box.
+//   - coordType: specify whether coordinates are relative to the screen or
+//     widget window.
+//   - xClipType: specify the horizontal clip type.
+//   - yClipType: specify the vertical clip type.
+//
+// The function returns the following values:
+//
+//   - textRanges: array of AtkTextRange. The last element of the array returned
+//     by this function will be NULL.
+//
+func (text *Text) boundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_bounded_ranges
+
+	var _arg0 *C.AtkText          // out
+	var _arg1 *C.AtkTextRectangle // out
+	var _arg2 C.AtkCoordType      // out
+	var _arg3 C.AtkTextClipType   // out
+	var _arg4 C.AtkTextClipType   // out
+	var _cret **C.AtkTextRange    // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = (*C.AtkTextRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+	_arg2 = C.AtkCoordType(coordType)
+	_arg3 = C.AtkTextClipType(xClipType)
+	_arg4 = C.AtkTextClipType(yClipType)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_bounded_ranges(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(rect)
+	runtime.KeepAlive(coordType)
+	runtime.KeepAlive(xClipType)
+	runtime.KeepAlive(yClipType)
+
+	var _textRanges []*TextRange // out
+
+	defer C.free(unsafe.Pointer(_cret))
+	{
+		var i int
+		var z *C.AtkTextRange
+		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(_cret, i)
+		_textRanges = make([]*TextRange, i)
+		for i := range src {
+			_textRanges[i] = (*TextRange)(gextras.NewStructNative(unsafe.Pointer(src[i])))
+			runtime.SetFinalizer(
+				gextras.StructIntern(unsafe.Pointer(_textRanges[i])),
+				func(intern *struct{ C unsafe.Pointer }) {
+					C.free(intern.C)
+				},
+			)
+		}
+	}
+
+	return _textRanges
+}
+
+// caretOffset gets the offset of the position of the caret (cursor).
+//
+// The function returns the following values:
+//
+//   - gint: character offset of the position of the caret or -1 if the caret is
+//     not located inside the element or in the case of any other failure.
+//
+func (text *Text) caretOffset() int {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_caret_offset
+
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+
+	_cret = C._gotk4_atk1_Text_virtual_get_caret_offset(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(text)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// characterAtOffset gets the specified text.
+//
+// The function takes the following parameters:
+//
+//   - offset: character offset within text.
+//
+// The function returns the following values:
+//
+//   - gunichar: character at offset or 0 in the case of failure.
+//
+func (text *Text) characterAtOffset(offset int) uint32 {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_character_at_offset
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gunichar // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_character_at_offset(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+
+	var _gunichar uint32 // out
+
+	_gunichar = uint32(_cret)
+
+	return _gunichar
+}
+
+// characterCount gets the character count.
+//
+// The function returns the following values:
+//
+//   - gint: number of characters or -1 in case of failure.
+//
+func (text *Text) characterCount() int {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_character_count
+
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+
+	_cret = C._gotk4_atk1_Text_virtual_get_character_count(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(text)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// characterExtents: if the extent can not be obtained (e.g. missing support),
+// all of x, y, width, height are set to -1.
+//
+// Get the bounding box containing the glyph representing the character at a
+// particular text offset.
+//
+// The function takes the following parameters:
+//
+//   - offset of the text character for which bounding information is required.
+//   - coords: specify whether coordinates are relative to the screen or widget
+//     window.
+//
+// The function returns the following values:
+//
+//   - x (optional): pointer for the x coordinate of the bounding box.
+//   - y (optional): pointer for the y coordinate of the bounding box.
+//   - width (optional): pointer for the width of the bounding box.
+//   - height (optional): pointer for the height of the bounding box.
+//
+func (text *Text) characterExtents(offset int, coords CoordType) (x, y, width, height int) {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_character_extents
+
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // in
+	var _arg3 C.gint         // in
+	var _arg4 C.gint         // in
+	var _arg5 C.gint         // in
+	var _arg6 C.AtkCoordType // out
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg6 = C.AtkCoordType(coords)
+
+	C._gotk4_atk1_Text_virtual_get_character_extents(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5, _arg6)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(coords)
+
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
+
+	_x = int(_arg2)
+	_y = int(_arg3)
+	_width = int(_arg4)
+	_height = int(_arg5)
+
+	return _x, _y, _width, _height
+}
+
+// nSelections gets the number of selected regions.
+//
+// The function returns the following values:
+//
+//   - gint: number of selected regions, or -1 in the case of failure.
+//
+func (text *Text) nSelections() int {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_n_selections
+
+	var _arg0 *C.AtkText // out
+	var _cret C.gint     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+
+	_cret = C._gotk4_atk1_Text_virtual_get_n_selections(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(text)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// offsetAtPoint gets the offset of the character located at coordinates x and
+// y. x and y are interpreted as being relative to the screen or this widget's
+// window depending on coords.
+//
+// The function takes the following parameters:
+//
+//   - x: screen x-position of character.
+//   - y: screen y-position of character.
+//   - coords: specify whether coordinates are relative to the screen or widget
+//     window.
+//
+// The function returns the following values:
+//
+//   - gint: offset to the character which is located at the specified x and y
+//     coordinates of -1 in case of failure.
+//
+func (text *Text) offsetAtPoint(x, y int, coords CoordType) int {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_offset_at_point
+
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _arg3 C.AtkCoordType // out
+	var _cret C.gint         // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
+	_arg3 = C.AtkCoordType(coords)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_offset_at_point(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+	runtime.KeepAlive(coords)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// rangeExtents: get the bounding box for text within the specified range.
+//
+// If the extents can not be obtained (e.g. or missing support), the rectangle
+// fields are set to -1.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: offset of the first text character for which boundary
+//     information is required.
+//   - endOffset: offset of the text character after the last character for
+//     which boundary information is required.
+//   - coordType: specify whether coordinates are relative to the screen or
+//     widget window.
+//
+// The function returns the following values:
+//
+//   - rect: pointer to a AtkTextRectangle which is filled in by this function.
+//
+func (text *Text) rangeExtents(startOffset, endOffset int, coordType CoordType) *TextRectangle {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_range_extents
+
+	var _arg0 *C.AtkText         // out
+	var _arg1 C.gint             // out
+	var _arg2 C.gint             // out
+	var _arg3 C.AtkCoordType     // out
+	var _arg4 C.AtkTextRectangle // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkCoordType(coordType)
+
+	C._gotk4_atk1_Text_virtual_get_range_extents(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(coordType)
+
+	var _rect *TextRectangle // out
+
+	_rect = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
+
+	return _rect
+}
+
+// Selection gets the text from the specified selection.
+//
+// The function takes the following parameters:
+//
+//   - selectionNum: selection number. The selected regions are assigned numbers
+//     that correspond to how far the region is from the start of the text. The
+//     selected region closest to the beginning of the text region is assigned
+//     the number 0, etc. Note that adding, moving or deleting a selected region
+//     can change the numbering.
+//
+// The function returns the following values:
+//
+//   - startOffset passes back the starting character offset of the selected
+//     region.
+//   - endOffset passes back the ending character offset (offset immediately
+//     past) of the selected region.
+//   - utf8: newly allocated string containing the selected text. Use g_free()
+//     to free the returned string.
+//
+func (text *Text) selection(selectionNum int) (startOffset, endOffset int, utf8 string) {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_selection
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // in
+	var _arg3 C.gint     // in
+	var _cret *C.gchar   // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_selection(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(selectionNum)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg2)
+	_endOffset = int(_arg3)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// stringAtOffset gets a portion of the text exposed through an Text according
+// to a given offset and a specific granularity, along with the start and end
+// offsets defining the boundaries of such a portion of text.
+//
+// If granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset is
+// returned.
+//
+// If granularity is ATK_TEXT_GRANULARITY_WORD the returned string is from the
+// word start at or before the offset to the word start after the offset.
+//
+// The returned string will contain the word at the offset if the offset is
+// inside a word and will contain the word before the offset if the offset is
+// not inside a word.
+//
+// If granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is from
+// the sentence start at or before the offset to the sentence start after the
+// offset.
+//
+// The returned string will contain the sentence at the offset if the offset
+// is inside a sentence and will contain the sentence before the offset if the
+// offset is not inside a sentence.
+//
+// If granularity is ATK_TEXT_GRANULARITY_LINE the returned string is from the
+// line start at or before the offset to the line start after the offset.
+//
+// If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
+// from the start of the paragraph at or before the offset to the start of the
+// following paragraph after the offset.
+//
+// The function takes the following parameters:
+//
+//   - offset: position.
+//   - granularity: TextGranularity.
+//
+// The function returns the following values:
+//
+//   - startOffset: starting character offset of the returned string, or -1 in
+//     the case of error (e.g. invalid offset, not implemented).
+//   - endOffset: offset of the first character after the returned string,
+//     or -1 in the case of error (e.g. invalid offset, not implemented).
+//   - utf8 (optional): newly allocated string containing the text at the offset
+//     bounded by the specified granularity. Use g_free() to free the returned
+//     string. Returns NULL if the offset is invalid or no implementation is
+//     available.
+//
+func (text *Text) stringAtOffset(offset int, granularity TextGranularity) (startOffset, endOffset int, utf8 string) {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_string_at_offset
+
+	var _arg0 *C.AtkText           // out
+	var _arg1 C.gint               // out
+	var _arg2 C.AtkTextGranularity // out
+	var _arg3 C.gint               // in
+	var _arg4 C.gint               // in
+	var _cret *C.gchar             // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextGranularity(granularity)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_string_at_offset(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(granularity)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg3)
+	_endOffset = int(_arg4)
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// Text gets the specified text.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: starting character offset within text.
+//   - endOffset: ending character offset within text, or -1 for the end of the
+//     string.
+//
+// The function returns the following values:
+//
+//   - utf8: newly allocated string containing the text from start_offset up to,
+//     but not including end_offset. Use g_free() to free the returned string.
+//
+func (text *Text) text(startOffset, endOffset int) string {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_text
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _cret *C.gchar   // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// textAfterOffset gets the specified text.
+//
+// Deprecated: Please use atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//   - offset: position.
+//   - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//   - startOffset: starting character offset of the returned string.
+//   - endOffset: offset of the first character after the returned substring.
+//   - utf8: newly allocated string containing the text after offset bounded by
+//     the specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) textAfterOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_text_after_offset
+
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_text_after_offset(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg3)
+	_endOffset = int(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// textAtOffset gets the specified text.
+//
+// If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the offset is
+// returned.
+//
+// If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string
+// is from the word start at or before the offset to the word start after the
+// offset.
+//
+// The returned string will contain the word at the offset if the offset is
+// inside a word and will contain the word before the offset if the offset is
+// not inside a word.
+//
+// If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned string
+// is from the sentence start at or before the offset to the sentence start
+// after the offset.
+//
+// The returned string will contain the sentence at the offset if the offset
+// is inside a sentence and will contain the sentence before the offset if the
+// offset is not inside a sentence.
+//
+// If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string
+// is from the line start at or before the offset to the line start after the
+// offset.
+//
+// Deprecated: This method is deprecated since ATK version 2.9.4. Please use
+// atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//   - offset: position.
+//   - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//   - startOffset: starting character offset of the returned string.
+//   - endOffset: offset of the first character after the returned substring.
+//   - utf8: newly allocated string containing the text at offset bounded by the
+//     specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) textAtOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_text_at_offset
+
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_text_at_offset(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg3)
+	_endOffset = int(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// textBeforeOffset gets the specified text.
+//
+// Deprecated: Please use atk_text_get_string_at_offset() instead.
+//
+// The function takes the following parameters:
+//
+//   - offset: position.
+//   - boundaryType: TextBoundary.
+//
+// The function returns the following values:
+//
+//   - startOffset: starting character offset of the returned string.
+//   - endOffset: offset of the first character after the returned substring.
+//   - utf8: newly allocated string containing the text before offset bounded by
+//     the specified boundary_type. Use g_free() to free the returned string.
+//
+func (text *Text) textBeforeOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.get_text_before_offset
+
+	var _arg0 *C.AtkText        // out
+	var _arg1 C.gint            // out
+	var _arg2 C.AtkTextBoundary // out
+	var _arg3 C.gint            // in
+	var _arg4 C.gint            // in
+	var _cret *C.gchar          // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+	_arg2 = C.AtkTextBoundary(boundaryType)
+
+	_cret = C._gotk4_atk1_Text_virtual_get_text_before_offset(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(boundaryType)
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _utf8 string     // out
+
+	_startOffset = int(_arg3)
+	_endOffset = int(_arg4)
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _startOffset, _endOffset, _utf8
+}
+
+// removeSelection removes the specified selection.
+//
+// The function takes the following parameters:
+//
+//   - selectionNum: selection number. The selected regions are assigned numbers
+//     that correspond to how far the region is from the start of the text. The
+//     selected region closest to the beginning of the text region is assigned
+//     the number 0, etc. Note that adding, moving or deleting a selected region
+//     can change the numbering.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (text *Text) removeSelection(selectionNum int) bool {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.remove_selection
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
+
+	_cret = C._gotk4_atk1_Text_virtual_remove_selection(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(selectionNum)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// scrollSubstringTo makes a substring of text visible on the screen by
+// scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: start offset in the text.
+//   - endOffset: end offset in the text, or -1 for the end of the text.
+//   - typ: specify where the object should be made visible.
+//
+// The function returns the following values:
+//
+//   - ok: whether scrolling was successful.
+//
+func (text *Text) scrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.scroll_substring_to
+
+	var _arg0 *C.AtkText      // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
+	var _arg3 C.AtkScrollType // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkScrollType(typ)
+
+	_cret = C._gotk4_atk1_Text_virtual_scroll_substring_to(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// scrollSubstringToPoint: move the top-left of a substring of text to a given
+// position of the screen by scrolling all necessary parents.
+//
+// The function takes the following parameters:
+//
+//   - startOffset: start offset in the text.
+//   - endOffset: end offset in the text, or -1 for the end of the text.
+//   - coords: specify whether coordinates are relative to the screen or to the
+//     parent object.
+//   - x: x-position where to scroll to.
+//   - y: y-position where to scroll to.
+//
+// The function returns the following values:
+//
+//   - ok: whether scrolling was successful.
+//
+func (text *Text) scrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.scroll_substring_to_point
+
+	var _arg0 *C.AtkText     // out
+	var _arg1 C.gint         // out
+	var _arg2 C.gint         // out
+	var _arg3 C.AtkCoordType // out
+	var _arg4 C.gint         // out
+	var _arg5 C.gint         // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(startOffset)
+	_arg2 = C.gint(endOffset)
+	_arg3 = C.AtkCoordType(coords)
+	_arg4 = C.gint(x)
+	_arg5 = C.gint(y)
+
+	_cret = C._gotk4_atk1_Text_virtual_scroll_substring_to_point(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+	runtime.KeepAlive(coords)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// setCaretOffset sets the caret (cursor) position to the specified offset.
+//
+// In the case of rich-text content, this method should either grab focus or
+// move the sequential focus navigation starting point (if the application
+// supports this concept) as if the user had clicked on the new caret position.
+// Typically, this means that the target of this operation is the node
+// containing the new caret position or one of its ancestors. In other words,
+// after this method is called, if the user advances focus, it should move to
+// the first focusable node following the new caret position.
+//
+// Calling this method should also scroll the application viewport in a way
+// that matches the behavior of the application's typical caret motion or tab
+// navigation as closely as possible. This also means that if the application's
+// caret motion or focus navigation does not trigger a scroll operation,
+// this method should not trigger one either. If the application does not have a
+// caret motion or focus navigation operation, this method should try to scroll
+// the new caret position into view while minimizing unnecessary scroll motion.
+//
+// The function takes the following parameters:
+//
+//   - offset: character offset of the new caret position.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (text *Text) setCaretOffset(offset int) bool {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.set_caret_offset
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(offset)
+
+	_cret = C._gotk4_atk1_Text_virtual_set_caret_offset(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(offset)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// setSelection changes the start and end offset of the specified selection.
+//
+// The function takes the following parameters:
+//
+//   - selectionNum: selection number. The selected regions are assigned numbers
+//     that correspond to how far the region is from the start of the text. The
+//     selected region closest to the beginning of the text region is assigned
+//     the number 0, etc. Note that adding, moving or deleting a selected region
+//     can change the numbering.
+//   - startOffset: new starting character offset of the selection.
+//   - endOffset: new end position of (e.g. offset immediately past) the
+//     selection.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if successful, FALSE otherwise.
+//
+func (text *Text) setSelection(selectionNum, startOffset, endOffset int) bool {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.set_selection
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+	var _arg3 C.gint     // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(selectionNum)
+	_arg2 = C.gint(startOffset)
+	_arg3 = C.gint(endOffset)
+
+	_cret = C._gotk4_atk1_Text_virtual_set_selection(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(selectionNum)
+	runtime.KeepAlive(startOffset)
+	runtime.KeepAlive(endOffset)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (text *Text) textAttributesChanged() {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.text_attributes_changed
+
+	var _arg0 *C.AtkText // out
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+
+	C._gotk4_atk1_Text_virtual_text_attributes_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(text)
+}
+
+// The function takes the following parameters:
+//
+func (text *Text) textCaretMoved(location int) {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.text_caret_moved
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(location)
+
+	C._gotk4_atk1_Text_virtual_text_caret_moved(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(location)
+}
+
+// The function takes the following parameters:
+//
+//   - position
+//   - length
+//
+func (text *Text) textChanged(position, length int) {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.text_changed
+
+	var _arg0 *C.AtkText // out
+	var _arg1 C.gint     // out
+	var _arg2 C.gint     // out
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+	_arg1 = C.gint(position)
+	_arg2 = C.gint(length)
+
+	C._gotk4_atk1_Text_virtual_text_changed(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(text)
+	runtime.KeepAlive(position)
+	runtime.KeepAlive(length)
+}
+
+func (text *Text) textSelectionChanged() {
+	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
+	fnarg := gclass.text_selection_changed
+
+	var _arg0 *C.AtkText // out
+
+	_arg0 = (*C.AtkText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
+
+	C._gotk4_atk1_Text_virtual_text_selection_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(text)
+}
+
+//export _gotk4_atk1_Text_ConnectTextAttributesChanged
+func _gotk4_atk1_Text_ConnectTextAttributesChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Text_ConnectTextCaretMoved
+func _gotk4_atk1_Text_ConnectTextCaretMoved(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
+	var f func(arg1 int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 int))
+	}
+
+	var _arg1 int // out
+
+	_arg1 = int(arg1)
+
+	f(_arg1)
+}
+
+//export _gotk4_atk1_Text_ConnectTextChanged
+func _gotk4_atk1_Text_ConnectTextChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1, arg2 int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int))
+	}
+
+	var _arg1 int // out
+	var _arg2 int // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
+}
+
+//export _gotk4_atk1_Text_ConnectTextInsert
+func _gotk4_atk1_Text_ConnectTextInsert(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
+	var f func(arg1, arg2 int, arg3 string)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int, arg3 string))
+	}
+
+	var _arg1 int    // out
+	var _arg2 int    // out
+	var _arg3 string // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+	_arg3 = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+
+	f(_arg1, _arg2, _arg3)
+}
+
+//export _gotk4_atk1_Text_ConnectTextRemove
+func _gotk4_atk1_Text_ConnectTextRemove(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 *C.gchar, arg4 C.guintptr) {
+	var f func(arg1, arg2 int, arg3 string)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 int, arg3 string))
+	}
+
+	var _arg1 int    // out
+	var _arg2 int    // out
+	var _arg3 string // out
+
+	_arg1 = int(arg1)
+	_arg2 = int(arg2)
+	_arg3 = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
+
+	f(_arg1, _arg2, _arg3)
+}
+
+//export _gotk4_atk1_Text_ConnectTextSelectionChanged
+func _gotk4_atk1_Text_ConnectTextSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// Value should be implemented for components which either display a value
+// from a bounded range, or which allow the user to specify a value from a
+// bounded range, or both. For instance, most sliders and range controls,
+// as well as dials, should have Object representations which implement Value on
+// the component's behalf. KValues may be read-only, in which case attempts to
+// alter the value return would fail.
+//
+// <refsect1 id="current-value-text"> <title>On the subject of current value
+// text</title> <para> In addition to providing the current value, implementors
+// can optionally provide an end-user-consumable textual description associated
+// with this value. This description should be included when the numeric value
+// fails to convey the full, on-screen representation seen by users. </para>
+//
+// <example> <title>Password strength</title> A password strength meter whose
+// value changes as the user types their new password. Red is used for values
+// less than 4.0, yellow for values between 4.0 and 7.0, and green for values
+// greater than 7.0. In this instance, value text should be provided by the
+// implementor. Appropriate value text would be "weak", "acceptable," and
+// "strong" respectively. </example>
+//
+// A level bar whose value changes to reflect the battery charge. The color
+// remains the same regardless of the charge and there is no on-screen text
+// reflecting the fullness of the battery. In this case, because the position
+// within the bar is the only indication the user has of the current charge,
+// value text should not be provided by the implementor.
+//
+// <refsect2 id="implementor-notes"> <title>Implementor Notes</title> <para>
+// Implementors should bear in mind that assistive technologies will likely
+// prefer the value text provided over the numeric value when presenting a
+// widget's value. As a result, strings not intended for end users should not be
+// exposed in the value text, and strings which are exposed should be localized.
+// In the case of widgets which display value text on screen, for instance
+// through a separate label in close proximity to the value-displaying widget,
+// it is still expected that implementors will expose the value text using the
+// above API. </para>
+//
+// <para> Value should NOT be implemented for widgets whose displayed value
+// is not reflective of a meaningful amount. For instance, a progress pulse
+// indicator whose value alternates between 0.0 and 1.0 to indicate that some
+// process is still taking place should not implement Value because the current
+// value does not reflect progress towards completion. </para> </refsect2>
+// </refsect1>
+//
+// <refsect1 id="ranges"> <title>On the subject of ranges</title> <para> In
+// addition to providing the minimum and maximum values, implementors can
+// optionally provide details about subranges associated with the widget. These
+// details should be provided by the implementor when both of the following are
+// communicated visually to the end user: </para> <itemizedlist> <listitem>The
+// existence of distinct ranges such as "weak", "acceptable", and "strong"
+// indicated by color, bar tick marks, and/or on-screen text.</listitem>
+// <listitem>Where the current value stands within a given subrange,
+// for instance illustrating progression from very "weak" towards nearly
+// "acceptable" through changes in shade and/or position on the bar within the
+// "weak" subrange.</listitem> </itemizedlist> <para> If both of the above do
+// not apply to the widget, it should be sufficient to expose the numeric value,
+// along with the value text if appropriate, to make the widget accessible.
+// </para>
+//
+// <refsect2 id="ranges-implementor-notes"> <title>Implementor Notes</title>
+// <para> If providing subrange details is deemed necessary, all possible values
+// of the widget are expected to fall within one of the subranges defined by the
+// implementor. </para> </refsect2> </refsect1>
+//
+// <refsect1 id="localization"> <title>On the subject of localization of
+// end-user-consumable text values</title> <para> Because value text and
+// subrange descriptors are human-consumable, implementors are expected to
+// provide localized strings which can be directly presented to end users via
+// their assistive technology. In order to simplify this for implementors,
+// implementors can use atk_value_type_get_localized_name() with the following
+// already-localized constants for commonly-needed values can be used: </para>
+//
+// <itemizedlist> <listitem>ATK_VALUE_VERY_WEAK</listitem>
+// <listitem>ATK_VALUE_WEAK</listitem> <listitem>ATK_VALUE_ACCEPTABLE</listitem>
+// <listitem>ATK_VALUE_STRONG</listitem>
+// <listitem>ATK_VALUE_VERY_STRONG</listitem>
+// <listitem>ATK_VALUE_VERY_LOW</listitem> <listitem>ATK_VALUE_LOW</listitem>
+// <listitem>ATK_VALUE_MEDIUM</listitem> <listitem>ATK_VALUE_HIGH</listitem>
+// <listitem>ATK_VALUE_VERY_HIGH</listitem>
+// <listitem>ATK_VALUE_VERY_BAD</listitem>
+// <listitem>ATK_VALUE_BAD</listitem> <listitem>ATK_VALUE_GOOD</listitem>
+// <listitem>ATK_VALUE_VERY_GOOD</listitem> <listitem>ATK_VALUE_BEST</listitem>
+// <listitem>ATK_VALUE_SUBSUBOPTIMAL</listitem>
+// <listitem>ATK_VALUE_SUBOPTIMAL</listitem>
+// <listitem>ATK_VALUE_OPTIMAL</listitem> </itemizedlist> <para> Proposals for
+// additional constants, along with their use cases, should be submitted to the
+// GNOME Accessibility Team. </para> </refsect1>
+//
+// <refsect1 id="changes"> <title>On the subject of changes</title> <para> Note
+// that if there is a textual description associated with the new numeric value,
+// that description should be included regardless of whether or not it has also
+// changed. </para> </refsect1>.
+//
+// Value wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Value struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Value)(nil)
+)
+
+// Valueer describes Value's interface methods.
+type Valueer interface {
+	coreglib.Objector
+
+	// CurrentValue gets the value of this object.
+	CurrentValue() coreglib.Value
+	// Increment gets the minimum increment by which the value of this object
+	// may be changed.
+	Increment() float64
+	// MaximumValue gets the maximum value of this object.
+	MaximumValue() coreglib.Value
+	// MinimumIncrement gets the minimum increment by which the value of this
+	// object may be changed.
+	MinimumIncrement() coreglib.Value
+	// MinimumValue gets the minimum value of this object.
+	MinimumValue() coreglib.Value
+	// Range gets the range of this object.
+	Range() *Range
+	// SubRanges gets the list of subranges defined for this object.
+	SubRanges() []*Range
+	// ValueAndText gets the current value and the human readable text
+	// alternative of obj.
+	ValueAndText() (float64, string)
+	// SetCurrentValue sets the value of this object.
+	SetCurrentValue(value *coreglib.Value) bool
+	// SetValue sets the value of this object.
+	SetValue(newValue float64)
+
+	// Value-changed: 'value-changed' signal is emitted when the current value
+	// that represent the object changes.
+	ConnectValueChanged(func(value float64, text string)) coreglib.SignalHandle
+}
+
+var _ Valueer = (*Value)(nil)
+
+func wrapValue(obj *coreglib.Object) *Value {
+	return &Value{
+		Object: obj,
+	}
+}
+
+func marshalValue(p uintptr) (interface{}, error) {
+	return wrapValue(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectValueChanged: 'value-changed' signal is emitted when the current value
+// that represent the object changes. value is the numerical representation of
+// this new value. text is the human readable text alternative of value, and can
+// be NULL if it is not available. Note that if there is a textual description
+// associated with the new numeric value, that description should be included
+// regardless of whether or not it has also changed.
+//
+// Example: a password meter whose value changes as the user types their new
+// password. Appropiate value text would be "weak", "acceptable" and "strong".
+func (obj *Value) ConnectValueChanged(f func(value float64, text string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(obj, "value-changed", false, unsafe.Pointer(C._gotk4_atk1_Value_ConnectValueChanged), f)
+}
+
+// CurrentValue gets the value of this object.
+//
+// Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
+//
+// The function returns the following values:
+//
+//   - value representing the current accessible value.
+//
+func (obj *Value) CurrentValue() coreglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C.atk_value_get_current_value(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// Increment gets the minimum increment by which the value of this object may be
+// changed. If zero, the minimum increment is undefined, which may mean that it
+// is limited only by the floating point precision of the platform.
+//
+// The function returns the following values:
+//
+//   - gdouble: minimum increment by which the value of this object may be
+//     changed. zero if undefined.
+//
+func (obj *Value) Increment() float64 {
+	var _arg0 *C.AtkValue // out
+	var _cret C.gdouble   // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C.atk_value_get_increment(_arg0)
+	runtime.KeepAlive(obj)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// MaximumValue gets the maximum value of this object.
+//
+// Deprecated: Since 2.12. Use atk_value_get_range() instead.
+//
+// The function returns the following values:
+//
+//   - value representing the maximum accessible value.
+//
+func (obj *Value) MaximumValue() coreglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C.atk_value_get_maximum_value(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// MinimumIncrement gets the minimum increment by which the value of this object
+// may be changed. If zero, the minimum increment is undefined, which may mean
+// that it is limited only by the floating point precision of the platform.
+//
+// Deprecated: Since 2.12. Use atk_value_get_increment() instead.
+//
+// The function returns the following values:
+//
+//   - value representing the minimum increment by which the accessible value
+//     may be changed.
+//
+func (obj *Value) MinimumIncrement() coreglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C.atk_value_get_minimum_increment(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// MinimumValue gets the minimum value of this object.
+//
+// Deprecated: Since 2.12. Use atk_value_get_range() instead.
+//
+// The function returns the following values:
+//
+//   - value representing the minimum accessible value.
+//
+func (obj *Value) MinimumValue() coreglib.Value {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C.atk_value_get_minimum_value(_arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// Range gets the range of this object.
+//
+// The function returns the following values:
+//
+//   - _range (optional): newly allocated Range that represents the minimum,
+//     maximum and descriptor (if available) of obj. NULL if that range is not
+//     defined.
+//
+func (obj *Value) Range() *Range {
+	var _arg0 *C.AtkValue // out
+	var _cret *C.AtkRange // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C.atk_value_get_range(_arg0)
+	runtime.KeepAlive(obj)
+
+	var __range *Range // out
+
+	if _cret != nil {
+		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(__range)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.atk_range_free((*C.AtkRange)(intern.C))
+			},
+		)
+	}
+
+	return __range
+}
+
+// SubRanges gets the list of subranges defined for this object. See Value
+// introduction for examples of subranges and when to expose them.
+//
+// The function returns the following values:
+//
+//   - sList of Range which each of the subranges defined for this object.
+//     Free the returns list with g_slist_free().
+//
+func (obj *Value) SubRanges() []*Range {
+	var _arg0 *C.AtkValue // out
+	var _cret *C.GSList   // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C.atk_value_get_sub_ranges(_arg0)
+	runtime.KeepAlive(obj)
+
+	var _sList []*Range // out
+
+	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.AtkRange)(v)
+		var dst *Range // out
+		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.atk_range_free((*C.AtkRange)(intern.C))
+			},
+		)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// ValueAndText gets the current value and the human readable text alternative
+// of obj. text is a newly created string, that must be freed by the caller.
+// Can be NULL if no descriptor is available.
+//
+// The function returns the following values:
+//
+//   - value address of #gdouble to put the current value of obj.
+//   - text (optional) address of #gchar to put the human readable text
+//     alternative for value.
+//
+func (obj *Value) ValueAndText() (float64, string) {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // in
+	var _arg2 *C.gchar    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C.atk_value_get_value_and_text(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(obj)
+
+	var _value float64 // out
+	var _text string   // out
+
+	_value = float64(_arg1)
+	if _arg2 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	return _value, _text
+}
+
+// SetCurrentValue sets the value of this object.
+//
+// Deprecated: Since 2.12. Use atk_value_set_value() instead.
+//
+// The function takes the following parameters:
+//
+//   - value which is the desired new accessible value.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if new value is successfully set, FALSE otherwise.
+//
+func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
+	var _arg0 *C.AtkValue // out
+	var _arg1 *C.GValue   // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	_cret = C.atk_value_set_current_value(_arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(value)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetValue sets the value of this object.
+//
+// This method is intended to provide a way to change the value of the object.
+// In any case, it is possible that the value can't be modified (ie: a read-only
+// component). If the value changes due this call, it is possible that the text
+// could change, and will trigger an Value::value-changed signal emission.
+//
+// Note for implementors: the deprecated atk_value_set_current_value()
+// method returned TRUE or FALSE depending if the value was assigned or not.
+// In the practice several implementors were not able to decide it, and returned
+// TRUE in any case. For that reason it is not required anymore to return if the
+// value was properly assigned or not.
+//
+// The function takes the following parameters:
+//
+//   - newValue: double which is the desired new accessible value.
+//
+func (obj *Value) SetValue(newValue float64) {
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // out
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = C.gdouble(newValue)
+
+	C.atk_value_set_value(_arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(newValue)
+}
+
+// currentValue gets the value of this object.
+//
+// Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
+//
+// The function returns the following values:
+//
+//   - value representing the current accessible value.
+//
+func (obj *Value) currentValue() coreglib.Value {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_current_value
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C._gotk4_atk1_Value_virtual_get_current_value(unsafe.Pointer(fnarg), _arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// Increment gets the minimum increment by which the value of this object may be
+// changed. If zero, the minimum increment is undefined, which may mean that it
+// is limited only by the floating point precision of the platform.
+//
+// The function returns the following values:
+//
+//   - gdouble: minimum increment by which the value of this object may be
+//     changed. zero if undefined.
+//
+func (obj *Value) increment() float64 {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_increment
+
+	var _arg0 *C.AtkValue // out
+	var _cret C.gdouble   // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C._gotk4_atk1_Value_virtual_get_increment(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(obj)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// maximumValue gets the maximum value of this object.
+//
+// Deprecated: Since 2.12. Use atk_value_get_range() instead.
+//
+// The function returns the following values:
+//
+//   - value representing the maximum accessible value.
+//
+func (obj *Value) maximumValue() coreglib.Value {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_maximum_value
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C._gotk4_atk1_Value_virtual_get_maximum_value(unsafe.Pointer(fnarg), _arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// minimumIncrement gets the minimum increment by which the value of this object
+// may be changed. If zero, the minimum increment is undefined, which may mean
+// that it is limited only by the floating point precision of the platform.
+//
+// Deprecated: Since 2.12. Use atk_value_get_increment() instead.
+//
+// The function returns the following values:
+//
+//   - value representing the minimum increment by which the accessible value
+//     may be changed.
+//
+func (obj *Value) minimumIncrement() coreglib.Value {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_minimum_increment
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C._gotk4_atk1_Value_virtual_get_minimum_increment(unsafe.Pointer(fnarg), _arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// minimumValue gets the minimum value of this object.
+//
+// Deprecated: Since 2.12. Use atk_value_get_range() instead.
+//
+// The function returns the following values:
+//
+//   - value representing the minimum accessible value.
+//
+func (obj *Value) minimumValue() coreglib.Value {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_minimum_value
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.GValue    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C._gotk4_atk1_Value_virtual_get_minimum_value(unsafe.Pointer(fnarg), _arg0, &_arg1)
+	runtime.KeepAlive(obj)
+
+	var _value coreglib.Value // out
+
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
+
+	return _value
+}
+
+// Range gets the range of this object.
+//
+// The function returns the following values:
+//
+//   - _range (optional): newly allocated Range that represents the minimum,
+//     maximum and descriptor (if available) of obj. NULL if that range is not
+//     defined.
+//
+func (obj *Value) _range() *Range {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_range
+
+	var _arg0 *C.AtkValue // out
+	var _cret *C.AtkRange // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C._gotk4_atk1_Value_virtual_get_range(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(obj)
+
+	var __range *Range // out
+
+	if _cret != nil {
+		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(__range)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.atk_range_free((*C.AtkRange)(intern.C))
+			},
+		)
+	}
+
+	return __range
+}
+
+// subRanges gets the list of subranges defined for this object. See Value
+// introduction for examples of subranges and when to expose them.
+//
+// The function returns the following values:
+//
+//   - sList of Range which each of the subranges defined for this object.
+//     Free the returns list with g_slist_free().
+//
+func (obj *Value) subRanges() []*Range {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_sub_ranges
+
+	var _arg0 *C.AtkValue // out
+	var _cret *C.GSList   // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C._gotk4_atk1_Value_virtual_get_sub_ranges(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(obj)
+
+	var _sList []*Range // out
+
+	_sList = make([]*Range, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.AtkRange)(v)
+		var dst *Range // out
+		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(dst)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.atk_range_free((*C.AtkRange)(intern.C))
+			},
+		)
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
+}
+
+// valueAndText gets the current value and the human readable text alternative
+// of obj. text is a newly created string, that must be freed by the caller.
+// Can be NULL if no descriptor is available.
+//
+// The function returns the following values:
+//
+//   - value address of #gdouble to put the current value of obj.
+//   - text (optional) address of #gchar to put the human readable text
+//     alternative for value.
+//
+func (obj *Value) valueAndText() (float64, string) {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_value_and_text
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // in
+	var _arg2 *C.gchar    // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	C._gotk4_atk1_Value_virtual_get_value_and_text(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(obj)
+
+	var _value float64 // out
+	var _text string   // out
+
+	_value = float64(_arg1)
+	if _arg2 != nil {
+		_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+
+	return _value, _text
+}
+
+// setCurrentValue sets the value of this object.
+//
+// Deprecated: Since 2.12. Use atk_value_set_value() instead.
+//
+// The function takes the following parameters:
+//
+//   - value which is the desired new accessible value.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if new value is successfully set, FALSE otherwise.
+//
+func (obj *Value) setCurrentValue(value *coreglib.Value) bool {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.set_current_value
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 *C.GValue   // out
+	var _cret C.gboolean  // in
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	_cret = C._gotk4_atk1_Value_virtual_set_current_value(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(value)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// setValue sets the value of this object.
+//
+// This method is intended to provide a way to change the value of the object.
+// In any case, it is possible that the value can't be modified (ie: a read-only
+// component). If the value changes due this call, it is possible that the text
+// could change, and will trigger an Value::value-changed signal emission.
+//
+// Note for implementors: the deprecated atk_value_set_current_value()
+// method returned TRUE or FALSE depending if the value was assigned or not.
+// In the practice several implementors were not able to decide it, and returned
+// TRUE in any case. For that reason it is not required anymore to return if the
+// value was properly assigned or not.
+//
+// The function takes the following parameters:
+//
+//   - newValue: double which is the desired new accessible value.
+//
+func (obj *Value) setValue(newValue float64) {
+	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.set_value
+
+	var _arg0 *C.AtkValue // out
+	var _arg1 C.gdouble   // out
+
+	_arg0 = (*C.AtkValue)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = C.gdouble(newValue)
+
+	C._gotk4_atk1_Value_virtual_set_value(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(newValue)
+}
+
+//export _gotk4_atk1_Value_ConnectValueChanged
+func _gotk4_atk1_Value_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(value float64, text string)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(value float64, text string))
+	}
+
+	var _value float64 // out
+	var _text string   // out
+
+	_value = float64(arg1)
+	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_value, _text)
+}
+
+// WindowOverrider contains methods that are overridable.
+type WindowOverrider interface {
+}
+
+// Window should be implemented by the UI elements that represent a top-level
+// window, such as the main window of an application or dialog.
+//
+// Window wraps an interface. This means the user can get the
+// underlying type by calling Cast().
+type Window struct {
+	_ [0]func() // equal guard
+	AtkObject
+}
+
+var (
+	_ coreglib.Objector = (*Window)(nil)
+)
+
+// Windower describes Window's interface methods.
+type Windower interface {
+	coreglib.Objector
+
+	baseWindow() *Window
+}
+
+var _ Windower = (*Window)(nil)
+
+func ifaceInitWindower(gifacePtr, data C.gpointer) {
+}
+
+func wrapWindow(obj *coreglib.Object) *Window {
+	return &Window{
+		AtkObject: AtkObject{
+			Object: obj,
+		},
+	}
+}
+
+func marshalWindow(p uintptr) (interface{}, error) {
+	return wrapWindow(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func (v *Window) baseWindow() *Window {
+	return v
+}
+
+// BaseWindow returns the underlying base object.
+func BaseWindow(obj Windower) *Window {
+	return obj.baseWindow()
+}
+
+// ConnectActivate: signal Window::activate is emitted when a window becomes the
+// active window of the application or session.
+func (v *Window) ConnectActivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "activate", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectActivate), f)
+}
+
+// ConnectCreate: signal Window::create is emitted when a new window is created.
+func (v *Window) ConnectCreate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "create", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectCreate), f)
+}
+
+// ConnectDeactivate: signal Window::deactivate is emitted when a window is no
+// longer the active window of the application or session.
+func (v *Window) ConnectDeactivate(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "deactivate", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectDeactivate), f)
+}
+
+// ConnectDestroy: signal Window::destroy is emitted when a window is destroyed.
+func (v *Window) ConnectDestroy(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "destroy", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectDestroy), f)
+}
+
+// ConnectMaximize: signal Window::maximize is emitted when a window is
+// maximized.
+func (v *Window) ConnectMaximize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "maximize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMaximize), f)
+}
+
+// ConnectMinimize: signal Window::minimize is emitted when a window is
+// minimized.
+func (v *Window) ConnectMinimize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "minimize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMinimize), f)
+}
+
+// ConnectMove: signal Window::move is emitted when a window is moved.
+func (v *Window) ConnectMove(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "move", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectMove), f)
+}
+
+// ConnectResize: signal Window::resize is emitted when a window is resized.
+func (v *Window) ConnectResize(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "resize", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectResize), f)
+}
+
+// ConnectRestore: signal Window::restore is emitted when a window is restored.
+func (v *Window) ConnectRestore(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(v, "restore", false, unsafe.Pointer(C._gotk4_atk1_Window_ConnectRestore), f)
+}
+
+//export _gotk4_atk1_Window_ConnectActivate
+func _gotk4_atk1_Window_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Window_ConnectCreate
+func _gotk4_atk1_Window_ConnectCreate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Window_ConnectDeactivate
+func _gotk4_atk1_Window_ConnectDeactivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Window_ConnectDestroy
+func _gotk4_atk1_Window_ConnectDestroy(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Window_ConnectMaximize
+func _gotk4_atk1_Window_ConnectMaximize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Window_ConnectMinimize
+func _gotk4_atk1_Window_ConnectMinimize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Window_ConnectMove
+func _gotk4_atk1_Window_ConnectMove(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Window_ConnectResize
+func _gotk4_atk1_Window_ConnectResize(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_atk1_Window_ConnectRestore
+func _gotk4_atk1_Window_ConnectRestore(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// GObjectAccessibleOverrides contains methods that are overridable.
+type GObjectAccessibleOverrides struct {
+}
+
+func defaultGObjectAccessibleOverrides(v *GObjectAccessible) GObjectAccessibleOverrides {
+	return GObjectAccessibleOverrides{}
+}
+
+// GObjectAccessible: this object class is derived from AtkObject. It can be
+// used as a basis for implementing accessible objects for GObjects which
+// are not derived from GtkWidget. One example of its use is in providing an
+// accessible object for GnomeCanvasItem in the GAIL library.
+type GObjectAccessible struct {
+	_ [0]func() // equal guard
+	AtkObject
+}
+
+var (
+	_ coreglib.Objector = (*GObjectAccessible)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*GObjectAccessible, *GObjectAccessibleClass, GObjectAccessibleOverrides](
+		GTypeGObjectAccessible,
+		initGObjectAccessibleClass,
+		wrapGObjectAccessible,
+		defaultGObjectAccessibleOverrides,
+	)
+}
+
+func initGObjectAccessibleClass(gclass unsafe.Pointer, overrides GObjectAccessibleOverrides, classInitFunc func(*GObjectAccessibleClass)) {
+	if classInitFunc != nil {
+		class := (*GObjectAccessibleClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapGObjectAccessible(obj *coreglib.Object) *GObjectAccessible {
+	return &GObjectAccessible{
+		AtkObject: AtkObject{
+			Object: obj,
+		},
+	}
+}
+
+func marshalGObjectAccessible(p uintptr) (interface{}, error) {
+	return wrapGObjectAccessible(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Object gets the GObject for which obj is the accessible object.
+//
+// The function returns the following values:
+//
+//   - object which is the object for which obj is the accessible object.
+//
+func (obj *GObjectAccessible) Object() *coreglib.Object {
+	var _arg0 *C.AtkGObjectAccessible // out
+	var _cret *C.GObject              // in
+
+	_arg0 = (*C.AtkGObjectAccessible)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C.atk_gobject_accessible_get_object(_arg0)
+	runtime.KeepAlive(obj)
+
+	var _object *coreglib.Object // out
+
+	_object = coreglib.Take(unsafe.Pointer(_cret))
+
+	return _object
+}
+
+// GObjectAccessibleForObject gets the accessible object for the specified obj.
+//
+// The function takes the following parameters:
+//
+//   - obj: #GObject.
+//
+// The function returns the following values:
+//
+//   - object which is the accessible object for the obj.
+//
+func GObjectAccessibleForObject(obj *coreglib.Object) *AtkObject {
+	var _arg1 *C.GObject   // out
+	var _cret *C.AtkObject // in
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+
+	_cret = C.atk_gobject_accessible_for_object(_arg1)
+	runtime.KeepAlive(obj)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// HyperlinkOverrides contains methods that are overridable.
+type HyperlinkOverrides struct {
+	// EndIndex gets the index with the hypertext document at which this link
+	// ends.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: index with the hypertext document at which this link ends.
+	//
+	EndIndex func() int
+	// NAnchors gets the number of anchors associated with this hyperlink.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: number of anchors associated with this hyperlink.
+	//
+	NAnchors func() int
+	// GetObject returns the item associated with this hyperlinks nth anchor.
+	// For instance, the returned Object will implement Text if link_ is a text
+	// hyperlink, Image if link_ is an image hyperlink etc.
+	//
+	// Multiple anchors are primarily used by client-side image maps.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: (zero-index) integer specifying the desired anchor.
+	//
+	// The function returns the following values:
+	//
+	//   - object associated with this hyperlinks i-th anchor.
+	//
+	GetObject func(i int) *AtkObject
+	// StartIndex gets the index with the hypertext document at which this link
+	// begins.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: index with the hypertext document at which this link begins.
+	//
+	StartIndex func() int
+	// URI: get a the URI associated with the anchor specified by i of link_.
+	//
+	// Multiple anchors are primarily used by client-side image maps.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: (zero-index) integer specifying the desired anchor.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: string specifying the URI.
+	//
+	URI func(i int) string
+	// IsSelectedLink determines whether this AtkHyperlink is selected
+	//
+	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+	// ATK_STATE_FOCUSED for focused links.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: true if the AtkHyperlink is selected, False otherwise.
+	//
+	IsSelectedLink func() bool
+	// IsValid: since the document that a link is associated with may have
+	// changed this method returns TRUE if the link is still valid (with respect
+	// to the document it references) and FALSE otherwise.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether or not this link is still valid.
+	//
+	IsValid       func() bool
+	LinkActivated func()
+	// The function returns the following values:
+	//
+	LinkState func() uint
+}
+
+func defaultHyperlinkOverrides(v *Hyperlink) HyperlinkOverrides {
+	return HyperlinkOverrides{
+		EndIndex:       v.endIndex,
+		NAnchors:       v.nAnchors,
+		GetObject:      v.getObject,
+		StartIndex:     v.startIndex,
+		URI:            v.urI,
+		IsSelectedLink: v.isSelectedLink,
+		IsValid:        v.isValid,
+		LinkActivated:  v.linkActivated,
+		LinkState:      v.linkState,
+	}
+}
+
+// Hyperlink: ATK object which encapsulates a link or set of links (for
+// instance in the case of client-side image maps) in a hypertext document.
+// It may implement the AtkAction interface. AtkHyperlink may also be used to
+// refer to inline embedded content, since it allows specification of a start
+// and end offset within the host AtkHypertext object.
+type Hyperlink struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+
+	Action
+}
+
+var (
+	_ coreglib.Objector = (*Hyperlink)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*Hyperlink, *HyperlinkClass, HyperlinkOverrides](
+		GTypeHyperlink,
+		initHyperlinkClass,
+		wrapHyperlink,
+		defaultHyperlinkOverrides,
+	)
+}
+
+func initHyperlinkClass(gclass unsafe.Pointer, overrides HyperlinkOverrides, classInitFunc func(*HyperlinkClass)) {
+	pclass := (*C.AtkHyperlinkClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeHyperlink))))
+
+	if overrides.EndIndex != nil {
+		pclass.get_end_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_end_index)
+	}
+
+	if overrides.NAnchors != nil {
+		pclass.get_n_anchors = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_n_anchors)
+	}
+
+	if overrides.GetObject != nil {
+		pclass.get_object = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_object)
+	}
+
+	if overrides.StartIndex != nil {
+		pclass.get_start_index = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_start_index)
+	}
+
+	if overrides.URI != nil {
+		pclass.get_uri = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_get_uri)
+	}
+
+	if overrides.IsSelectedLink != nil {
+		pclass.is_selected_link = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_is_selected_link)
+	}
+
+	if overrides.IsValid != nil {
+		pclass.is_valid = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_is_valid)
+	}
+
+	if overrides.LinkActivated != nil {
+		pclass.link_activated = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_activated)
+	}
+
+	if overrides.LinkState != nil {
+		pclass.link_state = (*[0]byte)(C._gotk4_atk1_HyperlinkClass_link_state)
+	}
+
+	if classInitFunc != nil {
+		class := (*HyperlinkClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapHyperlink(obj *coreglib.Object) *Hyperlink {
+	return &Hyperlink{
+		Object: obj,
+		Action: Action{
+			Object: obj,
+		},
+	}
+}
+
+func marshalHyperlink(p uintptr) (interface{}, error) {
+	return wrapHyperlink(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectLinkActivated: signal link-activated is emitted when a link is
+// activated.
+func (link_ *Hyperlink) ConnectLinkActivated(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(link_, "link-activated", false, unsafe.Pointer(C._gotk4_atk1_Hyperlink_ConnectLinkActivated), f)
+}
+
+// EndIndex gets the index with the hypertext document at which this link ends.
+//
+// The function returns the following values:
+//
+//   - gint: index with the hypertext document at which this link ends.
+//
+func (link_ *Hyperlink) EndIndex() int {
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C.atk_hyperlink_get_end_index(_arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// NAnchors gets the number of anchors associated with this hyperlink.
+//
+// The function returns the following values:
+//
+//   - gint: number of anchors associated with this hyperlink.
+//
+func (link_ *Hyperlink) NAnchors() int {
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C.atk_hyperlink_get_n_anchors(_arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// GetObject returns the item associated with this hyperlinks nth anchor.
+// For instance, the returned Object will implement Text if link_ is a text
+// hyperlink, Image if link_ is an image hyperlink etc.
+//
+// Multiple anchors are primarily used by client-side image maps.
+//
+// The function takes the following parameters:
+//
+//   - i: (zero-index) integer specifying the desired anchor.
+//
+// The function returns the following values:
+//
+//   - object associated with this hyperlinks i-th anchor.
+//
+func (link_ *Hyperlink) GetObject(i int) *AtkObject {
+	var _arg0 *C.AtkHyperlink // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_hyperlink_get_object(_arg0, _arg1)
+	runtime.KeepAlive(link_)
+	runtime.KeepAlive(i)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// StartIndex gets the index with the hypertext document at which this link
+// begins.
+//
+// The function returns the following values:
+//
+//   - gint: index with the hypertext document at which this link begins.
+//
+func (link_ *Hyperlink) StartIndex() int {
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C.atk_hyperlink_get_start_index(_arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// URI: get a the URI associated with the anchor specified by i of link_.
+//
+// Multiple anchors are primarily used by client-side image maps.
+//
+// The function takes the following parameters:
+//
+//   - i: (zero-index) integer specifying the desired anchor.
+//
+// The function returns the following values:
+//
+//   - utf8: string specifying the URI.
+//
+func (link_ *Hyperlink) URI(i int) string {
+	var _arg0 *C.AtkHyperlink // out
+	var _arg1 C.gint          // out
+	var _cret *C.gchar        // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_hyperlink_get_uri(_arg0, _arg1)
+	runtime.KeepAlive(link_)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// IsInline indicates whether the link currently displays some or all of its
+// content inline. Ordinary HTML links will usually return FALSE, but an inline
+// &lt;src&gt; HTML element will return TRUE.
+//
+// The function returns the following values:
+//
+//   - ok: whether or not this link displays its content inline.
+//
+func (link_ *Hyperlink) IsInline() bool {
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C.atk_hyperlink_is_inline(_arg0)
+	runtime.KeepAlive(link_)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsSelectedLink determines whether this AtkHyperlink is selected
+//
+// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+// ATK_STATE_FOCUSED for focused links.
+//
+// The function returns the following values:
+//
+//   - ok: true if the AtkHyperlink is selected, False otherwise.
+//
+func (link_ *Hyperlink) IsSelectedLink() bool {
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C.atk_hyperlink_is_selected_link(_arg0)
+	runtime.KeepAlive(link_)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsValid: since the document that a link is associated with may have changed
+// this method returns TRUE if the link is still valid (with respect to the
+// document it references) and FALSE otherwise.
+//
+// The function returns the following values:
+//
+//   - ok: whether or not this link is still valid.
+//
+func (link_ *Hyperlink) IsValid() bool {
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C.atk_hyperlink_is_valid(_arg0)
+	runtime.KeepAlive(link_)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// endIndex gets the index with the hypertext document at which this link ends.
+//
+// The function returns the following values:
+//
+//   - gint: index with the hypertext document at which this link ends.
+//
+func (link_ *Hyperlink) endIndex() int {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_end_index
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_end_index(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// nAnchors gets the number of anchors associated with this hyperlink.
+//
+// The function returns the following values:
+//
+//   - gint: number of anchors associated with this hyperlink.
+//
+func (link_ *Hyperlink) nAnchors() int {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_n_anchors
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_n_anchors(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// getObject returns the item associated with this hyperlinks nth anchor.
+// For instance, the returned Object will implement Text if link_ is a text
+// hyperlink, Image if link_ is an image hyperlink etc.
+//
+// Multiple anchors are primarily used by client-side image maps.
+//
+// The function takes the following parameters:
+//
+//   - i: (zero-index) integer specifying the desired anchor.
+//
+// The function returns the following values:
+//
+//   - object associated with this hyperlinks i-th anchor.
+//
+func (link_ *Hyperlink) getObject(i int) *AtkObject {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_object
+
+	var _arg0 *C.AtkHyperlink // out
+	var _arg1 C.gint          // out
+	var _cret *C.AtkObject    // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_object(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(link_)
+	runtime.KeepAlive(i)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// startIndex gets the index with the hypertext document at which this link
+// begins.
+//
+// The function returns the following values:
+//
+//   - gint: index with the hypertext document at which this link begins.
+//
+func (link_ *Hyperlink) startIndex() int {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_start_index
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gint          // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_start_index(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// urI: get a the URI associated with the anchor specified by i of link_.
+//
+// Multiple anchors are primarily used by client-side image maps.
+//
+// The function takes the following parameters:
+//
+//   - i: (zero-index) integer specifying the desired anchor.
+//
+// The function returns the following values:
+//
+//   - utf8: string specifying the URI.
+//
+func (link_ *Hyperlink) urI(i int) string {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.get_uri
+
+	var _arg0 *C.AtkHyperlink // out
+	var _arg1 C.gint          // out
+	var _cret *C.gchar        // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_get_uri(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(link_)
+	runtime.KeepAlive(i)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// isSelectedLink determines whether this AtkHyperlink is selected
+//
+// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
+// ATK_STATE_FOCUSED for focused links.
+//
+// The function returns the following values:
+//
+//   - ok: true if the AtkHyperlink is selected, False otherwise.
+//
+func (link_ *Hyperlink) isSelectedLink() bool {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.is_selected_link
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_is_selected_link(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// isValid: since the document that a link is associated with may have changed
+// this method returns TRUE if the link is still valid (with respect to the
+// document it references) and FALSE otherwise.
+//
+// The function returns the following values:
+//
+//   - ok: whether or not this link is still valid.
+//
+func (link_ *Hyperlink) isValid() bool {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.is_valid
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_is_valid(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+func (link_ *Hyperlink) linkActivated() {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.link_activated
+
+	var _arg0 *C.AtkHyperlink // out
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	C._gotk4_atk1_Hyperlink_virtual_link_activated(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+}
+
+// The function returns the following values:
+//
+func (link_ *Hyperlink) linkState() uint {
+	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
+	fnarg := gclass.link_state
+
+	var _arg0 *C.AtkHyperlink // out
+	var _cret C.guint         // in
+
+	_arg0 = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(link_).Native()))
+
+	_cret = C._gotk4_atk1_Hyperlink_virtual_link_state(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(link_)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_end_index
+func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.EndIndex == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.EndIndex, got none")
+	}
+
+	gint := overrides.EndIndex()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_n_anchors
+func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.NAnchors == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.NAnchors, got none")
+	}
+
+	gint := overrides.NAnchors()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_object
+func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.GetObject == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.GetObject, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	object := overrides.GetObject(_i)
+
+	var _ *AtkObject
+
+	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_start_index
+func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.StartIndex == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.StartIndex, got none")
+	}
+
+	gint := overrides.StartIndex()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_get_uri
+func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.URI == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.URI, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := overrides.URI(_i)
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_is_selected_link
+func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.IsSelectedLink == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.IsSelectedLink, got none")
+	}
+
+	ok := overrides.IsSelectedLink()
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_is_valid
+func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.IsValid == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.IsValid, got none")
+	}
+
+	ok := overrides.IsValid()
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_HyperlinkClass_link_activated
+func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.LinkActivated == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.LinkActivated, got none")
+	}
+
+	overrides.LinkActivated()
+}
+
+//export _gotk4_atk1_HyperlinkClass_link_state
+func _gotk4_atk1_HyperlinkClass_link_state(arg0 *C.AtkHyperlink) (cret C.guint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	if overrides.LinkState == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.LinkState, got none")
+	}
+
+	guint := overrides.LinkState()
+
+	var _ uint
+
+	cret = C.guint(guint)
+
+	return cret
+}
+
+//export _gotk4_atk1_Hyperlink_ConnectLinkActivated
+func _gotk4_atk1_Hyperlink_ConnectLinkActivated(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// MiscOverrides contains methods that are overridable.
+type MiscOverrides struct {
+	// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists.
+	// (This method is implemented by the toolkit ATK implementation layer;
+	// for instance, for GTK+, GAIL implements this via GDK_THREADS_ENTER).
+	//
+	// Deprecated: Since 2.12.
+	ThreadsEnter func()
+	// ThreadsLeave: release the thread mutex for the GUI toolkit,
+	// if one exists. This method, and atk_misc_threads_enter, are needed
+	// in some situations by threaded application code which services ATK
+	// requests, since fulfilling ATK requests often requires calling
+	// into the GUI toolkit. If a long-running or potentially blocking
+	// call takes place inside such a block, it should be bracketed by
+	// atk_misc_threads_leave/atk_misc_threads_enter calls. (This method is
+	// implemented by the toolkit ATK implementation layer; for instance,
+	// for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
+	//
+	// Deprecated: Since 2.12.
+	ThreadsLeave func()
+}
+
+func defaultMiscOverrides(v *Misc) MiscOverrides {
+	return MiscOverrides{
+		ThreadsEnter: v.threadsEnter,
+		ThreadsLeave: v.threadsLeave,
+	}
+}
+
+// Misc: set of utility functions for thread locking. This interface and all his
+// related methods are deprecated since 2.12.
+type Misc struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Misc)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*Misc, *MiscClass, MiscOverrides](
+		GTypeMisc,
+		initMiscClass,
+		wrapMisc,
+		defaultMiscOverrides,
+	)
+}
+
+func initMiscClass(gclass unsafe.Pointer, overrides MiscOverrides, classInitFunc func(*MiscClass)) {
+	pclass := (*C.AtkMiscClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeMisc))))
+
+	if overrides.ThreadsEnter != nil {
+		pclass.threads_enter = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_enter)
+	}
+
+	if overrides.ThreadsLeave != nil {
+		pclass.threads_leave = (*[0]byte)(C._gotk4_atk1_MiscClass_threads_leave)
+	}
+
+	if classInitFunc != nil {
+		class := (*MiscClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapMisc(obj *coreglib.Object) *Misc {
+	return &Misc{
+		Object: obj,
+	}
+}
+
+func marshalMisc(p uintptr) (interface{}, error) {
+	return wrapMisc(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ThreadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_ENTER).
+//
+// Deprecated: Since 2.12.
+func (misc *Misc) ThreadsEnter() {
+	var _arg0 *C.AtkMisc // out
+
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	C.atk_misc_threads_enter(_arg0)
+	runtime.KeepAlive(misc)
+}
+
+// ThreadsLeave: release the thread mutex for the GUI toolkit, if one exists.
+// This method, and atk_misc_threads_enter, are needed in some situations by
+// threaded application code which services ATK requests, since fulfilling ATK
+// requests often requires calling into the GUI toolkit. If a long-running
+// or potentially blocking call takes place inside such a block, it should
+// be bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
+//
+// Deprecated: Since 2.12.
+func (misc *Misc) ThreadsLeave() {
+	var _arg0 *C.AtkMisc // out
+
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	C.atk_misc_threads_leave(_arg0)
+	runtime.KeepAlive(misc)
+}
+
+// threadsEnter: take the thread mutex for the GUI toolkit, if one exists. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_ENTER).
+//
+// Deprecated: Since 2.12.
+func (misc *Misc) threadsEnter() {
+	gclass := (*C.AtkMiscClass)(coreglib.PeekParentClass(misc))
+	fnarg := gclass.threads_enter
+
+	var _arg0 *C.AtkMisc // out
+
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	C._gotk4_atk1_Misc_virtual_threads_enter(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(misc)
+}
+
+// threadsLeave: release the thread mutex for the GUI toolkit, if one exists.
+// This method, and atk_misc_threads_enter, are needed in some situations by
+// threaded application code which services ATK requests, since fulfilling ATK
+// requests often requires calling into the GUI toolkit. If a long-running
+// or potentially blocking call takes place inside such a block, it should
+// be bracketed by atk_misc_threads_leave/atk_misc_threads_enter calls. (This
+// method is implemented by the toolkit ATK implementation layer; for instance,
+// for GTK+, GAIL implements this via GDK_THREADS_LEAVE).
+//
+// Deprecated: Since 2.12.
+func (misc *Misc) threadsLeave() {
+	gclass := (*C.AtkMiscClass)(coreglib.PeekParentClass(misc))
+	fnarg := gclass.threads_leave
+
+	var _arg0 *C.AtkMisc // out
+
+	_arg0 = (*C.AtkMisc)(unsafe.Pointer(coreglib.InternObject(misc).Native()))
+
+	C._gotk4_atk1_Misc_virtual_threads_leave(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(misc)
+}
+
+//export _gotk4_atk1_MiscClass_threads_enter
+func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[MiscOverrides](instance0)
+	if overrides.ThreadsEnter == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MiscOverrides.ThreadsEnter, got none")
+	}
+
+	overrides.ThreadsEnter()
+}
+
+//export _gotk4_atk1_MiscClass_threads_leave
+func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.AtkMisc) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[MiscOverrides](instance0)
+	if overrides.ThreadsLeave == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MiscOverrides.ThreadsLeave, got none")
+	}
+
+	overrides.ThreadsLeave()
+}
+
+// MiscGetInstance: obtain the singleton instance of AtkMisc for this
+// application.
+//
+// Deprecated: Since 2.12.
+//
+// The function returns the following values:
+//
+//   - misc: singleton instance of AtkMisc for this application.
+//
+func MiscGetInstance() *Misc {
+	var _cret *C.AtkMisc // in
+
+	_cret = C.atk_misc_get_instance()
+
+	var _misc *Misc // out
+
+	_misc = wrapMisc(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _misc
+}
+
+// NoOpObjectOverrides contains methods that are overridable.
+type NoOpObjectOverrides struct {
+}
+
+func defaultNoOpObjectOverrides(v *NoOpObject) NoOpObjectOverrides {
+	return NoOpObjectOverrides{}
+}
+
+// NoOpObject is an AtkObject which purports to implement all ATK interfaces.
+// It is the type of AtkObject which is created if an accessible object is
+// requested for an object type for which no factory type is specified.
+type NoOpObject struct {
+	_ [0]func() // equal guard
+	AtkObject
+
+	*coreglib.Object
+	Action
+	Component
+	Document
+	EditableText
+	Hypertext
+	Image
+	Selection
+	Table
+	TableCell
+	Text
+	Value
+	Window
+}
+
+var (
+	_ coreglib.Objector = (*NoOpObject)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*NoOpObject, *NoOpObjectClass, NoOpObjectOverrides](
+		GTypeNoOpObject,
+		initNoOpObjectClass,
+		wrapNoOpObject,
+		defaultNoOpObjectOverrides,
+	)
+}
+
+func initNoOpObjectClass(gclass unsafe.Pointer, overrides NoOpObjectOverrides, classInitFunc func(*NoOpObjectClass)) {
+	if classInitFunc != nil {
+		class := (*NoOpObjectClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapNoOpObject(obj *coreglib.Object) *NoOpObject {
+	return &NoOpObject{
+		AtkObject: AtkObject{
+			Object: obj,
+		},
+		Object: obj,
+		Action: Action{
+			Object: obj,
+		},
+		Component: Component{
+			Object: obj,
+		},
+		Document: Document{
+			Object: obj,
+		},
+		EditableText: EditableText{
+			Object: obj,
+		},
+		Hypertext: Hypertext{
+			Object: obj,
+		},
+		Image: Image{
+			Object: obj,
+		},
+		Selection: Selection{
+			Object: obj,
+		},
+		Table: Table{
+			Object: obj,
+		},
+		TableCell: TableCell{
+			AtkObject: AtkObject{
+				Object: obj,
+			},
+		},
+		Text: Text{
+			Object: obj,
+		},
+		Value: Value{
+			Object: obj,
+		},
+		Window: Window{
+			AtkObject: AtkObject{
+				Object: obj,
+			},
+		},
+	}
+}
+
+func marshalNoOpObject(p uintptr) (interface{}, error) {
+	return wrapNoOpObject(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewNoOpObject provides a default (non-functioning stub) Object. Application
+// maintainers should not use this method.
+//
+// The function takes the following parameters:
+//
+//   - obj: #GObject.
+//
+// The function returns the following values:
+//
+//   - noOpObject: default (non-functioning stub) Object.
+//
+func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
+	var _arg1 *C.GObject   // out
+	var _cret *C.AtkObject // in
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+
+	_cret = C.atk_no_op_object_new(_arg1)
+	runtime.KeepAlive(obj)
+
+	var _noOpObject *NoOpObject // out
+
+	_noOpObject = wrapNoOpObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _noOpObject
+}
+
+// NoOpObjectFactoryOverrides contains methods that are overridable.
+type NoOpObjectFactoryOverrides struct {
+}
+
+func defaultNoOpObjectFactoryOverrides(v *NoOpObjectFactory) NoOpObjectFactoryOverrides {
+	return NoOpObjectFactoryOverrides{}
+}
+
+// NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject.
+// An instance of this is created by an AtkRegistry if no factory type has not
+// been specified to create an accessible object of a particular type.
+type NoOpObjectFactory struct {
+	_ [0]func() // equal guard
+	ObjectFactory
+}
+
+var (
+	_ coreglib.Objector = (*NoOpObjectFactory)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*NoOpObjectFactory, *NoOpObjectFactoryClass, NoOpObjectFactoryOverrides](
+		GTypeNoOpObjectFactory,
+		initNoOpObjectFactoryClass,
+		wrapNoOpObjectFactory,
+		defaultNoOpObjectFactoryOverrides,
+	)
+}
+
+func initNoOpObjectFactoryClass(gclass unsafe.Pointer, overrides NoOpObjectFactoryOverrides, classInitFunc func(*NoOpObjectFactoryClass)) {
+	if classInitFunc != nil {
+		class := (*NoOpObjectFactoryClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapNoOpObjectFactory(obj *coreglib.Object) *NoOpObjectFactory {
+	return &NoOpObjectFactory{
+		ObjectFactory: ObjectFactory{
+			Object: obj,
+		},
+	}
+}
+
+func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
+	return wrapNoOpObjectFactory(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewNoOpObjectFactory creates an instance of an ObjectFactory which generates
+// primitive (non-functioning) Objects.
+//
+// The function returns the following values:
+//
+//   - noOpObjectFactory: instance of an ObjectFactory.
+//
+func NewNoOpObjectFactory() *NoOpObjectFactory {
+	var _cret *C.AtkObjectFactory // in
+
+	_cret = C.atk_no_op_object_factory_new()
+
+	var _noOpObjectFactory *NoOpObjectFactory // out
+
+	_noOpObjectFactory = wrapNoOpObjectFactory(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _noOpObjectFactory
+}
+
+// AtkObjectOverrides contains methods that are overridable.
+type AtkObjectOverrides struct {
+	// The function takes the following parameters:
+	//
+	ActiveDescendantChanged func(child *unsafe.Pointer)
+	// The function takes the following parameters:
+	//
+	//   - changeIndex
+	//   - changedChild (optional)
+	//
+	ChildrenChanged func(changeIndex uint, changedChild unsafe.Pointer)
+	// The function takes the following parameters:
+	//
+	FocusEvent func(focusIn bool)
+	// Description gets the accessible description of the accessible.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: character string representing the accessible description of the
+	//     accessible.
+	//
+	Description func() string
+	// IndexInParent gets the 0-based index of this accessible in its parent;
+	// returns -1 if the accessible does not have an accessible parent.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: integer which is the index of the accessible in its parent.
+	//
+	IndexInParent func() int
+	// Layer gets the layer of the accessible.
+	//
+	// Deprecated: Use atk_component_get_layer instead.
+	//
+	// The function returns the following values:
+	//
+	//   - layer which is the layer of the accessible.
+	//
+	Layer func() Layer
+	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
+	// returned if the layer of the accessible is not ATK_LAYER_MDI.
+	//
+	// Deprecated: Use atk_component_get_mdi_zorder instead.
+	//
+	// The function returns the following values:
+	//
+	//   - gint which is the zorder of the accessible, i.e. the depth at which
+	//     the component is shown in relation to other components in the same
+	//     container.
+	//
+	MDIZOrder func() int
+	// The function returns the following values:
+	//
+	NChildren func() int
+	// Name gets the accessible name of the accessible.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: character string representing the accessible name of the
+	//     object.
+	//
+	Name func() string
+	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+	// locale of accessible.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+	//     accessible.
+	//
+	ObjectLocale func() string
+	// Parent gets the accessible parent of the accessible. By default this is
+	// the one assigned with atk_object_set_parent(), but it is assumed that ATK
+	// implementors have ways to get the parent of the object without the need
+	// of assigning it manually with atk_object_set_parent(), and will return it
+	// with this method.
+	//
+	// If you are only interested on the parent assigned with
+	// atk_object_set_parent(), use atk_object_peek_parent().
+	//
+	// The function returns the following values:
+	//
+	//   - object representing the accessible parent of the accessible.
+	//
+	Parent func() *AtkObject
+	// Role gets the role of the accessible.
+	//
+	// The function returns the following values:
+	//
+	//   - role which is the role of the accessible.
+	//
+	Role func() Role
+	// Initialize: this function is called when implementing subclasses of
+	// Object. It does initialization required for the new object. It is
+	// intended that this function should called only in the ..._new() functions
+	// used to create an instance of a subclass of Object.
+	//
+	// The function takes the following parameters:
+	//
+	//   - data (optional) which identifies the object for which the AtkObject
+	//     was created.
+	//
+	Initialize func(data unsafe.Pointer)
+	// The function takes the following parameters:
+	//
+	PropertyChange func(values *PropertyValues)
+	// RefRelationSet gets the RelationSet associated with the object.
+	//
+	// The function returns the following values:
+	//
+	//   - relationSet representing the relation set of the object.
+	//
+	RefRelationSet func() *RelationSet
+	// RefStateSet gets a reference to the state set of the accessible;
+	// the caller must unreference it when it is no longer needed.
+	//
+	// The function returns the following values:
+	//
+	//   - stateSet: reference to an StateSet which is the state set of the
+	//     accessible.
+	//
+	RefStateSet func() *StateSet
+	// RemovePropertyChangeHandler removes a property change handler.
+	//
+	// Deprecated: See atk_object_connect_property_change_handler().
+	//
+	// The function takes the following parameters:
+	//
+	//   - handlerId: guint which identifies the handler to be removed.
+	//
+	RemovePropertyChangeHandler func(handlerId uint)
+	// SetDescription sets the accessible description of the accessible.
+	// You can't set the description to NULL. This is reserved for the initial
+	// value. In this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to
+	// set the name to a empty value you can use "".
+	//
+	// The function takes the following parameters:
+	//
+	//   - description: character string to be set as the accessible
+	//     description.
+	//
+	SetDescription func(description string)
+	// SetName sets the accessible name of the accessible. You can't set the
+	// name to NULL. This is reserved for the initial value. In this aspect NULL
+	// is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a empty
+	// value you can use "".
+	//
+	// The function takes the following parameters:
+	//
+	//   - name: character string to be set as the accessible name.
+	//
+	SetName func(name string)
+	// SetParent sets the accessible parent of the accessible. parent can be
+	// NULL.
+	//
+	// The function takes the following parameters:
+	//
+	//   - parent to be set as the accessible parent.
+	//
+	SetParent func(parent *AtkObject)
+	// SetRole sets the role of the accessible.
+	//
+	// The function takes the following parameters:
+	//
+	//   - role to be set as the role.
+	//
+	SetRole func(role Role)
+	// The function takes the following parameters:
+	//
+	//   - name
+	//   - stateSet
+	//
+	StateChange        func(name string, stateSet bool)
+	VisibleDataChanged func()
+}
+
+func defaultAtkObjectOverrides(v *AtkObject) AtkObjectOverrides {
+	return AtkObjectOverrides{
+		ActiveDescendantChanged:     v.activeDescendantChanged,
+		ChildrenChanged:             v.childrenChanged,
+		FocusEvent:                  v.focusEvent,
+		Description:                 v.description,
+		IndexInParent:               v.indexInParent,
+		Layer:                       v.layer,
+		MDIZOrder:                   v.mdizOrder,
+		NChildren:                   v.nChildren,
+		Name:                        v.name,
+		ObjectLocale:                v.objectLocale,
+		Parent:                      v.parent,
+		Role:                        v.role,
+		Initialize:                  v.initialize,
+		PropertyChange:              v.propertyChange,
+		RefRelationSet:              v.refRelationSet,
+		RefStateSet:                 v.refStateSet,
+		RemovePropertyChangeHandler: v.removePropertyChangeHandler,
+		SetDescription:              v.setDescription,
+		SetName:                     v.setName,
+		SetParent:                   v.setParent,
+		SetRole:                     v.setRole,
+		StateChange:                 v.stateChange,
+		VisibleDataChanged:          v.visibleDataChanged,
+	}
+}
+
+// AtkObject: this class is the primary class for accessibility support via
+// the Accessibility ToolKit (ATK). Objects which are instances of Object (or
+// instances of AtkObject-derived types) are queried for properties which
+// relate basic (and generic) properties of a UI component such as name and
+// description. Instances of Object may also be queried as to whether they
+// implement other ATK interfaces (e.g. Action, Component, etc.), as appropriate
+// to the role which a given UI component plays in a user interface.
+//
+// All UI components in an application which provide useful information or
+// services to the user must provide corresponding Object instances on request
+// (in GTK+, for instance, usually on a call to #gtk_widget_get_accessible ()),
+// either via ATK support built into the toolkit for the widget class or
+// ancestor class, or in the case of custom widgets, if the inherited Object
+// implementation is insufficient, via instances of a new Object subclass.
+//
+// See also: ObjectFactory, Registry. (GTK+ users see also Accessible).
+type AtkObject struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*AtkObject)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*AtkObject, *ObjectClass, AtkObjectOverrides](
+		GTypeAtkObject,
+		initObjectClass,
+		wrapObject,
+		defaultAtkObjectOverrides,
+	)
+}
+
+func initObjectClass(gclass unsafe.Pointer, overrides AtkObjectOverrides, classInitFunc func(*ObjectClass)) {
+	pclass := (*C.AtkObjectClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeAtkObject))))
+
+	if overrides.ActiveDescendantChanged != nil {
+		pclass.active_descendant_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_active_descendant_changed)
+	}
+
+	if overrides.ChildrenChanged != nil {
+		pclass.children_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_children_changed)
+	}
+
+	if overrides.FocusEvent != nil {
+		pclass.focus_event = (*[0]byte)(C._gotk4_atk1_ObjectClass_focus_event)
+	}
+
+	if overrides.Description != nil {
+		pclass.get_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_description)
+	}
+
+	if overrides.IndexInParent != nil {
+		pclass.get_index_in_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_index_in_parent)
+	}
+
+	if overrides.Layer != nil {
+		pclass.get_layer = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_layer)
+	}
+
+	if overrides.MDIZOrder != nil {
+		pclass.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_mdi_zorder)
+	}
+
+	if overrides.NChildren != nil {
+		pclass.get_n_children = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_n_children)
+	}
+
+	if overrides.Name != nil {
+		pclass.get_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_name)
+	}
+
+	if overrides.ObjectLocale != nil {
+		pclass.get_object_locale = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_object_locale)
+	}
+
+	if overrides.Parent != nil {
+		pclass.get_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_parent)
+	}
+
+	if overrides.Role != nil {
+		pclass.get_role = (*[0]byte)(C._gotk4_atk1_ObjectClass_get_role)
+	}
+
+	if overrides.Initialize != nil {
+		pclass.initialize = (*[0]byte)(C._gotk4_atk1_ObjectClass_initialize)
+	}
+
+	if overrides.PropertyChange != nil {
+		pclass.property_change = (*[0]byte)(C._gotk4_atk1_ObjectClass_property_change)
+	}
+
+	if overrides.RefRelationSet != nil {
+		pclass.ref_relation_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_relation_set)
+	}
+
+	if overrides.RefStateSet != nil {
+		pclass.ref_state_set = (*[0]byte)(C._gotk4_atk1_ObjectClass_ref_state_set)
+	}
+
+	if overrides.RemovePropertyChangeHandler != nil {
+		pclass.remove_property_change_handler = (*[0]byte)(C._gotk4_atk1_ObjectClass_remove_property_change_handler)
+	}
+
+	if overrides.SetDescription != nil {
+		pclass.set_description = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_description)
+	}
+
+	if overrides.SetName != nil {
+		pclass.set_name = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_name)
+	}
+
+	if overrides.SetParent != nil {
+		pclass.set_parent = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_parent)
+	}
+
+	if overrides.SetRole != nil {
+		pclass.set_role = (*[0]byte)(C._gotk4_atk1_ObjectClass_set_role)
+	}
+
+	if overrides.StateChange != nil {
+		pclass.state_change = (*[0]byte)(C._gotk4_atk1_ObjectClass_state_change)
+	}
+
+	if overrides.VisibleDataChanged != nil {
+		pclass.visible_data_changed = (*[0]byte)(C._gotk4_atk1_ObjectClass_visible_data_changed)
+	}
+
+	if classInitFunc != nil {
+		class := (*ObjectClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapObject(obj *coreglib.Object) *AtkObject {
+	return &AtkObject{
+		Object: obj,
+	}
+}
+
+func marshalAtkObject(p uintptr) (interface{}, error) {
+	return wrapObject(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectActiveDescendantChanged: "active-descendant-changed" signal is emitted
+// by an object which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
+// object in the object changes. For instance, a table will emit the signal when
+// the cell in the table which has focus changes.
+func (object *AtkObject) ConnectActiveDescendantChanged(f func(arg1 *AtkObject)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "active-descendant-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectActiveDescendantChanged), f)
+}
+
+// ConnectChildrenChanged: signal "children-changed" is emitted when a child is
+// added or removed form an object. It supports two details: "add" and "remove".
+func (object *AtkObject) ConnectChildrenChanged(f func(arg1 uint, arg2 *AtkObject)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "children-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectChildrenChanged), f)
+}
+
+// ConnectFocusEvent: signal "focus-event" is emitted when an object gained or
+// lost focus.
+func (object *AtkObject) ConnectFocusEvent(f func(arg1 bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "focus-event", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectFocusEvent), f)
+}
+
+// ConnectPropertyChange: signal "property-change" is emitted when an object's
+// property value changes. arg1 contains an PropertyValues with the name and the
+// new value of the property whose value has changed. Note that, as with GObject
+// notify, getting this signal does not guarantee that the value of the property
+// has actually changed; it may also be emitted when the setter of the property
+// is called to reinstate the previous value.
+//
+// Toolkit implementor note: ATK implementors should use g_object_notify() to
+// emit property-changed notifications. Object::property-changed is needed by
+// the implementation of atk_add_global_event_listener() because GObject notify
+// doesn't support emission hooks.
+func (object *AtkObject) ConnectPropertyChange(f func(arg1 *PropertyValues)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "property-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectPropertyChange), f)
+}
+
+// ConnectStateChange: "state-change" signal is emitted when an object's state
+// changes. The detail value identifies the state type which has changed.
+func (object *AtkObject) ConnectStateChange(f func(arg1 string, arg2 bool)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "state-change", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectStateChange), f)
+}
+
+// ConnectVisibleDataChanged: "visible-data-changed" signal is emitted when the
+// visual appearance of the object changed.
+func (object *AtkObject) ConnectVisibleDataChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "visible-data-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectVisibleDataChanged), f)
+}
+
+// AddRelationship adds a relationship of the specified type with the specified
+// target.
+//
+// The function takes the following parameters:
+//
+//   - relationship of the relation.
+//   - target which is to be the target of the relation.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the relationship is added.
+//
+func (object *AtkObject) AddRelationship(relationship RelationType, target *AtkObject) bool {
+	var _arg0 *C.AtkObject      // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.atk_object_add_relationship(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// AccessibleID gets the accessible id of the accessible.
+//
+// The function returns the following values:
+//
+//   - utf8: character string representing the accessible id of the object,
+//     or NULL if no such string was set.
+//
+func (accessible *AtkObject) AccessibleID() string {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_accessible_id(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Description gets the accessible description of the accessible.
+//
+// The function returns the following values:
+//
+//   - utf8: character string representing the accessible description of the
+//     accessible.
+//
+func (accessible *AtkObject) Description() string {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_description(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// IndexInParent gets the 0-based index of this accessible in its parent;
+// returns -1 if the accessible does not have an accessible parent.
+//
+// The function returns the following values:
+//
+//   - gint: integer which is the index of the accessible in its parent.
+//
+func (accessible *AtkObject) IndexInParent() int {
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_index_in_parent(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Layer gets the layer of the accessible.
+//
+// Deprecated: Use atk_component_get_layer instead.
+//
+// The function returns the following values:
+//
+//   - layer which is the layer of the accessible.
+//
+func (accessible *AtkObject) Layer() Layer {
+	var _arg0 *C.AtkObject // out
+	var _cret C.AtkLayer   // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_layer(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _layer Layer // out
+
+	_layer = Layer(_cret)
+
+	return _layer
+}
+
+// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
+// returned if the layer of the accessible is not ATK_LAYER_MDI.
+//
+// Deprecated: Use atk_component_get_mdi_zorder instead.
+//
+// The function returns the following values:
+//
+//   - gint which is the zorder of the accessible, i.e. the depth at which the
+//     component is shown in relation to other components in the same container.
+//
+func (accessible *AtkObject) MDIZOrder() int {
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_mdi_zorder(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// NAccessibleChildren gets the number of accessible children of the accessible.
+//
+// The function returns the following values:
+//
+//   - gint: integer representing the number of accessible children of the
+//     accessible.
+//
+func (accessible *AtkObject) NAccessibleChildren() int {
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_n_accessible_children(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Name gets the accessible name of the accessible.
+//
+// The function returns the following values:
+//
+//   - utf8: character string representing the accessible name of the object.
+//
+func (accessible *AtkObject) Name() string {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_name(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+// locale of accessible.
+//
+// The function returns the following values:
+//
+//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+//     accessible.
+//
+func (accessible *AtkObject) ObjectLocale() string {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_object_locale(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Parent gets the accessible parent of the accessible. By default this is
+// the one assigned with atk_object_set_parent(), but it is assumed that ATK
+// implementors have ways to get the parent of the object without the need of
+// assigning it manually with atk_object_set_parent(), and will return it with
+// this method.
+//
+// If you are only interested on the parent assigned with
+// atk_object_set_parent(), use atk_object_peek_parent().
+//
+// The function returns the following values:
+//
+//   - object representing the accessible parent of the accessible.
+//
+func (accessible *AtkObject) Parent() *AtkObject {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_parent(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// Role gets the role of the accessible.
+//
+// The function returns the following values:
+//
+//   - role which is the role of the accessible.
+//
+func (accessible *AtkObject) Role() Role {
+	var _arg0 *C.AtkObject // out
+	var _cret C.AtkRole    // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_role(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
+}
+
+// Initialize: this function is called when implementing subclasses of Object.
+// It does initialization required for the new object. It is intended that this
+// function should called only in the ..._new() functions used to create an
+// instance of a subclass of Object.
+//
+// The function takes the following parameters:
+//
+//   - data (optional) which identifies the object for which the AtkObject was
+//     created.
+//
+func (accessible *AtkObject) Initialize(data unsafe.Pointer) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.gpointer   // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
+
+	C.atk_object_initialize(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(data)
+}
+
+// NotifyStateChange emits a state-change signal for the specified state.
+//
+// Note that as a general rule when the state of an existing object changes,
+// emitting a notification is expected.
+//
+// The function takes the following parameters:
+//
+//   - state whose state is changed.
+//   - value: gboolean which indicates whether the state is being set on or off.
+//
+func (accessible *AtkObject) NotifyStateChange(state State, value bool) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.AtkState   // out
+	var _arg2 C.gboolean   // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.guint64(state)
+	type _ = State
+	type _ = uint64
+	if value {
+		_arg2 = C.TRUE
+	}
+
+	C.atk_object_notify_state_change(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(state)
+	runtime.KeepAlive(value)
+}
+
+// PeekParent gets the accessible parent of the accessible, if it has been
+// manually assigned with atk_object_set_parent. Otherwise, this function
+// returns NULL.
+//
+// This method is intended as an utility for ATK implementors, and not to
+// be exposed to accessible tools. See atk_object_get_parent() for further
+// reference.
+//
+// The function returns the following values:
+//
+//   - object representing the accessible parent of the accessible if assigned.
+//
+func (accessible *AtkObject) PeekParent() *AtkObject {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_peek_parent(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// RefAccessibleChild gets a reference to the specified accessible child of the
+// object. The accessible children are 0-based so the first accessible child is
+// at index 0, the second at index 1 and so on.
+//
+// The function takes the following parameters:
+//
+//   - i: gint representing the position of the child, starting from 0.
+//
+// The function returns the following values:
+//
+//   - object representing the specified accessible child of the accessible.
+//
+func (accessible *AtkObject) RefAccessibleChild(i int) *AtkObject {
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.gint       // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_object_ref_accessible_child(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(i)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// RefRelationSet gets the RelationSet associated with the object.
+//
+// The function returns the following values:
+//
+//   - relationSet representing the relation set of the object.
+//
+func (accessible *AtkObject) RefRelationSet() *RelationSet {
+	var _arg0 *C.AtkObject      // out
+	var _cret *C.AtkRelationSet // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_ref_relation_set(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _relationSet *RelationSet // out
+
+	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _relationSet
+}
+
+// RefStateSet gets a reference to the state set of the accessible; the caller
+// must unreference it when it is no longer needed.
+//
+// The function returns the following values:
+//
+//   - stateSet: reference to an StateSet which is the state set of the
+//     accessible.
+//
+func (accessible *AtkObject) RefStateSet() *StateSet {
+	var _arg0 *C.AtkObject   // out
+	var _cret *C.AtkStateSet // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_ref_state_set(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _stateSet *StateSet // out
+
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _stateSet
+}
+
+// RemovePropertyChangeHandler removes a property change handler.
+//
+// Deprecated: See atk_object_connect_property_change_handler().
+//
+// The function takes the following parameters:
+//
+//   - handlerId: guint which identifies the handler to be removed.
+//
+func (accessible *AtkObject) RemovePropertyChangeHandler(handlerId uint) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.guint      // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.guint(handlerId)
+
+	C.atk_object_remove_property_change_handler(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(handlerId)
+}
+
+// RemoveRelationship removes a relationship of the specified type with the
+// specified target.
+//
+// The function takes the following parameters:
+//
+//   - relationship of the relation.
+//   - target which is the target of the relation to be removed.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the relationship is removed.
+//
+func (object *AtkObject) RemoveRelationship(relationship RelationType, target *AtkObject) bool {
+	var _arg0 *C.AtkObject      // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.atk_object_remove_relationship(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SetAccessibleID sets the accessible ID of the accessible. This is not meant
+// to be presented to the user, but to be an ID which is stable over application
+// development. Typically, this is the gtkbuilder ID. Such an ID will be
+// available for instance to identify a given well-known accessible object for
+// tailored screen reading, or for automatic regression testing.
+//
+// The function takes the following parameters:
+//
+//   - name: character string to be set as the accessible id.
+//
+func (accessible *AtkObject) SetAccessibleID(name string) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.atk_object_set_accessible_id(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(name)
+}
+
+// SetDescription sets the accessible description of the accessible. You can't
+// set the description to NULL. This is reserved for the initial value. In this
+// aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a
+// empty value you can use "".
+//
+// The function takes the following parameters:
+//
+//   - description: character string to be set as the accessible description.
+//
+func (accessible *AtkObject) SetDescription(description string) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.atk_object_set_description(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(description)
+}
+
+// SetName sets the accessible name of the accessible. You can't set the name to
+// NULL. This is reserved for the initial value. In this aspect NULL is similar
+// to ATK_ROLE_UNKNOWN. If you want to set the name to a empty value you can use
+// "".
+//
+// The function takes the following parameters:
+//
+//   - name: character string to be set as the accessible name.
+//
+func (accessible *AtkObject) SetName(name string) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.atk_object_set_name(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(name)
+}
+
+// SetParent sets the accessible parent of the accessible. parent can be NULL.
+//
+// The function takes the following parameters:
+//
+//   - parent to be set as the accessible parent.
+//
+func (accessible *AtkObject) SetParent(parent *AtkObject) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+
+	C.atk_object_set_parent(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(parent)
+}
+
+// SetRole sets the role of the accessible.
+//
+// The function takes the following parameters:
+//
+//   - role to be set as the role.
+//
+func (accessible *AtkObject) SetRole(role Role) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.AtkRole    // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.AtkRole(role)
+
+	C.atk_object_set_role(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(role)
+}
+
+// The function takes the following parameters:
+//
+func (accessible *AtkObject) activeDescendantChanged(child *unsafe.Pointer) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.active_descendant_changed
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gpointer  // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	if child != nil {
+		_arg1 = (*C.gpointer)(unsafe.Pointer(child))
+	}
+
+	C._gotk4_atk1_AtkObject_virtual_active_descendant_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(child)
+}
+
+// The function takes the following parameters:
+//
+//   - changeIndex
+//   - changedChild (optional)
+//
+func (accessible *AtkObject) childrenChanged(changeIndex uint, changedChild unsafe.Pointer) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.children_changed
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.guint      // out
+	var _arg2 C.gpointer   // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.guint(changeIndex)
+	_arg2 = (C.gpointer)(unsafe.Pointer(changedChild))
+
+	C._gotk4_atk1_AtkObject_virtual_children_changed(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(changeIndex)
+	runtime.KeepAlive(changedChild)
+}
+
+// The function takes the following parameters:
+//
+func (accessible *AtkObject) focusEvent(focusIn bool) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.focus_event
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.gboolean   // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	if focusIn {
+		_arg1 = C.TRUE
+	}
+
+	C._gotk4_atk1_AtkObject_virtual_focus_event(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(focusIn)
+}
+
+// Description gets the accessible description of the accessible.
+//
+// The function returns the following values:
+//
+//   - utf8: character string representing the accessible description of the
+//     accessible.
+//
+func (accessible *AtkObject) description() string {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_description
+
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_description(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// indexInParent gets the 0-based index of this accessible in its parent;
+// returns -1 if the accessible does not have an accessible parent.
+//
+// The function returns the following values:
+//
+//   - gint: integer which is the index of the accessible in its parent.
+//
+func (accessible *AtkObject) indexInParent() int {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_index_in_parent
+
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_index_in_parent(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Layer gets the layer of the accessible.
+//
+// Deprecated: Use atk_component_get_layer instead.
+//
+// The function returns the following values:
+//
+//   - layer which is the layer of the accessible.
+//
+func (accessible *AtkObject) layer() Layer {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_layer
+
+	var _arg0 *C.AtkObject // out
+	var _cret C.AtkLayer   // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_layer(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _layer Layer // out
+
+	_layer = Layer(_cret)
+
+	return _layer
+}
+
+// mdizOrder gets the zorder of the accessible. The value G_MININT will be
+// returned if the layer of the accessible is not ATK_LAYER_MDI.
+//
+// Deprecated: Use atk_component_get_mdi_zorder instead.
+//
+// The function returns the following values:
+//
+//   - gint which is the zorder of the accessible, i.e. the depth at which the
+//     component is shown in relation to other components in the same container.
+//
+func (accessible *AtkObject) mdizOrder() int {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_mdi_zorder
+
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_mdi_zorder(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// The function returns the following values:
+//
+func (accessible *AtkObject) nChildren() int {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_n_children
+
+	var _arg0 *C.AtkObject // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_n_children(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Name gets the accessible name of the accessible.
+//
+// The function returns the following values:
+//
+//   - utf8: character string representing the accessible name of the object.
+//
+func (accessible *AtkObject) name() string {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_name
+
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_name(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// objectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
+// locale of accessible.
+//
+// The function returns the following values:
+//
+//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
+//     accessible.
+//
+func (accessible *AtkObject) objectLocale() string {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_object_locale
+
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_object_locale(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// Parent gets the accessible parent of the accessible. By default this is
+// the one assigned with atk_object_set_parent(), but it is assumed that ATK
+// implementors have ways to get the parent of the object without the need of
+// assigning it manually with atk_object_set_parent(), and will return it with
+// this method.
+//
+// If you are only interested on the parent assigned with
+// atk_object_set_parent(), use atk_object_peek_parent().
+//
+// The function returns the following values:
+//
+//   - object representing the accessible parent of the accessible.
+//
+func (accessible *AtkObject) parent() *AtkObject {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_parent
+
+	var _arg0 *C.AtkObject // out
+	var _cret *C.AtkObject // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_parent(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// Role gets the role of the accessible.
+//
+// The function returns the following values:
+//
+//   - role which is the role of the accessible.
+//
+func (accessible *AtkObject) role() Role {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.get_role
+
+	var _arg0 *C.AtkObject // out
+	var _cret C.AtkRole    // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_get_role(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _role Role // out
+
+	_role = Role(_cret)
+
+	return _role
+}
+
+// Initialize: this function is called when implementing subclasses of Object.
+// It does initialization required for the new object. It is intended that this
+// function should called only in the ..._new() functions used to create an
+// instance of a subclass of Object.
+//
+// The function takes the following parameters:
+//
+//   - data (optional) which identifies the object for which the AtkObject was
+//     created.
+//
+func (accessible *AtkObject) initialize(data unsafe.Pointer) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.initialize
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.gpointer   // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(data))
+
+	C._gotk4_atk1_AtkObject_virtual_initialize(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(data)
+}
+
+// The function takes the following parameters:
+//
+func (accessible *AtkObject) propertyChange(values *PropertyValues) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.property_change
+
+	var _arg0 *C.AtkObject         // out
+	var _arg1 *C.AtkPropertyValues // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.AtkPropertyValues)(gextras.StructNative(unsafe.Pointer(values)))
+
+	C._gotk4_atk1_AtkObject_virtual_property_change(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(values)
+}
+
+// refRelationSet gets the RelationSet associated with the object.
+//
+// The function returns the following values:
+//
+//   - relationSet representing the relation set of the object.
+//
+func (accessible *AtkObject) refRelationSet() *RelationSet {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.ref_relation_set
+
+	var _arg0 *C.AtkObject      // out
+	var _cret *C.AtkRelationSet // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_ref_relation_set(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _relationSet *RelationSet // out
+
+	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _relationSet
+}
+
+// refStateSet gets a reference to the state set of the accessible; the caller
+// must unreference it when it is no longer needed.
+//
+// The function returns the following values:
+//
+//   - stateSet: reference to an StateSet which is the state set of the
+//     accessible.
+//
+func (accessible *AtkObject) refStateSet() *StateSet {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.ref_state_set
+
+	var _arg0 *C.AtkObject   // out
+	var _cret *C.AtkStateSet // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C._gotk4_atk1_AtkObject_virtual_ref_state_set(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+
+	var _stateSet *StateSet // out
+
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _stateSet
+}
+
+// removePropertyChangeHandler removes a property change handler.
+//
+// Deprecated: See atk_object_connect_property_change_handler().
+//
+// The function takes the following parameters:
+//
+//   - handlerId: guint which identifies the handler to be removed.
+//
+func (accessible *AtkObject) removePropertyChangeHandler(handlerId uint) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.remove_property_change_handler
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.guint      // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.guint(handlerId)
+
+	C._gotk4_atk1_AtkObject_virtual_remove_property_change_handler(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(handlerId)
+}
+
+// setDescription sets the accessible description of the accessible. You can't
+// set the description to NULL. This is reserved for the initial value. In this
+// aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to set the name to a
+// empty value you can use "".
+//
+// The function takes the following parameters:
+//
+//   - description: character string to be set as the accessible description.
+//
+func (accessible *AtkObject) setDescription(description string) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.set_description
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_atk1_AtkObject_virtual_set_description(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(description)
+}
+
+// setName sets the accessible name of the accessible. You can't set the name to
+// NULL. This is reserved for the initial value. In this aspect NULL is similar
+// to ATK_ROLE_UNKNOWN. If you want to set the name to a empty value you can use
+// "".
+//
+// The function takes the following parameters:
+//
+//   - name: character string to be set as the accessible name.
+//
+func (accessible *AtkObject) setName(name string) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.set_name
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_atk1_AtkObject_virtual_set_name(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(name)
+}
+
+// setParent sets the accessible parent of the accessible. parent can be NULL.
+//
+// The function takes the following parameters:
+//
+//   - parent to be set as the accessible parent.
+//
+func (accessible *AtkObject) setParent(parent *AtkObject) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.set_parent
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
+
+	C._gotk4_atk1_AtkObject_virtual_set_parent(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(parent)
+}
+
+// setRole sets the role of the accessible.
+//
+// The function takes the following parameters:
+//
+//   - role to be set as the role.
+//
+func (accessible *AtkObject) setRole(role Role) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.set_role
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 C.AtkRole    // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = C.AtkRole(role)
+
+	C._gotk4_atk1_AtkObject_virtual_set_role(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(role)
+}
+
+// The function takes the following parameters:
+//
+//   - name
+//   - stateSet
+//
+func (accessible *AtkObject) stateChange(name string, stateSet bool) {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.state_change
+
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gboolean   // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if stateSet {
+		_arg2 = C.TRUE
+	}
+
+	C._gotk4_atk1_AtkObject_virtual_state_change(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(stateSet)
+}
+
+func (accessible *AtkObject) visibleDataChanged() {
+	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
+	fnarg := gclass.visible_data_changed
+
+	var _arg0 *C.AtkObject // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	C._gotk4_atk1_AtkObject_virtual_visible_data_changed(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(accessible)
+}
+
+//export _gotk4_atk1_ObjectClass_active_descendant_changed
+func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.AtkObject, arg1 *C.gpointer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.ActiveDescendantChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.ActiveDescendantChanged, got none")
+	}
+
+	var _child *unsafe.Pointer // out
+
+	if arg1 != nil {
+		_child = (*unsafe.Pointer)(unsafe.Pointer(arg1))
+	}
+
+	overrides.ActiveDescendantChanged(_child)
+}
+
+//export _gotk4_atk1_ObjectClass_children_changed
+func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.AtkObject, arg1 C.guint, arg2 C.gpointer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.ChildrenChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.ChildrenChanged, got none")
+	}
+
+	var _changeIndex uint            // out
+	var _changedChild unsafe.Pointer // out
+
+	_changeIndex = uint(arg1)
+	_changedChild = (unsafe.Pointer)(unsafe.Pointer(arg2))
+
+	overrides.ChildrenChanged(_changeIndex, _changedChild)
+}
+
+//export _gotk4_atk1_ObjectClass_focus_event
+func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.AtkObject, arg1 C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.FocusEvent == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.FocusEvent, got none")
+	}
+
+	var _focusIn bool // out
+
+	if arg1 != 0 {
+		_focusIn = true
+	}
+
+	overrides.FocusEvent(_focusIn)
+}
+
+//export _gotk4_atk1_ObjectClass_get_description
+func _gotk4_atk1_ObjectClass_get_description(arg0 *C.AtkObject) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.Description == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Description, got none")
+	}
+
+	utf8 := overrides.Description()
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_index_in_parent
+func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.AtkObject) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.IndexInParent == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.IndexInParent, got none")
+	}
+
+	gint := overrides.IndexInParent()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_layer
+func _gotk4_atk1_ObjectClass_get_layer(arg0 *C.AtkObject) (cret C.AtkLayer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.Layer == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Layer, got none")
+	}
+
+	layer := overrides.Layer()
+
+	var _ Layer
+
+	cret = C.AtkLayer(layer)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_mdi_zorder
+func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.MDIZOrder == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.MDIZOrder, got none")
+	}
+
+	gint := overrides.MDIZOrder()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_n_children
+func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.AtkObject) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.NChildren == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.NChildren, got none")
+	}
+
+	gint := overrides.NChildren()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_name
+func _gotk4_atk1_ObjectClass_get_name(arg0 *C.AtkObject) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.Name == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Name, got none")
+	}
+
+	utf8 := overrides.Name()
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_object_locale
+func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.AtkObject) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.ObjectLocale == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.ObjectLocale, got none")
+	}
+
+	utf8 := overrides.ObjectLocale()
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_parent
+func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.AtkObject) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.Parent == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Parent, got none")
+	}
+
+	object := overrides.Parent()
+
+	var _ *AtkObject
+
+	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_get_role
+func _gotk4_atk1_ObjectClass_get_role(arg0 *C.AtkObject) (cret C.AtkRole) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.Role == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Role, got none")
+	}
+
+	role := overrides.Role()
+
+	var _ Role
+
+	cret = C.AtkRole(role)
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_initialize
+func _gotk4_atk1_ObjectClass_initialize(arg0 *C.AtkObject, arg1 C.gpointer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.Initialize == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Initialize, got none")
+	}
+
+	var _data unsafe.Pointer // out
+
+	_data = (unsafe.Pointer)(unsafe.Pointer(arg1))
+
+	overrides.Initialize(_data)
+}
+
+//export _gotk4_atk1_ObjectClass_property_change
+func _gotk4_atk1_ObjectClass_property_change(arg0 *C.AtkObject, arg1 *C.AtkPropertyValues) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.PropertyChange == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.PropertyChange, got none")
+	}
+
+	var _values *PropertyValues // out
+
+	_values = (*PropertyValues)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	overrides.PropertyChange(_values)
+}
+
+//export _gotk4_atk1_ObjectClass_ref_relation_set
+func _gotk4_atk1_ObjectClass_ref_relation_set(arg0 *C.AtkObject) (cret *C.AtkRelationSet) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.RefRelationSet == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.RefRelationSet, got none")
+	}
+
+	relationSet := overrides.RefRelationSet()
+
+	var _ *RelationSet
+
+	cret = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(relationSet).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(relationSet).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_ref_state_set
+func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.AtkObject) (cret *C.AtkStateSet) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.RefStateSet == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.RefStateSet, got none")
+	}
+
+	stateSet := overrides.RefStateSet()
+
+	var _ *StateSet
+
+	cret = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(stateSet).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(stateSet).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_ObjectClass_remove_property_change_handler
+func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.AtkObject, arg1 C.guint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.RemovePropertyChangeHandler == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.RemovePropertyChangeHandler, got none")
+	}
+
+	var _handlerId uint // out
+
+	_handlerId = uint(arg1)
+
+	overrides.RemovePropertyChangeHandler(_handlerId)
+}
+
+//export _gotk4_atk1_ObjectClass_set_description
+func _gotk4_atk1_ObjectClass_set_description(arg0 *C.AtkObject, arg1 *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.SetDescription == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.SetDescription, got none")
+	}
+
+	var _description string // out
+
+	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	overrides.SetDescription(_description)
+}
+
+//export _gotk4_atk1_ObjectClass_set_name
+func _gotk4_atk1_ObjectClass_set_name(arg0 *C.AtkObject, arg1 *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.SetName == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.SetName, got none")
+	}
+
+	var _name string // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	overrides.SetName(_name)
+}
+
+//export _gotk4_atk1_ObjectClass_set_parent
+func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.AtkObject, arg1 *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.SetParent == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.SetParent, got none")
+	}
+
+	var _parent *AtkObject // out
+
+	_parent = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
+
+	overrides.SetParent(_parent)
+}
+
+//export _gotk4_atk1_ObjectClass_set_role
+func _gotk4_atk1_ObjectClass_set_role(arg0 *C.AtkObject, arg1 C.AtkRole) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.SetRole == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.SetRole, got none")
+	}
+
+	var _role Role // out
+
+	_role = Role(arg1)
+
+	overrides.SetRole(_role)
+}
+
+//export _gotk4_atk1_ObjectClass_state_change
+func _gotk4_atk1_ObjectClass_state_change(arg0 *C.AtkObject, arg1 *C.gchar, arg2 C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.StateChange == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.StateChange, got none")
+	}
+
+	var _name string   // out
+	var _stateSet bool // out
+
+	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	if arg2 != 0 {
+		_stateSet = true
+	}
+
+	overrides.StateChange(_name, _stateSet)
+}
+
+//export _gotk4_atk1_ObjectClass_visible_data_changed
+func _gotk4_atk1_ObjectClass_visible_data_changed(arg0 *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	if overrides.VisibleDataChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.VisibleDataChanged, got none")
+	}
+
+	overrides.VisibleDataChanged()
+}
+
+//export _gotk4_atk1_Object_ConnectActiveDescendantChanged
+func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.guintptr) {
+	var f func(arg1 *AtkObject)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 *AtkObject))
+	}
+
+	var _arg1 *AtkObject // out
+
+	_arg1 = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
+
+	f(_arg1)
+}
+
+//export _gotk4_atk1_Object_ConnectChildrenChanged
+func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, arg2 *C.gpointer, arg3 C.guintptr) {
+	var f func(arg1 uint, arg2 *AtkObject)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 uint, arg2 *AtkObject))
+	}
+
+	var _arg1 uint       // out
+	var _arg2 *AtkObject // out
+
+	_arg1 = uint(arg1)
+	_arg2 = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
+
+	f(_arg1, _arg2)
+}
+
+//export _gotk4_atk1_Object_ConnectFocusEvent
+func _gotk4_atk1_Object_ConnectFocusEvent(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) {
+	var f func(arg1 bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 bool))
+	}
+
+	var _arg1 bool // out
+
+	if arg1 != 0 {
+		_arg1 = true
+	}
+
+	f(_arg1)
+}
+
+//export _gotk4_atk1_Object_ConnectPropertyChange
+func _gotk4_atk1_Object_ConnectPropertyChange(arg0 C.gpointer, arg1 *C.gpointer, arg2 C.guintptr) {
+	var f func(arg1 *PropertyValues)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 *PropertyValues))
+	}
+
+	var _arg1 *PropertyValues // out
+
+	_arg1 = (*PropertyValues)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	f(_arg1)
+}
+
+//export _gotk4_atk1_Object_ConnectStateChange
+func _gotk4_atk1_Object_ConnectStateChange(arg0 C.gpointer, arg1 *C.gchar, arg2 C.gboolean, arg3 C.guintptr) {
+	var f func(arg1 string, arg2 bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 string, arg2 bool))
+	}
+
+	var _arg1 string // out
+	var _arg2 bool   // out
+
+	_arg1 = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	if arg2 != 0 {
+		_arg2 = true
+	}
+
+	f(_arg1, _arg2)
+}
+
+//export _gotk4_atk1_Object_ConnectVisibleDataChanged
+func _gotk4_atk1_Object_ConnectVisibleDataChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+// ObjectFactoryOverrides contains methods that are overridable.
+type ObjectFactoryOverrides struct {
+	// Invalidate: inform factory that it is no longer being used to create
+	// accessibles. When called, factory may need to inform Objects which it has
+	// created that they need to be re-instantiated. Note: primarily used for
+	// runtime replacement of ObjectFactorys in object registries.
+	Invalidate func()
+}
+
+func defaultObjectFactoryOverrides(v *ObjectFactory) ObjectFactoryOverrides {
+	return ObjectFactoryOverrides{
+		Invalidate: v.invalidate,
+	}
+}
+
+// ObjectFactory: this class is the base object class for a factory used
+// to create an accessible object for a specific GType. The function
+// atk_registry_set_factory_type() is normally called to store in the registry
+// the factory type to be used to create an accessible of a particular GType.
+type ObjectFactory struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*ObjectFactory)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*ObjectFactory, *ObjectFactoryClass, ObjectFactoryOverrides](
+		GTypeObjectFactory,
+		initObjectFactoryClass,
+		wrapObjectFactory,
+		defaultObjectFactoryOverrides,
+	)
+}
+
+func initObjectFactoryClass(gclass unsafe.Pointer, overrides ObjectFactoryOverrides, classInitFunc func(*ObjectFactoryClass)) {
+	pclass := (*C.AtkObjectFactoryClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeObjectFactory))))
+
+	if overrides.Invalidate != nil {
+		pclass.invalidate = (*[0]byte)(C._gotk4_atk1_ObjectFactoryClass_invalidate)
+	}
+
+	if classInitFunc != nil {
+		class := (*ObjectFactoryClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapObjectFactory(obj *coreglib.Object) *ObjectFactory {
+	return &ObjectFactory{
+		Object: obj,
+	}
+}
+
+func marshalObjectFactory(p uintptr) (interface{}, error) {
+	return wrapObjectFactory(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// CreateAccessible provides an Object that implements an accessibility
+// interface on behalf of obj.
+//
+// The function takes the following parameters:
+//
+//   - obj: #GObject.
+//
+// The function returns the following values:
+//
+//   - object that implements an accessibility interface on behalf of obj.
+//
+func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *AtkObject {
+	var _arg0 *C.AtkObjectFactory // out
+	var _arg1 *C.GObject          // out
+	var _cret *C.AtkObject        // in
+
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(obj.Native()))
+
+	_cret = C.atk_object_factory_create_accessible(_arg0, _arg1)
+	runtime.KeepAlive(factory)
+	runtime.KeepAlive(obj)
+
+	var _object *AtkObject // out
+
+	_object = wrapObject(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _object
+}
+
+// AccessibleType gets the GType of the accessible which is created by the
+// factory.
+//
+// The function returns the following values:
+//
+//   - gType: type of the accessible which is created by the factory. The value
+//     G_TYPE_INVALID is returned if no type if found.
+//
+func (factory *ObjectFactory) AccessibleType() coreglib.Type {
+	var _arg0 *C.AtkObjectFactory // out
+	var _cret C.GType             // in
+
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+
+	_cret = C.atk_object_factory_get_accessible_type(_arg0)
+	runtime.KeepAlive(factory)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// Invalidate: inform factory that it is no longer being used to create
+// accessibles. When called, factory may need to inform Objects which it has
+// created that they need to be re-instantiated. Note: primarily used for
+// runtime replacement of ObjectFactorys in object registries.
+func (factory *ObjectFactory) Invalidate() {
+	var _arg0 *C.AtkObjectFactory // out
+
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+
+	C.atk_object_factory_invalidate(_arg0)
+	runtime.KeepAlive(factory)
+}
+
+// Invalidate: inform factory that it is no longer being used to create
+// accessibles. When called, factory may need to inform Objects which it has
+// created that they need to be re-instantiated. Note: primarily used for
+// runtime replacement of ObjectFactorys in object registries.
+func (factory *ObjectFactory) invalidate() {
+	gclass := (*C.AtkObjectFactoryClass)(coreglib.PeekParentClass(factory))
+	fnarg := gclass.invalidate
+
+	var _arg0 *C.AtkObjectFactory // out
+
+	_arg0 = (*C.AtkObjectFactory)(unsafe.Pointer(coreglib.InternObject(factory).Native()))
+
+	C._gotk4_atk1_ObjectFactory_virtual_invalidate(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(factory)
+}
+
+//export _gotk4_atk1_ObjectFactoryClass_invalidate
+func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.AtkObjectFactory) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[ObjectFactoryOverrides](instance0)
+	if overrides.Invalidate == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ObjectFactoryOverrides.Invalidate, got none")
+	}
+
+	overrides.Invalidate()
+}
+
+// PlugOverrides contains methods that are overridable.
+type PlugOverrides struct {
+	// The function returns the following values:
+	//
+	ObjectID func() string
+}
+
+func defaultPlugOverrides(v *Plug) PlugOverrides {
+	return PlugOverrides{
+		ObjectID: v.objectID,
+	}
+}
+
+// Plug: see Socket.
+type Plug struct {
+	_ [0]func() // equal guard
+	AtkObject
+
+	*coreglib.Object
+	Component
+}
+
+var (
+	_ coreglib.Objector = (*Plug)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*Plug, *PlugClass, PlugOverrides](
+		GTypePlug,
+		initPlugClass,
+		wrapPlug,
+		defaultPlugOverrides,
+	)
+}
+
+func initPlugClass(gclass unsafe.Pointer, overrides PlugOverrides, classInitFunc func(*PlugClass)) {
+	pclass := (*C.AtkPlugClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypePlug))))
+
+	if overrides.ObjectID != nil {
+		pclass.get_object_id = (*[0]byte)(C._gotk4_atk1_PlugClass_get_object_id)
+	}
+
+	if classInitFunc != nil {
+		class := (*PlugClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapPlug(obj *coreglib.Object) *Plug {
+	return &Plug{
+		AtkObject: AtkObject{
+			Object: obj,
+		},
+		Object: obj,
+		Component: Component{
+			Object: obj,
+		},
+	}
+}
+
+func marshalPlug(p uintptr) (interface{}, error) {
+	return wrapPlug(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewPlug creates a new Plug instance.
+//
+// The function returns the following values:
+//
+//   - plug: newly created Plug.
+//
+func NewPlug() *Plug {
+	var _cret *C.AtkObject // in
+
+	_cret = C.atk_plug_new()
+
+	var _plug *Plug // out
+
+	_plug = wrapPlug(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _plug
+}
+
+// ID gets the unique ID of an Plug object, which can be used to embed inside of
+// an Socket using atk_socket_embed().
+//
+// Internally, this calls a class function that should be registered by the IPC
+// layer (usually at-spi2-atk). The implementor of an Plug object should call
+// this function (after atk-bridge is loaded) and pass the value to the process
+// implementing the Socket, so it could embed the plug.
+//
+// The function returns the following values:
+//
+//   - utf8: unique ID for the plug.
+//
+func (plug *Plug) ID() string {
+	var _arg0 *C.AtkPlug // out
+	var _cret *C.gchar   // in
+
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+
+	_cret = C.atk_plug_get_id(_arg0)
+	runtime.KeepAlive(plug)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// SetChild sets child as accessible child of plug and plug as accessible parent
+// of child. child can be NULL.
+//
+// In some cases, one can not use the AtkPlug type directly as accessible object
+// for the toplevel widget of the application. For instance in the gtk case,
+// GtkPlugAccessible can not inherit both from GtkWindowAccessible and from
+// AtkPlug. In such a case, one can create, in addition to the standard
+// accessible object for the toplevel widget, an AtkPlug object, and make the
+// former the child of the latter by calling atk_plug_set_child().
+//
+// The function takes the following parameters:
+//
+//   - child to be set as accessible child of plug.
+//
+func (plug *Plug) SetChild(child *AtkObject) {
+	var _arg0 *C.AtkPlug   // out
+	var _arg1 *C.AtkObject // out
+
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer(coreglib.InternObject(plug).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+
+	C.atk_plug_set_child(_arg0, _arg1)
+	runtime.KeepAlive(plug)
+	runtime.KeepAlive(child)
+}
+
+// The function returns the following values:
+//
+func (obj *Plug) objectID() string {
+	gclass := (*C.AtkPlugClass)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.get_object_id
+
+	var _arg0 *C.AtkPlug // out
+	var _cret *C.gchar   // in
+
+	_arg0 = (*C.AtkPlug)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C._gotk4_atk1_Plug_virtual_get_object_id(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(obj)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+//export _gotk4_atk1_PlugClass_get_object_id
+func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.AtkPlug) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[PlugOverrides](instance0)
+	if overrides.ObjectID == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PlugOverrides.ObjectID, got none")
+	}
+
+	utf8 := overrides.ObjectID()
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+// RegistryOverrides contains methods that are overridable.
+type RegistryOverrides struct {
+}
+
+func defaultRegistryOverrides(v *Registry) RegistryOverrides {
+	return RegistryOverrides{}
+}
+
+// Registry is normally used to create appropriate ATK "peers" for user
+// interface components. Application developers usually need only interact
+// with the AtkRegistry by associating appropriate ATK implementation classes
+// with GObject classes via the atk_registry_set_factory_type call, passing the
+// appropriate GType for application custom widget classes.
+type Registry struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Registry)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*Registry, *RegistryClass, RegistryOverrides](
+		GTypeRegistry,
+		initRegistryClass,
+		wrapRegistry,
+		defaultRegistryOverrides,
+	)
+}
+
+func initRegistryClass(gclass unsafe.Pointer, overrides RegistryOverrides, classInitFunc func(*RegistryClass)) {
+	if classInitFunc != nil {
+		class := (*RegistryClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapRegistry(obj *coreglib.Object) *Registry {
+	return &Registry{
+		Object: obj,
+	}
+}
+
+func marshalRegistry(p uintptr) (interface{}, error) {
+	return wrapRegistry(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Factory gets an ObjectFactory appropriate for creating Objects appropriate
+// for type.
+//
+// The function takes the following parameters:
+//
+//   - typ with which to look up the associated ObjectFactory.
+//
+// The function returns the following values:
+//
+//   - objectFactory appropriate for creating Objects appropriate for type.
+//
+func (registry *Registry) Factory(typ coreglib.Type) *ObjectFactory {
+	var _arg0 *C.AtkRegistry      // out
+	var _arg1 C.GType             // out
+	var _cret *C.AtkObjectFactory // in
+
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	_arg1 = C.GType(typ)
+
+	_cret = C.atk_registry_get_factory(_arg0, _arg1)
+	runtime.KeepAlive(registry)
+	runtime.KeepAlive(typ)
+
+	var _objectFactory *ObjectFactory // out
+
+	_objectFactory = wrapObjectFactory(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _objectFactory
+}
+
+// FactoryType provides a #GType indicating the ObjectFactory subclass
+// associated with type.
+//
+// The function takes the following parameters:
+//
+//   - typ with which to look up the associated ObjectFactory subclass.
+//
+// The function returns the following values:
+//
+//   - gType associated with type type.
+//
+func (registry *Registry) FactoryType(typ coreglib.Type) coreglib.Type {
+	var _arg0 *C.AtkRegistry // out
+	var _arg1 C.GType        // out
+	var _cret C.GType        // in
+
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	_arg1 = C.GType(typ)
+
+	_cret = C.atk_registry_get_factory_type(_arg0, _arg1)
+	runtime.KeepAlive(registry)
+	runtime.KeepAlive(typ)
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
+}
+
+// SetFactoryType: associate an ObjectFactory subclass with a #GType. Note:
+// The associated factory_type will thereafter be responsible for the creation
+// of new Object implementations for instances appropriate for type.
+//
+// The function takes the following parameters:
+//
+//   - typ: Object type.
+//   - factoryType type to associate with type. Must implement AtkObject
+//     appropriate for type.
+//
+func (registry *Registry) SetFactoryType(typ, factoryType coreglib.Type) {
+	var _arg0 *C.AtkRegistry // out
+	var _arg1 C.GType        // out
+	var _arg2 C.GType        // out
+
+	_arg0 = (*C.AtkRegistry)(unsafe.Pointer(coreglib.InternObject(registry).Native()))
+	_arg1 = C.GType(typ)
+	_arg2 = C.GType(factoryType)
+
+	C.atk_registry_set_factory_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(registry)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(factoryType)
+}
+
+// RelationOverrides contains methods that are overridable.
+type RelationOverrides struct {
+}
+
+func defaultRelationOverrides(v *Relation) RelationOverrides {
+	return RelationOverrides{}
+}
+
+// Relation describes a relation between an object and one or more other
+// objects. The actual relations that an object has with other objects are
+// defined as an AtkRelationSet, which is a set of AtkRelations.
+type Relation struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Relation)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*Relation, *RelationClass, RelationOverrides](
+		GTypeRelation,
+		initRelationClass,
+		wrapRelation,
+		defaultRelationOverrides,
+	)
+}
+
+func initRelationClass(gclass unsafe.Pointer, overrides RelationOverrides, classInitFunc func(*RelationClass)) {
+	if classInitFunc != nil {
+		class := (*RelationClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapRelation(obj *coreglib.Object) *Relation {
+	return &Relation{
+		Object: obj,
+	}
+}
+
+func marshalRelation(p uintptr) (interface{}, error) {
+	return wrapRelation(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewRelation: create a new relation for the specified key and the specified
+// list of targets. See also atk_object_add_relationship().
+//
+// The function takes the following parameters:
+//
+//   - targets: array of pointers to Objects.
+//   - relationship with which to create the new Relation.
+//
+// The function returns the following values:
+//
+//   - relation: pointer to a new Relation.
+//
+func NewRelation(targets []*AtkObject, relationship RelationType) *Relation {
+	var _arg1 **C.AtkObject // out
+	var _arg2 C.gint
+	var _arg3 C.AtkRelationType // out
+	var _cret *C.AtkRelation    // in
+
+	_arg2 = (C.gint)(len(targets))
+	_arg1 = (**C.AtkObject)(C.calloc(C.size_t(len(targets)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((**C.AtkObject)(_arg1), len(targets))
+		for i := range targets {
+			out[i] = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(targets[i]).Native()))
+		}
+	}
+	_arg3 = C.AtkRelationType(relationship)
+
+	_cret = C.atk_relation_new(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(targets)
+	runtime.KeepAlive(relationship)
+
+	var _relation *Relation // out
+
+	_relation = wrapRelation(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _relation
+}
+
+// AddTarget adds the specified AtkObject to the target for the relation,
+// if it is not already present. See also atk_object_add_relationship().
+//
+// The function takes the following parameters:
+//
+//   - target: Object.
+//
+func (relation *Relation) AddTarget(target *AtkObject) {
+	var _arg0 *C.AtkRelation // out
+	var _arg1 *C.AtkObject   // out
+
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	C.atk_relation_add_target(_arg0, _arg1)
+	runtime.KeepAlive(relation)
+	runtime.KeepAlive(target)
+}
+
+// RelationType gets the type of relation.
+//
+// The function returns the following values:
+//
+//   - relationType: type of relation.
+//
+func (relation *Relation) RelationType() RelationType {
+	var _arg0 *C.AtkRelation    // out
+	var _cret C.AtkRelationType // in
+
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+
+	_cret = C.atk_relation_get_relation_type(_arg0)
+	runtime.KeepAlive(relation)
+
+	var _relationType RelationType // out
+
+	_relationType = RelationType(_cret)
+
+	return _relationType
+}
+
+// RemoveTarget: remove the specified AtkObject from the target for the
+// relation.
+//
+// The function takes the following parameters:
+//
+//   - target: Object.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the removal is successful.
+//
+func (relation *Relation) RemoveTarget(target *AtkObject) bool {
+	var _arg0 *C.AtkRelation // out
+	var _arg1 *C.AtkObject   // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+	_arg1 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.atk_relation_remove_target(_arg0, _arg1)
+	runtime.KeepAlive(relation)
+	runtime.KeepAlive(target)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// RelationSetOverrides contains methods that are overridable.
+type RelationSetOverrides struct {
+}
+
+func defaultRelationSetOverrides(v *RelationSet) RelationSetOverrides {
+	return RelationSetOverrides{}
+}
+
+// RelationSet held by an object establishes its relationships with objects
+// beyond the normal "parent/child" hierarchical relationships that all user
+// interface objects have. AtkRelationSets establish whether objects are
+// labelled or controlled by other components, share group membership with other
+// components (for instance within a radio-button group), or share content which
+// "flows" between them, among other types of possible relationships.
+type RelationSet struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*RelationSet)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*RelationSet, *RelationSetClass, RelationSetOverrides](
+		GTypeRelationSet,
+		initRelationSetClass,
+		wrapRelationSet,
+		defaultRelationSetOverrides,
+	)
+}
+
+func initRelationSetClass(gclass unsafe.Pointer, overrides RelationSetOverrides, classInitFunc func(*RelationSetClass)) {
+	if classInitFunc != nil {
+		class := (*RelationSetClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapRelationSet(obj *coreglib.Object) *RelationSet {
+	return &RelationSet{
+		Object: obj,
+	}
+}
+
+func marshalRelationSet(p uintptr) (interface{}, error) {
+	return wrapRelationSet(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewRelationSet creates a new empty relation set.
+//
+// The function returns the following values:
+//
+//   - relationSet: new RelationSet.
+//
+func NewRelationSet() *RelationSet {
+	var _cret *C.AtkRelationSet // in
+
+	_cret = C.atk_relation_set_new()
+
+	var _relationSet *RelationSet // out
+
+	_relationSet = wrapRelationSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _relationSet
+}
+
+// Add a new relation to the current relation set if it is not already present.
+// This function ref's the AtkRelation so the caller of this function should
+// unref it to ensure that it will be destroyed when the AtkRelationSet is
+// destroyed.
+//
+// The function takes the following parameters:
+//
+//   - relation: Relation.
+//
+func (set *RelationSet) Add(relation *Relation) {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 *C.AtkRelation    // out
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+
+	C.atk_relation_set_add(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relation)
+}
+
+// AddRelationByType: add a new relation of the specified type with the
+// specified target to the current relation set if the relation set does not
+// contain a relation of that type. If it is does contain a relation of that
+// typea the target is added to the relation.
+//
+// The function takes the following parameters:
+//
+//   - relationship: RelationType.
+//   - target: Object.
+//
+func (set *RelationSet) AddRelationByType(relationship RelationType, target *AtkObject) {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	C.atk_relation_set_add_relation_by_type(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+}
+
+// Contains determines whether the relation set contains a relation that matches
+// the specified type.
+//
+// The function takes the following parameters:
+//
+//   - relationship: RelationType.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if relationship is the relationship type of a relation in set,
+//     FALSE otherwise.
+//
+func (set *RelationSet) Contains(relationship RelationType) bool {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+
+	_cret = C.atk_relation_set_contains(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ContainsTarget determines whether the relation set contains a relation that
+// matches the specified pair formed by type relationship and object target.
+//
+// The function takes the following parameters:
+//
+//   - relationship: RelationType.
+//   - target: Object.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if set contains a relation with the relationship type
+//     relationship with an object target, FALSE otherwise.
+//
+func (set *RelationSet) ContainsTarget(relationship RelationType, target *AtkObject) bool {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _arg2 *C.AtkObject      // out
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+	_arg2 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(target).Native()))
+
+	_cret = C.atk_relation_set_contains_target(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+	runtime.KeepAlive(target)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// NRelations determines the number of relations in a relation set.
+//
+// The function returns the following values:
+//
+//   - gint: integer representing the number of relations in the set.
+//
+func (set *RelationSet) NRelations() int {
+	var _arg0 *C.AtkRelationSet // out
+	var _cret C.gint            // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+
+	_cret = C.atk_relation_set_get_n_relations(_arg0)
+	runtime.KeepAlive(set)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Relation determines the relation at the specified position in the relation
+// set.
+//
+// The function takes the following parameters:
+//
+//   - i: gint representing a position in the set, starting from 0.
+//
+// The function returns the following values:
+//
+//   - relation which is the relation at position i in the set.
+//
+func (set *RelationSet) Relation(i int) *Relation {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.gint            // out
+	var _cret *C.AtkRelation    // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.gint(i)
+
+	_cret = C.atk_relation_set_get_relation(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(i)
+
+	var _relation *Relation // out
+
+	_relation = wrapRelation(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _relation
+}
+
+// RelationByType finds a relation that matches the specified type.
+//
+// The function takes the following parameters:
+//
+//   - relationship: RelationType.
+//
+// The function returns the following values:
+//
+//   - relation which is a relation matching the specified type.
+//
+func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 C.AtkRelationType // out
+	var _cret *C.AtkRelation    // in
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkRelationType(relationship)
+
+	_cret = C.atk_relation_set_get_relation_by_type(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relationship)
+
+	var _relation *Relation // out
+
+	_relation = wrapRelation(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _relation
+}
+
+// Remove removes a relation from the relation set. This function unref's the
+// Relation so it will be deleted unless there is another reference to it.
+//
+// The function takes the following parameters:
+//
+//   - relation: Relation.
+//
+func (set *RelationSet) Remove(relation *Relation) {
+	var _arg0 *C.AtkRelationSet // out
+	var _arg1 *C.AtkRelation    // out
+
+	_arg0 = (*C.AtkRelationSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkRelation)(unsafe.Pointer(coreglib.InternObject(relation).Native()))
+
+	C.atk_relation_set_remove(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(relation)
+}
+
+// SocketOverrides contains methods that are overridable.
+type SocketOverrides struct {
+	// Embed embeds the children of an Plug as the children of the Socket.
+	// The plug may be in the same process or in a different process.
+	//
+	// The class item used by this function should be filled in by the IPC layer
+	// (usually at-spi2-atk). The implementor of the AtkSocket should call this
+	// function and pass the id for the plug as returned by atk_plug_get_id().
+	// It is the responsibility of the application to pass the plug id on to the
+	// process implementing the Socket as needed.
+	//
+	// The function takes the following parameters:
+	//
+	//   - plugId: ID of an Plug.
+	//
+	Embed func(plugId string)
+}
+
+func defaultSocketOverrides(v *Socket) SocketOverrides {
+	return SocketOverrides{
+		Embed: v.embed,
+	}
+}
+
+// Socket: together with Plug, Socket provides the ability to embed accessibles
+// from one process into another in a fashion that is transparent to assistive
+// technologies. Socket works as the container of Plug, embedding it using the
+// method atk_socket_embed(). Any accessible contained in the Plug will appear
+// to the assistive technologies as being inside the application that created
+// the Socket.
+//
+// The communication between a Socket and a Plug is done by the IPC layer
+// of the accessibility framework, normally implemented by the D-Bus based
+// implementation of AT-SPI (at-spi2). If that is the case, at-spi-atk2 is
+// the responsible to implement the abstract methods atk_plug_get_id() and
+// atk_socket_embed(), so an ATK implementor shouldn't reimplement them.
+// The process that contains the Plug is responsible to send the ID returned by
+// atk_plug_id() to the process that contains the Socket, so it could call the
+// method atk_socket_embed() in order to embed it.
+//
+// For the same reasons, an implementor doesn't need to implement
+// atk_object_get_n_accessible_children() and atk_object_ref_accessible_child().
+// All the logic related to those functions will be implemented by the IPC
+// layer.
+type Socket struct {
+	_ [0]func() // equal guard
+	AtkObject
+
+	*coreglib.Object
+	Component
+}
+
+var (
+	_ coreglib.Objector = (*Socket)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*Socket, *SocketClass, SocketOverrides](
+		GTypeSocket,
+		initSocketClass,
+		wrapSocket,
+		defaultSocketOverrides,
+	)
+}
+
+func initSocketClass(gclass unsafe.Pointer, overrides SocketOverrides, classInitFunc func(*SocketClass)) {
+	pclass := (*C.AtkSocketClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSocket))))
+
+	if overrides.Embed != nil {
+		pclass.embed = (*[0]byte)(C._gotk4_atk1_SocketClass_embed)
+	}
+
+	if classInitFunc != nil {
+		class := (*SocketClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapSocket(obj *coreglib.Object) *Socket {
+	return &Socket{
+		AtkObject: AtkObject{
+			Object: obj,
+		},
+		Object: obj,
+		Component: Component{
+			Object: obj,
+		},
+	}
+}
+
+func marshalSocket(p uintptr) (interface{}, error) {
+	return wrapSocket(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewSocket creates a new Socket.
+//
+// The function returns the following values:
+//
+//   - socket: newly created Socket instance.
+//
+func NewSocket() *Socket {
+	var _cret *C.AtkObject // in
+
+	_cret = C.atk_socket_new()
+
+	var _socket *Socket // out
+
+	_socket = wrapSocket(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _socket
+}
+
+// Embed embeds the children of an Plug as the children of the Socket. The plug
+// may be in the same process or in a different process.
+//
+// The class item used by this function should be filled in by the IPC layer
+// (usually at-spi2-atk). The implementor of the AtkSocket should call this
+// function and pass the id for the plug as returned by atk_plug_get_id().
+// It is the responsibility of the application to pass the plug id on to the
+// process implementing the Socket as needed.
+//
+// The function takes the following parameters:
+//
+//   - plugId: ID of an Plug.
+//
+func (obj *Socket) Embed(plugId string) {
+	var _arg0 *C.AtkSocket // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(plugId)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.atk_socket_embed(_arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(plugId)
+}
+
+// IsOccupied determines whether or not the socket has an embedded plug.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if a plug is embedded in the socket.
+//
+func (obj *Socket) IsOccupied() bool {
+	var _arg0 *C.AtkSocket // out
+	var _cret C.gboolean   // in
+
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+
+	_cret = C.atk_socket_is_occupied(_arg0)
+	runtime.KeepAlive(obj)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Embed embeds the children of an Plug as the children of the Socket. The plug
+// may be in the same process or in a different process.
+//
+// The class item used by this function should be filled in by the IPC layer
+// (usually at-spi2-atk). The implementor of the AtkSocket should call this
+// function and pass the id for the plug as returned by atk_plug_get_id().
+// It is the responsibility of the application to pass the plug id on to the
+// process implementing the Socket as needed.
+//
+// The function takes the following parameters:
+//
+//   - plugId: ID of an Plug.
+//
+func (obj *Socket) embed(plugId string) {
+	gclass := (*C.AtkSocketClass)(coreglib.PeekParentClass(obj))
+	fnarg := gclass.embed
+
+	var _arg0 *C.AtkSocket // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkSocket)(unsafe.Pointer(coreglib.InternObject(obj).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(plugId)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C._gotk4_atk1_Socket_virtual_embed(unsafe.Pointer(fnarg), _arg0, _arg1)
+	runtime.KeepAlive(obj)
+	runtime.KeepAlive(plugId)
+}
+
+//export _gotk4_atk1_SocketClass_embed
+func _gotk4_atk1_SocketClass_embed(arg0 *C.AtkSocket, arg1 *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[SocketOverrides](instance0)
+	if overrides.Embed == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketOverrides.Embed, got none")
+	}
+
+	var _plugId string // out
+
+	_plugId = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	overrides.Embed(_plugId)
+}
+
+// StateSetOverrides contains methods that are overridable.
+type StateSetOverrides struct {
+}
+
+func defaultStateSetOverrides(v *StateSet) StateSetOverrides {
+	return StateSetOverrides{}
+}
+
+// StateSet is a read-only representation of the full set of States that
+// apply to an object at a given time. This set is not meant to be modified,
+// but rather created when #atk_object_ref_state_set() is called.
+type StateSet struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*StateSet)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*StateSet, *StateSetClass, StateSetOverrides](
+		GTypeStateSet,
+		initStateSetClass,
+		wrapStateSet,
+		defaultStateSetOverrides,
+	)
+}
+
+func initStateSetClass(gclass unsafe.Pointer, overrides StateSetOverrides, classInitFunc func(*StateSetClass)) {
+	if classInitFunc != nil {
+		class := (*StateSetClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapStateSet(obj *coreglib.Object) *StateSet {
+	return &StateSet{
+		Object: obj,
+	}
+}
+
+func marshalStateSet(p uintptr) (interface{}, error) {
+	return wrapStateSet(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewStateSet creates a new empty state set.
+//
+// The function returns the following values:
+//
+//   - stateSet: new StateSet.
+//
+func NewStateSet() *StateSet {
+	var _cret *C.AtkStateSet // in
+
+	_cret = C.atk_state_set_new()
+
+	var _stateSet *StateSet // out
+
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _stateSet
+}
+
+// AddState adds the state of the specified type to the state set if it is not
+// already present.
+//
+// Note that because an StateSet is a read-only object, this method should be
+// used to add a state to a newly-created set which will then be returned by
+// #atk_object_ref_state_set. It should not be used to modify the existing state
+// of an object. See also #atk_object_notify_state_change.
+//
+// The function takes the following parameters:
+//
+//   - typ: StateType.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the state for type is not already in set.
+//
+func (set *StateSet) AddState(typ StateType) bool {
+	var _arg0 *C.AtkStateSet // out
+	var _arg1 C.AtkStateType // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkStateType(typ)
+
+	_cret = C.atk_state_set_add_state(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// AddStates adds the states of the specified types to the state set.
+//
+// Note that because an StateSet is a read-only object, this method should be
+// used to add states to a newly-created set which will then be returned by
+// #atk_object_ref_state_set. It should not be used to modify the existing state
+// of an object. See also #atk_object_notify_state_change.
+//
+// The function takes the following parameters:
+//
+//   - types: array of StateType.
+//
+func (set *StateSet) AddStates(types []StateType) {
+	var _arg0 *C.AtkStateSet  // out
+	var _arg1 *C.AtkStateType // out
+	var _arg2 C.gint
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg2 = (C.gint)(len(types))
+	if len(types) > 0 {
+		_arg1 = (*C.AtkStateType)(unsafe.Pointer(&types[0]))
+	}
+
+	C.atk_state_set_add_states(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(types)
+}
+
+// AndSets constructs the intersection of the two sets, returning NULL if the
+// intersection is empty.
+//
+// The function takes the following parameters:
+//
+//   - compareSet: another StateSet.
+//
+// The function returns the following values:
+//
+//   - stateSet: new StateSet which is the intersection of the two sets.
+//
+func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
+	var _arg0 *C.AtkStateSet // out
+	var _arg1 *C.AtkStateSet // out
+	var _cret *C.AtkStateSet // in
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
+
+	_cret = C.atk_state_set_and_sets(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(compareSet)
+
+	var _stateSet *StateSet // out
+
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _stateSet
+}
+
+// ClearStates removes all states from the state set.
+func (set *StateSet) ClearStates() {
+	var _arg0 *C.AtkStateSet // out
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+
+	C.atk_state_set_clear_states(_arg0)
+	runtime.KeepAlive(set)
+}
+
+// ContainsState checks whether the state for the specified type is in the
+// specified set.
+//
+// The function takes the following parameters:
+//
+//   - typ: StateType.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if type is the state type is in set.
+//
+func (set *StateSet) ContainsState(typ StateType) bool {
+	var _arg0 *C.AtkStateSet // out
+	var _arg1 C.AtkStateType // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkStateType(typ)
+
+	_cret = C.atk_state_set_contains_state(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ContainsStates checks whether the states for all the specified types are in
+// the specified set.
+//
+// The function takes the following parameters:
+//
+//   - types: array of StateType.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if all the states for type are in set.
+//
+func (set *StateSet) ContainsStates(types []StateType) bool {
+	var _arg0 *C.AtkStateSet  // out
+	var _arg1 *C.AtkStateType // out
+	var _arg2 C.gint
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg2 = (C.gint)(len(types))
+	if len(types) > 0 {
+		_arg1 = (*C.AtkStateType)(unsafe.Pointer(&types[0]))
+	}
+
+	_cret = C.atk_state_set_contains_states(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(types)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsEmpty checks whether the state set is empty, i.e. has no states set.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if set has no states set, otherwise FALSE.
+//
+func (set *StateSet) IsEmpty() bool {
+	var _arg0 *C.AtkStateSet // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+
+	_cret = C.atk_state_set_is_empty(_arg0)
+	runtime.KeepAlive(set)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// OrSets constructs the union of the two sets.
+//
+// The function takes the following parameters:
+//
+//   - compareSet: another StateSet.
+//
+// The function returns the following values:
+//
+//   - stateSet (optional): new StateSet which is the union of the two sets,
+//     returning NULL is empty.
+//
+func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
+	var _arg0 *C.AtkStateSet // out
+	var _arg1 *C.AtkStateSet // out
+	var _cret *C.AtkStateSet // in
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
+
+	_cret = C.atk_state_set_or_sets(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(compareSet)
+
+	var _stateSet *StateSet // out
+
+	if _cret != nil {
+		_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _stateSet
+}
+
+// RemoveState removes the state for the specified type from the state set.
+//
+// Note that because an StateSet is a read-only object, this method should be
+// used to remove a state to a newly-created set which will then be returned by
+// #atk_object_ref_state_set. It should not be used to modify the existing state
+// of an object. See also #atk_object_notify_state_change.
+//
+// The function takes the following parameters:
+//
+//   - typ: Type.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if type was the state type is in set.
+//
+func (set *StateSet) RemoveState(typ StateType) bool {
+	var _arg0 *C.AtkStateSet // out
+	var _arg1 C.AtkStateType // out
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = C.AtkStateType(typ)
+
+	_cret = C.atk_state_set_remove_state(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(typ)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// XorSets constructs the exclusive-or of the two sets, returning NULL is empty.
+// The set returned by this operation contains the states in exactly one of the
+// two sets.
+//
+// The function takes the following parameters:
+//
+//   - compareSet: another StateSet.
+//
+// The function returns the following values:
+//
+//   - stateSet: new StateSet which contains the states which are in exactly one
+//     of the two sets.
+//
+func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
+	var _arg0 *C.AtkStateSet // out
+	var _arg1 *C.AtkStateSet // out
+	var _cret *C.AtkStateSet // in
+
+	_arg0 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(set).Native()))
+	_arg1 = (*C.AtkStateSet)(unsafe.Pointer(coreglib.InternObject(compareSet).Native()))
+
+	_cret = C.atk_state_set_xor_sets(_arg0, _arg1)
+	runtime.KeepAlive(set)
+	runtime.KeepAlive(compareSet)
+
+	var _stateSet *StateSet // out
+
+	_stateSet = wrapStateSet(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _stateSet
+}
+
+// UtilOverrides contains methods that are overridable.
+type UtilOverrides struct {
+}
+
+func defaultUtilOverrides(v *Util) UtilOverrides {
+	return UtilOverrides{}
+}
+
+// Util: set of ATK utility functions which are used to support event
+// registration of various types, and obtaining the 'root' accessible of a
+// process and information about the current ATK implementation and toolkit
+// version.
+type Util struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*Util)(nil)
+)
+
+func init() {
+	coreglib.RegisterClassInfo[*Util, *UtilClass, UtilOverrides](
+		GTypeUtil,
+		initUtilClass,
+		wrapUtil,
+		defaultUtilOverrides,
+	)
+}
+
+func initUtilClass(gclass unsafe.Pointer, overrides UtilOverrides, classInitFunc func(*UtilClass)) {
+	if classInitFunc != nil {
+		class := (*UtilClass)(gextras.NewStructNative(gclass))
+		classInitFunc(class)
+	}
+}
+
+func wrapUtil(obj *coreglib.Object) *Util {
+	return &Util{
+		Object: obj,
+	}
+}
+
+func marshalUtil(p uintptr) (interface{}, error) {
+	return wrapUtil(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ActionIface interface should be supported by any object that can perform
+// one or more actions. The interface provides the standard mechanism for an
+// assistive technology to determine what those actions are as well as tell the
+// object to perform them. Any object that can be manipulated should support
+// this interface.
+//
+// An instance of this type is always passed by reference.
+type ActionIface struct {
+	*actionIface
+}
+
+// actionIface is the struct that's finalized.
+type actionIface struct {
+	native *C.AtkActionIface
+}
+
+// Attribute is a string name/value pair representing a generic
+// attribute. This can be used to expose additional information from an
+// accessible object as a whole (see atk_object_get_attributes()) or an
+// document (see atk_document_get_attributes()). In the case of text
+// attributes (see atk_text_get_default_attributes()), TextAttribute
+// enum defines all the possible text attribute names. You can use
+// atk_text_attribute_get_name() to get the string name from the enum value.
+// See also atk_text_attribute_for_name() and atk_text_attribute_get_value() for
+// more information.
+//
+// A string name/value pair representing a generic attribute.
+//
+// An instance of this type is always passed by reference.
+type Attribute struct {
+	*attribute
+}
+
+// attribute is the struct that's finalized.
+type attribute struct {
+	native *C.AtkAttribute
+}
+
+// Name: attribute name.
+func (a *Attribute) Name() string {
+	valptr := &a.native.name
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
+}
+
+// Value: value of the attribute, represented as a string.
+func (a *Attribute) Value() string {
+	valptr := &a.native.value
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
+}
+
+// ComponentIface: atkComponent interface should be supported by any object that
+// is rendered on the screen. The interface provides the standard mechanism for
+// an assistive technology to determine and set the graphical representation of
+// an object.
+//
+// An instance of this type is always passed by reference.
+type ComponentIface struct {
+	*componentIface
+}
+
+// componentIface is the struct that's finalized.
+type componentIface struct {
+	native *C.AtkComponentIface
+}
+
+// DocumentIface: instance of this type is always passed by reference.
+type DocumentIface struct {
+	*documentIface
+}
+
+// documentIface is the struct that's finalized.
+type documentIface struct {
+	native *C.AtkDocumentIface
+}
+
+// EditableTextIface: instance of this type is always passed by reference.
+type EditableTextIface struct {
+	*editableTextIface
+}
+
+// editableTextIface is the struct that's finalized.
+type editableTextIface struct {
+	native *C.AtkEditableTextIface
+}
+
+// GObjectAccessibleClass: instance of this type is always passed by reference.
+type GObjectAccessibleClass struct {
+	*gObjectAccessibleClass
+}
+
+// gObjectAccessibleClass is the struct that's finalized.
+type gObjectAccessibleClass struct {
+	native *C.AtkGObjectAccessibleClass
+}
+
+// HyperlinkClass: instance of this type is always passed by reference.
+type HyperlinkClass struct {
+	*hyperlinkClass
+}
+
+// hyperlinkClass is the struct that's finalized.
+type hyperlinkClass struct {
+	native *C.AtkHyperlinkClass
+}
+
+// HyperlinkImplIface: instance of this type is always passed by reference.
+type HyperlinkImplIface struct {
+	*hyperlinkImplIface
+}
+
+// hyperlinkImplIface is the struct that's finalized.
+type hyperlinkImplIface struct {
+	native *C.AtkHyperlinkImplIface
+}
+
+// HypertextIface: instance of this type is always passed by reference.
+type HypertextIface struct {
+	*hypertextIface
+}
+
+// hypertextIface is the struct that's finalized.
+type hypertextIface struct {
+	native *C.AtkHypertextIface
+}
+
+// ImageIface: instance of this type is always passed by reference.
+type ImageIface struct {
+	*imageIface
+}
+
+// imageIface is the struct that's finalized.
+type imageIface struct {
+	native *C.AtkImageIface
+}
+
+// KeyEventStruct encapsulates information about a key event.
+//
+// An instance of this type is always passed by reference.
+type KeyEventStruct struct {
+	*keyEventStruct
+}
+
+// keyEventStruct is the struct that's finalized.
+type keyEventStruct struct {
+	native *C.AtkKeyEventStruct
+}
+
+// Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
+// ATK_KEY_EVENT_RELEASE.
+func (k *KeyEventStruct) Type() int {
+	valptr := &k.native._type
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// State: bitmask representing the state of the modifier keys immediately
+// after the event takes place. The meaning of the bits is currently
+// defined to match the bitmask used by GDK in GdkEventType.state, see
+// http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
+func (k *KeyEventStruct) State() uint {
+	valptr := &k.native.state
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
+}
+
+// Keyval: guint representing a keysym value corresponding to those used by GDK
+// and X11: see /usr/X11/include/keysymdef.h.
+func (k *KeyEventStruct) Keyval() uint {
+	valptr := &k.native.keyval
+	var _v uint // out
+	_v = uint(*valptr)
+	return _v
+}
+
+// Length: length of member #string.
+func (k *KeyEventStruct) Length() int {
+	valptr := &k.native.length
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// String: string containing one of the following: either a string approximating
+// the text that would result from this keypress, if the key is a control or
+// graphic character, or a symbolic name for this keypress. Alphanumeric and
+// printable keys will have the symbolic key name in this string member, for
+// instance "A". "0", "semicolon", "aacute". Keypad keys have the prefix "KP".
+func (k *KeyEventStruct) String() string {
+	valptr := &k.native.string
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
+}
+
+// Keycode: raw hardware code that generated the key event. This field is raraly
+// useful.
+func (k *KeyEventStruct) Keycode() uint16 {
+	valptr := &k.native.keycode
+	var _v uint16 // out
+	_v = uint16(*valptr)
+	return _v
+}
+
+// Timestamp: timestamp in milliseconds indicating when the event occurred.
+// These timestamps are relative to a starting point which should be considered
+// arbitrary, and only used to compare the dispatch times of events to one
+// another.
+func (k *KeyEventStruct) Timestamp() uint32 {
+	valptr := &k.native.timestamp
+	var _v uint32 // out
+	_v = uint32(*valptr)
+	return _v
+}
+
+// Type: atkKeyEventType, generally one of ATK_KEY_EVENT_PRESS or
+// ATK_KEY_EVENT_RELEASE.
+func (k *KeyEventStruct) SetType(typ int) {
+	valptr := &k.native._type
+	*valptr = C.gint(typ)
+}
+
+// State: bitmask representing the state of the modifier keys immediately
+// after the event takes place. The meaning of the bits is currently
+// defined to match the bitmask used by GDK in GdkEventType.state, see
+// http://developer.gnome.org/doc/API/2.0/gdk/gdk-Event-Structures.htmlEventKey.
+func (k *KeyEventStruct) SetState(state uint) {
+	valptr := &k.native.state
+	*valptr = C.guint(state)
+}
+
+// Keyval: guint representing a keysym value corresponding to those used by GDK
+// and X11: see /usr/X11/include/keysymdef.h.
+func (k *KeyEventStruct) SetKeyval(keyval uint) {
+	valptr := &k.native.keyval
+	*valptr = C.guint(keyval)
+}
+
+// Length: length of member #string.
+func (k *KeyEventStruct) SetLength(length int) {
+	valptr := &k.native.length
+	*valptr = C.gint(length)
+}
+
+// Keycode: raw hardware code that generated the key event. This field is raraly
+// useful.
+func (k *KeyEventStruct) SetKeycode(keycode uint16) {
+	valptr := &k.native.keycode
+	*valptr = C.guint16(keycode)
+}
+
+// Timestamp: timestamp in milliseconds indicating when the event occurred.
+// These timestamps are relative to a starting point which should be considered
+// arbitrary, and only used to compare the dispatch times of events to one
+// another.
+func (k *KeyEventStruct) SetTimestamp(timestamp uint32) {
+	valptr := &k.native.timestamp
+	*valptr = C.guint32(timestamp)
+}
+
+// MiscClass: usage of AtkMisc is deprecated since 2.12 and heavily discouraged.
+//
+// An instance of this type is always passed by reference.
+type MiscClass struct {
+	*miscClass
+}
+
+// miscClass is the struct that's finalized.
+type miscClass struct {
+	native *C.AtkMiscClass
+}
+
+func (m *MiscClass) Vfuncs() [32]unsafe.Pointer {
+	valptr := &m.native.vfuncs
+	var _v [32]unsafe.Pointer // out
+	{
+		src := &*valptr
+		for i := 0; i < 32; i++ {
+			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
+		}
+	}
+	return _v
+}
+
+// NoOpObjectClass: instance of this type is always passed by reference.
+type NoOpObjectClass struct {
+	*noOpObjectClass
+}
+
+// noOpObjectClass is the struct that's finalized.
+type noOpObjectClass struct {
+	native *C.AtkNoOpObjectClass
+}
+
+func (n *NoOpObjectClass) ParentClass() *ObjectClass {
+	valptr := &n.native.parent_class
+	var _v *ObjectClass // out
+	_v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
+}
+
+// NoOpObjectFactoryClass: instance of this type is always passed by reference.
+type NoOpObjectFactoryClass struct {
+	*noOpObjectFactoryClass
+}
+
+// noOpObjectFactoryClass is the struct that's finalized.
+type noOpObjectFactoryClass struct {
+	native *C.AtkNoOpObjectFactoryClass
+}
+
+func (n *NoOpObjectFactoryClass) ParentClass() *ObjectFactoryClass {
+	valptr := &n.native.parent_class
+	var _v *ObjectFactoryClass // out
+	_v = (*ObjectFactoryClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
+}
+
+// ObjectClass: instance of this type is always passed by reference.
+type ObjectClass struct {
+	*objectClass
+}
+
+// objectClass is the struct that's finalized.
+type objectClass struct {
+	native *C.AtkObjectClass
+}
+
+// ObjectFactoryClass: instance of this type is always passed by reference.
+type ObjectFactoryClass struct {
+	*objectFactoryClass
+}
+
+// objectFactoryClass is the struct that's finalized.
+type objectFactoryClass struct {
+	native *C.AtkObjectFactoryClass
+}
+
+// PlugClass: instance of this type is always passed by reference.
+type PlugClass struct {
+	*plugClass
+}
+
+// plugClass is the struct that's finalized.
+type plugClass struct {
+	native *C.AtkPlugClass
+}
+
+func (p *PlugClass) ParentClass() *ObjectClass {
+	valptr := &p.native.parent_class
+	var _v *ObjectClass // out
+	_v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
+}
+
+// PropertyValues: note: old_value field of PropertyValues will not contain a
+// valid value. This is a field defined with the purpose of contain the previous
+// value of the property, but is not used anymore.
+//
+// An instance of this type is always passed by reference.
+type PropertyValues struct {
+	*propertyValues
+}
+
+// propertyValues is the struct that's finalized.
+type propertyValues struct {
+	native *C.AtkPropertyValues
+}
+
+// PropertyName: name of the ATK property which has changed.
+func (p *PropertyValues) PropertyName() string {
+	valptr := &p.native.property_name
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
+}
+
+// Range are used on Value, in order to represent the full range of a given
+// component (for example an slider or a range control), or to define each
+// individual subrange this full range is splitted if available. See Value
+// documentation for further details.
+//
+// An instance of this type is always passed by reference.
+type Range struct {
+	*_range
+}
+
+// _range is the struct that's finalized.
+type _range struct {
+	native *C.AtkRange
+}
+
+func marshalRange(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Range{&_range{(*C.AtkRange)(b)}}, nil
+}
+
+// NewRange constructs a struct Range.
+func NewRange(lowerLimit float64, upperLimit float64, description string) *Range {
+	var _arg1 C.gdouble   // out
+	var _arg2 C.gdouble   // out
+	var _arg3 *C.gchar    // out
+	var _cret *C.AtkRange // in
+
+	_arg1 = C.gdouble(lowerLimit)
+	_arg2 = C.gdouble(upperLimit)
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(description)))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	_cret = C.atk_range_new(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(lowerLimit)
+	runtime.KeepAlive(upperLimit)
+	runtime.KeepAlive(description)
+
+	var __range *Range // out
+
+	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(__range)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.atk_range_free((*C.AtkRange)(intern.C))
+		},
+	)
+
+	return __range
+}
+
+// Copy returns a new Range that is a exact copy of src.
+//
+// The function returns the following values:
+//
+//   - _range: new Range copy of src.
+//
+func (src *Range) Copy() *Range {
+	var _arg0 *C.AtkRange // out
+	var _cret *C.AtkRange // in
+
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(src)))
+
+	_cret = C.atk_range_copy(_arg0)
+	runtime.KeepAlive(src)
+
+	var __range *Range // out
+
+	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(__range)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.atk_range_free((*C.AtkRange)(intern.C))
+		},
+	)
+
+	return __range
+}
+
+// Description returns the human readable description of range.
+//
+// The function returns the following values:
+//
+//   - utf8: human-readable description of range.
+//
+func (_range *Range) Description() string {
+	var _arg0 *C.AtkRange // out
+	var _cret *C.gchar    // in
+
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
+
+	_cret = C.atk_range_get_description(_arg0)
+	runtime.KeepAlive(_range)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// LowerLimit returns the lower limit of range.
+//
+// The function returns the following values:
+//
+//   - gdouble: lower limit of range.
+//
+func (_range *Range) LowerLimit() float64 {
+	var _arg0 *C.AtkRange // out
+	var _cret C.gdouble   // in
+
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
+
+	_cret = C.atk_range_get_lower_limit(_arg0)
+	runtime.KeepAlive(_range)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// UpperLimit returns the upper limit of range.
+//
+// The function returns the following values:
+//
+//   - gdouble: upper limit of range.
+//
+func (_range *Range) UpperLimit() float64 {
+	var _arg0 *C.AtkRange // out
+	var _cret C.gdouble   // in
+
+	_arg0 = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
+
+	_cret = C.atk_range_get_upper_limit(_arg0)
+	runtime.KeepAlive(_range)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
+// Rectangle: data structure for holding a rectangle. Those coordinates are
+// relative to the component top-level parent.
+//
+// An instance of this type is always passed by reference.
+type Rectangle struct {
+	*rectangle
+}
+
+// rectangle is the struct that's finalized.
+type rectangle struct {
+	native *C.AtkRectangle
+}
+
+func marshalRectangle(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Rectangle{&rectangle{(*C.AtkRectangle)(b)}}, nil
+}
+
+// NewRectangle creates a new Rectangle instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewRectangle(x, y, width, height int) Rectangle {
+	var f0 C.gint // out
+	f0 = C.gint(x)
+	var f1 C.gint // out
+	f1 = C.gint(y)
+	var f2 C.gint // out
+	f2 = C.gint(width)
+	var f3 C.gint // out
+	f3 = C.gint(height)
+
+	v := C.AtkRectangle{
+		x:      f0,
+		y:      f1,
+		width:  f2,
+		height: f3,
+	}
+
+	return *(*Rectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
+// X coordinate of the left side of the rectangle.
+func (r *Rectangle) X() int {
+	valptr := &r.native.x
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// Y coordinate of the top side of the rectangle.
+func (r *Rectangle) Y() int {
+	valptr := &r.native.y
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// Width: width of the rectangle.
+func (r *Rectangle) Width() int {
+	valptr := &r.native.width
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// Height: height of the rectangle.
+func (r *Rectangle) Height() int {
+	valptr := &r.native.height
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// X coordinate of the left side of the rectangle.
+func (r *Rectangle) SetX(x int) {
+	valptr := &r.native.x
+	*valptr = C.gint(x)
+}
+
+// Y coordinate of the top side of the rectangle.
+func (r *Rectangle) SetY(y int) {
+	valptr := &r.native.y
+	*valptr = C.gint(y)
+}
+
+// Width: width of the rectangle.
+func (r *Rectangle) SetWidth(width int) {
+	valptr := &r.native.width
+	*valptr = C.gint(width)
+}
+
+// Height: height of the rectangle.
+func (r *Rectangle) SetHeight(height int) {
+	valptr := &r.native.height
+	*valptr = C.gint(height)
+}
+
+// RegistryClass: instance of this type is always passed by reference.
+type RegistryClass struct {
+	*registryClass
+}
+
+// registryClass is the struct that's finalized.
+type registryClass struct {
+	native *C.AtkRegistryClass
+}
+
+// RelationClass: instance of this type is always passed by reference.
+type RelationClass struct {
+	*relationClass
+}
+
+// relationClass is the struct that's finalized.
+type relationClass struct {
+	native *C.AtkRelationClass
+}
+
+// RelationSetClass: instance of this type is always passed by reference.
+type RelationSetClass struct {
+	*relationSetClass
+}
+
+// relationSetClass is the struct that's finalized.
+type relationSetClass struct {
+	native *C.AtkRelationSetClass
+}
+
+// SelectionIface: instance of this type is always passed by reference.
+type SelectionIface struct {
+	*selectionIface
+}
+
+// selectionIface is the struct that's finalized.
+type selectionIface struct {
+	native *C.AtkSelectionIface
+}
+
+// SocketClass: instance of this type is always passed by reference.
+type SocketClass struct {
+	*socketClass
+}
+
+// socketClass is the struct that's finalized.
+type socketClass struct {
+	native *C.AtkSocketClass
+}
+
+func (s *SocketClass) ParentClass() *ObjectClass {
+	valptr := &s.native.parent_class
+	var _v *ObjectClass // out
+	_v = (*ObjectClass)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
+}
+
+// StateSetClass: instance of this type is always passed by reference.
+type StateSetClass struct {
+	*stateSetClass
+}
+
+// stateSetClass is the struct that's finalized.
+type stateSetClass struct {
+	native *C.AtkStateSetClass
+}
+
+// StreamableContentIface: instance of this type is always passed by reference.
+type StreamableContentIface struct {
+	*streamableContentIface
+}
+
+// streamableContentIface is the struct that's finalized.
+type streamableContentIface struct {
+	native *C.AtkStreamableContentIface
+}
+
+// TableCellIface: atkTableCell is an interface for cells inside an Table.
+//
+// An instance of this type is always passed by reference.
+type TableCellIface struct {
+	*tableCellIface
+}
+
+// tableCellIface is the struct that's finalized.
+type tableCellIface struct {
+	native *C.AtkTableCellIface
+}
+
+// TableIface: instance of this type is always passed by reference.
+type TableIface struct {
+	*tableIface
+}
+
+// tableIface is the struct that's finalized.
+type tableIface struct {
+	native *C.AtkTableIface
+}
+
+// TextIface: instance of this type is always passed by reference.
+type TextIface struct {
+	*textIface
+}
+
+// textIface is the struct that's finalized.
+type textIface struct {
+	native *C.AtkTextIface
+}
+
+// TextRange: structure used to describe a text range.
+//
+// An instance of this type is always passed by reference.
+type TextRange struct {
+	*textRange
+}
+
+// textRange is the struct that's finalized.
+type textRange struct {
+	native *C.AtkTextRange
+}
+
+func marshalTextRange(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TextRange{&textRange{(*C.AtkTextRange)(b)}}, nil
+}
+
+// Bounds: rectangle giving the bounds of the text range.
+func (t *TextRange) Bounds() *TextRectangle {
+	valptr := &t.native.bounds
+	var _v *TextRectangle // out
+	_v = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer(valptr)))
+	return _v
+}
+
+// StartOffset: start offset of a AtkTextRange.
+func (t *TextRange) StartOffset() int {
+	valptr := &t.native.start_offset
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// EndOffset: end offset of a AtkTextRange.
+func (t *TextRange) EndOffset() int {
+	valptr := &t.native.end_offset
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// Content: text in the text range.
+func (t *TextRange) Content() string {
+	valptr := &t.native.content
+	var _v string // out
+	_v = C.GoString((*C.gchar)(unsafe.Pointer(*valptr)))
+	return _v
+}
+
+// StartOffset: start offset of a AtkTextRange.
+func (t *TextRange) SetStartOffset(startOffset int) {
+	valptr := &t.native.start_offset
+	*valptr = C.gint(startOffset)
+}
+
+// EndOffset: end offset of a AtkTextRange.
+func (t *TextRange) SetEndOffset(endOffset int) {
+	valptr := &t.native.end_offset
+	*valptr = C.gint(endOffset)
+}
+
+// TextRectangle: structure used to store a rectangle used by AtkText.
+//
+// An instance of this type is always passed by reference.
+type TextRectangle struct {
+	*textRectangle
+}
+
+// textRectangle is the struct that's finalized.
+type textRectangle struct {
+	native *C.AtkTextRectangle
+}
+
+// NewTextRectangle creates a new TextRectangle instance from the given
+// fields. Beware that this function allocates on the Go heap; be careful
+// when using it!
+func NewTextRectangle(x, y, width, height int) TextRectangle {
+	var f0 C.gint // out
+	f0 = C.gint(x)
+	var f1 C.gint // out
+	f1 = C.gint(y)
+	var f2 C.gint // out
+	f2 = C.gint(width)
+	var f3 C.gint // out
+	f3 = C.gint(height)
+
+	v := C.AtkTextRectangle{
+		x:      f0,
+		y:      f1,
+		width:  f2,
+		height: f3,
+	}
+
+	return *(*TextRectangle)(gextras.NewStructNative(unsafe.Pointer(&v)))
+}
+
+// X: horizontal coordinate of a rectangle.
+func (t *TextRectangle) X() int {
+	valptr := &t.native.x
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// Y: vertical coordinate of a rectangle.
+func (t *TextRectangle) Y() int {
+	valptr := &t.native.y
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// Width: width of a rectangle.
+func (t *TextRectangle) Width() int {
+	valptr := &t.native.width
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// Height: height of a rectangle.
+func (t *TextRectangle) Height() int {
+	valptr := &t.native.height
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// X: horizontal coordinate of a rectangle.
+func (t *TextRectangle) SetX(x int) {
+	valptr := &t.native.x
+	*valptr = C.gint(x)
+}
+
+// Y: vertical coordinate of a rectangle.
+func (t *TextRectangle) SetY(y int) {
+	valptr := &t.native.y
+	*valptr = C.gint(y)
+}
+
+// Width: width of a rectangle.
+func (t *TextRectangle) SetWidth(width int) {
+	valptr := &t.native.width
+	*valptr = C.gint(width)
+}
+
+// Height: height of a rectangle.
+func (t *TextRectangle) SetHeight(height int) {
+	valptr := &t.native.height
+	*valptr = C.gint(height)
+}
+
+// UtilClass: instance of this type is always passed by reference.
+type UtilClass struct {
+	*utilClass
+}
+
+// utilClass is the struct that's finalized.
+type utilClass struct {
+	native *C.AtkUtilClass
+}
+
+// ValueIface: instance of this type is always passed by reference.
+type ValueIface struct {
+	*valueIface
+}
+
+// valueIface is the struct that's finalized.
+type valueIface struct {
+	native *C.AtkValueIface
+}
+
+// WindowIface: instance of this type is always passed by reference.
+type WindowIface struct {
+	*windowIface
+}
+
+// windowIface is the struct that's finalized.
+type windowIface struct {
+	native *C.AtkWindowIface
+}

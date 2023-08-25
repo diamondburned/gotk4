@@ -163,9 +163,9 @@ func (n *NamespaceGenerator) Pkgconfig() []string {
 func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields, export bool) generators.FileWriter {
 	if n.Generator.Opts.SingleFile || info.Elements == nil {
 		if export {
-			return n.MakeFile(n.PkgName + "_export.go")
+			return n.makeFile(n.PkgName + "_export.go")
 		}
-		return n.MakeFile("")
+		return n.makeFile("")
 	}
 
 	var filename string
@@ -177,9 +177,9 @@ func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields, export bool) genera
 		filename = info.Elements.Doc.Filename
 	default:
 		if export {
-			return n.MakeFile(n.PkgName + "_export.go")
+			return n.makeFile(n.PkgName + "_export.go")
 		}
-		return n.MakeFile("")
+		return n.makeFile("")
 	}
 
 	filename = filepath.Base(filename)
@@ -196,7 +196,7 @@ func (n *NamespaceGenerator) FileWriter(info cmt.InfoFields, export bool) genera
 		filename += "_export"
 	}
 
-	return n.MakeFile(filename + ".go")
+	return n.makeFile(filename + ".go")
 }
 
 // File gets an existing Go file but returns false if no such file exists. It's
@@ -227,6 +227,10 @@ func (n *NamespaceGenerator) MakeFile(filename string) *GoFileGenerator {
 		filename = ""
 	}
 
+	return n.makeFile(filename)
+}
+
+func (n *NamespaceGenerator) makeFile(filename string) *GoFileGenerator {
 	isRoot := filename == n.PkgName+".go"
 
 	if filename == "" {

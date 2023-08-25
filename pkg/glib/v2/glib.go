@@ -4582,78 +4582,14 @@ func (u URIParamsFlags) Has(other URIParamsFlags) bool {
 // first value comes after the second.
 type CompareDataFunc func(a, b unsafe.Pointer) (gint int)
 
-//export _gotk4_glib2_CompareDataFunc
-func _gotk4_glib2_CompareDataFunc(arg1 C.gconstpointer, arg2 C.gconstpointer, arg3 C.gpointer) (cret C.gint) {
-	var fn CompareDataFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(CompareDataFunc)
-	}
-
-	var _a unsafe.Pointer // out
-	var _b unsafe.Pointer // out
-
-	_a = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_b = (unsafe.Pointer)(unsafe.Pointer(arg2))
-
-	gint := fn(_a, _b)
-
-	var _ int
-
-	cret = C.gint(gint)
-
-	return cret
-}
-
 // Func specifies the type of functions passed to g_list_foreach() and
 // g_slist_foreach().
 type Func func(data unsafe.Pointer)
-
-//export _gotk4_glib2_Func
-func _gotk4_glib2_Func(arg1 C.gpointer, arg2 C.gpointer) {
-	var fn Func
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(Func)
-	}
-
-	var _data unsafe.Pointer // out
-
-	_data = (unsafe.Pointer)(unsafe.Pointer(arg1))
-
-	fn(_data)
-}
 
 // HFunc specifies the type of the function passed to g_hash_table_foreach().
 // It is called with each key/value pair, together with the user_data parameter
 // which is passed to g_hash_table_foreach().
 type HFunc func(key, value unsafe.Pointer)
-
-//export _gotk4_glib2_HFunc
-func _gotk4_glib2_HFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) {
-	var fn HFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(HFunc)
-	}
-
-	var _key unsafe.Pointer   // out
-	var _value unsafe.Pointer // out
-
-	_key = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_value = (unsafe.Pointer)(unsafe.Pointer(arg2))
-
-	fn(_key, _value)
-}
 
 // HRFunc specifies the type of the function passed to
 // g_hash_table_foreach_remove(). It is called with each
@@ -4661,34 +4597,6 @@ func _gotk4_glib2_HFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) {
 // g_hash_table_foreach_remove(). It should return TRUE if the key/value pair
 // should be removed from the Table.
 type HRFunc func(key, value unsafe.Pointer) (ok bool)
-
-//export _gotk4_glib2_HRFunc
-func _gotk4_glib2_HRFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) (cret C.gboolean) {
-	var fn HRFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(HRFunc)
-	}
-
-	var _key unsafe.Pointer   // out
-	var _value unsafe.Pointer // out
-
-	_key = (unsafe.Pointer)(unsafe.Pointer(arg1))
-	_value = (unsafe.Pointer)(unsafe.Pointer(arg2))
-
-	ok := fn(_key, _value)
-
-	var _ bool
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 // LogFunc specifies the prototype of log handler functions.
 //
@@ -4701,28 +4609,6 @@ func _gotk4_glib2_HRFunc(arg1 C.gpointer, arg2 C.gpointer, arg3 C.gpointer) (cre
 // This is not used if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
-
-//export _gotk4_glib2_LogFunc
-func _gotk4_glib2_LogFunc(arg1 *C.gchar, arg2 C.GLogLevelFlags, arg3 *C.gchar, arg4 C.gpointer) {
-	var fn LogFunc
-	{
-		v := gbox.Get(uintptr(arg4))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(LogFunc)
-	}
-
-	var _logDomain string       // out
-	var _logLevel LogLevelFlags // out
-	var _message string         // out
-
-	_logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_logLevel = LogLevelFlags(arg2)
-	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-
-	fn(_logDomain, _logLevel, _message)
-}
 
 // LogWriterFunc: writer function for log entries. A log entry is a collection
 // of one or more Fields, using the standard [field names from journal
@@ -4744,38 +4630,6 @@ func _gotk4_glib2_LogFunc(arg1 *C.gchar, arg2 C.GLogLevelFlags, arg3 *C.gchar, a
 // chained and fall back to simpler handlers in case of failure.
 type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
 
-//export _gotk4_glib2_LogWriterFunc
-func _gotk4_glib2_LogWriterFunc(arg1 C.GLogLevelFlags, arg2 *C.GLogField, arg3 C.gsize, arg4 C.gpointer) (cret C.GLogWriterOutput) {
-	var fn LogWriterFunc
-	{
-		v := gbox.Get(uintptr(arg4))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(LogWriterFunc)
-	}
-
-	var _logLevel LogLevelFlags // out
-	var _fields []LogField      // out
-
-	_logLevel = LogLevelFlags(arg1)
-	{
-		src := unsafe.Slice((*C.GLogField)(arg2), arg3)
-		_fields = make([]LogField, arg3)
-		for i := 0; i < int(arg3); i++ {
-			_fields[i] = *(*LogField)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-		}
-	}
-
-	logWriterOutput := fn(_logLevel, _fields)
-
-	var _ LogWriterOutput
-
-	cret = C.GLogWriterOutput(logWriterOutput)
-
-	return cret
-}
-
 // SourceFunc specifies the type of function passed to g_timeout_add(),
 // g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
 //
@@ -4783,28 +4637,6 @@ func _gotk4_glib2_LogWriterFunc(arg1 C.GLogLevelFlags, arg2 *C.GLogField, arg3 C
 // different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
 // incompatible function types.
 type SourceFunc func() (ok bool)
-
-//export _gotk4_glib2_SourceFunc
-func _gotk4_glib2_SourceFunc(arg1 C.gpointer) (cret C.gboolean) {
-	var fn SourceFunc
-	{
-		v := gbox.Get(uintptr(arg1))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(SourceFunc)
-	}
-
-	ok := fn()
-
-	var _ bool
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 // SpawnChildSetupFunc specifies the type of the setup function passed to
 // g_spawn_async(), g_spawn_sync() and g_spawn_async_with_pipes(), which can,
@@ -4833,20 +4665,6 @@ func _gotk4_glib2_SourceFunc(arg1 C.gpointer) (cret C.gboolean) {
 // g_get_environ(), g_environ_setenv(), and g_environ_unsetenv(), and then pass
 // the complete environment list to the g_spawn... function.
 type SpawnChildSetupFunc func()
-
-//export _gotk4_glib2_SpawnChildSetupFunc
-func _gotk4_glib2_SpawnChildSetupFunc(arg1 C.gpointer) {
-	var fn SpawnChildSetupFunc
-	{
-		v := gbox.Get(uintptr(arg1))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(SpawnChildSetupFunc)
-	}
-
-	fn()
-}
 
 // The function takes the following parameters:
 //

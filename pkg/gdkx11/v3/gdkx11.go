@@ -984,22 +984,6 @@ func (screen *X11Screen) WindowManagerName() string {
 	return _utf8
 }
 
-//export _gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged
-func _gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
 type X11Visual struct {
 	_ [0]func() // equal guard
 	gdk.Visual

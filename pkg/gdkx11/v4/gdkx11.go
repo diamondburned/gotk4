@@ -737,34 +737,6 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 	return _encoding, _format, _ctext, _ok
 }
 
-//export _gotk4_gdkx114_X11Display_ConnectXevent
-func _gotk4_gdkx114_X11Display_ConnectXevent(arg0 C.gpointer, arg1 C.gpointer, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(xevent unsafe.Pointer) (ok bool)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(xevent unsafe.Pointer) (ok bool))
-	}
-
-	var _xevent unsafe.Pointer // out
-
-	_xevent = (unsafe.Pointer)(unsafe.Pointer(arg1))
-
-	ok := f(_xevent)
-
-	var _ bool
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 // X11DisplayOpen tries to open a new display to the X server given by
 // display_name. If opening the display fails, NULL is returned.
 //
@@ -1075,22 +1047,6 @@ func (screen *X11Screen) SupportsNetWmHint(propertyName string) bool {
 	}
 
 	return _ok
-}
-
-//export _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged
-func _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
 }
 
 type X11Surface struct {

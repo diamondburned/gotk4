@@ -387,26 +387,6 @@ func (p PixbufFormatFlags) Has(other PixbufFormatFlags) bool {
 // linkend="GdkPixbufLoader-area-prepared">area_prepared</link>" signal.
 type PixbufModulePreparedFunc func(pixbuf *Pixbuf, anim *PixbufAnimation)
 
-//export _gotk4_gdkpixbuf2_PixbufModulePreparedFunc
-func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg1 *C.GdkPixbuf, arg2 *C.GdkPixbufAnimation, arg3 C.gpointer) {
-	var fn PixbufModulePreparedFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(PixbufModulePreparedFunc)
-	}
-
-	var _pixbuf *Pixbuf        // out
-	var _anim *PixbufAnimation // out
-
-	_pixbuf = wrapPixbuf(coreglib.Take(unsafe.Pointer(arg1)))
-	_anim = wrapPixbufAnimation(coreglib.Take(unsafe.Pointer(arg2)))
-
-	fn(_pixbuf, _anim)
-}
-
 // PixbufModuleSizeFunc defines the type of the function that gets called once
 // the size of the loaded image is known.
 //
@@ -422,58 +402,12 @@ func _gotk4_gdkpixbuf2_PixbufModulePreparedFunc(arg1 *C.GdkPixbuf, arg2 *C.GdkPi
 // efficiently.
 type PixbufModuleSizeFunc func(width, height *int)
 
-//export _gotk4_gdkpixbuf2_PixbufModuleSizeFunc
-func _gotk4_gdkpixbuf2_PixbufModuleSizeFunc(arg1 *C.gint, arg2 *C.gint, arg3 C.gpointer) {
-	var fn PixbufModuleSizeFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(PixbufModuleSizeFunc)
-	}
-
-	var _width *int  // out
-	var _height *int // out
-
-	_width = (*int)(unsafe.Pointer(arg1))
-	_height = (*int)(unsafe.Pointer(arg2))
-
-	fn(_width, _height)
-}
-
 // PixbufModuleUpdatedFunc defines the type of the function that gets called
 // every time a region of pixbuf is updated.
 //
 // PixbufLoader uses a function of this type to emit the "<link
 // linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
 type PixbufModuleUpdatedFunc func(pixbuf *Pixbuf, x, y, width, height int)
-
-//export _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc
-func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg1 *C.GdkPixbuf, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int, arg6 C.gpointer) {
-	var fn PixbufModuleUpdatedFunc
-	{
-		v := gbox.Get(uintptr(arg6))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(PixbufModuleUpdatedFunc)
-	}
-
-	var _pixbuf *Pixbuf // out
-	var _x int          // out
-	var _y int          // out
-	var _width int      // out
-	var _height int     // out
-
-	_pixbuf = wrapPixbuf(coreglib.Take(unsafe.Pointer(arg1)))
-	_x = int(arg2)
-	_y = int(arg3)
-	_width = int(arg4)
-	_height = int(arg5)
-
-	fn(_pixbuf, _x, _y, _width, _height)
-}
 
 // PixbufSaveFunc: save functions used by gdkpixbuf.Pixbuf.SaveToCallback().
 //
@@ -484,37 +418,6 @@ func _gotk4_gdkpixbuf2_PixbufModuleUpdatedFunc(arg1 *C.GdkPixbuf, arg2 C.int, ar
 // and return FALSE, in which case gdk_pixbuf_save_to_callback() will fail with
 // the same error.
 type PixbufSaveFunc func(buf []byte) (err error, ok bool)
-
-//export _gotk4_gdkpixbuf2_PixbufSaveFunc
-func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg1 *C.gchar, arg2 C.gsize, arg3 **C.GError, arg4 C.gpointer) (cret C.gboolean) {
-	var fn PixbufSaveFunc
-	{
-		v := gbox.Get(uintptr(arg4))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(PixbufSaveFunc)
-	}
-
-	var _buf []byte // out
-
-	_buf = make([]byte, arg2)
-	copy(_buf, unsafe.Slice((*byte)(unsafe.Pointer(arg1)), arg2))
-
-	err, ok := fn(_buf)
-
-	var _ error
-	var _ bool
-
-	if err != nil && arg3 != nil {
-		*arg3 = (*C.GError)(gerror.New(err))
-	}
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
 
 // Pixbuf: pixel buffer.
 //
@@ -4305,146 +4208,6 @@ func (loader *PixbufLoader) sizePrepared(width, height int) {
 	runtime.KeepAlive(loader)
 	runtime.KeepAlive(width)
 	runtime.KeepAlive(height)
-}
-
-//export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared
-func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(arg0 *C.GdkPixbufLoader) {
-	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
-	if overrides.AreaPrepared == nil {
-		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.AreaPrepared, got none")
-	}
-
-	overrides.AreaPrepared()
-}
-
-//export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated
-func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
-	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
-	if overrides.AreaUpdated == nil {
-		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.AreaUpdated, got none")
-	}
-
-	var _x int      // out
-	var _y int      // out
-	var _width int  // out
-	var _height int // out
-
-	_x = int(arg1)
-	_y = int(arg2)
-	_width = int(arg3)
-	_height = int(arg4)
-
-	overrides.AreaUpdated(_x, _y, _width, _height)
-}
-
-//export _gotk4_gdkpixbuf2_PixbufLoaderClass_closed
-func _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(arg0 *C.GdkPixbufLoader) {
-	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
-	if overrides.Closed == nil {
-		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.Closed, got none")
-	}
-
-	overrides.Closed()
-}
-
-//export _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared
-func _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int) {
-	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
-	if overrides.SizePrepared == nil {
-		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.SizePrepared, got none")
-	}
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	overrides.SizePrepared(_width, _height)
-}
-
-//export _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaPrepared
-func _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaPrepared(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
-//export _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated
-func _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.gint, arg5 C.guintptr) {
-	var f func(x, y, width, height int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(x, y, width, height int))
-	}
-
-	var _x int      // out
-	var _y int      // out
-	var _width int  // out
-	var _height int // out
-
-	_x = int(arg1)
-	_y = int(arg2)
-	_width = int(arg3)
-	_height = int(arg4)
-
-	f(_x, _y, _width, _height)
-}
-
-//export _gotk4_gdkpixbuf2_PixbufLoader_ConnectClosed
-func _gotk4_gdkpixbuf2_PixbufLoader_ConnectClosed(arg0 C.gpointer, arg1 C.guintptr) {
-	var f func()
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func())
-	}
-
-	f()
-}
-
-//export _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared
-func _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
-	var f func(width, height int)
-	{
-		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
-		if closure == nil {
-			panic("given unknown closure user_data")
-		}
-		defer closure.TryRepanic()
-
-		f = closure.Func.(func(width, height int))
-	}
-
-	var _width int  // out
-	var _height int // out
-
-	_width = int(arg1)
-	_height = int(arg2)
-
-	f(_width, _height)
 }
 
 // PixbufSimpleAnim: opaque struct representing a simple animation.

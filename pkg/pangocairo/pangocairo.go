@@ -40,34 +40,6 @@ func init() {
 // PANGO_ATTR_SHAPE with Pango's Cairo renderer.
 type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool)
 
-//export _gotk4_pangocairo1_ShapeRendererFunc
-func _gotk4_pangocairo1_ShapeRendererFunc(arg1 *C.cairo_t, arg2 *C.PangoAttrShape, arg3 C.gboolean, arg4 C.gpointer) {
-	var fn ShapeRendererFunc
-	{
-		v := gbox.Get(uintptr(arg4))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(ShapeRendererFunc)
-	}
-
-	var _cr *cairo.Context     // out
-	var _attr *pango.AttrShape // out
-	var _doPath bool           // out
-
-	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
-	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
-	_attr = (*pango.AttrShape)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	if arg3 != 0 {
-		_doPath = true
-	}
-
-	fn(_cr, _attr, _doPath)
-}
-
 // ContextGetFontOptions retrieves any font rendering options previously set
 // with pangocairo.ContextSetFontOptions().
 //

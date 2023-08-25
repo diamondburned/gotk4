@@ -572,28 +572,6 @@ func (t TransformCategory) String() string {
 // node deserialization.
 type ParseErrorFunc func(start, end *ParseLocation, err error)
 
-//export _gotk4_gsk4_ParseErrorFunc
-func _gotk4_gsk4_ParseErrorFunc(arg1 *C.GskParseLocation, arg2 *C.GskParseLocation, arg3 *C.GError, arg4 C.gpointer) {
-	var fn ParseErrorFunc
-	{
-		v := gbox.Get(uintptr(arg4))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(ParseErrorFunc)
-	}
-
-	var _start *ParseLocation // out
-	var _end *ParseLocation   // out
-	var _err error            // out
-
-	_start = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_end = (*ParseLocation)(gextras.NewStructNative(unsafe.Pointer(arg2)))
-	_err = gerror.Take(unsafe.Pointer(arg3))
-
-	fn(_start, _end, _err)
-}
-
 // BlendNode: render node applying a blending function between its two child
 // nodes.
 type BlendNode struct {

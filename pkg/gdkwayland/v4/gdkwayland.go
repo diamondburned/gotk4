@@ -55,26 +55,6 @@ func init() {
 // surfaces as transient for out-of-process surfaces.
 type WaylandToplevelExported func(toplevel *WaylandToplevel, handle string)
 
-//export _gotk4_gdkwayland4_WaylandToplevelExported
-func _gotk4_gdkwayland4_WaylandToplevelExported(arg1 *C.GdkToplevel, arg2 *C.char, arg3 C.gpointer) {
-	var fn WaylandToplevelExported
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(WaylandToplevelExported)
-	}
-
-	var _toplevel *WaylandToplevel // out
-	var _handle string             // out
-
-	_toplevel = wrapWaylandToplevel(coreglib.Take(unsafe.Pointer(arg1)))
-	_handle = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-
-	fn(_toplevel, _handle)
-}
-
 // WaylandDevice: wayland implementation of GdkDevice.
 //
 // Beyond the regular gdk.Device API, the Wayland implementation

@@ -135,6 +135,8 @@ var Preprocessors = []Preprocessor{
 	TypeRenamer("GLib-2.file_test", "test_file"),
 	// This collides with Native().
 	TypeRenamer("Gtk-4.Native", "NativeSurface"),
+	// This collides with Editable()
+	TypeRenamer("Gtk-4.Editable", "EditableTextWidget"),
 	// These collide with structs of the same names.
 	RenameEnumMembers("Pango-1.AttrType", "ATTR_(.*)", "ATTR_TYPE_$1"),
 	RenameEnumMembers("Gsk-4.RenderNodeType", ".*", "${0}_TYPE"),

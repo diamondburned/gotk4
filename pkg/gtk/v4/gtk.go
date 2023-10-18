@@ -359,8 +359,8 @@ import (
 // extern void _gotk4_gtk4_EntryBufferClass_inserted_text(GtkEntryBuffer*, guint, char*, guint);
 // extern void _gotk4_gtk4_EntryBufferClass_deleted_text(GtkEntryBuffer*, guint, guint);
 // extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk4_Editable_ConnectDeleteText(gpointer, gint, gint, guintptr);
-// extern void _gotk4_gtk4_Editable_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_EditableTextWidget_ConnectDeleteText(gpointer, gint, gint, guintptr);
+// extern void _gotk4_gtk4_EditableTextWidget_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
 // extern void _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(gpointer, GdkDrop*, guintptr);
 // extern void _gotk4_gtk4_DropControllerMotion_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
@@ -632,7 +632,7 @@ import (
 // GtkCellEditable* _gotk4_gtk4_CellRenderer_virtual_start_editing(void* fnptr, GtkCellRenderer* arg0, GdkEvent* arg1, GtkWidget* arg2, char* arg3, GdkRectangle* arg4, GdkRectangle* arg5, GtkCellRendererState arg6) {
 //   return ((GtkCellEditable* (*)(GtkCellRenderer*, GdkEvent*, GtkWidget*, char*, GdkRectangle*, GdkRectangle*, GtkCellRendererState))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 // };
-// GtkEditable* _gotk4_gtk4_Editable_virtual_get_delegate(void* fnptr, GtkEditable* arg0) {
+// GtkEditable* _gotk4_gtk4_EditableTextWidget_virtual_get_delegate(void* fnptr, GtkEditable* arg0) {
 //   return ((GtkEditable* (*)(GtkEditable*))(fnptr))(arg0);
 // };
 // GtkFilterMatch _gotk4_gtk4_Filter_virtual_get_strictness(void* fnptr, GtkFilter* arg0) {
@@ -689,7 +689,7 @@ import (
 // char* _gotk4_gtk4_ComboBox_virtual_format_entry_text(void* fnptr, GtkComboBox* arg0, char* arg1) {
 //   return ((char* (*)(GtkComboBox*, char*))(fnptr))(arg0, arg1);
 // };
-// char* _gotk4_gtk4_Editable_virtual_get_text(void* fnptr, GtkEditable* arg0) {
+// char* _gotk4_gtk4_EditableTextWidget_virtual_get_text(void* fnptr, GtkEditable* arg0) {
 //   return ((char* (*)(GtkEditable*))(fnptr))(arg0);
 // };
 // char* _gotk4_gtk4_EntryBuffer_virtual_get_text(void* fnptr, GtkEntryBuffer* arg0, gsize* arg1) {
@@ -710,7 +710,7 @@ import (
 // gboolean _gotk4_gtk4_CellRenderer_virtual_activate(void* fnptr, GtkCellRenderer* arg0, GdkEvent* arg1, GtkWidget* arg2, char* arg3, GdkRectangle* arg4, GdkRectangle* arg5, GtkCellRendererState arg6) {
 //   return ((gboolean (*)(GtkCellRenderer*, GdkEvent*, GtkWidget*, char*, GdkRectangle*, GdkRectangle*, GtkCellRendererState))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 // };
-// gboolean _gotk4_gtk4_Editable_virtual_get_selection_bounds(void* fnptr, GtkEditable* arg0, int* arg1, int* arg2) {
+// gboolean _gotk4_gtk4_EditableTextWidget_virtual_get_selection_bounds(void* fnptr, GtkEditable* arg0, int* arg1, int* arg2) {
 //   return ((gboolean (*)(GtkEditable*, int*, int*))(fnptr))(arg0, arg1, arg2);
 // };
 // gboolean _gotk4_gtk4_Filter_virtual_match(void* fnptr, GtkFilter* arg0, gpointer arg1) {
@@ -1067,16 +1067,16 @@ import (
 // void _gotk4_gtk4_DrawingArea_virtual_resize(void* fnptr, GtkDrawingArea* arg0, int arg1, int arg2) {
 //   ((void (*)(GtkDrawingArea*, int, int))(fnptr))(arg0, arg1, arg2);
 // };
-// void _gotk4_gtk4_Editable_virtual_changed(void* fnptr, GtkEditable* arg0) {
+// void _gotk4_gtk4_EditableTextWidget_virtual_changed(void* fnptr, GtkEditable* arg0) {
 //   ((void (*)(GtkEditable*))(fnptr))(arg0);
 // };
-// void _gotk4_gtk4_Editable_virtual_delete_text(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
+// void _gotk4_gtk4_EditableTextWidget_virtual_delete_text(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
 //   ((void (*)(GtkEditable*, int, int))(fnptr))(arg0, arg1, arg2);
 // };
-// void _gotk4_gtk4_Editable_virtual_do_delete_text(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
+// void _gotk4_gtk4_EditableTextWidget_virtual_do_delete_text(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
 //   ((void (*)(GtkEditable*, int, int))(fnptr))(arg0, arg1, arg2);
 // };
-// void _gotk4_gtk4_Editable_virtual_set_selection_bounds(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
+// void _gotk4_gtk4_EditableTextWidget_virtual_set_selection_bounds(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
 //   ((void (*)(GtkEditable*, int, int))(fnptr))(arg0, arg1, arg2);
 // };
 // void _gotk4_gtk4_EntryBuffer_virtual_deleted_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, guint arg2) {
@@ -1571,7 +1571,7 @@ var (
 	GTypeCellLayout                 = coreglib.Type(C.gtk_cell_layout_get_type())
 	GTypeColorChooser               = coreglib.Type(C.gtk_color_chooser_get_type())
 	GTypeConstraintTarget           = coreglib.Type(C.gtk_constraint_target_get_type())
-	GTypeEditable                   = coreglib.Type(C.gtk_editable_get_type())
+	GTypeEditableTextWidget         = coreglib.Type(C.gtk_editable_get_type())
 	GTypeFileChooser                = coreglib.Type(C.gtk_file_chooser_get_type())
 	GTypeFontChooser                = coreglib.Type(C.gtk_font_chooser_get_type())
 	GTypeNativeSurface              = coreglib.Type(C.gtk_native_get_type())
@@ -1961,7 +1961,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeCellLayout, F: marshalCellLayout},
 		coreglib.TypeMarshaler{T: GTypeColorChooser, F: marshalColorChooser},
 		coreglib.TypeMarshaler{T: GTypeConstraintTarget, F: marshalConstraintTarget},
-		coreglib.TypeMarshaler{T: GTypeEditable, F: marshalEditable},
+		coreglib.TypeMarshaler{T: GTypeEditableTextWidget, F: marshalEditableTextWidget},
 		coreglib.TypeMarshaler{T: GTypeFileChooser, F: marshalFileChooser},
 		coreglib.TypeMarshaler{T: GTypeFontChooser, F: marshalFontChooser},
 		coreglib.TypeMarshaler{T: GTypeNativeSurface, F: marshalNativeSurface},
@@ -12647,7 +12647,7 @@ func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 	return obj.baseConstraintTarget()
 }
 
-// Editable: GtkEditable is an interface for text editing widgets.
+// EditableTextWidget: GtkEditable is an interface for text editing widgets.
 //
 // Typical examples of editable widgets are gtk.Entry and gtk.SpinButton.
 // It contains functions for generically manipulating an editable widget,
@@ -12763,19 +12763,21 @@ func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 // gtk.Editable::delete-text signals, you will need to connect to them on the
 // delegate obtained via gtk.Editable.GetDelegate().
 //
-// Editable wraps an interface. This means the user can get the
+// This type has been renamed from Editable.
+//
+// EditableTextWidget wraps an interface. This means the user can get the
 // underlying type by calling Cast().
-type Editable struct {
+type EditableTextWidget struct {
 	_ [0]func() // equal guard
 	Widget
 }
 
 var (
-	_ Widgetter = (*Editable)(nil)
+	_ Widgetter = (*EditableTextWidget)(nil)
 )
 
-// Editabler describes Editable's interface methods.
-type Editabler interface {
+// EditableTextWidgetter describes EditableTextWidget's interface methods.
+type EditableTextWidgetter interface {
 	coreglib.Objector
 
 	// DeleteSelection deletes the currently selected text of the editable.
@@ -12790,7 +12792,7 @@ type Editabler interface {
 	Chars(startPos, endPos int) string
 	// Delegate gets the GtkEditable that editable is delegating its
 	// implementation to.
-	Delegate() *Editable
+	Delegate() *EditableTextWidget
 	// Editable retrieves whether editable is editable.
 	Editable() bool
 	// EnableUndo gets if undo/redo actions are enabled for editable.
@@ -12838,10 +12840,10 @@ type Editabler interface {
 	ConnectDeleteText(func(startPos, endPos int)) coreglib.SignalHandle
 }
 
-var _ Editabler = (*Editable)(nil)
+var _ EditableTextWidgetter = (*EditableTextWidget)(nil)
 
-func wrapEditable(obj *coreglib.Object) *Editable {
-	return &Editable{
+func wrapEditableTextWidget(obj *coreglib.Object) *EditableTextWidget {
+	return &EditableTextWidget{
 		Widget: Widget{
 			InitiallyUnowned: coreglib.InitiallyUnowned{
 				Object: obj,
@@ -12860,8 +12862,8 @@ func wrapEditable(obj *coreglib.Object) *Editable {
 	}
 }
 
-func marshalEditable(p uintptr) (interface{}, error) {
-	return wrapEditable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+func marshalEditableTextWidget(p uintptr) (interface{}, error) {
+	return wrapEditableTextWidget(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
 // ConnectChanged is emitted at the end of a single user-visible operation on
@@ -12871,8 +12873,8 @@ func marshalEditable(p uintptr) (interface{}, error) {
 // cause only one signal emission (even though it is implemented by first
 // deleting the selection, then inserting the new content, and may cause
 // multiple ::notify::text signals to be emitted).
-func (editable *Editable) ConnectChanged(f func()) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(editable, "changed", false, unsafe.Pointer(C._gotk4_gtk4_Editable_ConnectChanged), f)
+func (editable *EditableTextWidget) ConnectChanged(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(editable, "changed", false, unsafe.Pointer(C._gotk4_gtk4_EditableTextWidget_ConnectChanged), f)
 }
 
 // ConnectDeleteText is emitted when text is deleted from the widget by the
@@ -12885,14 +12887,14 @@ func (editable *Editable) ConnectChanged(f func()) coreglib.SignalHandle {
 //
 // The start_pos and end_pos parameters are interpreted as for
 // gtk.Editable.DeleteText().
-func (editable *Editable) ConnectDeleteText(f func(startPos, endPos int)) coreglib.SignalHandle {
-	return coreglib.ConnectGeneratedClosure(editable, "delete-text", false, unsafe.Pointer(C._gotk4_gtk4_Editable_ConnectDeleteText), f)
+func (editable *EditableTextWidget) ConnectDeleteText(f func(startPos, endPos int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(editable, "delete-text", false, unsafe.Pointer(C._gotk4_gtk4_EditableTextWidget_ConnectDeleteText), f)
 }
 
 // DeleteSelection deletes the currently selected text of the editable.
 //
 // This call doesn’t do anything if there is no selected text.
-func (editable *Editable) DeleteSelection() {
+func (editable *EditableTextWidget) DeleteSelection() {
 	var _arg0 *C.GtkEditable // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
@@ -12914,7 +12916,7 @@ func (editable *Editable) DeleteSelection() {
 //   - startPos: start position.
 //   - endPos: end position.
 //
-func (editable *Editable) DeleteText(startPos, endPos int) {
+func (editable *EditableTextWidget) DeleteText(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -12933,7 +12935,7 @@ func (editable *Editable) DeleteText(startPos, endPos int) {
 //
 // This is a helper function that should be called from dispose, before removing
 // the delegate object.
-func (editable *Editable) FinishDelegate() {
+func (editable *EditableTextWidget) FinishDelegate() {
 	var _arg0 *C.GtkEditable // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
@@ -12948,7 +12950,7 @@ func (editable *Editable) FinishDelegate() {
 //
 //   - gfloat: alignment.
 //
-func (editable *Editable) Alignment() float32 {
+func (editable *EditableTextWidget) Alignment() float32 {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.float        // in
 
@@ -12984,7 +12986,7 @@ func (editable *Editable) Alignment() float32 {
 //     allocated by the GtkEditable implementation and should be freed by the
 //     caller.
 //
-func (editable *Editable) Chars(startPos, endPos int) string {
+func (editable *EditableTextWidget) Chars(startPos, endPos int) string {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -13016,7 +13018,7 @@ func (editable *Editable) Chars(startPos, endPos int) string {
 //
 //   - ret (optional): delegate GtkEditable.
 //
-func (editable *Editable) Delegate() *Editable {
+func (editable *EditableTextWidget) Delegate() *EditableTextWidget {
 	var _arg0 *C.GtkEditable // out
 	var _cret *C.GtkEditable // in
 
@@ -13025,10 +13027,10 @@ func (editable *Editable) Delegate() *Editable {
 	_cret = C.gtk_editable_get_delegate(_arg0)
 	runtime.KeepAlive(editable)
 
-	var _ret *Editable // out
+	var _ret *EditableTextWidget // out
 
 	if _cret != nil {
-		_ret = wrapEditable(coreglib.Take(unsafe.Pointer(_cret)))
+		_ret = wrapEditableTextWidget(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _ret
@@ -13040,7 +13042,7 @@ func (editable *Editable) Delegate() *Editable {
 //
 //   - ok: TRUE if editable is editable.
 //
-func (editable *Editable) Editable() bool {
+func (editable *EditableTextWidget) Editable() bool {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gboolean     // in
 
@@ -13064,7 +13066,7 @@ func (editable *Editable) Editable() bool {
 //
 //   - ok: TRUE if undo is enabled.
 //
-func (editable *Editable) EnableUndo() bool {
+func (editable *EditableTextWidget) EnableUndo() bool {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.gboolean     // in
 
@@ -13088,7 +13090,7 @@ func (editable *Editable) EnableUndo() bool {
 //
 //   - gint: maximum width of the entry, in characters.
 //
-func (editable *Editable) MaxWidthChars() int {
+func (editable *EditableTextWidget) MaxWidthChars() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
 
@@ -13113,7 +13115,7 @@ func (editable *Editable) MaxWidthChars() int {
 //
 //   - gint: cursor position.
 //
-func (editable *Editable) Position() int {
+func (editable *EditableTextWidget) Position() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
 
@@ -13143,7 +13145,7 @@ func (editable *Editable) Position() int {
 //   - endPos (optional): location to store the end position, or NULL.
 //   - ok: TRUE if there is a non-empty selection, FALSE otherwise.
 //
-func (editable *Editable) SelectionBounds() (startPos, endPos int, ok bool) {
+func (editable *EditableTextWidget) SelectionBounds() (startPos, endPos int, ok bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // in
 	var _arg2 C.int          // in
@@ -13175,7 +13177,7 @@ func (editable *Editable) SelectionBounds() (startPos, endPos int, ok bool) {
 //
 //   - utf8: pointer to the contents of the editable.
 //
-func (editable *Editable) Text() string {
+func (editable *EditableTextWidget) Text() string {
 	var _arg0 *C.GtkEditable // out
 	var _cret *C.char        // in
 
@@ -13198,7 +13200,7 @@ func (editable *Editable) Text() string {
 //
 //   - gint: number of chars to request space for, or negative if unset.
 //
-func (editable *Editable) WidthChars() int {
+func (editable *EditableTextWidget) WidthChars() int {
 	var _arg0 *C.GtkEditable // out
 	var _cret C.int          // in
 
@@ -13221,7 +13223,7 @@ func (editable *Editable) WidthChars() int {
 //
 // This is a helper function that should be called in instance init, after
 // creating the delegate object.
-func (editable *Editable) InitDelegate() {
+func (editable *EditableTextWidget) InitDelegate() {
 	var _arg0 *C.GtkEditable // out
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
@@ -13244,7 +13246,7 @@ func (editable *Editable) InitDelegate() {
 //   - startPos: start of region.
 //   - endPos: end of region.
 //
-func (editable *Editable) SelectRegion(startPos, endPos int) {
+func (editable *EditableTextWidget) SelectRegion(startPos, endPos int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 	var _arg2 C.int          // out
@@ -13269,7 +13271,7 @@ func (editable *Editable) SelectRegion(startPos, endPos int) {
 //   - xalign: horizontal alignment, from 0 (left) to 1 (right). Reversed for
 //     RTL layouts.
 //
-func (editable *Editable) SetAlignment(xalign float32) {
+func (editable *EditableTextWidget) SetAlignment(xalign float32) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.float        // out
 
@@ -13287,7 +13289,7 @@ func (editable *Editable) SetAlignment(xalign float32) {
 //
 //   - isEditable: TRUE if the user is allowed to edit the text in the widget.
 //
-func (editable *Editable) SetEditable(isEditable bool) {
+func (editable *EditableTextWidget) SetEditable(isEditable bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gboolean     // out
 
@@ -13312,7 +13314,7 @@ func (editable *Editable) SetEditable(isEditable bool) {
 //
 //   - enableUndo: if undo/redo should be enabled.
 //
-func (editable *Editable) SetEnableUndo(enableUndo bool) {
+func (editable *EditableTextWidget) SetEnableUndo(enableUndo bool) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.gboolean     // out
 
@@ -13332,7 +13334,7 @@ func (editable *Editable) SetEnableUndo(enableUndo bool) {
 //
 //   - nChars: new desired maximum width, in characters.
 //
-func (editable *Editable) SetMaxWidthChars(nChars int) {
+func (editable *EditableTextWidget) SetMaxWidthChars(nChars int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 
@@ -13356,7 +13358,7 @@ func (editable *Editable) SetMaxWidthChars(nChars int) {
 //
 //   - position of the cursor.
 //
-func (editable *Editable) SetPosition(position int) {
+func (editable *EditableTextWidget) SetPosition(position int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 
@@ -13376,7 +13378,7 @@ func (editable *Editable) SetPosition(position int) {
 //
 //   - text to set.
 //
-func (editable *Editable) SetText(text string) {
+func (editable *EditableTextWidget) SetText(text string) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 *C.char        // out
 
@@ -13400,7 +13402,7 @@ func (editable *Editable) SetText(text string) {
 //
 //   - nChars: width in chars.
 //
-func (editable *Editable) SetWidthChars(nChars int) {
+func (editable *EditableTextWidget) SetWidthChars(nChars int) {
 	var _arg0 *C.GtkEditable // out
 	var _arg1 C.int          // out
 
@@ -13412,7 +13414,7 @@ func (editable *Editable) SetWidthChars(nChars int) {
 	runtime.KeepAlive(nChars)
 }
 
-func (editable *Editable) changed() {
+func (editable *EditableTextWidget) changed() {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
 	fnarg := gclass.changed
 
@@ -13420,7 +13422,7 @@ func (editable *Editable) changed() {
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	C._gotk4_gtk4_Editable_virtual_changed(unsafe.Pointer(fnarg), _arg0)
+	C._gotk4_gtk4_EditableTextWidget_virtual_changed(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(editable)
 }
 
@@ -13437,7 +13439,7 @@ func (editable *Editable) changed() {
 //   - startPos: start position.
 //   - endPos: end position.
 //
-func (editable *Editable) deleteText(startPos, endPos int) {
+func (editable *EditableTextWidget) deleteText(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
 	fnarg := gclass.delete_text
 
@@ -13449,7 +13451,7 @@ func (editable *Editable) deleteText(startPos, endPos int) {
 	_arg1 = C.int(startPos)
 	_arg2 = C.int(endPos)
 
-	C._gotk4_gtk4_Editable_virtual_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	C._gotk4_gtk4_EditableTextWidget_virtual_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
@@ -13468,7 +13470,7 @@ func (editable *Editable) deleteText(startPos, endPos int) {
 //   - startPos: start position.
 //   - endPos: end position.
 //
-func (editable *Editable) doDeleteText(startPos, endPos int) {
+func (editable *EditableTextWidget) doDeleteText(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
 	fnarg := gclass.do_delete_text
 
@@ -13480,7 +13482,7 @@ func (editable *Editable) doDeleteText(startPos, endPos int) {
 	_arg1 = C.int(startPos)
 	_arg2 = C.int(endPos)
 
-	C._gotk4_gtk4_Editable_virtual_do_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	C._gotk4_gtk4_EditableTextWidget_virtual_do_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
@@ -13495,7 +13497,7 @@ func (editable *Editable) doDeleteText(startPos, endPos int) {
 //
 //   - ret (optional): delegate GtkEditable.
 //
-func (editable *Editable) delegate() *Editable {
+func (editable *EditableTextWidget) delegate() *EditableTextWidget {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
 	fnarg := gclass.get_delegate
 
@@ -13504,13 +13506,13 @@ func (editable *Editable) delegate() *Editable {
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_cret = C._gotk4_gtk4_Editable_virtual_get_delegate(unsafe.Pointer(fnarg), _arg0)
+	_cret = C._gotk4_gtk4_EditableTextWidget_virtual_get_delegate(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(editable)
 
-	var _ret *Editable // out
+	var _ret *EditableTextWidget // out
 
 	if _cret != nil {
-		_ret = wrapEditable(coreglib.Take(unsafe.Pointer(_cret)))
+		_ret = wrapEditableTextWidget(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _ret
@@ -13530,7 +13532,7 @@ func (editable *Editable) delegate() *Editable {
 //   - endPos (optional): location to store the end position, or NULL.
 //   - ok: TRUE if there is a non-empty selection, FALSE otherwise.
 //
-func (editable *Editable) selectionBounds() (startPos, endPos int, ok bool) {
+func (editable *EditableTextWidget) selectionBounds() (startPos, endPos int, ok bool) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
 	fnarg := gclass.get_selection_bounds
 
@@ -13541,7 +13543,7 @@ func (editable *Editable) selectionBounds() (startPos, endPos int, ok bool) {
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_cret = C._gotk4_gtk4_Editable_virtual_get_selection_bounds(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
+	_cret = C._gotk4_gtk4_EditableTextWidget_virtual_get_selection_bounds(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
 	runtime.KeepAlive(editable)
 
 	var _startPos int // out
@@ -13565,7 +13567,7 @@ func (editable *Editable) selectionBounds() (startPos, endPos int, ok bool) {
 //
 //   - utf8: pointer to the contents of the editable.
 //
-func (editable *Editable) text() string {
+func (editable *EditableTextWidget) text() string {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
 	fnarg := gclass.get_text
 
@@ -13574,7 +13576,7 @@ func (editable *Editable) text() string {
 
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
 
-	_cret = C._gotk4_gtk4_Editable_virtual_get_text(unsafe.Pointer(fnarg), _arg0)
+	_cret = C._gotk4_gtk4_EditableTextWidget_virtual_get_text(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(editable)
 
 	var _utf8 string // out
@@ -13598,7 +13600,7 @@ func (editable *Editable) text() string {
 //   - startPos: start of region.
 //   - endPos: end of region.
 //
-func (editable *Editable) setSelectionBounds(startPos, endPos int) {
+func (editable *EditableTextWidget) setSelectionBounds(startPos, endPos int) {
 	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
 	fnarg := gclass.set_selection_bounds
 
@@ -13610,7 +13612,7 @@ func (editable *Editable) setSelectionBounds(startPos, endPos int) {
 	_arg1 = C.int(startPos)
 	_arg2 = C.int(endPos)
 
-	C._gotk4_gtk4_Editable_virtual_set_selection_bounds(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
+	C._gotk4_gtk4_EditableTextWidget_virtual_set_selection_bounds(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(startPos)
 	runtime.KeepAlive(endPos)
@@ -43765,7 +43767,7 @@ type EditableLabel struct {
 	Widget
 
 	*coreglib.Object
-	Editable
+	EditableTextWidget
 }
 
 var (
@@ -43807,7 +43809,7 @@ func wrapEditableLabel(obj *coreglib.Object) *EditableLabel {
 			},
 		},
 		Object: obj,
-		Editable: Editable{
+		EditableTextWidget: EditableTextWidget{
 			Widget: Widget{
 				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
@@ -44120,7 +44122,7 @@ type Entry struct {
 	Buildable
 	CellEditable
 	ConstraintTarget
-	Editable
+	EditableTextWidget
 }
 
 var (
@@ -44197,7 +44199,7 @@ func wrapEntry(obj *coreglib.Object) *Entry {
 		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		Editable: Editable{
+		EditableTextWidget: EditableTextWidget{
 			Widget: Widget{
 				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
@@ -77172,7 +77174,7 @@ type PasswordEntry struct {
 	Widget
 
 	*coreglib.Object
-	Editable
+	EditableTextWidget
 }
 
 var (
@@ -77198,7 +77200,7 @@ func wrapPasswordEntry(obj *coreglib.Object) *PasswordEntry {
 			},
 		},
 		Object: obj,
-		Editable: Editable{
+		EditableTextWidget: EditableTextWidget{
 			Widget: Widget{
 				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
@@ -87163,7 +87165,7 @@ func NewSearchBar() *SearchBar {
 //
 //   - entry: GtkEditable.
 //
-func (bar *SearchBar) ConnectEntry(entry Editabler) {
+func (bar *SearchBar) ConnectEntry(entry EditableTextWidgetter) {
 	var _arg0 *C.GtkSearchBar // out
 	var _arg1 *C.GtkEditable  // out
 
@@ -87437,7 +87439,7 @@ type SearchEntry struct {
 	Widget
 
 	*coreglib.Object
-	Editable
+	EditableTextWidget
 }
 
 var (
@@ -87463,7 +87465,7 @@ func wrapSearchEntry(obj *coreglib.Object) *SearchEntry {
 			},
 		},
 		Object: obj,
-		Editable: Editable{
+		EditableTextWidget: EditableTextWidget{
 			Widget: Widget{
 				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
@@ -92348,7 +92350,7 @@ type SpinButton struct {
 	Buildable
 	CellEditable
 	ConstraintTarget
-	Editable
+	EditableTextWidget
 	Orientable
 }
 
@@ -92404,7 +92406,7 @@ func wrapSpinButton(obj *coreglib.Object) *SpinButton {
 		ConstraintTarget: ConstraintTarget{
 			Object: obj,
 		},
-		Editable: Editable{
+		EditableTextWidget: EditableTextWidget{
 			Widget: Widget{
 				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
@@ -96462,7 +96464,7 @@ type Text struct {
 	Widget
 
 	*coreglib.Object
-	Editable
+	EditableTextWidget
 }
 
 var (
@@ -96488,7 +96490,7 @@ func wrapText(obj *coreglib.Object) *Text {
 			},
 		},
 		Object: obj,
-		Editable: Editable{
+		EditableTextWidget: EditableTextWidget{
 			Widget: Widget{
 				InitiallyUnowned: coreglib.InitiallyUnowned{
 					Object: obj,
@@ -108938,7 +108940,7 @@ func (treeView *TreeView) SearchColumn() int {
 //
 //   - editable (optional): entry currently in use as search entry.
 //
-func (treeView *TreeView) SearchEntry() *Editable {
+func (treeView *TreeView) SearchEntry() *EditableTextWidget {
 	var _arg0 *C.GtkTreeView // out
 	var _cret *C.GtkEditable // in
 
@@ -108947,10 +108949,10 @@ func (treeView *TreeView) SearchEntry() *Editable {
 	_cret = C.gtk_tree_view_get_search_entry(_arg0)
 	runtime.KeepAlive(treeView)
 
-	var _editable *Editable // out
+	var _editable *EditableTextWidget // out
 
 	if _cret != nil {
-		_editable = wrapEditable(coreglib.Take(unsafe.Pointer(_cret)))
+		_editable = wrapEditableTextWidget(coreglib.Take(unsafe.Pointer(_cret)))
 	}
 
 	return _editable
@@ -110101,7 +110103,7 @@ func (treeView *TreeView) SetSearchColumn(column int) {
 //   - entry (optional) the interactive search code of tree_view should use or
 //     NULL.
 //
-func (treeView *TreeView) SetSearchEntry(entry Editabler) {
+func (treeView *TreeView) SetSearchEntry(entry EditableTextWidgetter) {
 	var _arg0 *C.GtkTreeView // out
 	var _arg1 *C.GtkEditable // out
 

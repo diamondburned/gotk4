@@ -1407,8 +1407,8 @@ func _gotk4_gtk4_ColorChooser_ConnectColorActivated(arg0 C.gpointer, arg1 *C.Gdk
 	f(_color)
 }
 
-//export _gotk4_gtk4_Editable_ConnectChanged
-func _gotk4_gtk4_Editable_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
+//export _gotk4_gtk4_EditableTextWidget_ConnectChanged
+func _gotk4_gtk4_EditableTextWidget_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -1423,8 +1423,8 @@ func _gotk4_gtk4_Editable_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
-//export _gotk4_gtk4_Editable_ConnectDeleteText
-func _gotk4_gtk4_Editable_ConnectDeleteText(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
+//export _gotk4_gtk4_EditableTextWidget_ConnectDeleteText
+func _gotk4_gtk4_EditableTextWidget_ConnectDeleteText(arg0 C.gpointer, arg1 C.gint, arg2 C.gint, arg3 C.guintptr) {
 	var f func(startPos, endPos int)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))

@@ -7,6 +7,7 @@ package glib
 import "C"
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -85,5 +86,25 @@ func (r *WeakRef[T]) Get() T {
 
 	// Construct a new Object pointer from the box. Keep in mind our equality
 	// guarantees.
-	return (&Object{box: box}).CastType(r.gtyp).(T)
+	obj := &Object{box: box}
+
+	if v, ok := obj.CastType(r.gtyp).(T); ok {
+		// Try casting using the GType.
+		// This is the most common case.
+		return v
+	}
+
+	// The GType might be a private extended type. In this case, we need to
+	// use WalkCast and forego the GType.
+	v := obj.WalkCast(func(obj Objector) bool {
+		_, ok := obj.(T)
+		return ok
+	})
+	if v, ok := v.(T); ok {
+		return v
+	}
+
+	// If we still can't cast, then we're out of luck.
+	var z T
+	panic(fmt.Sprintf("glib: weak reference cast failed: %T does not satisfy %s", z, r.gtyp))
 }

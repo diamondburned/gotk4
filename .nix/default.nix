@@ -9,11 +9,10 @@ let
 	#
 	# gotk4-nix = ../../gotk4-nix;
 	gotk4-nix = systemPkgs.fetchFromGitHub {
-		owner = "diamondburned";
-		repo  = "gotk4-nix";
-		# This is a commit from 2023-06-02.
-		rev    = "b186ac5419c22f4b75b1bdc35ef4fd9349c6b65e";
-		sha256 = "1pfx0p4w56d7pa1l9ipqfq52znfl7slc2wbjfqddq1jv1fp9z43q";
+		owner  = "diamondburned";
+		repo   = "gotk4-nix";
+		rev    = "ad91dabf706946c4380d0a105f0937e4e8ffd75f";
+		sha256 = "0rkw9k98qy7ifwypkh2fqhdn7y2qphy2f8xjisj0cyp5pjja62im";
 	};
 
 in import "${gotk4-nix}/${action}.nix" {
@@ -27,8 +26,7 @@ in import "${gotk4-nix}/${action}.nix" {
 		sourceNixpkgs = systemPkgs.fetchFromGitHub {
 			owner = "NixOS";
 			repo  = "nixpkgs";
-			# This is pinning an older (2021-06-06) revision of nixpkgs than
-			# the pinned gotk4-nix version pins (2022-01-29).
+			# This is pinning an older (2021-06-06) revision of nixpkgs.
 			rev    = "fbfb79400a08bf754e32b4d4fc3f7d8f8055cf94";
 			sha256 = "0pgyx1l1gj33g5i9kwjar7dc3sal2g14mhfljcajj8bqzzrbc3za";
 		};

@@ -54,6 +54,32 @@ If neither `generate` nor `build` is provided, then the `-it` flag could be
 added for Docker to successfully drop the user into a Bash shell with the right
 environments.
 
+## Generating Bindings
+
+To re-generate the gotk4 bindings, simply run:
+
+```sh
+go generate
+```
+
+If additional debug information is needed, then the `GIR_VERBOSE` environment
+variable can be set to `1`:
+
+```sh
+GIR_VERBOSE=1 go generate
+```
+
+This will print out much more information about the generation process,
+including the reasons why certain types and functions are skipped.
+
+Assuming you're in the Nix environment, the generated code should always be
+idempotent. This means that the generated code should always be the same
+no matter how many times you run `go generate`. If this is not the case, then
+please file an issue.
+
+If you need to generate gotk4 for a newer version of GTK, see the [Updating
+Nixpkgs](#updating-nixpkgs) section below.
+
 ## Updating Nixpkgs
 
 In case a new release of something is added to Nixpkgs Unstable, for example, a
@@ -64,8 +90,15 @@ but from [gotk4-nix.git][]; to update the gotk4-nix, then very similarly the
 `gotk4-nix.rev` and `gotk4-nix.sha256` variables inside [`.nix/default.nix`][]
 should be updated.
 
+> [!NOTE]
+> Some repositories such as [gotk4-adwaita][gotk4-adwaita] may choose to
+> contain all this information in its single `shell.nix` file for convenience.
+> In this case, the `sourceNixpkgs` and `gotk4-nix` variables should be updated
+> there instead.
+
 [`.nix/default.nix`]: ./.nix/default.nix
 [gotk4-nix.git]: https://github.com/diamondburned/gotk4-nix
+[gotk4-adwaita]: https://github.com/diamondburned/gotk4-adwaita
 
 Care should be taken when updating Nixpkgs, as the output could change
 drastically, and Nixpkgs versions should **never** be downgraded to ensure the

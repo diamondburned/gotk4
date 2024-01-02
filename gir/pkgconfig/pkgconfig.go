@@ -79,6 +79,10 @@ func FindGIRFiles(pkgs ...string) ([]string, error) {
 
 		err := fs.WalkDir(os.DirFS(baseDir), ".",
 			func(path string, d fs.DirEntry, err error) error {
+				if errors.Is(err, fs.ErrPermission) {
+					return fs.SkipDir
+				}
+
 				if err != nil {
 					return err
 				}

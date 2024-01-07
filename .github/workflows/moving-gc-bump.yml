@@ -19,6 +19,9 @@ jobs:
         with:
           shell-file: shell.nix
 
+      - name: Tidy up Go modules
+        run: go mod tidy
+
       - name: Bump go4.org/unsafe/assume-no-moving-gc
         run: |
           (
@@ -26,11 +29,6 @@ jobs:
             go get -u go4.org/unsafe/assume-no-moving-gc
             go mod tidy
           )
-
-      - name: Tidy up Go modules
-        run: |
-          go mod tidy
-          go work sync
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5

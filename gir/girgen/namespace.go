@@ -262,6 +262,34 @@ func (n *NamespaceGenerator) cc() *CFileGenerator {
 	return n.c.c
 }
 
+// Rename renames a file from src to dst. If src does not exist, then it will
+// return an error.
+func (n *NamespaceGenerator) Rename(src, dst string) error {
+	srcFile, ok := n.Files[src]
+	if !ok {
+		return fmt.Errorf("file %s does not exist", src)
+	}
+
+	_, ok = n.Files[dst]
+	if ok {
+		return fmt.Errorf("file %s already exists", dst)
+	}
+
+	switch f := srcFile.(type) {
+	case *GoFileGenerator:
+		f.name = dst
+	case *CFileGenerator:
+		f.name = dst
+	default:
+		return fmt.Errorf("cannot rename file of unsupported type %T", f)
+	}
+
+	delete(n.Files, src)
+	n.Files[dst] = srcFile
+
+	return nil
+}
+
 // Generate generates everything in the current namespace into files. The
 // returned map maps the filename to the raw file content.
 func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
@@ -359,7 +387,12 @@ func (n *NamespaceGenerator) Generate() (map[string][]byte, error) {
 		}
 	}
 
-	for _, file := range n.Files {
+	for name, file := range n.Files {
+		if name != file.Name() {
+			panic(fmt.Errorf(
+				"file name mismatch: %s != %s (see NamespaceGenerator.Rename)",
+				name, file.Name()))
+		}
 		if file.IsEmpty() {
 			continue
 		}

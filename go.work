@@ -1,8 +1,0 @@
-go 1.19
-
-toolchain go1.21.3
-
-use (
-	.
-	./pkg
-)

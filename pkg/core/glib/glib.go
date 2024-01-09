@@ -507,7 +507,6 @@ func ConnectGeneratedClosure(
 	defer C.free(unsafe.Pointer(csignal))
 
 	id := C.g_signal_connect_closure(C.gpointer(v.native()), csignal, gclosure, gbool(after))
-	C.g_closure_sink(gclosure)
 
 	runtime.KeepAlive(obj)
 	return SignalHandle(id)

@@ -26,7 +26,7 @@ import (
 
 const maxTypesAllowed = 3
 
-var knownTypes uint32
+var knownTypes uint32 = 0
 
 type BoxedType[T any] struct {
 	ctor func(*Box) *T
@@ -81,7 +81,8 @@ func (t *BoxedType[T]) Delete(box *Box) {
 
 // Box is an opaque type holding extra data.
 type Box struct {
-	data [maxTypesAllowed]unsafe.Pointer
+	dummy *unsafe.Pointer
+	data  [maxTypesAllowed]unsafe.Pointer
 }
 
 // Object returns Box's C GObject pointer.
@@ -113,6 +114,11 @@ func objInfo(obj unsafe.Pointer) string {
 func newBox(obj unsafe.Pointer) *Box {
 	box := &Box{}
 	box.data[0] = obj
+
+	// Cheat Go's GC by adding a finalizer to a dummy pointer that is inside Box
+	// but is not Box itself.
+	box.dummy = &obj
+	runtime.SetFinalizer(box.dummy, finalizeBox)
 
 	if objectProfile != nil {
 		objectProfile.Add(obj, 3)
@@ -189,7 +195,6 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	//    reverse link is always strong.
 	//
 	shared.strong[gobject] = box
-	runtime.SetFinalizer(box, finalizeBox)
 
 	shared.mu.Unlock()
 
@@ -259,14 +264,36 @@ func Free(box *Box) {
 	}
 }
 
+var finalizing atomic.Bool
+
 // finalizeBox only delays its finalization until GLib notifies us a toggle. It
 // does so for as long as an object is stored only in the Go heap. Once the
 // object is also shared, the toggle notifier will strongly reference the Box.
-func finalizeBox(box *Box) {
-	obj := box.GObject()
-	if obj == nil {
-		return
+func finalizeBox(dummy *unsafe.Pointer) {
+	// obj := box.GObject()
+	// if obj == nil {
+	// 	return
+	// }
+
+	// var objInfoRes string
+	// if toggleRefs != nil {
+	// 	objInfoRes = objInfo(obj)
+	// 	toggleRefs.Println(objInfoRes, "finalizeBox: acquiring lock...")
+	// }
+
+	shared.mu.Lock()
+
+	if !finalizing.CompareAndSwap(false, true) {
+		panic("impossible: finalizeBox called while finalizing")
 	}
+	defer finalizing.Store(false)
+
+	box, _ := gets(*dummy)
+	if box == nil {
+		panic("bug: finalizeBox called on already freed object")
+	}
+
+	obj := box.GObject()
 
 	var objInfoRes string
 	if toggleRefs != nil {
@@ -274,23 +301,23 @@ func finalizeBox(box *Box) {
 		toggleRefs.Println(objInfoRes, "finalizeBox: acquiring lock...")
 	}
 
-	shared.mu.Lock()
-
 	if !freeBox(box) {
 		// Delegate finalizing to the next cycle.
-		runtime.SetFinalizer(box, finalizeBox)
+		runtime.SetFinalizer(box.dummy, finalizeBox)
 		shared.mu.Unlock()
+
 		if toggleRefs != nil {
 			toggleRefs.Println(objInfoRes, "finalizeBox: moving finalize to next GC cycle")
 		}
 	} else {
-		shared.mu.Unlock()
 		// Unreference the object. This will potentially free the object as
 		// well. The closures are definitely gone at this point.
 		C.g_object_remove_toggle_ref(
 			(*C.GObject)(unsafe.Pointer(obj)),
 			(*[0]byte)(C.goToggleNotify), nil,
 		)
+		shared.mu.Unlock()
+
 		if toggleRefs != nil {
 			toggleRefs.Println(objInfoRes, "finalizeBox: removed toggle ref during GC")
 		}
@@ -346,7 +373,11 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 	gobject := unsafe.Pointer(obj)
 	isLast := isLastInt != C.FALSE
 
-	shared.mu.Lock()
+	if !finalizing.Load() {
+		shared.mu.Lock()
+		defer shared.mu.Unlock()
+	}
+
 	if isLast {
 		// delete(shared.sharing, gobject)
 		makeWeak(gobject)
@@ -354,7 +385,6 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 		// shared.sharing[gobject] = struct{}{}
 		makeStrong(gobject)
 	}
-	shared.mu.Unlock()
 
 	if toggleRefs != nil {
 		toggleRefs.Println(objInfo(unsafe.Pointer(obj)), "goToggleNotify: is last =", isLast)
@@ -388,6 +418,9 @@ func makeStrong(gobject unsafe.Pointer) {
 	// TODO: double mutex check, similar to ShouldFree.
 
 	box, strong := gets(gobject)
+	if toggleRefs != nil {
+		toggleRefs.Println(objInfo(gobject), "makeStrong: obtained box", box, "strong =", strong)
+	}
 	if box == nil {
 		return
 	}
@@ -402,6 +435,9 @@ func makeStrong(gobject unsafe.Pointer) {
 // weakly referenced.
 func makeWeak(gobject unsafe.Pointer) {
 	box, strong := gets(gobject)
+	if toggleRefs != nil {
+		toggleRefs.Println(objInfo(gobject), "makeWeak: obtained box", box, "strong =", strong)
+	}
 	if box == nil {
 		return
 	}

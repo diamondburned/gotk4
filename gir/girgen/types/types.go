@@ -219,6 +219,9 @@ var objectorMethods = map[string]struct{}{
 	"NotifyProperty":    {},
 	"ObjectProperty":    {},
 	"SetObjectProperty": {},
+	"FreezeNotify":      {},
+	"ThawNotify":        {},
+	"StopEmission":      {},
 	"Cast":              {},
 	"baseObject":        {},
 }

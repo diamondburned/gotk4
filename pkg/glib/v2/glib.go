@@ -636,7 +636,6 @@ const URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS = "!$&'()*+,;="
 // USEC_PER_SEC: number of microseconds in one second (1 million). This macro is
 // provided for code readability.
 const USEC_PER_SEC = 1000000
-const VA_COPY_AS_ARRAY = 1
 
 // VERSION_MIN_REQUIRED: macro that should be defined by the user prior to
 // including the glib.h header. The definition should be one of the predefined

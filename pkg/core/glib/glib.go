@@ -575,6 +575,9 @@ type Objector interface {
 	NotifyProperty(string, func()) SignalHandle
 	ObjectProperty(string) interface{}
 	SetObjectProperty(string, interface{})
+	FreezeNotify()
+	ThawNotify()
+	StopEmission(string)
 
 	baseObject() *Object
 }
@@ -780,10 +783,12 @@ func typeFromObject(obj unsafe.Pointer) Type {
 	return Type(C._g_type_from_instance(C.gpointer(obj)))
 }
 
-// StopEmission is a wrapper around g_signal_stop_emission_by_name().
+// StopEmission stops a signal’s current emission. It is a wrapper around
+// g_signal_stop_emission_by_name().
 func (v *Object) StopEmission(s string) {
 	cstr := C.CString(s)
 	defer C.free(unsafe.Pointer(cstr))
+
 	C.g_signal_stop_emission_by_name((C.gpointer)(v.Native()), (*C.gchar)(cstr))
 	runtime.KeepAlive(v)
 }
@@ -847,6 +852,33 @@ func (v *Object) NotifyProperty(property string, f func()) SignalHandle {
 		v, "notify::"+property, false,
 		unsafe.Pointer(C._gotk4_notifyHandlerTramp), f,
 	)
+}
+
+// FreezeNotify increases the freeze count on object. If the freeze count is
+// non-zero, the emission of “notify” signals on object is stopped. The signals
+// are queued until the freeze count is decreased to zero. Duplicate
+// notifications are squashed so that at most one GObject::notify signal is
+// emitted for each property modified while the object is frozen.
+//
+// This is necessary for accessors that modify multiple properties to prevent
+// premature notification while the object is still being modified.
+func (v *Object) FreezeNotify() {
+	C.g_object_freeze_notify(v.native())
+	runtime.KeepAlive(v)
+}
+
+// ThawNotify reverts the effect of a previous call to g_object_freeze_notify().
+// The freeze count is decreased on object and when it reaches zero, queued
+// “notify” signals are emitted.
+//
+// Duplicate notifications for each property are squashed so that at most one
+// GObject::notify signal is emitted for each property, in the reverse order in
+// which they have been queued.
+//
+// It is an error to call this function when the freeze count is zero.
+func (v *Object) ThawNotify() {
+	C.g_object_thaw_notify(v.native())
+	runtime.KeepAlive(v)
 }
 
 //export _gotk4_notifyHandlerTramp

@@ -4193,8 +4193,8 @@ func _gotk4_gtk4_DropTarget_ConnectAccept(arg0 C.gpointer, arg1 *C.GdkDrop, arg2
 }
 
 //export _gotk4_gtk4_DropTarget_ConnectDrop
-func _gotk4_gtk4_DropTarget_ConnectDrop(arg0 C.gpointer, arg1 C.GValue, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.gboolean) {
-	var f func(value coreglib.Value, x, y float64) (ok bool)
+func _gotk4_gtk4_DropTarget_ConnectDrop(arg0 C.gpointer, arg1 *C.GValue, arg2 C.gdouble, arg3 C.gdouble, arg4 C.guintptr) (cret C.gboolean) {
+	var f func(value *coreglib.Value, x, y float64) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
@@ -4202,14 +4202,14 @@ func _gotk4_gtk4_DropTarget_ConnectDrop(arg0 C.gpointer, arg1 C.GValue, arg2 C.g
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(value coreglib.Value, x, y float64) (ok bool))
+		f = closure.Func.(func(value *coreglib.Value, x, y float64) (ok bool))
 	}
 
-	var _value coreglib.Value // out
-	var _x float64            // out
-	var _y float64            // out
+	var _value *coreglib.Value // out
+	var _x float64             // out
+	var _y float64             // out
 
-	_value = *coreglib.ValueFromNative(unsafe.Pointer((&arg1)))
+	_value = coreglib.ValueFromNative(unsafe.Pointer(arg1))
 	_x = float64(arg2)
 	_y = float64(arg3)
 
@@ -8600,7 +8600,7 @@ func _gotk4_gtk4_PrintOperation_ConnectBeginPrint(arg0 C.gpointer, arg1 *C.GtkPr
 }
 
 //export _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget
-func _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 C.guintptr) (cret C.GObject) {
+func _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 C.guintptr) (cret *C.GObject) {
 	var f func() (object *coreglib.Object)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -8616,7 +8616,7 @@ func _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 
 
 	var _ *coreglib.Object
 
-	cret = *(*C.GObject)(unsafe.Pointer(object.Native()))
+	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	return cret
 }

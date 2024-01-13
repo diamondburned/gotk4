@@ -2047,7 +2047,7 @@ func _gotk4_gtk3_AboutDialog_ConnectActivateLink(arg0 C.gpointer, arg1 *C.gchar,
 }
 
 //export _gotk4_gtk3_AccelGroup_ConnectAccelActivate
-func _gotk4_gtk3_AccelGroup_ConnectAccelActivate(arg0 C.gpointer, arg1 C.GObject, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk3_AccelGroup_ConnectAccelActivate(arg0 C.gpointer, arg1 *C.GObject, arg2 C.guint, arg3 C.GdkModifierType, arg4 C.guintptr) (cret C.gboolean) {
 	var f func(acceleratable *coreglib.Object, keyval uint, modifier gdk.ModifierType) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -2063,7 +2063,7 @@ func _gotk4_gtk3_AccelGroup_ConnectAccelActivate(arg0 C.gpointer, arg1 C.GObject
 	var _keyval uint                    // out
 	var _modifier gdk.ModifierType      // out
 
-	_acceleratable = coreglib.Take(unsafe.Pointer(&arg1))
+	_acceleratable = coreglib.Take(unsafe.Pointer(arg1))
 	_keyval = uint(arg2)
 	_modifier = gdk.ModifierType(arg3)
 
@@ -11646,7 +11646,7 @@ func _gotk4_gtk3_PrintOperation_ConnectBeginPrint(arg0 C.gpointer, arg1 *C.GtkPr
 }
 
 //export _gotk4_gtk3_PrintOperation_ConnectCreateCustomWidget
-func _gotk4_gtk3_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 C.guintptr) (cret C.GObject) {
+func _gotk4_gtk3_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 C.guintptr) (cret *C.GObject) {
 	var f func() (object *coreglib.Object)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -11662,7 +11662,7 @@ func _gotk4_gtk3_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 
 
 	var _ *coreglib.Object
 
-	cret = *(*C.GObject)(unsafe.Pointer(object.Native()))
+	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	return cret
 }
@@ -15190,7 +15190,7 @@ func _gotk4_gtk3_TextTagClass_event(arg0 *C.GtkTextTag, arg1 *C.GObject, arg2 *C
 }
 
 //export _gotk4_gtk3_TextTag_ConnectEvent
-func _gotk4_gtk3_TextTag_ConnectEvent(arg0 C.gpointer, arg1 C.GObject, arg2 C.GdkEvent, arg3 *C.GtkTextIter, arg4 C.guintptr) (cret C.gboolean) {
+func _gotk4_gtk3_TextTag_ConnectEvent(arg0 C.gpointer, arg1 *C.GObject, arg2 C.GdkEvent, arg3 *C.GtkTextIter, arg4 C.guintptr) (cret C.gboolean) {
 	var f func(object *coreglib.Object, event *gdk.Event, iter *TextIter) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -15206,7 +15206,7 @@ func _gotk4_gtk3_TextTag_ConnectEvent(arg0 C.gpointer, arg1 C.GObject, arg2 C.Gd
 	var _event *gdk.Event        // out
 	var _iter *TextIter          // out
 
-	_object = coreglib.Take(unsafe.Pointer(&arg1))
+	_object = coreglib.Take(unsafe.Pointer(arg1))
 	{
 		v := (*gdk.Event)(gextras.NewStructNative(unsafe.Pointer((&arg2))))
 		v = gdk.CopyEventer(v)

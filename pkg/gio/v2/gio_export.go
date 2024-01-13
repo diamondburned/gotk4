@@ -5845,7 +5845,7 @@ func _gotk4_gio2_SocketServiceClass_incoming(arg0 *C.GSocketService, arg1 *C.GSo
 }
 
 //export _gotk4_gio2_SocketService_ConnectIncoming
-func _gotk4_gio2_SocketService_ConnectIncoming(arg0 C.gpointer, arg1 *C.GSocketConnection, arg2 C.GObject, arg3 C.guintptr) (cret C.gboolean) {
+func _gotk4_gio2_SocketService_ConnectIncoming(arg0 C.gpointer, arg1 *C.GSocketConnection, arg2 *C.GObject, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(connection *SocketConnection, sourceObject *coreglib.Object) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -5861,7 +5861,9 @@ func _gotk4_gio2_SocketService_ConnectIncoming(arg0 C.gpointer, arg1 *C.GSocketC
 	var _sourceObject *coreglib.Object // out
 
 	_connection = wrapSocketConnection(coreglib.Take(unsafe.Pointer(arg1)))
-	_sourceObject = coreglib.Take(unsafe.Pointer(&arg2))
+	if arg2 != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(arg2))
+	}
 
 	ok := f(_connection, _sourceObject)
 
@@ -5900,7 +5902,7 @@ func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.GThreadedSocketService, 
 }
 
 //export _gotk4_gio2_ThreadedSocketService_ConnectRun
-func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.GSocketConnection, arg2 C.GObject, arg3 C.guintptr) (cret C.gboolean) {
+func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.GSocketConnection, arg2 *C.GObject, arg3 C.guintptr) (cret C.gboolean) {
 	var f func(connection *SocketConnection, sourceObject *coreglib.Object) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
@@ -5916,7 +5918,9 @@ func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.GSock
 	var _sourceObject *coreglib.Object // out
 
 	_connection = wrapSocketConnection(coreglib.Take(unsafe.Pointer(arg1)))
-	_sourceObject = coreglib.Take(unsafe.Pointer(&arg2))
+	if arg2 != nil {
+		_sourceObject = coreglib.Take(unsafe.Pointer(arg2))
+	}
 
 	ok := f(_connection, _sourceObject)
 

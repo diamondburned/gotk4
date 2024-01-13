@@ -557,7 +557,7 @@ import (
 // extern gboolean _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(gpointer, gchar*, guintptr);
 // extern gboolean _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(gpointer, GtkTreeModel*, GtkTreeIter*, guintptr);
 // extern gboolean _gotk4_gtk4_EntryCompletionMatchFunc(GtkEntryCompletion*, char*, GtkTreeIter*, gpointer);
-// extern gboolean _gotk4_gtk4_DropTarget_ConnectDrop(gpointer, GValue, gdouble, gdouble, guintptr);
+// extern gboolean _gotk4_gtk4_DropTarget_ConnectDrop(gpointer, GValue*, gdouble, gdouble, guintptr);
 // extern gboolean _gotk4_gtk4_DropTarget_ConnectAccept(gpointer, GdkDrop*, guintptr);
 // extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectDrop(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
 // extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectAccept(gpointer, GdkDrop*, guintptr);
@@ -594,7 +594,7 @@ import (
 // extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragMotion(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
 // extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragEnter(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
 // extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
-// extern GObject _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(gpointer, guintptr);
+// extern GObject* _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(gpointer, guintptr);
 // extern GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
 // GList* _gotk4_gtk4_CellLayout_virtual_get_cells(void* fnptr, GtkCellLayout* arg0) {
 //   return ((GList* (*)(GtkCellLayout*))(fnptr))(arg0);
@@ -43161,7 +43161,7 @@ func (self *DropTarget) ConnectAccept(f func(drop gdk.Dropper) (ok bool)) coregl
 // Otherwise, the handler returns TRUE. In this case, this handler will
 // accept the drop. The handler is responsible for rading the given value and
 // performing the drop operation.
-func (self *DropTarget) ConnectDrop(f func(value coreglib.Value, x, y float64) (ok bool)) coreglib.SignalHandle {
+func (self *DropTarget) ConnectDrop(f func(value *coreglib.Value, x, y float64) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "drop", false, unsafe.Pointer(C._gotk4_gtk4_DropTarget_ConnectDrop), f)
 }
 

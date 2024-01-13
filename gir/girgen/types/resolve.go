@@ -793,7 +793,12 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 	var result *gir.TypeFindResult
 
 	// Try and dig out the CType if we have none.
+	//
+	// This doesn't always work though, so we'll record if we had an empty CType
+	// so we can fix it later if we have to.
+	var hadEmptyCType bool
 	if typ.CType == "" {
+		hadEmptyCType = true
 		if result = Find(gen, typ.Name); result != nil {
 			typ.CType = result.CType()
 		}
@@ -828,6 +833,19 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 
 	// Fill namespace.
 	typ.Name = EnsureNamespace(gen.Namespace(), typ.Name)
+
+	// In some cases, the gir.Type doesn't have a CType, and when we fill in
+	// our own, we wouldn't know if it's a pointer or not. Try to keep this
+	// consistent.
+	//
+	// Particularly, we want to do this for issue #107. This also happens in
+	// multiple other places though.
+	switch typ.Name {
+	case "GObject.Object", "GObject.Value", "GValue":
+		if hadEmptyCType {
+			typ.CType += "*"
+		}
+	}
 
 	// Resolve the unknown namespace that is GLib and primitive types.
 	switch typ.Name {

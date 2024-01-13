@@ -299,6 +299,9 @@ var ConversionProcessors = []ConversionProcessor{
 var Filters = []FilterMatcher{
 	AbsoluteFilter("C.cairo_image_surface_create"),
 
+	// This seems to be macro-guarded between x86 and arm64.
+	AbsoluteFilter("GLib.VA_COPY_AS_ARRAY"),
+
 	// These are not in gotk3/cairo.
 	AbsoluteFilter("cairo.ScaledFont"),
 	AbsoluteFilter("cairo.FontType"),

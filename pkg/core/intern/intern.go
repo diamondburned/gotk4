@@ -100,6 +100,7 @@ func (b *Box) GObject() unsafe.Pointer {
 var never bool
 var sink_ interface{}
 
+//go:nosplit
 func sink(v interface{}) {
 	if never {
 		sink_ = v
@@ -165,6 +166,8 @@ var shared = struct {
 
 // TryGet gets the Box associated with the GObject or nil if it's gone. The
 // caller must not retain the Box pointer anywhere.
+//
+//go:nosplit
 func TryGet(gobject unsafe.Pointer) *Box {
 	shared.mu.RLock()
 	box, _ := gets(gobject)
@@ -176,6 +179,8 @@ func TryGet(gobject unsafe.Pointer) *Box {
 // new or unknown, then a new box is made. If the intern box already exists for
 // a given C pointer, then that box is weakly referenced and returned. The box
 // will be reference-counted; the caller must use ShouldFree to unreference it.
+//
+//go:nosplit
 func Get(gobject unsafe.Pointer, take bool) *Box {
 	// If the registry does not exist, then we'll have to globally register it.
 	// If the registry is currently strongly referenced, then we must move it to
@@ -253,6 +258,8 @@ func Free(box *Box) {
 // finalizeBox only delays its finalization until GLib notifies us a toggle. It
 // does so for as long as an object is stored only in the Go heap. Once the
 // object is also shared, the toggle notifier will strongly reference the Box.
+//
+//go:nosplit
 func finalizeBox(dummy *boxDummy) {
 	if dummy == nil {
 		panic("bug: finalizeBox called with nil dummy")
@@ -315,6 +322,7 @@ func finalizeBox(dummy *boxDummy) {
 // actually free anything and relies on Box's finalizer to free both the box and
 // the C GObject.
 //
+//go:nosplit
 //export goToggleNotify
 func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 	gobject := unsafe.Pointer(obj)
@@ -338,6 +346,7 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 }
 
 //go:nocheckptr
+//go:nosplit
 func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 	if strong, ok := shared.strong[gobject]; ok {
 		return strong, true
@@ -360,6 +369,8 @@ func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 
 // makeStrong forces the Box instance associated with the given object to be
 // strongly referenced.
+//
+//go:nosplit
 func makeStrong(gobject unsafe.Pointer) {
 	// TODO: double mutex check, similar to ShouldFree.
 
@@ -379,6 +390,8 @@ func makeStrong(gobject unsafe.Pointer) {
 
 // makeWeak forces the Box intsance associated with the given object to be
 // weakly referenced.
+//
+//go:nosplit
 func makeWeak(gobject unsafe.Pointer) {
 	box, strong := gets(gobject)
 	if toggleRefs != nil {

@@ -18,6 +18,7 @@ import (
 	"sync/atomic"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/closure"
 	"github.com/diamondburned/gotk4/pkg/core/gdebug"
 
 	// Require a non-moving GC for heap pointers. Current GC is moving only by
@@ -25,66 +26,11 @@ import (
 	_ "go4.org/unsafe/assume-no-moving-gc"
 )
 
-const maxTypesAllowed = 2
-
-var knownTypes uint32 = 0
-
-type BoxedType[T any] struct {
-	ctor func(*Box) *T
-	id   uint32
-}
-
-func RegisterType[T any](ctor func(*Box) *T) BoxedType[T] {
-	t := BoxedType[T]{
-		ctor: ctor,
-		id:   atomic.AddUint32(&knownTypes, 1) - 1,
-	}
-	if t.id > maxTypesAllowed {
-		panic("BoxedType ID overflow")
-	}
-	return t
-}
-
-func (t *BoxedType[T]) Get(box *Box) *T {
-	old := atomic.LoadPointer(&box.data[t.id])
-	if old != nil {
-		return (*T)(old)
-	}
-
-	if t.ctor == nil {
-		return nil
-	}
-
-	new := t.ctor(box)
-
-	if atomic.CompareAndSwapPointer(&box.data[t.id], nil, unsafe.Pointer(new)) {
-		return new
-	}
-
-	ptr := atomic.LoadPointer(&box.data[t.id])
-	if ptr != nil {
-		return (*T)(ptr)
-	}
-
-	panic("Load returned nil after CompareAndSwap(old = nil) failed")
-}
-
-func (t *BoxedType[T]) Set(box *Box, v *T) {
-	if t.ctor != nil {
-		panic("bug: Set not permitted if t.ctor != nil")
-	}
-	atomic.StorePointer(&box.data[t.id], unsafe.Pointer(v))
-}
-
-func (t *BoxedType[T]) Delete(box *Box) {
-	atomic.StorePointer(&box.data[t.id], nil)
-}
-
 // Box is an opaque type holding extra data.
 type Box struct {
-	gobject unsafe.Pointer
-	dummy   *boxDummy
-	data    [maxTypesAllowed]unsafe.Pointer
+	gobject  unsafe.Pointer
+	closures atomic.Pointer[closure.Registry]
+	dummy    *boxDummy
 }
 
 type boxDummy struct {
@@ -94,6 +40,18 @@ type boxDummy struct {
 // Object returns Box's C GObject pointer.
 func (b *Box) GObject() unsafe.Pointer {
 	return b.gobject
+}
+
+// Closures returns the closure registry for this Box.
+func (b *Box) Closures() *closure.Registry {
+	closures := b.closures.Load()
+	if closures == nil {
+		closures = closure.NewRegistry()
+		if !b.closures.CompareAndSwap(nil, closures) {
+			closures = b.closures.Load()
+		}
+	}
+	return closures
 }
 
 // Hack to force an object on the heap.

@@ -3,13 +3,7 @@ package closure
 import (
 	"sync"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/core/intern"
 )
-
-var RegistryType = intern.RegisterType[Registry](func(*intern.Box) *Registry {
-	return NewRegistry()
-})
 
 // Registry describes the local closure registry of each object.
 type Registry struct {

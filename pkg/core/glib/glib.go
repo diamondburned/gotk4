@@ -24,6 +24,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/intern"
 )
 
+type PID C.GPid
+
 func gbool(b bool) C.gboolean {
 	if b {
 		return C.gboolean(1)
@@ -1707,5 +1709,3 @@ func (v *Value) String() string {
 
 	return C.GoString((*C.char)(c))
 }
-
-type PID C.GPid

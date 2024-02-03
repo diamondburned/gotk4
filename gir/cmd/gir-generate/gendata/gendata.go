@@ -1087,7 +1087,4 @@ var ExtraGoContents = map[string]string{
 			C.gtk_init(nil, nil)
 		}
 	`,
-	"core/glib/glib.go": `
-		type PID C.GPid
-	`,
 }

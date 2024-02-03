@@ -66182,7 +66182,7 @@ func (op *MountOperation) showProcesses(message string, processes []coreglib.PID
 	{
 		out := unsafe.Slice(_arg2.data, len(processes))
 		for i := range processes {
-			out[i] = C.GArray(processes[i])
+			out[i] = C.GPid(processes[i])
 		}
 	}
 	{

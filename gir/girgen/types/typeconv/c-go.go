@@ -509,6 +509,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.p.Linef("})")
 
 		return true
+
+	case "GLib.Pid":
+		value.p.Linef("%s = %s(%s)", value.Out.Set, value.Out.Type, value.In.Name)
+		return true
 	}
 
 	switch {

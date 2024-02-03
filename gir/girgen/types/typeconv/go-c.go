@@ -492,6 +492,13 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			value.Out.Set, value.OutCast(1), value.InNamePtr(1),
 		)
 		return true
+
+	case "GLib.Pid":
+		value.p.Linef(
+			"%s = %s(%s)",
+			value.Out.Set, value.Out.Type, value.In.Name,
+		)
+		return true
 	}
 
 	switch {

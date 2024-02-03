@@ -4267,6 +4267,45 @@ func _gotk4_gio2_MountOperationClass_reply(arg0 *C.GMountOperation, arg1 C.GMoun
 	overrides.Reply(_result)
 }
 
+//export _gotk4_gio2_MountOperationClass_show_processes
+func _gotk4_gio2_MountOperationClass_show_processes(arg0 *C.GMountOperation, arg1 *C.gchar, arg2 *C.GArray, arg3 **C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[MountOperationOverrides](instance0)
+	if overrides.ShowProcesses == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MountOperationOverrides.ShowProcesses, got none")
+	}
+
+	var _message string           // out
+	var _processes []coreglib.PID // out
+	var _choices []string         // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	{
+		var len uintptr
+		p := C.g_array_steal(&arg2, (*C.gsize)(&len))
+		src := unsafe.Slice((*C.GArray)(p), len)
+		_processes = make([]coreglib.PID, len)
+		for i := 0; i < len; i++ {
+			_processes[i] = coreglib.PID(src[i])
+		}
+	}
+	{
+		var i int
+		var z *C.gchar
+		for p := arg3; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(arg3, i)
+		_choices = make([]string, i)
+		for i := range src {
+			_choices[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	overrides.ShowProcesses(_message, _processes, _choices)
+}
+
 //export _gotk4_gio2_MountOperationClass_show_unmount_progress
 func _gotk4_gio2_MountOperationClass_show_unmount_progress(arg0 *C.GMountOperation, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -4380,6 +4419,50 @@ func _gotk4_gio2_MountOperation_ConnectReply(arg0 C.gpointer, arg1 C.GMountOpera
 	_result = MountOperationResult(arg1)
 
 	f(_result)
+}
+
+//export _gotk4_gio2_MountOperation_ConnectShowProcesses
+func _gotk4_gio2_MountOperation_ConnectShowProcesses(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.GPid, arg3 **C.gchar, arg4 C.guintptr) {
+	var f func(message string, processes []coreglib.PID, choices []string)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(message string, processes []coreglib.PID, choices []string))
+	}
+
+	var _message string           // out
+	var _processes []coreglib.PID // out
+	var _choices []string         // out
+
+	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	{
+		var len uintptr
+		p := C.g_array_steal(&arg2, (*C.gsize)(&len))
+		src := unsafe.Slice((*C.GPid)(p), len)
+		_processes = make([]coreglib.PID, len)
+		for i := 0; i < len; i++ {
+			_processes[i] = coreglib.PID(src[i])
+		}
+	}
+	{
+		var i int
+		var z *C.gchar
+		for p := arg3; *p != z; p = &unsafe.Slice(p, 2)[1] {
+			i++
+		}
+
+		src := unsafe.Slice(arg3, i)
+		_choices = make([]string, i)
+		for i := range src {
+			_choices[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+		}
+	}
+
+	f(_message, _processes, _choices)
 }
 
 //export _gotk4_gio2_MountOperation_ConnectShowUnmountProgress

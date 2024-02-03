@@ -72,11 +72,13 @@ import (
 // extern void _gotk4_gio2_Mount_ConnectPreUnmount(gpointer, guintptr);
 // extern void _gotk4_gio2_Mount_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, gchar*, gint64, gint64, guintptr);
+// extern void _gotk4_gio2_MountOperation_ConnectShowProcesses(gpointer, gchar*, GPid*, gchar**, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectReply(gpointer, GMountOperationResult, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectAskQuestion(gpointer, gchar*, gchar**, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectAskPassword(gpointer, gchar*, gchar*, gchar*, GAskPasswordFlags, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectAborted(gpointer, guintptr);
 // extern void _gotk4_gio2_MountOperationClass_show_unmount_progress(GMountOperation*, gchar*, gint64, gint64);
+// extern void _gotk4_gio2_MountOperationClass_show_processes(GMountOperation*, gchar*, GArray*, gchar**);
 // extern void _gotk4_gio2_MountOperationClass_reply(GMountOperation*, GMountOperationResult);
 // extern void _gotk4_gio2_MountOperationClass_ask_question(GMountOperation*, char*, char**);
 // extern void _gotk4_gio2_MountOperationClass_ask_password(GMountOperation*, char*, char*, char*, GAskPasswordFlags);
@@ -1604,6 +1606,9 @@ import (
 // };
 // void _gotk4_gio2_MountOperation_virtual_reply(void* fnptr, GMountOperation* arg0, GMountOperationResult arg1) {
 //   ((void (*)(GMountOperation*, GMountOperationResult))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_MountOperation_virtual_show_processes(void* fnptr, GMountOperation* arg0, gchar* arg1, GArray* arg2, gchar** arg3) {
+//   ((void (*)(GMountOperation*, gchar*, GArray*, gchar**))(fnptr))(arg0, arg1, arg2, arg3);
 // };
 // void _gotk4_gio2_MountOperation_virtual_show_unmount_progress(void* fnptr, GMountOperation* arg0, gchar* arg1, gint64 arg2, gint64 arg3) {
 //   ((void (*)(GMountOperation*, gchar*, gint64, gint64))(fnptr))(arg0, arg1, arg2, arg3);
@@ -65441,6 +65446,15 @@ type MountOperationOverrides struct {
 	//   - result: OperationResult.
 	//
 	Reply func(result MountOperationResult)
+	// ShowProcesses: virtual implementation of Operation::show-processes.
+	//
+	// The function takes the following parameters:
+	//
+	//   - message: string containing a message to display to the user.
+	//   - processes: array of #GPid for processes blocking the operation.
+	//   - choices: array of strings for each possible choice.
+	//
+	ShowProcesses func(message string, processes []coreglib.PID, choices []string)
 	// The function takes the following parameters:
 	//
 	//   - message
@@ -65456,6 +65470,7 @@ func defaultMountOperationOverrides(v *MountOperation) MountOperationOverrides {
 		AskPassword:         v.askPassword,
 		AskQuestion:         v.askQuestion,
 		Reply:               v.reply,
+		ShowProcesses:       v.showProcesses,
 		ShowUnmountProgress: v.showUnmountProgress,
 	}
 }
@@ -65517,6 +65532,10 @@ func initMountOperationClass(gclass unsafe.Pointer, overrides MountOperationOver
 		pclass.reply = (*[0]byte)(C._gotk4_gio2_MountOperationClass_reply)
 	}
 
+	if overrides.ShowProcesses != nil {
+		pclass.show_processes = (*[0]byte)(C._gotk4_gio2_MountOperationClass_show_processes)
+	}
+
 	if overrides.ShowUnmountProgress != nil {
 		pclass.show_unmount_progress = (*[0]byte)(C._gotk4_gio2_MountOperationClass_show_unmount_progress)
 	}
@@ -65567,6 +65586,20 @@ func (op *MountOperation) ConnectAskQuestion(f func(message string, choices []st
 // ConnectReply is emitted when the user has replied to the mount operation.
 func (op *MountOperation) ConnectReply(f func(result MountOperationResult)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(op, "reply", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectReply), f)
+}
+
+// ConnectShowProcesses is emitted when one or more processes are blocking an
+// operation e.g. unmounting/ejecting a #GMount or stopping a #GDrive.
+//
+// Note that this signal may be emitted several times to update the list
+// of blocking processes as processes close files. The application should
+// only respond with g_mount_operation_reply() to the latest signal (setting
+// Operation:choice to the choice the user made).
+//
+// If the message contains a line break, the first line should be presented as a
+// heading. For example, it may be used as the primary text in a MessageDialog.
+func (op *MountOperation) ConnectShowProcesses(f func(message string, processes []coreglib.PID, choices []string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(op, "show-processes", false, unsafe.Pointer(C._gotk4_gio2_MountOperation_ConnectShowProcesses), f)
 }
 
 // ConnectShowUnmountProgress is emitted when an unmount operation has been busy
@@ -66121,6 +66154,56 @@ func (op *MountOperation) reply(result MountOperationResult) {
 	C._gotk4_gio2_MountOperation_virtual_reply(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(result)
+}
+
+// showProcesses: virtual implementation of Operation::show-processes.
+//
+// The function takes the following parameters:
+//
+//   - message: string containing a message to display to the user.
+//   - processes: array of #GPid for processes blocking the operation.
+//   - choices: array of strings for each possible choice.
+//
+func (op *MountOperation) showProcesses(message string, processes []coreglib.PID, choices []string) {
+	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))
+	fnarg := gclass.show_processes
+
+	var _arg0 *C.GMountOperation // out
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.GArray          // out
+	var _arg3 **C.gchar          // out
+
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.g_array_sized_new(false, false, C.guint(C.sizeof_GArray), C.guint(len(processes)))
+	_arg2 = C.g_array_set_size(_arg2, C.guint(len(processes)))
+	defer C.g_array_unref(_arg2)
+	{
+		out := unsafe.Slice(_arg2.data, len(processes))
+		for i := range processes {
+			out[i] = C.GArray(processes[i])
+		}
+	}
+	{
+		_arg3 = (**C.gchar)(C.calloc(C.size_t((len(choices) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg3))
+		{
+			out := unsafe.Slice(_arg3, len(choices)+1)
+			var zero *C.gchar
+			out[len(choices)] = zero
+			for i := range choices {
+				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(choices[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+
+	C._gotk4_gio2_MountOperation_virtual_show_processes(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(op)
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(processes)
+	runtime.KeepAlive(choices)
 }
 
 // The function takes the following parameters:

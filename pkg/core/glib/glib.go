@@ -1707,3 +1707,5 @@ func (v *Value) String() string {
 
 	return C.GoString((*C.char)(c))
 }
+
+type PID C.GPid

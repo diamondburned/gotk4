@@ -924,20 +924,6 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
-func GLibPid(nsgen *girgen.NamespaceGenerator) error {
-	fg, ok := nsgen.File("gpid.go")
-	if !ok {
-		fg = nsgen.MakeFile("")
-	}
-
-	p := fg.Pen()
-	p.Line(`
-		type PID C.GPid
-	`)
-
-	return nil
-}
-
 func GtkNewDialog(nsgen *girgen.NamespaceGenerator) error {
 	name := fmt.Sprintf(
 		"_gotk4_gtk%s_dialog_new2",
@@ -1083,7 +1069,7 @@ func GdkPixbufFromImage(nsgen *girgen.NamespaceGenerator) error {
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
-	"GLib-2":      {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibPid, GLibDateTime},
+	"GLib-2":      {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibDateTime},
 	"GdkPixbuf-2": {GdkPixbufFromImage},
 	"Gio-2":       {ImportGError},
 	"Gtk-3":       {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
@@ -1100,5 +1086,8 @@ var ExtraGoContents = map[string]string{
 		func Init() {
 			C.gtk_init(nil, nil)
 		}
+	`,
+	"core/glib/glib.go": `
+		type PID C.GPid
 	`,
 }

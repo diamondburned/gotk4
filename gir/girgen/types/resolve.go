@@ -856,6 +856,8 @@ func Resolve(gen FileGenerator, typ gir.Type) *Resolved {
 		return externGLibType("*List", typ, "GList*")
 	case "GLib.SList":
 		return externGLibType("*SList", typ, "GSList*")
+	case "GLib.Pid":
+		return externGLibType("PID", typ, "GPid")
 	// TODO: include GLib.HashTable
 	case "GObject.Type", "GType":
 		return externGLibType("Type", typ, "GType")

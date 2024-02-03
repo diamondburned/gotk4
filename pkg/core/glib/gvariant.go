@@ -57,7 +57,7 @@ func takeVariant(p *C.GVariant) *Variant {
 // Reference counting is usually handled in the gotk layer,
 // most applications should not call this.
 func (v *Variant) IsFloating() bool {
-	b := gobool(C.g_variant_is_floating(v.native()))
+	b := Gobool(C.g_variant_is_floating(v.native()))
 	runtime.KeepAlive(v)
 	return b
 }
@@ -104,7 +104,7 @@ func (v *Variant) TypeString() string {
 
 // IsContainer returns true if the variant is a container and false otherwise.
 func (v *Variant) IsContainer() bool {
-	b := gobool(C.g_variant_is_container(v.native()))
+	b := Gobool(C.g_variant_is_container(v.native()))
 	runtime.KeepAlive(v)
 	return b
 }
@@ -140,7 +140,7 @@ func (v *Variant) Type() *VariantType {
 
 // IsType returns true if the variant's type matches t.
 func (v *Variant) IsType(t *VariantType) bool {
-	b := gobool(C.g_variant_is_of_type(v.native(), t.native()))
+	b := Gobool(C.g_variant_is_of_type(v.native(), t.native()))
 	runtime.KeepAlive(v)
 	runtime.KeepAlive(t)
 	return b
@@ -149,7 +149,7 @@ func (v *Variant) IsType(t *VariantType) bool {
 // Print wraps g_variant_print(). It returns a string understood by
 // g_variant_parse().
 func (v *Variant) Print(typeAnnotate bool) string {
-	gc := C.g_variant_print(v.native(), gbool(typeAnnotate))
+	gc := C.g_variant_print(v.native(), Gbool(typeAnnotate))
 	runtime.KeepAlive(v)
 
 	defer C.g_free(C.gpointer(gc))
@@ -178,7 +178,7 @@ func (v *Variant) GoValue() interface{} {
 	case C.G_VARIANT_TYPE_STRING:
 		val = v.String()
 	case C.G_VARIANT_TYPE_BOOLEAN:
-		val = gobool(C.g_variant_get_boolean(v.native()))
+		val = Gobool(C.g_variant_get_boolean(v.native()))
 	case C.G_VARIANT_TYPE_DOUBLE:
 		val = float64(C.g_variant_get_double(v.native()))
 	case C.G_VARIANT_TYPE_INT16:
@@ -301,19 +301,19 @@ func VariantTypeStringIsValid(typeString string) bool {
 	cstr := (*C.gchar)(C.CString(typeString))
 	defer C.free(unsafe.Pointer(cstr))
 
-	return gobool(C.g_variant_type_string_is_valid(cstr))
+	return Gobool(C.g_variant_type_string_is_valid(cstr))
 }
 
 // Equal is a wrapper around g_variant_type_equal.
 func (v *VariantType) Equal(to *VariantType) bool {
-	b := gobool(C.g_variant_type_equal(C.gconstpointer(v.native()), C.gconstpointer(to.native())))
+	b := Gobool(C.g_variant_type_equal(C.gconstpointer(v.native()), C.gconstpointer(to.native())))
 	runtime.KeepAlive(v)
 	return b
 }
 
 // IsSubtypeOf is a wrapper around g_variant_type_is_subtype_of.
 func (v *VariantType) IsSubtypeOf(supertype *VariantType) bool {
-	b := gobool(C.g_variant_type_is_subtype_of(v.native(), supertype.native()))
+	b := Gobool(C.g_variant_type_is_subtype_of(v.native(), supertype.native()))
 	runtime.KeepAlive(v)
 	return b
 }

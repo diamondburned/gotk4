@@ -40,7 +40,7 @@ func (v *Object) connectClosure(after bool, detailedSignal string, f interface{}
 	defer C.free(unsafe.Pointer(cstr))
 
 	gclosure := closureNew(v, fs)
-	c := C.g_signal_connect_closure(C.gpointer(v.Native()), (*C.gchar)(cstr), gclosure, gbool(after))
+	c := C.g_signal_connect_closure(C.gpointer(v.Native()), (*C.gchar)(cstr), gclosure, Gbool(after))
 
 	runtime.KeepAlive(v)
 

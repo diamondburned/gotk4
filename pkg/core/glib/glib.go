@@ -26,14 +26,14 @@ import (
 
 type PID C.GPid
 
-func gbool(b bool) C.gboolean {
+func Gbool(b bool) C.gboolean {
 	if b {
 		return C.gboolean(1)
 	}
 	return C.gboolean(0)
 }
 
-func gobool(b C.gboolean) bool {
+func Gobool(b C.gboolean) bool {
 	return b != 0
 }
 
@@ -96,7 +96,7 @@ func FundamentalType(actual Type) Type {
 
 // IsValue checks whether the passed in type can be used for g_value_init().
 func (t Type) IsValue() bool {
-	return gobool(C._g_type_is_value(C.GType(t)))
+	return Gobool(C._g_type_is_value(C.GType(t)))
 }
 
 // Name is a wrapper around g_type_name().
@@ -144,7 +144,7 @@ func (t Type) interfaces() []Type {
 
 // IsA is a wrapper around g_type_is_a().
 func (t Type) IsA(isAType Type) bool {
-	return gobool(C.g_type_is_a(C.GType(t), C.GType(isAType)))
+	return Gobool(C.g_type_is_a(C.GType(t), C.GType(isAType)))
 }
 
 // TypeFromName is a wrapper around g_type_from_name().
@@ -438,7 +438,7 @@ func timeoutAdd(time uint, sec bool, priority Priority, f interface{}) SourceHan
 
 // SourceRemove is a wrapper around g_source_remove()
 func SourceRemove(src SourceHandle) bool {
-	return gobool(C.g_source_remove(C.guint(src)))
+	return Gobool(C.g_source_remove(C.guint(src)))
 }
 
 // WipeAllClosures wipes all the Go closures associated with the given object
@@ -508,7 +508,7 @@ func ConnectGeneratedClosure(
 	csignal := (*C.gchar)(C.CString(signal))
 	defer C.free(unsafe.Pointer(csignal))
 
-	id := C.g_signal_connect_closure(C.gpointer(v.native()), csignal, gclosure, gbool(after))
+	id := C.g_signal_connect_closure(C.gpointer(v.native()), csignal, gclosure, Gbool(after))
 
 	runtime.KeepAlive(obj)
 	return SignalHandle(id)
@@ -766,7 +766,7 @@ func (v *Object) Eq(other Objector) bool {
 
 // IsA is a wrapper around g_type_is_a().
 func (v *Object) IsA(typ Type) bool {
-	return gobool(C.g_type_is_a(C.GType(v.TypeFromInstance()), C.GType(typ)))
+	return Gobool(C.g_type_is_a(C.GType(v.TypeFromInstance()), C.GType(typ)))
 }
 
 // Type aliases to TypeFromInstance.
@@ -1001,7 +1001,7 @@ func (v *value) unset() {
 }
 
 func (v *value) isValue() bool {
-	b := gobool(C._g_is_value(v.gvalue))
+	b := Gobool(C._g_is_value(v.gvalue))
 	runtime.KeepAlive(v)
 	return b
 }
@@ -1410,7 +1410,7 @@ func marshalUchar(p uintptr) (interface{}, error) {
 
 func marshalBoolean(p uintptr) (interface{}, error) {
 	c := C.g_value_get_boolean((*C.GValue)(unsafe.Pointer(p)))
-	return gobool(c), nil
+	return Gobool(c), nil
 }
 
 func marshalInt(p uintptr) (interface{}, error) {
@@ -1567,7 +1567,7 @@ func (v *Value) WalkGoValue(f func(interface{}) bool) (value interface{}) {
 
 // SetBool is a wrapper around g_value_set_boolean().
 func (v *Value) SetBool(val bool) {
-	C.g_value_set_boolean(v.native(), gbool(val))
+	C.g_value_set_boolean(v.native(), Gbool(val))
 	runtime.KeepAlive(v)
 }
 

@@ -30606,6 +30606,8 @@ func LoggerHandler(l *log.Logger) LogWriterFunc {
 	}
 }
 
+type PID C.GPid
+
 // NewTimeZoneFromGo creates a new TimeZone instance from Go's Location.
 // The location's accuracy is down to the second.
 func NewTimeZoneFromGo(loc *time.Location) *TimeZone {

@@ -202,10 +202,10 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 		value.p.Descend()
 
 		value.p.Linef("var len uintptr")
-		value.p.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&len))", value.In.Name)
-		value.p.Linef("src := unsafe.Slice((*%s)(p), len)", inner.In.Type)
+		value.p.Linef("p := C.g_array_steal(%s, (*C.gsize)(unsafe.Pointer(&len)))", value.In.Name)
+		value.p.Linef("src := unsafe.Slice((*%s)(p), len)", inner.Out.Type)
 		value.p.Linef("%s = make(%s, len)", value.Out.Set, value.Out.Type)
-		value.p.Linef("for i := 0; i < len; i++ {")
+		value.p.Linef("for i := 0; uint64(i) < *(*uint64)(unsafe.Pointer(len)); i++ {")
 		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
@@ -508,6 +508,10 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			unref, value.InPtr(1), value.In.Type)
 		value.p.Linef("})")
 
+		return true
+
+	case "GLib.Pid":
+		value.p.Linef("%s = %s(%s)", value.Out.Set, value.Out.Type, value.In.Name)
 		return true
 	}
 

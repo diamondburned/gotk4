@@ -255,7 +255,7 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 
 		// https://developer.gnome.org/glib/stable/glib-Arrays.html#g-array-sized-new
 		value.p.Linef(
-			"%s = C.g_array_sized_new(%t, false, C.guint(%s), C.guint(len(%s)))",
+			"%s = C.g_array_sized_new(C.gboolean(coreglib.Gbool(%t)), C.gboolean(coreglib.Gbool(false)), C.guint(%s), C.guint(len(%s)))",
 			value.Out.Set, array.IsZeroTerminated(), inner.csizeof(), value.In.Name)
 		value.p.Linef(
 			"%s = C.g_array_set_size(%s, C.guint(len(%s)))",
@@ -268,10 +268,9 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.header.ApplyFrom(inner.Header())
 		value.p.Descend()
 
-		value.p.Linef("out := unsafe.Slice(%s.data, len(%s))", value.OutName, value.In.Name)
-		value.p.Linef("for i := range %s {", value.In.Name)
-		value.p.Linef(inner.Conversion)
-		value.p.Linef("}")
+		value.p.Linef(
+			"%s = C.g_array_append_vals(%s, C.gconstpointer(unsafe.Pointer(&%s[0])), C.guint(len(%s)))",
+			value.Out.Set, value.OutName, value.In.Name, value.In.Name)
 
 		value.p.Ascend()
 		return true
@@ -490,6 +489,13 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.p.Linef(
 			"%s = (%s)(unsafe.Pointer(%s.Native()))",
 			value.Out.Set, value.OutCast(1), value.InNamePtr(1),
+		)
+		return true
+
+	case "GLib.Pid":
+		value.p.Linef(
+			"%s = %s(%s)",
+			value.Out.Set, value.Out.Type, value.In.Name,
 		)
 		return true
 	}

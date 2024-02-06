@@ -7,11 +7,32 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
 
 // #include <stdlib.h>
 // #include <glib.h>
 import "C"
+
+//export _gotk4_glib2_ChildWatchFunc
+func _gotk4_glib2_ChildWatchFunc(arg1 C.GPid, arg2 C.gint, arg3 C.gpointer) {
+	var fn ChildWatchFunc
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(ChildWatchFunc)
+	}
+
+	var _pid coreglib.PID // out
+	var _status int       // out
+
+	_pid = coreglib.PID(arg1)
+	_status = int(arg2)
+
+	fn(_pid, _status)
+}
 
 //export _gotk4_glib2_CompareDataFunc
 func _gotk4_glib2_CompareDataFunc(arg1 C.gconstpointer, arg2 C.gconstpointer, arg3 C.gpointer) (cret C.gint) {

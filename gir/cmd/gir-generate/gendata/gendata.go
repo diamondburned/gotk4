@@ -213,6 +213,11 @@ var Preprocessors = []Preprocessor{
 		param.Array.CType = "GFile**"
 	}),
 
+	ModifySignal("Gio-2.MountOperation::show-processes", func(sig *gir.Signal) {
+		param := FindParameterFromSlice(sig.Parameters.Parameters, "processes")
+		param.Array.CType = "GArray*"
+	}),
+
 	// Fix up GVariant methods to have nullable returns.
 	PreprocessorFunc(func(repos gir.Repositories) {
 		variant := repos.FindFullType("GLib-2.Variant").Type.(*gir.Record)

@@ -57,7 +57,7 @@ func newParamSpecCommon(name, nick, blurb string) (cname, cnick, cblurb *C.gchar
 		C.free(unsafe.Pointer(cblurb))
 	}
 
-	if !gobool(C.g_param_spec_is_valid_name(cname)) {
+	if !Gobool(C.g_param_spec_is_valid_name(cname)) {
 		log.Panicf("invalid param spec name %q", name)
 	}
 
@@ -89,7 +89,7 @@ func NewBoolParam(name, nick, blurb string, defaultValue bool, flags ParamFlags)
 
 	paramSpec := C.g_param_spec_boolean(
 		cname, cnick, cblurb,
-		gbool(defaultValue),
+		Gbool(defaultValue),
 		C.GParamFlags(flags),
 	)
 	return ParamSpecTake(unsafe.Pointer(paramSpec), false)

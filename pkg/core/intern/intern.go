@@ -6,6 +6,10 @@ package intern
 //
 // extern void goToggleNotify(gpointer, GObject*, gboolean);
 // static const gchar* gotk4_object_type_name(gpointer obj) { return G_OBJECT_TYPE_NAME(obj); };
+//
+// gboolean gotk4_intern_remove_toggle_ref(gpointer obj) {
+//   g_object_remove_toggle_ref(G_OBJECT(obj), (GToggleNotify)goToggleNotify, NULL);
+// }
 import "C"
 
 import (
@@ -318,45 +322,27 @@ func finalizeBox(dummy *boxDummy) {
 
 		// Unreference the object. This will potentially free the object as
 		// well. The closures are definitely gone at this point.
-		C.g_object_remove_toggle_ref(
-			(*C.GObject)(unsafe.Pointer(dummy.gobject)),
-			(*[0]byte)(C.goToggleNotify), nil,
-		)
+		// C.g_object_remove_toggle_ref(
+		// 	(*C.GObject)(unsafe.Pointer(dummy.gobject)),
+		// 	(*[0]byte)(C.goToggleNotify), nil,
+		// )
+
+		// Do this in the main loop instead. This is because finalizers are
+		// called in a finalizer thread, and our remove_toggle_ref might be
+		// destroying other main loop objects.
+		C.g_main_context_invoke(
+			nil, // nil means the default main context
+			(*[0]byte)(C.gotk4_intern_remove_toggle_ref),
+			C.gpointer(dummy.gobject))
 
 		if toggleRefs != nil {
-			toggleRefs.Println(objInfoRes, "finalizeBox: removed toggle ref during GC")
+			toggleRefs.Println(objInfoRes,
+				"finalizeBox: remove_toggle_ref queued for next main loop iteration")
 		}
 
 		if objectProfile != nil {
 			objectProfile.Remove(dummy.gobject)
 		}
-	}
-}
-
-// goToggleNotify is called by GLib on each toggle notification. It doesn't
-// actually free anything and relies on Box's finalizer to free both the box and
-// the C GObject.
-//
-//go:nosplit
-//export goToggleNotify
-func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
-	gobject := unsafe.Pointer(obj)
-	isLast := isLastInt != C.FALSE
-
-	shared.mu.Lock()
-
-	if isLast {
-		// delete(shared.sharing, gobject)
-		makeWeak(gobject)
-	} else {
-		// shared.sharing[gobject] = struct{}{}
-		makeStrong(gobject)
-	}
-
-	shared.mu.Unlock()
-
-	if toggleRefs != nil {
-		toggleRefs.Println(objInfo(unsafe.Pointer(obj)), "goToggleNotify: is last =", isLast)
 	}
 }
 

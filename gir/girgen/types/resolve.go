@@ -947,7 +947,7 @@ func resolveCopyType(gen FileGenerator, typ *gir.Type, array *gir.Array) *gir.Ty
 	// Guess the CType from the array if the type is from one. We must know
 	// beforehand that the CType has a pointer though, otherwise it'll hit
 	// gpointer.
-	if array != nil && array.CType != "" && strings.Contains(array.CType, "*") {
+	if array != nil && array.CType != "" && strings.Contains(array.CType, "*") && array.CType != "GArray*" {
 		ctyp = CleanCType(array.CType, false)
 		ctyp = DecPtr(ctyp)
 	}

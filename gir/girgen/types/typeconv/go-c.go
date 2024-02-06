@@ -495,8 +495,8 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 	case "GLib.Pid":
 		value.p.Linef(
-			"%s = C.GPid(%s)",
-			value.Out.Set, value.In.Name,
+			"%s = %s(%s)",
+			value.Out.Set, value.Out.Type, value.In.Name,
 		)
 		return true
 	}

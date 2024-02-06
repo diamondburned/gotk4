@@ -66176,7 +66176,7 @@ func (op *MountOperation) showProcesses(message string, processes []coreglib.PID
 	_arg0 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(op).Native()))
 	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.g_array_sized_new(C.gboolean(coreglib.Gbool(false)), C.gboolean(coreglib.Gbool(false)), C.guint(C.sizeof_GArray), C.guint(len(processes)))
+	_arg2 = C.g_array_sized_new(C.gboolean(coreglib.Gbool(false)), C.gboolean(coreglib.Gbool(false)), C.guint(C.sizeof_GPid), C.guint(len(processes)))
 	_arg2 = C.g_array_set_size(_arg2, C.guint(len(processes)))
 	defer C.g_array_unref(_arg2)
 	{

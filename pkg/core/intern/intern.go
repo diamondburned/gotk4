@@ -123,6 +123,10 @@ func objInfo(obj unsafe.Pointer) string {
 	return fmt.Sprintf("%p (%s):", obj, C.GoString(C.gotk4_object_type_name(C.gpointer(obj))))
 }
 
+func objRefCount(obj unsafe.Pointer) int {
+	return int(C.g_atomic_int_get((*C.gint)(unsafe.Pointer(&(*C.GObject)(obj).ref_count))))
+}
+
 // newBox creates a zero-value instance of Box.
 func newBox(obj unsafe.Pointer) *Box {
 	box := &Box{}
@@ -211,8 +215,7 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 
 	if toggleRefs != nil {
 		toggleRefs.Println(objInfo(gobject),
-			"Get: will introduce new box, current ref =",
-			C.g_atomic_int_get((*C.gint)(unsafe.Pointer(&(*C.GObject)(gobject).ref_count))))
+			"Get: will introduce new box, current ref =", objRefCount(gobject))
 	}
 
 	shared.mu.Unlock()
@@ -225,20 +228,32 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	// We should already have a strong reference. Sink the object in case. This
 	// will force the reference to be truly strong.
 	if C.g_object_is_floating(C.gpointer(gobject)) != C.FALSE {
+		// First, we need to ref_sink the object to convert the floating
+		// reference to a strong reference.
 		C.g_object_ref_sink(C.gpointer(gobject))
+		// Then, we need to unref it to balance the ref_sink.
+		C.g_object_unref(C.gpointer(gobject))
+
+		if toggleRefs != nil {
+			toggleRefs.Println(objInfo(gobject),
+				"Get: ref_sink'd the object, current ref =", objRefCount(gobject))
+		}
 	}
 
 	// If we're "not taking," then we can assume our ownership over the object,
 	// meaning the strong reference is now ours. That means we need to replace
 	// it, not add.
 	if !take {
+		if toggleRefs != nil {
+			toggleRefs.Println(objInfo(gobject),
+				"Get: not taking, so unrefing the object, current ref =", objRefCount(gobject))
+		}
 		C.g_object_unref(C.gpointer(gobject))
 	}
 
 	if toggleRefs != nil {
 		toggleRefs.Println(objInfo(gobject),
-			"Get: introduced new box, current ref =",
-			C.g_atomic_int_get((*C.gint)(unsafe.Pointer(&(*C.GObject)(gobject).ref_count))))
+			"Get: introduced new box, current ref =", objRefCount(gobject))
 	}
 
 	// Undo the initial ref_sink.

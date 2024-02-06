@@ -203,7 +203,7 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 		value.p.Linef("var len uintptr")
 		value.p.Linef("p := C.g_array_steal(%s, (*C.gsize)(unsafe.Pointer(&len)))", value.In.Name)
-		value.p.Linef("src := unsafe.Slice((*%s)(p), len)", inner.In.Type)
+		value.p.Linef("src := unsafe.Slice((*%s)(p), len)", inner.Out.Type)
 		value.p.Linef("%s = make(%s, len)", value.Out.Set, value.Out.Type)
 		value.p.Linef("for i := 0; uint64(i) < *(*uint64)(unsafe.Pointer(len)); i++ {")
 		value.p.Linef(inner.Conversion)

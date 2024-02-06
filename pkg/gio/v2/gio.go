@@ -72,7 +72,7 @@ import (
 // extern void _gotk4_gio2_Mount_ConnectPreUnmount(gpointer, guintptr);
 // extern void _gotk4_gio2_Mount_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(gpointer, gchar*, gint64, gint64, guintptr);
-// extern void _gotk4_gio2_MountOperation_ConnectShowProcesses(gpointer, gchar*, GPid*, gchar**, guintptr);
+// extern void _gotk4_gio2_MountOperation_ConnectShowProcesses(gpointer, gchar*, GArray*, gchar**, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectReply(gpointer, GMountOperationResult, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectAskQuestion(gpointer, gchar*, gchar**, guintptr);
 // extern void _gotk4_gio2_MountOperation_ConnectAskPassword(gpointer, gchar*, gchar*, gchar*, GAskPasswordFlags, guintptr);

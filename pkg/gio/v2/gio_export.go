@@ -4283,7 +4283,7 @@ func _gotk4_gio2_MountOperationClass_show_processes(arg0 *C.GMountOperation, arg
 	{
 		var len uintptr
 		p := C.g_array_steal(arg2, (*C.gsize)(unsafe.Pointer(&len)))
-		src := unsafe.Slice((*C.GArray)(p), len)
+		src := unsafe.Slice((*coreglib.PID)(p), len)
 		_processes = make([]coreglib.PID, len)
 		for i := 0; uint64(i) < *(*uint64)(unsafe.Pointer(len)); i++ {
 			_processes[i] = coreglib.PID(src[i])
@@ -4422,7 +4422,7 @@ func _gotk4_gio2_MountOperation_ConnectReply(arg0 C.gpointer, arg1 C.GMountOpera
 }
 
 //export _gotk4_gio2_MountOperation_ConnectShowProcesses
-func _gotk4_gio2_MountOperation_ConnectShowProcesses(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.GPid, arg3 **C.gchar, arg4 C.guintptr) {
+func _gotk4_gio2_MountOperation_ConnectShowProcesses(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.GArray, arg3 **C.gchar, arg4 C.guintptr) {
 	var f func(message string, processes []coreglib.PID, choices []string)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
@@ -4442,7 +4442,7 @@ func _gotk4_gio2_MountOperation_ConnectShowProcesses(arg0 C.gpointer, arg1 *C.gc
 	{
 		var len uintptr
 		p := C.g_array_steal(arg2, (*C.gsize)(unsafe.Pointer(&len)))
-		src := unsafe.Slice((*C.GPid)(p), len)
+		src := unsafe.Slice((*coreglib.PID)(p), len)
 		_processes = make([]coreglib.PID, len)
 		for i := 0; uint64(i) < *(*uint64)(unsafe.Pointer(len)); i++ {
 			_processes[i] = coreglib.PID(src[i])

@@ -4282,10 +4282,10 @@ func _gotk4_gio2_MountOperationClass_show_processes(arg0 *C.GMountOperation, arg
 	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	{
 		var len uintptr
-		p := C.g_array_steal(&arg2, (*C.gsize)(&len))
+		p := C.g_array_steal(arg2, (*C.gsize)(unsafe.Pointer(&len)))
 		src := unsafe.Slice((*C.GArray)(p), len)
 		_processes = make([]coreglib.PID, len)
-		for i := 0; i < len; i++ {
+		for i := 0; uint64(i) < *(*uint64)(unsafe.Pointer(len)); i++ {
 			_processes[i] = coreglib.PID(src[i])
 		}
 	}
@@ -4441,10 +4441,10 @@ func _gotk4_gio2_MountOperation_ConnectShowProcesses(arg0 C.gpointer, arg1 *C.gc
 	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	{
 		var len uintptr
-		p := C.g_array_steal(&arg2, (*C.gsize)(&len))
+		p := C.g_array_steal(arg2, (*C.gsize)(unsafe.Pointer(&len)))
 		src := unsafe.Slice((*C.GPid)(p), len)
 		_processes = make([]coreglib.PID, len)
-		for i := 0; i < len; i++ {
+		for i := 0; uint64(i) < *(*uint64)(unsafe.Pointer(len)); i++ {
 			_processes[i] = coreglib.PID(src[i])
 		}
 	}

@@ -66180,10 +66180,7 @@ func (op *MountOperation) showProcesses(message string, processes []coreglib.PID
 	_arg2 = C.g_array_set_size(_arg2, C.guint(len(processes)))
 	defer C.g_array_unref(_arg2)
 	{
-		out := unsafe.Slice(_arg2.data, len(processes))
-		for i := range processes {
-			out[i] = C.GPid(processes[i])
-		}
+		_arg2 = C.g_array_append_vals(_arg2, C.gconstpointer(unsafe.Pointer(&processes[0])), C.guint(len(processes)))
 	}
 	{
 		_arg3 = (**C.gchar)(C.calloc(C.size_t((len(choices) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))

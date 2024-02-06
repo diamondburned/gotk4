@@ -268,10 +268,9 @@ func (conv *Converter) gocArrayConverter(value *ValueConverted) bool {
 		value.header.ApplyFrom(inner.Header())
 		value.p.Descend()
 
-		value.p.Linef("out := unsafe.Slice(%s.data, len(%s))", value.OutName, value.In.Name)
-		value.p.Linef("for i := range %s {", value.In.Name)
-		value.p.Linef(inner.Conversion)
-		value.p.Linef("}")
+		value.p.Linef(
+			"%s = C.g_array_append_vals(%s, C.gconstpointer(unsafe.Pointer(&%s[0])), C.guint(len(%s)))",
+			value.Out.Set, value.OutName, value.In.Name, value.In.Name)
 
 		value.p.Ascend()
 		return true

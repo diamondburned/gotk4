@@ -28,7 +28,7 @@ For contributing guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 ## Community
 
 For questions and discussions, join the [**gotk4 Matrix
-room**](https://img.shields.io/matrix/gotk4%3Amatrix.org)!
+room**](https://matrix.to/#/#gotk4:matrix.org)!
 
 ## License
 

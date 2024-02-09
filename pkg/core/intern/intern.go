@@ -316,6 +316,23 @@ func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 		return (*Box)(unsafe.Pointer(weak)), false
 	}
 
+	// TODO: this is probably wrong. Ideally, this would work when we're getting
+	// objects during finalization, but if the finalizer resurrects the object,
+	// then this might be wrong. Specifically, the finalizer might take a strong
+	// reference to the object, which would not do anything because the object
+	// is in the finalizing map, so everything explodes.
+	//
+	// We opt to return true here because we're technically holding a reference
+	// to *Box, but its lifetime is already predetermined by the
+	// goFinishRemovingToggleRef function, so doing anything with this
+	// information will also explode.
+	//
+	// In other words, it shouldn't matter if we return true or false here, and
+	// relying on either value is wrong.
+	if finalizing, ok := shared.finalizing[gobject]; ok {
+		return finalizing, true
+	}
+
 	return nil, false
 }
 

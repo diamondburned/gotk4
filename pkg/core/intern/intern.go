@@ -7,7 +7,6 @@ import "C"
 
 import (
 	"fmt"
-	"log"
 	"runtime"
 	"runtime/debug"
 	"runtime/pprof"
@@ -15,6 +14,7 @@ import (
 	"sync/atomic"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/closure"
 	"github.com/diamondburned/gotk4/pkg/core/gdebug"
 
 	// Require a non-moving GC for heap pointers. Current GC is moving only by
@@ -22,67 +22,11 @@ import (
 	_ "go4.org/unsafe/assume-no-moving-gc"
 )
 
-const maxTypesAllowed = 2
-
-var knownTypes uint32 = 0
-
-type BoxedType[T any] struct {
-	ctor func(*Box) *T
-	id   uint32
-}
-
-func RegisterType[T any](ctor func(*Box) *T) BoxedType[T] {
-	t := BoxedType[T]{
-		ctor: ctor,
-		id:   atomic.AddUint32(&knownTypes, 1) - 1,
-	}
-	if t.id > maxTypesAllowed {
-		panic("BoxedType ID overflow")
-	}
-	return t
-}
-
-func (t *BoxedType[T]) Get(box *Box) *T {
-	old := atomic.LoadPointer(&box.data[t.id])
-	if old != nil {
-		return (*T)(old)
-	}
-
-	if t.ctor == nil {
-		return nil
-	}
-
-	new := t.ctor(box)
-
-	if atomic.CompareAndSwapPointer(&box.data[t.id], nil, unsafe.Pointer(new)) {
-		return new
-	}
-
-	ptr := atomic.LoadPointer(&box.data[t.id])
-	if ptr != nil {
-		return (*T)(ptr)
-	}
-
-	panic("Load returned nil after CompareAndSwap(old = nil) failed")
-}
-
-func (t *BoxedType[T]) Set(box *Box, v *T) {
-	if t.ctor != nil {
-		panic("bug: Set not permitted if t.ctor != nil")
-	}
-	atomic.StorePointer(&box.data[t.id], unsafe.Pointer(v))
-}
-
-func (t *BoxedType[T]) Delete(box *Box) {
-	atomic.StorePointer(&box.data[t.id], nil)
-}
-
 // Box is an opaque type holding extra data.
 type Box struct {
-	gobject unsafe.Pointer
-	dummy   *boxDummy
-	data    [maxTypesAllowed]unsafe.Pointer
-	done    bool
+	dummy    *boxDummy
+	closures atomic.Pointer[closure.Registry]
+	gobject  unsafe.Pointer
 }
 
 type boxDummy struct {
@@ -92,6 +36,23 @@ type boxDummy struct {
 // Object returns Box's C GObject pointer.
 func (b *Box) GObject() unsafe.Pointer {
 	return b.gobject
+}
+
+// Closures returns the closure registry for this Box.
+func (b *Box) Closures() *closure.Registry {
+	closures := b.closures.Load()
+	if closures != nil {
+		return closures
+	}
+
+	// If the closures are nil, then we'll have to create a new one.
+	closures = closure.NewRegistry()
+	if !b.closures.CompareAndSwap(nil, closures) {
+		// If the CAS failed, then we'll read the value again.
+		return b.closures.Load()
+	}
+
+	return closures
 }
 
 // Hack to force an object on the heap.
@@ -161,9 +122,15 @@ var shared = struct {
 	weak map[unsafe.Pointer]uintptr
 	// strong stores *Box while the object is still referenced by C but not Go.
 	strong map[unsafe.Pointer]*Box
+	// finalizing is a map of objects that are currently being finalized. This
+	// is used to prevent double-finalization.
+	// It acts the same as a strong reference, but it is deleted as soon as the
+	// finalizer is finished.
+	finalizing map[unsafe.Pointer]*Box
 }{
-	weak:   make(map[unsafe.Pointer]uintptr, 1024),
-	strong: make(map[unsafe.Pointer]*Box, 1024),
+	weak:       make(map[unsafe.Pointer]uintptr, 1024),
+	strong:     make(map[unsafe.Pointer]*Box, 1024),
+	finalizing: make(map[unsafe.Pointer]*Box, 1024),
 }
 
 // TryGet gets the Box associated with the GObject or nil if it's gone. The
@@ -172,14 +139,7 @@ var shared = struct {
 //go:nosplit
 func TryGet(gobject unsafe.Pointer) *Box {
 	shared.mu.RLock()
-
 	box, _ := gets(gobject)
-	if box != nil && box.done {
-		log.Panicf(
-			"gotk4: critical: %s TryGet called on a finalized object",
-			objInfo(gobject))
-	}
-
 	shared.mu.RUnlock()
 	return box
 }
@@ -290,7 +250,11 @@ func finalizeBox(dummy *boxDummy) {
 
 	box, strong := gets(dummy.gobject)
 	if box == nil {
-		log.Print("gotk4: intern: finalizer got unknown gobject ", dummy.gobject, ", ignoring")
+		// Silently ignore unknown objects.
+		//
+		// This is a trick to make sure that the box is really finalized. Turns
+		// out it hates being finalized in goFinishRemovingToggleRef, so we just
+		// don't call it there and let the GC do its thing.
 		return
 	}
 
@@ -298,32 +262,25 @@ func finalizeBox(dummy *boxDummy) {
 	// This won't be the case once goFinishRemovingToggleRef is called.
 	runtime.SetFinalizer(dummy, finalizeBox)
 
-	if box.done || strong {
-		// If box.done:
-		// The finalizer is again called before goFinishRemovingToggleRef gets
-		// the chance to run. Set the finalizer again and move on.
-		//
+	if strong {
 		// If strong: the closures are strong-referenced, then they might still
 		// be referenced from the C side, and those closures might access this
 		// object. Don't free.
 
 		if toggleRefs != nil {
-			if box.done {
-				toggleRefs.Println(
-					objInfo(dummy.gobject),
-					"finalizeBox: finalizeBox called on already finalized object")
-			} else {
-				toggleRefs.Println(
-					objInfo(dummy.gobject),
-					"finalizeBox: moving finalize to next GC cycle since object is still strong")
-			}
+			toggleRefs.Println(
+				objInfo(dummy.gobject),
+				"finalizeBox: moving finalize to next GC cycle since object is still strong")
 		}
 
 		return
 	}
 
-	// Mark the box as being removed "done" so that we don't double-free it.
-	box.done = true
+	// Move the box to finalizing. This is to prevent double-finalization as
+	// well as Go from freeing the box while the toggle reference is still
+	// active.
+	delete(shared.weak, dummy.gobject)
+	shared.finalizing[dummy.gobject] = box
 
 	// Do this in the main loop instead. This is because finalizers are
 	// called in a finalizer thread, and our remove_toggle_ref might be

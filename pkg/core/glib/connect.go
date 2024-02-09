@@ -63,7 +63,7 @@ func closureNew(v *Object, f interface{}) *C.GClosure {
 
 	gclosure := C.g_closure_new_simple(C.sizeof_GClosure, nil)
 
-	closures := closure.RegistryType.Get(v.box)
+	closures := v.box.Closures()
 	closures.Register(unsafe.Pointer(gclosure), fs)
 
 	C.g_object_watch_closure(v.native(), gclosure)

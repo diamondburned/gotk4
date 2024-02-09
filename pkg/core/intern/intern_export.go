@@ -21,6 +21,7 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 	isLast := isLastInt != C.FALSE
 
 	shared.mu.Lock()
+	defer shared.mu.Unlock()
 
 	if isLast {
 		// delete(shared.sharing, gobject)
@@ -29,8 +30,6 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 		// shared.sharing[gobject] = struct{}{}
 		makeStrong(gobject)
 	}
-
-	shared.mu.Unlock()
 
 	if toggleRefs != nil {
 		toggleRefs.Println(objInfo(unsafe.Pointer(obj)), "goToggleNotify: is last =", isLast)
@@ -51,8 +50,8 @@ func goFinishRemovingToggleRef(gobject unsafe.Pointer) {
 	shared.mu.Lock()
 	defer shared.mu.Unlock()
 
-	box, strong := gets(gobject)
-	if box == nil {
+	box, ok := shared.finalizing[gobject]
+	if !ok {
 		// Extremely weird error. This should never happen.
 		log.Printf(
 			"gotk4: critical: %p: finishRemovingToggleRef called on unknown object",
@@ -60,32 +59,20 @@ func goFinishRemovingToggleRef(gobject unsafe.Pointer) {
 		return
 	}
 
-	if strong {
-		// Panic here, else we're memory leaking.
-		log.Panicf(
-			"gotk4: critical: %p: finishRemovingToggleRef cannot be called on strongly-referenced object (unexpectedly resurrected?)",
-			gobject)
-	}
-
-	if !box.done {
-		log.Panicf(
-			"gotk4: critical: %p: finishRemovingToggleRef cannot be called with finalizer still set",
-			gobject)
-	}
-
-	// If the closures are weak-referenced, then the object reference hasn't
-	// been toggled yet. Since the object is going away and we're still
-	// weakly referenced, we can wipe the closures away.
-	//
-	// Finally clear the object data off the registry.
-	delete(shared.weak, gobject)
-
 	// Clear the finalizer.
-	runtime.SetFinalizer(box.dummy, nil)
+	// runtime.SetFinalizer(box.dummy, nil)
+
+	// Finally clear the object data off the registry.
+	delete(shared.finalizing, gobject)
 
 	// Keep the box alive until the end of the function just in case the
 	// finalizer is called again.
 	runtime.KeepAlive(box.dummy)
+	runtime.KeepAlive(box)
+
+	if toggleRefs != nil {
+		toggleRefs.Printf("goFinishRemovingToggleRef: removed %p", gobject)
+	}
 
 	if objectProfile != nil {
 		objectProfile.Remove(gobject)

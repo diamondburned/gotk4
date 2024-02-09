@@ -66,7 +66,7 @@ func closureNew(v *Object, f interface{}) *C.GClosure {
 	closures := closure.RegistryType.Get(v.box)
 	closures.Register(unsafe.Pointer(gclosure), fs)
 
-	// C.g_object_watch_closure(v.native(), gclosure)
+	C.g_object_watch_closure(v.native(), gclosure)
 	C.g_closure_set_meta_marshal(gclosure, C.gpointer(v.Native()), (*[0]byte)(C._gotk4_goMarshal))
 	C.g_closure_add_finalize_notifier(gclosure, C.gpointer(v.Native()), (*[0]byte)(C._gotk4_removeClosure))
 

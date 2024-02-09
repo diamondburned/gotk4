@@ -6,6 +6,7 @@ import "C"
 
 import (
 	"log"
+	"runtime"
 	"unsafe"
 )
 
@@ -43,6 +44,10 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 //go:nosplit
 //export goFinishRemovingToggleRef
 func goFinishRemovingToggleRef(gobject unsafe.Pointer) {
+	if toggleRefs != nil {
+		toggleRefs.Printf("goFinishRemovingToggleRef: called on %p", gobject)
+	}
+
 	shared.mu.Lock()
 	defer shared.mu.Unlock()
 
@@ -50,16 +55,22 @@ func goFinishRemovingToggleRef(gobject unsafe.Pointer) {
 	if box == nil {
 		// Extremely weird error. This should never happen.
 		log.Printf(
-			"gotk4: critical: finishRemovingToggleRef called on unknown GObject %s",
-			objInfo(gobject))
+			"gotk4: critical: %p: finishRemovingToggleRef called on unknown object",
+			gobject)
 		return
 	}
 
 	if strong {
 		// Panic here, else we're memory leaking.
 		log.Panicf(
-			"gotk4: critical: finishRemovingToggleRef cannot be called on strong GObject %s (object unexpectedly resurrected?)",
-			objInfo(gobject))
+			"gotk4: critical: %p: finishRemovingToggleRef cannot be called on strongly-referenced object (unexpectedly resurrected?)",
+			gobject)
+	}
+
+	if !box.done {
+		log.Panicf(
+			"gotk4: critical: %p: finishRemovingToggleRef cannot be called with finalizer still set",
+			gobject)
 	}
 
 	// If the closures are weak-referenced, then the object reference hasn't
@@ -68,4 +79,15 @@ func goFinishRemovingToggleRef(gobject unsafe.Pointer) {
 	//
 	// Finally clear the object data off the registry.
 	delete(shared.weak, gobject)
+
+	// Clear the finalizer.
+	runtime.SetFinalizer(box.dummy, nil)
+
+	// Keep the box alive until the end of the function just in case the
+	// finalizer is called again.
+	runtime.KeepAlive(box.dummy)
+
+	if objectProfile != nil {
+		objectProfile.Remove(gobject)
+	}
 }

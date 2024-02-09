@@ -82,6 +82,7 @@ type Box struct {
 	gobject unsafe.Pointer
 	dummy   *boxDummy
 	data    [maxTypesAllowed]unsafe.Pointer
+	done    bool
 }
 
 type boxDummy struct {
@@ -171,7 +172,14 @@ var shared = struct {
 //go:nosplit
 func TryGet(gobject unsafe.Pointer) *Box {
 	shared.mu.RLock()
+
 	box, _ := gets(gobject)
+	if box != nil && box.done {
+		log.Panicf(
+			"gotk4: critical: %s TryGet called on a finalized object",
+			objInfo(gobject))
+	}
+
 	shared.mu.RUnlock()
 	return box
 }
@@ -278,52 +286,57 @@ func finalizeBox(dummy *boxDummy) {
 	}
 
 	shared.mu.Lock()
+	defer shared.mu.Unlock()
 
 	box, strong := gets(dummy.gobject)
 	if box == nil {
 		log.Print("gotk4: intern: finalizer got unknown gobject ", dummy.gobject, ", ignoring")
-		shared.mu.Unlock()
 		return
 	}
 
-	var objInfoRes string
-	if toggleRefs != nil {
-		objInfoRes = objInfo(dummy.gobject)
-		toggleRefs.Println(objInfoRes, "finalizeBox: acquiring lock...")
-	}
+	// Always delegate the finalization to the next cycle.
+	// This won't be the case once goFinishRemovingToggleRef is called.
+	runtime.SetFinalizer(dummy, finalizeBox)
 
-	if strong {
-		// If the closures are strong-referenced, then they might still be
-		// referenced from the C side, and those closures might access this
+	if box.done || strong {
+		// If box.done:
+		// The finalizer is again called before goFinishRemovingToggleRef gets
+		// the chance to run. Set the finalizer again and move on.
+		//
+		// If strong: the closures are strong-referenced, then they might still
+		// be referenced from the C side, and those closures might access this
 		// object. Don't free.
 
-		// Delegate finalizing to the next cycle.
-		runtime.SetFinalizer(dummy, finalizeBox)
-
-		shared.mu.Unlock()
-
 		if toggleRefs != nil {
-			toggleRefs.Println(objInfoRes, "finalizeBox: moving finalize to next GC cycle")
-		}
-	} else {
-		// Do this in the main loop instead. This is because finalizers are
-		// called in a finalizer thread, and our remove_toggle_ref might be
-		// destroying other main loop objects.
-		C.g_main_context_invoke(
-			nil, // nil means the default main context
-			(*[0]byte)(C.gotk4_intern_remove_toggle_ref),
-			C.gpointer(dummy.gobject))
-
-		shared.mu.Unlock()
-
-		if toggleRefs != nil {
-			toggleRefs.Println(objInfoRes,
-				"finalizeBox: remove_toggle_ref queued for next main loop iteration")
+			if box.done {
+				toggleRefs.Println(
+					objInfo(dummy.gobject),
+					"finalizeBox: finalizeBox called on already finalized object")
+			} else {
+				toggleRefs.Println(
+					objInfo(dummy.gobject),
+					"finalizeBox: moving finalize to next GC cycle since object is still strong")
+			}
 		}
 
-		if objectProfile != nil {
-			objectProfile.Remove(dummy.gobject)
-		}
+		return
+	}
+
+	// Mark the box as being removed "done" so that we don't double-free it.
+	box.done = true
+
+	// Do this in the main loop instead. This is because finalizers are
+	// called in a finalizer thread, and our remove_toggle_ref might be
+	// destroying other main loop objects.
+	C.g_main_context_invoke(
+		nil, // nil means the default main context
+		(*[0]byte)(C.gotk4_intern_remove_toggle_ref),
+		C.gpointer(dummy.gobject))
+
+	if toggleRefs != nil {
+		toggleRefs.Println(
+			objInfo(dummy.gobject),
+			"finalizeBox: remove_toggle_ref queued for next main loop iteration")
 	}
 }
 

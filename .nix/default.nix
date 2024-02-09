@@ -15,7 +15,7 @@ let
 		sha256 = "0rkw9k98qy7ifwypkh2fqhdn7y2qphy2f8xjisj0cyp5pjja62im";
 	};
 
-in import "${gotk4-nix}/${action}.nix" {
+in import "${gotk4-nix}/${action}.nix" rec {
 	base = {
 		pname   = "gotk4";
 		version = "dev";
@@ -43,5 +43,8 @@ in import "${gotk4-nix}/${action}.nix" {
 						upstreamPkgs.go;
 			})
 		];
+	};
+	passthru = {
+		inherit pkgs;
 	};
 }

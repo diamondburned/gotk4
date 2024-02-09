@@ -2,7 +2,14 @@
 package intern
 
 // #cgo pkg-config: gobject-2.0
-// #include "intern.h"
+// #include <glib-object.h>
+//
+// extern void goToggleNotify(gpointer, GObject*, gboolean);
+// static const gchar* gotk4_object_type_name(gpointer obj) { return G_OBJECT_TYPE_NAME(obj); };
+//
+// gboolean gotk4_intern_remove_toggle_ref(gpointer obj) {
+//   g_object_remove_toggle_ref(G_OBJECT(obj), (GToggleNotify)goToggleNotify, NULL);
+// }
 import "C"
 
 import (
@@ -306,6 +313,20 @@ func finalizeBox(dummy *boxDummy) {
 			toggleRefs.Println(objInfoRes, "finalizeBox: moving finalize to next GC cycle")
 		}
 	} else {
+		// If the closures are weak-referenced, then the object reference hasn't
+		// been toggled yet. Since the object is going away and we're still
+		// weakly referenced, we can wipe the closures away.
+		delete(shared.weak, dummy.gobject)
+
+		shared.mu.Unlock()
+
+		// Unreference the object. This will potentially free the object as
+		// well. The closures are definitely gone at this point.
+		// C.g_object_remove_toggle_ref(
+		// 	(*C.GObject)(unsafe.Pointer(dummy.gobject)),
+		// 	(*[0]byte)(C.goToggleNotify), nil,
+		// )
+
 		// Do this in the main loop instead. This is because finalizers are
 		// called in a finalizer thread, and our remove_toggle_ref might be
 		// destroying other main loop objects.
@@ -313,8 +334,6 @@ func finalizeBox(dummy *boxDummy) {
 			nil, // nil means the default main context
 			(*[0]byte)(C.gotk4_intern_remove_toggle_ref),
 			C.gpointer(dummy.gobject))
-
-		shared.mu.Unlock()
 
 		if toggleRefs != nil {
 			toggleRefs.Println(objInfoRes,

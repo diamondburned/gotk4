@@ -25,6 +25,11 @@ completely missing. In that case, an issue should be opened.
 
 For contributing guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
+## Community
+
+For questions and discussions, join the [**gotk4 Matrix
+room**](https://img.shields.io/matrix/gotk4%3Amatrix.org)!
+
 ## License
 
 `gotk4` contains 3 directories licensed differently:

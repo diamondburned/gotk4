@@ -203,7 +203,7 @@ func _gotk4_goMarshal(
 		return
 	}
 
-	fs := closure.RegistryType.Get(box).Load(unsafe.Pointer(gclosure))
+	fs := box.Closures().Load(unsafe.Pointer(gclosure))
 	if fs == nil {
 		log.Printf(
 			"warning: object %s %v missing closure %v",
@@ -450,9 +450,11 @@ func SourceRemove(src SourceHandle) bool {
 // hack, this function is introduced for cases where the programmer knows for
 // sure that the object will never be used again, and it is significant enough
 // of a leak that having a workaround is better than not.
+//
+// Deprecated: this function is dangerous and should not be used. Using this
+// function now causes a panic.
 func WipeAllClosures(objector Objector) {
-	v := BaseObject(objector)
-	closure.RegistryType.Delete(v.box)
+	panic("WipeAllClosures is deprecated and should not be used")
 }
 
 // Destroy destroys the Go reference to the given object. The object must not be
@@ -496,7 +498,7 @@ func ConnectGeneratedClosure(
 	data.GClosure = uintptr(unsafe.Pointer(gclosure))
 
 	// Hold a strong reference mapping the Go closure to the object.
-	closures := closure.RegistryType.Get(v.box)
+	closures := v.box.Closures()
 	closures.Register(unsafe.Pointer(gclosure), fs)
 
 	// Just in case.
@@ -531,7 +533,7 @@ func ConnectedGeneratedClosure(closureData uintptr) *closure.FuncStack {
 		return nil
 	}
 
-	fs := closure.RegistryType.Get(box).Load(unsafe.Pointer(data.GClosure))
+	fs := box.Closures().Load(unsafe.Pointer(data.GClosure))
 	if fs == nil {
 		log.Printf(
 			"gotk4: warning: object %s %v missing closure %v",
@@ -552,7 +554,7 @@ func _gotk4_removeClosure(obj *C.GObject, gclosure *C.GClosure) {
 		return
 	}
 
-	closures := closure.RegistryType.Get(box)
+	closures := box.Closures()
 	closures.Delete(unsafe.Pointer(gclosure))
 }
 

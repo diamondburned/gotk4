@@ -7,4 +7,4 @@ require (
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 
-require github.com/KarpelesLab/weak v0.1.1 // indirect
+require github.com/KarpelesLab/weak v0.1.1

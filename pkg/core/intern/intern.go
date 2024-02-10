@@ -14,6 +14,7 @@ import (
 	"sync/atomic"
 	"unsafe"
 
+	"github.com/KarpelesLab/weak"
 	"github.com/diamondburned/gotk4/pkg/core/closure"
 	"github.com/diamondburned/gotk4/pkg/core/gdebug"
 
@@ -27,6 +28,7 @@ type Box struct {
 	dummy    *boxDummy
 	closures atomic.Pointer[closure.Registry]
 	gobject  unsafe.Pointer
+	finalize bool
 }
 
 type boxDummy struct {
@@ -119,24 +121,16 @@ var shared = struct {
 	// weak stores *Box while the object is in Go's heap. The finalizer will
 	// move *Box to strong if the reference is toggled. This is only the case,
 	// because the finalizer will not run otherwise.
-	weak map[unsafe.Pointer]uintptr
+	weak *weak.Map[unsafe.Pointer, Box]
 	// strong stores *Box while the object is still referenced by C but not Go.
 	strong map[unsafe.Pointer]*Box
-	// finalizing is a map of objects that are currently being finalized. This
-	// is used to prevent double-finalization.
-	// It acts the same as a strong reference, but it is deleted as soon as the
-	// finalizer is finished.
-	finalizing map[unsafe.Pointer]*Box
 }{
-	weak:       make(map[unsafe.Pointer]uintptr, 1024),
-	strong:     make(map[unsafe.Pointer]*Box, 1024),
-	finalizing: make(map[unsafe.Pointer]*Box, 1024),
+	weak:   weak.NewMap[unsafe.Pointer, Box](),
+	strong: make(map[unsafe.Pointer]*Box, 1024),
 }
 
 // TryGet gets the Box associated with the GObject or nil if it's gone. The
 // caller must not retain the Box pointer anywhere.
-//
-//go:nosplit
 func TryGet(gobject unsafe.Pointer) *Box {
 	shared.mu.RLock()
 	box, _ := gets(gobject)
@@ -148,8 +142,6 @@ func TryGet(gobject unsafe.Pointer) *Box {
 // new or unknown, then a new box is made. If the intern box already exists for
 // a given C pointer, then that box is weakly referenced and returned. The box
 // will be reference-counted; the caller must use ShouldFree to unreference it.
-//
-//go:nosplit
 func Get(gobject unsafe.Pointer, take bool) *Box {
 	// If the registry does not exist, then we'll have to globally register it.
 	// If the registry is currently strongly referenced, then we must move it to
@@ -238,8 +230,6 @@ func Free(box *Box) {
 // finalizeBox only delays its finalization until GLib notifies us a toggle. It
 // does so for as long as an object is stored only in the Go heap. Once the
 // object is also shared, the toggle notifier will strongly reference the Box.
-//
-//go:nosplit
 func finalizeBox(dummy *boxDummy) {
 	if dummy == nil {
 		panic("bug: finalizeBox called with nil dummy")
@@ -255,12 +245,30 @@ func finalizeBox(dummy *boxDummy) {
 		// This is a trick to make sure that the box is really finalized. Turns
 		// out it hates being finalized in goFinishRemovingToggleRef, so we just
 		// don't call it there and let the GC do its thing.
+
+		if traceObjects != nil {
+			traceObjects.Printf("%p: finalizeBox: unknown object", dummy.gobject)
+		}
+
 		return
 	}
 
 	// Always delegate the finalization to the next cycle.
 	// This won't be the case once goFinishRemovingToggleRef is called.
 	runtime.SetFinalizer(dummy, finalizeBox)
+
+	if box.finalize {
+		// If the box is already finalizing, then we don't need to do anything.
+		// Repeat this until box is gone from the registry.
+
+		if toggleRefs != nil {
+			toggleRefs.Printf(
+				"%p: finalizeBox: already finalizing, waiting for goFinishRemovingToggleRef",
+				dummy.gobject)
+		}
+
+		return
+	}
 
 	if strong {
 		// If strong: the closures are strong-referenced, then they might still
@@ -276,11 +284,15 @@ func finalizeBox(dummy *boxDummy) {
 		return
 	}
 
-	// Move the box to finalizing. This is to prevent double-finalization as
-	// well as Go from freeing the box while the toggle reference is still
-	// active.
-	delete(shared.weak, dummy.gobject)
-	shared.finalizing[dummy.gobject] = box
+	// Mark the box as finalizing.
+	box.finalize = true
+
+	// Do this before we dispatch the remove_toggle_ref, because the
+	// remove_toggle_ref might destroy the object.
+	var objInfoS string
+	if toggleRefs != nil {
+		objInfoS = objInfo(dummy.gobject)
+	}
 
 	// Do this in the main loop instead. This is because finalizers are
 	// called in a finalizer thread, and our remove_toggle_ref might be
@@ -291,20 +303,19 @@ func finalizeBox(dummy *boxDummy) {
 		C.gpointer(dummy.gobject))
 
 	if toggleRefs != nil {
-		toggleRefs.Println(
-			objInfo(dummy.gobject),
-			"finalizeBox: remove_toggle_ref queued for next main loop iteration")
+		toggleRefs.Printf(
+			"%s finalizeBox: remove_toggle_ref queued for next main loop iteration for box %p",
+			objInfoS, box)
 	}
 }
 
-//go:nocheckptr
 //go:nosplit
 func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 	if strong, ok := shared.strong[gobject]; ok {
 		return strong, true
 	}
 
-	if weak, ok := shared.weak[gobject]; ok {
+	if weak := shared.weak.Get(gobject); weak != nil {
 		// If forObject is false, then that probably means this was called
 		// inside goMarshal while the Go object is still alive, otherwise
 		// toggleNotify would've moved it over. We don't have to worry about
@@ -313,24 +324,7 @@ func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 		// TODO: does this actually resurrect the value properly? We have a
 		// mutex to guard this which is also used in the finalizer, so it
 		// shouldn't explode, but still.
-		return (*Box)(unsafe.Pointer(weak)), false
-	}
-
-	// TODO: this is probably wrong. Ideally, this would work when we're getting
-	// objects during finalization, but if the finalizer resurrects the object,
-	// then this might be wrong. Specifically, the finalizer might take a strong
-	// reference to the object, which would not do anything because the object
-	// is in the finalizing map, so everything explodes.
-	//
-	// We opt to return true here because we're technically holding a reference
-	// to *Box, but its lifetime is already predetermined by the
-	// goFinishRemovingToggleRef function, so doing anything with this
-	// information will also explode.
-	//
-	// In other words, it shouldn't matter if we return true or false here, and
-	// relying on either value is wrong.
-	if finalizing, ok := shared.finalizing[gobject]; ok {
-		return finalizing, true
+		return weak, false
 	}
 
 	return nil, false
@@ -340,7 +334,7 @@ func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 // strongly referenced.
 //
 //go:nosplit
-func makeStrong(gobject unsafe.Pointer) {
+func makeStrong(gobject unsafe.Pointer) *Box {
 	// TODO: double mutex check, similar to ShouldFree.
 
 	box, strong := gets(gobject)
@@ -348,30 +342,37 @@ func makeStrong(gobject unsafe.Pointer) {
 		toggleRefs.Println(objInfo(gobject), "makeStrong: obtained box", box, "strong =", strong)
 	}
 	if box == nil {
-		return
+		return nil
 	}
 
 	if !strong {
 		shared.strong[gobject] = box
-		delete(shared.weak, gobject)
+		shared.weak.Delete(gobject)
+
+		// Clear weak.Map's finalizer.
+		runtime.SetFinalizer(box, nil)
 	}
+
+	return box
 }
 
 // makeWeak forces the Box intsance associated with the given object to be
 // weakly referenced.
 //
 //go:nosplit
-func makeWeak(gobject unsafe.Pointer) {
+func makeWeak(gobject unsafe.Pointer) *Box {
 	box, strong := gets(gobject)
 	if toggleRefs != nil {
 		toggleRefs.Println(objInfo(gobject), "makeWeak: obtained box", box, "strong =", strong)
 	}
 	if box == nil {
-		return
+		return nil
 	}
 
 	if strong {
-		shared.weak[gobject] = uintptr(unsafe.Pointer(box))
+		shared.weak.Set(gobject, box)
 		delete(shared.strong, gobject)
 	}
+
+	return box
 }

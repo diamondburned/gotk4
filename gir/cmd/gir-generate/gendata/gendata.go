@@ -773,31 +773,6 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 
 	p := fg.Pen()
 	p.Line(`
-		// LogSetHandler sets the handler used for GLib logging and returns the
-		// new handler ID. It is a wrapper around g_log_set_handler and
-		// g_log_set_handler_full.
-		//
-		// To detach a log handler, use LogRemoveHandler.
-		func LogSetHandler(domain string, level LogLevelFlags, f LogFunc) uint {
-			var log_domain *C.gchar
-			if domain != "" {
-				log_domain = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
-				defer C.free(unsafe.Pointer(log_domain))
-			}
-
-			data := gbox.Assign(f)
-
-			h := C.g_log_set_handler_full(
-				log_domain,
-				C.GLogLevelFlags(level), 
-				C.GLogFunc((*[0]byte)(C._gotk4_glib2_LogFunc)),
-				C.gpointer(data),
-				C.GDestroyNotify((*[0]byte)(C.callbackDelete)),
-			)
-
-			return uint(h)
-		}
-
 		// Value returns the field's value.
 		func (l *LogField) Value() string {
 			if l.native.length == -1 {
@@ -806,14 +781,11 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 			return C.GoStringN((*C.gchar)(unsafe.Pointer(l.native.value)), C.int(l.native.length))
 		}
 
-		// LogSetWriter sets the log writer to the given callback, which should
+		// logSetWriter sets the log writer to the given callback, which should
 		// take in a list of pair of key-value strings and return true if the
 		// log has been successfully written. It is a wrapper around
 		// g_log_set_writer_func.
-		//
-		// Note that this function must ONLY be called ONCE. The GLib
-		// documentation states that it is an error to call it more than once.
-		func LogSetWriter(f LogWriterFunc) {
+		func logSetWriter(f LogWriterFunc) {
 			data := gbox.Assign(f)
 			C.g_log_set_writer_func(
 				C.GLogWriterFunc((*[0]byte)(C._gotk4_glib2_LogWriterFunc)),
@@ -822,25 +794,29 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 			)
 		}
 
-		// LogSetLogger sets the global slog.Logger to be used for all GLib
-		// logging. It is a wrapper around LogSetWriter. Applications must only
-		// call this function once.
-		func LogSetLogger(l *slog.Logger) {
-			LogSetWriter(NewSlogWriterFunc(l))
+		func init() {
+			logSetWriter(func(lvl LogLevelFlags, fields []LogField) LogWriterOutput {
+				handle := newSlogWriterFunc(slog.Default())
+				handle(lvl, fields)
+				return LogWriterHandled
+			})
 		}
 
-		// NewSlogWriterFunc returns a new LogWriterFunc that writes to the given
-		// slog.Logger.
-		func NewSlogWriterFunc(l *slog.Logger) LogWriterFunc {
-			// Support $G_MESSAGES_DEBUG.
+		// Support $G_MESSAGES_DEBUG.
+		var debugDomains = func() map[string]struct{} {
 			debugDomains := make(map[string]struct{})
 			for _, debugDomain := range strings.Fields(os.Getenv("G_MESSAGES_DEBUG")) {
 				debugDomains[debugDomain] = struct{}{}
 			}
+			return debugDomains
+		}()
 
-			// Special case: G_MESSAGES_DEBUG=all.
-			_, debugAll := debugDomains["all"]
+		// Special case: G_MESSAGES_DEBUG=all.
+		var _, debugAllDomains = debugDomains["all"]
 
+		// newSlogWriterFunc returns a new LogWriterFunc that writes to the given
+		// slog.Logger.
+		func newSlogWriterFunc(l *slog.Logger) LogWriterFunc {
 			return func(lvl LogLevelFlags, fields []LogField) LogWriterOutput {
 				attrs := make([]slog.Attr, 0, len(fields))
 				var message, domain string
@@ -859,7 +835,7 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 					}
 				}
 
-				if !debugAll && (lvl&LogLevelDebug != 0) && domain != "" {
+				if !debugAllDomains && (lvl&LogLevelDebug != 0) && domain != "" {
 					if _, ok := debugDomains[domain]; !ok {
 						return LogWriterHandled
 					}

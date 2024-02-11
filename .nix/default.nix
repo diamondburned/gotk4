@@ -15,9 +15,7 @@ let
 		sha256 = "sha256-WsJ2Cf1hvKT3BUYYVxQ5rNMYi6z7NWccbSsw39lgqO8=";
 	};
 
-	minGoVersion = 
-		with builtins;
-		elemAt (elemAt (split "go ([0-9][^\n]*)" (readFile ../go.mod)) 1) 0;
+	minGoVersion = "1.21";
 
 in import "${gotk4-nix}/${action}.nix" rec {
 	base = {

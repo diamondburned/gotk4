@@ -11,9 +11,13 @@ let
 	gotk4-nix = systemPkgs.fetchFromGitHub {
 		owner  = "diamondburned";
 		repo   = "gotk4-nix";
-		rev    = "ad91dabf706946c4380d0a105f0937e4e8ffd75f";
-		sha256 = "0rkw9k98qy7ifwypkh2fqhdn7y2qphy2f8xjisj0cyp5pjja62im";
+		rev    = "4eab6a0";
+		sha256 = "sha256-WsJ2Cf1hvKT3BUYYVxQ5rNMYi6z7NWccbSsw39lgqO8=";
 	};
+
+	minGoVersion = 
+		with builtins;
+		elemAt (elemAt (split "go ([0-9][^\n]*)" (readFile ../go.mod)) 1) 0;
 
 in import "${gotk4-nix}/${action}.nix" rec {
 	base = {
@@ -39,8 +43,14 @@ in import "${gotk4-nix}/${action}.nix" rec {
 				go =
 					let
 						upstreamPkgs = import "${gotk4-nix}/pkgs.nix" {};
+						go = upstreamPkgs.go;
 					in
-						upstreamPkgs.go;
+						with systemPkgs.lib;
+						assert assertMsg
+							(versionAtLeast go.version minGoVersion)
+							"go version ${go.version} is too old, need at least ${minGoVersion}";
+
+						go;
 			})
 		];
 	};

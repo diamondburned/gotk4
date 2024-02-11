@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./.github/gotk4.png" width="200" alt="gotk4 logo" />
+<img src="./.github/logo.png" width="200" alt="gotk4 logo" />
 
 # gotk4
 

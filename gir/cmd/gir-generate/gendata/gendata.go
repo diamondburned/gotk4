@@ -760,7 +760,8 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 
 	h := fg.Header()
 	h.Import("os")
-	h.Import("log")
+	h.Import("context")
+	h.Import("log/slog")
 	h.Import("strings")
 	h.ImportCore("gbox")
 	h.CallbackDelete = true
@@ -771,23 +772,6 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 	AddCallbackHeader(nsgen, h, r.FindFullType("GLib-2.LogWriterFunc").Type.(*gir.Callback))
 
 	p := fg.Pen()
-	// This one might be subjective, but I think most can agree that having a
-	// library dumping stuff into the console isn't the best idea. Not only
-	// would this make logging more consistently-looking, it would also allow
-	// the user to blot out all logging using Go's stdlib log.
-	//
-	// Somewhere down the line, a user might complain that a gotk4 application
-	// isn't obeying environment variables that GLib made up on its own. And
-	// that's understandable. Pull requests can be made to improve the piece of
-	// code written below, but consistency is still more ideal, I think.
-	p.Line(`
-		func init() {
-			if os.Getenv("G_DEBUG") == "" {
-				LogUseDefaultLogger() // see gotk4's gendata.go
-			}
-		}
-	`)
-
 	p.Line(`
 		// LogSetHandler sets the handler used for GLib logging and returns the
 		// new handler ID. It is a wrapper around g_log_set_handler and
@@ -838,26 +822,16 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 			)
 		}
 
-		// LogUseDefaultLogger calls LogUseLogger with Go's default standard
-		// logger. It is a convenient function for log.Default().
-		func LogUseDefaultLogger() { LogUseLogger(log.Default()) }
+		// LogSetLogger sets the global slog.Logger to be used for all GLib
+		// logging. It is a wrapper around LogSetWriter. Applications must only
+		// call this function once.
+		func LogSetLogger(l *slog.Logger) {
+			LogSetWriter(NewSlogWriterFunc(l))
+		}
 
-		// LogUseLogger calls LogSetWriter with the given Go's standard logger.
-		// Note that either this or LogSetWriter must only be called once.
-		// The method will ignore all fields excet for "MESSAGE"; for more
-		// sophisticated, structured log writing, use LogSetWriter.
-		// The output format of the logs printed using this function is not
-		// guaranteed to not change. Users who rely on the format are better off
-		// using LogSetWriter.
-		func LogUseLogger(l *log.Logger) { LogSetWriter(LoggerHandler(l)) }
-
-		// LoggerHandler creates a new LogWriterFunc that LogUseLogger uses. For
-		// more information, see LogUseLogger's documentation.
-		func LoggerHandler(l *log.Logger) LogWriterFunc {
-			// Treat Lshortfile and Llongfile the same, because we don't have
-			// the full path in codeFile anyway.
-			Lfile := l.Flags() & (log.Lshortfile | log.Llongfile) != 0
-
+		// NewSlogWriterFunc returns a new LogWriterFunc that writes to the given
+		// slog.Logger.
+		func NewSlogWriterFunc(l *slog.Logger) LogWriterFunc {
 			// Support $G_MESSAGES_DEBUG.
 			debugDomains := make(map[string]struct{})
 			for _, debugDomain := range strings.Fields(os.Getenv("G_MESSAGES_DEBUG")) {
@@ -868,25 +842,20 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 			_, debugAll := debugDomains["all"]
 
 			return func(lvl LogLevelFlags, fields []LogField) LogWriterOutput {
-				var message, codeFile, codeLine, codeFunc string
-				domain := "GLib (no domain)"
+				attrs := make([]slog.Attr, 0, len(fields))
+				var message, domain string
 
 				for _, field := range fields {
-					if !Lfile {
-						switch field.Key() {
-						case "MESSAGE":     message = field.Value()
-						case "GLIB_DOMAIN": domain  = field.Value()
+					k := field.Key()
+					v := field.Value()
+					if k == "MESSAGE" {
+						message = v
+					} else {
+						if k == "GLIB_DOMAIN" {
+							domain = v
 						}
-						// Skip setting code* if we don't have to.
-						continue
-					}
-
-					switch field.Key() {
-					case "MESSAGE":     message  = field.Value()
-					case "CODE_FILE":   codeFile = field.Value()
-					case "CODE_LINE":   codeLine = field.Value()
-					case "CODE_FUNC":   codeFunc = field.Value()
-					case "GLIB_DOMAIN": domain   = field.Value()
+						k = strings.ToLower(k)
+						attrs = append(attrs, slog.String(k, v))
 					}
 				}
 
@@ -896,26 +865,24 @@ func GLibLogs(nsgen *girgen.NamespaceGenerator) error {
 					}
 				}
 
-				f := l.Printf
-				if lvl&LogFlagFatal != 0 {
-					f = l.Fatalf
+				slogLevel := slog.LevelInfo
+				switch {
+				case lvl.Has(LogLevelError), lvl.Has(LogLevelCritical):
+					slogLevel = slog.LevelError
+				case lvl.Has(LogLevelWarning):
+					slogLevel = slog.LevelWarn
+				case lvl.Has(LogLevelMessage), lvl.Has(LogLevelInfo):
+					slogLevel = slog.LevelInfo
+				case lvl.Has(LogLevelDebug):
+					slogLevel = slog.LevelDebug
 				}
 
-				// Minor issue: this works badly if consts are OR'd together.
-				// Probably never.
-				level := strings.TrimPrefix(lvl.String(), "Level")
+				l.LogAttrs(context.Background(), slogLevel, message, attrs...)
 
-				if !Lfile || (codeFile == "" && codeLine == "") {
-					f("%s: %s: %s", level, domain, message)
-					return LogWriterHandled
+				if lvl.Has(LogFlagFatal) {
+					panic(message)
 				}
 
-				if codeFunc == "" {
-					f("%s: %s: %s:%s: %s", level, domain, codeFile, codeLine, message)
-					return LogWriterHandled
-				}
-
-				f("%s: %s: %s:%s (%s): %s", level, domain, codeFile, codeLine, codeFunc, message)
 				return LogWriterHandled
 			}
 		}

@@ -5,7 +5,6 @@ import (
 	"reflect"
 	"runtime"
 	"testing"
-	"time"
 )
 
 type weirdType struct {
@@ -13,7 +12,7 @@ type weirdType struct {
 	ptr   *string
 }
 
-type weirdTypeList = ListModelType[weirdType]
+var weirdTypeList = NewListModelType[weirdType]()
 
 func TestListModel(t *testing.T) {
 	expect := []weirdType{
@@ -23,8 +22,16 @@ func TestListModel(t *testing.T) {
 	}
 
 	list := weirdTypeList.New()
-	list.Append(expect[0])
-	list.Splice(1, 0, expect[1], expect[2])
+	list.ConnectItemsChanged(func(position, removed, added uint) {
+		t.Logf(
+			"ItemsChanged: position=%d, removed=%d, added=%d",
+			position, removed, added)
+	})
+
+	fuckShitUp()
+
+	list.Splice(0, 0, expect[0], expect[1])
+	list.Append(expect[2])
 
 	fuckShitUp()
 
@@ -106,7 +113,6 @@ func drainIterator[T any](iter func(yield func(T) bool)) []T {
 func fuckShitUp() {
 	for i := 0; i < 10; i++ {
 		runtime.GC()
-		time.Sleep(10 * time.Millisecond)
 	}
 }
 

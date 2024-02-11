@@ -15,7 +15,7 @@ func (p Person) String() string {
 	return fmt.Sprintf("%s: %d", p.Name, p.Age)
 }
 
-type peopleListModel = gioutil.ListModelType[Person]
+var peopleListModel = gioutil.NewListModelType[Person]()
 
 func ExampleListModel() {
 	list := peopleListModel.New()
@@ -25,8 +25,9 @@ func ExampleListModel() {
 
 	// AllItems() can be iterated over if rangefunc is supported.
 	all := list.AllItems()
-	all(func(p Person) {
+	all(func(p Person) bool {
 		fmt.Println(p)
+		return true
 	})
 
 	// Output:

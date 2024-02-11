@@ -22,7 +22,6 @@ Gotk4GboxList *gotk4_gbox_list_new(void);
 void gotk4_gbox_list_splice(Gotk4GboxList *self, guint position,
                             guint n_removals, const guintptr *additions);
 void gotk4_gbox_list_append(Gotk4GboxList *self, guintptr id);
-void gotk4_gbox_list_remove(Gotk4GboxList *self, guint position);
 guintptr gotk4_gbox_list_get_id(Gotk4GboxList *self, guint position);
 
 G_END_DECLS

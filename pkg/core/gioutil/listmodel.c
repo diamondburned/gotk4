@@ -1,7 +1,7 @@
 #include "listmodel.h"
 
-// defined in gboxlist.go.
-void gotk4_gboxlist_remove(guintptr id);
+// defined in gbox.
+extern void callbackDelete(guintptr id);
 
 #define GDK_ARRAY_ELEMENT_TYPE Gotk4GboxObject *
 #define GDK_ARRAY_NAME objects
@@ -21,7 +21,7 @@ static void gotk4_gbox_object_init(Gotk4GboxObject *self) { self->id = 0; }
 static void gotk4_gbox_object_finalize(GObject *object) {
   Gotk4GboxObject *self = GOTK4_GBOX_OBJECT(object);
   if (self->id != 0) {
-    gotk4_gboxlist_remove(self->id);
+    callbackDelete(self->id);
   }
   G_OBJECT_CLASS(gotk4_gbox_object_parent_class)->finalize(object);
 }
@@ -121,11 +121,6 @@ void gotk4_gbox_list_append(Gotk4GboxList *self, guintptr id) {
   objects_append(&self->items, gotk4_gbox_object_new(id));
   g_list_model_items_changed(G_LIST_MODEL(self),
                              objects_get_size(&self->items) - 1, 0, 1);
-}
-
-void gotk4_gbox_list_remove(Gotk4GboxList *self, guint position) {
-  g_return_if_fail(GOTK4_IS_GBOX_LIST(self));
-  gotk4_gbox_list_splice(self, position, 1, NULL);
 }
 
 guintptr gotk4_gbox_list_get_id(Gotk4GboxList *self, guint position) {

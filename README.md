@@ -1,4 +1,10 @@
+<div align="center">
+
+<img src="./.github/gotk4.png" width="200" alt="gotk4 logo" />
+
 # gotk4
+
+</div>
 
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
@@ -48,3 +54,17 @@ room**](https://matrix.to/#/#gotk4:matrix.org)!
 Some small snippets of code were taken from
 [tinyzimmer's go-glib](https://github.com/tinyzimmer/go-glib), which implements
 type subclassing.
+
+The logo is licensed under the [Creative Commons CC0 1.0 Universal Public Domain
+Dedication](https://creativecommons.org/publicdomain/zero/1.0/) from
+[egonelbre/gophers](https://github.com/egonelbre/gophers). It was modified to
+have a GTK4 logo.
+
+The Gopher itself is licensed under the [Creative Commons Attribution
+4.0](https://creativecommons.org/licenses/by/4.0/) by [Renee
+French](https://reneefrench.blogspot.com/).
+
+The GTK logo is licensed under the [Creative Commons Attribution-Share Alike
+3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.en) by
+Andreas Nilsson, taken from [the GNOME
+Project](https://wiki.gnome.org/Projects/GTK/Logo).

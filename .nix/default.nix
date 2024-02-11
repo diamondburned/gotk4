@@ -39,19 +39,20 @@ in import "${gotk4-nix}/${action}.nix" rec {
 		useFetched = true;
 		# usePatchedGo = true;
 		overlays = [
-			(self: super: {
-				go =
-					let
-						upstreamPkgs = import "${gotk4-nix}/pkgs.nix" {};
-						go = upstreamPkgs.go;
-					in
+			(self: super:
+				let
+					pkgs = import "${gotk4-nix}/pkgs.nix" {};
+				in
+				{
+					go =
 						with systemPkgs.lib;
 						assert assertMsg
-							(versionAtLeast go.version minGoVersion)
-							"go version ${go.version} is too old, need at least ${minGoVersion}";
-
-						go;
-			})
+							(versionAtLeast pkgs.go.version minGoVersion)
+							"go version ${pkgs.go.version} is too old, need at least ${minGoVersion}";
+						pkgs.go;
+					inherit (pkgs) gopls gotools;
+				}
+			)
 		];
 	};
 	passthru = {

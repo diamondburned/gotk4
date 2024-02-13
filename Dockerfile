@@ -9,7 +9,7 @@ COPY shell.nix shell.nix
 ENV NIX_PATH="nixpkgs=channel:nixos-unstable"
 
 # Prepare docker-env.
-RUN nix-env --install --file .nix --argstr action ../../../gotk4/.nix/docker-env
+RUN nix profile install '.#dockerEnv'
 
 # Initialize shell environment variables.
 RUN /root/.nix-profile/bin/docker-env init

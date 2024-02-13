@@ -3,8 +3,7 @@ FROM nixpkgs/nix
 WORKDIR /gotk4
 
 # Prepare the Nix files.
-COPY .nix .nix
-COPY shell.nix shell.nix
+COPY flake.nix flake.lock shell.nix ./
 
 ENV NIX_PATH="nixpkgs=channel:nixos-unstable"
 

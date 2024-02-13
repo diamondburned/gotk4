@@ -8,7 +8,7 @@ COPY flake.nix flake.lock shell.nix ./
 ENV NIX_PATH="nixpkgs=channel:nixos-unstable"
 
 # Prepare docker-env.
-RUN nix profile install '.#dockerEnv'
+RUN nix profile install --extra-experimental-features nix-command\ flakes '.#dockerEnv'
 
 # Initialize shell environment variables.
 RUN /root/.nix-profile/bin/docker-env init

@@ -11,8 +11,8 @@ let
 	gotk4-nix = systemPkgs.fetchFromGitHub {
 		owner  = "diamondburned";
 		repo   = "gotk4-nix";
-		rev    = "4eab6a0";
-		sha256 = "sha256-WsJ2Cf1hvKT3BUYYVxQ5rNMYi6z7NWccbSsw39lgqO8=";
+		rev    = "2d8319755215bf88730e912297cdfd1a6044645d";
+		sha256 = "sha256-QyOZLjn/rY7qpTWSM+5IhdA/Sljrft8I5HyuPMS1Y9I=";
 	};
 
 	minGoVersion = "1.21";

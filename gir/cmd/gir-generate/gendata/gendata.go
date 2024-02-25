@@ -967,6 +967,26 @@ func GtkLockOSThread(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
+func GtkInvalidListItem(nsgen *girgen.NamespaceGenerator) error {
+	fg := nsgen.MakeFile("gtk.go")
+	fg.Header().Import("math")
+
+	p := fg.Pen()
+	p.Line(`
+		// InvalidListPosition is the value used to refer to a guaranteed
+		// invalid position in a [gio.ListModel].
+		//
+		// This value may be returned from some functions, others may accept it
+		// as input. Its interpretation may differ for different functions.
+		//
+		// Refer to each function’s documentation for if this value is allowed
+		// and what it does.
+		const InvalidListPosition = math.MaxUint32
+	`)
+
+	return nil
+}
+
 func GdkPixbufFromImage(nsgen *girgen.NamespaceGenerator) error {
 	fg := nsgen.MakeFile("gdk-pixbuf-core-go.go")
 	fg.Header().Import("image")
@@ -1016,7 +1036,7 @@ var Postprocessors = map[string][]girgen.Postprocessor{
 	"GdkPixbuf-2": {GdkPixbufFromImage},
 	"Gio-2":       {ImportGError},
 	"Gtk-3":       {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
-	"Gtk-4":       {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},
+	"Gtk-4":       {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread, GtkInvalidListItem},
 }
 
 // ExtraGoContents contains the contents of files that are appended into

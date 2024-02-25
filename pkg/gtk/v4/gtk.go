@@ -5,6 +5,7 @@ package gtk
 import (
 	"context"
 	"fmt"
+	"math"
 	"runtime"
 	_ "runtime/cgo"
 	"strings"
@@ -130401,3 +130402,13 @@ func NewMessageDialog(parent *Window, flags DialogFlags, typ MessageType, button
 func init() {
 	runtime.LockOSThread()
 }
+
+// InvalidListPosition is the value used to refer to a guaranteed
+// invalid position in a [gio.ListModel].
+//
+// This value may be returned from some functions, others may accept it
+// as input. Its interpretation may differ for different functions.
+//
+// Refer to each function’s documentation for if this value is allowed
+// and what it does.
+const InvalidListPosition = math.MaxUint32

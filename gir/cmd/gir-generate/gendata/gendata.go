@@ -546,6 +546,38 @@ func GLibDateTime(nsgen *girgen.NamespaceGenerator) error {
 	return nil
 }
 
+func GLibObjectComparer(nsgen *girgen.NamespaceGenerator) error {
+	fg, ok := nsgen.Files["gobjectcomparer.go"]
+	if !ok {
+		fg = nsgen.MakeFile("")
+	}
+
+	h := fg.Header()
+	h.NeedsExternGLib()
+
+	p := fg.Pen()
+	p.Line(`
+		// NewObjectComparer returns a CompareDataFunc that uses the given function to
+		// compare two objects of type T. If the underlying objects are not of type T,
+		// then the function panics. If the underlying pointers aren't objects, then the
+		// behavior is undefined.
+		func NewObjectComparer[T Objector](f func(a, b T) int) CompareDataFunc {
+			return func(a, b unsafe.Pointer) int {
+				var aobj, bobj T
+				if a != nil {
+					aobj = coreglib.Take(a).Cast().(T)
+				}
+				if b != nil {
+					bobj = coreglib.Take(b).Cast().(T)
+				}
+				return f(aobj, bobj)
+			}
+		}
+	`)
+
+	return nil
+}
+
 // GioArrayUseBytes is the postprocessor that adds gio/v2.UseBytes.
 func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 	fg, ok := nsgen.Files["garray.go"]
@@ -1032,7 +1064,7 @@ func GdkPixbufFromImage(nsgen *girgen.NamespaceGenerator) error {
 // Postprocessors is similar to Append, except the caller can mutate the package
 // in a more flexible manner.
 var Postprocessors = map[string][]girgen.Postprocessor{
-	"GLib-2":      {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibDateTime},
+	"GLib-2":      {ImportGError, GioArrayUseBytes, GLibVariantIter, GLibAliases, GLibLogs, GLibDateTime, GLibObjectComparer},
 	"GdkPixbuf-2": {GdkPixbufFromImage},
 	"Gio-2":       {ImportGError},
 	"Gtk-3":       {ImportGError, GtkNewDialog, GtkNewMessageDialog, GtkLockOSThread},

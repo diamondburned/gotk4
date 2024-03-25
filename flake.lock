@@ -35,11 +35,11 @@
     "gotk4-nix": {
       "flake": false,
       "locked": {
-        "lastModified": 1707834922,
-        "narHash": "sha256-PP5Z9MJ68dRbuS2YCpwZQ7bwpGXnyA283eA28f3CNk4=",
+        "lastModified": 1711394319,
+        "narHash": "sha256-p1oPNnXfv7jVl2GdZGu1vNEzM+ZTvsjvRMuXC/M7sDg=",
         "owner": "diamondburned",
         "repo": "gotk4-nix",
-        "rev": "5b983f0faeb3c100f17fbe29fe5ca2d17116d07d",
+        "rev": "c028726827a6f5969b63d582de00b901f8b9da26",
         "type": "github"
       },
       "original": {

@@ -59,7 +59,9 @@ static guint gotk4_gbox_list_get_n_items(GListModel *list) {
 
 static gpointer gotk4_gbox_list_get_item(GListModel *list, guint index) {
   Gotk4GboxList *self = GOTK4_GBOX_LIST(list);
-  g_return_val_if_fail(index < objects_get_size(&self->items), NULL);
+  if (index >= objects_get_size(&self->items)) {
+    return NULL;
+  }
   return g_object_ref(objects_get(&self->items, index));
 }
 

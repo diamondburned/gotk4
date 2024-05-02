@@ -5,6 +5,7 @@ package cmt
 import (
 	"fmt"
 	"go/doc"
+	"go/doc/comment"
 	"html"
 	"log"
 	"reflect"
@@ -18,14 +19,8 @@ import (
 )
 
 const (
-	CommentsColumnLimit = 80 - 3 // account for prefix "// "
-	CommentsTabWidth    = 4
+	CommentsTabWidth = 4
 )
-
-// calculateCol accounts for the indentation in the column limit.
-func calculateCol(indentLvl int) int {
-	return CommentsColumnLimit - (CommentsTabWidth * indentLvl)
-}
 
 var (
 	cmtListRegex      = regexp.MustCompile(`(?m)\n?\n^- `)
@@ -37,9 +32,16 @@ var (
 	// cmtFunctionRegex  = regexp.MustCompile(`\w+\(\)`)
 	cmtHeadingRegex   = regexp.MustCompile(`\n*#+ (.*?)(?: ?#+ ?\{#.*?\})?\n+`)
 	cmtHyperlinkRegex = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
-	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->)?\n(.*?)\n\]\|\n*`)
+	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->)?\n(.*?)\n *\]\|\n*`)
 
 	mdCodeblockRegex = regexp.MustCompile(`(?ms)\n*\x60\x60\x60\w*\n(.*?)\x60\x60\x60\n*`)
+
+	mdEndRegex = regexp.MustCompile(`(?m)\s*(` + strings.Join([]string{
+		``,
+		"`",
+		"^ *```+",
+		`^\]\|`,
+	}, "|") + `)\z`)
 )
 
 // ParamDoc is the documentation for one parameter. It is added by callable
@@ -148,7 +150,6 @@ type (
 	additionalPrefix string
 	paragraphIndent  int
 	trailingNewLine  struct{}
-	trailingComment  struct{}
 	synopsize        struct{}
 )
 
@@ -158,7 +159,6 @@ func (additionalString) opts() {}
 func (additionalPrefix) opts() {}
 func (paragraphIndent) opts()  {}
 func (trailingNewLine) opts()  {}
-func (trailingComment) opts()  {}
 func (synopsize) opts()        {}
 
 func searchOpts(opts []Option, f func(opt Option) bool) bool {
@@ -253,53 +253,83 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 		}
 	}
 
-	opts = append(opts, originalTypeName(orig))
-	cmt := format(self, docBuilder.String(), opts)
-
 	synopsize := searchOptsBool(opts, synopsize{})
+
+	docStr := preprocessMarkdown(self, docBuilder.String(), append(opts, originalTypeName(orig)))
+	if synopsize && docStr == "" {
+		return ""
+	}
+	docBuilder.Reset()
+	docBuilder.WriteString(docStr)
+
+	baseLen := docBuilder.Len()
+	if len(inf.ParamDocs) > 0 {
+		writeParamDocs(&docBuilder,
+			"\n\nThe function takes the following parameters:\n",
+			inf.ParamDocs)
+	}
+	if len(inf.ReturnDocs) > 0 {
+		writeParamDocs(&docBuilder,
+			"\n\nThe function returns the following values:\n",
+			inf.ReturnDocs)
+	}
+	hasTail := docBuilder.Len() > baseLen
+
+	cmt := convertMarkdownStringToGoDoc(docBuilder.String())
+
 	if synopsize {
-		cmt = doc.Synopsis(cmt) // go/doc.Synopsis is deprecated as of Go 1.19
+		printer := &comment.Printer{
+			TextWidth: -1, // don't wrap yet
+		}
+		cmtStr := string(printer.Text(cmt))
+		cmtStr = new(doc.Package).Synopsis(cmtStr)
+		cmtStr = addPeriod(cmtStr)
+		cmt = new(comment.Parser).Parse(cmtStr)
 	}
 
-	cmt = addPeriod(cmt)
-
-	if !synopsize {
-		tail := strings.Builder{}
-		tail.Grow(256)
-
-		if len(inf.ParamDocs) > 0 {
-			writeParamDocs(&tail, indentLvl+1,
-				"\n\nThe function takes the following parameters:\n",
-				inf.ParamDocs)
+	printer := &comment.Printer{
+		// Don't use "\t" in TextPrefix because when calculating
+		// .PrintWidth the printer only counts tabs as width=1.
+		// Instead use CommentsTabWidth spaces, and count on the final
+		// gofmt step to turn them into tabs.
+		TextPrefix: strings.Repeat(" ", CommentsTabWidth*indentLvl) + "// ",
+	}
+	printer.TextCodePrefix = printer.TextPrefix + strings.Repeat(" ", CommentsTabWidth-1)
+	cmtStr := string(printer.Text(cmt))
+	cmtStr = transformLines(cmtStr, func(n, d int, line string) string {
+		if line == "" && n+1 != d {
+			return printer.TextPrefix
 		}
-		if len(inf.ReturnDocs) > 0 {
-			writeParamDocs(&tail, indentLvl+1,
-				"\n\nThe function returns the following values:\n",
-				inf.ReturnDocs)
-		}
+		return line
+	})
 
-		if tail.Len() > 0 {
-			opts = append(opts, trailingComment{})
-		}
-
-		cmt += tail.String()
+	if hasTail && !synopsize && !strings.HasSuffix(cmtStr, "\n//\n") {
+		cmtStr += "//\n"
 	}
 
-	return ReflowLinesIndent(indentLvl, cmt, opts...)
+	if !searchOptsBool(opts, trailingNewLine{}) {
+		cmtStr = strings.TrimSuffix(cmtStr, "\n")
+	}
+
+	return cmtStr
 }
 
-func addPeriod(cmt string) string {
-	if cmt != "" && !strings.HasSuffix(cmt, ".") {
-		cmt += "."
+func addPeriod(md string) string {
+	var suffix string
+	if idx := mdEndRegex.FindStringIndex(md); idx != nil && (cmtCodeblockRegex.MatchString(md) || !strings.HasSuffix(md[idx[0]:], "]|")) {
+		suffix = md[idx[0]:]
+		md = md[:idx[0]]
 	}
-	return cmt
+	if md != "" && !strings.HasSuffix(md, ".") {
+		md += "."
+	}
+	md += suffix
+	return md
 }
 
-func writeParamDocs(tail *strings.Builder, indent int, label string, params []ParamDoc) {
-	col := calculateCol(indent)
-
-	line1Indent := strings.Repeat(" ", CommentsTabWidth) + "- "
-	lineNIndent := strings.Repeat(" ", CommentsTabWidth+2)
+func writeParamDocs(tail *strings.Builder, label string, params []ParamDoc) {
+	line1Indent := " - "
+	lineNIndent := "   "
 
 	written := false
 
@@ -311,14 +341,11 @@ func writeParamDocs(tail *strings.Builder, indent int, label string, params []Pa
 
 		var doc string
 		if param.InfoElements.Doc != nil {
-			doc = format(name, param.InfoElements.Doc.String, []Option{
+			doc = preprocessMarkdown(name, param.InfoElements.Doc.String, []Option{
 				originalTypeName(param.Name),
 			})
-			doc = addPeriod(doc)
-			doc = docText(doc, col)
-			doc = strings.TrimSpace(doc)
 			// Insert a dash space into the lines.
-			doc = transformLines(doc, func(i int, line string) string {
+			doc = transformLines(doc, func(i, _ int, line string) string {
 				if i == 0 {
 					return line1Indent + line
 				} else {
@@ -366,7 +393,10 @@ func trimFirstWord(paragraph string) string {
 	return parts[1]
 }
 
-func format(self, cmt string, opts []Option) string {
+// preprocessMarkdown takes a (GTK-Doc-flavored / GI-DocGen-flavored)
+// markdown string makes some stylistic changes to it.  The return
+// value is still markdown.
+func preprocessMarkdown(self, cmt string, opts []Option) string {
 	if cmt == "" {
 		return ""
 	}
@@ -419,6 +449,16 @@ func format(self, cmt string, opts []Option) string {
 		}
 	}
 
+	cmt = strings.TrimSpace(cmt)
+	cmt = addPeriod(cmt)
+
+	return cmt
+}
+
+// convertMarkdownStringToGoDoc converts a (GTK-Doc-flavored /
+// GI-DocGen-flavored) markdown string into a parsed Go
+// [*comment.Doc].
+func convertMarkdownStringToGoDoc(cmt string) *comment.Doc {
 	// Fix up the codeblocks and render it using GoDoc format.
 	codeblockFunc := func(re *regexp.Regexp, match string) string {
 		matches := re.FindStringSubmatch(match)
@@ -542,57 +582,13 @@ func format(self, cmt string, opts []Option) string {
 		}
 	})
 
-	cmt = strings.TrimSpace(cmt)
-
-	return cmt
+	return new(comment.Parser).Parse(cmt)
 }
 
-// ReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go comment
-// strings. It is automatically indented.
-func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
-	var postIndentCount int
-	for _, opt := range opts {
-		if i, ok := opt.(paragraphIndent); ok {
-			postIndentCount = int(i)
-			break
-		}
-	}
-
-	preIndent := strings.Repeat("\t", indentLvl)
-
-	postIndent := " "
-	if postIndentCount > 0 {
-		postIndent = strings.Repeat(strings.Repeat(" ", CommentsTabWidth), postIndentCount)
-	}
-
-	col := calculateCol(indentLvl + postIndentCount)
-
-	cmt = docText(cmt, col)
-	cmt = strings.TrimSpace(cmt)
-
-	if cmt == "" {
-		return ""
-	}
-
-	if searchOptsBool(opts, trailingComment{}) {
-		cmt += "\n"
-	}
-
-	cmt = transformLines(cmt, func(i int, line string) string {
-		return preIndent + "//" + postIndent + line
-	})
-
-	if searchOptsBool(opts, trailingNewLine{}) {
-		cmt += "\n"
-	}
-
-	return cmt
-}
-
-func transformLines(cmt string, f func(int, string) string) string {
+func transformLines(cmt string, f func(int, int, string) string) string {
 	lines := strings.Split(cmt, "\n")
 	for i, line := range lines {
-		lines[i] = f(i, line)
+		lines[i] = f(i, len(lines), line)
 	}
 	return strings.Join(lines, "\n")
 }
@@ -610,14 +606,6 @@ func tidyParagraphs(text string) string {
 	}
 
 	return strings.Join(paragraphs, "\n\n")
-}
-
-func docText(p string, col int) string {
-	builder := strings.Builder{}
-	builder.Grow(len(p) + 64)
-
-	doc.ToText(&builder, p, "", "   ", col) // go/doc.ToText is deprecated as of Go 1.19
-	return builder.String()
 }
 
 // lowerFirstLetter lower-cases the first letter in the paragraph.

@@ -5338,8 +5338,6 @@ func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 	return _bytesRead, _guint8s, _goerr
 }
 
-// The function returns the following values:
-//
 func ConvertErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -6023,8 +6021,6 @@ func FileErrorFromErrno(errNo int) FileError {
 	return _fileError
 }
 
-// The function returns the following values:
-//
 func FileErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -9177,8 +9173,6 @@ func MainDepth() int {
 	return _gint
 }
 
-// The function returns the following values:
-//
 func MarkupErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -9268,8 +9262,6 @@ func MkdirWithParents(pathname string, mode int) int {
 	return _gint
 }
 
-// The function returns the following values:
-//
 func NumberParserErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -9282,8 +9274,6 @@ func NumberParserErrorQuark() Quark {
 	return _quark
 }
 
-// The function returns the following values:
-//
 func OptionErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -9908,8 +9898,6 @@ func Setenv(variable, value string, overwrite bool) bool {
 	return _ok
 }
 
-// The function returns the following values:
-//
 func ShellErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -10267,8 +10255,6 @@ func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []b
 	return _standardOutput, _standardError, _exitStatus, _goerr
 }
 
-// The function returns the following values:
-//
 func SpawnErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -10281,8 +10267,6 @@ func SpawnErrorQuark() Quark {
 	return _quark
 }
 
-// The function returns the following values:
-//
 func SpawnExitErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -10540,8 +10524,6 @@ func StripContext(msgid, msgval string) string {
 	return _utf8
 }
 
-// The function returns the following values:
-//
 func StrvGetType() coreglib.Type {
 	var _cret C.GType // in
 
@@ -13149,8 +13131,6 @@ func UUIDStringRandom() string {
 	return _utf8
 }
 
-// The function returns the following values:
-//
 func VariantGetGType() coreglib.Type {
 	var _cret C.GType // in
 
@@ -17016,8 +16996,6 @@ func IOChannelErrorFromErrno(en int) IOChannelError {
 	return _ioChannelError
 }
 
-// The function returns the following values:
-//
 func IOChannelErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -18891,8 +18869,6 @@ func (keyFile *KeyFile) ToData() (uint, string, error) {
 	return _length, _utf8, _goerr
 }
 
-// The function returns the following values:
-//
 func KeyFileErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -22010,8 +21986,6 @@ func RegexCheckReplacement(replacement string) (bool, error) {
 	return _hasReferences, _goerr
 }
 
-// The function returns the following values:
-//
 func RegexErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -24952,8 +24926,6 @@ func URIBuildWithUser(flags URIFlags, scheme, user, password, authParams, host s
 	return _uri
 }
 
-// The function returns the following values:
-//
 func URIErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -28651,8 +28623,6 @@ func VariantParseErrorPrintContext(err error, sourceStr string) string {
 	return _utf8
 }
 
-// The function returns the following values:
-//
 func VariantParseErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -28668,9 +28638,6 @@ func VariantParseErrorQuark() Quark {
 // VariantParserGetErrorQuark: same as g_variant_error_quark().
 //
 // Deprecated: Use g_variant_parse_error_quark() instead.
-//
-// The function returns the following values:
-//
 func VariantParserGetErrorQuark() Quark {
 	var _cret C.GQuark // in
 
@@ -30073,10 +30040,6 @@ func (typ *VariantType) Value() *VariantType {
 	return _variantType
 }
 
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
 func VariantTypeChecked_(arg0 string) *VariantType {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GVariantType // in
@@ -30094,10 +30057,6 @@ func VariantTypeChecked_(arg0 string) *VariantType {
 	return _variantType
 }
 
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
 func VariantTypeStringGetDepth_(typeString string) uint {
 	var _arg1 *C.gchar // out
 	var _cret C.gsize  // in

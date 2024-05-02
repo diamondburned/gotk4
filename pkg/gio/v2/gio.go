@@ -3424,8 +3424,6 @@ func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 	return _err
 }
 
-// The function returns the following values:
-//
 func DBusErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -15895,8 +15893,6 @@ func (object *DBusObject) objectPath() string {
 	return _utf8
 }
 
-// The function takes the following parameters:
-//
 func (object *DBusObject) interfaceAdded(interface_ DBusInterfacer) {
 	gclass := (*C.GDBusObjectIface)(coreglib.PeekParentClass(object))
 	fnarg := gclass.interface_added
@@ -15912,8 +15908,6 @@ func (object *DBusObject) interfaceAdded(interface_ DBusInterfacer) {
 	runtime.KeepAlive(interface_)
 }
 
-// The function takes the following parameters:
-//
 func (object *DBusObject) interfaceRemoved(interface_ DBusInterfacer) {
 	gclass := (*C.GDBusObjectIface)(coreglib.PeekParentClass(object))
 	fnarg := gclass.interface_removed
@@ -16301,8 +16295,6 @@ func (manager *DBusObjectManager) interfaceRemoved(object DBusObjector, interfac
 	runtime.KeepAlive(interface_)
 }
 
-// The function takes the following parameters:
-//
 func (manager *DBusObjectManager) objectAdded(object DBusObjector) {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.object_added
@@ -16318,8 +16310,6 @@ func (manager *DBusObjectManager) objectAdded(object DBusObjector) {
 	runtime.KeepAlive(object)
 }
 
-// The function takes the following parameters:
-//
 func (manager *DBusObjectManager) objectRemoved(object DBusObjector) {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.object_removed
@@ -20301,8 +20291,6 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 //
 //   - peerCert
 //   - errors
-//
-// The function returns the following values:
 //
 func (connection *DTLSConnection) acceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(connection))
@@ -32478,8 +32466,6 @@ func (v *MemoryMonitor) ConnectLowMemoryWarning(f func(level MemoryMonitorWarnin
 	return coreglib.ConnectGeneratedClosure(v, "low-memory-warning", false, unsafe.Pointer(C._gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning), f)
 }
 
-// The function takes the following parameters:
-//
 func (monitor *MemoryMonitor) lowMemoryWarning(level MemoryMonitorWarningLevel) {
 	gclass := (*C.GMemoryMonitorInterface)(coreglib.PeekParentClass(monitor))
 	fnarg := gclass.low_memory_warning
@@ -34812,8 +34798,6 @@ func (monitor *NetworkMonitor) canReachFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// The function takes the following parameters:
-//
 func (monitor *NetworkMonitor) networkChanged(networkAvailable bool) {
 	gclass := (*C.GNetworkMonitorInterface)(coreglib.PeekParentClass(monitor))
 	fnarg := gclass.network_changed
@@ -40430,21 +40414,11 @@ type ApplicationOverrides struct {
 	// emitted in the primary instance.
 	//
 	// The application must be registered before calling this function.
-	Activate func()
-	// The function takes the following parameters:
-	//
+	Activate        func()
 	AddPlatformData func(builder *glib.VariantBuilder)
-	// The function takes the following parameters:
-	//
-	AfterEmit func(platformData *glib.Variant)
-	// The function takes the following parameters:
-	//
-	BeforeEmit func(platformData *glib.Variant)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	CommandLine func(commandLine *ApplicationCommandLine) int
+	AfterEmit       func(platformData *glib.Variant)
+	BeforeEmit      func(platformData *glib.Variant)
+	CommandLine     func(commandLine *ApplicationCommandLine) int
 	// The function takes the following parameters:
 	//
 	//   - connection
@@ -40456,15 +40430,9 @@ type ApplicationOverrides struct {
 	//   - connection
 	//   - objectPath
 	//
-	DBusUnregister func(connection *DBusConnection, objectPath string)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
+	DBusUnregister     func(connection *DBusConnection, objectPath string)
 	HandleLocalOptions func(options *glib.VariantDict) int
-	// The function returns the following values:
-	//
-	NameLost func() bool
+	NameLost           func() bool
 	// Open opens the given files.
 	//
 	// In essence, this results in the #GApplication::open signal being emitted
@@ -41984,8 +41952,6 @@ func (application *Application) activate() {
 	runtime.KeepAlive(application)
 }
 
-// The function takes the following parameters:
-//
 func (application *Application) addPlatformData(builder *glib.VariantBuilder) {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.add_platform_data
@@ -42001,8 +41967,6 @@ func (application *Application) addPlatformData(builder *glib.VariantBuilder) {
 	runtime.KeepAlive(builder)
 }
 
-// The function takes the following parameters:
-//
 func (application *Application) afterEmit(platformData *glib.Variant) {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.after_emit
@@ -42018,8 +41982,6 @@ func (application *Application) afterEmit(platformData *glib.Variant) {
 	runtime.KeepAlive(platformData)
 }
 
-// The function takes the following parameters:
-//
 func (application *Application) beforeEmit(platformData *glib.Variant) {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.before_emit
@@ -42035,10 +41997,6 @@ func (application *Application) beforeEmit(platformData *glib.Variant) {
 	runtime.KeepAlive(platformData)
 }
 
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
 func (application *Application) commandLine(commandLine *ApplicationCommandLine) int {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.command_line
@@ -42118,10 +42076,6 @@ func (application *Application) dBusUnregister(connection *DBusConnection, objec
 	runtime.KeepAlive(objectPath)
 }
 
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
 func (application *Application) handleLocalOptions(options *glib.VariantDict) int {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.handle_local_options
@@ -42144,8 +42098,6 @@ func (application *Application) handleLocalOptions(options *glib.VariantDict) in
 	return _gint
 }
 
-// The function returns the following values:
-//
 func (application *Application) nameLost() bool {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.name_lost
@@ -42380,12 +42332,8 @@ type ApplicationCommandLineOverrides struct {
 	//
 	//   - inputStream (optional) for stdin.
 	//
-	Stdin func() InputStreamer
-	// The function takes the following parameters:
-	//
-	PrintLiteral func(message string)
-	// The function takes the following parameters:
-	//
+	Stdin           func() InputStreamer
+	PrintLiteral    func(message string)
 	PrinterrLiteral func(message string)
 }
 
@@ -42964,8 +42912,6 @@ func (cmdline *ApplicationCommandLine) stdin() InputStreamer {
 	return _inputStream
 }
 
-// The function takes the following parameters:
-//
 func (cmdline *ApplicationCommandLine) printLiteral(message string) {
 	gclass := (*C.GApplicationCommandLineClass)(coreglib.PeekParentClass(cmdline))
 	fnarg := gclass.print_literal
@@ -42982,8 +42928,6 @@ func (cmdline *ApplicationCommandLine) printLiteral(message string) {
 	runtime.KeepAlive(message)
 }
 
-// The function takes the following parameters:
-//
 func (cmdline *ApplicationCommandLine) printerrLiteral(message string) {
 	gclass := (*C.GApplicationCommandLineClass)(coreglib.PeekParentClass(cmdline))
 	fnarg := gclass.printerr_literal
@@ -47183,11 +47127,7 @@ type DBusInterfaceSkeletonOverrides struct {
 	// and emit the org.freedesktop.DBus.Properties.PropertiesChanged signal
 	// later (e.g. in an idle handler). This technique is useful for collapsing
 	// multiple property changes into one.
-	Flush func()
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
+	Flush            func()
 	GAuthorizeMethod func(invocation *DBusMethodInvocation) bool
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by interface_.
@@ -47648,10 +47588,6 @@ func (interface_ *DBusInterfaceSkeleton) flush() {
 	runtime.KeepAlive(interface_)
 }
 
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
 func (interface_ *DBusInterfaceSkeleton) gAuthorizeMethod(invocation *DBusMethodInvocation) bool {
 	gclass := (*C.GDBusInterfaceSkeletonClass)(coreglib.PeekParentClass(interface_))
 	fnarg := gclass.g_authorize_method
@@ -50409,8 +50345,6 @@ type DBusObjectSkeletonOverrides struct {
 	//   - interface_
 	//   - invocation
 	//
-	// The function returns the following values:
-	//
 	AuthorizeMethod func(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
 }
 
@@ -50609,8 +50543,6 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 //
 //   - interface_
 //   - invocation
-//
-// The function returns the following values:
 //
 func (object *DBusObjectSkeleton) authorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool {
 	gclass := (*C.GDBusObjectSkeletonClass)(coreglib.PeekParentClass(object))
@@ -53805,9 +53737,7 @@ type FileEnumeratorOverrides struct {
 	//   - result: Result.
 	//
 	CloseFinish func(result AsyncResulter) error
-	// The function takes the following parameters:
-	//
-	CloseFn func(ctx context.Context) error
+	CloseFn     func(ctx context.Context) error
 	// NextFile returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
 	// this function will contain attributes that match the attribute string
@@ -54476,8 +54406,6 @@ func (enumerator *FileEnumerator) closeFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// The function takes the following parameters:
-//
 func (enumerator *FileEnumerator) closeFn(ctx context.Context) error {
 	gclass := (*C.GFileEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.close_fn
@@ -54665,11 +54593,7 @@ func (enumerator *FileEnumerator) nextFilesFinish(result AsyncResulter) ([]*File
 
 // FileIOStreamOverrides contains methods that are overridable.
 type FileIOStreamOverrides struct {
-	// The function returns the following values:
-	//
-	CanSeek func() bool
-	// The function returns the following values:
-	//
+	CanSeek     func() bool
 	CanTruncate func() bool
 	// ETag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
@@ -54726,8 +54650,6 @@ type FileIOStreamOverrides struct {
 	//   - typ
 	//
 	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
-	// The function returns the following values:
-	//
 	Tell func() int64
 	// The function takes the following parameters:
 	//
@@ -55009,8 +54931,6 @@ func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, er
 	return _fileInfo, _goerr
 }
 
-// The function returns the following values:
-//
 func (stream *FileIOStream) canSeek() bool {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.can_seek
@@ -55032,8 +54952,6 @@ func (stream *FileIOStream) canSeek() bool {
 	return _ok
 }
 
-// The function returns the following values:
-//
 func (stream *FileIOStream) canTruncate() bool {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.can_truncate
@@ -55270,8 +55188,6 @@ func (stream *FileIOStream) seek(ctx context.Context, offset int64, typ glib.See
 	return _goerr
 }
 
-// The function returns the following values:
-//
 func (stream *FileIOStream) tell() int64 {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.tell
@@ -57139,8 +57055,6 @@ func (info *FileInfo) UnsetAttributeMask() {
 
 // FileInputStreamOverrides contains methods that are overridable.
 type FileInputStreamOverrides struct {
-	// The function returns the following values:
-	//
 	CanSeek func() bool
 	// QueryInfo queries a file input stream the given attributes. This function
 	// blocks while querying the stream. For the asynchronous (non-blocking)
@@ -57177,8 +57091,6 @@ type FileInputStreamOverrides struct {
 	//   - typ
 	//
 	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
-	// The function returns the following values:
-	//
 	Tell func() int64
 }
 
@@ -57396,8 +57308,6 @@ func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo,
 	return _fileInfo, _goerr
 }
 
-// The function returns the following values:
-//
 func (stream *FileInputStream) canSeek() bool {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.can_seek
@@ -57597,8 +57507,6 @@ func (stream *FileInputStream) seek(ctx context.Context, offset int64, typ glib.
 	return _goerr
 }
 
-// The function returns the following values:
-//
 func (stream *FileInputStream) tell() int64 {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.tell
@@ -57904,11 +57812,7 @@ func (monitor *FileMonitor) changed(file, otherFile Filer, eventType FileMonitor
 
 // FileOutputStreamOverrides contains methods that are overridable.
 type FileOutputStreamOverrides struct {
-	// The function returns the following values:
-	//
-	CanSeek func() bool
-	// The function returns the following values:
-	//
+	CanSeek     func() bool
 	CanTruncate func() bool
 	// ETag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
@@ -57965,8 +57869,6 @@ type FileOutputStreamOverrides struct {
 	//   - typ
 	//
 	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
-	// The function returns the following values:
-	//
 	Tell func() int64
 	// The function takes the following parameters:
 	//
@@ -58242,8 +58144,6 @@ func (stream *FileOutputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo
 	return _fileInfo, _goerr
 }
 
-// The function returns the following values:
-//
 func (stream *FileOutputStream) canSeek() bool {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.can_seek
@@ -58265,8 +58165,6 @@ func (stream *FileOutputStream) canSeek() bool {
 	return _ok
 }
 
-// The function returns the following values:
-//
 func (stream *FileOutputStream) canTruncate() bool {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.can_truncate
@@ -58503,8 +58401,6 @@ func (stream *FileOutputStream) seek(ctx context.Context, offset int64, typ glib
 	return _goerr
 }
 
-// The function returns the following values:
-//
 func (stream *FileOutputStream) tell() int64 {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.tell
@@ -59066,9 +58962,7 @@ type IOStreamOverrides struct {
 	//   - result: Result.
 	//
 	CloseFinish func(result AsyncResulter) error
-	// The function takes the following parameters:
-	//
-	CloseFn func(ctx context.Context) error
+	CloseFn     func(ctx context.Context) error
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
 	//
@@ -59621,8 +59515,6 @@ func (stream *IOStream) closeFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// The function takes the following parameters:
-//
 func (stream *IOStream) closeFn(ctx context.Context) error {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_fn
@@ -60777,9 +60669,7 @@ type InputStreamOverrides struct {
 	//   - result: Result.
 	//
 	CloseFinish func(result AsyncResulter) error
-	// The function takes the following parameters:
-	//
-	CloseFn func(ctx context.Context) error
+	CloseFn     func(ctx context.Context) error
 	// ReadFinish finishes an asynchronous stream read operation.
 	//
 	// The function takes the following parameters:
@@ -61849,8 +61739,6 @@ func (stream *InputStream) closeFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// The function takes the following parameters:
-//
 func (stream *InputStream) closeFn(ctx context.Context) error {
 	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_fn
@@ -62583,9 +62471,6 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 
 // NewMemoryOutputStreamResizable creates a new OutputStream, using g_realloc()
 // and g_free() for memory allocation.
-//
-// The function returns the following values:
-//
 func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 	var _cret *C.GOutputStream // in
 
@@ -67078,9 +66963,7 @@ type OutputStreamOverrides struct {
 	//   - result: Result.
 	//
 	CloseFinish func(result AsyncResulter) error
-	// The function takes the following parameters:
-	//
-	CloseFn func(ctx context.Context) error
+	CloseFn     func(ctx context.Context) error
 	// Flush forces a write of all user-space buffered data for the given
 	// stream. Will block during the operation. Closing the stream will
 	// implicitly cause a flush.
@@ -68646,8 +68529,6 @@ func (stream *OutputStream) closeFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// The function takes the following parameters:
-//
 func (stream *OutputStream) closeFn(ctx context.Context) error {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_fn
@@ -72361,20 +72242,10 @@ type SettingsOverrides struct {
 	//   - keys
 	//   - nKeys
 	//
-	// The function returns the following values:
-	//
-	ChangeEvent func(keys *glib.Quark, nKeys int) bool
-	// The function takes the following parameters:
-	//
-	Changed func(key string)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
+	ChangeEvent         func(keys *glib.Quark, nKeys int) bool
+	Changed             func(key string)
 	WritableChangeEvent func(key glib.Quark) bool
-	// The function takes the following parameters:
-	//
-	WritableChanged func(key string)
+	WritableChanged     func(key string)
 }
 
 func defaultSettingsOverrides(v *Settings) SettingsOverrides {
@@ -73423,8 +73294,6 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) unsafe.
 //
 //   - key to query the range of.
 //
-// The function returns the following values:
-//
 func (settings *Settings) Range(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -74373,8 +74242,6 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 //   - keys
 //   - nKeys
 //
-// The function returns the following values:
-//
 func (settings *Settings) changeEvent(keys *glib.Quark, nKeys int) bool {
 	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
 	fnarg := gclass.change_event
@@ -74402,8 +74269,6 @@ func (settings *Settings) changeEvent(keys *glib.Quark, nKeys int) bool {
 	return _ok
 }
 
-// The function takes the following parameters:
-//
 func (settings *Settings) changed(key string) {
 	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
 	fnarg := gclass.changed
@@ -74420,10 +74285,6 @@ func (settings *Settings) changed(key string) {
 	runtime.KeepAlive(key)
 }
 
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
 func (settings *Settings) writableChangeEvent(key glib.Quark) bool {
 	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
 	fnarg := gclass.writable_change_event
@@ -74448,8 +74309,6 @@ func (settings *Settings) writableChangeEvent(key glib.Quark) bool {
 	return _ok
 }
 
-// The function takes the following parameters:
-//
 func (settings *Settings) writableChanged(key string) {
 	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
 	fnarg := gclass.writable_changed
@@ -80623,8 +80482,6 @@ type SocketControlMessageOverrides struct {
 	//   - gsize: number of bytes required.
 	//
 	Size func() uint
-	// The function returns the following values:
-	//
 	Type func() int
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
@@ -80881,8 +80738,6 @@ func (message *SocketControlMessage) size() uint {
 	return _gsize
 }
 
-// The function returns the following values:
-//
 func (message *SocketControlMessage) typ() int {
 	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
 	fnarg := gclass.get_type
@@ -81633,8 +81488,6 @@ type SocketServiceOverrides struct {
 	//   - connection
 	//   - sourceObject
 	//
-	// The function returns the following values:
-	//
 	Incoming func(connection *SocketConnection, sourceObject *coreglib.Object) bool
 }
 
@@ -81812,8 +81665,6 @@ func (service *SocketService) Stop() {
 //
 //   - connection
 //   - sourceObject
-//
-// The function returns the following values:
 //
 func (service *SocketService) incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool {
 	gclass := (*C.GSocketServiceClass)(coreglib.PeekParentClass(service))
@@ -82103,9 +81954,6 @@ func (task *Task) Cancellable() *Cancellable {
 
 // CheckCancellable gets task's check-cancellable flag. See
 // g_task_set_check_cancellable() for more details.
-//
-// The function returns the following values:
-//
 func (task *Task) CheckCancellable() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -82233,9 +82081,6 @@ func (task *Task) Priority() int {
 
 // ReturnOnCancel gets task's return-on-cancel flag. See
 // g_task_set_return_on_cancel() for more details.
-//
-// The function returns the following values:
-//
 func (task *Task) ReturnOnCancel() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -83519,8 +83364,6 @@ type ThreadedSocketServiceOverrides struct {
 	//   - connection
 	//   - sourceObject
 	//
-	// The function returns the following values:
-	//
 	Run func(connection *SocketConnection, sourceObject *coreglib.Object) bool
 }
 
@@ -83628,8 +83471,6 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 //
 //   - connection
 //   - sourceObject
-//
-// The function returns the following values:
 //
 func (service *ThreadedSocketService) run(connection *SocketConnection, sourceObject *coreglib.Object) bool {
 	gclass := (*C.GThreadedSocketServiceClass)(coreglib.PeekParentClass(service))
@@ -84204,8 +84045,6 @@ type TLSConnectionOverrides struct {
 	//
 	//   - peerCert
 	//   - errors
-	//
-	// The function returns the following values:
 	//
 	AcceptCertificate func(peerCert TLSCertificater, errors TLSCertificateFlags) bool
 	// The function takes the following parameters:
@@ -85084,8 +84923,6 @@ func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 //
 //   - peerCert
 //   - errors
-//
-// The function returns the following values:
 //
 func (connection *TLSConnection) acceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(connection))
@@ -88149,8 +87986,6 @@ func (interaction *TLSInteraction) requestCertificateFinish(result AsyncResulter
 
 // TLSPasswordOverrides contains methods that are overridable.
 type TLSPasswordOverrides struct {
-	// The function returns the following values:
-	//
 	DefaultWarning func() string
 	// Value: get the password value. If length is not NULL then it will be
 	// filled in with the length of the password value. (Note that the password
@@ -88442,8 +88277,6 @@ func (password *TLSPassword) SetWarning(warning string) {
 	runtime.KeepAlive(warning)
 }
 
-// The function returns the following values:
-//
 func (password *TLSPassword) defaultWarning() string {
 	gclass := (*C.GTlsPasswordClass)(coreglib.PeekParentClass(password))
 	fnarg := gclass.get_default_warning
@@ -88502,8 +88335,6 @@ func (password *TLSPassword) value(length *uint) *byte {
 
 // VFSOverrides contains methods that are overridable.
 type VFSOverrides struct {
-	// The function takes the following parameters:
-	//
 	AddWritableNamespaces func(list *FileAttributeInfoList)
 	// FileForPath gets a #GFile for path.
 	//
@@ -88552,9 +88383,7 @@ type VFSOverrides struct {
 	//   - source
 	//   - dest
 	//
-	LocalFileMoved func(source, dest string)
-	// The function takes the following parameters:
-	//
+	LocalFileMoved   func(source, dest string)
 	LocalFileRemoved func(filename string)
 	// The function takes the following parameters:
 	//
@@ -88929,8 +88758,6 @@ func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	return _ok
 }
 
-// The function takes the following parameters:
-//
 func (vfs *VFS) addWritableNamespaces(list *FileAttributeInfoList) {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.add_writable_namespaces
@@ -89105,8 +88932,6 @@ func (vfs *VFS) localFileMoved(source, dest string) {
 	runtime.KeepAlive(dest)
 }
 
-// The function takes the following parameters:
-//
 func (vfs *VFS) localFileRemoved(filename string) {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.local_file_removed
@@ -89243,21 +89068,11 @@ func VFSGetLocal() *VFS {
 
 // VolumeMonitorOverrides contains methods that are overridable.
 type VolumeMonitorOverrides struct {
-	// The function takes the following parameters:
-	//
-	DriveChanged func(drive Driver)
-	// The function takes the following parameters:
-	//
-	DriveConnected func(drive Driver)
-	// The function takes the following parameters:
-	//
+	DriveChanged      func(drive Driver)
+	DriveConnected    func(drive Driver)
 	DriveDisconnected func(drive Driver)
-	// The function takes the following parameters:
-	//
-	DriveEjectButton func(drive Driver)
-	// The function takes the following parameters:
-	//
-	DriveStopButton func(drive Driver)
+	DriveEjectButton  func(drive Driver)
+	DriveStopButton   func(drive Driver)
 	// ConnectedDrives gets a list of drives connected to the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -89312,28 +89127,14 @@ type VolumeMonitorOverrides struct {
 	//
 	//   - list of #GVolume objects.
 	//
-	Volumes func() []*Volume
-	// The function takes the following parameters:
-	//
-	MountAdded func(mount Mounter)
-	// The function takes the following parameters:
-	//
-	MountChanged func(mount Mounter)
-	// The function takes the following parameters:
-	//
+	Volumes         func() []*Volume
+	MountAdded      func(mount Mounter)
+	MountChanged    func(mount Mounter)
 	MountPreUnmount func(mount Mounter)
-	// The function takes the following parameters:
-	//
-	MountRemoved func(mount Mounter)
-	// The function takes the following parameters:
-	//
-	VolumeAdded func(volume Volumer)
-	// The function takes the following parameters:
-	//
-	VolumeChanged func(volume Volumer)
-	// The function takes the following parameters:
-	//
-	VolumeRemoved func(volume Volumer)
+	MountRemoved    func(mount Mounter)
+	VolumeAdded     func(volume Volumer)
+	VolumeChanged   func(volume Volumer)
+	VolumeRemoved   func(volume Volumer)
 }
 
 func defaultVolumeMonitorOverrides(v *VolumeMonitor) VolumeMonitorOverrides {
@@ -89697,8 +89498,6 @@ func (volumeMonitor *VolumeMonitor) Volumes() []*Volume {
 	return _list
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) driveChanged(drive Driver) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.drive_changed
@@ -89714,8 +89513,6 @@ func (volumeMonitor *VolumeMonitor) driveChanged(drive Driver) {
 	runtime.KeepAlive(drive)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) driveConnected(drive Driver) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.drive_connected
@@ -89731,8 +89528,6 @@ func (volumeMonitor *VolumeMonitor) driveConnected(drive Driver) {
 	runtime.KeepAlive(drive)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) driveDisconnected(drive Driver) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.drive_disconnected
@@ -89748,8 +89543,6 @@ func (volumeMonitor *VolumeMonitor) driveDisconnected(drive Driver) {
 	runtime.KeepAlive(drive)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) driveEjectButton(drive Driver) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.drive_eject_button
@@ -89765,8 +89558,6 @@ func (volumeMonitor *VolumeMonitor) driveEjectButton(drive Driver) {
 	runtime.KeepAlive(drive)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) driveStopButton(drive Driver) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.drive_stop_button
@@ -89956,8 +89747,6 @@ func (volumeMonitor *VolumeMonitor) volumes() []*Volume {
 	return _list
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) mountAdded(mount Mounter) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.mount_added
@@ -89973,8 +89762,6 @@ func (volumeMonitor *VolumeMonitor) mountAdded(mount Mounter) {
 	runtime.KeepAlive(mount)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) mountChanged(mount Mounter) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.mount_changed
@@ -89990,8 +89777,6 @@ func (volumeMonitor *VolumeMonitor) mountChanged(mount Mounter) {
 	runtime.KeepAlive(mount)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) mountPreUnmount(mount Mounter) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.mount_pre_unmount
@@ -90007,8 +89792,6 @@ func (volumeMonitor *VolumeMonitor) mountPreUnmount(mount Mounter) {
 	runtime.KeepAlive(mount)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) mountRemoved(mount Mounter) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.mount_removed
@@ -90024,8 +89807,6 @@ func (volumeMonitor *VolumeMonitor) mountRemoved(mount Mounter) {
 	runtime.KeepAlive(mount)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) volumeAdded(volume Volumer) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.volume_added
@@ -90041,8 +89822,6 @@ func (volumeMonitor *VolumeMonitor) volumeAdded(volume Volumer) {
 	runtime.KeepAlive(volume)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) volumeChanged(volume Volumer) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.volume_changed
@@ -90058,8 +89837,6 @@ func (volumeMonitor *VolumeMonitor) volumeChanged(volume Volumer) {
 	runtime.KeepAlive(volume)
 }
 
-// The function takes the following parameters:
-//
 func (volumeMonitor *VolumeMonitor) volumeRemoved(volume Volumer) {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.volume_removed

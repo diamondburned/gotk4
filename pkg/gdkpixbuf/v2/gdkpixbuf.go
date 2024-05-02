@@ -278,8 +278,6 @@ func (p PixbufError) String() string {
 	}
 }
 
-// The function returns the following values:
-//
 func PixbufErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 

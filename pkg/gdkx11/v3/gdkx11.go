@@ -167,9 +167,6 @@ func X11GetDefaultScreen() int {
 // compositing is not available. Otherwise behaves like a transparent pattern.
 //
 // Deprecated: Don't use this function.
-//
-// The function returns the following values:
-//
 func X11GetParentRelativePattern() *cairo.Pattern {
 	var _cret *C.cairo_pattern_t // in
 

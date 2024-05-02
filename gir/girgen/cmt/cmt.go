@@ -268,12 +268,14 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 		tail.Grow(256)
 
 		if len(inf.ParamDocs) > 0 {
-			tail.WriteString("\n\nThe function takes the following parameters:\n")
-			writeParamDocs(&tail, indentLvl+1, inf.ParamDocs)
+			writeParamDocs(&tail, indentLvl+1,
+				"\n\nThe function takes the following parameters:\n",
+				inf.ParamDocs)
 		}
 		if len(inf.ReturnDocs) > 0 {
-			tail.WriteString("\n\nThe function returns the following values:\n")
-			writeParamDocs(&tail, indentLvl+1, inf.ReturnDocs)
+			writeParamDocs(&tail, indentLvl+1,
+				"\n\nThe function returns the following values:\n",
+				inf.ReturnDocs)
 		}
 
 		if tail.Len() > 0 {
@@ -293,11 +295,13 @@ func addPeriod(cmt string) string {
 	return cmt
 }
 
-func writeParamDocs(tail *strings.Builder, indent int, params []ParamDoc) {
+func writeParamDocs(tail *strings.Builder, indent int, label string, params []ParamDoc) {
 	col := calculateCol(indent)
 
 	line1Indent := strings.Repeat(" ", CommentsTabWidth) + "- "
 	lineNIndent := strings.Repeat(" ", CommentsTabWidth+2)
+
+	written := false
 
 	for _, param := range params {
 		name := param.Name
@@ -329,6 +333,10 @@ func writeParamDocs(tail *strings.Builder, indent int, params []ParamDoc) {
 			doc = line1Indent + name
 		}
 
+		if !written {
+			tail.WriteString(label)
+			written = true
+		}
 		tail.WriteString("\n")
 		tail.WriteString(doc)
 	}

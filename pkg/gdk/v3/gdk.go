@@ -3589,8 +3589,6 @@ func (g GLError) String() string {
 	}
 }
 
-// The function returns the following values:
-//
 func GLErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -6311,8 +6309,6 @@ func DragFindWindowForScreen(context *DragContext, dragWindow Windower, screen *
 //   - suggestedAction: suggested action.
 //   - possibleActions: possible actions.
 //   - time_: timestamp for this operation.
-//
-// The function returns the following values:
 //
 func DragMotion(context *DragContext, destWindow Windower, protocol DragProtocol, xRoot, yRoot int, suggestedAction, possibleActions DragAction, time_ uint32) bool {
 	var _arg1 *C.GdkDragContext // out
@@ -9151,9 +9147,6 @@ func (device *Device) AssociatedDevice() Devicer {
 }
 
 // Axes returns the axes currently available on the device.
-//
-// The function returns the following values:
-//
 func (device *Device) Axes() AxisFlags {
 	var _arg0 *C.GdkDevice   // out
 	var _cret C.GdkAxisFlags // in
@@ -16210,8 +16203,6 @@ type WindowOverrides struct {
 	//   - width
 	//   - height
 	//
-	// The function returns the following values:
-	//
 	CreateSurface func(width, height int) *cairo.Surface
 	// The function takes the following parameters:
 	//
@@ -18230,9 +18221,6 @@ func (window *Window) Parent() Windower {
 // window below.
 //
 // See gdk_window_set_pass_through() for details.
-//
-// The function returns the following values:
-//
 func (window *Window) PassThrough() bool {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.gboolean   // in
@@ -20847,8 +20835,6 @@ func (window *Window) Withdraw() {
 //
 //   - width
 //   - height
-//
-// The function returns the following values:
 //
 func (window *Window) createSurface(width, height int) *cairo.Surface {
 	gclass := (*C.GdkWindowClass)(coreglib.PeekParentClass(window))

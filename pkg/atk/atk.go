@@ -4481,8 +4481,6 @@ func (component *Component) SetSize(width, height int) bool {
 	return _ok
 }
 
-// The function takes the following parameters:
-//
 func (component *Component) boundsChanged(bounds *Rectangle) {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.bounds_changed
@@ -6265,8 +6263,6 @@ func (hypertext *Hypertext) nLinks() int {
 	return _gint
 }
 
-// The function takes the following parameters:
-//
 func (hypertext *Hypertext) linkSelected(linkIndex int) {
 	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
 	fnarg := gclass.link_selected
@@ -11962,8 +11958,6 @@ func (text *Text) textAttributesChanged() {
 	runtime.KeepAlive(text)
 }
 
-// The function takes the following parameters:
-//
 func (text *Text) textCaretMoved(location int) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.text_caret_moved
@@ -13047,9 +13041,7 @@ type HyperlinkOverrides struct {
 	//
 	IsValid       func() bool
 	LinkActivated func()
-	// The function returns the following values:
-	//
-	LinkState func() uint
+	LinkState     func() uint
 }
 
 func defaultHyperlinkOverrides(v *Hyperlink) HyperlinkOverrides {
@@ -13584,8 +13576,6 @@ func (link_ *Hyperlink) linkActivated() {
 	runtime.KeepAlive(link_)
 }
 
-// The function returns the following values:
-//
 func (link_ *Hyperlink) linkState() uint {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.link_state
@@ -13973,8 +13963,6 @@ func NewNoOpObjectFactory() *NoOpObjectFactory {
 
 // AtkObjectOverrides contains methods that are overridable.
 type AtkObjectOverrides struct {
-	// The function takes the following parameters:
-	//
 	ActiveDescendantChanged func(child *unsafe.Pointer)
 	// The function takes the following parameters:
 	//
@@ -13982,9 +13970,7 @@ type AtkObjectOverrides struct {
 	//   - changedChild (optional)
 	//
 	ChildrenChanged func(changeIndex uint, changedChild unsafe.Pointer)
-	// The function takes the following parameters:
-	//
-	FocusEvent func(focusIn bool)
+	FocusEvent      func(focusIn bool)
 	// Description gets the accessible description of the accessible.
 	//
 	// The function returns the following values:
@@ -14022,8 +14008,6 @@ type AtkObjectOverrides struct {
 	//     container.
 	//
 	MDIZOrder func() int
-	// The function returns the following values:
-	//
 	NChildren func() int
 	// Name gets the accessible name of the accessible.
 	//
@@ -14073,9 +14057,7 @@ type AtkObjectOverrides struct {
 	//   - data (optional) which identifies the object for which the AtkObject
 	//     was created.
 	//
-	Initialize func(data unsafe.Pointer)
-	// The function takes the following parameters:
-	//
+	Initialize     func(data unsafe.Pointer)
 	PropertyChange func(values *PropertyValues)
 	// RefRelationSet gets the RelationSet associated with the object.
 	//
@@ -14955,8 +14937,6 @@ func (accessible *AtkObject) SetRole(role Role) {
 	runtime.KeepAlive(role)
 }
 
-// The function takes the following parameters:
-//
 func (accessible *AtkObject) activeDescendantChanged(child *unsafe.Pointer) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.active_descendant_changed
@@ -14997,8 +14977,6 @@ func (accessible *AtkObject) childrenChanged(changeIndex uint, changedChild unsa
 	runtime.KeepAlive(changedChild)
 }
 
-// The function takes the following parameters:
-//
 func (accessible *AtkObject) focusEvent(focusIn bool) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.focus_event
@@ -15124,8 +15102,6 @@ func (accessible *AtkObject) mdizOrder() int {
 	return _gint
 }
 
-// The function returns the following values:
-//
 func (accessible *AtkObject) nChildren() int {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_n_children
@@ -15279,8 +15255,6 @@ func (accessible *AtkObject) initialize(data unsafe.Pointer) {
 	runtime.KeepAlive(data)
 }
 
-// The function takes the following parameters:
-//
 func (accessible *AtkObject) propertyChange(values *PropertyValues) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.property_change
@@ -15646,8 +15620,6 @@ func (factory *ObjectFactory) invalidate() {
 
 // PlugOverrides contains methods that are overridable.
 type PlugOverrides struct {
-	// The function returns the following values:
-	//
 	ObjectID func() string
 }
 
@@ -15781,8 +15753,6 @@ func (plug *Plug) SetChild(child *AtkObject) {
 	runtime.KeepAlive(child)
 }
 
-// The function returns the following values:
-//
 func (obj *Plug) objectID() string {
 	gclass := (*C.AtkPlugClass)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_object_id

@@ -8253,9 +8253,6 @@ func (s *Sphere) Center() *Point3D {
 }
 
 // Radius retrieves the radius of a #graphene_sphere_t.
-//
-// The function returns the following values:
-//
 func (s *Sphere) Radius() float32 {
 	var _arg0 *C.graphene_sphere_t // out
 	var _cret C.float              // in

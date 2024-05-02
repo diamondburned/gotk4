@@ -491,8 +491,6 @@ func (s SerializationError) String() string {
 	}
 }
 
-// The function returns the following values:
-//
 func SerializationErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 

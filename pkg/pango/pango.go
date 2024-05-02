@@ -4924,9 +4924,6 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 
 // RoundGlyphPositions returns whether font rendering with this context should
 // round glyph positions and widths.
-//
-// The function returns the following values:
-//
 func (context *Context) RoundGlyphPositions() bool {
 	var _arg0 *C.PangoContext // out
 	var _cret C.gboolean      // in
@@ -5517,9 +5514,7 @@ type FontOverrides struct {
 	//
 	//   - fontDescription: newly-allocated PangoFontDescription object.
 	//
-	Describe func() *FontDescription
-	// The function returns the following values:
-	//
+	Describe         func() *FontDescription
 	DescribeAbsolute func() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
 	//
@@ -5970,8 +5965,6 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 //
 //   - wc: unicode character.
 //
-// The function returns the following values:
-//
 func (font *Font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
@@ -6027,8 +6020,6 @@ func (font *Font) describe() *FontDescription {
 	return _fontDescription
 }
 
-// The function returns the following values:
-//
 func (font *Font) describeAbsolute() *FontDescription {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
 	fnarg := gclass.describe_absolute
@@ -7989,9 +7980,7 @@ type FontsetOverrides struct {
 	//   - font: PangoFont. The caller must call g_object_unref() when finished
 	//     with the font.
 	//
-	Font func(wc uint) Fonter
-	// The function returns the following values:
-	//
+	Font     func(wc uint) Fonter
 	Language func() *Language
 	// Metrics: get overall metric information for the fonts in the fontset.
 	//
@@ -8264,8 +8253,6 @@ func (fontset *Fontset) font(wc uint) Fonter {
 	return _font
 }
 
-// The function returns the following values:
-//
 func (fontset *Fontset) language() *Language {
 	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
 	fnarg := gclass.get_language
@@ -9054,9 +9041,6 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 // LineSpacing gets the line spacing factor of layout.
 //
 // See pango.Layout.SetLineSpacing().
-//
-// The function returns the following values:
-//
 func (layout *Layout) LineSpacing() float32 {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.float        // in
@@ -10401,9 +10385,7 @@ type RendererOverrides struct {
 	//   - part for which rendering has changed.
 	//
 	PartChanged func(part RenderPart)
-	// The function takes the following parameters:
-	//
-	PrepareRun func(run *LayoutRun)
+	PrepareRun  func(run *LayoutRun)
 }
 
 func defaultRendererOverrides(v *Renderer) RendererOverrides {
@@ -11431,8 +11413,6 @@ func (renderer *Renderer) partChanged(part RenderPart) {
 	runtime.KeepAlive(part)
 }
 
-// The function takes the following parameters:
-//
 func (renderer *Renderer) prepareRun(run *LayoutRun) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.prepare_run

@@ -3039,8 +3039,6 @@ func (g GLError) String() string {
 	}
 }
 
-// The function returns the following values:
-//
 func GLErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -3530,8 +3528,6 @@ func (v VulkanError) String() string {
 	}
 }
 
-// The function returns the following values:
-//
 func VulkanErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -5098,8 +5094,6 @@ func SetAllowedBackends(backends string) {
 	runtime.KeepAlive(backends)
 }
 
-// The function returns the following values:
-//
 func ToplevelSizeGetType() coreglib.Type {
 	var _cret C.GType // in
 
@@ -8108,13 +8102,9 @@ func (deserializer *ContentDeserializer) ReturnSuccess() {
 
 // ContentProviderOverrides contains methods that are overridable.
 type ContentProviderOverrides struct {
-	// The function takes the following parameters:
-	//
 	AttachClipboard func(clipboard *Clipboard)
 	// ContentChanged emits the ::content-changed signal.
-	ContentChanged func()
-	// The function takes the following parameters:
-	//
+	ContentChanged  func()
 	DetachClipboard func(clipboard *Clipboard)
 	// Value gets the contents of provider stored in value.
 	//
@@ -8549,8 +8539,6 @@ func (provider *ContentProvider) WriteMIMETypeFinish(result gio.AsyncResulter) e
 	return _goerr
 }
 
-// The function takes the following parameters:
-//
 func (provider *ContentProvider) attachClipboard(clipboard *Clipboard) {
 	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
 	fnarg := gclass.attach_clipboard
@@ -8579,8 +8567,6 @@ func (provider *ContentProvider) contentChanged() {
 	runtime.KeepAlive(provider)
 }
 
-// The function takes the following parameters:
-//
 func (provider *ContentProvider) detachClipboard(clipboard *Clipboard) {
 	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
 	fnarg := gclass.detach_clipboard

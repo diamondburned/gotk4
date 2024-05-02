@@ -262,7 +262,6 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 	docBuilder.Reset()
 	docBuilder.WriteString(docStr)
 
-	baseLen := docBuilder.Len()
 	if len(inf.ParamDocs) > 0 {
 		writeParamDocs(&docBuilder,
 			"\n\nThe function takes the following parameters:\n",
@@ -273,7 +272,6 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 			"\n\nThe function returns the following values:\n",
 			inf.ReturnDocs)
 	}
-	hasTail := docBuilder.Len() > baseLen
 
 	cmt := convertMarkdownStringToGoDoc(docBuilder.String())
 
@@ -292,9 +290,9 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 		// .PrintWidth the printer only counts tabs as width=1.
 		// Instead use CommentsTabWidth spaces, and count on the final
 		// gofmt step to turn them into tabs.
-		TextPrefix: strings.Repeat(" ", CommentsTabWidth*indentLvl) + "// ",
+		TextPrefix:     strings.Repeat(" ", CommentsTabWidth*indentLvl) + "// ",
+		TextCodePrefix: strings.Repeat(" ", CommentsTabWidth*indentLvl) + "//\t",
 	}
-	printer.TextCodePrefix = printer.TextPrefix + strings.Repeat(" ", CommentsTabWidth-1)
 	cmtStr := string(printer.Text(cmt))
 	cmtStr = transformLines(cmtStr, func(n, d int, line string) string {
 		if line == "" && n+1 != d {
@@ -302,10 +300,6 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 		}
 		return line
 	})
-
-	if hasTail && !synopsize && !strings.HasSuffix(cmtStr, "\n//\n") {
-		cmtStr += "//\n"
-	}
 
 	if !searchOptsBool(opts, trailingNewLine{}) {
 		cmtStr = strings.TrimSuffix(cmtStr, "\n")

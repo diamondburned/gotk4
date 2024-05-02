@@ -36,7 +36,7 @@ jobs:
 
     - name: Run goimports
       run: |
-        goimports -w gir/ pkg/core/ pkg/cairo/
+        goimports -w .
         git add .
         if [[ -n "$(git status --porcelain)" ]]; then
           PAGER= git diff --cached

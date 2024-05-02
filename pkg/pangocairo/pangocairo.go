@@ -55,7 +55,6 @@ type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath boo
 //   - fontOptions (optional): font options previously set on the context,
 //     or NULL if no options have been set. This value is owned by the context
 //     and must not be modified or freed.
-//
 func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 	var _arg1 *C.PangoContext         // out
 	var _cret *C.cairo_font_options_t // in
@@ -85,7 +84,6 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 //
 //   - gdouble: resolution in "dots per inch". A negative value will be returned
 //     if no resolution has previously been set.
-//
 func ContextGetResolution(context *pango.Context) float64 {
 	var _arg1 *C.PangoContext // out
 	var _cret C.double        // in
@@ -113,7 +111,6 @@ func ContextGetResolution(context *pango.Context) float64 {
 //   - context: PangoContext, from a pangocairo font map.
 //   - options (optional): cairo_font_options_t, or NULL to unset any previously
 //     set options. A copy is made.
-//
 func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 	var _arg1 *C.PangoContext         // out
 	var _arg2 *C.cairo_font_options_t // out
@@ -140,7 +137,6 @@ func ContextSetFontOptions(context *pango.Context, options *cairo.FontOptions) {
 //   - dpi: resolution in "dots per inch". (Physical inches aren't actually
 //     involved; the terminology is conventional.) A 0 or negative value means
 //     to use the resolution from the font map.
-//
 func ContextSetResolution(context *pango.Context, dpi float64) {
 	var _arg1 *C.PangoContext // out
 	var _arg2 C.double        // out
@@ -163,7 +159,6 @@ func ContextSetResolution(context *pango.Context, dpi float64) {
 //   - context: PangoContext, from a pangocairo font map.
 //   - fn (optional): callback function for rendering attributes of type
 //     PANGO_ATTR_SHAPE, or NULL to disable shape rendering.
-//
 func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
 	var _arg1 *C.PangoContext               // out
 	var _arg2 C.PangoCairoShapeRendererFunc // out
@@ -199,7 +194,6 @@ func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
 // The function returns the following values:
 //
 //   - context: newly created PangoContext. Free with g_object_unref().
-//
 func CreateContext(cr *cairo.Context) *pango.Context {
 	var _arg1 *C.cairo_t      // out
 	var _cret *C.PangoContext // in
@@ -241,7 +235,6 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 // The function returns the following values:
 //
 //   - layout: newly created PangoLayout. Free with g_object_unref().
-//
 func CreateLayout(cr *cairo.Context) *pango.Layout {
 	var _arg1 *C.cairo_t     // out
 	var _cret *C.PangoLayout // in
@@ -277,7 +270,6 @@ func CreateLayout(cr *cairo.Context) *pango.Layout {
 //   - y: y coordinate of one corner of the rectangle.
 //   - width: non-negative width of the rectangle.
 //   - height: non-negative height of the rectangle.
-//
 func ErrorUnderlinePath(cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 C.double   // out
@@ -310,7 +302,6 @@ func ErrorUnderlinePath(cr *cairo.Context, x, y, width, height float64) {
 //   - cr: cairo context.
 //   - font: PangoFont from a PangoCairoFontMap.
 //   - glyphs: PangoGlyphString.
-//
 func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphString) {
 	var _arg1 *C.cairo_t          // out
 	var _arg2 *C.PangoFont        // out
@@ -336,7 +327,6 @@ func GlyphStringPath(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 //
 //   - cr: cairo context.
 //   - line: PangoLayoutLine.
-//
 func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 	var _arg1 *C.cairo_t         // out
 	var _arg2 *C.PangoLayoutLine // out
@@ -359,7 +349,6 @@ func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 //
 //   - cr: cairo context.
 //   - layout: pango layout.
-//
 func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.PangoLayout // out
@@ -386,7 +375,6 @@ func LayoutPath(cr *cairo.Context, layout *pango.Layout) {
 //   - y: y coordinate of one corner of the rectangle.
 //   - width: non-negative width of the rectangle.
 //   - height: non-negative height of the rectangle.
-//
 func ShowErrorUnderline(cr *cairo.Context, x, y, width, height float64) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 C.double   // out
@@ -425,7 +413,6 @@ func ShowErrorUnderline(cr *cairo.Context, x, y, width, height float64) {
 //   - cr: cairo context.
 //   - text: UTF-8 text that glyph_item refers to.
 //   - glyphItem: PangoGlyphItem.
-//
 func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 	var _arg1 *C.cairo_t        // out
 	var _arg2 *C.char           // out
@@ -452,7 +439,6 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 //   - cr: cairo context.
 //   - font: PangoFont from a PangoCairoFontMap.
 //   - glyphs: PangoGlyphString.
-//
 func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphString) {
 	var _arg1 *C.cairo_t          // out
 	var _arg2 *C.PangoFont        // out
@@ -477,7 +463,6 @@ func ShowGlyphString(cr *cairo.Context, font pango.Fonter, glyphs *pango.GlyphSt
 //
 //   - cr: cairo context.
 //   - layout: pango layout.
-//
 func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.PangoLayout // out
@@ -499,7 +484,6 @@ func ShowLayout(cr *cairo.Context, layout *pango.Layout) {
 //
 //   - cr: cairo context.
 //   - line: PangoLayoutLine.
-//
 func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 	var _arg1 *C.cairo_t         // out
 	var _arg2 *C.PangoLayoutLine // out
@@ -522,7 +506,6 @@ func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 //
 //   - cr: cairo context.
 //   - context: PangoContext, from a pangocairo font map.
-//
 func UpdateContext(cr *cairo.Context, context *pango.Context) {
 	var _arg1 *C.cairo_t      // out
 	var _arg2 *C.PangoContext // out
@@ -543,7 +526,6 @@ func UpdateContext(cr *cairo.Context, context *pango.Context) {
 //
 //   - cr: cairo context.
 //   - layout: PangoLayout, from create_layout.
-//
 func UpdateLayout(cr *cairo.Context, layout *pango.Layout) {
 	var _arg1 *C.cairo_t     // out
 	var _arg2 *C.PangoLayout // out
@@ -645,7 +627,6 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - gdouble: resolution in "dots per inch".
-//
 func (fontmap *FontMap) Resolution() float64 {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _cret C.double             // in
@@ -697,7 +678,6 @@ func (fontmap *FontMap) SetDefault() {
 //
 //   - dpi: resolution in "dots per inch". (Physical inches aren't actually
 //     involved; the terminology is conventional.).
-//
 func (fontmap *FontMap) SetResolution(dpi float64) {
 	var _arg0 *C.PangoCairoFontMap // out
 	var _arg1 C.double             // out
@@ -728,7 +708,6 @@ func (fontmap *FontMap) SetResolution(dpi float64) {
 //
 //   - fontMap: default PangoCairo fontmap for the current thread. This object
 //     is owned by Pango and must not be freed.
-//
 func FontMapGetDefault() pango.FontMapper {
 	var _cret *C.PangoFontMap // in
 
@@ -777,7 +756,6 @@ func FontMapGetDefault() pango.FontMapper {
 //
 //   - fontMap: newly allocated PangoFontMap, which should be freed with
 //     g_object_unref().
-//
 func NewFontMap() pango.FontMapper {
 	var _cret *C.PangoFontMap // in
 

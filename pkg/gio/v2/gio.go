@@ -3278,7 +3278,6 @@ func (d DBusError) String() string {
 // The function returns the following values:
 //
 //   - utf8 d-Bus error name (never NULL). Free with g_free().
-//
 func DBusErrorEncodeGError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
@@ -3313,7 +3312,6 @@ func DBusErrorEncodeGError(err error) string {
 //
 //   - utf8 (optional): allocated string or NULL if the D-Bus error name could
 //     not be found. Free with g_free().
-//
 func DBusErrorGetRemoteError(err error) string {
 	var _arg1 *C.GError // out
 	var _cret *C.gchar  // in
@@ -3347,7 +3345,6 @@ func DBusErrorGetRemoteError(err error) string {
 //
 //   - ok: TRUE if error represents an error from a remote peer, FALSE
 //     otherwise.
-//
 func DBusErrorIsRemoteError(err error) bool {
 	var _arg1 *C.GError  // out
 	var _cret C.gboolean // in
@@ -3402,7 +3399,6 @@ func DBusErrorIsRemoteError(err error) bool {
 // The function returns the following values:
 //
 //   - err: allocated #GError. Free with g_error_free().
-//
 func NewDBusErrorForDBusError(dbusErrorName, dbusErrorMessage string) error {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
@@ -3451,7 +3447,6 @@ func DBusErrorQuark() glib.Quark {
 // The function returns the following values:
 //
 //   - ok: TRUE if the association was created, FALSE if it already exists.
-//
 func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var _arg1 C.GQuark   // out
 	var _arg2 C.gint     // out
@@ -3488,7 +3483,6 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 //   - errorDomainQuarkName: error domain name.
 //   - quarkVolatile: pointer where to store the #GQuark.
 //   - entries: pointer to num_entries BusErrorEntry struct items.
-//
 func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, entries []DBusErrorEntry) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gsize           // out
@@ -3528,7 +3522,6 @@ func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *ui
 // The function returns the following values:
 //
 //   - ok: TRUE if information was stripped, FALSE otherwise.
-//
 func DBusErrorStripRemoteError(err error) bool {
 	var _arg1 *C.GError  // out
 	var _cret C.gboolean // in
@@ -3561,7 +3554,6 @@ func DBusErrorStripRemoteError(err error) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the association was destroyed, FALSE if it wasn't found.
-//
 func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var _arg1 C.GQuark   // out
 	var _arg2 C.gint     // out
@@ -4120,11 +4112,11 @@ func (f FilesystemPreviewType) String() string {
 // G_IO_ERROR_FAILED in cases that were not explicitly distinguished before.
 // You should therefore avoid writing code like
 //
-//    if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED))
-//      {
-//        // Assume that this is EPRINTERONFIRE
-//        ...
-//      }
+//	if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED))
+//	  {
+//	    // Assume that this is EPRINTERONFIRE
+//	    ...
+//	  }
 //
 // but should instead treat all unrecognized error codes the same as
 // IO_ERROR_FAILED.
@@ -4385,8 +4377,8 @@ func (i IOModuleScopeFlags) String() string {
 // Note that because new values might be added, it is recommended that
 // applications check MonitorWarningLevel as ranges, for example:
 //
-//    if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
-//      drop_caches ();.
+//	if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
+//	  drop_caches ();.
 type MemoryMonitorWarningLevel C.gint
 
 const (
@@ -4646,7 +4638,6 @@ func (r ResolverError) String() string {
 // The function returns the following values:
 //
 //   - quark: #GQuark.
-//
 func ResolverErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -4758,7 +4749,6 @@ func (r ResourceError) String() string {
 // The function returns the following values:
 //
 //   - quark: #GQuark.
-//
 func ResourceErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -5091,7 +5081,6 @@ func (t TLSChannelBindingError) String() string {
 // The function returns the following values:
 //
 //   - quark: #GQuark.
-//
 func TLSChannelBindingErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -5229,7 +5218,6 @@ func (t TLSError) String() string {
 // The function returns the following values:
 //
 //   - quark: #GQuark.
-//
 func TLSErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -7651,52 +7639,52 @@ type DBusInterfaceSetPropertyFunc func(connection *DBusConnection, sender, objec
 // too. Passive filter functions that don't modify the message can simply return
 // the message object:
 //
-//    static GDBusMessage *
-//    passive_filter (GDBusConnection *connection
-//                    GDBusMessage    *message,
-//                    gboolean         incoming,
-//                    gpointer         user_data)
-//    {
-//      // inspect message
-//      return message;
-//    }
+//	static GDBusMessage *
+//	passive_filter (GDBusConnection *connection
+//	                GDBusMessage    *message,
+//	                gboolean         incoming,
+//	                gpointer         user_data)
+//	{
+//	  // inspect message
+//	  return message;
+//	}
 //
 // Filter functions that wants to drop a message can simply return NULL:
 //
-//    static GDBusMessage *
-//    drop_filter (GDBusConnection *connection
-//                 GDBusMessage    *message,
-//                 gboolean         incoming,
-//                 gpointer         user_data)
-//    {
-//      if (should_drop_message)
-//        {
-//          g_object_unref (message);
-//          message = NULL;
-//        }
-//      return message;
-//    }
+//	static GDBusMessage *
+//	drop_filter (GDBusConnection *connection
+//	             GDBusMessage    *message,
+//	             gboolean         incoming,
+//	             gpointer         user_data)
+//	{
+//	  if (should_drop_message)
+//	    {
+//	      g_object_unref (message);
+//	      message = NULL;
+//	    }
+//	  return message;
+//	}
 //
 // Finally, a filter function may modify a message by copying it:
 //
-//    static GDBusMessage *
-//    modifying_filter (GDBusConnection *connection
-//                      GDBusMessage    *message,
-//                      gboolean         incoming,
-//                      gpointer         user_data)
-//    {
-//      GDBusMessage *copy;
-//      GError *error;
+//	static GDBusMessage *
+//	modifying_filter (GDBusConnection *connection
+//	                  GDBusMessage    *message,
+//	                  gboolean         incoming,
+//	                  gpointer         user_data)
+//	{
+//	  GDBusMessage *copy;
+//	  GError *error;
 //
-//      error = NULL;
-//      copy = g_dbus_message_copy (message, &error);
-//      // handle error being set
-//      g_object_unref (message);
+//	  error = NULL;
+//	  copy = g_dbus_message_copy (message, &error);
+//	  // handle error being set
+//	  g_object_unref (message);
 //
-//      // modify copy
+//	  // modify copy
 //
-//      return copy;
-//    }
+//	  return copy;
+//	}
 //
 // If the returned BusMessage is different from message and cannot be sent on
 // connection (it could use features, such as file descriptors, not compatible
@@ -7852,7 +7840,6 @@ type VFSFileLookupFunc func(vfs *VFS, identifier string) (file *File)
 //   - ctx (optional) or NULL.
 //   - busType: Type.
 //   - callback (optional) to call when the request is satisfied.
-//
 func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.GBusType            // out
@@ -7893,7 +7880,6 @@ func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
 // The function returns the following values:
 //
 //   - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
 func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
@@ -7939,7 +7925,6 @@ func BusGetFinish(res AsyncResulter) (*DBusConnection, error) {
 // The function returns the following values:
 //
 //   - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
 func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 	var _arg2 *C.GCancellable    // out
 	var _arg1 C.GBusType         // out
@@ -7979,7 +7964,6 @@ func BusGetSync(ctx context.Context, busType BusType) (*DBusConnection, error) {
 // The function takes the following parameters:
 //
 //   - ownerId: identifier obtained from g_bus_own_name().
-//
 func BusUnownName(ownerId uint) {
 	var _arg1 C.guint // out
 
@@ -8001,7 +7985,6 @@ func BusUnownName(ownerId uint) {
 // The function takes the following parameters:
 //
 //   - watcherId: identifier obtained from g_bus_watch_name().
-//
 func BusUnwatchName(watcherId uint) {
 	var _arg1 C.guint // out
 
@@ -8023,7 +8006,6 @@ func BusUnwatchName(watcherId uint) {
 //
 //   - ok: TRUE if the file type corresponds to a type that can be executable,
 //     FALSE otherwise.
-//
 func ContentTypeCanBeExecutable(typ string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -8053,7 +8035,6 @@ func ContentTypeCanBeExecutable(typ string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two strings are identical or equivalent, FALSE otherwise.
-//
 func ContentTypeEquals(type1, type2 string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -8088,7 +8069,6 @@ func ContentTypeEquals(type1, type2 string) bool {
 //
 //   - utf8 (optional): newly allocated string with content type or NULL.
 //     Free with g_free().
-//
 func ContentTypeFromMIMEType(mimeType string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -8120,7 +8100,6 @@ func ContentTypeFromMIMEType(mimeType string) string {
 //
 //   - utf8: short description of the content type type. Free the returned
 //     string with g_free().
-//
 func ContentTypeGetDescription(typ string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -8153,7 +8132,6 @@ func ContentTypeGetDescription(typ string) string {
 //
 //   - utf8 (optional): registered generic icon name for the given type, or NULL
 //     if unknown. Free with g_free().
-//
 func ContentTypeGetGenericIconName(typ string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -8184,7 +8162,6 @@ func ContentTypeGetGenericIconName(typ string) string {
 //
 //   - icon corresponding to the content type. Free the returned object with
 //     g_object_unref().
-//
 func ContentTypeGetIcon(typ string) *Icon {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
@@ -8210,7 +8187,6 @@ func ContentTypeGetIcon(typ string) *Icon {
 //   - utf8s: NULL-terminated list of directories to load MIME data from,
 //     including any mime/ subdirectory, and with the first directory to try
 //     listed first.
-//
 func ContentTypeGetMIMEDirs() []string {
 	var _cret **C.gchar // in
 
@@ -8246,7 +8222,6 @@ func ContentTypeGetMIMEDirs() []string {
 //
 //   - utf8 (optional): registered mime type for the given type, or NULL if
 //     unknown; free with g_free().
-//
 func ContentTypeGetMIMEType(typ string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -8277,7 +8252,6 @@ func ContentTypeGetMIMEType(typ string) string {
 //
 //   - icon: symbolic #GIcon corresponding to the content type. Free the
 //     returned object with g_object_unref().
-//
 func ContentTypeGetSymbolicIcon(typ string) *Icon {
 	var _arg1 *C.gchar // out
 	var _cret *C.GIcon // in
@@ -8311,7 +8285,6 @@ func ContentTypeGetSymbolicIcon(typ string) *Icon {
 //     result, or NULL.
 //   - utf8: string indicating a guessed content type for the given data.
 //     Free with g_free().
-//
 func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.guchar // out
@@ -8365,7 +8338,6 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 //
 //   - utf8s: NULL-terminated array of zero or more content types. Free with
 //     g_strfreev().
-//
 func ContentTypeGuessForTree(root Filer) []string {
 	var _arg1 *C.GFile  // out
 	var _cret **C.gchar // in
@@ -8406,7 +8378,6 @@ func ContentTypeGuessForTree(root Filer) []string {
 // The function returns the following values:
 //
 //   - ok: TRUE if type is a kind of supertype, FALSE otherwise.
-//
 func ContentTypeIsA(typ, supertype string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -8441,7 +8412,6 @@ func ContentTypeIsA(typ, supertype string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if type is a kind of mime_type, FALSE otherwise.
-//
 func ContentTypeIsMIMEType(typ, mimeType string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -8476,7 +8446,6 @@ func ContentTypeIsMIMEType(typ, mimeType string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the type is the unknown type.
-//
 func ContentTypeIsUnknown(typ string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -8509,21 +8478,20 @@ func ContentTypeIsUnknown(typ string) bool {
 // on the system’s MIME database, you should call this function with dirs set to
 // NULL before calling g_test_init(), for instance:
 //
-//    // Load MIME data from the system
-//    g_content_type_set_mime_dirs (NULL);
-//    // Isolate the environment
-//    g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+//	// Load MIME data from the system
+//	g_content_type_set_mime_dirs (NULL);
+//	// Isolate the environment
+//	g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 //
-//    …
+//	…
 //
-//    return g_test_run ();.
+//	return g_test_run ();.
 //
 // The function takes the following parameters:
 //
 //   - dirs (optional): NULL-terminated list of directories to load MIME data
 //     from, including any mime/ subdirectory, and with the first directory to
 //     try listed first.
-//
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var _arg1 **C.gchar // out
 
@@ -8552,7 +8520,6 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 // The function returns the following values:
 //
 //   - list of the registered content types.
-//
 func ContentTypesGetRegistered() []string {
 	var _cret *C.GList // in
 
@@ -8587,7 +8554,6 @@ func ContentTypesGetRegistered() []string {
 // The function returns the following values:
 //
 //   - utf8: copy of string with all non-optionally-escaped bytes escaped.
-//
 func DBusAddressEscapeValue(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -8621,7 +8587,6 @@ func DBusAddressEscapeValue(str string) string {
 // The function returns the following values:
 //
 //   - utf8: valid D-Bus address string for bus_type or NULL if error is set.
-//
 func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, error) {
 	var _arg2 *C.GCancellable // out
 	var _arg1 C.GBusType      // out
@@ -8668,7 +8633,6 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 //   - ctx (optional) or NULL.
 //   - address: valid D-Bus address.
 //   - callback (optional) to call when the request is satisfied.
-//
 func DBusAddressGetStream(ctx context.Context, address string, callback AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
@@ -8709,7 +8673,6 @@ func DBusAddressGetStream(ctx context.Context, address string, callback AsyncRea
 //   - outGuid (optional): NULL or return location to store the GUID extracted
 //     from address, if any.
 //   - ioStream or NULL if error is set.
-//
 func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.gchar        // in
@@ -8775,7 +8738,6 @@ func DBusAddressGetStreamFinish(res AsyncResulter) (string, IOStreamer, error) {
 //   - outGuid (optional): NULL or return location to store the GUID extracted
 //     from address, if any.
 //   - ioStream or NULL if error is set.
-//
 func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOStreamer, error) {
 	var _arg3 *C.GCancellable // out
 	var _arg1 *C.gchar        // out
@@ -8837,7 +8799,6 @@ func DBusAddressGetStreamSync(ctx context.Context, address string) (string, IOSt
 // The function returns the following values:
 //
 //   - utf8: escaped version of s. Free with g_free().
-//
 func DBusEscapeObjectPath(s string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -8878,7 +8839,6 @@ func DBusEscapeObjectPath(s string) string {
 // The function returns the following values:
 //
 //   - utf8: escaped version of bytes. Free with g_free().
-//
 func DBusEscapeObjectPathBytestring(bytes []byte) string {
 	var _arg1 *C.guint8 // out
 	var _cret *C.gchar  // in
@@ -8909,7 +8869,6 @@ func DBusEscapeObjectPathBytestring(bytes []byte) string {
 // The function returns the following values:
 //
 //   - utf8: valid D-Bus GUID. Free with g_free().
-//
 func DBusGenerateGUID() string {
 	var _cret *C.gchar // in
 
@@ -8969,7 +8928,6 @@ func DBusGenerateGUID() string {
 //
 //   - variant (never floating) of Type type holding the data from gvalue or an
 //     empty #GVariant in case of failure. Free with g_variant_unref().
-//
 func DBusGValueToGVariant(gvalue *coreglib.Value, typ *glib.VariantType) *glib.Variant {
 	var _arg1 *C.GValue       // out
 	var _arg2 *C.GVariantType // out
@@ -9015,7 +8973,6 @@ func DBusGValueToGVariant(gvalue *coreglib.Value, typ *glib.VariantType) *glib.V
 //
 //   - outGvalue: return location pointing to a zero-filled (uninitialized)
 //     #GValue.
-//
 func DBusGVariantToGValue(value *glib.Variant) coreglib.Value {
 	var _arg1 *C.GVariant // out
 	var _arg2 C.GValue    // in
@@ -9045,7 +9002,6 @@ func DBusGVariantToGValue(value *glib.Variant) coreglib.Value {
 // The function returns the following values:
 //
 //   - ok: TRUE if string is a valid D-Bus address, FALSE otherwise.
-//
 func DBusIsAddress(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -9077,7 +9033,6 @@ func DBusIsAddress(str string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if string is a guid, FALSE otherwise.
-//
 func DBusIsGUID(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -9106,7 +9061,6 @@ func DBusIsGUID(str string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if valid, FALSE otherwise.
-//
 func DBusIsInterfaceName(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -9136,7 +9090,6 @@ func DBusIsInterfaceName(str string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if valid, FALSE otherwise.
-//
 func DBusIsMemberName(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -9166,7 +9119,6 @@ func DBusIsMemberName(str string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if valid, FALSE otherwise.
-//
 func DBusIsName(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -9194,7 +9146,6 @@ func DBusIsName(str string) bool {
 // The function takes the following parameters:
 //
 //   - str: string.
-//
 func DBusIsSupportedAddress(str string) error {
 	var _arg1 *C.gchar  // out
 	var _cerr *C.GError // in
@@ -9223,7 +9174,6 @@ func DBusIsSupportedAddress(str string) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if valid, FALSE otherwise.
-//
 func DBusIsUniqueName(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -9258,7 +9208,6 @@ func DBusIsUniqueName(str string) bool {
 //
 //   - guint8s (optional): an unescaped version of s, or NULL if s is not a
 //     string returned from g_dbus_escape_object_path(). Free with g_free().
-//
 func DBusUnescapeObjectPath(s string) []byte {
 	var _arg1 *C.gchar  // out
 	var _cret *C.guint8 // in
@@ -9305,7 +9254,6 @@ func DBusUnescapeObjectPath(s string) []byte {
 // The function returns the following values:
 //
 //   - ioErrorEnum value for the given errno.h error number.
-//
 func IOErrorFromErrno(errNo int) IOErrorEnum {
 	var _arg1 C.gint         // out
 	var _cret C.GIOErrorEnum // in
@@ -9327,7 +9275,6 @@ func IOErrorFromErrno(errNo int) IOErrorEnum {
 // The function returns the following values:
 //
 //   - quark: #GQuark.
-//
 func IOErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -9354,7 +9301,6 @@ func IOErrorQuark() glib.Quark {
 // The function takes the following parameters:
 //
 //   - dirname: pathname for a directory containing modules to scan.
-//
 func IOModulesScanAllInDirectory(dirname string) {
 	var _arg1 *C.char // out
 
@@ -9389,7 +9335,6 @@ func IOSchedulerCancelAllJobs() {
 // The function returns the following values:
 //
 //   - source: new #GSource.
-//
 func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 	var _arg1 *C.GObject // out
 	var _cret *C.GSource // in
@@ -9426,7 +9371,6 @@ func NewPollableSource(pollableStream *coreglib.Object) *glib.Source {
 // The function returns the following values:
 //
 //   - source: new #GSource.
-//
 func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object, childSource *glib.Source) *glib.Source {
 	var _arg3 *C.GCancellable // out
 	var _arg1 C.gpointer      // out
@@ -9481,7 +9425,6 @@ func PollableSourceNewFull(ctx context.Context, pollableStream *coreglib.Object,
 // The function returns the following values:
 //
 //   - gssize: number of bytes read, or -1 on error.
-//
 func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte, blocking bool) (int, error) {
 	var _arg5 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
@@ -9542,7 +9485,6 @@ func PollableStreamRead(ctx context.Context, stream InputStreamer, buffer []byte
 // The function returns the following values:
 //
 //   - gssize: number of bytes written, or -1 on error.
-//
 func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (int, error) {
 	var _arg5 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
@@ -9611,7 +9553,6 @@ func PollableStreamWrite(ctx context.Context, stream OutputStreamer, buffer []by
 //
 //   - bytesWritten: location to store the number of bytes that was written to
 //     the stream.
-//
 func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer []byte, blocking bool) (uint, error) {
 	var _arg6 *C.GCancellable  // out
 	var _arg1 *C.GOutputStream // out
@@ -9666,7 +9607,6 @@ func PollableStreamWriteAll(ctx context.Context, stream OutputStreamer, buffer [
 // The function returns the following values:
 //
 //   - utf8s: array of constant strings.
-//
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -9722,7 +9662,6 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 //     file, or NULL if the length is not needed.
 //   - flags (optional): location to place the Flags about the file, or NULL if
 //     the flags are not needed.
-//
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -9773,7 +9712,6 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 // The function returns the following values:
 //
 //   - bytes or NULL on error. Free the returned object with g_bytes_unref().
-//
 func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (*glib.Bytes, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -9820,7 +9758,6 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (*glib.By
 //
 //   - inputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStreamer, error) {
 	var _arg1 *C.char                // out
 	var _arg2 C.GResourceLookupFlags // out
@@ -9869,7 +9806,6 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStr
 // The function takes the following parameters:
 //
 //   - resource: #GResource.
-//
 func ResourcesRegister(resource *Resource) {
 	var _arg1 *C.GResource // out
 
@@ -9885,7 +9821,6 @@ func ResourcesRegister(resource *Resource) {
 // The function takes the following parameters:
 //
 //   - resource: #GResource.
-//
 func ResourcesUnregister(resource *Resource) {
 	var _arg1 *C.GResource // out
 
@@ -9906,7 +9841,6 @@ func ResourcesUnregister(resource *Resource) {
 //   - object (optional) or NULL.
 //   - callback (optional): ReadyCallback.
 //   - err to report.
-//
 func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyCallback, err error) {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -10015,7 +9949,6 @@ func marshalAction(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - parameter (optional) to the activation.
-//
 func (action *Action) Activate(parameter *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
@@ -10044,7 +9977,6 @@ func (action *Action) Activate(parameter *glib.Variant) {
 // The function takes the following parameters:
 //
 //   - value: new state.
-//
 func (action *Action) ChangeState(value *glib.Variant) {
 	var _arg0 *C.GAction  // out
 	var _arg1 *C.GVariant // out
@@ -10065,7 +9997,6 @@ func (action *Action) ChangeState(value *glib.Variant) {
 // The function returns the following values:
 //
 //   - ok: whether the action is enabled.
-//
 func (action *Action) Enabled() bool {
 	var _arg0 *C.GAction // out
 	var _cret C.gboolean // in
@@ -10089,7 +10020,6 @@ func (action *Action) Enabled() bool {
 // The function returns the following values:
 //
 //   - utf8: name of the action.
-//
 func (action *Action) Name() string {
 	var _arg0 *C.GAction // out
 	var _cret *C.gchar   // in
@@ -10118,7 +10048,6 @@ func (action *Action) Name() string {
 // The function returns the following values:
 //
 //   - variantType (optional): parameter type.
-//
 func (action *Action) ParameterType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
@@ -10149,7 +10078,6 @@ func (action *Action) ParameterType() *glib.VariantType {
 // The function returns the following values:
 //
 //   - variant (optional): current state of the action.
-//
 func (action *Action) State() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
@@ -10195,7 +10123,6 @@ func (action *Action) State() *glib.Variant {
 // The function returns the following values:
 //
 //   - variant (optional): state range hint.
-//
 func (action *Action) StateHint() *glib.Variant {
 	var _arg0 *C.GAction  // out
 	var _cret *C.GVariant // in
@@ -10235,7 +10162,6 @@ func (action *Action) StateHint() *glib.Variant {
 // The function returns the following values:
 //
 //   - variantType (optional): state type, if the action is stateful.
-//
 func (action *Action) StateType() *glib.VariantType {
 	var _arg0 *C.GAction      // out
 	var _cret *C.GVariantType // in
@@ -10265,7 +10191,6 @@ func (action *Action) StateType() *glib.VariantType {
 // The function takes the following parameters:
 //
 //   - parameter (optional) to the activation.
-//
 func (action *Action) activate(parameter *glib.Variant) {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.activate
@@ -10297,7 +10222,6 @@ func (action *Action) activate(parameter *glib.Variant) {
 // The function takes the following parameters:
 //
 //   - value: new state.
-//
 func (action *Action) changeState(value *glib.Variant) {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.change_state
@@ -10321,7 +10245,6 @@ func (action *Action) changeState(value *glib.Variant) {
 // The function returns the following values:
 //
 //   - ok: whether the action is enabled.
-//
 func (action *Action) enabled() bool {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_enabled
@@ -10348,7 +10271,6 @@ func (action *Action) enabled() bool {
 // The function returns the following values:
 //
 //   - utf8: name of the action.
-//
 func (action *Action) name() string {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_name
@@ -10380,7 +10302,6 @@ func (action *Action) name() string {
 // The function returns the following values:
 //
 //   - variantType (optional): parameter type.
-//
 func (action *Action) parameterType() *glib.VariantType {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_parameter_type
@@ -10414,7 +10335,6 @@ func (action *Action) parameterType() *glib.VariantType {
 // The function returns the following values:
 //
 //   - variant (optional): current state of the action.
-//
 func (action *Action) state() *glib.Variant {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_state
@@ -10463,7 +10383,6 @@ func (action *Action) state() *glib.Variant {
 // The function returns the following values:
 //
 //   - variant (optional): state range hint.
-//
 func (action *Action) stateHint() *glib.Variant {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_state_hint
@@ -10506,7 +10425,6 @@ func (action *Action) stateHint() *glib.Variant {
 // The function returns the following values:
 //
 //   - variantType (optional): state type, if the action is stateful.
-//
 func (action *Action) stateType() *glib.VariantType {
 	gclass := (*C.GActionInterface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_state_type
@@ -10543,7 +10461,6 @@ func (action *Action) stateType() *glib.VariantType {
 // The function returns the following values:
 //
 //   - ok: TRUE if action_name is valid.
-//
 func ActionNameIsValid(actionName string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -10595,7 +10512,6 @@ func ActionNameIsValid(actionName string) bool {
 //
 //   - actionName: action name.
 //   - targetValue: target value, or NULL for no target.
-//
 func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // in
@@ -10648,7 +10564,6 @@ func ActionParseDetailedName(detailedName string) (string, *glib.Variant, error)
 // The function returns the following values:
 //
 //   - utf8: detailed format string.
-//
 func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.GVariant // out
@@ -10824,7 +10739,6 @@ func (actionGroup *ActionGroup) ConnectActionStateChanged(f func(actionName stri
 // The function takes the following parameters:
 //
 //   - actionName: name of an action in the group.
-//
 func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -10847,7 +10761,6 @@ func (actionGroup *ActionGroup) ActionAdded(actionName string) {
 //
 //   - actionName: name of an action in the group.
 //   - enabled: whether or not the action is now enabled.
-//
 func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled bool) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -10873,7 +10786,6 @@ func (actionGroup *ActionGroup) ActionEnabledChanged(actionName string, enabled 
 // The function takes the following parameters:
 //
 //   - actionName: name of an action in the group.
-//
 func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -10896,7 +10808,6 @@ func (actionGroup *ActionGroup) ActionRemoved(actionName string) {
 //
 //   - actionName: name of an action in the group.
 //   - state: new state of the named action.
-//
 func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -10933,21 +10844,20 @@ func (actionGroup *ActionGroup) ActionStateChanged(actionName string, state *gli
 // g_dbus_connection_flush(), the "quit" action may fail to be activated on the
 // primary instance.
 //
-//    // call "quit" action on primary instance
-//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
+//	// call "quit" action on primary instance
+//	g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
 //
-//    // make sure the action is activated now
-//    g_dbus_connection_flush (...);
+//	// make sure the action is activated now
+//	g_dbus_connection_flush (...);
 //
-//    g_debug ("application has been terminated. exiting.");
+//	g_debug ("application has been terminated. exiting.");
 //
-//    exit (0);.
+//	exit (0);.
 //
 // The function takes the following parameters:
 //
 //   - actionName: name of the action to activate.
 //   - parameter (optional) parameters to the activation.
-//
 func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -10982,7 +10892,6 @@ func (actionGroup *ActionGroup) ActivateAction(actionName string, parameter *gli
 //
 //   - actionName: name of the action to request the change on.
 //   - value: new state.
-//
 func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib.Variant) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -11012,7 +10921,6 @@ func (actionGroup *ActionGroup) ChangeActionState(actionName string, value *glib
 // The function returns the following values:
 //
 //   - ok: whether or not the action is currently enabled.
-//
 func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -11056,7 +10964,6 @@ func (actionGroup *ActionGroup) ActionEnabled(actionName string) bool {
 // The function returns the following values:
 //
 //   - variantType (optional): parameter type.
-//
 func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.VariantType {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -11096,7 +11003,6 @@ func (actionGroup *ActionGroup) ActionParameterType(actionName string) *glib.Var
 // The function returns the following values:
 //
 //   - variant (optional): current state of the action.
-//
 func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -11150,7 +11056,6 @@ func (actionGroup *ActionGroup) ActionState(actionName string) *glib.Variant {
 // The function returns the following values:
 //
 //   - variant (optional): state range hint.
-//
 func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -11202,7 +11107,6 @@ func (actionGroup *ActionGroup) ActionStateHint(actionName string) *glib.Variant
 // The function returns the following values:
 //
 //   - variantType (optional): state type, if the action is stateful.
-//
 func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.VariantType {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -11234,7 +11138,6 @@ func (actionGroup *ActionGroup) ActionStateType(actionName string) *glib.Variant
 // The function returns the following values:
 //
 //   - ok: whether the named action exists.
-//
 func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -11265,7 +11168,6 @@ func (actionGroup *ActionGroup) HasAction(actionName string) bool {
 // The function returns the following values:
 //
 //   - utf8s: NULL-terminated array of the names of the actions in the group.
-//
 func (actionGroup *ActionGroup) ListActions() []string {
 	var _arg0 *C.GActionGroup // out
 	var _cret **C.gchar       // in
@@ -11335,7 +11237,6 @@ func (actionGroup *ActionGroup) ListActions() []string {
 //   - stateHint (optional): state hint, or NULL if none.
 //   - state (optional): current state, or NULL if stateless.
 //   - ok: TRUE if the action exists, else FALSE.
-//
 func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, parameterType, stateType *glib.VariantType, stateHint, state *glib.Variant, ok bool) {
 	var _arg0 *C.GActionGroup // out
 	var _arg1 *C.gchar        // out
@@ -11414,7 +11315,6 @@ func (actionGroup *ActionGroup) QueryAction(actionName string) (enabled bool, pa
 // The function takes the following parameters:
 //
 //   - actionName: name of an action in the group.
-//
 func (actionGroup *ActionGroup) actionAdded(actionName string) {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.action_added
@@ -11440,7 +11340,6 @@ func (actionGroup *ActionGroup) actionAdded(actionName string) {
 //
 //   - actionName: name of an action in the group.
 //   - enabled: whether or not the action is now enabled.
-//
 func (actionGroup *ActionGroup) actionEnabledChanged(actionName string, enabled bool) {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.action_enabled_changed
@@ -11469,7 +11368,6 @@ func (actionGroup *ActionGroup) actionEnabledChanged(actionName string, enabled 
 // The function takes the following parameters:
 //
 //   - actionName: name of an action in the group.
-//
 func (actionGroup *ActionGroup) actionRemoved(actionName string) {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.action_removed
@@ -11495,7 +11393,6 @@ func (actionGroup *ActionGroup) actionRemoved(actionName string) {
 //
 //   - actionName: name of an action in the group.
 //   - state: new state of the named action.
-//
 func (actionGroup *ActionGroup) actionStateChanged(actionName string, state *glib.Variant) {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.action_state_changed
@@ -11535,21 +11432,20 @@ func (actionGroup *ActionGroup) actionStateChanged(actionName string, state *gli
 // g_dbus_connection_flush(), the "quit" action may fail to be activated on the
 // primary instance.
 //
-//    // call "quit" action on primary instance
-//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
+//	// call "quit" action on primary instance
+//	g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
 //
-//    // make sure the action is activated now
-//    g_dbus_connection_flush (...);
+//	// make sure the action is activated now
+//	g_dbus_connection_flush (...);
 //
-//    g_debug ("application has been terminated. exiting.");
+//	g_debug ("application has been terminated. exiting.");
 //
-//    exit (0);.
+//	exit (0);.
 //
 // The function takes the following parameters:
 //
 //   - actionName: name of the action to activate.
 //   - parameter (optional) parameters to the activation.
-//
 func (actionGroup *ActionGroup) activateAction(actionName string, parameter *glib.Variant) {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.activate_action
@@ -11587,7 +11483,6 @@ func (actionGroup *ActionGroup) activateAction(actionName string, parameter *gli
 //
 //   - actionName: name of the action to request the change on.
 //   - value: new state.
-//
 func (actionGroup *ActionGroup) changeActionState(actionName string, value *glib.Variant) {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.change_action_state
@@ -11620,7 +11515,6 @@ func (actionGroup *ActionGroup) changeActionState(actionName string, value *glib
 // The function returns the following values:
 //
 //   - ok: whether or not the action is currently enabled.
-//
 func (actionGroup *ActionGroup) actionEnabled(actionName string) bool {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.get_action_enabled
@@ -11667,7 +11561,6 @@ func (actionGroup *ActionGroup) actionEnabled(actionName string) bool {
 // The function returns the following values:
 //
 //   - variantType (optional): parameter type.
-//
 func (actionGroup *ActionGroup) actionParameterType(actionName string) *glib.VariantType {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.get_action_parameter_type
@@ -11710,7 +11603,6 @@ func (actionGroup *ActionGroup) actionParameterType(actionName string) *glib.Var
 // The function returns the following values:
 //
 //   - variant (optional): current state of the action.
-//
 func (actionGroup *ActionGroup) actionState(actionName string) *glib.Variant {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.get_action_state
@@ -11767,7 +11659,6 @@ func (actionGroup *ActionGroup) actionState(actionName string) *glib.Variant {
 // The function returns the following values:
 //
 //   - variant (optional): state range hint.
-//
 func (actionGroup *ActionGroup) actionStateHint(actionName string) *glib.Variant {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.get_action_state_hint
@@ -11822,7 +11713,6 @@ func (actionGroup *ActionGroup) actionStateHint(actionName string) *glib.Variant
 // The function returns the following values:
 //
 //   - variantType (optional): state type, if the action is stateful.
-//
 func (actionGroup *ActionGroup) actionStateType(actionName string) *glib.VariantType {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.get_action_state_type
@@ -11857,7 +11747,6 @@ func (actionGroup *ActionGroup) actionStateType(actionName string) *glib.Variant
 // The function returns the following values:
 //
 //   - ok: whether the named action exists.
-//
 func (actionGroup *ActionGroup) hasAction(actionName string) bool {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.has_action
@@ -11891,7 +11780,6 @@ func (actionGroup *ActionGroup) hasAction(actionName string) bool {
 // The function returns the following values:
 //
 //   - utf8s: NULL-terminated array of the names of the actions in the group.
-//
 func (actionGroup *ActionGroup) listActions() []string {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.list_actions
@@ -11964,7 +11852,6 @@ func (actionGroup *ActionGroup) listActions() []string {
 //   - stateHint (optional): state hint, or NULL if none.
 //   - state (optional): current state, or NULL if stateless.
 //   - ok: TRUE if the action exists, else FALSE.
-//
 func (actionGroup *ActionGroup) queryAction(actionName string) (enabled bool, parameterType, stateType *glib.VariantType, stateHint, state *glib.Variant, ok bool) {
 	gclass := (*C.GActionGroupInterface)(coreglib.PeekParentClass(actionGroup))
 	fnarg := gclass.query_action
@@ -12094,7 +11981,6 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - action: #GAction.
-//
 func (actionMap *ActionMap) AddAction(action Actioner) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.GAction    // out
@@ -12112,42 +11998,41 @@ func (actionMap *ActionMap) AddAction(action Actioner) {
 //
 // Each action is constructed as per one Entry.
 //
-//    static void
-//    activate_quit (GSimpleAction *simple,
-//                   GVariant      *parameter,
-//                   gpointer       user_data)
-//    {
-//      exit (0);
-//    }
+//	static void
+//	activate_quit (GSimpleAction *simple,
+//	               GVariant      *parameter,
+//	               gpointer       user_data)
+//	{
+//	  exit (0);
+//	}
 //
-//    static void
-//    activate_print_string (GSimpleAction *simple,
-//                           GVariant      *parameter,
-//                           gpointer       user_data)
-//    {
-//      g_print ("s\n", g_variant_get_string (parameter, NULL));
-//    }
+//	static void
+//	activate_print_string (GSimpleAction *simple,
+//	                       GVariant      *parameter,
+//	                       gpointer       user_data)
+//	{
+//	  g_print ("s\n", g_variant_get_string (parameter, NULL));
+//	}
 //
-//    static GActionGroup *
-//    create_action_group (void)
-//    {
-//      const GActionEntry entries[] = {
-//        { "quit",         activate_quit              },
-//        { "print-string", activate_print_string, "s" }
-//      };
-//      GSimpleActionGroup *group;
+//	static GActionGroup *
+//	create_action_group (void)
+//	{
+//	  const GActionEntry entries[] = {
+//	    { "quit",         activate_quit              },
+//	    { "print-string", activate_print_string, "s" }
+//	  };
+//	  GSimpleActionGroup *group;
 //
-//      group = g_simple_action_group_new ();
-//      g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
+//	  group = g_simple_action_group_new ();
+//	  g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
 //
-//      return G_ACTION_GROUP (group);
-//    }.
+//	  return G_ACTION_GROUP (group);
+//	}.
 //
 // The function takes the following parameters:
 //
 //   - entries: pointer to the first item in an array of Entry structs.
 //   - userData (optional): user data for signal connections.
-//
 func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData unsafe.Pointer) {
 	var _arg0 *C.GActionMap   // out
 	var _arg1 *C.GActionEntry // out
@@ -12183,7 +12068,6 @@ func (actionMap *ActionMap) AddActionEntries(entries []ActionEntry, userData uns
 // The function returns the following values:
 //
 //   - action (optional) or NULL.
-//
 func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
@@ -12213,7 +12097,6 @@ func (actionMap *ActionMap) LookupAction(actionName string) *Action {
 // The function takes the following parameters:
 //
 //   - actionName: name of the action.
-//
 func (actionMap *ActionMap) RemoveAction(actionName string) {
 	var _arg0 *C.GActionMap // out
 	var _arg1 *C.gchar      // out
@@ -12237,7 +12120,6 @@ func (actionMap *ActionMap) RemoveAction(actionName string) {
 // The function takes the following parameters:
 //
 //   - action: #GAction.
-//
 func (actionMap *ActionMap) addAction(action Actioner) {
 	gclass := (*C.GActionMapInterface)(coreglib.PeekParentClass(actionMap))
 	fnarg := gclass.add_action
@@ -12264,7 +12146,6 @@ func (actionMap *ActionMap) addAction(action Actioner) {
 // The function returns the following values:
 //
 //   - action (optional) or NULL.
-//
 func (actionMap *ActionMap) lookupAction(actionName string) *Action {
 	gclass := (*C.GActionMapInterface)(coreglib.PeekParentClass(actionMap))
 	fnarg := gclass.lookup_action
@@ -12297,7 +12178,6 @@ func (actionMap *ActionMap) lookupAction(actionName string) *Action {
 // The function takes the following parameters:
 //
 //   - actionName: name of the action.
-//
 func (actionMap *ActionMap) removeAction(actionName string) {
 	gclass := (*C.GActionMapInterface)(coreglib.PeekParentClass(actionMap))
 	fnarg := gclass.remove_action
@@ -12336,20 +12216,20 @@ func (actionMap *ActionMap) removeAction(actionName string) {
 // g_file_new_for_commandline_arg() is equal to the result of g_file_get_uri().
 // The following snippet illustrates this:
 //
-//    GFile *f;
-//    char *uri;
+//	GFile *f;
+//	char *uri;
 //
-//    file = g_file_new_for_commandline_arg (uri_from_commandline);
+//	file = g_file_new_for_commandline_arg (uri_from_commandline);
 //
-//    uri = g_file_get_uri (file);
-//    strcmp (uri, uri_from_commandline) == 0;
-//    g_free (uri);
+//	uri = g_file_get_uri (file);
+//	strcmp (uri, uri_from_commandline) == 0;
+//	g_free (uri);
 //
-//    if (g_file_has_uri_scheme (file, "cdda"))
-//      {
-//        // do something special with uri
-//      }
-//    g_object_unref (file);
+//	if (g_file_has_uri_scheme (file, "cdda"))
+//	  {
+//	    // do something special with uri
+//	  }
+//	g_object_unref (file);
 //
 // This code will work when both cdda://sr0/Track 1.wav and
 // /home/user/.gvfs/cdda on sr0/Track 1.wav is passed to the application.
@@ -12455,7 +12335,6 @@ func marshalAppInfo(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - contentType: string.
-//
 func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -12484,7 +12363,6 @@ func (appinfo *AppInfo) AddSupportsType(contentType string) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if appinfo can be deleted.
-//
 func (appinfo *AppInfo) CanDelete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -12510,7 +12388,6 @@ func (appinfo *AppInfo) CanDelete() bool {
 //
 //   - ok: TRUE if it is possible to remove supported content types from a given
 //     appinfo, FALSE if not.
-//
 func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -12538,7 +12415,6 @@ func (appinfo *AppInfo) CanRemoveSupportsType() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if appinfo has been deleted.
-//
 func (appinfo *AppInfo) Delete() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -12562,7 +12438,6 @@ func (appinfo *AppInfo) Delete() bool {
 // The function returns the following values:
 //
 //   - appInfo: duplicate of appinfo.
-//
 func (appinfo *AppInfo) Dup() *AppInfo {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GAppInfo // in
@@ -12592,7 +12467,6 @@ func (appinfo *AppInfo) Dup() *AppInfo {
 // The function returns the following values:
 //
 //   - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
-//
 func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.GAppInfo // out
@@ -12620,7 +12494,6 @@ func (appinfo1 *AppInfo) Equal(appinfo2 AppInfor) bool {
 //
 //   - filename (optional): string containing the appinfo's commandline, or NULL
 //     if this information is not available.
-//
 func (appinfo *AppInfo) Commandline() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -12645,7 +12518,6 @@ func (appinfo *AppInfo) Commandline() string {
 //
 //   - utf8 (optional): string containing a description of the application
 //     appinfo, or NULL if none.
-//
 func (appinfo *AppInfo) Description() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -12671,7 +12543,6 @@ func (appinfo *AppInfo) Description() string {
 //
 //   - utf8: display name of the application for appinfo, or the name if no
 //     display name is available.
-//
 func (appinfo *AppInfo) DisplayName() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -12693,7 +12564,6 @@ func (appinfo *AppInfo) DisplayName() string {
 // The function returns the following values:
 //
 //   - filename: string containing the appinfo's application binaries name.
-//
 func (appinfo *AppInfo) Executable() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -12716,7 +12586,6 @@ func (appinfo *AppInfo) Executable() string {
 //
 //   - icon (optional): default #GIcon for appinfo or NULL if there is no
 //     default icon.
-//
 func (appinfo *AppInfo) Icon() *Icon {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.GIcon    // in
@@ -12745,7 +12614,6 @@ func (appinfo *AppInfo) Icon() *Icon {
 // The function returns the following values:
 //
 //   - utf8 (optional): string containing the application's ID.
-//
 func (appinfo *AppInfo) ID() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -12769,7 +12637,6 @@ func (appinfo *AppInfo) ID() string {
 // The function returns the following values:
 //
 //   - utf8: name of the application for appinfo.
-//
 func (appinfo *AppInfo) Name() string {
 	var _arg0 *C.GAppInfo // out
 	var _cret *C.char     // in
@@ -12795,7 +12662,6 @@ func (appinfo *AppInfo) Name() string {
 // The function returns the following values:
 //
 //   - utf8s: a list of content types.
-//
 func (appinfo *AppInfo) SupportedTypes() []string {
 	var _arg0 *C.GAppInfo // out
 	var _cret **C.char    // in
@@ -12855,7 +12721,6 @@ func (appinfo *AppInfo) SupportedTypes() []string {
 //
 //   - files (optional) of #GFile objects.
 //   - context (optional) or NULL.
-//
 func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 	var _arg0 *C.GAppInfo          // out
 	var _arg1 *C.GList             // out
@@ -12905,7 +12770,6 @@ func (appinfo *AppInfo) Launch(files []Filer, context *AppLaunchContext) error {
 //
 //   - uris (optional) containing URIs to launch.
 //   - context (optional) or NULL.
-//
 func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) error {
 	var _arg0 *C.GAppInfo          // out
 	var _arg1 *C.GList             // out
@@ -12954,7 +12818,6 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 //   - uris (optional) containing URIs to launch.
 //   - context (optional) or NULL.
 //   - callback (optional) to call when the request is done.
-//
 func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
 	var _arg0 *C.GAppInfo           // out
 	var _arg3 *C.GCancellable       // out
@@ -13000,7 +12863,6 @@ func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, cont
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 	var _arg0 *C.GAppInfo     // out
 	var _arg1 *C.GAsyncResult // out
@@ -13027,7 +12889,6 @@ func (appinfo *AppInfo) LaunchURIsFinish(result AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - contentType: string.
-//
 func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -13056,7 +12917,6 @@ func (appinfo *AppInfo) RemoveSupportsType(contentType string) error {
 // The function takes the following parameters:
 //
 //   - extension: string containing the file extension (without the dot).
-//
 func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -13085,7 +12945,6 @@ func (appinfo *AppInfo) SetAsDefaultForExtension(extension string) error {
 // The function takes the following parameters:
 //
 //   - contentType: content type.
-//
 func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -13116,7 +12975,6 @@ func (appinfo *AppInfo) SetAsDefaultForType(contentType string) error {
 // The function takes the following parameters:
 //
 //   - contentType: content type.
-//
 func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 	var _arg0 *C.GAppInfo // out
 	var _arg1 *C.char     // out
@@ -13145,7 +13003,6 @@ func (appinfo *AppInfo) SetAsLastUsedForType(contentType string) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if the appinfo should be shown, FALSE otherwise.
-//
 func (appinfo *AppInfo) ShouldShow() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -13169,7 +13026,6 @@ func (appinfo *AppInfo) ShouldShow() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the appinfo supports files.
-//
 func (appinfo *AppInfo) SupportsFiles() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -13194,7 +13050,6 @@ func (appinfo *AppInfo) SupportsFiles() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the appinfo supports URIs.
-//
 func (appinfo *AppInfo) SupportsURIs() bool {
 	var _arg0 *C.GAppInfo // out
 	var _cret C.gboolean  // in
@@ -13220,7 +13075,6 @@ func (appinfo *AppInfo) SupportsURIs() bool {
 // The function takes the following parameters:
 //
 //   - contentType: string.
-//
 func (appinfo *AppInfo) addSupportsType(contentType string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.add_supports_type
@@ -13252,7 +13106,6 @@ func (appinfo *AppInfo) addSupportsType(contentType string) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if appinfo can be deleted.
-//
 func (appinfo *AppInfo) canDelete() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.can_delete
@@ -13281,7 +13134,6 @@ func (appinfo *AppInfo) canDelete() bool {
 //
 //   - ok: TRUE if it is possible to remove supported content types from a given
 //     appinfo, FALSE if not.
-//
 func (appinfo *AppInfo) canRemoveSupportsType() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.can_remove_supports_type
@@ -13312,7 +13164,6 @@ func (appinfo *AppInfo) canRemoveSupportsType() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if appinfo has been deleted.
-//
 func (appinfo *AppInfo) doDelete() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.do_delete
@@ -13339,7 +13190,6 @@ func (appinfo *AppInfo) doDelete() bool {
 // The function returns the following values:
 //
 //   - appInfo: duplicate of appinfo.
-//
 func (appinfo *AppInfo) dup() *AppInfo {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.dup
@@ -13372,7 +13222,6 @@ func (appinfo *AppInfo) dup() *AppInfo {
 // The function returns the following values:
 //
 //   - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
-//
 func (appinfo1 *AppInfo) equal(appinfo2 AppInfor) bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo1))
 	fnarg := gclass.equal
@@ -13403,7 +13252,6 @@ func (appinfo1 *AppInfo) equal(appinfo2 AppInfor) bool {
 //
 //   - filename (optional): string containing the appinfo's commandline, or NULL
 //     if this information is not available.
-//
 func (appinfo *AppInfo) commandline() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.get_commandline
@@ -13431,7 +13279,6 @@ func (appinfo *AppInfo) commandline() string {
 //
 //   - utf8 (optional): string containing a description of the application
 //     appinfo, or NULL if none.
-//
 func (appinfo *AppInfo) description() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.get_description
@@ -13460,7 +13307,6 @@ func (appinfo *AppInfo) description() string {
 //
 //   - utf8: display name of the application for appinfo, or the name if no
 //     display name is available.
-//
 func (appinfo *AppInfo) displayName() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.get_display_name
@@ -13485,7 +13331,6 @@ func (appinfo *AppInfo) displayName() string {
 // The function returns the following values:
 //
 //   - filename: string containing the appinfo's application binaries name.
-//
 func (appinfo *AppInfo) executable() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.get_executable
@@ -13511,7 +13356,6 @@ func (appinfo *AppInfo) executable() string {
 //
 //   - icon (optional): default #GIcon for appinfo or NULL if there is no
 //     default icon.
-//
 func (appinfo *AppInfo) icon() *Icon {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.get_icon
@@ -13543,7 +13387,6 @@ func (appinfo *AppInfo) icon() *Icon {
 // The function returns the following values:
 //
 //   - utf8 (optional): string containing the application's ID.
-//
 func (appinfo *AppInfo) iD() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.get_id
@@ -13570,7 +13413,6 @@ func (appinfo *AppInfo) iD() string {
 // The function returns the following values:
 //
 //   - utf8: name of the application for appinfo.
-//
 func (appinfo *AppInfo) name() string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.get_name
@@ -13599,7 +13441,6 @@ func (appinfo *AppInfo) name() string {
 // The function returns the following values:
 //
 //   - utf8s: a list of content types.
-//
 func (appinfo *AppInfo) supportedTypes() []string {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.get_supported_types
@@ -13662,7 +13503,6 @@ func (appinfo *AppInfo) supportedTypes() []string {
 //
 //   - files (optional) of #GFile objects.
 //   - context (optional) or NULL.
-//
 func (appinfo *AppInfo) launch(files []Filer, context *AppLaunchContext) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.launch
@@ -13715,7 +13555,6 @@ func (appinfo *AppInfo) launch(files []Filer, context *AppLaunchContext) error {
 //
 //   - uris (optional) containing URIs to launch.
 //   - context (optional) or NULL.
-//
 func (appinfo *AppInfo) launchURIs(uris []string, context *AppLaunchContext) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.launch_uris
@@ -13767,7 +13606,6 @@ func (appinfo *AppInfo) launchURIs(uris []string, context *AppLaunchContext) err
 //   - uris (optional) containing URIs to launch.
 //   - context (optional) or NULL.
 //   - callback (optional) to call when the request is done.
-//
 func (appinfo *AppInfo) launchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.launch_uris_async
@@ -13816,7 +13654,6 @@ func (appinfo *AppInfo) launchURIsAsync(ctx context.Context, uris []string, cont
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (appinfo *AppInfo) launchURIsFinish(result AsyncResulter) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.launch_uris_finish
@@ -13846,7 +13683,6 @@ func (appinfo *AppInfo) launchURIsFinish(result AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - contentType: string.
-//
 func (appinfo *AppInfo) removeSupportsType(contentType string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.remove_supports_type
@@ -13878,7 +13714,6 @@ func (appinfo *AppInfo) removeSupportsType(contentType string) error {
 // The function takes the following parameters:
 //
 //   - extension: string containing the file extension (without the dot).
-//
 func (appinfo *AppInfo) setAsDefaultForExtension(extension string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.set_as_default_for_extension
@@ -13910,7 +13745,6 @@ func (appinfo *AppInfo) setAsDefaultForExtension(extension string) error {
 // The function takes the following parameters:
 //
 //   - contentType: content type.
-//
 func (appinfo *AppInfo) setAsDefaultForType(contentType string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.set_as_default_for_type
@@ -13944,7 +13778,6 @@ func (appinfo *AppInfo) setAsDefaultForType(contentType string) error {
 // The function takes the following parameters:
 //
 //   - contentType: content type.
-//
 func (appinfo *AppInfo) setAsLastUsedForType(contentType string) error {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.set_as_last_used_for_type
@@ -13976,7 +13809,6 @@ func (appinfo *AppInfo) setAsLastUsedForType(contentType string) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if the appinfo should be shown, FALSE otherwise.
-//
 func (appinfo *AppInfo) shouldShow() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.should_show
@@ -14003,7 +13835,6 @@ func (appinfo *AppInfo) shouldShow() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the appinfo supports files.
-//
 func (appinfo *AppInfo) supportsFiles() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.supports_files
@@ -14031,7 +13862,6 @@ func (appinfo *AppInfo) supportsFiles() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the appinfo supports URIs.
-//
 func (appinfo *AppInfo) supportsURIs() bool {
 	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
 	fnarg := gclass.supports_uris
@@ -14071,7 +13901,6 @@ func (appinfo *AppInfo) supportsURIs() bool {
 // The function returns the following values:
 //
 //   - appInfo: new Info for given command.
-//
 func AppInfoCreateFromCommandline(commandline, applicationName string, flags AppInfoCreateFlags) (*AppInfo, error) {
 	var _arg1 *C.char               // out
 	var _arg2 *C.char               // out
@@ -14114,7 +13943,6 @@ func AppInfoCreateFromCommandline(commandline, applicationName string, flags App
 // The function returns the following values:
 //
 //   - list: newly allocated #GList of references to Infos.
-//
 func AppInfoGetAll() []*AppInfo {
 	var _cret *C.GList // in
 
@@ -14144,7 +13972,6 @@ func AppInfoGetAll() []*AppInfo {
 // The function returns the following values:
 //
 //   - list of Infos for given content_type or NULL on error.
-//
 func AppInfoGetAllForType(contentType string) []*AppInfo {
 	var _arg1 *C.char  // out
 	var _cret *C.GList // in
@@ -14178,7 +14005,6 @@ func AppInfoGetAllForType(contentType string) []*AppInfo {
 // The function returns the following values:
 //
 //   - appInfo (optional) for given content_type or NULL on error.
-//
 func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo {
 	var _arg1 *C.char     // out
 	var _arg2 C.gboolean  // out
@@ -14214,7 +14040,6 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 // The function returns the following values:
 //
 //   - appInfo (optional) for given uri_scheme or NULL on error.
-//
 func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 	var _arg1 *C.char     // out
 	var _cret *C.GAppInfo // in
@@ -14245,7 +14070,6 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 // The function returns the following values:
 //
 //   - list of Infos for given content_type or NULL on error.
-//
 func AppInfoGetFallbackForType(contentType string) []*AppInfo {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
@@ -14282,7 +14106,6 @@ func AppInfoGetFallbackForType(contentType string) []*AppInfo {
 // The function returns the following values:
 //
 //   - list of Infos for given content_type or NULL on error.
-//
 func AppInfoGetRecommendedForType(contentType string) []*AppInfo {
 	var _arg1 *C.gchar // out
 	var _cret *C.GList // in
@@ -14318,7 +14141,6 @@ func AppInfoGetRecommendedForType(contentType string) []*AppInfo {
 //
 //   - uri to show.
 //   - context (optional): optional LaunchContext.
-//
 func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	var _arg1 *C.char              // out
 	var _arg2 *C.GAppLaunchContext // out
@@ -14360,7 +14182,6 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 //   - uri to show.
 //   - context (optional): optional LaunchContext.
 //   - callback (optional) to call when the request is done.
-//
 func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *AppLaunchContext, callback AsyncReadyCallback) {
 	var _arg3 *C.GCancellable       // out
 	var _arg1 *C.char               // out
@@ -14396,7 +14217,6 @@ func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *A
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -14423,7 +14243,6 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - contentType: content type.
-//
 func AppInfoResetTypeAssociations(contentType string) {
 	var _arg1 *C.char // out
 
@@ -14449,88 +14268,88 @@ func AppInfoResetTypeAssociations(contentType string) {
 //
 // A typical implementation might look something like this:
 //
-//    enum {
-//       NOT_INITIALIZED,
-//       INITIALIZING,
-//       INITIALIZED
-//    };
+//	enum {
+//	   NOT_INITIALIZED,
+//	   INITIALIZING,
+//	   INITIALIZED
+//	};
 //
-//    static void
-//    _foo_ready_cb (Foo *self)
-//    {
-//      GList *l;
+//	static void
+//	_foo_ready_cb (Foo *self)
+//	{
+//	  GList *l;
 //
-//      self->priv->state = INITIALIZED;
+//	  self->priv->state = INITIALIZED;
 //
-//      for (l = self->priv->init_results; l != NULL; l = l->next)
-//        {
-//          GTask *task = l->data;
+//	  for (l = self->priv->init_results; l != NULL; l = l->next)
+//	    {
+//	      GTask *task = l->data;
 //
-//          if (self->priv->success)
-//            g_task_return_boolean (task, TRUE);
-//          else
-//            g_task_return_new_error (task, ...);
-//          g_object_unref (task);
-//        }
+//	      if (self->priv->success)
+//	        g_task_return_boolean (task, TRUE);
+//	      else
+//	        g_task_return_new_error (task, ...);
+//	      g_object_unref (task);
+//	    }
 //
-//      g_list_free (self->priv->init_results);
-//      self->priv->init_results = NULL;
-//    }
+//	  g_list_free (self->priv->init_results);
+//	  self->priv->init_results = NULL;
+//	}
 //
-//    static void
-//    foo_init_async (GAsyncInitable       *initable,
-//                    int                   io_priority,
-//                    GCancellable         *cancellable,
-//                    GAsyncReadyCallback   callback,
-//                    gpointer              user_data)
-//    {
-//      Foo *self = FOO (initable);
-//      GTask *task;
+//	static void
+//	foo_init_async (GAsyncInitable       *initable,
+//	                int                   io_priority,
+//	                GCancellable         *cancellable,
+//	                GAsyncReadyCallback   callback,
+//	                gpointer              user_data)
+//	{
+//	  Foo *self = FOO (initable);
+//	  GTask *task;
 //
-//      task = g_task_new (initable, cancellable, callback, user_data);
-//      g_task_set_name (task, G_STRFUNC);
+//	  task = g_task_new (initable, cancellable, callback, user_data);
+//	  g_task_set_name (task, G_STRFUNC);
 //
-//      switch (self->priv->state)
-//        {
-//          case NOT_INITIALIZED:
-//            _foo_get_ready (self);
-//            self->priv->init_results = g_list_append (self->priv->init_results,
-//                                                      task);
-//            self->priv->state = INITIALIZING;
-//            break;
-//          case INITIALIZING:
-//            self->priv->init_results = g_list_append (self->priv->init_results,
-//                                                      task);
-//            break;
-//          case INITIALIZED:
-//            if (!self->priv->success)
-//              g_task_return_new_error (task, ...);
-//            else
-//              g_task_return_boolean (task, TRUE);
-//            g_object_unref (task);
-//            break;
-//        }
-//    }
+//	  switch (self->priv->state)
+//	    {
+//	      case NOT_INITIALIZED:
+//	        _foo_get_ready (self);
+//	        self->priv->init_results = g_list_append (self->priv->init_results,
+//	                                                  task);
+//	        self->priv->state = INITIALIZING;
+//	        break;
+//	      case INITIALIZING:
+//	        self->priv->init_results = g_list_append (self->priv->init_results,
+//	                                                  task);
+//	        break;
+//	      case INITIALIZED:
+//	        if (!self->priv->success)
+//	          g_task_return_new_error (task, ...);
+//	        else
+//	          g_task_return_boolean (task, TRUE);
+//	        g_object_unref (task);
+//	        break;
+//	    }
+//	}
 //
-//    static gboolean
-//    foo_init_finish (GAsyncInitable       *initable,
-//                     GAsyncResult         *result,
-//                     GError              **error)
-//    {
-//      g_return_val_if_fail (g_task_is_valid (result, initable), FALSE);
+//	static gboolean
+//	foo_init_finish (GAsyncInitable       *initable,
+//	                 GAsyncResult         *result,
+//	                 GError              **error)
+//	{
+//	  g_return_val_if_fail (g_task_is_valid (result, initable), FALSE);
 //
-//      return g_task_propagate_boolean (G_TASK (result), error);
-//    }
+//	  return g_task_propagate_boolean (G_TASK (result), error);
+//	}
 //
-//    static void
-//    foo_async_initable_iface_init (gpointer g_iface,
-//                                   gpointer data)
-//    {
-//      GAsyncInitableIface *iface = g_iface;
+//	static void
+//	foo_async_initable_iface_init (gpointer g_iface,
+//	                               gpointer data)
+//	{
+//	  GAsyncInitableIface *iface = g_iface;
 //
-//      iface->init_async = foo_init_async;
-//      iface->init_finish = foo_init_finish;
-//    }.
+//	  iface->init_async = foo_init_async;
+//	  iface->init_finish = foo_init_finish;
+//	}.
 //
 // AsyncInitable wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -14611,7 +14430,6 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the operation.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable     // out
 	var _arg2 *C.GCancellable       // out
@@ -14644,7 +14462,6 @@ func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, ca
 // The function takes the following parameters:
 //
 //   - res: Result.
-//
 func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
@@ -14677,7 +14494,6 @@ func (initable *AsyncInitable) InitFinish(res AsyncResulter) error {
 //
 //   - object: newly created #GObject, or NULL on error. Free with
 //     g_object_unref().
-//
 func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, error) {
 	var _arg0 *C.GAsyncInitable // out
 	var _arg1 *C.GAsyncResult   // out
@@ -14743,7 +14559,6 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the operation.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (initable *AsyncInitable) initAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GAsyncInitableIface)(coreglib.PeekParentClass(initable))
 	fnarg := gclass.init_async
@@ -14779,7 +14594,6 @@ func (initable *AsyncInitable) initAsync(ctx context.Context, ioPriority int, ca
 // The function takes the following parameters:
 //
 //   - res: Result.
-//
 func (initable *AsyncInitable) initFinish(res AsyncResulter) error {
 	gclass := (*C.GAsyncInitableIface)(coreglib.PeekParentClass(initable))
 	fnarg := gclass.init_finish
@@ -14833,44 +14647,44 @@ func (initable *AsyncInitable) initFinish(res AsyncResulter) error {
 //
 // Example of a typical asynchronous operation flow:
 //
-//    void _theoretical_frobnitz_async (Theoretical         *t,
-//                                      GCancellable        *c,
-//                                      GAsyncReadyCallback  cb,
-//                                      gpointer             u);
+//	void _theoretical_frobnitz_async (Theoretical         *t,
+//	                                  GCancellable        *c,
+//	                                  GAsyncReadyCallback  cb,
+//	                                  gpointer             u);
 //
-//    gboolean _theoretical_frobnitz_finish (Theoretical   *t,
-//                                           GAsyncResult  *res,
-//                                           GError       **e);
+//	gboolean _theoretical_frobnitz_finish (Theoretical   *t,
+//	                                       GAsyncResult  *res,
+//	                                       GError       **e);
 //
-//    static void
-//    frobnitz_result_func (GObject      *source_object,
-//    		 GAsyncResult *res,
-//    		 gpointer      user_data)
-//    {
-//      gboolean success = FALSE;
+//	static void
+//	frobnitz_result_func (GObject      *source_object,
+//			 GAsyncResult *res,
+//			 gpointer      user_data)
+//	{
+//	  gboolean success = FALSE;
 //
-//      success = _theoretical_frobnitz_finish (source_object, res, NULL);
+//	  success = _theoretical_frobnitz_finish (source_object, res, NULL);
 //
-//      if (success)
-//        g_printf ("Hurray!\n");
-//      else
-//        g_printf ("Uh oh!\n");
+//	  if (success)
+//	    g_printf ("Hurray!\n");
+//	  else
+//	    g_printf ("Uh oh!\n");
 //
-//      ...
+//	  ...
 //
-//    }
+//	}
 //
-//    int main (int argc, void *argv[])
-//    {
-//       ...
+//	int main (int argc, void *argv[])
+//	{
+//	   ...
 //
-//       _theoretical_frobnitz_async (theoretical_data,
-//                                    NULL,
-//                                    frobnitz_result_func,
-//                                    NULL);
+//	   _theoretical_frobnitz_async (theoretical_data,
+//	                                NULL,
+//	                                frobnitz_result_func,
+//	                                NULL);
 //
-//       ...
-//    }
+//	   ...
+//	}
 //
 // The callback for an asynchronous operation is called only once, and is always
 // called, even in the case of a cancelled operation. On cancellation the result
@@ -14930,7 +14744,6 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 //
 //   - object (optional): new reference to the source object for the res,
 //     or NULL if there is none.
-//
 func (res *AsyncResult) SourceObject() *coreglib.Object {
 	var _arg0 *C.GAsyncResult // out
 	var _cret *C.GObject      // in
@@ -14954,7 +14767,6 @@ func (res *AsyncResult) SourceObject() *coreglib.Object {
 // The function returns the following values:
 //
 //   - gpointer (optional): user data for res.
-//
 func (res *AsyncResult) UserData() unsafe.Pointer {
 	var _arg0 *C.GAsyncResult // out
 	var _cret C.gpointer      // in
@@ -14981,7 +14793,6 @@ func (res *AsyncResult) UserData() unsafe.Pointer {
 // The function returns the following values:
 //
 //   - ok: TRUE if res has the indicated source_tag, FALSE if not.
-//
 func (res *AsyncResult) IsTagged(sourceTag unsafe.Pointer) bool {
 	var _arg0 *C.GAsyncResult // out
 	var _arg1 C.gpointer      // out
@@ -15035,7 +14846,6 @@ func (res *AsyncResult) LegacyPropagateError() error {
 //
 //   - object (optional): new reference to the source object for the res,
 //     or NULL if there is none.
-//
 func (res *AsyncResult) sourceObject() *coreglib.Object {
 	gclass := (*C.GAsyncResultIface)(coreglib.PeekParentClass(res))
 	fnarg := gclass.get_source_object
@@ -15062,7 +14872,6 @@ func (res *AsyncResult) sourceObject() *coreglib.Object {
 // The function returns the following values:
 //
 //   - gpointer (optional): user data for res.
-//
 func (res *AsyncResult) userData() unsafe.Pointer {
 	gclass := (*C.GAsyncResultIface)(coreglib.PeekParentClass(res))
 	fnarg := gclass.get_user_data
@@ -15092,7 +14901,6 @@ func (res *AsyncResult) userData() unsafe.Pointer {
 // The function returns the following values:
 //
 //   - ok: TRUE if res has the indicated source_tag, FALSE if not.
-//
 func (res *AsyncResult) isTagged(sourceTag unsafe.Pointer) bool {
 	gclass := (*C.GAsyncResultIface)(coreglib.PeekParentClass(res))
 	fnarg := gclass.is_tagged
@@ -15247,7 +15055,6 @@ func marshalConverter(p uintptr) (interface{}, error) {
 //   - bytesWritten will be set to the number of bytes written to outbuf on
 //     success.
 //   - converterResult G_CONVERTER_ERROR on error.
-//
 func (converter *Converter) Convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	var _arg0 *C.GConverter // out
 	var _arg1 *C.void       // out
@@ -15394,7 +15201,6 @@ func (converter *Converter) Reset() {
 //   - bytesWritten will be set to the number of bytes written to outbuf on
 //     success.
 //   - converterResult G_CONVERTER_ERROR on error.
-//
 func (converter *Converter) convert(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead, bytesWritten uint, converterResult ConverterResult, goerr error) {
 	gclass := (*C.GConverterIface)(coreglib.PeekParentClass(converter))
 	fnarg := gclass.convert
@@ -15502,7 +15308,6 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 //
 //   - dBusObject (optional) or NULL. The returned reference should be freed
 //     with g_object_unref().
-//
 func (interface_ *DBusInterface) GetObject() *DBusObject {
 	var _arg0 *C.GDBusInterface // out
 	var _cret *C.GDBusObject    // in
@@ -15527,7 +15332,6 @@ func (interface_ *DBusInterface) GetObject() *DBusObject {
 // The function returns the following values:
 //
 //   - dBusInterfaceInfo Do not free.
-//
 func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterface     // out
 	var _cret *C.GDBusInterfaceInfo // in
@@ -15558,7 +15362,6 @@ func (interface_ *DBusInterface) Info() *DBusInterfaceInfo {
 // The function takes the following parameters:
 //
 //   - object (optional) or NULL.
-//
 func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 	var _arg0 *C.GDBusInterface // out
 	var _arg1 *C.GDBusObject    // out
@@ -15579,7 +15382,6 @@ func (interface_ *DBusInterface) SetObject(object DBusObjector) {
 //
 //   - dBusObject (optional) or NULL. The returned reference should be freed
 //     with g_object_unref().
-//
 func (interface_ *DBusInterface) dupObject() *DBusObject {
 	gclass := (*C.GDBusInterfaceIface)(coreglib.PeekParentClass(interface_))
 	fnarg := gclass.dup_object
@@ -15607,7 +15409,6 @@ func (interface_ *DBusInterface) dupObject() *DBusObject {
 // The function returns the following values:
 //
 //   - dBusInterfaceInfo Do not free.
-//
 func (interface_ *DBusInterface) info() *DBusInterfaceInfo {
 	gclass := (*C.GDBusInterfaceIface)(coreglib.PeekParentClass(interface_))
 	fnarg := gclass.get_info
@@ -15641,7 +15442,6 @@ func (interface_ *DBusInterface) info() *DBusInterfaceInfo {
 // The function takes the following parameters:
 //
 //   - object (optional) or NULL.
-//
 func (interface_ *DBusInterface) setObject(object DBusObjector) {
 	gclass := (*C.GDBusInterfaceIface)(coreglib.PeekParentClass(interface_))
 	fnarg := gclass.set_object
@@ -15725,7 +15525,6 @@ func (object *DBusObject) ConnectInterfaceRemoved(f func(iface DBusInterfacer)) 
 //
 //   - dBusInterface (optional): NULL if not found, otherwise a BusInterface
 //     that must be freed with g_object_unref().
-//
 func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 	var _arg0 *C.GDBusObject    // out
 	var _arg1 *C.gchar          // out
@@ -15754,7 +15553,6 @@ func (object *DBusObject) Interface(interfaceName string) *DBusInterface {
 //
 //   - list of BusInterface instances. The returned list must be freed by
 //     g_list_free() after each element has been freed with g_object_unref().
-//
 func (object *DBusObject) Interfaces() []*DBusInterface {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.GList       // in
@@ -15782,7 +15580,6 @@ func (object *DBusObject) Interfaces() []*DBusInterface {
 // The function returns the following values:
 //
 //   - utf8: string owned by object. Do not free.
-//
 func (object *DBusObject) ObjectPath() string {
 	var _arg0 *C.GDBusObject // out
 	var _cret *C.gchar       // in
@@ -15810,7 +15607,6 @@ func (object *DBusObject) ObjectPath() string {
 //
 //   - dBusInterface (optional): NULL if not found, otherwise a BusInterface
 //     that must be freed with g_object_unref().
-//
 func (object *DBusObject) iface(interfaceName string) *DBusInterface {
 	gclass := (*C.GDBusObjectIface)(coreglib.PeekParentClass(object))
 	fnarg := gclass.get_interface
@@ -15842,7 +15638,6 @@ func (object *DBusObject) iface(interfaceName string) *DBusInterface {
 //
 //   - list of BusInterface instances. The returned list must be freed by
 //     g_list_free() after each element has been freed with g_object_unref().
-//
 func (object *DBusObject) interfaces() []*DBusInterface {
 	gclass := (*C.GDBusObjectIface)(coreglib.PeekParentClass(object))
 	fnarg := gclass.get_interfaces
@@ -15873,7 +15668,6 @@ func (object *DBusObject) interfaces() []*DBusInterface {
 // The function returns the following values:
 //
 //   - utf8: string owned by object. Do not free.
-//
 func (object *DBusObject) objectPath() string {
 	gclass := (*C.GDBusObjectIface)(coreglib.PeekParentClass(object))
 	fnarg := gclass.get_object_path
@@ -16015,7 +15809,6 @@ func (manager *DBusObjectManager) ConnectObjectRemoved(f func(object DBusObjecto
 // The function returns the following values:
 //
 //   - dBusInterface instance or NULL. Free with g_object_unref().
-//
 func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *DBusInterface {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
@@ -16049,7 +15842,6 @@ func (manager *DBusObjectManager) Interface(objectPath, interfaceName string) *D
 // The function returns the following values:
 //
 //   - dBusObject or NULL. Free with g_object_unref().
-//
 func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 	var _arg0 *C.GDBusObjectManager // out
 	var _arg1 *C.gchar              // out
@@ -16075,7 +15867,6 @@ func (manager *DBusObjectManager) GetObject(objectPath string) *DBusObject {
 // The function returns the following values:
 //
 //   - utf8: string owned by manager. Do not free.
-//
 func (manager *DBusObjectManager) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.gchar              // in
@@ -16098,7 +15889,6 @@ func (manager *DBusObjectManager) ObjectPath() string {
 //
 //   - list of BusObject objects. The returned list should be freed with
 //     g_list_free() after each element has been freed with g_object_unref().
-//
 func (manager *DBusObjectManager) Objects() []*DBusObject {
 	var _arg0 *C.GDBusObjectManager // out
 	var _cret *C.GList              // in
@@ -16131,7 +15921,6 @@ func (manager *DBusObjectManager) Objects() []*DBusObject {
 // The function returns the following values:
 //
 //   - dBusInterface instance or NULL. Free with g_object_unref().
-//
 func (manager *DBusObjectManager) iface(objectPath, interfaceName string) *DBusInterface {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.get_interface
@@ -16168,7 +15957,6 @@ func (manager *DBusObjectManager) iface(objectPath, interfaceName string) *DBusI
 // The function returns the following values:
 //
 //   - dBusObject or NULL. Free with g_object_unref().
-//
 func (manager *DBusObjectManager) getObject(objectPath string) *DBusObject {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.get_object
@@ -16197,7 +15985,6 @@ func (manager *DBusObjectManager) getObject(objectPath string) *DBusObject {
 // The function returns the following values:
 //
 //   - utf8: string owned by manager. Do not free.
-//
 func (manager *DBusObjectManager) objectPath() string {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.get_object_path
@@ -16223,7 +16010,6 @@ func (manager *DBusObjectManager) objectPath() string {
 //
 //   - list of BusObject objects. The returned list should be freed with
 //     g_list_free() after each element has been freed with g_object_unref().
-//
 func (manager *DBusObjectManager) objects() []*DBusObject {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.get_objects
@@ -16253,7 +16039,6 @@ func (manager *DBusObjectManager) objects() []*DBusObject {
 //
 //   - object
 //   - interface_
-//
 func (manager *DBusObjectManager) interfaceAdded(object DBusObjector, interface_ DBusInterfacer) {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.interface_added
@@ -16276,7 +16061,6 @@ func (manager *DBusObjectManager) interfaceAdded(object DBusObjector, interface_
 //
 //   - object
 //   - interface_
-//
 func (manager *DBusObjectManager) interfaceRemoved(object DBusObjector, interface_ DBusInterfacer) {
 	gclass := (*C.GDBusObjectManagerIface)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.interface_removed
@@ -16460,7 +16244,6 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ioCondition mask of the current state.
-//
 func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GDatagramBased // out
 	var _arg1 C.GIOCondition    // out
@@ -16493,7 +16276,6 @@ func (datagramBased *DatagramBased) ConditionCheck(condition glib.IOCondition) g
 //   - condition mask to wait for.
 //   - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1 to
 //     block indefinitely.
-//
 func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error {
 	var _arg0 *C.GDatagramBased // out
 	var _arg3 *C.GCancellable   // out
@@ -16547,7 +16329,6 @@ func (datagramBased *DatagramBased) ConditionWait(ctx context.Context, condition
 // The function returns the following values:
 //
 //   - source: newly allocated #GSource.
-//
 func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition glib.IOCondition) *glib.Source {
 	var _arg0 *C.GDatagramBased // out
 	var _arg2 *C.GCancellable   // out
@@ -16643,7 +16424,6 @@ func (datagramBased *DatagramBased) CreateSource(ctx context.Context, condition 
 //     or positive, if the peer closed the connection, or if num_messages was
 //     larger than UIO_MAXIOV (1024), in which case the caller may re-try to
 //     receive the remaining messages.
-//
 func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
@@ -16744,7 +16524,6 @@ func (datagramBased *DatagramBased) ReceiveMessages(ctx context.Context, message
 //     messages sent may be smaller than num_messages if timeout is zero or
 //     positive, or if num_messages was larger than UIO_MAXIOV (1024), in which
 //     case the caller may re-try to send the remaining messages.
-//
 func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) {
 	var _arg0 *C.GDatagramBased // out
 	var _arg5 *C.GCancellable   // out
@@ -16836,7 +16615,6 @@ func (datagramBased *DatagramBased) SendMessages(ctx context.Context, messages [
 // The function returns the following values:
 //
 //   - ioCondition mask of the current state.
-//
 func (datagramBased *DatagramBased) conditionCheck(condition glib.IOCondition) glib.IOCondition {
 	gclass := (*C.GDatagramBasedInterface)(coreglib.PeekParentClass(datagramBased))
 	fnarg := gclass.condition_check
@@ -16872,7 +16650,6 @@ func (datagramBased *DatagramBased) conditionCheck(condition glib.IOCondition) g
 //   - condition mask to wait for.
 //   - timeout: maximum time (in microseconds) to wait, 0 to not block, or -1 to
 //     block indefinitely.
-//
 func (datagramBased *DatagramBased) conditionWait(ctx context.Context, condition glib.IOCondition, timeout int64) error {
 	gclass := (*C.GDatagramBasedInterface)(coreglib.PeekParentClass(datagramBased))
 	fnarg := gclass.condition_wait
@@ -16929,7 +16706,6 @@ func (datagramBased *DatagramBased) conditionWait(ctx context.Context, condition
 // The function returns the following values:
 //
 //   - source: newly allocated #GSource.
-//
 func (datagramBased *DatagramBased) createSource(ctx context.Context, condition glib.IOCondition) *glib.Source {
 	gclass := (*C.GDatagramBasedInterface)(coreglib.PeekParentClass(datagramBased))
 	fnarg := gclass.create_source
@@ -17028,7 +16804,6 @@ func (datagramBased *DatagramBased) createSource(ctx context.Context, condition 
 //     or positive, if the peer closed the connection, or if num_messages was
 //     larger than UIO_MAXIOV (1024), in which case the caller may re-try to
 //     receive the remaining messages.
-//
 func (datagramBased *DatagramBased) receiveMessages(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) {
 	gclass := (*C.GDatagramBasedInterface)(coreglib.PeekParentClass(datagramBased))
 	fnarg := gclass.receive_messages
@@ -17132,7 +16907,6 @@ func (datagramBased *DatagramBased) receiveMessages(ctx context.Context, message
 //     messages sent may be smaller than num_messages if timeout is zero or
 //     positive, or if num_messages was larger than UIO_MAXIOV (1024), in which
 //     case the caller may re-try to send the remaining messages.
-//
 func (datagramBased *DatagramBased) sendMessages(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) {
 	gclass := (*C.GDatagramBasedInterface)(coreglib.PeekParentClass(datagramBased))
 	fnarg := gclass.send_messages
@@ -17337,7 +17111,6 @@ func (drive *Drive) ConnectStopButton(f func()) coreglib.SignalHandle {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be ejected, FALSE otherwise.
-//
 func (drive *Drive) CanEject() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17361,7 +17134,6 @@ func (drive *Drive) CanEject() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be polled for media changes, FALSE otherwise.
-//
 func (drive *Drive) CanPollForMedia() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17385,7 +17157,6 @@ func (drive *Drive) CanPollForMedia() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be started, FALSE otherwise.
-//
 func (drive *Drive) CanStart() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17409,7 +17180,6 @@ func (drive *Drive) CanStart() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be started degraded, FALSE otherwise.
-//
 func (drive *Drive) CanStartDegraded() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17433,7 +17203,6 @@ func (drive *Drive) CanStartDegraded() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be stopped, FALSE otherwise.
-//
 func (drive *Drive) CanStop() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17464,7 +17233,6 @@ func (drive *Drive) CanStop() bool {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the unmount if required for eject.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg2 *C.GCancellable       // out
@@ -17498,7 +17266,6 @@ func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -17530,7 +17297,6 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 //   - flags affecting the unmount if required for eject.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg3 *C.GCancellable       // out
@@ -17569,7 +17335,6 @@ func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -17598,7 +17363,6 @@ func (drive *Drive) EjectWithOperationFinish(result AsyncResulter) error {
 //
 //   - utf8s: NULL-terminated array of strings containing kinds of identifiers.
 //     Use g_strfreev() to free.
-//
 func (drive *Drive) EnumerateIdentifiers() []string {
 	var _arg0 *C.GDrive // out
 	var _cret **C.char  // in
@@ -17634,7 +17398,6 @@ func (drive *Drive) EnumerateIdentifiers() []string {
 // The function returns the following values:
 //
 //   - icon for the drive. Free the returned object with g_object_unref().
-//
 func (drive *Drive) Icon() *Icon {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
@@ -17662,7 +17425,6 @@ func (drive *Drive) Icon() *Icon {
 //
 //   - utf8 (optional): newly allocated string containing the requested
 //     identifier, or NULL if the #GDrive doesn't have this kind of identifier.
-//
 func (drive *Drive) Identifier(kind string) string {
 	var _arg0 *C.GDrive // out
 	var _arg1 *C.char   // out
@@ -17692,7 +17454,6 @@ func (drive *Drive) Identifier(kind string) string {
 //
 //   - utf8: string containing drive's name. The returned string should be freed
 //     when no longer needed.
-//
 func (drive *Drive) Name() string {
 	var _arg0 *C.GDrive // out
 	var _cret *C.char   // in
@@ -17716,7 +17477,6 @@ func (drive *Drive) Name() string {
 //
 //   - utf8 (optional): sorting key for drive or NULL if no such key is
 //     available.
-//
 func (drive *Drive) SortKey() string {
 	var _arg0 *C.GDrive // out
 	var _cret *C.gchar  // in
@@ -17740,7 +17500,6 @@ func (drive *Drive) SortKey() string {
 // The function returns the following values:
 //
 //   - driveStartStopType: value from the StartStopType enumeration.
-//
 func (drive *Drive) StartStopType() DriveStartStopType {
 	var _arg0 *C.GDrive             // out
 	var _cret C.GDriveStartStopType // in
@@ -17763,7 +17522,6 @@ func (drive *Drive) StartStopType() DriveStartStopType {
 //
 //   - icon: symbolic #GIcon for the drive. Free the returned object with
 //     g_object_unref().
-//
 func (drive *Drive) SymbolicIcon() *Icon {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GIcon  // in
@@ -17788,7 +17546,6 @@ func (drive *Drive) SymbolicIcon() *Icon {
 // The function returns the following values:
 //
 //   - list containing any #GVolume objects on the given drive.
-//
 func (drive *Drive) Volumes() []*Volume {
 	var _arg0 *C.GDrive // out
 	var _cret *C.GList  // in
@@ -17818,7 +17575,6 @@ func (drive *Drive) Volumes() []*Volume {
 // The function returns the following values:
 //
 //   - ok: TRUE if drive has media, FALSE otherwise.
-//
 func (drive *Drive) HasMedia() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17842,7 +17598,6 @@ func (drive *Drive) HasMedia() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive contains volumes, FALSE otherwise.
-//
 func (drive *Drive) HasVolumes() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17868,7 +17623,6 @@ func (drive *Drive) HasVolumes() bool {
 //
 //   - ok: TRUE if the drive is capable of automatically detecting media
 //     changes, FALSE otherwise.
-//
 func (drive *Drive) IsMediaCheckAutomatic() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17892,7 +17646,6 @@ func (drive *Drive) IsMediaCheckAutomatic() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if drive supports removable media, FALSE otherwise.
-//
 func (drive *Drive) IsMediaRemovable() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17918,7 +17671,6 @@ func (drive *Drive) IsMediaRemovable() bool {
 //
 //   - ok: TRUE if drive and/or its media is considered removable, FALSE
 //     otherwise.
-//
 func (drive *Drive) IsRemovable() bool {
 	var _arg0 *C.GDrive  // out
 	var _cret C.gboolean // in
@@ -17947,7 +17699,6 @@ func (drive *Drive) IsRemovable() bool {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg1 *C.GCancellable       // out
@@ -17977,7 +17728,6 @@ func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallbac
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -18010,7 +17760,6 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 //   - flags affecting the start operation.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg3 *C.GCancellable       // out
@@ -18047,7 +17796,6 @@ func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOpera
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) StartFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -18080,7 +17828,6 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 //   - flags affecting the unmount if required for stopping.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GDrive             // out
 	var _arg3 *C.GCancellable       // out
@@ -18117,7 +17864,6 @@ func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOper
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) StopFinish(result AsyncResulter) error {
 	var _arg0 *C.GDrive       // out
 	var _arg1 *C.GAsyncResult // out
@@ -18144,7 +17890,6 @@ func (drive *Drive) StopFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be ejected, FALSE otherwise.
-//
 func (drive *Drive) canEject() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.can_eject
@@ -18171,7 +17916,6 @@ func (drive *Drive) canEject() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be polled for media changes, FALSE otherwise.
-//
 func (drive *Drive) canPollForMedia() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.can_poll_for_media
@@ -18198,7 +17942,6 @@ func (drive *Drive) canPollForMedia() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be started, FALSE otherwise.
-//
 func (drive *Drive) canStart() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.can_start
@@ -18225,7 +17968,6 @@ func (drive *Drive) canStart() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be started degraded, FALSE otherwise.
-//
 func (drive *Drive) canStartDegraded() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.can_start_degraded
@@ -18252,7 +17994,6 @@ func (drive *Drive) canStartDegraded() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive can be stopped, FALSE otherwise.
-//
 func (drive *Drive) canStop() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.can_stop
@@ -18310,7 +18051,6 @@ func (drive *Drive) disconnected() {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the unmount if required for eject.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.eject
@@ -18359,7 +18099,6 @@ func (drive *Drive) ejectButton() {
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) ejectFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.eject_finish
@@ -18394,7 +18133,6 @@ func (drive *Drive) ejectFinish(result AsyncResulter) error {
 //   - flags affecting the unmount if required for eject.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.eject_with_operation
@@ -18436,7 +18174,6 @@ func (drive *Drive) ejectWithOperation(ctx context.Context, flags MountUnmountFl
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) ejectWithOperationFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.eject_with_operation_finish
@@ -18468,7 +18205,6 @@ func (drive *Drive) ejectWithOperationFinish(result AsyncResulter) error {
 //
 //   - utf8s: NULL-terminated array of strings containing kinds of identifiers.
 //     Use g_strfreev() to free.
-//
 func (drive *Drive) enumerateIdentifiers() []string {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.enumerate_identifiers
@@ -18507,7 +18243,6 @@ func (drive *Drive) enumerateIdentifiers() []string {
 // The function returns the following values:
 //
 //   - icon for the drive. Free the returned object with g_object_unref().
-//
 func (drive *Drive) icon() *Icon {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.get_icon
@@ -18538,7 +18273,6 @@ func (drive *Drive) icon() *Icon {
 //
 //   - utf8 (optional): newly allocated string containing the requested
 //     identifier, or NULL if the #GDrive doesn't have this kind of identifier.
-//
 func (drive *Drive) identifier(kind string) string {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.get_identifier
@@ -18571,7 +18305,6 @@ func (drive *Drive) identifier(kind string) string {
 //
 //   - utf8: string containing drive's name. The returned string should be freed
 //     when no longer needed.
-//
 func (drive *Drive) name() string {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.get_name
@@ -18598,7 +18331,6 @@ func (drive *Drive) name() string {
 //
 //   - utf8 (optional): sorting key for drive or NULL if no such key is
 //     available.
-//
 func (drive *Drive) sortKey() string {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.get_sort_key
@@ -18625,7 +18357,6 @@ func (drive *Drive) sortKey() string {
 // The function returns the following values:
 //
 //   - driveStartStopType: value from the StartStopType enumeration.
-//
 func (drive *Drive) startStopType() DriveStartStopType {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.get_start_stop_type
@@ -18651,7 +18382,6 @@ func (drive *Drive) startStopType() DriveStartStopType {
 //
 //   - icon: symbolic #GIcon for the drive. Free the returned object with
 //     g_object_unref().
-//
 func (drive *Drive) symbolicIcon() *Icon {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.get_symbolic_icon
@@ -18679,7 +18409,6 @@ func (drive *Drive) symbolicIcon() *Icon {
 // The function returns the following values:
 //
 //   - list containing any #GVolume objects on the given drive.
-//
 func (drive *Drive) volumes() []*Volume {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.get_volumes
@@ -18712,7 +18441,6 @@ func (drive *Drive) volumes() []*Volume {
 // The function returns the following values:
 //
 //   - ok: TRUE if drive has media, FALSE otherwise.
-//
 func (drive *Drive) hasMedia() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.has_media
@@ -18739,7 +18467,6 @@ func (drive *Drive) hasMedia() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the drive contains volumes, FALSE otherwise.
-//
 func (drive *Drive) hasVolumes() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.has_volumes
@@ -18768,7 +18495,6 @@ func (drive *Drive) hasVolumes() bool {
 //
 //   - ok: TRUE if the drive is capable of automatically detecting media
 //     changes, FALSE otherwise.
-//
 func (drive *Drive) isMediaCheckAutomatic() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.is_media_check_automatic
@@ -18795,7 +18521,6 @@ func (drive *Drive) isMediaCheckAutomatic() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if drive supports removable media, FALSE otherwise.
-//
 func (drive *Drive) isMediaRemovable() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.is_media_removable
@@ -18824,7 +18549,6 @@ func (drive *Drive) isMediaRemovable() bool {
 //
 //   - ok: TRUE if drive and/or its media is considered removable, FALSE
 //     otherwise.
-//
 func (drive *Drive) isRemovable() bool {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.is_removable
@@ -18856,7 +18580,6 @@ func (drive *Drive) isRemovable() bool {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) pollForMedia(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.poll_for_media
@@ -18889,7 +18612,6 @@ func (drive *Drive) pollForMedia(ctx context.Context, callback AsyncReadyCallbac
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) pollForMediaFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.poll_for_media_finish
@@ -18925,7 +18647,6 @@ func (drive *Drive) pollForMediaFinish(result AsyncResulter) error {
 //   - flags affecting the start operation.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.start
@@ -18965,7 +18686,6 @@ func (drive *Drive) start(ctx context.Context, flags DriveStartFlags, mountOpera
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) startFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.start_finish
@@ -19001,7 +18721,6 @@ func (drive *Drive) startFinish(result AsyncResulter) error {
 //   - flags affecting the unmount if required for stopping.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (drive *Drive) stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.stop
@@ -19053,7 +18772,6 @@ func (drive *Drive) stopButton() {
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (drive *Drive) stopFinish(result AsyncResulter) error {
 	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
 	fnarg := gclass.stop_finish
@@ -19137,7 +18855,6 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 //
 //   - socketConnectable describing the expected server identity, or NULL if the
 //     expected identity is not known.
-//
 func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret *C.GSocketConnectable    // in
@@ -19159,7 +18876,6 @@ func (conn *DTLSClientConnection) ServerIdentity() *SocketConnectable {
 // The function returns the following values:
 //
 //   - tlsCertificateFlags: validation flags.
-//
 func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _cret C.GTlsCertificateFlags   // in
@@ -19184,7 +18900,6 @@ func (conn *DTLSClientConnection) ValidationFlags() TLSCertificateFlags {
 // The function takes the following parameters:
 //
 //   - identity describing the expected server identity.
-//
 func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 *C.GSocketConnectable    // out
@@ -19204,7 +18919,6 @@ func (conn *DTLSClientConnection) SetServerIdentity(identity SocketConnectabler)
 // The function takes the following parameters:
 //
 //   - flags to use.
-//
 func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GDtlsClientConnection // out
 	var _arg1 C.GTlsCertificateFlags   // out
@@ -19229,7 +18943,6 @@ func (conn *DTLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) 
 // The function returns the following values:
 //
 //   - dtlsClientConnection: new ClientConnection, or NULL on error.
-//
 func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketConnectabler) (*DTLSClientConnection, error) {
 	var _arg1 *C.GDatagramBased     // out
 	var _arg2 *C.GSocketConnectable // out
@@ -19427,7 +19140,6 @@ func (conn *DTLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertific
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (conn *DTLSConnection) Close(ctx context.Context) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -19461,7 +19173,6 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 //   - ctx (optional) or NULL.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the close operation is complete.
-//
 func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg2 *C.GCancellable       // out
@@ -19494,7 +19205,6 @@ func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, call
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -19528,7 +19238,6 @@ func (conn *DTLSConnection) CloseFinish(result AsyncResulter) error {
 //
 //   - ok: TRUE if one of the signal handlers has returned TRUE to accept
 //     peer_cert.
-//
 func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	var _arg0 *C.GDtlsConnection     // out
 	var _arg1 *C.GTlsCertificate     // out
@@ -19559,7 +19268,6 @@ func (conn *DTLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, erro
 // The function returns the following values:
 //
 //   - tlsCertificate (optional) conn's certificate, or NULL.
-//
 func (conn *DTLSConnection) Certificate() TLSCertificater {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsCertificate // in
@@ -19612,7 +19320,6 @@ func (conn *DTLSConnection) Certificate() TLSCertificater {
 // The function returns the following values:
 //
 //   - data (optional) is filled with the binding data, or NULL.
-//
 func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GDtlsConnection       // out
 	var _arg1 C.GTlsChannelBindingType // out
@@ -19644,7 +19351,6 @@ func (conn *DTLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byt
 // The function returns the following values:
 //
 //   - tlsDatabase (optional): certificate database that conn uses or NULL.
-//
 func (conn *DTLSConnection) Database() TLSDatabaser {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsDatabase    // in
@@ -19683,7 +19389,6 @@ func (conn *DTLSConnection) Database() TLSDatabaser {
 // The function returns the following values:
 //
 //   - tlsInteraction (optional): interaction object.
-//
 func (conn *DTLSConnection) Interaction() *TLSInteraction {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsInteraction // in
@@ -19713,7 +19418,6 @@ func (conn *DTLSConnection) Interaction() *TLSInteraction {
 // The function returns the following values:
 //
 //   - utf8 (optional): negotiated protocol, or NULL.
-//
 func (conn *DTLSConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.gchar           // in
@@ -19739,7 +19443,6 @@ func (conn *DTLSConnection) NegotiatedProtocol() string {
 // The function returns the following values:
 //
 //   - tlsCertificate (optional) conn's peer's certificate, or NULL.
-//
 func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret *C.GTlsCertificate // in
@@ -19778,7 +19481,6 @@ func (conn *DTLSConnection) PeerCertificate() TLSCertificater {
 // The function returns the following values:
 //
 //   - tlsCertificateFlags conn's peer's certificate errors.
-//
 func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	var _arg0 *C.GDtlsConnection     // out
 	var _cret C.GTlsCertificateFlags // in
@@ -19805,7 +19507,6 @@ func (conn *DTLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 // The function returns the following values:
 //
 //   - tlsRehandshakeMode: G_TLS_REHANDSHAKE_SAFELY.
-//
 func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	var _arg0 *C.GDtlsConnection    // out
 	var _cret C.GTlsRehandshakeMode // in
@@ -19829,7 +19530,6 @@ func (conn *DTLSConnection) RehandshakeMode() TLSRehandshakeMode {
 // The function returns the following values:
 //
 //   - ok: TRUE if conn requires a proper TLS close notification.
-//
 func (conn *DTLSConnection) RequireCloseNotify() bool {
 	var _arg0 *C.GDtlsConnection // out
 	var _cret C.gboolean         // in
@@ -19876,7 +19576,6 @@ func (conn *DTLSConnection) RequireCloseNotify() bool {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -19910,7 +19609,6 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 //   - ctx (optional) or NULL.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the handshake is complete.
-//
 func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg2 *C.GCancellable       // out
@@ -19943,7 +19641,6 @@ func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, 
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -19981,7 +19678,6 @@ func (conn *DTLSConnection) HandshakeFinish(result AsyncResulter) error {
 //
 //   - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
 //     "http/1.1", "h2"), or NULL.
-//
 func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 **C.gchar          // out
@@ -20025,7 +19721,6 @@ func (conn *DTLSConnection) SetAdvertisedProtocols(protocols []string) {
 // The function takes the following parameters:
 //
 //   - certificate to use for conn.
-//
 func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsCertificate // out
@@ -20049,7 +19744,6 @@ func (conn *DTLSConnection) SetCertificate(certificate TLSCertificater) {
 // The function takes the following parameters:
 //
 //   - database (optional): Database.
-//
 func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsDatabase    // out
@@ -20074,7 +19768,6 @@ func (conn *DTLSConnection) SetDatabase(database TLSDatabaser) {
 // The function takes the following parameters:
 //
 //   - interaction (optional) object, or NULL.
-//
 func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GTlsInteraction // out
@@ -20101,7 +19794,6 @@ func (conn *DTLSConnection) SetInteraction(interaction *TLSInteraction) {
 // The function takes the following parameters:
 //
 //   - mode: rehandshaking mode.
-//
 func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg1 C.GTlsRehandshakeMode // out
@@ -20139,7 +19831,6 @@ func (conn *DTLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 // The function takes the following parameters:
 //
 //   - requireCloseNotify: whether or not to require close notification.
-//
 func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 C.gboolean         // out
@@ -20176,7 +19867,6 @@ func (conn *DTLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 //   - ctx (optional) or NULL.
 //   - shutdownRead: TRUE to stop reception of incoming datagrams.
 //   - shutdownWrite: TRUE to stop sending outgoing datagrams.
-//
 func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg3 *C.GCancellable    // out
@@ -20222,7 +19912,6 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 //   - shutdownWrite: TRUE to stop sending outgoing datagrams.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the shutdown operation is complete.
-//
 func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDtlsConnection    // out
 	var _arg4 *C.GCancellable       // out
@@ -20265,7 +19954,6 @@ func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shu
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 	var _arg0 *C.GDtlsConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -20291,7 +19979,6 @@ func (conn *DTLSConnection) ShutdownFinish(result AsyncResulter) error {
 //
 //   - peerCert
 //   - errors
-//
 func (connection *DTLSConnection) acceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(connection))
 	fnarg := gclass.accept_certificate
@@ -20323,7 +20010,6 @@ func (connection *DTLSConnection) acceptCertificate(peerCert TLSCertificater, er
 //
 //   - typ
 //   - data
-//
 func (conn *DTLSConnection) bindingData(typ TLSChannelBindingType, data []byte) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.get_binding_data
@@ -20366,7 +20052,6 @@ func (conn *DTLSConnection) bindingData(typ TLSChannelBindingType, data []byte) 
 // The function returns the following values:
 //
 //   - utf8 (optional): negotiated protocol, or NULL.
-//
 func (conn *DTLSConnection) negotiatedProtocol() string {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.get_negotiated_protocol
@@ -20416,7 +20101,6 @@ func (conn *DTLSConnection) negotiatedProtocol() string {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (conn *DTLSConnection) handshake(ctx context.Context) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.handshake
@@ -20453,7 +20137,6 @@ func (conn *DTLSConnection) handshake(ctx context.Context) error {
 //   - ctx (optional) or NULL.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the handshake is complete.
-//
 func (conn *DTLSConnection) handshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.handshake_async
@@ -20489,7 +20172,6 @@ func (conn *DTLSConnection) handshakeAsync(ctx context.Context, ioPriority int, 
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (conn *DTLSConnection) handshakeFinish(result AsyncResulter) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.handshake_finish
@@ -20530,7 +20212,6 @@ func (conn *DTLSConnection) handshakeFinish(result AsyncResulter) error {
 //
 //   - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
 //     "http/1.1", "h2"), or NULL.
-//
 func (conn *DTLSConnection) setAdvertisedProtocols(protocols []string) {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.set_advertised_protocols
@@ -20580,7 +20261,6 @@ func (conn *DTLSConnection) setAdvertisedProtocols(protocols []string) {
 //   - ctx (optional) or NULL.
 //   - shutdownRead: TRUE to stop reception of incoming datagrams.
 //   - shutdownWrite: TRUE to stop sending outgoing datagrams.
-//
 func (conn *DTLSConnection) shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.shutdown
@@ -20629,7 +20309,6 @@ func (conn *DTLSConnection) shutdown(ctx context.Context, shutdownRead, shutdown
 //   - shutdownWrite: TRUE to stop sending outgoing datagrams.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the shutdown operation is complete.
-//
 func (conn *DTLSConnection) shutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.shutdown_async
@@ -20675,7 +20354,6 @@ func (conn *DTLSConnection) shutdownAsync(ctx context.Context, shutdownRead, shu
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (conn *DTLSConnection) shutdownFinish(result AsyncResulter) error {
 	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.shutdown_finish
@@ -20761,7 +20439,6 @@ func BaseDTLSServerConnection(obj DTLSServerConnectioner) *DTLSServerConnection 
 // The function returns the following values:
 //
 //   - dtlsServerConnection: new ServerConnection, or NULL on error.
-//
 func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertificater) (*DTLSServerConnection, error) {
 	var _arg1 *C.GDatagramBased  // out
 	var _arg2 *C.GTlsCertificate // out
@@ -21234,7 +20911,6 @@ func marshalFile(p uintptr) (interface{}, error) {
 //
 //   - fileOutputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg2 *C.GCancellable      // out
@@ -21280,7 +20956,6 @@ func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -21321,7 +20996,6 @@ func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPr
 //
 //   - fileOutputStream: valid OutputStream or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -21365,7 +21039,6 @@ func (file *File) AppendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 //
 //   - utf8: attribute query string for g_file_query_info(), or NULL if an error
 //     occurs.
-//
 func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyFlags) (string, error) {
 	var _arg0 *C.GFile         // out
 	var _arg2 *C.GCancellable  // out
@@ -21446,7 +21119,6 @@ func (file *File) BuildAttributeListForCopy(ctx context.Context, flags FileCopyF
 //   - flags: set of CopyFlags.
 //   - progressCallback (optional): function to callback with progress
 //     information, or NULL if progress information is not needed.
-//
 func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
 	var _arg0 *C.GFile                // out
 	var _arg3 *C.GCancellable         // out
@@ -21499,7 +21171,6 @@ func (source *File) Copy(ctx context.Context, destination Filer, flags FileCopyF
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - destination to copy attributes to.
 //   - flags: set of CopyFlags.
-//
 func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags FileCopyFlags) error {
 	var _arg0 *C.GFile         // out
 	var _arg3 *C.GCancellable  // out
@@ -21536,7 +21207,6 @@ func (source *File) CopyAttributes(ctx context.Context, destination Filer, flags
 // The function takes the following parameters:
 //
 //   - res: Result.
-//
 func (file *File) CopyFinish(res AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -21584,7 +21254,6 @@ func (file *File) CopyFinish(res AsyncResulter) error {
 //
 //   - fileOutputStream for the newly created file, or NULL on error. Free the
 //     returned object with g_object_unref().
-//
 func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg2 *C.GCancellable      // out
@@ -21631,7 +21300,6 @@ func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -21672,7 +21340,6 @@ func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPrio
 //
 //   - fileOutputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -21727,7 +21394,6 @@ func (file *File) CreateFinish(res AsyncResulter) (*FileOutputStream, error) {
 //
 //   - fileIOStream for the newly created file, or NULL on error. Free the
 //     returned object with g_object_unref().
-//
 func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error) {
 	var _arg0 *C.GFile           // out
 	var _arg2 *C.GCancellable    // out
@@ -21774,7 +21440,6 @@ func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -21815,7 +21480,6 @@ func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlag
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -21847,15 +21511,15 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 // for deletion to be implemented avoiding time-of-check to time-of-use races
 // (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
 //
-//    g_autoptr(GError) local_error = NULL;
-//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
-//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-//      {
-//        // deletion failed for some reason other than the file not existing:
-//        // so report the error
-//        g_warning ("Failed to delete s: s",
-//                   g_file_peek_path (my_file), local_error->message);
-//      }
+//	g_autoptr(GError) local_error = NULL;
+//	if (!g_file_delete (my_file, my_cancellable, &local_error) &&
+//	    !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+//	  {
+//	    // deletion failed for some reason other than the file not existing:
+//	    // so report the error
+//	    g_warning ("Failed to delete s: s",
+//	               g_file_peek_path (my_file), local_error->message);
+//	  }
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
@@ -21864,7 +21528,6 @@ func (file *File) CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (file *File) Delete(ctx context.Context) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -21899,7 +21562,6 @@ func (file *File) Delete(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -21931,7 +21593,6 @@ func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback Asyn
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) DeleteFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -21967,7 +21628,6 @@ func (file *File) DeleteFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - ret: new #GFile that is a duplicate of the given #GFile.
-//
 func (file *File) Dup() *File {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
@@ -21999,7 +21659,6 @@ func (file *File) Dup() *File {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the operation.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -22034,7 +21693,6 @@ func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, c
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) EjectMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -22071,7 +21729,6 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation, or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -22109,7 +21766,6 @@ func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUn
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -22162,7 +21818,6 @@ func (file *File) EjectMountableWithOperationFinish(result AsyncResulter) error 
 //
 //   - fileEnumerator if successful, NULL on error. Free the returned object
 //     with g_object_unref().
-//
 func (file *File) EnumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -22215,7 +21870,6 @@ func (file *File) EnumerateChildren(ctx context.Context, attributes string, flag
 //   - flags: set of QueryInfoFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -22260,7 +21914,6 @@ func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string,
 //
 //   - fileEnumerator or NULL if an error occurred. Free the returned object
 //     with g_object_unref().
-//
 func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error) {
 	var _arg0 *C.GFile           // out
 	var _arg1 *C.GAsyncResult    // out
@@ -22299,7 +21952,6 @@ func (file *File) EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 // The function returns the following values:
 //
 //   - ok: TRUE if file1 and file2 are equal.
-//
 func (file1 *File) Equal(file2 Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -22339,7 +21991,6 @@ func (file1 *File) Equal(file2 Filer) bool {
 //
 //   - mount where the file is located or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -22381,7 +22032,6 @@ func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -22419,7 +22069,6 @@ func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, c
 //
 //   - mount for given file or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -22464,7 +22113,6 @@ func (file *File) FindEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 //   - filename (optional): string containing the #GFile's base name, or NULL
 //     if given #GFile is invalid. The returned string should be freed with
 //     g_free() when no longer needed.
-//
 func (file *File) Basename() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -22500,7 +22148,6 @@ func (file *File) Basename() string {
 //
 //   - ret to a child specified by name. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) Child(name string) *File {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
@@ -22537,7 +22184,6 @@ func (file *File) Child(name string) *File {
 //
 //   - ret to the specified child, or NULL if the display name couldn't be
 //     converted. Free the returned object with g_object_unref().
-//
 func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 	var _arg0 *C.GFile  // out
 	var _arg1 *C.char   // out
@@ -22572,7 +22218,6 @@ func (file *File) ChildForDisplayName(displayName string) (*File, error) {
 //
 //   - ret (optional) structure to the parent of the given #GFile or NULL if
 //     there is no parent. Free the returned object with g_object_unref().
-//
 func (file *File) Parent() *File {
 	var _arg0 *C.GFile // out
 	var _cret *C.GFile // in
@@ -22608,7 +22253,6 @@ func (file *File) Parent() *File {
 //
 //   - utf8: string containing the #GFile's parse name. The returned string
 //     should be freed with g_free() when no longer needed.
-//
 func (file *File) ParseName() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -22636,7 +22280,6 @@ func (file *File) ParseName() string {
 //   - filename (optional): string containing the #GFile's path, or NULL if no
 //     such path exists. The returned string should be freed with g_free() when
 //     no longer needed.
-//
 func (file *File) Path() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -22669,7 +22312,6 @@ func (file *File) Path() string {
 //   - filename (optional): string with the relative path from descendant to
 //     parent, or NULL if descendant doesn't have parent as prefix. The returned
 //     string should be freed with g_free() when no longer needed.
-//
 func (parent *File) RelativePath(descendant Filer) string {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.GFile // out
@@ -22701,7 +22343,6 @@ func (parent *File) RelativePath(descendant Filer) string {
 //   - utf8: string containing the #GFile's URI. If the #GFile was constructed
 //     with an invalid URI, an invalid URI is returned. The returned string
 //     should be freed with g_free() when no longer needed.
-//
 func (file *File) URI() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -22721,7 +22362,7 @@ func (file *File) URI() string {
 
 // URIScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme as:
 //
-//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+//	URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 //
 // Common schemes include "file", "http", "ftp", etc.
 //
@@ -22736,7 +22377,6 @@ func (file *File) URI() string {
 //   - utf8 (optional): string containing the URI scheme for the given #GFile
 //     or NULL if the #GFile was constructed with an invalid URI. The returned
 //     string should be freed with g_free() when no longer needed.
-//
 func (file *File) URIScheme() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -22770,7 +22410,6 @@ func (file *File) URIScheme() string {
 //
 //   - ok: TRUE if file is an immediate child of parent (or any parent in the
 //     case that parent is NULL).
-//
 func (file *File) HasParent(parent Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -22815,7 +22454,6 @@ func (file *File) HasParent(parent Filer) bool {
 //
 //   - ok: TRUE if the file's parent, grandparent, etc is prefix, FALSE
 //     otherwise.
-//
 func (file *File) HasPrefix(prefix Filer) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.GFile   // out
@@ -22849,7 +22487,6 @@ func (file *File) HasPrefix(prefix Filer) bool {
 //
 //   - ok: TRUE if #GFile's backend supports the given URI scheme, FALSE if URI
 //     scheme is NULL, not supported, or #GFile is invalid.
-//
 func (file *File) HasURIScheme(uriScheme string) bool {
 	var _arg0 *C.GFile   // out
 	var _arg1 *C.char    // out
@@ -22881,7 +22518,6 @@ func (file *File) HasURIScheme(uriScheme string) bool {
 //   - guint: 0 if file is not a valid #GFile, otherwise an integer that can be
 //     used as hash value for the #GFile. This function is intended for easily
 //     hashing a #GFile to add to a Table or similar data structure.
-//
 func (file *File) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -22913,7 +22549,6 @@ func (file *File) Hash() uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if file is native.
-//
 func (file *File) IsNative() bool {
 	var _arg0 *C.GFile   // out
 	var _cret C.gboolean // in
@@ -22953,7 +22588,6 @@ func (file *File) IsNative() bool {
 //   - etagOut (optional): location to place the current entity tag for the
 //     file, or NULL if the entity tag is not needed.
 //   - bytes or NULL and error is set.
-//
 func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -23009,7 +22643,6 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 //
 //   - ctx (optional) or NULL.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
@@ -23053,7 +22686,6 @@ func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallbac
 //   - etagOut (optional): location to place the current entity tag for the
 //     file, or NULL if the entity tag is not needed.
 //   - bytes or NULL and error is set.
-//
 func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -23107,7 +22739,6 @@ func (file *File) LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, er
 //   - contents: location to place the contents of the file.
 //   - etagOut (optional): location to place the current entity tag for the
 //     file, or NULL if the entity tag is not needed.
-//
 func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -23162,7 +22793,6 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
@@ -23201,7 +22831,6 @@ func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCall
 //   - contents: location to place the contents of the file.
 //   - etagOut (optional): location to place the current entity tag for the
 //     file, or NULL if the entity tag is not needed.
-//
 func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -23249,7 +22878,6 @@ func (file *File) LoadContentsFinish(res AsyncResulter) ([]byte, string, error) 
 //   - contents: location to place the contents of the file.
 //   - etagOut (optional): location to place the current entity tag for the
 //     file, or NULL if the entity tag is not needed.
-//
 func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -23301,7 +22929,6 @@ func (file *File) LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, 
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (file *File) MakeDirectory(ctx context.Context) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -23334,7 +22961,6 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -23367,7 +22993,6 @@ func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callba
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -23406,7 +23031,6 @@ func (file *File) MakeDirectoryFinish(result AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -23443,7 +23067,6 @@ func (file *File) MakeDirectoryWithParents(ctx context.Context) error {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - symlinkValue: string with the path for the target of the new symlink.
-//
 func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) error {
 	var _arg0 *C.GFile        // out
 	var _arg2 *C.GCancellable // out
@@ -23486,7 +23109,6 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 //   - diskUsage (optional): number of bytes of disk space used.
 //   - numDirs (optional): number of directories encountered.
 //   - numFiles (optional): number of non-directories encountered.
-//
 func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage, numDirs, numFiles uint64, goerr error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -23533,7 +23155,6 @@ func (file *File) MeasureDiskUsageFinish(result AsyncResulter) (diskUsage, numDi
 //
 //   - fileMonitor for the given file, or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
@@ -23603,7 +23224,6 @@ func (file *File) Monitor(ctx context.Context, flags FileMonitorFlags) (FileMoni
 //
 //   - fileMonitor for the given file, or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
@@ -23674,7 +23294,6 @@ func (file *File) MonitorDirectory(ctx context.Context, flags FileMonitorFlags) 
 //
 //   - fileMonitor for the given file, or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	var _arg0 *C.GFile            // out
 	var _arg2 *C.GCancellable     // out
@@ -23739,7 +23358,6 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -23777,7 +23395,6 @@ func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMount
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -23816,7 +23433,6 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation, or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -23861,7 +23477,6 @@ func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mou
 // The function returns the following values:
 //
 //   - ret or NULL on error. Free the returned object with g_object_unref().
-//
 func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -23926,7 +23541,6 @@ func (file *File) MountMountableFinish(result AsyncResulter) (*File, error) {
 //   - destination pointing to the destination location.
 //   - flags: set of CopyFlags.
 //   - progressCallback (optional): ProgressCallback function for updates.
-//
 func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
 	var _arg0 *C.GFile                // out
 	var _arg3 *C.GCancellable         // out
@@ -23988,7 +23602,6 @@ func (source *File) Move(ctx context.Context, destination Filer, flags FileCopyF
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GCancellable  // out
@@ -24030,7 +23643,6 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -24068,7 +23680,6 @@ func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callba
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -24104,7 +23715,6 @@ func (file *File) OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 //
 //   - filename (optional): string containing the #GFile's path, or NULL if no
 //     such path exists. The returned string is owned by file.
-//
 func (file *File) PeekPath() string {
 	var _arg0 *C.GFile // out
 	var _cret *C.char  // in
@@ -24136,7 +23746,6 @@ func (file *File) PeekPath() string {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg1 *C.GCancellable       // out
@@ -24169,7 +23778,6 @@ func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) PollMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -24206,7 +23814,6 @@ func (file *File) PollMountableFinish(result AsyncResulter) error {
 //
 //   - appInfo if the handle was found, NULL if there were errors. When you are
 //     done with it, release it with g_object_unref().
-//
 func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -24242,7 +23849,6 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is done.
-//
 func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -24280,7 +23886,6 @@ func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, 
 //
 //   - appInfo if the handle was found, NULL if there were errors. When you are
 //     done with it, release it with g_object_unref().
-//
 func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -24337,7 +23942,6 @@ func (file *File) QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, err
 //
 //   - ok: TRUE if the file exists (and can be detected without error), FALSE
 //     otherwise (or if cancelled).
-//
 func (file *File) QueryExists(ctx context.Context) bool {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -24377,7 +23981,6 @@ func (file *File) QueryExists(ctx context.Context) bool {
 // The function returns the following values:
 //
 //   - fileType of the file and FILE_TYPE_UNKNOWN if the file does not exist.
-//
 func (file *File) QueryFileType(ctx context.Context, flags FileQueryInfoFlags) FileType {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -24436,7 +24039,6 @@ func (file *File) QueryFileType(ctx context.Context, flags FileQueryInfoFlags) F
 //
 //   - fileInfo or NULL if there was an error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg2 *C.GCancellable // out
@@ -24485,7 +24087,6 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 //   - attributes: attribute query string.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -24527,7 +24128,6 @@ func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes strin
 //
 //   - fileInfo for given file or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -24589,7 +24189,6 @@ func (file *File) QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 //
 //   - fileInfo for the given file, or NULL on error. Free the returned object
 //     with g_object_unref().
-//
 func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -24642,7 +24241,6 @@ func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQu
 //   - flags: set of QueryInfoFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -24687,7 +24285,6 @@ func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags F
 //
 //   - fileInfo for given file or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -24731,7 +24328,6 @@ func (file *File) QueryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 //
 //   - fileAttributeInfoList describing the settable attributes. When you are
 //     done with it, release it with g_file_attribute_info_list_unref().
-//
 func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeInfoList, error) {
 	var _arg0 *C.GFile                  // out
 	var _arg1 *C.GCancellable           // out
@@ -24782,7 +24378,6 @@ func (file *File) QuerySettableAttributes(ctx context.Context) (*FileAttributeIn
 //
 //   - fileAttributeInfoList describing the writable namespaces. When you are
 //     done with it, release it with g_file_attribute_info_list_unref().
-//
 func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeInfoList, error) {
 	var _arg0 *C.GFile                  // out
 	var _arg1 *C.GCancellable           // out
@@ -24837,7 +24432,6 @@ func (file *File) QueryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 //
 //   - fileInputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GCancellable     // out
@@ -24879,7 +24473,6 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -24917,7 +24510,6 @@ func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncR
 //
 //   - fileInputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 	var _arg0 *C.GFile            // out
 	var _arg1 *C.GAsyncResult     // out
@@ -24992,7 +24584,6 @@ func (file *File) ReadFinish(res AsyncResulter) (*FileInputStream, error) {
 //
 //   - fileOutputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg4 *C.GCancellable      // out
@@ -25053,7 +24644,6 @@ func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, fla
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
@@ -25124,7 +24714,6 @@ func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool
 //   - newEtag (optional): location to a new [entity tag][gfile-etag] for the
 //     document. This should be freed with g_free() when no longer needed,
 //     or NULL.
-//
 func (file *File) ReplaceContents(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg7 *C.GCancellable // out
@@ -25204,7 +24793,6 @@ func (file *File) ReplaceContents(ctx context.Context, contents, etag string, ma
 //   - makeBackup: TRUE if a backup should be created.
 //   - flags: set of CreateFlags.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) ReplaceContentsAsync(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile        // out
 	var _arg6 *C.GCancellable // out
@@ -25266,7 +24854,6 @@ func (file *File) ReplaceContentsAsync(ctx context.Context, contents, etag strin
 //   - makeBackup: TRUE if a backup should be created.
 //   - flags: set of CreateFlags.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
@@ -25320,7 +24907,6 @@ func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.
 //   - newEtag (optional): location of a new [entity tag][gfile-etag] for the
 //     document. This should be freed with g_free() when it is no longer needed,
 //     or NULL.
-//
 func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -25359,7 +24945,6 @@ func (file *File) ReplaceContentsFinish(res AsyncResulter) (string, error) {
 //
 //   - fileOutputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	var _arg0 *C.GFile             // out
 	var _arg1 *C.GAsyncResult      // out
@@ -25407,7 +24992,6 @@ func (file *File) ReplaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error) {
 	var _arg0 *C.GFile           // out
 	var _arg4 *C.GCancellable    // out
@@ -25468,7 +25052,6 @@ func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup 
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
@@ -25520,7 +25103,6 @@ func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBa
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	var _arg0 *C.GFile         // out
 	var _arg1 *C.GAsyncResult  // out
@@ -25557,7 +25139,6 @@ func (file *File) ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 //
 //   - ret to the resolved path. NULL if relative_path is NULL or if file is
 //     invalid. Free the returned object with g_object_unref().
-//
 func (file *File) ResolveRelativePath(relativePath string) *File {
 	var _arg0 *C.GFile // out
 	var _arg1 *C.char  // out
@@ -25596,7 +25177,6 @@ func (file *File) ResolveRelativePath(relativePath string) *File {
 //   - valueP (optional): pointer to the value (or the pointer itself if the
 //     type is a pointer type).
 //   - flags: set of QueryInfoFlags.
-//
 func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP unsafe.Pointer, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg5 *C.GCancellable       // out
@@ -25649,7 +25229,6 @@ func (file *File) SetAttribute(ctx context.Context, attribute string, typ FileAt
 //   - attribute: string containing the attribute's name.
 //   - value: string containing the attribute's new value.
 //   - flags: QueryInfoFlags.
-//
 func (file *File) SetAttributeByteString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -25699,7 +25278,6 @@ func (file *File) SetAttributeByteString(ctx context.Context, attribute, value s
 //   - attribute: string containing the attribute's name.
 //   - value containing the attribute's new value.
 //   - flags: QueryInfoFlags.
-//
 func (file *File) SetAttributeInt32(ctx context.Context, attribute string, value int32, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -25748,7 +25326,6 @@ func (file *File) SetAttributeInt32(ctx context.Context, attribute string, value
 //   - attribute: string containing the attribute's name.
 //   - value containing the attribute's new value.
 //   - flags: QueryInfoFlags.
-//
 func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value int64, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -25797,7 +25374,6 @@ func (file *File) SetAttributeInt64(ctx context.Context, attribute string, value
 //   - attribute: string containing the attribute's name.
 //   - value: string containing the attribute's value.
 //   - flags: QueryInfoFlags.
-//
 func (file *File) SetAttributeString(ctx context.Context, attribute, value string, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -25847,7 +25423,6 @@ func (file *File) SetAttributeString(ctx context.Context, attribute, value strin
 //   - attribute: string containing the attribute's name.
 //   - value containing the attribute's new value.
 //   - flags: QueryInfoFlags.
-//
 func (file *File) SetAttributeUint32(ctx context.Context, attribute string, value uint32, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -25896,7 +25471,6 @@ func (file *File) SetAttributeUint32(ctx context.Context, attribute string, valu
 //   - attribute: string containing the attribute's name.
 //   - value containing the attribute's new value.
 //   - flags: QueryInfoFlags.
-//
 func (file *File) SetAttributeUint64(ctx context.Context, attribute string, value uint64, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -25947,7 +25521,6 @@ func (file *File) SetAttributeUint64(ctx context.Context, attribute string, valu
 //   - flags: QueryInfoFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional): ReadyCallback.
-//
 func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg4 *C.GCancellable       // out
@@ -25990,7 +25563,6 @@ func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags 
 // The function returns the following values:
 //
 //   - info: Info.
-//
 func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -26032,7 +25604,6 @@ func (file *File) SetAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - info: Info.
 //   - flags: QueryInfoFlags.
-//
 func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -26089,7 +25660,6 @@ func (file *File) SetAttributesFromInfo(ctx context.Context, info *FileInfo, fla
 //
 //   - ret specifying what file was renamed to, or NULL if there was an error.
 //     Free the returned object with g_object_unref().
-//
 func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg2 *C.GCancellable // out
@@ -26136,7 +25706,6 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File
 //   - displayName: string.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -26177,7 +25746,6 @@ func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, i
 // The function returns the following values:
 //
 //   - ret or NULL on error. Free the returned object with g_object_unref().
-//
 func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -26219,7 +25787,6 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 //   - flags affecting the operation.
 //   - startOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -26260,7 +25827,6 @@ func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, sta
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) StartMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -26297,7 +25863,6 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation, or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -26338,7 +25903,6 @@ func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mo
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) StopMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -26368,7 +25932,6 @@ func (file *File) StopMountableFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - ok: whether or not file supports thread-default contexts.
-//
 func (file *File) SupportsThreadContexts() bool {
 	var _arg0 *C.GFile   // out
 	var _cret C.gboolean // in
@@ -26401,7 +25964,6 @@ func (file *File) SupportsThreadContexts() bool {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (file *File) Trash(ctx context.Context) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GCancellable // out
@@ -26434,7 +25996,6 @@ func (file *File) Trash(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -26467,7 +26028,6 @@ func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback Async
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) TrashFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -26505,7 +26065,6 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the operation.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg2 *C.GCancellable       // out
@@ -26543,7 +26102,6 @@ func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags,
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -26580,7 +26138,6 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation, or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) UnmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GFile              // out
 	var _arg3 *C.GCancellable       // out
@@ -26621,7 +26178,6 @@ func (file *File) UnmountMountableWithOperation(ctx context.Context, flags Mount
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GFile        // out
 	var _arg1 *C.GAsyncResult // out
@@ -26668,7 +26224,6 @@ func (file *File) UnmountMountableWithOperationFinish(result AsyncResulter) erro
 //
 //   - fileOutputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) appendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.append_to
@@ -26717,7 +26272,6 @@ func (file *File) appendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) appendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.append_to_async
@@ -26761,7 +26315,6 @@ func (file *File) appendToAsync(ctx context.Context, flags FileCreateFlags, ioPr
 //
 //   - fileOutputStream: valid OutputStream or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) appendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.append_to_finish
@@ -26837,7 +26390,6 @@ func (file *File) appendToFinish(res AsyncResulter) (*FileOutputStream, error) {
 //   - flags: set of CopyFlags.
 //   - progressCallback (optional): function to callback with progress
 //     information, or NULL if progress information is not needed.
-//
 func (source *File) copy(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(source))
 	fnarg := gclass.copy
@@ -26885,7 +26437,6 @@ func (source *File) copy(ctx context.Context, destination Filer, flags FileCopyF
 // The function takes the following parameters:
 //
 //   - res: Result.
-//
 func (file *File) copyFinish(res AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.copy_finish
@@ -26936,7 +26487,6 @@ func (file *File) copyFinish(res AsyncResulter) error {
 //
 //   - fileOutputStream for the newly created file, or NULL on error. Free the
 //     returned object with g_object_unref().
-//
 func (file *File) create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.create
@@ -26986,7 +26536,6 @@ func (file *File) create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) createAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.create_async
@@ -27030,7 +26579,6 @@ func (file *File) createAsync(ctx context.Context, flags FileCreateFlags, ioPrio
 //
 //   - fileOutputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) createFinish(res AsyncResulter) (*FileOutputStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.create_finish
@@ -27088,7 +26636,6 @@ func (file *File) createFinish(res AsyncResulter) (*FileOutputStream, error) {
 //
 //   - fileIOStream for the newly created file, or NULL on error. Free the
 //     returned object with g_object_unref().
-//
 func (file *File) createReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.create_readwrite
@@ -27138,7 +26685,6 @@ func (file *File) createReadwrite(ctx context.Context, flags FileCreateFlags) (*
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) createReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.create_readwrite_async
@@ -27182,7 +26728,6 @@ func (file *File) createReadwriteAsync(ctx context.Context, flags FileCreateFlag
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) createReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.create_readwrite_finish
@@ -27217,15 +26762,15 @@ func (file *File) createReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 // for deletion to be implemented avoiding time-of-check to time-of-use races
 // (https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use):
 //
-//    g_autoptr(GError) local_error = NULL;
-//    if (!g_file_delete (my_file, my_cancellable, &local_error) &&
-//        !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-//      {
-//        // deletion failed for some reason other than the file not existing:
-//        // so report the error
-//        g_warning ("Failed to delete s: s",
-//                   g_file_peek_path (my_file), local_error->message);
-//      }
+//	g_autoptr(GError) local_error = NULL;
+//	if (!g_file_delete (my_file, my_cancellable, &local_error) &&
+//	    !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+//	  {
+//	    // deletion failed for some reason other than the file not existing:
+//	    // so report the error
+//	    g_warning ("Failed to delete s: s",
+//	               g_file_peek_path (my_file), local_error->message);
+//	  }
 //
 // If cancellable is not NULL, then the operation can be cancelled by triggering
 // the cancellable object from another thread. If the operation was cancelled,
@@ -27234,7 +26779,6 @@ func (file *File) createReadwriteFinish(res AsyncResulter) (*FileIOStream, error
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (file *File) deleteFile(ctx context.Context) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.delete_file
@@ -27272,7 +26816,6 @@ func (file *File) deleteFile(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) deleteFileAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.delete_file_async
@@ -27307,7 +26850,6 @@ func (file *File) deleteFileAsync(ctx context.Context, ioPriority int, callback 
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) deleteFileFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.delete_file_finish
@@ -27346,7 +26888,6 @@ func (file *File) deleteFileFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - ret: new #GFile that is a duplicate of the given #GFile.
-//
 func (file *File) dup() *File {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.dup
@@ -27381,7 +26922,6 @@ func (file *File) dup() *File {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the operation.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) ejectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.eject_mountable
@@ -27419,7 +26959,6 @@ func (file *File) ejectMountable(ctx context.Context, flags MountUnmountFlags, c
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) ejectMountableFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.eject_mountable_finish
@@ -27459,7 +26998,6 @@ func (file *File) ejectMountableFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation, or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) ejectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.eject_mountable_with_operation
@@ -27500,7 +27038,6 @@ func (file *File) ejectMountableWithOperation(ctx context.Context, flags MountUn
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) ejectMountableWithOperationFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.eject_mountable_with_operation_finish
@@ -27556,7 +27093,6 @@ func (file *File) ejectMountableWithOperationFinish(result AsyncResulter) error 
 //
 //   - fileEnumerator if successful, NULL on error. Free the returned object
 //     with g_object_unref().
-//
 func (file *File) enumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.enumerate_children
@@ -27612,7 +27148,6 @@ func (file *File) enumerateChildren(ctx context.Context, attributes string, flag
 //   - flags: set of QueryInfoFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) enumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.enumerate_children_async
@@ -27660,7 +27195,6 @@ func (file *File) enumerateChildrenAsync(ctx context.Context, attributes string,
 //
 //   - fileEnumerator or NULL if an error occurred. Free the returned object
 //     with g_object_unref().
-//
 func (file *File) enumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.enumerate_children_finish
@@ -27702,7 +27236,6 @@ func (file *File) enumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, e
 // The function returns the following values:
 //
 //   - ok: TRUE if file1 and file2 are equal.
-//
 func (file1 *File) equal(file2 Filer) bool {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file1))
 	fnarg := gclass.equal
@@ -27745,7 +27278,6 @@ func (file1 *File) equal(file2 Filer) bool {
 //
 //   - mount where the file is located or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) findEnclosingMount(ctx context.Context) (*Mount, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.find_enclosing_mount
@@ -27790,7 +27322,6 @@ func (file *File) findEnclosingMount(ctx context.Context) (*Mount, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) findEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.find_enclosing_mount_async
@@ -27831,7 +27362,6 @@ func (file *File) findEnclosingMountAsync(ctx context.Context, ioPriority int, c
 //
 //   - mount for given file or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) findEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.find_enclosing_mount_finish
@@ -27879,7 +27409,6 @@ func (file *File) findEnclosingMountFinish(res AsyncResulter) (*Mount, error) {
 //   - filename (optional): string containing the #GFile's base name, or NULL
 //     if given #GFile is invalid. The returned string should be freed with
 //     g_free() when no longer needed.
-//
 func (file *File) basename() string {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.get_basename
@@ -27918,7 +27447,6 @@ func (file *File) basename() string {
 //
 //   - ret to the specified child, or NULL if the display name couldn't be
 //     converted. Free the returned object with g_object_unref().
-//
 func (file *File) childForDisplayName(displayName string) (*File, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.get_child_for_display_name
@@ -27956,7 +27484,6 @@ func (file *File) childForDisplayName(displayName string) (*File, error) {
 //
 //   - ret (optional) structure to the parent of the given #GFile or NULL if
 //     there is no parent. Free the returned object with g_object_unref().
-//
 func (file *File) parent() *File {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.get_parent
@@ -27995,7 +27522,6 @@ func (file *File) parent() *File {
 //
 //   - utf8: string containing the #GFile's parse name. The returned string
 //     should be freed with g_free() when no longer needed.
-//
 func (file *File) parseName() string {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.get_parse_name
@@ -28026,7 +27552,6 @@ func (file *File) parseName() string {
 //   - filename (optional): string containing the #GFile's path, or NULL if no
 //     such path exists. The returned string should be freed with g_free() when
 //     no longer needed.
-//
 func (file *File) path() string {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.get_path
@@ -28062,7 +27587,6 @@ func (file *File) path() string {
 //   - filename (optional): string with the relative path from descendant to
 //     parent, or NULL if descendant doesn't have parent as prefix. The returned
 //     string should be freed with g_free() when no longer needed.
-//
 func (parent *File) relativePath(descendant Filer) string {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(parent))
 	fnarg := gclass.get_relative_path
@@ -28097,7 +27621,6 @@ func (parent *File) relativePath(descendant Filer) string {
 //   - utf8: string containing the #GFile's URI. If the #GFile was constructed
 //     with an invalid URI, an invalid URI is returned. The returned string
 //     should be freed with g_free() when no longer needed.
-//
 func (file *File) urI() string {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.get_uri
@@ -28120,7 +27643,7 @@ func (file *File) urI() string {
 
 // uriScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme as:
 //
-//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+//	URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 //
 // Common schemes include "file", "http", "ftp", etc.
 //
@@ -28135,7 +27658,6 @@ func (file *File) urI() string {
 //   - utf8 (optional): string containing the URI scheme for the given #GFile
 //     or NULL if the #GFile was constructed with an invalid URI. The returned
 //     string should be freed with g_free() when no longer needed.
-//
 func (file *File) uriScheme() string {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.get_uri_scheme
@@ -28170,7 +27692,6 @@ func (file *File) uriScheme() string {
 //
 //   - ok: TRUE if #GFile's backend supports the given URI scheme, FALSE if URI
 //     scheme is NULL, not supported, or #GFile is invalid.
-//
 func (file *File) hasURIScheme(uriScheme string) bool {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.has_uri_scheme
@@ -28205,7 +27726,6 @@ func (file *File) hasURIScheme(uriScheme string) bool {
 //   - guint: 0 if file is not a valid #GFile, otherwise an integer that can be
 //     used as hash value for the #GFile. This function is intended for easily
 //     hashing a #GFile to add to a Table or similar data structure.
-//
 func (file *File) hash() uint {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.hash
@@ -28240,7 +27760,6 @@ func (file *File) hash() uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if file is native.
-//
 func (file *File) isNative() bool {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.is_native
@@ -28280,7 +27799,6 @@ func (file *File) isNative() bool {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (file *File) makeDirectory(ctx context.Context) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.make_directory
@@ -28316,7 +27834,6 @@ func (file *File) makeDirectory(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) makeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.make_directory_async
@@ -28352,7 +27869,6 @@ func (file *File) makeDirectoryAsync(ctx context.Context, ioPriority int, callba
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) makeDirectoryFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.make_directory_finish
@@ -28388,7 +27904,6 @@ func (file *File) makeDirectoryFinish(result AsyncResulter) error {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - symlinkValue: string with the path for the target of the new symlink.
-//
 func (file *File) makeSymbolicLink(ctx context.Context, symlinkValue string) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.make_symbolic_link
@@ -28434,7 +27949,6 @@ func (file *File) makeSymbolicLink(ctx context.Context, symlinkValue string) err
 //   - diskUsage (optional): number of bytes of disk space used.
 //   - numDirs (optional): number of directories encountered.
 //   - numFiles (optional): number of non-directories encountered.
-//
 func (file *File) measureDiskUsageFinish(result AsyncResulter) (diskUsage, numDirs, numFiles uint64, goerr error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.measure_disk_usage_finish
@@ -28490,7 +28004,6 @@ func (file *File) measureDiskUsageFinish(result AsyncResulter) (diskUsage, numDi
 //
 //   - fileMonitor for the given file, or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) monitorDir(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.monitor_dir
@@ -28564,7 +28077,6 @@ func (file *File) monitorDir(ctx context.Context, flags FileMonitorFlags) (FileM
 //
 //   - fileMonitor for the given file, or NULL on error. Free the returned
 //     object with g_object_unref().
-//
 func (file *File) monitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.monitor_file
@@ -28632,7 +28144,6 @@ func (file *File) monitorFile(ctx context.Context, flags FileMonitorFlags) (File
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (location *File) mountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(location))
 	fnarg := gclass.mount_enclosing_volume
@@ -28673,7 +28184,6 @@ func (location *File) mountEnclosingVolume(ctx context.Context, flags MountMount
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (location *File) mountEnclosingVolumeFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(location))
 	fnarg := gclass.mount_enclosing_volume_finish
@@ -28715,7 +28225,6 @@ func (location *File) mountEnclosingVolumeFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation, or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) mountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.mount_mountable
@@ -28763,7 +28272,6 @@ func (file *File) mountMountable(ctx context.Context, flags MountMountFlags, mou
 // The function returns the following values:
 //
 //   - ret or NULL on error. Free the returned object with g_object_unref().
-//
 func (file *File) mountMountableFinish(result AsyncResulter) (*File, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.mount_mountable_finish
@@ -28831,7 +28339,6 @@ func (file *File) mountMountableFinish(result AsyncResulter) (*File, error) {
 //   - destination pointing to the destination location.
 //   - flags: set of CopyFlags.
 //   - progressCallback (optional): ProgressCallback function for updates.
-//
 func (source *File) move(ctx context.Context, destination Filer, flags FileCopyFlags, progressCallback FileProgressCallback) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(source))
 	fnarg := gclass.move
@@ -28896,7 +28403,6 @@ func (source *File) move(ctx context.Context, destination Filer, flags FileCopyF
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) openReadwrite(ctx context.Context) (*FileIOStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.open_readwrite
@@ -28941,7 +28447,6 @@ func (file *File) openReadwrite(ctx context.Context) (*FileIOStream, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) openReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.open_readwrite_async
@@ -28982,7 +28487,6 @@ func (file *File) openReadwriteAsync(ctx context.Context, ioPriority int, callba
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) openReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.open_readwrite_finish
@@ -29023,7 +28527,6 @@ func (file *File) openReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) pollMountable(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.poll_mountable
@@ -29059,7 +28562,6 @@ func (file *File) pollMountable(ctx context.Context, callback AsyncReadyCallback
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) pollMountableFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.poll_mountable_finish
@@ -29105,7 +28607,6 @@ func (file *File) pollMountableFinish(result AsyncResulter) error {
 //
 //   - ok: TRUE if the file's parent, grandparent, etc is prefix, FALSE
 //     otherwise.
-//
 func (prefix *File) prefixMatches(file Filer) bool {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(prefix))
 	fnarg := gclass.prefix_matches
@@ -29162,7 +28663,6 @@ func (prefix *File) prefixMatches(file Filer) bool {
 //
 //   - fileInfo or NULL if there was an error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) queryFilesystemInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.query_filesystem_info
@@ -29214,7 +28714,6 @@ func (file *File) queryFilesystemInfo(ctx context.Context, attributes string) (*
 //   - attributes: attribute query string.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) queryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.query_filesystem_info_async
@@ -29259,7 +28758,6 @@ func (file *File) queryFilesystemInfoAsync(ctx context.Context, attributes strin
 //
 //   - fileInfo for given file or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) queryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.query_filesystem_info_finish
@@ -29324,7 +28822,6 @@ func (file *File) queryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error
 //
 //   - fileInfo for the given file, or NULL on error. Free the returned object
 //     with g_object_unref().
-//
 func (file *File) queryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.query_info
@@ -29380,7 +28877,6 @@ func (file *File) queryInfo(ctx context.Context, attributes string, flags FileQu
 //   - flags: set of QueryInfoFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) queryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.query_info_async
@@ -29428,7 +28924,6 @@ func (file *File) queryInfoAsync(ctx context.Context, attributes string, flags F
 //
 //   - fileInfo for given file or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) queryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.query_info_finish
@@ -29475,7 +28970,6 @@ func (file *File) queryInfoFinish(res AsyncResulter) (*FileInfo, error) {
 //
 //   - fileAttributeInfoList describing the settable attributes. When you are
 //     done with it, release it with g_file_attribute_info_list_unref().
-//
 func (file *File) querySettableAttributes(ctx context.Context) (*FileAttributeInfoList, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.query_settable_attributes
@@ -29529,7 +29023,6 @@ func (file *File) querySettableAttributes(ctx context.Context) (*FileAttributeIn
 //
 //   - fileAttributeInfoList describing the writable namespaces. When you are
 //     done with it, release it with g_file_attribute_info_list_unref().
-//
 func (file *File) queryWritableNamespaces(ctx context.Context) (*FileAttributeInfoList, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.query_writable_namespaces
@@ -29580,7 +29073,6 @@ func (file *File) queryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) readAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.read_async
@@ -29621,7 +29113,6 @@ func (file *File) readAsync(ctx context.Context, ioPriority int, callback AsyncR
 //
 //   - fileInputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) readFinish(res AsyncResulter) (*FileInputStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.read_finish
@@ -29669,7 +29160,6 @@ func (file *File) readFinish(res AsyncResulter) (*FileInputStream, error) {
 //
 //   - fileInputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) readFn(ctx context.Context) (*FileInputStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.read_fn
@@ -29751,7 +29241,6 @@ func (file *File) readFn(ctx context.Context) (*FileInputStream, error) {
 //
 //   - fileOutputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.replace
@@ -29815,7 +29304,6 @@ func (file *File) replace(ctx context.Context, etag string, makeBackup bool, fla
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) replaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.replace_async
@@ -29870,7 +29358,6 @@ func (file *File) replaceAsync(ctx context.Context, etag string, makeBackup bool
 //
 //   - fileOutputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) replaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.replace_finish
@@ -29921,7 +29408,6 @@ func (file *File) replaceFinish(res AsyncResulter) (*FileOutputStream, error) {
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) replaceReadwrite(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.replace_readwrite
@@ -29985,7 +29471,6 @@ func (file *File) replaceReadwrite(ctx context.Context, etag string, makeBackup 
 //   - flags: set of CreateFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) replaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.replace_readwrite_async
@@ -30040,7 +29525,6 @@ func (file *File) replaceReadwriteAsync(ctx context.Context, etag string, makeBa
 //
 //   - fileIOStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (file *File) replaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.replace_readwrite_finish
@@ -30080,7 +29564,6 @@ func (file *File) replaceReadwriteFinish(res AsyncResulter) (*FileIOStream, erro
 //
 //   - ret to the resolved path. NULL if relative_path is NULL or if file is
 //     invalid. Free the returned object with g_object_unref().
-//
 func (file *File) resolveRelativePath(relativePath string) *File {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.resolve_relative_path
@@ -30122,7 +29605,6 @@ func (file *File) resolveRelativePath(relativePath string) *File {
 //   - valueP (optional): pointer to the value (or the pointer itself if the
 //     type is a pointer type).
 //   - flags: set of QueryInfoFlags.
-//
 func (file *File) setAttribute(ctx context.Context, attribute string, typ FileAttributeType, valueP unsafe.Pointer, flags FileQueryInfoFlags) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.set_attribute
@@ -30179,7 +29661,6 @@ func (file *File) setAttribute(ctx context.Context, attribute string, typ FileAt
 //   - flags: QueryInfoFlags.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional): ReadyCallback.
-//
 func (file *File) setAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.set_attributes_async
@@ -30225,7 +29706,6 @@ func (file *File) setAttributesAsync(ctx context.Context, info *FileInfo, flags 
 // The function returns the following values:
 //
 //   - info: Info.
-//
 func (file *File) setAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.set_attributes_finish
@@ -30270,7 +29750,6 @@ func (file *File) setAttributesFinish(result AsyncResulter) (*FileInfo, error) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - info: Info.
 //   - flags: QueryInfoFlags.
-//
 func (file *File) setAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.set_attributes_from_info
@@ -30330,7 +29809,6 @@ func (file *File) setAttributesFromInfo(ctx context.Context, info *FileInfo, fla
 //
 //   - ret specifying what file was renamed to, or NULL if there was an error.
 //     Free the returned object with g_object_unref().
-//
 func (file *File) setDisplayName(ctx context.Context, displayName string) (*File, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.set_display_name
@@ -30380,7 +29858,6 @@ func (file *File) setDisplayName(ctx context.Context, displayName string) (*File
 //   - displayName: string.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) setDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.set_display_name_async
@@ -30424,7 +29901,6 @@ func (file *File) setDisplayNameAsync(ctx context.Context, displayName string, i
 // The function returns the following values:
 //
 //   - ret or NULL on error. Free the returned object with g_object_unref().
-//
 func (file *File) setDisplayNameFinish(res AsyncResulter) (*File, error) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.set_display_name_finish
@@ -30469,7 +29945,6 @@ func (file *File) setDisplayNameFinish(res AsyncResulter) (*File, error) {
 //   - flags affecting the operation.
 //   - startOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) startMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.start_mountable
@@ -30513,7 +29988,6 @@ func (file *File) startMountable(ctx context.Context, flags DriveStartFlags, sta
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) startMountableFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.start_mountable_finish
@@ -30553,7 +30027,6 @@ func (file *File) startMountableFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation, or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) stopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.stop_mountable
@@ -30597,7 +30070,6 @@ func (file *File) stopMountable(ctx context.Context, flags MountUnmountFlags, mo
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) stopMountableFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.stop_mountable_finish
@@ -30636,7 +30108,6 @@ func (file *File) stopMountableFinish(result AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (file *File) trash(ctx context.Context) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.trash
@@ -30672,7 +30143,6 @@ func (file *File) trash(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (file *File) trashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.trash_async
@@ -30708,7 +30178,6 @@ func (file *File) trashAsync(ctx context.Context, ioPriority int, callback Async
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) trashFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.trash_finish
@@ -30749,7 +30218,6 @@ func (file *File) trashFinish(result AsyncResulter) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the operation.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) unmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.unmount_mountable
@@ -30790,7 +30258,6 @@ func (file *File) unmountMountable(ctx context.Context, flags MountUnmountFlags,
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) unmountMountableFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.unmount_mountable_finish
@@ -30830,7 +30297,6 @@ func (file *File) unmountMountableFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional): Operation, or NULL to avoid user interaction.
 //   - callback (optional) to call when the request is satisfied, or NULL.
-//
 func (file *File) unmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.unmount_mountable_with_operation
@@ -30874,7 +30340,6 @@ func (file *File) unmountMountableWithOperation(ctx context.Context, flags Mount
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (file *File) unmountMountableWithOperationFinish(result AsyncResulter) error {
 	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
 	fnarg := gclass.unmount_mountable_with_operation_finish
@@ -30920,7 +30385,6 @@ func (file *File) unmountMountableWithOperationFinish(result AsyncResulter) erro
 // The function returns the following values:
 //
 //   - file: new #GFile. Free the returned object with g_object_unref().
-//
 func NewFileForCommandlineArg(arg string) *File {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -30958,7 +30422,6 @@ func NewFileForCommandlineArg(arg string) *File {
 // The function returns the following values:
 //
 //   - file: new #GFile.
-//
 func NewFileForCommandlineArgAndCwd(arg, cwd string) *File {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -30993,7 +30456,6 @@ func NewFileForCommandlineArgAndCwd(arg, cwd string) *File {
 //
 //   - file: new #GFile for the given path. Free the returned object with
 //     g_object_unref().
-//
 func NewFileForPath(path string) *File {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -31023,7 +30485,6 @@ func NewFileForPath(path string) *File {
 //
 //   - file: new #GFile for the given uri. Free the returned object with
 //     g_object_unref().
-//
 func NewFileForURI(uri string) *File {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -31061,7 +30522,6 @@ func NewFileForURI(uri string) *File {
 //
 //   - iostream: on return, a IOStream for the created file.
 //   - file: new #GFile. Free the returned object with g_object_unref().
-//
 func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 	var _arg1 *C.char          // out
 	var _arg2 *C.GFileIOStream // in
@@ -31101,7 +30561,6 @@ func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 // The function returns the following values:
 //
 //   - file: new #GFile.
-//
 func FileParseName(parseName string) *File {
 	var _arg1 *C.char  // out
 	var _cret *C.GFile // in
@@ -31191,7 +30650,6 @@ func marshalIcon(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
-//
 func (icon1 *Icon) Equal(icon2 Iconner) bool {
 	var _arg0 *C.GIcon   // out
 	var _arg1 *C.GIcon   // out
@@ -31227,7 +30685,6 @@ func (icon1 *Icon) Equal(icon2 Iconner) bool {
 //
 //   - variant (optional) or NULL when serialization fails. The #GVariant will
 //     not be floating.
-//
 func (icon *Icon) Serialize() *glib.Variant {
 	var _arg0 *C.GIcon    // out
 	var _cret *C.GVariant // in
@@ -31272,7 +30729,6 @@ func (icon *Icon) Serialize() *glib.Variant {
 //
 //   - utf8 (optional): allocated NUL-terminated UTF8 string or NULL if icon
 //     can't be serialized. Use g_free() to free.
-//
 func (icon *Icon) String() string {
 	var _arg0 *C.GIcon // out
 	var _cret *C.gchar // in
@@ -31301,7 +30757,6 @@ func (icon *Icon) String() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
-//
 func (icon1 *Icon) equal(icon2 Iconner) bool {
 	gclass := (*C.GIconIface)(coreglib.PeekParentClass(icon1))
 	fnarg := gclass.equal
@@ -31336,7 +30791,6 @@ func (icon1 *Icon) equal(icon2 Iconner) bool {
 //
 //   - guint containing a hash for the icon, suitable for use in a Table or
 //     similar data structure.
-//
 func (icon *Icon) hash() uint {
 	gclass := (*C.GIconIface)(coreglib.PeekParentClass(icon))
 	fnarg := gclass.hash
@@ -31366,7 +30820,6 @@ func (icon *Icon) hash() uint {
 //
 //   - variant (optional) or NULL when serialization fails. The #GVariant will
 //     not be floating.
-//
 func (icon *Icon) serialize() *glib.Variant {
 	gclass := (*C.GIconIface)(coreglib.PeekParentClass(icon))
 	fnarg := gclass.serialize
@@ -31404,7 +30857,6 @@ func (icon *Icon) serialize() *glib.Variant {
 // The function returns the following values:
 //
 //   - icon (optional) or NULL when deserialization fails.
-//
 func IconDeserialize(value *glib.Variant) *Icon {
 	var _arg1 *C.GVariant // out
 	var _cret *C.GIcon    // in
@@ -31433,7 +30885,6 @@ func IconDeserialize(value *glib.Variant) *Icon {
 //
 //   - guint containing a hash for the icon, suitable for use in a Table or
 //     similar data structure.
-//
 func IconHash(icon unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -31464,7 +30915,6 @@ func IconHash(icon unsafe.Pointer) uint {
 // The function returns the following values:
 //
 //   - icon: object implementing the #GIcon interface or NULL if error is set.
-//
 func NewIconForString(str string) (*Icon, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GIcon  // in
@@ -31582,7 +31032,6 @@ func marshalInitable(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (initable *Initable) Init(ctx context.Context) error {
 	var _arg0 *C.GInitable    // out
 	var _arg1 *C.GCancellable // out
@@ -31649,7 +31098,6 @@ func (initable *Initable) Init(ctx context.Context) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (initable *Initable) init(ctx context.Context) error {
 	gclass := (*C.GInitableIface)(coreglib.PeekParentClass(initable))
 	fnarg := gclass.init
@@ -31781,7 +31229,6 @@ func (list *ListModel) ConnectItemsChanged(f func(position, removed, added uint)
 // The function returns the following values:
 //
 //   - gType of the items contained in list.
-//
 func (list *ListModel) ItemType() coreglib.Type {
 	var _arg0 *C.GListModel // out
 	var _cret C.GType       // in
@@ -31807,7 +31254,6 @@ func (list *ListModel) ItemType() coreglib.Type {
 // The function returns the following values:
 //
 //   - guint: number of items in list.
-//
 func (list *ListModel) NItems() uint {
 	var _arg0 *C.GListModel // out
 	var _cret C.guint       // in
@@ -31837,7 +31283,6 @@ func (list *ListModel) NItems() uint {
 // The function returns the following values:
 //
 //   - object (optional) at position.
-//
 func (list *ListModel) Item(position uint) *coreglib.Object {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
@@ -31883,7 +31328,6 @@ func (list *ListModel) Item(position uint) *coreglib.Object {
 //   - position at which list changed.
 //   - removed: number of items removed.
 //   - added: number of items added.
-//
 func (list *ListModel) ItemsChanged(position, removed, added uint) {
 	var _arg0 *C.GListModel // out
 	var _arg1 C.guint       // out
@@ -31915,7 +31359,6 @@ func (list *ListModel) ItemsChanged(position, removed, added uint) {
 // The function returns the following values:
 //
 //   - object (optional) at position.
-//
 func (list *ListModel) item(position uint) *coreglib.Object {
 	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))
 	fnarg := gclass.get_item
@@ -31947,7 +31390,6 @@ func (list *ListModel) item(position uint) *coreglib.Object {
 // The function returns the following values:
 //
 //   - gType of the items contained in list.
-//
 func (list *ListModel) itemType() coreglib.Type {
 	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))
 	fnarg := gclass.get_item_type
@@ -31976,7 +31418,6 @@ func (list *ListModel) itemType() coreglib.Type {
 // The function returns the following values:
 //
 //   - guint: number of items in list.
-//
 func (list *ListModel) nItems() uint {
 	gclass := (*C.GListModelInterface)(coreglib.PeekParentClass(list))
 	fnarg := gclass.get_n_items
@@ -32048,7 +31489,6 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 //   - typ (optional): location to store the type of the loaded icon, NULL to
 //     ignore.
 //   - inputStream to read the icon from.
-//
 func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg3 *C.GCancellable  // out
@@ -32111,7 +31551,6 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - size: integer.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
 	var _arg0 *C.GLoadableIcon      // out
 	var _arg2 *C.GCancellable       // out
@@ -32150,7 +31589,6 @@ func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback Asyn
 //   - typ (optional): location to store the type of the loaded icon, NULL to
 //     ignore.
 //   - inputStream to read the icon from.
-//
 func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, error) {
 	var _arg0 *C.GLoadableIcon // out
 	var _arg1 *C.GAsyncResult  // out
@@ -32210,7 +31648,6 @@ func (icon *LoadableIcon) LoadFinish(res AsyncResulter) (string, InputStreamer, 
 //   - typ (optional): location to store the type of the loaded icon, NULL to
 //     ignore.
 //   - inputStream to read the icon from.
-//
 func (icon *LoadableIcon) load(ctx context.Context, size int) (string, InputStreamer, error) {
 	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
 	fnarg := gclass.load
@@ -32276,7 +31713,6 @@ func (icon *LoadableIcon) load(ctx context.Context, size int) (string, InputStre
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - size: integer.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (icon *LoadableIcon) loadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
 	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
 	fnarg := gclass.load_async
@@ -32318,7 +31754,6 @@ func (icon *LoadableIcon) loadAsync(ctx context.Context, size int, callback Asyn
 //   - typ (optional): location to store the type of the loaded icon, NULL to
 //     ignore.
 //   - inputStream to read the icon from.
-//
 func (icon *LoadableIcon) loadFinish(res AsyncResulter) (string, InputStreamer, error) {
 	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
 	fnarg := gclass.load_finish
@@ -32399,23 +31834,23 @@ func (icon *LoadableIcon) loadFinish(res AsyncResulter) (string, InputStreamer, 
 //
 // See MonitorWarningLevel for details on the various warning levels.
 //
-//    static void
-//    warning_cb (GMemoryMonitor *m, GMemoryMonitorWarningLevel level)
-//    {
-//      g_debug ("Warning level: d", level);
-//      if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
-//        drop_caches ();
-//    }
+//	static void
+//	warning_cb (GMemoryMonitor *m, GMemoryMonitorWarningLevel level)
+//	{
+//	  g_debug ("Warning level: d", level);
+//	  if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
+//	    drop_caches ();
+//	}
 //
-//    static GMemoryMonitor *
-//    monitor_low_memory (void)
-//    {
-//      GMemoryMonitor *m;
-//      m = g_memory_monitor_dup_default ();
-//      g_signal_connect (G_OBJECT (m), "low-memory-warning",
-//                        G_CALLBACK (warning_cb), NULL);
-//      return m;
-//    }
+//	static GMemoryMonitor *
+//	monitor_low_memory (void)
+//	{
+//	  GMemoryMonitor *m;
+//	  m = g_memory_monitor_dup_default ();
+//	  g_signal_connect (G_OBJECT (m), "low-memory-warning",
+//	                    G_CALLBACK (warning_cb), NULL);
+//	  return m;
+//	}
 //
 // Don't forget to disconnect the Monitor::low-memory-warning signal, and unref
 // the Monitor itself when exiting.
@@ -32487,7 +31922,6 @@ func (monitor *MemoryMonitor) lowMemoryWarning(level MemoryMonitorWarningLevel) 
 // The function returns the following values:
 //
 //   - memoryMonitor: new reference to the default Monitor.
-//
 func MemoryMonitorDupDefault() *MemoryMonitor {
 	var _cret *C.GMemoryMonitor // in
 
@@ -32636,7 +32070,6 @@ func (mount *Mount) ConnectUnmounted(f func()) coreglib.SignalHandle {
 // The function returns the following values:
 //
 //   - ok: TRUE if the mount can be ejected.
-//
 func (mount *Mount) CanEject() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -32660,7 +32093,6 @@ func (mount *Mount) CanEject() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the mount can be unmounted.
-//
 func (mount *Mount) CanUnmount() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -32690,7 +32122,6 @@ func (mount *Mount) CanUnmount() bool {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the unmount if required for eject.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg2 *C.GCancellable       // out
@@ -32726,7 +32157,6 @@ func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -32758,7 +32188,6 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 //   - flags affecting the unmount if required for eject.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg3 *C.GCancellable       // out
@@ -32797,7 +32226,6 @@ func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFl
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -32827,7 +32255,6 @@ func (mount *Mount) EjectWithOperationFinish(result AsyncResulter) error {
 //
 //   - file: #GFile. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (mount *Mount) DefaultLocation() *File {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
@@ -32854,7 +32281,6 @@ func (mount *Mount) DefaultLocation() *File {
 //   - drive (optional) or NULL if mount is not associated with a volume or a
 //     drive. The returned object should be unreffed with g_object_unref() when
 //     no longer needed.
-//
 func (mount *Mount) Drive() *Drive {
 	var _arg0 *C.GMount // out
 	var _cret *C.GDrive // in
@@ -32879,7 +32305,6 @@ func (mount *Mount) Drive() *Drive {
 //
 //   - icon: #GIcon. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (mount *Mount) Icon() *Icon {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
@@ -32902,7 +32327,6 @@ func (mount *Mount) Icon() *Icon {
 //
 //   - utf8: name for the given mount. The returned string should be freed with
 //     g_free() when no longer needed.
-//
 func (mount *Mount) Name() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
@@ -32926,7 +32350,6 @@ func (mount *Mount) Name() string {
 //
 //   - file: #GFile. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (mount *Mount) Root() *File {
 	var _arg0 *C.GMount // out
 	var _cret *C.GFile  // in
@@ -32949,7 +32372,6 @@ func (mount *Mount) Root() *File {
 //
 //   - utf8 (optional): sorting key for mount or NULL if no such key is
 //     available.
-//
 func (mount *Mount) SortKey() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.gchar  // in
@@ -32974,7 +32396,6 @@ func (mount *Mount) SortKey() string {
 //
 //   - icon: #GIcon. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (mount *Mount) SymbolicIcon() *Icon {
 	var _arg0 *C.GMount // out
 	var _cret *C.GIcon  // in
@@ -32999,7 +32420,6 @@ func (mount *Mount) SymbolicIcon() *Icon {
 //
 //   - utf8 (optional): UUID for mount or NULL if no UUID can be computed.
 //     The returned string should be freed with g_free() when no longer needed.
-//
 func (mount *Mount) UUID() string {
 	var _arg0 *C.GMount // out
 	var _cret *C.char   // in
@@ -33026,7 +32446,6 @@ func (mount *Mount) UUID() string {
 //   - volume (optional) or NULL if mount is not associated with a volume.
 //     The returned object should be unreffed with g_object_unref() when no
 //     longer needed.
-//
 func (mount *Mount) Volume() *Volume {
 	var _arg0 *C.GMount  // out
 	var _cret *C.GVolume // in
@@ -33063,7 +32482,6 @@ func (mount *Mount) Volume() *Volume {
 //   - forceRescan: whether to force a rescan of the content. Otherwise a cached
 //     result will be used if available.
 //   - callback (optional): ReadyCallback.
-//
 func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg2 *C.GCancellable       // out
@@ -33105,7 +32523,6 @@ func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, call
 //
 //   - utf8s: NULL-terminated array of content types or NULL on error. Caller
 //     should free this array with g_strfreev() when done with it.
-//
 func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -33164,7 +32581,6 @@ func (mount *Mount) GuessContentTypeFinish(result AsyncResulter) ([]string, erro
 //
 //   - utf8s: NULL-terminated array of content types or NULL on error. Caller
 //     should free this array with g_strfreev() when done with it.
-//
 func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error) {
 	var _arg0 *C.GMount       // out
 	var _arg2 *C.GCancellable // out
@@ -33236,7 +32652,6 @@ func (mount *Mount) GuessContentTypeSync(ctx context.Context, forceRescan bool) 
 // The function returns the following values:
 //
 //   - ok: TRUE if mount is shadowed.
-//
 func (mount *Mount) IsShadowed() bool {
 	var _arg0 *C.GMount  // out
 	var _cret C.gboolean // in
@@ -33270,7 +32685,6 @@ func (mount *Mount) IsShadowed() bool {
 //   - flags affecting the operation.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg3 *C.GCancellable       // out
@@ -33309,7 +32723,6 @@ func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOpe
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) RemountFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -33355,7 +32768,6 @@ func (mount *Mount) Shadow() {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the operation.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg2 *C.GCancellable       // out
@@ -33391,7 +32803,6 @@ func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callba
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -33423,7 +32834,6 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GMount             // out
 	var _arg3 *C.GCancellable       // out
@@ -33462,7 +32872,6 @@ func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmount
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) UnmountWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GMount       // out
 	var _arg1 *C.GAsyncResult // out
@@ -33502,7 +32911,6 @@ func (mount *Mount) Unshadow() {
 // The function returns the following values:
 //
 //   - ok: TRUE if the mount can be ejected.
-//
 func (mount *Mount) canEject() bool {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.can_eject
@@ -33529,7 +32937,6 @@ func (mount *Mount) canEject() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the mount can be unmounted.
-//
 func (mount *Mount) canUnmount() bool {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.can_unmount
@@ -33574,7 +32981,6 @@ func (mount *Mount) changed() {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the unmount if required for eject.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.eject
@@ -33613,7 +33019,6 @@ func (mount *Mount) eject(ctx context.Context, flags MountUnmountFlags, callback
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) ejectFinish(result AsyncResulter) error {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.eject_finish
@@ -33648,7 +33053,6 @@ func (mount *Mount) ejectFinish(result AsyncResulter) error {
 //   - flags affecting the unmount if required for eject.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.eject_with_operation
@@ -33690,7 +33094,6 @@ func (mount *Mount) ejectWithOperation(ctx context.Context, flags MountUnmountFl
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) ejectWithOperationFinish(result AsyncResulter) error {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.eject_with_operation_finish
@@ -33723,7 +33126,6 @@ func (mount *Mount) ejectWithOperationFinish(result AsyncResulter) error {
 //
 //   - file: #GFile. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (mount *Mount) defaultLocation() *File {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_default_location
@@ -33753,7 +33155,6 @@ func (mount *Mount) defaultLocation() *File {
 //   - drive (optional) or NULL if mount is not associated with a volume or a
 //     drive. The returned object should be unreffed with g_object_unref() when
 //     no longer needed.
-//
 func (mount *Mount) drive() *Drive {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_drive
@@ -33781,7 +33182,6 @@ func (mount *Mount) drive() *Drive {
 //
 //   - icon: #GIcon. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (mount *Mount) icon() *Icon {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_icon
@@ -33807,7 +33207,6 @@ func (mount *Mount) icon() *Icon {
 //
 //   - utf8: name for the given mount. The returned string should be freed with
 //     g_free() when no longer needed.
-//
 func (mount *Mount) name() string {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_name
@@ -33834,7 +33233,6 @@ func (mount *Mount) name() string {
 //
 //   - file: #GFile. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (mount *Mount) root() *File {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_root
@@ -33860,7 +33258,6 @@ func (mount *Mount) root() *File {
 //
 //   - utf8 (optional): sorting key for mount or NULL if no such key is
 //     available.
-//
 func (mount *Mount) sortKey() string {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_sort_key
@@ -33888,7 +33285,6 @@ func (mount *Mount) sortKey() string {
 //
 //   - icon: #GIcon. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (mount *Mount) symbolicIcon() *Icon {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_symbolic_icon
@@ -33916,7 +33312,6 @@ func (mount *Mount) symbolicIcon() *Icon {
 //
 //   - utf8 (optional): UUID for mount or NULL if no UUID can be computed.
 //     The returned string should be freed with g_free() when no longer needed.
-//
 func (mount *Mount) uuiD() string {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_uuid
@@ -33946,7 +33341,6 @@ func (mount *Mount) uuiD() string {
 //   - volume (optional) or NULL if mount is not associated with a volume.
 //     The returned object should be unreffed with g_object_unref() when no
 //     longer needed.
-//
 func (mount *Mount) volume() *Volume {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.get_volume
@@ -33986,7 +33380,6 @@ func (mount *Mount) volume() *Volume {
 //   - forceRescan: whether to force a rescan of the content. Otherwise a cached
 //     result will be used if available.
 //   - callback (optional): ReadyCallback.
-//
 func (mount *Mount) guessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback) {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.guess_content_type
@@ -34031,7 +33424,6 @@ func (mount *Mount) guessContentType(ctx context.Context, forceRescan bool, call
 //
 //   - utf8s: NULL-terminated array of content types or NULL on error. Caller
 //     should free this array with g_strfreev() when done with it.
-//
 func (mount *Mount) guessContentTypeFinish(result AsyncResulter) ([]string, error) {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.guess_content_type_finish
@@ -34093,7 +33485,6 @@ func (mount *Mount) guessContentTypeFinish(result AsyncResulter) ([]string, erro
 //
 //   - utf8s: NULL-terminated array of content types or NULL on error. Caller
 //     should free this array with g_strfreev() when done with it.
-//
 func (mount *Mount) guessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error) {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.guess_content_type_sync
@@ -34171,7 +33562,6 @@ func (mount *Mount) preUnmount() {
 //   - flags affecting the operation.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.remount
@@ -34213,7 +33603,6 @@ func (mount *Mount) remount(ctx context.Context, flags MountMountFlags, mountOpe
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) remountFinish(result AsyncResulter) error {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.remount_finish
@@ -34249,7 +33638,6 @@ func (mount *Mount) remountFinish(result AsyncResulter) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the operation.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.unmount
@@ -34288,7 +33676,6 @@ func (mount *Mount) unmount(ctx context.Context, flags MountUnmountFlags, callba
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) unmountFinish(result AsyncResulter) error {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.unmount_finish
@@ -34323,7 +33710,6 @@ func (mount *Mount) unmountFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (mount *Mount) unmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.unmount_with_operation
@@ -34365,7 +33751,6 @@ func (mount *Mount) unmountWithOperation(ctx context.Context, flags MountUnmount
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (mount *Mount) unmountWithOperationFinish(result AsyncResulter) error {
 	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
 	fnarg := gclass.unmount_with_operation_finish
@@ -34481,7 +33866,6 @@ func (monitor *NetworkMonitor) ConnectNetworkChanged(f func(networkAvailable boo
 //
 //   - ctx (optional) or NULL.
 //   - connectable: Connectable.
-//
 func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketConnectabler) error {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg2 *C.GCancellable       // out
@@ -34524,7 +33908,6 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 //   - ctx (optional) or NULL.
 //   - connectable: Connectable.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor    // out
 	var _arg2 *C.GCancellable       // out
@@ -34557,7 +33940,6 @@ func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable So
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 	var _arg0 *C.GNetworkMonitor // out
 	var _arg1 *C.GAsyncResult    // out
@@ -34602,7 +33984,6 @@ func (monitor *NetworkMonitor) CanReachFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - networkConnectivity: network connectivity state.
-//
 func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 	var _arg0 *C.GNetworkMonitor     // out
 	var _cret C.GNetworkConnectivity // in
@@ -34627,7 +34008,6 @@ func (monitor *NetworkMonitor) Connectivity() NetworkConnectivity {
 // The function returns the following values:
 //
 //   - ok: whether the network is available.
-//
 func (monitor *NetworkMonitor) NetworkAvailable() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
@@ -34652,7 +34032,6 @@ func (monitor *NetworkMonitor) NetworkAvailable() bool {
 // The function returns the following values:
 //
 //   - ok: whether the connection is metered.
-//
 func (monitor *NetworkMonitor) NetworkMetered() bool {
 	var _arg0 *C.GNetworkMonitor // out
 	var _cret C.gboolean         // in
@@ -34691,7 +34070,6 @@ func (monitor *NetworkMonitor) NetworkMetered() bool {
 //
 //   - ctx (optional) or NULL.
 //   - connectable: Connectable.
-//
 func (monitor *NetworkMonitor) canReach(ctx context.Context, connectable SocketConnectabler) error {
 	gclass := (*C.GNetworkMonitorInterface)(coreglib.PeekParentClass(monitor))
 	fnarg := gclass.can_reach
@@ -34737,7 +34115,6 @@ func (monitor *NetworkMonitor) canReach(ctx context.Context, connectable SocketC
 //   - ctx (optional) or NULL.
 //   - connectable: Connectable.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (monitor *NetworkMonitor) canReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	gclass := (*C.GNetworkMonitorInterface)(coreglib.PeekParentClass(monitor))
 	fnarg := gclass.can_reach_async
@@ -34773,7 +34150,6 @@ func (monitor *NetworkMonitor) canReachAsync(ctx context.Context, connectable So
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (monitor *NetworkMonitor) canReachFinish(result AsyncResulter) error {
 	gclass := (*C.GNetworkMonitorInterface)(coreglib.PeekParentClass(monitor))
 	fnarg := gclass.can_reach_finish
@@ -34821,7 +34197,6 @@ func (monitor *NetworkMonitor) networkChanged(networkAvailable bool) {
 //
 //   - networkMonitor which will be a dummy object if no network monitor is
 //     available.
-//
 func NetworkMonitorGetDefault() *NetworkMonitor {
 	var _cret *C.GNetworkMonitor // in
 
@@ -34890,7 +34265,6 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if stream is pollable, FALSE if not.
-//
 func (stream *PollableInputStream) CanPoll() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
@@ -34925,7 +34299,6 @@ func (stream *PollableInputStream) CanPoll() bool {
 // The function returns the following values:
 //
 //   - source: new #GSource.
-//
 func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Source {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg1 *C.GCancellable         // out
@@ -34968,7 +34341,6 @@ func (stream *PollableInputStream) CreateSource(ctx context.Context) *glib.Sourc
 //   - ok: TRUE if stream is readable, FALSE if not. If an error has occurred
 //     on stream, this will result in g_pollable_input_stream_is_readable()
 //     returning TRUE, and the next attempt to read will return the error.
-//
 func (stream *PollableInputStream) IsReadable() bool {
 	var _arg0 *C.GPollableInputStream // out
 	var _cret C.gboolean              // in
@@ -35007,7 +34379,6 @@ func (stream *PollableInputStream) IsReadable() bool {
 //
 //   - gssize: number of bytes read, or -1 on error (including
 //     G_IO_ERROR_WOULD_BLOCK).
-//
 func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableInputStream // out
 	var _arg3 *C.GCancellable         // out
@@ -35054,7 +34425,6 @@ func (stream *PollableInputStream) ReadNonblocking(ctx context.Context, buffer [
 // The function returns the following values:
 //
 //   - ok: TRUE if stream is pollable, FALSE if not.
-//
 func (stream *PollableInputStream) canPoll() bool {
 	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.can_poll
@@ -35092,7 +34462,6 @@ func (stream *PollableInputStream) canPoll() bool {
 // The function returns the following values:
 //
 //   - source: new #GSource.
-//
 func (stream *PollableInputStream) createSource(ctx context.Context) *glib.Source {
 	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.create_source
@@ -35138,7 +34507,6 @@ func (stream *PollableInputStream) createSource(ctx context.Context) *glib.Sourc
 //   - ok: TRUE if stream is readable, FALSE if not. If an error has occurred
 //     on stream, this will result in g_pollable_input_stream_is_readable()
 //     returning TRUE, and the next attempt to read will return the error.
-//
 func (stream *PollableInputStream) isReadable() bool {
 	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.is_readable
@@ -35180,7 +34548,6 @@ func (stream *PollableInputStream) isReadable() bool {
 //
 //   - gssize: number of bytes read, or -1 on error (including
 //     G_IO_ERROR_WOULD_BLOCK).
-//
 func (stream *PollableInputStream) readNonblocking(buffer []byte) (int, error) {
 	gclass := (*C.GPollableInputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.read_nonblocking
@@ -35271,7 +34638,6 @@ func marshalPollableOutputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if stream is pollable, FALSE if not.
-//
 func (stream *PollableOutputStream) CanPoll() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
@@ -35306,7 +34672,6 @@ func (stream *PollableOutputStream) CanPoll() bool {
 // The function returns the following values:
 //
 //   - source: new #GSource.
-//
 func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Source {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg1 *C.GCancellable          // out
@@ -35349,7 +34714,6 @@ func (stream *PollableOutputStream) CreateSource(ctx context.Context) *glib.Sour
 //   - ok: TRUE if stream is writable, FALSE if not. If an error has occurred
 //     on stream, this will result in g_pollable_output_stream_is_writable()
 //     returning TRUE, and the next attempt to write will return the error.
-//
 func (stream *PollableOutputStream) IsWritable() bool {
 	var _arg0 *C.GPollableOutputStream // out
 	var _cret C.gboolean               // in
@@ -35392,7 +34756,6 @@ func (stream *PollableOutputStream) IsWritable() bool {
 //
 //   - gssize: number of bytes written, or -1 on error (including
 //     G_IO_ERROR_WOULD_BLOCK).
-//
 func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg3 *C.GCancellable          // out
@@ -35457,7 +34820,6 @@ func (stream *PollableOutputStream) WriteNonblocking(ctx context.Context, buffer
 //     G_POLLABLE_RETURN_WOULD_BLOCK if the stream is not currently writable
 //     (and error is *not* set), or G_POLLABLE_RETURN_FAILED if there was an
 //     error in which case error will be set.
-//
 func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vectors []OutputVector) (uint, PollableReturn, error) {
 	var _arg0 *C.GPollableOutputStream // out
 	var _arg4 *C.GCancellable          // out
@@ -35512,7 +34874,6 @@ func (stream *PollableOutputStream) WritevNonblocking(ctx context.Context, vecto
 // The function returns the following values:
 //
 //   - ok: TRUE if stream is pollable, FALSE if not.
-//
 func (stream *PollableOutputStream) canPoll() bool {
 	gclass := (*C.GPollableOutputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.can_poll
@@ -35550,7 +34911,6 @@ func (stream *PollableOutputStream) canPoll() bool {
 // The function returns the following values:
 //
 //   - source: new #GSource.
-//
 func (stream *PollableOutputStream) createSource(ctx context.Context) *glib.Source {
 	gclass := (*C.GPollableOutputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.create_source
@@ -35596,7 +34956,6 @@ func (stream *PollableOutputStream) createSource(ctx context.Context) *glib.Sour
 //   - ok: TRUE if stream is writable, FALSE if not. If an error has occurred
 //     on stream, this will result in g_pollable_output_stream_is_writable()
 //     returning TRUE, and the next attempt to write will return the error.
-//
 func (stream *PollableOutputStream) isWritable() bool {
 	gclass := (*C.GPollableOutputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.is_writable
@@ -35641,7 +35000,6 @@ func (stream *PollableOutputStream) isWritable() bool {
 //
 //   - gssize: number of bytes written, or -1 on error (including
 //     G_IO_ERROR_WOULD_BLOCK).
-//
 func (stream *PollableOutputStream) writeNonblocking(buffer []byte) (int, error) {
 	gclass := (*C.GPollableOutputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.write_nonblocking
@@ -35701,7 +35059,6 @@ func (stream *PollableOutputStream) writeNonblocking(buffer []byte) (int, error)
 //     G_POLLABLE_RETURN_WOULD_BLOCK if the stream is not currently writable
 //     (and error is *not* set), or G_POLLABLE_RETURN_FAILED if there was an
 //     error in which case error will be set.
-//
 func (stream *PollableOutputStream) writevNonblocking(vectors []OutputVector) (uint, PollableReturn, error) {
 	gclass := (*C.GPollableOutputStreamInterface)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.writev_nonblocking
@@ -35803,7 +35160,6 @@ func marshalProxy(p uintptr) (interface{}, error) {
 //
 //   - ioStream that will replace connection. This might be the same as
 //     connection, in which case a reference will be added.
-//
 func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) {
 	var _arg0 *C.GProxy        // out
 	var _arg3 *C.GCancellable  // out
@@ -35862,7 +35218,6 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 //   - connection: OStream.
 //   - proxyAddress: Address.
 //   - callback (optional): ReadyCallback.
-//
 func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxy             // out
 	var _arg3 *C.GCancellable       // out
@@ -35901,7 +35256,6 @@ func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, pro
 // The function returns the following values:
 //
 //   - ioStream: OStream.
-//
 func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 	var _arg0 *C.GProxy       // out
 	var _arg1 *C.GAsyncResult // out
@@ -35952,7 +35306,6 @@ func (proxy *Proxy) ConnectFinish(result AsyncResulter) (IOStreamer, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if hostname resolution is supported.
-//
 func (proxy *Proxy) SupportsHostname() bool {
 	var _arg0 *C.GProxy  // out
 	var _cret C.gboolean // in
@@ -35986,7 +35339,6 @@ func (proxy *Proxy) SupportsHostname() bool {
 //
 //   - ioStream that will replace connection. This might be the same as
 //     connection, in which case a reference will be added.
-//
 func (proxy *Proxy) connectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) {
 	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
 	fnarg := gclass.connect
@@ -36048,7 +35400,6 @@ func (proxy *Proxy) connectProxy(ctx context.Context, connection IOStreamer, pro
 //   - connection: OStream.
 //   - proxyAddress: Address.
 //   - callback (optional): ReadyCallback.
-//
 func (proxy *Proxy) connectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback) {
 	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
 	fnarg := gclass.connect_async
@@ -36090,7 +35441,6 @@ func (proxy *Proxy) connectAsync(ctx context.Context, connection IOStreamer, pro
 // The function returns the following values:
 //
 //   - ioStream: OStream.
-//
 func (proxy *Proxy) connectFinish(result AsyncResulter) (IOStreamer, error) {
 	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
 	fnarg := gclass.connect_finish
@@ -36144,7 +35494,6 @@ func (proxy *Proxy) connectFinish(result AsyncResulter) (IOStreamer, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if hostname resolution is supported.
-//
 func (proxy *Proxy) supportsHostname() bool {
 	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
 	fnarg := gclass.supports_hostname
@@ -36176,7 +35525,6 @@ func (proxy *Proxy) supportsHostname() bool {
 // The function returns the following values:
 //
 //   - proxy (optional): return a #GProxy or NULL if protocol is not supported.
-//
 func ProxyGetDefaultForProtocol(protocol string) *Proxy {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GProxy // in
@@ -36250,7 +35598,6 @@ func marshalProxyResolver(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if resolver is supported.
-//
 func (resolver *ProxyResolver) IsSupported() bool {
 	var _arg0 *C.GProxyResolver // out
 	var _cret C.gboolean        // in
@@ -36291,7 +35638,6 @@ func (resolver *ProxyResolver) IsSupported() bool {
 //
 //   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
 //     g_strfreev().
-//
 func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg2 *C.GCancellable   // out
@@ -36346,7 +35692,6 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 //   - ctx (optional) or NULL.
 //   - uri: URI representing the destination to connect to.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver     // out
 	var _arg2 *C.GCancellable       // out
@@ -36386,7 +35731,6 @@ func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, call
 //
 //   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
 //     g_strfreev().
-//
 func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, error) {
 	var _arg0 *C.GProxyResolver // out
 	var _arg1 *C.GAsyncResult   // out
@@ -36432,7 +35776,6 @@ func (resolver *ProxyResolver) LookupFinish(result AsyncResulter) ([]string, err
 // The function returns the following values:
 //
 //   - ok: TRUE if resolver is supported.
-//
 func (resolver *ProxyResolver) isSupported() bool {
 	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.is_supported
@@ -36476,7 +35819,6 @@ func (resolver *ProxyResolver) isSupported() bool {
 //
 //   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
 //     g_strfreev().
-//
 func (resolver *ProxyResolver) lookup(ctx context.Context, uri string) ([]string, error) {
 	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup
@@ -36534,7 +35876,6 @@ func (resolver *ProxyResolver) lookup(ctx context.Context, uri string) ([]string
 //   - ctx (optional) or NULL.
 //   - uri: URI representing the destination to connect to.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *ProxyResolver) lookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
 	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_async
@@ -36577,7 +35918,6 @@ func (resolver *ProxyResolver) lookupAsync(ctx context.Context, uri string, call
 //
 //   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
 //     g_strfreev().
-//
 func (resolver *ProxyResolver) lookupFinish(result AsyncResulter) ([]string, error) {
 	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_finish
@@ -36625,7 +35965,6 @@ func (resolver *ProxyResolver) lookupFinish(result AsyncResulter) ([]string, err
 //
 //   - proxyResolver: default Resolver, which will be a dummy object if no proxy
 //     resolver is available.
-//
 func ProxyResolverGetDefault() *ProxyResolver {
 	var _cret *C.GProxyResolver // in
 
@@ -36704,7 +36043,6 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 //   - actionName: name of the action to activate.
 //   - parameter (optional): optional parameter to the activation.
 //   - platformData: platform data to send.
-//
 func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -36741,7 +36079,6 @@ func (remote *RemoteActionGroup) ActivateActionFull(actionName string, parameter
 //   - actionName: name of the action to change the state of.
 //   - value: new requested value for the state.
 //   - platformData: platform data to send.
-//
 func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value, platformData *glib.Variant) {
 	var _arg0 *C.GRemoteActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -36776,7 +36113,6 @@ func (remote *RemoteActionGroup) ChangeActionStateFull(actionName string, value,
 //   - actionName: name of the action to activate.
 //   - parameter (optional): optional parameter to the activation.
 //   - platformData: platform data to send.
-//
 func (remote *RemoteActionGroup) activateActionFull(actionName string, parameter, platformData *glib.Variant) {
 	gclass := (*C.GRemoteActionGroupInterface)(coreglib.PeekParentClass(remote))
 	fnarg := gclass.activate_action_full
@@ -36816,7 +36152,6 @@ func (remote *RemoteActionGroup) activateActionFull(actionName string, parameter
 //   - actionName: name of the action to change the state of.
 //   - value: new requested value for the state.
 //   - platformData: platform data to send.
-//
 func (remote *RemoteActionGroup) changeActionStateFull(actionName string, value, platformData *glib.Variant) {
 	gclass := (*C.GRemoteActionGroupInterface)(coreglib.PeekParentClass(remote))
 	fnarg := gclass.change_action_state_full
@@ -36897,7 +36232,6 @@ func marshalSeekable(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if seekable can be seeked. FALSE otherwise.
-//
 func (seekable *Seekable) CanSeek() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
@@ -36922,7 +36256,6 @@ func (seekable *Seekable) CanSeek() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the stream can be truncated, FALSE otherwise.
-//
 func (seekable *Seekable) CanTruncate() bool {
 	var _arg0 *C.GSeekable // out
 	var _cret C.gboolean   // in
@@ -36961,7 +36294,6 @@ func (seekable *Seekable) CanTruncate() bool {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - offset: #goffset.
 //   - typ: Type.
-//
 func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg3 *C.GCancellable // out
@@ -36998,7 +36330,6 @@ func (seekable *Seekable) Seek(ctx context.Context, offset int64, typ glib.SeekT
 // The function returns the following values:
 //
 //   - gint64: offset from the beginning of the buffer.
-//
 func (seekable *Seekable) Tell() int64 {
 	var _arg0 *C.GSeekable // out
 	var _cret C.goffset    // in
@@ -37029,7 +36360,6 @@ func (seekable *Seekable) Tell() int64 {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - offset: new length for seekable, in bytes.
-//
 func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 	var _arg0 *C.GSeekable    // out
 	var _arg2 *C.GCancellable // out
@@ -37063,7 +36393,6 @@ func (seekable *Seekable) Truncate(ctx context.Context, offset int64) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if seekable can be seeked. FALSE otherwise.
-//
 func (seekable *Seekable) canSeek() bool {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
 	fnarg := gclass.can_seek
@@ -37091,7 +36420,6 @@ func (seekable *Seekable) canSeek() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the stream can be truncated, FALSE otherwise.
-//
 func (seekable *Seekable) canTruncate() bool {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
 	fnarg := gclass.can_truncate
@@ -37133,7 +36461,6 @@ func (seekable *Seekable) canTruncate() bool {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - offset: #goffset.
 //   - typ: Type.
-//
 func (seekable *Seekable) seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
 	fnarg := gclass.seek
@@ -37173,7 +36500,6 @@ func (seekable *Seekable) seek(ctx context.Context, offset int64, typ glib.SeekT
 // The function returns the following values:
 //
 //   - gint64: offset from the beginning of the buffer.
-//
 func (seekable *Seekable) tell() int64 {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
 	fnarg := gclass.tell
@@ -37207,7 +36533,6 @@ func (seekable *Seekable) tell() int64 {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - offset: new length for seekable, in bytes.
-//
 func (seekable *Seekable) truncateFn(ctx context.Context, offset int64) error {
 	gclass := (*C.GSeekableIface)(coreglib.PeekParentClass(seekable))
 	fnarg := gclass.truncate_fn
@@ -37244,55 +36569,55 @@ func (seekable *Seekable) truncateFn(ctx context.Context, offset int64) error {
 // g_socket_connectable_enumerate() to get a AddressEnumerator to try out each
 // socket address in turn until one succeeds, as shown in the sample code below.
 //
-//    MyConnectionType *
-//    connect_to_host (const char    *hostname,
-//                     guint16        port,
-//                     GCancellable  *cancellable,
-//                     GError       **error)
-//    {
-//      MyConnection *conn = NULL;
-//      GSocketConnectable *addr;
-//      GSocketAddressEnumerator *enumerator;
-//      GSocketAddress *sockaddr;
-//      GError *conn_error = NULL;
+//	MyConnectionType *
+//	connect_to_host (const char    *hostname,
+//	                 guint16        port,
+//	                 GCancellable  *cancellable,
+//	                 GError       **error)
+//	{
+//	  MyConnection *conn = NULL;
+//	  GSocketConnectable *addr;
+//	  GSocketAddressEnumerator *enumerator;
+//	  GSocketAddress *sockaddr;
+//	  GError *conn_error = NULL;
 //
-//      addr = g_network_address_new (hostname, port);
-//      enumerator = g_socket_connectable_enumerate (addr);
-//      g_object_unref (addr);
+//	  addr = g_network_address_new (hostname, port);
+//	  enumerator = g_socket_connectable_enumerate (addr);
+//	  g_object_unref (addr);
 //
-//      // Try each sockaddr until we succeed. Record the first connection error,
-//      // but not any further ones (since they'll probably be basically the same
-//      // as the first).
-//      while (!conn && (sockaddr = g_socket_address_enumerator_next (enumerator, cancellable, error))
-//        {
-//          conn = connect_to_sockaddr (sockaddr, conn_error ? NULL : &conn_error);
-//          g_object_unref (sockaddr);
-//        }
-//      g_object_unref (enumerator);
+//	  // Try each sockaddr until we succeed. Record the first connection error,
+//	  // but not any further ones (since they'll probably be basically the same
+//	  // as the first).
+//	  while (!conn && (sockaddr = g_socket_address_enumerator_next (enumerator, cancellable, error))
+//	    {
+//	      conn = connect_to_sockaddr (sockaddr, conn_error ? NULL : &conn_error);
+//	      g_object_unref (sockaddr);
+//	    }
+//	  g_object_unref (enumerator);
 //
-//      if (conn)
-//        {
-//          if (conn_error)
-//            {
-//              // We couldn't connect to the first address, but we succeeded
-//              // in connecting to a later address.
-//              g_error_free (conn_error);
-//            }
-//          return conn;
-//        }
-//      else if (error)
-//        {
-//          /// Either initial lookup failed, or else the caller cancelled us.
-//          if (conn_error)
-//            g_error_free (conn_error);
-//          return NULL;
-//        }
-//      else
-//        {
-//          g_error_propagate (error, conn_error);
-//          return NULL;
-//        }
-//    }.
+//	  if (conn)
+//	    {
+//	      if (conn_error)
+//	        {
+//	          // We couldn't connect to the first address, but we succeeded
+//	          // in connecting to a later address.
+//	          g_error_free (conn_error);
+//	        }
+//	      return conn;
+//	    }
+//	  else if (error)
+//	    {
+//	      /// Either initial lookup failed, or else the caller cancelled us.
+//	      if (conn_error)
+//	        g_error_free (conn_error);
+//	      return NULL;
+//	    }
+//	  else
+//	    {
+//	      g_error_propagate (error, conn_error);
+//	      return NULL;
+//	    }
+//	}.
 //
 // SocketConnectable wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -37336,7 +36661,6 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - socketAddressEnumerator: new AddressEnumerator.
-//
 func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
@@ -37378,7 +36702,6 @@ func (connectable *SocketConnectable) Enumerate() SocketAddressEnumeratorrer {
 // The function returns the following values:
 //
 //   - socketAddressEnumerator: new AddressEnumerator.
-//
 func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorrer {
 	var _arg0 *C.GSocketConnectable       // out
 	var _cret *C.GSocketAddressEnumerator // in
@@ -37422,7 +36745,6 @@ func (connectable *SocketConnectable) ProxyEnumerate() SocketAddressEnumeratorre
 // The function returns the following values:
 //
 //   - utf8: formatted string.
-//
 func (connectable *SocketConnectable) String() string {
 	var _arg0 *C.GSocketConnectable // out
 	var _cret *C.gchar              // in
@@ -37445,7 +36767,6 @@ func (connectable *SocketConnectable) String() string {
 // The function returns the following values:
 //
 //   - socketAddressEnumerator: new AddressEnumerator.
-//
 func (connectable *SocketConnectable) enumerate() SocketAddressEnumeratorrer {
 	gclass := (*C.GSocketConnectableIface)(coreglib.PeekParentClass(connectable))
 	fnarg := gclass.enumerate
@@ -37490,7 +36811,6 @@ func (connectable *SocketConnectable) enumerate() SocketAddressEnumeratorrer {
 // The function returns the following values:
 //
 //   - socketAddressEnumerator: new AddressEnumerator.
-//
 func (connectable *SocketConnectable) proxyEnumerate() SocketAddressEnumeratorrer {
 	gclass := (*C.GSocketConnectableIface)(coreglib.PeekParentClass(connectable))
 	fnarg := gclass.proxy_enumerate
@@ -37537,7 +36857,6 @@ func (connectable *SocketConnectable) proxyEnumerate() SocketAddressEnumeratorre
 // The function returns the following values:
 //
 //   - utf8: formatted string.
-//
 func (connectable *SocketConnectable) str() string {
 	gclass := (*C.GSocketConnectableIface)(coreglib.PeekParentClass(connectable))
 	fnarg := gclass.to_string
@@ -37621,7 +36940,6 @@ func marshalTLSBackend(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - gType of backend's Certificate implementation.
-//
 func (backend *TLSBackend) CertificateType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -37644,7 +36962,6 @@ func (backend *TLSBackend) CertificateType() coreglib.Type {
 // The function returns the following values:
 //
 //   - gType of backend's ClientConnection implementation.
-//
 func (backend *TLSBackend) ClientConnectionType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -37666,7 +36983,6 @@ func (backend *TLSBackend) ClientConnectionType() coreglib.Type {
 // The function returns the following values:
 //
 //   - tlsDatabase: default database, which should be unreffed when done.
-//
 func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 	var _arg0 *C.GTlsBackend  // out
 	var _cret *C.GTlsDatabase // in
@@ -37706,7 +37022,6 @@ func (backend *TLSBackend) DefaultDatabase() TLSDatabaser {
 //
 //   - gType of backend’s ClientConnection implementation, or G_TYPE_INVALID if
 //     this backend doesn’t support DTLS.
-//
 func (backend *TLSBackend) DTLSClientConnectionType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -37730,7 +37045,6 @@ func (backend *TLSBackend) DTLSClientConnectionType() coreglib.Type {
 //
 //   - gType of backend’s ServerConnection implementation, or G_TYPE_INVALID if
 //     this backend doesn’t support DTLS.
-//
 func (backend *TLSBackend) DTLSServerConnectionType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -37752,7 +37066,6 @@ func (backend *TLSBackend) DTLSServerConnectionType() coreglib.Type {
 // The function returns the following values:
 //
 //   - gType of backend's FileDatabase implementation.
-//
 func (backend *TLSBackend) FileDatabaseType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -37775,7 +37088,6 @@ func (backend *TLSBackend) FileDatabaseType() coreglib.Type {
 // The function returns the following values:
 //
 //   - gType of backend's ServerConnection implementation.
-//
 func (backend *TLSBackend) ServerConnectionType() coreglib.Type {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.GType        // in
@@ -37804,7 +37116,6 @@ func (backend *TLSBackend) ServerConnectionType() coreglib.Type {
 // The function takes the following parameters:
 //
 //   - database (optional): Database.
-//
 func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 	var _arg0 *C.GTlsBackend  // out
 	var _arg1 *C.GTlsDatabase // out
@@ -37825,7 +37136,6 @@ func (backend *TLSBackend) SetDefaultDatabase(database TLSDatabaser) {
 // The function returns the following values:
 //
 //   - ok: whether DTLS is supported.
-//
 func (backend *TLSBackend) SupportsDTLS() bool {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.gboolean     // in
@@ -37850,7 +37160,6 @@ func (backend *TLSBackend) SupportsDTLS() bool {
 // The function returns the following values:
 //
 //   - ok: whether or not TLS is supported.
-//
 func (backend *TLSBackend) SupportsTLS() bool {
 	var _arg0 *C.GTlsBackend // out
 	var _cret C.gboolean     // in
@@ -37874,7 +37183,6 @@ func (backend *TLSBackend) SupportsTLS() bool {
 // The function returns the following values:
 //
 //   - tlsDatabase: default database, which should be unreffed when done.
-//
 func (backend *TLSBackend) defaultDatabase() TLSDatabaser {
 	gclass := (*C.GTlsBackendInterface)(coreglib.PeekParentClass(backend))
 	fnarg := gclass.get_default_database
@@ -37916,7 +37224,6 @@ func (backend *TLSBackend) defaultDatabase() TLSDatabaser {
 // The function returns the following values:
 //
 //   - ok: whether DTLS is supported.
-//
 func (backend *TLSBackend) supportsDTLS() bool {
 	gclass := (*C.GTlsBackendInterface)(coreglib.PeekParentClass(backend))
 	fnarg := gclass.supports_dtls
@@ -37944,7 +37251,6 @@ func (backend *TLSBackend) supportsDTLS() bool {
 // The function returns the following values:
 //
 //   - ok: whether or not TLS is supported.
-//
 func (backend *TLSBackend) supportsTLS() bool {
 	gclass := (*C.GTlsBackendInterface)(coreglib.PeekParentClass(backend))
 	fnarg := gclass.supports_tls
@@ -37971,7 +37277,6 @@ func (backend *TLSBackend) supportsTLS() bool {
 // The function returns the following values:
 //
 //   - tlsBackend which will be a dummy object if no TLS backend is available.
-//
 func TLSBackendGetDefault() *TLSBackend {
 	var _cret *C.GTlsBackend // in
 
@@ -38069,7 +37374,6 @@ func marshalTLSClientConnection(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - source: ClientConnection.
-//
 func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GTlsClientConnection // out
@@ -38088,7 +37392,6 @@ func (conn *TLSClientConnection) CopySessionState(source TLSClientConnectioner) 
 //
 //   - socketConnectable (optional) describing the expected server identity,
 //     or NULL if the expected identity is not known.
-//
 func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret *C.GSocketConnectable   // in
@@ -38115,7 +37418,6 @@ func (conn *TLSClientConnection) ServerIdentity() *SocketConnectable {
 // The function returns the following values:
 //
 //   - ok: FALSE.
-//
 func (conn *TLSClientConnection) UseSSL3() bool {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.gboolean              // in
@@ -38139,7 +37441,6 @@ func (conn *TLSClientConnection) UseSSL3() bool {
 // The function returns the following values:
 //
 //   - tlsCertificateFlags: validation flags.
-//
 func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GTlsClientConnection // out
 	var _cret C.GTlsCertificateFlags  // in
@@ -38164,7 +37465,6 @@ func (conn *TLSClientConnection) ValidationFlags() TLSCertificateFlags {
 // The function takes the following parameters:
 //
 //   - identity describing the expected server identity.
-//
 func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 *C.GSocketConnectable   // out
@@ -38192,7 +37492,6 @@ func (conn *TLSClientConnection) SetServerIdentity(identity SocketConnectabler) 
 // The function takes the following parameters:
 //
 //   - useSsl3: #gboolean, ignored.
-//
 func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 C.gboolean              // out
@@ -38214,7 +37513,6 @@ func (conn *TLSClientConnection) SetUseSSL3(useSsl3 bool) {
 // The function takes the following parameters:
 //
 //   - flags to use.
-//
 func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GTlsClientConnection // out
 	var _arg1 C.GTlsCertificateFlags  // out
@@ -38257,7 +37555,6 @@ func (conn *TLSClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
 // The function takes the following parameters:
 //
 //   - source: ClientConnection.
-//
 func (conn *TLSClientConnection) copySessionState(source TLSClientConnectioner) {
 	gclass := (*C.GTlsClientConnectionInterface)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.copy_session_state
@@ -38289,7 +37586,6 @@ func (conn *TLSClientConnection) copySessionState(source TLSClientConnectioner) 
 // The function returns the following values:
 //
 //   - tlsClientConnection: new ClientConnection, or NULL on error.
-//
 func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnectabler) (*TLSClientConnection, error) {
 	var _arg1 *C.GIOStream          // out
 	var _arg2 *C.GSocketConnectable // out
@@ -38380,7 +37676,6 @@ func BaseTLSFileDatabase(obj TLSFileDatabaser) *TLSFileDatabase {
 // The function returns the following values:
 //
 //   - tlsFileDatabase: new FileDatabase, or NULL on error.
-//
 func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GTlsDatabase // in
@@ -38471,7 +37766,6 @@ func BaseTLSServerConnection(obj TLSServerConnectioner) *TLSServerConnection {
 // The function returns the following values:
 //
 //   - tlsServerConnection: new ServerConnection, or NULL on error.
-//
 func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater) (*TLSServerConnection, error) {
 	var _arg1 *C.GIOStream       // out
 	var _arg2 *C.GTlsCertificate // out
@@ -38528,7 +37822,7 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 // VOLUME_IDENTIFIER_KIND_UUID, VOLUME_IDENTIFIER_KIND_LABEL, etc. Use
 // g_volume_get_identifier() to obtain an identifier for a volume.
 //
-//    Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
+//	Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
 //
 // Volume wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -38622,7 +37916,6 @@ func (volume *Volume) ConnectRemoved(f func()) coreglib.SignalHandle {
 // The function returns the following values:
 //
 //   - ok: TRUE if the volume can be ejected. FALSE otherwise.
-//
 func (volume *Volume) CanEject() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -38646,7 +37939,6 @@ func (volume *Volume) CanEject() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the volume can be mounted. FALSE otherwise.
-//
 func (volume *Volume) CanMount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -38676,7 +37968,6 @@ func (volume *Volume) CanMount() bool {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the unmount if required for eject.
 //   - callback (optional) or NULL.
-//
 func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg2 *C.GCancellable       // out
@@ -38712,7 +38003,6 @@ func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callba
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -38744,7 +38034,6 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 //   - flags affecting the unmount if required for eject.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg3 *C.GCancellable       // out
@@ -38783,7 +38072,6 @@ func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmount
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -38813,7 +38101,6 @@ func (volume *Volume) EjectWithOperationFinish(result AsyncResulter) error {
 //
 //   - utf8s: NULL-terminated array of strings containing kinds of identifiers.
 //     Use g_strfreev() to free.
-//
 func (volume *Volume) EnumerateIdentifiers() []string {
 	var _arg0 *C.GVolume // out
 	var _cret **C.char   // in
@@ -38850,8 +38137,8 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 // g_volume_get_mount() will always either be equal or a prefix of what this
 // function returns. In other words, in code
 //
-//    (g_file_has_prefix (volume_activation_root, mount_root) ||
-//     g_file_equal (volume_activation_root, mount_root))
+//	(g_file_has_prefix (volume_activation_root, mount_root) ||
+//	 g_file_equal (volume_activation_root, mount_root))
 //
 // will always be TRUE.
 //
@@ -38862,7 +38149,6 @@ func (volume *Volume) EnumerateIdentifiers() []string {
 //
 //   - file (optional): activation root of volume or NULL. Use g_object_unref()
 //     to free.
-//
 func (volume *Volume) ActivationRoot() *File {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GFile   // in
@@ -38888,7 +38174,6 @@ func (volume *Volume) ActivationRoot() *File {
 //   - drive (optional) or NULL if volume is not associated with a drive.
 //     The returned object should be unreffed with g_object_unref() when no
 //     longer needed.
-//
 func (volume *Volume) Drive() *Drive {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GDrive  // in
@@ -38913,7 +38198,6 @@ func (volume *Volume) Drive() *Drive {
 //
 //   - icon: #GIcon. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (volume *Volume) Icon() *Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
@@ -38942,7 +38226,6 @@ func (volume *Volume) Icon() *Icon {
 //
 //   - utf8 (optional): newly allocated string containing the requested
 //     identifier, or NULL if the #GVolume doesn't have this kind of identifier.
-//
 func (volume *Volume) Identifier(kind string) string {
 	var _arg0 *C.GVolume // out
 	var _arg1 *C.char    // out
@@ -38972,7 +38255,6 @@ func (volume *Volume) Identifier(kind string) string {
 //
 //   - mount (optional) or NULL if volume isn't mounted. The returned object
 //     should be unreffed with g_object_unref() when no longer needed.
-//
 func (volume *Volume) GetMount() *Mount {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
@@ -38997,7 +38279,6 @@ func (volume *Volume) GetMount() *Mount {
 //
 //   - utf8: name for the given volume. The returned string should be freed with
 //     g_free() when no longer needed.
-//
 func (volume *Volume) Name() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
@@ -39021,7 +38302,6 @@ func (volume *Volume) Name() string {
 //
 //   - utf8 (optional): sorting key for volume or NULL if no such key is
 //     available.
-//
 func (volume *Volume) SortKey() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.gchar   // in
@@ -39046,7 +38326,6 @@ func (volume *Volume) SortKey() string {
 //
 //   - icon: #GIcon. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (volume *Volume) SymbolicIcon() *Icon {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GIcon   // in
@@ -39071,7 +38350,6 @@ func (volume *Volume) SymbolicIcon() *Icon {
 //
 //   - utf8 (optional): UUID for volume or NULL if no UUID can be computed.
 //     The returned string should be freed with g_free() when no longer needed.
-//
 func (volume *Volume) UUID() string {
 	var _arg0 *C.GVolume // out
 	var _cret *C.char    // in
@@ -39101,7 +38379,6 @@ func (volume *Volume) UUID() string {
 //   - flags affecting the operation.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	var _arg0 *C.GVolume            // out
 	var _arg3 *C.GCancellable       // out
@@ -39144,7 +38421,6 @@ func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOpe
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (volume *Volume) MountFinish(result AsyncResulter) error {
 	var _arg0 *C.GVolume      // out
 	var _arg1 *C.GAsyncResult // out
@@ -39171,7 +38447,6 @@ func (volume *Volume) MountFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if the volume should be automatically mounted.
-//
 func (volume *Volume) ShouldAutomount() bool {
 	var _arg0 *C.GVolume // out
 	var _cret C.gboolean // in
@@ -39195,7 +38470,6 @@ func (volume *Volume) ShouldAutomount() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the volume can be ejected. FALSE otherwise.
-//
 func (volume *Volume) canEject() bool {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.can_eject
@@ -39222,7 +38496,6 @@ func (volume *Volume) canEject() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the volume can be mounted. FALSE otherwise.
-//
 func (volume *Volume) canMount() bool {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.can_mount
@@ -39267,7 +38540,6 @@ func (volume *Volume) changed() {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - flags affecting the unmount if required for eject.
 //   - callback (optional) or NULL.
-//
 func (volume *Volume) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.eject
@@ -39306,7 +38578,6 @@ func (volume *Volume) eject(ctx context.Context, flags MountUnmountFlags, callba
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (volume *Volume) ejectFinish(result AsyncResulter) error {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.eject_finish
@@ -39341,7 +38612,6 @@ func (volume *Volume) ejectFinish(result AsyncResulter) error {
 //   - flags affecting the unmount if required for eject.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (volume *Volume) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.eject_with_operation
@@ -39383,7 +38653,6 @@ func (volume *Volume) ejectWithOperation(ctx context.Context, flags MountUnmount
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (volume *Volume) ejectWithOperationFinish(result AsyncResulter) error {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.eject_with_operation_finish
@@ -39416,7 +38685,6 @@ func (volume *Volume) ejectWithOperationFinish(result AsyncResulter) error {
 //
 //   - utf8s: NULL-terminated array of strings containing kinds of identifiers.
 //     Use g_strfreev() to free.
-//
 func (volume *Volume) enumerateIdentifiers() []string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.enumerate_identifiers
@@ -39456,8 +38724,8 @@ func (volume *Volume) enumerateIdentifiers() []string {
 // g_volume_get_mount() will always either be equal or a prefix of what this
 // function returns. In other words, in code
 //
-//    (g_file_has_prefix (volume_activation_root, mount_root) ||
-//     g_file_equal (volume_activation_root, mount_root))
+//	(g_file_has_prefix (volume_activation_root, mount_root) ||
+//	 g_file_equal (volume_activation_root, mount_root))
 //
 // will always be TRUE.
 //
@@ -39468,7 +38736,6 @@ func (volume *Volume) enumerateIdentifiers() []string {
 //
 //   - file (optional): activation root of volume or NULL. Use g_object_unref()
 //     to free.
-//
 func (volume *Volume) activationRoot() *File {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_activation_root
@@ -39497,7 +38764,6 @@ func (volume *Volume) activationRoot() *File {
 //   - drive (optional) or NULL if volume is not associated with a drive.
 //     The returned object should be unreffed with g_object_unref() when no
 //     longer needed.
-//
 func (volume *Volume) drive() *Drive {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_drive
@@ -39525,7 +38791,6 @@ func (volume *Volume) drive() *Drive {
 //
 //   - icon: #GIcon. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (volume *Volume) icon() *Icon {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_icon
@@ -39557,7 +38822,6 @@ func (volume *Volume) icon() *Icon {
 //
 //   - utf8 (optional): newly allocated string containing the requested
 //     identifier, or NULL if the #GVolume doesn't have this kind of identifier.
-//
 func (volume *Volume) identifier(kind string) string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_identifier
@@ -39590,7 +38854,6 @@ func (volume *Volume) identifier(kind string) string {
 //
 //   - mount (optional) or NULL if volume isn't mounted. The returned object
 //     should be unreffed with g_object_unref() when no longer needed.
-//
 func (volume *Volume) mount() *Mount {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_mount
@@ -39618,7 +38881,6 @@ func (volume *Volume) mount() *Mount {
 //
 //   - utf8: name for the given volume. The returned string should be freed with
 //     g_free() when no longer needed.
-//
 func (volume *Volume) name() string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_name
@@ -39645,7 +38907,6 @@ func (volume *Volume) name() string {
 //
 //   - utf8 (optional): sorting key for volume or NULL if no such key is
 //     available.
-//
 func (volume *Volume) sortKey() string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_sort_key
@@ -39673,7 +38934,6 @@ func (volume *Volume) sortKey() string {
 //
 //   - icon: #GIcon. The returned object should be unreffed with
 //     g_object_unref() when no longer needed.
-//
 func (volume *Volume) symbolicIcon() *Icon {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_symbolic_icon
@@ -39701,7 +38961,6 @@ func (volume *Volume) symbolicIcon() *Icon {
 //
 //   - utf8 (optional): UUID for volume or NULL if no UUID can be computed.
 //     The returned string should be freed with g_free() when no longer needed.
-//
 func (volume *Volume) uuiD() string {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.get_uuid
@@ -39735,7 +38994,6 @@ func (volume *Volume) uuiD() string {
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (volume *Volume) mountFinish(result AsyncResulter) error {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.mount_finish
@@ -39770,7 +39028,6 @@ func (volume *Volume) mountFinish(result AsyncResulter) error {
 //   - flags affecting the operation.
 //   - mountOperation (optional) or NULL to avoid user interaction.
 //   - callback (optional) or NULL.
-//
 func (volume *Volume) mountFn(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.mount_fn
@@ -39822,7 +39079,6 @@ func (volume *Volume) removed() {
 // The function returns the following values:
 //
 //   - ok: TRUE if the volume should be automatically mounted.
-//
 func (volume *Volume) shouldAutomount() bool {
 	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
 	fnarg := gclass.should_automount
@@ -39897,7 +39153,6 @@ func (v *AppInfoMonitor) ConnectChanged(f func()) coreglib.SignalHandle {
 // The function returns the following values:
 //
 //   - appInfoMonitor: reference to a InfoMonitor.
-//
 func AppInfoMonitorGet() *AppInfoMonitor {
 	var _cret *C.GAppInfoMonitor // in
 
@@ -39924,7 +39179,6 @@ type AppLaunchContextOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): display string for the display.
-	//
 	Display func(info AppInfor, files []Filer) string
 	// StartupNotifyID initiates startup notification for the application and
 	// returns the DESKTOP_STARTUP_ID for the launched operation, if supported.
@@ -39942,7 +39196,6 @@ type AppLaunchContextOverrides struct {
 	//
 	//   - utf8 (optional): startup notification ID for the application, or NULL
 	//     if not supported.
-	//
 	StartupNotifyID func(info AppInfor, files []Filer) string
 	// LaunchFailed: called when an application has failed to launch,
 	// so that it can cancel the application startup notification started in
@@ -39952,13 +39205,11 @@ type AppLaunchContextOverrides struct {
 	//
 	//   - startupNotifyId: startup notification id that was returned by
 	//     g_app_launch_context_get_startup_notify_id().
-	//
 	LaunchFailed func(startupNotifyId string)
 	// The function takes the following parameters:
 	//
 	//   - info
 	//   - platformData
-	//
 	Launched func(info AppInfor, platformData *glib.Variant)
 }
 
@@ -40050,7 +39301,6 @@ func (context *AppLaunchContext) ConnectLaunched(f func(info AppInfor, platformD
 // The function returns the following values:
 //
 //   - appLaunchContext: LaunchContext.
-//
 func NewAppLaunchContext() *AppLaunchContext {
 	var _cret *C.GAppLaunchContext // in
 
@@ -40075,7 +39325,6 @@ func NewAppLaunchContext() *AppLaunchContext {
 // The function returns the following values:
 //
 //   - utf8 (optional): display string for the display.
-//
 func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.GAppInfo          // out
@@ -40114,7 +39363,6 @@ func (context *AppLaunchContext) Display(info AppInfor, files []Filer) string {
 // The function returns the following values:
 //
 //   - filenames: the child's environment.
-//
 func (context *AppLaunchContext) Environment() []string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _cret **C.char             // in
@@ -40161,7 +39409,6 @@ func (context *AppLaunchContext) Environment() []string {
 //
 //   - utf8 (optional): startup notification ID for the application, or NULL if
 //     not supported.
-//
 func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) string {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.GAppInfo          // out
@@ -40201,7 +39448,6 @@ func (context *AppLaunchContext) StartupNotifyID(info AppInfor, files []Filer) s
 //
 //   - startupNotifyId: startup notification id that was returned by
 //     g_app_launch_context_get_startup_notify_id().
-//
 func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -40222,7 +39468,6 @@ func (context *AppLaunchContext) LaunchFailed(startupNotifyId string) {
 //
 //   - variable: environment variable to set.
 //   - value for to set the variable to.
-//
 func (context *AppLaunchContext) Setenv(variable, value string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -40246,7 +39491,6 @@ func (context *AppLaunchContext) Setenv(variable, value string) {
 // The function takes the following parameters:
 //
 //   - variable: environment variable to remove.
-//
 func (context *AppLaunchContext) Unsetenv(variable string) {
 	var _arg0 *C.GAppLaunchContext // out
 	var _arg1 *C.char              // out
@@ -40272,7 +39516,6 @@ func (context *AppLaunchContext) Unsetenv(variable string) {
 // The function returns the following values:
 //
 //   - utf8 (optional): display string for the display.
-//
 func (context *AppLaunchContext) display(info AppInfor, files []Filer) string {
 	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
 	fnarg := gclass.get_display
@@ -40323,7 +39566,6 @@ func (context *AppLaunchContext) display(info AppInfor, files []Filer) string {
 //
 //   - utf8 (optional): startup notification ID for the application, or NULL if
 //     not supported.
-//
 func (context *AppLaunchContext) startupNotifyID(info AppInfor, files []Filer) string {
 	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
 	fnarg := gclass.get_startup_notify_id
@@ -40366,7 +39608,6 @@ func (context *AppLaunchContext) startupNotifyID(info AppInfor, files []Filer) s
 //
 //   - startupNotifyId: startup notification id that was returned by
 //     g_app_launch_context_get_startup_notify_id().
-//
 func (context *AppLaunchContext) launchFailed(startupNotifyId string) {
 	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
 	fnarg := gclass.launch_failed
@@ -40387,7 +39628,6 @@ func (context *AppLaunchContext) launchFailed(startupNotifyId string) {
 //
 //   - info
 //   - platformData
-//
 func (context *AppLaunchContext) launched(info AppInfor, platformData *glib.Variant) {
 	gclass := (*C.GAppLaunchContextClass)(coreglib.PeekParentClass(context))
 	fnarg := gclass.launched
@@ -40423,13 +39663,11 @@ type ApplicationOverrides struct {
 	//
 	//   - connection
 	//   - objectPath
-	//
 	DBusRegister func(connection *DBusConnection, objectPath string) error
 	// The function takes the following parameters:
 	//
 	//   - connection
 	//   - objectPath
-	//
 	DBusUnregister     func(connection *DBusConnection, objectPath string)
 	HandleLocalOptions func(options *glib.VariantDict) int
 	NameLost           func() bool
@@ -40452,7 +39690,6 @@ type ApplicationOverrides struct {
 	//
 	//   - files: array of #GFiles to open.
 	//   - hint (or ""), but never NULL.
-	//
 	Open         func(files []Filer, hint string)
 	QuitMainloop func()
 	RunMainloop  func()
@@ -40786,7 +40023,6 @@ func (application *Application) ConnectStartup(f func()) coreglib.SignalHandle {
 // The function returns the following values:
 //
 //   - application: new #GApplication instance.
-//
 func NewApplication(applicationId string, flags ApplicationFlags) *Application {
 	var _arg1 *C.gchar            // out
 	var _arg2 C.GApplicationFlags // out
@@ -40846,7 +40082,6 @@ func (application *Application) Activate() {
 //   - description for the option in --help output.
 //   - argDescription (optional): placeholder to use for the extra argument
 //     parsed by the option in --help output.
-//
 func (application *Application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description, argDescription string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.char         // out
@@ -40943,7 +40178,6 @@ func (application *Application) AddMainOption(longName string, shortName byte, f
 // The function takes the following parameters:
 //
 //   - entries: a NULL-terminated list of Entrys.
-//
 func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionEntry // out
@@ -40994,7 +40228,6 @@ func (application *Application) AddMainOptionEntries(entries []glib.OptionEntry)
 // The function takes the following parameters:
 //
 //   - group: Group.
-//
 func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GOptionGroup // out
@@ -41017,7 +40250,6 @@ func (application *Application) AddOptionGroup(group *glib.OptionGroup) {
 //
 //   - object: #GObject.
 //   - property: name of a boolean property of object.
-//
 func (application *Application) BindBusyProperty(object *coreglib.Object, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
@@ -41039,7 +40271,6 @@ func (application *Application) BindBusyProperty(object *coreglib.Object, proper
 // The function returns the following values:
 //
 //   - utf8 (optional): identifier for application, owned by application.
-//
 func (application *Application) ApplicationID() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -41074,7 +40305,6 @@ func (application *Application) ApplicationID() string {
 // The function returns the following values:
 //
 //   - dBusConnection (optional) or NULL.
-//
 func (application *Application) DBusConnection() *DBusConnection {
 	var _arg0 *C.GApplication    // out
 	var _cret *C.GDBusConnection // in
@@ -41112,7 +40342,6 @@ func (application *Application) DBusConnection() *DBusConnection {
 // The function returns the following values:
 //
 //   - utf8 (optional): object path, or NULL.
-//
 func (application *Application) DBusObjectPath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -41138,7 +40367,6 @@ func (application *Application) DBusObjectPath() string {
 // The function returns the following values:
 //
 //   - applicationFlags flags for application.
-//
 func (application *Application) Flags() ApplicationFlags {
 	var _arg0 *C.GApplication     // out
 	var _cret C.GApplicationFlags // in
@@ -41163,7 +40391,6 @@ func (application *Application) Flags() ApplicationFlags {
 // The function returns the following values:
 //
 //   - guint: timeout, in milliseconds.
-//
 func (application *Application) InactivityTimeout() uint {
 	var _arg0 *C.GApplication // out
 	var _cret C.guint         // in
@@ -41186,7 +40413,6 @@ func (application *Application) InactivityTimeout() uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if application is currently marked as busy.
-//
 func (application *Application) IsBusy() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -41213,7 +40439,6 @@ func (application *Application) IsBusy() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if application is registered.
-//
 func (application *Application) IsRegistered() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -41245,7 +40470,6 @@ func (application *Application) IsRegistered() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if application is remote.
-//
 func (application *Application) IsRemote() bool {
 	var _arg0 *C.GApplication // out
 	var _cret C.gboolean      // in
@@ -41271,7 +40495,6 @@ func (application *Application) IsRemote() bool {
 // The function returns the following values:
 //
 //   - utf8 (optional): base resource path, if one is set.
-//
 func (application *Application) ResourceBasePath() string {
 	var _arg0 *C.GApplication // out
 	var _cret *C.gchar        // in
@@ -41343,7 +40566,6 @@ func (application *Application) MarkBusy() {
 //
 //   - files: array of #GFiles to open.
 //   - hint (or ""), but never NULL.
-//
 func (application *Application) Open(files []Filer, hint string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 **C.GFile       // out
@@ -41422,7 +40644,6 @@ func (application *Application) Quit() {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (application *Application) Register(ctx context.Context) error {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GCancellable // out
@@ -41541,7 +40762,6 @@ func (application *Application) Release() {
 // The function returns the following values:
 //
 //   - gint: exit status.
-//
 func (application *Application) Run(argv []string) int {
 	var _arg0 *C.GApplication // out
 	var _arg2 **C.char        // out
@@ -41600,7 +40820,6 @@ func (application *Application) Run(argv []string) int {
 //
 //   - id (optional) of the notification, or NULL.
 //   - notification to send.
-//
 func (application *Application) SendNotification(id string, notification *Notification) {
 	var _arg0 *C.GApplication  // out
 	var _arg1 *C.gchar         // out
@@ -41630,7 +40849,6 @@ func (application *Application) SendNotification(id string, notification *Notifi
 // The function takes the following parameters:
 //
 //   - actionGroup (optional) or NULL.
-//
 func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.GActionGroup // out
@@ -41656,7 +40874,6 @@ func (application *Application) SetActionGroup(actionGroup ActionGrouper) {
 // The function takes the following parameters:
 //
 //   - applicationId (optional): identifier for application.
-//
 func (application *Application) SetApplicationID(applicationId string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -41697,7 +40914,6 @@ func (application *Application) SetDefault() {
 // The function takes the following parameters:
 //
 //   - flags for application.
-//
 func (application *Application) SetFlags(flags ApplicationFlags) {
 	var _arg0 *C.GApplication     // out
 	var _arg1 C.GApplicationFlags // out
@@ -41722,7 +40938,6 @@ func (application *Application) SetFlags(flags ApplicationFlags) {
 // The function takes the following parameters:
 //
 //   - inactivityTimeout: timeout, in milliseconds.
-//
 func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.guint         // out
@@ -41744,7 +40959,6 @@ func (application *Application) SetInactivityTimeout(inactivityTimeout uint) {
 //
 //   - description (optional): string to be shown in --help output after the
 //     list of options, or NULL.
-//
 func (application *Application) SetOptionContextDescription(description string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -41772,7 +40986,6 @@ func (application *Application) SetOptionContextDescription(description string) 
 //
 //   - parameterString (optional): string which is displayed in the first line
 //     of --help output, after the usage summary programname [OPTION...].
-//
 func (application *Application) SetOptionContextParameterString(parameterString string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -41796,7 +41009,6 @@ func (application *Application) SetOptionContextParameterString(parameterString 
 //
 //   - summary (optional): string to be shown in --help output before the list
 //     of options, or NULL.
-//
 func (application *Application) SetOptionContextSummary(summary string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -41847,7 +41059,6 @@ func (application *Application) SetOptionContextSummary(summary string) {
 // The function takes the following parameters:
 //
 //   - resourcePath (optional): resource path to use.
-//
 func (application *Application) SetResourceBasePath(resourcePath string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -41871,7 +41082,6 @@ func (application *Application) SetResourceBasePath(resourcePath string) {
 //
 //   - object: #GObject.
 //   - property: name of a boolean property of object.
-//
 func (application *Application) UnbindBusyProperty(object *coreglib.Object, property string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 C.gpointer      // out
@@ -41920,7 +41130,6 @@ func (application *Application) UnmarkBusy() {
 // The function takes the following parameters:
 //
 //   - id of a previously sent notification.
-//
 func (application *Application) WithdrawNotification(id string) {
 	var _arg0 *C.GApplication // out
 	var _arg1 *C.gchar        // out
@@ -42023,7 +41232,6 @@ func (application *Application) commandLine(commandLine *ApplicationCommandLine)
 //
 //   - connection
 //   - objectPath
-//
 func (application *Application) dBusRegister(connection *DBusConnection, objectPath string) error {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.dbus_register
@@ -42056,7 +41264,6 @@ func (application *Application) dBusRegister(connection *DBusConnection, objectP
 //
 //   - connection
 //   - objectPath
-//
 func (application *Application) dBusUnregister(connection *DBusConnection, objectPath string) {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.dbus_unregister
@@ -42138,7 +41345,6 @@ func (application *Application) nameLost() bool {
 //
 //   - files: array of #GFiles to open.
 //   - hint (or ""), but never NULL.
-//
 func (application *Application) open(files []Filer, hint string) {
 	gclass := (*C.GApplicationClass)(coreglib.PeekParentClass(application))
 	fnarg := gclass.open
@@ -42227,7 +41433,6 @@ func (application *Application) startup() {
 // The function returns the following values:
 //
 //   - application (optional): default application for this process, or NULL.
-//
 func ApplicationGetDefault() *Application {
 	var _cret *C.GApplication // in
 
@@ -42296,7 +41501,6 @@ func ApplicationGetDefault() *Application {
 // The function returns the following values:
 //
 //   - ok: TRUE if application_id is valid.
-//
 func ApplicationIDIsValid(applicationId string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -42331,7 +41535,6 @@ type ApplicationCommandLineOverrides struct {
 	// The function returns the following values:
 	//
 	//   - inputStream (optional) for stdin.
-	//
 	Stdin           func() InputStreamer
 	PrintLiteral    func(message string)
 	PrinterrLiteral func(message string)
@@ -42378,35 +41581,35 @@ func defaultApplicationCommandLineOverrides(v *ApplicationCommandLine) Applicati
 // signal handler in the primary instance has returned, and the return value of
 // the signal handler becomes the exit status of the launching instance.
 //
-//    static gboolean
-//    my_cmdline_handler (gpointer data)
-//    {
-//      GApplicationCommandLine *cmdline = data;
+//	static gboolean
+//	my_cmdline_handler (gpointer data)
+//	{
+//	  GApplicationCommandLine *cmdline = data;
 //
-//      // do the heavy lifting in an idle
+//	  // do the heavy lifting in an idle
 //
-//      g_application_command_line_set_exit_status (cmdline, 0);
-//      g_object_unref (cmdline); // this releases the application
+//	  g_application_command_line_set_exit_status (cmdline, 0);
+//	  g_object_unref (cmdline); // this releases the application
 //
-//      return G_SOURCE_REMOVE;
-//    }
+//	  return G_SOURCE_REMOVE;
+//	}
 //
-//    static int
-//    command_line (GApplication            *application,
-//                  GApplicationCommandLine *cmdline)
-//    {
-//      // keep the application running until we are done with this commandline
-//      g_application_hold (application);
+//	static int
+//	command_line (GApplication            *application,
+//	              GApplicationCommandLine *cmdline)
+//	{
+//	  // keep the application running until we are done with this commandline
+//	  g_application_hold (application);
 //
-//      g_object_set_data_full (G_OBJECT (cmdline),
-//                              "application", application,
-//                              (GDestroyNotify)g_application_release);
+//	  g_object_set_data_full (G_OBJECT (cmdline),
+//	                          "application", application,
+//	                          (GDestroyNotify)g_application_release);
 //
-//      g_object_ref (cmdline);
-//      g_idle_add (my_cmdline_handler, cmdline);
+//	  g_object_ref (cmdline);
+//	  g_idle_add (my_cmdline_handler, cmdline);
 //
-//      return 0;
-//    }
+//	  return 0;
+//	}
 //
 // In this example the commandline is not completely handled before the
 // #GApplication::command-line handler returns. Instead, we keep a reference
@@ -42479,7 +41682,6 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - file: new #GFile.
-//
 func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
@@ -42514,7 +41716,6 @@ func (cmdline *ApplicationCommandLine) CreateFileForArg(arg string) *File {
 // The function returns the following values:
 //
 //   - filenames: the string array containing the arguments (the argv).
-//
 func (cmdline *ApplicationCommandLine) Arguments() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret **C.gchar                  // in
@@ -42552,7 +41753,6 @@ func (cmdline *ApplicationCommandLine) Arguments() []string {
 // The function returns the following values:
 //
 //   - filename (optional): current directory, or NULL.
-//
 func (cmdline *ApplicationCommandLine) Cwd() string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.gchar                   // in
@@ -42590,7 +41790,6 @@ func (cmdline *ApplicationCommandLine) Cwd() string {
 // The function returns the following values:
 //
 //   - filenames: the environment strings, or NULL if they were not sent.
-//
 func (cmdline *ApplicationCommandLine) Environ() []string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret **C.gchar                  // in
@@ -42625,7 +41824,6 @@ func (cmdline *ApplicationCommandLine) Environ() []string {
 // The function returns the following values:
 //
 //   - gint: exit status.
-//
 func (cmdline *ApplicationCommandLine) ExitStatus() int {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.int                      // in
@@ -42647,7 +41845,6 @@ func (cmdline *ApplicationCommandLine) ExitStatus() int {
 // The function returns the following values:
 //
 //   - ok: TRUE if the invocation was remote.
-//
 func (cmdline *ApplicationCommandLine) IsRemote() bool {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret C.gboolean                 // in
@@ -42680,7 +41877,6 @@ func (cmdline *ApplicationCommandLine) IsRemote() bool {
 // The function returns the following values:
 //
 //   - variantDict with the options.
-//
 func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariantDict            // in
@@ -42716,7 +41912,6 @@ func (cmdline *ApplicationCommandLine) OptionsDict() *glib.VariantDict {
 // The function returns the following values:
 //
 //   - variant (optional): platform data, or NULL.
-//
 func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GVariant                // in
@@ -42754,7 +41949,6 @@ func (cmdline *ApplicationCommandLine) PlatformData() *glib.Variant {
 // The function returns the following values:
 //
 //   - inputStream (optional) for stdin.
-//
 func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _cret *C.GInputStream            // in
@@ -42805,7 +41999,6 @@ func (cmdline *ApplicationCommandLine) Stdin() InputStreamer {
 // The function returns the following values:
 //
 //   - utf8 (optional): value of the variable, or NULL if unset or unsent.
-//
 func (cmdline *ApplicationCommandLine) env(name string) string {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 *C.gchar                   // out
@@ -42851,7 +42044,6 @@ func (cmdline *ApplicationCommandLine) env(name string) string {
 // The function takes the following parameters:
 //
 //   - exitStatus: exit status.
-//
 func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 	var _arg0 *C.GApplicationCommandLine // out
 	var _arg1 C.int                      // out
@@ -42877,7 +42069,6 @@ func (cmdline *ApplicationCommandLine) SetExitStatus(exitStatus int) {
 // The function returns the following values:
 //
 //   - inputStream (optional) for stdin.
-//
 func (cmdline *ApplicationCommandLine) stdin() InputStreamer {
 	gclass := (*C.GApplicationCommandLineClass)(coreglib.PeekParentClass(cmdline))
 	fnarg := gclass.get_stdin
@@ -42980,7 +42171,6 @@ type BufferedInputStreamOverrides struct {
 	//
 	//   - gssize: number of bytes read into stream's buffer, up to count,
 	//     or -1 on error.
-	//
 	Fill func(ctx context.Context, count int) (int, error)
 	// FillFinish finishes an asynchronous read.
 	//
@@ -42991,7 +42181,6 @@ type BufferedInputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize of the read stream, or -1 on an error.
-	//
 	FillFinish func(result AsyncResulter) (int, error)
 }
 
@@ -43080,7 +42269,6 @@ func marshalBufferedInputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - bufferedInputStream for the given base_stream.
-//
 func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _cret *C.GInputStream // in
@@ -43108,7 +42296,6 @@ func NewBufferedInputStream(baseStream InputStreamer) *BufferedInputStream {
 // The function returns the following values:
 //
 //   - bufferedInputStream: Stream.
-//
 func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedInputStream {
 	var _arg1 *C.GInputStream // out
 	var _arg2 C.gsize         // out
@@ -43162,7 +42349,6 @@ func NewBufferedInputStreamSized(baseStream InputStreamer, size uint) *BufferedI
 //
 //   - gssize: number of bytes read into stream's buffer, up to count, or -1 on
 //     error.
-//
 func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg2 *C.GCancellable         // out
@@ -43207,7 +42393,6 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 //   - count: number of bytes that will be read from the stream.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional): ReadyCallback.
-//
 func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg3 *C.GCancellable         // out
@@ -43246,7 +42431,6 @@ func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPrior
 // The function returns the following values:
 //
 //   - gssize of the read stream, or -1 on an error.
-//
 func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GAsyncResult         // out
@@ -43276,7 +42460,6 @@ func (stream *BufferedInputStream) FillFinish(result AsyncResulter) (int, error)
 // The function returns the following values:
 //
 //   - gsize: size of the available stream.
-//
 func (stream *BufferedInputStream) Available() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
@@ -43298,7 +42481,6 @@ func (stream *BufferedInputStream) Available() uint {
 // The function returns the following values:
 //
 //   - gsize: current buffer size.
-//
 func (stream *BufferedInputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret C.gsize                 // in
@@ -43326,7 +42508,6 @@ func (stream *BufferedInputStream) BufferSize() uint {
 // The function returns the following values:
 //
 //   - gsize of the number of bytes peeked, or -1 on error.
-//
 func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.void                 // out
@@ -43360,7 +42541,6 @@ func (stream *BufferedInputStream) Peek(buffer []byte, offset uint) uint {
 // The function returns the following values:
 //
 //   - guint8s: read-only buffer.
-//
 func (stream *BufferedInputStream) PeekBuffer() []byte {
 	var _arg0 *C.GBufferedInputStream // out
 	var _cret unsafe.Pointer          // in
@@ -43400,7 +42580,6 @@ func (stream *BufferedInputStream) PeekBuffer() []byte {
 // The function returns the following values:
 //
 //   - gint: byte read from the stream, or -1 on end of stream or error.
-//
 func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 *C.GCancellable         // out
@@ -43436,7 +42615,6 @@ func (stream *BufferedInputStream) ReadByte(ctx context.Context) (int, error) {
 // The function takes the following parameters:
 //
 //   - size: #gsize.
-//
 func (stream *BufferedInputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedInputStream // out
 	var _arg1 C.gsize                 // out
@@ -43483,7 +42661,6 @@ func (stream *BufferedInputStream) SetBufferSize(size uint) {
 //
 //   - gssize: number of bytes read into stream's buffer, up to count, or -1 on
 //     error.
-//
 func (stream *BufferedInputStream) fill(ctx context.Context, count int) (int, error) {
 	gclass := (*C.GBufferedInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.fill
@@ -43531,7 +42708,6 @@ func (stream *BufferedInputStream) fill(ctx context.Context, count int) (int, er
 //   - count: number of bytes that will be read from the stream.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional): ReadyCallback.
-//
 func (stream *BufferedInputStream) fillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GBufferedInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.fill_async
@@ -43573,7 +42749,6 @@ func (stream *BufferedInputStream) fillAsync(ctx context.Context, count, ioPrior
 // The function returns the following values:
 //
 //   - gssize of the read stream, or -1 on an error.
-//
 func (stream *BufferedInputStream) fillFinish(result AsyncResulter) (int, error) {
 	gclass := (*C.GBufferedInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.fill_finish
@@ -43677,7 +42852,6 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - bufferedOutputStream for the given base_stream.
-//
 func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _cret *C.GOutputStream // in
@@ -43705,7 +42879,6 @@ func NewBufferedOutputStream(baseStream OutputStreamer) *BufferedOutputStream {
 // The function returns the following values:
 //
 //   - bufferedOutputStream with an internal buffer set to size.
-//
 func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *BufferedOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 C.gsize          // out
@@ -43730,7 +42903,6 @@ func NewBufferedOutputStreamSized(baseStream OutputStreamer, size uint) *Buffere
 // The function returns the following values:
 //
 //   - ok: TRUE if the stream's buffer automatically grows, FALSE otherwise.
-//
 func (stream *BufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gboolean               // in
@@ -43754,7 +42926,6 @@ func (stream *BufferedOutputStream) AutoGrow() bool {
 // The function returns the following values:
 //
 //   - gsize: current size of the buffer.
-//
 func (stream *BufferedOutputStream) BufferSize() uint {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _cret C.gsize                  // in
@@ -43779,7 +42950,6 @@ func (stream *BufferedOutputStream) BufferSize() uint {
 // The function takes the following parameters:
 //
 //   - autoGrow: #gboolean.
-//
 func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gboolean               // out
@@ -43799,7 +42969,6 @@ func (stream *BufferedOutputStream) SetAutoGrow(autoGrow bool) {
 // The function takes the following parameters:
 //
 //   - size: #gsize.
-//
 func (stream *BufferedOutputStream) SetBufferSize(size uint) {
 	var _arg0 *C.GBufferedOutputStream // out
 	var _arg1 C.gsize                  // out
@@ -43852,7 +43021,6 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - bytesIcon for the given bytes.
-//
 func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 	var _arg1 *C.GBytes // out
 	var _cret *C.GIcon  // in
@@ -43874,7 +43042,6 @@ func NewBytesIcon(bytes *glib.Bytes) *BytesIcon {
 // The function returns the following values:
 //
 //   - bytes: #GBytes.
-//
 func (icon *BytesIcon) Bytes() *glib.Bytes {
 	var _arg0 *C.GBytesIcon // out
 	var _cret *C.GBytes     // in
@@ -43974,27 +43141,27 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 //
 // An example of how to us this:
 //
-//    // Make sure we don't do unnecessary work if already cancelled
-//    if (g_cancellable_set_error_if_cancelled (cancellable, error))
-//      return;
+//	// Make sure we don't do unnecessary work if already cancelled
+//	if (g_cancellable_set_error_if_cancelled (cancellable, error))
+//	  return;
 //
-//    // Set up all the data needed to be able to handle cancellation
-//    // of the operation
-//    my_data = my_data_new (...);
+//	// Set up all the data needed to be able to handle cancellation
+//	// of the operation
+//	my_data = my_data_new (...);
 //
-//    id = 0;
-//    if (cancellable)
-//      id = g_cancellable_connect (cancellable,
-//    			      G_CALLBACK (cancelled_handler)
-//    			      data, NULL);
+//	id = 0;
+//	if (cancellable)
+//	  id = g_cancellable_connect (cancellable,
+//				      G_CALLBACK (cancelled_handler)
+//				      data, NULL);
 //
-//    // cancellable operation here...
+//	// cancellable operation here...
 //
-//    g_cancellable_disconnect (cancellable, id);
+//	g_cancellable_disconnect (cancellable, id);
 //
-//    // cancelled_handler is never called after this, it is now safe
-//    // to free the data
-//    my_data_free (my_data);
+//	// cancelled_handler is never called after this, it is now safe
+//	// to free the data
+//	my_data_free (my_data);
 //
 // Note that the cancelled signal is emitted in the thread that the user
 // cancelled from, which may be the main thread. So, the cancellable signal
@@ -44014,7 +43181,6 @@ func (cancellable *Cancellable) ConnectCancelled(f func()) coreglib.SignalHandle
 // The function returns the following values:
 //
 //   - cancellable: #GCancellable.
-//
 func NewCancellable() *Cancellable {
 	var _cret *C.GCancellable // in
 
@@ -44068,7 +43234,6 @@ func (cancellable *Cancellable) Cancel() {
 // The function takes the following parameters:
 //
 //   - handlerId: handler id of the handler to be disconnected, or 0.
-//
 func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 	var _arg0 *C.GCancellable // out
 	var _arg1 C.gulong        // out
@@ -44101,7 +43266,6 @@ func (cancellable *Cancellable) Disconnect(handlerId uint32) {
 //
 //   - gint: valid file descriptor. -1 if the file descriptor is not supported,
 //     or on errors.
-//
 func (cancellable *Cancellable) Fd() int {
 	var _arg0 *C.GCancellable // out
 	var _cret C.int           // in
@@ -44126,7 +43290,6 @@ func (cancellable *Cancellable) Fd() int {
 //
 //   - ok: TRUE if cancellable is cancelled, FALSE if called with NULL or if
 //     item is not cancelled.
-//
 func (cancellable *Cancellable) IsCancelled() bool {
 	var _arg0 *C.GCancellable // out
 	var _cret C.gboolean      // in
@@ -44256,7 +43419,6 @@ func (cancellable *Cancellable) SetErrorIfCancelled() error {
 // The function returns the following values:
 //
 //   - source: new #GSource.
-//
 func (cancellable *Cancellable) NewSource() *glib.Source {
 	var _arg0 *C.GCancellable // out
 	var _cret *C.GSource      // in
@@ -44301,7 +43463,6 @@ func (cancellable *Cancellable) cancelled() {
 //
 //   - cancellable (optional) from the top of the stack, or NULL if the stack is
 //     empty.
-//
 func CancellableGetCurrent() *Cancellable {
 	var _cret *C.GCancellable // in
 
@@ -44379,7 +43540,6 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - charsetConverter: new Converter or NULL on error.
-//
 func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, error) {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
@@ -44411,7 +43571,6 @@ func NewCharsetConverter(toCharset, fromCharset string) (*CharsetConverter, erro
 // The function returns the following values:
 //
 //   - guint: number of fallbacks that converter has applied.
-//
 func (converter *CharsetConverter) NumFallbacks() uint {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.guint              // in
@@ -44433,7 +43592,6 @@ func (converter *CharsetConverter) NumFallbacks() uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if fallbacks are used by converter.
-//
 func (converter *CharsetConverter) UseFallback() bool {
 	var _arg0 *C.GCharsetConverter // out
 	var _cret C.gboolean           // in
@@ -44457,7 +43615,6 @@ func (converter *CharsetConverter) UseFallback() bool {
 // The function takes the following parameters:
 //
 //   - useFallback: TRUE to use fallbacks.
-//
 func (converter *CharsetConverter) SetUseFallback(useFallback bool) {
 	var _arg0 *C.GCharsetConverter // out
 	var _arg1 C.gboolean           // out
@@ -44549,7 +43706,6 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - converterInputStream: new Stream.
-//
 func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *ConverterInputStream {
 	var _arg1 *C.GInputStream // out
 	var _arg2 *C.GConverter   // out
@@ -44574,7 +43730,6 @@ func NewConverterInputStream(baseStream InputStreamer, converter Converterer) *C
 // The function returns the following values:
 //
 //   - converter of the converter input stream.
-//
 func (converterStream *ConverterInputStream) Converter() *Converter {
 	var _arg0 *C.GConverterInputStream // out
 	var _cret *C.GConverter            // in
@@ -44668,7 +43823,6 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - converterOutputStream: new Stream.
-//
 func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) *ConverterOutputStream {
 	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.GConverter    // out
@@ -44693,7 +43847,6 @@ func NewConverterOutputStream(baseStream OutputStreamer, converter Converterer) 
 // The function returns the following values:
 //
 //   - converter of the converter output stream.
-//
 func (converterStream *ConverterOutputStream) Converter() *Converter {
 	var _arg0 *C.GConverterOutputStream // out
 	var _cret *C.GConverter             // in
@@ -44765,7 +43918,6 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - credentials Free with g_object_unref().
-//
 func NewCredentials() *Credentials {
 	var _cret *C.GCredentials // in
 
@@ -44785,7 +43937,6 @@ func NewCredentials() *Credentials {
 // The function takes the following parameters:
 //
 //   - otherCredentials: #GCredentials.
-//
 func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error {
 	var _arg0 *C.GCredentials // out
 	var _arg1 *C.GCredentials // out
@@ -44818,7 +43969,6 @@ func (credentials *Credentials) IsSameUser(otherCredentials *Credentials) error 
 //
 //   - nativeType: type of native credentials to set.
 //   - native: pointer to native credentials.
-//
 func (credentials *Credentials) SetNative(nativeType CredentialsType, native unsafe.Pointer) {
 	var _arg0 *C.GCredentials    // out
 	var _arg1 C.GCredentialsType // out
@@ -44841,7 +43991,6 @@ func (credentials *Credentials) SetNative(nativeType CredentialsType, native uns
 // The function returns the following values:
 //
 //   - utf8: string that should be freed with g_free().
-//
 func (credentials *Credentials) String() string {
 	var _arg0 *C.GCredentials // out
 	var _cret *C.gchar        // in
@@ -44912,7 +44061,6 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - dBusActionGroup: BusActionGroup.
-//
 func DBusActionGroupGet(connection *DBusConnection, busName, objectPath string) *DBusActionGroup {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
@@ -44952,26 +44100,26 @@ func DBusActionGroupGet(connection *DBusConnection, busName, objectPath string) 
 // passing and is the recommended mechanism for modern Unix platforms such as
 // Linux and the BSD family, you would use a signal handler like this:
 //
-//    static gboolean
-//    on_authorize_authenticated_peer (GDBusAuthObserver *observer,
-//                                     GIOStream         *stream,
-//                                     GCredentials      *credentials,
-//                                     gpointer           user_data)
-//    {
-//      gboolean authorized;
+//	static gboolean
+//	on_authorize_authenticated_peer (GDBusAuthObserver *observer,
+//	                                 GIOStream         *stream,
+//	                                 GCredentials      *credentials,
+//	                                 gpointer           user_data)
+//	{
+//	  gboolean authorized;
 //
-//      authorized = FALSE;
-//      if (credentials != NULL)
-//        {
-//          GCredentials *own_credentials;
-//          own_credentials = g_credentials_new ();
-//          if (g_credentials_is_same_user (credentials, own_credentials, NULL))
-//            authorized = TRUE;
-//          g_object_unref (own_credentials);
-//        }
+//	  authorized = FALSE;
+//	  if (credentials != NULL)
+//	    {
+//	      GCredentials *own_credentials;
+//	      own_credentials = g_credentials_new ();
+//	      if (g_credentials_is_same_user (credentials, own_credentials, NULL))
+//	        authorized = TRUE;
+//	      g_object_unref (own_credentials);
+//	    }
 //
-//      return authorized;
-//    }.
+//	  return authorized;
+//	}.
 type DBusAuthObserver struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -45007,7 +44155,6 @@ func (observer *DBusAuthObserver) ConnectAuthorizeAuthenticatedPeer(f func(strea
 // The function returns the following values:
 //
 //   - dBusAuthObserver Free with g_object_unref().
-//
 func NewDBusAuthObserver() *DBusAuthObserver {
 	var _cret *C.GDBusAuthObserver // in
 
@@ -45030,7 +44177,6 @@ func NewDBusAuthObserver() *DBusAuthObserver {
 //
 //   - ok: TRUE if mechanism can be used to authenticate the other peer,
 //     FALSE if not.
-//
 func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.gchar             // out
@@ -45064,7 +44210,6 @@ func (observer *DBusAuthObserver) AllowMechanism(mechanism string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the peer is authorized, FALSE if not.
-//
 func (observer *DBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStreamer, credentials *Credentials) bool {
 	var _arg0 *C.GDBusAuthObserver // out
 	var _arg1 *C.GIOStream         // out
@@ -45195,7 +44340,6 @@ func (connection *DBusConnection) ConnectClosed(f func(remotePeerVanished bool, 
 // The function returns the following values:
 //
 //   - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
@@ -45227,7 +44371,6 @@ func NewDBusConnectionFinish(res AsyncResulter) (*DBusConnection, error) {
 // The function returns the following values:
 //
 //   - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _cret *C.GDBusConnection // in
@@ -45275,7 +44418,6 @@ func NewDBusConnectionForAddressFinish(res AsyncResulter) (*DBusConnection, erro
 // The function returns the following values:
 //
 //   - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
 	var _arg4 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
@@ -45339,7 +44481,6 @@ func NewDBusConnectionForAddressSync(ctx context.Context, address string, flags 
 // The function returns the following values:
 //
 //   - dBusConnection or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver) (*DBusConnection, error) {
 	var _arg5 *C.GCancellable        // out
 	var _arg1 *C.GIOStream           // out
@@ -45416,7 +44557,6 @@ func NewDBusConnectionSync(ctx context.Context, stream IOStreamer, guid string, 
 //
 //   - guint: filter identifier that can be used with
 //     g_dbus_connection_remove_filter().
-//
 func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunction) uint {
 	var _arg0 *C.GDBusConnection           // out
 	var _arg1 C.GDBusMessageFilterFunction // out
@@ -45457,20 +44597,20 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 // If the parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
 //
-//    g_dbus_connection_call (connection,
-//                            "org.freedesktop.StringThings",
-//                            "/org/freedesktop/StringThings",
-//                            "org.freedesktop.StringThings",
-//                            "TwoStrings",
-//                            g_variant_new ("(ss)",
-//                                           "Thing One",
-//                                           "Thing Two"),
-//                            NULL,
-//                            G_DBUS_CALL_FLAGS_NONE,
-//                            -1,
-//                            NULL,
-//                            (GAsyncReadyCallback) two_strings_done,
-//                            NULL);
+//	g_dbus_connection_call (connection,
+//	                        "org.freedesktop.StringThings",
+//	                        "/org/freedesktop/StringThings",
+//	                        "org.freedesktop.StringThings",
+//	                        "TwoStrings",
+//	                        g_variant_new ("(ss)",
+//	                                       "Thing One",
+//	                                       "Thing Two"),
+//	                        NULL,
+//	                        G_DBUS_CALL_FLAGS_NONE,
+//	                        -1,
+//	                        NULL,
+//	                        (GAsyncReadyCallback) two_strings_done,
+//	                        NULL);
 //
 // This is an asynchronous method. When the operation is finished,
 // callback will be invoked in the [thread-default main
@@ -45499,7 +44639,6 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 //     G_MAXINT for no timeout.
 //   - callback (optional) to call when the request is satisfied or NULL if you
 //     don't care about the result of the method invocation.
-//
 func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection     // out
 	var _arg9 *C.GCancellable        // out
@@ -45567,7 +44706,6 @@ func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath,
 //
 //   - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
 //     with return values. Free with g_variant_unref().
-//
 func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -45613,19 +44751,19 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 // If the parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
 //
-//    g_dbus_connection_call_sync (connection,
-//                                 "org.freedesktop.StringThings",
-//                                 "/org/freedesktop/StringThings",
-//                                 "org.freedesktop.StringThings",
-//                                 "TwoStrings",
-//                                 g_variant_new ("(ss)",
-//                                                "Thing One",
-//                                                "Thing Two"),
-//                                 NULL,
-//                                 G_DBUS_CALL_FLAGS_NONE,
-//                                 -1,
-//                                 NULL,
-//                                 &error);
+//	g_dbus_connection_call_sync (connection,
+//	                             "org.freedesktop.StringThings",
+//	                             "/org/freedesktop/StringThings",
+//	                             "org.freedesktop.StringThings",
+//	                             "TwoStrings",
+//	                             g_variant_new ("(ss)",
+//	                                            "Thing One",
+//	                                            "Thing Two"),
+//	                             NULL,
+//	                             G_DBUS_CALL_FLAGS_NONE,
+//	                             -1,
+//	                             NULL,
+//	                             &error);
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_connection_call() for the asynchronous version of this method.
@@ -45649,7 +44787,6 @@ func (connection *DBusConnection) CallFinish(res AsyncResulter) (*glib.Variant, 
 //
 //   - variant: NULL if error is set. Otherwise a non-floating #GVariant tuple
 //     with return values. Free with g_variant_unref().
-//
 func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg9 *C.GCancellable    // out
@@ -45745,7 +44882,6 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectP
 //   - ctx (optional) or NULL.
 //   - callback (optional) to call when the request is satisfied or NULL if you
 //     don't care about the result.
-//
 func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.GCancellable       // out
@@ -45774,7 +44910,6 @@ func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReady
 // The function takes the following parameters:
 //
 //   - res obtained from the ReadyCallback passed to g_dbus_connection_close().
-//
 func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -45803,7 +44938,6 @@ func (connection *DBusConnection) CloseFinish(res AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -45846,7 +44980,6 @@ func (connection *DBusConnection) CloseSync(ctx context.Context) error {
 //   - signalName: name of the signal to emit.
 //   - parameters (optional) tuple with parameters for the signal or NULL if not
 //     passing parameters.
-//
 func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, interfaceName, signalName string, parameters *glib.Variant) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -45917,7 +45050,6 @@ func (connection *DBusConnection) EmitSignal(destinationBusName, objectPath, int
 // The function returns the following values:
 //
 //   - guint: ID of the export (never zero), or 0 in case of failure.
-//
 func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGrouper) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -45966,7 +45098,6 @@ func (connection *DBusConnection) ExportActionGroup(objectPath string, actionGro
 // The function returns the following values:
 //
 //   - guint: ID of the export (never zero), or 0 in case of failure.
-//
 func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuModeller) (uint, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.gchar           // out
@@ -46014,7 +45145,6 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 //   - ctx (optional) or NULL.
 //   - callback (optional) to call when the request is satisfied or NULL if you
 //     don't care about the result.
-//
 func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.GCancellable       // out
@@ -46043,7 +45173,6 @@ func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReady
 // The function takes the following parameters:
 //
 //   - res obtained from the ReadyCallback passed to g_dbus_connection_flush().
-//
 func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -46072,7 +45201,6 @@ func (connection *DBusConnection) FlushFinish(res AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GCancellable    // out
@@ -46104,7 +45232,6 @@ func (connection *DBusConnection) FlushSync(ctx context.Context) error {
 //
 //   - dBusCapabilityFlags: zero or more flags from the BusCapabilityFlags
 //     enumeration.
-//
 func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
 	var _arg0 *C.GDBusConnection     // out
 	var _cret C.GDBusCapabilityFlags // in
@@ -46128,7 +45255,6 @@ func (connection *DBusConnection) Capabilities() DBusCapabilityFlags {
 //
 //   - ok: whether the process is terminated when connection is closed by the
 //     remote peer.
-//
 func (connection *DBusConnection) ExitOnClose() bool {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.gboolean         // in
@@ -46153,7 +45279,6 @@ func (connection *DBusConnection) ExitOnClose() bool {
 //
 //   - dBusConnectionFlags: zero or more flags from the BusConnectionFlags
 //     enumeration.
-//
 func (connection *DBusConnection) Flags() DBusConnectionFlags {
 	var _arg0 *C.GDBusConnection     // out
 	var _cret C.GDBusConnectionFlags // in
@@ -46176,7 +45301,6 @@ func (connection *DBusConnection) Flags() DBusConnectionFlags {
 // The function returns the following values:
 //
 //   - utf8: GUID. Do not free this string, it is owned by connection.
-//
 func (connection *DBusConnection) GUID() string {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.gchar           // in
@@ -46203,7 +45327,6 @@ func (connection *DBusConnection) GUID() string {
 //
 //   - guint32: last used serial or zero when no message has been sent within
 //     the current thread.
-//
 func (connection *DBusConnection) LastSerial() uint32 {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.guint32          // in
@@ -46233,7 +45356,6 @@ func (connection *DBusConnection) LastSerial() uint32 {
 //
 //   - credentials (optional) or NULL if not available. Do not free this object,
 //     it is owned by connection.
-//
 func (connection *DBusConnection) PeerCredentials() *Credentials {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.GCredentials    // in
@@ -46260,7 +45382,6 @@ func (connection *DBusConnection) PeerCredentials() *Credentials {
 // The function returns the following values:
 //
 //   - ioStream: stream used for IO.
-//
 func (connection *DBusConnection) Stream() IOStreamer {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.GIOStream       // in
@@ -46301,7 +45422,6 @@ func (connection *DBusConnection) Stream() IOStreamer {
 //
 //   - utf8 (optional): unique name or NULL if connection is not a message bus
 //     connection. Do not free this string, it is owned by connection.
-//
 func (connection *DBusConnection) UniqueName() string {
 	var _arg0 *C.GDBusConnection // out
 	var _cret *C.gchar           // in
@@ -46325,7 +45445,6 @@ func (connection *DBusConnection) UniqueName() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if the connection is closed, FALSE otherwise.
-//
 func (connection *DBusConnection) IsClosed() bool {
 	var _arg0 *C.GDBusConnection // out
 	var _cret C.gboolean         // in
@@ -46359,7 +45478,6 @@ func (connection *DBusConnection) IsClosed() bool {
 //
 //   - guint: 0 if error is set, otherwise a registration ID (never 0) that can
 //     be used with g_dbus_connection_unregister_object() .
-//
 func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure, getPropertyClosure, setPropertyClosure coreglib.AnyClosure) (uint, error) {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.gchar              // out
@@ -46409,7 +45527,6 @@ func (connection *DBusConnection) RegisterObject(objectPath string, interfaceInf
 // The function takes the following parameters:
 //
 //   - filterId: identifier obtained from g_dbus_connection_add_filter().
-//
 func (connection *DBusConnection) RemoveFilter(filterId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -46452,7 +45569,6 @@ func (connection *DBusConnection) RemoveFilter(filterId uint) {
 //
 //   - outSerial (optional): return location for serial number assigned to
 //     message when sending it or NULL.
-//
 func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSendMessageFlags) (uint32, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg1 *C.GDBusMessage         // out
@@ -46524,7 +45640,6 @@ func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSe
 //
 //   - outSerial (optional): return location for serial number assigned to
 //     message when sending it or NULL.
-//
 func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, callback AsyncReadyCallback) uint32 {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg5 *C.GCancellable         // out
@@ -46584,7 +45699,6 @@ func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, mess
 // The function returns the following values:
 //
 //   - dBusMessage: locked BusMessage or NULL if error is set.
-//
 func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) (*DBusMessage, error) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 *C.GAsyncResult    // out
@@ -46652,7 +45766,6 @@ func (connection *DBusConnection) SendMessageWithReplyFinish(res AsyncResulter) 
 //     message when sending it or NULL.
 //   - dBusMessage: locked BusMessage that is the reply to message or NULL if
 //     error is set.
-//
 func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int) (uint32, *DBusMessage, error) {
 	var _arg0 *C.GDBusConnection      // out
 	var _arg5 *C.GCancellable         // out
@@ -46707,7 +45820,6 @@ func (connection *DBusConnection) SendMessageWithReplySync(ctx context.Context, 
 //
 //   - exitOnClose: whether the process should be terminated when connection is
 //     closed by the remote peer.
-//
 func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.gboolean         // out
@@ -46788,7 +45900,6 @@ func (connection *DBusConnection) SetExitOnClose(exitOnClose bool) {
 //
 //   - guint: subscription identifier that can be used with
 //     g_dbus_connection_signal_unsubscribe().
-//
 func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member, objectPath, arg0 string, flags DBusSignalFlags, callback DBusSignalCallback) uint {
 	var _arg0 *C.GDBusConnection    // out
 	var _arg1 *C.gchar              // out
@@ -46858,7 +45969,6 @@ func (connection *DBusConnection) SignalSubscribe(sender, interfaceName, member,
 //
 //   - subscriptionId: subscription id obtained from
 //     g_dbus_connection_signal_subscribe().
-//
 func (connection *DBusConnection) SignalUnsubscribe(subscriptionId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -46894,7 +46004,6 @@ func (connection *DBusConnection) StartMessageProcessing() {
 // The function takes the following parameters:
 //
 //   - exportId: ID from g_dbus_connection_export_action_group().
-//
 func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -46917,7 +46026,6 @@ func (connection *DBusConnection) UnexportActionGroup(exportId uint) {
 // The function takes the following parameters:
 //
 //   - exportId: ID from g_dbus_connection_export_menu_model().
-//
 func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -46940,7 +46048,6 @@ func (connection *DBusConnection) UnexportMenuModel(exportId uint) {
 // The function returns the following values:
 //
 //   - ok: TRUE if the object was unregistered, FALSE otherwise.
-//
 func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -46972,7 +46079,6 @@ func (connection *DBusConnection) UnregisterObject(registrationId uint) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the subtree was unregistered, FALSE otherwise.
-//
 func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 	var _arg0 *C.GDBusConnection // out
 	var _arg1 C.guint            // out
@@ -47020,7 +46126,6 @@ func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 //   - flags describing how to make the connection.
 //   - observer (optional) or NULL.
 //   - callback (optional) to call when the request is satisfied.
-//
 func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
 	var _arg5 *C.GCancellable        // out
 	var _arg1 *C.GIOStream           // out
@@ -47085,7 +46190,6 @@ func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flag
 //   - flags describing how to make the connection.
 //   - observer (optional) or NULL.
 //   - callback (optional) to call when the request is satisfied.
-//
 func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
 	var _arg4 *C.GCancellable        // out
 	var _arg1 *C.gchar               // out
@@ -47135,7 +46239,6 @@ type DBusInterfaceSkeletonOverrides struct {
 	// The function returns the following values:
 	//
 	//   - dBusInterfaceInfo (never NULL). Do not free.
-	//
 	Info func() *DBusInterfaceInfo
 	// Properties gets all D-Bus properties for interface_.
 	//
@@ -47143,7 +46246,6 @@ type DBusInterfaceSkeletonOverrides struct {
 	//
 	//   - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
 	//     g_variant_unref().
-	//
 	Properties func() *glib.Variant
 }
 
@@ -47281,7 +46383,6 @@ func (interface_ *DBusInterfaceSkeleton) ConnectGAuthorizeMethod(f func(invocati
 //
 //   - connection to export interface_ on.
 //   - objectPath: path to export the interface at.
-//
 func (interface_ *DBusInterfaceSkeleton) Export(connection *DBusConnection, objectPath string) error {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
@@ -47329,7 +46430,6 @@ func (interface_ *DBusInterfaceSkeleton) Flush() {
 //
 //   - dBusConnection (optional) or NULL if interface_ is not exported anywhere.
 //     Do not free, the object belongs to interface_.
-//
 func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusConnection        // in
@@ -47355,7 +46455,6 @@ func (interface_ *DBusInterfaceSkeleton) Connection() *DBusConnection {
 //   - list of all the connections that interface_ is exported on. The returned
 //     list should be freed with g_list_free() after each element has been freed
 //     with g_object_unref().
-//
 func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GList                  // in
@@ -47385,7 +46484,6 @@ func (interface_ *DBusInterfaceSkeleton) Connections() []*DBusConnection {
 //
 //   - dBusInterfaceSkeletonFlags: one or more flags from the
 //     BusInterfaceSkeletonFlags enumeration.
-//
 func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _cret C.GDBusInterfaceSkeletonFlags // in
@@ -47408,7 +46506,6 @@ func (interface_ *DBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 // The function returns the following values:
 //
 //   - dBusInterfaceInfo (never NULL). Do not free.
-//
 func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GDBusInterfaceInfo     // in
@@ -47438,7 +46535,6 @@ func (interface_ *DBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 //
 //   - utf8 (optional): string owned by interface_ or NULL if interface_ is not
 //     exported anywhere. Do not free, the string belongs to interface_.
-//
 func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.gchar                  // in
@@ -47463,7 +46559,6 @@ func (interface_ *DBusInterfaceSkeleton) ObjectPath() string {
 //
 //   - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
 //     g_variant_unref().
-//
 func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _cret *C.GVariant               // in
@@ -47495,7 +46590,6 @@ func (interface_ *DBusInterfaceSkeleton) Properties() *glib.Variant {
 // The function returns the following values:
 //
 //   - ok: TRUE if interface_ is exported on connection, FALSE otherwise.
-//
 func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnection) bool {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
@@ -47522,7 +46616,6 @@ func (interface_ *DBusInterfaceSkeleton) HasConnection(connection *DBusConnectio
 // The function takes the following parameters:
 //
 //   - flags flags from the BusInterfaceSkeletonFlags enumeration.
-//
 func (interface_ *DBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
 	var _arg0 *C.GDBusInterfaceSkeleton     // out
 	var _arg1 C.GDBusInterfaceSkeletonFlags // out
@@ -47556,7 +46649,6 @@ func (interface_ *DBusInterfaceSkeleton) Unexport() {
 // The function takes the following parameters:
 //
 //   - connection: BusConnection.
-//
 func (interface_ *DBusInterfaceSkeleton) UnexportFromConnection(connection *DBusConnection) {
 	var _arg0 *C.GDBusInterfaceSkeleton // out
 	var _arg1 *C.GDBusConnection        // out
@@ -47618,7 +46710,6 @@ func (interface_ *DBusInterfaceSkeleton) gAuthorizeMethod(invocation *DBusMethod
 // The function returns the following values:
 //
 //   - dBusInterfaceInfo (never NULL). Do not free.
-//
 func (interface_ *DBusInterfaceSkeleton) info() *DBusInterfaceInfo {
 	gclass := (*C.GDBusInterfaceSkeletonClass)(coreglib.PeekParentClass(interface_))
 	fnarg := gclass.get_info
@@ -47651,7 +46742,6 @@ func (interface_ *DBusInterfaceSkeleton) info() *DBusInterfaceInfo {
 //
 //   - variant of type ['a{sv}'][G-VARIANT-TYPE-VARDICT:CAPS]. Free with
 //     g_variant_unref().
-//
 func (interface_ *DBusInterfaceSkeleton) properties() *glib.Variant {
 	gclass := (*C.GDBusInterfaceSkeletonClass)(coreglib.PeekParentClass(interface_))
 	fnarg := gclass.get_properties
@@ -47720,7 +46810,6 @@ func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - dBusMenuModel object. Free with g_object_unref().
-//
 func DBusMenuModelGet(connection *DBusConnection, busName, objectPath string) *DBusMenuModel {
 	var _arg1 *C.GDBusConnection // out
 	var _arg2 *C.gchar           // out
@@ -47773,7 +46862,6 @@ func marshalDBusMessage(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - dBusMessage Free with g_object_unref().
-//
 func NewDBusMessage() *DBusMessage {
 	var _cret *C.GDBusMessage // in
 
@@ -47802,7 +46890,6 @@ func NewDBusMessage() *DBusMessage {
 //
 //   - dBusMessage: new BusMessage or NULL if error is set. Free with
 //     g_object_unref().
-//
 func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBusMessage, error) {
 	var _arg1 *C.guchar // out
 	var _arg2 C.gsize
@@ -47843,7 +46930,6 @@ func NewDBusMessageFromBlob(blob []byte, capabilities DBusCapabilityFlags) (*DBu
 // The function returns the following values:
 //
 //   - dBusMessage Free with g_object_unref().
-//
 func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessage {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -47888,7 +46974,6 @@ func NewDBusMessageMethodCall(name, path, interface_, method string) *DBusMessag
 // The function returns the following values:
 //
 //   - dBusMessage Free with g_object_unref().
-//
 func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 	var _arg1 *C.gchar        // out
 	var _arg2 *C.gchar        // out
@@ -47924,7 +47009,6 @@ func NewDBusMessageSignal(path, interface_, signal string) *DBusMessage {
 //
 //   - dBusMessage: new BusMessage or NULL if error is set. Free with
 //     g_object_unref().
-//
 func (message *DBusMessage) Copy() (*DBusMessage, error) {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
@@ -47952,7 +47036,6 @@ func (message *DBusMessage) Copy() (*DBusMessage, error) {
 //
 //   - utf8 (optional): string item or NULL if the first item in the body of
 //     message is not a string.
-//
 func (message *DBusMessage) Arg0() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -47977,7 +47060,6 @@ func (message *DBusMessage) Arg0() string {
 //
 //   - variant (optional) or NULL if the body is empty. Do not free, it is owned
 //     by message.
-//
 func (message *DBusMessage) Body() *glib.Variant {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GVariant     // in
@@ -48008,7 +47090,6 @@ func (message *DBusMessage) Body() *glib.Variant {
 // The function returns the following values:
 //
 //   - dBusMessageByteOrder: byte order.
-//
 func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
 	var _arg0 *C.GDBusMessage         // out
 	var _cret C.GDBusMessageByteOrder // in
@@ -48031,7 +47112,6 @@ func (message *DBusMessage) ByteOrder() DBusMessageByteOrder {
 // The function returns the following values:
 //
 //   - utf8 (optional): value.
-//
 func (message *DBusMessage) Destination() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -48056,7 +47136,6 @@ func (message *DBusMessage) Destination() string {
 // The function returns the following values:
 //
 //   - utf8 (optional): value.
-//
 func (message *DBusMessage) ErrorName() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -48081,7 +47160,6 @@ func (message *DBusMessage) ErrorName() string {
 //
 //   - dBusMessageFlags flags that are set (typically values from the
 //     BusMessageFlags enumeration bitwise ORed together).
-//
 func (message *DBusMessage) Flags() DBusMessageFlags {
 	var _arg0 *C.GDBusMessage     // out
 	var _cret C.GDBusMessageFlags // in
@@ -48112,7 +47190,6 @@ func (message *DBusMessage) Flags() DBusMessageFlags {
 //
 //   - variant (optional) with the value if the header was found, NULL
 //     otherwise. Do not free, it is owned by message.
-//
 func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
@@ -48148,7 +47225,6 @@ func (message *DBusMessage) Header(headerField DBusMessageHeaderField) *glib.Var
 //   - guint8s: array of header fields terminated by
 //     G_DBUS_MESSAGE_HEADER_FIELD_INVALID. Each element is a #guchar. Free with
 //     g_free().
-//
 func (message *DBusMessage) HeaderFields() []byte {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.guchar       // in
@@ -48183,7 +47259,6 @@ func (message *DBusMessage) HeaderFields() []byte {
 // The function returns the following values:
 //
 //   - utf8 (optional): value.
-//
 func (message *DBusMessage) Interface() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -48209,7 +47284,6 @@ func (message *DBusMessage) Interface() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if message is locked, FALSE otherwise.
-//
 func (message *DBusMessage) Locked() bool {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.gboolean      // in
@@ -48234,7 +47308,6 @@ func (message *DBusMessage) Locked() bool {
 // The function returns the following values:
 //
 //   - utf8 (optional): value.
-//
 func (message *DBusMessage) Member() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -48259,7 +47332,6 @@ func (message *DBusMessage) Member() string {
 //
 //   - dBusMessageType: 8-bit unsigned integer (typically a value from the
 //     BusMessageType enumeration).
-//
 func (message *DBusMessage) MessageType() DBusMessageType {
 	var _arg0 *C.GDBusMessage    // out
 	var _cret C.GDBusMessageType // in
@@ -48282,7 +47354,6 @@ func (message *DBusMessage) MessageType() DBusMessageType {
 // The function returns the following values:
 //
 //   - utf8 (optional): value.
-//
 func (message *DBusMessage) Path() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -48307,7 +47378,6 @@ func (message *DBusMessage) Path() string {
 // The function returns the following values:
 //
 //   - guint32: value.
-//
 func (message *DBusMessage) ReplySerial() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
@@ -48330,7 +47400,6 @@ func (message *DBusMessage) ReplySerial() uint32 {
 // The function returns the following values:
 //
 //   - utf8 (optional): value.
-//
 func (message *DBusMessage) Sender() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -48354,7 +47423,6 @@ func (message *DBusMessage) Sender() string {
 // The function returns the following values:
 //
 //   - guint32: #guint32.
-//
 func (message *DBusMessage) Serial() uint32 {
 	var _arg0 *C.GDBusMessage // out
 	var _cret C.guint32       // in
@@ -48377,7 +47445,6 @@ func (message *DBusMessage) Serial() uint32 {
 // The function returns the following values:
 //
 //   - utf8: value.
-//
 func (message *DBusMessage) Signature() string {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.gchar        // in
@@ -48415,7 +47482,6 @@ func (message *DBusMessage) Lock() {
 // The function returns the following values:
 //
 //   - dBusMessage Free with g_object_unref().
-//
 func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMessage string) *DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -48446,7 +47512,6 @@ func (methodCallMessage *DBusMessage) NewMethodErrorLiteral(errorName, errorMess
 // The function returns the following values:
 //
 //   - dBusMessage Free with g_object_unref().
-//
 func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 	var _arg0 *C.GDBusMessage // out
 	var _cret *C.GDBusMessage // in
@@ -48469,31 +47534,31 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 // formatting is subject to change at any time. Typical output looks something
 // like this:
 //
-//    Flags:   none
-//    Version: 0
-//    Serial:  4
-//    Headers:
-//      path -> objectpath '/org/gtk/GDBus/TestObject'
-//      interface -> 'org.gtk.GDBus.TestInterface'
-//      member -> 'GimmeStdout'
-//      destination -> ':1.146'
-//    Body: ()
-//    UNIX File Descriptors:
-//      (none)
+//	Flags:   none
+//	Version: 0
+//	Serial:  4
+//	Headers:
+//	  path -> objectpath '/org/gtk/GDBus/TestObject'
+//	  interface -> 'org.gtk.GDBus.TestInterface'
+//	  member -> 'GimmeStdout'
+//	  destination -> ':1.146'
+//	Body: ()
+//	UNIX File Descriptors:
+//	  (none)
 //
 // or
 //
-//    Flags:   no-reply-expected
-//    Version: 0
-//    Serial:  477
-//    Headers:
-//      reply-serial -> uint32 4
-//      destination -> ':1.159'
-//      sender -> ':1.146'
-//      num-unix-fds -> uint32 1
-//    Body: ()
-//    UNIX File Descriptors:
-//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635.
+//	Flags:   no-reply-expected
+//	Version: 0
+//	Serial:  477
+//	Headers:
+//	  reply-serial -> uint32 4
+//	  destination -> ':1.159'
+//	  sender -> ':1.146'
+//	  num-unix-fds -> uint32 1
+//	Body: ()
+//	UNIX File Descriptors:
+//	  fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635.
 //
 // The function takes the following parameters:
 //
@@ -48502,7 +47567,6 @@ func (methodCallMessage *DBusMessage) NewMethodReply() *DBusMessage {
 // The function returns the following values:
 //
 //   - utf8: string that should be freed with g_free().
-//
 func (message *DBusMessage) Print(indent uint) string {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint         // out
@@ -48532,7 +47596,6 @@ func (message *DBusMessage) Print(indent uint) string {
 // The function takes the following parameters:
 //
 //   - body: either NULL or a #GVariant that is a tuple.
-//
 func (message *DBusMessage) SetBody(body *glib.Variant) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.GVariant     // out
@@ -48550,7 +47613,6 @@ func (message *DBusMessage) SetBody(body *glib.Variant) {
 // The function takes the following parameters:
 //
 //   - byteOrder: byte order.
-//
 func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	var _arg0 *C.GDBusMessage         // out
 	var _arg1 C.GDBusMessageByteOrder // out
@@ -48569,7 +47631,6 @@ func (message *DBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 // The function takes the following parameters:
 //
 //   - value (optional) to set.
-//
 func (message *DBusMessage) SetDestination(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -48591,7 +47652,6 @@ func (message *DBusMessage) SetDestination(value string) {
 // The function takes the following parameters:
 //
 //   - value to set.
-//
 func (message *DBusMessage) SetErrorName(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -48613,7 +47673,6 @@ func (message *DBusMessage) SetErrorName(value string) {
 //
 //   - flags flags for message that are set (typically values from the
 //     BusMessageFlags enumeration bitwise ORed together).
-//
 func (message *DBusMessage) SetFlags(flags DBusMessageFlags) {
 	var _arg0 *C.GDBusMessage     // out
 	var _arg1 C.GDBusMessageFlags // out
@@ -48636,7 +47695,6 @@ func (message *DBusMessage) SetFlags(flags DBusMessageFlags) {
 //     BusMessageHeaderField enumeration).
 //   - value (optional) to set the header field or NULL to clear the header
 //     field.
-//
 func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
 	var _arg0 *C.GDBusMessage           // out
 	var _arg1 C.GDBusMessageHeaderField // out
@@ -48660,7 +47718,6 @@ func (message *DBusMessage) SetHeader(headerField DBusMessageHeaderField, value 
 // The function takes the following parameters:
 //
 //   - value (optional) to set.
-//
 func (message *DBusMessage) SetInterface(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -48682,7 +47739,6 @@ func (message *DBusMessage) SetInterface(value string) {
 // The function takes the following parameters:
 //
 //   - value (optional) to set.
-//
 func (message *DBusMessage) SetMember(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -48704,7 +47760,6 @@ func (message *DBusMessage) SetMember(value string) {
 //
 //   - typ: 8-bit unsigned integer (typically a value from the BusMessageType
 //     enumeration).
-//
 func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 	var _arg0 *C.GDBusMessage    // out
 	var _arg1 C.GDBusMessageType // out
@@ -48723,7 +47778,6 @@ func (message *DBusMessage) SetMessageType(typ DBusMessageType) {
 // The function takes the following parameters:
 //
 //   - value (optional) to set.
-//
 func (message *DBusMessage) SetPath(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -48745,7 +47799,6 @@ func (message *DBusMessage) SetPath(value string) {
 // The function takes the following parameters:
 //
 //   - value to set.
-//
 func (message *DBusMessage) SetReplySerial(value uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
@@ -48764,7 +47817,6 @@ func (message *DBusMessage) SetReplySerial(value uint32) {
 // The function takes the following parameters:
 //
 //   - value (optional) to set.
-//
 func (message *DBusMessage) SetSender(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -48785,7 +47837,6 @@ func (message *DBusMessage) SetSender(value string) {
 // The function takes the following parameters:
 //
 //   - serial: #guint32.
-//
 func (message *DBusMessage) SetSerial(serial uint32) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 C.guint32       // out
@@ -48804,7 +47855,6 @@ func (message *DBusMessage) SetSerial(serial uint32) {
 // The function takes the following parameters:
 //
 //   - value (optional) to set.
-//
 func (message *DBusMessage) SetSignature(value string) {
 	var _arg0 *C.GDBusMessage // out
 	var _arg1 *C.gchar        // out
@@ -48831,7 +47881,6 @@ func (message *DBusMessage) SetSignature(value string) {
 //
 //   - guint8s: pointer to a valid binary D-Bus message of out_size bytes
 //     generated by message or NULL if error is set. Free with g_free().
-//
 func (message *DBusMessage) ToBlob(capabilities DBusCapabilityFlags) ([]byte, error) {
 	var _arg0 *C.GDBusMessage        // out
 	var _arg2 C.GDBusCapabilityFlags // out
@@ -48896,7 +47945,6 @@ func (message *DBusMessage) ToGError() error {
 //   - gssize: number of bytes needed or -1 if error is set (e.g. if blob
 //     contains invalid data or not enough data is available to determine the
 //     size).
-//
 func DBusMessageBytesNeeded(blob []byte) (int, error) {
 	var _arg1 *C.guchar // out
 	var _arg2 C.gsize
@@ -48953,7 +48001,6 @@ func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - dBusConnection Do not free, it is owned by invocation.
-//
 func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusConnection       // in
@@ -48979,7 +48026,6 @@ func (invocation *DBusMethodInvocation) Connection() *DBusConnection {
 // The function returns the following values:
 //
 //   - utf8: string. Do not free, it is owned by invocation.
-//
 func (invocation *DBusMethodInvocation) InterfaceName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
@@ -49007,7 +48053,6 @@ func (invocation *DBusMethodInvocation) InterfaceName() string {
 // The function returns the following values:
 //
 //   - dBusMessage Do not free, it is owned by invocation.
-//
 func (invocation *DBusMethodInvocation) Message() *DBusMessage {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusMessage          // in
@@ -49035,7 +48080,6 @@ func (invocation *DBusMethodInvocation) Message() *DBusMessage {
 //
 //   - dBusMethodInfo (optional) or NULL. Do not free, it is owned by
 //     invocation.
-//
 func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusMethodInfo       // in
@@ -49066,7 +48110,6 @@ func (invocation *DBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 // The function returns the following values:
 //
 //   - utf8: string. Do not free, it is owned by invocation.
-//
 func (invocation *DBusMethodInvocation) MethodName() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
@@ -49088,7 +48131,6 @@ func (invocation *DBusMethodInvocation) MethodName() string {
 // The function returns the following values:
 //
 //   - utf8: string. Do not free, it is owned by invocation.
-//
 func (invocation *DBusMethodInvocation) ObjectPath() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
@@ -49112,7 +48154,6 @@ func (invocation *DBusMethodInvocation) ObjectPath() string {
 // The function returns the following values:
 //
 //   - variant tuple. Do not unref this because it is owned by invocation.
-//
 func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GVariant              // in
@@ -49151,7 +48192,6 @@ func (invocation *DBusMethodInvocation) Parameters() *glib.Variant {
 // The function returns the following values:
 //
 //   - dBusPropertyInfo (optional) or NULL.
-//
 func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.GDBusPropertyInfo     // in
@@ -49182,7 +48222,6 @@ func (invocation *DBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 // The function returns the following values:
 //
 //   - utf8: string. Do not free, it is owned by invocation.
-//
 func (invocation *DBusMethodInvocation) Sender() string {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _cret *C.gchar                 // in
@@ -49208,7 +48247,6 @@ func (invocation *DBusMethodInvocation) Sender() string {
 //
 //   - errorName: valid D-Bus error name.
 //   - errorMessage: valid D-Bus error message.
-//
 func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.gchar                 // out
@@ -49238,7 +48276,6 @@ func (invocation *DBusMethodInvocation) ReturnDBusError(errorName, errorMessage 
 //   - domain for the #GError error domain.
 //   - code: error code.
 //   - message: error message.
-//
 func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 C.GQuark                 // out
@@ -49268,7 +48305,6 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 // The function takes the following parameters:
 //
 //   - err: #GError.
-//
 func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GError                // out
@@ -49292,19 +48328,19 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 // single out-parameter, it must be contained in a tuple. If the method has no
 // out-parameters, parameters may be NULL or an empty tuple.
 //
-//    GDBusMethodInvocation *invocation = some_invocation;
-//    g_autofree gchar *result_string = NULL;
-//    g_autoptr (GError) error = NULL;
+//	GDBusMethodInvocation *invocation = some_invocation;
+//	g_autofree gchar *result_string = NULL;
+//	g_autoptr (GError) error = NULL;
 //
-//    result_string = calculate_result (&error);
+//	result_string = calculate_result (&error);
 //
-//    if (error != NULL)
-//      g_dbus_method_invocation_return_gerror (invocation, error);
-//    else
-//      g_dbus_method_invocation_return_value (invocation,
-//                                             g_variant_new ("(s)", result_string));
+//	if (error != NULL)
+//	  g_dbus_method_invocation_return_gerror (invocation, error);
+//	else
+//	  g_dbus_method_invocation_return_value (invocation,
+//	                                         g_variant_new ("(s)", result_string));
 //
-//    // Do not free invocation here; returning a value does that
+//	// Do not free invocation here; returning a value does that
 //
 // This method will take ownership of invocation. See BusInterfaceVTable for
 // more information about the ownership of invocation.
@@ -49317,7 +48353,6 @@ func (invocation *DBusMethodInvocation) ReturnGError(err error) {
 //
 //   - parameters (optional) tuple with out parameters for the method or NULL if
 //     not passing any parameters.
-//
 func (invocation *DBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	var _arg0 *C.GDBusMethodInvocation // out
 	var _arg1 *C.GVariant              // out
@@ -49342,7 +48377,6 @@ type DBusObjectManagerClientOverrides struct {
 	//   - senderName
 	//   - signalName
 	//   - parameters
-	//
 	InterfaceProxySignal func(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant)
 }
 
@@ -49508,7 +48542,6 @@ func (manager *DBusObjectManagerClient) ConnectInterfaceProxySignal(f func(objec
 //
 //   - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
 //     is set. Free with g_object_unref().
-//
 func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
@@ -49542,7 +48575,6 @@ func NewDBusObjectManagerClientFinish(res AsyncResulter) (*DBusObjectManagerClie
 //
 //   - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
 //     is set. Free with g_object_unref().
-//
 func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManagerClient, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GDBusObjectManager // in
@@ -49587,7 +48619,6 @@ func NewDBusObjectManagerClientForBusFinish(res AsyncResulter) (*DBusObjectManag
 //
 //   - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
 //     is set. Free with g_object_unref().
-//
 func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 C.GBusType                      // out
@@ -49658,7 +48689,6 @@ func NewDBusObjectManagerClientForBusSync(ctx context.Context, busType BusType, 
 //
 //   - dBusObjectManagerClient: a BusObjectManagerClient object or NULL if error
 //     is set. Free with g_object_unref().
-//
 func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc) (*DBusObjectManagerClient, error) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 *C.GDBusConnection              // out
@@ -49714,7 +48744,6 @@ func NewDBusObjectManagerClientSync(ctx context.Context, connection *DBusConnect
 // The function returns the following values:
 //
 //   - dBusConnection object. Do not free, the object belongs to manager.
-//
 func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.GDBusConnection          // in
@@ -49737,7 +48766,6 @@ func (manager *DBusObjectManagerClient) Connection() *DBusConnection {
 //
 //   - dBusObjectManagerClientFlags: zero of more flags from the
 //     BusObjectManagerClientFlags enumeration.
-//
 func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	var _arg0 *C.GDBusObjectManagerClient     // out
 	var _cret C.GDBusObjectManagerClientFlags // in
@@ -49761,7 +48789,6 @@ func (manager *DBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 //
 //   - utf8: unique or well-known name. Do not free, the string belongs to
 //     manager.
-//
 func (manager *DBusObjectManagerClient) Name() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
@@ -49786,7 +48813,6 @@ func (manager *DBusObjectManagerClient) Name() string {
 //
 //   - utf8 (optional): name owner or NULL if no name owner exists. Free with
 //     g_free().
-//
 func (manager *DBusObjectManagerClient) NameOwner() string {
 	var _arg0 *C.GDBusObjectManagerClient // out
 	var _cret *C.gchar                    // in
@@ -49813,7 +48839,6 @@ func (manager *DBusObjectManagerClient) NameOwner() string {
 //   - senderName
 //   - signalName
 //   - parameters
-//
 func (manager *DBusObjectManagerClient) interfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant) {
 	gclass := (*C.GDBusObjectManagerClientClass)(coreglib.PeekParentClass(manager))
 	fnarg := gclass.interface_proxy_signal
@@ -49864,7 +48889,6 @@ func (manager *DBusObjectManagerClient) interfaceProxySignal(objectProxy *DBusOb
 //   - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
 //     proxies.
 //   - callback (optional) to call when the request is satisfied.
-//
 func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 *C.GDBusConnection              // out
@@ -49929,7 +48953,6 @@ func NewDBusObjectManagerClient(ctx context.Context, connection *DBusConnection,
 //   - getProxyTypeFunc (optional) function or NULL to always construct BusProxy
 //     proxies.
 //   - callback (optional) to call when the request is satisfied.
-//
 func NewDBusObjectManagerClientForBus(ctx context.Context, busType BusType, flags DBusObjectManagerClientFlags, name, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, callback AsyncReadyCallback) {
 	var _arg8 *C.GCancellable                 // out
 	var _arg1 C.GBusType                      // out
@@ -50056,7 +49079,6 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - dBusObjectManagerServer object. Free with g_object_unref().
-//
 func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 	var _arg1 *C.gchar                    // out
 	var _cret *C.GDBusObjectManagerServer // in
@@ -50088,7 +49110,6 @@ func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer {
 // The function takes the following parameters:
 //
 //   - object: BusObjectSkeleton.
-//
 func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -50109,7 +49130,6 @@ func (manager *DBusObjectManagerServer) Export(object *DBusObjectSkeleton) {
 // The function takes the following parameters:
 //
 //   - object: object.
-//
 func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleton) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -50128,7 +49148,6 @@ func (manager *DBusObjectManagerServer) ExportUniquely(object *DBusObjectSkeleto
 //
 //   - dBusConnection object or NULL if manager isn't exported on a connection.
 //     The returned object should be freed with g_object_unref().
-//
 func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _cret *C.GDBusConnection          // in
@@ -50154,7 +49173,6 @@ func (manager *DBusObjectManagerServer) Connection() *DBusConnection {
 // The function returns the following values:
 //
 //   - ok: TRUE if object is exported.
-//
 func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusObjectSkeleton      // out
@@ -50182,7 +49200,6 @@ func (manager *DBusObjectManagerServer) IsExported(object *DBusObjectSkeleton) b
 // The function takes the following parameters:
 //
 //   - connection (optional) or NULL.
-//
 func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection) {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.GDBusConnection          // out
@@ -50210,7 +49227,6 @@ func (manager *DBusObjectManagerServer) SetConnection(connection *DBusConnection
 // The function returns the following values:
 //
 //   - ok: TRUE if object at object_path was removed, FALSE otherwise.
-//
 func (manager *DBusObjectManagerServer) Unexport(objectPath string) bool {
 	var _arg0 *C.GDBusObjectManagerServer // out
 	var _arg1 *C.gchar                    // out
@@ -50295,7 +49311,6 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - dBusObjectProxy: new BusObjectProxy.
-//
 func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy {
 	var _arg1 *C.GDBusConnection  // out
 	var _arg2 *C.gchar            // out
@@ -50321,7 +49336,6 @@ func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObje
 // The function returns the following values:
 //
 //   - dBusConnection Do not free, the object is owned by proxy.
-//
 func (proxy *DBusObjectProxy) Connection() *DBusConnection {
 	var _arg0 *C.GDBusObjectProxy // out
 	var _cret *C.GDBusConnection  // in
@@ -50344,7 +49358,6 @@ type DBusObjectSkeletonOverrides struct {
 	//
 	//   - interface_
 	//   - invocation
-	//
 	AuthorizeMethod func(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
 }
 
@@ -50426,7 +49439,6 @@ func (object *DBusObjectSkeleton) ConnectAuthorizeMethod(f func(iface DBusInterf
 // The function returns the following values:
 //
 //   - dBusObjectSkeleton Free with g_object_unref().
-//
 func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 	var _arg1 *C.gchar               // out
 	var _cret *C.GDBusObjectSkeleton // in
@@ -50455,7 +49467,6 @@ func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton {
 // The function takes the following parameters:
 //
 //   - interface_: BusInterfaceSkeleton.
-//
 func (object *DBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
@@ -50484,7 +49495,6 @@ func (object *DBusObjectSkeleton) Flush() {
 // The function takes the following parameters:
 //
 //   - interface_: BusInterfaceSkeleton.
-//
 func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeletonner) {
 	var _arg0 *C.GDBusObjectSkeleton    // out
 	var _arg1 *C.GDBusInterfaceSkeleton // out
@@ -50506,7 +49516,6 @@ func (object *DBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkelet
 // The function takes the following parameters:
 //
 //   - interfaceName d-Bus interface name.
-//
 func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
@@ -50525,7 +49534,6 @@ func (object *DBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 // The function takes the following parameters:
 //
 //   - objectPath: valid D-Bus object path.
-//
 func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var _arg0 *C.GDBusObjectSkeleton // out
 	var _arg1 *C.gchar               // out
@@ -50543,7 +49551,6 @@ func (object *DBusObjectSkeleton) SetObjectPath(objectPath string) {
 //
 //   - interface_
 //   - invocation
-//
 func (object *DBusObjectSkeleton) authorizeMethod(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool {
 	gclass := (*C.GDBusObjectSkeletonClass)(coreglib.PeekParentClass(object))
 	fnarg := gclass.authorize_method
@@ -50578,7 +49585,6 @@ type DBusProxyOverrides struct {
 	//   - senderName
 	//   - signalName
 	//   - parameters
-	//
 	GSignal func(senderName, signalName string, parameters *glib.Variant)
 }
 
@@ -50708,7 +49714,6 @@ func (proxy *DBusProxy) ConnectGSignal(f func(senderName, signalName string, par
 // The function returns the following values:
 //
 //   - dBusProxy or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
@@ -50740,7 +49745,6 @@ func NewDBusProxyFinish(res AsyncResulter) (*DBusProxy, error) {
 // The function returns the following values:
 //
 //   - dBusProxy or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GDBusProxy   // in
@@ -50781,7 +49785,6 @@ func NewDBusProxyForBusFinish(res AsyncResulter) (*DBusProxy, error) {
 // The function returns the following values:
 //
 //   - dBusProxy or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string) (*DBusProxy, error) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 C.GBusType            // out
@@ -50868,7 +49871,6 @@ func NewDBusProxyForBusSync(ctx context.Context, busType BusType, flags DBusProx
 // The function returns the following values:
 //
 //   - dBusProxy or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string) (*DBusProxy, error) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 *C.GDBusConnection    // out
@@ -50934,16 +49936,16 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 // If the parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
 //
-//    g_dbus_proxy_call (proxy,
-//                       "TwoStrings",
-//                       g_variant_new ("(ss)",
-//                                      "Thing One",
-//                                      "Thing Two"),
-//                       G_DBUS_CALL_FLAGS_NONE,
-//                       -1,
-//                       NULL,
-//                       (GAsyncReadyCallback) two_strings_done,
-//                       &data);
+//	g_dbus_proxy_call (proxy,
+//	                   "TwoStrings",
+//	                   g_variant_new ("(ss)",
+//	                                  "Thing One",
+//	                                  "Thing Two"),
+//	                   G_DBUS_CALL_FLAGS_NONE,
+//	                   -1,
+//	                   NULL,
+//	                   (GAsyncReadyCallback) two_strings_done,
+//	                   &data);
 //
 // If proxy has an expected interface (see BusProxy:g-interface-info) and
 // method_name is referenced by it, then the return value is checked against the
@@ -50970,7 +49972,6 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 //     or -1 to use the proxy default timeout.
 //   - callback (optional) to call when the request is satisfied or NULL if you
 //     don't care about the result of the method invocation.
-//
 func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg5 *C.GCancellable       // out
@@ -51019,7 +50020,6 @@ func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters 
 //
 //   - variant: NULL if error is set. Otherwise a #GVariant tuple with return
 //     values. Free with g_variant_unref().
-//
 func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy   // out
 	var _arg1 *C.GAsyncResult // out
@@ -51065,15 +50065,15 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 // If the parameters #GVariant is floating, it is consumed. This allows
 // convenient 'inline' use of g_variant_new(), e.g.:
 //
-//    g_dbus_proxy_call_sync (proxy,
-//                            "TwoStrings",
-//                            g_variant_new ("(ss)",
-//                                           "Thing One",
-//                                           "Thing Two"),
-//                            G_DBUS_CALL_FLAGS_NONE,
-//                            -1,
-//                            NULL,
-//                            &error);
+//	g_dbus_proxy_call_sync (proxy,
+//	                        "TwoStrings",
+//	                        g_variant_new ("(ss)",
+//	                                       "Thing One",
+//	                                       "Thing Two"),
+//	                        G_DBUS_CALL_FLAGS_NONE,
+//	                        -1,
+//	                        NULL,
+//	                        &error);
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_proxy_call() for the asynchronous version of this method.
@@ -51096,7 +50096,6 @@ func (proxy *DBusProxy) CallFinish(res AsyncResulter) (*glib.Variant, error) {
 //
 //   - variant: NULL if error is set. Otherwise a #GVariant tuple with return
 //     values. Free with g_variant_unref().
-//
 func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int) (*glib.Variant, error) {
 	var _arg0 *C.GDBusProxy    // out
 	var _arg5 *C.GCancellable  // out
@@ -51162,7 +50161,6 @@ func (proxy *DBusProxy) CallSync(ctx context.Context, methodName string, paramet
 //   - variant (optional): reference to the #GVariant instance that holds
 //     the value for property_name or NULL if the value is not in the cache.
 //     The returned reference must be freed with g_variant_unref().
-//
 func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
@@ -51197,7 +50195,6 @@ func (proxy *DBusProxy) CachedProperty(propertyName string) *glib.Variant {
 //
 //   - utf8s (optional): a NULL-terminated array of strings or NULL if proxy has
 //     no cached properties. Free the returned array with g_strfreev().
-//
 func (proxy *DBusProxy) CachedPropertyNames() []string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret **C.gchar     // in
@@ -51235,7 +50232,6 @@ func (proxy *DBusProxy) CachedPropertyNames() []string {
 // The function returns the following values:
 //
 //   - dBusConnection owned by proxy. Do not free.
-//
 func (proxy *DBusProxy) Connection() *DBusConnection {
 	var _arg0 *C.GDBusProxy      // out
 	var _cret *C.GDBusConnection // in
@@ -51261,7 +50257,6 @@ func (proxy *DBusProxy) Connection() *DBusConnection {
 // The function returns the following values:
 //
 //   - gint: timeout to use for proxy.
-//
 func (proxy *DBusProxy) DefaultTimeout() int {
 	var _arg0 *C.GDBusProxy // out
 	var _cret C.gint        // in
@@ -51283,7 +50278,6 @@ func (proxy *DBusProxy) DefaultTimeout() int {
 // The function returns the following values:
 //
 //   - dBusProxyFlags flags from the BusProxyFlags enumeration.
-//
 func (proxy *DBusProxy) Flags() DBusProxyFlags {
 	var _arg0 *C.GDBusProxy     // out
 	var _cret C.GDBusProxyFlags // in
@@ -51308,7 +50302,6 @@ func (proxy *DBusProxy) Flags() DBusProxyFlags {
 //
 //   - dBusInterfaceInfo (optional) or NULL. Do not unref the returned object,
 //     it is owned by proxy.
-//
 func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 	var _arg0 *C.GDBusProxy         // out
 	var _cret *C.GDBusInterfaceInfo // in
@@ -51339,7 +50332,6 @@ func (proxy *DBusProxy) InterfaceInfo() *DBusInterfaceInfo {
 // The function returns the following values:
 //
 //   - utf8: string owned by proxy. Do not free.
-//
 func (proxy *DBusProxy) InterfaceName() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -51361,7 +50353,6 @@ func (proxy *DBusProxy) InterfaceName() string {
 // The function returns the following values:
 //
 //   - utf8: string owned by proxy. Do not free.
-//
 func (proxy *DBusProxy) Name() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -51386,7 +50377,6 @@ func (proxy *DBusProxy) Name() string {
 //
 //   - utf8 (optional): name owner or NULL if no name owner exists. Free with
 //     g_free().
-//
 func (proxy *DBusProxy) NameOwner() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -51411,7 +50401,6 @@ func (proxy *DBusProxy) NameOwner() string {
 // The function returns the following values:
 //
 //   - utf8: string owned by proxy. Do not free.
-//
 func (proxy *DBusProxy) ObjectPath() string {
 	var _arg0 *C.GDBusProxy // out
 	var _cret *C.gchar      // in
@@ -51440,11 +50429,11 @@ func (proxy *DBusProxy) ObjectPath() string {
 // If the value #GVariant is floating, it is consumed. This allows convenient
 // 'inline' use of g_variant_new(), e.g.
 //
-//    g_dbus_proxy_set_cached_property (proxy,
-//                                      "SomeProperty",
-//                                      g_variant_new ("(si)",
-//                                                    "A String",
-//                                                    42));
+//	g_dbus_proxy_set_cached_property (proxy,
+//	                                  "SomeProperty",
+//	                                  g_variant_new ("(si)",
+//	                                                "A String",
+//	                                                42));
 //
 // Normally you will not need to use this method since proxy is tracking changes
 // using the org.freedesktop.DBus.Properties.PropertiesChanged D-Bus signal.
@@ -51464,7 +50453,6 @@ func (proxy *DBusProxy) ObjectPath() string {
 //   - propertyName: property name.
 //   - value (optional): value for the property or NULL to remove it from the
 //     cache.
-//
 func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Variant) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 *C.gchar      // out
@@ -51492,7 +50480,6 @@ func (proxy *DBusProxy) SetCachedProperty(propertyName string, value *glib.Varia
 // The function takes the following parameters:
 //
 //   - timeoutMsec: timeout in milliseconds.
-//
 func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int) {
 	var _arg0 *C.GDBusProxy // out
 	var _arg1 C.gint        // out
@@ -51512,7 +50499,6 @@ func (proxy *DBusProxy) SetDefaultTimeout(timeoutMsec int) {
 //
 //   - info (optional): minimum interface this proxy conforms to or NULL to
 //     unset.
-//
 func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 	var _arg0 *C.GDBusProxy         // out
 	var _arg1 *C.GDBusInterfaceInfo // out
@@ -51532,7 +50518,6 @@ func (proxy *DBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo) {
 //   - senderName
 //   - signalName
 //   - parameters
-//
 func (proxy *DBusProxy) gSignal(senderName, signalName string, parameters *glib.Variant) {
 	gclass := (*C.GDBusProxyClass)(coreglib.PeekParentClass(proxy))
 	fnarg := gclass.g_signal
@@ -51596,7 +50581,6 @@ func (proxy *DBusProxy) gSignal(senderName, signalName string, parameters *glib.
 //   - objectPath: object path.
 //   - interfaceName d-Bus interface name.
 //   - callback (optional): callback function to invoke when the proxy is ready.
-//
 func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 *C.GDBusConnection    // out
@@ -51658,7 +50642,6 @@ func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusPro
 //   - objectPath: object path.
 //   - interfaceName d-Bus interface name.
 //   - callback (optional): callback function to invoke when the proxy is ready.
-//
 func NewDBusProxyForBus(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
 	var _arg7 *C.GCancellable       // out
 	var _arg1 C.GBusType            // out
@@ -51800,7 +50783,6 @@ func (server *DBusServer) ConnectNewConnection(f func(connection *DBusConnection
 // The function returns the following values:
 //
 //   - dBusServer or NULL if error is set. Free with g_object_unref().
-//
 func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlags, guid string, observer *DBusAuthObserver) (*DBusServer, error) {
 	var _arg5 *C.GCancellable      // out
 	var _arg1 *C.gchar             // out
@@ -51849,7 +50831,6 @@ func NewDBusServerSync(ctx context.Context, address string, flags DBusServerFlag
 // The function returns the following values:
 //
 //   - utf8 d-Bus address string. Do not free, the string is owned by server.
-//
 func (server *DBusServer) ClientAddress() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
@@ -51871,7 +50852,6 @@ func (server *DBusServer) ClientAddress() string {
 // The function returns the following values:
 //
 //   - dBusServerFlags: set of flags from the BusServerFlags enumeration.
-//
 func (server *DBusServer) Flags() DBusServerFlags {
 	var _arg0 *C.GDBusServer     // out
 	var _cret C.GDBusServerFlags // in
@@ -51893,7 +50873,6 @@ func (server *DBusServer) Flags() DBusServerFlags {
 // The function returns the following values:
 //
 //   - utf8 d-Bus GUID. Do not free this string, it is owned by server.
-//
 func (server *DBusServer) GUID() string {
 	var _arg0 *C.GDBusServer // out
 	var _cret *C.gchar       // in
@@ -51915,7 +50894,6 @@ func (server *DBusServer) GUID() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if server is active, FALSE otherwise.
-//
 func (server *DBusServer) IsActive() bool {
 	var _arg0 *C.GDBusServer // out
 	var _cret C.gboolean     // in
@@ -52017,7 +50995,6 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - dataInputStream: new InputStream.
-//
 func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 	var _arg1 *C.GInputStream     // out
 	var _cret *C.GDataInputStream // in
@@ -52039,7 +51016,6 @@ func NewDataInputStream(baseStream InputStreamer) *DataInputStream {
 // The function returns the following values:
 //
 //   - dataStreamByteOrder stream's current StreamByteOrder.
-//
 func (stream *DataInputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataInputStream    // out
 	var _cret C.GDataStreamByteOrder // in
@@ -52061,7 +51037,6 @@ func (stream *DataInputStream) ByteOrder() DataStreamByteOrder {
 // The function returns the following values:
 //
 //   - dataStreamNewlineType for the given stream.
-//
 func (stream *DataInputStream) NewlineType() DataStreamNewlineType {
 	var _arg0 *C.GDataInputStream      // out
 	var _cret C.GDataStreamNewlineType // in
@@ -52088,7 +51063,6 @@ func (stream *DataInputStream) NewlineType() DataStreamNewlineType {
 //
 //   - guint8: unsigned 8-bit/1-byte value read from the stream or 0 if an error
 //     occurred.
-//
 func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -52131,7 +51105,6 @@ func (stream *DataInputStream) ReadByte(ctx context.Context) (byte, error) {
 //
 //   - gint16: signed 16-bit/2-byte value read from stream or 0 if an error
 //     occurred.
-//
 func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -52178,7 +51151,6 @@ func (stream *DataInputStream) ReadInt16(ctx context.Context) (int16, error) {
 //
 //   - gint32: signed 32-bit/4-byte value read from the stream or 0 if an error
 //     occurred.
-//
 func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -52225,7 +51197,6 @@ func (stream *DataInputStream) ReadInt32(ctx context.Context) (int32, error) {
 //
 //   - gint64: signed 64-bit/8-byte value read from stream or 0 if an error
 //     occurred.
-//
 func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -52274,7 +51245,6 @@ func (stream *DataInputStream) ReadInt64(ctx context.Context) (int64, error) {
 //     of the read line. On an error, it will return NULL and error will be set.
 //     If there's no content to read, it will still return NULL, but error won't
 //     be set.
-//
 func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg2 *C.GCancellable     // out
@@ -52332,7 +51302,6 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg2 *C.GCancellable       // out
@@ -52375,7 +51344,6 @@ func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int
 //     of the read line. On an error, it will return NULL and error will be set.
 //     If there's no content to read, it will still return NULL, but error won't
 //     be set.
-//
 func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byte, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -52433,7 +51401,6 @@ func (stream *DataInputStream) ReadLineFinish(result AsyncResulter) (uint, []byt
 //     an error, it will return NULL and error will be set. For UTF-8 conversion
 //     errors, the set error domain is G_CONVERT_ERROR. If there's no content to
 //     read, it will still return NULL, but error won't be set.
-//
 func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -52483,7 +51450,6 @@ func (stream *DataInputStream) ReadLineFinishUTF8(result AsyncResulter) (uint, s
 //     For UTF-8 conversion errors, the set error domain is G_CONVERT_ERROR.
 //     If there's no content to read, it will still return NULL, but error won't
 //     be set.
-//
 func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg2 *C.GCancellable     // out
@@ -52532,7 +51498,6 @@ func (stream *DataInputStream) ReadLineUTF8(ctx context.Context) (uint, string, 
 //
 //   - guint16: unsigned 16-bit/2-byte value read from the stream or 0 if an
 //     error occurred.
-//
 func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -52579,7 +51544,6 @@ func (stream *DataInputStream) ReadUint16(ctx context.Context) (uint16, error) {
 //
 //   - guint32: unsigned 32-bit/4-byte value read from the stream or 0 if an
 //     error occurred.
-//
 func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -52625,7 +51589,6 @@ func (stream *DataInputStream) ReadUint32(ctx context.Context) (uint32, error) {
 //
 //   - guint64: unsigned 64-bit/8-byte read from stream or 0 if an error
 //     occurred.
-//
 func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GCancellable     // out
@@ -52679,7 +51642,6 @@ func (stream *DataInputStream) ReadUint64(ctx context.Context) (uint64, error) {
 //   - utf8: string with the data that was read before encountering any of the
 //     stop characters. Set length to a #gsize to get the length of the string.
 //     This function will return NULL on an error.
-//
 func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg3 *C.GCancellable     // out
@@ -52739,7 +51701,6 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 //   - stopChars characters to terminate the read.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg3 *C.GCancellable       // out
@@ -52786,7 +51747,6 @@ func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars str
 //   - utf8: string with the data that was read before encountering any of the
 //     stop characters. Set length to a #gsize to get the length of the string.
 //     This function will return NULL on an error.
-//
 func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -52839,7 +51799,6 @@ func (stream *DataInputStream) ReadUntilFinish(result AsyncResulter) (uint, stri
 //   - utf8: string with the data that was read before encountering any of the
 //     stop characters. Set length to a #gsize to get the length of the string.
 //     This function will return NULL on an error.
-//
 func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, stopCharsLen int) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg4 *C.GCancellable     // out
@@ -52899,7 +51858,6 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string, s
 //     nul-terminated.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, stopCharsLen, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream   // out
 	var _arg4 *C.GCancellable       // out
@@ -52952,7 +51910,6 @@ func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars stri
 //   - utf8: string with the data that was read before encountering any of the
 //     stop characters. Set length to a #gsize to get the length of the string.
 //     This function will return NULL on an error.
-//
 func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, string, error) {
 	var _arg0 *C.GDataInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -52987,7 +51944,6 @@ func (stream *DataInputStream) ReadUptoFinish(result AsyncResulter) (uint, strin
 // The function takes the following parameters:
 //
 //   - order to set.
-//
 func (stream *DataInputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataInputStream    // out
 	var _arg1 C.GDataStreamByteOrder // out
@@ -53009,7 +51965,6 @@ func (stream *DataInputStream) SetByteOrder(order DataStreamByteOrder) {
 // The function takes the following parameters:
 //
 //   - typ: type of new line return as StreamNewlineType.
-//
 func (stream *DataInputStream) SetNewlineType(typ DataStreamNewlineType) {
 	var _arg0 *C.GDataInputStream      // out
 	var _arg1 C.GDataStreamNewlineType // out
@@ -53085,7 +52040,6 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - dataOutputStream: OutputStream.
-//
 func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 	var _arg1 *C.GOutputStream     // out
 	var _cret *C.GDataOutputStream // in
@@ -53107,7 +52061,6 @@ func NewDataOutputStream(baseStream OutputStreamer) *DataOutputStream {
 // The function returns the following values:
 //
 //   - dataStreamByteOrder for the stream.
-//
 func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 	var _arg0 *C.GDataOutputStream   // out
 	var _cret C.GDataStreamByteOrder // in
@@ -53130,7 +52083,6 @@ func (stream *DataOutputStream) ByteOrder() DataStreamByteOrder {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - data: #guchar.
-//
 func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -53165,7 +52117,6 @@ func (stream *DataOutputStream) PutByte(ctx context.Context, data byte) error {
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - data: #gint16.
-//
 func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -53200,7 +52151,6 @@ func (stream *DataOutputStream) PutInt16(ctx context.Context, data int16) error 
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - data: #gint32.
-//
 func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -53235,7 +52185,6 @@ func (stream *DataOutputStream) PutInt32(ctx context.Context, data int32) error 
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - data: #gint64.
-//
 func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -53270,7 +52219,6 @@ func (stream *DataOutputStream) PutInt64(ctx context.Context, data int64) error 
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - str: string.
-//
 func (stream *DataOutputStream) PutString(ctx context.Context, str string) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -53306,7 +52254,6 @@ func (stream *DataOutputStream) PutString(ctx context.Context, str string) error
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - data: #guint16.
-//
 func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -53341,7 +52288,6 @@ func (stream *DataOutputStream) PutUint16(ctx context.Context, data uint16) erro
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - data: #guint32.
-//
 func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -53376,7 +52322,6 @@ func (stream *DataOutputStream) PutUint32(ctx context.Context, data uint32) erro
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - data: #guint64.
-//
 func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) error {
 	var _arg0 *C.GDataOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -53410,7 +52355,6 @@ func (stream *DataOutputStream) PutUint64(ctx context.Context, data uint64) erro
 // The function takes the following parameters:
 //
 //   - order: GDataStreamByteOrder.
-//
 func (stream *DataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 	var _arg0 *C.GDataOutputStream   // out
 	var _arg1 C.GDataStreamByteOrder // out
@@ -53461,7 +52405,6 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - emblem: new #GEmblem.
-//
 func NewEmblem(icon Iconner) *Emblem {
 	var _arg1 *C.GIcon   // out
 	var _cret *C.GEmblem // in
@@ -53488,7 +52431,6 @@ func NewEmblem(icon Iconner) *Emblem {
 // The function returns the following values:
 //
 //   - emblem: new #GEmblem.
-//
 func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 	var _arg1 *C.GIcon        // out
 	var _arg2 C.GEmblemOrigin // out
@@ -53514,7 +52456,6 @@ func NewEmblemWithOrigin(icon Iconner, origin EmblemOrigin) *Emblem {
 //
 //   - icon The returned object belongs to the emblem and should not be modified
 //     or freed.
-//
 func (emblem *Emblem) GetIcon() *Icon {
 	var _arg0 *C.GEmblem // out
 	var _cret *C.GIcon   // in
@@ -53536,7 +52477,6 @@ func (emblem *Emblem) GetIcon() *Icon {
 // The function returns the following values:
 //
 //   - emblemOrigin: origin of the emblem.
-//
 func (emblem *Emblem) Origin() EmblemOrigin {
 	var _arg0 *C.GEmblem      // out
 	var _cret C.GEmblemOrigin // in
@@ -53617,7 +52557,6 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - emblemedIcon: new #GIcon.
-//
 func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 	var _arg1 *C.GIcon   // out
 	var _arg2 *C.GEmblem // out
@@ -53644,7 +52583,6 @@ func NewEmblemedIcon(icon Iconner, emblem *Emblem) *EmblemedIcon {
 // The function takes the following parameters:
 //
 //   - emblem: #GEmblem.
-//
 func (emblemed *EmblemedIcon) AddEmblem(emblem *Emblem) {
 	var _arg0 *C.GEmblemedIcon // out
 	var _arg1 *C.GEmblem       // out
@@ -53672,7 +52610,6 @@ func (emblemed *EmblemedIcon) ClearEmblems() {
 // The function returns the following values:
 //
 //   - list of #GEmblems that is owned by emblemed.
-//
 func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GList         // in
@@ -53700,7 +52637,6 @@ func (emblemed *EmblemedIcon) Emblems() []*Emblem {
 // The function returns the following values:
 //
 //   - icon that is owned by emblemed.
-//
 func (emblemed *EmblemedIcon) GetIcon() *Icon {
 	var _arg0 *C.GEmblemedIcon // out
 	var _cret *C.GIcon         // in
@@ -53735,7 +52671,6 @@ type FileEnumeratorOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	//
 	CloseFinish func(result AsyncResulter) error
 	CloseFn     func(ctx context.Context) error
 	// NextFile returns information for the next file in the enumerated object.
@@ -53757,7 +52692,6 @@ type FileEnumeratorOverrides struct {
 	//
 	//   - fileInfo (optional) or NULL on error or end of enumerator. Free the
 	//     returned object with g_object_unref() when no longer needed.
-	//
 	NextFile func(ctx context.Context) (*FileInfo, error)
 	// NextFilesFinish finishes the asynchronous operation started with
 	// g_file_enumerator_next_files_async().
@@ -53770,7 +52704,6 @@ type FileEnumeratorOverrides struct {
 	//
 	//   - list of Infos. You must free the list with g_list_free() and unref
 	//     the infos with g_object_unref() when you're done with them.
-	//
 	NextFilesFinish func(result AsyncResulter) ([]*FileInfo, error)
 }
 
@@ -53869,7 +52802,6 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (enumerator *FileEnumerator) Close(ctx context.Context) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
@@ -53907,7 +52839,6 @@ func (enumerator *FileEnumerator) Close(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg2 *C.GCancellable       // out
@@ -53949,7 +52880,6 @@ func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
@@ -53977,9 +52907,9 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 //
 // This is a convenience method that's equivalent to:
 //
-//    gchar *name = g_file_info_get_name (info);
-//    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-//                                     name);.
+//	gchar *name = g_file_info_get_name (info);
+//	GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
+//	                                 name);.
 //
 // The function takes the following parameters:
 //
@@ -53988,7 +52918,6 @@ func (enumerator *FileEnumerator) CloseFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - file for the Info passed it.
-//
 func (enumerator *FileEnumerator) Child(info *FileInfo) *File {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GFileInfo       // out
@@ -54013,7 +52942,6 @@ func (enumerator *FileEnumerator) Child(info *FileInfo) *File {
 // The function returns the following values:
 //
 //   - file which is being enumerated.
-//
 func (enumerator *FileEnumerator) Container() *File {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret *C.GFile           // in
@@ -54035,7 +52963,6 @@ func (enumerator *FileEnumerator) Container() *File {
 // The function returns the following values:
 //
 //   - ok: TRUE if the enumerator has pending operations.
-//
 func (enumerator *FileEnumerator) HasPending() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
@@ -54059,7 +52986,6 @@ func (enumerator *FileEnumerator) HasPending() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the enumerator is closed.
-//
 func (enumerator *FileEnumerator) IsClosed() bool {
 	var _arg0 *C.GFileEnumerator // out
 	var _cret C.gboolean         // in
@@ -54098,19 +53024,19 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 //
 // The code pattern for correctly using g_file_enumerator_iterate() from C is:
 //
-//    direnum = g_file_enumerate_children (file, ...);
-//    while (TRUE)
-//      {
-//        GFileInfo *info;
-//        if (!g_file_enumerator_iterate (direnum, &info, NULL, cancellable, error))
-//          goto out;
-//        if (!info)
-//          break;
-//        ... do stuff with "info"; do not unref it! ...
-//      }
+//	direnum = g_file_enumerate_children (file, ...);
+//	while (TRUE)
+//	  {
+//	    GFileInfo *info;
+//	    if (!g_file_enumerator_iterate (direnum, &info, NULL, cancellable, error))
+//	      goto out;
+//	    if (!info)
+//	      break;
+//	    ... do stuff with "info"; do not unref it! ...
+//	  }
 //
-//    out:
-//      g_object_unref (direnum); // Note: frees the last info.
+//	out:
+//	  g_object_unref (direnum); // Note: frees the last info.
 //
 // The function takes the following parameters:
 //
@@ -54120,7 +53046,6 @@ func (enumerator *FileEnumerator) IsClosed() bool {
 //
 //   - outInfo (optional): output location for the next Info, or NULL.
 //   - outChild (optional): output location for the next #GFile, or NULL.
-//
 func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, *File, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg3 *C.GCancellable    // out
@@ -54175,7 +53100,6 @@ func (direnum *FileEnumerator) Iterate(ctx context.Context) (*FileInfo, *File, e
 //
 //   - fileInfo (optional) or NULL on error or end of enumerator. Free the
 //     returned object with g_object_unref() when no longer needed.
-//
 func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GCancellable    // out
@@ -54232,7 +53156,6 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 //   - numFiles: number of file info objects to request.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileEnumerator    // out
 	var _arg3 *C.GCancellable       // out
@@ -54273,7 +53196,6 @@ func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, 
 //
 //   - list of Infos. You must free the list with g_list_free() and unref the
 //     infos with g_object_unref() when you're done with them.
-//
 func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]*FileInfo, error) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 *C.GAsyncResult    // out
@@ -54309,7 +53231,6 @@ func (enumerator *FileEnumerator) NextFilesFinish(result AsyncResulter) ([]*File
 // The function takes the following parameters:
 //
 //   - pending: boolean value.
-//
 func (enumerator *FileEnumerator) SetPending(pending bool) {
 	var _arg0 *C.GFileEnumerator // out
 	var _arg1 C.gboolean         // out
@@ -54336,7 +53257,6 @@ func (enumerator *FileEnumerator) SetPending(pending bool) {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (enumerator *FileEnumerator) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.close_async
@@ -54381,7 +53301,6 @@ func (enumerator *FileEnumerator) closeAsync(ctx context.Context, ioPriority int
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (enumerator *FileEnumerator) closeFinish(result AsyncResulter) error {
 	gclass := (*C.GFileEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.close_finish
@@ -54453,7 +53372,6 @@ func (enumerator *FileEnumerator) closeFn(ctx context.Context) error {
 //
 //   - fileInfo (optional) or NULL on error or end of enumerator. Free the
 //     returned object with g_object_unref() when no longer needed.
-//
 func (enumerator *FileEnumerator) nextFile(ctx context.Context) (*FileInfo, error) {
 	gclass := (*C.GFileEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.next_file
@@ -54513,7 +53431,6 @@ func (enumerator *FileEnumerator) nextFile(ctx context.Context) (*FileInfo, erro
 //   - numFiles: number of file info objects to request.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (enumerator *FileEnumerator) nextFilesAsync(ctx context.Context, numFiles, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.next_files_async
@@ -54557,7 +53474,6 @@ func (enumerator *FileEnumerator) nextFilesAsync(ctx context.Context, numFiles, 
 //
 //   - list of Infos. You must free the list with g_list_free() and unref the
 //     infos with g_object_unref() when you're done with them.
-//
 func (enumerator *FileEnumerator) nextFilesFinish(result AsyncResulter) ([]*FileInfo, error) {
 	gclass := (*C.GFileEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.next_files_finish
@@ -54602,7 +53518,6 @@ type FileIOStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): entity tag for the stream.
-	//
 	ETag func() string
 	// QueryInfo queries a file io stream for the given attributes. This
 	// function blocks while querying the stream. For the asynchronous version
@@ -54629,7 +53544,6 @@ type FileIOStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo for the stream, or NULL on error.
-	//
 	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
@@ -54641,21 +53555,18 @@ type FileIOStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo for the finished query.
-	//
 	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error)
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - offset
 	//   - typ
-	//
 	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
 	Tell func() int64
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - size
-	//
 	TruncateFn func(ctx context.Context, size int64) error
 }
 
@@ -54775,7 +53686,6 @@ func marshalFileIOStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - utf8 (optional): entity tag for the stream.
-//
 func (stream *FileIOStream) ETag() string {
 	var _arg0 *C.GFileIOStream // out
 	var _cret *C.char          // in
@@ -54819,7 +53729,6 @@ func (stream *FileIOStream) ETag() string {
 // The function returns the following values:
 //
 //   - fileInfo for the stream, or NULL on error.
-//
 func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg2 *C.GCancellable  // out
@@ -54865,7 +53774,6 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 //   - attributes: file attribute query string.
 //   - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileIOStream      // out
 	var _arg3 *C.GCancellable       // out
@@ -54906,7 +53814,6 @@ func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes strin
 // The function returns the following values:
 //
 //   - fileInfo for the finished query.
-//
 func (stream *FileIOStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileIOStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -54980,7 +53887,6 @@ func (stream *FileIOStream) canTruncate() bool {
 // The function returns the following values:
 //
 //   - utf8 (optional): entity tag for the stream.
-//
 func (stream *FileIOStream) eTag() string {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.get_etag
@@ -55027,7 +53933,6 @@ func (stream *FileIOStream) eTag() string {
 // The function returns the following values:
 //
 //   - fileInfo for the stream, or NULL on error.
-//
 func (stream *FileIOStream) queryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info
@@ -55076,7 +53981,6 @@ func (stream *FileIOStream) queryInfo(ctx context.Context, attributes string) (*
 //   - attributes: file attribute query string.
 //   - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *FileIOStream) queryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info_async
@@ -55120,7 +54024,6 @@ func (stream *FileIOStream) queryInfoAsync(ctx context.Context, attributes strin
 // The function returns the following values:
 //
 //   - fileInfo for the finished query.
-//
 func (stream *FileIOStream) queryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info_finish
@@ -55153,7 +54056,6 @@ func (stream *FileIOStream) queryInfoFinish(result AsyncResulter) (*FileInfo, er
 //   - ctx (optional)
 //   - offset
 //   - typ
-//
 func (stream *FileIOStream) seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.seek
@@ -55211,7 +54113,6 @@ func (stream *FileIOStream) tell() int64 {
 //
 //   - ctx (optional)
 //   - size
-//
 func (stream *FileIOStream) truncateFn(ctx context.Context, size int64) error {
 	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.truncate_fn
@@ -55279,7 +54180,6 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - fileIcon for the given file, or NULL on error.
-//
 func NewFileIcon(file Filer) *FileIcon {
 	var _arg1 *C.GFile // out
 	var _cret *C.GIcon // in
@@ -55301,7 +54201,6 @@ func NewFileIcon(file Filer) *FileIcon {
 // The function returns the following values:
 //
 //   - file: #GFile.
-//
 func (icon *FileIcon) File() *File {
 	var _arg0 *C.GFileIcon // out
 	var _cret *C.GFile     // in
@@ -55365,7 +54264,6 @@ func marshalFileInfo(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - fileInfo: Info.
-//
 func NewFileInfo() *FileInfo {
 	var _cret *C.GFileInfo // in
 
@@ -55395,7 +54293,6 @@ func (info *FileInfo) ClearStatus() {
 // The function takes the following parameters:
 //
 //   - destInfo: destination to copy attributes to.
-//
 func (srcInfo *FileInfo) CopyInto(destInfo *FileInfo) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GFileInfo // out
@@ -55413,7 +54310,6 @@ func (srcInfo *FileInfo) CopyInto(destInfo *FileInfo) {
 // The function returns the following values:
 //
 //   - fileInfo: duplicate Info of other.
-//
 func (other *FileInfo) Dup() *FileInfo {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GFileInfo // in
@@ -55442,7 +54338,6 @@ func (other *FileInfo) Dup() *FileInfo {
 //   - utf8 (optional): UTF-8 string associated with the given attribute,
 //     or NULL if the attribute wasn’t set. When you're done with the string it
 //     must be freed with g_free().
-//
 func (info *FileInfo) AttributeAsString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55476,7 +54371,6 @@ func (info *FileInfo) AttributeAsString(attribute string) string {
 // The function returns the following values:
 //
 //   - ok: boolean value contained within the attribute.
-//
 func (info *FileInfo) AttributeBoolean(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55510,7 +54404,6 @@ func (info *FileInfo) AttributeBoolean(attribute string) bool {
 //
 //   - utf8 (optional) contents of the attribute value as a byte string,
 //     or NULL otherwise.
-//
 func (info *FileInfo) AttributeByteString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55546,7 +54439,6 @@ func (info *FileInfo) AttributeByteString(attribute string) string {
 //     the attribute value will not be NULL.
 //   - status (optional): return location for the attribute status, or NULL.
 //   - ok: TRUE if info has an attribute named attribute, FALSE otherwise.
-//
 func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, unsafe.Pointer, FileAttributeStatus, bool) {
 	var _arg0 *C.GFileInfo           // out
 	var _arg1 *C.char                // out
@@ -55589,7 +54481,6 @@ func (info *FileInfo) AttributeData(attribute string) (FileAttributeType, unsafe
 // The function returns the following values:
 //
 //   - gint32: signed 32-bit integer from the attribute.
-//
 func (info *FileInfo) AttributeInt32(attribute string) int32 {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55621,7 +54512,6 @@ func (info *FileInfo) AttributeInt32(attribute string) int32 {
 // The function returns the following values:
 //
 //   - gint64: signed 64-bit integer from the attribute.
-//
 func (info *FileInfo) AttributeInt64(attribute string) int64 {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55652,7 +54542,6 @@ func (info *FileInfo) AttributeInt64(attribute string) int64 {
 // The function returns the following values:
 //
 //   - object (optional) associated with the given attribute, or NULL otherwise.
-//
 func (info *FileInfo) AttributeObject(attribute string) *coreglib.Object {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55685,7 +54574,6 @@ func (info *FileInfo) AttributeObject(attribute string) *coreglib.Object {
 //
 //   - fileAttributeStatus for the given attribute, or
 //     G_FILE_ATTRIBUTE_STATUS_UNSET if the key is invalid.
-//
 func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 	var _arg0 *C.GFileInfo           // out
 	var _arg1 *C.char                // out
@@ -55717,7 +54605,6 @@ func (info *FileInfo) AttributeStatus(attribute string) FileAttributeStatus {
 //
 //   - utf8 (optional) contents of the attribute value as a UTF-8 string,
 //     or NULL otherwise.
-//
 func (info *FileInfo) AttributeString(attribute string) string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55751,7 +54638,6 @@ func (info *FileInfo) AttributeString(attribute string) string {
 //
 //   - utf8s (optional) contents of the attribute value as a stringv, or NULL
 //     otherwise. Do not free. These returned strings are UTF-8.
-//
 func (info *FileInfo) AttributeStringv(attribute string) []string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55796,7 +54682,6 @@ func (info *FileInfo) AttributeStringv(attribute string) []string {
 //
 //   - fileAttributeType for the given attribute, or
 //     G_FILE_ATTRIBUTE_TYPE_INVALID if the key is not set.
-//
 func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
 	var _arg0 *C.GFileInfo         // out
 	var _arg1 *C.char              // out
@@ -55828,7 +54713,6 @@ func (info *FileInfo) AttributeType(attribute string) FileAttributeType {
 // The function returns the following values:
 //
 //   - guint32: unsigned 32-bit integer from the attribute.
-//
 func (info *FileInfo) AttributeUint32(attribute string) uint32 {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55860,7 +54744,6 @@ func (info *FileInfo) AttributeUint32(attribute string) uint32 {
 // The function returns the following values:
 //
 //   - guint64: unsigned 64-bit integer from the attribute.
-//
 func (info *FileInfo) AttributeUint64(attribute string) uint64 {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -55887,7 +54770,6 @@ func (info *FileInfo) AttributeUint64(attribute string) uint64 {
 //
 //   - utf8 (optional): string containing the file's content type, or NULL if
 //     unknown.
-//
 func (info *FileInfo) ContentType() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -55913,7 +54795,6 @@ func (info *FileInfo) ContentType() string {
 // The function returns the following values:
 //
 //   - dateTime (optional) or NULL.
-//
 func (info *FileInfo) DeletionDate() *glib.DateTime {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GDateTime // in
@@ -55944,7 +54825,6 @@ func (info *FileInfo) DeletionDate() *glib.DateTime {
 // The function returns the following values:
 //
 //   - utf8: string containing the display name.
-//
 func (info *FileInfo) DisplayName() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -55966,7 +54846,6 @@ func (info *FileInfo) DisplayName() string {
 // The function returns the following values:
 //
 //   - utf8: string containing the edit name.
-//
 func (info *FileInfo) EditName() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -55990,7 +54869,6 @@ func (info *FileInfo) EditName() string {
 //
 //   - utf8 (optional): string containing the value of the "etag:value"
 //     attribute.
-//
 func (info *FileInfo) ETag() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -56016,7 +54894,6 @@ func (info *FileInfo) ETag() string {
 // The function returns the following values:
 //
 //   - fileType for the given file.
-//
 func (info *FileInfo) FileType() FileType {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.GFileType  // in
@@ -56038,7 +54915,6 @@ func (info *FileInfo) FileType() FileType {
 // The function returns the following values:
 //
 //   - icon (optional) for the given info.
-//
 func (info *FileInfo) Icon() *Icon {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
@@ -56062,7 +54938,6 @@ func (info *FileInfo) Icon() *Icon {
 // The function returns the following values:
 //
 //   - ok: TRUE if file is a backup file, FALSE otherwise.
-//
 func (info *FileInfo) IsBackup() bool {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.gboolean   // in
@@ -56086,7 +54961,6 @@ func (info *FileInfo) IsBackup() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the file is a hidden file, FALSE otherwise.
-//
 func (info *FileInfo) IsHidden() bool {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.gboolean   // in
@@ -56110,7 +54984,6 @@ func (info *FileInfo) IsHidden() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the given info is a symlink.
-//
 func (info *FileInfo) IsSymlink() bool {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.gboolean   // in
@@ -56139,7 +55012,6 @@ func (info *FileInfo) IsSymlink() bool {
 // The function returns the following values:
 //
 //   - dateTime (optional): modification time, or NULL if unknown.
-//
 func (info *FileInfo) ModificationDateTime() *glib.DateTime {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GDateTime // in
@@ -56173,7 +55045,6 @@ func (info *FileInfo) ModificationDateTime() *glib.DateTime {
 // The function returns the following values:
 //
 //   - result: Val.
-//
 func (info *FileInfo) ModificationTime() *glib.TimeVal {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.GTimeVal   // in
@@ -56195,7 +55066,6 @@ func (info *FileInfo) ModificationTime() *glib.TimeVal {
 // The function returns the following values:
 //
 //   - filename: string containing the file name.
-//
 func (info *FileInfo) Name() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -56219,7 +55089,6 @@ func (info *FileInfo) Name() string {
 // The function returns the following values:
 //
 //   - gint64 containing the file's size (in bytes).
-//
 func (info *FileInfo) Size() int64 {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.goffset    // in
@@ -56242,7 +55111,6 @@ func (info *FileInfo) Size() int64 {
 // The function returns the following values:
 //
 //   - gint32 containing the value of the "standard::sort_order" attribute.
-//
 func (info *FileInfo) SortOrder() int32 {
 	var _arg0 *C.GFileInfo // out
 	var _cret C.gint32     // in
@@ -56264,7 +55132,6 @@ func (info *FileInfo) SortOrder() int32 {
 // The function returns the following values:
 //
 //   - icon (optional) for the given info.
-//
 func (info *FileInfo) SymbolicIcon() *Icon {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.GIcon     // in
@@ -56288,7 +55155,6 @@ func (info *FileInfo) SymbolicIcon() *Icon {
 // The function returns the following values:
 //
 //   - utf8 (optional): string containing the symlink target.
-//
 func (info *FileInfo) SymlinkTarget() string {
 	var _arg0 *C.GFileInfo // out
 	var _cret *C.char      // in
@@ -56317,7 +55183,6 @@ func (info *FileInfo) SymlinkTarget() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if info has an attribute named attribute, FALSE otherwise.
-//
 func (info *FileInfo) HasAttribute(attribute string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56350,7 +55215,6 @@ func (info *FileInfo) HasAttribute(attribute string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if info has an attribute in name_space, FALSE otherwise.
-//
 func (info *FileInfo) HasNamespace(nameSpace string) bool {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56384,7 +55248,6 @@ func (info *FileInfo) HasNamespace(nameSpace string) bool {
 //
 //   - utf8s (optional): a null-terminated array of strings of all of the
 //     possible attribute types for the given name_space, or NULL on error.
-//
 func (info *FileInfo) ListAttributes(nameSpace string) []string {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56428,7 +55291,6 @@ func (info *FileInfo) ListAttributes(nameSpace string) []string {
 // The function takes the following parameters:
 //
 //   - attribute: file attribute key.
-//
 func (info *FileInfo) RemoveAttribute(attribute string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56450,7 +55312,6 @@ func (info *FileInfo) RemoveAttribute(attribute string) {
 //   - attribute: file attribute key.
 //   - typ: AttributeType.
 //   - valueP: pointer to the value.
-//
 func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valueP unsafe.Pointer) {
 	var _arg0 *C.GFileInfo         // out
 	var _arg1 *C.char              // out
@@ -56477,7 +55338,6 @@ func (info *FileInfo) SetAttribute(attribute string, typ FileAttributeType, valu
 //
 //   - attribute: file attribute key.
 //   - attrValue: boolean value.
-//
 func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56503,7 +55363,6 @@ func (info *FileInfo) SetAttributeBoolean(attribute string, attrValue bool) {
 //
 //   - attribute: file attribute key.
 //   - attrValue: byte string.
-//
 func (info *FileInfo) SetAttributeByteString(attribute, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56528,7 +55387,6 @@ func (info *FileInfo) SetAttributeByteString(attribute, attrValue string) {
 //
 //   - attribute: file attribute key.
 //   - attrValue: signed 32-bit integer.
-//
 func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56552,7 +55410,6 @@ func (info *FileInfo) SetAttributeInt32(attribute string, attrValue int32) {
 //
 //   - attribute name to set.
 //   - attrValue: int64 value to set attribute to.
-//
 func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56574,7 +55431,6 @@ func (info *FileInfo) SetAttributeInt64(attribute string, attrValue int64) {
 // The function takes the following parameters:
 //
 //   - mask: AttributeMatcher.
-//
 func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 	var _arg0 *C.GFileInfo             // out
 	var _arg1 *C.GFileAttributeMatcher // out
@@ -56594,7 +55450,6 @@ func (info *FileInfo) SetAttributeMask(mask *FileAttributeMatcher) {
 //
 //   - attribute: file attribute key.
 //   - attrValue: #GObject.
-//
 func (info *FileInfo) SetAttributeObject(attribute string, attrValue *coreglib.Object) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56626,7 +55481,6 @@ func (info *FileInfo) SetAttributeObject(attribute string, attrValue *coreglib.O
 // The function returns the following values:
 //
 //   - ok: TRUE if the status was changed, FALSE if the key was not set.
-//
 func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool {
 	var _arg0 *C.GFileInfo           // out
 	var _arg1 *C.char                // out
@@ -56659,7 +55513,6 @@ func (info *FileInfo) SetAttributeStatus(attribute string, status FileAttributeS
 //
 //   - attribute: file attribute key.
 //   - attrValue: UTF-8 string.
-//
 func (info *FileInfo) SetAttributeString(attribute, attrValue string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56686,7 +55539,6 @@ func (info *FileInfo) SetAttributeString(attribute, attrValue string) {
 //
 //   - attribute: file attribute key.
 //   - attrValue: NULL terminated array of UTF-8 strings.
-//
 func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56722,7 +55574,6 @@ func (info *FileInfo) SetAttributeStringv(attribute string, attrValue []string) 
 //
 //   - attribute: file attribute key.
 //   - attrValue: unsigned 32-bit integer.
-//
 func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56746,7 +55597,6 @@ func (info *FileInfo) SetAttributeUint32(attribute string, attrValue uint32) {
 //
 //   - attribute: file attribute key.
 //   - attrValue: unsigned 64-bit integer.
-//
 func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56769,7 +55619,6 @@ func (info *FileInfo) SetAttributeUint64(attribute string, attrValue uint64) {
 // The function takes the following parameters:
 //
 //   - contentType: content type. See [GContentType][gio-GContentType].
-//
 func (info *FileInfo) SetContentType(contentType string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56789,7 +55638,6 @@ func (info *FileInfo) SetContentType(contentType string) {
 // The function takes the following parameters:
 //
 //   - displayName: string containing a display name.
-//
 func (info *FileInfo) SetDisplayName(displayName string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56809,7 +55657,6 @@ func (info *FileInfo) SetDisplayName(displayName string) {
 // The function takes the following parameters:
 //
 //   - editName: string containing an edit name.
-//
 func (info *FileInfo) SetEditName(editName string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56829,7 +55676,6 @@ func (info *FileInfo) SetEditName(editName string) {
 // The function takes the following parameters:
 //
 //   - typ: Type.
-//
 func (info *FileInfo) SetFileType(typ FileType) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.GFileType  // out
@@ -56847,7 +55693,6 @@ func (info *FileInfo) SetFileType(typ FileType) {
 // The function takes the following parameters:
 //
 //   - icon: #GIcon.
-//
 func (info *FileInfo) SetIcon(icon Iconner) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
@@ -56866,7 +55711,6 @@ func (info *FileInfo) SetIcon(icon Iconner) {
 // The function takes the following parameters:
 //
 //   - isHidden: #gboolean.
-//
 func (info *FileInfo) SetIsHidden(isHidden bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gboolean   // out
@@ -56887,7 +55731,6 @@ func (info *FileInfo) SetIsHidden(isHidden bool) {
 // The function takes the following parameters:
 //
 //   - isSymlink: #gboolean.
-//
 func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gboolean   // out
@@ -56909,7 +55752,6 @@ func (info *FileInfo) SetIsSymlink(isSymlink bool) {
 // The function takes the following parameters:
 //
 //   - mtime: Time.
-//
 func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GDateTime // out
@@ -56932,7 +55774,6 @@ func (info *FileInfo) SetModificationDateTime(mtime *glib.DateTime) {
 // The function takes the following parameters:
 //
 //   - mtime: Val.
-//
 func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GTimeVal  // out
@@ -56951,7 +55792,6 @@ func (info *FileInfo) SetModificationTime(mtime *glib.TimeVal) {
 // The function takes the following parameters:
 //
 //   - name: string containing a name.
-//
 func (info *FileInfo) SetName(name string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -56971,7 +55811,6 @@ func (info *FileInfo) SetName(name string) {
 // The function takes the following parameters:
 //
 //   - size containing the file's size.
-//
 func (info *FileInfo) SetSize(size int64) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.goffset    // out
@@ -56990,7 +55829,6 @@ func (info *FileInfo) SetSize(size int64) {
 // The function takes the following parameters:
 //
 //   - sortOrder: sort order integer.
-//
 func (info *FileInfo) SetSortOrder(sortOrder int32) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 C.gint32     // out
@@ -57009,7 +55847,6 @@ func (info *FileInfo) SetSortOrder(sortOrder int32) {
 // The function takes the following parameters:
 //
 //   - icon: #GIcon.
-//
 func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.GIcon     // out
@@ -57028,7 +55865,6 @@ func (info *FileInfo) SetSymbolicIcon(icon Iconner) {
 // The function takes the following parameters:
 //
 //   - symlinkTarget: static string containing a path to a symlink target.
-//
 func (info *FileInfo) SetSymlinkTarget(symlinkTarget string) {
 	var _arg0 *C.GFileInfo // out
 	var _arg1 *C.char      // out
@@ -57071,7 +55907,6 @@ type FileInputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo or NULL on error.
-	//
 	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error)
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	//
@@ -57082,14 +55917,12 @@ type FileInputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo: Info.
-	//
 	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error)
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - offset
 	//   - typ
-	//
 	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
 	Tell func() int64
 }
@@ -57193,7 +56026,6 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - fileInfo or NULL on error.
-//
 func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg2 *C.GCancellable     // out
@@ -57243,7 +56075,6 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 //   - attributes: file attribute query string.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileInputStream   // out
 	var _arg3 *C.GCancellable       // out
@@ -57283,7 +56114,6 @@ func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes st
 // The function returns the following values:
 //
 //   - fileInfo: Info.
-//
 func (stream *FileInputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileInputStream // out
 	var _arg1 *C.GAsyncResult     // out
@@ -57343,7 +56173,6 @@ func (stream *FileInputStream) canSeek() bool {
 // The function returns the following values:
 //
 //   - fileInfo or NULL on error.
-//
 func (stream *FileInputStream) queryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info
@@ -57396,7 +56225,6 @@ func (stream *FileInputStream) queryInfo(ctx context.Context, attributes string)
 //   - attributes: file attribute query string.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *FileInputStream) queryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info_async
@@ -57439,7 +56267,6 @@ func (stream *FileInputStream) queryInfoAsync(ctx context.Context, attributes st
 // The function returns the following values:
 //
 //   - fileInfo: Info.
-//
 func (stream *FileInputStream) queryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info_finish
@@ -57472,7 +56299,6 @@ func (stream *FileInputStream) queryInfoFinish(result AsyncResulter) (*FileInfo,
 //   - ctx (optional)
 //   - offset
 //   - typ
-//
 func (stream *FileInputStream) seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.seek
@@ -57533,14 +56359,12 @@ type FileMonitorOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok always TRUE.
-	//
 	Cancel func() bool
 	// The function takes the following parameters:
 	//
 	//   - file
 	//   - otherFile
 	//   - eventType
-	//
 	Changed func(file, otherFile Filer, eventType FileMonitorEvent)
 }
 
@@ -57662,7 +56486,6 @@ func (monitor *FileMonitor) ConnectChanged(f func(file, otherFile Filer, eventTy
 // The function returns the following values:
 //
 //   - ok always TRUE.
-//
 func (monitor *FileMonitor) Cancel() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
@@ -57693,7 +56516,6 @@ func (monitor *FileMonitor) Cancel() bool {
 //   - child: #GFile.
 //   - otherFile: #GFile.
 //   - eventType: set of MonitorEvent flags.
-//
 func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMonitorEvent) {
 	var _arg0 *C.GFileMonitor     // out
 	var _arg1 *C.GFile            // out
@@ -57717,7 +56539,6 @@ func (monitor *FileMonitor) EmitEvent(child, otherFile Filer, eventType FileMoni
 // The function returns the following values:
 //
 //   - ok: TRUE if monitor is canceled. FALSE otherwise.
-//
 func (monitor *FileMonitor) IsCancelled() bool {
 	var _arg0 *C.GFileMonitor // out
 	var _cret C.gboolean      // in
@@ -57743,7 +56564,6 @@ func (monitor *FileMonitor) IsCancelled() bool {
 //
 //   - limitMsecs: non-negative integer with the limit in milliseconds to poll
 //     for changes.
-//
 func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 	var _arg0 *C.GFileMonitor // out
 	var _arg1 C.gint          // out
@@ -57761,7 +56581,6 @@ func (monitor *FileMonitor) SetRateLimit(limitMsecs int) {
 // The function returns the following values:
 //
 //   - ok always TRUE.
-//
 func (monitor *FileMonitor) cancel() bool {
 	gclass := (*C.GFileMonitorClass)(coreglib.PeekParentClass(monitor))
 	fnarg := gclass.cancel
@@ -57788,7 +56607,6 @@ func (monitor *FileMonitor) cancel() bool {
 //   - file
 //   - otherFile
 //   - eventType
-//
 func (monitor *FileMonitor) changed(file, otherFile Filer, eventType FileMonitorEvent) {
 	gclass := (*C.GFileMonitorClass)(coreglib.PeekParentClass(monitor))
 	fnarg := gclass.changed
@@ -57821,7 +56639,6 @@ type FileOutputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): entity tag for the stream.
-	//
 	ETag func() string
 	// QueryInfo queries a file output stream for the given attributes. This
 	// function blocks while querying the stream. For the asynchronous version
@@ -57848,7 +56665,6 @@ type FileOutputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo for the stream, or NULL on error.
-	//
 	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error)
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_output_stream_query_info_async().
@@ -57860,21 +56676,18 @@ type FileOutputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo for the finished query.
-	//
 	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error)
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - offset
 	//   - typ
-	//
 	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
 	Tell func() int64
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - size
-	//
 	TruncateFn func(ctx context.Context, size int64) error
 }
 
@@ -57988,7 +56801,6 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - utf8 (optional): entity tag for the stream.
-//
 func (stream *FileOutputStream) ETag() string {
 	var _arg0 *C.GFileOutputStream // out
 	var _cret *C.char              // in
@@ -58032,7 +56844,6 @@ func (stream *FileOutputStream) ETag() string {
 // The function returns the following values:
 //
 //   - fileInfo for the stream, or NULL on error.
-//
 func (stream *FileOutputStream) QueryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg2 *C.GCancellable      // out
@@ -58078,7 +56889,6 @@ func (stream *FileOutputStream) QueryInfo(ctx context.Context, attributes string
 //   - attributes: file attribute query string.
 //   - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *FileOutputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileOutputStream  // out
 	var _arg3 *C.GCancellable       // out
@@ -58119,7 +56929,6 @@ func (stream *FileOutputStream) QueryInfoAsync(ctx context.Context, attributes s
 // The function returns the following values:
 //
 //   - fileInfo for the finished query.
-//
 func (stream *FileOutputStream) QueryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	var _arg0 *C.GFileOutputStream // out
 	var _arg1 *C.GAsyncResult      // out
@@ -58193,7 +57002,6 @@ func (stream *FileOutputStream) canTruncate() bool {
 // The function returns the following values:
 //
 //   - utf8 (optional): entity tag for the stream.
-//
 func (stream *FileOutputStream) eTag() string {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.get_etag
@@ -58240,7 +57048,6 @@ func (stream *FileOutputStream) eTag() string {
 // The function returns the following values:
 //
 //   - fileInfo for the stream, or NULL on error.
-//
 func (stream *FileOutputStream) queryInfo(ctx context.Context, attributes string) (*FileInfo, error) {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info
@@ -58289,7 +57096,6 @@ func (stream *FileOutputStream) queryInfo(ctx context.Context, attributes string
 //   - attributes: file attribute query string.
 //   - ioPriority: [I/O priority][gio-GIOScheduler] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *FileOutputStream) queryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info_async
@@ -58333,7 +57139,6 @@ func (stream *FileOutputStream) queryInfoAsync(ctx context.Context, attributes s
 // The function returns the following values:
 //
 //   - fileInfo for the finished query.
-//
 func (stream *FileOutputStream) queryInfoFinish(result AsyncResulter) (*FileInfo, error) {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.query_info_finish
@@ -58366,7 +57171,6 @@ func (stream *FileOutputStream) queryInfoFinish(result AsyncResulter) (*FileInfo
 //   - ctx (optional)
 //   - offset
 //   - typ
-//
 func (stream *FileOutputStream) seek(ctx context.Context, offset int64, typ glib.SeekType) error {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.seek
@@ -58424,7 +57228,6 @@ func (stream *FileOutputStream) tell() int64 {
 //
 //   - ctx (optional)
 //   - size
-//
 func (stream *FileOutputStream) truncateFn(ctx context.Context, size int64) error {
 	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.truncate_fn
@@ -58522,7 +57325,6 @@ func (completer *FilenameCompleter) ConnectGotCompletionData(f func()) coreglib.
 // The function returns the following values:
 //
 //   - filenameCompleter: Completer.
-//
 func NewFilenameCompleter() *FilenameCompleter {
 	var _cret *C.GFilenameCompleter // in
 
@@ -58545,7 +57347,6 @@ func NewFilenameCompleter() *FilenameCompleter {
 //
 //   - utf8 (optional): completed string, or NULL if no completion exists. This
 //     string is not owned by GIO, so remember to g_free() it when finished.
-//
 func (completer *FilenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
@@ -58579,7 +57380,6 @@ func (completer *FilenameCompleter) CompletionSuffix(initialText string) string 
 //
 //   - utf8s: array of strings with possible completions for initial_text.
 //     This array must be freed by g_strfreev() when finished.
-//
 func (completer *FilenameCompleter) Completions(initialText string) []string {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 *C.char               // out
@@ -58620,7 +57420,6 @@ func (completer *FilenameCompleter) Completions(initialText string) []string {
 // The function takes the following parameters:
 //
 //   - dirsOnly: #gboolean.
-//
 func (completer *FilenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var _arg0 *C.GFilenameCompleter // out
 	var _arg1 C.gboolean            // out
@@ -58721,7 +57520,6 @@ func BaseFilterInputStream(obj FilterInputStreamer) *FilterInputStream {
 // The function returns the following values:
 //
 //   - inputStream: Stream.
-//
 func (stream *FilterInputStream) BaseStream() InputStreamer {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret *C.GInputStream       // in
@@ -58760,7 +57558,6 @@ func (stream *FilterInputStream) BaseStream() InputStreamer {
 // The function returns the following values:
 //
 //   - ok: TRUE if the base stream will be closed.
-//
 func (stream *FilterInputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterInputStream // out
 	var _cret C.gboolean            // in
@@ -58785,7 +57582,6 @@ func (stream *FilterInputStream) CloseBaseStream() bool {
 // The function takes the following parameters:
 //
 //   - closeBase: TRUE to close the base stream.
-//
 func (stream *FilterInputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterInputStream // out
 	var _arg1 C.gboolean            // out
@@ -58874,7 +57670,6 @@ func BaseFilterOutputStream(obj FilterOutputStreamer) *FilterOutputStream {
 // The function returns the following values:
 //
 //   - outputStream: Stream.
-//
 func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret *C.GOutputStream       // in
@@ -58913,7 +57708,6 @@ func (stream *FilterOutputStream) BaseStream() OutputStreamer {
 // The function returns the following values:
 //
 //   - ok: TRUE if the base stream will be closed.
-//
 func (stream *FilterOutputStream) CloseBaseStream() bool {
 	var _arg0 *C.GFilterOutputStream // out
 	var _cret C.gboolean             // in
@@ -58938,7 +57732,6 @@ func (stream *FilterOutputStream) CloseBaseStream() bool {
 // The function takes the following parameters:
 //
 //   - closeBase: TRUE to close the base stream.
-//
 func (stream *FilterOutputStream) SetCloseBaseStream(closeBase bool) {
 	var _arg0 *C.GFilterOutputStream // out
 	var _arg1 C.gboolean             // out
@@ -58960,7 +57753,6 @@ type IOStreamOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	//
 	CloseFinish func(result AsyncResulter) error
 	CloseFn     func(ctx context.Context) error
 	// InputStream gets the input stream for this object. This is used for
@@ -58969,7 +57761,6 @@ type IOStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - inputStream owned by the OStream. Do not free.
-	//
 	InputStream func() InputStreamer
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
@@ -58977,7 +57768,6 @@ type IOStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - outputStream owned by the OStream. Do not free.
-	//
 	OutputStream func() OutputStreamer
 }
 
@@ -59153,7 +57943,6 @@ func (stream *IOStream) ClearPending() {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (stream *IOStream) Close(ctx context.Context) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GCancellable // out
@@ -59194,7 +57983,6 @@ func (stream *IOStream) Close(ctx context.Context) error {
 //   - ctx (optional): optional cancellable object.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream          // out
 	var _arg2 *C.GCancellable       // out
@@ -59226,7 +58014,6 @@ func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GIOStream    // out
 	var _arg1 *C.GAsyncResult // out
@@ -59253,7 +58040,6 @@ func (stream *IOStream) CloseFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - inputStream owned by the OStream. Do not free.
-//
 func (stream *IOStream) InputStream() InputStreamer {
 	var _arg0 *C.GIOStream    // out
 	var _cret *C.GInputStream // in
@@ -59292,7 +58078,6 @@ func (stream *IOStream) InputStream() InputStreamer {
 // The function returns the following values:
 //
 //   - outputStream owned by the OStream. Do not free.
-//
 func (stream *IOStream) OutputStream() OutputStreamer {
 	var _arg0 *C.GIOStream     // out
 	var _cret *C.GOutputStream // in
@@ -59330,7 +58115,6 @@ func (stream *IOStream) OutputStream() OutputStreamer {
 // The function returns the following values:
 //
 //   - ok: TRUE if stream has pending actions.
-//
 func (stream *IOStream) HasPending() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
@@ -59354,7 +58138,6 @@ func (stream *IOStream) HasPending() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the stream is closed.
-//
 func (stream *IOStream) IsClosed() bool {
 	var _arg0 *C.GIOStream // out
 	var _cret C.gboolean   // in
@@ -59407,7 +58190,6 @@ func (stream *IOStream) SetPending() error {
 //   - flags: set of OStreamSpliceFlags.
 //   - ioPriority: io priority of the request.
 //   - callback (optional): ReadyCallback.
-//
 func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GIOStream           // out
 	var _arg4 *C.GCancellable        // out
@@ -59455,7 +58237,6 @@ func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, fl
 //   - ctx (optional): optional cancellable object.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *IOStream) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_async
@@ -59490,7 +58271,6 @@ func (stream *IOStream) closeAsync(ctx context.Context, ioPriority int, callback
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (stream *IOStream) closeFinish(result AsyncResulter) error {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_finish
@@ -59548,7 +58328,6 @@ func (stream *IOStream) closeFn(ctx context.Context) error {
 // The function returns the following values:
 //
 //   - inputStream owned by the OStream. Do not free.
-//
 func (stream *IOStream) inputStream() InputStreamer {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.get_input_stream
@@ -59590,7 +58369,6 @@ func (stream *IOStream) inputStream() InputStreamer {
 // The function returns the following values:
 //
 //   - outputStream owned by the OStream. Do not free.
-//
 func (stream *IOStream) outputStream() OutputStreamer {
 	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.get_output_stream
@@ -59631,7 +58409,6 @@ func (stream *IOStream) outputStream() OutputStreamer {
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func IOStreamSpliceFinish(result AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -59658,7 +58435,6 @@ type InetAddressOverrides struct {
 	//
 	//   - utf8: representation of address as a string, which should be freed
 	//     after use.
-	//
 	String func() string
 }
 
@@ -59727,7 +58503,6 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 //
 //   - inetAddress: new Address corresponding to the "any" address for family.
 //     Free the returned object with g_object_unref().
-//
 func NewInetAddressAny(family SocketFamily) *InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
@@ -59756,7 +58531,6 @@ func NewInetAddressAny(family SocketFamily) *InetAddress {
 //   - inetAddress (optional): new Address corresponding to string,
 //     or NULL if string could not be parsed. Free the returned object with
 //     g_object_unref().
-//
 func NewInetAddressFromString(str string) *InetAddress {
 	var _arg1 *C.gchar        // out
 	var _cret *C.GInetAddress // in
@@ -59786,7 +58560,6 @@ func NewInetAddressFromString(str string) *InetAddress {
 //
 //   - inetAddress: new Address corresponding to the loopback address for
 //     family. Free the returned object with g_object_unref().
-//
 func NewInetAddressLoopback(family SocketFamily) *InetAddress {
 	var _arg1 C.GSocketFamily // out
 	var _cret *C.GInetAddress // in
@@ -59812,7 +58585,6 @@ func NewInetAddressLoopback(family SocketFamily) *InetAddress {
 // The function returns the following values:
 //
 //   - ok: TRUE if address and other_address are equal, FALSE otherwise.
-//
 func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 	var _arg0 *C.GInetAddress // out
 	var _arg1 *C.GInetAddress // out
@@ -59839,7 +58611,6 @@ func (address *InetAddress) Equal(otherAddress *InetAddress) bool {
 // The function returns the following values:
 //
 //   - socketFamily address's family.
-//
 func (address *InetAddress) Family() SocketFamily {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.GSocketFamily // in
@@ -59861,7 +58632,6 @@ func (address *InetAddress) Family() SocketFamily {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is the "any" address for its family.
-//
 func (address *InetAddress) IsAny() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -59886,7 +58656,6 @@ func (address *InetAddress) IsAny() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is a link-local address.
-//
 func (address *InetAddress) IsLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -59910,7 +58679,6 @@ func (address *InetAddress) IsLinkLocal() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is the loopback address for its family.
-//
 func (address *InetAddress) IsLoopback() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -59934,7 +58702,6 @@ func (address *InetAddress) IsLoopback() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is a global multicast address.
-//
 func (address *InetAddress) IsMcGlobal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -59958,7 +58725,6 @@ func (address *InetAddress) IsMcGlobal() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is a link-local multicast address.
-//
 func (address *InetAddress) IsMcLinkLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -59982,7 +58748,6 @@ func (address *InetAddress) IsMcLinkLocal() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is a node-local multicast address.
-//
 func (address *InetAddress) IsMcNodeLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -60007,7 +58772,6 @@ func (address *InetAddress) IsMcNodeLocal() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is an organization-local multicast address.
-//
 func (address *InetAddress) IsMcOrgLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -60031,7 +58795,6 @@ func (address *InetAddress) IsMcOrgLocal() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is a site-local multicast address.
-//
 func (address *InetAddress) IsMcSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -60055,7 +58818,6 @@ func (address *InetAddress) IsMcSiteLocal() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is a multicast address.
-//
 func (address *InetAddress) IsMulticast() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -60082,7 +58844,6 @@ func (address *InetAddress) IsMulticast() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if address is a site-local address.
-//
 func (address *InetAddress) IsSiteLocal() bool {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gboolean      // in
@@ -60107,7 +58868,6 @@ func (address *InetAddress) IsSiteLocal() bool {
 // The function returns the following values:
 //
 //   - gsize: number of bytes used for the native version of address.
-//
 func (address *InetAddress) NativeSize() uint {
 	var _arg0 *C.GInetAddress // out
 	var _cret C.gsize         // in
@@ -60130,7 +58890,6 @@ func (address *InetAddress) NativeSize() uint {
 //
 //   - utf8: representation of address as a string, which should be freed after
 //     use.
-//
 func (address *InetAddress) String() string {
 	var _arg0 *C.GInetAddress // out
 	var _cret *C.gchar        // in
@@ -60154,7 +58913,6 @@ func (address *InetAddress) String() string {
 //
 //   - utf8: representation of address as a string, which should be freed after
 //     use.
-//
 func (address *InetAddress) str() string {
 	gclass := (*C.GInetAddressClass)(coreglib.PeekParentClass(address))
 	fnarg := gclass.to_string
@@ -60238,7 +58996,6 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - inetAddressMask: new AddressMask, or NULL on error.
-//
 func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error) {
 	var _arg1 *C.GInetAddress     // out
 	var _arg2 C.guint             // out
@@ -60276,7 +59033,6 @@ func NewInetAddressMask(addr *InetAddress, length uint) (*InetAddressMask, error
 //
 //   - inetAddressMask: new AddressMask corresponding to string, or NULL on
 //     error.
-//
 func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 	var _arg1 *C.gchar            // out
 	var _cret *C.GInetAddressMask // in
@@ -60308,7 +59064,6 @@ func NewInetAddressMaskFromString(maskString string) (*InetAddressMask, error) {
 // The function returns the following values:
 //
 //   - ok: whether mask and mask2 are the same mask.
-//
 func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddressMask // out
@@ -60335,7 +59090,6 @@ func (mask *InetAddressMask) Equal(mask2 *InetAddressMask) bool {
 // The function returns the following values:
 //
 //   - inetAddress mask's base address.
-//
 func (mask *InetAddressMask) Address() *InetAddress {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.GInetAddress     // in
@@ -60357,7 +59111,6 @@ func (mask *InetAddressMask) Address() *InetAddress {
 // The function returns the following values:
 //
 //   - socketFamily of mask's address.
-//
 func (mask *InetAddressMask) Family() SocketFamily {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.GSocketFamily     // in
@@ -60379,7 +59132,6 @@ func (mask *InetAddressMask) Family() SocketFamily {
 // The function returns the following values:
 //
 //   - guint mask's length.
-//
 func (mask *InetAddressMask) Length() uint {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret C.guint             // in
@@ -60405,7 +59157,6 @@ func (mask *InetAddressMask) Length() uint {
 // The function returns the following values:
 //
 //   - ok: whether address falls within the range described by mask.
-//
 func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 	var _arg0 *C.GInetAddressMask // out
 	var _arg1 *C.GInetAddress     // out
@@ -60432,7 +59183,6 @@ func (mask *InetAddressMask) Matches(address *InetAddress) bool {
 // The function returns the following values:
 //
 //   - utf8: string corresponding to mask.
-//
 func (mask *InetAddressMask) String() string {
 	var _arg0 *C.GInetAddressMask // out
 	var _cret *C.gchar            // in
@@ -60510,7 +59260,6 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - inetSocketAddress: new SocketAddress.
-//
 func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
@@ -60545,7 +59294,6 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress 
 //
 //   - inetSocketAddress (optional): new SocketAddress, or NULL if address
 //     cannot be parsed.
-//
 func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddress {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // out
@@ -60574,7 +59322,6 @@ func NewInetSocketAddressFromString(address string, port uint) *InetSocketAddres
 //
 //   - inetAddress for address, which must be g_object_ref()'d if it will be
 //     stored.
-//
 func (address *InetSocketAddress) Address() *InetAddress {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret *C.GInetAddress       // in
@@ -60597,7 +59344,6 @@ func (address *InetSocketAddress) Address() *InetAddress {
 // The function returns the following values:
 //
 //   - guint32: flowinfo field.
-//
 func (address *InetSocketAddress) Flowinfo() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
@@ -60619,7 +59365,6 @@ func (address *InetSocketAddress) Flowinfo() uint32 {
 // The function returns the following values:
 //
 //   - guint16: port for address.
-//
 func (address *InetSocketAddress) Port() uint16 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint16             // in
@@ -60642,7 +59387,6 @@ func (address *InetSocketAddress) Port() uint16 {
 // The function returns the following values:
 //
 //   - guint32: scope id field.
-//
 func (address *InetSocketAddress) ScopeID() uint32 {
 	var _arg0 *C.GInetSocketAddress // out
 	var _cret C.guint32             // in
@@ -60667,7 +59411,6 @@ type InputStreamOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	//
 	CloseFinish func(result AsyncResulter) error
 	CloseFn     func(ctx context.Context) error
 	// ReadFinish finishes an asynchronous stream read operation.
@@ -60679,7 +59422,6 @@ type InputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
-	//
 	ReadFinish func(result AsyncResulter) (int, error)
 	// Skip tries to skip count bytes from the stream. Will block during the
 	// operation.
@@ -60705,7 +59447,6 @@ type InputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize: number of bytes skipped, or -1 on error.
-	//
 	Skip func(ctx context.Context, count uint) (int, error)
 	// SkipFinish finishes a stream skip operation.
 	//
@@ -60716,7 +59457,6 @@ type InputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize: size of the bytes skipped, or -1 on error.
-	//
 	SkipFinish func(result AsyncResulter) (int, error)
 }
 
@@ -60855,7 +59595,6 @@ func (stream *InputStream) ClearPending() {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//
 func (stream *InputStream) Close(ctx context.Context) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GCancellable // out
@@ -60897,7 +59636,6 @@ func (stream *InputStream) Close(ctx context.Context) error {
 //   - ctx (optional): optional cancellable object.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg2 *C.GCancellable       // out
@@ -60930,7 +59668,6 @@ func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int, callb
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (stream *InputStream) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -60957,7 +59694,6 @@ func (stream *InputStream) CloseFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if stream has pending actions.
-//
 func (stream *InputStream) HasPending() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
@@ -60981,7 +59717,6 @@ func (stream *InputStream) HasPending() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the stream is closed.
-//
 func (stream *InputStream) IsClosed() bool {
 	var _arg0 *C.GInputStream // out
 	var _cret C.gboolean      // in
@@ -61031,7 +59766,6 @@ func (stream *InputStream) IsClosed() bool {
 // The function returns the following values:
 //
 //   - gssize: number of bytes read, or -1 on error, or 0 on end of file.
-//
 func (stream *InputStream) Read(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg3 *C.GCancellable // out
@@ -61097,7 +59831,6 @@ func (stream *InputStream) Read(ctx context.Context, buffer []byte) (int, error)
 //
 //   - bytesRead: location to store the number of bytes that was read from the
 //     stream.
-//
 func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg4 *C.GCancellable // out
@@ -61151,7 +59884,6 @@ func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, er
 //     long).
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream // out
 	var _arg4 *C.GCancellable // out
@@ -61203,7 +59935,6 @@ func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPr
 //
 //   - bytesRead: location to store the number of bytes that was read from the
 //     stream.
-//
 func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -61260,7 +59991,6 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 //     long).
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream // out
 	var _arg4 *C.GCancellable // out
@@ -61324,7 +60054,6 @@ func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPrior
 // The function returns the following values:
 //
 //   - bytes: new #GBytes, or NULL on error.
-//
 func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Bytes, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg2 *C.GCancellable // out
@@ -61388,7 +60117,6 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 //   - count: number of bytes that will be read from the stream.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg3 *C.GCancellable       // out
@@ -61427,7 +60155,6 @@ func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPri
 // The function returns the following values:
 //
 //   - bytes: newly-allocated #GBytes, or NULL on error.
-//
 func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -61467,7 +60194,6 @@ func (stream *InputStream) ReadBytesFinish(result AsyncResulter) (*glib.Bytes, e
 // The function returns the following values:
 //
 //   - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
-//
 func (stream *InputStream) ReadFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -61536,7 +60262,6 @@ func (stream *InputStream) SetPending() error {
 // The function returns the following values:
 //
 //   - gssize: number of bytes skipped, or -1 on error.
-//
 func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg2 *C.GCancellable // out
@@ -61598,7 +60323,6 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 //   - count: number of bytes that will be skipped from the stream.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream       // out
 	var _arg3 *C.GCancellable       // out
@@ -61637,7 +60361,6 @@ func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority
 // The function returns the following values:
 //
 //   - gssize: size of the bytes skipped, or -1 on error.
-//
 func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GInputStream // out
 	var _arg1 *C.GAsyncResult // out
@@ -61678,7 +60401,6 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 //   - ctx (optional): optional cancellable object.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *InputStream) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_async
@@ -61714,7 +60436,6 @@ func (stream *InputStream) closeAsync(ctx context.Context, ioPriority int, callb
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (stream *InputStream) closeFinish(result AsyncResulter) error {
 	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_finish
@@ -61776,7 +60497,6 @@ func (stream *InputStream) closeFn(ctx context.Context) error {
 // The function returns the following values:
 //
 //   - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
-//
 func (stream *InputStream) readFinish(result AsyncResulter) (int, error) {
 	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.read_finish
@@ -61828,7 +60548,6 @@ func (stream *InputStream) readFinish(result AsyncResulter) (int, error) {
 // The function returns the following values:
 //
 //   - gssize: number of bytes skipped, or -1 on error.
-//
 func (stream *InputStream) skip(ctx context.Context, count uint) (int, error) {
 	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.skip
@@ -61893,7 +60612,6 @@ func (stream *InputStream) skip(ctx context.Context, count uint) (int, error) {
 //   - count: number of bytes that will be skipped from the stream.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *InputStream) skipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.skip_async
@@ -61935,7 +60653,6 @@ func (stream *InputStream) skipAsync(ctx context.Context, count uint, ioPriority
 // The function returns the following values:
 //
 //   - gssize: size of the bytes skipped, or -1 on error.
-//
 func (stream *InputStream) skipFinish(result AsyncResulter) (int, error) {
 	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.skip_finish
@@ -62026,7 +60743,6 @@ func marshalListStore(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - listStore: new Store.
-//
 func NewListStore(itemType coreglib.Type) *ListStore {
 	var _arg1 C.GType       // out
 	var _cret *C.GListStore // in
@@ -62053,7 +60769,6 @@ func NewListStore(itemType coreglib.Type) *ListStore {
 // The function takes the following parameters:
 //
 //   - item: new item.
-//
 func (store *ListStore) Append(item *coreglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
@@ -62082,7 +60797,6 @@ func (store *ListStore) Append(item *coreglib.Object) {
 //   - position (optional): first position of item, if it was found.
 //   - ok: whether store contains item. If it was found, position will be set to
 //     the position where item occurred for the first time.
-//
 func (store *ListStore) Find(item *coreglib.Object) (uint, bool) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.gpointer    // out
@@ -62120,7 +60834,6 @@ func (store *ListStore) Find(item *coreglib.Object) (uint, bool) {
 //
 //   - position at which to insert the new item.
 //   - item: new item.
-//
 func (store *ListStore) Insert(position uint, item *coreglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
@@ -62153,7 +60866,6 @@ func (store *ListStore) Insert(position uint, item *coreglib.Object) {
 // The function returns the following values:
 //
 //   - guint: position at which item was inserted.
-//
 func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.CompareDataFunc) uint {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.gpointer         // out
@@ -62188,7 +60900,6 @@ func (store *ListStore) InsertSorted(item *coreglib.Object, compareFunc glib.Com
 // The function takes the following parameters:
 //
 //   - position of the item that is to be removed.
-//
 func (store *ListStore) Remove(position uint) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
@@ -62216,7 +60927,6 @@ func (store *ListStore) RemoveAll() {
 // The function takes the following parameters:
 //
 //   - compareFunc: pairwise comparison function for sorting.
-//
 func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 	var _arg0 *C.GListStore      // out
 	var _arg1 C.GCompareDataFunc // out
@@ -62251,7 +60961,6 @@ func (store *ListStore) Sort(compareFunc glib.CompareDataFunc) {
 //   - position at which to make the change.
 //   - nRemovals: number of items to remove.
 //   - additions items to add.
-//
 func (store *ListStore) Splice(position, nRemovals uint, additions []*coreglib.Object) {
 	var _arg0 *C.GListStore // out
 	var _arg1 C.guint       // out
@@ -62347,7 +61056,6 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - memoryInputStream: new Stream.
-//
 func NewMemoryInputStream() *MemoryInputStream {
 	var _cret *C.GInputStream // in
 
@@ -62370,7 +61078,6 @@ func NewMemoryInputStream() *MemoryInputStream {
 // The function returns the following values:
 //
 //   - memoryInputStream: new Stream read from bytes.
-//
 func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 	var _arg1 *C.GBytes       // out
 	var _cret *C.GInputStream // in
@@ -62392,7 +61099,6 @@ func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) *MemoryInputStream {
 // The function takes the following parameters:
 //
 //   - bytes: input data.
-//
 func (stream *MemoryInputStream) AddBytes(bytes *glib.Bytes) {
 	var _arg0 *C.GMemoryInputStream // out
 	var _arg1 *C.GBytes             // out
@@ -62492,7 +61198,6 @@ func NewMemoryOutputStreamResizable() *MemoryOutputStream {
 //
 //   - gpointer (optional): pointer to the stream's data, or NULL if the data
 //     has been stolen.
-//
 func (ostream *MemoryOutputStream) Data() unsafe.Pointer {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
@@ -62515,7 +61220,6 @@ func (ostream *MemoryOutputStream) Data() unsafe.Pointer {
 // The function returns the following values:
 //
 //   - gsize: number of bytes written to the stream.
-//
 func (ostream *MemoryOutputStream) DataSize() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
@@ -62550,7 +61254,6 @@ func (ostream *MemoryOutputStream) DataSize() uint {
 // The function returns the following values:
 //
 //   - gsize: number of bytes allocated for the data buffer.
-//
 func (ostream *MemoryOutputStream) Size() uint {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gsize                // in
@@ -62573,7 +61276,6 @@ func (ostream *MemoryOutputStream) Size() uint {
 // The function returns the following values:
 //
 //   - bytes stream's data.
-//
 func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret *C.GBytes              // in
@@ -62606,7 +61308,6 @@ func (ostream *MemoryOutputStream) StealAsBytes() *glib.Bytes {
 //
 //   - gpointer (optional) stream's data, or NULL if it has previously been
 //     stolen.
-//
 func (ostream *MemoryOutputStream) StealData() unsafe.Pointer {
 	var _arg0 *C.GMemoryOutputStream // out
 	var _cret C.gpointer             // in
@@ -62658,7 +61359,6 @@ func marshalMenu(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - menu: new #GMenu.
-//
 func NewMenu() *Menu {
 	var _cret *C.GMenu // in
 
@@ -62679,7 +61379,6 @@ func NewMenu() *Menu {
 //
 //   - label (optional): section label, or NULL.
 //   - detailedAction (optional): detailed action string, or NULL.
-//
 func (menu *Menu) Append(label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
@@ -62708,7 +61407,6 @@ func (menu *Menu) Append(label, detailedAction string) {
 // The function takes the following parameters:
 //
 //   - item to append.
-//
 func (menu *Menu) AppendItem(item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
@@ -62729,7 +61427,6 @@ func (menu *Menu) AppendItem(item *MenuItem) {
 //
 //   - label (optional): section label, or NULL.
 //   - section with the items of the section.
-//
 func (menu *Menu) AppendSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -62756,7 +61453,6 @@ func (menu *Menu) AppendSection(label string, section MenuModeller) {
 //
 //   - label (optional): section label, or NULL.
 //   - submenu with the items of the submenu.
-//
 func (menu *Menu) AppendSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -62800,7 +61496,6 @@ func (menu *Menu) Freeze() {
 //   - position at which to insert the item.
 //   - label (optional): section label, or NULL.
 //   - detailedAction (optional): detailed action string, or NULL.
-//
 func (menu *Menu) Insert(position int, label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
@@ -62846,7 +61541,6 @@ func (menu *Menu) Insert(position int, label, detailedAction string) {
 //
 //   - position at which to insert the item.
 //   - item to insert.
-//
 func (menu *Menu) InsertItem(position int, item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 C.gint       // out
@@ -62871,7 +61565,6 @@ func (menu *Menu) InsertItem(position int, item *MenuItem) {
 //   - position at which to insert the item.
 //   - label (optional): section label, or NULL.
 //   - section with the items of the section.
-//
 func (menu *Menu) InsertSection(position int, label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
@@ -62902,7 +61595,6 @@ func (menu *Menu) InsertSection(position int, label string, section MenuModeller
 //   - position at which to insert the item.
 //   - label (optional): section label, or NULL.
 //   - submenu with the items of the submenu.
-//
 func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 C.gint        // out
@@ -62932,7 +61624,6 @@ func (menu *Menu) InsertSubmenu(position int, label string, submenu MenuModeller
 //
 //   - label (optional): section label, or NULL.
 //   - detailedAction (optional): detailed action string, or NULL.
-//
 func (menu *Menu) Prepend(label, detailedAction string) {
 	var _arg0 *C.GMenu // out
 	var _arg1 *C.gchar // out
@@ -62961,7 +61652,6 @@ func (menu *Menu) Prepend(label, detailedAction string) {
 // The function takes the following parameters:
 //
 //   - item to prepend.
-//
 func (menu *Menu) PrependItem(item *MenuItem) {
 	var _arg0 *C.GMenu     // out
 	var _arg1 *C.GMenuItem // out
@@ -62982,7 +61672,6 @@ func (menu *Menu) PrependItem(item *MenuItem) {
 //
 //   - label (optional): section label, or NULL.
 //   - section with the items of the section.
-//
 func (menu *Menu) PrependSection(label string, section MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -63009,7 +61698,6 @@ func (menu *Menu) PrependSection(label string, section MenuModeller) {
 //
 //   - label (optional): section label, or NULL.
 //   - submenu with the items of the submenu.
-//
 func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 	var _arg0 *C.GMenu      // out
 	var _arg1 *C.gchar      // out
@@ -63042,7 +61730,6 @@ func (menu *Menu) PrependSubmenu(label string, submenu MenuModeller) {
 // The function takes the following parameters:
 //
 //   - position of the item to remove.
-//
 func (menu *Menu) Remove(position int) {
 	var _arg0 *C.GMenu // out
 	var _arg1 C.gint   // out
@@ -63087,7 +61774,6 @@ type MenuAttributeIterOverrides struct {
 	//   - outName (optional): type of the attribute.
 	//   - value (optional): attribute value.
 	//   - ok: TRUE on success, or FALSE if there is no additional attribute.
-	//
 	Next func() (string, *glib.Variant, bool)
 }
 
@@ -63168,7 +61854,6 @@ func BaseMenuAttributeIter(obj MenuAttributeIterer) *MenuAttributeIter {
 // The function returns the following values:
 //
 //   - utf8: name of the attribute.
-//
 func (iter *MenuAttributeIter) Name() string {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.gchar              // in
@@ -63205,7 +61890,6 @@ func (iter *MenuAttributeIter) Name() string {
 //   - outName (optional): type of the attribute.
 //   - value (optional): attribute value.
 //   - ok: TRUE on success, or FALSE if there is no additional attribute.
-//
 func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _arg1 *C.gchar              // in
@@ -63247,7 +61931,6 @@ func (iter *MenuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 // The function returns the following values:
 //
 //   - variant: value of the current attribute.
-//
 func (iter *MenuAttributeIter) Value() *glib.Variant {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret *C.GVariant           // in
@@ -63280,7 +61963,6 @@ func (iter *MenuAttributeIter) Value() *glib.Variant {
 // The function returns the following values:
 //
 //   - ok: TRUE on success, or FALSE when there are no more attributes.
-//
 func (iter *MenuAttributeIter) Next() bool {
 	var _arg0 *C.GMenuAttributeIter // out
 	var _cret C.gboolean            // in
@@ -63319,7 +62001,6 @@ func (iter *MenuAttributeIter) Next() bool {
 //   - outName (optional): type of the attribute.
 //   - value (optional): attribute value.
 //   - ok: TRUE on success, or FALSE if there is no additional attribute.
-//
 func (iter *MenuAttributeIter) next() (string, *glib.Variant, bool) {
 	gclass := (*C.GMenuAttributeIterClass)(coreglib.PeekParentClass(iter))
 	fnarg := gclass.get_next
@@ -63394,7 +62075,6 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - menuItem: new Item.
-//
 func NewMenuItem(label, detailedAction string) *MenuItem {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -63434,7 +62114,6 @@ func NewMenuItem(label, detailedAction string) *MenuItem {
 // The function returns the following values:
 //
 //   - menuItem: new Item.
-//
 func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 	var _arg1 *C.GMenuModel // out
 	var _arg2 C.gint        // out
@@ -63477,17 +62156,17 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 // added as submenus of the third. In XML format, this would look something like
 // the following:
 //
-//    <menu id='edit-menu'>
-//      <section>
-//        <item label='Undo'/>
-//        <item label='Redo'/>
-//      </section>
-//      <section>
-//        <item label='Cut'/>
-//        <item label='Copy'/>
-//        <item label='Paste'/>
-//      </section>
-//    </menu>
+//	<menu id='edit-menu'>
+//	  <section>
+//	    <item label='Undo'/>
+//	    <item label='Redo'/>
+//	  </section>
+//	  <section>
+//	    <item label='Cut'/>
+//	    <item label='Copy'/>
+//	    <item label='Paste'/>
+//	  </section>
+//	</menu>
 //
 // The following example is exactly equivalent. It is more illustrative of the
 // exact relationship between the menus and items (keeping in mind that the
@@ -63496,21 +62175,21 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 // therefore not recommended except for the purpose of understanding what is
 // really going on).
 //
-//    <menu id='edit-menu'>
-//      <item>
-//        <link name='section'>
-//          <item label='Undo'/>
-//          <item label='Redo'/>
-//        </link>
-//      </item>
-//      <item>
-//        <link name='section'>
-//          <item label='Cut'/>
-//          <item label='Copy'/>
-//          <item label='Paste'/>
-//        </link>
-//      </item>
-//    </menu>.
+//	<menu id='edit-menu'>
+//	  <item>
+//	    <link name='section'>
+//	      <item label='Undo'/>
+//	      <item label='Redo'/>
+//	    </link>
+//	  </item>
+//	  <item>
+//	    <link name='section'>
+//	      <item label='Cut'/>
+//	      <item label='Copy'/>
+//	      <item label='Paste'/>
+//	    </link>
+//	  </item>
+//	</menu>.
 //
 // The function takes the following parameters:
 //
@@ -63520,7 +62199,6 @@ func NewMenuItemFromModel(model MenuModeller, itemIndex int) *MenuItem {
 // The function returns the following values:
 //
 //   - menuItem: new Item.
-//
 func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -63556,7 +62234,6 @@ func NewMenuItemSection(label string, section MenuModeller) *MenuItem {
 // The function returns the following values:
 //
 //   - menuItem: new Item.
-//
 func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 	var _arg1 *C.gchar      // out
 	var _arg2 *C.GMenuModel // out
@@ -63592,7 +62269,6 @@ func NewMenuItemSubmenu(label string, submenu MenuModeller) *MenuItem {
 // The function returns the following values:
 //
 //   - variant (optional): attribute value, or NULL.
-//
 func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuItem    // out
 	var _arg1 *C.gchar        // out
@@ -63635,7 +62311,6 @@ func (menuItem *MenuItem) AttributeValue(attribute string, expectedType *glib.Va
 // The function returns the following values:
 //
 //   - menuModel (optional): link, or NULL.
-//
 func (menuItem *MenuItem) Link(link string) MenuModeller {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
@@ -63711,7 +62386,6 @@ func (menuItem *MenuItem) Link(link string) MenuModeller {
 //
 //   - action (optional): name of the action for this item.
 //   - targetValue (optional) to use as the action target.
-//
 func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -63754,7 +62428,6 @@ func (menuItem *MenuItem) SetActionAndTargetValue(action string, targetValue *gl
 //
 //   - attribute to set.
 //   - value (optional) to use as the value, or NULL.
-//
 func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Variant) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -63789,7 +62462,6 @@ func (menuItem *MenuItem) SetAttributeValue(attribute string, value *glib.Varian
 // The function takes the following parameters:
 //
 //   - detailedAction: "detailed" action string.
-//
 func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -63817,7 +62489,6 @@ func (menuItem *MenuItem) SetDetailedAction(detailedAction string) {
 // The function takes the following parameters:
 //
 //   - icon or NULL.
-//
 func (menuItem *MenuItem) SetIcon(icon Iconner) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.GIcon     // out
@@ -63838,7 +62509,6 @@ func (menuItem *MenuItem) SetIcon(icon Iconner) {
 // The function takes the following parameters:
 //
 //   - label (optional) to set, or NULL to unset.
-//
 func (menuItem *MenuItem) SetLabel(label string) {
 	var _arg0 *C.GMenuItem // out
 	var _arg1 *C.gchar     // out
@@ -63869,7 +62539,6 @@ func (menuItem *MenuItem) SetLabel(label string) {
 //
 //   - link: type of link to establish or unset.
 //   - model (optional) to link to (or NULL to unset).
-//
 func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.gchar      // out
@@ -63898,7 +62567,6 @@ func (menuItem *MenuItem) SetLink(link string, model MenuModeller) {
 // The function takes the following parameters:
 //
 //   - section (optional) or NULL.
-//
 func (menuItem *MenuItem) SetSection(section MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
@@ -63924,7 +62592,6 @@ func (menuItem *MenuItem) SetSection(section MenuModeller) {
 // The function takes the following parameters:
 //
 //   - submenu (optional) or NULL.
-//
 func (menuItem *MenuItem) SetSubmenu(submenu MenuModeller) {
 	var _arg0 *C.GMenuItem  // out
 	var _arg1 *C.GMenuModel // out
@@ -63961,7 +62628,6 @@ type MenuLinkIterOverrides struct {
 	//   - outLink (optional): name of the link.
 	//   - value (optional): linked Model.
 	//   - ok: TRUE on success, or FALSE if there is no additional link.
-	//
 	Next func() (string, MenuModeller, bool)
 }
 
@@ -64041,7 +62707,6 @@ func BaseMenuLinkIter(obj MenuLinkIterer) *MenuLinkIter {
 // The function returns the following values:
 //
 //   - utf8: type of the link.
-//
 func (iter *MenuLinkIter) Name() string {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret *C.gchar         // in
@@ -64077,7 +62742,6 @@ func (iter *MenuLinkIter) Name() string {
 //   - outLink (optional): name of the link.
 //   - value (optional): linked Model.
 //   - ok: TRUE on success, or FALSE if there is no additional link.
-//
 func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 	var _arg0 *C.GMenuLinkIter // out
 	var _arg1 *C.gchar         // in
@@ -64126,7 +62790,6 @@ func (iter *MenuLinkIter) GetNext() (string, MenuModeller, bool) {
 // The function returns the following values:
 //
 //   - menuModel that is linked to.
-//
 func (iter *MenuLinkIter) Value() MenuModeller {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret *C.GMenuModel    // in
@@ -64169,7 +62832,6 @@ func (iter *MenuLinkIter) Value() MenuModeller {
 // The function returns the following values:
 //
 //   - ok: TRUE on success, or FALSE when there are no more links.
-//
 func (iter *MenuLinkIter) Next() bool {
 	var _arg0 *C.GMenuLinkIter // out
 	var _cret C.gboolean       // in
@@ -64207,7 +62869,6 @@ func (iter *MenuLinkIter) Next() bool {
 //   - outLink (optional): name of the link.
 //   - value (optional): linked Model.
 //   - ok: TRUE on success, or FALSE if there is no additional link.
-//
 func (iter *MenuLinkIter) next() (string, MenuModeller, bool) {
 	gclass := (*C.GMenuLinkIterClass)(coreglib.PeekParentClass(iter))
 	fnarg := gclass.get_next
@@ -64275,7 +62936,6 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - variant (optional): value of the attribute.
-	//
 	ItemAttributeValue func(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 	// ItemAttributes gets all the attributes associated with the item in the
 	// menu model.
@@ -64287,7 +62947,6 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - attributes attributes on the item.
-	//
 	ItemAttributes func(itemIndex int) map[string]*glib.Variant
 	// ItemLink queries the item at position item_index in model for the link
 	// specified by link.
@@ -64303,7 +62962,6 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - menuModel (optional): linked Model, or NULL.
-	//
 	ItemLink func(itemIndex int, link string) MenuModeller
 	// ItemLinks gets all the links associated with the item in the menu model.
 	//
@@ -64314,14 +62972,12 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - links links from the item.
-	//
 	ItemLinks func(itemIndex int) map[string]MenuModeller
 	// NItems: query the number of items in model.
 	//
 	// The function returns the following values:
 	//
 	//   - gint: number of items.
-	//
 	NItems func() int
 	// IsMutable queries if model is mutable.
 	//
@@ -64332,7 +62988,6 @@ type MenuModelOverrides struct {
 	//
 	//   - ok: TRUE if the model is mutable (ie: "items-changed" may be
 	//     emitted).
-	//
 	IsMutable func() bool
 	// IterateItemAttributes creates a AttributeIter to iterate over the
 	// attributes of the item at position item_index in model.
@@ -64346,7 +63001,6 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - menuAttributeIter: new AttributeIter.
-	//
 	IterateItemAttributes func(itemIndex int) MenuAttributeIterer
 	// IterateItemLinks creates a LinkIter to iterate over the links of the item
 	// at position item_index in model.
@@ -64360,7 +63014,6 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - menuLinkIter: new LinkIter.
-	//
 	IterateItemLinks func(itemIndex int) MenuLinkIterer
 }
 
@@ -64627,7 +63280,6 @@ func (model *MenuModel) ConnectItemsChanged(f func(position, removed, added int)
 // The function returns the following values:
 //
 //   - variant (optional): value of the attribute.
-//
 func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var _arg0 *C.GMenuModel   // out
 	var _arg1 C.gint          // out
@@ -64678,7 +63330,6 @@ func (model *MenuModel) ItemAttributeValue(itemIndex int, attribute string, expe
 // The function returns the following values:
 //
 //   - menuModel (optional): linked Model, or NULL.
-//
 func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
@@ -64722,7 +63373,6 @@ func (model *MenuModel) ItemLink(itemIndex int, link string) MenuModeller {
 // The function returns the following values:
 //
 //   - gint: number of items.
-//
 func (model *MenuModel) NItems() int {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gint        // in
@@ -64747,7 +63397,6 @@ func (model *MenuModel) NItems() int {
 // The function returns the following values:
 //
 //   - ok: TRUE if the model is mutable (ie: "items-changed" may be emitted).
-//
 func (model *MenuModel) IsMutable() bool {
 	var _arg0 *C.GMenuModel // out
 	var _cret C.gboolean    // in
@@ -64787,7 +63436,6 @@ func (model *MenuModel) IsMutable() bool {
 //   - position of the change.
 //   - removed: number of items removed.
 //   - added: number of items added.
-//
 func (model *MenuModel) ItemsChanged(position, removed, added int) {
 	var _arg0 *C.GMenuModel // out
 	var _arg1 C.gint        // out
@@ -64818,7 +63466,6 @@ func (model *MenuModel) ItemsChanged(position, removed, added int) {
 // The function returns the following values:
 //
 //   - menuAttributeIter: new AttributeIter.
-//
 func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer {
 	var _arg0 *C.GMenuModel         // out
 	var _arg1 C.gint                // out
@@ -64866,7 +63513,6 @@ func (model *MenuModel) IterateItemAttributes(itemIndex int) MenuAttributeIterer
 // The function returns the following values:
 //
 //   - menuLinkIter: new LinkIter.
-//
 func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 	var _arg0 *C.GMenuModel    // out
 	var _arg1 C.gint           // out
@@ -64923,7 +63569,6 @@ func (model *MenuModel) IterateItemLinks(itemIndex int) MenuLinkIterer {
 // The function returns the following values:
 //
 //   - variant (optional): value of the attribute.
-//
 func (model *MenuModel) itemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
 	fnarg := gclass.get_item_attribute_value
@@ -64973,7 +63618,6 @@ func (model *MenuModel) itemAttributeValue(itemIndex int, attribute string, expe
 // The function returns the following values:
 //
 //   - attributes attributes on the item.
-//
 func (model *MenuModel) itemAttributes(itemIndex int) map[string]*glib.Variant {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
 	fnarg := gclass.get_item_attributes
@@ -65026,7 +63670,6 @@ func (model *MenuModel) itemAttributes(itemIndex int) map[string]*glib.Variant {
 // The function returns the following values:
 //
 //   - menuModel (optional): linked Model, or NULL.
-//
 func (model *MenuModel) itemLink(itemIndex int, link string) MenuModeller {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
 	fnarg := gclass.get_item_link
@@ -65077,7 +63720,6 @@ func (model *MenuModel) itemLink(itemIndex int, link string) MenuModeller {
 // The function returns the following values:
 //
 //   - links links from the item.
-//
 func (model *MenuModel) itemLinks(itemIndex int) map[string]MenuModeller {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
 	fnarg := gclass.get_item_links
@@ -65130,7 +63772,6 @@ func (model *MenuModel) itemLinks(itemIndex int) map[string]MenuModeller {
 // The function returns the following values:
 //
 //   - gint: number of items.
-//
 func (model *MenuModel) nItems() int {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
 	fnarg := gclass.get_n_items
@@ -65158,7 +63799,6 @@ func (model *MenuModel) nItems() int {
 // The function returns the following values:
 //
 //   - ok: TRUE if the model is mutable (ie: "items-changed" may be emitted).
-//
 func (model *MenuModel) isMutable() bool {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
 	fnarg := gclass.is_mutable
@@ -65192,7 +63832,6 @@ func (model *MenuModel) isMutable() bool {
 // The function returns the following values:
 //
 //   - menuAttributeIter: new AttributeIter.
-//
 func (model *MenuModel) iterateItemAttributes(itemIndex int) MenuAttributeIterer {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
 	fnarg := gclass.iterate_item_attributes
@@ -65243,7 +63882,6 @@ func (model *MenuModel) iterateItemAttributes(itemIndex int) MenuAttributeIterer
 // The function returns the following values:
 //
 //   - menuLinkIter: new LinkIter.
-//
 func (model *MenuModel) iterateItemLinks(itemIndex int) MenuLinkIterer {
 	gclass := (*C.GMenuModelClass)(coreglib.PeekParentClass(model))
 	fnarg := gclass.iterate_item_links
@@ -65291,7 +63929,6 @@ type MountOperationOverrides struct {
 	//   - defaultUser
 	//   - defaultDomain
 	//   - flags
-	//
 	AskPassword func(message, defaultUser, defaultDomain string, flags AskPasswordFlags)
 	// AskQuestion: virtual implementation of Operation::ask-question.
 	//
@@ -65299,21 +63936,18 @@ type MountOperationOverrides struct {
 	//
 	//   - message: string containing a message to display to the user.
 	//   - choices: array of strings for each possible choice.
-	//
 	AskQuestion func(message string, choices []string)
 	// Reply emits the Operation::reply signal.
 	//
 	// The function takes the following parameters:
 	//
 	//   - result: OperationResult.
-	//
 	Reply func(result MountOperationResult)
 	// The function takes the following parameters:
 	//
 	//   - message
 	//   - timeLeft
 	//   - bytesLeft
-	//
 	ShowUnmountProgress func(message string, timeLeft, bytesLeft int64)
 }
 
@@ -65460,7 +64094,6 @@ func (op *MountOperation) ConnectShowUnmountProgress(f func(message string, time
 // The function returns the following values:
 //
 //   - mountOperation: Operation.
-//
 func NewMountOperation() *MountOperation {
 	var _cret *C.GMountOperation // in
 
@@ -65479,7 +64112,6 @@ func NewMountOperation() *MountOperation {
 // The function returns the following values:
 //
 //   - ok: TRUE if mount operation is anonymous.
-//
 func (op *MountOperation) Anonymous() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -65504,7 +64136,6 @@ func (op *MountOperation) Anonymous() bool {
 //
 //   - gint: integer containing an index of the user's choice from the choice's
 //     list, or 0.
-//
 func (op *MountOperation) Choice() int {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.int              // in
@@ -65526,7 +64157,6 @@ func (op *MountOperation) Choice() int {
 // The function returns the following values:
 //
 //   - utf8 (optional): string set to the domain.
-//
 func (op *MountOperation) Domain() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -65551,7 +64181,6 @@ func (op *MountOperation) Domain() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if mount operation is for hidden volume.
-//
 func (op *MountOperation) IsTcryptHiddenVolume() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -65576,7 +64205,6 @@ func (op *MountOperation) IsTcryptHiddenVolume() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if mount operation is for system volume.
-//
 func (op *MountOperation) IsTcryptSystemVolume() bool {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.gboolean         // in
@@ -65600,7 +64228,6 @@ func (op *MountOperation) IsTcryptSystemVolume() bool {
 // The function returns the following values:
 //
 //   - utf8 (optional): string containing the password within op.
-//
 func (op *MountOperation) Password() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -65624,7 +64251,6 @@ func (op *MountOperation) Password() string {
 // The function returns the following values:
 //
 //   - passwordSave: Save flag.
-//
 func (op *MountOperation) PasswordSave() PasswordSave {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.GPasswordSave    // in
@@ -65646,7 +64272,6 @@ func (op *MountOperation) PasswordSave() PasswordSave {
 // The function returns the following values:
 //
 //   - guint: veraCrypt PIM within op.
-//
 func (op *MountOperation) Pim() uint {
 	var _arg0 *C.GMountOperation // out
 	var _cret C.guint            // in
@@ -65668,7 +64293,6 @@ func (op *MountOperation) Pim() uint {
 // The function returns the following values:
 //
 //   - utf8 (optional): string containing the user name.
-//
 func (op *MountOperation) Username() string {
 	var _arg0 *C.GMountOperation // out
 	var _cret *C.char            // in
@@ -65692,7 +64316,6 @@ func (op *MountOperation) Username() string {
 // The function takes the following parameters:
 //
 //   - result: OperationResult.
-//
 func (op *MountOperation) Reply(result MountOperationResult) {
 	var _arg0 *C.GMountOperation      // out
 	var _arg1 C.GMountOperationResult // out
@@ -65711,7 +64334,6 @@ func (op *MountOperation) Reply(result MountOperationResult) {
 // The function takes the following parameters:
 //
 //   - anonymous: boolean value.
-//
 func (op *MountOperation) SetAnonymous(anonymous bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -65731,7 +64353,6 @@ func (op *MountOperation) SetAnonymous(anonymous bool) {
 // The function takes the following parameters:
 //
 //   - choice: integer.
-//
 func (op *MountOperation) SetChoice(choice int) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.int              // out
@@ -65749,7 +64370,6 @@ func (op *MountOperation) SetChoice(choice int) {
 // The function takes the following parameters:
 //
 //   - domain (optional) to set.
-//
 func (op *MountOperation) SetDomain(domain string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -65771,7 +64391,6 @@ func (op *MountOperation) SetDomain(domain string) {
 // The function takes the following parameters:
 //
 //   - hiddenVolume: boolean value.
-//
 func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -65792,7 +64411,6 @@ func (op *MountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 // The function takes the following parameters:
 //
 //   - systemVolume: boolean value.
-//
 func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.gboolean         // out
@@ -65812,7 +64430,6 @@ func (op *MountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 // The function takes the following parameters:
 //
 //   - password (optional) to set.
-//
 func (op *MountOperation) SetPassword(password string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -65833,7 +64450,6 @@ func (op *MountOperation) SetPassword(password string) {
 // The function takes the following parameters:
 //
 //   - save: set of Save flags.
-//
 func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.GPasswordSave    // out
@@ -65851,7 +64467,6 @@ func (op *MountOperation) SetPasswordSave(save PasswordSave) {
 // The function takes the following parameters:
 //
 //   - pim: unsigned integer.
-//
 func (op *MountOperation) SetPim(pim uint) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 C.guint            // out
@@ -65869,7 +64484,6 @@ func (op *MountOperation) SetPim(pim uint) {
 // The function takes the following parameters:
 //
 //   - username (optional): input username.
-//
 func (op *MountOperation) SetUsername(username string) {
 	var _arg0 *C.GMountOperation // out
 	var _arg1 *C.char            // out
@@ -65903,7 +64517,6 @@ func (op *MountOperation) aborted() {
 //   - defaultUser
 //   - defaultDomain
 //   - flags
-//
 func (op *MountOperation) askPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags) {
 	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))
 	fnarg := gclass.ask_password
@@ -65937,7 +64550,6 @@ func (op *MountOperation) askPassword(message, defaultUser, defaultDomain string
 //
 //   - message: string containing a message to display to the user.
 //   - choices: array of strings for each possible choice.
-//
 func (op *MountOperation) askQuestion(message string, choices []string) {
 	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))
 	fnarg := gclass.ask_question
@@ -65974,7 +64586,6 @@ func (op *MountOperation) askQuestion(message string, choices []string) {
 // The function takes the following parameters:
 //
 //   - result: OperationResult.
-//
 func (op *MountOperation) reply(result MountOperationResult) {
 	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))
 	fnarg := gclass.reply
@@ -65995,7 +64606,6 @@ func (op *MountOperation) reply(result MountOperationResult) {
 //   - message
 //   - timeLeft
 //   - bytesLeft
-//
 func (op *MountOperation) showUnmountProgress(message string, timeLeft, bytesLeft int64) {
 	gclass := (*C.GMountOperationClass)(coreglib.PeekParentClass(op))
 	fnarg := gclass.show_unmount_progress
@@ -66077,7 +64687,6 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - nativeSocketAddress: new SocketAddress.
-//
 func NewNativeSocketAddress(native unsafe.Pointer, len uint) *NativeSocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
@@ -66234,7 +64843,6 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - networkAddress: new Address.
-//
 func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -66274,7 +64882,6 @@ func NewNetworkAddress(hostname string, port uint16) *NetworkAddress {
 // The function returns the following values:
 //
 //   - networkAddress: new Address.
-//
 func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 	var _arg1 C.guint16             // out
 	var _cret *C.GSocketConnectable // in
@@ -66297,7 +64904,6 @@ func NewNetworkAddressLoopback(port uint16) *NetworkAddress {
 // The function returns the following values:
 //
 //   - utf8 addr's hostname.
-//
 func (addr *NetworkAddress) Hostname() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
@@ -66319,7 +64925,6 @@ func (addr *NetworkAddress) Hostname() string {
 // The function returns the following values:
 //
 //   - guint16 addr's port (which may be 0).
-//
 func (addr *NetworkAddress) Port() uint16 {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret C.guint16          // in
@@ -66341,7 +64946,6 @@ func (addr *NetworkAddress) Port() uint16 {
 // The function returns the following values:
 //
 //   - utf8 (optional) addr's scheme (NULL if not built from URI).
-//
 func (addr *NetworkAddress) Scheme() string {
 	var _arg0 *C.GNetworkAddress // out
 	var _cret *C.gchar           // in
@@ -66389,7 +64993,6 @@ func (addr *NetworkAddress) Scheme() string {
 // The function returns the following values:
 //
 //   - networkAddress: new Address, or NULL on error.
-//
 func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -66429,7 +65032,6 @@ func NetworkAddressParse(hostAndPort string, defaultPort uint16) (*NetworkAddres
 // The function returns the following values:
 //
 //   - networkAddress: new Address, or NULL on error.
-//
 func NetworkAddressParseURI(uri string, defaultPort uint16) (*NetworkAddress, error) {
 	var _arg1 *C.gchar              // out
 	var _arg2 C.guint16             // out
@@ -66523,7 +65125,6 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - networkService: new Service.
-//
 func NewNetworkService(service, protocol, domain string) *NetworkService {
 	var _arg1 *C.gchar              // out
 	var _arg2 *C.gchar              // out
@@ -66555,7 +65156,6 @@ func NewNetworkService(service, protocol, domain string) *NetworkService {
 // The function returns the following values:
 //
 //   - utf8 srv's domain name.
-//
 func (srv *NetworkService) Domain() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -66577,7 +65177,6 @@ func (srv *NetworkService) Domain() string {
 // The function returns the following values:
 //
 //   - utf8 srv's protocol name.
-//
 func (srv *NetworkService) Protocol() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -66600,7 +65199,6 @@ func (srv *NetworkService) Protocol() string {
 // The function returns the following values:
 //
 //   - utf8 srv's scheme name.
-//
 func (srv *NetworkService) Scheme() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -66622,7 +65220,6 @@ func (srv *NetworkService) Scheme() string {
 // The function returns the following values:
 //
 //   - utf8 srv's service name.
-//
 func (srv *NetworkService) Service() string {
 	var _arg0 *C.GNetworkService // out
 	var _cret *C.gchar           // in
@@ -66645,7 +65242,6 @@ func (srv *NetworkService) Service() string {
 // The function takes the following parameters:
 //
 //   - scheme: URI scheme.
-//
 func (srv *NetworkService) SetScheme(scheme string) {
 	var _arg0 *C.GNetworkService // out
 	var _arg1 *C.gchar           // out
@@ -66711,7 +65307,6 @@ func marshalNotification(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - notification: new #GNotification instance.
-//
 func NewNotification(title string) *Notification {
 	var _arg1 *C.gchar         // out
 	var _cret *C.GNotification // in
@@ -66741,7 +65336,6 @@ func NewNotification(title string) *Notification {
 //
 //   - label of the button.
 //   - detailedAction: detailed action name.
-//
 func (notification *Notification) AddButton(label, detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -66770,7 +65364,6 @@ func (notification *Notification) AddButton(label, detailedAction string) {
 //   - label of the button.
 //   - action name.
 //   - target (optional) to use as action's parameter, or NULL.
-//
 func (notification *Notification) AddButtonWithTarget(label, action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -66798,7 +65391,6 @@ func (notification *Notification) AddButtonWithTarget(label, action string, targ
 // The function takes the following parameters:
 //
 //   - body (optional): new body for notification, or NULL.
-//
 func (notification *Notification) SetBody(body string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -66829,7 +65421,6 @@ func (notification *Notification) SetBody(body string) {
 // The function takes the following parameters:
 //
 //   - detailedAction: detailed action name.
-//
 func (notification *Notification) SetDefaultAction(detailedAction string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -66856,7 +65447,6 @@ func (notification *Notification) SetDefaultAction(detailedAction string) {
 //
 //   - action name.
 //   - target (optional) to use as action's parameter, or NULL.
-//
 func (notification *Notification) SetDefaultActionAndTarget(action string, target *glib.Variant) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -66880,7 +65470,6 @@ func (notification *Notification) SetDefaultActionAndTarget(action string, targe
 // The function takes the following parameters:
 //
 //   - icon to be shown in notification, as a #GIcon.
-//
 func (notification *Notification) SetIcon(icon Iconner) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.GIcon         // out
@@ -66899,7 +65488,6 @@ func (notification *Notification) SetIcon(icon Iconner) {
 // The function takes the following parameters:
 //
 //   - priority: Priority.
-//
 func (notification *Notification) SetPriority(priority NotificationPriority) {
 	var _arg0 *C.GNotification        // out
 	var _arg1 C.GNotificationPriority // out
@@ -66917,7 +65505,6 @@ func (notification *Notification) SetPriority(priority NotificationPriority) {
 // The function takes the following parameters:
 //
 //   - title: new title for notification.
-//
 func (notification *Notification) SetTitle(title string) {
 	var _arg0 *C.GNotification // out
 	var _arg1 *C.gchar         // out
@@ -66939,7 +65526,6 @@ func (notification *Notification) SetTitle(title string) {
 // The function takes the following parameters:
 //
 //   - urgent: TRUE if notification is urgent.
-//
 func (notification *Notification) SetUrgent(urgent bool) {
 	var _arg0 *C.GNotification // out
 	var _arg1 C.gboolean       // out
@@ -66961,7 +65547,6 @@ type OutputStreamOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	//
 	CloseFinish func(result AsyncResulter) error
 	CloseFn     func(ctx context.Context) error
 	// Flush forces a write of all user-space buffered data for the given
@@ -66977,14 +65562,12 @@ type OutputStreamOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional): optional cancellable object.
-	//
 	Flush func(ctx context.Context) error
 	// FlushFinish finishes flushing an output stream.
 	//
 	// The function takes the following parameters:
 	//
 	//   - result: GAsyncResult.
-	//
 	FlushFinish func(result AsyncResulter) error
 	// Splice splices an input stream into an output stream.
 	//
@@ -67000,7 +65583,6 @@ type OutputStreamOverrides struct {
 	//     occurred. Note that if the number of bytes spliced is greater than
 	//     G_MAXSSIZE, then that will be returned, and there is no way to
 	//     determine the actual number of bytes spliced.
-	//
 	Splice func(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
 	// SpliceFinish finishes an asynchronous stream splice operation.
 	//
@@ -67013,7 +65595,6 @@ type OutputStreamOverrides struct {
 	//   - gssize of the number of bytes spliced. Note that if the number of
 	//     bytes spliced is greater than G_MAXSSIZE, then that will be returned,
 	//     and there is no way to determine the actual number of bytes spliced.
-	//
 	SpliceFinish func(result AsyncResulter) (int, error)
 	// WriteFinish finishes a stream write operation.
 	//
@@ -67024,7 +65605,6 @@ type OutputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize containing the number of bytes written to the stream.
-	//
 	WriteFinish func(result AsyncResulter) (int, error)
 	// WritevFinish finishes a stream writev operation.
 	//
@@ -67036,7 +65616,6 @@ type OutputStreamOverrides struct {
 	//
 	//   - bytesWritten (optional): location to store the number of bytes that
 	//     were written to the stream.
-	//
 	WritevFinish func(result AsyncResulter) (uint, error)
 }
 
@@ -67195,7 +65774,6 @@ func (stream *OutputStream) ClearPending() {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional cancellable object.
-//
 func (stream *OutputStream) Close(ctx context.Context) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
@@ -67237,7 +65815,6 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 //   - ctx (optional): optional cancellable object.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg2 *C.GCancellable       // out
@@ -67269,7 +65846,6 @@ func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, call
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -67304,7 +65880,6 @@ func (stream *OutputStream) CloseFinish(result AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional cancellable object.
-//
 func (stream *OutputStream) Flush(ctx context.Context) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GCancellable  // out
@@ -67341,7 +65916,6 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg2 *C.GCancellable       // out
@@ -67373,7 +65947,6 @@ func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, call
 // The function takes the following parameters:
 //
 //   - result: GAsyncResult.
-//
 func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -67400,7 +65973,6 @@ func (stream *OutputStream) FlushFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if stream has pending actions.
-//
 func (stream *OutputStream) HasPending() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
@@ -67424,7 +65996,6 @@ func (stream *OutputStream) HasPending() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if stream is closed. FALSE otherwise.
-//
 func (stream *OutputStream) IsClosed() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
@@ -67450,7 +66021,6 @@ func (stream *OutputStream) IsClosed() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if stream is being closed. FALSE otherwise.
-//
 func (stream *OutputStream) IsClosing() bool {
 	var _arg0 *C.GOutputStream // out
 	var _cret C.gboolean       // in
@@ -67503,7 +66073,6 @@ func (stream *OutputStream) SetPending() error {
 //     occurred. Note that if the number of bytes spliced is greater than
 //     G_MAXSSIZE, then that will be returned, and there is no way to determine
 //     the actual number of bytes spliced.
-//
 func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error) {
 	var _arg0 *C.GOutputStream           // out
 	var _arg3 *C.GCancellable            // out
@@ -67552,7 +66121,6 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 //   - flags: set of StreamSpliceFlags.
 //   - ioPriority: io priority of the request.
 //   - callback (optional): ReadyCallback.
-//
 func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream           // out
 	var _arg4 *C.GCancellable            // out
@@ -67596,7 +66164,6 @@ func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreame
 //   - gssize of the number of bytes spliced. Note that if the number of bytes
 //     spliced is greater than G_MAXSSIZE, then that will be returned, and there
 //     is no way to determine the actual number of bytes spliced.
-//
 func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -67649,7 +66216,6 @@ func (stream *OutputStream) SpliceFinish(result AsyncResulter) (int, error) {
 // The function returns the following values:
 //
 //   - gssize: number of bytes written, or -1 on error.
-//
 func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg3 *C.GCancellable  // out
@@ -67713,7 +66279,6 @@ func (stream *OutputStream) Write(ctx context.Context, buffer []byte) (int, erro
 //
 //   - bytesWritten (optional): location to store the number of bytes that was
 //     written to the stream.
-//
 func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
@@ -67771,7 +66336,6 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 //   - buffer containing the data to write.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
@@ -67823,7 +66387,6 @@ func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, io
 //
 //   - bytesWritten (optional): location to store the number of bytes that was
 //     written to the stream.
-//
 func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -67889,7 +66452,6 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 //   - buffer containing the data to write.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
@@ -67942,7 +66504,6 @@ func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPri
 // The function returns the following values:
 //
 //   - gssize: number of bytes written, or -1 on error.
-//
 func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg2 *C.GCancellable  // out
@@ -67993,7 +66554,6 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (
 //   - bytes to write.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Bytes, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream      // out
 	var _arg3 *C.GCancellable       // out
@@ -68032,7 +66592,6 @@ func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Byt
 // The function returns the following values:
 //
 //   - gssize containing the number of bytes written to the stream.
-//
 func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -68066,7 +66625,6 @@ func (stream *OutputStream) WriteBytesFinish(result AsyncResulter) (int, error) 
 // The function returns the following values:
 //
 //   - gssize containing the number of bytes written to the stream.
-//
 func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -68124,7 +66682,6 @@ func (stream *OutputStream) WriteFinish(result AsyncResulter) (int, error) {
 //
 //   - bytesWritten (optional): location to store the number of bytes that were
 //     written to the stream.
-//
 func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
@@ -68196,7 +66753,6 @@ func (stream *OutputStream) Writev(ctx context.Context, vectors []OutputVector) 
 //
 //   - bytesWritten (optional): location to store the number of bytes that were
 //     written to the stream.
-//
 func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVector) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
@@ -68260,7 +66816,6 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 //   - vectors: buffer containing the Vectors to write.
 //   - ioPriority: i/O priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
@@ -68317,7 +66872,6 @@ func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []Output
 //
 //   - bytesWritten (optional): location to store the number of bytes that were
 //     written to the stream.
-//
 func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -68379,7 +66933,6 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 //   - vectors: buffer containing the Vectors to write.
 //   - ioPriority: i/O priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GOutputStream // out
 	var _arg4 *C.GCancellable  // out
@@ -68428,7 +66981,6 @@ func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVec
 //
 //   - bytesWritten (optional): location to store the number of bytes that were
 //     written to the stream.
-//
 func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	var _arg0 *C.GOutputStream // out
 	var _arg1 *C.GAsyncResult  // out
@@ -68469,7 +67021,6 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 //   - ctx (optional): optional cancellable object.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_async
@@ -68504,7 +67055,6 @@ func (stream *OutputStream) closeAsync(ctx context.Context, ioPriority int, call
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (stream *OutputStream) closeFinish(result AsyncResulter) error {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.close_finish
@@ -68570,7 +67120,6 @@ func (stream *OutputStream) closeFn(ctx context.Context) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional cancellable object.
-//
 func (stream *OutputStream) flush(ctx context.Context) error {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.flush
@@ -68610,7 +67159,6 @@ func (stream *OutputStream) flush(ctx context.Context) error {
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) flushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.flush_async
@@ -68645,7 +67193,6 @@ func (stream *OutputStream) flushAsync(ctx context.Context, ioPriority int, call
 // The function takes the following parameters:
 //
 //   - result: GAsyncResult.
-//
 func (stream *OutputStream) flushFinish(result AsyncResulter) error {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.flush_finish
@@ -68684,7 +67231,6 @@ func (stream *OutputStream) flushFinish(result AsyncResulter) error {
 //     occurred. Note that if the number of bytes spliced is greater than
 //     G_MAXSSIZE, then that will be returned, and there is no way to determine
 //     the actual number of bytes spliced.
-//
 func (stream *OutputStream) splice(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.splice
@@ -68736,7 +67282,6 @@ func (stream *OutputStream) splice(ctx context.Context, source InputStreamer, fl
 //   - flags: set of StreamSpliceFlags.
 //   - ioPriority: io priority of the request.
 //   - callback (optional): ReadyCallback.
-//
 func (stream *OutputStream) spliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.splice_async
@@ -68783,7 +67328,6 @@ func (stream *OutputStream) spliceAsync(ctx context.Context, source InputStreame
 //   - gssize of the number of bytes spliced. Note that if the number of bytes
 //     spliced is greater than G_MAXSSIZE, then that will be returned, and there
 //     is no way to determine the actual number of bytes spliced.
-//
 func (stream *OutputStream) spliceFinish(result AsyncResulter) (int, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.splice_finish
@@ -68852,7 +67396,6 @@ func (stream *OutputStream) spliceFinish(result AsyncResulter) (int, error) {
 //   - buffer (optional) containing the data to write.
 //   - ioPriority: io priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) writeAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.write_async
@@ -68898,7 +67441,6 @@ func (stream *OutputStream) writeAsync(ctx context.Context, buffer []byte, ioPri
 // The function returns the following values:
 //
 //   - gssize containing the number of bytes written to the stream.
-//
 func (stream *OutputStream) writeFinish(result AsyncResulter) (int, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.write_finish
@@ -68954,7 +67496,6 @@ func (stream *OutputStream) writeFinish(result AsyncResulter) (int, error) {
 // The function returns the following values:
 //
 //   - gssize: number of bytes written, or -1 on error.
-//
 func (stream *OutputStream) writeFn(ctx context.Context, buffer []byte) (int, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.write_fn
@@ -69030,7 +67571,6 @@ func (stream *OutputStream) writeFn(ctx context.Context, buffer []byte) (int, er
 //   - vectors: buffer containing the Vectors to write.
 //   - ioPriority: i/O priority of the request.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (stream *OutputStream) writevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.writev_async
@@ -69082,7 +67622,6 @@ func (stream *OutputStream) writevAsync(ctx context.Context, vectors []OutputVec
 //
 //   - bytesWritten (optional): location to store the number of bytes that were
 //     written to the stream.
-//
 func (stream *OutputStream) writevFinish(result AsyncResulter) (uint, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.writev_finish
@@ -69143,7 +67682,6 @@ func (stream *OutputStream) writevFinish(result AsyncResulter) (uint, error) {
 //
 //   - bytesWritten (optional): location to store the number of bytes that were
 //     written to the stream.
-//
 func (stream *OutputStream) writevFn(ctx context.Context, vectors []OutputVector) (uint, error) {
 	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
 	fnarg := gclass.writev_fn
@@ -69208,7 +67746,6 @@ type PermissionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional) or NULL.
-	//
 	Acquire func(ctx context.Context) error
 	// AcquireFinish collects the result of attempting to acquire the permission
 	// represented by permission.
@@ -69219,7 +67756,6 @@ type PermissionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result given to the ReadyCallback.
-	//
 	AcquireFinish func(result AsyncResulter) error
 	// Release attempts to release the permission represented by permission.
 	//
@@ -69240,7 +67776,6 @@ type PermissionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional) or NULL.
-	//
 	Release func(ctx context.Context) error
 	// ReleaseFinish collects the result of attempting to release the permission
 	// represented by permission.
@@ -69251,7 +67786,6 @@ type PermissionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result given to the ReadyCallback.
-	//
 	ReleaseFinish func(result AsyncResulter) error
 }
 
@@ -69369,7 +67903,6 @@ func BasePermission(obj Permissioner) *Permission {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (permission *Permission) Acquire(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
@@ -69403,7 +67936,6 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 //
 //   - ctx (optional) or NULL.
 //   - callback (optional) to call when done.
-//
 func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
@@ -69436,7 +67968,6 @@ func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncRe
 // The function takes the following parameters:
 //
 //   - result given to the ReadyCallback.
-//
 func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
@@ -69465,7 +67996,6 @@ func (permission *Permission) AcquireFinish(result AsyncResulter) error {
 // The function returns the following values:
 //
 //   - ok: value of the 'allowed' property.
-//
 func (permission *Permission) Allowed() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -69491,7 +68021,6 @@ func (permission *Permission) Allowed() bool {
 // The function returns the following values:
 //
 //   - ok: value of the 'can-acquire' property.
-//
 func (permission *Permission) CanAcquire() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -69517,7 +68046,6 @@ func (permission *Permission) CanAcquire() bool {
 // The function returns the following values:
 //
 //   - ok: value of the 'can-release' property.
-//
 func (permission *Permission) CanRelease() bool {
 	var _arg0 *C.GPermission // out
 	var _cret C.gboolean     // in
@@ -69547,7 +68075,6 @@ func (permission *Permission) CanRelease() bool {
 //   - allowed: new value for the 'allowed' property.
 //   - canAcquire: new value for the 'can-acquire' property.
 //   - canRelease: new value for the 'can-release' property.
-//
 func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 	var _arg0 *C.GPermission // out
 	var _arg1 C.gboolean     // out
@@ -69591,7 +68118,6 @@ func (permission *Permission) ImplUpdate(allowed, canAcquire, canRelease bool) {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (permission *Permission) Release(ctx context.Context) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GCancellable // out
@@ -69625,7 +68151,6 @@ func (permission *Permission) Release(ctx context.Context) error {
 //
 //   - ctx (optional) or NULL.
 //   - callback (optional) to call when done.
-//
 func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission        // out
 	var _arg1 *C.GCancellable       // out
@@ -69658,7 +68183,6 @@ func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncRe
 // The function takes the following parameters:
 //
 //   - result given to the ReadyCallback.
-//
 func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 	var _arg0 *C.GPermission  // out
 	var _arg1 *C.GAsyncResult // out
@@ -69699,7 +68223,6 @@ func (permission *Permission) ReleaseFinish(result AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (permission *Permission) acquire(ctx context.Context) error {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
 	fnarg := gclass.acquire
@@ -69736,7 +68259,6 @@ func (permission *Permission) acquire(ctx context.Context) error {
 //
 //   - ctx (optional) or NULL.
 //   - callback (optional) to call when done.
-//
 func (permission *Permission) acquireAsync(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
 	fnarg := gclass.acquire_async
@@ -69772,7 +68294,6 @@ func (permission *Permission) acquireAsync(ctx context.Context, callback AsyncRe
 // The function takes the following parameters:
 //
 //   - result given to the ReadyCallback.
-//
 func (permission *Permission) acquireFinish(result AsyncResulter) error {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
 	fnarg := gclass.acquire_finish
@@ -69816,7 +68337,6 @@ func (permission *Permission) acquireFinish(result AsyncResulter) error {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (permission *Permission) release(ctx context.Context) error {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
 	fnarg := gclass.release
@@ -69853,7 +68373,6 @@ func (permission *Permission) release(ctx context.Context) error {
 //
 //   - ctx (optional) or NULL.
 //   - callback (optional) to call when done.
-//
 func (permission *Permission) releaseAsync(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
 	fnarg := gclass.release_async
@@ -69889,7 +68408,6 @@ func (permission *Permission) releaseAsync(ctx context.Context, callback AsyncRe
 // The function takes the following parameters:
 //
 //   - result given to the ReadyCallback.
-//
 func (permission *Permission) releaseFinish(result AsyncResulter) error {
 	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
 	fnarg := gclass.release_finish
@@ -70004,7 +68522,6 @@ func marshalPropertyAction(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - propertyAction: new Action.
-//
 func NewPropertyAction(name string, object *coreglib.Object, propertyName string) *PropertyAction {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gpointer         // out
@@ -70100,7 +68617,6 @@ func marshalProxyAddress(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - proxyAddress: new Address.
-//
 func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname string, destPort uint16, username, password string) *ProxyAddress {
 	var _arg1 *C.GInetAddress   // out
 	var _arg2 C.guint16         // out
@@ -70150,7 +68666,6 @@ func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol, destHostname 
 // The function returns the following values:
 //
 //   - utf8 proxy's destination hostname.
-//
 func (proxy *ProxyAddress) DestinationHostname() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -70174,7 +68689,6 @@ func (proxy *ProxyAddress) DestinationHostname() string {
 // The function returns the following values:
 //
 //   - guint16 proxy's destination port.
-//
 func (proxy *ProxyAddress) DestinationPort() uint16 {
 	var _arg0 *C.GProxyAddress // out
 	var _cret C.guint16        // in
@@ -70197,7 +68711,6 @@ func (proxy *ProxyAddress) DestinationPort() uint16 {
 // The function returns the following values:
 //
 //   - utf8 proxy's destination protocol.
-//
 func (proxy *ProxyAddress) DestinationProtocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -70219,7 +68732,6 @@ func (proxy *ProxyAddress) DestinationProtocol() string {
 // The function returns the following values:
 //
 //   - utf8 (optional) proxy's password.
-//
 func (proxy *ProxyAddress) Password() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -70243,7 +68755,6 @@ func (proxy *ProxyAddress) Password() string {
 // The function returns the following values:
 //
 //   - utf8 proxy's protocol.
-//
 func (proxy *ProxyAddress) Protocol() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -70265,7 +68776,6 @@ func (proxy *ProxyAddress) Protocol() string {
 // The function returns the following values:
 //
 //   - utf8 (optional) proxy's URI, or NULL if unknown.
-//
 func (proxy *ProxyAddress) URI() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -70289,7 +68799,6 @@ func (proxy *ProxyAddress) URI() string {
 // The function returns the following values:
 //
 //   - utf8 (optional) proxy's username.
-//
 func (proxy *ProxyAddress) Username() string {
 	var _arg0 *C.GProxyAddress // out
 	var _cret *C.gchar         // in
@@ -70381,7 +68890,6 @@ type ResolverOverrides struct {
 	//
 	//   - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL
 	//     on error.
-	//
 	LookupByAddress func(ctx context.Context, address *InetAddress) (string, error)
 	// LookupByAddressFinish retrieves the result of a previous call to
 	// g_resolver_lookup_by_address_async().
@@ -70398,7 +68906,6 @@ type ResolverOverrides struct {
 	//
 	//   - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL
 	//     on error.
-	//
 	LookupByAddressFinish func(result AsyncResulter) (string, error)
 	// LookupByName: synchronously resolves hostname to determine its associated
 	// IP address(es). hostname may be an ASCII-only or UTF-8 hostname, or the
@@ -70432,7 +68939,6 @@ type ResolverOverrides struct {
 	//   - list: non-empty #GList of Address, or NULL on error. You must unref
 	//     each of the addresses and free the list when you are done with it.
 	//     (You can use g_resolver_free_addresses() to do this.).
-	//
 	LookupByName func(ctx context.Context, hostname string) ([]*InetAddress, error)
 	// LookupByNameFinish retrieves the result of a call to
 	// g_resolver_lookup_by_name_async().
@@ -70449,7 +68955,6 @@ type ResolverOverrides struct {
 	//
 	//   - list Address, or NULL on error. See g_resolver_lookup_by_name() for
 	//     more details.
-	//
 	LookupByNameFinish func(result AsyncResulter) ([]*InetAddress, error)
 	// LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 	// that you can modify the lookup behavior with flags. For example this can
@@ -70466,7 +68971,6 @@ type ResolverOverrides struct {
 	//   - list: non-empty #GList of Address, or NULL on error. You must unref
 	//     each of the addresses and free the list when you are done with it.
 	//     (You can use g_resolver_free_addresses() to do this.).
-	//
 	LookupByNameWithFlags func(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error)
 	// LookupByNameWithFlagsFinish retrieves the result of a call to
 	// g_resolver_lookup_by_name_with_flags_async().
@@ -70483,7 +68987,6 @@ type ResolverOverrides struct {
 	//
 	//   - list Address, or NULL on error. See g_resolver_lookup_by_name() for
 	//     more details.
-	//
 	LookupByNameWithFlagsFinish func(result AsyncResulter) ([]*InetAddress, error)
 	// LookupRecords: synchronously performs a DNS record lookup for the given
 	// rrname and returns a list of records as #GVariant tuples. See RecordType
@@ -70506,7 +69009,6 @@ type ResolverOverrides struct {
 	//   - list: non-empty #GList of #GVariant, or NULL on error. You must
 	//     free each of the records and the list when you are done with it.
 	//     (You can use g_list_free_full() with g_variant_unref() to do this.).
-	//
 	LookupRecords func(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error)
 	// LookupRecordsFinish retrieves the result of a previous call to
 	// g_resolver_lookup_records_async(). Returns a non-empty list of records
@@ -70526,7 +69028,6 @@ type ResolverOverrides struct {
 	//   - list: non-empty #GList of #GVariant, or NULL on error. You must
 	//     free each of the records and the list when you are done with it.
 	//     (You can use g_list_free_full() with g_variant_unref() to do this.).
-	//
 	LookupRecordsFinish func(result AsyncResulter) ([]*glib.Variant, error)
 	// LookupServiceFinish retrieves the result of a previous call to
 	// g_resolver_lookup_service_async().
@@ -70543,7 +69044,6 @@ type ResolverOverrides struct {
 	//
 	//   - list: non-empty #GList of Target, or NULL on error. See
 	//     g_resolver_lookup_service() for more details.
-	//
 	LookupServiceFinish func(result AsyncResulter) ([]*SrvTarget, error)
 	Reload              func()
 }
@@ -70692,7 +69192,6 @@ func (resolver *Resolver) ConnectReload(f func()) coreglib.SignalHandle {
 //
 //   - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL on
 //     error.
-//
 func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddress) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg2 *C.GCancellable // out
@@ -70734,7 +69233,6 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 //   - ctx (optional) or NULL.
 //   - address to reverse-resolve.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *InetAddress, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg2 *C.GCancellable       // out
@@ -70776,7 +69274,6 @@ func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *Ine
 //
 //   - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL on
 //     error.
-//
 func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -70833,7 +69330,6 @@ func (resolver *Resolver) LookupByAddressFinish(result AsyncResulter) (string, e
 //   - list: non-empty #GList of Address, or NULL on error. You must unref each
 //     of the addresses and free the list when you are done with it. (You can
 //     use g_resolver_free_addresses() to do this.).
-//
 func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]*InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg2 *C.GCancellable // out
@@ -70882,7 +69378,6 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 //   - ctx (optional) or NULL.
 //   - hostname to look up the address of.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg2 *C.GCancellable       // out
@@ -70925,7 +69420,6 @@ func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string
 //
 //   - list Address, or NULL on error. See g_resolver_lookup_by_name() for more
 //     details.
-//
 func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]*InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -70971,7 +69465,6 @@ func (resolver *Resolver) LookupByNameFinish(result AsyncResulter) ([]*InetAddre
 //   - list: non-empty #GList of Address, or NULL on error. You must unref each
 //     of the addresses and free the list when you are done with it. (You can
 //     use g_resolver_free_addresses() to do this.).
-//
 func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error) {
 	var _arg0 *C.GResolver               // out
 	var _arg3 *C.GCancellable            // out
@@ -71024,7 +69517,6 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 //   - hostname to look up the address of.
 //   - flags: extra NameLookupFlags for the lookup.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostname string, flags ResolverNameLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver               // out
 	var _arg3 *C.GCancellable            // out
@@ -71070,7 +69562,6 @@ func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostna
 //
 //   - list Address, or NULL on error. See g_resolver_lookup_by_name() for more
 //     details.
-//
 func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -71122,7 +69613,6 @@ func (resolver *Resolver) LookupByNameWithFlagsFinish(result AsyncResulter) ([]*
 //   - list: non-empty #GList of #GVariant, or NULL on error. You must free
 //     each of the records and the list when you are done with it. (You can use
 //     g_list_free_full() with g_variant_unref() to do this.).
-//
 func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error) {
 	var _arg0 *C.GResolver          // out
 	var _arg3 *C.GCancellable       // out
@@ -71181,7 +69671,6 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 //   - rrname: DNS name to look up the record for.
 //   - recordType: type of DNS record to look up.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string, recordType ResolverRecordType, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg3 *C.GCancellable       // out
@@ -71229,7 +69718,6 @@ func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string,
 //   - list: non-empty #GList of #GVariant, or NULL on error. You must free
 //     each of the records and the list when you are done with it. (You can use
 //     g_list_free_full() with g_variant_unref() to do this.).
-//
 func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -71297,7 +69785,6 @@ func (resolver *Resolver) LookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 //   - list: non-empty #GList of Target, or NULL on error. You must free each
 //     of the targets and the list when you are done with it. (You can use
 //     g_resolver_free_targets() to do this.).
-//
 func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, domain string) ([]*SrvTarget, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg4 *C.GCancellable // out
@@ -71362,7 +69849,6 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 //   - protocol: networking protocol to use for service (eg, "tcp").
 //   - domain: DNS domain to look up the service in.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, protocol, domain string, callback AsyncReadyCallback) {
 	var _arg0 *C.GResolver          // out
 	var _arg4 *C.GCancellable       // out
@@ -71413,7 +69899,6 @@ func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, proto
 //
 //   - list: non-empty #GList of Target, or NULL on error. See
 //     g_resolver_lookup_service() for more details.
-//
 func (resolver *Resolver) LookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error) {
 	var _arg0 *C.GResolver    // out
 	var _arg1 *C.GAsyncResult // out
@@ -71486,7 +69971,6 @@ func (resolver *Resolver) SetDefault() {
 //
 //   - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL on
 //     error.
-//
 func (resolver *Resolver) lookupByAddress(ctx context.Context, address *InetAddress) (string, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_address
@@ -71531,7 +70015,6 @@ func (resolver *Resolver) lookupByAddress(ctx context.Context, address *InetAddr
 //   - ctx (optional) or NULL.
 //   - address to reverse-resolve.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) lookupByAddressAsync(ctx context.Context, address *InetAddress, callback AsyncReadyCallback) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_address_async
@@ -71576,7 +70059,6 @@ func (resolver *Resolver) lookupByAddressAsync(ctx context.Context, address *Ine
 //
 //   - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL on
 //     error.
-//
 func (resolver *Resolver) lookupByAddressFinish(result AsyncResulter) (string, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_address_finish
@@ -71636,7 +70118,6 @@ func (resolver *Resolver) lookupByAddressFinish(result AsyncResulter) (string, e
 //   - list: non-empty #GList of Address, or NULL on error. You must unref each
 //     of the addresses and free the list when you are done with it. (You can
 //     use g_resolver_free_addresses() to do this.).
-//
 func (resolver *Resolver) lookupByName(ctx context.Context, hostname string) ([]*InetAddress, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_name
@@ -71688,7 +70169,6 @@ func (resolver *Resolver) lookupByName(ctx context.Context, hostname string) ([]
 //   - ctx (optional) or NULL.
 //   - hostname to look up the address of.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) lookupByNameAsync(ctx context.Context, hostname string, callback AsyncReadyCallback) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_name_async
@@ -71734,7 +70214,6 @@ func (resolver *Resolver) lookupByNameAsync(ctx context.Context, hostname string
 //
 //   - list Address, or NULL on error. See g_resolver_lookup_by_name() for more
 //     details.
-//
 func (resolver *Resolver) lookupByNameFinish(result AsyncResulter) ([]*InetAddress, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_name_finish
@@ -71783,7 +70262,6 @@ func (resolver *Resolver) lookupByNameFinish(result AsyncResulter) ([]*InetAddre
 //   - list: non-empty #GList of Address, or NULL on error. You must unref each
 //     of the addresses and free the list when you are done with it. (You can
 //     use g_resolver_free_addresses() to do this.).
-//
 func (resolver *Resolver) lookupByNameWithFlags(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_name_with_flags
@@ -71839,7 +70317,6 @@ func (resolver *Resolver) lookupByNameWithFlags(ctx context.Context, hostname st
 //   - hostname to look up the address of.
 //   - flags: extra NameLookupFlags for the lookup.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) lookupByNameWithFlagsAsync(ctx context.Context, hostname string, flags ResolverNameLookupFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_name_with_flags_async
@@ -71888,7 +70365,6 @@ func (resolver *Resolver) lookupByNameWithFlagsAsync(ctx context.Context, hostna
 //
 //   - list Address, or NULL on error. See g_resolver_lookup_by_name() for more
 //     details.
-//
 func (resolver *Resolver) lookupByNameWithFlagsFinish(result AsyncResulter) ([]*InetAddress, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_by_name_with_flags_finish
@@ -71943,7 +70419,6 @@ func (resolver *Resolver) lookupByNameWithFlagsFinish(result AsyncResulter) ([]*
 //   - list: non-empty #GList of #GVariant, or NULL on error. You must free
 //     each of the records and the list when you are done with it. (You can use
 //     g_list_free_full() with g_variant_unref() to do this.).
-//
 func (resolver *Resolver) lookupRecords(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_records
@@ -72005,7 +70480,6 @@ func (resolver *Resolver) lookupRecords(ctx context.Context, rrname string, reco
 //   - rrname: DNS name to look up the record for.
 //   - recordType: type of DNS record to look up.
 //   - callback (optional) to call after resolution completes.
-//
 func (resolver *Resolver) lookupRecordsAsync(ctx context.Context, rrname string, recordType ResolverRecordType, callback AsyncReadyCallback) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_records_async
@@ -72056,7 +70530,6 @@ func (resolver *Resolver) lookupRecordsAsync(ctx context.Context, rrname string,
 //   - list: non-empty #GList of #GVariant, or NULL on error. You must free
 //     each of the records and the list when you are done with it. (You can use
 //     g_list_free_full() with g_variant_unref() to do this.).
-//
 func (resolver *Resolver) lookupRecordsFinish(result AsyncResulter) ([]*glib.Variant, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_records_finish
@@ -72101,7 +70574,6 @@ func (resolver *Resolver) lookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 //   - ctx (optional)
 //   - rrname
 //   - callback (optional)
-//
 func (resolver *Resolver) lookupServiceAsync(ctx context.Context, rrname string, callback AsyncReadyCallback) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_service_async
@@ -72147,7 +70619,6 @@ func (resolver *Resolver) lookupServiceAsync(ctx context.Context, rrname string,
 //
 //   - list: non-empty #GList of Target, or NULL on error. See
 //     g_resolver_lookup_service() for more details.
-//
 func (resolver *Resolver) lookupServiceFinish(result AsyncResulter) ([]*SrvTarget, error) {
 	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
 	fnarg := gclass.lookup_service_finish
@@ -72206,7 +70677,6 @@ func (resolver *Resolver) reload() {
 // The function returns the following values:
 //
 //   - resolver: default #GResolver.
-//
 func ResolverGetDefault() Resolverer {
 	var _cret *C.GResolver // in
 
@@ -72241,7 +70711,6 @@ type SettingsOverrides struct {
 	//
 	//   - keys
 	//   - nKeys
-	//
 	ChangeEvent         func(keys *glib.Quark, nKeys int) bool
 	Changed             func(key string)
 	WritableChangeEvent func(key glib.Quark) bool
@@ -72320,10 +70789,10 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 //
 // For example:
 //
-//    <!-- Translators: A list of words which are not allowed to be typed, in
-//         GVariant serialization syntax.
-//         See: https://developer.gnome.org/glib/stable/gvariant-text.html -->
-//    <default l10n='messages' context='Banned words'>['bad', 'words']</default>
+//	<!-- Translators: A list of words which are not allowed to be typed, in
+//	     GVariant serialization syntax.
+//	     See: https://developer.gnome.org/glib/stable/gvariant-text.html -->
+//	<default l10n='messages' context='Banned words'>['bad', 'words']</default>
 //
 // Translations of default values must remain syntactically valid serialized
 // #GVariants (e.g. retaining any surrounding quotation marks) or runtime errors
@@ -72357,73 +70826,73 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 //
 // An example for default value:
 //
-//    <schemalist>
-//      <schema id="org.gtk.Test" path="/org/gtk/Test/" gettext-domain="test">
+//	<schemalist>
+//	  <schema id="org.gtk.Test" path="/org/gtk/Test/" gettext-domain="test">
 //
-//        <key name="greeting" type="s">
-//          <default l10n="messages">"Hello, earthlings"</default>
-//          <summary>A greeting</summary>
-//          <description>
-//            Greeting of the invading martians
-//          </description>
-//        </key>
+//	    <key name="greeting" type="s">
+//	      <default l10n="messages">"Hello, earthlings"</default>
+//	      <summary>A greeting</summary>
+//	      <description>
+//	        Greeting of the invading martians
+//	      </description>
+//	    </key>
 //
-//        <key name="box" type="(ii)">
-//          <default>(20,30)</default>
-//        </key>
+//	    <key name="box" type="(ii)">
+//	      <default>(20,30)</default>
+//	    </key>
 //
-//        <key name="empty-string" type="s">
-//          <default>""</default>
-//          <summary>Empty strings have to be provided in GVariant form</summary>
-//        </key>
+//	    <key name="empty-string" type="s">
+//	      <default>""</default>
+//	      <summary>Empty strings have to be provided in GVariant form</summary>
+//	    </key>
 //
-//      </schema>
-//    </schemalist>
+//	  </schema>
+//	</schemalist>
 //
 // An example for ranges, choices and enumerated types:
 //
-//    <schemalist>
+//	<schemalist>
 //
-//      <enum id="org.gtk.Test.myenum">
-//        <value nick="first" value="1"/>
-//        <value nick="second" value="2"/>
-//      </enum>
+//	  <enum id="org.gtk.Test.myenum">
+//	    <value nick="first" value="1"/>
+//	    <value nick="second" value="2"/>
+//	  </enum>
 //
-//      <flags id="org.gtk.Test.myflags">
-//        <value nick="flag1" value="1"/>
-//        <value nick="flag2" value="2"/>
-//        <value nick="flag3" value="4"/>
-//      </flags>
+//	  <flags id="org.gtk.Test.myflags">
+//	    <value nick="flag1" value="1"/>
+//	    <value nick="flag2" value="2"/>
+//	    <value nick="flag3" value="4"/>
+//	  </flags>
 //
-//      <schema id="org.gtk.Test">
+//	  <schema id="org.gtk.Test">
 //
-//        <key name="key-with-range" type="i">
-//          <range min="1" max="100"/>
-//          <default>10</default>
-//        </key>
+//	    <key name="key-with-range" type="i">
+//	      <range min="1" max="100"/>
+//	      <default>10</default>
+//	    </key>
 //
-//        <key name="key-with-choices" type="s">
-//          <choices>
-//            <choice value='Elisabeth'/>
-//            <choice value='Annabeth'/>
-//            <choice value='Joe'/>
-//          </choices>
-//          <aliases>
-//            <alias value='Anna' target='Annabeth'/>
-//            <alias value='Beth' target='Elisabeth'/>
-//          </aliases>
-//          <default>'Joe'</default>
-//        </key>
+//	    <key name="key-with-choices" type="s">
+//	      <choices>
+//	        <choice value='Elisabeth'/>
+//	        <choice value='Annabeth'/>
+//	        <choice value='Joe'/>
+//	      </choices>
+//	      <aliases>
+//	        <alias value='Anna' target='Annabeth'/>
+//	        <alias value='Beth' target='Elisabeth'/>
+//	      </aliases>
+//	      <default>'Joe'</default>
+//	    </key>
 //
-//        <key name='enumerated-key' enum='org.gtk.Test.myenum'>
-//          <default>'first'</default>
-//        </key>
+//	    <key name='enumerated-key' enum='org.gtk.Test.myenum'>
+//	      <default>'first'</default>
+//	    </key>
 //
-//        <key name='flags-key' flags='org.gtk.Test.myflags'>
-//          <default>["flag1","flag2"]</default>
-//        </key>
-//      </schema>
-//    </schemalist>
+//	    <key name='flags-key' flags='org.gtk.Test.myflags'>
+//	      <default>["flag1","flag2"]</default>
+//	    </key>
+//	  </schema>
+//	</schemalist>
 //
 // # Vendor overrides
 //
@@ -72436,9 +70905,9 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // the group name in the key file, and the values are expected in serialized
 // GVariant form, as in the following example:
 //
-//    [org.gtk.Example]
-//    key1='string'
-//    key2=1.5
+//	[org.gtk.Example]
+//	key1='string'
+//	key2=1.5
 //
 // glib-compile-schemas expects schema files to have the extension
 // .gschema.override.
@@ -72474,9 +70943,9 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // etc. If any of the paths are well-known they can be specified as <child>
 // elements in the parent schema, e.g.:
 //
-//    <schema id="org.foo.MyApp" path="/org/foo/MyApp/">
-//      <child name="main" schema="org.foo.MyApp.Window"/>
-//    </schema>
+//	<schema id="org.foo.MyApp" path="/org/foo/MyApp/">
+//	  <child name="main" schema="org.foo.MyApp.Window"/>
+//	</schema>
 //
 // # Build system integration
 //
@@ -72484,26 +70953,26 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // installing schemas. To add GSettings support to an application, add the
 // following to your configure.ac:
 //
-//    GLIB_GSETTINGS
+//	GLIB_GSETTINGS
 //
 // In the appropriate Makefile.am, use the following snippet to compile and
 // install the named schema:
 //
-//    gsettings_SCHEMAS = org.foo.MyApp.gschema.xml
-//    EXTRA_DIST = $(gsettings_SCHEMAS)
+//	gsettings_SCHEMAS = org.foo.MyApp.gschema.xml
+//	EXTRA_DIST = $(gsettings_SCHEMAS)
 //
-//    GSETTINGS_RULES@
+//	GSETTINGS_RULES@
 //
 // No changes are needed to the build system to mark a schema XML file for
 // translation. Assuming it sets the gettext-domain attribute, a schema may be
 // marked for translation by adding it to POTFILES.in, assuming gettext 0.19 is
 // in use (the preferred method for translation):
 //
-//    data/org.foo.MyApp.gschema.xml
+//	data/org.foo.MyApp.gschema.xml
 //
 // Alternatively, if intltool 0.50.1 is in use:
 //
-//    [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
+//	[type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
 //
 // GSettings will use gettext to look up translations for the <summary> and
 // <description> elements, and also any <default> elements which have a l10n
@@ -72517,8 +70986,8 @@ func defaultSettingsOverrides(v *Settings) SettingsOverrides {
 // This approach is preferred, as it ensures the two representations are always
 // synchronised. To do so, add the following to the relevant Makefile.am:
 //
-//    gsettings_ENUM_NAMESPACE = org.foo.MyApp
-//    gsettings_ENUM_FILES = my-app-enums.h my-app-misc.h
+//	gsettings_ENUM_NAMESPACE = org.foo.MyApp
+//	gsettings_ENUM_FILES = my-app-enums.h my-app-misc.h
 //
 // gsettings_ENUM_NAMESPACE specifies the schema namespace for the enum files,
 // which are specified in gsettings_ENUM_FILES. This will generate a
@@ -72662,7 +71131,6 @@ func (settings *Settings) ConnectWritableChanged(f func(key string)) coreglib.Si
 // The function returns the following values:
 //
 //   - settings: new #GSettings object.
-//
 func NewSettings(schemaId string) *Settings {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GSettings // in
@@ -72701,7 +71169,6 @@ func NewSettings(schemaId string) *Settings {
 // The function returns the following values:
 //
 //   - settings: new #GSettings object.
-//
 func NewSettingsWithPath(schemaId, path string) *Settings {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.gchar     // out
@@ -72760,7 +71227,6 @@ func (settings *Settings) Apply() {
 //   - object: #GObject.
 //   - property: name of the property to bind.
 //   - flags for the binding.
-//
 func (settings *Settings) Bind(key string, object *coreglib.Object, property string, flags SettingsBindFlags) {
 	var _arg0 *C.GSettings         // out
 	var _arg1 *C.gchar             // out
@@ -72806,7 +71272,6 @@ func (settings *Settings) Bind(key string, object *coreglib.Object, property str
 //   - object: #GObject.
 //   - property: name of a boolean property to bind.
 //   - inverted: whether to 'invert' the value.
-//
 func (settings *Settings) BindWritable(key string, object *coreglib.Object, property string, inverted bool) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -72852,7 +71317,6 @@ func (settings *Settings) BindWritable(key string, object *coreglib.Object, prop
 // The function returns the following values:
 //
 //   - action: new #GAction.
-//
 func (settings *Settings) CreateAction(key string) *Action {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -72899,7 +71363,6 @@ func (settings *Settings) Delay() {
 // The function returns the following values:
 //
 //   - ok: boolean.
-//
 func (settings *Settings) Boolean(key string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -72935,7 +71398,6 @@ func (settings *Settings) Boolean(key string) bool {
 // The function returns the following values:
 //
 //   - ret: 'child' settings object.
-//
 func (settings *Settings) Child(name string) *Settings {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -72984,7 +71446,6 @@ func (settings *Settings) Child(name string) *Settings {
 // The function returns the following values:
 //
 //   - variant (optional): default value.
-//
 func (settings *Settings) DefaultValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73027,7 +71488,6 @@ func (settings *Settings) DefaultValue(key string) *glib.Variant {
 // The function returns the following values:
 //
 //   - gdouble: double.
-//
 func (settings *Settings) Double(key string) float64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73067,7 +71527,6 @@ func (settings *Settings) Double(key string) float64 {
 // The function returns the following values:
 //
 //   - gint: enum value.
-//
 func (settings *Settings) Enum(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73107,7 +71566,6 @@ func (settings *Settings) Enum(key string) int {
 // The function returns the following values:
 //
 //   - guint flags value.
-//
 func (settings *Settings) Flags(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73134,7 +71592,6 @@ func (settings *Settings) Flags(key string) uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if settings has unapplied changes.
-//
 func (settings *Settings) HasUnapplied() bool {
 	var _arg0 *C.GSettings // out
 	var _cret C.gboolean   // in
@@ -73167,7 +71624,6 @@ func (settings *Settings) HasUnapplied() bool {
 // The function returns the following values:
 //
 //   - gint: integer.
-//
 func (settings *Settings) Int(key string) int {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73202,7 +71658,6 @@ func (settings *Settings) Int(key string) int {
 // The function returns the following values:
 //
 //   - gint64: 64-bit integer.
-//
 func (settings *Settings) Int64(key string) int64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73259,7 +71714,6 @@ func (settings *Settings) Int64(key string) int64 {
 // The function returns the following values:
 //
 //   - gpointer (optional): result, which may be NULL.
-//
 func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) unsafe.Pointer {
 	var _arg0 *C.GSettings          // out
 	var _arg1 *C.gchar              // out
@@ -73293,7 +71747,6 @@ func (settings *Settings) Mapped(key string, mapping SettingsGetMapping) unsafe.
 // The function takes the following parameters:
 //
 //   - key to query the range of.
-//
 func (settings *Settings) Range(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73334,7 +71787,6 @@ func (settings *Settings) Range(key string) *glib.Variant {
 // The function returns the following values:
 //
 //   - utf8: newly-allocated string.
-//
 func (settings *Settings) String(key string) string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73369,7 +71821,6 @@ func (settings *Settings) String(key string) string {
 //
 //   - utf8s: a newly-allocated, NULL-terminated array of strings, the value
 //     that is stored at key in settings.
-//
 func (settings *Settings) Strv(key string) []string {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73418,7 +71869,6 @@ func (settings *Settings) Strv(key string) []string {
 // The function returns the following values:
 //
 //   - guint: unsigned integer.
-//
 func (settings *Settings) Uint(key string) uint {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73453,7 +71903,6 @@ func (settings *Settings) Uint(key string) uint {
 // The function returns the following values:
 //
 //   - guint64: 64-bit unsigned integer.
-//
 func (settings *Settings) Uint64(key string) uint64 {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73499,7 +71948,6 @@ func (settings *Settings) Uint64(key string) uint64 {
 // The function returns the following values:
 //
 //   - variant (optional) user's value, if set.
-//
 func (settings *Settings) UserValue(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73540,7 +71988,6 @@ func (settings *Settings) UserValue(key string) *glib.Variant {
 // The function returns the following values:
 //
 //   - variant: new #GVariant.
-//
 func (settings *Settings) Value(key string) *glib.Variant {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73576,7 +72023,6 @@ func (settings *Settings) Value(key string) *glib.Variant {
 // The function returns the following values:
 //
 //   - ok: TRUE if the key name is writable.
-//
 func (settings *Settings) IsWritable(name string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73613,7 +72059,6 @@ func (settings *Settings) IsWritable(name string) bool {
 // The function returns the following values:
 //
 //   - utf8s: list of the children on settings, in no defined order.
-//
 func (settings *Settings) ListChildren() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar    // in
@@ -73657,7 +72102,6 @@ func (settings *Settings) ListChildren() []string {
 // The function returns the following values:
 //
 //   - utf8s: list of the keys on settings, in no defined order.
-//
 func (settings *Settings) ListKeys() []string {
 	var _arg0 *C.GSettings // out
 	var _cret **C.gchar    // in
@@ -73701,7 +72145,6 @@ func (settings *Settings) ListKeys() []string {
 // The function returns the following values:
 //
 //   - ok: TRUE if value is valid for key.
-//
 func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73736,7 +72179,6 @@ func (settings *Settings) RangeCheck(key string, value *glib.Variant) bool {
 // The function takes the following parameters:
 //
 //   - key: name of a key.
-//
 func (settings *Settings) Reset(key string) {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73779,7 +72221,6 @@ func (settings *Settings) Revert() {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetBoolean(key string, value bool) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73822,7 +72263,6 @@ func (settings *Settings) SetBoolean(key string, value bool) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetDouble(key string, value float64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73866,7 +72306,6 @@ func (settings *Settings) SetDouble(key string, value float64) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE, if the set succeeds.
-//
 func (settings *Settings) SetEnum(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73910,7 +72349,6 @@ func (settings *Settings) SetEnum(key string, value int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE, if the set succeeds.
-//
 func (settings *Settings) SetFlags(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73951,7 +72389,6 @@ func (settings *Settings) SetFlags(key string, value uint) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetInt(key string, value int) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -73992,7 +72429,6 @@ func (settings *Settings) SetInt(key string, value int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetInt64(key string, value int64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -74033,7 +72469,6 @@ func (settings *Settings) SetInt64(key string, value int64) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetString(key, value string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -74076,7 +72511,6 @@ func (settings *Settings) SetString(key, value string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetStrv(key string, value []string) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -74129,7 +72563,6 @@ func (settings *Settings) SetStrv(key string, value []string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetUint(key string, value uint) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -74170,7 +72603,6 @@ func (settings *Settings) SetUint(key string, value uint) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetUint64(key string, value uint64) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -74211,7 +72643,6 @@ func (settings *Settings) SetUint64(key string, value uint64) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if setting the key succeeded, FALSE if the key was not writable.
-//
 func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 	var _arg0 *C.GSettings // out
 	var _arg1 *C.gchar     // out
@@ -74241,7 +72672,6 @@ func (settings *Settings) SetValue(key string, value *glib.Variant) bool {
 //
 //   - keys
 //   - nKeys
-//
 func (settings *Settings) changeEvent(keys *glib.Quark, nKeys int) bool {
 	gclass := (*C.GSettingsClass)(coreglib.PeekParentClass(settings))
 	fnarg := gclass.change_event
@@ -74333,7 +72763,6 @@ func (settings *Settings) writableChanged(key string) {
 //
 //   - utf8s: list of relocatable #GSettings schemas that are available,
 //     in no defined order. The list must not be modified or freed.
-//
 func SettingsListRelocatableSchemas() []string {
 	var _cret **C.gchar // in
 
@@ -74368,7 +72797,6 @@ func SettingsListRelocatableSchemas() []string {
 //
 //   - utf8s: list of #GSettings schemas that are available, in no defined
 //     order. The list must not be modified or freed.
-//
 func SettingsListSchemas() []string {
 	var _cret **C.gchar // in
 
@@ -74416,7 +72844,6 @@ func SettingsSync() {
 //
 //   - object: object.
 //   - property whose binding is removed.
-//
 func SettingsUnbind(object *coreglib.Object, property string) {
 	var _arg1 C.gpointer // out
 	var _arg2 *C.gchar   // out
@@ -74490,19 +72917,19 @@ func (simple *SimpleAction) ConnectActivate(f func(parameter *glib.Variant)) cor
 //
 // An example of a 'change-state' handler:
 //
-//    static void
-//    change_volume_state (GSimpleAction *action,
-//                         GVariant      *value,
-//                         gpointer       user_data)
-//    {
-//      gint requested;
+//	static void
+//	change_volume_state (GSimpleAction *action,
+//	                     GVariant      *value,
+//	                     gpointer       user_data)
+//	{
+//	  gint requested;
 //
-//      requested = g_variant_get_int32 (value);
+//	  requested = g_variant_get_int32 (value);
 //
-//      // Volume only goes from 0 to 10
-//      if (0 <= requested && requested <= 10)
-//        g_simple_action_set_state (action, value);
-//    }
+//	  // Volume only goes from 0 to 10
+//	  if (0 <= requested && requested <= 10)
+//	    g_simple_action_set_state (action, value);
+//	}
 //
 // The handler need not set the state to the requested value. It could set it to
 // any value at all, or take some other action.
@@ -74524,7 +72951,6 @@ func (simple *SimpleAction) ConnectChangeState(f func(value *glib.Variant)) core
 // The function returns the following values:
 //
 //   - simpleAction: new Action.
-//
 func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariantType  // out
@@ -74563,7 +72989,6 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 // The function returns the following values:
 //
 //   - simpleAction: new Action.
-//
 func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) *SimpleAction {
 	var _arg1 *C.gchar         // out
 	var _arg2 *C.GVariantType  // out
@@ -74600,7 +73025,6 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 // The function takes the following parameters:
 //
 //   - enabled: whether the action is enabled.
-//
 func (simple *SimpleAction) SetEnabled(enabled bool) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 C.gboolean       // out
@@ -74628,7 +73052,6 @@ func (simple *SimpleAction) SetEnabled(enabled bool) {
 // The function takes the following parameters:
 //
 //   - value: new #GVariant for the state.
-//
 func (simple *SimpleAction) SetState(value *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
@@ -74648,7 +73071,6 @@ func (simple *SimpleAction) SetState(value *glib.Variant) {
 // The function takes the following parameters:
 //
 //   - stateHint (optional) representing the state hint.
-//
 func (simple *SimpleAction) SetStateHint(stateHint *glib.Variant) {
 	var _arg0 *C.GSimpleAction // out
 	var _arg1 *C.GVariant      // out
@@ -74722,7 +73144,6 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - simpleActionGroup: new ActionGroup.
-//
 func NewSimpleActionGroup() *SimpleActionGroup {
 	var _cret *C.GSimpleActionGroup // in
 
@@ -74744,7 +73165,6 @@ func NewSimpleActionGroup() *SimpleActionGroup {
 //
 //   - entries: pointer to the first item in an array of Entry structs.
 //   - userData (optional): user data for signal connections.
-//
 func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData unsafe.Pointer) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GActionEntry       // out
@@ -74781,7 +73201,6 @@ func (simple *SimpleActionGroup) AddEntries(entries []ActionEntry, userData unsa
 // The function takes the following parameters:
 //
 //   - action: #GAction.
-//
 func (simple *SimpleActionGroup) Insert(action Actioner) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.GAction            // out
@@ -74807,7 +73226,6 @@ func (simple *SimpleActionGroup) Insert(action Actioner) {
 // The function returns the following values:
 //
 //   - action or NULL.
-//
 func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -74837,7 +73255,6 @@ func (simple *SimpleActionGroup) Lookup(actionName string) *Action {
 // The function takes the following parameters:
 //
 //   - actionName: name of the action.
-//
 func (simple *SimpleActionGroup) Remove(actionName string) {
 	var _arg0 *C.GSimpleActionGroup // out
 	var _arg1 *C.gchar              // out
@@ -74916,98 +73333,98 @@ func (simple *SimpleActionGroup) Remove(actionName string) {
 // see Result. A typical implementation of an asynchronous operation using
 // GSimpleAsyncResult looks something like this:
 //
-//    static void
-//    baked_cb (Cake    *cake,
-//              gpointer user_data)
-//    {
-//      // In this example, this callback is not given a reference to the cake,
-//      // so the GSimpleAsyncResult has to take a reference to it.
-//      GSimpleAsyncResult *result = user_data;
+//	static void
+//	baked_cb (Cake    *cake,
+//	          gpointer user_data)
+//	{
+//	  // In this example, this callback is not given a reference to the cake,
+//	  // so the GSimpleAsyncResult has to take a reference to it.
+//	  GSimpleAsyncResult *result = user_data;
 //
-//      if (cake == NULL)
-//        g_simple_async_result_set_error (result,
-//                                         BAKER_ERRORS,
-//                                         BAKER_ERROR_NO_FLOUR,
-//                                         "Go to the supermarket");
-//      else
-//        g_simple_async_result_set_op_res_gpointer (result,
-//                                                   g_object_ref (cake),
-//                                                   g_object_unref);
+//	  if (cake == NULL)
+//	    g_simple_async_result_set_error (result,
+//	                                     BAKER_ERRORS,
+//	                                     BAKER_ERROR_NO_FLOUR,
+//	                                     "Go to the supermarket");
+//	  else
+//	    g_simple_async_result_set_op_res_gpointer (result,
+//	                                               g_object_ref (cake),
+//	                                               g_object_unref);
 //
 //
-//      // In this example, we assume that baked_cb is called as a callback from
-//      // the mainloop, so it's safe to complete the operation synchronously here.
-//      // If, however, _baker_prepare_cake () might call its callback without
-//      // first returning to the mainloop — inadvisable, but some APIs do so —
-//      // we would need to use g_simple_async_result_complete_in_idle().
-//      g_simple_async_result_complete (result);
-//      g_object_unref (result);
-//    }
+//	  // In this example, we assume that baked_cb is called as a callback from
+//	  // the mainloop, so it's safe to complete the operation synchronously here.
+//	  // If, however, _baker_prepare_cake () might call its callback without
+//	  // first returning to the mainloop — inadvisable, but some APIs do so —
+//	  // we would need to use g_simple_async_result_complete_in_idle().
+//	  g_simple_async_result_complete (result);
+//	  g_object_unref (result);
+//	}
 //
-//    void
-//    baker_bake_cake_async (Baker              *self,
-//                           guint               radius,
-//                           GAsyncReadyCallback callback,
-//                           gpointer            user_data)
-//    {
-//      GSimpleAsyncResult *simple;
-//      Cake               *cake;
+//	void
+//	baker_bake_cake_async (Baker              *self,
+//	                       guint               radius,
+//	                       GAsyncReadyCallback callback,
+//	                       gpointer            user_data)
+//	{
+//	  GSimpleAsyncResult *simple;
+//	  Cake               *cake;
 //
-//      if (radius < 3)
-//        {
-//          g_simple_async_report_error_in_idle (G_OBJECT (self),
-//                                               callback,
-//                                               user_data,
-//                                               BAKER_ERRORS,
-//                                               BAKER_ERROR_TOO_SMALL,
-//                                               "ucm radius cakes are silly",
-//                                               radius);
-//          return;
-//        }
+//	  if (radius < 3)
+//	    {
+//	      g_simple_async_report_error_in_idle (G_OBJECT (self),
+//	                                           callback,
+//	                                           user_data,
+//	                                           BAKER_ERRORS,
+//	                                           BAKER_ERROR_TOO_SMALL,
+//	                                           "ucm radius cakes are silly",
+//	                                           radius);
+//	      return;
+//	    }
 //
-//      simple = g_simple_async_result_new (G_OBJECT (self),
-//                                          callback,
-//                                          user_data,
-//                                          baker_bake_cake_async);
-//      cake = _baker_get_cached_cake (self, radius);
+//	  simple = g_simple_async_result_new (G_OBJECT (self),
+//	                                      callback,
+//	                                      user_data,
+//	                                      baker_bake_cake_async);
+//	  cake = _baker_get_cached_cake (self, radius);
 //
-//      if (cake != NULL)
-//        {
-//          g_simple_async_result_set_op_res_gpointer (simple,
-//                                                     g_object_ref (cake),
-//                                                     g_object_unref);
-//          g_simple_async_result_complete_in_idle (simple);
-//          g_object_unref (simple);
-//          // Drop the reference returned by _baker_get_cached_cake();
-//          // the GSimpleAsyncResult has taken its own reference.
-//          g_object_unref (cake);
-//          return;
-//        }
+//	  if (cake != NULL)
+//	    {
+//	      g_simple_async_result_set_op_res_gpointer (simple,
+//	                                                 g_object_ref (cake),
+//	                                                 g_object_unref);
+//	      g_simple_async_result_complete_in_idle (simple);
+//	      g_object_unref (simple);
+//	      // Drop the reference returned by _baker_get_cached_cake();
+//	      // the GSimpleAsyncResult has taken its own reference.
+//	      g_object_unref (cake);
+//	      return;
+//	    }
 //
-//      _baker_prepare_cake (self, radius, baked_cb, simple);
-//    }
+//	  _baker_prepare_cake (self, radius, baked_cb, simple);
+//	}
 //
-//    Cake *
-//    baker_bake_cake_finish (Baker        *self,
-//                            GAsyncResult *result,
-//                            GError      **error)
-//    {
-//      GSimpleAsyncResult *simple;
-//      Cake               *cake;
+//	Cake *
+//	baker_bake_cake_finish (Baker        *self,
+//	                        GAsyncResult *result,
+//	                        GError      **error)
+//	{
+//	  GSimpleAsyncResult *simple;
+//	  Cake               *cake;
 //
-//      g_return_val_if_fail (g_simple_async_result_is_valid (result,
-//                                                            G_OBJECT (self),
-//                                                            baker_bake_cake_async),
-//                            NULL);
+//	  g_return_val_if_fail (g_simple_async_result_is_valid (result,
+//	                                                        G_OBJECT (self),
+//	                                                        baker_bake_cake_async),
+//	                        NULL);
 //
-//      simple = (GSimpleAsyncResult *) result;
+//	  simple = (GSimpleAsyncResult *) result;
 //
-//      if (g_simple_async_result_propagate_error (simple, error))
-//        return NULL;
+//	  if (g_simple_async_result_propagate_error (simple, error))
+//	    return NULL;
 //
-//      cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));
-//      return g_object_ref (cake);
-//    }.
+//	  cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));
+//	  return g_object_ref (cake);
+//	}.
 type SimpleAsyncResult struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -75054,7 +73471,6 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - simpleAsyncResult: AsyncResult.
-//
 func NewSimpleAsyncResult(sourceObject *coreglib.Object, callback AsyncReadyCallback, sourceTag unsafe.Pointer) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -75096,7 +73512,6 @@ func NewSimpleAsyncResult(sourceObject *coreglib.Object, callback AsyncReadyCall
 // The function returns the following values:
 //
 //   - simpleAsyncResult: AsyncResult.
-//
 func NewSimpleAsyncResultFromError(sourceObject *coreglib.Object, callback AsyncReadyCallback, err error) *SimpleAsyncResult {
 	var _arg1 *C.GObject            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -75172,7 +73587,6 @@ func (simple *SimpleAsyncResult) CompleteInIdle() {
 //
 //   - ok: TRUE if the operation's result was TRUE, FALSE if the operation's
 //     result was FALSE.
-//
 func (simple *SimpleAsyncResult) OpResGboolean() bool {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gboolean            // in
@@ -75198,7 +73612,6 @@ func (simple *SimpleAsyncResult) OpResGboolean() bool {
 // The function returns the following values:
 //
 //   - gssize returned from the asynchronous function.
-//
 func (simple *SimpleAsyncResult) OpResGssize() int {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _cret C.gssize              // in
@@ -75262,7 +73675,6 @@ func (simple *SimpleAsyncResult) PropagateError() error {
 // The function takes the following parameters:
 //
 //   - ctx (optional) to check, or NULL to unset.
-//
 func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GCancellable       // out
@@ -75286,7 +73698,6 @@ func (simple *SimpleAsyncResult) SetCheckCancellable(ctx context.Context) {
 // The function takes the following parameters:
 //
 //   - err: #GError.
-//
 func (simple *SimpleAsyncResult) SetFromError(err error) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 *C.GError             // out
@@ -75313,7 +73724,6 @@ func (simple *SimpleAsyncResult) SetFromError(err error) {
 // The function takes the following parameters:
 //
 //   - handleCancellation: #gboolean.
-//
 func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
@@ -75336,7 +73746,6 @@ func (simple *SimpleAsyncResult) SetHandleCancellation(handleCancellation bool) 
 // The function takes the following parameters:
 //
 //   - opRes: #gboolean.
-//
 func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gboolean            // out
@@ -75359,7 +73768,6 @@ func (simple *SimpleAsyncResult) SetOpResGboolean(opRes bool) {
 // The function takes the following parameters:
 //
 //   - opRes: #gssize.
-//
 func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 	var _arg0 *C.GSimpleAsyncResult // out
 	var _arg1 C.gssize              // out
@@ -75394,7 +73802,6 @@ func (simple *SimpleAsyncResult) SetOpResGssize(opRes int) {
 // The function returns the following values:
 //
 //   - ok if all checks passed or LSE if any failed.
-//
 func SimpleAsyncResultIsValid(result AsyncResulter, source *coreglib.Object, sourceTag unsafe.Pointer) bool {
 	var _arg1 *C.GAsyncResult // out
 	var _arg2 *C.GObject      // out
@@ -75460,7 +73867,6 @@ func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - simpleIOStream: new IOStream instance.
-//
 func NewSimpleIOStream(inputStream InputStreamer, outputStream OutputStreamer) *SimpleIOStream {
 	var _arg1 *C.GInputStream  // out
 	var _arg2 *C.GOutputStream // out
@@ -75516,7 +73922,6 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - simplePermission as a #GPermission.
-//
 func NewSimplePermission(allowed bool) *SimplePermission {
 	var _arg1 C.gboolean     // out
 	var _cret *C.GPermission // in
@@ -75600,7 +74005,6 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - defaultProxy: default proxy to use.
-//
 func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
@@ -75626,7 +74030,6 @@ func (resolver *SimpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 //
 //   - uriScheme: URI scheme to add a proxy for.
 //   - proxy to use for uri_scheme.
-//
 func (resolver *SimpleProxyResolver) SetURIProxy(uriScheme, proxy string) {
 	var _arg0 *C.GSimpleProxyResolver // out
 	var _arg1 *C.gchar                // out
@@ -75766,7 +74169,6 @@ func marshalSocket(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - socket or NULL on error. Free the returned object with g_object_unref().
-//
 func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*Socket, error) {
 	var _arg1 C.GSocketFamily   // out
 	var _arg2 C.GSocketType     // out
@@ -75814,7 +74216,6 @@ func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (*S
 // The function returns the following values:
 //
 //   - socket or NULL on error. Free the returned object with g_object_unref().
-//
 func NewSocketFromFd(fd int) (*Socket, error) {
 	var _arg1 C.gint     // out
 	var _cret *C.GSocket // in
@@ -75855,7 +74256,6 @@ func NewSocketFromFd(fd int) (*Socket, error) {
 //
 //   - ret: new #GSocket, or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GCancellable // out
@@ -75911,7 +74311,6 @@ func (socket *Socket) Accept(ctx context.Context) (*Socket, error) {
 //
 //   - address specifying the local address.
 //   - allowReuse: whether to allow reusing this address.
-//
 func (socket *Socket) Bind(address SocketAddresser, allowReuse bool) error {
 	var _arg0 *C.GSocket        // out
 	var _arg1 *C.GSocketAddress // out
@@ -76026,7 +74425,6 @@ func (socket *Socket) Close() error {
 // The function returns the following values:
 //
 //   - ioCondition: GIOCondition mask of the current state.
-//
 func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
 	var _arg0 *C.GSocket     // out
 	var _arg1 C.GIOCondition // out
@@ -76066,7 +74464,6 @@ func (socket *Socket) ConditionCheck(condition glib.IOCondition) glib.IOConditio
 //   - ctx (optional) or NULL.
 //   - condition mask to wait for.
 //   - timeoutUs: maximum time (in microseconds) to wait, or -1.
-//
 func (socket *Socket) ConditionTimedWait(ctx context.Context, condition glib.IOCondition, timeoutUs int64) error {
 	var _arg0 *C.GSocket      // out
 	var _arg3 *C.GCancellable // out
@@ -76112,7 +74509,6 @@ func (socket *Socket) ConditionTimedWait(ctx context.Context, condition glib.IOC
 //
 //   - ctx (optional) or NULL.
 //   - condition mask to wait for.
-//
 func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondition) error {
 	var _arg0 *C.GSocket      // out
 	var _arg2 *C.GCancellable // out
@@ -76162,7 +74558,6 @@ func (socket *Socket) ConditionWait(ctx context.Context, condition glib.IOCondit
 //
 //   - ctx (optional): GCancellable or NULL.
 //   - address specifying the remote address.
-//
 func (socket *Socket) ConnectSocket(ctx context.Context, address SocketAddresser) error {
 	var _arg0 *C.GSocket        // out
 	var _arg2 *C.GCancellable   // out
@@ -76197,7 +74592,6 @@ func (socket *Socket) ConnectSocket(ctx context.Context, address SocketAddresser
 // The function returns the following values:
 //
 //   - socketConnection: Connection.
-//
 func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 	var _arg0 *C.GSocket           // out
 	var _cret *C.GSocketConnection // in
@@ -76230,7 +74624,6 @@ func (socket *Socket) ConnectionFactoryCreateConnection() *SocketConnection {
 //
 //   - gssize: number of bytes that can be read from the socket without blocking
 //     or truncating, or -1 on error.
-//
 func (socket *Socket) AvailableBytes() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.gssize   // in
@@ -76253,7 +74646,6 @@ func (socket *Socket) AvailableBytes() int {
 // The function returns the following values:
 //
 //   - ok: TRUE if blocking I/O is used, FALSE otherwise.
-//
 func (socket *Socket) Blocking() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -76278,7 +74670,6 @@ func (socket *Socket) Blocking() bool {
 // The function returns the following values:
 //
 //   - ok: broadcast setting on socket.
-//
 func (socket *Socket) Broadcast() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -76324,7 +74715,6 @@ func (socket *Socket) Broadcast() bool {
 //
 //   - credentials: NULL if error is set, otherwise a #GCredentials object that
 //     must be freed with g_object_unref().
-//
 func (socket *Socket) Credentials() (*Credentials, error) {
 	var _arg0 *C.GSocket      // out
 	var _cret *C.GCredentials // in
@@ -76351,7 +74741,6 @@ func (socket *Socket) Credentials() (*Credentials, error) {
 // The function returns the following values:
 //
 //   - socketFamily: Family.
-//
 func (socket *Socket) Family() SocketFamily {
 	var _arg0 *C.GSocket      // out
 	var _cret C.GSocketFamily // in
@@ -76376,7 +74765,6 @@ func (socket *Socket) Family() SocketFamily {
 // The function returns the following values:
 //
 //   - gint: file descriptor of the socket.
-//
 func (socket *Socket) Fd() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.int      // in
@@ -76399,7 +74787,6 @@ func (socket *Socket) Fd() int {
 // The function returns the following values:
 //
 //   - ok: TRUE if keepalive is active, FALSE otherwise.
-//
 func (socket *Socket) Keepalive() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -76424,7 +74811,6 @@ func (socket *Socket) Keepalive() bool {
 // The function returns the following values:
 //
 //   - gint: maximum number of pending connections.
-//
 func (socket *Socket) ListenBacklog() int {
 	var _arg0 *C.GSocket // out
 	var _cret C.gint     // in
@@ -76449,7 +74835,6 @@ func (socket *Socket) ListenBacklog() int {
 //
 //   - socketAddress or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocket        // out
 	var _cret *C.GSocketAddress // in
@@ -76494,7 +74879,6 @@ func (socket *Socket) LocalAddress() (SocketAddresser, error) {
 // The function returns the following values:
 //
 //   - ok: multicast loopback setting on socket.
-//
 func (socket *Socket) MulticastLoopback() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -76519,7 +74903,6 @@ func (socket *Socket) MulticastLoopback() bool {
 // The function returns the following values:
 //
 //   - guint: multicast time-to-live setting on socket.
-//
 func (socket *Socket) MulticastTTL() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
@@ -76557,7 +74940,6 @@ func (socket *Socket) MulticastTTL() uint {
 // The function returns the following values:
 //
 //   - value: return location for the option value.
-//
 func (socket *Socket) Option(level, optname int) (int, error) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -76591,7 +74973,6 @@ func (socket *Socket) Option(level, optname int) (int, error) {
 // The function returns the following values:
 //
 //   - socketProtocol: protocol id, or -1 if unknown.
-//
 func (socket *Socket) Protocol() SocketProtocol {
 	var _arg0 *C.GSocket        // out
 	var _cret C.GSocketProtocol // in
@@ -76615,7 +74996,6 @@ func (socket *Socket) Protocol() SocketProtocol {
 //
 //   - socketAddress or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocket        // out
 	var _cret *C.GSocketAddress // in
@@ -76658,7 +75038,6 @@ func (socket *Socket) RemoteAddress() (SocketAddresser, error) {
 // The function returns the following values:
 //
 //   - socketType: Type.
-//
 func (socket *Socket) SocketType() SocketType {
 	var _arg0 *C.GSocket    // out
 	var _cret C.GSocketType // in
@@ -76681,7 +75060,6 @@ func (socket *Socket) SocketType() SocketType {
 // The function returns the following values:
 //
 //   - guint: timeout in seconds.
-//
 func (socket *Socket) Timeout() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
@@ -76704,7 +75082,6 @@ func (socket *Socket) Timeout() uint {
 // The function returns the following values:
 //
 //   - guint: time-to-live setting on socket.
-//
 func (socket *Socket) TTL() uint {
 	var _arg0 *C.GSocket // out
 	var _cret C.guint    // in
@@ -76726,7 +75103,6 @@ func (socket *Socket) TTL() uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if socket is closed, FALSE otherwise.
-//
 func (socket *Socket) IsClosed() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -76756,7 +75132,6 @@ func (socket *Socket) IsClosed() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if socket is connected, FALSE otherwise.
-//
 func (socket *Socket) IsConnected() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -76794,7 +75169,6 @@ func (socket *Socket) IsConnected() bool {
 //   - group specifying the group address to join.
 //   - sourceSpecific: TRUE if source-specific multicast should be used.
 //   - iface (optional): name of the interface to use, or NULL.
-//
 func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -76848,7 +75222,6 @@ func (socket *Socket) JoinMulticastGroup(group *InetAddress, sourceSpecific bool
 //   - sourceSpecific (optional) specifying the source-specific multicast
 //     address or NULL to ignore.
 //   - iface (optional): name of the interface to use, or NULL.
-//
 func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -76896,7 +75269,6 @@ func (socket *Socket) JoinMulticastGroupSSM(group, sourceSpecific *InetAddress, 
 //   - group specifying the group address to leave.
 //   - sourceSpecific: TRUE if source-specific multicast was used.
 //   - iface (optional): interface used.
-//
 func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific bool, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -76942,7 +75314,6 @@ func (socket *Socket) LeaveMulticastGroup(group *InetAddress, sourceSpecific boo
 //   - sourceSpecific (optional) specifying the source-specific multicast
 //     address or NULL to ignore.
 //   - iface (optional): name of the interface to use, or NULL.
-//
 func (socket *Socket) LeaveMulticastGroupSSM(group, sourceSpecific *InetAddress, iface string) error {
 	var _arg0 *C.GSocket      // out
 	var _arg1 *C.GInetAddress // out
@@ -77033,7 +75404,6 @@ func (socket *Socket) Listen() error {
 //
 //   - gssize: number of bytes read, or 0 if the connection was closed by the
 //     peer, or -1 on error.
-//
 func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg3 *C.GCancellable // out
@@ -77086,7 +75456,6 @@ func (socket *Socket) Receive(ctx context.Context, buffer []byte) (int, error) {
 //   - address (optional): pointer to a Address pointer, or NULL.
 //   - gssize: number of bytes read, or 0 if the connection was closed by the
 //     peer, or -1 on error.
-//
 func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAddresser, int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
@@ -77201,7 +75570,6 @@ func (socket *Socket) ReceiveFrom(ctx context.Context, buffer []byte) (SocketAdd
 //     mode, if the peer closed the connection, or if num_messages was larger
 //     than UIO_MAXIOV (1024), in which case the caller may re-try to receive
 //     the remaining messages.
-//
 func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessage, flags int) (int, error) {
 	var _arg0 *C.GSocket       // out
 	var _arg4 *C.GCancellable  // out
@@ -77260,7 +75628,6 @@ func (socket *Socket) ReceiveMessages(ctx context.Context, messages []InputMessa
 //
 //   - gssize: number of bytes read, or 0 if the connection was closed by the
 //     peer, or -1 on error.
-//
 func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, blocking bool) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg4 *C.GCancellable // out
@@ -77324,7 +75691,6 @@ func (socket *Socket) ReceiveWithBlocking(ctx context.Context, buffer []byte, bl
 //
 //   - gssize: number of bytes written (which may be less than size), or -1 on
 //     error.
-//
 func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg3 *C.GCancellable // out
@@ -77414,7 +75780,6 @@ func (socket *Socket) Send(ctx context.Context, buffer string) (int, error) {
 //
 //   - gssize: number of bytes written (which may be less than size), or -1 on
 //     error.
-//
 func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg7 *C.GCancellable   // out
@@ -77504,7 +75869,6 @@ func (socket *Socket) SendMessage(ctx context.Context, address SocketAddresser, 
 //     written, G_POLLABLE_RETURN_WOULD_BLOCK if the socket is currently not
 //     writable, or G_POLLABLE_RETURN_FAILED if an error happened and error is
 //     set.
-//
 func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address SocketAddresser, vectors []OutputVector, messages []SocketControlMessager, flags int, timeoutUs int64) (uint, PollableReturn, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg9 *C.GCancellable   // out
@@ -77621,7 +75985,6 @@ func (socket *Socket) SendMessageWithTimeout(ctx context.Context, address Socket
 //     of messages sent may be smaller than num_messages if the socket is
 //     non-blocking or if num_messages was larger than UIO_MAXIOV (1024),
 //     in which case the caller may re-try to send the remaining messages.
-//
 func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage, flags int) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
@@ -77680,7 +76043,6 @@ func (socket *Socket) SendMessages(ctx context.Context, messages []OutputMessage
 //
 //   - gssize: number of bytes written (which may be less than size), or -1 on
 //     error.
-//
 func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffer string) (int, error) {
 	var _arg0 *C.GSocket        // out
 	var _arg4 *C.GCancellable   // out
@@ -77735,7 +76097,6 @@ func (socket *Socket) SendTo(ctx context.Context, address SocketAddresser, buffe
 //
 //   - gssize: number of bytes written (which may be less than size), or -1 on
 //     error.
-//
 func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, blocking bool) (int, error) {
 	var _arg0 *C.GSocket      // out
 	var _arg4 *C.GCancellable // out
@@ -77788,7 +76149,6 @@ func (socket *Socket) SendWithBlocking(ctx context.Context, buffer string, block
 // The function takes the following parameters:
 //
 //   - blocking: whether to use blocking I/O or not.
-//
 func (socket *Socket) SetBlocking(blocking bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -77809,7 +76169,6 @@ func (socket *Socket) SetBlocking(blocking bool) {
 // The function takes the following parameters:
 //
 //   - broadcast: whether socket should allow sending to broadcast addresses.
-//
 func (socket *Socket) SetBroadcast(broadcast bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -77842,7 +76201,6 @@ func (socket *Socket) SetBroadcast(broadcast bool) {
 // The function takes the following parameters:
 //
 //   - keepalive: value for the keepalive flag.
-//
 func (socket *Socket) SetKeepalive(keepalive bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -77868,7 +76226,6 @@ func (socket *Socket) SetKeepalive(keepalive bool) {
 // The function takes the following parameters:
 //
 //   - backlog: maximum number of pending connections.
-//
 func (socket *Socket) SetListenBacklog(backlog int) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -77889,7 +76246,6 @@ func (socket *Socket) SetListenBacklog(backlog int) {
 //
 //   - loopback: whether socket should receive messages sent to its multicast
 //     groups from the local host.
-//
 func (socket *Socket) SetMulticastLoopback(loopback bool) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -77911,7 +76267,6 @@ func (socket *Socket) SetMulticastLoopback(loopback bool) {
 // The function takes the following parameters:
 //
 //   - ttl: time-to-live value for all multicast datagrams on socket.
-//
 func (socket *Socket) SetMulticastTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -77938,7 +76293,6 @@ func (socket *Socket) SetMulticastTTL(ttl uint) {
 //   - level: "API level" of the option (eg, SOL_SOCKET).
 //   - optname: "name" of the option (eg, SO_BROADCAST).
 //   - value to set the option to.
-//
 func (socket *Socket) SetOption(level, optname, value int) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gint     // out
@@ -77987,7 +76341,6 @@ func (socket *Socket) SetOption(level, optname, value int) error {
 // The function takes the following parameters:
 //
 //   - timeout for socket, in seconds, or 0 for none.
-//
 func (socket *Socket) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -78006,7 +76359,6 @@ func (socket *Socket) SetTimeout(timeout uint) {
 // The function takes the following parameters:
 //
 //   - ttl: time-to-live value for all unicast packets on socket.
-//
 func (socket *Socket) SetTTL(ttl uint) {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.guint    // out
@@ -78038,7 +76390,6 @@ func (socket *Socket) SetTTL(ttl uint) {
 //
 //   - shutdownRead: whether to shut down the read side.
 //   - shutdownWrite: whether to shut down the write side.
-//
 func (socket *Socket) Shutdown(shutdownRead, shutdownWrite bool) error {
 	var _arg0 *C.GSocket // out
 	var _arg1 C.gboolean // out
@@ -78079,7 +76430,6 @@ func (socket *Socket) Shutdown(shutdownRead, shutdownWrite bool) error {
 // The function returns the following values:
 //
 //   - ok: TRUE if this socket can be used with IPv4.
-//
 func (socket *Socket) SpeaksIPv4() bool {
 	var _arg0 *C.GSocket // out
 	var _cret C.gboolean // in
@@ -78105,7 +76455,6 @@ type SocketAddressOverrides struct {
 	// The function returns the following values:
 	//
 	//   - socketFamily: socket family type of address.
-	//
 	Family func() SocketFamily
 	// NativeSize gets the size of address's native struct sockaddr. You can use
 	// this to allocate memory to pass to g_socket_address_to_native().
@@ -78113,7 +76462,6 @@ type SocketAddressOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize: size of the native struct sockaddr that address represents.
-	//
 	NativeSize func() int
 	// ToNative converts a Address to a native struct sockaddr, which can be
 	// passed to low-level functions like connect() or bind().
@@ -78128,7 +76476,6 @@ type SocketAddressOverrides struct {
 	//     native struct sockaddr.
 	//   - destlen: size of dest. Must be at least as large as
 	//     g_socket_address_get_native_size().
-	//
 	ToNative func(dest unsafe.Pointer, destlen uint) error
 }
 
@@ -78229,7 +76576,6 @@ func BaseSocketAddress(obj SocketAddresser) *SocketAddress {
 //
 //   - socketAddress: new Address if native could successfully be converted,
 //     otherwise NULL.
-//
 func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress {
 	var _arg1 C.gpointer        // out
 	var _arg2 C.gsize           // out
@@ -78254,7 +76600,6 @@ func NewSocketAddressFromNative(native unsafe.Pointer, len uint) *SocketAddress 
 // The function returns the following values:
 //
 //   - socketFamily: socket family type of address.
-//
 func (address *SocketAddress) Family() SocketFamily {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.GSocketFamily   // in
@@ -78277,7 +76622,6 @@ func (address *SocketAddress) Family() SocketFamily {
 // The function returns the following values:
 //
 //   - gssize: size of the native struct sockaddr that address represents.
-//
 func (address *SocketAddress) NativeSize() int {
 	var _arg0 *C.GSocketAddress // out
 	var _cret C.gssize          // in
@@ -78307,7 +76651,6 @@ func (address *SocketAddress) NativeSize() int {
 //     native struct sockaddr.
 //   - destlen: size of dest. Must be at least as large as
 //     g_socket_address_get_native_size().
-//
 func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error {
 	var _arg0 *C.GSocketAddress // out
 	var _arg1 C.gpointer        // out
@@ -78337,7 +76680,6 @@ func (address *SocketAddress) ToNative(dest unsafe.Pointer, destlen uint) error 
 // The function returns the following values:
 //
 //   - socketFamily: socket family type of address.
-//
 func (address *SocketAddress) family() SocketFamily {
 	gclass := (*C.GSocketAddressClass)(coreglib.PeekParentClass(address))
 	fnarg := gclass.get_family
@@ -78363,7 +76705,6 @@ func (address *SocketAddress) family() SocketFamily {
 // The function returns the following values:
 //
 //   - gssize: size of the native struct sockaddr that address represents.
-//
 func (address *SocketAddress) nativeSize() int {
 	gclass := (*C.GSocketAddressClass)(coreglib.PeekParentClass(address))
 	fnarg := gclass.get_native_size
@@ -78396,7 +76737,6 @@ func (address *SocketAddress) nativeSize() int {
 //     native struct sockaddr.
 //   - destlen: size of dest. Must be at least as large as
 //     g_socket_address_get_native_size().
-//
 func (address *SocketAddress) toNative(dest unsafe.Pointer, destlen uint) error {
 	gclass := (*C.GSocketAddressClass)(coreglib.PeekParentClass(address))
 	fnarg := gclass.to_native
@@ -78446,7 +76786,6 @@ type SocketAddressEnumeratorOverrides struct {
 	//
 	//   - socketAddress (owned by the caller), or NULL on error (in which case
 	//     *error will be set) or if there are no more addresses.
-	//
 	Next func(ctx context.Context) (SocketAddresser, error)
 	// NextFinish retrieves the result of a completed call
 	// to g_socket_address_enumerator_next_async(). See
@@ -78461,7 +76800,6 @@ type SocketAddressEnumeratorOverrides struct {
 	//
 	//   - socketAddress (owned by the caller), or NULL on error (in which case
 	//     *error will be set) or if there are no more addresses.
-	//
 	NextFinish func(result AsyncResulter) (SocketAddresser, error)
 }
 
@@ -78569,7 +76907,6 @@ func BaseSocketAddressEnumerator(obj SocketAddressEnumeratorrer) *SocketAddressE
 //
 //   - socketAddress (owned by the caller), or NULL on error (in which case
 //     *error will be set) or if there are no more addresses.
-//
 func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
@@ -78625,7 +76962,6 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GCancellable             // out
@@ -78661,7 +76997,6 @@ func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callba
 //
 //   - socketAddress (owned by the caller), or NULL on error (in which case
 //     *error will be set) or if there are no more addresses.
-//
 func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (SocketAddresser, error) {
 	var _arg0 *C.GSocketAddressEnumerator // out
 	var _arg1 *C.GAsyncResult             // out
@@ -78722,7 +77057,6 @@ func (enumerator *SocketAddressEnumerator) NextFinish(result AsyncResulter) (Soc
 //
 //   - socketAddress (owned by the caller), or NULL on error (in which case
 //     *error will be set) or if there are no more addresses.
-//
 func (enumerator *SocketAddressEnumerator) next(ctx context.Context) (SocketAddresser, error) {
 	gclass := (*C.GSocketAddressEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.next
@@ -78781,7 +77115,6 @@ func (enumerator *SocketAddressEnumerator) next(ctx context.Context) (SocketAddr
 //
 //   - ctx (optional): optional #GCancellable object, NULL to ignore.
 //   - callback (optional) to call when the request is satisfied.
-//
 func (enumerator *SocketAddressEnumerator) nextAsync(ctx context.Context, callback AsyncReadyCallback) {
 	gclass := (*C.GSocketAddressEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.next_async
@@ -78820,7 +77153,6 @@ func (enumerator *SocketAddressEnumerator) nextAsync(ctx context.Context, callba
 //
 //   - socketAddress (owned by the caller), or NULL on error (in which case
 //     *error will be set) or if there are no more addresses.
-//
 func (enumerator *SocketAddressEnumerator) nextFinish(result AsyncResulter) (SocketAddresser, error) {
 	gclass := (*C.GSocketAddressEnumeratorClass)(coreglib.PeekParentClass(enumerator))
 	fnarg := gclass.next_finish
@@ -78871,7 +77203,6 @@ type SocketClientOverrides struct {
 	//   - event
 	//   - connectable
 	//   - connection
-	//
 	Event func(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer)
 }
 
@@ -78990,7 +77321,6 @@ func (client *SocketClient) ConnectEvent(f func(event SocketClientEvent, connect
 // The function returns the following values:
 //
 //   - socketClient: Client. Free the returned object with g_object_unref().
-//
 func NewSocketClient() *SocketClient {
 	var _cret *C.GSocketClient // in
 
@@ -79024,7 +77354,6 @@ func NewSocketClient() *SocketClient {
 // The function takes the following parameters:
 //
 //   - protocol: proxy protocol.
-//
 func (client *SocketClient) AddApplicationProxy(protocol string) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 *C.gchar         // out
@@ -79066,7 +77395,6 @@ func (client *SocketClient) AddApplicationProxy(protocol string) {
 // The function returns the following values:
 //
 //   - socketConnection on success, NULL on error.
-//
 func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable SocketConnectabler) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg2 *C.GCancellable       // out
@@ -79116,7 +77444,6 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 //   - ctx (optional) or NULL.
 //   - connectable specifying the remote address.
 //   - callback (optional): ReadyCallback.
-//
 func (client *SocketClient) ConnectAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg2 *C.GCancellable       // out
@@ -79153,7 +77480,6 @@ func (client *SocketClient) ConnectAsync(ctx context.Context, connectable Socket
 // The function returns the following values:
 //
 //   - socketConnection on success, NULL on error.
-//
 func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -79217,7 +77543,6 @@ func (client *SocketClient) ConnectFinish(result AsyncResulter) (*SocketConnecti
 // The function returns the following values:
 //
 //   - socketConnection on success, NULL on error.
-//
 func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort string, defaultPort uint16) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg3 *C.GCancellable      // out
@@ -79265,7 +77590,6 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 //   - hostAndPort: name and optionally the port of the host to connect to.
 //   - defaultPort: default port to connect to.
 //   - callback (optional): ReadyCallback.
-//
 func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort string, defaultPort uint16, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg3 *C.GCancellable       // out
@@ -79306,7 +77630,6 @@ func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort 
 // The function returns the following values:
 //
 //   - socketConnection on success, NULL on error.
-//
 func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -79354,7 +77677,6 @@ func (client *SocketClient) ConnectToHostFinish(result AsyncResulter) (*SocketCo
 // The function returns the following values:
 //
 //   - socketConnection if successful, or NULL on error.
-//
 func (client *SocketClient) ConnectToService(ctx context.Context, domain, service string) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg3 *C.GCancellable      // out
@@ -79400,7 +77722,6 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 //   - domain name.
 //   - service: name of the service to connect to.
 //   - callback (optional): ReadyCallback.
-//
 func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, service string, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg3 *C.GCancellable       // out
@@ -79442,7 +77763,6 @@ func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, s
 // The function returns the following values:
 //
 //   - socketConnection on success, NULL on error.
-//
 func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -79496,7 +77816,6 @@ func (client *SocketClient) ConnectToServiceFinish(result AsyncResulter) (*Socke
 // The function returns the following values:
 //
 //   - socketConnection on success, NULL on error.
-//
 func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaultPort uint16) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg3 *C.GCancellable      // out
@@ -79544,7 +77863,6 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 //   - uri: network uri.
 //   - defaultPort: default port to connect to.
 //   - callback (optional): ReadyCallback.
-//
 func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, defaultPort uint16, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketClient      // out
 	var _arg3 *C.GCancellable       // out
@@ -79585,7 +77903,6 @@ func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, d
 // The function returns the following values:
 //
 //   - socketConnection on success, NULL on error.
-//
 func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketConnection, error) {
 	var _arg0 *C.GSocketClient     // out
 	var _arg1 *C.GAsyncResult      // out
@@ -79616,7 +77933,6 @@ func (client *SocketClient) ConnectToURIFinish(result AsyncResulter) (*SocketCon
 // The function returns the following values:
 //
 //   - ok: whether proxying is enabled.
-//
 func (client *SocketClient) EnableProxy() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
@@ -79642,7 +77958,6 @@ func (client *SocketClient) EnableProxy() bool {
 // The function returns the following values:
 //
 //   - socketFamily: Family.
-//
 func (client *SocketClient) Family() SocketFamily {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.GSocketFamily  // in
@@ -79666,7 +77981,6 @@ func (client *SocketClient) Family() SocketFamily {
 // The function returns the following values:
 //
 //   - socketAddress (optional) or NULL. Do not free.
-//
 func (client *SocketClient) LocalAddress() SocketAddresser {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GSocketAddress // in
@@ -79705,7 +78019,6 @@ func (client *SocketClient) LocalAddress() SocketAddresser {
 // The function returns the following values:
 //
 //   - socketProtocol: Protocol.
-//
 func (client *SocketClient) Protocol() SocketProtocol {
 	var _arg0 *C.GSocketClient  // out
 	var _cret C.GSocketProtocol // in
@@ -79729,7 +78042,6 @@ func (client *SocketClient) Protocol() SocketProtocol {
 // The function returns the following values:
 //
 //   - proxyResolver being used by client.
-//
 func (client *SocketClient) ProxyResolver() *ProxyResolver {
 	var _arg0 *C.GSocketClient  // out
 	var _cret *C.GProxyResolver // in
@@ -79753,7 +78065,6 @@ func (client *SocketClient) ProxyResolver() *ProxyResolver {
 // The function returns the following values:
 //
 //   - socketType: Family.
-//
 func (client *SocketClient) SocketType() SocketType {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.GSocketType    // in
@@ -79777,7 +78088,6 @@ func (client *SocketClient) SocketType() SocketType {
 // The function returns the following values:
 //
 //   - guint: timeout in seconds.
-//
 func (client *SocketClient) Timeout() uint {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.guint          // in
@@ -79800,7 +78110,6 @@ func (client *SocketClient) Timeout() uint {
 // The function returns the following values:
 //
 //   - ok: whether client uses TLS.
-//
 func (client *SocketClient) TLS() bool {
 	var _arg0 *C.GSocketClient // out
 	var _cret C.gboolean       // in
@@ -79825,7 +78134,6 @@ func (client *SocketClient) TLS() bool {
 // The function returns the following values:
 //
 //   - tlsCertificateFlags: TLS validation flags.
-//
 func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
 	var _arg0 *C.GSocketClient       // out
 	var _cret C.GTlsCertificateFlags // in
@@ -79852,7 +78160,6 @@ func (client *SocketClient) TLSValidationFlags() TLSCertificateFlags {
 // The function takes the following parameters:
 //
 //   - enable: whether to enable proxies.
-//
 func (client *SocketClient) SetEnableProxy(enable bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
@@ -79878,7 +78185,6 @@ func (client *SocketClient) SetEnableProxy(enable bool) {
 // The function takes the following parameters:
 //
 //   - family: Family.
-//
 func (client *SocketClient) SetFamily(family SocketFamily) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.GSocketFamily  // out
@@ -79901,7 +78207,6 @@ func (client *SocketClient) SetFamily(family SocketFamily) {
 // The function takes the following parameters:
 //
 //   - address (optional) or NULL.
-//
 func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GSocketAddress // out
@@ -79925,7 +78230,6 @@ func (client *SocketClient) SetLocalAddress(address SocketAddresser) {
 // The function takes the following parameters:
 //
 //   - protocol: Protocol.
-//
 func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 C.GSocketProtocol // out
@@ -79949,7 +78253,6 @@ func (client *SocketClient) SetProtocol(protocol SocketProtocol) {
 // The function takes the following parameters:
 //
 //   - proxyResolver (optional) or NULL for the default.
-//
 func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 	var _arg0 *C.GSocketClient  // out
 	var _arg1 *C.GProxyResolver // out
@@ -79973,7 +78276,6 @@ func (client *SocketClient) SetProxyResolver(proxyResolver ProxyResolverer) {
 // The function takes the following parameters:
 //
 //   - typ: Type.
-//
 func (client *SocketClient) SetSocketType(typ SocketType) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.GSocketType    // out
@@ -79996,7 +78298,6 @@ func (client *SocketClient) SetSocketType(typ SocketType) {
 // The function takes the following parameters:
 //
 //   - timeout: timeout.
-//
 func (client *SocketClient) SetTimeout(timeout uint) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.guint          // out
@@ -80029,7 +78330,6 @@ func (client *SocketClient) SetTimeout(timeout uint) {
 // The function takes the following parameters:
 //
 //   - tls: whether to use TLS.
-//
 func (client *SocketClient) SetTLS(tls bool) {
 	var _arg0 *C.GSocketClient // out
 	var _arg1 C.gboolean       // out
@@ -80050,7 +78350,6 @@ func (client *SocketClient) SetTLS(tls bool) {
 // The function takes the following parameters:
 //
 //   - flags: validation flags.
-//
 func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 	var _arg0 *C.GSocketClient       // out
 	var _arg1 C.GTlsCertificateFlags // out
@@ -80068,7 +78367,6 @@ func (client *SocketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
 //   - event
 //   - connectable
 //   - connection
-//
 func (client *SocketClient) event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer) {
 	gclass := (*C.GSocketClientClass)(coreglib.PeekParentClass(client))
 	fnarg := gclass.event
@@ -80156,7 +78454,6 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 //
 //   - ctx (optional): GCancellable or NULL.
 //   - address specifying the remote address.
-//
 func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context, address SocketAddresser) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg2 *C.GCancellable      // out
@@ -80198,7 +78495,6 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 //   - ctx (optional): GCancellable or NULL.
 //   - address specifying the remote address.
 //   - callback (optional): ReadyCallback.
-//
 func (connection *SocketConnection) ConnectAsync(ctx context.Context, address SocketAddresser, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketConnection  // out
 	var _arg2 *C.GCancellable       // out
@@ -80230,7 +78526,6 @@ func (connection *SocketConnection) ConnectAsync(ctx context.Context, address So
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 	var _arg0 *C.GSocketConnection // out
 	var _arg1 *C.GAsyncResult      // out
@@ -80258,7 +78553,6 @@ func (connection *SocketConnection) ConnectFinish(result AsyncResulter) error {
 //
 //   - socketAddress or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
@@ -80308,7 +78602,6 @@ func (connection *SocketConnection) LocalAddress() (SocketAddresser, error) {
 //
 //   - socketAddress or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocketAddress    // in
@@ -80353,7 +78646,6 @@ func (connection *SocketConnection) RemoteAddress() (SocketAddresser, error) {
 // The function returns the following values:
 //
 //   - socket or NULL on error.
-//
 func (connection *SocketConnection) Socket() *Socket {
 	var _arg0 *C.GSocketConnection // out
 	var _cret *C.GSocket           // in
@@ -80376,7 +78668,6 @@ func (connection *SocketConnection) Socket() *Socket {
 // The function returns the following values:
 //
 //   - ok: whether connection is connected.
-//
 func (connection *SocketConnection) IsConnected() bool {
 	var _arg0 *C.GSocketConnection // out
 	var _cret C.gboolean           // in
@@ -80410,7 +78701,6 @@ func (connection *SocketConnection) IsConnected() bool {
 // The function returns the following values:
 //
 //   - gType: #GType.
-//
 func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, protocolId int) coreglib.Type {
 	var _arg1 C.GSocketFamily // out
 	var _arg2 C.GSocketType   // out
@@ -80445,7 +78735,6 @@ func SocketConnectionFactoryLookupType(family SocketFamily, typ SocketType, prot
 //   - family: Family.
 //   - typ: Type.
 //   - protocol id.
-//
 func SocketConnectionFactoryRegisterType(gType coreglib.Type, family SocketFamily, typ SocketType, protocol int) {
 	var _arg1 C.GType         // out
 	var _arg2 C.GSocketFamily // out
@@ -80472,7 +78761,6 @@ type SocketControlMessageOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gint: integer describing the level.
-	//
 	Level func() int
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
@@ -80480,7 +78768,6 @@ type SocketControlMessageOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gsize: number of bytes required.
-	//
 	Size func() uint
 	Type func() int
 	// Serialize converts the data in the message to bytes placed in the
@@ -80492,7 +78779,6 @@ type SocketControlMessageOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - data: buffer to write data to.
-	//
 	Serialize func(data unsafe.Pointer)
 }
 
@@ -80602,7 +78888,6 @@ func BaseSocketControlMessage(obj SocketControlMessager) *SocketControlMessage {
 // The function returns the following values:
 //
 //   - gint: integer describing the level.
-//
 func (message *SocketControlMessage) Level() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
@@ -80625,7 +78910,6 @@ func (message *SocketControlMessage) Level() int {
 // The function returns the following values:
 //
 //   - gint: integer describing the type of control message.
-//
 func (message *SocketControlMessage) MsgType() int {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.int                    // in
@@ -80648,7 +78932,6 @@ func (message *SocketControlMessage) MsgType() int {
 // The function returns the following values:
 //
 //   - gsize: number of bytes required.
-//
 func (message *SocketControlMessage) Size() uint {
 	var _arg0 *C.GSocketControlMessage // out
 	var _cret C.gsize                  // in
@@ -80673,7 +78956,6 @@ func (message *SocketControlMessage) Size() uint {
 // The function takes the following parameters:
 //
 //   - data: buffer to write data to.
-//
 func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
 	var _arg0 *C.GSocketControlMessage // out
 	var _arg1 C.gpointer               // out
@@ -80692,7 +78974,6 @@ func (message *SocketControlMessage) Serialize(data unsafe.Pointer) {
 // The function returns the following values:
 //
 //   - gint: integer describing the level.
-//
 func (message *SocketControlMessage) level() int {
 	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
 	fnarg := gclass.get_level
@@ -80718,7 +78999,6 @@ func (message *SocketControlMessage) level() int {
 // The function returns the following values:
 //
 //   - gsize: number of bytes required.
-//
 func (message *SocketControlMessage) size() uint {
 	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
 	fnarg := gclass.get_size
@@ -80765,7 +79045,6 @@ func (message *SocketControlMessage) typ() int {
 // The function takes the following parameters:
 //
 //   - data: buffer to write data to.
-//
 func (message *SocketControlMessage) serialize(data unsafe.Pointer) {
 	gclass := (*C.GSocketControlMessageClass)(coreglib.PeekParentClass(message))
 	fnarg := gclass.serialize
@@ -80798,7 +79077,6 @@ func (message *SocketControlMessage) serialize(data unsafe.Pointer) {
 // The function returns the following values:
 //
 //   - socketControlMessage: deserialized message or NULL.
-//
 func SocketControlMessageDeserialize(level, typ int, data []byte) SocketControlMessager {
 	var _arg1 C.int      // out
 	var _arg2 C.int      // out
@@ -80848,7 +79126,6 @@ type SocketListenerOverrides struct {
 	//
 	//   - event
 	//   - socket
-	//
 	Event func(event SocketListenerEvent, socket *Socket)
 }
 
@@ -80930,7 +79207,6 @@ func (listener *SocketListener) ConnectEvent(f func(event SocketListenerEvent, s
 // The function returns the following values:
 //
 //   - socketListener: new Listener.
-//
 func NewSocketListener() *SocketListener {
 	var _cret *C.GSocketListener // in
 
@@ -80962,7 +79238,6 @@ func NewSocketListener() *SocketListener {
 //   - sourceObject (optional): location where #GObject pointer will be stored,
 //     or NULL.
 //   - socketConnection on success, NULL on error.
-//
 func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg2 *C.GCancellable      // out
@@ -81005,7 +79280,6 @@ func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *
 //
 //   - ctx (optional) or NULL.
 //   - callback (optional): ReadyCallback.
-//
 func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
 	var _arg1 *C.GCancellable       // out
@@ -81040,7 +79314,6 @@ func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncR
 //
 //   - sourceObject (optional): optional #GObject identifying this source.
 //   - socketConnection on success, NULL on error.
-//
 func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Object, *SocketConnection, error) {
 	var _arg0 *C.GSocketListener   // out
 	var _arg1 *C.GAsyncResult      // out
@@ -81092,7 +79365,6 @@ func (listener *SocketListener) AcceptFinish(result AsyncResulter) (*coreglib.Ob
 //   - sourceObject (optional): location where #GObject pointer will be stored,
 //     or NULL.
 //   - socket on success, NULL on error.
-//
 func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg2 *C.GCancellable    // out
@@ -81136,7 +79408,6 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Obj
 //
 //   - ctx (optional) or NULL.
 //   - callback (optional): ReadyCallback.
-//
 func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketListener    // out
 	var _arg1 *C.GCancellable       // out
@@ -81171,7 +79442,6 @@ func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback 
 //
 //   - sourceObject (optional): optional #GObject identifying this source.
 //   - socket on success, NULL on error.
-//
 func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreglib.Object, *Socket, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GAsyncResult    // out
@@ -81233,7 +79503,6 @@ func (listener *SocketListener) AcceptSocketFinish(result AsyncResulter) (*coreg
 //
 //   - effectiveAddress (optional): location to store the address that was bound
 //     to, or NULL.
-//
 func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketType, protocol SocketProtocol, sourceObject *coreglib.Object) (SocketAddresser, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocketAddress  // out
@@ -81301,7 +79570,6 @@ func (listener *SocketListener) AddAddress(address SocketAddresser, typ SocketTy
 // The function returns the following values:
 //
 //   - guint16: port number, or 0 in case of failure.
-//
 func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (uint16, error) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GObject         // out
@@ -81344,7 +79612,6 @@ func (listener *SocketListener) AddAnyInetPort(sourceObject *coreglib.Object) (u
 //
 //   - port: IP port number (non-zero).
 //   - sourceObject (optional): optional #GObject identifying this source.
-//
 func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.Object) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.guint16          // out
@@ -81387,7 +79654,6 @@ func (listener *SocketListener) AddInetPort(port uint16, sourceObject *coreglib.
 //
 //   - socket: listening #GSocket.
 //   - sourceObject (optional): optional #GObject identifying this source.
-//
 func (listener *SocketListener) AddSocket(socket *Socket, sourceObject *coreglib.Object) error {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 *C.GSocket         // out
@@ -81433,7 +79699,6 @@ func (listener *SocketListener) Close() {
 // The function takes the following parameters:
 //
 //   - listenBacklog: integer.
-//
 func (listener *SocketListener) SetBacklog(listenBacklog int) {
 	var _arg0 *C.GSocketListener // out
 	var _arg1 C.int              // out
@@ -81462,7 +79727,6 @@ func (listener *SocketListener) changed() {
 //
 //   - event
 //   - socket
-//
 func (listener *SocketListener) event(event SocketListenerEvent, socket *Socket) {
 	gclass := (*C.GSocketListenerClass)(coreglib.PeekParentClass(listener))
 	fnarg := gclass.event
@@ -81487,7 +79751,6 @@ type SocketServiceOverrides struct {
 	//
 	//   - connection
 	//   - sourceObject
-	//
 	Incoming func(connection *SocketConnection, sourceObject *coreglib.Object) bool
 }
 
@@ -81583,7 +79846,6 @@ func (service *SocketService) ConnectIncoming(f func(connection *SocketConnectio
 // The function returns the following values:
 //
 //   - socketService: new Service.
-//
 func NewSocketService() *SocketService {
 	var _cret *C.GSocketService // in
 
@@ -81603,7 +79865,6 @@ func NewSocketService() *SocketService {
 // The function returns the following values:
 //
 //   - ok: TRUE if the service is active, FALSE otherwise.
-//
 func (service *SocketService) IsActive() bool {
 	var _arg0 *C.GSocketService // out
 	var _cret C.gboolean        // in
@@ -81665,7 +79926,6 @@ func (service *SocketService) Stop() {
 //
 //   - connection
 //   - sourceObject
-//
 func (service *SocketService) incoming(connection *SocketConnection, sourceObject *coreglib.Object) bool {
 	gclass := (*C.GSocketServiceClass)(coreglib.PeekParentClass(service))
 	fnarg := gclass.incoming
@@ -81712,94 +79972,94 @@ func (service *SocketService) incoming(connection *SocketConnection, sourceObjec
 //
 // Here is an example for using GTask as a GAsyncResult:
 //
-//    static void
-//    bake_cake_thread (GTask         *task,
-//                      gpointer       source_object,
-//                      gpointer       task_data,
-//                      GCancellable  *cancellable)
-//    {
-//      Baker *self = source_object;
-//      CakeData *cake_data = task_data;
-//      Cake *cake;
-//      GError *error = NULL;
+//	static void
+//	bake_cake_thread (GTask         *task,
+//	                  gpointer       source_object,
+//	                  gpointer       task_data,
+//	                  GCancellable  *cancellable)
+//	{
+//	  Baker *self = source_object;
+//	  CakeData *cake_data = task_data;
+//	  Cake *cake;
+//	  GError *error = NULL;
 //
-//      cake = bake_cake (baker, cake_data->radius, cake_data->flavor,
-//                        cake_data->frosting, cake_data->message,
-//                        &error);
-//      if (error)
-//        {
-//          g_task_return_error (task, error);
-//          return;
-//        }
+//	  cake = bake_cake (baker, cake_data->radius, cake_data->flavor,
+//	                    cake_data->frosting, cake_data->message,
+//	                    &error);
+//	  if (error)
+//	    {
+//	      g_task_return_error (task, error);
+//	      return;
+//	    }
 //
-//      // If the task has already been cancelled, then we don't want to add
-//      // the cake to the cake cache. Likewise, we don't  want to have the
-//      // task get cancelled in the middle of updating the cache.
-//      // g_task_set_return_on_cancel() will return TRUE here if it managed
-//      // to disable return-on-cancel, or FALSE if the task was cancelled
-//      // before it could.
-//      if (g_task_set_return_on_cancel (task, FALSE))
-//        {
-//          // If the caller cancels at this point, their
-//          // GAsyncReadyCallback won't be invoked until we return,
-//          // so we don't have to worry that this code will run at
-//          // the same time as that code does. But if there were
-//          // other functions that might look at the cake cache,
-//          // then we'd probably need a GMutex here as well.
-//          baker_add_cake_to_cache (baker, cake);
-//          g_task_return_pointer (task, cake, g_object_unref);
-//        }
-//    }
+//	  // If the task has already been cancelled, then we don't want to add
+//	  // the cake to the cake cache. Likewise, we don't  want to have the
+//	  // task get cancelled in the middle of updating the cache.
+//	  // g_task_set_return_on_cancel() will return TRUE here if it managed
+//	  // to disable return-on-cancel, or FALSE if the task was cancelled
+//	  // before it could.
+//	  if (g_task_set_return_on_cancel (task, FALSE))
+//	    {
+//	      // If the caller cancels at this point, their
+//	      // GAsyncReadyCallback won't be invoked until we return,
+//	      // so we don't have to worry that this code will run at
+//	      // the same time as that code does. But if there were
+//	      // other functions that might look at the cake cache,
+//	      // then we'd probably need a GMutex here as well.
+//	      baker_add_cake_to_cache (baker, cake);
+//	      g_task_return_pointer (task, cake, g_object_unref);
+//	    }
+//	}
 //
-//    void
-//    baker_bake_cake_async (Baker               *self,
-//                           guint                radius,
-//                           CakeFlavor           flavor,
-//                           CakeFrostingType     frosting,
-//                           const char          *message,
-//                           GCancellable        *cancellable,
-//                           GAsyncReadyCallback  callback,
-//                           gpointer             user_data)
-//    {
-//      CakeData *cake_data;
-//      GTask *task;
+//	void
+//	baker_bake_cake_async (Baker               *self,
+//	                       guint                radius,
+//	                       CakeFlavor           flavor,
+//	                       CakeFrostingType     frosting,
+//	                       const char          *message,
+//	                       GCancellable        *cancellable,
+//	                       GAsyncReadyCallback  callback,
+//	                       gpointer             user_data)
+//	{
+//	  CakeData *cake_data;
+//	  GTask *task;
 //
-//      cake_data = g_slice_new (CakeData);
+//	  cake_data = g_slice_new (CakeData);
 //
-//      ...
+//	  ...
 //
-//      task = g_task_new (self, cancellable, callback, user_data);
-//      g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
-//      g_task_set_return_on_cancel (task, TRUE);
-//      g_task_run_in_thread (task, bake_cake_thread);
-//    }
+//	  task = g_task_new (self, cancellable, callback, user_data);
+//	  g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+//	  g_task_set_return_on_cancel (task, TRUE);
+//	  g_task_run_in_thread (task, bake_cake_thread);
+//	}
 //
-//    Cake *
-//    baker_bake_cake_sync (Baker               *self,
-//                          guint                radius,
-//                          CakeFlavor           flavor,
-//                          CakeFrostingType     frosting,
-//                          const char          *message,
-//                          GCancellable        *cancellable,
-//                          GError             **error)
-//    {
-//      CakeData *cake_data;
-//      GTask *task;
-//      Cake *cake;
+//	Cake *
+//	baker_bake_cake_sync (Baker               *self,
+//	                      guint                radius,
+//	                      CakeFlavor           flavor,
+//	                      CakeFrostingType     frosting,
+//	                      const char          *message,
+//	                      GCancellable        *cancellable,
+//	                      GError             **error)
+//	{
+//	  CakeData *cake_data;
+//	  GTask *task;
+//	  Cake *cake;
 //
-//      cake_data = g_slice_new (CakeData);
+//	  cake_data = g_slice_new (CakeData);
 //
-//      ...
+//	  ...
 //
-//      task = g_task_new (self, cancellable, NULL, NULL);
-//      g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
-//      g_task_set_return_on_cancel (task, TRUE);
-//      g_task_run_in_thread_sync (task, bake_cake_thread);
+//	  task = g_task_new (self, cancellable, NULL, NULL);
+//	  g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+//	  g_task_set_return_on_cancel (task, TRUE);
+//	  g_task_run_in_thread_sync (task, bake_cake_thread);
 //
-//      cake = g_task_propagate_pointer (task, error);
-//      g_object_unref (task);
-//      return cake;
-//    }
+//	  cake = g_task_propagate_pointer (task, error);
+//	  g_object_unref (task);
+//	  return cake;
+//	}
 //
 // # Porting from GSimpleAsyncResult
 //
@@ -81899,7 +80159,6 @@ func marshalTask(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - task: #GTask.
-//
 func NewTask(ctx context.Context, sourceObject *coreglib.Object, callback AsyncReadyCallback) *Task {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 C.gpointer            // out
@@ -81935,7 +80194,6 @@ func NewTask(ctx context.Context, sourceObject *coreglib.Object, callback AsyncR
 // The function returns the following values:
 //
 //   - cancellable task's #GCancellable.
-//
 func (task *Task) Cancellable() *Cancellable {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GCancellable // in
@@ -81979,7 +80237,6 @@ func (task *Task) CheckCancellable() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the task has completed, FALSE otherwise.
-//
 func (task *Task) Completed() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -82009,7 +80266,6 @@ func (task *Task) Completed() bool {
 // The function returns the following values:
 //
 //   - mainContext task's Context.
-//
 func (task *Task) Context() *glib.MainContext {
 	var _arg0 *C.GTask        // out
 	var _cret *C.GMainContext // in
@@ -82038,7 +80294,6 @@ func (task *Task) Context() *glib.MainContext {
 // The function returns the following values:
 //
 //   - utf8 (optional) task’s name, or NULL.
-//
 func (task *Task) Name() string {
 	var _arg0 *C.GTask // out
 	var _cret *C.gchar // in
@@ -82062,7 +80317,6 @@ func (task *Task) Name() string {
 // The function returns the following values:
 //
 //   - gint task's priority.
-//
 func (task *Task) Priority() int {
 	var _arg0 *C.GTask // out
 	var _cret C.gint   // in
@@ -82105,7 +80359,6 @@ func (task *Task) ReturnOnCancel() bool {
 // The function returns the following values:
 //
 //   - object (optional) task's source object, or NULL.
-//
 func (task *Task) SourceObject() *coreglib.Object {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -82127,7 +80380,6 @@ func (task *Task) SourceObject() *coreglib.Object {
 // The function returns the following values:
 //
 //   - gpointer (optional) task's source tag.
-//
 func (task *Task) SourceTag() unsafe.Pointer {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -82149,7 +80401,6 @@ func (task *Task) SourceTag() unsafe.Pointer {
 // The function returns the following values:
 //
 //   - gpointer (optional) task's task_data.
-//
 func (task *Task) TaskData() unsafe.Pointer {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -82171,7 +80422,6 @@ func (task *Task) TaskData() unsafe.Pointer {
 // The function returns the following values:
 //
 //   - ok: TRUE if the task resulted in an error, FALSE otherwise.
-//
 func (task *Task) HadError() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -82226,7 +80476,6 @@ func (task *Task) PropagateBoolean() error {
 // The function returns the following values:
 //
 //   - gssize: task result, or -1 on error.
-//
 func (task *Task) PropagateInt() (int, error) {
 	var _arg0 *C.GTask  // out
 	var _cret C.gssize  // in
@@ -82260,7 +80509,6 @@ func (task *Task) PropagateInt() (int, error) {
 // The function returns the following values:
 //
 //   - gpointer (optional): task result, or NULL on error.
-//
 func (task *Task) PropagatePointer() (unsafe.Pointer, error) {
 	var _arg0 *C.GTask   // out
 	var _cret C.gpointer // in
@@ -82296,7 +80544,6 @@ func (task *Task) PropagatePointer() (unsafe.Pointer, error) {
 // The function returns the following values:
 //
 //   - value: return location for the #GValue.
-//
 func (task *Task) PropagateValue() (coreglib.Value, error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 C.GValue  // in
@@ -82324,7 +80571,6 @@ func (task *Task) PropagateValue() (coreglib.Value, error) {
 // The function takes the following parameters:
 //
 //   - result result of a task function.
-//
 func (task *Task) ReturnBoolean(result bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -82353,7 +80599,6 @@ func (task *Task) ReturnBoolean(result bool) {
 // The function takes the following parameters:
 //
 //   - err result of a task function.
-//
 func (task *Task) ReturnError(err error) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GError // out
@@ -82375,7 +80620,6 @@ func (task *Task) ReturnError(err error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if task has been cancelled, FALSE if not.
-//
 func (task *Task) ReturnErrorIfCancelled() bool {
 	var _arg0 *C.GTask   // out
 	var _cret C.gboolean // in
@@ -82400,7 +80644,6 @@ func (task *Task) ReturnErrorIfCancelled() bool {
 // The function takes the following parameters:
 //
 //   - result: integer (#gssize) result of a task function.
-//
 func (task *Task) ReturnInt(result int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gssize // out
@@ -82426,7 +80669,6 @@ func (task *Task) ReturnInt(result int) {
 // The function takes the following parameters:
 //
 //   - result (optional) result of a task function.
-//
 func (task *Task) ReturnValue(result *coreglib.Value) {
 	var _arg0 *C.GTask  // out
 	var _arg1 *C.GValue // out
@@ -82459,7 +80701,6 @@ func (task *Task) ReturnValue(result *coreglib.Value) {
 //
 //   - checkCancellable: whether #GTask will check the state of its
 //     #GCancellable for you.
-//
 func (task *Task) SetCheckCancellable(checkCancellable bool) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -82487,7 +80728,6 @@ func (task *Task) SetCheckCancellable(checkCancellable bool) {
 // The function takes the following parameters:
 //
 //   - name (optional): human readable name for the task, or NULL to unset it.
-//
 func (task *Task) SetName(name string) {
 	var _arg0 *C.GTask // out
 	var _arg1 *C.gchar // out
@@ -82513,7 +80753,6 @@ func (task *Task) SetName(name string) {
 // The function takes the following parameters:
 //
 //   - priority: [priority][io-priority] of the request.
-//
 func (task *Task) SetPriority(priority int) {
 	var _arg0 *C.GTask // out
 	var _arg1 C.gint   // out
@@ -82561,7 +80800,6 @@ func (task *Task) SetPriority(priority int) {
 //
 //   - ok: TRUE if task's return-on-cancel flag was changed to match
 //     return_on_cancel. FALSE if task has already been cancelled.
-//
 func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gboolean // out
@@ -82594,7 +80832,6 @@ func (task *Task) SetReturnOnCancel(returnOnCancel bool) bool {
 // The function takes the following parameters:
 //
 //   - sourceTag (optional): opaque pointer indicating the source of this task.
-//
 func (task *Task) SetSourceTag(sourceTag unsafe.Pointer) {
 	var _arg0 *C.GTask   // out
 	var _arg1 C.gpointer // out
@@ -82620,7 +80857,6 @@ func (task *Task) SetSourceTag(sourceTag unsafe.Pointer) {
 // The function returns the following values:
 //
 //   - ok: TRUE if result and source_object are valid, FALSE if not.
-//
 func TaskIsValid(result AsyncResulter, sourceObject *coreglib.Object) bool {
 	var _arg1 C.gpointer // out
 	var _arg2 C.gpointer // out
@@ -82657,7 +80893,6 @@ func TaskIsValid(result AsyncResulter, sourceObject *coreglib.Object) bool {
 //   - callback (optional): ReadyCallback.
 //   - sourceTag (optional): opaque pointer indicating the source of this task.
 //   - err: error to report.
-//
 func TaskReportError(sourceObject *coreglib.Object, callback AsyncReadyCallback, sourceTag unsafe.Pointer, err error) {
 	var _arg1 C.gpointer            // out
 	var _arg2 C.GAsyncReadyCallback // out
@@ -82737,7 +80972,6 @@ func marshalTCPConnection(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if graceful disconnect is used on close, FALSE otherwise.
-//
 func (connection *TCPConnection) GracefulDisconnect() bool {
 	var _arg0 *C.GTcpConnection // out
 	var _cret C.gboolean        // in
@@ -82770,7 +81004,6 @@ func (connection *TCPConnection) GracefulDisconnect() bool {
 // The function takes the following parameters:
 //
 //   - gracefulDisconnect: whether to do graceful disconnects or not.
-//
 func (connection *TCPConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
 	var _arg0 *C.GTcpConnection // out
 	var _arg1 C.gboolean        // out
@@ -82849,7 +81082,6 @@ func marshalTCPWrapperConnection(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - tcpWrapperConnection: new Connection.
-//
 func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrapperConnection {
 	var _arg1 *C.GIOStream         // out
 	var _arg2 *C.GSocket           // out
@@ -82874,7 +81106,6 @@ func NewTCPWrapperConnection(baseIoStream IOStreamer, socket *Socket) *TCPWrappe
 // The function returns the following values:
 //
 //   - ioStream conn's base OStream.
-//
 func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 	var _arg0 *C.GTcpWrapperConnection // out
 	var _cret *C.GIOStream             // in
@@ -82933,18 +81164,18 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 // achieve this by adding a file such as my-server.service.in in the services
 // directory and have it processed by configure.
 //
-//    [D-BUS Service]
-//    Name=org.gtk.GDBus.Examples.ObjectManager
-//    Exec=abs_top_builddir@/gio/tests/gdbus-example-objectmanager-server
+//	[D-BUS Service]
+//	Name=org.gtk.GDBus.Examples.ObjectManager
+//	Exec=abs_top_builddir@/gio/tests/gdbus-example-objectmanager-server
 //
 // You will also need to indicate this service directory in your test fixtures,
 // so you will need to pass the path while compiling your test cases. Typically
 // this is done with autotools with an added preprocessor flag specified to
 // compile your tests such as:
 //
-//       -DTEST_SERVICES=\""$(abs_top_builddir)/tests/services"\"
+//	   -DTEST_SERVICES=\""$(abs_top_builddir)/tests/services"\"
 //
-//    Once you have a service definition file which is local to your source tree,
+//	Once you have a service definition file which is local to your source tree,
 //
 // you can proceed to set up a GTest fixture using the DBus scaffolding.
 //
@@ -82973,10 +81204,10 @@ func (conn *TCPWrapperConnection) BaseIOStream() IOStreamer {
 // test cases, an autotools setup might do the following in the directory
 // holding schemas:
 //
-//    all-am:
-//            $(GLIB_COMPILE_SCHEMAS) .
+//	all-am:
+//	        $(GLIB_COMPILE_SCHEMAS) .
 //
-//    CLEANFILES += gschemas.compiled.
+//	CLEANFILES += gschemas.compiled.
 type TestDBus struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -83005,7 +81236,6 @@ func marshalTestDBus(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - testDBus: new DBus.
-//
 func NewTestDBus(flags TestDBusFlags) *TestDBus {
 	var _arg1 C.GTestDBusFlags // out
 	var _cret *C.GTestDBus     // in
@@ -83028,7 +81258,6 @@ func NewTestDBus(flags TestDBusFlags) *TestDBus {
 // The function takes the following parameters:
 //
 //   - path to a directory containing .service files.
-//
 func (self *TestDBus) AddServiceDir(path string) {
 	var _arg0 *C.GTestDBus // out
 	var _arg1 *C.gchar     // out
@@ -83063,7 +81292,6 @@ func (self *TestDBus) Down() {
 // The function returns the following values:
 //
 //   - utf8 (optional) address of the bus, or NULL.
-//
 func (self *TestDBus) BusAddress() string {
 	var _arg0 *C.GTestDBus // out
 	var _cret *C.gchar     // in
@@ -83087,7 +81315,6 @@ func (self *TestDBus) BusAddress() string {
 // The function returns the following values:
 //
 //   - testDBusFlags: value of DBus:flags property.
-//
 func (self *TestDBus) Flags() TestDBusFlags {
 	var _arg0 *C.GTestDBus     // out
 	var _cret C.GTestDBusFlags // in
@@ -83185,7 +81412,6 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - themedIcon: new Icon.
-//
 func NewThemedIcon(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -83212,7 +81438,6 @@ func NewThemedIcon(iconname string) *ThemedIcon {
 // The function returns the following values:
 //
 //   - themedIcon: new Icon.
-//
 func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 	var _arg1 **C.char // out
 	var _arg2 C.int
@@ -83244,15 +81469,15 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 //
 // In the following example, icon1 and icon2 are equivalent:
 //
-//    const char *names[] = {
-//      "gnome-dev-cdrom-audio",
-//      "gnome-dev-cdrom",
-//      "gnome-dev",
-//      "gnome"
-//    };
+//	const char *names[] = {
+//	  "gnome-dev-cdrom-audio",
+//	  "gnome-dev-cdrom",
+//	  "gnome-dev",
+//	  "gnome"
+//	};
 //
-//    icon1 = g_themed_icon_new_from_names (names, 4);
-//    icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");.
+//	icon1 = g_themed_icon_new_from_names (names, 4);
+//	icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");.
 //
 // The function takes the following parameters:
 //
@@ -83261,7 +81486,6 @@ func NewThemedIconFromNames(iconnames []string) *ThemedIcon {
 // The function returns the following values:
 //
 //   - themedIcon: new Icon.
-//
 func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 	var _arg1 *C.char  // out
 	var _cret *C.GIcon // in
@@ -83287,7 +81511,6 @@ func NewThemedIconWithDefaultFallbacks(iconname string) *ThemedIcon {
 // The function takes the following parameters:
 //
 //   - iconname: name of icon to append to list of icons from within icon.
-//
 func (icon *ThemedIcon) AppendName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
@@ -83306,7 +81529,6 @@ func (icon *ThemedIcon) AppendName(iconname string) {
 // The function returns the following values:
 //
 //   - utf8s: list of icon names.
-//
 func (icon *ThemedIcon) Names() []string {
 	var _arg0 *C.GThemedIcon // out
 	var _cret **C.gchar      // in
@@ -83343,7 +81565,6 @@ func (icon *ThemedIcon) Names() []string {
 // The function takes the following parameters:
 //
 //   - iconname: name of icon to prepend to list of icons from within icon.
-//
 func (icon *ThemedIcon) PrependName(iconname string) {
 	var _arg0 *C.GThemedIcon // out
 	var _arg1 *C.char        // out
@@ -83363,7 +81584,6 @@ type ThreadedSocketServiceOverrides struct {
 	//
 	//   - connection
 	//   - sourceObject
-	//
 	Run func(connection *SocketConnection, sourceObject *coreglib.Object) bool
 }
 
@@ -83450,7 +81670,6 @@ func (v *ThreadedSocketService) ConnectRun(f func(connection *SocketConnection, 
 // The function returns the following values:
 //
 //   - threadedSocketService: new Service.
-//
 func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 	var _arg1 C.int             // out
 	var _cret *C.GSocketService // in
@@ -83471,7 +81690,6 @@ func NewThreadedSocketService(maxThreads int) *ThreadedSocketService {
 //
 //   - connection
 //   - sourceObject
-//
 func (service *ThreadedSocketService) run(connection *SocketConnection, sourceObject *coreglib.Object) bool {
 	gclass := (*C.GThreadedSocketServiceClass)(coreglib.PeekParentClass(service))
 	fnarg := gclass.run
@@ -83527,7 +81745,6 @@ type TLSCertificateOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsCertificateFlags: appropriate CertificateFlags.
-	//
 	Verify func(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
 }
 
@@ -83621,7 +81838,6 @@ func BaseTLSCertificate(obj TLSCertificater) *TLSCertificate {
 // The function returns the following values:
 //
 //   - tlsCertificate: new certificate, or NULL on error.
-//
 func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _cret *C.GTlsCertificate // in
@@ -83664,7 +81880,6 @@ func NewTLSCertificateFromFile(file string) (*TLSCertificate, error) {
 // The function returns the following values:
 //
 //   - tlsCertificate: new certificate, or NULL on error.
-//
 func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -83713,7 +81928,6 @@ func NewTLSCertificateFromFiles(certFile, keyFile string) (*TLSCertificate, erro
 // The function returns the following values:
 //
 //   - tlsCertificate: new certificate, or NULL if data is invalid.
-//
 func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gssize           // out
@@ -83746,15 +81960,15 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 //
 // Where the token’s layout is:
 //
-//    Object 0:
-//      URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=private20key;type=private
-//      Type: Private key (RSA-2048)
-//      ID: 01
+//	Object 0:
+//	  URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=private20key;type=private
+//	  Type: Private key (RSA-2048)
+//	  ID: 01
 //
-//    Object 1:
-//      URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=Certificate20for20Authentication;type=cert
-//      Type: X.509 Certificate (RSA-2048)
-//      ID: 01
+//	Object 1:
+//	  URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My20Client20Certificate;id=01;object=Certificate20for20Authentication;type=cert
+//	  Type: X.509 Certificate (RSA-2048)
+//	  ID: 01
 //
 // In this case the certificate and private key would both be detected and used
 // as expected. pkcs_uri may also just reference an X.509 certificate object and
@@ -83772,7 +81986,6 @@ func NewTLSCertificateFromPem(data string, length int) (*TLSCertificate, error) 
 // The function returns the following values:
 //
 //   - tlsCertificate: new certificate, or NULL on error.
-//
 func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TLSCertificate, error) {
 	var _arg1 *C.gchar           // out
 	var _arg2 *C.gchar           // out
@@ -83807,7 +82020,6 @@ func NewTLSCertificateFromPKCS11URIs(pkcs11Uri, privateKeyPkcs11Uri string) (*TL
 //
 //   - tlsCertificate (optional): certificate of cert's issuer, or NULL if cert
 //     is self-signed or signed with an unknown certificate.
-//
 func (cert *TLSCertificate) Issuer() TLSCertificater {
 	var _arg0 *C.GTlsCertificate // out
 	var _cret *C.GTlsCertificate // in
@@ -83852,7 +82064,6 @@ func (cert *TLSCertificate) Issuer() TLSCertificater {
 // The function returns the following values:
 //
 //   - ok: whether the same or not.
-//
 func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 	var _arg0 *C.GTlsCertificate // out
 	var _arg1 *C.GTlsCertificate // out
@@ -83899,7 +82110,6 @@ func (certOne *TLSCertificate) IsSame(certTwo TLSCertificater) bool {
 // The function returns the following values:
 //
 //   - tlsCertificateFlags: appropriate CertificateFlags.
-//
 func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags {
 	var _arg0 *C.GTlsCertificate     // out
 	var _arg1 *C.GSocketConnectable  // out
@@ -83951,7 +82161,6 @@ func (cert *TLSCertificate) Verify(identity SocketConnectabler, trustedCa TLSCer
 // The function returns the following values:
 //
 //   - tlsCertificateFlags: appropriate CertificateFlags.
-//
 func (cert *TLSCertificate) verify(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags {
 	gclass := (*C.GTlsCertificateClass)(coreglib.PeekParentClass(cert))
 	fnarg := gclass.verify
@@ -83994,7 +82203,6 @@ func (cert *TLSCertificate) verify(identity SocketConnectabler, trustedCa TLSCer
 //
 //   - list: a #GList containing Certificate objects. You must free the list and
 //     its contents when you are done with it.
-//
 func TLSCertificateListNewFromFile(file string) ([]TLSCertificater, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.GList  // in
@@ -84045,13 +82253,11 @@ type TLSConnectionOverrides struct {
 	//
 	//   - peerCert
 	//   - errors
-	//
 	AcceptCertificate func(peerCert TLSCertificater, errors TLSCertificateFlags) bool
 	// The function takes the following parameters:
 	//
 	//   - typ
 	//   - data
-	//
 	BindingData func(typ TLSChannelBindingType, data []byte) error
 	// Handshake attempts a TLS handshake on conn.
 	//
@@ -84085,7 +82291,6 @@ type TLSConnectionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional) or NULL.
-	//
 	Handshake func(ctx context.Context) error
 	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	// See g_tls_connection_handshake() for more information.
@@ -84093,7 +82298,6 @@ type TLSConnectionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	//
 	HandshakeFinish func(result AsyncResulter) error
 }
 
@@ -84232,7 +82436,6 @@ func (conn *TLSConnection) ConnectAcceptCertificate(f func(peerCert TLSCertifica
 //
 //   - ok: TRUE if one of the signal handlers has returned TRUE to accept
 //     peer_cert.
-//
 func (conn *TLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	var _arg0 *C.GTlsConnection      // out
 	var _arg1 *C.GTlsCertificate     // out
@@ -84263,7 +82466,6 @@ func (conn *TLSConnection) EmitAcceptCertificate(peerCert TLSCertificater, error
 // The function returns the following values:
 //
 //   - tlsCertificate (optional) conn's certificate, or NULL.
-//
 func (conn *TLSConnection) Certificate() TLSCertificater {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsCertificate // in
@@ -84316,7 +82518,6 @@ func (conn *TLSConnection) Certificate() TLSCertificater {
 // The function returns the following values:
 //
 //   - data (optional) is filled with the binding data, or NULL.
-//
 func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte, error) {
 	var _arg0 *C.GTlsConnection        // out
 	var _arg1 C.GTlsChannelBindingType // out
@@ -84348,7 +82549,6 @@ func (conn *TLSConnection) ChannelBindingData(typ TLSChannelBindingType) ([]byte
 // The function returns the following values:
 //
 //   - tlsDatabase (optional): certificate database that conn uses or NULL.
-//
 func (conn *TLSConnection) Database() TLSDatabaser {
 	var _arg0 *C.GTlsConnection // out
 	var _cret *C.GTlsDatabase   // in
@@ -84387,7 +82587,6 @@ func (conn *TLSConnection) Database() TLSDatabaser {
 // The function returns the following values:
 //
 //   - tlsInteraction (optional): interaction object.
-//
 func (conn *TLSConnection) Interaction() *TLSInteraction {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsInteraction // in
@@ -84417,7 +82616,6 @@ func (conn *TLSConnection) Interaction() *TLSInteraction {
 // The function returns the following values:
 //
 //   - utf8 (optional): negotiated protocol, or NULL.
-//
 func (conn *TLSConnection) NegotiatedProtocol() string {
 	var _arg0 *C.GTlsConnection // out
 	var _cret *C.gchar          // in
@@ -84443,7 +82641,6 @@ func (conn *TLSConnection) NegotiatedProtocol() string {
 // The function returns the following values:
 //
 //   - tlsCertificate (optional) conn's peer's certificate, or NULL.
-//
 func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 	var _arg0 *C.GTlsConnection  // out
 	var _cret *C.GTlsCertificate // in
@@ -84482,7 +82679,6 @@ func (conn *TLSConnection) PeerCertificate() TLSCertificater {
 // The function returns the following values:
 //
 //   - tlsCertificateFlags conn's peer's certificate errors.
-//
 func (conn *TLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 	var _arg0 *C.GTlsConnection      // out
 	var _cret C.GTlsCertificateFlags // in
@@ -84509,7 +82705,6 @@ func (conn *TLSConnection) PeerCertificateErrors() TLSCertificateFlags {
 // The function returns the following values:
 //
 //   - tlsRehandshakeMode: G_TLS_REHANDSHAKE_SAFELY.
-//
 func (conn *TLSConnection) RehandshakeMode() TLSRehandshakeMode {
 	var _arg0 *C.GTlsConnection     // out
 	var _cret C.GTlsRehandshakeMode // in
@@ -84533,7 +82728,6 @@ func (conn *TLSConnection) RehandshakeMode() TLSRehandshakeMode {
 // The function returns the following values:
 //
 //   - ok: TRUE if conn requires a proper TLS close notification.
-//
 func (conn *TLSConnection) RequireCloseNotify() bool {
 	var _arg0 *C.GTlsConnection // out
 	var _cret C.gboolean        // in
@@ -84560,7 +82754,6 @@ func (conn *TLSConnection) RequireCloseNotify() bool {
 // The function returns the following values:
 //
 //   - ok: whether conn uses the system certificate database.
-//
 func (conn *TLSConnection) UseSystemCertDB() bool {
 	var _arg0 *C.GTlsConnection // out
 	var _cret C.gboolean        // in
@@ -84610,7 +82803,6 @@ func (conn *TLSConnection) UseSystemCertDB() bool {
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (conn *TLSConnection) Handshake(ctx context.Context) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GCancellable   // out
@@ -84644,7 +82836,6 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 //   - ctx (optional) or NULL.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the handshake is complete.
-//
 func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsConnection     // out
 	var _arg2 *C.GCancellable       // out
@@ -84677,7 +82868,6 @@ func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, c
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GAsyncResult   // out
@@ -84715,7 +82905,6 @@ func (conn *TLSConnection) HandshakeFinish(result AsyncResulter) error {
 //
 //   - protocols (optional): NULL-terminated array of ALPN protocol names (eg,
 //     "http/1.1", "h2"), or NULL.
-//
 func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 **C.gchar         // out
@@ -84759,7 +82948,6 @@ func (conn *TLSConnection) SetAdvertisedProtocols(protocols []string) {
 // The function takes the following parameters:
 //
 //   - certificate to use for conn.
-//
 func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
 	var _arg0 *C.GTlsConnection  // out
 	var _arg1 *C.GTlsCertificate // out
@@ -84783,7 +82971,6 @@ func (conn *TLSConnection) SetCertificate(certificate TLSCertificater) {
 // The function takes the following parameters:
 //
 //   - database (optional): Database.
-//
 func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 *C.GTlsDatabase   // out
@@ -84808,7 +82995,6 @@ func (conn *TLSConnection) SetDatabase(database TLSDatabaser) {
 // The function takes the following parameters:
 //
 //   - interaction (optional) object, or NULL.
-//
 func (conn *TLSConnection) SetInteraction(interaction *TLSInteraction) {
 	var _arg0 *C.GTlsConnection  // out
 	var _arg1 *C.GTlsInteraction // out
@@ -84835,7 +83021,6 @@ func (conn *TLSConnection) SetInteraction(interaction *TLSInteraction) {
 // The function takes the following parameters:
 //
 //   - mode: rehandshaking mode.
-//
 func (conn *TLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 	var _arg0 *C.GTlsConnection     // out
 	var _arg1 C.GTlsRehandshakeMode // out
@@ -84877,7 +83062,6 @@ func (conn *TLSConnection) SetRehandshakeMode(mode TLSRehandshakeMode) {
 // The function takes the following parameters:
 //
 //   - requireCloseNotify: whether or not to require close notification.
-//
 func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 C.gboolean        // out
@@ -84904,7 +83088,6 @@ func (conn *TLSConnection) SetRequireCloseNotify(requireCloseNotify bool) {
 // The function takes the following parameters:
 //
 //   - useSystemCertdb: whether to use the system certificate database.
-//
 func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 	var _arg0 *C.GTlsConnection // out
 	var _arg1 C.gboolean        // out
@@ -84923,7 +83106,6 @@ func (conn *TLSConnection) SetUseSystemCertDB(useSystemCertdb bool) {
 //
 //   - peerCert
 //   - errors
-//
 func (connection *TLSConnection) acceptCertificate(peerCert TLSCertificater, errors TLSCertificateFlags) bool {
 	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(connection))
 	fnarg := gclass.accept_certificate
@@ -84955,7 +83137,6 @@ func (connection *TLSConnection) acceptCertificate(peerCert TLSCertificater, err
 //
 //   - typ
 //   - data
-//
 func (conn *TLSConnection) bindingData(typ TLSChannelBindingType, data []byte) error {
 	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.get_binding_data
@@ -85018,7 +83199,6 @@ func (conn *TLSConnection) bindingData(typ TLSChannelBindingType, data []byte) e
 // The function takes the following parameters:
 //
 //   - ctx (optional) or NULL.
-//
 func (conn *TLSConnection) handshake(ctx context.Context) error {
 	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.handshake
@@ -85055,7 +83235,6 @@ func (conn *TLSConnection) handshake(ctx context.Context) error {
 //   - ctx (optional) or NULL.
 //   - ioPriority: [I/O priority][io-priority] of the request.
 //   - callback (optional) to call when the handshake is complete.
-//
 func (conn *TLSConnection) handshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.handshake_async
@@ -85091,7 +83270,6 @@ func (conn *TLSConnection) handshakeAsync(ctx context.Context, ioPriority int, c
 // The function takes the following parameters:
 //
 //   - result: Result.
-//
 func (conn *TLSConnection) handshakeFinish(result AsyncResulter) error {
 	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(conn))
 	fnarg := gclass.handshake_finish
@@ -85134,7 +83312,6 @@ type TLSDatabaseOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): newly allocated string containing the handle.
-	//
 	CreateCertificateHandle func(certificate TLSCertificater) string
 	// LookupCertificateForHandle: look up a certificate by its handle.
 	//
@@ -85161,7 +83338,6 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificate (optional): newly allocated Certificate, or NULL.
 	//     Use g_object_unref() to release the certificate.
-	//
 	LookupCertificateForHandle func(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
 	// LookupCertificateForHandleFinish: finish an
 	// asynchronous lookup of a certificate by its handle. See
@@ -85178,7 +83354,6 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificate: newly allocated Certificate object. Use
 	//     g_object_unref() to release the certificate.
-	//
 	LookupCertificateForHandleFinish func(result AsyncResulter) (TLSCertificater, error)
 	// LookupCertificateIssuer: look up the issuer of certificate in the
 	// database.
@@ -85201,7 +83376,6 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificate: newly allocated issuer Certificate, or NULL.
 	//     Use g_object_unref() to release the certificate.
-	//
 	LookupCertificateIssuer func(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
 	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 	// operation. See g_tls_database_lookup_certificate_issuer() for more
@@ -85215,7 +83389,6 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificate: newly allocated issuer Certificate, or NULL.
 	//     Use g_object_unref() to release the certificate.
-	//
 	LookupCertificateIssuerFinish func(result AsyncResulter) (TLSCertificater, error)
 	// LookupCertificatesIssuedBy: look up certificates issued by this issuer in
 	// the database.
@@ -85236,7 +83409,6 @@ type TLSDatabaseOverrides struct {
 	//   - list: newly allocated list of Certificate objects. Use
 	//     g_object_unref() on each certificate, and g_list_free() on the
 	//     release the list.
-	//
 	LookupCertificatesIssuedBy func(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error)
 	// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
 	// certificates. See g_tls_database_lookup_certificates_issued_by() for more
@@ -85251,7 +83423,6 @@ type TLSDatabaseOverrides struct {
 	//   - list: newly allocated list of Certificate objects. Use
 	//     g_object_unref() on each certificate, and g_list_free() on the
 	//     release the list.
-	//
 	LookupCertificatesIssuedByFinish func(result AsyncResulter) ([]TLSCertificater, error)
 	// VerifyChain determines the validity of a certificate chain after looking
 	// up and adding any missing certificates to the chain.
@@ -85303,7 +83474,6 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificateFlags: appropriate CertificateFlags which represents
 	//     the result of verification.
-	//
 	VerifyChain func(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
 	// VerifyChainFinish: finish an asynchronous verify chain operation.
 	// See g_tls_database_verify_chain() for more information.
@@ -85324,7 +83494,6 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificateFlags: appropriate CertificateFlags which represents
 	//     the result of verification.
-	//
 	VerifyChainFinish func(result AsyncResulter) (TLSCertificateFlags, error)
 }
 
@@ -85460,7 +83629,6 @@ func BaseTLSDatabase(obj TLSDatabaser) *TLSDatabase {
 // The function returns the following values:
 //
 //   - utf8 (optional): newly allocated string containing the handle.
-//
 func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) string {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GTlsCertificate // out
@@ -85508,7 +83676,6 @@ func (self *TLSDatabase) CreateCertificateHandle(certificate TLSCertificater) st
 //
 //   - tlsCertificate (optional): newly allocated Certificate, or NULL.
 //     Use g_object_unref() to release the certificate.
-//
 func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg4 *C.GCancellable           // out
@@ -85575,7 +83742,6 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 //   - interaction (optional): used to interact with the user if necessary.
 //   - flags flags which affect the lookup.
 //   - callback (optional) to call when the operation completes.
-//
 func (self *TLSDatabase) LookupCertificateForHandleAsync(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg4 *C.GCancellable           // out
@@ -85626,7 +83792,6 @@ func (self *TLSDatabase) LookupCertificateForHandleAsync(ctx context.Context, ha
 //
 //   - tlsCertificate: newly allocated Certificate object. Use g_object_unref()
 //     to release the certificate.
-//
 func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
@@ -85686,7 +83851,6 @@ func (self *TLSDatabase) LookupCertificateForHandleFinish(result AsyncResulter) 
 //
 //   - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
 //     g_object_unref() to release the certificate.
-//
 func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg4 *C.GCancellable           // out
@@ -85753,7 +83917,6 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 //   - interaction (optional): used to interact with the user if necessary.
 //   - flags which affect the lookup operation.
 //   - callback (optional) to call when the operation completes.
-//
 func (self *TLSDatabase) LookupCertificateIssuerAsync(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg4 *C.GCancellable           // out
@@ -85800,7 +83963,6 @@ func (self *TLSDatabase) LookupCertificateIssuerAsync(ctx context.Context, certi
 //
 //   - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
 //     g_object_unref() to release the certificate.
-//
 func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase    // out
 	var _arg1 *C.GAsyncResult    // out
@@ -85859,7 +84021,6 @@ func (self *TLSDatabase) LookupCertificateIssuerFinish(result AsyncResulter) (TL
 //
 //   - list: newly allocated list of Certificate objects. Use g_object_unref()
 //     on each certificate, and g_list_free() on the release the list.
-//
 func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg4 *C.GCancellable           // out
@@ -85940,7 +84101,6 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 //   - interaction (optional): used to interact with the user if necessary.
 //   - flags flags which affect the lookup operation.
 //   - callback (optional) to call when the operation completes.
-//
 func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg4 *C.GCancellable           // out
@@ -85991,7 +84151,6 @@ func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, is
 //
 //   - list: newly allocated list of Certificate objects. Use g_object_unref()
 //     on each certificate, and g_list_free() on the release the list.
-//
 func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error) {
 	var _arg0 *C.GTlsDatabase // out
 	var _arg1 *C.GAsyncResult // out
@@ -86086,7 +84245,6 @@ func (self *TLSDatabase) LookupCertificatesIssuedByFinish(result AsyncResulter) 
 //
 //   - tlsCertificateFlags: appropriate CertificateFlags which represents the
 //     result of verification.
-//
 func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg6 *C.GCancellable           // out
@@ -86148,7 +84306,6 @@ func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater,
 //   - interaction (optional): used to interact with the user if necessary.
 //   - flags: additional verify flags.
 //   - callback (optional) to call when the operation completes.
-//
 func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsDatabase           // out
 	var _arg6 *C.GCancellable           // out
@@ -86210,7 +84367,6 @@ func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertific
 //
 //   - tlsCertificateFlags: appropriate CertificateFlags which represents the
 //     result of verification.
-//
 func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error) {
 	var _arg0 *C.GTlsDatabase        // out
 	var _arg1 *C.GAsyncResult        // out
@@ -86251,7 +84407,6 @@ func (self *TLSDatabase) VerifyChainFinish(result AsyncResulter) (TLSCertificate
 // The function returns the following values:
 //
 //   - utf8 (optional): newly allocated string containing the handle.
-//
 func (self *TLSDatabase) createCertificateHandle(certificate TLSCertificater) string {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.create_certificate_handle
@@ -86302,7 +84457,6 @@ func (self *TLSDatabase) createCertificateHandle(certificate TLSCertificater) st
 //
 //   - tlsCertificate (optional): newly allocated Certificate, or NULL.
 //     Use g_object_unref() to release the certificate.
-//
 func (self *TLSDatabase) lookupCertificateForHandle(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificate_for_handle
@@ -86372,7 +84526,6 @@ func (self *TLSDatabase) lookupCertificateForHandle(ctx context.Context, handle 
 //   - interaction (optional): used to interact with the user if necessary.
 //   - flags flags which affect the lookup.
 //   - callback (optional) to call when the operation completes.
-//
 func (self *TLSDatabase) lookupCertificateForHandleAsync(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificate_for_handle_async
@@ -86426,7 +84579,6 @@ func (self *TLSDatabase) lookupCertificateForHandleAsync(ctx context.Context, ha
 //
 //   - tlsCertificate: newly allocated Certificate object. Use g_object_unref()
 //     to release the certificate.
-//
 func (self *TLSDatabase) lookupCertificateForHandleFinish(result AsyncResulter) (TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificate_for_handle_finish
@@ -86489,7 +84641,6 @@ func (self *TLSDatabase) lookupCertificateForHandleFinish(result AsyncResulter) 
 //
 //   - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
 //     g_object_unref() to release the certificate.
-//
 func (self *TLSDatabase) lookupCertificateIssuer(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificate_issuer
@@ -86559,7 +84710,6 @@ func (self *TLSDatabase) lookupCertificateIssuer(ctx context.Context, certificat
 //   - interaction (optional): used to interact with the user if necessary.
 //   - flags which affect the lookup operation.
 //   - callback (optional) to call when the operation completes.
-//
 func (self *TLSDatabase) lookupCertificateIssuerAsync(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificate_issuer_async
@@ -86609,7 +84759,6 @@ func (self *TLSDatabase) lookupCertificateIssuerAsync(ctx context.Context, certi
 //
 //   - tlsCertificate: newly allocated issuer Certificate, or NULL. Use
 //     g_object_unref() to release the certificate.
-//
 func (self *TLSDatabase) lookupCertificateIssuerFinish(result AsyncResulter) (TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificate_issuer_finish
@@ -86671,7 +84820,6 @@ func (self *TLSDatabase) lookupCertificateIssuerFinish(result AsyncResulter) (TL
 //
 //   - list: newly allocated list of Certificate objects. Use g_object_unref()
 //     on each certificate, and g_list_free() on the release the list.
-//
 func (self *TLSDatabase) lookupCertificatesIssuedBy(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificates_issued_by
@@ -86755,7 +84903,6 @@ func (self *TLSDatabase) lookupCertificatesIssuedBy(ctx context.Context, issuerR
 //   - interaction (optional): used to interact with the user if necessary.
 //   - flags flags which affect the lookup operation.
 //   - callback (optional) to call when the operation completes.
-//
 func (self *TLSDatabase) lookupCertificatesIssuedByAsync(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificates_issued_by_async
@@ -86809,7 +84956,6 @@ func (self *TLSDatabase) lookupCertificatesIssuedByAsync(ctx context.Context, is
 //
 //   - list: newly allocated list of Certificate objects. Use g_object_unref()
 //     on each certificate, and g_list_free() on the release the list.
-//
 func (self *TLSDatabase) lookupCertificatesIssuedByFinish(result AsyncResulter) ([]TLSCertificater, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.lookup_certificates_issued_by_finish
@@ -86907,7 +85053,6 @@ func (self *TLSDatabase) lookupCertificatesIssuedByFinish(result AsyncResulter) 
 //
 //   - tlsCertificateFlags: appropriate CertificateFlags which represents the
 //     result of verification.
-//
 func (self *TLSDatabase) verifyChain(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.verify_chain
@@ -86972,7 +85117,6 @@ func (self *TLSDatabase) verifyChain(ctx context.Context, chain TLSCertificater,
 //   - interaction (optional): used to interact with the user if necessary.
 //   - flags: additional verify flags.
 //   - callback (optional) to call when the operation completes.
-//
 func (self *TLSDatabase) verifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.verify_chain_async
@@ -87037,7 +85181,6 @@ func (self *TLSDatabase) verifyChainAsync(ctx context.Context, chain TLSCertific
 //
 //   - tlsCertificateFlags: appropriate CertificateFlags which represents the
 //     result of verification.
-//
 func (self *TLSDatabase) verifyChainFinish(result AsyncResulter) (TLSCertificateFlags, error) {
 	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
 	fnarg := gclass.verify_chain_finish
@@ -87089,7 +85232,6 @@ type TLSInteractionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsInteractionResult status of the ask password interaction.
-	//
 	AskPassword func(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error)
 	// AskPasswordFinish: complete an ask password user interaction request.
 	// This should be once the g_tls_interaction_ask_password_async() completion
@@ -87109,7 +85251,6 @@ type TLSInteractionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsInteractionResult status of the ask password interaction.
-	//
 	AskPasswordFinish func(result AsyncResulter) (TLSInteractionResult, error)
 	// RequestCertificate: run synchronous interaction to ask the user
 	// to choose a certificate to use with the connection. In general,
@@ -87139,7 +85280,6 @@ type TLSInteractionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsInteractionResult status of the request certificate interaction.
-	//
 	RequestCertificate func(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error)
 	// RequestCertificateFinish: complete a request certificate
 	// user interaction request. This should be once the
@@ -87161,7 +85301,6 @@ type TLSInteractionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsInteractionResult status of the request certificate interaction.
-	//
 	RequestCertificateFinish func(result AsyncResulter) (TLSInteractionResult, error)
 }
 
@@ -87268,7 +85407,6 @@ func marshalTLSInteraction(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the ask password interaction.
-//
 func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg2 *C.GCancellable         // out
@@ -87321,7 +85459,6 @@ func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TL
 //   - ctx (optional): optional #GCancellable cancellation object.
 //   - password: Password object.
 //   - callback (optional) will be called when the interaction completes.
-//
 func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, password *TLSPassword, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsInteraction    // out
 	var _arg2 *C.GCancellable       // out
@@ -87366,7 +85503,6 @@ func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, passwor
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the ask password interaction.
-//
 func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
@@ -87418,7 +85554,6 @@ func (interaction *TLSInteraction) AskPasswordFinish(result AsyncResulter) (TLSI
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the ask password interaction.
-//
 func (interaction *TLSInteraction) InvokeAskPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg2 *C.GCancellable         // out
@@ -87480,7 +85615,6 @@ func (interaction *TLSInteraction) InvokeAskPassword(ctx context.Context, passwo
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the certificate request interaction.
-//
 func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg3 *C.GCancellable               // out
@@ -87543,7 +85677,6 @@ func (interaction *TLSInteraction) InvokeRequestCertificate(ctx context.Context,
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the request certificate interaction.
-//
 func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg3 *C.GCancellable               // out
@@ -87594,7 +85727,6 @@ func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, conne
 //   - connection: Connection object.
 //   - flags providing more information about the request.
 //   - callback (optional) will be called when the interaction completes.
-//
 func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags, callback AsyncReadyCallback) {
 	var _arg0 *C.GTlsInteraction            // out
 	var _arg3 *C.GCancellable               // out
@@ -87643,7 +85775,6 @@ func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, 
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the request certificate interaction.
-//
 func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	var _arg0 *C.GTlsInteraction      // out
 	var _arg1 *C.GAsyncResult         // out
@@ -87690,7 +85821,6 @@ func (interaction *TLSInteraction) RequestCertificateFinish(result AsyncResulter
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the ask password interaction.
-//
 func (interaction *TLSInteraction) askPassword(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error) {
 	gclass := (*C.GTlsInteractionClass)(coreglib.PeekParentClass(interaction))
 	fnarg := gclass.ask_password
@@ -87746,7 +85876,6 @@ func (interaction *TLSInteraction) askPassword(ctx context.Context, password *TL
 //   - ctx (optional): optional #GCancellable cancellation object.
 //   - password: Password object.
 //   - callback (optional) will be called when the interaction completes.
-//
 func (interaction *TLSInteraction) askPasswordAsync(ctx context.Context, password *TLSPassword, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsInteractionClass)(coreglib.PeekParentClass(interaction))
 	fnarg := gclass.ask_password_async
@@ -87794,7 +85923,6 @@ func (interaction *TLSInteraction) askPasswordAsync(ctx context.Context, passwor
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the ask password interaction.
-//
 func (interaction *TLSInteraction) askPasswordFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	gclass := (*C.GTlsInteractionClass)(coreglib.PeekParentClass(interaction))
 	fnarg := gclass.ask_password_finish
@@ -87850,7 +85978,6 @@ func (interaction *TLSInteraction) askPasswordFinish(result AsyncResulter) (TLSI
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the request certificate interaction.
-//
 func (interaction *TLSInteraction) requestCertificate(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error) {
 	gclass := (*C.GTlsInteractionClass)(coreglib.PeekParentClass(interaction))
 	fnarg := gclass.request_certificate
@@ -87904,7 +86031,6 @@ func (interaction *TLSInteraction) requestCertificate(ctx context.Context, conne
 //   - connection: Connection object.
 //   - flags providing more information about the request.
 //   - callback (optional) will be called when the interaction completes.
-//
 func (interaction *TLSInteraction) requestCertificateAsync(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags, callback AsyncReadyCallback) {
 	gclass := (*C.GTlsInteractionClass)(coreglib.PeekParentClass(interaction))
 	fnarg := gclass.request_certificate_async
@@ -87956,7 +86082,6 @@ func (interaction *TLSInteraction) requestCertificateAsync(ctx context.Context, 
 // The function returns the following values:
 //
 //   - tlsInteractionResult status of the request certificate interaction.
-//
 func (interaction *TLSInteraction) requestCertificateFinish(result AsyncResulter) (TLSInteractionResult, error) {
 	gclass := (*C.GTlsInteractionClass)(coreglib.PeekParentClass(interaction))
 	fnarg := gclass.request_certificate_finish
@@ -87999,7 +86124,6 @@ type TLSPasswordOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint8: password value (owned by the password object).
-	//
 	Value func(length *uint) *byte
 }
 
@@ -88066,7 +86190,6 @@ func marshalTLSPassword(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - tlsPassword: newly allocated password object.
-//
 func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 	var _arg1 C.GTlsPasswordFlags // out
 	var _arg2 *C.gchar            // out
@@ -88093,7 +86216,6 @@ func NewTLSPassword(flags TLSPasswordFlags, description string) *TLSPassword {
 // The function returns the following values:
 //
 //   - utf8: description of the password.
-//
 func (password *TLSPassword) Description() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
@@ -88115,7 +86237,6 @@ func (password *TLSPassword) Description() string {
 // The function returns the following values:
 //
 //   - tlsPasswordFlags flags about the password.
-//
 func (password *TLSPassword) Flags() TLSPasswordFlags {
 	var _arg0 *C.GTlsPassword     // out
 	var _cret C.GTlsPasswordFlags // in
@@ -88144,7 +86265,6 @@ func (password *TLSPassword) Flags() TLSPasswordFlags {
 // The function returns the following values:
 //
 //   - guint8: password value (owned by the password object).
-//
 func (password *TLSPassword) Value(length *uint) *byte {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gsize        // out
@@ -88173,7 +86293,6 @@ func (password *TLSPassword) Value(length *uint) *byte {
 // The function returns the following values:
 //
 //   - utf8: warning.
-//
 func (password *TLSPassword) Warning() string {
 	var _arg0 *C.GTlsPassword // out
 	var _cret *C.gchar        // in
@@ -88196,7 +86315,6 @@ func (password *TLSPassword) Warning() string {
 // The function takes the following parameters:
 //
 //   - description of the password.
-//
 func (password *TLSPassword) SetDescription(description string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
@@ -88215,7 +86333,6 @@ func (password *TLSPassword) SetDescription(description string) {
 // The function takes the following parameters:
 //
 //   - flags about the password.
-//
 func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 	var _arg0 *C.GTlsPassword     // out
 	var _arg1 C.GTlsPasswordFlags // out
@@ -88239,7 +86356,6 @@ func (password *TLSPassword) SetFlags(flags TLSPasswordFlags) {
 // The function takes the following parameters:
 //
 //   - value: new password value.
-//
 func (password *TLSPassword) SetValue(value []byte) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.guchar       // out
@@ -88263,7 +86379,6 @@ func (password *TLSPassword) SetValue(value []byte) {
 // The function takes the following parameters:
 //
 //   - warning: user readable warning.
-//
 func (password *TLSPassword) SetWarning(warning string) {
 	var _arg0 *C.GTlsPassword // out
 	var _arg1 *C.gchar        // out
@@ -88308,7 +86423,6 @@ func (password *TLSPassword) defaultWarning() string {
 // The function returns the following values:
 //
 //   - guint8: password value (owned by the password object).
-//
 func (password *TLSPassword) value(length *uint) *byte {
 	gclass := (*C.GTlsPasswordClass)(coreglib.PeekParentClass(password))
 	fnarg := gclass.get_value
@@ -88345,7 +86459,6 @@ type VFSOverrides struct {
 	// The function returns the following values:
 	//
 	//   - file: #GFile. Free the returned object with g_object_unref().
-	//
 	FileForPath func(path string) *File
 	// FileForURI gets a #GFile for uri.
 	//
@@ -88360,7 +86473,6 @@ type VFSOverrides struct {
 	// The function returns the following values:
 	//
 	//   - file: #GFile. Free the returned object with g_object_unref().
-	//
 	FileForURI func(uri string) *File
 	// SupportedURISchemes gets a list of URI schemes supported by vfs.
 	//
@@ -88368,7 +86480,6 @@ type VFSOverrides struct {
 	//
 	//   - utf8s: NULL-terminated array of strings. The returned array belongs
 	//     to GIO and must not be freed or modified.
-	//
 	SupportedURISchemes func() []string
 	// IsActive checks if the VFS is active.
 	//
@@ -88376,13 +86487,11 @@ type VFSOverrides struct {
 	//
 	//   - ok: TRUE if construction of the vfs was successful and it is now
 	//     active.
-	//
 	IsActive func() bool
 	// The function takes the following parameters:
 	//
 	//   - source
 	//   - dest
-	//
 	LocalFileMoved   func(source, dest string)
 	LocalFileRemoved func(filename string)
 	// The function takes the following parameters:
@@ -88391,7 +86500,6 @@ type VFSOverrides struct {
 	//   - filename
 	//   - info
 	//   - flags
-	//
 	LocalFileSetAttributes func(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
 	// ParseName: this operation never fails, but the returned object might
 	// not support any I/O operations if the parse_name cannot be parsed by the
@@ -88405,7 +86513,6 @@ type VFSOverrides struct {
 	//
 	//   - file for the given parse_name. Free the returned object with
 	//     g_object_unref().
-	//
 	ParseName func(parseName string) *File
 }
 
@@ -88506,7 +86613,6 @@ func marshalVFS(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - file: #GFile. Free the returned object with g_object_unref().
-//
 func (vfs *VFS) FileForPath(path string) *File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -88539,7 +86645,6 @@ func (vfs *VFS) FileForPath(path string) *File {
 // The function returns the following values:
 //
 //   - file: #GFile. Free the returned object with g_object_unref().
-//
 func (vfs *VFS) FileForURI(uri string) *File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -88566,7 +86671,6 @@ func (vfs *VFS) FileForURI(uri string) *File {
 //
 //   - utf8s: NULL-terminated array of strings. The returned array belongs to
 //     GIO and must not be freed or modified.
-//
 func (vfs *VFS) SupportedURISchemes() []string {
 	var _arg0 *C.GVfs   // out
 	var _cret **C.gchar // in
@@ -88600,7 +86704,6 @@ func (vfs *VFS) SupportedURISchemes() []string {
 // The function returns the following values:
 //
 //   - ok: TRUE if construction of the vfs was successful and it is now active.
-//
 func (vfs *VFS) IsActive() bool {
 	var _arg0 *C.GVfs    // out
 	var _cret C.gboolean // in
@@ -88631,7 +86734,6 @@ func (vfs *VFS) IsActive() bool {
 //
 //   - file for the given parse_name. Free the returned object with
 //     g_object_unref().
-//
 func (vfs *VFS) ParseName(parseName string) *File {
 	var _arg0 *C.GVfs  // out
 	var _arg1 *C.char  // out
@@ -88683,7 +86785,6 @@ func (vfs *VFS) ParseName(parseName string) *File {
 //
 //   - ok: TRUE if scheme was successfully registered, or FALSE if a handler for
 //     scheme already exists.
-//
 func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileLookupFunc) bool {
 	var _arg0 *C.GVfs              // out
 	var _arg1 *C.char              // out
@@ -88735,7 +86836,6 @@ func (vfs *VFS) RegisterURIScheme(scheme string, uriFunc, parseNameFunc VFSFileL
 //
 //   - ok: TRUE if scheme was successfully unregistered, or FALSE if a handler
 //     for scheme does not exist.
-//
 func (vfs *VFS) UnregisterURIScheme(scheme string) bool {
 	var _arg0 *C.GVfs    // out
 	var _arg1 *C.char    // out
@@ -88782,7 +86882,6 @@ func (vfs *VFS) addWritableNamespaces(list *FileAttributeInfoList) {
 // The function returns the following values:
 //
 //   - file: #GFile. Free the returned object with g_object_unref().
-//
 func (vfs *VFS) fileForPath(path string) *File {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.get_file_for_path
@@ -88818,7 +86917,6 @@ func (vfs *VFS) fileForPath(path string) *File {
 // The function returns the following values:
 //
 //   - file: #GFile. Free the returned object with g_object_unref().
-//
 func (vfs *VFS) fileForURI(uri string) *File {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.get_file_for_uri
@@ -88848,7 +86946,6 @@ func (vfs *VFS) fileForURI(uri string) *File {
 //
 //   - utf8s: NULL-terminated array of strings. The returned array belongs to
 //     GIO and must not be freed or modified.
-//
 func (vfs *VFS) supportedURISchemes() []string {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.get_supported_uri_schemes
@@ -88885,7 +86982,6 @@ func (vfs *VFS) supportedURISchemes() []string {
 // The function returns the following values:
 //
 //   - ok: TRUE if construction of the vfs was successful and it is now active.
-//
 func (vfs *VFS) isActive() bool {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.is_active
@@ -88911,7 +87007,6 @@ func (vfs *VFS) isActive() bool {
 //
 //   - source
 //   - dest
-//
 func (vfs *VFS) localFileMoved(source, dest string) {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.local_file_moved
@@ -88954,7 +87049,6 @@ func (vfs *VFS) localFileRemoved(filename string) {
 //   - filename
 //   - info
 //   - flags
-//
 func (vfs *VFS) localFileSetAttributes(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.local_file_set_attributes
@@ -89005,7 +87099,6 @@ func (vfs *VFS) localFileSetAttributes(ctx context.Context, filename string, inf
 //
 //   - file for the given parse_name. Free the returned object with
 //     g_object_unref().
-//
 func (vfs *VFS) parseName(parseName string) *File {
 	gclass := (*C.GVfsClass)(coreglib.PeekParentClass(vfs))
 	fnarg := gclass.parse_name
@@ -89035,7 +87128,6 @@ func (vfs *VFS) parseName(parseName string) *File {
 //
 //   - vfs which will be the local file system #GVfs if no other implementation
 //     is available.
-//
 func VFSGetDefault() *VFS {
 	var _cret *C.GVfs // in
 
@@ -89053,7 +87145,6 @@ func VFSGetDefault() *VFS {
 // The function returns the following values:
 //
 //   - vfs: #GVfs.
-//
 func VFSGetLocal() *VFS {
 	var _cret *C.GVfs // in
 
@@ -89081,7 +87172,6 @@ type VolumeMonitorOverrides struct {
 	// The function returns the following values:
 	//
 	//   - list of connected #GDrive objects.
-	//
 	ConnectedDrives func() []*Drive
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid()).
 	//
@@ -89093,7 +87183,6 @@ type VolumeMonitorOverrides struct {
 	//
 	//   - mount (optional) or NULL if no such mount is available. Free the
 	//     returned object with g_object_unref().
-	//
 	MountForUUID func(uuid string) *Mount
 	// Mounts gets a list of the mounts on the system.
 	//
@@ -89103,7 +87192,6 @@ type VolumeMonitorOverrides struct {
 	// The function returns the following values:
 	//
 	//   - list of #GMount objects.
-	//
 	Mounts func() []*Mount
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid()).
@@ -89116,7 +87204,6 @@ type VolumeMonitorOverrides struct {
 	//
 	//   - volume (optional) or NULL if no such volume is available. Free the
 	//     returned object with g_object_unref().
-	//
 	VolumeForUUID func(uuid string) *Volume
 	// Volumes gets a list of the volumes on the system.
 	//
@@ -89126,7 +87213,6 @@ type VolumeMonitorOverrides struct {
 	// The function returns the following values:
 	//
 	//   - list of #GVolume objects.
-	//
 	Volumes         func() []*Volume
 	MountAdded      func(mount Mounter)
 	MountChanged    func(mount Mounter)
@@ -89347,7 +87433,6 @@ func (volumeMonitor *VolumeMonitor) ConnectVolumeRemoved(f func(volume Volumer))
 // The function returns the following values:
 //
 //   - list of connected #GDrive objects.
-//
 func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
@@ -89380,7 +87465,6 @@ func (volumeMonitor *VolumeMonitor) ConnectedDrives() []*Drive {
 //
 //   - mount (optional) or NULL if no such mount is available. Free the returned
 //     object with g_object_unref().
-//
 func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
@@ -89411,7 +87495,6 @@ func (volumeMonitor *VolumeMonitor) MountForUUID(uuid string) *Mount {
 // The function returns the following values:
 //
 //   - list of #GMount objects.
-//
 func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
@@ -89444,7 +87527,6 @@ func (volumeMonitor *VolumeMonitor) Mounts() []*Mount {
 //
 //   - volume (optional) or NULL if no such volume is available. Free the
 //     returned object with g_object_unref().
-//
 func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 	var _arg0 *C.GVolumeMonitor // out
 	var _arg1 *C.char           // out
@@ -89475,7 +87557,6 @@ func (volumeMonitor *VolumeMonitor) VolumeForUUID(uuid string) *Volume {
 // The function returns the following values:
 //
 //   - list of #GVolume objects.
-//
 func (volumeMonitor *VolumeMonitor) Volumes() []*Volume {
 	var _arg0 *C.GVolumeMonitor // out
 	var _cret *C.GList          // in
@@ -89581,7 +87662,6 @@ func (volumeMonitor *VolumeMonitor) driveStopButton(drive Driver) {
 // The function returns the following values:
 //
 //   - list of connected #GDrive objects.
-//
 func (volumeMonitor *VolumeMonitor) connectedDrives() []*Drive {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.get_connected_drives
@@ -89617,7 +87697,6 @@ func (volumeMonitor *VolumeMonitor) connectedDrives() []*Drive {
 //
 //   - mount (optional) or NULL if no such mount is available. Free the returned
 //     object with g_object_unref().
-//
 func (volumeMonitor *VolumeMonitor) mountForUUID(uuid string) *Mount {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.get_mount_for_uuid
@@ -89651,7 +87730,6 @@ func (volumeMonitor *VolumeMonitor) mountForUUID(uuid string) *Mount {
 // The function returns the following values:
 //
 //   - list of #GMount objects.
-//
 func (volumeMonitor *VolumeMonitor) mounts() []*Mount {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.get_mounts
@@ -89687,7 +87765,6 @@ func (volumeMonitor *VolumeMonitor) mounts() []*Mount {
 //
 //   - volume (optional) or NULL if no such volume is available. Free the
 //     returned object with g_object_unref().
-//
 func (volumeMonitor *VolumeMonitor) volumeForUUID(uuid string) *Volume {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.get_volume_for_uuid
@@ -89721,7 +87798,6 @@ func (volumeMonitor *VolumeMonitor) volumeForUUID(uuid string) *Volume {
 // The function returns the following values:
 //
 //   - list of #GVolume objects.
-//
 func (volumeMonitor *VolumeMonitor) volumes() []*Volume {
 	gclass := (*C.GVolumeMonitorClass)(coreglib.PeekParentClass(volumeMonitor))
 	fnarg := gclass.get_volumes
@@ -89894,7 +87970,6 @@ func (volumeMonitor *VolumeMonitor) volumeRemoved(volume Volumer) {
 //
 //   - volume object that is the parent for mount or NULL if no wants to adopt
 //     the #GMount.
-//
 func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 	var _arg1 *C.GMount  // out
 	var _cret *C.GVolume // in
@@ -89917,7 +87992,6 @@ func VolumeMonitorAdoptOrphanMount(mount Mounter) *Volume {
 //
 //   - volumeMonitor: reference to the Monitor used by gio. Call
 //     g_object_unref() when done with it.
-//
 func VolumeMonitorGet() *VolumeMonitor {
 	var _cret *C.GVolumeMonitor // in
 
@@ -89989,7 +88063,6 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - zlibCompressor: new Compressor.
-//
 func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _arg2 C.int                   // out
@@ -90014,7 +88087,6 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor {
 // The function returns the following values:
 //
 //   - fileInfo (optional) or NULL.
-//
 func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibCompressor // out
 	var _cret *C.GFileInfo       // in
@@ -90045,7 +88117,6 @@ func (compressor *ZlibCompressor) FileInfo() *FileInfo {
 // The function takes the following parameters:
 //
 //   - fileInfo (optional): Info.
-//
 func (compressor *ZlibCompressor) SetFileInfo(fileInfo *FileInfo) {
 	var _arg0 *C.GZlibCompressor // out
 	var _arg1 *C.GFileInfo       // out
@@ -90118,7 +88189,6 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - zlibDecompressor: new Decompressor.
-//
 func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 	var _arg1 C.GZlibCompressorFormat // out
 	var _cret *C.GZlibDecompressor    // in
@@ -90144,7 +88214,6 @@ func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor {
 // The function returns the following values:
 //
 //   - fileInfo (optional) or NULL.
-//
 func (decompressor *ZlibDecompressor) FileInfo() *FileInfo {
 	var _arg0 *C.GZlibDecompressor // out
 	var _cret *C.GFileInfo         // in
@@ -90513,7 +88582,6 @@ func (d *DBusAnnotationInfo) SetRefCount(refCount int) {
 //
 //   - utf8 (optional): value or NULL if not found. Do not free, it is owned by
 //     annotations.
-//
 func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
 	var _arg1 **C.GDBusAnnotationInfo // out
 	var _arg2 *C.gchar                // out
@@ -90864,7 +88932,6 @@ func (info *DBusInterfaceInfo) CacheRelease() {
 //
 //   - dBusMethodInfo (optional) or NULL if not found. Do not free, it is owned
 //     by info.
-//
 func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -90907,7 +88974,6 @@ func (info *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 //
 //   - dBusPropertyInfo (optional) or NULL if not found. Do not free, it is
 //     owned by info.
-//
 func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -90950,7 +89016,6 @@ func (info *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 //
 //   - dBusSignalInfo (optional) or NULL if not found. Do not free, it is owned
 //     by info.
-//
 func (info *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var _arg0 *C.GDBusInterfaceInfo // out
 	var _arg1 *C.gchar              // out
@@ -91328,7 +89393,6 @@ func (d *DBusNodeInfo) SetRefCount(refCount int) {
 //
 //   - dBusInterfaceInfo (optional) or NULL if not found. Do not free, it is
 //     owned by info.
-//
 func (info *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var _arg0 *C.GDBusNodeInfo      // out
 	var _arg1 *C.gchar              // out
@@ -91844,7 +89908,6 @@ func (f *FileAttributeInfoList) SetNInfos(nInfos int) {
 //   - name of the attribute to add.
 //   - typ for the attribute.
 //   - flags for the attribute.
-//
 func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _arg1 *C.char                   // out
@@ -91869,7 +89932,6 @@ func (list *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags
 // The function returns the following values:
 //
 //   - fileAttributeInfoList: copy of the given list.
-//
 func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _cret *C.GFileAttributeInfoList // in
@@ -91901,7 +89963,6 @@ func (list *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 // The function returns the following values:
 //
 //   - fileAttributeInfo for the name, or NULL if an attribute isn't found.
-//
 func (list *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var _arg0 *C.GFileAttributeInfoList // out
 	var _arg1 *C.char                   // out
@@ -91978,7 +90039,6 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
 //
 //   - ok: TRUE if the matcher matches all of the entries in the given ns,
 //     FALSE otherwise.
-//
 func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
@@ -92007,7 +90067,6 @@ func (matcher *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
 //
 //   - utf8 (optional): string containing the next attribute or, NULL if no more
 //     attribute exist.
-//
 func (matcher *FileAttributeMatcher) EnumerateNext() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
@@ -92037,7 +90096,6 @@ func (matcher *FileAttributeMatcher) EnumerateNext() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if attribute matches matcher. FALSE otherwise.
-//
 func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
@@ -92070,7 +90128,6 @@ func (matcher *FileAttributeMatcher) Matches(attribute string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the matcher only matches attribute. FALSE otherwise.
-//
 func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.char                  // out
@@ -92109,7 +90166,6 @@ func (matcher *FileAttributeMatcher) MatchesOnly(attribute string) bool {
 //
 //   - fileAttributeMatcher (optional): file attribute matcher matching all
 //     attributes of matcher that are not matched by subtract.
-//
 func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _arg1 *C.GFileAttributeMatcher // out
@@ -92150,7 +90206,6 @@ func (matcher *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *F
 //
 //   - utf8: string describing the attributes the matcher matches against or
 //     NULL if matcher was NULL.
-//
 func (matcher *FileAttributeMatcher) String() string {
 	var _arg0 *C.GFileAttributeMatcher // out
 	var _cret *C.char                  // in
@@ -92928,22 +90983,22 @@ type resolverClass struct {
 //
 // An example resource description:
 //
-//    <?xml version="1.0" encoding="UTF-8"?>
-//    <gresources>
-//      <gresource prefix="/org/gtk/Example">
-//        <file>data/splashscreen.png</file>
-//        <file compressed="true">dialog.ui</file>
-//        <file preprocess="xml-stripblanks">menumarkup.xml</file>
-//        <file alias="example.css">data/example.css</file>
-//      </gresource>
-//    </gresources>
+//	<?xml version="1.0" encoding="UTF-8"?>
+//	<gresources>
+//	  <gresource prefix="/org/gtk/Example">
+//	    <file>data/splashscreen.png</file>
+//	    <file compressed="true">dialog.ui</file>
+//	    <file preprocess="xml-stripblanks">menumarkup.xml</file>
+//	    <file alias="example.css">data/example.css</file>
+//	  </gresource>
+//	</gresources>
 //
 // This will create a resource bundle with the following files:
 //
-//    /org/gtk/Example/data/splashscreen.png
-//    /org/gtk/Example/dialog.ui
-//    /org/gtk/Example/menumarkup.xml
-//    /org/gtk/Example/example.css
+//	/org/gtk/Example/data/splashscreen.png
+//	/org/gtk/Example/dialog.ui
+//	/org/gtk/Example/menumarkup.xml
+//	/org/gtk/Example/example.css
 //
 // Note that all resources in the process share the same namespace, so use
 // Java-style path prefixes (like in the above example) to avoid conflicts.
@@ -92996,7 +91051,7 @@ type resolverClass struct {
 //
 // A substitution has the form
 //
-//    /org/gtk/libgtk=/home/desrt/gtk-overlay
+//	/org/gtk/libgtk=/home/desrt/gtk-overlay
 //
 // The part before the = is the resource subpath for which the overlay applies.
 // The part after is a filesystem path which contains files and subdirectories
@@ -93074,7 +91129,6 @@ func NewResourceFromData(data *glib.Bytes) (*Resource, error) {
 // The function returns the following values:
 //
 //   - utf8s: array of constant strings.
-//
 func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -93133,7 +91187,6 @@ func (resource *Resource) EnumerateChildren(path string, lookupFlags ResourceLoo
 //     file, or NULL if the length is not needed.
 //   - flags (optional): location to place the flags about the file, or NULL if
 //     the length is not needed.
-//
 func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -93186,7 +91239,6 @@ func (resource *Resource) Info(path string, lookupFlags ResourceLookupFlags) (ui
 // The function returns the following values:
 //
 //   - bytes or NULL on error. Free the returned object with g_bytes_unref().
-//
 func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlags) (*glib.Bytes, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -93235,7 +91287,6 @@ func (resource *Resource) LookupData(path string, lookupFlags ResourceLookupFlag
 //
 //   - inputStream or NULL on error. Free the returned object with
 //     g_object_unref().
-//
 func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (InputStreamer, error) {
 	var _arg0 *C.GResource           // out
 	var _arg1 *C.char                // out
@@ -93297,7 +91348,6 @@ func (resource *Resource) OpenStream(path string, lookupFlags ResourceLookupFlag
 // The function returns the following values:
 //
 //   - resource: new #GResource, or NULL on error.
-//
 func ResourceLoad(filename string) (*Resource, error) {
 	var _arg1 *C.gchar     // out
 	var _cret *C.GResource // in
@@ -93376,14 +91426,14 @@ func (s *SettingsClass) Padding() [20]unsafe.Pointer {
 //
 // Consider the following example:
 //
-//    {
-//      GSettings *settings;
-//      gint some_value;
+//	{
+//	  GSettings *settings;
+//	  gint some_value;
 //
-//      settings = plugin_get_settings (self, NULL);
-//      some_value = g_settings_get_int (settings, "some-value");
-//      ...
-//    }
+//	  settings = plugin_get_settings (self, NULL);
+//	  some_value = g_settings_get_int (settings, "some-value");
+//	  ...
+//	}
 //
 // It's also possible that the plugin system expects the schema source files
 // (ie: .gschema.xml files) instead of a gschemas.compiled file. In that case,
@@ -93410,7 +91460,6 @@ func marshalSettingsSchema(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - utf8: ID.
-//
 func (schema *SettingsSchema) ID() string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret *C.gchar           // in
@@ -93439,7 +91488,6 @@ func (schema *SettingsSchema) ID() string {
 // The function returns the following values:
 //
 //   - settingsSchemaKey for name.
-//
 func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 	var _arg0 *C.GSettingsSchema    // out
 	var _arg1 *C.gchar              // out
@@ -93479,7 +91527,6 @@ func (schema *SettingsSchema) Key(name string) *SettingsSchemaKey {
 // The function returns the following values:
 //
 //   - utf8 (optional): path of the schema, or NULL.
-//
 func (schema *SettingsSchema) Path() string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret *C.gchar           // in
@@ -93507,7 +91554,6 @@ func (schema *SettingsSchema) Path() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if such a key exists.
-//
 func (schema *SettingsSchema) HasKey(name string) bool {
 	var _arg0 *C.GSettingsSchema // out
 	var _arg1 *C.gchar           // out
@@ -93537,7 +91583,6 @@ func (schema *SettingsSchema) HasKey(name string) bool {
 // The function returns the following values:
 //
 //   - utf8s: list of the children on settings, in no defined order.
-//
 func (schema *SettingsSchema) ListChildren() []string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret **C.gchar          // in
@@ -93577,7 +91622,6 @@ func (schema *SettingsSchema) ListChildren() []string {
 // The function returns the following values:
 //
 //   - utf8s: list of the keys on schema, in no defined order.
-//
 func (schema *SettingsSchema) ListKeys() []string {
 	var _arg0 *C.GSettingsSchema // out
 	var _cret **C.gchar          // in
@@ -93634,7 +91678,6 @@ func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - variant: default value for the key.
-//
 func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariant           // in
@@ -93673,7 +91716,6 @@ func (key *SettingsSchemaKey) DefaultValue() *glib.Variant {
 // The function returns the following values:
 //
 //   - utf8 (optional): description for key, or NULL.
-//
 func (key *SettingsSchemaKey) Description() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
@@ -93697,7 +91739,6 @@ func (key *SettingsSchemaKey) Description() string {
 // The function returns the following values:
 //
 //   - utf8: name of key.
-//
 func (key *SettingsSchemaKey) Name() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
@@ -93752,7 +91793,6 @@ func (key *SettingsSchemaKey) Name() string {
 // The function returns the following values:
 //
 //   - variant describing the range.
-//
 func (key *SettingsSchemaKey) Range() *glib.Variant {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariant           // in
@@ -93790,7 +91830,6 @@ func (key *SettingsSchemaKey) Range() *glib.Variant {
 // The function returns the following values:
 //
 //   - utf8 (optional): summary for key, or NULL.
-//
 func (key *SettingsSchemaKey) Summary() string {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.gchar              // in
@@ -93814,7 +91853,6 @@ func (key *SettingsSchemaKey) Summary() string {
 // The function returns the following values:
 //
 //   - variantType: type of key.
-//
 func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _cret *C.GVariantType       // in
@@ -93844,7 +91882,6 @@ func (key *SettingsSchemaKey) ValueType() *glib.VariantType {
 // The function returns the following values:
 //
 //   - ok: TRUE if value is valid for key.
-//
 func (key *SettingsSchemaKey) RangeCheck(value *glib.Variant) bool {
 	var _arg0 *C.GSettingsSchemaKey // out
 	var _arg1 *C.GVariant           // out
@@ -93943,7 +91980,6 @@ func NewSettingsSchemaSourceFromDirectory(directory string, parent *SettingsSche
 //
 //   - nonRelocatable: the list of non-relocatable schemas, in no defined order.
 //   - relocatable: list of relocatable schemas, in no defined order.
-//
 func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable []string, relocatable []string) {
 	var _arg0 *C.GSettingsSchemaSource // out
 	var _arg1 C.gboolean               // out
@@ -94015,7 +92051,6 @@ func (source *SettingsSchemaSource) ListSchemas(recursive bool) (nonRelocatable 
 // The function returns the following values:
 //
 //   - settingsSchema (optional): new Schema.
-//
 func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *SettingsSchema {
 	var _arg0 *C.GSettingsSchemaSource // out
 	var _arg1 *C.gchar                 // out
@@ -94065,7 +92100,6 @@ func (source *SettingsSchemaSource) Lookup(schemaId string, recursive bool) *Set
 // The function returns the following values:
 //
 //   - settingsSchemaSource (optional): default schema source.
-//
 func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 	var _cret *C.GSettingsSchemaSource // in
 
@@ -94289,7 +92323,6 @@ func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) 
 // The function returns the following values:
 //
 //   - srvTarget: copy of target.
-//
 func (target *SrvTarget) Copy() *SrvTarget {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.GSrvTarget // in
@@ -94320,7 +92353,6 @@ func (target *SrvTarget) Copy() *SrvTarget {
 // The function returns the following values:
 //
 //   - utf8 target's hostname.
-//
 func (target *SrvTarget) Hostname() string {
 	var _arg0 *C.GSrvTarget // out
 	var _cret *C.gchar      // in
@@ -94342,7 +92374,6 @@ func (target *SrvTarget) Hostname() string {
 // The function returns the following values:
 //
 //   - guint16 target's port.
-//
 func (target *SrvTarget) Port() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
@@ -94365,7 +92396,6 @@ func (target *SrvTarget) Port() uint16 {
 // The function returns the following values:
 //
 //   - guint16 target's priority.
-//
 func (target *SrvTarget) Priority() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
@@ -94388,7 +92418,6 @@ func (target *SrvTarget) Priority() uint16 {
 // The function returns the following values:
 //
 //   - guint16 target's weight.
-//
 func (target *SrvTarget) Weight() uint16 {
 	var _arg0 *C.GSrvTarget // out
 	var _cret C.guint16     // in
@@ -94442,7 +92471,6 @@ func (staticResource *StaticResource) Fini() {
 // The function returns the following values:
 //
 //   - resource: #GResource.
-//
 func (staticResource *StaticResource) Resource() *Resource {
 	var _arg0 *C.GStaticResource // out
 	var _cret *C.GResource       // in

@@ -4673,7 +4673,6 @@ type SpawnChildSetupFunc func()
 //   - line
 //   - prettyFunction
 //   - expression
-//
 func AssertWarning(logDomain, file string, line int, prettyFunction, expression string) {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out
@@ -4713,7 +4712,6 @@ func AssertWarning(logDomain, file string, line int, prettyFunction, expression 
 // The function returns the following values:
 //
 //   - filename: name of the file without any leading directory components.
-//
 func Basename(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -4745,7 +4743,6 @@ func Basename(fileName string) string {
 //
 //   - gint: index of the first bit set which is higher than nth_bit, or -1 if
 //     no higher bits are set.
-//
 func BitNthLSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
@@ -4779,7 +4776,6 @@ func BitNthLSF(mask uint32, nthBit int) int {
 //
 //   - gint: index of the first bit set which is lower than nth_bit, or -1 if no
 //     lower bits are set.
-//
 func BitNthMSF(mask uint32, nthBit int) int {
 	var _arg1 C.gulong // out
 	var _arg2 C.gint   // out
@@ -4809,7 +4805,6 @@ func BitNthMSF(mask uint32, nthBit int) int {
 // The function returns the following values:
 //
 //   - guint: number of bits used to hold number.
-//
 func BitStorage(number uint32) uint {
 	var _arg1 C.gulong // out
 	var _cret C.guint  // in
@@ -4837,7 +4832,6 @@ func BitStorage(number uint32) uint {
 // The function returns the following values:
 //
 //   - filename: newly-allocated string that must be freed with g_free().
-//
 func BuildFilenamev(args []string) string {
 	var _arg1 **C.gchar // out
 	var _cret *C.gchar  // in
@@ -4879,7 +4873,6 @@ func BuildFilenamev(args []string) string {
 // The function returns the following values:
 //
 //   - filename: newly-allocated string that must be freed with g_free().
-//
 func BuildPathv(separator string, args []string) string {
 	var _arg1 *C.gchar  // out
 	var _arg2 **C.gchar // out
@@ -4939,7 +4932,6 @@ func BuildPathv(separator string, args []string) string {
 // The function returns the following values:
 //
 //   - ret: newly allocated string with the canonical file path.
-//
 func CanonicalizeFilename(filename, relativeTo string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -4987,7 +4979,6 @@ func CanonicalizeFilename(filename, relativeTo string) string {
 //   - utf8: NULL if the GLib library is compatible with the given version,
 //     or a string describing the version mismatch. The returned string is owned
 //     by GLib and must not be modified or freed.
-//
 func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	var _arg1 C.guint  // out
 	var _arg2 C.guint  // out
@@ -5026,7 +5017,6 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 //   - utf8 (optional): digest of the binary data as a string in hexadecimal,
 //     or NULL if g_checksum_new() fails for checksum_type. The returned string
 //     should be freed with g_free() when done using it.
-//
 func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.GBytes       // out
@@ -5065,7 +5055,6 @@ func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 //   - utf8 (optional): digest of the binary data as a string in hexadecimal,
 //     or NULL if g_checksum_new() fails for checksum_type. The returned string
 //     should be freed with g_free() when done using it.
-//
 func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar       // out
@@ -5107,7 +5096,6 @@ func ComputeChecksumForData(checksumType ChecksumType, data []byte) string {
 //   - utf8 (optional): checksum as a hexadecimal string, or NULL if
 //     g_checksum_new() fails for checksum_type. The returned string should be
 //     freed with g_free() when done using it.
-//
 func ComputeChecksumForString(checksumType ChecksumType, str string, length int) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.gchar        // out
@@ -5149,7 +5137,6 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 //
 //   - utf8: HMAC of the binary data as a string in hexadecimal. The returned
 //     string should be freed with g_free() when done using it.
-//
 func ComputeHMACForBytes(digestType ChecksumType, key, data *Bytes) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.GBytes       // out
@@ -5188,7 +5175,6 @@ func ComputeHMACForBytes(digestType ChecksumType, key, data *Bytes) string {
 //
 //   - utf8: HMAC of the binary data as a string in hexadecimal. The returned
 //     string should be freed with g_free() when done using it.
-//
 func ComputeHMACForData(digestType ChecksumType, key, data []byte) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar       // out
@@ -5235,7 +5221,6 @@ func ComputeHMACForData(digestType ChecksumType, key, data []byte) string {
 //
 //   - utf8: HMAC as a hexadecimal string. The returned string should be freed
 //     with g_free() when done using it.
-//
 func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
 	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar       // out
@@ -5298,7 +5283,6 @@ func ComputeHMACForString(digestType ChecksumType, key []byte, str string, lengt
 //   - guint8s: If the conversion was successful, a newly allocated buffer
 //     containing the converted string, which must be freed with g_free().
 //     Otherwise NULL and error will be set.
-//
 func Convert(str, toCodeset, fromCodeset string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -5385,7 +5369,6 @@ func ConvertErrorQuark() Quark {
 //   - guint8s: If the conversion was successful, a newly allocated buffer
 //     containing the converted string, which must be freed with g_free().
 //     Otherwise NULL and error will be set.
-//
 func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []byte, error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -5444,7 +5427,6 @@ func ConvertWithFallback(str, toCodeset, fromCodeset, fallback string) (uint, []
 // The function returns the following values:
 //
 //   - utf8: translated string for the given locale category.
-//
 func Dcgettext(domain, msgid string, category int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -5512,7 +5494,6 @@ func Dcgettext(domain, msgid string, category int) string {
 // The function returns the following values:
 //
 //   - utf8: translated string.
-//
 func Dgettext(domain, msgid string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -5552,7 +5533,6 @@ func Dgettext(domain, msgid string) string {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two keys match.
-//
 func DirectEqual(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -5588,7 +5568,6 @@ func DirectEqual(v1, v2 unsafe.Pointer) bool {
 // The function returns the following values:
 //
 //   - guint: hash value corresponding to the key.
-//
 func DirectHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -5622,7 +5601,6 @@ func DirectHash(v unsafe.Pointer) uint {
 // The function returns the following values:
 //
 //   - utf8: translated string.
-//
 func Dngettext(domain, msgid, msgidPlural string, n uint32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -5666,7 +5644,6 @@ func Dngettext(domain, msgid, msgidPlural string, n uint32) string {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two keys match.
-//
 func DoubleEqual(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -5700,7 +5677,6 @@ func DoubleEqual(v1, v2 unsafe.Pointer) bool {
 // The function returns the following values:
 //
 //   - guint: hash value corresponding to the key.
-//
 func DoubleHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -5740,7 +5716,6 @@ func DoubleHash(v unsafe.Pointer) uint {
 // The function returns the following values:
 //
 //   - utf8: translated string.
-//
 func Dpgettext(domain, msgctxtid string, msgidoffset uint) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -5787,7 +5762,6 @@ func Dpgettext(domain, msgctxtid string, msgidoffset uint) string {
 // The function returns the following values:
 //
 //   - utf8: translated string.
-//
 func Dpgettext2(domain, context, msgid string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -5829,7 +5803,6 @@ func Dpgettext2(domain, context, msgid string) string {
 //   - filename: value of the environment variable, or NULL if the environment
 //     variable is not set in envp. The returned string is owned by envp,
 //     and will be freed if variable is set or unset again.
-//
 func EnvironGetenv(envp []string, variable string) string {
 	var _arg1 **C.gchar // out
 	var _arg2 *C.gchar  // out
@@ -5877,7 +5850,6 @@ func EnvironGetenv(envp []string, variable string) string {
 // The function returns the following values:
 //
 //   - filenames: the updated environment list. Free it using g_strfreev().
-//
 func EnvironSetenv(envp []string, variable, value string, overwrite bool) []string {
 	var _arg1 **C.gchar  // out
 	var _arg2 *C.gchar   // out
@@ -5944,7 +5916,6 @@ func EnvironSetenv(envp []string, variable, value string, overwrite bool) []stri
 // The function returns the following values:
 //
 //   - filenames: the updated environment list. Free it using g_strfreev().
-//
 func EnvironUnsetenv(envp []string, variable string) []string {
 	var _arg1 **C.gchar // out
 	var _arg2 *C.gchar  // out
@@ -6004,7 +5975,6 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 // The function returns the following values:
 //
 //   - fileError corresponding to the given errno.
-//
 func FileErrorFromErrno(errNo int) FileError {
 	var _arg1 C.gint       // out
 	var _cret C.GFileError // in
@@ -6053,7 +6023,6 @@ func FileErrorQuark() Quark {
 //
 //   - contents: location to store an allocated string, use g_free() to free the
 //     returned string.
-//
 func FileGetContents(filename string) ([]byte, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
@@ -6106,7 +6075,6 @@ func FileGetContents(filename string) ([]byte, error) {
 //     writing. The file is opened in binary mode on platforms where there is
 //     a difference. The file handle should be closed with close(). In case of
 //     errors, -1 is returned and error will be set.
-//
 func FileOpenTmp(tmpl string) (string, int, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
@@ -6147,7 +6115,6 @@ func FileOpenTmp(tmpl string) (string, int, error) {
 //
 //   - ret: newly-allocated string with the contents of the symbolic link,
 //     or NULL if an error occurred.
-//
 func FileReadLink(filename string) (string, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.gchar  // in
@@ -6181,7 +6148,6 @@ func FileReadLink(filename string) (string, error) {
 //   - filename: name of a file to write contents to, in the GLib file name
 //     encoding.
 //   - contents: string to write to the file.
-//
 func FileSetContents(filename, contents string) error {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -6271,7 +6237,6 @@ func FileSetContents(filename, contents string) error {
 //   - contents: string to write to the file.
 //   - flags controlling the safety vs speed of the operation.
 //   - mode: file mode, as passed to open(); typically this will be 0666.
-//
 func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, mode int) error {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -6324,12 +6289,12 @@ func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, 
 // file without being tricked into writing into a different location. It doesn't
 // work!
 //
-//    // DON'T DO THIS
-//    if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK))
-//      {
-//        fd = g_open (filename, O_WRONLY);
-//        // write to fd
-//      }
+//	// DON'T DO THIS
+//	if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK))
+//	  {
+//	    fd = g_open (filename, O_WRONLY);
+//	    // write to fd
+//	  }
 //
 // Another thing to note is that G_FILE_TEST_EXISTS and
 // G_FILE_TEST_IS_EXECUTABLE are implemented using the access() system call.
@@ -6353,7 +6318,6 @@ func FileSetContentsFull(filename, contents string, flags FileSetContentsFlags, 
 // The function returns the following values:
 //
 //   - ok: whether a test was TRUE.
-//
 func TestFile(filename string, test FileTest) bool {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GFileTest // out
@@ -6401,7 +6365,6 @@ func TestFile(filename string, test FileTest) bool {
 //
 //   - utf8: newly allocated string containing a rendition of the basename of
 //     the filename in valid UTF-8.
-//
 func FilenameDisplayBasename(filename string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -6444,7 +6407,6 @@ func FilenameDisplayBasename(filename string) string {
 //
 //   - utf8: newly allocated string containing a rendition of the filename in
 //     valid UTF-8.
-//
 func FilenameDisplayName(filename string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -6476,7 +6438,6 @@ func FilenameDisplayName(filename string) string {
 //     no hostname in the URI, NULL will be stored in this location.
 //   - filename: newly-allocated string holding the resulting filename, or NULL
 //     on an error.
-//
 func FilenameFromURI(uri string) (hostname, filename string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
@@ -6533,7 +6494,6 @@ func FilenameFromURI(uri string) (hostname, filename string, goerr error) {
 //   - bytesWritten (optional): number of bytes stored in the output buffer (not
 //     including the terminating nul).
 //   - filename: The converted string, or NULL on an error.
-//
 func FilenameFromUTF8(utf8String string, len int) (bytesRead, bytesWritten uint, filename string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
@@ -6579,7 +6539,6 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead, bytesWritten uint,
 //
 //   - utf8: newly-allocated string holding the resulting URI, or NULL on an
 //     error.
-//
 func FilenameToURI(filename, hostname string) (string, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // out
@@ -6639,7 +6598,6 @@ func FilenameToURI(filename, hostname string) (string, error) {
 //   - bytesWritten (optional): number of bytes stored in the output buffer (not
 //     including the terminating nul).
 //   - utf8: converted string, or NULL on an error.
-//
 func FilenameToUTF8(opsysstring string, len int) (bytesRead, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
@@ -6695,7 +6653,6 @@ func FilenameToUTF8(opsysstring string, len int) (bytesRead, bytesWritten uint, 
 //
 //   - filename (optional): newly-allocated string with the absolute path,
 //     or NULL.
-//
 func FindProgramInPath(program string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -6738,7 +6695,6 @@ func FindProgramInPath(program string) string {
 //
 //   - utf8: newly-allocated formatted string containing a human readable file
 //     size.
-//
 func FormatSize(size uint64) string {
 	var _arg1 C.guint64 // out
 	var _cret *C.gchar  // in
@@ -6776,7 +6732,6 @@ func FormatSize(size uint64) string {
 //
 //   - utf8: newly-allocated formatted string containing a human readable file
 //     size.
-//
 func FormatSizeForDisplay(size int64) string {
 	var _arg1 C.goffset // out
 	var _cret *C.gchar  // in
@@ -6808,7 +6763,6 @@ func FormatSizeForDisplay(size int64) string {
 //
 //   - utf8: newly-allocated formatted string containing a human readable file
 //     size.
-//
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 	var _arg1 C.guint64          // out
 	var _arg2 C.GFormatSizeFlags // out
@@ -6839,7 +6793,6 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 // The function returns the following values:
 //
 //   - utf8 (optional): human-readable application name. May return NULL.
-//
 func GetApplicationName() string {
 	var _cret *C.gchar // in
 
@@ -6877,7 +6830,6 @@ func GetApplicationName() string {
 //
 //   - charset (optional): return location for character set name, or NULL.
 //   - ok: TRUE if the returned charset is UTF-8.
-//
 func GetCharset() (string, bool) {
 	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
@@ -6903,7 +6855,6 @@ func GetCharset() (string, bool) {
 //
 //   - utf8: newly allocated string containing the name of the character set.
 //     This string must be freed with g_free().
-//
 func GetCodeset() string {
 	var _cret *C.gchar // in
 
@@ -6938,7 +6889,6 @@ func GetCodeset() string {
 //
 //   - charset (optional): return location for character set name, or NULL.
 //   - ok: TRUE if the returned charset is UTF-8.
-//
 func GetConsoleCharset() (string, bool) {
 	var _arg1 *C.char    // in
 	var _cret C.gboolean // in
@@ -6971,7 +6921,6 @@ func GetConsoleCharset() (string, bool) {
 // The function returns the following values:
 //
 //   - filename: current directory.
-//
 func GetCurrentDir() string {
 	var _cret *C.gchar // in
 
@@ -6994,7 +6943,6 @@ func GetCurrentDir() string {
 // The function takes the following parameters:
 //
 //   - result structure in which to store current time.
-//
 func GetCurrentTime(result *TimeVal) {
 	var _arg1 *C.GTimeVal // out
 
@@ -7018,7 +6966,6 @@ func GetCurrentTime(result *TimeVal) {
 // The function returns the following values:
 //
 //   - filenames: the list of environment variables.
-//
 func GetEnviron() []string {
 	var _cret **C.gchar // in
 
@@ -7074,7 +7021,6 @@ func GetEnviron() []string {
 //   - filenameCharsets: return location for the NULL-terminated list of
 //     encoding names.
 //   - ok: TRUE if the filename encoding is UTF-8.
-//
 func GetFilenameCharsets() ([]string, bool) {
 	var _arg1 **C.gchar  // in
 	var _cret C.gboolean // in
@@ -7128,7 +7074,6 @@ func GetFilenameCharsets() ([]string, bool) {
 // The function returns the following values:
 //
 //   - filename: current user's home directory.
-//
 func GetHomeDir() string {
 	var _cret *C.gchar // in
 
@@ -7157,7 +7102,6 @@ func GetHomeDir() string {
 // The function returns the following values:
 //
 //   - utf8: host name of the machine.
-//
 func GetHostName() string {
 	var _cret *C.gchar // in
 
@@ -7185,7 +7129,6 @@ func GetHostName() string {
 //
 //   - utf8s: NULL-terminated array of strings owned by GLib that must not be
 //     modified or freed.
-//
 func GetLanguageNames() []string {
 	var _cret **C.gchar // in
 
@@ -7231,7 +7174,6 @@ func GetLanguageNames() []string {
 //     g_get_language_names_with_category was called from. It must not be
 //     modified or freed. It must be copied if planned to be used in another
 //     thread.
-//
 func GetLanguageNamesWithCategory(categoryName string) []string {
 	var _arg1 *C.gchar  // out
 	var _cret **C.gchar // in
@@ -7284,7 +7226,6 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 //
 //   - utf8s: newly allocated array of newly allocated strings with the locale
 //     variants. Free with g_strfreev().
-//
 func GetLocaleVariants(locale string) []string {
 	var _arg1 *C.gchar  // out
 	var _cret **C.gchar // in
@@ -7329,7 +7270,6 @@ func GetLocaleVariants(locale string) []string {
 // The function returns the following values:
 //
 //   - gint64: monotonic time, in microseconds.
-//
 func GetMonotonicTime() int64 {
 	var _cret C.gint64 // in
 
@@ -7360,7 +7300,6 @@ func GetMonotonicTime() int64 {
 //
 //   - utf8 (optional): associated value for the requested key or NULL if this
 //     information is not provided.
-//
 func GetOsInfo(keyName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -7393,7 +7332,6 @@ func GetOsInfo(keyName string) string {
 //
 //   - utf8 (optional): name of the program, or NULL if it has not been set yet.
 //     The returned string belongs to GLib and must not be modified or freed.
-//
 func GetPrgname() string {
 	var _cret *C.gchar // in
 
@@ -7416,7 +7354,6 @@ func GetPrgname() string {
 // The function returns the following values:
 //
 //   - filename user's real name.
-//
 func GetRealName() string {
 	var _cret *C.gchar // in
 
@@ -7441,7 +7378,6 @@ func GetRealName() string {
 // The function returns the following values:
 //
 //   - gint64: number of microseconds since January 1, 1970 UTC.
-//
 func GetRealTime() int64 {
 	var _cret C.gint64 // in
 
@@ -7478,7 +7414,6 @@ func GetRealTime() int64 {
 //
 //   - filenames: a NULL-terminated array of strings owned by GLib that must not
 //     be modified or freed.
-//
 func GetSystemConfigDirs() []string {
 	var _cret **C.gchar // in
 
@@ -7539,7 +7474,6 @@ func GetSystemConfigDirs() []string {
 //
 //   - filenames: a NULL-terminated array of strings owned by GLib that must not
 //     be modified or freed.
-//
 func GetSystemDataDirs() []string {
 	var _cret **C.gchar // in
 
@@ -7579,7 +7513,6 @@ func GetSystemDataDirs() []string {
 // The function returns the following values:
 //
 //   - filename: directory to use for temporary files.
-//
 func GetTmpDir() string {
 	var _cret *C.gchar // in
 
@@ -7613,7 +7546,6 @@ func GetTmpDir() string {
 // The function returns the following values:
 //
 //   - filename: string owned by GLib that must not be modified or freed.
-//
 func GetUserCacheDir() string {
 	var _cret *C.gchar // in
 
@@ -7648,7 +7580,6 @@ func GetUserCacheDir() string {
 // The function returns the following values:
 //
 //   - filename: string owned by GLib that must not be modified or freed.
-//
 func GetUserConfigDir() string {
 	var _cret *C.gchar // in
 
@@ -7683,7 +7614,6 @@ func GetUserConfigDir() string {
 // The function returns the following values:
 //
 //   - filename: string owned by GLib that must not be modified or freed.
-//
 func GetUserDataDir() string {
 	var _cret *C.gchar // in
 
@@ -7704,7 +7634,6 @@ func GetUserDataDir() string {
 // The function returns the following values:
 //
 //   - filename: user name of the current user.
-//
 func GetUserName() string {
 	var _cret *C.gchar // in
 
@@ -7732,7 +7661,6 @@ func GetUserName() string {
 // The function returns the following values:
 //
 //   - filename: string owned by GLib that must not be modified or freed.
-//
 func GetUserRuntimeDir() string {
 	var _cret *C.gchar // in
 
@@ -7765,7 +7693,6 @@ func GetUserRuntimeDir() string {
 //   - filename: path to the specified special directory, or NULL if the logical
 //     id was not found. The returned string is owned by GLib and should not be
 //     modified or freed.
-//
 func GetUserSpecialDir(directory UserDirectory) string {
 	var _arg1 C.GUserDirectory // out
 	var _cret *C.gchar         // in
@@ -7798,7 +7725,6 @@ func GetUserSpecialDir(directory UserDirectory) string {
 //   - filename: value of the environment variable, or NULL if the environment
 //     variable is not found. The returned string may be overwritten by the next
 //     call to g_getenv(), g_setenv() or g_unsetenv().
-//
 func Getenv(variable string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -7832,7 +7758,6 @@ func Getenv(variable string) string {
 // The function returns the following values:
 //
 //   - ok: TRUE if hostname contains any ASCII-encoded segments.
-//
 func HostnameIsASCIIEncoded(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -7864,7 +7789,6 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if hostname is an IP address.
-//
 func HostnameIsIPAddress(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -7899,7 +7823,6 @@ func HostnameIsIPAddress(hostname string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if hostname contains any non-ASCII characters.
-//
 func HostnameIsNonASCII(hostname string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -7930,7 +7853,6 @@ func HostnameIsNonASCII(hostname string) bool {
 //
 //   - utf8 (optional): ASCII hostname, which must be freed, or NULL if hostname
 //     is in some way invalid.
-//
 func HostnameToASCII(hostname string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -7967,7 +7889,6 @@ func HostnameToASCII(hostname string) string {
 //
 //   - utf8 (optional): UTF-8 hostname, which must be freed, or NULL if hostname
 //     is in some way invalid.
-//
 func HostnameToUnicode(hostname string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -7997,7 +7918,6 @@ func HostnameToUnicode(hostname string) string {
 // The function returns the following values:
 //
 //   - ok: TRUE if an idle source was found and removed.
-//
 func IdleRemoveByData(data unsafe.Pointer) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
@@ -8026,7 +7946,6 @@ func IdleRemoveByData(data unsafe.Pointer) bool {
 // The function returns the following values:
 //
 //   - source: newly-created idle source.
-//
 func NewIdleSource() *Source {
 	var _cret *C.GSource // in
 
@@ -8058,7 +7977,6 @@ func NewIdleSource() *Source {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two keys match.
-//
 func Int64Equal(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -8092,7 +8010,6 @@ func Int64Equal(v1, v2 unsafe.Pointer) bool {
 // The function returns the following values:
 //
 //   - guint: hash value corresponding to the key.
-//
 func Int64Hash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -8125,7 +8042,6 @@ func Int64Hash(v unsafe.Pointer) uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two keys match.
-//
 func IntEqual(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -8162,7 +8078,6 @@ func IntEqual(v1, v2 unsafe.Pointer) bool {
 // The function returns the following values:
 //
 //   - guint: hash value corresponding to the key.
-//
 func IntHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -8195,7 +8110,6 @@ func IntHash(v unsafe.Pointer) uint {
 // The function returns the following values:
 //
 //   - utf8: canonical representation for the string.
-//
 func InternStaticString(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -8230,7 +8144,6 @@ func InternStaticString(str string) string {
 // The function returns the following values:
 //
 //   - utf8: canonical representation for the string.
-//
 func InternString(str string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -8273,7 +8186,6 @@ func InternString(str string) string {
 // The function returns the following values:
 //
 //   - source: new #GSource.
-//
 func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	var _arg1 *C.GIOChannel  // out
 	var _arg2 C.GIOCondition // out
@@ -8312,7 +8224,6 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 //
 //   - filenames: a NULL-terminated list of strings which must be freed with
 //     g_strfreev().
-//
 func Listenv() []string {
 	var _cret **C.gchar // in
 
@@ -8363,7 +8274,6 @@ func Listenv() []string {
 //     byte offset after the last valid input sequence.
 //   - guint8s: A newly-allocated buffer containing the converted string,
 //     or NULL on an error, and error will be set.
-//
 func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 C.gssize  // out
@@ -8422,7 +8332,6 @@ func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 //   - bytesWritten (optional): number of bytes stored in the output buffer (not
 //     including the terminating nul).
 //   - utf8: converted string, or NULL on an error.
-//
 func LocaleToUTF8(opsysstring string) (bytesRead, bytesWritten uint, utf8 string, goerr error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -8487,7 +8396,6 @@ func LocaleToUTF8(opsysstring string) (bytesRead, bytesWritten uint, utf8 string
 //   - logLevel: level of the message.
 //   - message (optional): message.
 //   - unusedData (optional): data passed from g_log() which is unused.
-//
 func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData unsafe.Pointer) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.GLogLevelFlags // out
@@ -8521,7 +8429,6 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 //
 //   - logDomain: log domain.
 //   - handlerId: id of the handler, which was returned in g_log_set_handler().
-//
 func LogRemoveHandler(logDomain string, handlerId uint) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.guint  // out
@@ -8559,7 +8466,6 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 // The function returns the following values:
 //
 //   - logLevelFlags: old fatal mask.
-//
 func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 C.GLogLevelFlags // out
 	var _cret C.GLogLevelFlags // in
@@ -8598,7 +8504,6 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 // The function returns the following values:
 //
 //   - logLevelFlags: old fatal mask for the log domain.
-//
 func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.GLogLevelFlags // out
@@ -8633,7 +8538,6 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 //
 //   - logLevel: log level, either from LevelFlags, or a user-defined level.
 //   - fields: key–value pairs of structured data to add to the log message.
-//
 func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.GLogField     // out
@@ -8679,7 +8583,6 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 //   - logLevel: log level, either from LevelFlags, or a user-defined level.
 //   - fields: dictionary (#GVariant of the type G_VARIANT_TYPE_VARDICT)
 //     containing the key-value pairs of message data.
-//
 func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.GLogLevelFlags // out
@@ -8728,7 +8631,6 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 //
 //   - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
 //     otherwise.
-//
 func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData unsafe.Pointer) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.GLogField     // out
@@ -8778,7 +8680,6 @@ func LogWriterDefault(logLevel LogLevelFlags, fields []LogField, userData unsafe
 //
 //   - useStderr: if TRUE, use stderr for log messages that would normally have
 //     appeared on stdout.
-//
 func LogWriterDefaultSetUseStderr(useStderr bool) {
 	var _arg1 C.gboolean // out
 
@@ -8801,13 +8702,13 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 // This can be used when implementing log writers with the same filtering
 // behaviour as the default, but a different destination or output format:
 //
-//    if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
-//      {
-//        gchar *result = expensive_computation (my_object);
+//	if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
+//	  {
+//	    gchar *result = expensive_computation (my_object);
 //
-//        g_debug ("my_object result: s", result);
-//        g_free (result);
-//      }.
+//	    g_debug ("my_object result: s", result);
+//	    g_free (result);
+//	  }.
 //
 // The function takes the following parameters:
 //
@@ -8818,7 +8719,6 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 //
 //   - ok: TRUE if the log message would be dropped by GLib's default log
 //     handlers.
-//
 func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.char          // out
@@ -8864,7 +8764,6 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 //
 //   - utf8: string containing the formatted log message, in the character set
 //     of the current locale.
-//
 func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.GLogField     // out
@@ -8906,7 +8805,7 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 // Invalid file descriptors are accepted and return FALSE, which allows for the
 // following construct without needing any additional error handling:
 //
-//    is_journald = g_log_writer_is_journald (fileno (stderr));.
+//	is_journald = g_log_writer_is_journald (fileno (stderr));.
 //
 // The function takes the following parameters:
 //
@@ -8915,7 +8814,6 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 // The function returns the following values:
 //
 //   - ok: TRUE if output_fd points to the journal, FALSE otherwise.
-//
 func LogWriterIsJournald(outputFd int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
@@ -8954,7 +8852,6 @@ func LogWriterIsJournald(outputFd int) bool {
 //
 //   - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
 //     otherwise.
-//
 func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData unsafe.Pointer) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.GLogField     // out
@@ -9010,7 +8907,6 @@ func LogWriterJournald(logLevel LogLevelFlags, fields []LogField, userData unsaf
 //
 //   - logWriterOutput: G_LOG_WRITER_HANDLED on success, G_LOG_WRITER_UNHANDLED
 //     otherwise.
-//
 func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userData unsafe.Pointer) LogWriterOutput {
 	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.GLogField     // out
@@ -9053,7 +8949,6 @@ func LogWriterStandardStreams(logLevel LogLevelFlags, fields []LogField, userDat
 // The function returns the following values:
 //
 //   - ok: TRUE if ANSI color escapes are supported, FALSE otherwise.
-//
 func LogWriterSupportsColor(outputFd int) bool {
 	var _arg1 C.gint     // out
 	var _cret C.gboolean // in
@@ -9077,7 +8972,6 @@ func LogWriterSupportsColor(outputFd int) bool {
 // The function returns the following values:
 //
 //   - source (optional): currently firing source or NULL.
-//
 func MainCurrentSource() *Source {
 	var _cret *C.GSource // in
 
@@ -9109,36 +9003,36 @@ func MainCurrentSource() *Source {
 // This function is useful in a situation like the following: Imagine an
 // extremely simple "garbage collected" system.
 //
-//    gpointer
-//    allocate_memory (gsize size)
-//    {
-//      FreeListBlock *block = g_new (FreeListBlock, 1);
-//      block->mem = g_malloc (size);
-//      block->depth = g_main_depth ();
-//      free_list = g_list_prepend (free_list, block);
-//      return block->mem;
-//    }
+//	gpointer
+//	allocate_memory (gsize size)
+//	{
+//	  FreeListBlock *block = g_new (FreeListBlock, 1);
+//	  block->mem = g_malloc (size);
+//	  block->depth = g_main_depth ();
+//	  free_list = g_list_prepend (free_list, block);
+//	  return block->mem;
+//	}
 //
-//    void
-//    free_allocated_memory (void)
-//    {
-//      GList *l;
+//	void
+//	free_allocated_memory (void)
+//	{
+//	  GList *l;
 //
-//      int depth = g_main_depth ();
-//      for (l = free_list; l; );
-//        {
-//          GList *next = l->next;
-//          FreeListBlock *block = l->data;
-//          if (block->depth > depth)
-//            {
-//              g_free (block->mem);
-//              g_free (block);
-//              free_list = g_list_delete_link (free_list, l);
-//            }
+//	  int depth = g_main_depth ();
+//	  for (l = free_list; l; );
+//	    {
+//	      GList *next = l->next;
+//	      FreeListBlock *block = l->data;
+//	      if (block->depth > depth)
+//	        {
+//	          g_free (block->mem);
+//	          g_free (block);
+//	          free_list = g_list_delete_link (free_list, l);
+//	        }
 //
-//          l = next;
-//        }
-//      }
+//	      l = next;
+//	    }
+//	  }
 //
 // There is a temptation to use g_main_depth() to solve problems with
 // reentrancy. For instance, while waiting for data to be received from the
@@ -9160,7 +9054,6 @@ func MainCurrentSource() *Source {
 // The function returns the following values:
 //
 //   - gint: main loop recursion level in the current thread.
-//
 func MainDepth() int {
 	var _cret C.gint // in
 
@@ -9207,7 +9100,6 @@ func MarkupErrorQuark() Quark {
 // The function returns the following values:
 //
 //   - utf8: newly allocated string with the escaped text.
-//
 func MarkupEscapeText(text string, length int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -9241,7 +9133,6 @@ func MarkupEscapeText(text string, length int) string {
 //
 //   - gint: 0 if the directory already exists, or was successfully created.
 //     Returns -1 if an error occurred, with errno set.
-//
 func MkdirWithParents(pathname string, mode int) int {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
@@ -9306,7 +9197,6 @@ func OptionErrorQuark() Quark {
 // The function returns the following values:
 //
 //   - guint: combined set of bit flags.
-//
 func ParseDebugString(str string, keys []DebugKey) uint {
 	var _arg1 *C.gchar     // out
 	var _arg2 *C.GDebugKey // out
@@ -9353,7 +9243,6 @@ func ParseDebugString(str string, keys []DebugKey) uint {
 //
 //   - filename: newly allocated string containing the last component of the
 //     filename.
-//
 func PathGetBasename(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -9386,7 +9275,6 @@ func PathGetBasename(fileName string) string {
 // The function returns the following values:
 //
 //   - filename: directory components of the file.
-//
 func PathGetDirname(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -9435,7 +9323,6 @@ func PathGetDirname(fileName string) string {
 // The function returns the following values:
 //
 //   - ok: TRUE if file_name is absolute.
-//
 func PathIsAbsolute(fileName string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -9466,7 +9353,6 @@ func PathIsAbsolute(fileName string) bool {
 // The function returns the following values:
 //
 //   - filename (optional): pointer into file_name after the root component.
-//
 func PathSkipRoot(fileName string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -9499,7 +9385,6 @@ func PathSkipRoot(fileName string) string {
 // The function returns the following values:
 //
 //   - ok: TRUE if string matches pspec.
-//
 func PatternMatchSimple(pattern, str string) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -9546,7 +9431,6 @@ func PatternMatchSimple(pattern, str string) bool {
 // The function returns the following values:
 //
 //   - quark identifying the string, or 0 if string is NULL.
-//
 func QuarkFromStaticString(str string) Quark {
 	var _arg1 *C.gchar // out
 	var _cret C.GQuark // in
@@ -9581,7 +9465,6 @@ func QuarkFromStaticString(str string) Quark {
 // The function returns the following values:
 //
 //   - quark identifying the string, or 0 if string is NULL.
-//
 func QuarkFromString(str string) Quark {
 	var _arg1 *C.gchar // out
 	var _cret C.GQuark // in
@@ -9610,7 +9493,6 @@ func QuarkFromString(str string) Quark {
 // The function returns the following values:
 //
 //   - utf8: string associated with the #GQuark.
-//
 func QuarkToString(quark Quark) string {
 	var _arg1 C.GQuark // out
 	var _cret *C.gchar // in
@@ -9644,7 +9526,6 @@ func QuarkToString(quark Quark) string {
 //
 //   - quark associated with the string, or 0 if string is NULL or there is no
 //     #GQuark associated with it.
-//
 func QuarkTryString(str string) Quark {
 	var _arg1 *C.gchar // out
 	var _cret C.GQuark // in
@@ -9670,7 +9551,6 @@ func QuarkTryString(str string) Quark {
 // The function returns the following values:
 //
 //   - gdouble: random number.
-//
 func RandomDouble() float64 {
 	var _cret C.gdouble // in
 
@@ -9694,7 +9574,6 @@ func RandomDouble() float64 {
 // The function returns the following values:
 //
 //   - gdouble: random number.
-//
 func RandomDoubleRange(begin, end float64) float64 {
 	var _arg1 C.gdouble // out
 	var _arg2 C.gdouble // out
@@ -9720,7 +9599,6 @@ func RandomDoubleRange(begin, end float64) float64 {
 // The function returns the following values:
 //
 //   - guint32: random number.
-//
 func RandomInt() uint32 {
 	var _cret C.guint32 // in
 
@@ -9744,7 +9622,6 @@ func RandomInt() uint32 {
 // The function returns the following values:
 //
 //   - gint32: random number.
-//
 func RandomIntRange(begin, end int32) int32 {
 	var _arg1 C.gint32 // out
 	var _arg2 C.gint32 // out
@@ -9770,7 +9647,6 @@ func RandomIntRange(begin, end int32) int32 {
 // The function takes the following parameters:
 //
 //   - seed: value to reinitialize the global random number generator.
-//
 func RandomSetSeed(seed uint32) {
 	var _arg1 C.guint32 // out
 
@@ -9806,7 +9682,6 @@ func ReloadUserSpecialDirsCache() {
 // The function takes the following parameters:
 //
 //   - applicationName: localized name of the application.
-//
 func SetApplicationName(applicationName string) {
 	var _arg1 *C.gchar // out
 
@@ -9830,7 +9705,6 @@ func SetApplicationName(applicationName string) {
 // The function takes the following parameters:
 //
 //   - prgname: name of the program.
-//
 func SetPrgname(prgname string) {
 	var _arg1 *C.gchar // out
 
@@ -9869,7 +9743,6 @@ func SetPrgname(prgname string) {
 // The function returns the following values:
 //
 //   - ok: FALSE if the environment variable couldn't be set.
-//
 func Setenv(variable, value string, overwrite bool) bool {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out
@@ -9926,7 +9799,6 @@ func ShellErrorQuark() Quark {
 // The function returns the following values:
 //
 //   - argvp (optional): return location for array of args.
-//
 func ShellParseArgv(commandLine string) ([]string, error) {
 	var _arg1 *C.gchar  // out
 	var _arg3 **C.gchar // in
@@ -9973,7 +9845,6 @@ func ShellParseArgv(commandLine string) ([]string, error) {
 // The function returns the following values:
 //
 //   - filename: quoted string.
-//
 func ShellQuote(unquotedString string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -10018,7 +9889,6 @@ func ShellQuote(unquotedString string) string {
 // The function returns the following values:
 //
 //   - filename: unquoted string.
-//
 func ShellUnquote(quotedString string) (string, error) {
 	var _arg1 *C.gchar  // out
 	var _cret *C.gchar  // in
@@ -10057,7 +9927,6 @@ func ShellUnquote(quotedString string) (string, error) {
 //
 //   - guint: smallest prime number from a built-in array of primes which is
 //     larger than num.
-//
 func SpacedPrimesClosest(num uint) uint {
 	var _arg1 C.guint // out
 	var _cret C.guint // in
@@ -10113,7 +9982,6 @@ func SpacedPrimesClosest(num uint) uint {
 // The function takes the following parameters:
 //
 //   - exitStatus: exit code as returned from g_spawn_sync().
-//
 func SpawnCheckExitStatus(exitStatus int) error {
 	var _arg1 C.gint    // out
 	var _cerr *C.GError // in
@@ -10145,7 +10013,6 @@ func SpawnCheckExitStatus(exitStatus int) error {
 // The function takes the following parameters:
 //
 //   - commandLine: command line.
-//
 func SpawnCommandLineAsync(commandLine string) error {
 	var _arg1 *C.gchar  // out
 	var _cerr *C.GError // in
@@ -10196,7 +10063,6 @@ func SpawnCommandLineAsync(commandLine string) error {
 //   - standardError (optional): return location for child errors.
 //   - exitStatus (optional): return location for child exit status, as returned
 //     by waitpid().
-//
 func SpawnCommandLineSync(commandLine string) (standardOutput, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar  // out
 	var _arg2 *C.gchar  // in
@@ -10314,7 +10180,6 @@ func SpawnExitErrorQuark() Quark {
 //     or NULL.
 //   - exitStatus (optional): return location for child exit status, as returned
 //     by waitpid(), or NULL.
-//
 func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput, standardError []byte, exitStatus int, goerr error) {
 	var _arg1 *C.gchar               // out
 	var _arg2 **C.gchar              // out
@@ -10431,7 +10296,6 @@ func SpawnSync(workingDirectory string, argv, envp []string, flags SpawnFlags, c
 // The function returns the following values:
 //
 //   - ok: TRUE if the two keys match.
-//
 func StrEqual(v1, v2 unsafe.Pointer) bool {
 	var _arg1 C.gconstpointer // out
 	var _arg2 C.gconstpointer // out
@@ -10473,7 +10337,6 @@ func StrEqual(v1, v2 unsafe.Pointer) bool {
 // The function returns the following values:
 //
 //   - guint: hash value corresponding to the key.
-//
 func StrHash(v unsafe.Pointer) uint {
 	var _arg1 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -10502,7 +10365,6 @@ func StrHash(v unsafe.Pointer) uint {
 //   - utf8: msgval, unless msgval is identical to msgid and contains a '|'
 //     character, in which case a pointer to the substring of msgid after the
 //     first '|' character is returned.
-//
 func StripContext(msgid, msgval string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -10551,7 +10413,6 @@ func StrvGetType() coreglib.Type {
 // The function returns the following values:
 //
 //   - source: newly-created timeout source.
-//
 func NewTimeoutSource(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
@@ -10592,7 +10453,6 @@ func NewTimeoutSource(interval uint) *Source {
 // The function returns the following values:
 //
 //   - source: newly-created timeout source.
-//
 func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _arg1 C.guint    // out
 	var _cret *C.GSource // in
@@ -10633,7 +10493,6 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 //   - guint16: pointer to a newly allocated UTF-16 string. This value must be
 //     freed with g_free(). If an error occurs, NULL will be returned and error
 //     set.
-//
 func UCS4ToUTF16(str *uint32, len int32) (itemsRead, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gunichar  // out
 	var _arg2 C.glong      // out
@@ -10683,7 +10542,6 @@ func UCS4ToUTF16(str *uint32, len int32) (itemsRead, itemsWritten int32, guint16
 //     with g_free(). If an error occurs, NULL will be returned and error set.
 //     In that case, items_read will be set to the position of the first invalid
 //     input character.
-//
 func UCS4ToUTF8(str *uint32, len int32) (itemsRead, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.glong     // out
@@ -10729,7 +10587,6 @@ func UCS4ToUTF8(str *uint32, len int32) (itemsRead, itemsWritten int32, utf8 str
 // The function returns the following values:
 //
 //   - unicodeBreakType: break type of c.
-//
 func UnicharBreakType(c uint32) UnicodeBreakType {
 	var _arg1 C.gunichar          // out
 	var _cret C.GUnicodeBreakType // in
@@ -10756,7 +10613,6 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 // The function returns the following values:
 //
 //   - gint: combining class of the character.
-//
 func UnicharCombiningClass(uc uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
@@ -10796,7 +10652,6 @@ func UnicharCombiningClass(uc uint32) int {
 //
 //   - ch: return location for the composed character.
 //   - ok: TRUE if the characters could be composed.
-//
 func UnicharCompose(a, b uint32) (uint32, bool) {
 	var _arg1 C.gunichar // out
 	var _arg2 C.gunichar // out
@@ -10847,7 +10702,6 @@ func UnicharCompose(a, b uint32) (uint32, bool) {
 //   - a: return location for the first component of ch.
 //   - b: return location for the second component of ch.
 //   - ok: TRUE if the character could be decomposed.
-//
 func UnicharDecompose(ch uint32) (a, b uint32, ok bool) {
 	var _arg1 C.gunichar // out
 	var _arg2 C.gunichar // in
@@ -10883,7 +10737,6 @@ func UnicharDecompose(ch uint32) (a, b uint32, ok bool) {
 //
 //   - gint: if c is a decimal digit (according to g_unichar_isdigit()),
 //     its numeric value. Otherwise, -1.
-//
 func UnicharDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
@@ -10925,7 +10778,6 @@ func UnicharDigitValue(c uint32) int {
 //
 //   - result (optional): location to store decomposed result, or NULL.
 //   - gsize: length of the full decomposition.
-//
 func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint) {
 	var _arg1 C.gunichar // out
 	var _arg2 C.gboolean // out
@@ -10971,7 +10823,6 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint
 // The function returns the following values:
 //
 //   - ok: TRUE if ch has a mirrored character, FALSE otherwise.
-//
 func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gunichar // out
@@ -11007,7 +10858,6 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 // The function returns the following values:
 //
 //   - unicodeScript for the character.
-//
 func UnicharGetScript(ch uint32) UnicodeScript {
 	var _arg1 C.gunichar       // out
 	var _cret C.GUnicodeScript // in
@@ -11034,7 +10884,6 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is an alphanumeric character.
-//
 func UnicharIsalnum(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11063,7 +10912,6 @@ func UnicharIsalnum(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is an alphabetic character.
-//
 func UnicharIsalpha(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11092,7 +10940,6 @@ func UnicharIsalpha(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is a control character.
-//
 func UnicharIscntrl(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11121,7 +10968,6 @@ func UnicharIscntrl(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the character has an assigned value.
-//
 func UnicharIsdefined(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11151,7 +10997,6 @@ func UnicharIsdefined(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is a digit.
-//
 func UnicharIsdigit(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11182,7 +11027,6 @@ func UnicharIsdigit(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is printable unless it's a space.
-//
 func UnicharIsgraph(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11211,7 +11055,6 @@ func UnicharIsgraph(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is a lowercase letter.
-//
 func UnicharIslower(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11245,7 +11088,6 @@ func UnicharIslower(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is a mark character.
-//
 func UnicharIsmark(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11275,7 +11117,6 @@ func UnicharIsmark(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is printable.
-//
 func UnicharIsprint(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11304,7 +11145,6 @@ func UnicharIsprint(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is a punctuation or symbol character.
-//
 func UnicharIspunct(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11337,7 +11177,6 @@ func UnicharIspunct(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is a space character.
-//
 func UnicharIsspace(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11369,7 +11208,6 @@ func UnicharIsspace(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the character is titlecase.
-//
 func UnicharIstitle(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11397,7 +11235,6 @@ func UnicharIstitle(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if c is an uppercase character.
-//
 func UnicharIsupper(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11426,7 +11263,6 @@ func UnicharIsupper(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the character is wide.
-//
 func UnicharIswide(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11462,7 +11298,6 @@ func UnicharIswide(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the character is wide in legacy East Asian locales.
-//
 func UnicharIswideCjk(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11490,7 +11325,6 @@ func UnicharIswideCjk(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the character is a hexadecimal digit.
-//
 func UnicharIsxdigit(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11526,7 +11360,6 @@ func UnicharIsxdigit(c uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the character has zero width.
-//
 func UnicharIszerowidth(c uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11556,7 +11389,6 @@ func UnicharIszerowidth(c uint32) bool {
 //   - gunichar: result of converting c to lower case. If c is not an upperlower
 //     or titlecase character, or has no lowercase equivalent c is returned
 //     unchanged.
-//
 func UnicharToLower(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
@@ -11583,7 +11415,6 @@ func UnicharToLower(c uint32) uint32 {
 //
 //   - gunichar: result of converting c to titlecase. If c is not an uppercase
 //     or lowercase character, c is returned unchanged.
-//
 func UnicharToTitle(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
@@ -11611,7 +11442,6 @@ func UnicharToTitle(c uint32) uint32 {
 //   - gunichar: result of converting c to uppercase. If c is not a lowercase
 //     or titlecase character, or has no upper case equivalent c is returned
 //     unchanged.
-//
 func UnicharToUpper(c uint32) uint32 {
 	var _arg1 C.gunichar // out
 	var _cret C.gunichar // in
@@ -11637,7 +11467,6 @@ func UnicharToUpper(c uint32) uint32 {
 // The function returns the following values:
 //
 //   - unicodeType: type of the character.
-//
 func UnicharType(c uint32) UnicodeType {
 	var _arg1 C.gunichar     // out
 	var _cret C.GUnicodeType // in
@@ -11665,7 +11494,6 @@ func UnicharType(c uint32) UnicodeType {
 // The function returns the following values:
 //
 //   - ok: TRUE if ch is a valid Unicode character.
-//
 func UnicharValidate(ch uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -11695,7 +11523,6 @@ func UnicharValidate(ch uint32) bool {
 //
 //   - gint: if c is a hex digit (according to g_unichar_isxdigit()), its
 //     numeric value. Otherwise, -1.
-//
 func UnicharXDigitValue(c uint32) int {
 	var _arg1 C.gunichar // out
 	var _cret C.gint     // in
@@ -11726,7 +11553,6 @@ func UnicharXDigitValue(c uint32) int {
 //
 //   - gunichar: newly allocated string of Unicode characters. result_len is set
 //     to the resulting length of the string.
-//
 func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gsize    // out
@@ -11754,7 +11580,6 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 //
 //   - str: UCS-4 encoded string.
 //   - len: maximum length of string to use.
-//
 func UnicodeCanonicalOrdering(str *uint32, len uint) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.gsize     // out
@@ -11785,7 +11610,6 @@ func UnicodeCanonicalOrdering(str *uint32, len uint) {
 //   - unicodeScript: unicode script for iso15924, or of
 //     G_UNICODE_SCRIPT_INVALID_CODE if iso15924 is zero and
 //     G_UNICODE_SCRIPT_UNKNOWN if iso15924 is unknown.
-//
 func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 	var _arg1 C.guint32        // out
 	var _cret C.GUnicodeScript // in
@@ -11820,7 +11644,6 @@ func UnicodeScriptFromISO15924(iso15924 uint32) UnicodeScript {
 //   - guint32: ISO 15924 code for script, encoded as an integer, of zero if
 //     script is G_UNICODE_SCRIPT_INVALID_CODE or ISO 15924 code 'Zzzz' (script
 //     code for UNKNOWN) if script is not understood.
-//
 func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 	var _arg1 C.GUnicodeScript // out
 	var _cret C.guint32        // in
@@ -11857,7 +11680,6 @@ func UnicodeScriptToISO15924(script UnicodeScript) uint32 {
 // The function takes the following parameters:
 //
 //   - variable: environment variable to remove, must not contain '='.
-//
 func Unsetenv(variable string) {
 	var _arg1 *C.gchar // out
 
@@ -11877,7 +11699,6 @@ func Unsetenv(variable string) {
 // The function takes the following parameters:
 //
 //   - microseconds: number of microseconds to pause.
-//
 func Usleep(microseconds uint32) {
 	var _arg1 C.gulong // out
 
@@ -11907,7 +11728,6 @@ func Usleep(microseconds uint32) {
 //   - gunichar: pointer to a newly allocated UCS-4 string. This value must be
 //     freed with g_free(). If an error occurs, NULL will be returned and error
 //     set.
-//
 func UTF16ToUCS4(str *uint16, len int32) (itemsRead, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
@@ -11966,7 +11786,6 @@ func UTF16ToUCS4(str *uint16, len int32) (itemsRead, itemsWritten int32, gunicha
 //     or NULL. The value stored here does not include the trailing 0 byte.
 //   - utf8: pointer to a newly allocated UTF-8 string. This value must be freed
 //     with g_free(). If an error occurs, NULL will be returned and error set.
-//
 func UTF16ToUTF8(str *uint16, len int32) (itemsRead, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong      // out
@@ -12017,7 +11836,6 @@ func UTF16ToUTF8(str *uint16, len int32) (itemsRead, itemsWritten int32, utf8 st
 // The function returns the following values:
 //
 //   - utf8: newly allocated string, that is a case independent form of str.
-//
 func UTF8Casefold(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -12054,7 +11872,6 @@ func UTF8Casefold(str string, len int) string {
 //
 //   - gint: < 0 if str1 compares before str2, 0 if they compare equal, > 0 if
 //     str1 compares after str2.
-//
 func UTF8Collate(str1, str2 string) int {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -12093,7 +11910,6 @@ func UTF8Collate(str1, str2 string) int {
 //
 //   - utf8: newly allocated string. This string should be freed with g_free()
 //     when you are done with it.
-//
 func UTF8CollateKey(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -12137,7 +11953,6 @@ func UTF8CollateKey(str string, len int) string {
 //
 //   - utf8: newly allocated string. This string should be freed with g_free()
 //     when you are done with it.
-//
 func UTF8CollateKeyForFilename(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -12180,7 +11995,6 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 //
 //   - utf8 (optional): pointer to the found character or NULL if end is set and
 //     is reached.
-//
 func UTF8FindNextChar(p, end string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -12222,7 +12036,6 @@ func UTF8FindNextChar(p, end string) string {
 // The function returns the following values:
 //
 //   - utf8 (optional): pointer to the found character or NULL.
-//
 func UTF8FindPrevChar(str, p string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -12260,7 +12073,6 @@ func UTF8FindPrevChar(str, p string) string {
 // The function returns the following values:
 //
 //   - gunichar: resulting character.
-//
 func UTF8GetChar(p string) uint32 {
 	var _arg1 *C.gchar   // out
 	var _cret C.gunichar // in
@@ -12297,7 +12109,6 @@ func UTF8GetChar(p string) uint32 {
 //     end of a string that could begin a valid character (or if max_len is
 //     zero), returns (gunichar)-2; otherwise, if p does not point to a valid
 //     UTF-8 encoded Unicode character, returns (gunichar)-1.
-//
 func UTF8GetCharValidated(p string, maxLen int) uint32 {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.gssize   // out
@@ -12337,7 +12148,6 @@ func UTF8GetCharValidated(p string, maxLen int) uint32 {
 // The function returns the following values:
 //
 //   - utf8: valid UTF-8 string whose content resembles str.
-//
 func UTF8MakeValid(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -12388,7 +12198,6 @@ func UTF8MakeValid(str string, len int) string {
 //
 //   - utf8 (optional): newly allocated string, that is the normalized form of
 //     str, or NULL if str is not valid UTF-8.
-//
 func UTF8Normalize(str string, len int, mode NormalizeMode) string {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gssize         // out
@@ -12437,7 +12246,6 @@ func UTF8Normalize(str string, len int, mode NormalizeMode) string {
 // The function returns the following values:
 //
 //   - utf8: resulting pointer.
-//
 func UTF8OffsetToPointer(str string, offset int32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong  // out
@@ -12472,7 +12280,6 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 // The function returns the following values:
 //
 //   - glong: resulting character offset.
-//
 func UTF8PointerToOffset(str, pos string) int32 {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -12508,7 +12315,6 @@ func UTF8PointerToOffset(str, pos string) int32 {
 // The function returns the following values:
 //
 //   - utf8: pointer to the found character.
-//
 func UTF8PrevChar(p string) string {
 	var _arg1 *C.gchar // out
 	var _cret *C.gchar // in
@@ -12541,7 +12347,6 @@ func UTF8PrevChar(p string) string {
 //   - utf8 (optional): NULL if the string does not contain the character,
 //     otherwise, a pointer to the start of the leftmost occurrence of the
 //     character in the string.
-//
 func UTF8Strchr(p string, len int, c uint32) string {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.gssize   // out
@@ -12579,7 +12384,6 @@ func UTF8Strchr(p string, len int, c uint32) string {
 // The function returns the following values:
 //
 //   - utf8: newly allocated string, with all characters converted to lowercase.
-//
 func UTF8Strdown(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -12616,7 +12420,6 @@ func UTF8Strdown(str string, len int) string {
 // The function returns the following values:
 //
 //   - glong: length of the string in characters.
-//
 func UTF8Strlen(p string, max int) int32 {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -12654,7 +12457,6 @@ func UTF8Strlen(p string, max int) int32 {
 // The function returns the following values:
 //
 //   - utf8: dest.
-//
 func UTF8Strncpy(dest, src string, n uint) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -12694,7 +12496,6 @@ func UTF8Strncpy(dest, src string, n uint) string {
 //   - utf8 (optional): NULL if the string does not contain the character,
 //     otherwise, a pointer to the start of the rightmost occurrence of the
 //     character in the string.
-//
 func UTF8Strrchr(p string, len int, c uint32) string {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.gssize   // out
@@ -12741,7 +12542,6 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 // The function returns the following values:
 //
 //   - utf8: newly-allocated string which is the reverse of str.
-//
 func UTF8Strreverse(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -12776,7 +12576,6 @@ func UTF8Strreverse(str string, len int) string {
 // The function returns the following values:
 //
 //   - utf8: newly allocated string, with all characters converted to uppercase.
-//
 func UTF8Strup(str string, len int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize // out
@@ -12811,7 +12610,6 @@ func UTF8Strup(str string, len int) string {
 //
 //   - utf8: newly allocated copy of the requested substring. Free with g_free()
 //     when no longer needed.
-//
 func UTF8Substring(str string, startPos, endPos int32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong  // out
@@ -12857,7 +12655,6 @@ func UTF8Substring(str string, startPos, endPos int32) string {
 //   - gunichar: pointer to a newly allocated UCS-4 string. This value must be
 //     freed with g_free(). If an error occurs, NULL will be returned and error
 //     set.
-//
 func UTF8ToUCS4(str string, len int32) (itemsRead, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
@@ -12906,7 +12703,6 @@ func UTF8ToUCS4(str string, len int32) (itemsRead, itemsWritten int32, gunichar 
 //     the result, or NULL.
 //   - gunichar: pointer to a newly allocated UCS-4 string. This value must be
 //     freed with g_free().
-//
 func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.glong     // out
@@ -12950,7 +12746,6 @@ func UTF8ToUCS4Fast(str string, len int32) (int32, *uint32) {
 //   - guint16: pointer to a newly allocated UTF-16 string. This value must be
 //     freed with g_free(). If an error occurs, NULL will be returned and error
 //     set.
-//
 func UTF8ToUTF16(str string, len int32) (itemsRead, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gchar     // out
 	var _arg2 C.glong      // out
@@ -13004,7 +12799,6 @@ func UTF8ToUTF16(str string, len int32) (itemsRead, itemsWritten int32, guint16 
 //
 //   - end (optional): return location for end of valid data.
 //   - ok: TRUE if the text was valid UTF-8.
-//
 func UTF8Validate(str string) (string, bool) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
@@ -13045,7 +12839,6 @@ func UTF8Validate(str string) (string, bool) {
 //
 //   - end (optional): return location for end of valid data.
 //   - ok: TRUE if the text was valid UTF-8.
-//
 func UTF8ValidateLen(str string) (string, bool) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gsize
@@ -13089,7 +12882,6 @@ func UTF8ValidateLen(str string) (string, bool) {
 // The function returns the following values:
 //
 //   - ok: TRUE if str is a valid UUID, FALSE otherwise.
-//
 func UUIDStringIsValid(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -13117,7 +12909,6 @@ func UUIDStringIsValid(str string) bool {
 // The function returns the following values:
 //
 //   - utf8: string that should be freed with g_free().
-//
 func UUIDStringRandom() string {
 	var _cret *C.gchar // in
 
@@ -13294,7 +13085,6 @@ func NewBytes(data []byte) *Bytes {
 //
 //   - gint: negative value if bytes1 is less than bytes2, a positive value if
 //     bytes1 is greater than bytes2, and zero if bytes1 is equal to bytes2.
-//
 func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -13327,7 +13117,6 @@ func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two keys match.
-//
 func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -13360,7 +13149,6 @@ func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 // The function returns the following values:
 //
 //   - guint8s (optional): a pointer to the byte data, or NULL.
-//
 func (bytes *Bytes) Data() []byte {
 	var _arg0 *C.GBytes       // out
 	var _cret C.gconstpointer // in
@@ -13386,7 +13174,6 @@ func (bytes *Bytes) Data() []byte {
 // The function returns the following values:
 //
 //   - gsize: size.
-//
 func (bytes *Bytes) Size() uint {
 	var _arg0 *C.GBytes // out
 	var _cret C.gsize   // in
@@ -13411,7 +13198,6 @@ func (bytes *Bytes) Size() uint {
 // The function returns the following values:
 //
 //   - guint: hash value corresponding to the key.
-//
 func (bytes *Bytes) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -13448,7 +13234,6 @@ func (bytes *Bytes) Hash() uint {
 // The function returns the following values:
 //
 //   - ret: new #GBytes.
-//
 func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
 	var _arg0 *C.GBytes // out
 	var _arg1 C.gsize   // out
@@ -13529,7 +13314,6 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 //
 //   - ret: copy of the passed #GChecksum. Use g_checksum_free() when finished
 //     using it.
-//
 func (checksum *Checksum) Copy() *Checksum {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.GChecksum // in
@@ -13563,7 +13347,6 @@ func (checksum *Checksum) Copy() *Checksum {
 //
 //   - utf8: hexadecimal representation of the checksum. The returned string is
 //     owned by the checksum and should not be modified or freed.
-//
 func (checksum *Checksum) String() string {
 	var _arg0 *C.GChecksum // out
 	var _cret *C.gchar     // in
@@ -13597,7 +13380,6 @@ func (checksum *Checksum) Reset() {
 // The function takes the following parameters:
 //
 //   - data: buffer used to compute the checksum.
-//
 func (checksum *Checksum) Update(data []byte) {
 	var _arg0 *C.GChecksum // out
 	var _arg1 *C.guchar    // out
@@ -13624,7 +13406,6 @@ func (checksum *Checksum) Update(data []byte) {
 // The function returns the following values:
 //
 //   - gssize: checksum length, or -1 if checksum_type is not supported.
-//
 func ChecksumTypeGetLength(checksumType ChecksumType) int {
 	var _arg1 C.GChecksumType // out
 	var _cret C.gssize        // in
@@ -13990,7 +13771,6 @@ func NewDateTimeUTC(year int, month int, day int, hour int, minute int, seconds 
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.GTimeSpan  // out
@@ -14029,7 +13809,6 @@ func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) AddDays(days int) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
@@ -14073,7 +13852,6 @@ func (datetime *DateTime) AddDays(days int) *DateTime {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) AddFull(years int, months int, days int, hours int, minutes int, seconds float64) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
@@ -14127,7 +13905,6 @@ func (datetime *DateTime) AddFull(years int, months int, days int, hours int, mi
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) AddHours(hours int) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
@@ -14166,7 +13943,6 @@ func (datetime *DateTime) AddHours(hours int) *DateTime {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
@@ -14210,7 +13986,6 @@ func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) AddMonths(months int) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
@@ -14249,7 +14024,6 @@ func (datetime *DateTime) AddMonths(months int) *DateTime {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gdouble    // out
@@ -14288,7 +14062,6 @@ func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
@@ -14330,7 +14103,6 @@ func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) AddYears(years int) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // out
@@ -14368,7 +14140,6 @@ func (datetime *DateTime) AddYears(years int) *DateTime {
 // The function returns the following values:
 //
 //   - gint: -1, 0 or 1 if dt1 is less than, equal to or greater than dt2.
-//
 func (dt1 *DateTime) Compare(dt2 *DateTime) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -14400,7 +14171,6 @@ func (dt1 *DateTime) Compare(dt2 *DateTime) int {
 //
 //   - timeSpan: difference between the two Time, as a time span expressed in
 //     microseconds.
-//
 func (end *DateTime) Difference(begin *DateTime) TimeSpan {
 	var _arg0 *C.GDateTime // out
 	var _arg1 *C.GDateTime // out
@@ -14432,7 +14202,6 @@ func (end *DateTime) Difference(begin *DateTime) TimeSpan {
 // The function returns the following values:
 //
 //   - ok: TRUE if dt1 and dt2 are equal.
-//
 func (dt1 *DateTime) Equal(dt2 *DateTime) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -14605,7 +14374,6 @@ func (dt1 *DateTime) Equal(dt2 *DateTime) bool {
 //     or NULL in the case that there was an error (such as a format specifier
 //     not being supported in the current locale). The string should be freed
 //     with g_free().
-//
 func (datetime *DateTime) Format(format string) string {
 	var _arg0 *C.GDateTime // out
 	var _arg1 *C.gchar     // out
@@ -14640,7 +14408,6 @@ func (datetime *DateTime) Format(format string) string {
 //   - utf8 (optional): newly allocated string formatted in ISO 8601 format or
 //     NULL in the case that there was an error. The string should be freed with
 //     g_free().
-//
 func (datetime *DateTime) FormatISO8601() string {
 	var _arg0 *C.GDateTime // out
 	var _cret *C.gchar     // in
@@ -14666,7 +14433,6 @@ func (datetime *DateTime) FormatISO8601() string {
 // The function returns the following values:
 //
 //   - gint: day of the month.
-//
 func (datetime *DateTime) DayOfMonth() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -14689,7 +14455,6 @@ func (datetime *DateTime) DayOfMonth() int {
 // The function returns the following values:
 //
 //   - gint: day of the week.
-//
 func (datetime *DateTime) DayOfWeek() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -14712,7 +14477,6 @@ func (datetime *DateTime) DayOfWeek() int {
 // The function returns the following values:
 //
 //   - gint: day of the year.
-//
 func (datetime *DateTime) DayOfYear() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -14734,7 +14498,6 @@ func (datetime *DateTime) DayOfYear() int {
 // The function returns the following values:
 //
 //   - gint: hour of the day.
-//
 func (datetime *DateTime) Hour() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -14756,7 +14519,6 @@ func (datetime *DateTime) Hour() int {
 // The function returns the following values:
 //
 //   - gint: microsecond of the second.
-//
 func (datetime *DateTime) Microsecond() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -14778,7 +14540,6 @@ func (datetime *DateTime) Microsecond() int {
 // The function returns the following values:
 //
 //   - gint: minute of the hour.
-//
 func (datetime *DateTime) Minute() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -14801,7 +14562,6 @@ func (datetime *DateTime) Minute() int {
 // The function returns the following values:
 //
 //   - gint: month represented by datetime.
-//
 func (datetime *DateTime) Month() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -14823,7 +14583,6 @@ func (datetime *DateTime) Month() int {
 // The function returns the following values:
 //
 //   - gint: second represented by datetime.
-//
 func (datetime *DateTime) Second() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -14846,7 +14605,6 @@ func (datetime *DateTime) Second() int {
 // The function returns the following values:
 //
 //   - gdouble: number of seconds.
-//
 func (datetime *DateTime) Seconds() float64 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gdouble    // in
@@ -14868,7 +14626,6 @@ func (datetime *DateTime) Seconds() float64 {
 // The function returns the following values:
 //
 //   - timeZone: time zone.
-//
 func (datetime *DateTime) Timezone() *TimeZone {
 	var _arg0 *C.GDateTime // out
 	var _cret *C.GTimeZone // in
@@ -14902,7 +14659,6 @@ func (datetime *DateTime) Timezone() *TimeZone {
 //
 //   - utf8: time zone abbreviation. The returned string is owned by the Time
 //     and it should not be modified or freed.
-//
 func (datetime *DateTime) TimezoneAbbreviation() string {
 	var _arg0 *C.GDateTime // out
 	var _cret *C.gchar     // in
@@ -14932,7 +14688,6 @@ func (datetime *DateTime) TimezoneAbbreviation() string {
 //
 //   - timeSpan: number of microseconds that should be added to UTC to get the
 //     local time.
-//
 func (datetime *DateTime) UTCOffset() TimeSpan {
 	var _arg0 *C.GDateTime // out
 	var _cret C.GTimeSpan  // in
@@ -14983,7 +14738,6 @@ func (datetime *DateTime) UTCOffset() TimeSpan {
 // The function returns the following values:
 //
 //   - gint: ISO 8601 week-numbering year for datetime.
-//
 func (datetime *DateTime) WeekNumberingYear() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -15018,7 +14772,6 @@ func (datetime *DateTime) WeekNumberingYear() int {
 // The function returns the following values:
 //
 //   - gint: ISO 8601 week number for datetime.
-//
 func (datetime *DateTime) WeekOfYear() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -15040,7 +14793,6 @@ func (datetime *DateTime) WeekOfYear() int {
 // The function returns the following values:
 //
 //   - gint: year represented by datetime.
-//
 func (datetime *DateTime) Year() int {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint       // in
@@ -15064,7 +14816,6 @@ func (datetime *DateTime) Year() int {
 //   - year (optional): return location for the gregorian year, or NULL.
 //   - month (optional): return location for the month of the year, or NULL.
 //   - day (optional): return location for the day of the month, or NULL.
-//
 func (datetime *DateTime) Ymd() (year int, month int, day int) {
 	var _arg0 *C.GDateTime // out
 	var _arg1 C.gint       // in
@@ -15092,7 +14843,6 @@ func (datetime *DateTime) Ymd() (year int, month int, day int) {
 // The function returns the following values:
 //
 //   - guint containing the hash.
-//
 func (datetime *DateTime) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -15115,7 +14865,6 @@ func (datetime *DateTime) Hash() uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if daylight savings time is in effect.
-//
 func (datetime *DateTime) IsDaylightSavings() bool {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gboolean   // in
@@ -15144,7 +14893,6 @@ func (datetime *DateTime) IsDaylightSavings() bool {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) ToLocal() *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _cret *C.GDateTime // in
@@ -15191,7 +14939,6 @@ func (datetime *DateTime) ToLocal() *DateTime {
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, else FALSE.
-//
 func (datetime *DateTime) ToTimeval(tv *TimeVal) bool {
 	var _arg0 *C.GDateTime // out
 	var _arg1 *C.GTimeVal  // out
@@ -15228,7 +14975,6 @@ func (datetime *DateTime) ToTimeval(tv *TimeVal) bool {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) ToTimezone(tz *TimeZone) *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _arg1 *C.GTimeZone // out
@@ -15265,7 +15011,6 @@ func (datetime *DateTime) ToTimezone(tz *TimeZone) *DateTime {
 // The function returns the following values:
 //
 //   - gint64: unix time corresponding to datetime.
-//
 func (datetime *DateTime) ToUnix() int64 {
 	var _arg0 *C.GDateTime // out
 	var _cret C.gint64     // in
@@ -15292,7 +15037,6 @@ func (datetime *DateTime) ToUnix() int64 {
 //
 //   - dateTime (optional): newly created Time which should be freed with
 //     g_date_time_unref(), or NULL.
-//
 func (datetime *DateTime) ToUTC() *DateTime {
 	var _arg0 *C.GDateTime // out
 	var _cret *C.GDateTime // in
@@ -15393,7 +15137,6 @@ func marshalHashTable(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if the key did not exist yet.
-//
 func HashTableAdd(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable // out
 	var _arg2 C.gpointer    // out
@@ -15433,7 +15176,6 @@ func HashTableAdd(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointe
 // The function returns the following values:
 //
 //   - ok: TRUE if key is in hash_table, FALSE otherwise.
-//
 func HashTableContains(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -15472,7 +15214,6 @@ func HashTableContains(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.P
 // The function takes the following parameters:
 //
 //   - hashTable: Table.
-//
 func HashTableDestroy(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	var _arg1 *C.GHashTable // out
 
@@ -15509,7 +15250,6 @@ func HashTableDestroy(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 // The function returns the following values:
 //
 //   - ok: TRUE if the key did not exist yet.
-//
 func HashTableInsert(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable // out
 	var _arg2 C.gpointer    // out
@@ -15555,7 +15295,6 @@ func HashTableInsert(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value uns
 // The function returns the following values:
 //
 //   - gpointer (optional): associated value, or NULL if the key is not found.
-//
 func HashTableLookup(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) unsafe.Pointer {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -15601,7 +15340,6 @@ func HashTableLookup(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poi
 //   - origKey (optional): return location for the original key.
 //   - value (optional): return location for the value associated with the key.
 //   - ok: TRUE if the key was found in the Table.
-//
 func HashTableLookupExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (origKey, value unsafe.Pointer, ok bool) {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -15651,7 +15389,6 @@ func HashTableLookupExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookup
 // The function returns the following values:
 //
 //   - ok: TRUE if the key was found and removed from the Table.
-//
 func HashTableRemove(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -15690,7 +15427,6 @@ func HashTableRemove(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poi
 // The function takes the following parameters:
 //
 //   - hashTable: Table.
-//
 func HashTableRemoveAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	var _arg1 *C.GHashTable // out
 
@@ -15727,7 +15463,6 @@ func HashTableRemoveAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 // The function returns the following values:
 //
 //   - ok: TRUE if the key did not exist yet.
-//
 func HashTableReplace(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable // out
 	var _arg2 C.gpointer    // out
@@ -15769,7 +15504,6 @@ func HashTableReplace(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value un
 // The function returns the following values:
 //
 //   - guint: number of key/value pairs in the Table.
-//
 func HashTableSize(hashTable map[unsafe.Pointer]unsafe.Pointer) uint {
 	var _arg1 *C.GHashTable // out
 	var _cret C.guint       // in
@@ -15805,7 +15539,6 @@ func HashTableSize(hashTable map[unsafe.Pointer]unsafe.Pointer) uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if the key was found and removed from the Table.
-//
 func HashTableSteal(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointer) bool {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -15841,7 +15574,6 @@ func HashTableSteal(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poin
 // The function takes the following parameters:
 //
 //   - hashTable: Table.
-//
 func HashTableStealAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	var _arg1 *C.GHashTable // out
 
@@ -15881,7 +15613,6 @@ func HashTableStealAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 //   - stolenValue (optional): return location for the value associated with the
 //     key.
 //   - ok: TRUE if the key was found in the Table.
-//
 func HashTableStealExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupKey unsafe.Pointer) (stolenKey, stolenValue unsafe.Pointer, ok bool) {
 	var _arg1 *C.GHashTable   // out
 	var _arg2 C.gconstpointer // out
@@ -15941,19 +15672,18 @@ type hashTableIter struct {
 // The iteration order of a TableIter over the keys/values in a hash table is
 // not defined.
 //
-//    GHashTableIter iter;
-//    gpointer key, value;
+//	GHashTableIter iter;
+//	gpointer key, value;
 //
-//    g_hash_table_iter_init (&iter, hash_table);
-//    while (g_hash_table_iter_next (&iter, &key, &value))
-//      {
-//        // do something with key and value
-//      }.
+//	g_hash_table_iter_init (&iter, hash_table);
+//	while (g_hash_table_iter_next (&iter, &key, &value))
+//	  {
+//	    // do something with key and value
+//	  }.
 //
 // The function takes the following parameters:
 //
 //   - hashTable: Table.
-//
 func (iter *HashTableIter) Init(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 *C.GHashTable     // out
@@ -15983,7 +15713,6 @@ func (iter *HashTableIter) Init(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 //   - key (optional): location to store the key.
 //   - value (optional): location to store the value.
 //   - ok: FALSE if the end of the Table has been reached.
-//
 func (iter *HashTableIter) Next() (key unsafe.Pointer, value unsafe.Pointer, ok bool) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // in
@@ -16019,11 +15748,11 @@ func (iter *HashTableIter) Next() (key unsafe.Pointer, value unsafe.Pointer, ok 
 //
 // It is safe to continue iterating the Table afterward:
 //
-//    while (g_hash_table_iter_next (&iter, &key, &value))
-//      {
-//        if (condition)
-//          g_hash_table_iter_remove (&iter);
-//      }.
+//	while (g_hash_table_iter_next (&iter, &key, &value))
+//	  {
+//	    if (condition)
+//	      g_hash_table_iter_remove (&iter);
+//	  }.
 func (iter *HashTableIter) Remove() {
 	var _arg0 *C.GHashTableIter // out
 
@@ -16043,7 +15772,6 @@ func (iter *HashTableIter) Remove() {
 // The function takes the following parameters:
 //
 //   - value (optional) to replace with.
-//
 func (iter *HashTableIter) Replace(value unsafe.Pointer) {
 	var _arg0 *C.GHashTableIter // out
 	var _arg1 C.gpointer        // out
@@ -16163,7 +15891,6 @@ func (channel *IOChannel) Close() {
 //
 //   - ioStatus status of the operation: One of IO_STATUS_NORMAL,
 //     IO_STATUS_AGAIN, or IO_STATUS_ERROR.
-//
 func (channel *IOChannel) Flush() (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.GIOStatus   // in
@@ -16192,7 +15919,6 @@ func (channel *IOChannel) Flush() (IOStatus, error) {
 // The function returns the following values:
 //
 //   - ioCondition: OCondition.
-//
 func (channel *IOChannel) BufferCondition() IOCondition {
 	var _arg0 *C.GIOChannel  // out
 	var _cret C.GIOCondition // in
@@ -16214,7 +15940,6 @@ func (channel *IOChannel) BufferCondition() IOCondition {
 // The function returns the following values:
 //
 //   - gsize: size of the buffer.
-//
 func (channel *IOChannel) BufferSize() uint {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gsize       // in
@@ -16236,7 +15961,6 @@ func (channel *IOChannel) BufferSize() uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if the channel is buffered.
-//
 func (channel *IOChannel) Buffered() bool {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gboolean    // in
@@ -16263,7 +15987,6 @@ func (channel *IOChannel) Buffered() bool {
 //
 //   - utf8: string containing the encoding, this string is owned by GLib and
 //     must not be freed.
-//
 func (channel *IOChannel) Encoding() string {
 	var _arg0 *C.GIOChannel // out
 	var _cret *C.gchar      // in
@@ -16292,7 +16015,6 @@ func (channel *IOChannel) Encoding() string {
 // The function returns the following values:
 //
 //   - ioFlags flags which are set on the channel.
-//
 func (channel *IOChannel) Flags() IOFlags {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.GIOFlags    // in
@@ -16320,7 +16042,6 @@ func (channel *IOChannel) Flags() IOFlags {
 //
 //   - utf8: line termination string. This value is owned by GLib and must not
 //     be freed.
-//
 func (channel *IOChannel) LineTerm(length *int) string {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gint       // out
@@ -16366,7 +16087,6 @@ func (channel *IOChannel) Init() {
 //     on success if count < 6 and the channel's encoding is non-NULL. This
 //     indicates that the next UTF-8 character is too wide for the buffer.
 //   - ioStatus status of the operation.
-//
 func (channel *IOChannel) ReadChars(buf []byte) (uint, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -16411,7 +16131,6 @@ func (channel *IOChannel) ReadChars(buf []byte) (uint, IOStatus, error) {
 //   - terminatorPos (optional): location to store position of line terminator,
 //     or NULL.
 //   - ioStatus status of the operation.
-//
 func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorPos uint, ioStatus IOStatus, goerr error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // in
@@ -16453,7 +16172,6 @@ func (channel *IOChannel) ReadLine() (strReturn string, length uint, terminatorP
 //     but there may be other nuls in the intervening data.
 //   - ioStatus: G_IO_STATUS_NORMAL on success. This function never returns
 //     G_IO_STATUS_EOF.
-//
 func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // in
@@ -16488,7 +16206,6 @@ func (channel *IOChannel) ReadToEnd() ([]byte, IOStatus, error) {
 //
 //   - thechar: location to return a character.
 //   - ioStatus: OStatus.
-//
 func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gunichar    // in
@@ -16529,7 +16246,6 @@ func (channel *IOChannel) ReadUnichar() (uint32, IOStatus, error) {
 // The function returns the following values:
 //
 //   - ioError: G_IO_ERROR_NONE if the operation was successful.
-//
 func (channel *IOChannel) Seek(offset int64, typ SeekType) IOError {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gint64      // out
@@ -16564,7 +16280,6 @@ func (channel *IOChannel) Seek(offset int64, typ SeekType) IOError {
 // The function returns the following values:
 //
 //   - ioStatus status of the operation.
-//
 func (channel *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gint64      // out
@@ -16597,7 +16312,6 @@ func (channel *IOChannel) SeekPosition(offset int64, typ SeekType) (IOStatus, er
 // The function takes the following parameters:
 //
 //   - size of the buffer, or 0 to let GLib pick a good size.
-//
 func (channel *IOChannel) SetBufferSize(size uint) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gsize       // out
@@ -16630,7 +16344,6 @@ func (channel *IOChannel) SetBufferSize(size uint) {
 // The function takes the following parameters:
 //
 //   - buffered: whether to set the channel buffered or unbuffered.
-//
 func (channel *IOChannel) SetBuffered(buffered bool) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gboolean    // out
@@ -16685,7 +16398,6 @@ func (channel *IOChannel) SetBuffered(buffered bool) {
 // The function returns the following values:
 //
 //   - ioStatus: G_IO_STATUS_NORMAL if the encoding was successfully set.
-//
 func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -16723,7 +16435,6 @@ func (channel *IOChannel) SetEncoding(encoding string) (IOStatus, error) {
 // The function returns the following values:
 //
 //   - ioStatus status of the operation.
-//
 func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.GIOFlags    // out
@@ -16760,7 +16471,6 @@ func (channel *IOChannel) SetFlags(flags IOFlags) (IOStatus, error) {
 //   - length of the termination string. If -1 is passed, the string is assumed
 //     to be nul-terminated. This option allows termination strings with
 //     embedded nuls.
-//
 func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -16790,7 +16500,6 @@ func (channel *IOChannel) SetLineTerm(lineTerm string, length int) {
 // The function returns the following values:
 //
 //   - ioStatus status of the operation.
-//
 func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gboolean    // out
@@ -16825,7 +16534,6 @@ func (channel *IOChannel) Shutdown(flush bool) (IOStatus, error) {
 // The function returns the following values:
 //
 //   - gint: file descriptor of the OChannel.
-//
 func (channel *IOChannel) UnixGetFd() int {
 	var _arg0 *C.GIOChannel // out
 	var _cret C.gint        // in
@@ -16855,7 +16563,6 @@ func (channel *IOChannel) UnixGetFd() int {
 // The function returns the following values:
 //
 //   - ioError: G_IO_ERROR_NONE if the operation was successful.
-//
 func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOError {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -16902,7 +16609,6 @@ func (channel *IOChannel) Write(buf string, count uint, bytesWritten *uint) IOEr
 //     G_IO_STATUS_NORMAL and the channel is blocking, this will always be equal
 //     to count if count >= 0.
 //   - ioStatus status of the operation.
-//
 func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 *C.gchar      // out
@@ -16945,7 +16651,6 @@ func (channel *IOChannel) WriteChars(buf string, count int) (uint, IOStatus, err
 // The function returns the following values:
 //
 //   - ioStatus: OStatus.
-//
 func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 	var _arg0 *C.GIOChannel // out
 	var _arg1 C.gunichar    // out
@@ -16979,7 +16684,6 @@ func (channel *IOChannel) WriteUnichar(thechar uint32) (IOStatus, error) {
 // The function returns the following values:
 //
 //   - ioChannelError error number, e.g. G_IO_CHANNEL_ERROR_INVAL.
-//
 func IOChannelErrorFromErrno(en int) IOChannelError {
 	var _arg1 C.gint            // out
 	var _cret C.GIOChannelError // in
@@ -17069,7 +16773,6 @@ func NewKeyFile() *KeyFile {
 //
 //   - groupName: group name.
 //   - key: key.
-//
 func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17114,7 +16817,6 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 //   - oks: the values associated with the key as a list of booleans, or NULL
 //     if the key was not found or could not be parsed. The returned list of
 //     booleans should be freed with g_free() when no longer needed.
-//
 func (keyFile *KeyFile) BooleanList(groupName string, key string) ([]bool, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17163,7 +16865,6 @@ func (keyFile *KeyFile) BooleanList(groupName string, key string) ([]bool, error
 // The function returns the following values:
 //
 //   - utf8: comment that should be freed with g_free().
-//
 func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17215,7 +16916,6 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 //
 //   - gdouble: value associated with the key as a double, or 0.0 if the key was
 //     not found or could not be parsed.
-//
 func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17263,7 +16963,6 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 //   - gdoubles: the values associated with the key as a list of doubles,
 //     or NULL if the key was not found or could not be parsed. The returned
 //     list of doubles should be freed with g_free() when no longer needed.
-//
 func (keyFile *KeyFile) DoubleList(groupName string, key string) ([]float64, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17305,7 +17004,6 @@ func (keyFile *KeyFile) DoubleList(groupName string, key string) ([]float64, err
 //     or NULL.
 //   - utf8s: newly-allocated NULL-terminated array of strings. Use g_strfreev()
 //     to free it.
-//
 func (keyFile *KeyFile) Groups() (uint, []string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gsize     // in
@@ -17352,7 +17050,6 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 //
 //   - gint64: value associated with the key as a signed 64-bit integer, or 0 if
 //     the key was not found or could not be parsed.
-//
 func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17398,7 +17095,6 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 //
 //   - gint: value associated with the key as an integer, or 0 if the key was
 //     not found or could not be parsed.
-//
 func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17446,7 +17142,6 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 //   - gints: the values associated with the key as a list of integers, or NULL
 //     if the key was not found or could not be parsed. The returned list of
 //     integers should be freed with g_free() when no longer needed.
-//
 func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17499,7 +17194,6 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error)
 //     or NULL.
 //   - utf8s: newly-allocated NULL-terminated array of strings. Use g_strfreev()
 //     to free it.
-//
 func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17561,7 +17255,6 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 //
 //   - utf8 (optional): locale from the file, or NULL if the key was not found
 //     or the entry in the file was was untranslated.
-//
 func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string) string {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17618,7 +17311,6 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 //
 //   - utf8: newly allocated string or NULL if the specified key cannot be
 //     found.
-//
 func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string) (string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17679,7 +17371,6 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 //
 //   - utf8s: newly allocated NULL-terminated string array or NULL if the key
 //     isn't found. The string array should be freed with g_strfreev().
-//
 func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale string) ([]string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17729,7 +17420,6 @@ func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale st
 // The function returns the following values:
 //
 //   - utf8 (optional): start group of the key file.
-//
 func (keyFile *KeyFile) StartGroup() string {
 	var _arg0 *C.GKeyFile // out
 	var _cret *C.gchar    // in
@@ -17765,7 +17455,6 @@ func (keyFile *KeyFile) StartGroup() string {
 //
 //   - utf8: newly allocated string or NULL if the specified key cannot be
 //     found.
-//
 func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17811,7 +17500,6 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 //
 //   - utf8s: a NULL-terminated string array or NULL if the specified key cannot
 //     be found. The array should be freed with g_strfreev().
-//
 func (keyFile *KeyFile) StringList(groupName string, key string) ([]string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17863,7 +17551,6 @@ func (keyFile *KeyFile) StringList(groupName string, key string) ([]string, erro
 //
 //   - guint64: value associated with the key as an unsigned 64-bit integer,
 //     or 0 if the key was not found or could not be parsed.
-//
 func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17909,7 +17596,6 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 //
 //   - utf8: newly allocated string or NULL if the specified key cannot be
 //     found.
-//
 func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17949,7 +17635,6 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if group_name is a part of key_file, FALSE otherwise.
-//
 func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -17979,7 +17664,6 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 //
 //   - bytes: #GBytes.
 //   - flags from FileFlags.
-//
 func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.GBytes       // out
@@ -18012,7 +17696,6 @@ func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 //   - data: key file loaded in memory.
 //   - length of data in bytes (or (gsize)-1 if data is nul-terminated).
 //   - flags from FileFlags.
-//
 func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -18055,7 +17738,6 @@ func (keyFile *KeyFile) LoadFromData(data string, length uint, flags KeyFileFlag
 //
 //   - fullPath (optional): return location for a string containing the full
 //     path of the file, or NULL.
-//
 func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (string, error) {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -18107,7 +17789,6 @@ func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (strin
 //
 //   - fullPath (optional): return location for a string containing the full
 //     path of the file, or NULL.
-//
 func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFlags) (string, error) {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -18167,7 +17848,6 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 //
 //   - file: path of a filename to load, in the GLib filename encoding.
 //   - flags from FileFlags.
-//
 func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -18201,7 +17881,6 @@ func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 //
 //   - groupName (optional): group name, or NULL.
 //   - key (optional): key.
-//
 func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18237,7 +17916,6 @@ func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 // The function takes the following parameters:
 //
 //   - groupName: group name.
-//
 func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18266,7 +17944,6 @@ func (keyFile *KeyFile) RemoveGroup(groupName string) error {
 //
 //   - groupName: group name.
 //   - key name to remove.
-//
 func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18304,7 +17981,6 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 // The function takes the following parameters:
 //
 //   - filename: name of the file to write to.
-//
 func (keyFile *KeyFile) SaveToFile(filename string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18335,7 +18011,6 @@ func (keyFile *KeyFile) SaveToFile(filename string) error {
 //   - groupName: group name.
 //   - key: key.
 //   - value: TRUE or FALSE.
-//
 func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18367,7 +18042,6 @@ func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 //   - groupName: group name.
 //   - key: key.
 //   - list: array of boolean values.
-//
 func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18406,7 +18080,6 @@ func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool
 //   - groupName (optional): group name, or NULL.
 //   - key (optional): key.
 //   - comment: comment.
-//
 func (keyFile *KeyFile) SetComment(groupName string, key string, comment string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18449,7 +18122,6 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 //   - groupName: group name.
 //   - key: key.
 //   - value: double value.
-//
 func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18478,7 +18150,6 @@ func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 //   - groupName: group name.
 //   - key: key.
 //   - list: array of double values.
-//
 func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float64) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18511,7 +18182,6 @@ func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float
 //   - groupName: group name.
 //   - key: key.
 //   - value: integer value.
-//
 func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18540,7 +18210,6 @@ func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 //   - groupName: group name.
 //   - key: key.
 //   - value: integer value.
-//
 func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18569,7 +18238,6 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 //   - groupName: group name.
 //   - key: key.
 //   - list: array of integer values.
-//
 func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18606,7 +18274,6 @@ func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int)
 // The function takes the following parameters:
 //
 //   - separator: separator.
-//
 func (keyFile *KeyFile) SetListSeparator(separator byte) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gchar     // out
@@ -18628,7 +18295,6 @@ func (keyFile *KeyFile) SetListSeparator(separator byte) {
 //   - key: key.
 //   - locale identifier.
 //   - str: string.
-//
 func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale string, str string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18664,7 +18330,6 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 //   - key: key.
 //   - locale identifier.
 //   - list: NULL-terminated array of locale string values.
-//
 func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale string, list []string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18709,7 +18374,6 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 //   - groupName: group name.
 //   - key: key.
 //   - str: string.
-//
 func (keyFile *KeyFile) SetString(groupName string, key string, str string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18740,7 +18404,6 @@ func (keyFile *KeyFile) SetString(groupName string, key string, str string) {
 //   - groupName: group name.
 //   - key: key.
 //   - list: array of string values.
-//
 func (keyFile *KeyFile) SetStringList(groupName string, key string, list []string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18779,7 +18442,6 @@ func (keyFile *KeyFile) SetStringList(groupName string, key string, list []strin
 //   - groupName: group name.
 //   - key: key.
 //   - value: integer value.
-//
 func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18811,7 +18473,6 @@ func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 //   - groupName: group name.
 //   - key: key.
 //   - value: string.
-//
 func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18843,7 +18504,6 @@ func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 //   - length (optional): return location for the length of the returned string,
 //     or NULL.
 //   - utf8: newly allocated string holding the contents of the File.
-//
 func (keyFile *KeyFile) ToData() (uint, string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gsize     // in
@@ -18958,7 +18618,6 @@ func NewMainContext() *MainContext {
 //
 //   - ok: TRUE if the operation succeeded, and this thread is now the owner of
 //     context.
-//
 func (context *MainContext) Acquire() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -19002,7 +18661,6 @@ func (context *MainContext) Dispatch() {
 // The function returns the following values:
 //
 //   - source: source, if one was found, otherwise NULL.
-//
 func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GSourceFuncs // out
@@ -19053,7 +18711,6 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 // The function returns the following values:
 //
 //   - source: #GSource.
-//
 func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.guint         // out
@@ -19093,7 +18750,6 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 // The function returns the following values:
 //
 //   - source: source, if one was found, otherwise NULL.
-//
 func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gpointer      // out
@@ -19134,7 +18790,6 @@ func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Sourc
 //
 //   - priority at which to run function.
 //   - function to call.
-//
 func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // out
@@ -19163,7 +18818,6 @@ func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
 // The function returns the following values:
 //
 //   - ok: TRUE if current thread is owner of context.
-//
 func (context *MainContext) IsOwner() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -19201,7 +18855,6 @@ func (context *MainContext) IsOwner() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if events were dispatched.
-//
 func (context *MainContext) Iteration(mayBlock bool) bool {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gboolean      // out
@@ -19232,7 +18885,6 @@ func (context *MainContext) Iteration(mayBlock bool) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if events are pending.
-//
 func (context *MainContext) Pending() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -19277,7 +18929,6 @@ func (context *MainContext) PopThreadDefault() {
 //   - priority (optional): location to store priority of highest priority
 //     source already ready.
 //   - ok: TRUE if some source is ready to be dispatched prior to polling.
-//
 func (context *MainContext) Prepare() (int, bool) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // in
@@ -19366,10 +19017,10 @@ func (context *MainContext) Release() {
 // Another related use for this function is when implementing a main loop with a
 // termination condition, computed from multiple threads:
 //
-//    perform_work();
+//	perform_work();
 //
-//    if (g_atomic_int_dec_and_test (&tasks_remaining))
-//      g_main_context_wakeup (NULL);.
+//	if (g_atomic_int_dec_and_test (&tasks_remaining))
+//	  g_main_context_wakeup (NULL);.
 func (context *MainContext) Wakeup() {
 	var _arg0 *C.GMainContext // out
 
@@ -19387,7 +19038,6 @@ func (context *MainContext) Wakeup() {
 // The function returns the following values:
 //
 //   - mainContext: global default main context.
-//
 func MainContextDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
@@ -19422,7 +19072,6 @@ func MainContextDefault() *MainContext {
 //
 //   - mainContext (optional): thread-default Context, or NULL if the
 //     thread-default context is the global default context.
-//
 func MainContextGetThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
@@ -19455,7 +19104,6 @@ func MainContextGetThreadDefault() *MainContext {
 //
 //   - mainContext: thread-default Context. Unref with g_main_context_unref()
 //     when you are done with it.
-//
 func MainContextRefThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
@@ -19527,7 +19175,6 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 // The function returns the following values:
 //
 //   - mainContext of loop.
-//
 func (loop *MainLoop) Context() *MainContext {
 	var _arg0 *C.GMainLoop    // out
 	var _cret *C.GMainContext // in
@@ -19557,7 +19204,6 @@ func (loop *MainLoop) Context() *MainContext {
 // The function returns the following values:
 //
 //   - ok: TRUE if the mainloop is currently being run.
-//
 func (loop *MainLoop) IsRunning() bool {
 	var _arg0 *C.GMainLoop // out
 	var _cret C.gboolean   // in
@@ -19694,7 +19340,6 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 // The function returns the following values:
 //
 //   - bytes: newly allocated #GBytes referencing data from file.
-//
 func (file *MappedFile) Bytes() *Bytes {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.GBytes      // in
@@ -19727,7 +19372,6 @@ func (file *MappedFile) Bytes() *Bytes {
 // The function returns the following values:
 //
 //   - utf8 contents of file, or NULL.
-//
 func (file *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.gchar       // in
@@ -19750,7 +19394,6 @@ func (file *MappedFile) Contents() string {
 // The function returns the following values:
 //
 //   - gsize: length of the contents of file.
-//
 func (file *MappedFile) Length() uint {
 	var _arg0 *C.GMappedFile // out
 	var _cret C.gsize        // in
@@ -19819,7 +19462,6 @@ func (context *MarkupParseContext) EndParse() error {
 // The function returns the following values:
 //
 //   - utf8: name of the currently open element, or NULL.
-//
 func (context *MarkupParseContext) Element() string {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret *C.gchar               // in
@@ -19846,7 +19488,6 @@ func (context *MarkupParseContext) Element() string {
 //   - lineNumber (optional): return location for a line number, or NULL.
 //   - charNumber (optional): return location for a char-on-line number,
 //     or NULL.
-//
 func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 C.gint                 // in
@@ -19877,7 +19518,6 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 //   - gpointer (optional): provided user_data. The returned data belongs to the
 //     markup context and will be freed when g_markup_parse_context_free() is
 //     called.
-//
 func (context *MarkupParseContext) UserData() unsafe.Pointer {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
@@ -19908,7 +19548,6 @@ func (context *MarkupParseContext) UserData() unsafe.Pointer {
 //
 //   - text: chunk of text to parse.
 //   - textLen: length of text in bytes.
-//
 func (context *MarkupParseContext) Parse(text string, textLen int) error {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.gchar               // out
@@ -19950,7 +19589,6 @@ func (context *MarkupParseContext) Parse(text string, textLen int) error {
 // The function returns the following values:
 //
 //   - gpointer (optional): user data passed to g_markup_parse_context_push().
-//
 func (context *MarkupParseContext) Pop() unsafe.Pointer {
 	var _arg0 *C.GMarkupParseContext // out
 	var _cret C.gpointer             // in
@@ -19995,27 +19633,26 @@ func (context *MarkupParseContext) Pop() unsafe.Pointer {
 // As an example, see the following implementation of a simple parser that
 // counts the number of tags encountered.
 //
-//    static void start_element (context, element_name, ...)
-//    {
-//      if (strcmp (element_name, "count-these") == 0)
-//        start_counting (context);
+//	static void start_element (context, element_name, ...)
+//	{
+//	  if (strcmp (element_name, "count-these") == 0)
+//	    start_counting (context);
 //
-//      // else, handle other tags...
-//    }
+//	  // else, handle other tags...
+//	}
 //
-//    static void end_element (context, element_name, ...)
-//    {
-//      if (strcmp (element_name, "count-these") == 0)
-//        g_print ("Counted d tags\n", end_counting (context));
+//	static void end_element (context, element_name, ...)
+//	{
+//	  if (strcmp (element_name, "count-these") == 0)
+//	    g_print ("Counted d tags\n", end_counting (context));
 //
-//      // else, handle other tags...
-//    }.
+//	  // else, handle other tags...
+//	}.
 //
 // The function takes the following parameters:
 //
 //   - parser: Parser.
 //   - userData (optional): user data to pass to Parser functions.
-//
 func (context *MarkupParseContext) Push(parser *MarkupParser, userData unsafe.Pointer) {
 	var _arg0 *C.GMarkupParseContext // out
 	var _arg1 *C.GMarkupParser       // out
@@ -20090,7 +19727,6 @@ func marshalMatchInfo(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - utf8 (optional): expanded string, or NULL if an error occurred.
-//
 func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, error) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 *C.gchar      // out
@@ -20144,7 +19780,6 @@ func (matchInfo *MatchInfo) ExpandReferences(stringToExpand string) (string, err
 //
 //   - utf8 (optional): matched substring, or NULL if an error occurred.
 //     You have to free the string yourself.
-//
 func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 C.gint        // out
@@ -20187,7 +19822,6 @@ func (matchInfo *MatchInfo) Fetch(matchNum int) string {
 //
 //   - utf8s: NULL-terminated array of gchar * pointers. It must be freed using
 //     g_strfreev(). If the previous match failed NULL is returned.
-//
 func (matchInfo *MatchInfo) FetchAll() []string {
 	var _arg0 *C.GMatchInfo // out
 	var _cret **C.gchar     // in
@@ -20235,7 +19869,6 @@ func (matchInfo *MatchInfo) FetchAll() []string {
 //
 //   - utf8 (optional): matched substring, or NULL if an error occurred.
 //     You have to free the string yourself.
-//
 func (matchInfo *MatchInfo) FetchNamed(name string) string {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 *C.gchar      // out
@@ -20278,7 +19911,6 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 //     or NULL.
 //   - ok: TRUE if the position was fetched, FALSE otherwise. If the position
 //     cannot be fetched, start_pos and end_pos are left unchanged.
-//
 func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 *C.gchar      // out
@@ -20332,7 +19964,6 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 //     or NULL.
 //   - ok: TRUE if the position was fetched, FALSE otherwise. If the position
 //     cannot be fetched, start_pos and end_pos are left unchanged.
-//
 func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 C.gint        // out
@@ -20372,7 +20003,6 @@ func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok
 // The function returns the following values:
 //
 //   - gint: number of matched substrings, or -1 if an error occurred.
-//
 func (matchInfo *MatchInfo) MatchCount() int {
 	var _arg0 *C.GMatchInfo // out
 	var _cret C.gint        // in
@@ -20396,7 +20026,6 @@ func (matchInfo *MatchInfo) MatchCount() int {
 // The function returns the following values:
 //
 //   - regex object used in match_info.
-//
 func (matchInfo *MatchInfo) Regex() *Regex {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.GRegex     // in
@@ -20426,7 +20055,6 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 // The function returns the following values:
 //
 //   - utf8: string searched with match_info.
-//
 func (matchInfo *MatchInfo) String() string {
 	var _arg0 *C.GMatchInfo // out
 	var _cret *C.gchar      // in
@@ -20478,7 +20106,6 @@ func (matchInfo *MatchInfo) String() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if the match was partial, FALSE otherwise.
-//
 func (matchInfo *MatchInfo) IsPartialMatch() bool {
 	var _arg0 *C.GMatchInfo // out
 	var _cret C.gboolean    // in
@@ -20502,7 +20129,6 @@ func (matchInfo *MatchInfo) IsPartialMatch() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the previous match operation succeeded, FALSE otherwise.
-//
 func (matchInfo *MatchInfo) Matches() bool {
 	var _arg0 *C.GMatchInfo // out
 	var _cret C.gboolean    // in
@@ -20610,7 +20236,6 @@ func (n *Node) Children() *Node {
 //
 //   - gint: index of the child of node which contains data, or -1 if the data
 //     is not found.
-//
 func (node *Node) ChildIndex(data unsafe.Pointer) int {
 	var _arg0 *C.GNode   // out
 	var _arg1 C.gpointer // out
@@ -20641,7 +20266,6 @@ func (node *Node) ChildIndex(data unsafe.Pointer) int {
 // The function returns the following values:
 //
 //   - gint: position of child with respect to its siblings.
-//
 func (node *Node) ChildPosition(child *Node) int {
 	var _arg0 *C.GNode // out
 	var _arg1 *C.GNode // out
@@ -20669,7 +20293,6 @@ func (node *Node) ChildPosition(child *Node) int {
 // The function returns the following values:
 //
 //   - guint: depth of the #GNode.
-//
 func (node *Node) Depth() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
@@ -20708,7 +20331,6 @@ func (root *Node) Destroy() {
 // The function returns the following values:
 //
 //   - ok: TRUE if node is an ancestor of descendant.
-//
 func (node *Node) IsAncestor(descendant *Node) bool {
 	var _arg0 *C.GNode   // out
 	var _arg1 *C.GNode   // out
@@ -20739,7 +20361,6 @@ func (node *Node) IsAncestor(descendant *Node) bool {
 // The function returns the following values:
 //
 //   - guint: maximum height of the tree beneath root.
-//
 func (root *Node) MaxHeight() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
@@ -20761,7 +20382,6 @@ func (root *Node) MaxHeight() uint {
 // The function returns the following values:
 //
 //   - guint: number of children of node.
-//
 func (node *Node) NChildren() uint {
 	var _arg0 *C.GNode // out
 	var _cret C.guint  // in
@@ -20788,7 +20408,6 @@ func (node *Node) NChildren() uint {
 // The function returns the following values:
 //
 //   - guint: number of nodes in the tree.
-//
 func (root *Node) NNodes(flags TraverseFlags) uint {
 	var _arg0 *C.GNode         // out
 	var _arg1 C.GTraverseFlags // out
@@ -20961,7 +20580,6 @@ func marshalOptionGroup(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - entries: NULL-terminated array of Entrys.
-//
 func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.GOptionEntry // out
@@ -20991,7 +20609,6 @@ func (group *OptionGroup) AddEntries(entries []OptionEntry) {
 // The function takes the following parameters:
 //
 //   - domain to use.
-//
 func (group *OptionGroup) SetTranslationDomain(domain string) {
 	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.gchar        // out
@@ -21068,7 +20685,6 @@ func (queue *Queue) Clear() {
 // The function returns the following values:
 //
 //   - guint: number of items in queue.
-//
 func (queue *Queue) Length() uint {
 	var _arg0 *C.GQueue // out
 	var _cret C.guint   // in
@@ -21095,7 +20711,6 @@ func (queue *Queue) Length() uint {
 //
 //   - gint: position of the first element in queue which contains data,
 //     or -1 if no element in queue contains data.
-//
 func (queue *Queue) Index(data unsafe.Pointer) int {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
@@ -21132,7 +20747,6 @@ func (queue *Queue) Init() {
 // The function returns the following values:
 //
 //   - ok: TRUE if the queue is empty.
-//
 func (queue *Queue) IsEmpty() bool {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gboolean // in
@@ -21157,7 +20771,6 @@ func (queue *Queue) IsEmpty() bool {
 //
 //   - gpointer (optional): data of the first element in the queue, or NULL if
 //     the queue is empty.
-//
 func (queue *Queue) PeekHead() unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
@@ -21184,7 +20797,6 @@ func (queue *Queue) PeekHead() unsafe.Pointer {
 //
 //   - gpointer (optional): data for the n'th element of queue, or NULL if n is
 //     off the end of queue.
-//
 func (queue *Queue) PeekNth(n uint) unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
@@ -21210,7 +20822,6 @@ func (queue *Queue) PeekNth(n uint) unsafe.Pointer {
 //
 //   - gpointer (optional): data of the last element in the queue, or NULL if
 //     the queue is empty.
-//
 func (queue *Queue) PeekTail() unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
@@ -21233,7 +20844,6 @@ func (queue *Queue) PeekTail() unsafe.Pointer {
 //
 //   - gpointer (optional): data of the first element in the queue, or NULL if
 //     the queue is empty.
-//
 func (queue *Queue) PopHead() unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
@@ -21259,7 +20869,6 @@ func (queue *Queue) PopHead() unsafe.Pointer {
 // The function returns the following values:
 //
 //   - gpointer (optional) element's data, or NULL if n is off the end of queue.
-//
 func (queue *Queue) PopNth(n uint) unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.guint    // out
@@ -21285,7 +20894,6 @@ func (queue *Queue) PopNth(n uint) unsafe.Pointer {
 //
 //   - gpointer (optional): data of the last element in the queue, or NULL if
 //     the queue is empty.
-//
 func (queue *Queue) PopTail() unsafe.Pointer {
 	var _arg0 *C.GQueue  // out
 	var _cret C.gpointer // in
@@ -21307,7 +20915,6 @@ func (queue *Queue) PopTail() unsafe.Pointer {
 // The function takes the following parameters:
 //
 //   - data (optional) for the new element.
-//
 func (queue *Queue) PushHead(data unsafe.Pointer) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
@@ -21327,7 +20934,6 @@ func (queue *Queue) PushHead(data unsafe.Pointer) {
 //   - data (optional) for the new element.
 //   - n to insert the new element. If n is negative or larger than the number
 //     of elements in the queue, the element is added to the end of the queue.
-//
 func (queue *Queue) PushNth(data unsafe.Pointer, n int) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
@@ -21348,7 +20954,6 @@ func (queue *Queue) PushNth(data unsafe.Pointer, n int) {
 // The function takes the following parameters:
 //
 //   - data (optional) for the new element.
-//
 func (queue *Queue) PushTail(data unsafe.Pointer) {
 	var _arg0 *C.GQueue  // out
 	var _arg1 C.gpointer // out
@@ -21370,7 +20975,6 @@ func (queue *Queue) PushTail(data unsafe.Pointer) {
 // The function returns the following values:
 //
 //   - ok: TRUE if data was found and removed from queue.
-//
 func (queue *Queue) Remove(data unsafe.Pointer) bool {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
@@ -21401,7 +21005,6 @@ func (queue *Queue) Remove(data unsafe.Pointer) bool {
 // The function returns the following values:
 //
 //   - guint: number of elements removed from queue.
-//
 func (queue *Queue) RemoveAll(data unsafe.Pointer) uint {
 	var _arg0 *C.GQueue       // out
 	var _arg1 C.gconstpointer // out
@@ -21547,7 +21150,6 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 // The function returns the following values:
 //
 //   - gint: number of capturing subpatterns.
-//
 func (regex *Regex) CaptureCount() int {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
@@ -21573,7 +21175,6 @@ func (regex *Regex) CaptureCount() int {
 // The function returns the following values:
 //
 //   - regexCompileFlags flags from CompileFlags.
-//
 func (regex *Regex) CompileFlags() RegexCompileFlags {
 	var _arg0 *C.GRegex            // out
 	var _cret C.GRegexCompileFlags // in
@@ -21595,7 +21196,6 @@ func (regex *Regex) CompileFlags() RegexCompileFlags {
 // The function returns the following values:
 //
 //   - ok: TRUE if the pattern contains explicit CR or LF references.
-//
 func (regex *Regex) HasCrOrLf() bool {
 	var _arg0 *C.GRegex  // out
 	var _cret C.gboolean // in
@@ -21619,7 +21219,6 @@ func (regex *Regex) HasCrOrLf() bool {
 // The function returns the following values:
 //
 //   - regexMatchFlags flags from MatchFlags.
-//
 func (regex *Regex) MatchFlags() RegexMatchFlags {
 	var _arg0 *C.GRegex          // out
 	var _cret C.GRegexMatchFlags // in
@@ -21642,7 +21241,6 @@ func (regex *Regex) MatchFlags() RegexMatchFlags {
 // The function returns the following values:
 //
 //   - gint: number of the highest back reference.
-//
 func (regex *Regex) MaxBackref() int {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
@@ -21666,7 +21264,6 @@ func (regex *Regex) MaxBackref() int {
 // The function returns the following values:
 //
 //   - gint: number of characters in the longest lookbehind assertion.
-//
 func (regex *Regex) MaxLookbehind() int {
 	var _arg0 *C.GRegex // out
 	var _cret C.gint    // in
@@ -21689,7 +21286,6 @@ func (regex *Regex) MaxLookbehind() int {
 // The function returns the following values:
 //
 //   - utf8: pattern of regex.
-//
 func (regex *Regex) Pattern() string {
 	var _arg0 *C.GRegex // out
 	var _cret *C.gchar  // in
@@ -21715,7 +21311,6 @@ func (regex *Regex) Pattern() string {
 // The function returns the following values:
 //
 //   - gint: number of the subexpression or -1 if name does not exists.
-//
 func (regex *Regex) StringNumber(name string) int {
 	var _arg0 *C.GRegex // out
 	var _arg1 *C.gchar  // out
@@ -21750,25 +21345,25 @@ func (regex *Regex) StringNumber(name string) int {
 // To retrieve all the non-overlapping matches of the pattern in string you can
 // use g_match_info_next().
 //
-//    static void
-//    print_uppercase_words (const gchar *string)
-//    {
-//      // Print all uppercase-only words.
-//      GRegex *regex;
-//      GMatchInfo *match_info;
+//	static void
+//	print_uppercase_words (const gchar *string)
+//	{
+//	  // Print all uppercase-only words.
+//	  GRegex *regex;
+//	  GMatchInfo *match_info;
 //
-//      regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
-//      g_regex_match (regex, string, 0, &match_info);
-//      while (g_match_info_matches (match_info))
-//        {
-//          gchar *word = g_match_info_fetch (match_info, 0);
-//          g_print ("Found: s\n", word);
-//          g_free (word);
-//          g_match_info_next (match_info, NULL);
-//        }
-//      g_match_info_free (match_info);
-//      g_regex_unref (regex);
-//    }
+//	  regex = g_regex_new ("[A-Z]+", 0, 0, NULL);
+//	  g_regex_match (regex, string, 0, &match_info);
+//	  while (g_match_info_matches (match_info))
+//	    {
+//	      gchar *word = g_match_info_fetch (match_info, 0);
+//	      g_print ("Found: s\n", word);
+//	      g_free (word);
+//	      g_match_info_next (match_info, NULL);
+//	    }
+//	  g_match_info_free (match_info);
+//	  g_regex_unref (regex);
+//	}
 //
 // string is not copied and is used in Info internally. If you use any Info
 // method (except g_match_info_free()) after freeing or modifying string then
@@ -21784,7 +21379,6 @@ func (regex *Regex) StringNumber(name string) int {
 //   - matchInfo (optional): pointer to location where to store the Info,
 //     or NULL if you do not need it.
 //   - ok: TRUE is the string matched, FALSE otherwise.
-//
 func (regex *Regex) Match(str string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
@@ -21845,7 +21439,6 @@ func (regex *Regex) Match(str string, matchOptions RegexMatchFlags) (*MatchInfo,
 //   - matchInfo (optional): pointer to location where to store the Info,
 //     or NULL if you do not need it.
 //   - ok: TRUE is the string matched, FALSE otherwise.
-//
 func (regex *Regex) MatchAll(str string, matchOptions RegexMatchFlags) (*MatchInfo, bool) {
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
@@ -21906,7 +21499,6 @@ func (regex *Regex) MatchAll(str string, matchOptions RegexMatchFlags) (*MatchIn
 // The function returns the following values:
 //
 //   - utf8s: NULL-terminated gchar ** array. Free it using g_strfreev().
-//
 func (regex *Regex) Split(str string, matchOptions RegexMatchFlags) []string {
 	var _arg0 *C.GRegex          // out
 	var _arg1 *C.gchar           // out
@@ -21961,7 +21553,6 @@ func (regex *Regex) Split(str string, matchOptions RegexMatchFlags) []string {
 //
 //   - hasReferences (optional): location to store information about references
 //     in replacement or NULL.
-//
 func RegexCheckReplacement(replacement string) (bool, error) {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.gboolean // in
@@ -22012,7 +21603,6 @@ func RegexErrorQuark() Quark {
 // The function returns the following values:
 //
 //   - utf8: newly-allocated escaped string.
-//
 func RegexEscapeNUL(str string, length int) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
@@ -22055,7 +21645,6 @@ func RegexEscapeNUL(str string, length int) string {
 // The function returns the following values:
 //
 //   - ok: TRUE if the string matched, FALSE otherwise.
-//
 func RegexMatchSimple(pattern, str string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
@@ -22120,7 +21709,6 @@ func RegexMatchSimple(pattern, str string, compileOptions RegexCompileFlags, mat
 // The function returns the following values:
 //
 //   - utf8s: NULL-terminated array of strings. Free it using g_strfreev().
-//
 func RegexSplitSimple(pattern, str string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string {
 	var _arg1 *C.gchar             // out
 	var _arg2 *C.gchar             // out
@@ -22190,7 +21778,6 @@ type scanner struct {
 // The function returns the following values:
 //
 //   - guint: current line.
-//
 func (scanner *Scanner) CurLine() uint {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
@@ -22214,7 +21801,6 @@ func (scanner *Scanner) CurLine() uint {
 // The function returns the following values:
 //
 //   - guint: current position on the line.
-//
 func (scanner *Scanner) CurPosition() uint {
 	var _arg0 *C.GScanner // out
 	var _cret C.guint     // in
@@ -22237,7 +21823,6 @@ func (scanner *Scanner) CurPosition() uint {
 // The function returns the following values:
 //
 //   - tokenType: current token type.
-//
 func (scanner *Scanner) CurToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
@@ -22270,7 +21855,6 @@ func (scanner *Scanner) Destroy() {
 // The function returns the following values:
 //
 //   - ok: TRUE if the scanner has reached the end of the file or text buffer.
-//
 func (scanner *Scanner) EOF() bool {
 	var _arg0 *C.GScanner // out
 	var _cret C.gboolean  // in
@@ -22296,7 +21880,6 @@ func (scanner *Scanner) EOF() bool {
 // The function returns the following values:
 //
 //   - tokenType: type of the token.
-//
 func (scanner *Scanner) NextToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
@@ -22318,7 +21901,6 @@ func (scanner *Scanner) NextToken() TokenType {
 // The function takes the following parameters:
 //
 //   - inputFd: file descriptor.
-//
 func (scanner *Scanner) InputFile(inputFd int) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.gint      // out
@@ -22337,7 +21919,6 @@ func (scanner *Scanner) InputFile(inputFd int) {
 //
 //   - text buffer to scan.
 //   - textLen: length of the text buffer.
-//
 func (scanner *Scanner) InputText(text string, textLen uint) {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
@@ -22365,7 +21946,6 @@ func (scanner *Scanner) InputText(text string, textLen uint) {
 //
 //   - gpointer (optional): value of symbol in the current scope, or NULL if
 //     symbol is not bound in the current scope.
-//
 func (scanner *Scanner) LookupSymbol(symbol string) unsafe.Pointer {
 	var _arg0 *C.GScanner // out
 	var _arg1 *C.gchar    // out
@@ -22401,7 +21981,6 @@ func (scanner *Scanner) LookupSymbol(symbol string) unsafe.Pointer {
 // The function returns the following values:
 //
 //   - tokenType: type of the token.
-//
 func (scanner *Scanner) PeekNextToken() TokenType {
 	var _arg0 *C.GScanner  // out
 	var _cret C.GTokenType // in
@@ -22425,7 +22004,6 @@ func (scanner *Scanner) PeekNextToken() TokenType {
 //   - scopeId: scope id.
 //   - symbol to add.
 //   - value (optional) of the symbol.
-//
 func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value unsafe.Pointer) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
@@ -22457,7 +22035,6 @@ func (scanner *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value unsafe
 //
 //   - gpointer (optional): value of symbol in the given scope, or NULL if
 //     symbol is not bound in the given scope.
-//
 func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) unsafe.Pointer {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
@@ -22487,7 +22064,6 @@ func (scanner *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) unsafe.Po
 //
 //   - scopeId: scope id.
 //   - symbol to remove.
-//
 func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
@@ -22513,7 +22089,6 @@ func (scanner *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 // The function returns the following values:
 //
 //   - guint: old scope id.
-//
 func (scanner *Scanner) SetScope(scopeId uint) uint {
 	var _arg0 *C.GScanner // out
 	var _arg1 C.guint     // out
@@ -22566,7 +22141,6 @@ func (scanner *Scanner) SyncFileOffset() {
 //   - message string to output at the end of the warning/error, or NULL.
 //   - isError: if TRUE it is output as an error. If FALSE it is output as a
 //     warning.
-//
 func (scanner *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
 	var _arg0 *C.GScanner  // out
 	var _arg1 C.GTokenType // out
@@ -22714,7 +22288,6 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 // The function takes the following parameters:
 //
 //   - childSource: second #GSource that source should "poll".
-//
 func (source *Source) AddChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
@@ -22740,7 +22313,6 @@ func (source *Source) AddChildSource(childSource *Source) {
 // The function returns the following values:
 //
 //   - guint: ID (greater than 0) for the source within the Context.
-//
 func (source *Source) Attach(context *MainContext) uint {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GMainContext // out
@@ -22786,7 +22358,6 @@ func (source *Source) Destroy() {
 // The function returns the following values:
 //
 //   - ok: whether recursion is allowed.
-//
 func (source *Source) CanRecurse() bool {
 	var _arg0 *C.GSource // out
 	var _cret C.gboolean // in
@@ -22817,7 +22388,6 @@ func (source *Source) CanRecurse() bool {
 //
 //   - mainContext (optional) with which the source is associated, or NULL if
 //     the context has not yet been added to a source.
-//
 func (source *Source) Context() *MainContext {
 	var _arg0 *C.GSource      // out
 	var _cret *C.GMainContext // in
@@ -22851,7 +22421,6 @@ func (source *Source) Context() *MainContext {
 // The function takes the following parameters:
 //
 //   - timeval structure in which to store current time.
-//
 func (source *Source) CurrentTime(timeval *TimeVal) {
 	var _arg0 *C.GSource  // out
 	var _arg1 *C.GTimeVal // out
@@ -22877,7 +22446,6 @@ func (source *Source) CurrentTime(timeval *TimeVal) {
 // The function returns the following values:
 //
 //   - guint: ID (greater than 0) for the source.
-//
 func (source *Source) ID() uint {
 	var _arg0 *C.GSource // out
 	var _cret C.guint    // in
@@ -22900,7 +22468,6 @@ func (source *Source) ID() uint {
 // The function returns the following values:
 //
 //   - utf8 (optional): name of the source.
-//
 func (source *Source) Name() string {
 	var _arg0 *C.GSource // out
 	var _cret *C.char    // in
@@ -22924,7 +22491,6 @@ func (source *Source) Name() string {
 // The function returns the following values:
 //
 //   - gint: priority of the source.
-//
 func (source *Source) Priority() int {
 	var _arg0 *C.GSource // out
 	var _cret C.gint     // in
@@ -22950,7 +22516,6 @@ func (source *Source) Priority() int {
 // The function returns the following values:
 //
 //   - gint64: monotonic ready time, -1 for "never".
-//
 func (source *Source) ReadyTime() int64 {
 	var _arg0 *C.GSource // out
 	var _cret C.gint64   // in
@@ -22978,7 +22543,6 @@ func (source *Source) ReadyTime() int64 {
 // The function returns the following values:
 //
 //   - gint64: monotonic time in microseconds.
-//
 func (source *Source) Time() int64 {
 	var _arg0 *C.GSource // out
 	var _cret C.gint64   // in
@@ -23001,20 +22565,20 @@ func (source *Source) Time() int64 {
 // handlers, but may have freed the object before the dispatch of your idle
 // handler.
 //
-//    static gboolean
-//    idle_callback (gpointer data)
-//    {
-//      SomeWidget *self = data;
+//	static gboolean
+//	idle_callback (gpointer data)
+//	{
+//	  SomeWidget *self = data;
 //
-//      g_mutex_lock (&self->idle_id_mutex);
-//      if (!g_source_is_destroyed (g_main_current_source ()))
-//        {
-//          // do stuff with self
-//        }
-//      g_mutex_unlock (&self->idle_id_mutex);
+//	  g_mutex_lock (&self->idle_id_mutex);
+//	  if (!g_source_is_destroyed (g_main_current_source ()))
+//	    {
+//	      // do stuff with self
+//	    }
+//	  g_mutex_unlock (&self->idle_id_mutex);
 //
-//      return FALSE;
-//    }
+//	  return FALSE;
+//	}
 //
 // Calls to this function from a thread other than the one acquired by the
 // Context the #GSource is attached to are typically redundant, as the source
@@ -23025,7 +22589,6 @@ func (source *Source) Time() int64 {
 // The function returns the following values:
 //
 //   - ok: TRUE if the source has been destroyed.
-//
 func (source *Source) IsDestroyed() bool {
 	var _arg0 *C.GSource // out
 	var _cret C.gboolean // in
@@ -23052,7 +22615,6 @@ func (source *Source) IsDestroyed() bool {
 // The function takes the following parameters:
 //
 //   - childSource previously passed to g_source_add_child_source().
-//
 func (source *Source) RemoveChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
@@ -23085,7 +22647,6 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 // The function takes the following parameters:
 //
 //   - fn: callback function.
-//
 func (source *Source) SetCallback(fn SourceFunc) {
 	var _arg0 *C.GSource    // out
 	var _arg1 C.GSourceFunc // out
@@ -23117,7 +22678,6 @@ func (source *Source) SetCallback(fn SourceFunc) {
 //   - callbackData (optional): pointer to callback data "object".
 //   - callbackFuncs functions for reference counting callback_data and getting
 //     the callback and data.
-//
 func (source *Source) SetCallbackIndirect(callbackData unsafe.Pointer, callbackFuncs *SourceCallbackFuncs) {
 	var _arg0 *C.GSource              // out
 	var _arg1 C.gpointer              // out
@@ -23141,7 +22701,6 @@ func (source *Source) SetCallbackIndirect(callbackData unsafe.Pointer, callbackF
 // The function takes the following parameters:
 //
 //   - canRecurse: whether recursion is allowed for this source.
-//
 func (source *Source) SetCanRecurse(canRecurse bool) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gboolean // out
@@ -23162,7 +22721,6 @@ func (source *Source) SetCanRecurse(canRecurse bool) {
 // The function takes the following parameters:
 //
 //   - funcs: new Funcs.
-//
 func (source *Source) SetFuncs(funcs *SourceFuncs) {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GSourceFuncs // out
@@ -23194,7 +22752,6 @@ func (source *Source) SetFuncs(funcs *SourceFuncs) {
 // The function takes the following parameters:
 //
 //   - name: debug name for the source.
-//
 func (source *Source) SetName(name string) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.char    // out
@@ -23219,7 +22776,6 @@ func (source *Source) SetName(name string) {
 // The function takes the following parameters:
 //
 //   - priority: new priority.
-//
 func (source *Source) SetPriority(priority int) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint     // out
@@ -23258,7 +22814,6 @@ func (source *Source) SetPriority(priority int) {
 //
 //   - readyTime: monotonic time at which the source will be ready, 0 for
 //     "immediately", -1 for "never".
-//
 func (source *Source) SetReadyTime(readyTime int64) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint64   // out
@@ -23283,7 +22838,6 @@ func (source *Source) SetReadyTime(readyTime int64) {
 // The function returns the following values:
 //
 //   - ok: TRUE if a source was found and removed.
-//
 func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) bool {
 	var _arg1 *C.GSourceFuncs // out
 	var _arg2 C.gpointer      // out
@@ -23316,7 +22870,6 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) bo
 // The function returns the following values:
 //
 //   - ok: TRUE if a source was found and removed.
-//
 func SourceRemoveByUserData(userData unsafe.Pointer) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
@@ -23354,7 +22907,6 @@ func SourceRemoveByUserData(userData unsafe.Pointer) bool {
 //
 //   - tag: #GSource ID.
 //   - name: debug name for the source.
-//
 func SourceSetNameByID(tag uint, name string) {
 	var _arg1 C.guint // out
 	var _arg2 *C.char // out
@@ -23486,7 +23038,6 @@ func (t *TimeVal) SetTvUsec(tvUsec int32) {
 // The function takes the following parameters:
 //
 //   - microseconds: number of microseconds to add to time.
-//
 func (time_ *TimeVal) Add(microseconds int32) {
 	var _arg0 *C.GTimeVal // out
 	var _arg1 C.glong     // out
@@ -23524,9 +23075,9 @@ func (time_ *TimeVal) Add(microseconds int32) {
 // the year 2038 problem. Accordingly, since GLib 2.62, this function has been
 // deprecated. Equivalent functionality is available using:
 //
-//    GDateTime *dt = g_date_time_new_from_unix_utc (time_val);
-//    iso8601_string = g_date_time_format_iso8601 (dt);
-//    g_date_time_unref (dt);
+//	GDateTime *dt = g_date_time_new_from_unix_utc (time_val);
+//	iso8601_string = g_date_time_format_iso8601 (dt);
+//	g_date_time_unref (dt);
 //
 // The return value of g_time_val_to_iso8601() has been nullable since GLib
 // 2.54; before then, GLib would crash under the same conditions.
@@ -23538,7 +23089,6 @@ func (time_ *TimeVal) Add(microseconds int32) {
 //
 //   - utf8 (optional): newly allocated string containing an ISO 8601 date,
 //     or NULL if time_ was too large.
-//
 func (time_ *TimeVal) ToISO8601() string {
 	var _arg0 *C.GTimeVal // out
 	var _cret *C.gchar    // in
@@ -23571,9 +23121,9 @@ func (time_ *TimeVal) ToISO8601() string {
 // This function was deprecated, along with Val itself, in GLib 2.62. Equivalent
 // functionality is available using code like:
 //
-//    GDateTime *dt = g_date_time_new_from_iso8601 (iso8601_string, NULL);
-//    gint64 time_val = g_date_time_to_unix (dt);
-//    g_date_time_unref (dt);
+//	GDateTime *dt = g_date_time_new_from_iso8601 (iso8601_string, NULL);
+//	gint64 time_val = g_date_time_to_unix (dt);
+//	g_date_time_unref (dt);
 //
 // Deprecated: Val is not year-2038-safe. Use g_date_time_new_from_iso8601()
 // instead.
@@ -23586,7 +23136,6 @@ func (time_ *TimeVal) ToISO8601() string {
 //
 //   - time_: Val.
 //   - ok: TRUE if the conversion was successful.
-//
 func TimeValFromISO8601(isoDate string) (*TimeVal, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 C.GTimeVal // in
@@ -23764,7 +23313,6 @@ func NewTimeZoneUTC() *TimeZone {
 // The function returns the following values:
 //
 //   - gint: interval containing time_, never -1.
-//
 func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.GTimeType  // out
@@ -23812,7 +23360,6 @@ func (tz *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 // The function returns the following values:
 //
 //   - gint: interval containing time_, or -1 in case of failure.
-//
 func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.GTimeType  // out
@@ -23848,7 +23395,6 @@ func (tz *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 // The function returns the following values:
 //
 //   - utf8: time zone abbreviation, which belongs to tz.
-//
 func (tz *TimeZone) Abbreviation(interval int) string {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
@@ -23880,7 +23426,6 @@ func (tz *TimeZone) Abbreviation(interval int) string {
 // The function returns the following values:
 //
 //   - utf8: identifier for this timezone.
-//
 func (tz *TimeZone) Identifier() string {
 	var _arg0 *C.GTimeZone // out
 	var _cret *C.gchar     // in
@@ -23912,7 +23457,6 @@ func (tz *TimeZone) Identifier() string {
 //
 //   - gint32: number of seconds that should be added to UTC to get the local
 //     time in tz.
-//
 func (tz *TimeZone) Offset(interval int) int32 {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
@@ -23942,7 +23486,6 @@ func (tz *TimeZone) Offset(interval int) int32 {
 // The function returns the following values:
 //
 //   - ok: TRUE if daylight savings time is in effect.
-//
 func (tz *TimeZone) IsDst(interval int) bool {
 	var _arg0 *C.GTimeZone // out
 	var _arg1 C.gint       // out
@@ -24006,7 +23549,6 @@ func (tree *Tree) Destroy() {
 // The function returns the following values:
 //
 //   - gint: height of tree.
-//
 func (tree *Tree) Height() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
@@ -24032,7 +23574,6 @@ func (tree *Tree) Height() int {
 //
 //   - key (optional) to insert.
 //   - value (optional) corresponding to the key.
-//
 func (tree *Tree) Insert(key unsafe.Pointer, value unsafe.Pointer) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
@@ -24060,7 +23601,6 @@ func (tree *Tree) Insert(key unsafe.Pointer, value unsafe.Pointer) {
 //
 //   - gpointer (optional): value corresponding to the key, or NULL if the key
 //     was not found.
-//
 func (tree *Tree) Lookup(key unsafe.Pointer) unsafe.Pointer {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
@@ -24093,7 +23633,6 @@ func (tree *Tree) Lookup(key unsafe.Pointer) unsafe.Pointer {
 //   - origKey (optional) returns the original key.
 //   - value (optional) returns the value associated with the key.
 //   - ok: TRUE if the key was found in the #GTree.
-//
 func (tree *Tree) LookupExtended(lookupKey unsafe.Pointer) (origKey unsafe.Pointer, value unsafe.Pointer, ok bool) {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
@@ -24126,7 +23665,6 @@ func (tree *Tree) LookupExtended(lookupKey unsafe.Pointer) (origKey unsafe.Point
 // The function returns the following values:
 //
 //   - gint: number of nodes in tree.
-//
 func (tree *Tree) Nnodes() int {
 	var _arg0 *C.GTree // out
 	var _cret C.gint   // in
@@ -24161,7 +23699,6 @@ func (tree *Tree) Nnodes() int {
 //
 //   - ok: TRUE if the key was found (prior to 2.8, this function returned
 //     nothing).
-//
 func (tree *Tree) Remove(key unsafe.Pointer) bool {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
@@ -24190,7 +23727,6 @@ func (tree *Tree) Remove(key unsafe.Pointer) bool {
 //
 //   - key (optional) to insert.
 //   - value (optional) corresponding to the key.
-//
 func (tree *Tree) Replace(key unsafe.Pointer, value unsafe.Pointer) {
 	var _arg0 *C.GTree   // out
 	var _arg1 C.gpointer // out
@@ -24219,7 +23755,6 @@ func (tree *Tree) Replace(key unsafe.Pointer, value unsafe.Pointer) {
 //
 //   - ok: TRUE if the key was found (prior to 2.8, this function returned
 //     nothing).
-//
 func (tree *Tree) Steal(key unsafe.Pointer) bool {
 	var _arg0 *C.GTree        // out
 	var _arg1 C.gconstpointer // out
@@ -24369,7 +23904,6 @@ func marshalURI(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - utf8 (optional) uri's authentication parameters.
-//
 func (uri *URI) AuthParams() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24393,7 +23927,6 @@ func (uri *URI) AuthParams() string {
 // The function returns the following values:
 //
 //   - uriFlags uri's flags.
-//
 func (uri *URI) Flags() URIFlags {
 	var _arg0 *C.GUri     // out
 	var _cret C.GUriFlags // in
@@ -24416,7 +23949,6 @@ func (uri *URI) Flags() URIFlags {
 // The function returns the following values:
 //
 //   - utf8 (optional) uri's fragment.
-//
 func (uri *URI) Fragment() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24448,7 +23980,6 @@ func (uri *URI) Fragment() string {
 // The function returns the following values:
 //
 //   - utf8 (optional) uri's host.
-//
 func (uri *URI) Host() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24474,7 +24005,6 @@ func (uri *URI) Host() string {
 // The function returns the following values:
 //
 //   - utf8 (optional) uri's password.
-//
 func (uri *URI) Password() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24499,7 +24029,6 @@ func (uri *URI) Password() string {
 // The function returns the following values:
 //
 //   - utf8 uri's path.
-//
 func (uri *URI) Path() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24521,7 +24050,6 @@ func (uri *URI) Path() string {
 // The function returns the following values:
 //
 //   - gint uri's port, or -1 if no port was specified.
-//
 func (uri *URI) Port() int {
 	var _arg0 *C.GUri // out
 	var _cret C.gint  // in
@@ -24547,7 +24075,6 @@ func (uri *URI) Port() int {
 // The function returns the following values:
 //
 //   - utf8 (optional) uri's query.
-//
 func (uri *URI) Query() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24572,7 +24099,6 @@ func (uri *URI) Query() string {
 // The function returns the following values:
 //
 //   - utf8 uri's scheme.
-//
 func (uri *URI) Scheme() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24597,7 +24123,6 @@ func (uri *URI) Scheme() string {
 // The function returns the following values:
 //
 //   - utf8 (optional) uri's user.
-//
 func (uri *URI) User() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24622,7 +24147,6 @@ func (uri *URI) User() string {
 // The function returns the following values:
 //
 //   - utf8 (optional) uri's userinfo.
-//
 func (uri *URI) Userinfo() string {
 	var _arg0 *C.GUri  // out
 	var _cret *C.gchar // in
@@ -24653,7 +24177,6 @@ func (uri *URI) Userinfo() string {
 // The function returns the following values:
 //
 //   - uri: new #GUri, or NULL on error.
-//
 func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	var _arg0 *C.GUri     // out
 	var _arg1 *C.gchar    // out
@@ -24705,7 +24228,6 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 // The function returns the following values:
 //
 //   - utf8: string representing uri, which the caller must free.
-//
 func (uri *URI) String() string {
 	var _arg0 *C.GUri // out
 	var _cret *C.char // in
@@ -24733,7 +24255,6 @@ func (uri *URI) String() string {
 // The function returns the following values:
 //
 //   - utf8: string representing uri, which the caller must free.
-//
 func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 	var _arg0 *C.GUri         // out
 	var _arg1 C.GUriHideFlags // out
@@ -24773,7 +24294,6 @@ func (uri *URI) ToStringPartial(flags URIHideFlags) string {
 // The function returns the following values:
 //
 //   - uri: new #GUri.
-//
 func URIBuild(flags URIFlags, scheme, userinfo, host string, port int, path, query, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
@@ -24856,7 +24376,6 @@ func URIBuild(flags URIFlags, scheme, userinfo, host string, port int, path, que
 // The function returns the following values:
 //
 //   - uri: new #GUri.
-//
 func URIBuildWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int, path, query, fragment string) *URI {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
@@ -24958,7 +24477,6 @@ func URIErrorQuark() Quark {
 //
 //   - utf8: escaped version of unescaped. The returned string should be freed
 //     when no longer needed.
-//
 func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 	var _arg1 *C.guint8 // out
 	var _arg2 C.gsize
@@ -25005,7 +24523,6 @@ func URIEscapeBytes(unescaped []byte, reservedCharsAllowed string) string {
 //
 //   - utf8: escaped version of unescaped. The returned string should be freed
 //     when no longer needed.
-//
 func URIEscapeString(unescaped, reservedCharsAllowed string, allowUtf8 bool) string {
 	var _arg1 *C.char    // out
 	var _arg2 *C.char    // out
@@ -25048,7 +24565,6 @@ func URIEscapeString(unescaped, reservedCharsAllowed string, allowUtf8 bool) str
 //
 //   - uriString: string containing an absolute URI.
 //   - flags for parsing uri_string.
-//
 func URIIsValid(uriString string, flags URIFlags) error {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -25100,7 +24616,6 @@ func URIIsValid(uriString string, flags URIFlags) error {
 // The function returns the following values:
 //
 //   - utf8: absolute URI string.
-//
 func URIJoin(flags URIFlags, scheme, userinfo, host string, port int, path, query, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
@@ -25181,7 +24696,6 @@ func URIJoin(flags URIFlags, scheme, userinfo, host string, port int, path, quer
 // The function returns the following values:
 //
 //   - utf8: absolute URI string.
-//
 func URIJoinWithUser(flags URIFlags, scheme, user, password, authParams, host string, port int, path, query, fragment string) string {
 	var _arg1 C.GUriFlags // out
 	var _arg2 *C.gchar    // out
@@ -25260,7 +24774,6 @@ func URIJoinWithUser(flags URIFlags, scheme, user, password, authParams, host st
 //
 //   - utf8s: newly allocated NULL-terminated list of strings holding the
 //     individual URIs. The array should be freed with g_strfreev().
-//
 func URIListExtractURIs(uriList string) []string {
 	var _arg1 *C.gchar  // out
 	var _cret **C.gchar // in
@@ -25304,7 +24817,6 @@ func URIListExtractURIs(uriList string) []string {
 // The function returns the following values:
 //
 //   - uri: new #GUri, or NULL on error.
-//
 func URIParse(uriString string, flags URIFlags) (*URI, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -25375,7 +24887,6 @@ func URIParse(uriString string, flags URIFlags) (*URI, error) {
 //
 //   - hashTable: A hash table of attribute/value pairs, with both names and
 //     values fully-decoded; or NULL on error.
-//
 func URIParseParams(params string, length int, separators string, flags URIParamsFlags) (map[string]string, error) {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.gssize          // out
@@ -25422,7 +24933,7 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 // URIParseScheme gets the scheme portion of a URI string. RFC 3986
 // (https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
 //
-//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+//	URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 //
 // Common schemes include file, https, svn+ssh, etc.
 //
@@ -25434,7 +24945,6 @@ func URIParseParams(params string, length int, separators string, flags URIParam
 //
 //   - utf8 (optional): ‘scheme’ component of the URI, or NULL on error.
 //     The returned string should be freed when no longer needed.
-//
 func URIParseScheme(uri string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -25458,7 +24968,7 @@ func URIParseScheme(uri string) string {
 // URIPeekScheme gets the scheme portion of a URI string. RFC 3986
 // (https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
 //
-//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+//	URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 //
 // Common schemes include file, https, svn+ssh, etc.
 //
@@ -25474,7 +24984,6 @@ func URIParseScheme(uri string) string {
 //   - utf8 (optional): ‘scheme’ component of the URI, or NULL on error.
 //     The returned string is normalized to all-lowercase, and interned via
 //     g_intern_string(), so it does not need to be freed.
-//
 func URIPeekScheme(uri string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -25511,7 +25020,6 @@ func URIPeekScheme(uri string) string {
 // The function returns the following values:
 //
 //   - utf8: resolved URI string, or NULL on error.
-//
 func URIResolveRelative(baseUriString, uriRef string, flags URIFlags) (string, error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 *C.gchar    // out
@@ -25574,7 +25082,6 @@ func URIResolveRelative(baseUriString, uriRef string, flags URIFlags) (string, e
 //   - path (optional): on return, contains the path.
 //   - query (optional): on return, contains the query, or NULL.
 //   - fragment (optional): on return, contains the fragment, or NULL.
-//
 func URISplit(uriRef string, flags URIFlags) (scheme, userinfo, host string, port int, path, query, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -25654,7 +25161,6 @@ func URISplit(uriRef string, flags URIFlags) (scheme, userinfo, host string, por
 //     lowercase), or NULL.
 //   - host (optional): on return, contains the host, or NULL.
 //   - port (optional): on return, contains the port, or -1.
-//
 func URISplitNetwork(uriString string, flags URIFlags) (scheme, host string, port int, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -25720,7 +25226,6 @@ func URISplitNetwork(uriString string, flags URIFlags) (scheme, host string, por
 //   - path (optional): on return, contains the path.
 //   - query (optional): on return, contains the query, or NULL.
 //   - fragment (optional): on return, contains the fragment, or NULL.
-//
 func URISplitWithUser(uriRef string, flags URIFlags) (scheme, user, password, authParams, host string, port int, path, query, fragment string, goerr error) {
 	var _arg1 *C.gchar    // out
 	var _arg2 C.GUriFlags // out
@@ -25817,7 +25322,6 @@ func URISplitWithUser(uriRef string, flags URIFlags) (scheme, user, password, au
 //   - bytes: unescaped version of escaped_string or NULL on error (if decoding
 //     failed, using G_URI_ERROR_FAILED error code). The returned #GBytes should
 //     be unreffed when no longer needed.
-//
 func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) (*Bytes, error) {
 	var _arg1 *C.char   // out
 	var _arg2 C.gssize  // out
@@ -25879,7 +25383,6 @@ func URIUnescapeBytes(escapedString string, length int, illegalCharacters string
 //   - utf8 (optional): unescaped version of escaped_string, or NULL on error.
 //     The returned string should be freed when no longer needed. As a special
 //     case if NULL is given for escaped_string, this function will return NULL.
-//
 func URIUnescapeSegment(escapedString, escapedStringEnd, illegalCharacters string) string {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out
@@ -25932,7 +25435,6 @@ func URIUnescapeSegment(escapedString, escapedStringEnd, illegalCharacters strin
 //
 //   - utf8 (optional): unescaped version of escaped_string. The returned string
 //     should be freed when no longer needed.
-//
 func URIUnescapeString(escapedString, illegalCharacters string) string {
 	var _arg1 *C.char // out
 	var _arg2 *C.char // out
@@ -25995,21 +25497,21 @@ type uriParamsIter struct {
 // if passed to flags for g_uri_params_iter_init(). The caller is responsible
 // for doing their own case-insensitive comparisons.
 //
-//    GUriParamsIter iter;
-//    GError *error = NULL;
-//    gchar *unowned_attr, *unowned_value;
+//	GUriParamsIter iter;
+//	GError *error = NULL;
+//	gchar *unowned_attr, *unowned_value;
 //
-//    g_uri_params_iter_init (&iter, "foo=bar&baz=bar&Foo=frob&baz=bar2", -1, "&", G_URI_PARAMS_NONE);
-//    while (g_uri_params_iter_next (&iter, &unowned_attr, &unowned_value, &error))
-//      {
-//        g_autofree gchar *attr = g_steal_pointer (&unowned_attr);
-//        g_autofree gchar *value = g_steal_pointer (&unowned_value);
-//        // do something with attr and value; this code will be called 4 times
-//        // for the params string in this example: once with attr=foo and value=bar,
-//        // then with baz/bar, then Foo/frob, then baz/bar2.
-//      }
-//    if (error)
-//      // handle parsing error.
+//	g_uri_params_iter_init (&iter, "foo=bar&baz=bar&Foo=frob&baz=bar2", -1, "&", G_URI_PARAMS_NONE);
+//	while (g_uri_params_iter_next (&iter, &unowned_attr, &unowned_value, &error))
+//	  {
+//	    g_autofree gchar *attr = g_steal_pointer (&unowned_attr);
+//	    g_autofree gchar *value = g_steal_pointer (&unowned_value);
+//	    // do something with attr and value; this code will be called 4 times
+//	    // for the params string in this example: once with attr=foo and value=bar,
+//	    // then with baz/bar, then Foo/frob, then baz/bar2.
+//	  }
+//	if (error)
+//	  // handle parsing error.
 //
 // The function takes the following parameters:
 //
@@ -26021,7 +25523,6 @@ type uriParamsIter struct {
 //     ASCII characters. You may pass an empty set, in which case no splitting
 //     will occur.
 //   - flags to modify the way the parameters are handled.
-//
 func (iter *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
 	var _arg0 *C.GUriParamsIter // out
 	var _arg1 *C.gchar          // out
@@ -26058,7 +25559,6 @@ func (iter *URIParamsIter) Init(params string, length int, separators string, fl
 //
 //   - attribute (optional): on return, contains the attribute, or NULL.
 //   - value (optional): on return, contains the value, or NULL.
-//
 func (iter *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var _arg0 *C.GUriParamsIter // out
 	var _arg1 *C.gchar          // in
@@ -26106,7 +25606,7 @@ func (iter *URIParamsIter) Next() (attribute string, value string, goerr error) 
 // For instance, if you want to create a #GVariant holding an integer value you
 // can use:
 //
-//    GVariant *v = g_variant_new ("u", 40);
+//	GVariant *v = g_variant_new ("u", 40);
 //
 // The string "u" in the first argument tells #GVariant that the data passed to
 // the constructor (40) is going to be an unsigned integer.
@@ -26998,7 +26498,6 @@ func NewVariantVariant(value *Variant) *Variant {
 // The function returns the following values:
 //
 //   - variant (optional): byteswapped form of value.
-//
 func (value *Variant) Byteswap() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -27046,7 +26545,6 @@ func (value *Variant) Byteswap() *Variant {
 // The function returns the following values:
 //
 //   - ok: TRUE if format_string is safe to use.
-//
 func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool {
 	var _arg0 *C.GVariant // out
 	var _arg1 *C.gchar    // out
@@ -27079,7 +26577,6 @@ func (value *Variant) CheckFormatString(formatString string, copyOnly bool) bool
 // The function returns the following values:
 //
 //   - variantClass of value.
-//
 func (value *Variant) Classify() VariantClass {
 	var _arg0 *C.GVariant     // out
 	var _cret C.GVariantClass // in
@@ -27122,7 +26619,6 @@ func (value *Variant) Classify() VariantClass {
 // The function returns the following values:
 //
 //   - gint: negative value if a < b; zero if a = b; positive value if a > b.
-//
 func (one *Variant) Compare(two *Variant) int {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -27150,7 +26646,6 @@ func (one *Variant) Compare(two *Variant) int {
 // The function returns the following values:
 //
 //   - guint8s: a newly allocated string.
-//
 func (value *Variant) DupBytestring() []byte {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
@@ -27183,7 +26678,6 @@ func (value *Variant) DupBytestring() []byte {
 // The function returns the following values:
 //
 //   - utf8s: array of strings.
-//
 func (value *Variant) DupBytestringArray() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -27221,7 +26715,6 @@ func (value *Variant) DupBytestringArray() []string {
 // The function returns the following values:
 //
 //   - utf8s: array of strings.
-//
 func (value *Variant) DupObjv() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -27258,7 +26751,6 @@ func (value *Variant) DupObjv() []string {
 //
 //   - length: pointer to a #gsize, to store the length.
 //   - utf8: newly allocated string, UTF-8 encoded.
-//
 func (value *Variant) DupString() (uint, string) {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gsize     // in
@@ -27291,7 +26783,6 @@ func (value *Variant) DupString() (uint, string) {
 // The function returns the following values:
 //
 //   - utf8s: array of strings.
-//
 func (value *Variant) DupStrv() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -27329,7 +26820,6 @@ func (value *Variant) DupStrv() []string {
 // The function returns the following values:
 //
 //   - ok: TRUE if one and two are equal.
-//
 func (one *Variant) Equal(two *Variant) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -27359,7 +26849,6 @@ func (one *Variant) Equal(two *Variant) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE or FALSE.
-//
 func (value *Variant) Boolean() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
@@ -27386,7 +26875,6 @@ func (value *Variant) Boolean() bool {
 // The function returns the following values:
 //
 //   - guint8: #guint8.
-//
 func (value *Variant) Byte() byte {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint8    // in
@@ -27425,7 +26913,6 @@ func (value *Variant) Byte() byte {
 // The function returns the following values:
 //
 //   - guint8s: the constant string.
-//
 func (value *Variant) Bytestring() []byte {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
@@ -27467,7 +26954,6 @@ func (value *Variant) Bytestring() []byte {
 // The function returns the following values:
 //
 //   - utf8s: array of constant strings.
-//
 func (value *Variant) BytestringArray() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -27522,7 +27008,6 @@ func (value *Variant) BytestringArray() []string {
 // The function returns the following values:
 //
 //   - variant (optional): child at the specified index.
-//
 func (value *Variant) ChildValue(index_ uint) *Variant {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gsize     // out
@@ -27576,7 +27061,6 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 // The function returns the following values:
 //
 //   - gpointer (optional): serialised form of value, or NULL.
-//
 func (value *Variant) Data() unsafe.Pointer {
 	var _arg0 *C.GVariant     // out
 	var _cret C.gconstpointer // in
@@ -27600,7 +27084,6 @@ func (value *Variant) Data() unsafe.Pointer {
 // The function returns the following values:
 //
 //   - bytes: new #GBytes representing the variant data.
-//
 func (value *Variant) DataAsBytes() *Bytes {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GBytes   // in
@@ -27631,7 +27114,6 @@ func (value *Variant) DataAsBytes() *Bytes {
 // The function returns the following values:
 //
 //   - gdouble: #gdouble.
-//
 func (value *Variant) Double() float64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gdouble   // in
@@ -27660,7 +27142,6 @@ func (value *Variant) Double() float64 {
 // The function returns the following values:
 //
 //   - gint32: #gint32.
-//
 func (value *Variant) Handle() int32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint32    // in
@@ -27685,7 +27166,6 @@ func (value *Variant) Handle() int32 {
 // The function returns the following values:
 //
 //   - gint16: #gint16.
-//
 func (value *Variant) Int16() int16 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint16    // in
@@ -27710,7 +27190,6 @@ func (value *Variant) Int16() int16 {
 // The function returns the following values:
 //
 //   - gint32: #gint32.
-//
 func (value *Variant) Int32() int32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint32    // in
@@ -27735,7 +27214,6 @@ func (value *Variant) Int32() int32 {
 // The function returns the following values:
 //
 //   - gint64: #gint64.
-//
 func (value *Variant) Int64() int64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.gint64    // in
@@ -27758,7 +27236,6 @@ func (value *Variant) Int64() int64 {
 // The function returns the following values:
 //
 //   - variant (optional) contents of value, or NULL.
-//
 func (value *Variant) Maybe() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -27810,7 +27287,6 @@ func (value *Variant) Maybe() *Variant {
 // The function returns the following values:
 //
 //   - variant (optional): trusted #GVariant.
-//
 func (value *Variant) NormalForm() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -27848,7 +27324,6 @@ func (value *Variant) NormalForm() *Variant {
 // The function returns the following values:
 //
 //   - utf8s: array of constant strings.
-//
 func (value *Variant) Objv() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -27887,7 +27362,6 @@ func (value *Variant) Objv() []string {
 // The function returns the following values:
 //
 //   - gsize: serialised size of value.
-//
 func (value *Variant) Size() uint {
 	var _arg0 *C.GVariant // out
 	var _cret C.gsize     // in
@@ -27925,7 +27399,6 @@ func (value *Variant) Size() uint {
 // The function returns the following values:
 //
 //   - utf8: constant string, UTF-8 encoded.
-//
 func (value *Variant) String() string {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
@@ -27956,7 +27429,6 @@ func (value *Variant) String() string {
 // The function returns the following values:
 //
 //   - utf8s: array of constant strings.
-//
 func (value *Variant) Strv() []string {
 	var _arg0 *C.GVariant // out
 	var _cret **C.gchar   // in
@@ -27988,7 +27460,6 @@ func (value *Variant) Strv() []string {
 // The function returns the following values:
 //
 //   - variantType: Type.
-//
 func (value *Variant) Type() *VariantType {
 	var _arg0 *C.GVariant     // out
 	var _cret *C.GVariantType // in
@@ -28012,7 +27483,6 @@ func (value *Variant) Type() *VariantType {
 // The function returns the following values:
 //
 //   - utf8: type string for the type of value.
-//
 func (value *Variant) TypeString() string {
 	var _arg0 *C.GVariant // out
 	var _cret *C.gchar    // in
@@ -28037,7 +27507,6 @@ func (value *Variant) TypeString() string {
 // The function returns the following values:
 //
 //   - guint16: #guint16.
-//
 func (value *Variant) Uint16() uint16 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint16   // in
@@ -28062,7 +27531,6 @@ func (value *Variant) Uint16() uint16 {
 // The function returns the following values:
 //
 //   - guint32: #guint32.
-//
 func (value *Variant) Uint32() uint32 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint32   // in
@@ -28087,7 +27555,6 @@ func (value *Variant) Uint32() uint32 {
 // The function returns the following values:
 //
 //   - guint64: #guint64.
-//
 func (value *Variant) Uint64() uint64 {
 	var _arg0 *C.GVariant // out
 	var _cret C.guint64   // in
@@ -28110,7 +27577,6 @@ func (value *Variant) Uint64() uint64 {
 // The function returns the following values:
 //
 //   - variant (optional): item contained in the variant.
-//
 func (value *Variant) Variant() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -28148,7 +27614,6 @@ func (value *Variant) Variant() *Variant {
 // The function returns the following values:
 //
 //   - guint: hash value corresponding to value.
-//
 func (value *Variant) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -28170,7 +27635,6 @@ func (value *Variant) Hash() uint {
 // The function returns the following values:
 //
 //   - ok: TRUE if value is a container.
-//
 func (value *Variant) IsContainer() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
@@ -28202,7 +27666,6 @@ func (value *Variant) IsContainer() bool {
 // The function returns the following values:
 //
 //   - ok: whether value is floating.
-//
 func (value *Variant) IsFloating() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
@@ -28237,7 +27700,6 @@ func (value *Variant) IsFloating() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if value is in normal form.
-//
 func (value *Variant) IsNormalForm() bool {
 	var _arg0 *C.GVariant // out
 	var _cret C.gboolean  // in
@@ -28265,7 +27727,6 @@ func (value *Variant) IsNormalForm() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the type of value matches type.
-//
 func (value *Variant) IsOfType(typ *VariantType) bool {
 	var _arg0 *C.GVariant     // out
 	var _arg1 *C.GVariantType // out
@@ -28317,7 +27778,6 @@ func (value *Variant) IsOfType(typ *VariantType) bool {
 // The function returns the following values:
 //
 //   - variant (optional): value of the dictionary key, or NULL.
-//
 func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *Variant {
 	var _arg0 *C.GVariant     // out
 	var _arg1 *C.gchar        // out
@@ -28365,7 +27825,6 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 // The function returns the following values:
 //
 //   - gsize: number of children in the container.
-//
 func (value *Variant) NChildren() uint {
 	var _arg0 *C.GVariant // out
 	var _cret C.gsize     // in
@@ -28395,7 +27854,6 @@ func (value *Variant) NChildren() uint {
 // The function returns the following values:
 //
 //   - utf8: newly-allocated string holding the result.
-//
 func (value *Variant) Print(typeAnnotate bool) string {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gboolean  // out
@@ -28442,7 +27900,6 @@ func (value *Variant) Print(typeAnnotate bool) string {
 // The function returns the following values:
 //
 //   - variant (optional): same value.
-//
 func (value *Variant) RefSink() *Variant {
 	var _arg0 *C.GVariant // out
 	var _cret *C.GVariant // in
@@ -28483,7 +27940,6 @@ func (value *Variant) RefSink() *Variant {
 // The function takes the following parameters:
 //
 //   - data: location to store the serialised data at.
-//
 func (value *Variant) Store(data unsafe.Pointer) {
 	var _arg0 *C.GVariant // out
 	var _arg1 C.gpointer  // out
@@ -28512,7 +27968,6 @@ func (value *Variant) Store(data unsafe.Pointer) {
 // The function returns the following values:
 //
 //   - ok: TRUE if string is a D-Bus object path.
-//
 func VariantIsObjectPath(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -28546,7 +28001,6 @@ func VariantIsObjectPath(str string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if string is a D-Bus type signature.
-//
 func VariantIsSignature(str string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -28574,15 +28028,15 @@ func VariantIsSignature(str string) bool {
 //
 // The message will typically look something like one of the following:
 //
-//    unterminated string constant:
-//      (1, 2, 3, 'abc
-//                ^^^^
+//	unterminated string constant:
+//	  (1, 2, 3, 'abc
+//	            ^^^^
 //
 // or
 //
-//    unable to find a common type:
-//      [1, 2, 3, 'str']
-//       ^        ^^^^^
+//	unable to find a common type:
+//	  [1, 2, 3, 'str']
+//	   ^        ^^^^^
 //
 // The format of the message may change in a future version.
 //
@@ -28599,7 +28053,6 @@ func VariantIsSignature(str string) bool {
 // The function returns the following values:
 //
 //   - utf8: printed message.
-//
 func VariantParseErrorPrintContext(err error, sourceStr string) string {
 	var _arg1 *C.GError // out
 	var _arg2 *C.gchar  // out
@@ -28710,7 +28163,6 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 // The function takes the following parameters:
 //
 //   - value: #GVariant.
-//
 func (builder *VariantBuilder) AddValue(value *Variant) {
 	var _arg0 *C.GVariantBuilder // out
 	var _arg1 *C.GVariant        // out
@@ -28757,7 +28209,6 @@ func (builder *VariantBuilder) Close() {
 // The function returns the following values:
 //
 //   - variant: new, floating, #GVariant.
-//
 func (builder *VariantBuilder) End() *Variant {
 	var _arg0 *C.GVariantBuilder // out
 	var _cret *C.GVariant        // in
@@ -28792,35 +28243,34 @@ func (builder *VariantBuilder) End() *Variant {
 //
 // Example of building a nested variant:
 //
-//    GVariantBuilder builder;
-//    guint32 some_number = get_number ();
-//    g_autoptr (GHashTable) some_dict = get_dict ();
-//    GHashTableIter iter;
-//    const gchar *key;
-//    const GVariant *value;
-//    g_autoptr (GVariant) output = NULL;
+//	GVariantBuilder builder;
+//	guint32 some_number = get_number ();
+//	g_autoptr (GHashTable) some_dict = get_dict ();
+//	GHashTableIter iter;
+//	const gchar *key;
+//	const GVariant *value;
+//	g_autoptr (GVariant) output = NULL;
 //
-//    g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ua{sv})"));
-//    g_variant_builder_add (&builder, "u", some_number);
-//    g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
+//	g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ua{sv})"));
+//	g_variant_builder_add (&builder, "u", some_number);
+//	g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
 //
-//    g_hash_table_iter_init (&iter, some_dict);
-//    while (g_hash_table_iter_next (&iter, (gpointer *) &key, (gpointer *) &value))
-//      {
-//        g_variant_builder_open (&builder, G_VARIANT_TYPE ("{sv}"));
-//        g_variant_builder_add (&builder, "s", key);
-//        g_variant_builder_add (&builder, "v", value);
-//        g_variant_builder_close (&builder);
-//      }
+//	g_hash_table_iter_init (&iter, some_dict);
+//	while (g_hash_table_iter_next (&iter, (gpointer *) &key, (gpointer *) &value))
+//	  {
+//	    g_variant_builder_open (&builder, G_VARIANT_TYPE ("{sv}"));
+//	    g_variant_builder_add (&builder, "s", key);
+//	    g_variant_builder_add (&builder, "v", value);
+//	    g_variant_builder_close (&builder);
+//	  }
 //
-//    g_variant_builder_close (&builder);
+//	g_variant_builder_close (&builder);
 //
-//    output = g_variant_builder_end (&builder);.
+//	output = g_variant_builder_end (&builder);.
 //
 // The function takes the following parameters:
 //
 //   - typ of the container.
-//
 func (builder *VariantBuilder) Open(typ *VariantType) {
 	var _arg0 *C.GVariantBuilder // out
 	var _arg1 *C.GVariantType    // out
@@ -28865,31 +28315,31 @@ func (builder *VariantBuilder) Open(typ *VariantType) {
 //
 // Using a stack-allocated GVariantDict
 //
-//    GVariant *
-//    add_to_count (GVariant  *orig,
-//                  GError   **error)
-//    {
-//      GVariantDict *dict;
-//      GVariant *result;
-//      guint32 count;
+//	GVariant *
+//	add_to_count (GVariant  *orig,
+//	              GError   **error)
+//	{
+//	  GVariantDict *dict;
+//	  GVariant *result;
+//	  guint32 count;
 //
-//      dict = g_variant_dict_new (orig);
+//	  dict = g_variant_dict_new (orig);
 //
-//      if (g_variant_dict_lookup (dict, "count", "u", &count))
-//        {
-//          g_variant_dict_insert (dict, "count", "u", count + 1);
-//          result = g_variant_dict_end (dict);
-//        }
-//      else
-//        {
-//          g_set_error (...);
-//          result = NULL;
-//        }
+//	  if (g_variant_dict_lookup (dict, "count", "u", &count))
+//	    {
+//	      g_variant_dict_insert (dict, "count", "u", count + 1);
+//	      result = g_variant_dict_end (dict);
+//	    }
+//	  else
+//	    {
+//	      g_set_error (...);
+//	      result = NULL;
+//	    }
 //
-//      g_variant_dict_unref (dict);
+//	  g_variant_dict_unref (dict);
 //
-//      return result;
-//    }
+//	  return result;
+//	}
 //
 // An instance of this type is always passed by reference.
 type VariantDict struct {
@@ -28961,7 +28411,6 @@ func (dict *VariantDict) Clear() {
 // The function returns the following values:
 //
 //   - ok: TRUE if key is in dict.
-//
 func (dict *VariantDict) Contains(key string) bool {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
@@ -28995,7 +28444,6 @@ func (dict *VariantDict) Contains(key string) bool {
 // The function returns the following values:
 //
 //   - variant: new, floating, #GVariant.
-//
 func (dict *VariantDict) End() *Variant {
 	var _arg0 *C.GVariantDict // out
 	var _cret *C.GVariant     // in
@@ -29027,7 +28475,6 @@ func (dict *VariantDict) End() *Variant {
 //
 //   - key to insert a value for.
 //   - value to insert.
-//
 func (dict *VariantDict) InsertValue(key string, value *Variant) {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
@@ -29063,7 +28510,6 @@ func (dict *VariantDict) InsertValue(key string, value *Variant) {
 // The function returns the following values:
 //
 //   - variant: value of the dictionary key, or NULL.
-//
 func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Variant {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
@@ -29104,7 +28550,6 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 // The function returns the following values:
 //
 //   - ok: TRUE if the key was found and removed.
-//
 func (dict *VariantDict) Remove(key string) bool {
 	var _arg0 *C.GVariantDict // out
 	var _arg1 *C.gchar        // out
@@ -29263,9 +28708,9 @@ func (dict *VariantDict) Remove(key string) bool {
 // array to form a dictionary; the type string "a{sd}", for example, is the type
 // of a dictionary that maps strings to double precision floating point values.
 //
-//    The first type (the basic type) is the key type and the second type is
-//    the value type. The reason that the first type is restricted to being a
-//    basic type is so that it can easily be hashed.
+//	The first type (the basic type) is the key type and the second type is
+//	the value type. The reason that the first type is restricted to being a
+//	basic type is so that it can easily be hashed.
 //
 // - *: the type string of G_VARIANT_TYPE_ANY; the indefinite type that is a
 // supertype of all types. Note that, as with all type strings, this character
@@ -29436,7 +28881,6 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 //   - variantType: new Type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) Copy() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -29468,7 +28912,6 @@ func (typ *VariantType) Copy() *VariantType {
 //   - utf8: corresponding type string
 //
 //     Since 2.24.
-//
 func (typ *VariantType) DupString() string {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.gchar        // in
@@ -29495,7 +28938,6 @@ func (typ *VariantType) DupString() string {
 //   - variantType: element type of type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) Element() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -29532,7 +28974,6 @@ func (typ *VariantType) Element() *VariantType {
 //   - ok: TRUE if type1 and type2 are exactly equal
 //
 //     Since 2.24.
-//
 func (type1 *VariantType) Equal(type2 *VariantType) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -29571,7 +29012,6 @@ func (type1 *VariantType) Equal(type2 *VariantType) bool {
 //   - variantType: first item type of type, or NULL
 //
 //     Since 2.24.
-//
 func (typ *VariantType) First() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -29597,7 +29037,6 @@ func (typ *VariantType) First() *VariantType {
 //   - gsize: length of the corresponding type string
 //
 //     Since 2.24.
-//
 func (typ *VariantType) StringLength() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
@@ -29624,7 +29063,6 @@ func (typ *VariantType) StringLength() uint {
 //   - guint: hash value
 //
 //     Since 2.24.
-//
 func (typ *VariantType) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -29652,7 +29090,6 @@ func (typ *VariantType) Hash() uint {
 //   - ok: TRUE if type is an array type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsArray() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -29686,7 +29123,6 @@ func (typ *VariantType) IsArray() bool {
 //   - ok: TRUE if type is a basic type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsBasic() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -29718,7 +29154,6 @@ func (typ *VariantType) IsBasic() bool {
 //   - ok: TRUE if type is a container type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsContainer() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -29752,7 +29187,6 @@ func (typ *VariantType) IsContainer() bool {
 //   - ok: TRUE if type is definite
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsDefinite() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -29782,7 +29216,6 @@ func (typ *VariantType) IsDefinite() bool {
 //   - ok: TRUE if type is a dictionary entry type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsDictEntry() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -29812,7 +29245,6 @@ func (typ *VariantType) IsDictEntry() bool {
 //   - ok: TRUE if type is a maybe type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsMaybe() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -29846,7 +29278,6 @@ func (typ *VariantType) IsMaybe() bool {
 //   - ok: TRUE if type is a subtype of supertype
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	var _arg0 *C.GVariantType // out
 	var _arg1 *C.GVariantType // out
@@ -29879,7 +29310,6 @@ func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 //   - ok: TRUE if type is a tuple type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsTuple() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -29905,7 +29335,6 @@ func (typ *VariantType) IsTuple() bool {
 //   - ok: TRUE if type is the variant type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) IsVariant() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -29934,7 +29363,6 @@ func (typ *VariantType) IsVariant() bool {
 //   - variantType: key type of the dictionary entry
 //
 //     Since 2.24.
-//
 func (typ *VariantType) Key() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -29964,7 +29392,6 @@ func (typ *VariantType) Key() *VariantType {
 //   - gsize: number of items in type
 //
 //     Since 2.24.
-//
 func (typ *VariantType) NItems() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
@@ -29997,7 +29424,6 @@ func (typ *VariantType) NItems() uint {
 //   - variantType: next Type after type, or NULL
 //
 //     Since 2.24.
-//
 func (typ *VariantType) Next() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -30023,7 +29449,6 @@ func (typ *VariantType) Next() *VariantType {
 //   - variantType: value type of the dictionary entry
 //
 //     Since 2.24.
-//
 func (typ *VariantType) Value() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -30087,7 +29512,6 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 //   - ok: TRUE if type_string is exactly one valid type string
 //
 //     Since 2.24.
-//
 func VariantTypeStringIsValid(typeString string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -30129,7 +29553,6 @@ func VariantTypeStringIsValid(typeString string) bool {
 //
 //   - endptr (optional): location to store the end pointer, or NULL.
 //   - ok: TRUE if a valid type string was found.
-//
 func VariantTypeStringScan(str, limit string) (string, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out

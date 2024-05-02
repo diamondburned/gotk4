@@ -603,7 +603,6 @@ func marshalBlendNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - blendNode: new GskRenderNode.
-//
 func NewBlendNode(bottom, top RenderNoder, blendMode BlendMode) *BlendNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
@@ -631,7 +630,6 @@ func NewBlendNode(bottom, top RenderNoder, blendMode BlendMode) *BlendNode {
 // The function returns the following values:
 //
 //   - blendMode: blend mode.
-//
 func (node *BlendNode) BlendMode() BlendMode {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.GskBlendMode   // in
@@ -653,7 +651,6 @@ func (node *BlendNode) BlendMode() BlendMode {
 // The function returns the following values:
 //
 //   - renderNode: bottom child node.
-//
 func (node *BlendNode) BottomChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -691,7 +688,6 @@ func (node *BlendNode) BottomChild() RenderNoder {
 // The function returns the following values:
 //
 //   - renderNode: top child node.
-//
 func (node *BlendNode) TopChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -756,7 +752,6 @@ func marshalBlurNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - blurNode: new GskRenderNode.
-//
 func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 C.float          // out
@@ -781,7 +776,6 @@ func NewBlurNode(child RenderNoder, radius float32) *BlurNode {
 // The function returns the following values:
 //
 //   - renderNode: blurred child node.
-//
 func (node *BlurNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -819,7 +813,6 @@ func (node *BlurNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - gfloat: blur radius.
-//
 func (node *BlurNode) Radius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -873,7 +866,6 @@ func marshalBorderNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - borderNode: new GskRenderNode.
-//
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) *BorderNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.float          // out
@@ -908,7 +900,6 @@ func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]
 //
 //   - rgbA: array of 4 RGBA structs for the top, right, bottom and left color
 //     of the border.
-//
 func (node *BorderNode) Colors() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
@@ -930,7 +921,6 @@ func (node *BorderNode) Colors() *gdk.RGBA {
 // The function returns the following values:
 //
 //   - roundedRect: outline of the border.
-//
 func (node *BorderNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
@@ -953,7 +943,6 @@ func (node *BorderNode) Outline() *RoundedRect {
 //
 //   - gfloats: array of 4 floats for the top, right, bottom and left stroke
 //     width of the border, respectively.
-//
 func (node *BorderNode) Widths() [4]float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.float         // in
@@ -1004,7 +993,6 @@ func marshalCairoNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - cairoNode: new GskRenderNode.
-//
 func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _cret *C.GskRenderNode   // in
@@ -1031,7 +1019,6 @@ func NewCairoNode(bounds *graphene.Rect) *CairoNode {
 //
 //   - context: cairo context used for drawing; use cairo_destroy() when done
 //     drawing.
-//
 func (node *CairoNode) DrawContext() *cairo.Context {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.cairo_t       // in
@@ -1056,7 +1043,6 @@ func (node *CairoNode) DrawContext() *cairo.Context {
 // The function returns the following values:
 //
 //   - surface: cairo surface.
-//
 func (node *CairoNode) Surface() *cairo.Surface {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.cairo_surface_t // in
@@ -1112,7 +1098,6 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - cairoRenderer: new Cairo renderer.
-//
 func NewCairoRenderer() *CairoRenderer {
 	var _cret *C.GskRenderer // in
 
@@ -1158,7 +1143,6 @@ func marshalClipNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - clipNode: new GskRenderNode.
-//
 func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 	var _arg1 *C.GskRenderNode   // out
 	var _arg2 *C.graphene_rect_t // out
@@ -1183,7 +1167,6 @@ func NewClipNode(child RenderNoder, clip *graphene.Rect) *ClipNode {
 // The function returns the following values:
 //
 //   - renderNode: child that is getting clipped.
-//
 func (node *ClipNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -1221,7 +1204,6 @@ func (node *ClipNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - rect: clip rectangle.
-//
 func (node *ClipNode) Clip() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_rect_t // in
@@ -1266,7 +1248,7 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 //
 // In particular, the node will transform the operation
 //
-//    pixel = color_matrix * pixel + color_offset
+//	pixel = color_matrix * pixel + color_offset
 //
 // for every pixel.
 //
@@ -1279,7 +1261,6 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - colorMatrixNode: new GskRenderNode.
-//
 func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) *ColorMatrixNode {
 	var _arg1 *C.GskRenderNode     // out
 	var _arg2 *C.graphene_matrix_t // out
@@ -1308,7 +1289,6 @@ func NewColorMatrixNode(child RenderNoder, colorMatrix *graphene.Matrix, colorOf
 // The function returns the following values:
 //
 //   - renderNode: child that is getting its colors modified.
-//
 func (node *ColorMatrixNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -1346,7 +1326,6 @@ func (node *ColorMatrixNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - matrix: 4x4 color matrix.
-//
 func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 	var _arg0 *C.GskRenderNode     // out
 	var _cret *C.graphene_matrix_t // in
@@ -1368,7 +1347,6 @@ func (node *ColorMatrixNode) ColorMatrix() *graphene.Matrix {
 // The function returns the following values:
 //
 //   - vec4: color vector.
-//
 func (node *ColorMatrixNode) ColorOffset() *graphene.Vec4 {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_vec4_t // in
@@ -1418,7 +1396,6 @@ func marshalColorNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - colorNode: new GskRenderNode.
-//
 func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 	var _arg1 *C.GdkRGBA         // out
 	var _arg2 *C.graphene_rect_t // out
@@ -1443,7 +1420,6 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 // The function returns the following values:
 //
 //   - rgbA: color of the node.
-//
 func (node *ColorNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
@@ -1500,7 +1476,6 @@ func marshalConicGradientNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - conicGradientNode: new GskRenderNode.
-//
 func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) *ConicGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -1541,12 +1516,11 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 // The angle is starting at the top and going clockwise, as expressed in the css
 // specification:
 //
-//    angle = 90 - gsk_conic_gradient_node_get_rotation().
+//	angle = 90 - gsk_conic_gradient_node_get_rotation().
 //
 // The function returns the following values:
 //
 //   - gfloat: angle for the gradient.
-//
 func (node *ConicGradientNode) Angle() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -1568,7 +1542,6 @@ func (node *ConicGradientNode) Angle() float32 {
 // The function returns the following values:
 //
 //   - point: center point for the gradient.
-//
 func (node *ConicGradientNode) Center() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
@@ -1590,7 +1563,6 @@ func (node *ConicGradientNode) Center() *graphene.Point {
 // The function returns the following values:
 //
 //   - colorStops: color stops in the gradient.
-//
 func (node *ConicGradientNode) ColorStops() []ColorStop {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskColorStop  // in
@@ -1619,7 +1591,6 @@ func (node *ConicGradientNode) ColorStops() []ColorStop {
 // The function returns the following values:
 //
 //   - gsize: number of color stops.
-//
 func (node *ConicGradientNode) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
@@ -1641,7 +1612,6 @@ func (node *ConicGradientNode) NColorStops() uint {
 // The function returns the following values:
 //
 //   - gfloat: rotation for the gradient.
-//
 func (node *ConicGradientNode) Rotation() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -1692,7 +1662,6 @@ func marshalContainerNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - containerNode: new GskRenderNode.
-//
 func NewContainerNode(children []RenderNoder) *ContainerNode {
 	var _arg1 **C.GskRenderNode // out
 	var _arg2 C.guint
@@ -1727,7 +1696,6 @@ func NewContainerNode(children []RenderNoder) *ContainerNode {
 // The function returns the following values:
 //
 //   - renderNode: idx'th child of container.
-//
 func (node *ContainerNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
@@ -1768,7 +1736,6 @@ func (node *ContainerNode) Child(idx uint) RenderNoder {
 // The function returns the following values:
 //
 //   - guint: number of children of the GskRenderNode.
-//
 func (node *ContainerNode) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
@@ -1820,7 +1787,6 @@ func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - crossFadeNode: new GskRenderNode.
-//
 func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskRenderNode // out
@@ -1848,7 +1814,6 @@ func NewCrossFadeNode(start, end RenderNoder, progress float32) *CrossFadeNode {
 // The function returns the following values:
 //
 //   - renderNode: GskRenderNode.
-//
 func (node *CrossFadeNode) EndChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -1886,7 +1851,6 @@ func (node *CrossFadeNode) EndChild() RenderNoder {
 // The function returns the following values:
 //
 //   - gfloat progress value, between 0 and 1.
-//
 func (node *CrossFadeNode) Progress() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -1909,7 +1873,6 @@ func (node *CrossFadeNode) Progress() float32 {
 // The function returns the following values:
 //
 //   - renderNode: GskRenderNode.
-//
 func (node *CrossFadeNode) StartChild() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -1978,7 +1941,6 @@ func marshalDebugNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - debugNode: new GskRenderNode.
-//
 func NewDebugNode(child RenderNoder, message string) *DebugNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.char          // out
@@ -2003,7 +1965,6 @@ func NewDebugNode(child RenderNoder, message string) *DebugNode {
 // The function returns the following values:
 //
 //   - renderNode: child GskRenderNode.
-//
 func (node *DebugNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -2041,7 +2002,6 @@ func (node *DebugNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - utf8: debug message.
-//
 func (node *DebugNode) Message() string {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.char          // in
@@ -2100,10 +2060,10 @@ func defaultGLShaderOverrides(v *GLShader) GLShaderOverrides {
 //
 // The main function the shader must implement is:
 //
-//    void mainImage(out vec4 fragColor,
-//                   in vec2 fragCoord,
-//                   in vec2 resolution,
-//                   in vec2 uv)
+//	void mainImage(out vec4 fragColor,
+//	               in vec2 fragCoord,
+//	               in vec2 resolution,
+//	               in vec2 uv)
 //
 // Where the input fragCoord is the coordinate of the pixel we're currently
 // rendering, relative to the boundary rectangle that was specified in the
@@ -2129,16 +2089,16 @@ func defaultGLShaderOverrides(v *GLShader) GLShaderOverrides {
 // Note that GTK parses the uniform declarations, so each uniform has to be on a
 // line by itself with no other code, like so:
 //
-//    uniform float u_time;
-//    uniform vec3 u_color;
-//    uniform sampler2D u_texture1;
-//    uniform sampler2D u_texture2;
+//	uniform float u_time;
+//	uniform vec3 u_color;
+//	uniform sampler2D u_texture1;
+//	uniform sampler2D u_texture2;
 //
 // GTK uses the the "gsk" namespace in the symbols it uses in the shader,
 // so your code should not use any symbols with the prefix gsk or GSK. There are
 // some helper functions declared that you can use:
 //
-//    vec4 GskTexture(sampler2D sampler, vec2 texCoords);
+//	vec4 GskTexture(sampler2D sampler, vec2 texCoords);
 //
 // This samples a texture (e.g. u_texture1) at the specified coordinates, and
 // containes some helper ifdefs to ensure that it works on all OpenGL versions.
@@ -2152,19 +2112,19 @@ func defaultGLShaderOverrides(v *GLShader) GLShaderOverrides {
 //
 // An example shader
 //
-//    uniform float position;
-//    uniform sampler2D u_texture1;
-//    uniform sampler2D u_texture2;
+//	uniform float position;
+//	uniform sampler2D u_texture1;
+//	uniform sampler2D u_texture2;
 //
-//    void mainImage(out vec4 fragColor,
-//                   in vec2 fragCoord,
-//                   in vec2 resolution,
-//                   in vec2 uv) {
-//      vec4 source1 = GskTexture(u_texture1, uv);
-//      vec4 source2 = GskTexture(u_texture2, uv);
+//	void mainImage(out vec4 fragColor,
+//	               in vec2 fragCoord,
+//	               in vec2 resolution,
+//	               in vec2 uv) {
+//	  vec4 source1 = GskTexture(u_texture1, uv);
+//	  vec4 source2 = GskTexture(u_texture2, uv);
 //
-//      fragColor = position * source1 + (1.0 - position) * source2;
-//    }.
+//	  fragColor = position * source1 + (1.0 - position) * source2;
+//	}.
 type GLShader struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -2210,7 +2170,6 @@ func marshalGLShader(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - glShader: new GskGLShader.
-//
 func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
 	var _arg1 *C.GBytes      // out
 	var _cret *C.GskGLShader // in
@@ -2238,7 +2197,6 @@ func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
 // The function returns the following values:
 //
 //   - glShader: new GskGLShader.
-//
 func NewGLShaderFromResource(resourcePath string) *GLShader {
 	var _arg1 *C.char        // out
 	var _cret *C.GskGLShader // in
@@ -2270,7 +2228,6 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 // The function takes the following parameters:
 //
 //   - renderer: GskRenderer.
-//
 func (shader *GLShader) Compile(renderer Rendererer) error {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GskRenderer // out
@@ -2302,7 +2259,6 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 // The function returns the following values:
 //
 //   - gint: index of the uniform, or -1.
-//
 func (shader *GLShader) FindUniformByName(name string) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.char        // out
@@ -2335,7 +2291,6 @@ func (shader *GLShader) FindUniformByName(name string) int {
 // The function returns the following values:
 //
 //   - ok: value.
-//
 func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
@@ -2372,7 +2327,6 @@ func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
 // The function returns the following values:
 //
 //   - gfloat: value.
-//
 func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
@@ -2407,7 +2361,6 @@ func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 // The function returns the following values:
 //
 //   - gint32: value.
-//
 func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
@@ -2442,7 +2395,6 @@ func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
 // The function returns the following values:
 //
 //   - guint32: value.
-//
 func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 *C.GBytes      // out
@@ -2474,7 +2426,6 @@ func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 //   - args: uniform arguments.
 //   - idx: index of the uniform.
 //   - outValue: location to store the uniform value in.
-//
 func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
@@ -2502,7 +2453,6 @@ func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Ve
 //   - args: uniform arguments.
 //   - idx: index of the uniform.
 //   - outValue: location to store the uniform value in.
-//
 func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
@@ -2530,7 +2480,6 @@ func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Ve
 //   - args: uniform arguments.
 //   - idx: index of the uniform.
 //   - outValue: location to store set the uniform value in.
-//
 func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4) {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 *C.GBytes          // out
@@ -2555,7 +2504,6 @@ func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Ve
 // The function returns the following values:
 //
 //   - gsize: size of the data block.
-//
 func (shader *GLShader) ArgsSize() uint {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.gsize        // in
@@ -2581,7 +2529,6 @@ func (shader *GLShader) ArgsSize() uint {
 // The function returns the following values:
 //
 //   - gint: number of texture inputs required by shader.
-//
 func (shader *GLShader) NTextures() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
@@ -2603,7 +2550,6 @@ func (shader *GLShader) NTextures() int {
 // The function returns the following values:
 //
 //   - gint: number of declared uniforms.
-//
 func (shader *GLShader) NUniforms() int {
 	var _arg0 *C.GskGLShader // out
 	var _cret C.int          // in
@@ -2626,7 +2572,6 @@ func (shader *GLShader) NUniforms() int {
 // The function returns the following values:
 //
 //   - utf8: resource path for the shader, or NULL if none.
-//
 func (shader *GLShader) Resource() string {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.char        // in
@@ -2648,7 +2593,6 @@ func (shader *GLShader) Resource() string {
 // The function returns the following values:
 //
 //   - bytes: source code for the shader.
-//
 func (shader *GLShader) Source() *glib.Bytes {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.GBytes      // in
@@ -2682,7 +2626,6 @@ func (shader *GLShader) Source() *glib.Bytes {
 // The function returns the following values:
 //
 //   - utf8: name of the declared uniform.
-//
 func (shader *GLShader) UniformName(idx int) string {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
@@ -2712,7 +2655,6 @@ func (shader *GLShader) UniformName(idx int) string {
 // The function returns the following values:
 //
 //   - gint: data offset.
-//
 func (shader *GLShader) UniformOffset(idx int) int {
 	var _arg0 *C.GskGLShader // out
 	var _arg1 C.int          // out
@@ -2742,7 +2684,6 @@ func (shader *GLShader) UniformOffset(idx int) int {
 // The function returns the following values:
 //
 //   - glUniformType: type of the declared uniform.
-//
 func (shader *GLShader) UniformType(idx int) GLUniformType {
 	var _arg0 *C.GskGLShader     // out
 	var _arg1 C.int              // out
@@ -2813,7 +2754,6 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - glShaderNode: new GskRenderNode.
-//
 func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNoder) *GLShaderNode {
 	var _arg1 *C.GskGLShader     // out
 	var _arg2 *C.graphene_rect_t // out
@@ -2853,7 +2793,6 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 // The function returns the following values:
 //
 //   - bytes with the uniform arguments.
-//
 func (node *GLShaderNode) Args() *glib.Bytes {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GBytes        // in
@@ -2886,7 +2825,6 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 // The function returns the following values:
 //
 //   - renderNode: idx'th child of node.
-//
 func (node *GLShaderNode) Child(idx uint) RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.guint          // out
@@ -2927,7 +2865,6 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 // The function returns the following values:
 //
 //   - guint: number of children.
-//
 func (node *GLShaderNode) NChildren() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
@@ -2949,7 +2886,6 @@ func (node *GLShaderNode) NChildren() uint {
 // The function returns the following values:
 //
 //   - glShader: GLShader shader.
-//
 func (node *GLShaderNode) Shader() *GLShader {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskGLShader   // in
@@ -3003,7 +2939,6 @@ func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - insetShadowNode: new GskRenderNode.
-//
 func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *InsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -3040,7 +2975,6 @@ func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, b
 // The function returns the following values:
 //
 //   - gfloat: blur radius, in pixels.
-//
 func (node *InsetShadowNode) BlurRadius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3062,7 +2996,6 @@ func (node *InsetShadowNode) BlurRadius() float32 {
 // The function returns the following values:
 //
 //   - rgbA: color of the shadow.
-//
 func (node *InsetShadowNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
@@ -3084,7 +3017,6 @@ func (node *InsetShadowNode) Color() *gdk.RGBA {
 // The function returns the following values:
 //
 //   - gfloat: offset, in pixels.
-//
 func (node *InsetShadowNode) Dx() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3106,7 +3038,6 @@ func (node *InsetShadowNode) Dx() float32 {
 // The function returns the following values:
 //
 //   - gfloat: offset, in pixels.
-//
 func (node *InsetShadowNode) Dy() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3128,7 +3059,6 @@ func (node *InsetShadowNode) Dy() float32 {
 // The function returns the following values:
 //
 //   - roundedRect: rounded rectangle.
-//
 func (node *InsetShadowNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
@@ -3150,7 +3080,6 @@ func (node *InsetShadowNode) Outline() *RoundedRect {
 // The function returns the following values:
 //
 //   - gfloat: size of the shadow, in pixels.
-//
 func (node *InsetShadowNode) Spread() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3205,7 +3134,6 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - linearGradientNode: new GskRenderNode.
-//
 func NewLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, colorStops []ColorStop) *LinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -3245,7 +3173,6 @@ func NewLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, co
 // The function returns the following values:
 //
 //   - colorStops: color stops in the gradient.
-//
 func (node *LinearGradientNode) ColorStops() []ColorStop {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskColorStop  // in
@@ -3274,7 +3201,6 @@ func (node *LinearGradientNode) ColorStops() []ColorStop {
 // The function returns the following values:
 //
 //   - point: final point.
-//
 func (node *LinearGradientNode) End() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
@@ -3296,7 +3222,6 @@ func (node *LinearGradientNode) End() *graphene.Point {
 // The function returns the following values:
 //
 //   - gsize: number of color stops.
-//
 func (node *LinearGradientNode) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
@@ -3318,7 +3243,6 @@ func (node *LinearGradientNode) NColorStops() uint {
 // The function returns the following values:
 //
 //   - point: initial point.
-//
 func (node *LinearGradientNode) Start() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
@@ -3368,7 +3292,6 @@ func marshalOpacityNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - opacityNode: new GskRenderNode.
-//
 func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 C.float          // out
@@ -3393,7 +3316,6 @@ func NewOpacityNode(child RenderNoder, opacity float32) *OpacityNode {
 // The function returns the following values:
 //
 //   - renderNode: child that is getting opacityed.
-//
 func (node *OpacityNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -3431,7 +3353,6 @@ func (node *OpacityNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - gfloat: opacity factor.
-//
 func (node *OpacityNode) Opacity() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3485,7 +3406,6 @@ func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - outsetShadowNode: new GskRenderNode.
-//
 func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, blurRadius float32) *OutsetShadowNode {
 	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.GdkRGBA        // out
@@ -3522,7 +3442,6 @@ func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx, dy, spread, 
 // The function returns the following values:
 //
 //   - gfloat: blur radius, in pixels.
-//
 func (node *OutsetShadowNode) BlurRadius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3544,7 +3463,6 @@ func (node *OutsetShadowNode) BlurRadius() float32 {
 // The function returns the following values:
 //
 //   - rgbA: color.
-//
 func (node *OutsetShadowNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
@@ -3566,7 +3484,6 @@ func (node *OutsetShadowNode) Color() *gdk.RGBA {
 // The function returns the following values:
 //
 //   - gfloat: offset, in pixels.
-//
 func (node *OutsetShadowNode) Dx() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3588,7 +3505,6 @@ func (node *OutsetShadowNode) Dx() float32 {
 // The function returns the following values:
 //
 //   - gfloat: offset, in pixels.
-//
 func (node *OutsetShadowNode) Dy() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3610,7 +3526,6 @@ func (node *OutsetShadowNode) Dy() float32 {
 // The function returns the following values:
 //
 //   - roundedRect: rounded rectangle.
-//
 func (node *OutsetShadowNode) Outline() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
@@ -3632,7 +3547,6 @@ func (node *OutsetShadowNode) Outline() *RoundedRect {
 // The function returns the following values:
 //
 //   - gfloat: size of the shadow, in pixels.
-//
 func (node *OutsetShadowNode) Spread() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3693,7 +3607,6 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - radialGradientNode: new GskRenderNode.
-//
 func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, colorStops []ColorStop) *RadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -3742,7 +3655,6 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 // The function returns the following values:
 //
 //   - point: center point for the gradient.
-//
 func (node *RadialGradientNode) Center() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
@@ -3764,7 +3676,6 @@ func (node *RadialGradientNode) Center() *graphene.Point {
 // The function returns the following values:
 //
 //   - colorStops: color stops in the gradient.
-//
 func (node *RadialGradientNode) ColorStops() []ColorStop {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskColorStop  // in
@@ -3793,7 +3704,6 @@ func (node *RadialGradientNode) ColorStops() []ColorStop {
 // The function returns the following values:
 //
 //   - gfloat: end value for the gradient.
-//
 func (node *RadialGradientNode) End() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3815,7 +3725,6 @@ func (node *RadialGradientNode) End() float32 {
 // The function returns the following values:
 //
 //   - gfloat: horizontal radius for the gradient.
-//
 func (node *RadialGradientNode) Hradius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3837,7 +3746,6 @@ func (node *RadialGradientNode) Hradius() float32 {
 // The function returns the following values:
 //
 //   - gsize: number of color stops.
-//
 func (node *RadialGradientNode) NColorStops() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
@@ -3859,7 +3767,6 @@ func (node *RadialGradientNode) NColorStops() uint {
 // The function returns the following values:
 //
 //   - gfloat: start value for the gradient.
-//
 func (node *RadialGradientNode) Start() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3881,7 +3788,6 @@ func (node *RadialGradientNode) Start() float32 {
 // The function returns the following values:
 //
 //   - gfloat: vertical radius for the gradient.
-//
 func (node *RadialGradientNode) Vradius() float32 {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.float          // in
@@ -3962,7 +3868,6 @@ func BaseRenderNode(obj RenderNoder) *RenderNode {
 // The function takes the following parameters:
 //
 //   - cr: cairo context to draw to.
-//
 func (node *RenderNode) Draw(cr *cairo.Context) {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.cairo_t       // out
@@ -3982,7 +3887,6 @@ func (node *RenderNode) Draw(cr *cairo.Context) {
 // The function returns the following values:
 //
 //   - bounds: return location for the boundaries.
-//
 func (node *RenderNode) Bounds() *graphene.Rect {
 	var _arg0 *C.GskRenderNode  // out
 	var _arg1 C.graphene_rect_t // in
@@ -4004,7 +3908,6 @@ func (node *RenderNode) Bounds() *graphene.Rect {
 // The function returns the following values:
 //
 //   - renderNodeType: type of the GskRenderNode.
-//
 func (node *RenderNode) NodeType() RenderNodeType {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret C.GskRenderNodeType // in
@@ -4034,7 +3937,6 @@ func (node *RenderNode) NodeType() RenderNodeType {
 // The function returns the following values:
 //
 //   - bytes representing the node.
-//
 func (node *RenderNode) Serialize() *glib.Bytes {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GBytes        // in
@@ -4068,7 +3970,6 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 // The function takes the following parameters:
 //
 //   - filename: file to save it to.
-//
 func (node *RenderNode) WriteToFile(filename string) error {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 *C.char          // out
@@ -4104,7 +4005,6 @@ func (node *RenderNode) WriteToFile(filename string) error {
 // The function returns the following values:
 //
 //   - renderNode (optional): new GskRenderNode or NULL on error.
-//
 func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNoder {
 	var _arg1 *C.GBytes           // out
 	var _arg2 C.GskParseErrorFunc // out
@@ -4208,7 +4108,6 @@ func BaseRenderer(obj Rendererer) *Renderer {
 // The function returns the following values:
 //
 //   - renderer (optional): GskRenderer.
-//
 func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 	var _arg1 *C.GdkSurface  // out
 	var _cret *C.GskRenderer // in
@@ -4234,7 +4133,6 @@ func NewRendererForSurface(surface gdk.Surfacer) *Renderer {
 // The function returns the following values:
 //
 //   - surface (optional): GdkSurface.
-//
 func (renderer *Renderer) Surface() gdk.Surfacer {
 	var _arg0 *C.GskRenderer // out
 	var _cret *C.GdkSurface  // in
@@ -4271,7 +4169,6 @@ func (renderer *Renderer) Surface() gdk.Surfacer {
 // The function returns the following values:
 //
 //   - ok: TRUE if the GskRenderer was realized, and FALSE otherwise.
-//
 func (renderer *Renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer // out
 	var _cret C.gboolean     // in
@@ -4296,7 +4193,6 @@ func (renderer *Renderer) IsRealized() bool {
 // The function takes the following parameters:
 //
 //   - surface: GdkSurface renderer will be used on.
-//
 func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
@@ -4334,7 +4230,6 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 //   - root: GskRenderNode.
 //   - region (optional): cairo_region_t that must be redrawn or NULL for the
 //     whole window.
-//
 func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 	var _arg0 *C.GskRenderer    // out
 	var _arg1 *C.GskRenderNode  // out
@@ -4369,7 +4264,6 @@ func (renderer *Renderer) Render(root RenderNoder, region *cairo.Region) {
 // The function returns the following values:
 //
 //   - texture: GdkTexture with the rendered contents of root.
-//
 func (renderer *Renderer) RenderTexture(root RenderNoder, viewport *graphene.Rect) gdk.Texturer {
 	var _arg0 *C.GskRenderer     // out
 	var _arg1 *C.GskRenderNode   // out
@@ -4455,7 +4349,6 @@ func marshalRepeatNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - repeatNode: new GskRenderNode.
-//
 func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphene.Rect) *RepeatNode {
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 *C.GskRenderNode   // out
@@ -4485,7 +4378,6 @@ func NewRepeatNode(bounds *graphene.Rect, child RenderNoder, childBounds *graphe
 // The function returns the following values:
 //
 //   - renderNode: GskRenderNode.
-//
 func (node *RepeatNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -4523,7 +4415,6 @@ func (node *RepeatNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - rect: bounding rectangle.
-//
 func (node *RepeatNode) ChildBounds() *graphene.Rect {
 	var _arg0 *C.GskRenderNode   // out
 	var _cret *C.graphene_rect_t // in
@@ -4578,7 +4469,6 @@ func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - repeatingLinearGradientNode: new GskRenderNode.
-//
 func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start, end *graphene.Point, colorStops []ColorStop) *RepeatingLinearGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -4658,7 +4548,6 @@ func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - repeatingRadialGradientNode: new GskRenderNode.
-//
 func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius, vradius, start, end float32, colorStops []ColorStop) *RepeatingRadialGradientNode {
 	var _arg1 *C.graphene_rect_t  // out
 	var _arg2 *C.graphene_point_t // out
@@ -4736,7 +4625,6 @@ func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - roundedClipNode: new GskRenderNode.
-//
 func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 	var _arg1 *C.GskRenderNode  // out
 	var _arg2 *C.GskRoundedRect // out
@@ -4761,7 +4649,6 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 // The function returns the following values:
 //
 //   - renderNode: child that is getting clipped.
-//
 func (node *RoundedClipNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -4799,7 +4686,6 @@ func (node *RoundedClipNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - roundedRect: rounded rectangle.
-//
 func (node *RoundedClipNode) Clip() *RoundedRect {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.GskRoundedRect // in
@@ -4850,7 +4736,6 @@ func marshalShadowNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - shadowNode: new GskRenderNode.
-//
 func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskShadow     // out
@@ -4884,7 +4769,6 @@ func NewShadowNode(child RenderNoder, shadows []Shadow) *ShadowNode {
 // The function returns the following values:
 //
 //   - renderNode: child render node.
-//
 func (node *ShadowNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -4922,7 +4806,6 @@ func (node *ShadowNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - gsize: number of shadows.
-//
 func (node *ShadowNode) NShadows() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gsize          // in
@@ -4948,7 +4831,6 @@ func (node *ShadowNode) NShadows() uint {
 // The function returns the following values:
 //
 //   - shadow data.
-//
 func (node *ShadowNode) Shadow(i uint) *Shadow {
 	var _arg0 *C.GskRenderNode // out
 	var _arg1 C.gsize          // out
@@ -5004,7 +4886,6 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - textNode (optional): new GskRenderNode.
-//
 func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) *TextNode {
 	var _arg1 *C.PangoFont        // out
 	var _arg2 *C.PangoGlyphString // out
@@ -5037,7 +4918,6 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 // The function returns the following values:
 //
 //   - rgbA: text color.
-//
 func (node *TextNode) Color() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
@@ -5059,7 +4939,6 @@ func (node *TextNode) Color() *gdk.RGBA {
 // The function returns the following values:
 //
 //   - font: font.
-//
 func (node *TextNode) Font() pango.Fonter {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.PangoFont     // in
@@ -5097,7 +4976,6 @@ func (node *TextNode) Font() pango.Fonter {
 // The function returns the following values:
 //
 //   - glyphInfos: glyph information.
-//
 func (node *TextNode) Glyphs() []pango.GlyphInfo {
 	var _arg0 *C.GskRenderNode  // out
 	var _cret *C.PangoGlyphInfo // in
@@ -5126,7 +5004,6 @@ func (node *TextNode) Glyphs() []pango.GlyphInfo {
 // The function returns the following values:
 //
 //   - guint: number of glyphs.
-//
 func (node *TextNode) NumGlyphs() uint {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.guint          // in
@@ -5148,7 +5025,6 @@ func (node *TextNode) NumGlyphs() uint {
 // The function returns the following values:
 //
 //   - point with the horizontal and vertical offsets.
-//
 func (node *TextNode) Offset() *graphene.Point {
 	var _arg0 *C.GskRenderNode    // out
 	var _cret *C.graphene_point_t // in
@@ -5170,7 +5046,6 @@ func (node *TextNode) Offset() *graphene.Point {
 // The function returns the following values:
 //
 //   - ok: TRUE if the text node has color glyphs.
-//
 func (node *TextNode) HasColorGlyphs() bool {
 	var _arg0 *C.GskRenderNode // out
 	var _cret C.gboolean       // in
@@ -5222,7 +5097,6 @@ func marshalTextureNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - textureNode: new GskRenderNode.
-//
 func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 	var _arg1 *C.GdkTexture      // out
 	var _arg2 *C.graphene_rect_t // out
@@ -5247,7 +5121,6 @@ func NewTextureNode(texture gdk.Texturer, bounds *graphene.Rect) *TextureNode {
 // The function returns the following values:
 //
 //   - texture: GdkTexture.
-//
 func (node *TextureNode) Texture() gdk.Texturer {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkTexture    // in
@@ -5313,7 +5186,6 @@ func marshalTransformNode(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - transformNode: new GskRenderNode.
-//
 func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 	var _arg1 *C.GskRenderNode // out
 	var _arg2 *C.GskTransform  // out
@@ -5338,7 +5210,6 @@ func NewTransformNode(child RenderNoder, transform *Transform) *TransformNode {
 // The function returns the following values:
 //
 //   - renderNode: child that is getting transformed.
-//
 func (node *TransformNode) Child() RenderNoder {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskRenderNode // in
@@ -5376,7 +5247,6 @@ func (node *TransformNode) Child() RenderNoder {
 // The function returns the following values:
 //
 //   - transform: GskTransform.
-//
 func (node *TransformNode) Transform() *Transform {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskTransform  // in
@@ -5606,7 +5476,6 @@ func (r *RoundedRect) Corner() [4]graphene.Size {
 // The function returns the following values:
 //
 //   - ok: TRUE if the point is inside the rounded rectangle.
-//
 func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 	var _arg0 *C.GskRoundedRect   // out
 	var _arg1 *C.graphene_point_t // out
@@ -5638,7 +5507,6 @@ func (self *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the rect is fully contained inside the rounded rectangle.
-//
 func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
@@ -5675,7 +5543,6 @@ func (self *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 // The function returns the following values:
 //
 //   - roundedRect: initialized rectangle.
-//
 func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, topRight *graphene.Size, bottomRight *graphene.Size, bottomLeft *graphene.Size) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
@@ -5719,7 +5586,6 @@ func (self *RoundedRect) Init(bounds *graphene.Rect, topLeft *graphene.Size, top
 // The function returns the following values:
 //
 //   - roundedRect: initialized rectangle.
-//
 func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 *C.GskRoundedRect // out
@@ -5750,7 +5616,6 @@ func (self *RoundedRect) InitCopy(src *RoundedRect) *RoundedRect {
 // The function returns the following values:
 //
 //   - roundedRect: initialized rectangle.
-//
 func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
@@ -5783,7 +5648,6 @@ func (self *RoundedRect) InitFromRect(bounds *graphene.Rect, radius float32) *Ro
 // The function returns the following values:
 //
 //   - ok: TRUE if the rect intersects with the rounded rectangle.
-//
 func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 	var _arg0 *C.GskRoundedRect  // out
 	var _arg1 *C.graphene_rect_t // out
@@ -5814,7 +5678,6 @@ func (self *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the rectangle is rectilinear.
-//
 func (self *RoundedRect) IsRectilinear() bool {
 	var _arg0 *C.GskRoundedRect // out
 	var _cret C.gboolean        // in
@@ -5841,7 +5704,6 @@ func (self *RoundedRect) IsRectilinear() bool {
 // The function returns the following values:
 //
 //   - roundedRect: normalized rectangle.
-//
 func (self *RoundedRect) Normalize() *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _cret *C.GskRoundedRect // in
@@ -5870,7 +5732,6 @@ func (self *RoundedRect) Normalize() *RoundedRect {
 // The function returns the following values:
 //
 //   - roundedRect: offset rectangle.
-//
 func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 C.float           // out
@@ -5912,7 +5773,6 @@ func (self *RoundedRect) Offset(dx float32, dy float32) *RoundedRect {
 // The function returns the following values:
 //
 //   - roundedRect: resized GskRoundedRect.
-//
 func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left float32) *RoundedRect {
 	var _arg0 *C.GskRoundedRect // out
 	var _arg1 C.float           // out
@@ -5994,7 +5854,6 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 //
 //   - idx: index of the uniform.
 //   - value to set the uniform to.
-//
 func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
@@ -6020,7 +5879,6 @@ func (builder *ShaderArgsBuilder) SetBool(idx int, value bool) {
 //
 //   - idx: index of the uniform.
 //   - value to set the uniform to.
-//
 func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
@@ -6044,7 +5902,6 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 //
 //   - idx: index of the uniform.
 //   - value to set the uniform to.
-//
 func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
@@ -6068,7 +5925,6 @@ func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
 //
 //   - idx: index of the uniform.
 //   - value to set the uniform to.
-//
 func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
@@ -6092,7 +5948,6 @@ func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 //
 //   - idx: index of the uniform.
 //   - value to set the uniform too.
-//
 func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
@@ -6116,7 +5971,6 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 //
 //   - idx: index of the uniform.
 //   - value to set the uniform too.
-//
 func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
@@ -6140,7 +5994,6 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 //
 //   - idx: index of the uniform.
 //   - value to set the uniform too.
-//
 func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _arg1 C.int                   // out
@@ -6170,7 +6023,6 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 // The function returns the following values:
 //
 //   - bytes: newly allocated buffer with all the args added to builder.
-//
 func (builder *ShaderArgsBuilder) ToArgs() *glib.Bytes {
 	var _arg0 *C.GskShaderArgsBuilder // out
 	var _cret *C.GBytes               // in
@@ -6308,7 +6160,6 @@ func NewTransform() *Transform {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two transforms perform the same operation.
-//
 func (first *Transform) Equal(second *Transform) bool {
 	var _arg0 *C.GskTransform // out
 	var _arg1 *C.GskTransform // out
@@ -6339,7 +6190,6 @@ func (first *Transform) Equal(second *Transform) bool {
 // The function returns the following values:
 //
 //   - transformCategory: category of the transform.
-//
 func (self *Transform) Category() TransformCategory {
 	var _arg0 *C.GskTransform        // out
 	var _cret C.GskTransformCategory // in
@@ -6369,7 +6219,6 @@ func (self *Transform) Category() TransformCategory {
 //
 //   - transform (optional): inverted transform or NULL if the transform cannot
 //     be inverted.
-//
 func (self *Transform) Invert() *Transform {
 	var _arg0 *C.GskTransform // out
 	var _cret *C.GskTransform // in
@@ -6405,7 +6254,6 @@ func (self *Transform) Invert() *Transform {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var _arg0 *C.GskTransform      // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -6447,7 +6295,6 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Perspective(depth float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
@@ -6484,7 +6331,6 @@ func (next *Transform) Perspective(depth float32) *Transform {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Rotate(angle float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
@@ -6524,7 +6370,6 @@ func (next *Transform) Rotate(angle float32) *Transform {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 C.float            // out
@@ -6567,7 +6412,6 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
@@ -6609,7 +6453,6 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
@@ -6650,9 +6493,9 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 //
 // The returned values have the following layout:
 //
-//    | xx yx |   |  a  b  0 |
-//    | xy yy | = |  c  d  0 |
-//    | dx dy |   | tx ty  1 |
+//	| xx yx |   |  a  b  0 |
+//	| xy yy | = |  c  d  0 |
+//	| dx dy |   | tx ty  1 |
 //
 // This function can be used to convert between a GskTransform and a matrix type
 // from other 2D drawing libraries, in particular Cairo.
@@ -6665,7 +6508,6 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 //   - outYy: return location for the yy member.
 //   - outDx: return location for the x0 member.
 //   - outDy: return location for the y0 member.
-//
 func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // in
@@ -6708,7 +6550,6 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 //   - outScaleY: return location for the scale factor in the y direction.
 //   - outDx: return location for the translation in the x direction.
 //   - outDy: return location for the translation in the y direction.
-//
 func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // in
@@ -6741,7 +6582,6 @@ func (self *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx f
 // The function returns the following values:
 //
 //   - outMatrix: matrix to set.
-//
 func (self *Transform) ToMatrix() *graphene.Matrix {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 C.graphene_matrix_t // in
@@ -6769,7 +6609,6 @@ func (self *Transform) ToMatrix() *graphene.Matrix {
 // The function returns the following values:
 //
 //   - utf8: new string for self.
-//
 func (self *Transform) String() string {
 	var _arg0 *C.GskTransform // out
 	var _cret *C.char         // in
@@ -6798,7 +6637,6 @@ func (self *Transform) String() string {
 //
 //   - outDx: return location for the translation in the x direction.
 //   - outDy: return location for the translation in the y direction.
-//
 func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // in
@@ -6827,7 +6665,6 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Transform(other *Transform) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 *C.GskTransform // out
@@ -6868,7 +6705,6 @@ func (next *Transform) Transform(other *Transform) *Transform {
 // The function returns the following values:
 //
 //   - outRect: return location for the bounds of the transformed rectangle.
-//
 func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 *C.graphene_rect_t // out
@@ -6897,7 +6733,6 @@ func (self *Transform) TransformBounds(rect *graphene.Rect) *graphene.Rect {
 // The function returns the following values:
 //
 //   - outPoint: return location for the transformed point.
-//
 func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 *C.graphene_point_t // out
@@ -6926,7 +6761,6 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Translate(point *graphene.Point) *Transform {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 *C.graphene_point_t // out
@@ -6963,7 +6797,6 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 // The function returns the following values:
 //
 //   - transform: new transform.
-//
 func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var _arg0 *C.GskTransform       // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -7008,7 +6841,6 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 //
 //   - outTransform: location to put the transform in.
 //   - ok: TRUE if string described a valid transform.
-//
 func TransformParse(str string) (*Transform, bool) {
 	var _arg1 *C.char         // out
 	var _arg2 *C.GskTransform // in

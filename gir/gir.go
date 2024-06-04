@@ -117,7 +117,7 @@ type PkgRepository struct {
 // AddSelected adds a single package but only searches for the given list of
 // GIR files.
 func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
-	found := 0
+	found := make([]string, 0, len(wantedNames))
 
 	filter := func(r *Repository) bool {
 		namespaces := r.Namespaces
@@ -125,14 +125,13 @@ func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 
 		for _, namespace := range namespaces {
 			vname := VersionedNamespace(&namespace)
-
 			for _, wantedName := range wantedNames {
 				if wantedName != vname {
 					continue
 				}
 
 				r.Namespaces = append(r.Namespaces, namespace)
-				found++
+				found = append(found, vname)
 				break
 			}
 		}
@@ -160,8 +159,8 @@ func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 		}
 	}
 
-	if found != len(wantedNames) {
-		return fmt.Errorf("only %d girs found", found)
+	if len(found) != len(wantedNames) {
+		return fmt.Errorf("wanted %v but only got %v", wantedNames, found)
 	}
 
 	return nil
@@ -422,8 +421,8 @@ func (res *TypeFindResult) MustFindGIR() string {
 // resolves imports recursively. This function is primarily used to ensure that
 // proper versions are imported.
 func (repos Repositories) FindInclude(
-	res *NamespaceFindResult, includes string) *NamespaceFindResult {
-
+	res *NamespaceFindResult, includes string,
+) *NamespaceFindResult {
 	for _, incl := range res.Repository.Includes {
 		if incl.Name != includes {
 			continue

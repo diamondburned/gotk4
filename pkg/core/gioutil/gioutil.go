@@ -2,15 +2,47 @@
 // idiomatic.
 package gioutil
 
+// #cgo pkg-config: gio-2.0 glib-2.0 gobject-2.0
+// #include "go-common-stream.h"
+// #include "go-input-stream.h"
+// #include "go-output-stream.h"
+import "C"
+
 import (
 	"context"
 	"errors"
 	"fmt"
 	"io"
+	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
+
+	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
 )
+
+// NewInputStream creates a new InputStream for the given io.Reader. If r
+// implements io.Closer, then it is automatically called if needed.
+func NewInputStream(r io.Reader) *gio.InputStream {
+	_, isSeekable := r.(io.Seeker)
+	id := gbox.Assign(r)
+	ob := C.go_input_stream_new(C.guintptr(id), C.gboolean(coreglib.GBool(isSeekable)))
+	return &gio.InputStream{
+		Object: coreglib.AssumeOwnership(unsafe.Pointer(ob)),
+	}
+}
+
+// NewOutputStream creates a new OutputStream for the given io.Reader. If r
+// implements io.Closer, then it is automatically called if needed.
+func NewOutputStream(w io.Writer) *gio.OutputStream {
+	_, isSeekable := w.(io.Seeker)
+	id := gbox.Assign(w)
+	ob := C.go_output_stream_new(C.guintptr(id), C.gboolean(coreglib.GBool(isSeekable)))
+	return &gio.OutputStream{
+		Object: coreglib.AssumeOwnership(unsafe.Pointer(ob)),
+	}
+}
 
 // StreamReader wraps around a gio.InputStreamer.
 type StreamReader struct {

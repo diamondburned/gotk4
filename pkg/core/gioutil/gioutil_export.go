@@ -70,6 +70,27 @@ func goOutputStreamWrite(id C.guintptr, buf *C.void, len C.gsize, errOut **C.GEr
 	return C.gssize(n)
 }
 
+//export goStreamSeek
+func goStreamSeek(id C.guintptr, offset C.goffset, whence C.gint, errOut **C.GError) C.gssize {
+	sk, ok := gbox.Get(uintptr(id)).(io.Seeker)
+	if !ok {
+		if errOut != nil {
+			*errOut = (*C.GError)(gerror.New(fmt.Errorf("unknown seeker ID %d", id)))
+		}
+		return -1
+	}
+
+	n, err := sk.Seek(int64(offset), int(whence))
+	if err != nil {
+		if errOut != nil {
+			*errOut = (*C.GError)(gerror.New(err))
+		}
+		return -1
+	}
+
+	return C.gssize(n)
+}
+
 //export goStreamClose
 func goStreamClose(id C.guintptr, errOut **C.GError) C.gboolean {
 	rd, ok := gbox.Pop(uintptr(id)).(io.Reader)

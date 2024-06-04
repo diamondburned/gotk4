@@ -6,6 +6,9 @@ import (
 	"io"
 	"math/rand"
 	"testing"
+
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // newJunk returns a byte slice of new random junk.
@@ -50,6 +53,53 @@ func TestOutputStream(t *testing.T) {
 	}
 
 	assertReader(t, &out, b)
+}
+
+var (
+	_ io.Reader = (*bytes.Reader)(nil)
+	_ io.Seeker = (*bytes.Reader)(nil)
+)
+
+func TestInputStreamSeeker(t *testing.T) {
+	r := bytes.NewReader(newJunk(128))
+	istream := NewInputStream(r)
+
+	sstream := &gio.Seekable{Object: istream.Object}
+	if !sstream.CanSeek() {
+		t.Fatal("bytes.Reader is not seekable over gio.InputStream")
+	}
+
+	if err := sstream.Seek(context.Background(), 2, glib.SeekSet); err != nil {
+		t.Fatal("gio.InputStream.Seek(SeekSet) failed:", err)
+	}
+	assertCursorPos(t, r, sstream, 2)
+
+	if err := sstream.Seek(context.Background(), 1, glib.SeekCur); err != nil {
+		t.Fatal("gio.InputStream.Seek(SeekCur) failed:", err)
+	}
+	assertCursorPos(t, r, sstream, 3)
+
+	if err := sstream.Seek(context.Background(), 0, glib.SeekEnd); err != nil {
+		t.Fatal("gio.InputStream.Seek(SeekEnd) failed:", err)
+	}
+	assertCursorPos(t, r, sstream, r.Size())
+}
+
+func assertCursorPos(t *testing.T, s io.Seeker, gs *gio.Seekable, want int64) {
+	t.Helper()
+
+	n, err := s.Seek(0, io.SeekCurrent)
+	if err != nil {
+		t.Fatal("Seek() failed:", err)
+	}
+
+	if n != want {
+		t.Fatalf("did not seek to the correct position (got %d, want %d)", n, want)
+	}
+
+	if tell := gs.Tell(); n != tell {
+		t.Fatalf("gio.Seekable.Tell() returned an incorrect value (got %d, want %d)", tell, n)
+	}
 }
 
 const (

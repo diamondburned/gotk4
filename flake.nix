@@ -2,10 +2,14 @@
 	inputs = {
 		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 		nixpkgs-gotk4.url = "github:NixOS/nixpkgs/fbfb79400a08bf754e32b4d4fc3f7d8f8055cf94"; # 2021-06-06
-		gotk4-nix.url = "github:diamondburned/gotk4-nix/main";
-		gotk4-nix.flake = false;
 		flake-utils.url = "github:numtide/flake-utils";
 		flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
+
+		gotk4-nix.url = "github:diamondburned/gotk4-nix";
+		gotk4-nix.inputs = {
+			nixpkgs.follows = "nixpkgs";
+			flake-utils.follows = "flake-utils";
+		};
 	};
 
 	outputs =
@@ -23,13 +27,13 @@
 				pkgs = nixpkgs.legacyPackages.${system};
 			in
 			{
-				devShells.default = import "${gotk4-nix}/shell.nix" {
+				devShells.default = gotk4-nix.lib.mkShell {
 					base.pname = "gotk4";
 					pkgs = import nixpkgs-gotk4 {
 						inherit system;
 						overlays = [
-							(import "${gotk4-nix}/overlay.nix")
-							(import "${gotk4-nix}/overlay-patchelf.nix")
+							# gotk4-nix.overlays.patchedGo
+							gotk4-nix.overlays.patchelf
 							(self: super: {
 								inherit (pkgs)
 									go

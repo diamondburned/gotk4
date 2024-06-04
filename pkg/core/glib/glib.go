@@ -24,15 +24,27 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/intern"
 )
 
-func gbool(b bool) C.gboolean {
+// GBool converts a Go bool to a GLib gboolean.
+func GBool(b bool) C.gboolean {
 	if b {
 		return C.gboolean(1)
 	}
 	return C.gboolean(0)
 }
 
-func gobool(b C.gboolean) bool {
+// Deprecated: use GBool.
+func gbool(b bool) C.gboolean {
+	return GBool(b)
+}
+
+// GoBool converts a GLib gboolean to a Go bool.
+func GoBool(b C.gboolean) bool {
 	return b != 0
+}
+
+// Deprecated: use GoBool.
+func gobool(b C.gboolean) bool {
+	return GoBool(b)
 }
 
 // InitI18n initializes the i18n subsystem. It runs the following C code:

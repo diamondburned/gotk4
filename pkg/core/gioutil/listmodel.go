@@ -41,6 +41,8 @@ type ListModel[T any] struct {
 	*gio.ListModel
 }
 
+var _ gio.ListModeller = (*ListModel[struct{}])(nil)
+
 // NewListModel creates a new list model.
 func NewListModel[T any]() *ListModel[T] {
 	obj := coreglib.AssumeOwnership(unsafe.Pointer(C.gotk4_gbox_list_new())) // C.Gotk4GboxList
@@ -83,23 +85,23 @@ func (l *ListModel[T]) Splice(position, removals int, values ...T) {
 	C.gotk4_gbox_list_splice(l.native(), C.guint(position), C.guint(removals), idsPtr)
 }
 
-// Item returns the value at the given index.
-func (l *ListModel[T]) Item(index int) T {
+// At returns the value at the given index.
+func (l *ListModel[T]) At(index int) T {
 	id := uintptr(C.gotk4_gbox_list_get_id(l.native(), C.guint(index)))
 	return gbox.Get(id).(T)
 }
 
-// NItems returns the number of items in the list.
-func (l *ListModel[T]) NItems() int {
+// Len returns the number of items in the list.
+func (l *ListModel[T]) Len() int {
 	return int(l.ListModel.NItems())
 }
 
-// AllItems returns an iterator over all values in the list.
-func (l *ListModel[T]) AllItems() func(yield func(T) bool) {
+// All returns an iterator over all values in the list.
+func (l *ListModel[T]) All() func(yield func(T) bool) {
 	return func(yield func(T) bool) {
-		nItems := l.NItems()
+		nItems := l.Len()
 		for i := 0; i < nItems; i++ {
-			if !yield(l.Item(i)) {
+			if !yield(l.At(i)) {
 				break
 			}
 		}
@@ -110,9 +112,9 @@ func (l *ListModel[T]) AllItems() func(yield func(T) bool) {
 // If j is greater than the length of the list, it will be clamped to that.
 func (l *ListModel[T]) RangeItems(i, j int) func(yield func(T) bool) {
 	return func(yield func(T) bool) {
-		nItems := l.NItems()
+		nItems := l.Len()
 		for j = min(j, nItems); i < j; i++ {
-			if !yield(l.Item(i)) {
+			if !yield(l.At(i)) {
 				break
 			}
 		}

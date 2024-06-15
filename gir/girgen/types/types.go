@@ -319,6 +319,7 @@ var cgoPrimitiveTypes = map[string]string{
 	"long long": "longlong",
 
 	"unsigned int":       "uint",
+	"unsigned short":     "ushort",
 	"unsigned long":      "ulong",
 	"unsigned long long": "ulonglong",
 }

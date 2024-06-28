@@ -225,7 +225,8 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		return false
 	}
 
-	if !strings.Contains(cgoType, "*") && value.InContainer {
+	if !strings.Contains(cgoType, "*") && value.InContainer && !value.Resolved.IsGpointer() {
+		value.Logln(logger.Debug, "non-pointer container detected, so making it a pointer")
 		// The inner type inside a container must always be a pointer, so if
 		// it's not, then make it one.
 		cgoType = "*" + cgoType

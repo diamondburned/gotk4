@@ -514,9 +514,20 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 	switch {
 	case value.Resolved.IsBuiltin("cgo.Handle", "unsafe.Pointer", "uintptr"):
 		value.header.Import("unsafe")
-		// unsafe.Pointer is needed for pointer to pointers, so we're playing it
-		// safe.
-		value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.Out.Set, value.Out.Type, value.In.Name)
+
+		switch types.CleanCType(value.Resolved.CType, false) {
+		case "guintptr":
+			// We can directly cast this to uintptr.
+			value.p.Linef("%s = uintptr(%s)", value.Out.Set, value.In.Name)
+		default:
+			// Be safe and cast it to an unsafe.Pointer first.
+			//
+			// NOTE: this is realistically the case when the type is an actual C
+			// pointer rather than some masked int type. We're only handling
+			// guintptr in this case, but there might be more.
+			value.p.Linef("%s = (%s)(unsafe.Pointer(%s))", value.Out.Set, value.Out.Type, value.In.Name)
+		}
+
 		return true
 
 	case value.Resolved.IsBuiltin("string"):

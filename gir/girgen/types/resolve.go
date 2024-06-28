@@ -221,6 +221,7 @@ func IsGpointer(ctype string) bool {
 
 // IsGpointer returns true if the given type is a gpointer type.
 func (typ *Resolved) IsGpointer() bool {
+	typ = typ.Underlying()
 	return isGpointer(typ.CType, typ.GType, int(typ.Ptr))
 }
 
@@ -362,6 +363,8 @@ func (typ *Resolved) PublicIsInterface() bool {
 // IsPrimitive returns true if the resolved type is a builtin type that can be
 // directly casted to an equivalent C type OR a record.
 func (typ *Resolved) IsPrimitive() bool {
+	typ = typ.Underlying()
+
 	if typ.Builtin == nil {
 		return false
 	}
@@ -381,6 +384,8 @@ func (typ *Resolved) IsPrimitive() bool {
 // IsContainerBuiltin returns true if the resolved type is a built-in Go
 // container type (like string, error or interface{}).
 func (typ *Resolved) IsContainerBuiltin() bool {
+	typ = typ.Underlying()
+
 	if typ.Builtin == nil {
 		return false
 	}
@@ -417,14 +422,18 @@ func (typ *Resolved) CanCast(gen FileGenerator) bool {
 
 // IsBuiltin is a convenient function to compare the builtin type.
 func (typ *Resolved) IsBuiltin(builtins ...string) bool {
+	typ = typ.Underlying()
+
 	if typ.Builtin == nil {
 		return false
 	}
+
 	for _, b := range builtins {
 		if b == *typ.Builtin {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -441,6 +450,8 @@ func (typ *Resolved) HasPointer(gen FileGenerator) bool {
 		// Probably unknown.
 		return true
 	}
+
+	typ = typ.Underlying()
 
 	if typ.Builtin != nil {
 		return !typ.IsPrimitive()

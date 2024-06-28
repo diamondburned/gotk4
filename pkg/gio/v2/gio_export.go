@@ -5235,9 +5235,7 @@ func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, a
 	var _keys *glib.Quark // out
 	var _nKeys int        // out
 
-	_keys = (*uint32)(unsafe.Pointer(arg1))
-	type _ = *glib.Quark
-	type _ = *uint32
+	_keys = (*glib.Quark)(unsafe.Pointer(arg1))
 	_nKeys = int(arg2)
 
 	ok := overrides.ChangeEvent(_keys, _nKeys)
@@ -5276,9 +5274,7 @@ func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.GSettings, arg1 C.G
 
 	var _key glib.Quark // out
 
-	_key = uint32(arg1)
-	type _ = glib.Quark
-	type _ = uint32
+	_key = glib.Quark(arg1)
 
 	ok := overrides.WritableChangeEvent(_key)
 
@@ -5321,15 +5317,8 @@ func _gotk4_gio2_Settings_ConnectChangeEvent(arg0 C.gpointer, arg1 C.gpointer, a
 
 	var _keys []glib.Quark // out
 
-	{
-		src := unsafe.Slice((*C.GQuark)(arg1), arg2)
-		_keys = make([]glib.Quark, arg2)
-		for i := 0; i < int(arg2); i++ {
-			_keys[i] = uint32(src[i])
-			type _ = glib.Quark
-			type _ = uint32
-		}
-	}
+	_keys = make([]glib.Quark, arg2)
+	copy(_keys, unsafe.Slice((*glib.Quark)(unsafe.Pointer(arg1)), arg2))
 
 	ok := f(_keys)
 

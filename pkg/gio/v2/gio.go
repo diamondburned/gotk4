@@ -3433,9 +3433,7 @@ func DBusErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -3462,9 +3460,7 @@ func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 	var _arg3 *C.gchar   // out
 	var _cret C.gboolean // in
 
-	_arg1 = C.guint32(errorDomain)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(errorDomain)
 	_arg2 = C.gint(errorCode)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -3574,9 +3570,7 @@ func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorNa
 	var _arg3 *C.gchar   // out
 	var _cret C.gboolean // in
 
-	_arg1 = C.guint32(errorDomain)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(errorDomain)
 	_arg2 = C.gint(errorCode)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(dbusErrorName)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -4662,9 +4656,7 @@ func ResolverErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -4776,9 +4768,7 @@ func ResourceErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -5111,9 +5101,7 @@ func TLSChannelBindingErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -5251,9 +5239,7 @@ func TLSErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -9351,9 +9337,7 @@ func IOErrorQuark() glib.Quark {
 
 	var _quark glib.Quark // out
 
-	_quark = uint32(_cret)
-	type _ = glib.Quark
-	type _ = uint32
+	_quark = glib.Quark(_cret)
 
 	return _quark
 }
@@ -49327,9 +49311,7 @@ func (invocation *DBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, co
 
 	_arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(coreglib.InternObject(invocation).Native()))
 	C.g_object_ref(C.gpointer(coreglib.InternObject(invocation).Native()))
-	_arg1 = C.guint32(domain)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(domain)
 	_arg2 = C.gint(code)
 	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(message)))
 	defer C.free(unsafe.Pointer(_arg3))
@@ -74403,9 +74385,7 @@ func (settings *Settings) changeEvent(keys *glib.Quark, nKeys int) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = (*C.guint32)(unsafe.Pointer(keys))
-	type _ = *glib.Quark
-	type _ = *uint32
+	_arg1 = (*C.GQuark)(unsafe.Pointer(keys))
 	_arg2 = C.gint(nKeys)
 
 	_cret = C._gotk4_gio2_Settings_virtual_change_event(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
@@ -74453,9 +74433,7 @@ func (settings *Settings) writableChangeEvent(key glib.Quark) bool {
 	var _cret C.gboolean   // in
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-	_arg1 = C.guint32(key)
-	type _ = glib.Quark
-	type _ = uint32
+	_arg1 = C.GQuark(key)
 
 	_cret = C._gotk4_gio2_Settings_virtual_writable_change_event(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(settings)

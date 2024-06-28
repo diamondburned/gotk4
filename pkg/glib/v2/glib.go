@@ -5347,9 +5347,7 @@ func ConvertErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -6034,9 +6032,7 @@ func FileErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -9190,9 +9186,7 @@ func MarkupErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -9283,9 +9277,7 @@ func NumberParserErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -9299,9 +9291,7 @@ func OptionErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -9581,9 +9571,7 @@ func QuarkFromStaticString(str string) Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -9618,9 +9606,7 @@ func QuarkFromString(str string) Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -9639,9 +9625,7 @@ func QuarkToString(quark Quark) string {
 	var _arg1 C.GQuark // out
 	var _cret *C.gchar // in
 
-	_arg1 = C.guint32(quark)
-	type _ = Quark
-	type _ = uint32
+	_arg1 = C.GQuark(quark)
 
 	_cret = C.g_quark_to_string(_arg1)
 	runtime.KeepAlive(quark)
@@ -9685,9 +9669,7 @@ func QuarkTryString(str string) Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -9935,9 +9917,7 @@ func ShellErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -10296,9 +10276,7 @@ func SpawnErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -10312,9 +10290,7 @@ func SpawnExitErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -14041,9 +14017,7 @@ func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 	var _cret *C.GDateTime // in
 
 	_arg0 = (*C.GDateTime)(gextras.StructNative(unsafe.Pointer(datetime)))
-	_arg1 = C.gint64(timespan)
-	type _ = TimeSpan
-	type _ = int64
+	_arg1 = C.GTimeSpan(timespan)
 
 	_cret = C.g_date_time_add(_arg0, _arg1)
 	runtime.KeepAlive(datetime)
@@ -14461,9 +14435,7 @@ func (end *DateTime) Difference(begin *DateTime) TimeSpan {
 
 	var _timeSpan TimeSpan // out
 
-	_timeSpan = int64(_cret)
-	type _ = TimeSpan
-	type _ = int64
+	_timeSpan = TimeSpan(_cret)
 
 	return _timeSpan
 }
@@ -14992,9 +14964,7 @@ func (datetime *DateTime) UTCOffset() TimeSpan {
 
 	var _timeSpan TimeSpan // out
 
-	_timeSpan = int64(_cret)
-	type _ = TimeSpan
-	type _ = int64
+	_timeSpan = TimeSpan(_cret)
 
 	return _timeSpan
 }
@@ -15451,10 +15421,10 @@ func HashTableAdd(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Pointe
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15491,10 +15461,10 @@ func HashTableContains(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.P
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15528,10 +15498,10 @@ func HashTableDestroy(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15568,10 +15538,10 @@ func HashTableInsert(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value uns
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15613,10 +15583,10 @@ func HashTableLookup(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poi
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15661,10 +15631,10 @@ func HashTableLookupExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookup
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15709,10 +15679,10 @@ func HashTableRemove(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poi
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15746,10 +15716,10 @@ func HashTableRemoveAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15786,10 +15756,10 @@ func HashTableReplace(hashTable map[unsafe.Pointer]unsafe.Pointer, key, value un
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15826,10 +15796,10 @@ func HashTableSize(hashTable map[unsafe.Pointer]unsafe.Pointer) uint {
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15863,10 +15833,10 @@ func HashTableSteal(hashTable map[unsafe.Pointer]unsafe.Pointer, key unsafe.Poin
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15897,10 +15867,10 @@ func HashTableStealAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -15941,10 +15911,10 @@ func HashTableStealExtended(hashTable map[unsafe.Pointer]unsafe.Pointer, lookupK
 
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -16011,10 +15981,10 @@ func (iter *HashTableIter) Init(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 	_arg0 = (*C.GHashTableIter)(gextras.StructNative(unsafe.Pointer(iter)))
 	_arg1 = C.g_hash_table_new_full(nil, nil, (*[0]byte)(C.free), (*[0]byte)(C.free))
 	for ksrc, vsrc := range hashTable {
-		var kdst *C.gpointer // out
-		var vdst *C.gpointer // out
-		kdst = (*C.gpointer)(unsafe.Pointer(ksrc))
-		vdst = (*C.gpointer)(unsafe.Pointer(vsrc))
+		var kdst C.gpointer // out
+		var vdst C.gpointer // out
+		kdst = (C.gpointer)(unsafe.Pointer(ksrc))
+		vdst = (C.gpointer)(unsafe.Pointer(vsrc))
 		C.g_hash_table_insert(_arg1, C.gpointer(unsafe.Pointer(kdst)), C.gpointer(unsafe.Pointer(vdst)))
 	}
 	defer C.g_hash_table_unref(_arg1)
@@ -17055,9 +17025,7 @@ func IOChannelErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -18932,9 +18900,7 @@ func KeyFileErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -22053,9 +22019,7 @@ func RegexErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -24997,9 +24961,7 @@ func URIErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -28698,9 +28660,7 @@ func VariantParseErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }
@@ -28718,9 +28678,7 @@ func VariantParserGetErrorQuark() Quark {
 
 	var _quark Quark // out
 
-	_quark = uint32(_cret)
-	type _ = Quark
-	type _ = uint32
+	_quark = Quark(_cret)
 
 	return _quark
 }

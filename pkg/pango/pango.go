@@ -5899,9 +5899,7 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 	if font != nil {
 		_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	}
-	_arg1 = C.guint32(glyph)
-	type _ = Glyph
-	type _ = uint32
+	_arg1 = C.PangoGlyph(glyph)
 
 	C.pango_font_get_glyph_extents(_arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(font)
@@ -6174,9 +6172,7 @@ func (font *Font) glyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 	if font != nil {
 		_arg0 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
 	}
-	_arg1 = C.guint32(glyph)
-	type _ = Glyph
-	type _ = uint32
+	_arg1 = C.PangoGlyph(glyph)
 
 	C._gotk4_pango1_Font_virtual_get_glyph_extents(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
 	runtime.KeepAlive(font)
@@ -10615,9 +10611,7 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
-	_arg2 = C.guint32(glyph)
-	type _ = Glyph
-	type _ = uint32
+	_arg2 = C.PangoGlyph(glyph)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
 
@@ -11179,9 +11173,7 @@ func (renderer *Renderer) drawGlyph(font Fonter, glyph Glyph, x, y float64) {
 
 	_arg0 = (*C.PangoRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(coreglib.InternObject(font).Native()))
-	_arg2 = C.guint32(glyph)
-	type _ = Glyph
-	type _ = uint32
+	_arg2 = C.PangoGlyph(glyph)
 	_arg3 = C.double(x)
 	_arg4 = C.double(y)
 
@@ -14320,9 +14312,7 @@ type glyphGeometry struct {
 func (g *GlyphGeometry) Width() GlyphUnit {
 	valptr := &g.native.width
 	var _v GlyphUnit // out
-	_v = int32(*valptr)
-	type _ = GlyphUnit
-	type _ = int32
+	_v = GlyphUnit(*valptr)
 	return _v
 }
 
@@ -14330,9 +14320,7 @@ func (g *GlyphGeometry) Width() GlyphUnit {
 func (g *GlyphGeometry) XOffset() GlyphUnit {
 	valptr := &g.native.x_offset
 	var _v GlyphUnit // out
-	_v = int32(*valptr)
-	type _ = GlyphUnit
-	type _ = int32
+	_v = GlyphUnit(*valptr)
 	return _v
 }
 
@@ -14340,9 +14328,7 @@ func (g *GlyphGeometry) XOffset() GlyphUnit {
 func (g *GlyphGeometry) YOffset() GlyphUnit {
 	valptr := &g.native.y_offset
 	var _v GlyphUnit // out
-	_v = int32(*valptr)
-	type _ = GlyphUnit
-	type _ = int32
+	_v = GlyphUnit(*valptr)
 	return _v
 }
 
@@ -14363,9 +14349,7 @@ type glyphInfo struct {
 func (g *GlyphInfo) Glyph() Glyph {
 	valptr := &g.native.glyph
 	var _v Glyph // out
-	_v = uint32(*valptr)
-	type _ = Glyph
-	type _ = uint32
+	_v = Glyph(*valptr)
 	return _v
 }
 

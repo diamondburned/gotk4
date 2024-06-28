@@ -14680,9 +14680,7 @@ func (accessible *AtkObject) NotifyStateChange(state State, value bool) {
 	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = C.guint64(state)
-	type _ = State
-	type _ = uint64
+	_arg1 = C.AtkState(state)
 	if value {
 		_arg2 = C.TRUE
 	}

@@ -208,9 +208,7 @@ func _gotk4_pango1_FontClass_get_glyph_extents(arg0 *C.PangoFont, arg1 C.PangoGl
 
 	var _glyph Glyph // out
 
-	_glyph = uint32(arg1)
-	type _ = Glyph
-	type _ = uint32
+	_glyph = Glyph(arg1)
 
 	inkRect, logicalRect := overrides.GlyphExtents(_glyph)
 
@@ -695,9 +693,7 @@ func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.Pango
 		}
 		_font = rv
 	}
-	_glyph = uint32(arg2)
-	type _ = Glyph
-	type _ = uint32
+	_glyph = Glyph(arg2)
 	_x = float64(arg3)
 	_y = float64(arg4)
 

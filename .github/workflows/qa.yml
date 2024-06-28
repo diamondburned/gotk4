@@ -102,7 +102,14 @@ jobs:
         tags: gotk4
         #context: . # commented out to use Git directly instead of the filesystem
 
-    - run: docker run --rm --volume "$PWD:/gotk4/" -u "$(id -u):$(id -g)" gotk4 generate
+    - run: |
+        docker run \
+          --rm \
+          --volume "$PWD:/gotk4/" \
+          -u "$(id -u):$(id -g)" \
+          gotk4 \
+          go generate
+
     - name: Git dirty check
       run: |
         git add .
@@ -113,4 +120,11 @@ jobs:
 
     # Also add extra `--volume "$HOME/.cache/go-build:/user/.cache/go-build"`
     # arguments to do caching.
-    - run: docker run --rm --volume "$PWD:/gotk4/" --volume "$HOME/.cache/go-build:/user/.cache/go-build" -u "$(id -u):$(id -g)" gotk4 build
+    - run: |
+        docker run \
+          --rm \
+          --volume "$PWD:/gotk4/" \
+          --volume "$HOME/.cache/go-build:/user/.cache/go-build" \
+          -u "$(id -u):$(id -g)" \
+          gotk4 \
+          bash -c "cd pkg && go test ./..."

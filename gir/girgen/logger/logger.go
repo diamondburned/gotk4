@@ -55,6 +55,16 @@ func (lvl Level) colorf(f string, v ...interface{}) string {
 	}
 }
 
+// Faint returns the given string with a faint color.
+func Faint(s string) string {
+	return color.New(color.Faint).Sprint(s)
+}
+
+// Bold returns the given string with a bold color.
+func Bold(s string) string {
+	return color.New(color.Bold).Sprint(s)
+}
+
 // LineLogger describes anything that can log itself.
 type LineLogger interface {
 	Logln(Level, ...interface{})

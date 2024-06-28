@@ -249,6 +249,8 @@ func (conv *Converter) convert(result *ValueConverted) bool {
 	}
 
 	result.flush()
+	result.Logln(logger.Debug, "figured out type conversion for value")
+
 	return true
 }
 

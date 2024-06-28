@@ -627,27 +627,35 @@ func (value *ValueConverted) ptrsz() string {
 
 func (value *ValueConverted) logPrefix() string {
 	var prefix string
-	var cgoType string
+	// var cgoType string
 
 	switch value.Direction {
 	case ConvertCToGo:
-		prefix = fmt.Sprintf("C %s -> Go %s", value.InName, value.OutName)
-		cgoType = value.In.Type
+		prefix = "c->go"
+		// cgoType = value.In.Type
 	case ConvertGoToC:
-		prefix = fmt.Sprintf("Go %s -> C %s", value.InName, value.OutName)
-		cgoType = value.Out.Type
+		prefix = "go->c"
+		// cgoType = value.Out.Type
 	default:
 		return ""
 	}
 
-	prefix += fmt.Sprintf(" (%s)", value.ParameterAttrs.Direction)
-
-	if cgoType != "" {
-		prefix += fmt.Sprintf(" (%s)", cgoType)
+	inType := value.In.Type
+	if inType == "" {
+		inType = logger.Faint("unknown")
 	}
 
-	if value.GoType != "" {
-		prefix += fmt.Sprintf(" (%s)", value.GoType)
+	outType := value.Out.Type
+	if outType == "" {
+		outType = logger.Faint("unknown")
+	}
+
+	prefix += fmt.Sprintf(" %s (%s) -> %s (%s)",
+		logger.Bold(value.InName), inType,
+		logger.Bold(value.OutName), outType)
+
+	if value.ParameterAttrs.Direction != "" {
+		prefix += logger.Faint(fmt.Sprintf(" (%s)", value.ParameterAttrs.Direction))
 	}
 
 	return prefix + ":"

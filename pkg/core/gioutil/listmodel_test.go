@@ -35,19 +35,19 @@ func TestListModel(t *testing.T) {
 
 	fuckShitUp()
 
-	listItems := drainIterator(list.AllItems())
+	listItems := drainIterator(list.All())
 	assertEq(t, "ListModel length mismatch", list.NItems(), 3)
 	assertEq(t, "ListModel's items don't match expected list", listItems, expect)
 
 	list.Remove(0)
 
-	listItems = drainIterator(list.AllItems())
+	listItems = drainIterator(list.All())
 	assertEq(t, "ListModel length mismatch", list.NItems(), 2)
 	assertEq(t, "ListModel's items don't match expected list", listItems, expect[1:])
 
 	list.Splice(0, 2)
 
-	listItems = drainIterator(list.AllItems())
+	listItems = drainIterator(list.All())
 	assertEq(t, "ListModel length mismatch", list.NItems(), 0)
 	assertEq(t, "ListModel's items don't match expected list", listItems, []weirdType(nil))
 }
@@ -85,7 +85,7 @@ func BenchmarkListModel(b *testing.B) {
 			b.ResetTimer()
 
 			for i := 0; i < b.N; i++ {
-				all := list.AllItems()
+				all := list.All()
 				all(func(*weirdType) bool { return true })
 			}
 		})

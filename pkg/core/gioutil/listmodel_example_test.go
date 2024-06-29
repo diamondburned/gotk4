@@ -23,8 +23,8 @@ func ExampleListModel() {
 	list.Append(Person{"Bob", 30})
 	list.Append(Person{"Charlie", 40})
 
-	// AllItems() can be iterated over if rangefunc is supported.
-	all := list.AllItems()
+	// All() can be iterated over if rangefunc is supported.
+	all := list.All()
 	all(func(p Person) bool {
 		fmt.Println(p)
 		return true

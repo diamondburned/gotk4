@@ -278,8 +278,6 @@ func (p PixbufError) String() string {
 	}
 }
 
-// The function returns the following values:
-//
 func PixbufErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -478,7 +476,7 @@ type PixbufSaveFunc func(buf []byte) (err error, ok bool)
 // Use gdkpixbuf.Pixbuf.Copy() instead, or compute the width in bytes of the
 // last row as:
 //
-//    last_row = width * ((n_channels * bits_per_sample + 7) / 8);
+//	last_row = width * ((n_channels * bits_per_sample + 7) / 8);
 //
 // The same rule applies when iterating over each row of a GdkPixbuf pixels
 // array.
@@ -486,42 +484,42 @@ type PixbufSaveFunc func(buf []byte) (err error, ok bool)
 // The following code illustrates a simple put_pixel() function for RGB pixbufs
 // with 8 bits per channel with an alpha channel.
 //
-//    static void
-//    put_pixel (GdkPixbuf *pixbuf,
-//               int x,
-//    	   int y,
-//    	   guchar red,
-//    	   guchar green,
-//    	   guchar blue,
-//    	   guchar alpha)
-//    {
-//      int n_channels = gdk_pixbuf_get_n_channels (pixbuf);
+//	static void
+//	put_pixel (GdkPixbuf *pixbuf,
+//	           int x,
+//		   int y,
+//		   guchar red,
+//		   guchar green,
+//		   guchar blue,
+//		   guchar alpha)
+//	{
+//	  int n_channels = gdk_pixbuf_get_n_channels (pixbuf);
 //
-//      // Ensure that the pixbuf is valid
-//      g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
-//      g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
-//      g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
-//      g_assert (n_channels == 4);
+//	  // Ensure that the pixbuf is valid
+//	  g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
+//	  g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
+//	  g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
+//	  g_assert (n_channels == 4);
 //
-//      int width = gdk_pixbuf_get_width (pixbuf);
-//      int height = gdk_pixbuf_get_height (pixbuf);
+//	  int width = gdk_pixbuf_get_width (pixbuf);
+//	  int height = gdk_pixbuf_get_height (pixbuf);
 //
-//      // Ensure that the coordinates are in a valid range
-//      g_assert (x >= 0 && x < width);
-//      g_assert (y >= 0 && y < height);
+//	  // Ensure that the coordinates are in a valid range
+//	  g_assert (x >= 0 && x < width);
+//	  g_assert (y >= 0 && y < height);
 //
-//      int rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+//	  int rowstride = gdk_pixbuf_get_rowstride (pixbuf);
 //
-//      // The pixel buffer in the GdkPixbuf instance
-//      guchar *pixels = gdk_pixbuf_get_pixels (pixbuf);
+//	  // The pixel buffer in the GdkPixbuf instance
+//	  guchar *pixels = gdk_pixbuf_get_pixels (pixbuf);
 //
-//      // The pixel we wish to modify
-//      guchar *p = pixels + y * rowstride + x * n_channels;
-//      p[0] = red;
-//      p[1] = green;
-//      p[2] = blue;
-//      p[3] = alpha;
-//    }
+//	  // The pixel we wish to modify
+//	  guchar *p = pixels + y * rowstride + x * n_channels;
+//	  p[0] = red;
+//	  p[1] = green;
+//	  p[2] = blue;
+//	  p[3] = alpha;
+//	}
 //
 // # Loading images
 //
@@ -584,7 +582,6 @@ func marshalPixbuf(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixel buffer.
-//
 func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int) *Pixbuf {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out
@@ -637,7 +634,6 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, heigh
 // The function returns the following values:
 //
 //   - pixbuf: newly-created pixbuf.
-//
 func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height, rowstride int) *Pixbuf {
 	var _arg1 *C.GBytes       // out
 	var _arg2 C.GdkColorspace // out
@@ -694,7 +690,6 @@ func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, 
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixbuf.
-//
 func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
@@ -752,7 +747,6 @@ func NewPixbufFromFile(filename string) (*Pixbuf, error) {
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixbuf.
-//
 func NewPixbufFromFileAtScale(filename string, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -815,7 +809,6 @@ func NewPixbufFromFileAtScale(filename string, width, height int, preserveAspect
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixbuf.
-//
 func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -858,7 +851,7 @@ func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error
 // In almost all cases, you should pass the --raw option to gdk-pixbuf-csource.
 // A sample invocation would be:
 //
-//    gdk-pixbuf-csource --raw --name=myimage_inline myimage.png
+//	gdk-pixbuf-csource --raw --name=myimage_inline myimage.png
 //
 // For the typical case where the inline pixbuf is read-only static data,
 // you don't need to copy the pixel data unless you intend to write to it, so
@@ -870,7 +863,7 @@ func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error
 // it's probably safe to ignore errors and disable length checks, since things
 // will always succeed:
 //
-//    pixbuf = gdk_pixbuf_new_from_inline (-1, myimage_inline, FALSE, NULL);
+//	pixbuf = gdk_pixbuf_new_from_inline (-1, myimage_inline, FALSE, NULL);
 //
 // For non-const inline data, you could get out of memory. For untrusted inline
 // data located at runtime, you could have corrupt inline data in addition.
@@ -886,7 +879,6 @@ func NewPixbufFromFileAtSize(filename string, width, height int) (*Pixbuf, error
 // The function returns the following values:
 //
 //   - pixbuf: newly-created pixbuf.
-//
 func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 	var _arg2 *C.guint8 // out
 	var _arg1 C.gint
@@ -930,7 +922,6 @@ func NewPixbufFromInline(data []byte, copyPixels bool) (*Pixbuf, error) {
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixbuf.
-//
 func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _cret *C.GdkPixbuf // in
@@ -980,7 +971,6 @@ func NewPixbufFromResource(resourcePath string) (*Pixbuf, error) {
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixbuf.
-//
 func NewPixbufFromResourceAtScale(resourcePath string, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg1 *C.char      // out
 	var _arg2 C.int        // out
@@ -1037,7 +1027,6 @@ func NewPixbufFromResourceAtScale(resourcePath string, width, height int, preser
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixbuf.
-//
 func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf, error) {
 	var _arg2 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
@@ -1101,7 +1090,6 @@ func NewPixbufFromStream(ctx context.Context, stream gio.InputStreamer) (*Pixbuf
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixbuf.
-//
 func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool) (*Pixbuf, error) {
 	var _arg5 *C.GCancellable // out
 	var _arg1 *C.GInputStream // out
@@ -1153,7 +1141,6 @@ func NewPixbufFromStreamAtScale(ctx context.Context, stream gio.InputStreamer, w
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly created pixbuf.
-//
 func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 	var _arg1 *C.GAsyncResult // out
 	var _cret *C.GdkPixbuf    // in
@@ -1189,7 +1176,6 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 // The function returns the following values:
 //
 //   - pixbuf: newly-created pixbuf.
-//
 func NewPixbufFromXPMData(data []string) *Pixbuf {
 	var _arg1 **C.char     // out
 	var _cret *C.GdkPixbuf // in
@@ -1240,7 +1226,6 @@ func NewPixbufFromXPMData(data []string) *Pixbuf {
 // The function returns the following values:
 //
 //   - ret: newly-created pixbuf.
-//
 func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r, g, b byte) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
@@ -1284,7 +1269,6 @@ func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r, g, b byte) *Pixbuf {
 // The function returns the following values:
 //
 //   - pixbuf (optional): newly-created pixbuf.
-//
 func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GdkPixbuf // in
@@ -1328,7 +1312,6 @@ func (src *Pixbuf) ApplyEmbeddedOrientation() *Pixbuf {
 //   - scaleY: scale factor in the Y direction.
 //   - interpType: interpolation type for the transformation.
 //   - overallAlpha: overall alpha for source image (0..255).
-//
 func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha int) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
@@ -1402,7 +1385,6 @@ func (src *Pixbuf) Composite(dest *Pixbuf, destX, destY, destWidth, destHeight i
 //   - checkSize: size of checks in the checkboard (must be a power of two).
 //   - color1: color of check at upper left.
 //   - color2: color of the other check.
-//
 func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType, overallAlpha, checkX, checkY, checkSize int, color1, color2 uint32) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
@@ -1477,7 +1459,6 @@ func (src *Pixbuf) CompositeColor(dest *Pixbuf, destX, destY, destWidth, destHei
 // The function returns the following values:
 //
 //   - pixbuf (optional): new pixbuf.
-//
 func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType InterpType, overallAlpha, checkSize int, color1, color2 uint32) *Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
 	var _arg1 C.int           // out
@@ -1526,7 +1507,6 @@ func (src *Pixbuf) CompositeColorSimple(destWidth, destHeight int, interpType In
 // The function returns the following values:
 //
 //   - ret (optional): newly-created pixbuf.
-//
 func (pixbuf *Pixbuf) Copy() *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GdkPixbuf // in
@@ -1562,7 +1542,6 @@ func (pixbuf *Pixbuf) Copy() *Pixbuf {
 //   - destPixbuf: destination pixbuf.
 //   - destX: x coordinate within dest_pixbuf.
 //   - destY: y coordinate within dest_pixbuf.
-//
 func (srcPixbuf *Pixbuf) CopyArea(srcX, srcY, width, height int, destPixbuf *Pixbuf, destX, destY int) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
@@ -1607,7 +1586,6 @@ func (srcPixbuf *Pixbuf) CopyArea(srcX, srcY, width, height int, destPixbuf *Pix
 // The function returns the following values:
 //
 //   - ok: TRUE on success.
-//
 func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf *Pixbuf) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
@@ -1639,7 +1617,6 @@ func (srcPixbuf *Pixbuf) CopyOptions(destPixbuf *Pixbuf) bool {
 //
 //   - pixel: RGBA pixel to used to clear (0xffffffff is opaque white,
 //     0x00000000 transparent black).
-//
 func (pixbuf *Pixbuf) Fill(pixel uint32) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.guint32    // out
@@ -1662,7 +1639,6 @@ func (pixbuf *Pixbuf) Fill(pixel uint32) {
 // The function returns the following values:
 //
 //   - pixbuf (optional): new pixbuf.
-//
 func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
@@ -1691,7 +1667,6 @@ func (src *Pixbuf) Flip(horizontal bool) *Pixbuf {
 // The function returns the following values:
 //
 //   - gint: number of bits per color sample.
-//
 func (pixbuf *Pixbuf) BitsPerSample() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
@@ -1713,7 +1688,6 @@ func (pixbuf *Pixbuf) BitsPerSample() int {
 // The function returns the following values:
 //
 //   - gsize: length of the pixel data.
-//
 func (pixbuf *Pixbuf) ByteLength() uint {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.gsize      // in
@@ -1735,7 +1709,6 @@ func (pixbuf *Pixbuf) ByteLength() uint {
 // The function returns the following values:
 //
 //   - colorspace: color space.
-//
 func (pixbuf *Pixbuf) Colorspace() Colorspace {
 	var _arg0 *C.GdkPixbuf    // out
 	var _cret C.GdkColorspace // in
@@ -1757,7 +1730,6 @@ func (pixbuf *Pixbuf) Colorspace() Colorspace {
 // The function returns the following values:
 //
 //   - ok: TRUE if it has an alpha channel, FALSE otherwise.
-//
 func (pixbuf *Pixbuf) HasAlpha() bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.gboolean   // in
@@ -1781,7 +1753,6 @@ func (pixbuf *Pixbuf) HasAlpha() bool {
 // The function returns the following values:
 //
 //   - gint: height in pixels.
-//
 func (pixbuf *Pixbuf) Height() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
@@ -1803,7 +1774,6 @@ func (pixbuf *Pixbuf) Height() int {
 // The function returns the following values:
 //
 //   - gint: number of channels.
-//
 func (pixbuf *Pixbuf) NChannels() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
@@ -1842,7 +1812,6 @@ func (pixbuf *Pixbuf) NChannels() int {
 // The function returns the following values:
 //
 //   - utf8 (optional): value associated with key.
-//
 func (pixbuf *Pixbuf) Option(key string) string {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
@@ -1872,7 +1841,6 @@ func (pixbuf *Pixbuf) Option(key string) string {
 // The function returns the following values:
 //
 //   - hashTable: Table of key/values pairs.
-//
 func (pixbuf *Pixbuf) Options() map[string]string {
 	var _arg0 *C.GdkPixbuf  // out
 	var _cret *C.GHashTable // in
@@ -1909,7 +1877,6 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 // The function returns the following values:
 //
 //   - guint8s: pointer to the pixbuf's pixel data.
-//
 func (pixbuf *Pixbuf) Pixels() []byte {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.guchar    // in
@@ -1934,7 +1901,6 @@ func (pixbuf *Pixbuf) Pixels() []byte {
 // The function returns the following values:
 //
 //   - gint: distance between row starts.
-//
 func (pixbuf *Pixbuf) Rowstride() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
@@ -1956,7 +1922,6 @@ func (pixbuf *Pixbuf) Rowstride() int {
 // The function returns the following values:
 //
 //   - gint: width in pixels.
-//
 func (pixbuf *Pixbuf) Width() int {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret C.int        // in
@@ -1993,7 +1958,6 @@ func (pixbuf *Pixbuf) Width() int {
 // The function returns the following values:
 //
 //   - pixbuf: new pixbuf.
-//
 func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX, srcY, width, height int) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.int        // out
@@ -2033,7 +1997,6 @@ func (srcPixbuf *Pixbuf) NewSubpixbuf(srcX, srcY, width, height int) *Pixbuf {
 //   - bytes: new reference to a read-only copy of the pixel data. Note that for
 //     mutable pixbufs, this function will incur a one-time copy of the pixel
 //     data for conversion into the returned #GBytes.
-//
 func (pixbuf *Pixbuf) ReadPixelBytes() *glib.Bytes {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.GBytes    // in
@@ -2064,7 +2027,6 @@ func (pixbuf *Pixbuf) ReadPixelBytes() *glib.Bytes {
 // The function returns the following values:
 //
 //   - guint8: read-only pointer to the raw pixel data.
-//
 func (pixbuf *Pixbuf) ReadPixels() *byte {
 	var _arg0 *C.GdkPixbuf // out
 	var _cret *C.guint8    // in
@@ -2090,7 +2052,6 @@ func (pixbuf *Pixbuf) ReadPixels() *byte {
 // The function returns the following values:
 //
 //   - ok: TRUE if an option was removed, FALSE if not.
-//
 func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
@@ -2125,7 +2086,6 @@ func (pixbuf *Pixbuf) RemoveOption(key string) bool {
 // The function returns the following values:
 //
 //   - pixbuf (optional): new pixbuf.
-//
 func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufRotation // out
@@ -2167,7 +2127,6 @@ func (src *Pixbuf) RotateSimple(angle PixbufRotation) *Pixbuf {
 //   - dest: place to write modified version of src.
 //   - saturation factor.
 //   - pixelate: whether to pixelate.
-//
 func (src *Pixbuf) SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelate bool) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.GdkPixbuf // out
@@ -2204,7 +2163,6 @@ func (src *Pixbuf) SaturateAndPixelate(dest *Pixbuf, saturation float32, pixelat
 // The function returns the following values:
 //
 //   - buffer: location to receive a pointer to the new buffer.
-//
 func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys, optionValues []string) ([]byte, error) {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // in
@@ -2279,7 +2237,6 @@ func (pixbuf *Pixbuf) SaveToBufferv(typ string, optionKeys, optionValues []strin
 //   - typ: name of file format.
 //   - optionKeys (optional): name of options to set.
 //   - optionValues (optional) values for named options.
-//
 func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf        // out
 	var _arg1 C.GdkPixbufSaveFunc // out
@@ -2351,7 +2308,6 @@ func (pixbuf *Pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, typ string, optio
 //   - typ: name of file format.
 //   - optionKeys (optional): name of options to set.
 //   - optionValues (optional) values for named options.
-//
 func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg5 *C.GCancellable  // out
@@ -2433,7 +2389,6 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 //   - optionValues (optional) values for named options.
 //   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
 //     saved.
-//
 func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys, optionValues []string, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkPixbuf          // out
 	var _arg5 *C.GCancellable       // out
@@ -2509,7 +2464,6 @@ func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputS
 //   - typ: name of file format.
 //   - optionKeys (optional): name of options to set.
 //   - optionValues (optional) values for named options.
-//
 func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.char      // out
@@ -2591,7 +2545,6 @@ func (pixbuf *Pixbuf) Savev(filename, typ string, optionKeys, optionValues []str
 //   - scaleX: scale factor in the X direction.
 //   - scaleY: scale factor in the Y direction.
 //   - interpType: interpolation type for the transformation.
-//
 func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, offsetX, offsetY, scaleX, scaleY float64, interpType InterpType) {
 	var _arg0 *C.GdkPixbuf     // out
 	var _arg1 *C.GdkPixbuf     // out
@@ -2659,7 +2612,6 @@ func (src *Pixbuf) Scale(dest *Pixbuf, destX, destY, destWidth, destHeight int, 
 // The function returns the following values:
 //
 //   - pixbuf (optional): new pixbuf.
-//
 func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType) *Pixbuf {
 	var _arg0 *C.GdkPixbuf    // out
 	var _arg1 C.int           // out
@@ -2700,7 +2652,6 @@ func (src *Pixbuf) ScaleSimple(destWidth, destHeight int, interpType InterpType)
 // The function returns the following values:
 //
 //   - ok: TRUE on success.
-//
 func (pixbuf *Pixbuf) SetOption(key, value string) bool {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 *C.gchar     // out
@@ -2744,7 +2695,6 @@ func (pixbuf *Pixbuf) SetOption(key, value string) bool {
 // The function returns the following values:
 //
 //   - gint: rowstride for the given values, or -1 in case of error.
-//
 func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSample, width, height int) int {
 	var _arg1 C.GdkColorspace // out
 	var _arg2 C.gboolean      // out
@@ -2788,7 +2738,6 @@ func PixbufCalculateRowstride(colorspace Colorspace, hasAlpha bool, bitsPerSampl
 //   - height (optional): return location for the height of the image.
 //   - pixbufFormat (optional): GdkPixbufFormat describing the image format of
 //     the file.
-//
 func PixbufGetFileInfo(filename string) (width, height int, pixbufFormat *PixbufFormat) {
 	var _arg1 *C.gchar           // out
 	var _arg2 C.gint             // in
@@ -2830,7 +2779,6 @@ func PixbufGetFileInfo(filename string) (width, height int, pixbufFormat *Pixbuf
 //   - filename: name of the file to identify.
 //   - callback (optional): GAsyncReadyCallback to call when the file info is
 //     available.
-//
 func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.gchar              // out
@@ -2868,7 +2816,6 @@ func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.A
 //   - height: return location for the height of the image, or NULL.
 //   - pixbufFormat (optional): GdkPixbufFormat describing the image format of
 //     the file.
-//
 func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width, height int, pixbufFormat *PixbufFormat, goerr error) {
 	var _arg1 *C.GAsyncResult    // out
 	var _arg2 C.gint             // in
@@ -2904,7 +2851,6 @@ func PixbufGetFileInfoFinish(asyncResult gio.AsyncResulter) (width, height int, 
 // The function returns the following values:
 //
 //   - sList: list of support image formats.
-//
 func PixbufGetFormats() []*PixbufFormat {
 	var _cret *C.GSList // in
 
@@ -2939,7 +2885,6 @@ func PixbufGetFormats() []*PixbufFormat {
 // The function takes the following parameters:
 //
 //   - path: path to directory where the loaders.cache is installed.
-//
 func PixbufInitModules(path string) error {
 	var _arg1 *C.char   // out
 	var _cerr *C.GError // in
@@ -2975,7 +2920,6 @@ func PixbufInitModules(path string) error {
 //   - stream: GInputStream from which to load the pixbuf.
 //   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
 //     loaded.
-//
 func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
@@ -3018,7 +2962,6 @@ func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, cal
 //   - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
 //   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
 //     loaded.
-//
 func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
 	var _arg5 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
@@ -3059,7 +3002,6 @@ func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStream
 // The function takes the following parameters:
 //
 //   - asyncResult: GAsyncResult.
-//
 func PixbufSaveToStreamFinish(asyncResult gio.AsyncResulter) error {
 	var _arg1 *C.GAsyncResult // out
 	var _cerr *C.GError       // in
@@ -3126,7 +3068,6 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - pixbufAnimation (optional): newly-created animation.
-//
 func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -3164,7 +3105,6 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 // The function returns the following values:
 //
 //   - pixbufAnimation (optional): newly-created animation.
-//
 func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, error) {
 	var _arg1 *C.char               // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -3210,7 +3150,6 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 // The function returns the following values:
 //
 //   - pixbufAnimation (optional): newly-created animation.
-//
 func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer) (*PixbufAnimation, error) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
@@ -3252,7 +3191,6 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 // The function returns the following values:
 //
 //   - pixbufAnimation (optional): newly created animation.
-//
 func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufAnimation, error) {
 	var _arg1 *C.GAsyncResult       // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -3281,7 +3219,6 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 // The function returns the following values:
 //
 //   - gint: height of the bounding box of the animation.
-//
 func (animation *PixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
@@ -3336,7 +3273,6 @@ func (animation *PixbufAnimation) Height() int {
 // The function returns the following values:
 //
 //   - pixbufAnimationIter: iterator to move over the animation.
-//
 func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimationIter {
 	var _arg0 *C.GdkPixbufAnimation     // out
 	var _arg1 *C.GTimeVal               // out
@@ -3372,7 +3308,6 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 // The function returns the following values:
 //
 //   - pixbuf: unanimated image representing the animation.
-//
 func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret *C.GdkPixbuf          // in
@@ -3394,7 +3329,6 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 // The function returns the following values:
 //
 //   - gint: width of the bounding box of the animation.
-//
 func (animation *PixbufAnimation) Width() int {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.int                 // in
@@ -3420,7 +3354,6 @@ func (animation *PixbufAnimation) Width() int {
 // The function returns the following values:
 //
 //   - ok: TRUE if the "animation" was really just an image.
-//
 func (animation *PixbufAnimation) IsStaticImage() bool {
 	var _arg0 *C.GdkPixbufAnimation // out
 	var _cret C.gboolean            // in
@@ -3455,7 +3388,6 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 //   - stream from which to load the animation.
 //   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
 //     loaded.
-//
 func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
 	var _arg2 *C.GCancellable       // out
 	var _arg1 *C.GInputStream       // out
@@ -3527,7 +3459,6 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if the image may need updating.
-//
 func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _arg1 *C.GTimeVal               // out
@@ -3564,7 +3495,6 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 // The function returns the following values:
 //
 //   - gint: delay time in milliseconds (thousandths of a second).
-//
 func (iter *PixbufAnimationIter) DelayTime() int {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.int                     // in
@@ -3600,7 +3530,6 @@ func (iter *PixbufAnimationIter) DelayTime() int {
 // The function returns the following values:
 //
 //   - pixbuf to be displayed.
-//
 func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret *C.GdkPixbuf              // in
@@ -3627,7 +3556,6 @@ func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 // The function returns the following values:
 //
 //   - ok: TRUE if the frame we're on is partially loaded, or the last frame.
-//
 func (iter *PixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 	var _arg0 *C.GdkPixbufAnimationIter // out
 	var _cret C.gboolean                // in
@@ -3655,14 +3583,12 @@ type PixbufLoaderOverrides struct {
 	//   - y
 	//   - width
 	//   - height
-	//
 	AreaUpdated func(x, y, width, height int)
 	Closed      func()
 	// The function takes the following parameters:
 	//
 	//   - width
 	//   - height
-	//
 	SizePrepared func(width, height int)
 }
 
@@ -3814,7 +3740,6 @@ func (loader *PixbufLoader) ConnectSizePrepared(f func(width, height int)) coreg
 // The function returns the following values:
 //
 //   - pixbufLoader: newly-created pixbuf loader.
-//
 func NewPixbufLoader() *PixbufLoader {
 	var _cret *C.GdkPixbufLoader // in
 
@@ -3848,7 +3773,6 @@ func NewPixbufLoader() *PixbufLoader {
 // The function returns the following values:
 //
 //   - pixbufLoader: newly-created pixbuf loader.
-//
 func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in
@@ -3892,7 +3816,6 @@ func NewPixbufLoaderWithMIMEType(mimeType string) (*PixbufLoader, error) {
 // The function returns the following values:
 //
 //   - pixbufLoader: newly-created pixbuf loader.
-//
 func NewPixbufLoaderWithType(imageType string) (*PixbufLoader, error) {
 	var _arg1 *C.char            // out
 	var _cret *C.GdkPixbufLoader // in
@@ -3961,7 +3884,6 @@ func (loader *PixbufLoader) Close() error {
 //
 //   - pixbufAnimation (optional): animation that the loader is currently
 //     loading.
-//
 func (loader *PixbufLoader) Animation() *PixbufAnimation {
 	var _arg0 *C.GdkPixbufLoader    // out
 	var _cret *C.GdkPixbufAnimation // in
@@ -3986,7 +3908,6 @@ func (loader *PixbufLoader) Animation() *PixbufAnimation {
 // The function returns the following values:
 //
 //   - pixbufFormat (optional): PixbufFormat.
-//
 func (loader *PixbufLoader) Format() *PixbufFormat {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbufFormat // in
@@ -4024,7 +3945,6 @@ func (loader *PixbufLoader) Format() *PixbufFormat {
 // The function returns the following values:
 //
 //   - pixbuf (optional) that the loader is creating.
-//
 func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _cret *C.GdkPixbuf       // in
@@ -4056,7 +3976,6 @@ func (loader *PixbufLoader) Pixbuf() *Pixbuf {
 //
 //   - width: desired width of the image being loaded.
 //   - height: desired height of the image being loaded.
-//
 func (loader *PixbufLoader) SetSize(width, height int) {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 C.int              // out
@@ -4077,7 +3996,6 @@ func (loader *PixbufLoader) SetSize(width, height int) {
 // The function takes the following parameters:
 //
 //   - buf: pointer to image data.
-//
 func (loader *PixbufLoader) Write(buf []byte) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar          // out
@@ -4108,7 +4026,6 @@ func (loader *PixbufLoader) Write(buf []byte) error {
 // The function takes the following parameters:
 //
 //   - buffer: image data as a GBytes buffer.
-//
 func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.GBytes          // out
@@ -4148,7 +4065,6 @@ func (loader *PixbufLoader) areaPrepared() {
 //   - y
 //   - width
 //   - height
-//
 func (loader *PixbufLoader) areaUpdated(x, y, width, height int) {
 	gclass := (*C.GdkPixbufLoaderClass)(coreglib.PeekParentClass(loader))
 	fnarg := gclass.area_updated
@@ -4189,7 +4105,6 @@ func (loader *PixbufLoader) closed() {
 //
 //   - width
 //   - height
-//
 func (loader *PixbufLoader) sizePrepared(width, height int) {
 	gclass := (*C.GdkPixbufLoaderClass)(coreglib.PeekParentClass(loader))
 	fnarg := gclass.size_prepared
@@ -4241,7 +4156,6 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - pixbufSimpleAnim: newly allocated PixbufSimpleAnim.
-//
 func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
 	var _arg1 C.gint                 // out
 	var _arg2 C.gint                 // out
@@ -4270,7 +4184,6 @@ func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
 // The function takes the following parameters:
 //
 //   - pixbuf to add.
-//
 func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 *C.GdkPixbuf           // out
@@ -4288,7 +4201,6 @@ func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 // The function returns the following values:
 //
 //   - ok: TRUE if the animation loops forever, FALSE otherwise.
-//
 func (animation *PixbufSimpleAnim) Loop() bool {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _cret C.gboolean             // in
@@ -4313,7 +4225,6 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 // The function takes the following parameters:
 //
 //   - loop: whether to loop the animation.
-//
 func (animation *PixbufSimpleAnim) SetLoop(loop bool) {
 	var _arg0 *C.GdkPixbufSimpleAnim // out
 	var _arg1 C.gboolean             // out
@@ -4376,7 +4287,6 @@ func marshalPixbufFormat(p uintptr) (interface{}, error) {
 //
 //   - pixbufFormat: newly allocated copy of a GdkPixbufFormat. Use
 //     gdk_pixbuf_format_free() to free the resources when done.
-//
 func (format *PixbufFormat) Copy() *PixbufFormat {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.GdkPixbufFormat // in
@@ -4404,7 +4314,6 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 // The function returns the following values:
 //
 //   - utf8: description of the format.
-//
 func (format *PixbufFormat) Description() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -4428,7 +4337,6 @@ func (format *PixbufFormat) Description() string {
 // The function returns the following values:
 //
 //   - utf8s: array of filename extensions.
-//
 func (format *PixbufFormat) Extensions() []string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret **C.gchar          // in
@@ -4468,7 +4376,6 @@ func (format *PixbufFormat) Extensions() []string {
 // The function returns the following values:
 //
 //   - utf8: string describing the license of the pixbuf format.
-//
 func (format *PixbufFormat) License() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -4491,7 +4398,6 @@ func (format *PixbufFormat) License() string {
 // The function returns the following values:
 //
 //   - utf8s: array of mime types.
-//
 func (format *PixbufFormat) MIMETypes() []string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret **C.gchar          // in
@@ -4527,7 +4433,6 @@ func (format *PixbufFormat) MIMETypes() []string {
 // The function returns the following values:
 //
 //   - utf8: name of the format.
-//
 func (format *PixbufFormat) Name() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -4552,7 +4457,6 @@ func (format *PixbufFormat) Name() string {
 // The function returns the following values:
 //
 //   - ok: whether this image format is disabled.
-//
 func (format *PixbufFormat) IsDisabled() bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret C.gboolean         // in
@@ -4583,7 +4487,6 @@ func (format *PixbufFormat) IsDisabled() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the specified option is supported.
-//
 func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _arg1 *C.gchar           // out
@@ -4615,7 +4518,6 @@ func (format *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 // The function returns the following values:
 //
 //   - ok: whether this image format is scalable.
-//
 func (format *PixbufFormat) IsScalable() bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret C.gboolean         // in
@@ -4639,7 +4541,6 @@ func (format *PixbufFormat) IsScalable() bool {
 // The function returns the following values:
 //
 //   - ok: whether pixbufs can be saved in the given format.
-//
 func (format *PixbufFormat) IsWritable() bool {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret C.gboolean         // in
@@ -4669,7 +4570,6 @@ func (format *PixbufFormat) IsWritable() bool {
 // The function takes the following parameters:
 //
 //   - disabled: TRUE to disable the format format.
-//
 func (format *PixbufFormat) SetDisabled(disabled bool) {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _arg1 C.gboolean         // out

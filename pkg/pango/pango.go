@@ -544,7 +544,6 @@ func (a AttrType) String() string {
 //
 //   - utf8 (optional): type ID name (which may be NULL), or NULL if type is a
 //     built-in Pango attribute type or invalid.
-//
 func AttrTypeGetName(typ AttrType) string {
 	var _arg1 C.PangoAttrType // out
 	var _cret *C.char         // in
@@ -575,7 +574,6 @@ func AttrTypeGetName(typ AttrType) string {
 // The function returns the following values:
 //
 //   - attrType: new type ID.
-//
 func AttrTypeRegister(name string) AttrType {
 	var _arg1 *C.gchar        // out
 	var _cret C.PangoAttrType // in
@@ -706,7 +704,6 @@ func (b BidiType) String() string {
 //
 //   - bidiType: bidirectional character type, as used in the Unicode
 //     bidirectional algorithm.
-//
 func BidiTypeForUnichar(ch uint32) BidiType {
 	var _arg1 C.gunichar      // out
 	var _cret C.PangoBidiType // in
@@ -930,7 +927,6 @@ func (g Gravity) String() string {
 //
 //   - gravity of matrix, which will never be PANGO_GRAVITY_AUTO, or
 //     PANGO_GRAVITY_SOUTH if matrix is NULL.
-//
 func GravityGetForMatrix(matrix *Matrix) Gravity {
 	var _arg1 *C.PangoMatrix // out
 	var _cret C.PangoGravity // in
@@ -966,7 +962,6 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 // The function returns the following values:
 //
 //   - gravity: resolved gravity suitable to use for a run of text with script.
-//
 func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
 	var _arg2 C.PangoGravity     // out
@@ -1015,7 +1010,6 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 //
 //   - gravity: resolved gravity suitable to use for a run of text with script
 //     and wide.
-//
 func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
 	var _arg1 C.PangoScript      // out
 	var _arg2 C.gboolean         // out
@@ -1057,7 +1051,6 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 // The function returns the following values:
 //
 //   - gdouble: rotation value corresponding to gravity.
-//
 func GravityToRotation(gravity Gravity) float64 {
 	var _arg1 C.PangoGravity // out
 	var _cret C.double       // in
@@ -1700,7 +1693,6 @@ func (s Script) String() string {
 // The function returns the following values:
 //
 //   - script: PangoScript for the character.
-//
 func ScriptForUnichar(ch uint32) Script {
 	var _arg1 C.gunichar    // out
 	var _cret C.PangoScript // in
@@ -1751,7 +1743,6 @@ func ScriptForUnichar(ch uint32) Script {
 //
 //   - language (optional): PangoLanguage that is representative of the script,
 //     or NULL if no such language exists.
-//
 func ScriptGetSampleLanguage(script Script) *Language {
 	var _arg1 C.PangoScript    // out
 	var _cret *C.PangoLanguage // in
@@ -2278,7 +2269,6 @@ type FontsetForEachFunc func(fontset Fontsetter, font Fonter) (ok bool)
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
@@ -2313,7 +2303,6 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _cret *C.PangoAttribute // in
@@ -2348,7 +2337,6 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrBackground(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -2392,7 +2380,6 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrFallback(enableFallback bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
@@ -2427,7 +2414,6 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrFamily(family string) *Attribute {
 	var _arg1 *C.char           // out
 	var _cret *C.PangoAttribute // in
@@ -2461,7 +2447,6 @@ func NewAttrFamily(family string) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _cret *C.PangoAttribute // in
@@ -2496,7 +2481,6 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrForeground(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -2535,7 +2519,6 @@ func NewAttrForeground(red, green, blue uint16) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrGravityHint(hint GravityHint) *Attribute {
 	var _arg1 C.PangoGravityHint // out
 	var _cret *C.PangoAttribute  // in
@@ -2568,7 +2551,6 @@ func NewAttrGravityHint(hint GravityHint) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrGravity(gravity Gravity) *Attribute {
 	var _arg1 C.PangoGravity    // out
 	var _cret *C.PangoAttribute // in
@@ -2604,7 +2586,6 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
@@ -2640,7 +2621,6 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
@@ -2678,7 +2658,6 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -2717,7 +2696,6 @@ func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrOverline(overline Overline) *Attribute {
 	var _arg1 C.PangoOverline   // out
 	var _cret *C.PangoAttribute // in
@@ -2751,7 +2729,6 @@ func NewAttrOverline(overline Overline) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrRise(rise int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
@@ -2787,7 +2764,6 @@ func NewAttrRise(rise int) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrScale(scaleFactor float64) *Attribute {
 	var _arg1 C.double          // out
 	var _cret *C.PangoAttribute // in
@@ -2821,7 +2797,6 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrShow(flags ShowFlags) *Attribute {
 	var _arg1 C.PangoShowFlags  // out
 	var _cret *C.PangoAttribute // in
@@ -2854,7 +2829,6 @@ func NewAttrShow(flags ShowFlags) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrStretch(stretch Stretch) *Attribute {
 	var _arg1 C.PangoStretch    // out
 	var _cret *C.PangoAttribute // in
@@ -2892,7 +2866,6 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -2931,7 +2904,6 @@ func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	var _arg1 C.gboolean        // out
 	var _cret *C.PangoAttribute // in
@@ -2966,7 +2938,6 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrStyle(style Style) *Attribute {
 	var _arg1 C.PangoStyle      // out
 	var _cret *C.PangoAttribute // in
@@ -3004,7 +2975,6 @@ func NewAttrStyle(style Style) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 	var _arg1 C.guint16         // out
 	var _arg2 C.guint16         // out
@@ -3043,7 +3013,6 @@ func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrUnderline(underline Underline) *Attribute {
 	var _arg1 C.PangoUnderline  // out
 	var _cret *C.PangoAttribute // in
@@ -3076,7 +3045,6 @@ func NewAttrUnderline(underline Underline) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrVariant(variant Variant) *Attribute {
 	var _arg1 C.PangoVariant    // out
 	var _cret *C.PangoAttribute // in
@@ -3109,7 +3077,6 @@ func NewAttrVariant(variant Variant) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrWeight(weight Weight) *Attribute {
 	var _arg1 C.PangoWeight     // out
 	var _cret *C.PangoAttribute // in
@@ -3145,7 +3112,6 @@ func NewAttrWeight(weight Weight) *Attribute {
 //   - length of text in bytes (may be -1 if text is nul-terminated).
 //   - analysis structure from pango_itemize().
 //   - attrs: array to store character information in.
-//
 func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
@@ -3188,7 +3154,6 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 //   - analysis (optional) for the text.
 //   - attrs: logical attributes to fill in.
 //   - attrsLen: size of the array passed as attrs.
-//
 func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.int            // out
@@ -3235,7 +3200,6 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 //
 //   - inclusive (optional): rectangle to round to pixels inclusively, or NULL.
 //   - nearest (optional): rectangle to round to nearest pixels, or NULL.
-//
 func ExtentsToPixels(inclusive, nearest *Rectangle) {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
@@ -3264,7 +3228,6 @@ func ExtentsToPixels(inclusive, nearest *Rectangle) {
 //
 //   - direction corresponding to the first strong character. If no such
 //     character is found, then PANGO_DIRECTION_NEUTRAL is returned.
-//
 func FindBaseDir(text string, length int) Direction {
 	var _arg1 *C.gchar         // out
 	var _arg2 C.gint           // out
@@ -3306,7 +3269,6 @@ func FindBaseDir(text string, length int) Direction {
 //
 //   - paragraphDelimiterIndex: return location for index of delimiter.
 //   - nextParagraphStart: return location for start of next paragraph.
-//
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex, nextParagraphStart int) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gint   // out
@@ -3346,7 +3308,6 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex, ne
 //   - language tag.
 //   - logAttrs: array with one PangoLogAttr per character in text, plus one
 //     extra, to be filled in.
-//
 func GetLogAttrs(text string, length, level int, language *Language, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
@@ -3394,7 +3355,6 @@ func GetLogAttrs(text string, length, level int, language *Language, logAttrs []
 //
 //   - ok: TRUE if ch has a mirrored character and mirrored_ch is filled in,
 //     FALSE otherwise.
-//
 func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var _arg1 C.gunichar  // out
 	var _arg2 *C.gunichar // out
@@ -3429,7 +3389,6 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if ch is a zero-width character, FALSE otherwise.
-//
 func IsZeroWidth(ch uint32) bool {
 	var _arg1 C.gunichar // out
 	var _cret C.gboolean // in
@@ -3475,7 +3434,6 @@ func IsZeroWidth(ch uint32) bool {
 //
 //   - list: GList of pango.Item structures. The items should be freed using
 //     pango.Item.Free() probably in combination with g_list_free_full().
-//
 func Itemize(context *Context, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 *C.char              // out
@@ -3545,7 +3503,6 @@ func Itemize(context *Context, text string, startIndex, length int, attrs *AttrL
 //
 //   - list: GList of pango.Item structures. The items should be freed using
 //     pango.Item.Free() probably in combination with g_list_free_full().
-//
 func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex, length int, attrs *AttrList, cachedIter *AttrIterator) []*Item {
 	var _arg1 *C.PangoContext      // out
 	var _arg2 C.PangoDirection     // out
@@ -3601,7 +3558,7 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 // The bidirectional embedding levels are defined by the Unicode Bidirectional
 // Algorithm available at:
 //
-//    http://www.unicode.org/reports/tr9/
+//	http://www.unicode.org/reports/tr9/
 //
 // If the input base direction is a weak direction, the direction of the
 // characters in the text will determine the final resolved direction.
@@ -3617,7 +3574,6 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 //
 //   - guint8: newly allocated array of embedding levels, one item per character
 //     (not byte), that should be freed using g_free().
-//
 func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *byte {
 	var _arg1 *C.gchar          // out
 	var _arg2 C.int             // out
@@ -3660,7 +3616,6 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 //     or NULL.
 //   - accelChar (optional) address of return location for accelerator char,
 //     or NULL.
-//
 func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
 	var _arg1 *C.GMarkupParseContext // out
 	var _arg2 *C.PangoAttrList       // in
@@ -3730,7 +3685,6 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 //
 //   - markupParseContext: GMarkupParseContext that should be destroyed with
 //     g_markup_parse_context_free().
-//
 func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 	var _arg1 C.gunichar             // out
 	var _cret *C.GMarkupParseContext // in
@@ -3777,7 +3731,6 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 //   - possibleValues (optional): place to store list of possible values on
 //     failure, or NULL.
 //   - ok: TRUE if str was successfully parsed.
-//
 func ParseEnum(typ coreglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg1 C.GType    // out
 	var _arg2 *C.char    // out
@@ -3848,7 +3801,6 @@ func ParseEnum(typ coreglib.Type, str string, warn bool) (int, string, bool) {
 //     or NULL.
 //   - accelChar (optional) address of return location for accelerator char,
 //     or NULL.
-//
 func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
@@ -3910,7 +3862,6 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 //
 //   - stretch: PangoStretch to store the result in.
 //   - ok: TRUE if str was successfully parsed.
-//
 func ParseStretch(str string, warn bool) (Stretch, bool) {
 	var _arg1 *C.char        // out
 	var _arg2 C.PangoStretch // in
@@ -3952,7 +3903,6 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 //
 //   - style: PangoStyle to store the result in.
 //   - ok: TRUE if str was successfully parsed.
-//
 func ParseStyle(str string, warn bool) (Style, bool) {
 	var _arg1 *C.char      // out
 	var _arg2 C.PangoStyle // in
@@ -3994,7 +3944,6 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 //
 //   - variant: PangoVariant to store the result in.
 //   - ok: TRUE if str was successfully parsed.
-//
 func ParseVariant(str string, warn bool) (Variant, bool) {
 	var _arg1 *C.char        // out
 	var _arg2 C.PangoVariant // in
@@ -4036,7 +3985,6 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 //
 //   - weight: PangoWeight to store the result in.
 //   - ok: TRUE if str was successfully parsed.
-//
 func ParseWeight(str string, warn bool) (Weight, bool) {
 	var _arg1 *C.char       // out
 	var _arg2 C.PangoWeight // in
@@ -4080,7 +4028,6 @@ func ParseWeight(str string, warn bool) (Weight, bool) {
 //     (Please open a bug if you use this function. It is not a particularly
 //     convenient interface, and the code is duplicated elsewhere in Pango for
 //     that reason.).
-//
 func ReorderItems(logicalItems []*Item) []*Item {
 	var _arg1 *C.GList // out
 	var _cret *C.GList // in
@@ -4134,7 +4081,6 @@ func ReorderItems(logicalItems []*Item) []*Item {
 //   - length (in bytes) of text.
 //   - analysis: PangoAnalysis structure from itemize.
 //   - glyphs: glyph string in which to store results.
-//
 func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -4181,7 +4127,6 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 //     nul-terminated text.
 //   - analysis: PangoAnalysis structure from itemize.
 //   - glyphs: glyph string in which to store results.
-//
 func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -4235,7 +4180,6 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 //   - analysis: PangoAnalysis structure from itemize.
 //   - glyphs: glyph string in which to store results.
 //   - flags influencing the shaping process.
-//
 func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
 	var _arg1 *C.char             // out
 	var _arg2 C.int               // out
@@ -4279,7 +4223,6 @@ func ShapeWithFlags(itemText string, itemLength int, paragraphText string, parag
 // The function returns the following values:
 //
 //   - utf8s: list of strings to be freed with g_strfreev().
-//
 func SplitFileList(str string) []string {
 	var _arg1 *C.char  // out
 	var _cret **C.char // in
@@ -4327,7 +4270,6 @@ func SplitFileList(str string) []string {
 //     ignore attributes from analysis.
 //   - logAttrs: array with one PangoLogAttr per character in text, plus one
 //     extra, to be filled in.
-//
 func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
 	var _arg1 *C.char          // out
 	var _arg2 C.int            // out
@@ -4370,7 +4312,6 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 // The function returns the following values:
 //
 //   - utf8: newly-allocated string that must be freed with g_free().
-//
 func TrimString(str string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -4405,7 +4346,6 @@ func TrimString(str string) string {
 // The function returns the following values:
 //
 //   - direction of the character.
-//
 func UnicharDirection(ch uint32) Direction {
 	var _arg1 C.gunichar       // out
 	var _cret C.PangoDirection // in
@@ -4434,7 +4374,6 @@ func UnicharDirection(ch uint32) Direction {
 // The function returns the following values:
 //
 //   - gint: value in Pango units.
-//
 func UnitsFromDouble(d float64) int {
 	var _arg1 C.double // out
 	var _cret C.int    // in
@@ -4462,7 +4401,6 @@ func UnitsFromDouble(d float64) int {
 // The function returns the following values:
 //
 //   - gdouble: double value.
-//
 func UnitsToDouble(i int) float64 {
 	var _arg1 C.int    // out
 	var _cret C.double // in
@@ -4488,7 +4426,6 @@ func UnitsToDouble(i int) float64 {
 // The function returns the following values:
 //
 //   - gint: encoded version of Pango library available at run time.
-//
 func Version() int {
 	var _cret C.int // in
 
@@ -4529,7 +4466,6 @@ func Version() int {
 //   - utf8 (optional): NULL if the Pango library is compatible with the given
 //     version, or a string describing the version mismatch. The returned string
 //     is owned by Pango and should not be modified or freed.
-//
 func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 	var _arg1 C.int   // out
 	var _arg2 C.int   // out
@@ -4564,7 +4500,6 @@ func VersionCheck(requiredMajor, requiredMinor, requiredMicro int) string {
 //   - utf8: string containing the version of Pango library available at run
 //     time. The returned string is owned by Pango and should not be modified or
 //     freed.
-//
 func VersionString() string {
 	var _cret *C.char // in
 
@@ -4619,7 +4554,6 @@ func marshalContext(p uintptr) (interface{}, error) {
 //
 //   - context: newly allocated PangoContext, which should be freed with
 //     g_object_unref().
-//
 func NewContext() *Context {
 	var _cret *C.PangoContext // in
 
@@ -4654,7 +4588,6 @@ func (context *Context) Changed() {
 // The function returns the following values:
 //
 //   - direction: base direction for the context.
-//
 func (context *Context) BaseDir() Direction {
 	var _arg0 *C.PangoContext  // out
 	var _cret C.PangoDirection // in
@@ -4678,7 +4611,6 @@ func (context *Context) BaseDir() Direction {
 // The function returns the following values:
 //
 //   - gravity: base gravity for the context.
-//
 func (context *Context) BaseGravity() Gravity {
 	var _arg0 *C.PangoContext // out
 	var _cret C.PangoGravity  // in
@@ -4701,7 +4633,6 @@ func (context *Context) BaseGravity() Gravity {
 //
 //   - fontDescription: pointer to the context's default font description.
 //     This value must not be modified or freed.
-//
 func (context *Context) FontDescription() *FontDescription {
 	var _arg0 *C.PangoContext         // out
 	var _cret *C.PangoFontDescription // in
@@ -4724,7 +4655,6 @@ func (context *Context) FontDescription() *FontDescription {
 //
 //   - fontMap: font map for the PangoContext. This value is owned by Pango and
 //     should not be unreferenced.
-//
 func (context *Context) FontMap() FontMapper {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoFontMap // in
@@ -4766,7 +4696,6 @@ func (context *Context) FontMap() FontMapper {
 // The function returns the following values:
 //
 //   - gravity: resolved gravity for the context.
-//
 func (context *Context) Gravity() Gravity {
 	var _arg0 *C.PangoContext // out
 	var _cret C.PangoGravity  // in
@@ -4790,7 +4719,6 @@ func (context *Context) Gravity() Gravity {
 // The function returns the following values:
 //
 //   - gravityHint: gravity hint for the context.
-//
 func (context *Context) GravityHint() GravityHint {
 	var _arg0 *C.PangoContext    // out
 	var _cret C.PangoGravityHint // in
@@ -4812,7 +4740,6 @@ func (context *Context) GravityHint() GravityHint {
 // The function returns the following values:
 //
 //   - language: global language tag.
-//
 func (context *Context) Language() *Language {
 	var _arg0 *C.PangoContext  // out
 	var _cret *C.PangoLanguage // in
@@ -4845,7 +4772,6 @@ func (context *Context) Language() *Language {
 //   - matrix (optional): matrix, or NULL if no matrix has been set (which is
 //     the same as the identity matrix). The returned matrix is owned by Pango
 //     and must not be modified or freed.
-//
 func (context *Context) Matrix() *Matrix {
 	var _arg0 *C.PangoContext // out
 	var _cret *C.PangoMatrix  // in
@@ -4889,7 +4815,6 @@ func (context *Context) Matrix() *Matrix {
 //
 //   - fontMetrics: PangoFontMetrics object. The caller must call
 //     pango.FontMetrics.Unref() when finished using the object.
-//
 func (context *Context) Metrics(desc *FontDescription, language *Language) *FontMetrics {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -4924,9 +4849,6 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 
 // RoundGlyphPositions returns whether font rendering with this context should
 // round glyph positions and widths.
-//
-// The function returns the following values:
-//
 func (context *Context) RoundGlyphPositions() bool {
 	var _arg0 *C.PangoContext // out
 	var _cret C.gboolean      // in
@@ -4960,7 +4882,6 @@ func (context *Context) RoundGlyphPositions() bool {
 // The function returns the following values:
 //
 //   - guint: current serial number of context.
-//
 func (context *Context) Serial() uint {
 	var _arg0 *C.PangoContext // out
 	var _cret C.guint         // in
@@ -4983,7 +4904,6 @@ func (context *Context) Serial() uint {
 //
 //   - families: location to store a pointer to an array of PangoFontFamily.
 //     This array should be freed with g_free().
-//
 func (context *Context) ListFamilies() []FontFamilier {
 	var _arg0 *C.PangoContext     // out
 	var _arg1 **C.PangoFontFamily // in
@@ -5035,7 +4955,6 @@ func (context *Context) ListFamilies() []FontFamilier {
 //
 //   - font (optional): newly allocated PangoFont that was loaded, or NULL if no
 //     font matched.
-//
 func (context *Context) LoadFont(desc *FontDescription) Fonter {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -5082,7 +5001,6 @@ func (context *Context) LoadFont(desc *FontDescription) Fonter {
 //
 //   - fontset (optional): newly allocated PangoFontset loaded, or NULL if no
 //     font matched.
-//
 func (context *Context) LoadFontset(desc *FontDescription, language *Language) Fontsetter {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -5132,7 +5050,6 @@ func (context *Context) LoadFontset(desc *FontDescription, language *Language) F
 // The function takes the following parameters:
 //
 //   - direction: new base direction.
-//
 func (context *Context) SetBaseDir(direction Direction) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 C.PangoDirection // out
@@ -5152,7 +5069,6 @@ func (context *Context) SetBaseDir(direction Direction) {
 // The function takes the following parameters:
 //
 //   - gravity: new base gravity.
-//
 func (context *Context) SetBaseGravity(gravity Gravity) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.PangoGravity  // out
@@ -5170,7 +5086,6 @@ func (context *Context) SetBaseGravity(gravity Gravity) {
 // The function takes the following parameters:
 //
 //   - desc: new pango font description.
-//
 func (context *Context) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoContext         // out
 	var _arg1 *C.PangoFontDescription // out
@@ -5192,7 +5107,6 @@ func (context *Context) SetFontDescription(desc *FontDescription) {
 // The function takes the following parameters:
 //
 //   - fontMap: PangoFontMap to set.
-//
 func (context *Context) SetFontMap(fontMap FontMapper) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoFontMap // out
@@ -5214,7 +5128,6 @@ func (context *Context) SetFontMap(fontMap FontMapper) {
 // The function takes the following parameters:
 //
 //   - hint: new gravity hint.
-//
 func (context *Context) SetGravityHint(hint GravityHint) {
 	var _arg0 *C.PangoContext    // out
 	var _arg1 C.PangoGravityHint // out
@@ -5235,7 +5148,6 @@ func (context *Context) SetGravityHint(hint GravityHint) {
 // The function takes the following parameters:
 //
 //   - language: new language tag.
-//
 func (context *Context) SetLanguage(language *Language) {
 	var _arg0 *C.PangoContext  // out
 	var _arg1 *C.PangoLanguage // out
@@ -5261,7 +5173,6 @@ func (context *Context) SetLanguage(language *Language) {
 //
 //   - matrix (optional): PangoMatrix, or NULL to unset any existing matrix.
 //     (No matrix set is the same as setting the identity matrix.).
-//
 func (context *Context) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 *C.PangoMatrix  // out
@@ -5287,7 +5198,6 @@ func (context *Context) SetMatrix(matrix *Matrix) {
 // The function takes the following parameters:
 //
 //   - roundPositions: whether to round glyph positions.
-//
 func (context *Context) SetRoundGlyphPositions(roundPositions bool) {
 	var _arg0 *C.PangoContext // out
 	var _arg1 C.gboolean      // out
@@ -5334,7 +5244,6 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 //   - coverage: newly allocated PangoCoverage, initialized to
 //     PANGO_COVERAGE_NONE with a reference count of one, which should be freed
 //     with pango_coverage_unref().
-//
 func NewCoverage() *Coverage {
 	var _cret *C.PangoCoverage // in
 
@@ -5353,7 +5262,6 @@ func NewCoverage() *Coverage {
 //
 //   - ret: newly allocated PangoCoverage, with a reference count of one,
 //     which should be freed with pango_coverage_unref().
-//
 func (coverage *Coverage) Copy() *Coverage {
 	var _arg0 *C.PangoCoverage // out
 	var _cret *C.PangoCoverage // in
@@ -5379,7 +5287,6 @@ func (coverage *Coverage) Copy() *Coverage {
 // The function returns the following values:
 //
 //   - coverageLevel: coverage level of coverage for character index_.
-//
 func (coverage *Coverage) Get(index_ int) CoverageLevel {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
@@ -5408,7 +5315,6 @@ func (coverage *Coverage) Get(index_ int) CoverageLevel {
 // The function takes the following parameters:
 //
 //   - other PangoCoverage.
-//
 func (coverage *Coverage) Max(other *Coverage) {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.PangoCoverage // out
@@ -5427,7 +5333,6 @@ func (coverage *Coverage) Max(other *Coverage) {
 //
 //   - index_: index to modify.
 //   - level: new level for index_.
-//
 func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 	var _arg0 *C.PangoCoverage     // out
 	var _arg1 C.int                // out
@@ -5450,7 +5355,6 @@ func (coverage *Coverage) Set(index_ int, level CoverageLevel) {
 // The function returns the following values:
 //
 //   - bytes: location to store result (must be freed with g_free()).
-//
 func (coverage *Coverage) ToBytes() []byte {
 	var _arg0 *C.PangoCoverage // out
 	var _arg1 *C.guchar        // in
@@ -5483,7 +5387,6 @@ func (coverage *Coverage) ToBytes() []byte {
 //
 //   - coverage (optional): newly allocated PangoCoverage, or NULL if the data
 //     was invalid.
-//
 func CoverageFromBytes(bytes []byte) *Coverage {
 	var _arg1 *C.guchar // out
 	var _arg2 C.int
@@ -5516,10 +5419,7 @@ type FontOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fontDescription: newly-allocated PangoFontDescription object.
-	//
-	Describe func() *FontDescription
-	// The function returns the following values:
-	//
+	Describe         func() *FontDescription
 	DescribeAbsolute func() *FontDescription
 	// Coverage computes the coverage map for a given font and language tag.
 	//
@@ -5530,7 +5430,6 @@ type FontOverrides struct {
 	// The function returns the following values:
 	//
 	//   - coverage: newly-allocated PangoCoverage object.
-	//
 	Coverage func(language *Language) *Coverage
 	// FontMap gets the font map for which the font was created.
 	//
@@ -5547,7 +5446,6 @@ type FontOverrides struct {
 	//
 	//   - fontMap (optional): PangoFontMap for the font, or NULL if font is
 	//     NULL.
-	//
 	FontMap func() FontMapper
 	// GlyphExtents gets the logical and ink extents of a glyph within a font.
 	//
@@ -5571,7 +5469,6 @@ type FontOverrides struct {
 	//     as drawn or NULL to indicate that the result is not needed.
 	//   - logicalRect (optional): rectangle used to store the logical extents
 	//     of the glyph or NULL to indicate that the result is not needed.
-	//
 	GlyphExtents func(glyph Glyph) (inkRect, logicalRect *Rectangle)
 	// Metrics gets overall metric information for a font.
 	//
@@ -5592,7 +5489,6 @@ type FontOverrides struct {
 	//
 	//   - fontMetrics: PangoFontMetrics object. The caller must call
 	//     pango.FontMetrics.Unref() when finished using the object.
-	//
 	Metrics func(language *Language) *FontMetrics
 }
 
@@ -5698,7 +5594,6 @@ func BaseFont(obj Fonter) *Font {
 // The function returns the following values:
 //
 //   - fontDescription: newly-allocated PangoFontDescription object.
-//
 func (font *Font) Describe() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
@@ -5729,7 +5624,6 @@ func (font *Font) Describe() *FontDescription {
 // The function returns the following values:
 //
 //   - fontDescription: newly-allocated PangoFontDescription object.
-//
 func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 	var _arg0 *C.PangoFont            // out
 	var _cret *C.PangoFontDescription // in
@@ -5761,7 +5655,6 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 // The function returns the following values:
 //
 //   - coverage: newly-allocated PangoCoverage object.
-//
 func (font *Font) Coverage(language *Language) *Coverage {
 	var _arg0 *C.PangoFont     // out
 	var _arg1 *C.PangoLanguage // out
@@ -5786,7 +5679,6 @@ func (font *Font) Coverage(language *Language) *Coverage {
 // The function returns the following values:
 //
 //   - fontFace: PangoFontFace.
-//
 func (font *Font) Face() FontFacer {
 	var _arg0 *C.PangoFont     // out
 	var _cret *C.PangoFontFace // in
@@ -5833,7 +5725,6 @@ func (font *Font) Face() FontFacer {
 // The function returns the following values:
 //
 //   - fontMap (optional): PangoFontMap for the font, or NULL if font is NULL.
-//
 func (font *Font) FontMap() FontMapper {
 	var _arg0 *C.PangoFont    // out
 	var _cret *C.PangoFontMap // in
@@ -5889,7 +5780,6 @@ func (font *Font) FontMap() FontMapper {
 //     drawn or NULL to indicate that the result is not needed.
 //   - logicalRect (optional): rectangle used to store the logical extents of
 //     the glyph or NULL to indicate that the result is not needed.
-//
 func (font *Font) GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 	var _arg0 *C.PangoFont     // out
 	var _arg1 C.PangoGlyph     // out
@@ -5932,7 +5822,6 @@ func (font *Font) GlyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 //
 //   - fontMetrics: PangoFontMetrics object. The caller must call
 //     pango.FontMetrics.Unref() when finished using the object.
-//
 func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _arg0 *C.PangoFont        // out
 	var _arg1 *C.PangoLanguage    // out
@@ -5969,9 +5858,6 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 // The function takes the following parameters:
 //
 //   - wc: unicode character.
-//
-// The function returns the following values:
-//
 func (font *Font) HasChar(wc uint32) bool {
 	var _arg0 *C.PangoFont // out
 	var _arg1 C.gunichar   // out
@@ -6001,7 +5887,6 @@ func (font *Font) HasChar(wc uint32) bool {
 // The function returns the following values:
 //
 //   - fontDescription: newly-allocated PangoFontDescription object.
-//
 func (font *Font) describe() *FontDescription {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
 	fnarg := gclass.describe
@@ -6027,8 +5912,6 @@ func (font *Font) describe() *FontDescription {
 	return _fontDescription
 }
 
-// The function returns the following values:
-//
 func (font *Font) describeAbsolute() *FontDescription {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
 	fnarg := gclass.describe_absolute
@@ -6063,7 +5946,6 @@ func (font *Font) describeAbsolute() *FontDescription {
 // The function returns the following values:
 //
 //   - coverage: newly-allocated PangoCoverage object.
-//
 func (font *Font) coverage(language *Language) *Coverage {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
 	fnarg := gclass.get_coverage
@@ -6100,7 +5982,6 @@ func (font *Font) coverage(language *Language) *Coverage {
 // The function returns the following values:
 //
 //   - fontMap (optional): PangoFontMap for the font, or NULL if font is NULL.
-//
 func (font *Font) fontMap() FontMapper {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
 	fnarg := gclass.get_font_map
@@ -6159,7 +6040,6 @@ func (font *Font) fontMap() FontMapper {
 //     drawn or NULL to indicate that the result is not needed.
 //   - logicalRect (optional): rectangle used to store the logical extents of
 //     the glyph or NULL to indicate that the result is not needed.
-//
 func (font *Font) glyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
 	fnarg := gclass.get_glyph_extents
@@ -6205,7 +6085,6 @@ func (font *Font) glyphExtents(glyph Glyph) (inkRect, logicalRect *Rectangle) {
 //
 //   - fontMetrics: PangoFontMetrics object. The caller must call
 //     pango.FontMetrics.Unref() when finished using the object.
-//
 func (font *Font) metrics(language *Language) *FontMetrics {
 	gclass := (*C.PangoFontClass)(coreglib.PeekParentClass(font))
 	fnarg := gclass.get_metrics
@@ -6249,7 +6128,6 @@ type FontFaceOverrides struct {
 	//   - fontDescription: newly-created PangoFontDescription structure holding
 	//     the description of the face. Use pango.FontDescription.Free() to free
 	//     the result.
-	//
 	Describe func() *FontDescription
 	// FaceName gets a name representing the style of this face among the
 	// different faces in the PangoFontFamily for the face. The name is suitable
@@ -6259,14 +6137,12 @@ type FontFaceOverrides struct {
 	//
 	//   - utf8: face name for the face. This string is owned by the face object
 	//     and must not be modified or freed.
-	//
 	FaceName func() string
 	// Family gets the PangoFontFamily that face belongs to.
 	//
 	// The function returns the following values:
 	//
 	//   - fontFamily: PangoFontFamily.
-	//
 	Family func() FontFamilier
 	// IsSynthesized returns whether a PangoFontFace is synthesized by the
 	// underlying font rendering engine from another face, perhaps by shearing,
@@ -6275,7 +6151,6 @@ type FontFaceOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: whether face is synthesized.
-	//
 	IsSynthesized func() bool
 	// ListSizes: list the available sizes for a font.
 	//
@@ -6288,7 +6163,6 @@ type FontFaceOverrides struct {
 	//
 	//   - sizes (optional): location to store a pointer to an array of int.
 	//     This array should be freed with g_free().
-	//
 	ListSizes func() []int
 }
 
@@ -6390,7 +6264,6 @@ func BaseFontFace(obj FontFacer) *FontFace {
 //   - fontDescription: newly-created PangoFontDescription structure holding
 //     the description of the face. Use pango.FontDescription.Free() to free the
 //     result.
-//
 func (face *FontFace) Describe() *FontDescription {
 	var _arg0 *C.PangoFontFace        // out
 	var _cret *C.PangoFontDescription // in
@@ -6421,7 +6294,6 @@ func (face *FontFace) Describe() *FontDescription {
 //
 //   - utf8: face name for the face. This string is owned by the face object and
 //     must not be modified or freed.
-//
 func (face *FontFace) FaceName() string {
 	var _arg0 *C.PangoFontFace // out
 	var _cret *C.char          // in
@@ -6443,7 +6315,6 @@ func (face *FontFace) FaceName() string {
 // The function returns the following values:
 //
 //   - fontFamily: PangoFontFamily.
-//
 func (face *FontFace) Family() FontFamilier {
 	var _arg0 *C.PangoFontFace   // out
 	var _cret *C.PangoFontFamily // in
@@ -6483,7 +6354,6 @@ func (face *FontFace) Family() FontFamilier {
 // The function returns the following values:
 //
 //   - ok: whether face is synthesized.
-//
 func (face *FontFace) IsSynthesized() bool {
 	var _arg0 *C.PangoFontFace // out
 	var _cret C.gboolean       // in
@@ -6512,7 +6382,6 @@ func (face *FontFace) IsSynthesized() bool {
 //
 //   - sizes (optional): location to store a pointer to an array of int.
 //     This array should be freed with g_free().
-//
 func (face *FontFace) ListSizes() []int {
 	var _arg0 *C.PangoFontFace // out
 	var _arg1 *C.int           // in
@@ -6548,7 +6417,6 @@ func (face *FontFace) ListSizes() []int {
 //   - fontDescription: newly-created PangoFontDescription structure holding
 //     the description of the face. Use pango.FontDescription.Free() to free the
 //     result.
-//
 func (face *FontFace) describe() *FontDescription {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
 	fnarg := gclass.describe
@@ -6582,7 +6450,6 @@ func (face *FontFace) describe() *FontDescription {
 //
 //   - utf8: face name for the face. This string is owned by the face object and
 //     must not be modified or freed.
-//
 func (face *FontFace) faceName() string {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
 	fnarg := gclass.get_face_name
@@ -6607,7 +6474,6 @@ func (face *FontFace) faceName() string {
 // The function returns the following values:
 //
 //   - fontFamily: PangoFontFamily.
-//
 func (face *FontFace) family() FontFamilier {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
 	fnarg := gclass.get_family
@@ -6650,7 +6516,6 @@ func (face *FontFace) family() FontFamilier {
 // The function returns the following values:
 //
 //   - ok: whether face is synthesized.
-//
 func (face *FontFace) isSynthesized() bool {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
 	fnarg := gclass.is_synthesized
@@ -6682,7 +6547,6 @@ func (face *FontFace) isSynthesized() bool {
 //
 //   - sizes (optional): location to store a pointer to an array of int.
 //     This array should be freed with g_free().
-//
 func (face *FontFace) listSizes() []int {
 	gclass := (*C.PangoFontFaceClass)(coreglib.PeekParentClass(face))
 	fnarg := gclass.list_sizes
@@ -6725,7 +6589,6 @@ type FontFamilyOverrides struct {
 	//
 	//   - fontFace (optional): PangoFontFace, or NULL if no face with the given
 	//     name exists.
-	//
 	Face func(name string) FontFacer
 	// Name gets the name of the family.
 	//
@@ -6737,7 +6600,6 @@ type FontFamilyOverrides struct {
 	//
 	//   - utf8: name of the family. This string is owned by the family object
 	//     and must not be modified or freed.
-	//
 	Name func() string
 	// IsMonospace: monospace font is a font designed for text display where the
 	// the characters form a regular grid.
@@ -6756,7 +6618,6 @@ type FontFamilyOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the family is monospace.
-	//
 	IsMonospace func() bool
 	// IsVariable: variable font is a font which has axes that can be modified
 	// to produce different faces.
@@ -6764,7 +6625,6 @@ type FontFamilyOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the family is variable.
-	//
 	IsVariable func() bool
 	// ListFaces lists the different font faces that make up family.
 	//
@@ -6776,7 +6636,6 @@ type FontFamilyOverrides struct {
 	//   - faces (optional): location to store an array of pointers to
 	//     PangoFontFace objects, or NULL. This array should be freed with
 	//     g_free() when it is no longer needed.
-	//
 	ListFaces func() []FontFacer
 }
 
@@ -6883,7 +6742,6 @@ func BaseFontFamily(obj FontFamilier) *FontFamily {
 //
 //   - fontFace (optional): PangoFontFace, or NULL if no face with the given
 //     name exists.
-//
 func (family *FontFamily) Face(name string) FontFacer {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 *C.char            // out
@@ -6930,7 +6788,6 @@ func (family *FontFamily) Face(name string) FontFacer {
 //
 //   - utf8: name of the family. This string is owned by the family object and
 //     must not be modified or freed.
-//
 func (family *FontFamily) Name() string {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret *C.char            // in
@@ -6964,7 +6821,6 @@ func (family *FontFamily) Name() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if the family is monospace.
-//
 func (family *FontFamily) IsMonospace() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
@@ -6989,7 +6845,6 @@ func (family *FontFamily) IsMonospace() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the family is variable.
-//
 func (family *FontFamily) IsVariable() bool {
 	var _arg0 *C.PangoFontFamily // out
 	var _cret C.gboolean         // in
@@ -7018,7 +6873,6 @@ func (family *FontFamily) IsVariable() bool {
 //   - faces (optional): location to store an array of pointers to PangoFontFace
 //     objects, or NULL. This array should be freed with g_free() when it is no
 //     longer needed.
-//
 func (family *FontFamily) ListFaces() []FontFacer {
 	var _arg0 *C.PangoFontFamily // out
 	var _arg1 **C.PangoFontFace  // in
@@ -7072,7 +6926,6 @@ func (family *FontFamily) ListFaces() []FontFacer {
 //
 //   - fontFace (optional): PangoFontFace, or NULL if no face with the given
 //     name exists.
-//
 func (family *FontFamily) face(name string) FontFacer {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
 	fnarg := gclass.get_face
@@ -7122,7 +6975,6 @@ func (family *FontFamily) face(name string) FontFacer {
 //
 //   - utf8: name of the family. This string is owned by the family object and
 //     must not be modified or freed.
-//
 func (family *FontFamily) name() string {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
 	fnarg := gclass.get_name
@@ -7159,7 +7011,6 @@ func (family *FontFamily) name() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if the family is monospace.
-//
 func (family *FontFamily) isMonospace() bool {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
 	fnarg := gclass.is_monospace
@@ -7187,7 +7038,6 @@ func (family *FontFamily) isMonospace() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if the family is variable.
-//
 func (family *FontFamily) isVariable() bool {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
 	fnarg := gclass.is_variable
@@ -7219,7 +7069,6 @@ func (family *FontFamily) isVariable() bool {
 //   - faces (optional): location to store an array of pointers to PangoFontFace
 //     objects, or NULL. This array should be freed with g_free() when it is no
 //     longer needed.
-//
 func (family *FontFamily) listFaces() []FontFacer {
 	gclass := (*C.PangoFontFamilyClass)(coreglib.PeekParentClass(family))
 	fnarg := gclass.list_faces
@@ -7283,7 +7132,6 @@ type FontMapOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fontFamily: PangoFontFamily.
-	//
 	Family func(name string) FontFamilier
 	// Serial returns the current serial number of fontmap.
 	//
@@ -7301,7 +7149,6 @@ type FontMapOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint: current serial number of fontmap.
-	//
 	Serial func() uint
 	// ListFamilies: list all families for a fontmap.
 	//
@@ -7309,7 +7156,6 @@ type FontMapOverrides struct {
 	//
 	//   - families: location to store a pointer to an array of PangoFontFamily
 	//     *. This array should be freed with g_free().
-	//
 	ListFamilies func() []FontFamilier
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// desc.
@@ -7323,7 +7169,6 @@ type FontMapOverrides struct {
 	//
 	//   - font (optional): newly allocated PangoFont loaded, or NULL if no font
 	//     matched.
-	//
 	LoadFont func(context *Context, desc *FontDescription) Fonter
 	// LoadFontset: load a set of fonts in the fontmap that can be used to
 	// render a font matching desc.
@@ -7338,7 +7183,6 @@ type FontMapOverrides struct {
 	//
 	//   - fontset (optional): newly allocated PangoFontset loaded, or NULL if
 	//     no font matched.
-	//
 	LoadFontset func(context *Context, desc *FontDescription, language *Language) Fontsetter
 }
 
@@ -7467,7 +7311,6 @@ func (fontmap *FontMap) Changed() {
 //
 //   - context: newly allocated PangoContext, which should be freed with
 //     g_object_unref().
-//
 func (fontmap *FontMap) CreateContext() *Context {
 	var _arg0 *C.PangoFontMap // out
 	var _cret *C.PangoContext // in
@@ -7493,7 +7336,6 @@ func (fontmap *FontMap) CreateContext() *Context {
 // The function returns the following values:
 //
 //   - fontFamily: PangoFontFamily.
-//
 func (fontmap *FontMap) Family(name string) FontFamilier {
 	var _arg0 *C.PangoFontMap    // out
 	var _arg1 *C.char            // out
@@ -7546,7 +7388,6 @@ func (fontmap *FontMap) Family(name string) FontFamilier {
 // The function returns the following values:
 //
 //   - guint: current serial number of fontmap.
-//
 func (fontmap *FontMap) Serial() uint {
 	var _arg0 *C.PangoFontMap // out
 	var _cret C.guint         // in
@@ -7569,7 +7410,6 @@ func (fontmap *FontMap) Serial() uint {
 //
 //   - families: location to store a pointer to an array of PangoFontFamily *.
 //     This array should be freed with g_free().
-//
 func (fontmap *FontMap) ListFamilies() []FontFamilier {
 	var _arg0 *C.PangoFontMap     // out
 	var _arg1 **C.PangoFontFamily // in
@@ -7621,7 +7461,6 @@ func (fontmap *FontMap) ListFamilies() []FontFamilier {
 //
 //   - font (optional): newly allocated PangoFont loaded, or NULL if no font
 //     matched.
-//
 func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
@@ -7672,7 +7511,6 @@ func (fontmap *FontMap) LoadFont(context *Context, desc *FontDescription) Fonter
 //
 //   - fontset (optional): newly allocated PangoFontset loaded, or NULL if no
 //     font matched.
-//
 func (fontmap *FontMap) LoadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter {
 	var _arg0 *C.PangoFontMap         // out
 	var _arg1 *C.PangoContext         // out
@@ -7740,7 +7578,6 @@ func (fontmap *FontMap) changed() {
 // The function returns the following values:
 //
 //   - fontFamily: PangoFontFamily.
-//
 func (fontmap *FontMap) family(name string) FontFamilier {
 	gclass := (*C.PangoFontMapClass)(coreglib.PeekParentClass(fontmap))
 	fnarg := gclass.get_family
@@ -7796,7 +7633,6 @@ func (fontmap *FontMap) family(name string) FontFamilier {
 // The function returns the following values:
 //
 //   - guint: current serial number of fontmap.
-//
 func (fontmap *FontMap) serial() uint {
 	gclass := (*C.PangoFontMapClass)(coreglib.PeekParentClass(fontmap))
 	fnarg := gclass.get_serial
@@ -7822,7 +7658,6 @@ func (fontmap *FontMap) serial() uint {
 //
 //   - families: location to store a pointer to an array of PangoFontFamily *.
 //     This array should be freed with g_free().
-//
 func (fontmap *FontMap) listFamilies() []FontFamilier {
 	gclass := (*C.PangoFontMapClass)(coreglib.PeekParentClass(fontmap))
 	fnarg := gclass.list_families
@@ -7877,7 +7712,6 @@ func (fontmap *FontMap) listFamilies() []FontFamilier {
 //
 //   - font (optional): newly allocated PangoFont loaded, or NULL if no font
 //     matched.
-//
 func (fontmap *FontMap) loadFont(context *Context, desc *FontDescription) Fonter {
 	gclass := (*C.PangoFontMapClass)(coreglib.PeekParentClass(fontmap))
 	fnarg := gclass.load_font
@@ -7931,7 +7765,6 @@ func (fontmap *FontMap) loadFont(context *Context, desc *FontDescription) Fonter
 //
 //   - fontset (optional): newly allocated PangoFontset loaded, or NULL if no
 //     font matched.
-//
 func (fontmap *FontMap) loadFontset(context *Context, desc *FontDescription, language *Language) Fontsetter {
 	gclass := (*C.PangoFontMapClass)(coreglib.PeekParentClass(fontmap))
 	fnarg := gclass.load_fontset
@@ -7988,10 +7821,7 @@ type FontsetOverrides struct {
 	//
 	//   - font: PangoFont. The caller must call g_object_unref() when finished
 	//     with the font.
-	//
-	Font func(wc uint) Fonter
-	// The function returns the following values:
-	//
+	Font     func(wc uint) Fonter
 	Language func() *Language
 	// Metrics: get overall metric information for the fonts in the fontset.
 	//
@@ -7999,7 +7829,6 @@ type FontsetOverrides struct {
 	//
 	//   - fontMetrics object. The caller must call pango_font_metrics_unref()
 	//     when finished using the object.
-	//
 	Metrics func() *FontMetrics
 }
 
@@ -8095,7 +7924,6 @@ func BaseFontset(obj Fontsetter) *Fontset {
 // The function takes the following parameters:
 //
 //   - fn: callback function.
-//
 func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
 	var _arg0 *C.PangoFontset           // out
 	var _arg1 C.PangoFontsetForeachFunc // out
@@ -8122,7 +7950,6 @@ func (fontset *Fontset) ForEach(fn FontsetForEachFunc) {
 //
 //   - font: PangoFont. The caller must call g_object_unref() when finished with
 //     the font.
-//
 func (fontset *Fontset) Font(wc uint) Fonter {
 	var _arg0 *C.PangoFontset // out
 	var _arg1 C.guint         // out
@@ -8164,7 +7991,6 @@ func (fontset *Fontset) Font(wc uint) Fonter {
 //
 //   - fontMetrics object. The caller must call pango_font_metrics_unref() when
 //     finished using the object.
-//
 func (fontset *Fontset) Metrics() *FontMetrics {
 	var _arg0 *C.PangoFontset     // out
 	var _cret *C.PangoFontMetrics // in
@@ -8195,7 +8021,6 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 // The function takes the following parameters:
 //
 //   - fn: callback function.
-//
 func (fontset *Fontset) forEach(fn FontsetForEachFunc) {
 	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
 	fnarg := gclass.foreach
@@ -8225,7 +8050,6 @@ func (fontset *Fontset) forEach(fn FontsetForEachFunc) {
 //
 //   - font: PangoFont. The caller must call g_object_unref() when finished with
 //     the font.
-//
 func (fontset *Fontset) font(wc uint) Fonter {
 	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
 	fnarg := gclass.get_font
@@ -8264,8 +8088,6 @@ func (fontset *Fontset) font(wc uint) Fonter {
 	return _font
 }
 
-// The function returns the following values:
-//
 func (fontset *Fontset) language() *Language {
 	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
 	fnarg := gclass.get_language
@@ -8297,7 +8119,6 @@ func (fontset *Fontset) language() *Language {
 //
 //   - fontMetrics object. The caller must call pango_font_metrics_unref() when
 //     finished using the object.
-//
 func (fontset *Fontset) metrics() *FontMetrics {
 	gclass := (*C.PangoFontsetClass)(coreglib.PeekParentClass(fontset))
 	fnarg := gclass.get_metrics
@@ -8359,7 +8180,6 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 //
 //   - fontsetSimple: newly allocated PangoFontsetSimple, which should be freed
 //     with g_object_unref().
-//
 func NewFontsetSimple(language *Language) *FontsetSimple {
 	var _arg1 *C.PangoLanguage      // out
 	var _cret *C.PangoFontsetSimple // in
@@ -8381,7 +8201,6 @@ func NewFontsetSimple(language *Language) *FontsetSimple {
 // The function takes the following parameters:
 //
 //   - font: PangoFont.
-//
 func (fontset *FontsetSimple) Append(font Fonter) {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _arg1 *C.PangoFont          // out
@@ -8399,7 +8218,6 @@ func (fontset *FontsetSimple) Append(font Fonter) {
 // The function returns the following values:
 //
 //   - gint: size of fontset.
-//
 func (fontset *FontsetSimple) Size() int {
 	var _arg0 *C.PangoFontsetSimple // out
 	var _cret C.int                 // in
@@ -8469,7 +8287,6 @@ func marshalLayout(p uintptr) (interface{}, error) {
 //
 //   - layout: newly allocated PangoLayout, with a reference count of one,
 //     which should be freed with g_object_unref().
-//
 func NewLayout(context *Context) *Layout {
 	var _arg1 *C.PangoContext // out
 	var _cret *C.PangoLayout  // in
@@ -8509,7 +8326,6 @@ func (layout *Layout) ContextChanged() {
 //
 //   - layout: newly allocated PangoLayout, with a reference count of one,
 //     which should be freed with g_object_unref().
-//
 func (src *Layout) Copy() *Layout {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.PangoLayout // in
@@ -8532,7 +8348,6 @@ func (src *Layout) Copy() *Layout {
 // The function returns the following values:
 //
 //   - alignment: alignment.
-//
 func (layout *Layout) Alignment() Alignment {
 	var _arg0 *C.PangoLayout   // out
 	var _cret C.PangoAlignment // in
@@ -8554,7 +8369,6 @@ func (layout *Layout) Alignment() Alignment {
 // The function returns the following values:
 //
 //   - attrList (optional): PangoAttrList or NULL if none was set.
-//
 func (layout *Layout) Attributes() *AttrList {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoAttrList // in
@@ -8589,7 +8403,6 @@ func (layout *Layout) Attributes() *AttrList {
 //
 //   - ok: TRUE if the bidirectional base direction is computed from the
 //     layout's contents, FALSE otherwise.
-//
 func (layout *Layout) AutoDir() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -8613,7 +8426,6 @@ func (layout *Layout) AutoDir() bool {
 // The function returns the following values:
 //
 //   - gint: baseline of first line, from top of layout.
-//
 func (layout *Layout) Baseline() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -8636,7 +8448,6 @@ func (layout *Layout) Baseline() int {
 // The function returns the following values:
 //
 //   - gint: number of Unicode characters in the text of layout.
-//
 func (layout *Layout) CharacterCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gint         // in
@@ -8660,7 +8471,6 @@ func (layout *Layout) CharacterCount() int {
 //   - context: PangoContext for the layout. This does not have an additional
 //     refcount added, so if you want to keep a copy of this around, you must
 //     reference it yourself.
-//
 func (layout *Layout) Context() *Context {
 	var _arg0 *C.PangoLayout  // out
 	var _cret *C.PangoContext // in
@@ -8696,7 +8506,6 @@ func (layout *Layout) Context() *Context {
 //     be NULL).
 //   - weakPos (optional): location to store the weak cursor position (may be
 //     NULL).
-//
 func (layout *Layout) CursorPos(index_ int) (strongPos, weakPos *Rectangle) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
@@ -8728,7 +8537,6 @@ func (layout *Layout) CursorPos(index_ int) (strongPos, weakPos *Rectangle) {
 // The function returns the following values:
 //
 //   - direction: text direction at index.
-//
 func (layout *Layout) Direction(index int) Direction {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
@@ -8758,7 +8566,6 @@ func (layout *Layout) Direction(index int) Direction {
 // The function returns the following values:
 //
 //   - ellipsizeMode: current ellipsization mode for layout.
-//
 func (layout *Layout) Ellipsize() EllipsizeMode {
 	var _arg0 *C.PangoLayout       // out
 	var _cret C.PangoEllipsizeMode // in
@@ -8792,7 +8599,6 @@ func (layout *Layout) Ellipsize() EllipsizeMode {
 //     drawn or NULL to indicate that the result is not needed.
 //   - logicalRect (optional): rectangle used to store the logical extents of
 //     the layout or NULL to indicate that the result is not needed.
-//
 func (layout *Layout) Extents() (inkRect, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoRectangle // in
@@ -8819,7 +8625,6 @@ func (layout *Layout) Extents() (inkRect, logicalRect *Rectangle) {
 //   - fontDescription (optional): pointer to the layout's font description,
 //     or NULL if the font description from the layout's context is inherited.
 //     This value is owned by the layout and must not be modified or freed.
-//
 func (layout *Layout) FontDescription() *FontDescription {
 	var _arg0 *C.PangoLayout          // out
 	var _cret *C.PangoFontDescription // in
@@ -8845,7 +8650,6 @@ func (layout *Layout) FontDescription() *FontDescription {
 // The function returns the following values:
 //
 //   - gint: height, in Pango units if positive, or number of lines if negative.
-//
 func (layout *Layout) Height() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -8869,7 +8673,6 @@ func (layout *Layout) Height() int {
 // The function returns the following values:
 //
 //   - gint: indent in Pango units.
-//
 func (layout *Layout) Indent() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -8892,7 +8695,6 @@ func (layout *Layout) Indent() int {
 //
 //   - layoutIter: new PangoLayoutIter that should be freed using
 //     pango.LayoutIter.Free().
-//
 func (layout *Layout) Iter() *LayoutIter {
 	var _arg0 *C.PangoLayout     // out
 	var _cret *C.PangoLayoutIter // in
@@ -8921,7 +8723,6 @@ func (layout *Layout) Iter() *LayoutIter {
 // The function returns the following values:
 //
 //   - ok: justify.
-//
 func (layout *Layout) Justify() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -8955,7 +8756,6 @@ func (layout *Layout) Justify() bool {
 //   - layoutLine (optional): requested PangoLayoutLine, or NULL if the index
 //     is out of range. This layout line can be ref'ed and retained, but will
 //     become invalid if changes are made to the PangoLayout.
-//
 func (layout *Layout) Line(line int) *LayoutLine {
 	var _arg0 *C.PangoLayout     // out
 	var _arg1 C.int              // out
@@ -8989,7 +8789,6 @@ func (layout *Layout) Line(line int) *LayoutLine {
 // The function returns the following values:
 //
 //   - gint: line count.
-//
 func (layout *Layout) LineCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -9022,7 +8821,6 @@ func (layout *Layout) LineCount() int {
 //     is out of range. This layout line can be ref'ed and retained, but will
 //     become invalid if changes are made to the PangoLayout. No changes should
 //     be made to the line.
-//
 func (layout *Layout) LineReadonly(line int) *LayoutLine {
 	var _arg0 *C.PangoLayout     // out
 	var _arg1 C.int              // out
@@ -9054,9 +8852,6 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 // LineSpacing gets the line spacing factor of layout.
 //
 // See pango.Layout.SetLineSpacing().
-//
-// The function returns the following values:
-//
 func (layout *Layout) LineSpacing() float32 {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.float        // in
@@ -9083,7 +8878,6 @@ func (layout *Layout) LineSpacing() float32 {
 //   - sList: GSList containing the lines in the layout. This points to internal
 //     data of the PangoLayout and must be used with care. It will become
 //     invalid on any change to the layout's text or properties.
-//
 func (layout *Layout) Lines() []*LayoutLine {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.GSList      // in
@@ -9124,7 +8918,6 @@ func (layout *Layout) Lines() []*LayoutLine {
 //     data of the PangoLayout and must be used with care. It will become
 //     invalid on any change to the layout's text or properties. No changes
 //     should be made to the lines.
-//
 func (layout *Layout) LinesReadonly() []*LayoutLine {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.GSList      // in
@@ -9161,7 +8954,6 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 //
 //   - attrs: location to store a pointer to an array of logical attributes This
 //     value must be freed with g_free().
-//
 func (layout *Layout) LogAttrs() []LogAttr {
 	var _arg0 *C.PangoLayout  // out
 	var _arg1 *C.PangoLogAttr // in
@@ -9201,7 +8993,6 @@ func (layout *Layout) LogAttrs() []LogAttr {
 // The function returns the following values:
 //
 //   - logAttrs: array of logical attributes.
-//
 func (layout *Layout) LogAttrsReadonly() []LogAttr {
 	var _arg0 *C.PangoLayout  // out
 	var _cret *C.PangoLogAttr // in
@@ -9238,7 +9029,6 @@ func (layout *Layout) LogAttrsReadonly() []LogAttr {
 //     drawn or NULL to indicate that the result is not needed.
 //   - logicalRect (optional): rectangle used to store the logical extents of
 //     the layout or NULL to indicate that the result is not needed.
-//
 func (layout *Layout) PixelExtents() (inkRect, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoRectangle // in
@@ -9268,7 +9058,6 @@ func (layout *Layout) PixelExtents() (inkRect, logicalRect *Rectangle) {
 //
 //   - width (optional): location to store the logical width, or NULL.
 //   - height (optional): location to store the logical height, or NULL.
-//
 func (layout *Layout) PixelSize() (width, height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // in
@@ -9303,7 +9092,6 @@ func (layout *Layout) PixelSize() (width, height int) {
 // The function returns the following values:
 //
 //   - guint: current serial number of layout.
-//
 func (layout *Layout) Serial() uint {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.guint        // in
@@ -9328,7 +9116,6 @@ func (layout *Layout) Serial() uint {
 //
 //   - ok: TRUE if the layout does not break paragraphs at paragraph separator
 //     characters, FALSE otherwise.
-//
 func (layout *Layout) SingleParagraphMode() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -9355,7 +9142,6 @@ func (layout *Layout) SingleParagraphMode() bool {
 //
 //   - width (optional): location to store the logical width, or NULL.
 //   - height (optional): location to store the logical height, or NULL.
-//
 func (layout *Layout) Size() (width, height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // in
@@ -9380,7 +9166,6 @@ func (layout *Layout) Size() (width, height int) {
 // The function returns the following values:
 //
 //   - gint: spacing in Pango units.
-//
 func (layout *Layout) Spacing() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -9407,7 +9192,6 @@ func (layout *Layout) Spacing() int {
 // The function returns the following values:
 //
 //   - tabArray (optional): copy of the tabs for this layout, or NULL.
-//
 func (layout *Layout) Tabs() *TabArray {
 	var _arg0 *C.PangoLayout   // out
 	var _cret *C.PangoTabArray // in
@@ -9438,7 +9222,6 @@ func (layout *Layout) Tabs() *TabArray {
 // The function returns the following values:
 //
 //   - utf8: text in the layout.
-//
 func (layout *Layout) Text() string {
 	var _arg0 *C.PangoLayout // out
 	var _cret *C.char        // in
@@ -9465,7 +9248,6 @@ func (layout *Layout) Text() string {
 // The function returns the following values:
 //
 //   - gint: number of unknown glyphs in layout.
-//
 func (layout *Layout) UnknownGlyphsCount() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -9487,7 +9269,6 @@ func (layout *Layout) UnknownGlyphsCount() int {
 // The function returns the following values:
 //
 //   - gint: width in Pango units, or -1 if no width set.
-//
 func (layout *Layout) Width() int {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.int          // in
@@ -9512,7 +9293,6 @@ func (layout *Layout) Width() int {
 // The function returns the following values:
 //
 //   - wrapMode: active wrap mode.
-//
 func (layout *Layout) Wrap() WrapMode {
 	var _arg0 *C.PangoLayout  // out
 	var _cret C.PangoWrapMode // in
@@ -9547,7 +9327,6 @@ func (layout *Layout) Wrap() WrapMode {
 //     between 0 and pango_layout_get_line_count(layout) - 1), or NULL.
 //   - xPos (optional): location to store resulting position within line
 //     (PANGO_SCALE units per device unit), or NULL.
-//
 func (layout *Layout) IndexToLineX(index_ int, trailing bool) (line, xPos int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -9590,7 +9369,6 @@ func (layout *Layout) IndexToLineX(index_ int, trailing bool) (line, xPos int) {
 // The function returns the following values:
 //
 //   - pos: rectangle in which to store the position of the grapheme.
-//
 func (layout *Layout) IndexToPos(index_ int) *Rectangle {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.int            // out
@@ -9619,7 +9397,6 @@ func (layout *Layout) IndexToPos(index_ int) *Rectangle {
 // The function returns the following values:
 //
 //   - ok: TRUE if any paragraphs had to be ellipsized, FALSE otherwise.
-//
 func (layout *Layout) IsEllipsized() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -9647,7 +9424,6 @@ func (layout *Layout) IsEllipsized() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if any paragraphs had to be wrapped, FALSE otherwise.
-//
 func (layout *Layout) IsWrapped() bool {
 	var _arg0 *C.PangoLayout // out
 	var _cret C.gboolean     // in
@@ -9703,7 +9479,6 @@ func (layout *Layout) IsWrapped() bool {
 //     displayed. This allows distinguishing the position at the beginning of
 //     one line from the position at the end of the preceding line. new_index is
 //     always on the line where the cursor should be displayed.
-//
 func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, direction int) (newIndex, newTrailing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -9743,7 +9518,6 @@ func (layout *Layout) MoveCursorVisually(strong bool, oldIndex, oldTrailing, dir
 // The function takes the following parameters:
 //
 //   - alignment: alignment.
-//
 func (layout *Layout) SetAlignment(alignment Alignment) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 C.PangoAlignment // out
@@ -9762,7 +9536,6 @@ func (layout *Layout) SetAlignment(alignment Alignment) {
 // The function takes the following parameters:
 //
 //   - attrs (optional) can be NULL.
-//
 func (layout *Layout) SetAttributes(attrs *AttrList) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoAttrList // out
@@ -9798,7 +9571,6 @@ func (layout *Layout) SetAttributes(attrs *AttrList) {
 //
 //   - autoDir: if TRUE, compute the bidirectional base direction from the
 //     layout's contents.
-//
 func (layout *Layout) SetAutoDir(autoDir bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -9827,7 +9599,6 @@ func (layout *Layout) SetAutoDir(autoDir bool) {
 // The function takes the following parameters:
 //
 //   - ellipsize: new ellipsization mode for layout.
-//
 func (layout *Layout) SetEllipsize(ellipsize EllipsizeMode) {
 	var _arg0 *C.PangoLayout       // out
 	var _arg1 C.PangoEllipsizeMode // out
@@ -9849,7 +9620,6 @@ func (layout *Layout) SetEllipsize(ellipsize EllipsizeMode) {
 //
 //   - desc (optional): new PangoFontDescription, or NULL to unset the current
 //     font description.
-//
 func (layout *Layout) SetFontDescription(desc *FontDescription) {
 	var _arg0 *C.PangoLayout          // out
 	var _arg1 *C.PangoFontDescription // out
@@ -9892,7 +9662,6 @@ func (layout *Layout) SetFontDescription(desc *FontDescription) {
 //
 //   - height: desired height of the layout in Pango units if positive,
 //     or desired number of lines if negative.
-//
 func (layout *Layout) SetHeight(height int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -9917,7 +9686,6 @@ func (layout *Layout) SetHeight(height int) {
 // The function takes the following parameters:
 //
 //   - indent: amount by which to indent.
-//
 func (layout *Layout) SetIndent(indent int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -9943,7 +9711,6 @@ func (layout *Layout) SetIndent(indent int) {
 // The function takes the following parameters:
 //
 //   - justify: whether the lines in the layout should be justified.
-//
 func (layout *Layout) SetJustify(justify bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -9964,7 +9731,7 @@ func (layout *Layout) SetJustify(justify bool) {
 //
 // If factor is non-zero, lines are placed so that
 //
-//    baseline2 = baseline1 + factor * height2
+//	baseline2 = baseline1 + factor * height2
 //
 // where height2 is the line height of the second line (as determined by the
 // font(s)). In this case, the spacing set with pango.Layout.SetSpacing() is
@@ -9975,7 +9742,6 @@ func (layout *Layout) SetJustify(justify bool) {
 // The function takes the following parameters:
 //
 //   - factor: new line spacing factor.
-//
 func (layout *Layout) SetLineSpacing(factor float32) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.float        // out
@@ -10000,7 +9766,6 @@ func (layout *Layout) SetLineSpacing(factor float32) {
 //
 //   - markup: marked-up text.
 //   - length of marked-up text in bytes, or -1 if markup is null-terminated.
-//
 func (layout *Layout) SetMarkup(markup string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -10040,7 +9805,6 @@ func (layout *Layout) SetMarkup(markup string, length int) {
 //
 //   - accelChar (optional): return location for first located accelerator,
 //     or NULL.
-//
 func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32 {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -10077,7 +9841,6 @@ func (layout *Layout) SetMarkupWithAccel(markup string, length int, accelMarker 
 // The function takes the following parameters:
 //
 //   - setting: new setting.
-//
 func (layout *Layout) SetSingleParagraphMode(setting bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.gboolean     // out
@@ -10107,7 +9870,6 @@ func (layout *Layout) SetSingleParagraphMode(setting bool) {
 // The function takes the following parameters:
 //
 //   - spacing: amount of spacing.
-//
 func (layout *Layout) SetSpacing(spacing int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -10129,7 +9891,6 @@ func (layout *Layout) SetSpacing(spacing int) {
 // The function takes the following parameters:
 //
 //   - tabs (optional): PangoTabArray, or NULL.
-//
 func (layout *Layout) SetTabs(tabs *TabArray) {
 	var _arg0 *C.PangoLayout   // out
 	var _arg1 *C.PangoTabArray // out
@@ -10160,7 +9921,6 @@ func (layout *Layout) SetTabs(tabs *TabArray) {
 //   - length: maximum length of text, in bytes. -1 indicates that the string is
 //     nul-terminated and the length should be calculated. The text will also be
 //     truncated on encountering a nul-termination even when length is positive.
-//
 func (layout *Layout) SetText(text string, length int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 *C.char        // out
@@ -10186,7 +9946,6 @@ func (layout *Layout) SetText(text string, length int) {
 //
 //   - width: desired width in Pango units, or -1 to indicate that no wrapping
 //     or ellipsization should be performed.
-//
 func (layout *Layout) SetWidth(width int) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -10207,7 +9966,6 @@ func (layout *Layout) SetWidth(width int) {
 // The function takes the following parameters:
 //
 //   - wrap mode.
-//
 func (layout *Layout) SetWrap(wrap WrapMode) {
 	var _arg0 *C.PangoLayout  // out
 	var _arg1 C.PangoWrapMode // out
@@ -10242,7 +10000,6 @@ func (layout *Layout) SetWrap(wrap WrapMode) {
 //     the user clicked. It will either be zero, or the number of characters in
 //     the grapheme. 0 represents the leading edge of the grapheme.
 //   - ok: TRUE if the coordinates were inside text, FALSE otherwise.
-//
 func (layout *Layout) XYToIndex(x, y int) (index_, trailing int, ok bool) {
 	var _arg0 *C.PangoLayout // out
 	var _arg1 C.int          // out
@@ -10295,7 +10052,6 @@ type RendererOverrides struct {
 	//     system.
 	//   - width of underline, in Pango units in user coordinate system.
 	//   - height of underline, in Pango units in user coordinate system.
-	//
 	DrawErrorUnderline func(x, y, width, height int)
 	// DrawGlyph draws a single glyph with coordinates in device space.
 	//
@@ -10305,7 +10061,6 @@ type RendererOverrides struct {
 	//   - glyph index of a single glyph.
 	//   - x: x coordinate of left edge of baseline of glyph.
 	//   - y: y coordinate of left edge of baseline of glyph.
-	//
 	DrawGlyph func(font Fonter, glyph Glyph, x, y float64)
 	// DrawGlyphItem draws the glyphs in glyph_item with the specified
 	// PangoRenderer, embedding the text associated with the glyphs in the
@@ -10329,7 +10084,6 @@ type RendererOverrides struct {
 	//     Pango units.
 	//   - y: y position of left edge of baseline, in user space coordinates in
 	//     Pango units.
-	//
 	DrawGlyphItem func(text string, glyphItem *GlyphItem, x, y int)
 	// DrawGlyphs draws the glyphs in glyphs with the specified PangoRenderer.
 	//
@@ -10341,7 +10095,6 @@ type RendererOverrides struct {
 	//     Pango units.
 	//   - y: y position of left edge of baseline, in user space coordinates in
 	//     Pango units.
-	//
 	DrawGlyphs func(font Fonter, glyphs *GlyphString, x, y int)
 	// DrawRectangle draws an axis-aligned rectangle in user space coordinates
 	// with the specified PangoRenderer.
@@ -10358,14 +10111,12 @@ type RendererOverrides struct {
 	//     in Pango units.
 	//   - width of rectangle in Pango units.
 	//   - height of rectangle in Pango units.
-	//
 	DrawRectangle func(part RenderPart, x, y, width, height int)
 	// The function takes the following parameters:
 	//
 	//   - attr
 	//   - x
 	//   - y
-	//
 	DrawShape func(attr *AttrShape, x, y int)
 	// DrawTrapezoid draws a trapezoid with the parallel sides aligned with the
 	// X axis using the given PangoRenderer; coordinates are in device space.
@@ -10379,7 +10130,6 @@ type RendererOverrides struct {
 	//   - y2: y coordinate of bottom of trapezoid.
 	//   - x12: x coordinate of left end of bottom of trapezoid.
 	//   - x22: x coordinate of right end of bottom of trapezoid.
-	//
 	DrawTrapezoid func(part RenderPart, y1, x11, x21, y2, x12, x22 float64)
 	End           func()
 	// PartChanged informs Pango that the way that the rendering is done for
@@ -10390,7 +10140,7 @@ type RendererOverrides struct {
 	// For instance, if a subclass of PangoRenderer was to add a stipple option
 	// for drawing underlines, it needs to call
 	//
-	//    pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
+	//	pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
 	//
 	// When the stipple changes or underlines with different stipples might be
 	// joined together. Pango automatically calls this for changes to colors.
@@ -10399,11 +10149,8 @@ type RendererOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - part for which rendering has changed.
-	//
 	PartChanged func(part RenderPart)
-	// The function takes the following parameters:
-	//
-	PrepareRun func(run *LayoutRun)
+	PrepareRun  func(run *LayoutRun)
 }
 
 func defaultRendererOverrides(v *Renderer) RendererOverrides {
@@ -10571,7 +10318,6 @@ func (renderer *Renderer) Deactivate() {
 //   - y: y coordinate of underline, in Pango units in user coordinate system.
 //   - width of underline, in Pango units in user coordinate system.
 //   - height of underline, in Pango units in user coordinate system.
-//
 func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 C.int            // out
@@ -10601,7 +10347,6 @@ func (renderer *Renderer) DrawErrorUnderline(x, y, width, height int) {
 //   - glyph index of a single glyph.
 //   - x: x coordinate of left edge of baseline of glyph.
 //   - y: y coordinate of left edge of baseline of glyph.
-//
 func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoFont     // out
@@ -10645,7 +10390,6 @@ func (renderer *Renderer) DrawGlyph(font Fonter, glyph Glyph, x, y float64) {
 //     Pango units.
 //   - y: y position of left edge of baseline, in user space coordinates in
 //     Pango units.
-//
 func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 *C.char           // out
@@ -10680,7 +10424,6 @@ func (renderer *Renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 //     Pango units.
 //   - y: y position of left edge of baseline, in user space coordinates in
 //     Pango units.
-//
 func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {
 	var _arg0 *C.PangoRenderer    // out
 	var _arg1 *C.PangoFont        // out
@@ -10711,7 +10454,6 @@ func (renderer *Renderer) DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 //     Pango units.
 //   - y: y position of left edge of baseline, in user space coordinates in
 //     Pango units.
-//
 func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoLayout   // out
@@ -10739,7 +10481,6 @@ func (renderer *Renderer) DrawLayout(layout *Layout, x, y int) {
 //     Pango units.
 //   - y: y position of left edge of baseline, in user space coordinates in
 //     Pango units.
-//
 func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 	var _arg0 *C.PangoRenderer   // out
 	var _arg1 *C.PangoLayoutLine // out
@@ -10773,7 +10514,6 @@ func (renderer *Renderer) DrawLayoutLine(line *LayoutLine, x, y int) {
 //     Pango units.
 //   - width of rectangle in Pango units.
 //   - height of rectangle in Pango units.
-//
 func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -10810,7 +10550,6 @@ func (renderer *Renderer) DrawRectangle(part RenderPart, x, y, width, height int
 //   - y2: y coordinate of bottom of trapezoid.
 //   - x12: x coordinate of left end of bottom of trapezoid.
 //   - x22: x coordinate of right end of bottom of trapezoid.
-//
 func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -10851,7 +10590,6 @@ func (renderer *Renderer) DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, 
 //
 //   - guint16: alpha for the specified part, or 0 if it hasn't been set and
 //     should be inherited from the environment.
-//
 func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -10881,7 +10619,6 @@ func (renderer *Renderer) Alpha(part RenderPart) uint16 {
 //
 //   - color (optional) for the specified part, or NULL if it hasn't been set
 //     and should be inherited from the environment.
-//
 func (renderer *Renderer) Color(part RenderPart) *Color {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -10914,7 +10651,6 @@ func (renderer *Renderer) Color(part RenderPart) *Color {
 //
 //   - layout (optional): layout, or NULL if no layout is being rendered using
 //     renderer at this time.
-//
 func (renderer *Renderer) Layout() *Layout {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoLayout   // in
@@ -10944,7 +10680,6 @@ func (renderer *Renderer) Layout() *Layout {
 //
 //   - layoutLine (optional): layout line, or NULL if no layout line is being
 //     rendered using renderer at this time.
-//
 func (renderer *Renderer) LayoutLine() *LayoutLine {
 	var _arg0 *C.PangoRenderer   // out
 	var _cret *C.PangoLayoutLine // in
@@ -10979,7 +10714,6 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 //   - matrix (optional): matrix, or NULL if no matrix has been set (which is
 //     the same as the identity matrix). The returned matrix is owned by Pango
 //     and must not be modified or freed.
-//
 func (renderer *Renderer) Matrix() *Matrix {
 	var _arg0 *C.PangoRenderer // out
 	var _cret *C.PangoMatrix   // in
@@ -11006,7 +10740,7 @@ func (renderer *Renderer) Matrix() *Matrix {
 // if a subclass of PangoRenderer was to add a stipple option for drawing
 // underlines, it needs to call
 //
-//    pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
+//	pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
 //
 // When the stipple changes or underlines with different stipples might be
 // joined together. Pango automatically calls this for changes to colors.
@@ -11015,7 +10749,6 @@ func (renderer *Renderer) Matrix() *Matrix {
 // The function takes the following parameters:
 //
 //   - part for which rendering has changed.
-//
 func (renderer *Renderer) PartChanged(part RenderPart) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -11037,7 +10770,6 @@ func (renderer *Renderer) PartChanged(part RenderPart) {
 //
 //   - part to set the alpha for.
 //   - alpha value between 1 and 65536, or 0 to unset the alpha.
-//
 func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -11061,7 +10793,6 @@ func (renderer *Renderer) SetAlpha(part RenderPart, alpha uint16) {
 //
 //   - part to change the color of.
 //   - color (optional): new color or NULL to unset the current color.
-//
 func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 	var _arg0 *C.PangoRenderer  // out
 	var _arg1 C.PangoRenderPart // out
@@ -11085,7 +10816,6 @@ func (renderer *Renderer) SetColor(part RenderPart, color *Color) {
 //
 //   - matrix (optional): PangoMatrix, or NULL to unset any existing matrix.
 //     (No matrix set is the same as setting the identity matrix.).
-//
 func (renderer *Renderer) SetMatrix(matrix *Matrix) {
 	var _arg0 *C.PangoRenderer // out
 	var _arg1 *C.PangoMatrix   // out
@@ -11127,7 +10857,6 @@ func (renderer *Renderer) begin() {
 //   - y: y coordinate of underline, in Pango units in user coordinate system.
 //   - width of underline, in Pango units in user coordinate system.
 //   - height of underline, in Pango units in user coordinate system.
-//
 func (renderer *Renderer) drawErrorUnderline(x, y, width, height int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.draw_error_underline
@@ -11160,7 +10889,6 @@ func (renderer *Renderer) drawErrorUnderline(x, y, width, height int) {
 //   - glyph index of a single glyph.
 //   - x: x coordinate of left edge of baseline of glyph.
 //   - y: y coordinate of left edge of baseline of glyph.
-//
 func (renderer *Renderer) drawGlyph(font Fonter, glyph Glyph, x, y float64) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.draw_glyph
@@ -11207,7 +10935,6 @@ func (renderer *Renderer) drawGlyph(font Fonter, glyph Glyph, x, y float64) {
 //     Pango units.
 //   - y: y position of left edge of baseline, in user space coordinates in
 //     Pango units.
-//
 func (renderer *Renderer) drawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.draw_glyph_item
@@ -11245,7 +10972,6 @@ func (renderer *Renderer) drawGlyphItem(text string, glyphItem *GlyphItem, x, y 
 //     Pango units.
 //   - y: y position of left edge of baseline, in user space coordinates in
 //     Pango units.
-//
 func (renderer *Renderer) drawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.draw_glyphs
@@ -11285,7 +11011,6 @@ func (renderer *Renderer) drawGlyphs(font Fonter, glyphs *GlyphString, x, y int)
 //     Pango units.
 //   - width of rectangle in Pango units.
 //   - height of rectangle in Pango units.
-//
 func (renderer *Renderer) drawRectangle(part RenderPart, x, y, width, height int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.draw_rectangle
@@ -11318,7 +11043,6 @@ func (renderer *Renderer) drawRectangle(part RenderPart, x, y, width, height int
 //   - attr
 //   - x
 //   - y
-//
 func (renderer *Renderer) drawShape(attr *AttrShape, x, y int) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.draw_shape
@@ -11352,7 +11076,6 @@ func (renderer *Renderer) drawShape(attr *AttrShape, x, y int) {
 //   - y2: y coordinate of bottom of trapezoid.
 //   - x12: x coordinate of left end of bottom of trapezoid.
 //   - x22: x coordinate of right end of bottom of trapezoid.
-//
 func (renderer *Renderer) drawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.draw_trapezoid
@@ -11406,7 +11129,7 @@ func (renderer *Renderer) end() {
 // if a subclass of PangoRenderer was to add a stipple option for drawing
 // underlines, it needs to call
 //
-//    pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
+//	pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);
 //
 // When the stipple changes or underlines with different stipples might be
 // joined together. Pango automatically calls this for changes to colors.
@@ -11415,7 +11138,6 @@ func (renderer *Renderer) end() {
 // The function takes the following parameters:
 //
 //   - part for which rendering has changed.
-//
 func (renderer *Renderer) partChanged(part RenderPart) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.part_changed
@@ -11431,8 +11153,6 @@ func (renderer *Renderer) partChanged(part RenderPart) {
 	runtime.KeepAlive(part)
 }
 
-// The function takes the following parameters:
-//
 func (renderer *Renderer) prepareRun(run *LayoutRun) {
 	gclass := (*C.PangoRendererClass)(coreglib.PeekParentClass(renderer))
 	fnarg := gclass.prepare_run
@@ -11697,7 +11417,6 @@ func (a *AttrFontDesc) Desc() *FontDescription {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrFontDesc(desc *FontDescription) *Attribute {
 	var _arg1 *C.PangoFontDescription // out
 	var _cret *C.PangoAttribute       // in
@@ -11759,7 +11478,6 @@ func (a *AttrFontFeatures) Features() string {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrFontFeatures(features string) *Attribute {
 	var _arg1 *C.gchar          // out
 	var _cret *C.PangoAttribute // in
@@ -11846,7 +11564,6 @@ func marshalAttrIterator(p uintptr) (interface{}, error) {
 //
 //   - attrIterator: newly allocated PangoAttrIterator, which should be freed
 //     with pango.AttrIterator.Destroy().
-//
 func (iterator *AttrIterator) Copy() *AttrIterator {
 	var _arg0 *C.PangoAttrIterator // out
 	var _cret *C.PangoAttrIterator // in
@@ -11891,7 +11608,6 @@ func (iterator *AttrIterator) Destroy() {
 //
 //   - attribute (optional): current attribute of the given type, or NULL if no
 //     attribute of that type applies to the current location.
-//
 func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 	var _arg0 *C.PangoAttrIterator // out
 	var _arg1 C.PangoAttrType      // out
@@ -11920,7 +11636,6 @@ func (iterator *AttrIterator) Get(typ AttrType) *Attribute {
 //   - sList: a list of all attributes for the current range. To free this
 //     value, call pango.Attribute.Destroy() on each value and g_slist_free() on
 //     the list.
-//
 func (iterator *AttrIterator) Attrs() []*Attribute {
 	var _arg0 *C.PangoAttrIterator // out
 	var _cret *C.GSList            // in
@@ -11954,7 +11669,6 @@ func (iterator *AttrIterator) Attrs() []*Attribute {
 // The function returns the following values:
 //
 //   - ok: FALSE if the iterator is at the end of the list, otherwise TRUE.
-//
 func (iterator *AttrIterator) Next() bool {
 	var _arg0 *C.PangoAttrIterator // out
 	var _cret C.gboolean           // in
@@ -11982,7 +11696,6 @@ func (iterator *AttrIterator) Next() bool {
 //
 //   - start: location to store the start of the range.
 //   - end: location to store the end of the range.
-//
 func (iterator *AttrIterator) Range() (start int, end int) {
 	var _arg0 *C.PangoAttrIterator // out
 	var _arg1 C.gint               // in
@@ -12041,7 +11754,6 @@ func (a *AttrLanguage) Value() *Language {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrLanguage(language *Language) *Attribute {
 	var _arg1 *C.PangoLanguage  // out
 	var _cret *C.PangoAttribute // in
@@ -12124,7 +11836,6 @@ func NewAttrList() *AttrList {
 //
 //   - attr: attribute to insert. Ownership of this value is assumed by the
 //     list.
-//
 func (list *AttrList) Change(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
@@ -12145,7 +11856,6 @@ func (list *AttrList) Change(attr *Attribute) {
 //   - attrList (optional): newly allocated PangoAttrList, with a reference
 //     count of one, which should be freed with pango.AttrList.Unref(). Returns
 //     NULL if list was NULL.
-//
 func (list *AttrList) Copy() *AttrList {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.PangoAttrList // in
@@ -12183,7 +11893,6 @@ func (list *AttrList) Copy() *AttrList {
 // The function returns the following values:
 //
 //   - ok: TRUE if the lists are equal, FALSE if they aren't.
-//
 func (list *AttrList) Equal(otherList *AttrList) bool {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 *C.PangoAttrList // out
@@ -12217,7 +11926,6 @@ func (list *AttrList) Equal(otherList *AttrList) bool {
 //
 //   - attrList (optional): new PangoAttrList or NULL if no attributes of the
 //     given types were found.
-//
 func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 	var _arg0 *C.PangoAttrList      // out
 	var _arg1 C.PangoAttrFilterFunc // out
@@ -12254,7 +11962,6 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 //
 //   - sList: a list of all attributes in list. To free this value, call
 //     pango.Attribute.Destroy on each value and g_slist_free() on the list.
-//
 func (list *AttrList) Attributes() []*Attribute {
 	var _arg0 *C.PangoAttrList // out
 	var _cret *C.GSList        // in
@@ -12290,7 +11997,6 @@ func (list *AttrList) Attributes() []*Attribute {
 //
 //   - attrIterator: newly allocated PangoAttrIterator, which should be freed
 //     with pango.AttrIterator.Destroy().
-//
 func (list *AttrList) Iterator() *AttrIterator {
 	var _arg0 *C.PangoAttrList     // out
 	var _cret *C.PangoAttrIterator // in
@@ -12321,7 +12027,6 @@ func (list *AttrList) Iterator() *AttrIterator {
 //
 //   - attr: attribute to insert. Ownership of this value is assumed by the
 //     list.
-//
 func (list *AttrList) Insert(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
@@ -12343,7 +12048,6 @@ func (list *AttrList) Insert(attr *Attribute) {
 //
 //   - attr: attribute to insert. Ownership of this value is assumed by the
 //     list.
-//
 func (list *AttrList) InsertBefore(attr *Attribute) {
 	var _arg0 *C.PangoAttrList  // out
 	var _arg1 *C.PangoAttribute // out
@@ -12375,7 +12079,6 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 //   - len: length of the spliced segment. (Note that this must be specified
 //     since the attributes in other may only be present at some subsection of
 //     this range).
-//
 func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 *C.PangoAttrList // out
@@ -12412,7 +12115,6 @@ func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 //   - pos: position of the change.
 //   - remove: number of removed bytes.
 //   - add: number of added bytes.
-//
 func (list *AttrList) Update(pos int, remove int, add int) {
 	var _arg0 *C.PangoAttrList // out
 	var _arg1 C.int            // out
@@ -12459,7 +12161,6 @@ type attrShape struct {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
 	var _arg1 *C.PangoRectangle // out
 	var _arg2 *C.PangoRectangle // out
@@ -12532,7 +12233,6 @@ func (a *AttrSize) SetSize(size int) {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrSize(size int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
@@ -12565,7 +12265,6 @@ func NewAttrSize(size int) *Attribute {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func NewAttrSizeAbsolute(size int) *Attribute {
 	var _arg1 C.int             // out
 	var _cret *C.PangoAttribute // in
@@ -12685,7 +12384,6 @@ func (a *Attribute) SetEndIndex(endIndex uint) {
 //
 //   - attribute: newly allocated PangoAttribute, which should be freed with
 //     pango.Attribute.Destroy().
-//
 func (attr *Attribute) Copy() *Attribute {
 	var _arg0 *C.PangoAttribute // out
 	var _cret *C.PangoAttribute // in
@@ -12728,7 +12426,6 @@ func (attr *Attribute) Destroy() {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two attributes have the same value.
-//
 func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 	var _arg0 *C.PangoAttribute // out
 	var _arg1 *C.PangoAttribute // out
@@ -12758,7 +12455,6 @@ func (attr1 *Attribute) Equal(attr2 *Attribute) bool {
 // The function takes the following parameters:
 //
 //   - klass: PangoAttrClass.
-//
 func (attr *Attribute) Init(klass *AttrClass) {
 	var _arg0 *C.PangoAttribute // out
 	var _arg1 *C.PangoAttrClass // out
@@ -12861,7 +12557,6 @@ func (c *Color) SetBlue(blue uint16) {
 //
 //   - color (optional): newly allocated PangoColor, which should be freed with
 //     pango.Color.Free(), or NULL if src was NULL.
-//
 func (src *Color) Copy() *Color {
 	var _arg0 *C.PangoColor // out
 	var _cret *C.PangoColor // in
@@ -12904,7 +12599,6 @@ func (src *Color) Copy() *Color {
 // The function returns the following values:
 //
 //   - ok: TRUE if parsing of the specifier succeeded, otherwise false.
-//
 func (color *Color) Parse(spec string) bool {
 	var _arg0 *C.PangoColor // out
 	var _arg1 *C.char       // out
@@ -12951,7 +12645,6 @@ func (color *Color) Parse(spec string) bool {
 //
 //   - alpha (optional): return location for alpha, or NULL.
 //   - ok: TRUE if parsing of the specifier succeeded, otherwise false.
-//
 func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 	var _arg0 *C.PangoColor // out
 	var _arg1 C.guint16     // in
@@ -12987,7 +12680,6 @@ func (color *Color) ParseWithAlpha(spec string) (uint16, bool) {
 // The function returns the following values:
 //
 //   - utf8: newly-allocated text string that must be freed with g_free().
-//
 func (color *Color) String() string {
 	var _arg0 *C.PangoColor // out
 	var _cret *C.gchar      // in
@@ -13076,7 +12768,6 @@ func NewFontDescription() *FontDescription {
 // The function returns the following values:
 //
 //   - ok: TRUE if new_match is a better match.
-//
 func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *FontDescription) bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -13110,7 +12801,6 @@ func (desc *FontDescription) BetterMatch(oldMatch *FontDescription, newMatch *Fo
 //   - fontDescription (optional): newly allocated PangoFontDescription,
 //     which should be freed with pango.FontDescription.Free(), or NULL if desc
 //     was NULL.
-//
 func (desc *FontDescription) Copy() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.PangoFontDescription // in
@@ -13150,7 +12840,6 @@ func (desc *FontDescription) Copy() *FontDescription {
 //   - fontDescription (optional): newly allocated PangoFontDescription,
 //     which should be freed with pango.FontDescription.Free(), or NULL if desc
 //     was NULL.
-//
 func (desc *FontDescription) CopyStatic() *FontDescription {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.PangoFontDescription // in
@@ -13191,7 +12880,6 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 // The function returns the following values:
 //
 //   - ok: TRUE if the two font descriptions are identical, FALSE otherwise.
-//
 func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -13222,7 +12910,6 @@ func (desc1 *FontDescription) Equal(desc2 *FontDescription) bool {
 //   - utf8 (optional): family name field for the font description, or NULL if
 //     not previously set. This has the same life-time as the font description
 //     itself and should not be freed.
-//
 func (desc *FontDescription) Family() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
@@ -13250,7 +12937,6 @@ func (desc *FontDescription) Family() string {
 //   - gravity field for the font description. Use
 //     pango.FontDescription.GetSetFields() to find out if the field was
 //     explicitly set or not.
-//
 func (desc *FontDescription) Gravity() Gravity {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoGravity          // in
@@ -13273,7 +12959,6 @@ func (desc *FontDescription) Gravity() Gravity {
 //
 //   - fontMask: bitmask with bits set corresponding to the fields in desc that
 //     have been set.
-//
 func (desc *FontDescription) SetFields() FontMask {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoFontMask         // in
@@ -13301,7 +12986,6 @@ func (desc *FontDescription) SetFields() FontMask {
 //     is the case. Returns 0 if the size field has not previously been set or
 //     it has been set to 0 explicitly. Use pango.FontDescription.GetSetFields()
 //     to find out if the field was explicitly set or not.
-//
 func (desc *FontDescription) Size() int {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.gint                  // in
@@ -13329,7 +13013,6 @@ func (desc *FontDescription) Size() int {
 //   - ok: whether the size for the font description is in points or device
 //     units. Use pango.FontDescription.GetSetFields() to find out if the size
 //     field of the font description was explicitly set or not.
-//
 func (desc *FontDescription) SizeIsAbsolute() bool {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.gboolean              // in
@@ -13357,7 +13040,6 @@ func (desc *FontDescription) SizeIsAbsolute() bool {
 //   - stretch field for the font description. Use
 //     pango.FontDescription.GetSetFields() to find out if the field was
 //     explicitly set or not.
-//
 func (desc *FontDescription) Stretch() Stretch {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoStretch          // in
@@ -13383,7 +13065,6 @@ func (desc *FontDescription) Stretch() Stretch {
 //   - style field for the font description. Use
 //     pango.FontDescription.GetSetFields() to find out if the field was
 //     explicitly set or not.
-//
 func (desc *FontDescription) Style() Style {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoStyle            // in
@@ -13409,7 +13090,6 @@ func (desc *FontDescription) Style() Style {
 //   - variant field for the font description. Use
 //     pango.FontDescription.GetSetFields() to find out if the field was
 //     explicitly set or not.
-//
 func (desc *FontDescription) Variant() Variant {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoVariant          // in
@@ -13435,7 +13115,6 @@ func (desc *FontDescription) Variant() Variant {
 //   - utf8 (optional) variations field for the font description, or NULL if
 //     not previously set. This has the same life-time as the font description
 //     itself and should not be freed.
-//
 func (desc *FontDescription) Variations() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
@@ -13463,7 +13142,6 @@ func (desc *FontDescription) Variations() string {
 //   - weight field for the font description. Use
 //     pango.FontDescription.GetSetFields() to find out if the field was
 //     explicitly set or not.
-//
 func (desc *FontDescription) Weight() Weight {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.PangoWeight           // in
@@ -13488,7 +13166,6 @@ func (desc *FontDescription) Weight() Weight {
 // The function returns the following values:
 //
 //   - guint: hash value.
-//
 func (desc *FontDescription) Hash() uint {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret C.guint                 // in
@@ -13519,7 +13196,6 @@ func (desc *FontDescription) Hash() uint {
 //   - descToMerge (optional): PangoFontDescription to merge from, or NULL.
 //   - replaceExisting: if TRUE, replace fields in desc with the corresponding
 //     values from desc_to_merge, even if they are already exist.
-//
 func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting bool) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -13552,7 +13228,6 @@ func (desc *FontDescription) Merge(descToMerge *FontDescription, replaceExisting
 //   - descToMerge: PangoFontDescription to merge from.
 //   - replaceExisting: if TRUE, replace fields in desc with the corresponding
 //     values from desc_to_merge, even if they are already exist.
-//
 func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceExisting bool) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.PangoFontDescription // out
@@ -13580,7 +13255,6 @@ func (desc *FontDescription) MergeStatic(descToMerge *FontDescription, replaceEx
 //   - size: new size, in Pango units. There are PANGO_SCALE Pango units in
 //     one device unit. For an output backend where a device unit is a pixel,
 //     a size value of 10 * PANGO_SCALE gives a 10 pixel font.
-//
 func (desc *FontDescription) SetAbsoluteSize(size float64) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.double                // out
@@ -13602,7 +13276,6 @@ func (desc *FontDescription) SetAbsoluteSize(size float64) {
 // The function takes the following parameters:
 //
 //   - family: string representing the family name.
-//
 func (desc *FontDescription) SetFamily(family string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
@@ -13628,7 +13301,6 @@ func (desc *FontDescription) SetFamily(family string) {
 // The function takes the following parameters:
 //
 //   - family: string representing the family name.
-//
 func (desc *FontDescription) SetFamilyStatic(family string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
@@ -13654,7 +13326,6 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 // The function takes the following parameters:
 //
 //   - gravity for the font description.
-//
 func (desc *FontDescription) SetGravity(gravity Gravity) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoGravity          // out
@@ -13680,7 +13351,6 @@ func (desc *FontDescription) SetGravity(gravity Gravity) {
 //     case a 10 point font corresponds to a 10 * (96 / 72) = 13.3 pixel font.
 //     Use pango.FontDescription.SetAbsoluteSize() if you need a particular size
 //     in device units.
-//
 func (desc *FontDescription) SetSize(size int) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.gint                  // out
@@ -13700,7 +13370,6 @@ func (desc *FontDescription) SetSize(size int) {
 // The function takes the following parameters:
 //
 //   - stretch for the font description.
-//
 func (desc *FontDescription) SetStretch(stretch Stretch) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoStretch          // out
@@ -13726,7 +13395,6 @@ func (desc *FontDescription) SetStretch(stretch Stretch) {
 // The function takes the following parameters:
 //
 //   - style for the font description.
-//
 func (desc *FontDescription) SetStyle(style Style) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoStyle            // out
@@ -13747,7 +13415,6 @@ func (desc *FontDescription) SetStyle(style Style) {
 // The function takes the following parameters:
 //
 //   - variant type for the font description.
-//
 func (desc *FontDescription) SetVariant(variant Variant) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoVariant          // out
@@ -13767,7 +13434,7 @@ func (desc *FontDescription) SetVariant(variant Variant) {
 //
 // The format of the variations string is
 //
-//    AXIS1=VALUE,AXIS2=VALUE...
+//	AXIS1=VALUE,AXIS2=VALUE...
 //
 // with each AXIS a 4 character tag that identifies a font axis, and each VALUE
 // a floating point number. Unknown axes are ignored, and values are clamped to
@@ -13779,7 +13446,6 @@ func (desc *FontDescription) SetVariant(variant Variant) {
 // The function takes the following parameters:
 //
 //   - variations: string representing the variations.
-//
 func (desc *FontDescription) SetVariations(variations string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
@@ -13804,7 +13470,6 @@ func (desc *FontDescription) SetVariations(variations string) {
 // The function takes the following parameters:
 //
 //   - variations: string representing the variations.
-//
 func (desc *FontDescription) SetVariationsStatic(variations string) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 *C.char                 // out
@@ -13827,7 +13492,6 @@ func (desc *FontDescription) SetVariationsStatic(variations string) {
 // The function takes the following parameters:
 //
 //   - weight for the font description.
-//
 func (desc *FontDescription) SetWeight(weight Weight) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoWeight           // out
@@ -13849,7 +13513,6 @@ func (desc *FontDescription) SetWeight(weight Weight) {
 // The function returns the following values:
 //
 //   - utf8: new string that must be freed with g_free().
-//
 func (desc *FontDescription) ToFilename() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
@@ -13877,7 +13540,6 @@ func (desc *FontDescription) ToFilename() string {
 // The function returns the following values:
 //
 //   - utf8: new string that must be freed with g_free().
-//
 func (desc *FontDescription) String() string {
 	var _arg0 *C.PangoFontDescription // out
 	var _cret *C.char                 // in
@@ -13902,7 +13564,6 @@ func (desc *FontDescription) String() string {
 // The function takes the following parameters:
 //
 //   - toUnset: bitmask of fields in the desc to unset.
-//
 func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 	var _arg0 *C.PangoFontDescription // out
 	var _arg1 C.PangoFontMask         // out
@@ -13920,7 +13581,7 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 //
 // The string must have the form
 //
-//    "\[FAMILY-LIST] \[STYLE-OPTIONS] \[SIZE] \[VARIATIONS]",
+//	"\[FAMILY-LIST] \[STYLE-OPTIONS] \[SIZE] \[VARIATIONS]",
 //
 // where FAMILY-LIST is a comma-separated list of families optionally terminated
 // by a comma, STYLE_OPTIONS is a whitespace-separated list of words where each
@@ -13954,7 +13615,7 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 //
 // A typical example:
 //
-//    "Cantarell Italic Light 15 \wght=200".
+//	"Cantarell Italic Light 15 \wght=200".
 //
 // The function takes the following parameters:
 //
@@ -13963,7 +13624,6 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 // The function returns the following values:
 //
 //   - fontDescription: new PangoFontDescription.
-//
 func FontDescriptionFromString(str string) *FontDescription {
 	var _arg1 *C.char                 // out
 	var _cret *C.PangoFontDescription // in
@@ -14062,7 +13722,6 @@ func marshalFontMetrics(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - gint: character width, in Pango units.
-//
 func (metrics *FontMetrics) ApproximateCharWidth() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14090,7 +13749,6 @@ func (metrics *FontMetrics) ApproximateCharWidth() int {
 // The function returns the following values:
 //
 //   - gint: digit width, in Pango units.
-//
 func (metrics *FontMetrics) ApproximateDigitWidth() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14116,7 +13774,6 @@ func (metrics *FontMetrics) ApproximateDigitWidth() int {
 // The function returns the following values:
 //
 //   - gint: ascent, in Pango units.
-//
 func (metrics *FontMetrics) Ascent() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14143,7 +13800,6 @@ func (metrics *FontMetrics) Ascent() int {
 // The function returns the following values:
 //
 //   - gint: descent, in Pango units.
-//
 func (metrics *FontMetrics) Descent() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14169,7 +13825,6 @@ func (metrics *FontMetrics) Descent() int {
 // The function returns the following values:
 //
 //   - gint: height, in Pango units.
-//
 func (metrics *FontMetrics) Height() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14194,7 +13849,6 @@ func (metrics *FontMetrics) Height() int {
 // The function returns the following values:
 //
 //   - gint: suggested strikethrough position, in Pango units.
-//
 func (metrics *FontMetrics) StrikethroughPosition() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14217,7 +13871,6 @@ func (metrics *FontMetrics) StrikethroughPosition() int {
 // The function returns the following values:
 //
 //   - gint: suggested strikethrough thickness, in Pango units.
-//
 func (metrics *FontMetrics) StrikethroughThickness() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14243,7 +13896,6 @@ func (metrics *FontMetrics) StrikethroughThickness() int {
 // The function returns the following values:
 //
 //   - gint: suggested underline position, in Pango units.
-//
 func (metrics *FontMetrics) UnderlinePosition() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14265,7 +13917,6 @@ func (metrics *FontMetrics) UnderlinePosition() int {
 // The function returns the following values:
 //
 //   - gint: suggested underline thickness, in Pango units.
-//
 func (metrics *FontMetrics) UnderlineThickness() int {
 	var _arg0 *C.PangoFontMetrics // out
 	var _cret C.int               // in
@@ -14434,7 +14085,6 @@ func (g *GlyphItem) Glyphs() *GlyphString {
 //
 //   - sList: a list of glyph items resulting from splitting glyph_item. Free
 //     the elements using pango.GlyphItem.Free(), the list using g_slist_free().
-//
 func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
@@ -14476,7 +14126,6 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 //
 //   - glyphItem (optional): newly allocated PangoGlyphItem, which should be
 //     freed with pango_glyph_item_free(), or NULL if orig was NULL.
-//
 func (orig *GlyphItem) Copy() *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _cret *C.PangoGlyphItem // in
@@ -14524,7 +14173,6 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 //
 //   - glyphItem: newly allocated item representing text before split_index,
 //     which should be freed with pango_glyph_item_free().
-//
 func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 	var _arg0 *C.PangoGlyphItem // out
 	var _arg1 *C.char           // out
@@ -14571,16 +14219,16 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 //
 // A common idiom for doing a forward iteration over the clusters is:
 //
-//    PangoGlyphItemIter cluster_iter;
-//    gboolean have_cluster;
+//	PangoGlyphItemIter cluster_iter;
+//	gboolean have_cluster;
 //
-//    for (have_cluster = pango_glyph_item_iter_init_start (&cluster_iter,
-//                                                          glyph_item, text);
-//         have_cluster;
-//         have_cluster = pango_glyph_item_iter_next_cluster (&cluster_iter))
-//    {
-//      ...
-//    }
+//	for (have_cluster = pango_glyph_item_iter_init_start (&cluster_iter,
+//	                                                      glyph_item, text);
+//	     have_cluster;
+//	     have_cluster = pango_glyph_item_iter_next_cluster (&cluster_iter))
+//	{
+//	  ...
+//	}
 //
 // Note that text is the start of the text for layout, which is then indexed by
 // glyph_item->item->offset to get to the text of glyph_item. The start_index
@@ -14699,7 +14347,6 @@ func (g *GlyphItemIter) SetEndChar(endChar int) {
 //   - glyphItemIter (optional): newly allocated PangoGlyphItemIter, which
 //     should be freed with pango_glyph_item_iter_free(), or NULL if orig was
 //     NULL.
-//
 func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret *C.PangoGlyphItemIter // in
@@ -14739,7 +14386,6 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 // The function returns the following values:
 //
 //   - ok: FALSE if there are no clusters in the glyph item.
-//
 func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _arg1 *C.PangoGlyphItem     // out
@@ -14778,7 +14424,6 @@ func (iter *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 // The function returns the following values:
 //
 //   - ok: FALSE if there are no clusters in the glyph item.
-//
 func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _arg1 *C.PangoGlyphItem     // out
@@ -14812,7 +14457,6 @@ func (iter *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 //
 //   - ok: TRUE if the iterator was advanced, FALSE if we were already on the
 //     last cluster.
-//
 func (iter *GlyphItemIter) NextCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret C.gboolean            // in
@@ -14838,7 +14482,6 @@ func (iter *GlyphItemIter) NextCluster() bool {
 //
 //   - ok: TRUE if the iterator was moved, FALSE if we were already on the first
 //     cluster.
-//
 func (iter *GlyphItemIter) PrevCluster() bool {
 	var _arg0 *C.PangoGlyphItemIter // out
 	var _cret C.gboolean            // in
@@ -14903,7 +14546,6 @@ func NewGlyphString() *GlyphString {
 //
 //   - glyphString (optional): newly allocated PangoGlyphString, which should be
 //     freed with pango.GlyphString.Free(), or NULL if string was NULL.
-//
 func (str *GlyphString) Copy() *GlyphString {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret *C.PangoGlyphString // in
@@ -14949,7 +14591,6 @@ func (str *GlyphString) Copy() *GlyphString {
 //     string as drawn or NULL to indicate that the result is not needed.
 //   - logicalRect (optional): rectangle used to store the logical extents of
 //     the glyph string or NULL to indicate that the result is not needed.
-//
 func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.PangoFont        // out
@@ -14991,7 +14632,6 @@ func (glyphs *GlyphString) Extents(font Fonter) (inkRect *Rectangle, logicalRect
 //     string range as drawn or NULL to indicate that the result is not needed.
 //   - logicalRect (optional): rectangle used to store the logical extents of
 //     the glyph string range or NULL to indicate that the result is not needed.
-//
 func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.int               // out
@@ -15030,7 +14670,6 @@ func (glyphs *GlyphString) ExtentsRange(start int, end int, font Fonter) (inkRec
 // The function returns the following values:
 //
 //   - gint: logical width of the glyph string.
-//
 func (glyphs *GlyphString) Width() int {
 	var _arg0 *C.PangoGlyphString // out
 	var _cret C.int               // in
@@ -15064,7 +14703,6 @@ func (glyphs *GlyphString) Width() int {
 // The function returns the following values:
 //
 //   - xPos: location to store result.
-//
 func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis, index_ int, trailing bool) int {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.char             // out
@@ -15104,7 +14742,6 @@ func (glyphs *GlyphString) IndexToX(text string, length int, analysis *Analysis,
 // The function takes the following parameters:
 //
 //   - newLen: new length of the string.
-//
 func (str *GlyphString) SetSize(newLen int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 C.gint              // out
@@ -15137,7 +14774,6 @@ func (str *GlyphString) SetSize(newLen int) {
 //   - index_: location to store calculated byte index within text.
 //   - trailing: location to store a boolean indicating whether the user clicked
 //     on the leading or trailing edge of the character.
-//
 func (glyphs *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos int) (index_ int, trailing int) {
 	var _arg0 *C.PangoGlyphString // out
 	var _arg1 *C.char             // out
@@ -15288,7 +14924,6 @@ func (i *Item) SetNumChars(numChars int) {
 // The function takes the following parameters:
 //
 //   - iter: PangoAttrIterator.
-//
 func (item *Item) ApplyAttrs(iter *AttrIterator) {
 	var _arg0 *C.PangoItem         // out
 	var _arg1 *C.PangoAttrIterator // out
@@ -15307,7 +14942,6 @@ func (item *Item) ApplyAttrs(iter *AttrIterator) {
 //
 //   - ret (optional): newly allocated PangoItem, which should be freed with
 //     pango.Item.Free(), or NULL if item was NULL.
-//
 func (item *Item) Copy() *Item {
 	var _arg0 *C.PangoItem // out
 	var _cret *C.PangoItem // in
@@ -15355,7 +14989,6 @@ func (item *Item) Copy() *Item {
 //
 //   - item: new item representing text before split_index, which should be
 //     freed with pango.Item.Free().
-//
 func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _arg0 *C.PangoItem // out
 	var _arg1 C.int        // out
@@ -15420,13 +15053,12 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 // pointer value to that returned for (non-existent) language code "xx".
 // That is, compare to:
 //
-//    pango_language_get_sample_string (pango_language_from_string ("xx")).
+//	pango_language_get_sample_string (pango_language_from_string ("xx")).
 //
 // The function returns the following values:
 //
 //   - utf8: sample string. This value is owned by Pango and should not be
 //     freed.
-//
 func (language *Language) SampleString() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
@@ -15473,7 +15105,6 @@ func (language *Language) SampleString() string {
 //     have any information about this particular language tag (also the case if
 //     language is NULL). The returned array is owned by Pango and should not be
 //     modified or freed.
-//
 func (language *Language) Scripts() []Script {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.PangoScript   // in
@@ -15516,7 +15147,6 @@ func (language *Language) Scripts() []Script {
 //   - ok: TRUE if script is one of the scripts used to write language or if
 //     nothing is known about language (including the case that language is
 //     NULL), FALSE otherwise.
-//
 func (language *Language) IncludesScript(script Script) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 C.PangoScript    // out
@@ -15556,7 +15186,6 @@ func (language *Language) IncludesScript(script Script) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if a match was found.
-//
 func (language *Language) Matches(rangeList string) bool {
 	var _arg0 *C.PangoLanguage // out
 	var _arg1 *C.char          // out
@@ -15587,7 +15216,6 @@ func (language *Language) Matches(rangeList string) bool {
 //
 //   - utf8: string representing the language tag. This is owned by Pango and
 //     should not be freed.
-//
 func (language *Language) String() string {
 	var _arg0 *C.PangoLanguage // out
 	var _cret *C.char          // in
@@ -15625,7 +15253,6 @@ func (language *Language) String() string {
 //   - ret (optional): opaque pointer to a PangoLanguage structure, or NULL if
 //     language was NULL. The returned pointer will be valid forever after,
 //     and should not be freed.
-//
 func LanguageFromString(language string) *Language {
 	var _arg1 *C.char          // out
 	var _cret *C.PangoLanguage // in
@@ -15675,7 +15302,6 @@ func LanguageFromString(language string) *Language {
 // The function returns the following values:
 //
 //   - language: default language as a PangoLanguage, must not be freed.
-//
 func LanguageGetDefault() *Language {
 	var _cret *C.PangoLanguage // in
 
@@ -15701,7 +15327,6 @@ func LanguageGetDefault() *Language {
 // The function returns the following values:
 //
 //   - language (optional): NULL-terminated array of PangoLanguage*.
-//
 func LanguageGetPreferred() *Language {
 	var _cret **C.PangoLanguage // in
 
@@ -15743,7 +15368,6 @@ func marshalLayoutIter(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if iter is on the last line.
-//
 func (iter *LayoutIter) AtLastLine() bool {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.gboolean         // in
@@ -15768,7 +15392,6 @@ func (iter *LayoutIter) AtLastLine() bool {
 //
 //   - layoutIter (optional): newly allocated PangoLayoutIter, which should be
 //     freed with pango.LayoutIter.Free(), or NULL if iter was NULL.
-//
 func (iter *LayoutIter) Copy() *LayoutIter {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret *C.PangoLayoutIter // in
@@ -15801,7 +15424,6 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 // The function returns the following values:
 //
 //   - gint: baseline of current line.
-//
 func (iter *LayoutIter) Baseline() int {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.int              // in
@@ -15826,7 +15448,6 @@ func (iter *LayoutIter) Baseline() int {
 // The function returns the following values:
 //
 //   - logicalRect: rectangle to fill with logical extents.
-//
 func (iter *LayoutIter) CharExtents() *Rectangle {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
@@ -15850,7 +15471,6 @@ func (iter *LayoutIter) CharExtents() *Rectangle {
 //
 //   - inkRect (optional): rectangle to fill with ink extents, or NULL.
 //   - logicalRect (optional): rectangle to fill with logical extents, or NULL.
-//
 func (iter *LayoutIter) ClusterExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
@@ -15878,7 +15498,6 @@ func (iter *LayoutIter) ClusterExtents() (inkRect *Rectangle, logicalRect *Recta
 // The function returns the following values:
 //
 //   - gint: current byte index.
-//
 func (iter *LayoutIter) Index() int {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.int              // in
@@ -15900,7 +15519,6 @@ func (iter *LayoutIter) Index() int {
 // The function returns the following values:
 //
 //   - layout associated with iter.
-//
 func (iter *LayoutIter) Layout() *Layout {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret *C.PangoLayout     // in
@@ -15924,7 +15542,6 @@ func (iter *LayoutIter) Layout() *Layout {
 //
 //   - inkRect (optional): rectangle to fill with ink extents, or NULL.
 //   - logicalRect (optional): rectangle to fill with logical extents, or NULL.
-//
 func (iter *LayoutIter) LayoutExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
@@ -15952,7 +15569,6 @@ func (iter *LayoutIter) LayoutExtents() (inkRect *Rectangle, logicalRect *Rectan
 // The function returns the following values:
 //
 //   - layoutLine: current line.
-//
 func (iter *LayoutIter) Line() *LayoutLine {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret *C.PangoLayoutLine // in
@@ -15986,7 +15602,6 @@ func (iter *LayoutIter) Line() *LayoutLine {
 //
 //   - inkRect (optional): rectangle to fill with ink extents, or NULL.
 //   - logicalRect (optional): rectangle to fill with logical extents, or NULL.
-//
 func (iter *LayoutIter) LineExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
@@ -16014,7 +15629,6 @@ func (iter *LayoutIter) LineExtents() (inkRect *Rectangle, logicalRect *Rectangl
 // The function returns the following values:
 //
 //   - layoutLine: current line, that should not be modified.
-//
 func (iter *LayoutIter) LineReadonly() *LayoutLine {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret *C.PangoLayoutLine // in
@@ -16052,7 +15666,6 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 //
 //   - y0 (optional): start of line, or NULL.
 //   - y1 (optional): end of line, or NULL.
-//
 func (iter *LayoutIter) LineYrange() (y0 int, y1 int) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.int              // in
@@ -16083,7 +15696,6 @@ func (iter *LayoutIter) LineYrange() (y0 int, y1 int) {
 // The function returns the following values:
 //
 //   - layoutRun (optional): current run.
-//
 func (iter *LayoutIter) Run() *LayoutRun {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret *C.PangoLayoutRun  // in
@@ -16111,7 +15723,6 @@ func (iter *LayoutIter) Run() *LayoutRun {
 //
 //   - inkRect (optional): rectangle to fill with ink extents, or NULL.
 //   - logicalRect (optional): rectangle to fill with logical extents, or NULL.
-//
 func (iter *LayoutIter) RunExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutIter // out
 	var _arg1 C.PangoRectangle   // in
@@ -16142,7 +15753,6 @@ func (iter *LayoutIter) RunExtents() (inkRect *Rectangle, logicalRect *Rectangle
 // The function returns the following values:
 //
 //   - layoutRun (optional): current run, that should not be modified.
-//
 func (iter *LayoutIter) RunReadonly() *LayoutRun {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret *C.PangoLayoutRun  // in
@@ -16169,7 +15779,6 @@ func (iter *LayoutIter) RunReadonly() *LayoutRun {
 // The function returns the following values:
 //
 //   - ok: whether motion was possible.
-//
 func (iter *LayoutIter) NextChar() bool {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.gboolean         // in
@@ -16194,7 +15803,6 @@ func (iter *LayoutIter) NextChar() bool {
 // The function returns the following values:
 //
 //   - ok: whether motion was possible.
-//
 func (iter *LayoutIter) NextCluster() bool {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.gboolean         // in
@@ -16219,7 +15827,6 @@ func (iter *LayoutIter) NextCluster() bool {
 // The function returns the following values:
 //
 //   - ok: whether motion was possible.
-//
 func (iter *LayoutIter) NextLine() bool {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.gboolean         // in
@@ -16244,7 +15851,6 @@ func (iter *LayoutIter) NextLine() bool {
 // The function returns the following values:
 //
 //   - ok: whether motion was possible.
-//
 func (iter *LayoutIter) NextRun() bool {
 	var _arg0 *C.PangoLayoutIter // out
 	var _cret C.gboolean         // in
@@ -16331,7 +15937,6 @@ func (l *LayoutLine) SetLength(length int) {
 //     string as drawn, or NULL.
 //   - logicalRect (optional): rectangle used to store the logical extents of
 //     the glyph string, or NULL.
-//
 func (line *LayoutLine) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.PangoRectangle   // in
@@ -16357,7 +15962,6 @@ func (line *LayoutLine) Extents() (inkRect *Rectangle, logicalRect *Rectangle) {
 // The function returns the following values:
 //
 //   - height (optional): return location for the line height.
-//
 func (line *LayoutLine) Height() int {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // in
@@ -16388,7 +15992,6 @@ func (line *LayoutLine) Height() int {
 //     string as drawn, or NULL.
 //   - logicalRect (optional): rectangle used to store the logical extents of
 //     the glyph string, or NULL.
-//
 func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *Rectangle) {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.PangoRectangle   // in
@@ -16432,7 +16035,6 @@ func (layoutLine *LayoutLine) PixelExtents() (inkRect *Rectangle, logicalRect *R
 //     of width (*ranges)[2*n + 1] - (*ranges)[2*n]. This array must be freed
 //     with g_free(). The coordinates are relative to the layout and are in
 //     Pango units.
-//
 func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // out
@@ -16475,7 +16077,6 @@ func (line *LayoutLine) XRanges(startIndex int, endIndex int) []int {
 // The function returns the following values:
 //
 //   - xPos: location to store the x_offset (in Pango units).
-//
 func (line *LayoutLine) IndexToX(index_ int, trailing bool) int {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // out
@@ -16522,7 +16123,6 @@ func (line *LayoutLine) IndexToX(index_ int, trailing bool) int {
 //     the user clicked. It will either be zero, or the number of characters in
 //     the grapheme. 0 represents the leading edge of the grapheme.
 //   - ok: FALSE if x_pos was outside the line, TRUE if inside.
-//
 func (line *LayoutLine) XToIndex(xPos int) (index_ int, trailing int, ok bool) {
 	var _arg0 *C.PangoLayoutLine // out
 	var _arg1 C.int              // out
@@ -16568,8 +16168,8 @@ type logAttr struct {
 //
 // The transformation is given by
 //
-//    x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
-//    y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
+//	x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
+//	y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0;
 //
 // An instance of this type is always passed by reference.
 type Matrix struct {
@@ -16706,7 +16306,6 @@ func (m *Matrix) SetY0(y0 float64) {
 // The function takes the following parameters:
 //
 //   - newMatrix: PangoMatrix.
-//
 func (matrix *Matrix) Concat(newMatrix *Matrix) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 *C.PangoMatrix // out
@@ -16725,7 +16324,6 @@ func (matrix *Matrix) Concat(newMatrix *Matrix) {
 //
 //   - ret (optional): newly allocated PangoMatrix, which should be freed with
 //     pango.Matrix.Free(), or NULL if matrix was NULL.
-//
 func (matrix *Matrix) Copy() *Matrix {
 	var _arg0 *C.PangoMatrix // out
 	var _cret *C.PangoMatrix // in
@@ -16763,7 +16361,6 @@ func (matrix *Matrix) Copy() *Matrix {
 //
 //   - gdouble: scale factor of matrix on the height of the font, or 1.0 if
 //     matrix is NULL.
-//
 func (matrix *Matrix) FontScaleFactor() float64 {
 	var _arg0 *C.PangoMatrix // out
 	var _cret C.double       // in
@@ -16796,7 +16393,6 @@ func (matrix *Matrix) FontScaleFactor() float64 {
 //   - xscale (optional): output scale factor in the x direction, or NULL.
 //   - yscale (optional): output scale factor perpendicular to the x direction,
 //     or NULL.
-//
 func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // in
@@ -16825,7 +16421,6 @@ func (matrix *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 // The function takes the following parameters:
 //
 //   - degrees to rotate counter-clockwise.
-//
 func (matrix *Matrix) Rotate(degrees float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
@@ -16846,7 +16441,6 @@ func (matrix *Matrix) Rotate(degrees float64) {
 //
 //   - scaleX: amount to scale by in X direction.
 //   - scaleY: amount to scale by in Y direction.
-//
 func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
@@ -16870,7 +16464,6 @@ func (matrix *Matrix) Scale(scaleX float64, scaleY float64) {
 //
 //   - tx: amount to translate in the X direction.
 //   - ty: amount to translate in the Y direction.
-//
 func (matrix *Matrix) Translate(tx float64, ty float64) {
 	var _arg0 *C.PangoMatrix // out
 	var _arg1 C.double       // out
@@ -17073,7 +16666,6 @@ func NewScriptIter(text string, length int) *ScriptIter {
 //   - start (optional): location to store start position of the range, or NULL.
 //   - end (optional): location to store end position of the range, or NULL.
 //   - script (optional): location to store script for range, or NULL.
-//
 func (iter *ScriptIter) Range() (start string, end string, script Script) {
 	var _arg0 *C.PangoScriptIter // out
 	var _arg1 *C.char            // in
@@ -17108,7 +16700,6 @@ func (iter *ScriptIter) Range() (start string, end string, script Script) {
 // The function returns the following values:
 //
 //   - ok: TRUE if iter was successfully advanced.
-//
 func (iter *ScriptIter) Next() bool {
 	var _arg0 *C.PangoScriptIter // out
 	var _cret C.gboolean         // in
@@ -17181,7 +16772,6 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 //
 //   - tabArray: newly allocated PangoTabArray, which should be freed with
 //     pango.TabArray.Free().
-//
 func (src *TabArray) Copy() *TabArray {
 	var _arg0 *C.PangoTabArray // out
 	var _cret *C.PangoTabArray // in
@@ -17210,7 +16800,6 @@ func (src *TabArray) Copy() *TabArray {
 // The function returns the following values:
 //
 //   - ok: whether positions are in pixels.
-//
 func (tabArray *TabArray) PositionsInPixels() bool {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gboolean       // in
@@ -17234,7 +16823,6 @@ func (tabArray *TabArray) PositionsInPixels() bool {
 // The function returns the following values:
 //
 //   - gint: number of tab stops in the array.
-//
 func (tabArray *TabArray) Size() int {
 	var _arg0 *C.PangoTabArray // out
 	var _cret C.gint           // in
@@ -17261,7 +16849,6 @@ func (tabArray *TabArray) Size() int {
 //
 //   - alignment (optional): location to store alignment, or NULL.
 //   - location (optional) to store tab position, or NULL.
-//
 func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
@@ -17292,7 +16879,6 @@ func (tabArray *TabArray) Tab(tabIndex int) (TabAlign, int) {
 // The function takes the following parameters:
 //
 //   - newSize: new size of the array.
-//
 func (tabArray *TabArray) Resize(newSize int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out
@@ -17314,7 +16900,6 @@ func (tabArray *TabArray) Resize(newSize int) {
 //   - tabIndex: index of a tab stop.
 //   - alignment: tab alignment.
 //   - location: tab location in Pango units.
-//
 func (tabArray *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
 	var _arg0 *C.PangoTabArray // out
 	var _arg1 C.gint           // out

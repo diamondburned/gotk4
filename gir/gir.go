@@ -7,6 +7,7 @@ package gir
 import (
 	"fmt"
 	"log"
+	"os"
 	"path"
 	"path/filepath"
 	"strconv"
@@ -15,7 +16,6 @@ import (
 	"unicode"
 
 	"github.com/diamondburned/gotk4/gir/pkgconfig"
-	"github.com/pkg/errors"
 	"golang.org/x/sync/singleflight"
 )
 
@@ -114,6 +114,43 @@ type PkgRepository struct {
 	Path string // gir file path
 }
 
+// FindGIRFiles finds gir files from the given list of pkgs.
+func FindGIRFiles(pkgs ...string) ([]string, error) {
+	girDirs, err := pkgconfig.GIRDirs(pkgs...)
+	if err != nil {
+		return nil, err
+	}
+	visited := make(map[string]struct{}, len(girDirs))
+	var girFiles []string
+	// Iterate over `pkgs` instead of over `girDirs` directly, so
+	// that the order of `girFiles` is predictable based on order
+	// of the input arguments.  At least this was important to me
+	// for debugability, but I feel like I had another reason that
+	// I no longer remember.
+	for _, pkg := range pkgs {
+		girDir := girDirs[pkg]
+
+		// Avoid visiting the same directory twice.  Sorting +
+		// slices.Compact(pkgs) can't save us because multiple
+		// pkgs might have the same girDir.
+		if _, ok := visited[girDir]; ok {
+			continue
+		}
+		visited[girDir] = struct{}{}
+
+		dirEnts, err := os.ReadDir(girDir)
+		if err != nil {
+			return nil, err
+		}
+		for _, dirEnt := range dirEnts {
+			if filepath.Ext(dirEnt.Name()) == ".gir" {
+				girFiles = append(girFiles, filepath.Join(girDir, dirEnt.Name()))
+			}
+		}
+	}
+	return girFiles, nil
+}
+
 // AddSelected adds a single package but only searches for the given list of
 // GIR files.
 func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
@@ -139,15 +176,15 @@ func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 		return len(r.Namespaces) > 0
 	}
 
-	girs, err := pkgconfig.FindGIRFiles(pkg)
+	girs, err := FindGIRFiles(pkg)
 	if err != nil {
-		return errors.Wrapf(err, "failed to get gir files for %q", pkg)
+		return fmt.Errorf("failed to get gir files for %q: %w", pkg, err)
 	}
 
 	for _, gir := range girs {
 		repo, err := ParseRepository(gir)
 		if err != nil {
-			return errors.Wrapf(err, "failed to parse file %q", gir)
+			return fmt.Errorf("failed to parse file %q: %w", gir, err)
 		}
 
 		if !filter(repo) {
@@ -155,7 +192,7 @@ func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 		}
 
 		if err := repos.add(*repo, pkg, gir); err != nil {
-			return errors.Wrapf(err, "failed to add file %q", gir)
+			return fmt.Errorf("failed to add file %q: %w", gir, err)
 		}
 	}
 
@@ -169,19 +206,19 @@ func (repos *Repositories) AddSelected(pkg string, wantedNames []string) error {
 // Add finds the given pkg name to be searched using pkg-config and added into
 // the list of repositories.
 func (repos *Repositories) Add(pkg string) error {
-	girs, err := pkgconfig.FindGIRFiles(pkg)
+	girs, err := FindGIRFiles(pkg)
 	if err != nil {
-		return errors.Wrapf(err, "failed to get gir files for %q", pkg)
+		return fmt.Errorf("failed to get gir files for %q: %w", pkg, err)
 	}
 
 	for _, gir := range girs {
 		repo, err := ParseRepository(gir)
 		if err != nil {
-			return errors.Wrapf(err, "failed to parse file %q", gir)
+			return fmt.Errorf("failed to parse file %q: %w", gir, err)
 		}
 
 		if err := repos.add(*repo, pkg, gir); err != nil {
-			return errors.Wrapf(err, "failed to add file %q", gir)
+			return fmt.Errorf("failed to add file %q: %w", gir, err)
 		}
 	}
 

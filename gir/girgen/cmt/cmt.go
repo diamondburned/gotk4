@@ -5,6 +5,7 @@ package cmt
 import (
 	"fmt"
 	"go/doc"
+	"go/doc/comment"
 	"html"
 	"log"
 	"reflect"
@@ -18,14 +19,8 @@ import (
 )
 
 const (
-	CommentsColumnLimit = 80 - 3 // account for prefix "// "
-	CommentsTabWidth    = 4
+	CommentsTabWidth = 4
 )
-
-// calculateCol accounts for the indentation in the column limit.
-func calculateCol(indentLvl int) int {
-	return CommentsColumnLimit - (CommentsTabWidth * indentLvl)
-}
 
 var (
 	cmtListRegex      = regexp.MustCompile(`(?m)\n?\n^- `)
@@ -37,9 +32,16 @@ var (
 	// cmtFunctionRegex  = regexp.MustCompile(`\w+\(\)`)
 	cmtHeadingRegex   = regexp.MustCompile(`\n*#+ (.*?)(?: ?#+ ?\{#.*?\})?\n+`)
 	cmtHyperlinkRegex = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
-	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->)?\n(.*?)\n\]\|\n*`)
+	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->)?\n(.*?)\n *\]\|\n*`)
 
 	mdCodeblockRegex = regexp.MustCompile(`(?ms)\n*\x60\x60\x60\w*\n(.*?)\x60\x60\x60\n*`)
+
+	mdEndRegex = regexp.MustCompile(`(?m)\s*(` + strings.Join([]string{
+		``,
+		"`",
+		"^ *```+",
+		`^\]\|`,
+	}, "|") + `)\z`)
 )
 
 // ParamDoc is the documentation for one parameter. It is added by callable
@@ -148,7 +150,6 @@ type (
 	additionalPrefix string
 	paragraphIndent  int
 	trailingNewLine  struct{}
-	trailingComment  struct{}
 	synopsize        struct{}
 )
 
@@ -158,7 +159,6 @@ func (additionalString) opts() {}
 func (additionalPrefix) opts() {}
 func (paragraphIndent) opts()  {}
 func (trailingNewLine) opts()  {}
-func (trailingComment) opts()  {}
 func (synopsize) opts()        {}
 
 func searchOpts(opts []Option, f func(opt Option) bool) bool {
@@ -253,51 +253,79 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 		}
 	}
 
-	opts = append(opts, originalTypeName(orig))
-	cmt := format(self, docBuilder.String(), opts)
-
 	synopsize := searchOptsBool(opts, synopsize{})
+
+	docStr := preprocessMarkdown(self, docBuilder.String(), append(opts, originalTypeName(orig)))
+	if synopsize && docStr == "" {
+		return ""
+	}
+	docBuilder.Reset()
+	docBuilder.WriteString(docStr)
+
+	if len(inf.ParamDocs) > 0 {
+		writeParamDocs(&docBuilder,
+			"\n\nThe function takes the following parameters:\n",
+			inf.ParamDocs)
+	}
+	if len(inf.ReturnDocs) > 0 {
+		writeParamDocs(&docBuilder,
+			"\n\nThe function returns the following values:\n",
+			inf.ReturnDocs)
+	}
+
+	cmt := convertMarkdownStringToGoDoc(docBuilder.String())
+
 	if synopsize {
-		cmt = doc.Synopsis(cmt)
+		printer := &comment.Printer{
+			TextWidth: -1, // don't wrap yet
+		}
+		cmtStr := string(printer.Text(cmt))
+		cmtStr = new(doc.Package).Synopsis(cmtStr)
+		cmtStr = addPeriod(cmtStr)
+		cmt = new(comment.Parser).Parse(cmtStr)
 	}
 
-	cmt = addPeriod(cmt)
-
-	if !synopsize {
-		tail := strings.Builder{}
-		tail.Grow(256)
-
-		if len(inf.ParamDocs) > 0 {
-			tail.WriteString("\n\nThe function takes the following parameters:\n")
-			writeParamDocs(&tail, indentLvl+1, inf.ParamDocs)
+	printer := &comment.Printer{
+		// Don't use "\t" in TextPrefix because when calculating
+		// .PrintWidth the printer only counts tabs as width=1.
+		// Instead use CommentsTabWidth spaces, and count on the final
+		// gofmt step to turn them into tabs.
+		TextPrefix:     strings.Repeat(" ", CommentsTabWidth*indentLvl) + "// ",
+		TextCodePrefix: strings.Repeat(" ", CommentsTabWidth*indentLvl) + "//\t",
+	}
+	cmtStr := string(printer.Text(cmt))
+	cmtStr = transformLines(cmtStr, func(n, d int, line string) string {
+		if line == "" && n+1 != d {
+			return printer.TextPrefix
 		}
-		if len(inf.ReturnDocs) > 0 {
-			tail.WriteString("\n\nThe function returns the following values:\n")
-			writeParamDocs(&tail, indentLvl+1, inf.ReturnDocs)
-		}
+		return line
+	})
 
-		if tail.Len() > 0 {
-			opts = append(opts, trailingComment{})
-		}
-
-		cmt += tail.String()
+	if !searchOptsBool(opts, trailingNewLine{}) {
+		cmtStr = strings.TrimSuffix(cmtStr, "\n")
 	}
 
-	return ReflowLinesIndent(indentLvl, cmt, opts...)
+	return cmtStr
 }
 
-func addPeriod(cmt string) string {
-	if cmt != "" && !strings.HasSuffix(cmt, ".") {
-		cmt += "."
+func addPeriod(md string) string {
+	var suffix string
+	if idx := mdEndRegex.FindStringIndex(md); idx != nil && (cmtCodeblockRegex.MatchString(md) || !strings.HasSuffix(md[idx[0]:], "]|")) {
+		suffix = md[idx[0]:]
+		md = md[:idx[0]]
 	}
-	return cmt
+	if md != "" && !strings.HasSuffix(md, ".") {
+		md += "."
+	}
+	md += suffix
+	return md
 }
 
-func writeParamDocs(tail *strings.Builder, indent int, params []ParamDoc) {
-	col := calculateCol(indent)
+func writeParamDocs(tail *strings.Builder, label string, params []ParamDoc) {
+	line1Indent := " - "
+	lineNIndent := "   "
 
-	line1Indent := strings.Repeat(" ", CommentsTabWidth) + "- "
-	lineNIndent := strings.Repeat(" ", CommentsTabWidth+2)
+	written := false
 
 	for _, param := range params {
 		name := param.Name
@@ -307,14 +335,11 @@ func writeParamDocs(tail *strings.Builder, indent int, params []ParamDoc) {
 
 		var doc string
 		if param.InfoElements.Doc != nil {
-			doc = format(name, param.InfoElements.Doc.String, []Option{
+			doc = preprocessMarkdown(name, param.InfoElements.Doc.String, []Option{
 				originalTypeName(param.Name),
 			})
-			doc = addPeriod(doc)
-			doc = docText(doc, col)
-			doc = strings.TrimSpace(doc)
 			// Insert a dash space into the lines.
-			doc = transformLines(doc, func(i int, line string) string {
+			doc = transformLines(doc, func(i, _ int, line string) string {
 				if i == 0 {
 					return line1Indent + line
 				} else {
@@ -329,6 +354,10 @@ func writeParamDocs(tail *strings.Builder, indent int, params []ParamDoc) {
 			doc = line1Indent + name
 		}
 
+		if !written {
+			tail.WriteString(label)
+			written = true
+		}
 		tail.WriteString("\n")
 		tail.WriteString(doc)
 	}
@@ -343,23 +372,14 @@ func nthWord(paragraph string, n int) string {
 	return words[n]
 }
 
-// nthWordSimplePresent checks if the second word has a trailing "s".
-func nthWordSimplePresent(paragraph string, n int) bool {
-	word := nthWord(paragraph, n)
+// wordIsSimplePresent returns whether word is a simple present tense verb
+// (e.g.: "is", "takes", "emits").
+func wordIsSimplePresent(word string) bool {
 	return !strings.EqualFold(word, "this") && strings.HasSuffix(word, "s")
 }
 
-// lowerFirstLetter lower-cases the first letter in the paragraph.
-func lowerFirstWord(paragraph string) string {
-	r, sz := utf8.DecodeRuneInString(paragraph)
-	if sz > 0 {
-		return string(unicode.ToLower(r)) + paragraph[sz:]
-	}
-	return string(paragraph)
-}
-
-// popFirstWord pops the first word off.
-func popFirstWord(paragraph string) string {
+// trimFirstWord trims the first word off.
+func trimFirstWord(paragraph string) string {
 	parts := strings.SplitN(paragraph, " ", 2)
 	if len(parts) < 2 {
 		return ""
@@ -367,7 +387,10 @@ func popFirstWord(paragraph string) string {
 	return parts[1]
 }
 
-func format(self, cmt string, opts []Option) string {
+// preprocessMarkdown takes a (GTK-Doc-flavored / GI-DocGen-flavored)
+// markdown string makes some stylistic changes to it.  The return
+// value is still markdown.
+func preprocessMarkdown(self, cmt string, opts []Option) string {
 	if cmt == "" {
 		return ""
 	}
@@ -377,7 +400,7 @@ func format(self, cmt string, opts []Option) string {
 	if self != "" {
 		switch strings.ToLower(nthWord(cmt, 0)) {
 		case "a", "an", "the":
-			cmt = popFirstWord(cmt)
+			cmt = trimFirstWord(cmt)
 		}
 
 		var typeNamed bool
@@ -392,26 +415,24 @@ func format(self, cmt string, opts []Option) string {
 			}
 		}
 
+		firstWord := nthWord(cmt, 0)
 		switch {
-		case strings.ToLower(nthWord(cmt, 0)) == "is":
-			fallthrough
-		case strings.ToLower(nthWord(cmt, 0)) == "will":
-			cmt = self + " " + lowerFirstWord(cmt)
-		case strings.ToLower(nthWord(cmt, 0)) == "emitted":
-			cmt = self + " is " + lowerFirstWord(cmt)
-
-		case typeNamed:
-			fallthrough
-		case strings.HasPrefix(cmt, "#") && nthWord(cmt, 1) != "":
-			// Trim the first word away and replace it with the Go name.
-			cmt = self + " " + popFirstWord(cmt)
-		case nthWordSimplePresent(cmt, 0):
-			cmt = self + " " + lowerFirstWord(cmt)
+		case strings.EqualFold(firstWord, "is"), strings.EqualFold(firstWord, "will"):
+			// Turn "Will frob the fnord" into "{name} will frob the fnord".
+			cmt = self + " " + lowerFirstLetter(cmt)
+		case strings.EqualFold(firstWord, "emitted"):
+			// Turn "emitted by Emitter" into "{name} is emitted by Emitter".
+			cmt = self + " is " + lowerFirstLetter(cmt)
+		case typeNamed, strings.HasPrefix(cmt, "#") && nthWord(cmt, 1) != "":
+			// Turn "#CName does stuff" into "GoName does stuff"
+			cmt = self + " " + trimFirstWord(cmt)
+		case wordIsSimplePresent(firstWord):
+			// Turn "Frobs the fnord" into "{name} frobs the fnord".
+			cmt = self + " " + lowerFirstLetter(cmt)
 		default:
 			// Trim the word "this" away to make the sentence gramatically
 			// correct.
-			cmt = strings.TrimPrefix(cmt, "this ")
-			cmt = self + ": " + lowerFirstLetter(cmt)
+			cmt = self + ": " + lowerFirstLetter(strings.TrimPrefix(cmt, "this "))
 		}
 	}
 
@@ -422,6 +443,16 @@ func format(self, cmt string, opts []Option) string {
 		}
 	}
 
+	cmt = strings.TrimSpace(cmt)
+	cmt = addPeriod(cmt)
+
+	return cmt
+}
+
+// convertMarkdownStringToGoDoc converts a (GTK-Doc-flavored /
+// GI-DocGen-flavored) markdown string into a parsed Go
+// [*comment.Doc].
+func convertMarkdownStringToGoDoc(cmt string) *comment.Doc {
 	// Fix up the codeblocks and render it using GoDoc format.
 	codeblockFunc := func(re *regexp.Regexp, match string) string {
 		matches := re.FindStringSubmatch(match)
@@ -545,57 +576,13 @@ func format(self, cmt string, opts []Option) string {
 		}
 	})
 
-	cmt = strings.TrimSpace(cmt)
-
-	return cmt
+	return new(comment.Parser).Parse(cmt)
 }
 
-// ReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go comment
-// strings. It is automatically indented.
-func ReflowLinesIndent(indentLvl int, cmt string, opts ...Option) string {
-	var postIndentCount int
-	for _, opt := range opts {
-		if i, ok := opt.(paragraphIndent); ok {
-			postIndentCount = int(i)
-			break
-		}
-	}
-
-	preIndent := strings.Repeat("\t", indentLvl)
-
-	postIndent := " "
-	if postIndentCount > 0 {
-		postIndent = strings.Repeat(strings.Repeat(" ", CommentsTabWidth), postIndentCount)
-	}
-
-	col := calculateCol(indentLvl + postIndentCount)
-
-	cmt = docText(cmt, col)
-	cmt = strings.TrimSpace(cmt)
-
-	if cmt == "" {
-		return ""
-	}
-
-	if searchOptsBool(opts, trailingComment{}) {
-		cmt += "\n"
-	}
-
-	cmt = transformLines(cmt, func(i int, line string) string {
-		return preIndent + "//" + postIndent + line
-	})
-
-	if searchOptsBool(opts, trailingNewLine{}) {
-		cmt += "\n"
-	}
-
-	return cmt
-}
-
-func transformLines(cmt string, f func(int, string) string) string {
+func transformLines(cmt string, f func(int, int, string) string) string {
 	lines := strings.Split(cmt, "\n")
 	for i, line := range lines {
-		lines[i] = f(i, line)
+		lines[i] = f(i, len(lines), line)
 	}
 	return strings.Join(lines, "\n")
 }
@@ -615,32 +602,24 @@ func tidyParagraphs(text string) string {
 	return strings.Join(paragraphs, "\n\n")
 }
 
-func docText(p string, col int) string {
-	builder := strings.Builder{}
-	builder.Grow(len(p) + 64)
-
-	doc.ToText(&builder, p, "", "   ", col)
-	return builder.String()
-}
-
-func openOrCloseCodeblock(paragraph string) bool {
-	return strings.HasPrefix(paragraph, "|[") || strings.HasSuffix(paragraph, "]|")
-}
-
+// lowerFirstLetter lower-cases the first letter in the paragraph.
 func lowerFirstLetter(p string) string {
 	if p == "" {
 		return ""
 	}
 
-	runes := []rune(p)
-	if len(runes) < 2 {
-		return string(unicode.ToLower(runes[0]))
+	r1, r1w := utf8.DecodeRuneInString(p)
+	if unicode.IsLower(r1) {
+		return p
+	}
+	if r1w == len(p) {
+		return strings.ToLower(p)
 	}
 
 	// Edge case: gTK, etc.
-	if unicode.IsUpper(runes[1]) {
+	if r2, _ := utf8.DecodeRuneInString(p[r1w:]); unicode.IsUpper(r2) {
 		return p
 	}
 
-	return string(unicode.ToLower(runes[0])) + string(runes[1:])
+	return strings.ToLower(p[:r1w]) + p[r1w:]
 }

@@ -14,7 +14,6 @@ import (
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen"
-	"github.com/pkg/errors"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -94,7 +93,7 @@ func WriteNamespace(ng *girgen.NamespaceGenerator, basePath string) error {
 	}
 
 	if err := os.MkdirAll(dir, 0777); err != nil {
-		return errors.Wrapf(err, "failed to mkdir -p %q", dir)
+		return fmt.Errorf("failed to mkdir -p %q: %w", dir, err)
 	}
 
 	files, err := ng.Generate()
@@ -102,7 +101,7 @@ func WriteNamespace(ng *girgen.NamespaceGenerator, basePath string) error {
 	for name, file := range files {
 		dst := filepath.Join(dir, name)
 		if err := os.WriteFile(dst, file, 0666); err != nil {
-			return errors.Wrapf(err, "failed to write to %s", dst)
+			return fmt.Errorf("failed to write to %q: %w", dst, err)
 		}
 	}
 
@@ -143,7 +142,7 @@ func AddPackages(repos *gir.Repositories, pkgs []Package) error {
 		}
 
 		if err != nil {
-			return errors.Wrapf(err, "error adding package %q", pkg.Name)
+			return fmt.Errorf("error adding package %q: %w", pkg.Name, err)
 		}
 	}
 
@@ -297,7 +296,7 @@ func CleanDirectory(path string, except []string) error {
 
 		fullPath := filepath.Join(path, oldFile.Name())
 		if err := os.RemoveAll(fullPath); err != nil {
-			return errors.Wrapf(err, "failed to rm -rf %s", oldFile)
+			return fmt.Errorf("failed to rm -rf %q: %w", oldFile, err)
 		}
 	}
 
@@ -320,18 +319,18 @@ func appendGoFile(path, filename, content string) error {
 
 	b, err := os.ReadFile(fullPath)
 	if err != nil {
-		return errors.Wrapf(err, "failed to read file %q", filename)
+		return fmt.Errorf("failed to read file %q: %w", filename, err)
 	}
 
 	b = append(b, []byte(content)...)
 
 	b, err = format.Source(b)
 	if err != nil {
-		return errors.Wrapf(err, "failed to go fmt file %q", filename)
+		return fmt.Errorf("failed to go fmt file %q: %w", filename, err)
 	}
 
 	if err := os.WriteFile(fullPath, b, os.ModePerm); err != nil {
-		return errors.Wrapf(err, "failed to write file %q", filename)
+		return fmt.Errorf("failed to write file %q: %w", filename, err)
 	}
 
 	return nil
@@ -344,7 +343,7 @@ func EnsureDirectory(path string, expects ...[]string) error {
 
 	files, err := os.ReadDir(path)
 	if err != nil {
-		return errors.Wrap(err, "failed to read dir")
+		return fmt.Errorf("failed to read dir: %w", err)
 	}
 
 	for _, file := range files {

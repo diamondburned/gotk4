@@ -94,7 +94,6 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - utf8 (optional): /dev/input/event* path of this device.
-//
 func (device *WaylandDevice) NodePath() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -149,7 +148,6 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - utf8 (optional): startup notification ID for display, or NULL.
-//
 func (display *WaylandDisplay) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
@@ -178,7 +176,6 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 // The function returns the following values:
 //
 //   - ok: TRUE if the global is offered by the compositor.
-//
 func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -207,7 +204,6 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 //
 //   - name: new cursor theme.
 //   - size to use for cursors.
-//
 func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -237,7 +233,6 @@ func (display *WaylandDisplay) SetCursorTheme(name string, size int) {
 // The function takes the following parameters:
 //
 //   - startupId: startup notification ID (must be valid utf8).
-//
 func (display *WaylandDisplay) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -456,7 +451,6 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if the handle has been requested, FALSE if an error occurred.
-//
 func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) bool {
 	var _arg0 *C.GdkToplevel               // out
 	var _arg1 C.GdkWaylandToplevelExported // out
@@ -487,7 +481,6 @@ func (toplevel *WaylandToplevel) ExportHandle(callback WaylandToplevelExported) 
 // The function takes the following parameters:
 //
 //   - applicationId: application id for the toplevel.
-//
 func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out
@@ -518,7 +511,6 @@ func (toplevel *WaylandToplevel) SetApplicationID(applicationId string) {
 //
 //   - ok: TRUE if the surface has been marked as transient, FALSE if an error
 //     occurred.
-//
 func (toplevel *WaylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	var _arg0 *C.GdkToplevel // out
 	var _arg1 *C.char        // out

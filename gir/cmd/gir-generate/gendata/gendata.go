@@ -36,28 +36,6 @@ var Main = genmain.Data{
 	SingleFile:            true,
 }
 
-type Package struct {
-	PkgName    string   // pkg-config name
-	Namespaces []string // refer to ./cmd/gir_namespaces
-}
-
-// HasNamespace returns true if the package allows all namespaces or has the
-// given namespace in the list.
-func (pkg *Package) HasNamespace(n *gir.Namespace) bool {
-	if pkg.Namespaces == nil {
-		return true
-	}
-
-	namespace := gir.VersionedNamespace(n)
-	for _, name := range pkg.Namespaces {
-		if name == namespace {
-			return true
-		}
-	}
-
-	return false
-}
-
 // PkgExceptions contains a list of file names that won't be deleted off of
 // pkg/.
 var PkgExceptions = []string{

@@ -352,7 +352,6 @@ func NewBoxAlloc() *Box {
 // The function returns the following values:
 //
 //   - ok: true if the box is contained in the given box.
-//
 func (a *Box) ContainsBox(b *Box) bool {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -383,7 +382,6 @@ func (a *Box) ContainsBox(b *Box) bool {
 // The function returns the following values:
 //
 //   - ok: true if the point is contained in the given box.
-//
 func (box *Box) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -414,7 +412,6 @@ func (box *Box) ContainsPoint(point *Point3D) bool {
 // The function returns the following values:
 //
 //   - ok: true if the boxes are equal.
-//
 func (a *Box) Equal(b *Box) bool {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -445,7 +442,6 @@ func (a *Box) Equal(b *Box) bool {
 // The function returns the following values:
 //
 //   - res: return location for the expanded box.
-//
 func (box *Box) Expand(point *Point3D) *Box {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -477,7 +473,6 @@ func (box *Box) Expand(point *Point3D) *Box {
 // The function returns the following values:
 //
 //   - res: return location for the expanded box.
-//
 func (box *Box) ExpandScalar(scalar float32) *Box {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 C.float           // out
@@ -507,7 +502,6 @@ func (box *Box) ExpandScalar(scalar float32) *Box {
 // The function returns the following values:
 //
 //   - res: return location for the expanded box.
-//
 func (box *Box) ExpandVec3(vec *Vec3) *Box {
 	var _arg0 *C.graphene_box_t  // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -533,7 +527,6 @@ func (box *Box) ExpandVec3(vec *Vec3) *Box {
 // The function returns the following values:
 //
 //   - sphere: return location for the bounding sphere.
-//
 func (box *Box) BoundingSphere() *Sphere {
 	var _arg0 *C.graphene_box_t   // out
 	var _arg1 C.graphene_sphere_t // in
@@ -555,7 +548,6 @@ func (box *Box) BoundingSphere() *Sphere {
 // The function returns the following values:
 //
 //   - center: return location for the coordinates of the center.
-//
 func (box *Box) Center() *Point3D {
 	var _arg0 *C.graphene_box_t    // out
 	var _arg1 C.graphene_point3d_t // in
@@ -577,7 +569,6 @@ func (box *Box) Center() *Point3D {
 // The function returns the following values:
 //
 //   - gfloat: depth of the box.
-//
 func (box *Box) Depth() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
@@ -599,7 +590,6 @@ func (box *Box) Depth() float32 {
 // The function returns the following values:
 //
 //   - gfloat: height of the box.
-//
 func (box *Box) Height() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
@@ -622,7 +612,6 @@ func (box *Box) Height() float32 {
 // The function returns the following values:
 //
 //   - max: return location for the maximum point.
-//
 func (box *Box) Max() *Point3D {
 	var _arg0 *C.graphene_box_t    // out
 	var _arg1 C.graphene_point3d_t // in
@@ -645,7 +634,6 @@ func (box *Box) Max() *Point3D {
 // The function returns the following values:
 //
 //   - min: return location for the minimum point.
-//
 func (box *Box) Min() *Point3D {
 	var _arg0 *C.graphene_box_t    // out
 	var _arg1 C.graphene_point3d_t // in
@@ -668,7 +656,6 @@ func (box *Box) Min() *Point3D {
 // The function returns the following values:
 //
 //   - size: return location for the size.
-//
 func (box *Box) Size() *Vec3 {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 C.graphene_vec3_t // in
@@ -690,7 +677,6 @@ func (box *Box) Size() *Vec3 {
 // The function returns the following values:
 //
 //   - vertices: return location for an array of 8 #graphene_vec3_t.
-//
 func (box *Box) Vertices() [8]Vec3 {
 	var _arg0 *C.graphene_box_t    // out
 	var _arg1 [8]C.graphene_vec3_t // in
@@ -717,7 +703,6 @@ func (box *Box) Vertices() [8]Vec3 {
 // The function returns the following values:
 //
 //   - gfloat: width of the box.
-//
 func (box *Box) Width() float32 {
 	var _arg0 *C.graphene_box_t // out
 	var _cret C.float           // in
@@ -744,7 +729,6 @@ func (box *Box) Width() float32 {
 // The function returns the following values:
 //
 //   - ret: initialized #graphene_box_t.
-//
 func (box *Box) Init(min *Point3D, max *Point3D) *Box {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -781,7 +765,6 @@ func (box *Box) Init(min *Point3D, max *Point3D) *Box {
 // The function returns the following values:
 //
 //   - ret: initialized #graphene_box_t.
-//
 func (box *Box) InitFromBox(src *Box) *Box {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -813,7 +796,6 @@ func (box *Box) InitFromBox(src *Box) *Box {
 // The function returns the following values:
 //
 //   - ret: initialized #graphene_box_t.
-//
 func (box *Box) InitFromPoints(points []Point3D) *Box {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg2 *C.graphene_point3d_t // out
@@ -853,7 +835,6 @@ func (box *Box) InitFromPoints(points []Point3D) *Box {
 // The function returns the following values:
 //
 //   - ret: initialized #graphene_box_t.
-//
 func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	var _arg0 *C.graphene_box_t  // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -892,7 +873,6 @@ func (box *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 // The function returns the following values:
 //
 //   - ret: initialized #graphene_box_t.
-//
 func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 	var _arg0 *C.graphene_box_t  // out
 	var _arg2 *C.graphene_vec3_t // out
@@ -934,7 +914,6 @@ func (box *Box) InitFromVectors(vectors []Vec3) *Box {
 //
 //   - res (optional): return location for the result.
 //   - ok: true if the two boxes intersect.
-//
 func (a *Box) Intersection(b *Box) (*Box, bool) {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -968,7 +947,6 @@ func (a *Box) Intersection(b *Box) (*Box, bool) {
 // The function returns the following values:
 //
 //   - res: return location for the result.
-//
 func (a *Box) Union(b *Box) *Box {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -995,7 +973,6 @@ func (a *Box) Union(b *Box) *Box {
 // The function returns the following values:
 //
 //   - box: #graphene_box_t.
-//
 func BoxEmpty() *Box {
 	var _cret *C.graphene_box_t // in
 
@@ -1015,7 +992,6 @@ func BoxEmpty() *Box {
 // The function returns the following values:
 //
 //   - box: #graphene_box_t.
-//
 func BoxInfinite() *Box {
 	var _cret *C.graphene_box_t // in
 
@@ -1036,7 +1012,6 @@ func BoxInfinite() *Box {
 // The function returns the following values:
 //
 //   - box: #graphene_box_t.
-//
 func BoxMinusOne() *Box {
 	var _cret *C.graphene_box_t // in
 
@@ -1057,7 +1032,6 @@ func BoxMinusOne() *Box {
 // The function returns the following values:
 //
 //   - box: #graphene_box_t.
-//
 func BoxOne() *Box {
 	var _cret *C.graphene_box_t // in
 
@@ -1078,7 +1052,6 @@ func BoxOne() *Box {
 // The function returns the following values:
 //
 //   - box: #graphene_box_t.
-//
 func BoxOneMinusOne() *Box {
 	var _cret *C.graphene_box_t // in
 
@@ -1098,7 +1071,6 @@ func BoxOneMinusOne() *Box {
 // The function returns the following values:
 //
 //   - box: #graphene_box_t.
-//
 func BoxZero() *Box {
 	var _cret *C.graphene_box_t // in
 
@@ -1159,7 +1131,6 @@ func NewEulerAlloc() *Euler {
 // The function returns the following values:
 //
 //   - ok: true if the two #graphene_euler_t are equal.
-//
 func (a *Euler) Equal(b *Euler) bool {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 *C.graphene_euler_t // out
@@ -1189,7 +1160,6 @@ func (a *Euler) Equal(b *Euler) bool {
 // The function returns the following values:
 //
 //   - gfloat: first component of the Euler angle vector, in radians.
-//
 func (e *Euler) Alpha() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -1214,7 +1184,6 @@ func (e *Euler) Alpha() float32 {
 // The function returns the following values:
 //
 //   - gfloat: second component of the Euler angle vector, in radians.
-//
 func (e *Euler) Beta() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -1239,7 +1208,6 @@ func (e *Euler) Beta() float32 {
 // The function returns the following values:
 //
 //   - gfloat: third component of the Euler angle vector, in radians.
-//
 func (e *Euler) Gamma() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -1266,7 +1234,6 @@ func (e *Euler) Gamma() float32 {
 // The function returns the following values:
 //
 //   - eulerOrder: order used to apply the rotations.
-//
 func (e *Euler) Order() EulerOrder {
 	var _arg0 *C.graphene_euler_t      // out
 	var _cret C.graphene_euler_order_t // in
@@ -1288,7 +1255,6 @@ func (e *Euler) Order() EulerOrder {
 // The function returns the following values:
 //
 //   - gfloat: rotation angle.
-//
 func (e *Euler) X() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -1310,7 +1276,6 @@ func (e *Euler) X() float32 {
 // The function returns the following values:
 //
 //   - gfloat: rotation angle.
-//
 func (e *Euler) Y() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -1332,7 +1297,6 @@ func (e *Euler) Y() float32 {
 // The function returns the following values:
 //
 //   - gfloat: rotation angle.
-//
 func (e *Euler) Z() float32 {
 	var _arg0 *C.graphene_euler_t // out
 	var _cret C.float             // in
@@ -1362,7 +1326,6 @@ func (e *Euler) Z() float32 {
 // The function returns the following values:
 //
 //   - euler: initialized #graphene_euler_t.
-//
 func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.float             // out
@@ -1401,7 +1364,6 @@ func (e *Euler) Init(x float32, y float32, z float32) *Euler {
 // The function returns the following values:
 //
 //   - euler: initialized #graphene_euler_t.
-//
 func (e *Euler) InitFromEuler(src *Euler) *Euler {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 *C.graphene_euler_t // out
@@ -1437,7 +1399,6 @@ func (e *Euler) InitFromEuler(src *Euler) *Euler {
 // The function returns the following values:
 //
 //   - euler: initialized #graphene_euler_t.
-//
 func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 *C.graphene_matrix_t     // out
@@ -1476,7 +1437,6 @@ func (e *Euler) InitFromMatrix(m *Matrix, order EulerOrder) *Euler {
 // The function returns the following values:
 //
 //   - euler: initialized #graphene_euler_t.
-//
 func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -1514,7 +1474,6 @@ func (e *Euler) InitFromQuaternion(q *Quaternion, order EulerOrder) *Euler {
 // The function returns the following values:
 //
 //   - euler: initialized #graphene_euler_t.
-//
 func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.float                  // out
@@ -1557,7 +1516,6 @@ func (e *Euler) InitFromRadians(x float32, y float32, z float32, order EulerOrde
 // The function returns the following values:
 //
 //   - euler: initialized #graphene_euler_t.
-//
 func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 *C.graphene_vec3_t       // out
@@ -1595,7 +1553,6 @@ func (e *Euler) InitFromVec3(v *Vec3, order EulerOrder) *Euler {
 // The function returns the following values:
 //
 //   - euler: initialized #graphene_euler_t.
-//
 func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.float                  // out
@@ -1637,7 +1594,6 @@ func (e *Euler) InitWithOrder(x float32, y float32, z float32, order EulerOrder)
 // The function returns the following values:
 //
 //   - res: return location for the reordered #graphene_euler_t.
-//
 func (e *Euler) Reorder(order EulerOrder) *Euler {
 	var _arg0 *C.graphene_euler_t      // out
 	var _arg1 C.graphene_euler_order_t // out
@@ -1674,7 +1630,6 @@ func (e *Euler) Reorder(order EulerOrder) *Euler {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_matrix_t.
-//
 func (e *Euler) ToMatrix() *Matrix {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.graphene_matrix_t // in
@@ -1696,7 +1651,6 @@ func (e *Euler) ToMatrix() *Matrix {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_quaternion_t.
-//
 func (e *Euler) ToQuaternion() *Quaternion {
 	var _arg0 *C.graphene_euler_t     // out
 	var _arg1 C.graphene_quaternion_t // in
@@ -1719,7 +1673,6 @@ func (e *Euler) ToQuaternion() *Quaternion {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_vec3_t.
-//
 func (e *Euler) ToVec3() *Vec3 {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 C.graphene_vec3_t   // in
@@ -1785,7 +1738,6 @@ func NewFrustumAlloc() *Frustum {
 // The function returns the following values:
 //
 //   - ok: true if the point is inside the frustum.
-//
 func (f *Frustum) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -1816,7 +1768,6 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 // The function returns the following values:
 //
 //   - ok: true if the given frustums are equal.
-//
 func (a *Frustum) Equal(b *Frustum) bool {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_frustum_t // out
@@ -1843,7 +1794,6 @@ func (a *Frustum) Equal(b *Frustum) bool {
 // The function returns the following values:
 //
 //   - planes: return location for an array of 6 #graphene_plane_t.
-//
 func (f *Frustum) Planes() [6]Plane {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 [6]C.graphene_plane_t // in
@@ -1880,7 +1830,6 @@ func (f *Frustum) Planes() [6]Plane {
 // The function returns the following values:
 //
 //   - frustum: initialized frustum.
-//
 func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5 *Plane) *Frustum {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_plane_t   // out
@@ -1925,7 +1874,6 @@ func (f *Frustum) Init(p0 *Plane, p1 *Plane, p2 *Plane, p3 *Plane, p4 *Plane, p5
 // The function returns the following values:
 //
 //   - frustum: initialized frustum.
-//
 func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_frustum_t // out
@@ -1954,7 +1902,6 @@ func (f *Frustum) InitFromFrustum(src *Frustum) *Frustum {
 // The function returns the following values:
 //
 //   - frustum: initialized frustum.
-//
 func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_matrix_t  // out
@@ -1984,7 +1931,6 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 // The function returns the following values:
 //
 //   - ok: true if the box intersects the frustum.
-//
 func (f *Frustum) IntersectsBox(box *Box) bool {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_box_t     // out
@@ -2016,7 +1962,6 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 // The function returns the following values:
 //
 //   - ok: true if the sphere intersects the frustum.
-//
 func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_sphere_t  // out
@@ -2094,7 +2039,6 @@ func NewMatrixAlloc() *Matrix {
 //   - shear vector.
 //   - perspective vector.
 //   - ok: true if the matrix could be decomposed.
-//
 func (m *Matrix) Decompose() (translate *Vec3, scale *Vec3, rotate *Quaternion, shear *Vec3, perspective *Vec4, ok bool) {
 	var _arg0 *C.graphene_matrix_t    // out
 	var _arg1 C.graphene_vec3_t       // in
@@ -2133,7 +2077,6 @@ func (m *Matrix) Decompose() (translate *Vec3, scale *Vec3, rotate *Quaternion, 
 // The function returns the following values:
 //
 //   - gfloat: value of the determinant.
-//
 func (m *Matrix) Determinant() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -2159,7 +2102,6 @@ func (m *Matrix) Determinant() float32 {
 // The function returns the following values:
 //
 //   - ok: true if the two matrices are equal, and false otherwise.
-//
 func (a *Matrix) Equal(b *Matrix) bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -2188,19 +2130,19 @@ func (a *Matrix) Equal(b *Matrix) bool {
 // return false negatives, so it should be used in conjuction with either
 // graphene_matrix_equal() or graphene_matrix_near(). For instance:
 //
-//    if (graphene_matrix_equal_fast (a, b))
-//      {
-//        // matrices are definitely the same
-//      }
-//    else
-//      {
-//        if (graphene_matrix_equal (a, b))
-//          // matrices contain the same values within an epsilon of FLT_EPSILON
-//        else if (graphene_matrix_near (a, b, 0.0001))
-//          // matrices contain the same values within an epsilon of 0.0001
-//        else
-//          // matrices are not equal
-//      }.
+//	if (graphene_matrix_equal_fast (a, b))
+//	  {
+//	    // matrices are definitely the same
+//	  }
+//	else
+//	  {
+//	    if (graphene_matrix_equal (a, b))
+//	      // matrices contain the same values within an epsilon of FLT_EPSILON
+//	    else if (graphene_matrix_near (a, b, 0.0001))
+//	      // matrices contain the same values within an epsilon of 0.0001
+//	    else
+//	      // matrices are not equal
+//	  }.
 //
 // The function takes the following parameters:
 //
@@ -2209,7 +2151,6 @@ func (a *Matrix) Equal(b *Matrix) bool {
 // The function returns the following values:
 //
 //   - ok: true if the matrices are equal. and false otherwise.
-//
 func (a *Matrix) EqualFast(b *Matrix) bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -2241,7 +2182,6 @@ func (a *Matrix) EqualFast(b *Matrix) bool {
 //
 //   - res: return location for the #graphene_vec4_t that is used to store the
 //     row vector.
-//
 func (m *Matrix) Row(index_ uint) *Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
@@ -2271,7 +2211,6 @@ func (m *Matrix) Row(index_ uint) *Vec4 {
 // The function returns the following values:
 //
 //   - gfloat: value at the given indices.
-//
 func (m *Matrix) Value(row uint, col uint) float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.uint               // out
@@ -2299,7 +2238,6 @@ func (m *Matrix) Value(row uint, col uint) float32 {
 // The function returns the following values:
 //
 //   - gfloat: value of the scaling factor.
-//
 func (m *Matrix) XScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -2321,7 +2259,6 @@ func (m *Matrix) XScale() float32 {
 // The function returns the following values:
 //
 //   - gfloat: translation component.
-//
 func (m *Matrix) XTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -2343,7 +2280,6 @@ func (m *Matrix) XTranslation() float32 {
 // The function returns the following values:
 //
 //   - gfloat: value of the scaling factor.
-//
 func (m *Matrix) YScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -2365,7 +2301,6 @@ func (m *Matrix) YScale() float32 {
 // The function returns the following values:
 //
 //   - gfloat: translation component.
-//
 func (m *Matrix) YTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -2387,7 +2322,6 @@ func (m *Matrix) YTranslation() float32 {
 // The function returns the following values:
 //
 //   - gfloat: value of the scaling factor.
-//
 func (m *Matrix) ZScale() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -2409,7 +2343,6 @@ func (m *Matrix) ZScale() float32 {
 // The function returns the following values:
 //
 //   - gfloat: translation component.
-//
 func (m *Matrix) ZTranslation() float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C.float              // in
@@ -2431,9 +2364,9 @@ func (m *Matrix) ZTranslation() float32 {
 //
 // The arguments map to the following matrix layout:
 //
-//    ⎛ xx  yx ⎞   ⎛  a   b  0 ⎞
-//    ⎜ xy  yy ⎟ = ⎜  c   d  0 ⎟
-//    ⎝ x0  y0 ⎠   ⎝ tx  ty  1 ⎠
+//	⎛ xx  yx ⎞   ⎛  a   b  0 ⎞
+//	⎜ xy  yy ⎟ = ⎜  c   d  0 ⎟
+//	⎝ x0  y0 ⎠   ⎝ tx  ty  1 ⎠
 //
 // This function can be used to convert between an affine matrix type from other
 // libraries and a #graphene_matrix_t.
@@ -2450,7 +2383,6 @@ func (m *Matrix) ZTranslation() float32 {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 float64, y0 float64) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.double             // out
@@ -2495,7 +2427,6 @@ func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 f
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.float             // out
@@ -2525,7 +2456,6 @@ func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -2558,7 +2488,6 @@ func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec4_t   // out
@@ -2604,7 +2533,6 @@ func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top float32, zNear float32, zFar float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -2644,7 +2572,6 @@ func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top fl
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitIdentity() *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret *C.graphene_matrix_t // in
@@ -2686,7 +2613,6 @@ func (m *Matrix) InitIdentity() *Matrix {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec3_t   // out
@@ -2726,7 +2652,6 @@ func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom float32, zNear float32, zFar float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -2774,7 +2699,6 @@ func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom floa
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zFar float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -2814,7 +2738,6 @@ func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zF
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -2848,7 +2771,6 @@ func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -2885,7 +2807,6 @@ func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -2918,7 +2839,6 @@ func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
 // The function returns the following values:
 //
 //   - matrix: initialized matrix.
-//
 func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -2953,7 +2873,6 @@ func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
 // The function returns the following values:
 //
 //   - res: return location for the interpolated matrix.
-//
 func (a *Matrix) Interpolate(b *Matrix, factor float64) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -2982,7 +2901,6 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) *Matrix {
 //
 //   - res: return location for the inverse matrix.
 //   - ok: true if the matrix is invertible.
-//
 func (m *Matrix) Inverse() (*Matrix, bool) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.graphene_matrix_t  // in
@@ -3011,7 +2929,6 @@ func (m *Matrix) Inverse() (*Matrix, bool) {
 //
 //   - ok: true if the matrix is compatible with an affine transformation
 //     matrix.
-//
 func (m *Matrix) Is2D() bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
@@ -3036,7 +2953,6 @@ func (m *Matrix) Is2D() bool {
 // The function returns the following values:
 //
 //   - ok: true if the back face of the matrix is visible.
-//
 func (m *Matrix) IsBackfaceVisible() bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
@@ -3061,7 +2977,6 @@ func (m *Matrix) IsBackfaceVisible() bool {
 // The function returns the following values:
 //
 //   - ok: true if the matrix is the identity matrix.
-//
 func (m *Matrix) IsIdentity() bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
@@ -3085,7 +3000,6 @@ func (m *Matrix) IsIdentity() bool {
 // The function returns the following values:
 //
 //   - ok: true if the matrix is singular.
-//
 func (m *Matrix) IsSingular() bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _cret C._Bool              // in
@@ -3116,7 +3030,6 @@ func (m *Matrix) IsSingular() bool {
 // The function returns the following values:
 //
 //   - res: return location for the matrix result.
-//
 func (a *Matrix) Multiply(b *Matrix) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -3147,7 +3060,6 @@ func (a *Matrix) Multiply(b *Matrix) *Matrix {
 // The function returns the following values:
 //
 //   - ok: true if the two matrices are near each other, and false otherwise.
-//
 func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -3177,7 +3089,6 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 // The function returns the following values:
 //
 //   - res: return location for the normalized matrix.
-//
 func (m *Matrix) Normalize() *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.graphene_matrix_t  // in
@@ -3203,7 +3114,6 @@ func (m *Matrix) Normalize() *Matrix {
 // The function returns the following values:
 //
 //   - res: return location for the perspective matrix.
-//
 func (m *Matrix) Perspective(depth float32) *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3245,7 +3155,6 @@ func (m *Matrix) Print() {
 // The function returns the following values:
 //
 //   - res: return location for the projected point.
-//
 func (m *Matrix) ProjectPoint(p *Point) *Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
@@ -3277,7 +3186,6 @@ func (m *Matrix) ProjectPoint(p *Point) *Point {
 // The function returns the following values:
 //
 //   - res: return location for the projected rectangle.
-//
 func (m *Matrix) ProjectRect(r *Rect) *Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -3309,7 +3217,6 @@ func (m *Matrix) ProjectRect(r *Rect) *Quad {
 // The function returns the following values:
 //
 //   - res: return location for the projected rectangle.
-//
 func (m *Matrix) ProjectRectBounds(r *Rect) *Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -3339,7 +3246,6 @@ func (m *Matrix) ProjectRectBounds(r *Rect) *Rect {
 //
 //   - angle: rotation angle, in degrees.
 //   - axis: rotation axis, as a #graphene_vec3_t.
-//
 func (m *Matrix) Rotate(angle float32, axis *Vec3) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3361,7 +3267,6 @@ func (m *Matrix) Rotate(angle float32, axis *Vec3) {
 // The function takes the following parameters:
 //
 //   - e: rotation described by a #graphene_euler_t.
-//
 func (m *Matrix) RotateEuler(e *Euler) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_euler_t  // out
@@ -3383,7 +3288,6 @@ func (m *Matrix) RotateEuler(e *Euler) {
 // The function takes the following parameters:
 //
 //   - q: rotation described by a #graphene_quaternion_t.
-//
 func (m *Matrix) RotateQuaternion(q *Quaternion) {
 	var _arg0 *C.graphene_matrix_t     // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -3404,7 +3308,6 @@ func (m *Matrix) RotateQuaternion(q *Quaternion) {
 // The function takes the following parameters:
 //
 //   - angle: rotation angle, in degrees.
-//
 func (m *Matrix) RotateX(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3425,7 +3328,6 @@ func (m *Matrix) RotateX(angle float32) {
 // The function takes the following parameters:
 //
 //   - angle: rotation angle, in degrees.
-//
 func (m *Matrix) RotateY(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3446,7 +3348,6 @@ func (m *Matrix) RotateY(angle float32) {
 // The function takes the following parameters:
 //
 //   - angle: rotation angle, in degrees.
-//
 func (m *Matrix) RotateZ(angle float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3469,7 +3370,6 @@ func (m *Matrix) RotateZ(angle float32) {
 //   - factorX: scaling factor on the X axis.
 //   - factorY: scaling factor on the Y axis.
 //   - factorZ: scaling factor on the Z axis.
-//
 func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3493,7 +3393,6 @@ func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
 // The function takes the following parameters:
 //
 //   - factor: skew factor.
-//
 func (m *Matrix) SkewXY(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3511,7 +3410,6 @@ func (m *Matrix) SkewXY(factor float32) {
 // The function takes the following parameters:
 //
 //   - factor: skew factor.
-//
 func (m *Matrix) SkewXZ(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3529,7 +3427,6 @@ func (m *Matrix) SkewXZ(factor float32) {
 // The function takes the following parameters:
 //
 //   - factor: skew factor.
-//
 func (m *Matrix) SkewYZ(factor float32) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.float              // out
@@ -3547,9 +3444,9 @@ func (m *Matrix) SkewYZ(factor float32) {
 //
 // The returned values have the following layout:
 //
-//    ⎛ xx  yx ⎞   ⎛  a   b  0 ⎞
-//    ⎜ xy  yy ⎟ = ⎜  c   d  0 ⎟
-//    ⎝ x0  y0 ⎠   ⎝ tx  ty  1 ⎠
+//	⎛ xx  yx ⎞   ⎛  a   b  0 ⎞
+//	⎜ xy  yy ⎟ = ⎜  c   d  0 ⎟
+//	⎝ x0  y0 ⎠   ⎝ tx  ty  1 ⎠
 //
 // This function can be used to convert between a #graphene_matrix_t and an
 // affine matrix type from other libraries.
@@ -3564,7 +3461,6 @@ func (m *Matrix) SkewYZ(factor float32) {
 //   - y0: return location for the y0 member.
 //   - ok: true if the matrix is compatible with an affine transformation
 //     matrix.
-//
 func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 float64, y0 float64, ok bool) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.double             // in
@@ -3607,7 +3503,6 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 //
 //   - v: return location for an array of floating point values. The array must
 //     be capable of holding at least 16 values.
-//
 func (m *Matrix) ToFloat() [16]float32 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 [16]C.float          // in
@@ -3639,7 +3534,6 @@ func (m *Matrix) ToFloat() [16]float32 {
 // The function returns the following values:
 //
 //   - res: return location for the bounds of the transformed rectangle.
-//
 func (m *Matrix) TransformBounds(r *Rect) *Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -3672,7 +3566,6 @@ func (m *Matrix) TransformBounds(r *Rect) *Rect {
 // The function returns the following values:
 //
 //   - res: return location for the bounds of the transformed box.
-//
 func (m *Matrix) TransformBox(b *Box) *Box {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_box_t    // out
@@ -3707,7 +3600,6 @@ func (m *Matrix) TransformBox(b *Box) *Box {
 // The function returns the following values:
 //
 //   - res: return location for the transformed #graphene_point_t.
-//
 func (m *Matrix) TransformPoint(p *Point) *Point {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
@@ -3742,7 +3634,6 @@ func (m *Matrix) TransformPoint(p *Point) *Point {
 // The function returns the following values:
 //
 //   - res: return location for the result.
-//
 func (m *Matrix) TransformPoint3D(p *Point3D) *Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -3771,7 +3662,6 @@ func (m *Matrix) TransformPoint3D(p *Point3D) *Point3D {
 // The function returns the following values:
 //
 //   - res: return location for the transformed ray.
-//
 func (m *Matrix) TransformRay(r *Ray) *Ray {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_ray_t    // out
@@ -3805,7 +3695,6 @@ func (m *Matrix) TransformRay(r *Ray) *Ray {
 // The function returns the following values:
 //
 //   - res: return location for the transformed quad.
-//
 func (m *Matrix) TransformRect(r *Rect) *Quad {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -3835,7 +3724,6 @@ func (m *Matrix) TransformRect(r *Rect) *Quad {
 // The function returns the following values:
 //
 //   - res: return location for the bounds of the transformed sphere.
-//
 func (m *Matrix) TransformSphere(s *Sphere) *Sphere {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_sphere_t // out
@@ -3870,7 +3758,6 @@ func (m *Matrix) TransformSphere(s *Sphere) *Sphere {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_vec3_t.
-//
 func (m *Matrix) TransformVec3(v *Vec3) *Vec3 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec3_t   // out
@@ -3901,7 +3788,6 @@ func (m *Matrix) TransformVec3(v *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_vec4_t.
-//
 func (m *Matrix) TransformVec4(v *Vec4) *Vec4 {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_vec4_t   // out
@@ -3930,7 +3816,6 @@ func (m *Matrix) TransformVec4(v *Vec4) *Vec4 {
 // The function takes the following parameters:
 //
 //   - pos: #graphene_point3d_t.
-//
 func (m *Matrix) Translate(pos *Point3D) {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -3948,7 +3833,6 @@ func (m *Matrix) Translate(pos *Point3D) {
 // The function returns the following values:
 //
 //   - res: return location for the transposed matrix.
-//
 func (m *Matrix) Transpose() *Matrix {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.graphene_matrix_t  // in
@@ -3977,7 +3861,6 @@ func (m *Matrix) Transpose() *Matrix {
 // The function returns the following values:
 //
 //   - res: return location for the unprojected point.
-//
 func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) *Point3D {
 	var _arg0 *C.graphene_matrix_t  // out
 	var _arg1 *C.graphene_matrix_t  // out
@@ -4012,7 +3895,6 @@ func (projection *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) *P
 // The function returns the following values:
 //
 //   - res: return location for the untransformed rectangle.
-//
 func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) *Rect {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_rect_t   // out
@@ -4047,7 +3929,6 @@ func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) *Rect {
 //
 //   - res: return location for the untransformed point.
 //   - ok: true if the point was successfully untransformed.
-//
 func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (*Point, bool) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_point_t  // out
@@ -4123,7 +4004,6 @@ func NewPlaneAlloc() *Plane {
 // The function returns the following values:
 //
 //   - gfloat: distance of the given #graphene_point3d_t from the plane.
-//
 func (p *Plane) Distance(point *Point3D) float32 {
 	var _arg0 *C.graphene_plane_t   // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -4152,7 +4032,6 @@ func (p *Plane) Distance(point *Point3D) float32 {
 // The function returns the following values:
 //
 //   - ok: true if the given planes are equal.
-//
 func (a *Plane) Equal(b *Plane) bool {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 *C.graphene_plane_t // out
@@ -4180,7 +4059,6 @@ func (a *Plane) Equal(b *Plane) bool {
 // The function returns the following values:
 //
 //   - gfloat: constant value of the plane.
-//
 func (p *Plane) Constant() float32 {
 	var _arg0 *C.graphene_plane_t // out
 	var _cret C.float             // in
@@ -4203,7 +4081,6 @@ func (p *Plane) Constant() float32 {
 // The function returns the following values:
 //
 //   - normal: return location for the normal vector.
-//
 func (p *Plane) Normal() *Vec3 {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 C.graphene_vec3_t   // in
@@ -4233,7 +4110,6 @@ func (p *Plane) Normal() *Vec3 {
 // The function returns the following values:
 //
 //   - plane: initialized plane.
-//
 func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 *C.graphene_vec3_t  // out
@@ -4268,7 +4144,6 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 // The function returns the following values:
 //
 //   - plane: initialized plane.
-//
 func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 *C.graphene_plane_t // out
@@ -4299,7 +4174,6 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 // The function returns the following values:
 //
 //   - plane: initialized plane.
-//
 func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	var _arg0 *C.graphene_plane_t   // out
 	var _arg1 *C.graphene_vec3_t    // out
@@ -4337,7 +4211,6 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 // The function returns the following values:
 //
 //   - plane: initialized plane.
-//
 func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 	var _arg0 *C.graphene_plane_t   // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -4374,7 +4247,6 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 // The function returns the following values:
 //
 //   - plane: initialized plane.
-//
 func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 *C.graphene_vec4_t  // out
@@ -4400,7 +4272,6 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 // The function returns the following values:
 //
 //   - res: return location for the negated plane.
-//
 func (p *Plane) Negate() *Plane {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 C.graphene_plane_t  // in
@@ -4423,7 +4294,6 @@ func (p *Plane) Negate() *Plane {
 // The function returns the following values:
 //
 //   - res: return location for the normalized plane.
-//
 func (p *Plane) Normalize() *Plane {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 C.graphene_plane_t  // in
@@ -4456,7 +4326,6 @@ func (p *Plane) Normalize() *Plane {
 // The function returns the following values:
 //
 //   - res: transformed plane.
-//
 func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) *Plane {
 	var _arg0 *C.graphene_plane_t  // out
 	var _arg1 *C.graphene_matrix_t // out
@@ -4556,7 +4425,6 @@ func (p *Point) SetY(y float32) {
 //   - dX (optional): distance component on the X axis.
 //   - dY (optional): distance component on the Y axis.
 //   - gfloat: distance between the two points.
-//
 func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -4595,7 +4463,6 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 // The function returns the following values:
 //
 //   - ok: true if the points have the same coordinates.
-//
 func (a *Point) Equal(b *Point) bool {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -4629,7 +4496,6 @@ func (a *Point) Equal(b *Point) bool {
 // The function returns the following values:
 //
 //   - point: initialized point.
-//
 func (p *Point) Init(x float32, y float32) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 C.float             // out
@@ -4661,7 +4527,6 @@ func (p *Point) Init(x float32, y float32) *Point {
 // The function returns the following values:
 //
 //   - point: initialized point.
-//
 func (p *Point) InitFromPoint(src *Point) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -4691,7 +4556,6 @@ func (p *Point) InitFromPoint(src *Point) *Point {
 // The function returns the following values:
 //
 //   - point: initialized point.
-//
 func (p *Point) InitFromVec2(src *Vec2) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_vec2_t  // out
@@ -4722,7 +4586,6 @@ func (p *Point) InitFromVec2(src *Vec2) *Point {
 // The function returns the following values:
 //
 //   - res: return location for the interpolated point.
-//
 func (a *Point) Interpolate(b *Point, factor float64) *Point {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -4756,7 +4619,6 @@ func (a *Point) Interpolate(b *Point, factor float64) *Point {
 // The function returns the following values:
 //
 //   - ok: true if the distance is within epsilon.
-//
 func (a *Point) Near(b *Point, epsilon float32) bool {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
@@ -4787,7 +4649,6 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 // The function returns the following values:
 //
 //   - v: return location for the vertex.
-//
 func (p *Point) ToVec2() *Vec2 {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 C.graphene_vec2_t   // in
@@ -4809,7 +4670,6 @@ func (p *Point) ToVec2() *Vec2 {
 // The function returns the following values:
 //
 //   - point: fixed point.
-//
 func PointZero() *Point {
 	var _cret *C.graphene_point_t // in
 
@@ -4909,7 +4769,6 @@ func (p *Point3D) SetZ(z float32) {
 // The function returns the following values:
 //
 //   - res: return location for the cross product.
-//
 func (a *Point3D) Cross(b *Point3D) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -4940,7 +4799,6 @@ func (a *Point3D) Cross(b *Point3D) *Point3D {
 //   - delta (optional): return location for the distance components on the X,
 //     Y, and Z axis.
 //   - gfloat: distance between two points.
-//
 func (a *Point3D) Distance(b *Point3D) (*Vec3, float32) {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -4972,7 +4830,6 @@ func (a *Point3D) Distance(b *Point3D) (*Vec3, float32) {
 // The function returns the following values:
 //
 //   - gfloat: value of the dot product.
-//
 func (a *Point3D) Dot(b *Point3D) float32 {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -5001,7 +4858,6 @@ func (a *Point3D) Dot(b *Point3D) float32 {
 // The function returns the following values:
 //
 //   - ok: true if the points are equal.
-//
 func (a *Point3D) Equal(b *Point3D) bool {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -5034,7 +4890,6 @@ func (a *Point3D) Equal(b *Point3D) bool {
 // The function returns the following values:
 //
 //   - point3D: initialized #graphene_point3d_t.
-//
 func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.float               // out
@@ -5070,7 +4925,6 @@ func (p *Point3D) Init(x float32, y float32, z float32) *Point3D {
 // The function returns the following values:
 //
 //   - point3D: initialized point.
-//
 func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -5100,7 +4954,6 @@ func (p *Point3D) InitFromPoint(src *Point3D) *Point3D {
 // The function returns the following values:
 //
 //   - point3D: initialized #graphene_point3d_t.
-//
 func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_vec3_t    // out
@@ -5131,7 +4984,6 @@ func (p *Point3D) InitFromVec3(v *Vec3) *Point3D {
 // The function returns the following values:
 //
 //   - res: return location for the interpolated #graphene_point3d_t.
-//
 func (a *Point3D) Interpolate(b *Point3D, factor float64) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -5160,7 +5012,6 @@ func (a *Point3D) Interpolate(b *Point3D, factor float64) *Point3D {
 // The function returns the following values:
 //
 //   - gfloat: length of the vector represented by the point.
-//
 func (p *Point3D) Length() float32 {
 	var _arg0 *C.graphene_point3d_t // out
 	var _cret C.float               // in
@@ -5188,7 +5039,6 @@ func (p *Point3D) Length() float32 {
 // The function returns the following values:
 //
 //   - ok: true if the points are near each other.
-//
 func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -5219,7 +5069,6 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 // The function returns the following values:
 //
 //   - res: return location for the normalized #graphene_point3d_t.
-//
 func (p *Point3D) Normalize() *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.graphene_point3d_t  // in
@@ -5253,7 +5102,6 @@ func (p *Point3D) Normalize() *Point3D {
 // The function returns the following values:
 //
 //   - res: return location for the normalized #graphene_point3d_t.
-//
 func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_rect_t    // out
@@ -5289,7 +5137,6 @@ func (p *Point3D) NormalizeViewport(viewport *Rect, zNear float32, zFar float32)
 // The function returns the following values:
 //
 //   - res: return location for the scaled point.
-//
 func (p *Point3D) Scale(factor float32) *Point3D {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.float               // out
@@ -5315,7 +5162,6 @@ func (p *Point3D) Scale(factor float32) *Point3D {
 // The function returns the following values:
 //
 //   - v: return location for a #graphene_vec3_t.
-//
 func (p *Point3D) ToVec3() *Vec3 {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 C.graphene_vec3_t     // in
@@ -5337,7 +5183,6 @@ func (p *Point3D) ToVec3() *Vec3 {
 // The function returns the following values:
 //
 //   - point3D: zero point.
-//
 func Point3DZero() *Point3D {
 	var _cret *C.graphene_point3d_t // in
 
@@ -5394,7 +5239,6 @@ func NewQuadAlloc() *Quad {
 // The function returns the following values:
 //
 //   - r: return location for a #graphene_rect_t.
-//
 func (q *Quad) Bounds() *Rect {
 	var _arg0 *C.graphene_quad_t // out
 	var _arg1 C.graphene_rect_t  // in
@@ -5421,7 +5265,6 @@ func (q *Quad) Bounds() *Rect {
 // The function returns the following values:
 //
 //   - ok: true if the point is inside the #graphene_quad_t.
-//
 func (q *Quad) Contains(p *Point) bool {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 *C.graphene_point_t // out
@@ -5452,7 +5295,6 @@ func (q *Quad) Contains(p *Point) bool {
 // The function returns the following values:
 //
 //   - point: #graphene_point_t.
-//
 func (q *Quad) Point(index_ uint) *Point {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 C.uint              // out
@@ -5484,7 +5326,6 @@ func (q *Quad) Point(index_ uint) *Point {
 // The function returns the following values:
 //
 //   - quad: initialized #graphene_quad_t.
-//
 func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 *C.graphene_point_t // out
@@ -5522,7 +5363,6 @@ func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
 // The function returns the following values:
 //
 //   - quad: initialized #graphene_quad_t.
-//
 func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 *C.graphene_point_t // out
@@ -5558,7 +5398,6 @@ func (q *Quad) InitFromPoints(points [4]Point) *Quad {
 // The function returns the following values:
 //
 //   - quad: initialized #graphene_quad_t.
-//
 func (q *Quad) InitFromRect(r *Rect) *Quad {
 	var _arg0 *C.graphene_quad_t // out
 	var _arg1 *C.graphene_rect_t // out
@@ -5626,7 +5465,6 @@ func NewQuaternionAlloc() *Quaternion {
 // The function returns the following values:
 //
 //   - res: result of the operation.
-//
 func (a *Quaternion) Add(b *Quaternion) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -5655,7 +5493,6 @@ func (a *Quaternion) Add(b *Quaternion) *Quaternion {
 // The function returns the following values:
 //
 //   - gfloat: value of the dot products.
-//
 func (a *Quaternion) Dot(b *Quaternion) float32 {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -5684,7 +5521,6 @@ func (a *Quaternion) Dot(b *Quaternion) float32 {
 // The function returns the following values:
 //
 //   - ok: true if the quaternions are equal.
-//
 func (a *Quaternion) Equal(b *Quaternion) bool {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -5718,7 +5554,6 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 // The function returns the following values:
 //
 //   - quaternion: initialized quaternion.
-//
 func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
@@ -5758,7 +5593,6 @@ func (q *Quaternion) Init(x float32, y float32, z float32, w float32) *Quaternio
 // The function returns the following values:
 //
 //   - quaternion: initialized quaternion.
-//
 func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
@@ -5795,7 +5629,6 @@ func (q *Quaternion) InitFromAngleVec3(angle float32, axis *Vec3) *Quaternion {
 // The function returns the following values:
 //
 //   - quaternion: initialized quaternion.
-//
 func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
@@ -5831,7 +5664,6 @@ func (q *Quaternion) InitFromAngles(degX float32, degY float32, degZ float32) *Q
 // The function returns the following values:
 //
 //   - quaternion: initialized #graphene_quaternion_t.
-//
 func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_euler_t      // out
@@ -5861,7 +5693,6 @@ func (q *Quaternion) InitFromEuler(e *Euler) *Quaternion {
 // The function returns the following values:
 //
 //   - quaternion: initialized quaternion.
-//
 func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_matrix_t     // out
@@ -5891,7 +5722,6 @@ func (q *Quaternion) InitFromMatrix(m *Matrix) *Quaternion {
 // The function returns the following values:
 //
 //   - quaternion: initialized quaternion.
-//
 func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -5925,7 +5755,6 @@ func (q *Quaternion) InitFromQuaternion(src *Quaternion) *Quaternion {
 // The function returns the following values:
 //
 //   - quaternion: initialized quaternion.
-//
 func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
@@ -5960,7 +5789,6 @@ func (q *Quaternion) InitFromRadians(radX float32, radY float32, radZ float32) *
 // The function returns the following values:
 //
 //   - quaternion: initialized quaternion.
-//
 func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_vec4_t       // out
@@ -5986,7 +5814,6 @@ func (q *Quaternion) InitFromVec4(src *Vec4) *Quaternion {
 // The function returns the following values:
 //
 //   - quaternion: initialized quaternion.
-//
 func (q *Quaternion) InitIdentity() *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _cret *C.graphene_quaternion_t // in
@@ -6009,7 +5836,6 @@ func (q *Quaternion) InitIdentity() *Quaternion {
 // The function returns the following values:
 //
 //   - res: return location for the inverted quaternion.
-//
 func (q *Quaternion) Invert() *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.graphene_quaternion_t  // in
@@ -6035,7 +5861,6 @@ func (q *Quaternion) Invert() *Quaternion {
 // The function returns the following values:
 //
 //   - res: result of the operation.
-//
 func (a *Quaternion) Multiply(b *Quaternion) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -6060,7 +5885,6 @@ func (a *Quaternion) Multiply(b *Quaternion) *Quaternion {
 // The function returns the following values:
 //
 //   - res: return location for the normalized quaternion.
-//
 func (q *Quaternion) Normalize() *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.graphene_quaternion_t  // in
@@ -6087,7 +5911,6 @@ func (q *Quaternion) Normalize() *Quaternion {
 // The function returns the following values:
 //
 //   - res: result of the operation.
-//
 func (q *Quaternion) Scale(factor float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // out
@@ -6119,7 +5942,6 @@ func (q *Quaternion) Scale(factor float32) *Quaternion {
 // The function returns the following values:
 //
 //   - res: return location for the interpolated quaternion.
-//
 func (a *Quaternion) Slerp(b *Quaternion, factor float32) *Quaternion {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
@@ -6148,7 +5970,6 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) *Quaternion {
 //
 //   - angle: return location for the angle, in degrees.
 //   - axis: return location for the rotation axis.
-//
 func (q *Quaternion) ToAngleVec3() (float32, *Vec3) {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // in
@@ -6179,7 +6000,6 @@ func (q *Quaternion) ToAngleVec3() (float32, *Vec3) {
 //     (pitch), in degrees.
 //   - degZ (optional): return location for the rotation angle on the Z axis
 //     (roll), in degrees.
-//
 func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // in
@@ -6208,7 +6028,6 @@ func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 // The function returns the following values:
 //
 //   - m: #graphene_matrix_t.
-//
 func (q *Quaternion) ToMatrix() *Matrix {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.graphene_matrix_t      // in
@@ -6236,7 +6055,6 @@ func (q *Quaternion) ToMatrix() *Matrix {
 //     (pitch), in radians.
 //   - radZ (optional): return location for the rotation angle on the Z axis
 //     (roll), in radians.
-//
 func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.float                  // in
@@ -6265,7 +6083,6 @@ func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_vec4_t.
-//
 func (q *Quaternion) ToVec4() *Vec4 {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 C.graphene_vec4_t        // in
@@ -6330,7 +6147,6 @@ func NewRayAlloc() *Ray {
 // The function returns the following values:
 //
 //   - ok: true if the given rays are equal.
-//
 func (a *Ray) Equal(b *Ray) bool {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_ray_t // out
@@ -6362,7 +6178,6 @@ func (a *Ray) Equal(b *Ray) bool {
 // The function returns the following values:
 //
 //   - res: return location for the closest point3d.
-//
 func (r *Ray) ClosestPointToPoint(p *Point3D) *Point3D {
 	var _arg0 *C.graphene_ray_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -6387,7 +6202,6 @@ func (r *Ray) ClosestPointToPoint(p *Point3D) *Point3D {
 // The function returns the following values:
 //
 //   - direction: return location for the direction.
-//
 func (r *Ray) Direction() *Vec3 {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 C.graphene_vec3_t // in
@@ -6416,7 +6230,6 @@ func (r *Ray) Direction() *Vec3 {
 // The function returns the following values:
 //
 //   - gfloat: distance of the origin of the ray from the plane.
-//
 func (r *Ray) DistanceToPlane(p *Plane) float32 {
 	var _arg0 *C.graphene_ray_t   // out
 	var _arg1 *C.graphene_plane_t // out
@@ -6449,7 +6262,6 @@ func (r *Ray) DistanceToPlane(p *Plane) float32 {
 // The function returns the following values:
 //
 //   - gfloat: distance of the point.
-//
 func (r *Ray) DistanceToPoint(p *Point3D) float32 {
 	var _arg0 *C.graphene_ray_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -6474,7 +6286,6 @@ func (r *Ray) DistanceToPoint(p *Point3D) float32 {
 // The function returns the following values:
 //
 //   - origin: return location for the origin.
-//
 func (r *Ray) Origin() *Point3D {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 C.graphene_point3d_t // in
@@ -6501,7 +6312,6 @@ func (r *Ray) Origin() *Point3D {
 // The function returns the following values:
 //
 //   - position: return location for the position.
-//
 func (r *Ray) PositionAt(t float32) *Point3D {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 C.float              // out
@@ -6532,7 +6342,6 @@ func (r *Ray) PositionAt(t float32) *Point3D {
 // The function returns the following values:
 //
 //   - ray: initialized ray.
-//
 func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 	var _arg0 *C.graphene_ray_t     // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -6569,7 +6378,6 @@ func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
 // The function returns the following values:
 //
 //   - ray: initialized ray.
-//
 func (r *Ray) InitFromRay(src *Ray) *Ray {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_ray_t // out
@@ -6599,7 +6407,6 @@ func (r *Ray) InitFromRay(src *Ray) *Ray {
 // The function returns the following values:
 //
 //   - ray: initialized ray.
-//
 func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 	var _arg0 *C.graphene_ray_t  // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -6637,7 +6444,6 @@ func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
 //
 //   - tOut: distance of the point on the ray that intersects the box.
 //   - rayIntersectionKind: type of intersection.
-//
 func (r *Ray) IntersectBox(b *Box) (float32, RayIntersectionKind) {
 	var _arg0 *C.graphene_ray_t                  // out
 	var _arg1 *C.graphene_box_t                  // out
@@ -6671,7 +6477,6 @@ func (r *Ray) IntersectBox(b *Box) (float32, RayIntersectionKind) {
 //
 //   - tOut: distance of the point on the ray that intersects the sphere.
 //   - rayIntersectionKind: type of intersection.
-//
 func (r *Ray) IntersectSphere(s *Sphere) (float32, RayIntersectionKind) {
 	var _arg0 *C.graphene_ray_t                  // out
 	var _arg1 *C.graphene_sphere_t               // out
@@ -6705,7 +6510,6 @@ func (r *Ray) IntersectSphere(s *Sphere) (float32, RayIntersectionKind) {
 //
 //   - tOut: distance of the point on the ray that intersects the triangle.
 //   - rayIntersectionKind: type of intersection.
-//
 func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
 	var _arg0 *C.graphene_ray_t                  // out
 	var _arg1 *C.graphene_triangle_t             // out
@@ -6740,7 +6544,6 @@ func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
 // The function returns the following values:
 //
 //   - ok: true if the ray intersects the box.
-//
 func (r *Ray) IntersectsBox(b *Box) bool {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_box_t // out
@@ -6774,7 +6577,6 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 // The function returns the following values:
 //
 //   - ok: true if the ray intersects the sphere.
-//
 func (r *Ray) IntersectsSphere(s *Sphere) bool {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 *C.graphene_sphere_t // out
@@ -6808,7 +6610,6 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 // The function returns the following values:
 //
 //   - ok: true if the ray intersects the triangle.
-//
 func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 	var _arg0 *C.graphene_ray_t      // out
 	var _arg1 *C.graphene_triangle_t // out
@@ -6884,7 +6685,6 @@ func (r *Rect) Size() *Size {
 // The function returns the following values:
 //
 //   - ok: true if the rectangle contains the point.
-//
 func (r *Rect) ContainsPoint(p *Point) bool {
 	var _arg0 *C.graphene_rect_t  // out
 	var _arg1 *C.graphene_point_t // out
@@ -6916,7 +6716,6 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 // The function returns the following values:
 //
 //   - ok: true if the rectangle a fully contains b.
-//
 func (a *Rect) ContainsRect(b *Rect) bool {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
@@ -6947,7 +6746,6 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 // The function returns the following values:
 //
 //   - ok: true if the rectangles are equal.
-//
 func (a *Rect) Equal(b *Rect) bool {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
@@ -6978,7 +6776,6 @@ func (a *Rect) Equal(b *Rect) bool {
 // The function returns the following values:
 //
 //   - res: return location for the expanded rectangle.
-//
 func (r *Rect) Expand(p *Point) *Rect {
 	var _arg0 *C.graphene_rect_t  // out
 	var _arg1 *C.graphene_point_t // out
@@ -7003,7 +6800,6 @@ func (r *Rect) Expand(p *Point) *Rect {
 // The function returns the following values:
 //
 //   - gfloat: area of the normalized rectangle.
-//
 func (r *Rect) Area() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
@@ -7026,7 +6822,6 @@ func (r *Rect) Area() float32 {
 // The function returns the following values:
 //
 //   - p: return location for a #graphene_point_t.
-//
 func (r *Rect) BottomLeft() *Point {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_point_t // in
@@ -7049,7 +6844,6 @@ func (r *Rect) BottomLeft() *Point {
 // The function returns the following values:
 //
 //   - p: return location for a #graphene_point_t.
-//
 func (r *Rect) BottomRight() *Point {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_point_t // in
@@ -7071,7 +6865,6 @@ func (r *Rect) BottomRight() *Point {
 // The function returns the following values:
 //
 //   - p: return location for a #graphene_point_t.
-//
 func (r *Rect) Center() *Point {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_point_t // in
@@ -7093,7 +6886,6 @@ func (r *Rect) Center() *Point {
 // The function returns the following values:
 //
 //   - gfloat: normalized height of the rectangle.
-//
 func (r *Rect) Height() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
@@ -7116,7 +6908,6 @@ func (r *Rect) Height() float32 {
 // The function returns the following values:
 //
 //   - p: return location for a #graphene_point_t.
-//
 func (r *Rect) TopLeft() *Point {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_point_t // in
@@ -7139,7 +6930,6 @@ func (r *Rect) TopLeft() *Point {
 // The function returns the following values:
 //
 //   - p: return location for a #graphene_point_t.
-//
 func (r *Rect) TopRight() *Point {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_point_t // in
@@ -7161,7 +6951,6 @@ func (r *Rect) TopRight() *Point {
 // The function returns the following values:
 //
 //   - vertices: return location for an array of 4 #graphene_vec2_t.
-//
 func (r *Rect) Vertices() [4]Vec2 {
 	var _arg0 *C.graphene_rect_t   // out
 	var _arg1 [4]C.graphene_vec2_t // in
@@ -7188,7 +6977,6 @@ func (r *Rect) Vertices() [4]Vec2 {
 // The function returns the following values:
 //
 //   - gfloat: normalized width of the rectangle.
-//
 func (r *Rect) Width() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
@@ -7210,7 +6998,6 @@ func (r *Rect) Width() float32 {
 // The function returns the following values:
 //
 //   - gfloat: normalized X coordinate of the rectangle.
-//
 func (r *Rect) X() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
@@ -7232,7 +7019,6 @@ func (r *Rect) X() float32 {
 // The function returns the following values:
 //
 //   - gfloat: normalized Y coordinate of the rectangle.
-//
 func (r *Rect) Y() float32 {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret C.float            // in
@@ -7264,7 +7050,6 @@ func (r *Rect) Y() float32 {
 // The function returns the following values:
 //
 //   - rect: initialized rectangle.
-//
 func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
@@ -7305,7 +7090,6 @@ func (r *Rect) Init(x float32, y float32, width float32, height float32) *Rect {
 // The function returns the following values:
 //
 //   - rect: initialized rectangle.
-//
 func (r *Rect) InitFromRect(src *Rect) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
@@ -7347,7 +7131,6 @@ func (r *Rect) InitFromRect(src *Rect) *Rect {
 // The function returns the following values:
 //
 //   - rect: inset rectangle.
-//
 func (r *Rect) Inset(dX float32, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
@@ -7392,7 +7175,6 @@ func (r *Rect) Inset(dX float32, dY float32) *Rect {
 // The function returns the following values:
 //
 //   - res: return location for the inset rectangle.
-//
 func (r *Rect) InsetR(dX float32, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
@@ -7426,7 +7208,6 @@ func (r *Rect) InsetR(dX float32, dY float32) *Rect {
 // The function returns the following values:
 //
 //   - res: return location for the interpolated rectangle.
-//
 func (a *Rect) Interpolate(b *Rect, factor float64) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
@@ -7466,7 +7247,6 @@ func (a *Rect) Interpolate(b *Rect, factor float64) *Rect {
 //
 //   - res (optional): return location for a #graphene_rect_t.
 //   - ok: true if the two rectangles intersect.
-//
 func (a *Rect) Intersection(b *Rect) (*Rect, bool) {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
@@ -7499,7 +7279,6 @@ func (a *Rect) Intersection(b *Rect) (*Rect, bool) {
 // The function returns the following values:
 //
 //   - rect: normalized rectangle.
-//
 func (r *Rect) Normalize() *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret *C.graphene_rect_t // in
@@ -7524,7 +7303,6 @@ func (r *Rect) Normalize() *Rect {
 // The function returns the following values:
 //
 //   - res: return location for the normalized rectangle.
-//
 func (r *Rect) NormalizeR() *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_rect_t  // in
@@ -7553,7 +7331,6 @@ func (r *Rect) NormalizeR() *Rect {
 // The function returns the following values:
 //
 //   - rect: offset rectangle.
-//
 func (r *Rect) Offset(dX float32, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
@@ -7588,7 +7365,6 @@ func (r *Rect) Offset(dX float32, dY float32) *Rect {
 // The function returns the following values:
 //
 //   - res: return location for the offset rectangle.
-//
 func (r *Rect) OffsetR(dX float32, dY float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
@@ -7625,7 +7401,6 @@ func (r *Rect) OffsetR(dX float32, dY float32) *Rect {
 // The function returns the following values:
 //
 //   - res: return location for the rounded rectangle.
-//
 func (r *Rect) Round() *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_rect_t  // in
@@ -7663,7 +7438,6 @@ func (r *Rect) Round() *Rect {
 // The function returns the following values:
 //
 //   - res: return location for the rectangle with rounded extents.
-//
 func (r *Rect) RoundExtents() *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.graphene_rect_t  // in
@@ -7689,7 +7463,6 @@ func (r *Rect) RoundExtents() *Rect {
 // The function returns the following values:
 //
 //   - rect: pixel-aligned rectangle.
-//
 func (r *Rect) RoundToPixel() *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _cret *C.graphene_rect_t // in
@@ -7717,7 +7490,6 @@ func (r *Rect) RoundToPixel() *Rect {
 // The function returns the following values:
 //
 //   - res: return location for the scaled rectangle.
-//
 func (r *Rect) Scale(sH float32, sV float32) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 C.float            // out
@@ -7753,7 +7525,6 @@ func (r *Rect) Scale(sH float32, sV float32) *Rect {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_rect_t.
-//
 func (a *Rect) Union(b *Rect) *Rect {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
@@ -7780,7 +7551,6 @@ func (a *Rect) Union(b *Rect) *Rect {
 // The function returns the following values:
 //
 //   - rect: newly allocated rectangle.
-//
 func RectAlloc() *Rect {
 	var _cret *C.graphene_rect_t // in
 
@@ -7805,7 +7575,6 @@ func RectAlloc() *Rect {
 // The function returns the following values:
 //
 //   - rect: fixed rectangle.
-//
 func RectZero() *Rect {
 	var _cret *C.graphene_rect_t // in
 
@@ -7911,7 +7680,6 @@ func (s *Size) SetHeight(height float32) {
 // The function returns the following values:
 //
 //   - ok: true if the sizes are equal.
-//
 func (a *Size) Equal(b *Size) bool {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
@@ -7943,7 +7711,6 @@ func (a *Size) Equal(b *Size) bool {
 // The function returns the following values:
 //
 //   - size: initialized #graphene_size_t.
-//
 func (s *Size) Init(width float32, height float32) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 C.float            // out
@@ -7976,7 +7743,6 @@ func (s *Size) Init(width float32, height float32) *Size {
 // The function returns the following values:
 //
 //   - size: initialized #graphene_size_t.
-//
 func (s *Size) InitFromSize(src *Size) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
@@ -8007,7 +7773,6 @@ func (s *Size) InitFromSize(src *Size) *Size {
 // The function returns the following values:
 //
 //   - res: return location for the interpolated size.
-//
 func (a *Size) Interpolate(b *Size, factor float64) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
@@ -8039,7 +7804,6 @@ func (a *Size) Interpolate(b *Size, factor float64) *Size {
 // The function returns the following values:
 //
 //   - res: return location for the scaled size.
-//
 func (s *Size) Scale(factor float32) *Size {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 C.float            // out
@@ -8065,7 +7829,6 @@ func (s *Size) Scale(factor float32) *Size {
 // The function returns the following values:
 //
 //   - size: constant size.
-//
 func SizeZero() *Size {
 	var _cret *C.graphene_size_t // in
 
@@ -8124,7 +7887,6 @@ func NewSphereAlloc() *Sphere {
 // The function returns the following values:
 //
 //   - ok: true if the sphere contains the point.
-//
 func (s *Sphere) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -8156,7 +7918,6 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 // The function returns the following values:
 //
 //   - gfloat: distance of the point.
-//
 func (s *Sphere) Distance(point *Point3D) float32 {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -8185,7 +7946,6 @@ func (s *Sphere) Distance(point *Point3D) float32 {
 // The function returns the following values:
 //
 //   - ok: true if the spheres are equal.
-//
 func (a *Sphere) Equal(b *Sphere) bool {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 *C.graphene_sphere_t // out
@@ -8213,7 +7973,6 @@ func (a *Sphere) Equal(b *Sphere) bool {
 // The function returns the following values:
 //
 //   - box: return location for the bounding box.
-//
 func (s *Sphere) BoundingBox() *Box {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 C.graphene_box_t     // in
@@ -8235,7 +7994,6 @@ func (s *Sphere) BoundingBox() *Box {
 // The function returns the following values:
 //
 //   - center: return location for the coordinates of the center.
-//
 func (s *Sphere) Center() *Point3D {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 C.graphene_point3d_t // in
@@ -8253,9 +8011,6 @@ func (s *Sphere) Center() *Point3D {
 }
 
 // Radius retrieves the radius of a #graphene_sphere_t.
-//
-// The function returns the following values:
-//
 func (s *Sphere) Radius() float32 {
 	var _arg0 *C.graphene_sphere_t // out
 	var _cret C.float              // in
@@ -8284,7 +8039,6 @@ func (s *Sphere) Radius() float32 {
 // The function returns the following values:
 //
 //   - sphere: initialized #graphene_sphere_t.
-//
 func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -8323,7 +8077,6 @@ func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
 // The function returns the following values:
 //
 //   - sphere: initialized #graphene_sphere_t.
-//
 func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg2 *C.graphene_point3d_t // out
@@ -8371,7 +8124,6 @@ func (s *Sphere) InitFromPoints(points []Point3D, center *Point3D) *Sphere {
 // The function returns the following values:
 //
 //   - sphere: initialized #graphene_sphere_t.
-//
 func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg2 *C.graphene_vec3_t   // out
@@ -8410,7 +8162,6 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 // The function returns the following values:
 //
 //   - ok: true if the sphere is empty.
-//
 func (s *Sphere) IsEmpty() bool {
 	var _arg0 *C.graphene_sphere_t // out
 	var _cret C._Bool              // in
@@ -8439,7 +8190,6 @@ func (s *Sphere) IsEmpty() bool {
 // The function returns the following values:
 //
 //   - res: return location for the translated sphere.
-//
 func (s *Sphere) Translate(point *Point3D) *Sphere {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -8504,7 +8254,6 @@ func NewTriangleAlloc() *Triangle {
 // The function returns the following values:
 //
 //   - ok: true if the point is inside the triangle.
-//
 func (t *Triangle) ContainsPoint(p *Point3D) bool {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
@@ -8535,7 +8284,6 @@ func (t *Triangle) ContainsPoint(p *Point3D) bool {
 // The function returns the following values:
 //
 //   - ok: true if the triangles are equal.
-//
 func (a *Triangle) Equal(b *Triangle) bool {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_triangle_t // out
@@ -8562,7 +8310,6 @@ func (a *Triangle) Equal(b *Triangle) bool {
 // The function returns the following values:
 //
 //   - gfloat: area of the triangle.
-//
 func (t *Triangle) Area() float32 {
 	var _arg0 *C.graphene_triangle_t // out
 	var _cret C.float                // in
@@ -8605,7 +8352,6 @@ func (t *Triangle) Area() float32 {
 //
 //   - res: return location for the vector with the barycentric coordinates.
 //   - ok: true if the barycentric coordinates are valid.
-//
 func (t *Triangle) Barycoords(p *Point3D) (*Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
@@ -8637,7 +8383,6 @@ func (t *Triangle) Barycoords(p *Point3D) (*Vec2, bool) {
 // The function returns the following values:
 //
 //   - res: return location for the box.
-//
 func (t *Triangle) BoundingBox() *Box {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_box_t       // in
@@ -8664,7 +8409,6 @@ func (t *Triangle) BoundingBox() *Box {
 // The function returns the following values:
 //
 //   - res: return location for the coordinates of the midpoint.
-//
 func (t *Triangle) Midpoint() *Point3D {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_point3d_t   // in
@@ -8686,7 +8430,6 @@ func (t *Triangle) Midpoint() *Point3D {
 // The function returns the following values:
 //
 //   - res: return location for the normal vector.
-//
 func (t *Triangle) Normal() *Vec3 {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_vec3_t      // in
@@ -8709,7 +8452,6 @@ func (t *Triangle) Normal() *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the plane.
-//
 func (t *Triangle) Plane() *Plane {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_plane_t     // in
@@ -8734,7 +8476,6 @@ func (t *Triangle) Plane() *Plane {
 //   - a (optional): return location for the coordinates of the first vertex.
 //   - b (optional): return location for the coordinates of the second vertex.
 //   - c (optional): return location for the coordinates of the third vertex.
-//
 func (t *Triangle) Points() (a *Point3D, b *Point3D, c *Point3D) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_point3d_t   // in
@@ -8781,7 +8522,6 @@ func (t *Triangle) Points() (a *Point3D, b *Point3D, c *Point3D) {
 //
 //   - res: vector containing the UV coordinates of the given point p.
 //   - ok: true if the coordinates are valid.
-//
 func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (*Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
@@ -8824,7 +8564,6 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (*Vec2, bool)
 //   - a (optional): return location for the first vertex.
 //   - b (optional): return location for the second vertex.
 //   - c (optional): return location for the third vertex.
-//
 func (t *Triangle) Vertices() (a *Vec3, b *Vec3, c *Vec3) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 C.graphene_vec3_t      // in
@@ -8860,7 +8599,6 @@ func (t *Triangle) Vertices() (a *Vec3, b *Vec3, c *Vec3) {
 // The function returns the following values:
 //
 //   - triangle: initialized #graphene_triangle_t.
-//
 func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.float               // out
@@ -8898,7 +8636,6 @@ func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Tria
 // The function returns the following values:
 //
 //   - triangle: initialized #graphene_triangle_t.
-//
 func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
@@ -8942,7 +8679,6 @@ func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle
 // The function returns the following values:
 //
 //   - triangle: initialized #graphene_triangle_t.
-//
 func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_vec3_t     // out
@@ -9023,7 +8759,6 @@ func NewVec2Alloc() *Vec2 {
 // The function returns the following values:
 //
 //   - res: return location for the result.
-//
 func (a *Vec2) Add(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9054,7 +8789,6 @@ func (a *Vec2) Add(b *Vec2) *Vec2 {
 // The function returns the following values:
 //
 //   - res: return location for the result.
-//
 func (a *Vec2) Divide(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9083,7 +8817,6 @@ func (a *Vec2) Divide(b *Vec2) *Vec2 {
 // The function returns the following values:
 //
 //   - gfloat: dot product of the vectors.
-//
 func (a *Vec2) Dot(b *Vec2) float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9112,7 +8845,6 @@ func (a *Vec2) Dot(b *Vec2) float32 {
 // The function returns the following values:
 //
 //   - ok: true if the two vectors are equal, and false otherwise.
-//
 func (v1 *Vec2) Equal(v2 *Vec2) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9139,7 +8871,6 @@ func (v1 *Vec2) Equal(v2 *Vec2) bool {
 // The function returns the following values:
 //
 //   - gfloat: value of the X component.
-//
 func (v *Vec2) X() float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _cret C.float            // in
@@ -9161,7 +8892,6 @@ func (v *Vec2) X() float32 {
 // The function returns the following values:
 //
 //   - gfloat: value of the Y component.
-//
 func (v *Vec2) Y() float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _cret C.float            // in
@@ -9190,7 +8920,6 @@ func (v *Vec2) Y() float32 {
 // The function returns the following values:
 //
 //   - vec2: initialized vector.
-//
 func (v *Vec2) Init(x float32, y float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
@@ -9222,7 +8951,6 @@ func (v *Vec2) Init(x float32, y float32) *Vec2 {
 // The function returns the following values:
 //
 //   - vec2: initialized vector.
-//
 func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.float           // out
@@ -9251,7 +8979,6 @@ func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 // The function returns the following values:
 //
 //   - vec2: initialized vector.
-//
 func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9281,7 +9008,6 @@ func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 // The function returns the following values:
 //
 //   - res: interpolated vector.
-//
 func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9309,7 +9035,6 @@ func (v1 *Vec2) Interpolate(v2 *Vec2, factor float64) *Vec2 {
 // The function returns the following values:
 //
 //   - gfloat: length of the vector.
-//
 func (v *Vec2) Length() float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _cret C.float            // in
@@ -9336,7 +9061,6 @@ func (v *Vec2) Length() float32 {
 // The function returns the following values:
 //
 //   - res: resulting vector.
-//
 func (a *Vec2) Max(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9366,7 +9090,6 @@ func (a *Vec2) Max(b *Vec2) *Vec2 {
 // The function returns the following values:
 //
 //   - res: resulting vector.
-//
 func (a *Vec2) Min(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9396,7 +9119,6 @@ func (a *Vec2) Min(b *Vec2) *Vec2 {
 // The function returns the following values:
 //
 //   - res: return location for the result.
-//
 func (a *Vec2) Multiply(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9427,7 +9149,6 @@ func (a *Vec2) Multiply(b *Vec2) *Vec2 {
 // The function returns the following values:
 //
 //   - ok: true if the two vectors are near each other.
-//
 func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9457,7 +9178,6 @@ func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (v *Vec2) Negate() *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.graphene_vec2_t  // in
@@ -9479,7 +9199,6 @@ func (v *Vec2) Negate() *Vec2 {
 // The function returns the following values:
 //
 //   - res: return location for the normalized vector.
-//
 func (v *Vec2) Normalize() *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.graphene_vec2_t  // in
@@ -9506,7 +9225,6 @@ func (v *Vec2) Normalize() *Vec2 {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (v *Vec2) Scale(factor float32) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 C.float            // out
@@ -9537,7 +9255,6 @@ func (v *Vec2) Scale(factor float32) *Vec2 {
 // The function returns the following values:
 //
 //   - res: return location for the result.
-//
 func (a *Vec2) Subtract(b *Vec2) *Vec2 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -9563,7 +9280,6 @@ func (a *Vec2) Subtract(b *Vec2) *Vec2 {
 //
 //   - dest: return location for an array of floating point values with at least
 //     2 elements.
-//
 func (v *Vec2) ToFloat() [2]float32 {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 [2]C.float         // in
@@ -9585,7 +9301,6 @@ func (v *Vec2) ToFloat() [2]float32 {
 // The function returns the following values:
 //
 //   - vec2: one vector.
-//
 func Vec2One() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 
@@ -9603,7 +9318,6 @@ func Vec2One() *Vec2 {
 // The function returns the following values:
 //
 //   - vec2: x axis vector.
-//
 func Vec2XAxis() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 
@@ -9621,7 +9335,6 @@ func Vec2XAxis() *Vec2 {
 // The function returns the following values:
 //
 //   - vec2: y axis vector.
-//
 func Vec2YAxis() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 
@@ -9639,7 +9352,6 @@ func Vec2YAxis() *Vec2 {
 // The function returns the following values:
 //
 //   - vec2: zero vector.
-//
 func Vec2Zero() *Vec2 {
 	var _cret *C.graphene_vec2_t // in
 
@@ -9701,7 +9413,6 @@ func NewVec3Alloc() *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec3) Add(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -9730,7 +9441,6 @@ func (a *Vec3) Add(b *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec3) Cross(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -9761,7 +9471,6 @@ func (a *Vec3) Cross(b *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec3) Divide(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -9790,7 +9499,6 @@ func (a *Vec3) Divide(b *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - gfloat: value of the dot product.
-//
 func (a *Vec3) Dot(b *Vec3) float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -9819,7 +9527,6 @@ func (a *Vec3) Dot(b *Vec3) float32 {
 // The function returns the following values:
 //
 //   - ok: true if the two vectors are equal, and false otherwise.
-//
 func (v1 *Vec3) Equal(v2 *Vec3) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -9846,7 +9553,6 @@ func (v1 *Vec3) Equal(v2 *Vec3) bool {
 // The function returns the following values:
 //
 //   - gfloat: value of the first component of the vector.
-//
 func (v *Vec3) X() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -9869,7 +9575,6 @@ func (v *Vec3) X() float32 {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_vec2_t.
-//
 func (v *Vec3) XY() *Vec2 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec2_t  // in
@@ -9892,7 +9597,6 @@ func (v *Vec3) XY() *Vec2 {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_vec3_t.
-//
 func (v *Vec3) XY0() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
@@ -9915,7 +9619,6 @@ func (v *Vec3) XY0() *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the vector.
-//
 func (v *Vec3) XYZ0() *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec4_t  // in
@@ -9938,7 +9641,6 @@ func (v *Vec3) XYZ0() *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the vector.
-//
 func (v *Vec3) XYZ1() *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec4_t  // in
@@ -9965,7 +9667,6 @@ func (v *Vec3) XYZ1() *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the vector.
-//
 func (v *Vec3) Xyzw(w float32) *Vec4 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
@@ -9990,7 +9691,6 @@ func (v *Vec3) Xyzw(w float32) *Vec4 {
 // The function returns the following values:
 //
 //   - gfloat: value of the second component of the vector.
-//
 func (v *Vec3) Y() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -10012,7 +9712,6 @@ func (v *Vec3) Y() float32 {
 // The function returns the following values:
 //
 //   - gfloat: value of the third component of the vector.
-//
 func (v *Vec3) Z() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -10042,7 +9741,6 @@ func (v *Vec3) Z() float32 {
 // The function returns the following values:
 //
 //   - vec3: pointer to the initialized vector.
-//
 func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
@@ -10077,7 +9775,6 @@ func (v *Vec3) Init(x float32, y float32, z float32) *Vec3 {
 // The function returns the following values:
 //
 //   - vec3: initialized vector.
-//
 func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.float           // out
@@ -10107,7 +9804,6 @@ func (v *Vec3) InitFromFloat(src [3]float32) *Vec3 {
 // The function returns the following values:
 //
 //   - vec3: initialized vector.
-//
 func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -10137,7 +9833,6 @@ func (v *Vec3) InitFromVec3(src *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - res: interpolated vector.
-//
 func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -10165,7 +9860,6 @@ func (v1 *Vec3) Interpolate(v2 *Vec3, factor float64) *Vec3 {
 // The function returns the following values:
 //
 //   - gfloat: value of the length of the vector.
-//
 func (v *Vec3) Length() float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _cret C.float            // in
@@ -10192,7 +9886,6 @@ func (v *Vec3) Length() float32 {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (a *Vec3) Max(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -10222,7 +9915,6 @@ func (a *Vec3) Max(b *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (a *Vec3) Min(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -10251,7 +9943,6 @@ func (a *Vec3) Min(b *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec3) Multiply(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -10282,7 +9973,6 @@ func (a *Vec3) Multiply(b *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - ok: true if the two vectors are near each other.
-//
 func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -10312,7 +10002,6 @@ func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (v *Vec3) Negate() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
@@ -10334,7 +10023,6 @@ func (v *Vec3) Negate() *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the normalized vector.
-//
 func (v *Vec3) Normalize() *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.graphene_vec3_t  // in
@@ -10361,7 +10049,6 @@ func (v *Vec3) Normalize() *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (v *Vec3) Scale(factor float32) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 C.float            // out
@@ -10392,7 +10079,6 @@ func (v *Vec3) Scale(factor float32) *Vec3 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec3) Subtract(b *Vec3) *Vec3 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -10417,7 +10103,6 @@ func (a *Vec3) Subtract(b *Vec3) *Vec3 {
 // The function returns the following values:
 //
 //   - dest: return location for an array of floating point values.
-//
 func (v *Vec3) ToFloat() [3]float32 {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 [3]C.float         // in
@@ -10440,7 +10125,6 @@ func (v *Vec3) ToFloat() [3]float32 {
 // The function returns the following values:
 //
 //   - vec3: constant vector.
-//
 func Vec3One() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -10459,7 +10143,6 @@ func Vec3One() *Vec3 {
 // The function returns the following values:
 //
 //   - vec3: constant vector.
-//
 func Vec3XAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -10478,7 +10161,6 @@ func Vec3XAxis() *Vec3 {
 // The function returns the following values:
 //
 //   - vec3: constant vector.
-//
 func Vec3YAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -10497,7 +10179,6 @@ func Vec3YAxis() *Vec3 {
 // The function returns the following values:
 //
 //   - vec3: constant vector.
-//
 func Vec3ZAxis() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -10516,7 +10197,6 @@ func Vec3ZAxis() *Vec3 {
 // The function returns the following values:
 //
 //   - vec3: constant vector.
-//
 func Vec3Zero() *Vec3 {
 	var _cret *C.graphene_vec3_t // in
 
@@ -10578,7 +10258,6 @@ func NewVec4Alloc() *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec4) Add(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -10609,7 +10288,6 @@ func (a *Vec4) Add(b *Vec4) *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec4) Divide(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -10638,7 +10316,6 @@ func (a *Vec4) Divide(b *Vec4) *Vec4 {
 // The function returns the following values:
 //
 //   - gfloat: value of the dot product.
-//
 func (a *Vec4) Dot(b *Vec4) float32 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -10667,7 +10344,6 @@ func (a *Vec4) Dot(b *Vec4) float32 {
 // The function returns the following values:
 //
 //   - ok: true if the two vectors are equal, and false otherwise.
-//
 func (v1 *Vec4) Equal(v2 *Vec4) bool {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -10694,7 +10370,6 @@ func (v1 *Vec4) Equal(v2 *Vec4) bool {
 // The function returns the following values:
 //
 //   - gfloat: value of the fourth component.
-//
 func (v *Vec4) W() float32 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _cret C.float            // in
@@ -10716,7 +10391,6 @@ func (v *Vec4) W() float32 {
 // The function returns the following values:
 //
 //   - gfloat: value of the first component.
-//
 func (v *Vec4) X() float32 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _cret C.float            // in
@@ -10739,7 +10413,6 @@ func (v *Vec4) X() float32 {
 // The function returns the following values:
 //
 //   - res: return location for a #graphene_vec2_t.
-//
 func (v *Vec4) XY() *Vec2 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.graphene_vec2_t  // in
@@ -10762,7 +10435,6 @@ func (v *Vec4) XY() *Vec2 {
 // The function returns the following values:
 //
 //   - res: return location for a graphene_vec3_t.
-//
 func (v *Vec4) XYZ() *Vec3 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.graphene_vec3_t  // in
@@ -10784,7 +10456,6 @@ func (v *Vec4) XYZ() *Vec3 {
 // The function returns the following values:
 //
 //   - gfloat: value of the second component.
-//
 func (v *Vec4) Y() float32 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _cret C.float            // in
@@ -10806,7 +10477,6 @@ func (v *Vec4) Y() float32 {
 // The function returns the following values:
 //
 //   - gfloat: value of the third component.
-//
 func (v *Vec4) Z() float32 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _cret C.float            // in
@@ -10837,7 +10507,6 @@ func (v *Vec4) Z() float32 {
 // The function returns the following values:
 //
 //   - vec4: pointer to the initialized vector.
-//
 func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.float            // out
@@ -10876,7 +10545,6 @@ func (v *Vec4) Init(x float32, y float32, z float32, w float32) *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: initialized vector.
-//
 func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.float           // out
@@ -10908,7 +10576,6 @@ func (v *Vec4) InitFromFloat(src [4]float32) *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: initialized vector.
-//
 func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec2_t // out
@@ -10945,7 +10612,6 @@ func (v *Vec4) InitFromVec2(src *Vec2, z float32, w float32) *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: initialized vector.
-//
 func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec3_t // out
@@ -10978,7 +10644,6 @@ func (v *Vec4) InitFromVec3(src *Vec3, w float32) *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: initialized vector.
-//
 func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -11008,7 +10673,6 @@ func (v *Vec4) InitFromVec4(src *Vec4) *Vec4 {
 // The function returns the following values:
 //
 //   - res: interpolated vector.
-//
 func (v1 *Vec4) Interpolate(v2 *Vec4, factor float64) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -11036,7 +10700,6 @@ func (v1 *Vec4) Interpolate(v2 *Vec4, factor float64) *Vec4 {
 // The function returns the following values:
 //
 //   - gfloat: length of the vector.
-//
 func (v *Vec4) Length() float32 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _cret C.float            // in
@@ -11063,7 +10726,6 @@ func (v *Vec4) Length() float32 {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (a *Vec4) Max(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -11093,7 +10755,6 @@ func (a *Vec4) Max(b *Vec4) *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (a *Vec4) Min(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -11122,7 +10783,6 @@ func (a *Vec4) Min(b *Vec4) *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec4) Multiply(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -11153,7 +10813,6 @@ func (a *Vec4) Multiply(b *Vec4) *Vec4 {
 // The function returns the following values:
 //
 //   - ok: true if the two vectors are near each other.
-//
 func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -11183,7 +10842,6 @@ func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (v *Vec4) Negate() *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.graphene_vec4_t  // in
@@ -11205,7 +10863,6 @@ func (v *Vec4) Negate() *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the normalized vector.
-//
 func (v *Vec4) Normalize() *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.graphene_vec4_t  // in
@@ -11232,7 +10889,6 @@ func (v *Vec4) Normalize() *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the result vector.
-//
 func (v *Vec4) Scale(factor float32) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 C.float            // out
@@ -11263,7 +10919,6 @@ func (v *Vec4) Scale(factor float32) *Vec4 {
 // The function returns the following values:
 //
 //   - res: return location for the resulting vector.
-//
 func (a *Vec4) Subtract(b *Vec4) *Vec4 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
@@ -11289,7 +10944,6 @@ func (a *Vec4) Subtract(b *Vec4) *Vec4 {
 // The function returns the following values:
 //
 //   - dest: return location for an array of floating point values.
-//
 func (v *Vec4) ToFloat() [4]float32 {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 [4]C.float         // in
@@ -11312,7 +10966,6 @@ func (v *Vec4) ToFloat() [4]float32 {
 // The function returns the following values:
 //
 //   - vec4: constant vector.
-//
 func Vec4One() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
 
@@ -11331,7 +10984,6 @@ func Vec4One() *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: constant vector.
-//
 func Vec4WAxis() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
 
@@ -11350,7 +11002,6 @@ func Vec4WAxis() *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: constant vector.
-//
 func Vec4XAxis() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
 
@@ -11369,7 +11020,6 @@ func Vec4XAxis() *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: constant vector.
-//
 func Vec4YAxis() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
 
@@ -11388,7 +11038,6 @@ func Vec4YAxis() *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: constant vector.
-//
 func Vec4ZAxis() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
 
@@ -11407,7 +11056,6 @@ func Vec4ZAxis() *Vec4 {
 // The function returns the following values:
 //
 //   - vec4: constant vector.
-//
 func Vec4Zero() *Vec4 {
 	var _cret *C.graphene_vec4_t // in
 

@@ -1034,7 +1034,6 @@ func (r RelationType) String() string {
 //
 //   - relationType enumerated type corresponding to the specified name,
 //     or K_RELATION_NULL if no matching relation type is found.
-//
 func RelationTypeForName(name string) RelationType {
 	var _arg1 *C.gchar          // out
 	var _cret C.AtkRelationType // in
@@ -1062,7 +1061,6 @@ func RelationTypeForName(name string) RelationType {
 // The function returns the following values:
 //
 //   - utf8: string describing the AtkRelationType.
-//
 func RelationTypeGetName(typ RelationType) string {
 	var _arg1 C.AtkRelationType // out
 	var _cret *C.gchar          // in
@@ -1088,7 +1086,6 @@ func RelationTypeGetName(typ RelationType) string {
 // The function returns the following values:
 //
 //   - relationType associated with name.
-//
 func RelationTypeRegister(name string) RelationType {
 	var _arg1 *C.gchar          // out
 	var _cret C.AtkRelationType // in
@@ -1812,7 +1809,6 @@ func (r Role) String() string {
 //
 //   - role enumerated type corresponding to the specified name, or
 //     K_ROLE_INVALID if no matching role is found.
-//
 func RoleForName(name string) Role {
 	var _arg1 *C.gchar  // out
 	var _cret C.AtkRole // in
@@ -1840,7 +1836,6 @@ func RoleForName(name string) Role {
 // The function returns the following values:
 //
 //   - utf8: localized string describing the AtkRole.
-//
 func RoleGetLocalizedName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
@@ -1866,7 +1861,6 @@ func RoleGetLocalizedName(role Role) string {
 // The function returns the following values:
 //
 //   - utf8: string describing the AtkRole.
-//
 func RoleGetName(role Role) string {
 	var _arg1 C.AtkRole // out
 	var _cret *C.gchar  // in
@@ -1898,7 +1892,6 @@ func RoleGetName(role Role) string {
 //
 //   - role for the new role if added properly. ATK_ROLE_INVALID in case of
 //     error.
-//
 func RoleRegister(name string) Role {
 	var _arg1 *C.gchar  // out
 	var _cret C.AtkRole // in
@@ -2309,7 +2302,6 @@ func (s StateType) String() string {
 // The function returns the following values:
 //
 //   - stateType corresponding to name.
-//
 func StateTypeForName(name string) StateType {
 	var _arg1 *C.gchar       // out
 	var _cret C.AtkStateType // in
@@ -2336,7 +2328,6 @@ func StateTypeForName(name string) StateType {
 // The function returns the following values:
 //
 //   - utf8: string describing the AtkStateType.
-//
 func StateTypeGetName(typ StateType) string {
 	var _arg1 C.AtkStateType // out
 	var _cret *C.gchar       // in
@@ -2362,7 +2353,6 @@ func StateTypeGetName(typ StateType) string {
 // The function returns the following values:
 //
 //   - stateType value for the new state.
-//
 func StateTypeRegister(name string) StateType {
 	var _arg1 *C.gchar       // out
 	var _cret C.AtkStateType // in
@@ -2555,7 +2545,6 @@ func (t TextAttribute) String() string {
 //
 //   - textAttribute enumerated type corresponding to the specified name,
 //     or K_TEXT_ATTRIBUTE_INVALID if no matching text attribute is found.
-//
 func TextAttributeForName(name string) TextAttribute {
 	var _arg1 *C.gchar           // out
 	var _cret C.AtkTextAttribute // in
@@ -2582,7 +2571,6 @@ func TextAttributeForName(name string) TextAttribute {
 // The function returns the following values:
 //
 //   - utf8: string containing the name; this string should not be freed.
-//
 func TextAttributeGetName(attr TextAttribute) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _cret *C.gchar           // in
@@ -2611,7 +2599,6 @@ func TextAttributeGetName(attr TextAttribute) string {
 //   - utf8 (optional): string containing the value; this string should not be
 //     freed; NULL is returned if there are no values maintained for the attr
 //     value.
-//
 func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 	var _arg1 C.AtkTextAttribute // out
 	var _arg2 C.gint             // out
@@ -2642,7 +2629,6 @@ func TextAttributeGetValue(attr TextAttribute, index_ int) string {
 // The function returns the following values:
 //
 //   - textAttribute associated with name.
-//
 func TextAttributeRegister(name string) TextAttribute {
 	var _arg1 *C.gchar           // out
 	var _cret C.AtkTextAttribute // in
@@ -2875,7 +2861,6 @@ func (v ValueType) String() string {
 // The function returns the following values:
 //
 //   - utf8: localized string describing the ValueType.
-//
 func ValueTypeGetLocalizedName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in
@@ -2902,7 +2887,6 @@ func ValueTypeGetLocalizedName(valueType ValueType) string {
 // The function returns the following values:
 //
 //   - utf8: string describing the ValueType.
-//
 func ValueTypeGetName(valueType ValueType) string {
 	var _arg1 C.AtkValueType // out
 	var _cret *C.gchar       // in
@@ -2983,7 +2967,6 @@ type KeySnoopFunc func(event *KeyEventStruct) (gint int)
 // The function takes the following parameters:
 //
 //   - object: Object.
-//
 func FocusTrackerNotify(object *AtkObject) {
 	var _arg1 *C.AtkObject // out
 
@@ -2999,7 +2982,6 @@ func FocusTrackerNotify(object *AtkObject) {
 // The function returns the following values:
 //
 //   - guint: binary age of the ATK library.
-//
 func GetBinaryAge() uint {
 	var _cret C.guint // in
 
@@ -3022,7 +3004,6 @@ func GetBinaryAge() uint {
 // The function returns the following values:
 //
 //   - registry: default implementation of the ObjectFactory/type registry.
-//
 func GetDefaultRegistry() *Registry {
 	var _cret *C.AtkRegistry // in
 
@@ -3040,7 +3021,6 @@ func GetDefaultRegistry() *Registry {
 // The function returns the following values:
 //
 //   - object: currently focused object for the current application.
-//
 func GetFocusObject() *AtkObject {
 	var _cret *C.AtkObject // in
 
@@ -3059,7 +3039,6 @@ func GetFocusObject() *AtkObject {
 // The function returns the following values:
 //
 //   - guint: interface age of the ATK library.
-//
 func GetInterfaceAge() uint {
 	var _cret C.guint // in
 
@@ -3082,7 +3061,6 @@ func GetInterfaceAge() uint {
 // The function returns the following values:
 //
 //   - guint: major version number of the ATK library.
-//
 func GetMajorVersion() uint {
 	var _cret C.guint // in
 
@@ -3105,7 +3083,6 @@ func GetMajorVersion() uint {
 // The function returns the following values:
 //
 //   - guint: micro version number of the ATK library.
-//
 func GetMicroVersion() uint {
 	var _cret C.guint // in
 
@@ -3128,7 +3105,6 @@ func GetMicroVersion() uint {
 // The function returns the following values:
 //
 //   - guint: minor version number of the ATK library.
-//
 func GetMinorVersion() uint {
 	var _cret C.guint // in
 
@@ -3146,7 +3122,6 @@ func GetMinorVersion() uint {
 // The function returns the following values:
 //
 //   - object: root accessible container for the current application.
-//
 func GetRoot() *AtkObject {
 	var _cret *C.AtkObject // in
 
@@ -3166,7 +3141,6 @@ func GetRoot() *AtkObject {
 //
 //   - utf8: name string for the GUI toolkit implementing ATK for this
 //     application.
-//
 func GetToolkitName() string {
 	var _cret *C.gchar // in
 
@@ -3186,7 +3160,6 @@ func GetToolkitName() string {
 //
 //   - utf8: version string for the GUI toolkit implementing ATK for this
 //     application.
-//
 func GetToolkitVersion() string {
 	var _cret *C.gchar // in
 
@@ -3204,7 +3177,6 @@ func GetToolkitVersion() string {
 // The function returns the following values:
 //
 //   - utf8: version string for ATK.
-//
 func GetVersion() string {
 	var _cret *C.gchar // in
 
@@ -3227,7 +3199,6 @@ func GetVersion() string {
 // The function takes the following parameters:
 //
 //   - trackerId: id of the focus tracker to remove.
-//
 func RemoveFocusTracker(trackerId uint) {
 	var _arg1 C.guint // out
 
@@ -3252,7 +3223,6 @@ func RemoveFocusTracker(trackerId uint) {
 // The function takes the following parameters:
 //
 //   - listenerId: id of the event listener to remove.
-//
 func RemoveGlobalEventListener(listenerId uint) {
 	var _arg1 C.guint // out
 
@@ -3270,7 +3240,6 @@ func RemoveGlobalEventListener(listenerId uint) {
 // The function takes the following parameters:
 //
 //   - listenerId: id of the event listener to remove.
-//
 func RemoveKeyEventListener(listenerId uint) {
 	var _arg1 C.guint // out
 
@@ -3350,7 +3319,6 @@ func marshalAction(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (action *Action) DoAction(i int) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -3382,7 +3350,6 @@ func (action *Action) DoAction(i int) bool {
 //
 //   - utf8 (optional): description string, or NULL if action does not implement
 //     this interface.
-//
 func (action *Action) Description(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -3437,7 +3404,6 @@ func (action *Action) Description(i int) string {
 //
 //   - utf8 (optional): keybinding which can be used to activate this action,
 //     or NULL if there is no keybinding for this action.
-//
 func (action *Action) Keybinding(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -3470,7 +3436,6 @@ func (action *Action) Keybinding(i int) string {
 //
 //   - utf8 (optional): name string, or NULL if action does not implement this
 //     interface.
-//
 func (action *Action) LocalizedName(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -3500,7 +3465,6 @@ func (action *Action) LocalizedName(i int) string {
 //
 //   - gint: the number of actions, or 0 if action does not implement this
 //     interface.
-//
 func (action *Action) NActions() int {
 	var _arg0 *C.AtkAction // out
 	var _cret C.gint       // in
@@ -3538,7 +3502,6 @@ func (action *Action) NActions() int {
 //
 //   - utf8 (optional): name string, or NULL if action does not implement this
 //     interface.
-//
 func (action *Action) Name(i int) string {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -3570,7 +3533,6 @@ func (action *Action) Name(i int) string {
 // The function returns the following values:
 //
 //   - ok: gboolean representing if the description was successfully set;.
-//
 func (action *Action) SetDescription(i int, desc string) bool {
 	var _arg0 *C.AtkAction // out
 	var _arg1 C.gint       // out
@@ -3605,7 +3567,6 @@ func (action *Action) SetDescription(i int, desc string) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (action *Action) doAction(i int) bool {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.do_action
@@ -3640,7 +3601,6 @@ func (action *Action) doAction(i int) bool {
 //
 //   - utf8 (optional): description string, or NULL if action does not implement
 //     this interface.
-//
 func (action *Action) description(i int) string {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_description
@@ -3698,7 +3658,6 @@ func (action *Action) description(i int) string {
 //
 //   - utf8 (optional): keybinding which can be used to activate this action,
 //     or NULL if there is no keybinding for this action.
-//
 func (action *Action) keybinding(i int) string {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_keybinding
@@ -3734,7 +3693,6 @@ func (action *Action) keybinding(i int) string {
 //
 //   - utf8 (optional): name string, or NULL if action does not implement this
 //     interface.
-//
 func (action *Action) localizedName(i int) string {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_localized_name
@@ -3767,7 +3725,6 @@ func (action *Action) localizedName(i int) string {
 //
 //   - gint: the number of actions, or 0 if action does not implement this
 //     interface.
-//
 func (action *Action) nActions() int {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_n_actions
@@ -3808,7 +3765,6 @@ func (action *Action) nActions() int {
 //
 //   - utf8 (optional): name string, or NULL if action does not implement this
 //     interface.
-//
 func (action *Action) name(i int) string {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.get_name
@@ -3843,7 +3799,6 @@ func (action *Action) name(i int) string {
 // The function returns the following values:
 //
 //   - ok: gboolean representing if the description was successfully set;.
-//
 func (action *Action) setDescription(i int, desc string) bool {
 	gclass := (*C.AtkActionIface)(coreglib.PeekParentClass(action))
 	fnarg := gclass.set_description
@@ -3976,7 +3931,6 @@ func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) coregl
 //
 //   - ok: TRUE or FALSE indicating whether the specified point is within the
 //     extent of the component or not.
-//
 func (component *Component) Contains(x, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -4010,7 +3964,6 @@ func (component *Component) Contains(x, y int, coordType CoordType) bool {
 // The function returns the following values:
 //
 //   - gdouble: alpha value from 0 to 1.0, inclusive.
-//
 func (component *Component) Alpha() float64 {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gdouble       // in
@@ -4043,7 +3996,6 @@ func (component *Component) Alpha() float64 {
 //   - y (optional) address of #gint to put y coordinate.
 //   - width (optional) address of #gint to put width.
 //   - height (optional) address of #gint to put height.
-//
 func (component *Component) Extents(coordType CoordType) (x, y, width, height int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
@@ -4077,7 +4029,6 @@ func (component *Component) Extents(coordType CoordType) (x, y, width, height in
 // The function returns the following values:
 //
 //   - layer which is the layer of the component.
-//
 func (component *Component) Layer() Layer {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.AtkLayer      // in
@@ -4102,7 +4053,6 @@ func (component *Component) Layer() Layer {
 //
 //   - gint which is the zorder of the component, i.e. the depth at which the
 //     component is shown in relation to other components in the same container.
-//
 func (component *Component) MDIZOrder() int {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gint          // in
@@ -4136,7 +4086,6 @@ func (component *Component) MDIZOrder() int {
 //
 //   - x (optional) address of #gint to put x coordinate position.
 //   - y (optional) address of #gint to put y coordinate position.
-//
 func (component *Component) Position(coordType CoordType) (x, y int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
@@ -4170,7 +4119,6 @@ func (component *Component) Position(coordType CoordType) (x, y int) {
 //
 //   - width (optional) address of #gint to put width of component.
 //   - height (optional) address of #gint to put height of component.
-//
 func (component *Component) Size() (width, height int) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // in
@@ -4195,7 +4143,6 @@ func (component *Component) Size() (width, height int) {
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (component *Component) GrabFocus() bool {
 	var _arg0 *C.AtkComponent // out
 	var _cret C.gboolean      // in
@@ -4227,7 +4174,6 @@ func (component *Component) GrabFocus() bool {
 // The function returns the following values:
 //
 //   - object (optional): reference to the accessible child, if one exists.
-//
 func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) *AtkObject {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -4265,7 +4211,6 @@ func (component *Component) RefAccessibleAtPoint(x, y int, coordType CoordType) 
 // The function takes the following parameters:
 //
 //   - handlerId: handler id of the focus handler to be removed from component.
-//
 func (component *Component) RemoveFocusHandler(handlerId uint) {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.guint         // out
@@ -4292,7 +4237,6 @@ func (component *Component) RemoveFocusHandler(handlerId uint) {
 // The function returns the following values:
 //
 //   - ok: whether scrolling was successful.
-//
 func (component *Component) ScrollTo(typ ScrollType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.AtkScrollType // out
@@ -4327,7 +4271,6 @@ func (component *Component) ScrollTo(typ ScrollType) bool {
 // The function returns the following values:
 //
 //   - ok: whether scrolling was successful.
-//
 func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.AtkCoordType  // out
@@ -4369,7 +4312,6 @@ func (component *Component) ScrollToPoint(coords CoordType, x, y int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE or FALSE whether the extents were set or not.
-//
 func (component *Component) SetExtents(x, y, width, height int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -4418,7 +4360,6 @@ func (component *Component) SetExtents(x, y, width, height int, coordType CoordT
 // The function returns the following values:
 //
 //   - ok: TRUE or FALSE whether or not the position was set or not.
-//
 func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -4456,7 +4397,6 @@ func (component *Component) SetPosition(x, y int, coordType CoordType) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE or FALSE whether the size was set or not.
-//
 func (component *Component) SetSize(width, height int) bool {
 	var _arg0 *C.AtkComponent // out
 	var _arg1 C.gint          // out
@@ -4481,8 +4421,6 @@ func (component *Component) SetSize(width, height int) bool {
 	return _ok
 }
 
-// The function takes the following parameters:
-//
 func (component *Component) boundsChanged(bounds *Rectangle) {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.bounds_changed
@@ -4515,7 +4453,6 @@ func (component *Component) boundsChanged(bounds *Rectangle) {
 //
 //   - ok: TRUE or FALSE indicating whether the specified point is within the
 //     extent of the component or not.
-//
 func (component *Component) contains(x, y int, coordType CoordType) bool {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.contains
@@ -4552,7 +4489,6 @@ func (component *Component) contains(x, y int, coordType CoordType) bool {
 // The function returns the following values:
 //
 //   - gdouble: alpha value from 0 to 1.0, inclusive.
-//
 func (component *Component) alpha() float64 {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.get_alpha
@@ -4588,7 +4524,6 @@ func (component *Component) alpha() float64 {
 //   - y (optional) address of #gint to put y coordinate.
 //   - width (optional) address of #gint to put width.
 //   - height (optional) address of #gint to put height.
-//
 func (component *Component) extents(coordType CoordType) (x, y, width, height int) {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.get_extents
@@ -4625,7 +4560,6 @@ func (component *Component) extents(coordType CoordType) (x, y, width, height in
 // The function returns the following values:
 //
 //   - layer which is the layer of the component.
-//
 func (component *Component) layer() Layer {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.get_layer
@@ -4653,7 +4587,6 @@ func (component *Component) layer() Layer {
 //
 //   - gint which is the zorder of the component, i.e. the depth at which the
 //     component is shown in relation to other components in the same container.
-//
 func (component *Component) mdizOrder() int {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.get_mdi_zorder
@@ -4690,7 +4623,6 @@ func (component *Component) mdizOrder() int {
 //
 //   - x (optional) address of #gint to put x coordinate position.
 //   - y (optional) address of #gint to put y coordinate position.
-//
 func (component *Component) position(coordType CoordType) (x, y int) {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.get_position
@@ -4727,7 +4659,6 @@ func (component *Component) position(coordType CoordType) (x, y int) {
 //
 //   - width (optional) address of #gint to put width of component.
 //   - height (optional) address of #gint to put height of component.
-//
 func (component *Component) size() (width, height int) {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.get_size
@@ -4755,7 +4686,6 @@ func (component *Component) size() (width, height int) {
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (component *Component) grabFocus() bool {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.grab_focus
@@ -4790,7 +4720,6 @@ func (component *Component) grabFocus() bool {
 // The function returns the following values:
 //
 //   - object (optional): reference to the accessible child, if one exists.
-//
 func (component *Component) refAccessibleAtPoint(x, y int, coordType CoordType) *AtkObject {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.ref_accessible_at_point
@@ -4831,7 +4760,6 @@ func (component *Component) refAccessibleAtPoint(x, y int, coordType CoordType) 
 // The function takes the following parameters:
 //
 //   - handlerId: handler id of the focus handler to be removed from component.
-//
 func (component *Component) removeFocusHandler(handlerId uint) {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.remove_focus_handler
@@ -4861,7 +4789,6 @@ func (component *Component) removeFocusHandler(handlerId uint) {
 // The function returns the following values:
 //
 //   - ok: whether scrolling was successful.
-//
 func (component *Component) scrollTo(typ ScrollType) bool {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.scroll_to
@@ -4899,7 +4826,6 @@ func (component *Component) scrollTo(typ ScrollType) bool {
 // The function returns the following values:
 //
 //   - ok: whether scrolling was successful.
-//
 func (component *Component) scrollToPoint(coords CoordType, x, y int) bool {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.scroll_to_point
@@ -4944,7 +4870,6 @@ func (component *Component) scrollToPoint(coords CoordType, x, y int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE or FALSE whether the extents were set or not.
-//
 func (component *Component) setExtents(x, y, width, height int, coordType CoordType) bool {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.set_extents
@@ -4996,7 +4921,6 @@ func (component *Component) setExtents(x, y, width, height int, coordType CoordT
 // The function returns the following values:
 //
 //   - ok: TRUE or FALSE whether or not the position was set or not.
-//
 func (component *Component) setPosition(x, y int, coordType CoordType) bool {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.set_position
@@ -5037,7 +4961,6 @@ func (component *Component) setPosition(x, y int, coordType CoordType) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE or FALSE whether the size was set or not.
-//
 func (component *Component) setSize(width, height int) bool {
 	gclass := (*C.AtkComponentIface)(coreglib.PeekParentClass(component))
 	fnarg := gclass.set_size
@@ -5179,7 +5102,6 @@ func (document *Document) ConnectReload(f func()) coreglib.SignalHandle {
 //   - utf8 (optional): string value associated with the named attribute
 //     for this document, or NULL if a value for attribute_name has not been
 //     specified for this document.
-//
 func (document *Document) AttributeValue(attributeName string) string {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
@@ -5208,7 +5130,6 @@ func (document *Document) AttributeValue(attributeName string) string {
 //
 //   - gint: current page number inside document, or -1 if not implemented,
 //     not know by the implementor, or irrelevant.
-//
 func (document *Document) CurrentPageNumber() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
@@ -5235,7 +5156,6 @@ func (document *Document) CurrentPageNumber() int {
 // The function returns the following values:
 //
 //   - gpointer (optional) that points to an instance of the DOM.
-//
 func (document *Document) Document() unsafe.Pointer {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gpointer     // in
@@ -5260,7 +5180,6 @@ func (document *Document) Document() unsafe.Pointer {
 // The function returns the following values:
 //
 //   - utf8: string indicating the document type.
-//
 func (document *Document) DocumentType() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
@@ -5289,7 +5208,6 @@ func (document *Document) DocumentType() string {
 //   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the
 //     document content as a whole, or NULL if the document content does not
 //     specify a locale.
-//
 func (document *Document) Locale() string {
 	var _arg0 *C.AtkDocument // out
 	var _cret *C.gchar       // in
@@ -5312,7 +5230,6 @@ func (document *Document) Locale() string {
 //
 //   - gint: total page count of document, or -1 if not implemented, not know by
 //     the implementor or irrelevant.
-//
 func (document *Document) PageCount() int {
 	var _arg0 *C.AtkDocument // out
 	var _cret C.gint         // in
@@ -5343,7 +5260,6 @@ func (document *Document) PageCount() int {
 //   - ok: TRUE if attribute_value is successfully associated with
 //     attribute_name for this document, and FALSE if if the document does not
 //     allow the attribute to be modified.
-//
 func (document *Document) SetAttributeValue(attributeName, attributeValue string) bool {
 	var _arg0 *C.AtkDocument // out
 	var _arg1 *C.gchar       // out
@@ -5376,7 +5292,6 @@ func (document *Document) SetAttributeValue(attributeName, attributeValue string
 //
 //   - gint: current page number inside document, or -1 if not implemented,
 //     not know by the implementor, or irrelevant.
-//
 func (document *Document) currentPageNumber() int {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
 	fnarg := gclass.get_current_page_number
@@ -5406,7 +5321,6 @@ func (document *Document) currentPageNumber() int {
 // The function returns the following values:
 //
 //   - gpointer (optional) that points to an instance of the DOM.
-//
 func (document *Document) document() unsafe.Pointer {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
 	fnarg := gclass.get_document
@@ -5439,7 +5353,6 @@ func (document *Document) document() unsafe.Pointer {
 //   - utf8 (optional): string value associated with the named attribute
 //     for this document, or NULL if a value for attribute_name has not been
 //     specified for this document.
-//
 func (document *Document) documentAttributeValue(attributeName string) string {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
 	fnarg := gclass.get_document_attribute_value
@@ -5477,7 +5390,6 @@ func (document *Document) documentAttributeValue(attributeName string) string {
 //   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of the
 //     document content as a whole, or NULL if the document content does not
 //     specify a locale.
-//
 func (document *Document) documentLocale() string {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
 	fnarg := gclass.get_document_locale
@@ -5505,7 +5417,6 @@ func (document *Document) documentLocale() string {
 // The function returns the following values:
 //
 //   - utf8: string indicating the document type.
-//
 func (document *Document) documentType() string {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
 	fnarg := gclass.get_document_type
@@ -5531,7 +5442,6 @@ func (document *Document) documentType() string {
 //
 //   - gint: total page count of document, or -1 if not implemented, not know by
 //     the implementor or irrelevant.
-//
 func (document *Document) pageCount() int {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
 	fnarg := gclass.get_page_count
@@ -5565,7 +5475,6 @@ func (document *Document) pageCount() int {
 //   - ok: TRUE if attribute_value is successfully associated with
 //     attribute_name for this document, and FALSE if if the document does not
 //     allow the attribute to be modified.
-//
 func (document *Document) setDocumentAttribute(attributeName, attributeValue string) bool {
 	gclass := (*C.AtkDocumentIface)(coreglib.PeekParentClass(document))
 	fnarg := gclass.set_document_attribute
@@ -5654,7 +5563,6 @@ func marshalEditableText(p uintptr) (interface{}, error) {
 //
 //   - startPos: start position.
 //   - endPos: end position.
-//
 func (text *EditableText) CopyText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -5677,7 +5585,6 @@ func (text *EditableText) CopyText(startPos, endPos int) {
 //
 //   - startPos: start position.
 //   - endPos: end position.
-//
 func (text *EditableText) CutText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -5699,7 +5606,6 @@ func (text *EditableText) CutText(startPos, endPos int) {
 //
 //   - startPos: start position.
 //   - endPos: end position.
-//
 func (text *EditableText) DeleteText(startPos, endPos int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -5724,7 +5630,6 @@ func (text *EditableText) DeleteText(startPos, endPos int) {
 //   - position: caller initializes this to the position at which to insert the
 //     text. After the call it points at the position after the newly inserted
 //     text.
-//
 func (text *EditableText) InsertText(str string, length int, position *int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
@@ -5749,7 +5654,6 @@ func (text *EditableText) InsertText(str string, length int, position *int) {
 // The function takes the following parameters:
 //
 //   - position to paste.
-//
 func (text *EditableText) PasteText(position int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 C.gint             // out
@@ -5767,7 +5671,6 @@ func (text *EditableText) PasteText(position int) {
 // The function takes the following parameters:
 //
 //   - str: string to set for text contents of text.
-//
 func (text *EditableText) SetTextContents(str string) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
@@ -5788,7 +5691,6 @@ func (text *EditableText) SetTextContents(str string) {
 //
 //   - startPos: start position.
 //   - endPos: end position.
-//
 func (text *EditableText) copyText(startPos, endPos int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.copy_text
@@ -5814,7 +5716,6 @@ func (text *EditableText) copyText(startPos, endPos int) {
 //
 //   - startPos: start position.
 //   - endPos: end position.
-//
 func (text *EditableText) cutText(startPos, endPos int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.cut_text
@@ -5839,7 +5740,6 @@ func (text *EditableText) cutText(startPos, endPos int) {
 //
 //   - startPos: start position.
 //   - endPos: end position.
-//
 func (text *EditableText) deleteText(startPos, endPos int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.delete_text
@@ -5867,7 +5767,6 @@ func (text *EditableText) deleteText(startPos, endPos int) {
 //   - position: caller initializes this to the position at which to insert the
 //     text. After the call it points at the position after the newly inserted
 //     text.
-//
 func (text *EditableText) insertText(str string, length int, position *int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.insert_text
@@ -5895,7 +5794,6 @@ func (text *EditableText) insertText(str string, length int, position *int) {
 // The function takes the following parameters:
 //
 //   - position to paste.
-//
 func (text *EditableText) pasteText(position int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.paste_text
@@ -5916,7 +5814,6 @@ func (text *EditableText) pasteText(position int) {
 // The function takes the following parameters:
 //
 //   - str: string to set for text contents of text.
-//
 func (text *EditableText) setTextContents(str string) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.set_text_contents
@@ -5995,7 +5892,6 @@ func marshalHyperlinkImpl(p uintptr) (interface{}, error) {
 //
 //   - hyperlink: atkHyperlink object which points to this implementing
 //     AtkObject.
-//
 func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 	var _arg0 *C.AtkHyperlinkImpl // out
 	var _cret *C.AtkHyperlink     // in
@@ -6018,7 +5914,6 @@ func (impl *HyperlinkImpl) Hyperlink() *Hyperlink {
 //
 //   - hyperlink: atkHyperlink object which points to this implementing
 //     AtkObject.
-//
 func (impl *HyperlinkImpl) hyperlink() *Hyperlink {
 	gclass := (*C.AtkHyperlinkImplIface)(coreglib.PeekParentClass(impl))
 	fnarg := gclass.get_hyperlink
@@ -6101,7 +5996,6 @@ func (hypertext *Hypertext) ConnectLinkSelected(f func(arg1 int)) coreglib.Signa
 // The function returns the following values:
 //
 //   - hyperlink: link in this hypertext document at index link_index.
-//
 func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
@@ -6132,7 +6026,6 @@ func (hypertext *Hypertext) Link(linkIndex int) *Hyperlink {
 //
 //   - gint: index into the array of hyperlinks in hypertext, or -1 if there is
 //     no hyperlink associated with this character.
-//
 func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 	var _arg0 *C.AtkHypertext // out
 	var _arg1 C.gint          // out
@@ -6157,7 +6050,6 @@ func (hypertext *Hypertext) LinkIndex(charIndex int) int {
 // The function returns the following values:
 //
 //   - gint: number of links within this hypertext document.
-//
 func (hypertext *Hypertext) NLinks() int {
 	var _arg0 *C.AtkHypertext // out
 	var _cret C.gint          // in
@@ -6183,7 +6075,6 @@ func (hypertext *Hypertext) NLinks() int {
 // The function returns the following values:
 //
 //   - hyperlink: link in this hypertext document at index link_index.
-//
 func (hypertext *Hypertext) link(linkIndex int) *Hyperlink {
 	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
 	fnarg := gclass.get_link
@@ -6217,7 +6108,6 @@ func (hypertext *Hypertext) link(linkIndex int) *Hyperlink {
 //
 //   - gint: index into the array of hyperlinks in hypertext, or -1 if there is
 //     no hyperlink associated with this character.
-//
 func (hypertext *Hypertext) linkIndex(charIndex int) int {
 	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
 	fnarg := gclass.get_link_index
@@ -6245,7 +6135,6 @@ func (hypertext *Hypertext) linkIndex(charIndex int) int {
 // The function returns the following values:
 //
 //   - gint: number of links within this hypertext document.
-//
 func (hypertext *Hypertext) nLinks() int {
 	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
 	fnarg := gclass.get_n_links
@@ -6265,8 +6154,6 @@ func (hypertext *Hypertext) nLinks() int {
 	return _gint
 }
 
-// The function takes the following parameters:
-//
 func (hypertext *Hypertext) linkSelected(linkIndex int) {
 	gclass := (*C.AtkHypertextIface)(coreglib.PeekParentClass(hypertext))
 	fnarg := gclass.link_selected
@@ -6339,7 +6226,6 @@ func marshalImage(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - utf8: string representing the image description.
-//
 func (image *Image) ImageDescription() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
@@ -6363,7 +6249,6 @@ func (image *Image) ImageDescription() string {
 //   - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
 //     used by the image description, or NULL if the image does not specify a
 //     locale.
-//
 func (image *Image) ImageLocale() string {
 	var _arg0 *C.AtkImage // out
 	var _cret *C.gchar    // in
@@ -6399,7 +6284,6 @@ func (image *Image) ImageLocale() string {
 //     -1 if value cannot be obtained.
 //   - y (optional) address of #gint to put y coordinate position; otherwise,
 //     -1 if value cannot be obtained.
-//
 func (image *Image) ImagePosition(coordType CoordType) (x, y int) {
 	var _arg0 *C.AtkImage    // out
 	var _arg1 C.gint         // in
@@ -6435,7 +6319,6 @@ func (image *Image) ImagePosition(coordType CoordType) (x, y int) {
 //     be obtained.
 //   - height (optional): filled with the image height, or -1 if the value
 //     cannot be obtained.
-//
 func (image *Image) ImageSize() (width, height int) {
 	var _arg0 *C.AtkImage // out
 	var _arg1 C.gint      // in
@@ -6464,7 +6347,6 @@ func (image *Image) ImageSize() (width, height int) {
 // The function returns the following values:
 //
 //   - ok: boolean TRUE, or FALSE if operation could not be completed.
-//
 func (image *Image) SetImageDescription(description string) bool {
 	var _arg0 *C.AtkImage // out
 	var _arg1 *C.gchar    // out
@@ -6492,7 +6374,6 @@ func (image *Image) SetImageDescription(description string) bool {
 // The function returns the following values:
 //
 //   - utf8: string representing the image description.
-//
 func (image *Image) imageDescription() string {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
 	fnarg := gclass.get_image_description
@@ -6519,7 +6400,6 @@ func (image *Image) imageDescription() string {
 //   - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
 //     used by the image description, or NULL if the image does not specify a
 //     locale.
-//
 func (image *Image) imageLocale() string {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
 	fnarg := gclass.get_image_locale
@@ -6558,7 +6438,6 @@ func (image *Image) imageLocale() string {
 //     -1 if value cannot be obtained.
 //   - y (optional) address of #gint to put y coordinate position; otherwise,
 //     -1 if value cannot be obtained.
-//
 func (image *Image) imagePosition(coordType CoordType) (x, y int) {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
 	fnarg := gclass.get_image_position
@@ -6597,7 +6476,6 @@ func (image *Image) imagePosition(coordType CoordType) (x, y int) {
 //     be obtained.
 //   - height (optional): filled with the image height, or -1 if the value
 //     cannot be obtained.
-//
 func (image *Image) imageSize() (width, height int) {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
 	fnarg := gclass.get_image_size
@@ -6629,7 +6507,6 @@ func (image *Image) imageSize() (width, height int) {
 // The function returns the following values:
 //
 //   - ok: boolean TRUE, or FALSE if operation could not be completed.
-//
 func (image *Image) setImageDescription(description string) bool {
 	gclass := (*C.AtkImageIface)(coreglib.PeekParentClass(image))
 	fnarg := gclass.set_image_description
@@ -6780,7 +6657,6 @@ func (selection *Selection) ConnectSelectionChanged(f func()) coreglib.SignalHan
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (selection *Selection) AddSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
@@ -6808,7 +6684,6 @@ func (selection *Selection) AddSelection(i int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (selection *Selection) ClearSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
@@ -6837,7 +6712,6 @@ func (selection *Selection) ClearSelection() bool {
 //
 //   - gint representing the number of items selected, or 0 if selection does
 //     not implement this interface.
-//
 func (selection *Selection) SelectionCount() int {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gint          // in
@@ -6868,7 +6742,6 @@ func (selection *Selection) SelectionCount() int {
 //
 //   - ok: gboolean representing the specified child is selected, or 0 if
 //     selection does not implement this interface.
-//
 func (selection *Selection) IsChildSelected(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
@@ -6905,7 +6778,6 @@ func (selection *Selection) IsChildSelected(i int) bool {
 //
 //   - object (optional) representing the selected accessible, or NULL if
 //     selection does not implement this interface.
-//
 func (selection *Selection) RefSelection(i int) *AtkObject {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
@@ -6938,7 +6810,6 @@ func (selection *Selection) RefSelection(i int) *AtkObject {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (selection *Selection) RemoveSelection(i int) bool {
 	var _arg0 *C.AtkSelection // out
 	var _arg1 C.gint          // out
@@ -6966,7 +6837,6 @@ func (selection *Selection) RemoveSelection(i int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (selection *Selection) SelectAllSelection() bool {
 	var _arg0 *C.AtkSelection // out
 	var _cret C.gboolean      // in
@@ -6995,7 +6865,6 @@ func (selection *Selection) SelectAllSelection() bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (selection *Selection) addSelection(i int) bool {
 	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
 	fnarg := gclass.add_selection
@@ -7026,7 +6895,6 @@ func (selection *Selection) addSelection(i int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (selection *Selection) clearSelection() bool {
 	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
 	fnarg := gclass.clear_selection
@@ -7058,7 +6926,6 @@ func (selection *Selection) clearSelection() bool {
 //
 //   - gint representing the number of items selected, or 0 if selection does
 //     not implement this interface.
-//
 func (selection *Selection) selectionCount() int {
 	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
 	fnarg := gclass.get_selection_count
@@ -7092,7 +6959,6 @@ func (selection *Selection) selectionCount() int {
 //
 //   - ok: gboolean representing the specified child is selected, or 0 if
 //     selection does not implement this interface.
-//
 func (selection *Selection) isChildSelected(i int) bool {
 	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
 	fnarg := gclass.is_child_selected
@@ -7132,7 +6998,6 @@ func (selection *Selection) isChildSelected(i int) bool {
 //
 //   - object (optional) representing the selected accessible, or NULL if
 //     selection does not implement this interface.
-//
 func (selection *Selection) refSelection(i int) *AtkObject {
 	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
 	fnarg := gclass.ref_selection
@@ -7168,7 +7033,6 @@ func (selection *Selection) refSelection(i int) *AtkObject {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (selection *Selection) removeSelection(i int) bool {
 	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
 	fnarg := gclass.remove_selection
@@ -7199,7 +7063,6 @@ func (selection *Selection) removeSelection(i int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if success, FALSE otherwise.
-//
 func (selection *Selection) selectAllSelection() bool {
 	gclass := (*C.AtkSelectionIface)(coreglib.PeekParentClass(selection))
 	fnarg := gclass.select_all_selection
@@ -7299,7 +7162,6 @@ func marshalStreamableContent(p uintptr) (interface{}, error) {
 //
 //   - utf8: gchar* representing the specified mime type; the caller should not
 //     free the character string.
-//
 func (streamable *StreamableContent) MIMEType(i int) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 C.gint                  // out
@@ -7324,7 +7186,6 @@ func (streamable *StreamableContent) MIMEType(i int) string {
 // The function returns the following values:
 //
 //   - gint which is the number of mime types supported by the object.
-//
 func (streamable *StreamableContent) NMIMETypes() int {
 	var _arg0 *C.AtkStreamableContent // out
 	var _cret C.gint                  // in
@@ -7350,7 +7211,6 @@ func (streamable *StreamableContent) NMIMETypes() int {
 // The function returns the following values:
 //
 //   - ioChannel which contains the content in the specified mime type.
-//
 func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
@@ -7394,7 +7254,6 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 //
 //   - utf8 (optional) returns a string representing a URI, or NULL if no
 //     corresponding URI can be constructed.
-//
 func (streamable *StreamableContent) URI(mimeType string) string {
 	var _arg0 *C.AtkStreamableContent // out
 	var _arg1 *C.gchar                // out
@@ -7428,7 +7287,6 @@ func (streamable *StreamableContent) URI(mimeType string) string {
 //
 //   - utf8: gchar* representing the specified mime type; the caller should not
 //     free the character string.
-//
 func (streamable *StreamableContent) mimeType(i int) string {
 	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
 	fnarg := gclass.get_mime_type
@@ -7456,7 +7314,6 @@ func (streamable *StreamableContent) mimeType(i int) string {
 // The function returns the following values:
 //
 //   - gint which is the number of mime types supported by the object.
-//
 func (streamable *StreamableContent) nmimeTypes() int {
 	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
 	fnarg := gclass.get_n_mime_types
@@ -7485,7 +7342,6 @@ func (streamable *StreamableContent) nmimeTypes() int {
 // The function returns the following values:
 //
 //   - ioChannel which contains the content in the specified mime type.
-//
 func (streamable *StreamableContent) stream(mimeType string) *glib.IOChannel {
 	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
 	fnarg := gclass.get_stream
@@ -7532,7 +7388,6 @@ func (streamable *StreamableContent) stream(mimeType string) *glib.IOChannel {
 //
 //   - utf8 (optional) returns a string representing a URI, or NULL if no
 //     corresponding URI can be constructed.
-//
 func (streamable *StreamableContent) urI(mimeType string) string {
 	gclass := (*C.AtkStreamableContentIface)(coreglib.PeekParentClass(streamable))
 	fnarg := gclass.get_uri
@@ -7760,7 +7615,6 @@ func (table *Table) ConnectRowReordered(f func()) coreglib.SignalHandle {
 //
 //   - ok: gboolean representing if the column was successfully added to the
 //     selection, or 0 if value does not implement this interface.
-//
 func (table *Table) AddColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -7792,7 +7646,6 @@ func (table *Table) AddColumnSelection(column int) bool {
 //
 //   - ok: gboolean representing if row was successfully added to selection,
 //     or 0 if value does not implement this interface.
-//
 func (table *Table) AddRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -7820,7 +7673,6 @@ func (table *Table) AddRowSelection(row int) bool {
 //
 //   - object (optional): atkObject* representing the table caption, or NULL if
 //     value does not implement this interface.
-//
 func (table *Table) Caption() *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
@@ -7851,7 +7703,6 @@ func (table *Table) Caption() *AtkObject {
 //
 //   - gint representing the column at the specified index, or -1 if the table
 //     does not implement this method.
-//
 func (table *Table) ColumnAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -7882,7 +7733,6 @@ func (table *Table) ColumnAtIndex(index_ int) int {
 //
 //   - utf8: gchar* representing the column description, or NULL if value does
 //     not implement this interface.
-//
 func (table *Table) ColumnDescription(column int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -7914,7 +7764,6 @@ func (table *Table) ColumnDescription(column int) string {
 //
 //   - gint representing the column extent at specified position, or 0 if value
 //     does not implement this interface.
-//
 func (table *Table) ColumnExtentAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -7948,7 +7797,6 @@ func (table *Table) ColumnExtentAt(row, column int) int {
 //
 //   - object (optional): atkObject* representing the specified column header,
 //     or NULL if value does not implement this interface.
-//
 func (table *Table) ColumnHeader(column int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -7985,7 +7833,6 @@ func (table *Table) ColumnHeader(column int) *AtkObject {
 //   - gint representing the index at specified position. The value -1 is
 //     returned if the object at row,column is not a child of table or table
 //     does not implement this interface.
-//
 func (table *Table) IndexAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8014,7 +7861,6 @@ func (table *Table) IndexAt(row, column int) int {
 //
 //   - gint representing the number of columns, or 0 if value does not implement
 //     this interface.
-//
 func (table *Table) NColumns() int {
 	var _arg0 *C.AtkTable // out
 	var _cret C.gint      // in
@@ -8037,7 +7883,6 @@ func (table *Table) NColumns() int {
 //
 //   - gint representing the number of rows, or 0 if value does not implement
 //     this interface.
-//
 func (table *Table) NRows() int {
 	var _arg0 *C.AtkTable // out
 	var _cret C.gint      // in
@@ -8066,7 +7911,6 @@ func (table *Table) NRows() int {
 //
 //   - gint representing the row at the specified index, or -1 if the table does
 //     not implement this method.
-//
 func (table *Table) RowAtIndex(index_ int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8096,7 +7940,6 @@ func (table *Table) RowAtIndex(index_ int) int {
 //
 //   - utf8 (optional): gchar* representing the row description, or NULL if
 //     value does not implement this interface.
-//
 func (table *Table) RowDescription(row int) string {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8130,7 +7973,6 @@ func (table *Table) RowDescription(row int) string {
 //
 //   - gint representing the row extent at specified position, or 0 if value
 //     does not implement this interface.
-//
 func (table *Table) RowExtentAt(row, column int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8163,7 +8005,6 @@ func (table *Table) RowExtentAt(row, column int) int {
 //
 //   - object (optional): atkObject* representing the specified row header,
 //     or NULL if value does not implement this interface.
-//
 func (table *Table) RowHeader(row int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -8197,7 +8038,6 @@ func (table *Table) RowHeader(row int) *AtkObject {
 //
 //   - gint representing the number of selected columns, or 0 if value does not
 //     implement this interface.
-//
 func (table *Table) SelectedColumns(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
@@ -8228,7 +8068,6 @@ func (table *Table) SelectedColumns(selected **int) int {
 //
 //   - gint representing the number of selected rows, or zero if value does not
 //     implement this interface.
-//
 func (table *Table) SelectedRows(selected **int) int {
 	var _arg0 *C.AtkTable // out
 	var _arg1 **C.gint    // out
@@ -8254,7 +8093,6 @@ func (table *Table) SelectedRows(selected **int) int {
 //
 //   - object: atkObject* representing a summary description of the table,
 //     or zero if value does not implement this interface.
-//
 func (table *Table) Summary() *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _cret *C.AtkObject // in
@@ -8282,7 +8120,6 @@ func (table *Table) Summary() *AtkObject {
 //
 //   - ok: gboolean representing if the column is selected, or 0 if value does
 //     not implement this interface.
-//
 func (table *Table) IsColumnSelected(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8315,7 +8152,6 @@ func (table *Table) IsColumnSelected(column int) bool {
 //
 //   - ok: gboolean representing if the row is selected, or 0 if value does not
 //     implement this interface.
-//
 func (table *Table) IsRowSelected(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8349,7 +8185,6 @@ func (table *Table) IsRowSelected(row int) bool {
 //
 //   - ok: gboolean representing if the cell is selected, or 0 if value does not
 //     implement this interface.
-//
 func (table *Table) IsSelected(row, column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8385,7 +8220,6 @@ func (table *Table) IsSelected(row, column int) bool {
 // The function returns the following values:
 //
 //   - object representing the referred to accessible.
-//
 func (table *Table) RefAt(row, column int) *AtkObject {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -8418,7 +8252,6 @@ func (table *Table) RefAt(row, column int) *AtkObject {
 //
 //   - ok: gboolean representing if the column was successfully removed from the
 //     selection, or 0 if value does not implement this interface.
-//
 func (table *Table) RemoveColumnSelection(column int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8450,7 +8283,6 @@ func (table *Table) RemoveColumnSelection(column int) bool {
 //
 //   - ok: gboolean representing if the row was successfully removed from the
 //     selection, or 0 if value does not implement this interface.
-//
 func (table *Table) RemoveRowSelection(row int) bool {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8477,7 +8309,6 @@ func (table *Table) RemoveRowSelection(row int) bool {
 // The function takes the following parameters:
 //
 //   - caption representing the caption to set for table.
-//
 func (table *Table) SetCaption(caption *AtkObject) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
@@ -8498,7 +8329,6 @@ func (table *Table) SetCaption(caption *AtkObject) {
 //   - column representing a column in table.
 //   - description representing the description text to set for the specified
 //     column of the table.
-//
 func (table *Table) SetColumnDescription(column int, description string) {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8521,7 +8351,6 @@ func (table *Table) SetColumnDescription(column int, description string) {
 //
 //   - column representing a column in table.
 //   - header: Table.
-//
 func (table *Table) SetColumnHeader(column int, header *AtkObject) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -8544,7 +8373,6 @@ func (table *Table) SetColumnHeader(column int, header *AtkObject) {
 //   - row representing a row in table.
 //   - description representing the description text to set for the specified
 //     row of table.
-//
 func (table *Table) SetRowDescription(row int, description string) {
 	var _arg0 *C.AtkTable // out
 	var _arg1 C.gint      // out
@@ -8567,7 +8395,6 @@ func (table *Table) SetRowDescription(row int, description string) {
 //
 //   - row representing a row in table.
 //   - header: Table.
-//
 func (table *Table) SetRowHeader(row int, header *AtkObject) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 C.gint       // out
@@ -8588,7 +8415,6 @@ func (table *Table) SetRowHeader(row int, header *AtkObject) {
 // The function takes the following parameters:
 //
 //   - accessible representing the summary description to set for table.
-//
 func (table *Table) SetSummary(accessible *AtkObject) {
 	var _arg0 *C.AtkTable  // out
 	var _arg1 *C.AtkObject // out
@@ -8611,7 +8437,6 @@ func (table *Table) SetSummary(accessible *AtkObject) {
 //
 //   - ok: gboolean representing if the column was successfully added to the
 //     selection, or 0 if value does not implement this interface.
-//
 func (table *Table) addColumnSelection(column int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.add_column_selection
@@ -8646,7 +8471,6 @@ func (table *Table) addColumnSelection(column int) bool {
 //
 //   - ok: gboolean representing if row was successfully added to selection,
 //     or 0 if value does not implement this interface.
-//
 func (table *Table) addRowSelection(row int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.add_row_selection
@@ -8675,7 +8499,6 @@ func (table *Table) addRowSelection(row int) bool {
 //
 //   - column
 //   - numDeleted
-//
 func (table *Table) columnDeleted(column, numDeleted int) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.column_deleted
@@ -8698,7 +8521,6 @@ func (table *Table) columnDeleted(column, numDeleted int) {
 //
 //   - column
 //   - numInserted
-//
 func (table *Table) columnInserted(column, numInserted int) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.column_inserted
@@ -8735,7 +8557,6 @@ func (table *Table) columnReordered() {
 //
 //   - object (optional): atkObject* representing the table caption, or NULL if
 //     value does not implement this interface.
-//
 func (table *Table) caption() *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_caption
@@ -8769,7 +8590,6 @@ func (table *Table) caption() *AtkObject {
 //
 //   - gint representing the column at the specified index, or -1 if the table
 //     does not implement this method.
-//
 func (table *Table) columnAtIndex(index_ int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_column_at_index
@@ -8803,7 +8623,6 @@ func (table *Table) columnAtIndex(index_ int) int {
 //
 //   - utf8: gchar* representing the column description, or NULL if value does
 //     not implement this interface.
-//
 func (table *Table) columnDescription(column int) string {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_column_description
@@ -8838,7 +8657,6 @@ func (table *Table) columnDescription(column int) string {
 //
 //   - gint representing the column extent at specified position, or 0 if value
 //     does not implement this interface.
-//
 func (table *Table) columnExtentAt(row, column int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_column_extent_at
@@ -8875,7 +8693,6 @@ func (table *Table) columnExtentAt(row, column int) int {
 //
 //   - object (optional): atkObject* representing the specified column header,
 //     or NULL if value does not implement this interface.
-//
 func (table *Table) columnHeader(column int) *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_column_header
@@ -8915,7 +8732,6 @@ func (table *Table) columnHeader(column int) *AtkObject {
 //   - gint representing the index at specified position. The value -1 is
 //     returned if the object at row,column is not a child of table or table
 //     does not implement this interface.
-//
 func (table *Table) indexAt(row, column int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_index_at
@@ -8947,7 +8763,6 @@ func (table *Table) indexAt(row, column int) int {
 //
 //   - gint representing the number of columns, or 0 if value does not implement
 //     this interface.
-//
 func (table *Table) nColumns() int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_n_columns
@@ -8973,7 +8788,6 @@ func (table *Table) nColumns() int {
 //
 //   - gint representing the number of rows, or 0 if value does not implement
 //     this interface.
-//
 func (table *Table) nRows() int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_n_rows
@@ -9005,7 +8819,6 @@ func (table *Table) nRows() int {
 //
 //   - gint representing the row at the specified index, or -1 if the table does
 //     not implement this method.
-//
 func (table *Table) rowAtIndex(index_ int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_row_at_index
@@ -9038,7 +8851,6 @@ func (table *Table) rowAtIndex(index_ int) int {
 //
 //   - utf8 (optional): gchar* representing the row description, or NULL if
 //     value does not implement this interface.
-//
 func (table *Table) rowDescription(row int) string {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_row_description
@@ -9075,7 +8887,6 @@ func (table *Table) rowDescription(row int) string {
 //
 //   - gint representing the row extent at specified position, or 0 if value
 //     does not implement this interface.
-//
 func (table *Table) rowExtentAt(row, column int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_row_extent_at
@@ -9111,7 +8922,6 @@ func (table *Table) rowExtentAt(row, column int) int {
 //
 //   - object (optional): atkObject* representing the specified row header,
 //     or NULL if value does not implement this interface.
-//
 func (table *Table) rowHeader(row int) *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_row_header
@@ -9148,7 +8958,6 @@ func (table *Table) rowHeader(row int) *AtkObject {
 //
 //   - gint representing the number of selected columns, or 0 if value does not
 //     implement this interface.
-//
 func (table *Table) selectedColumns(selected **int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_selected_columns
@@ -9182,7 +8991,6 @@ func (table *Table) selectedColumns(selected **int) int {
 //
 //   - gint representing the number of selected rows, or zero if value does not
 //     implement this interface.
-//
 func (table *Table) selectedRows(selected **int) int {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_selected_rows
@@ -9211,7 +9019,6 @@ func (table *Table) selectedRows(selected **int) int {
 //
 //   - object: atkObject* representing a summary description of the table,
 //     or zero if value does not implement this interface.
-//
 func (table *Table) summary() *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.get_summary
@@ -9242,7 +9049,6 @@ func (table *Table) summary() *AtkObject {
 //
 //   - ok: gboolean representing if the column is selected, or 0 if value does
 //     not implement this interface.
-//
 func (table *Table) isColumnSelected(column int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.is_column_selected
@@ -9278,7 +9084,6 @@ func (table *Table) isColumnSelected(column int) bool {
 //
 //   - ok: gboolean representing if the row is selected, or 0 if value does not
 //     implement this interface.
-//
 func (table *Table) isRowSelected(row int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.is_row_selected
@@ -9315,7 +9120,6 @@ func (table *Table) isRowSelected(row int) bool {
 //
 //   - ok: gboolean representing if the cell is selected, or 0 if value does not
 //     implement this interface.
-//
 func (table *Table) isSelected(row, column int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.is_selected
@@ -9366,7 +9170,6 @@ func (table *Table) modelChanged() {
 // The function returns the following values:
 //
 //   - object representing the referred to accessible.
-//
 func (table *Table) refAt(row, column int) *AtkObject {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.ref_at
@@ -9402,7 +9205,6 @@ func (table *Table) refAt(row, column int) *AtkObject {
 //
 //   - ok: gboolean representing if the column was successfully removed from the
 //     selection, or 0 if value does not implement this interface.
-//
 func (table *Table) removeColumnSelection(column int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.remove_column_selection
@@ -9437,7 +9239,6 @@ func (table *Table) removeColumnSelection(column int) bool {
 //
 //   - ok: gboolean representing if the row was successfully removed from the
 //     selection, or 0 if value does not implement this interface.
-//
 func (table *Table) removeRowSelection(row int) bool {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.remove_row_selection
@@ -9466,7 +9267,6 @@ func (table *Table) removeRowSelection(row int) bool {
 //
 //   - row
 //   - numDeleted
-//
 func (table *Table) rowDeleted(row, numDeleted int) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.row_deleted
@@ -9489,7 +9289,6 @@ func (table *Table) rowDeleted(row, numDeleted int) {
 //
 //   - row
 //   - numInserted
-//
 func (table *Table) rowInserted(row, numInserted int) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.row_inserted
@@ -9525,7 +9324,6 @@ func (table *Table) rowReordered() {
 // The function takes the following parameters:
 //
 //   - caption representing the caption to set for table.
-//
 func (table *Table) setCaption(caption *AtkObject) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.set_caption
@@ -9549,7 +9347,6 @@ func (table *Table) setCaption(caption *AtkObject) {
 //   - column representing a column in table.
 //   - description representing the description text to set for the specified
 //     column of the table.
-//
 func (table *Table) setColumnDescription(column int, description string) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.set_column_description
@@ -9575,7 +9372,6 @@ func (table *Table) setColumnDescription(column int, description string) {
 //
 //   - column representing a column in table.
 //   - header: Table.
-//
 func (table *Table) setColumnHeader(column int, header *AtkObject) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.set_column_header
@@ -9601,7 +9397,6 @@ func (table *Table) setColumnHeader(column int, header *AtkObject) {
 //   - row representing a row in table.
 //   - description representing the description text to set for the specified
 //     row of table.
-//
 func (table *Table) setRowDescription(row int, description string) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.set_row_description
@@ -9627,7 +9422,6 @@ func (table *Table) setRowDescription(row int, description string) {
 //
 //   - row representing a row in table.
 //   - header: Table.
-//
 func (table *Table) setRowHeader(row int, header *AtkObject) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.set_row_header
@@ -9651,7 +9445,6 @@ func (table *Table) setRowHeader(row int, header *AtkObject) {
 // The function takes the following parameters:
 //
 //   - accessible representing the summary description to set for table.
-//
 func (table *Table) setSummary(accessible *AtkObject) {
 	gclass := (*C.AtkTableIface)(coreglib.PeekParentClass(table))
 	fnarg := gclass.set_summary
@@ -9722,7 +9515,6 @@ func marshalTableCell(p uintptr) (interface{}, error) {
 //
 //   - gint representing the number of columns occupied by this cell, or 0 if
 //     the cell does not implement this method.
-//
 func (cell *TableCell) ColumnSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
@@ -9746,7 +9538,6 @@ func (cell *TableCell) ColumnSpan() int {
 //   - row of the given cell.
 //   - column of the given cell.
 //   - ok: TRUE if successful; FALSE otherwise.
-//
 func (cell *TableCell) Position() (row, column int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
@@ -9785,7 +9576,6 @@ func (cell *TableCell) Position() (row, column int, ok bool) {
 //   - rowSpan: number of rows occupied by this cell.
 //   - columnSpan: number of columns occupied by this cell.
 //   - ok: TRUE if successful; FALSE otherwise.
-//
 func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int, ok bool) {
 	var _arg0 *C.AtkTableCell // out
 	var _arg1 C.gint          // in
@@ -9822,7 +9612,6 @@ func (cell *TableCell) RowColumnSpan() (row, column, rowSpan, columnSpan int, ok
 //
 //   - gint representing the number of rows occupied by this cell, or 0 if the
 //     cell does not implement this method.
-//
 func (cell *TableCell) RowSpan() int {
 	var _arg0 *C.AtkTableCell // out
 	var _cret C.gint          // in
@@ -9844,7 +9633,6 @@ func (cell *TableCell) RowSpan() int {
 // The function returns the following values:
 //
 //   - object: atk object for the containing table.
-//
 func (cell *TableCell) Table() *AtkObject {
 	var _arg0 *C.AtkTableCell // out
 	var _cret *C.AtkObject    // in
@@ -9867,7 +9655,6 @@ func (cell *TableCell) Table() *AtkObject {
 //
 //   - gint representing the number of columns occupied by this cell, or 0 if
 //     the cell does not implement this method.
-//
 func (cell *TableCell) columnSpan() int {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
 	fnarg := gclass.get_column_span
@@ -9894,7 +9681,6 @@ func (cell *TableCell) columnSpan() int {
 //   - row of the given cell.
 //   - column of the given cell.
 //   - ok: TRUE if successful; FALSE otherwise.
-//
 func (cell *TableCell) position() (row, column int, ok bool) {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
 	fnarg := gclass.get_position
@@ -9936,7 +9722,6 @@ func (cell *TableCell) position() (row, column int, ok bool) {
 //   - rowSpan: number of rows occupied by this cell.
 //   - columnSpan: number of columns occupied by this cell.
 //   - ok: TRUE if successful; FALSE otherwise.
-//
 func (cell *TableCell) rowColumnSpan() (row, column, rowSpan, columnSpan int, ok bool) {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
 	fnarg := gclass.get_row_column_span
@@ -9976,7 +9761,6 @@ func (cell *TableCell) rowColumnSpan() (row, column, rowSpan, columnSpan int, ok
 //
 //   - gint representing the number of rows occupied by this cell, or 0 if the
 //     cell does not implement this method.
-//
 func (cell *TableCell) rowSpan() int {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
 	fnarg := gclass.get_row_span
@@ -10001,7 +9785,6 @@ func (cell *TableCell) rowSpan() int {
 // The function returns the following values:
 //
 //   - object: atk object for the containing table.
-//
 func (cell *TableCell) table() *AtkObject {
 	gclass := (*C.AtkTableCellIface)(coreglib.PeekParentClass(cell))
 	fnarg := gclass.get_table
@@ -10031,7 +9814,7 @@ func (cell *TableCell) table() *AtkObject {
 // In the case of editable text content, EditableText (a subtype of the Text
 // interface) should be implemented instead.
 //
-//    Text provides not only traversal facilities and change
+//	Text provides not only traversal facilities and change
 //
 // notification for text content, but also caret tracking and glyph bounding
 // box calculations. Note that the text strings are exposed as UTF-8, and are
@@ -10184,7 +9967,6 @@ func (text *Text) ConnectTextSelectionChanged(f func()) coreglib.SignalHandle {
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (text *Text) AddSelection(startOffset, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -10223,7 +10005,6 @@ func (text *Text) AddSelection(startOffset, endOffset int) bool {
 //
 //   - textRanges: array of AtkTextRange. The last element of the array returned
 //     by this function will be NULL.
-//
 func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange {
 	var _arg0 *C.AtkText          // out
 	var _arg1 *C.AtkTextRectangle // out
@@ -10277,7 +10058,6 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 //
 //   - gint: character offset of the position of the caret or -1 if the caret is
 //     not located inside the element or in the case of any other failure.
-//
 func (text *Text) CaretOffset() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
@@ -10303,7 +10083,6 @@ func (text *Text) CaretOffset() int {
 // The function returns the following values:
 //
 //   - gunichar: character at offset or 0 in the case of failure.
-//
 func (text *Text) CharacterAtOffset(offset int) uint32 {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -10328,7 +10107,6 @@ func (text *Text) CharacterAtOffset(offset int) uint32 {
 // The function returns the following values:
 //
 //   - gint: number of characters or -1 in case of failure.
-//
 func (text *Text) CharacterCount() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
@@ -10363,7 +10141,6 @@ func (text *Text) CharacterCount() int {
 //   - y (optional): pointer for the y coordinate of the bounding box.
 //   - width (optional): pointer for the width of the bounding box.
 //   - height (optional): pointer for the height of the bounding box.
-//
 func (text *Text) CharacterExtents(offset int, coords CoordType) (x, y, width, height int) {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
@@ -10400,7 +10177,6 @@ func (text *Text) CharacterExtents(offset int, coords CoordType) (x, y, width, h
 // The function returns the following values:
 //
 //   - gint: number of selected regions, or -1 in the case of failure.
-//
 func (text *Text) NSelections() int {
 	var _arg0 *C.AtkText // out
 	var _cret C.gint     // in
@@ -10432,7 +10208,6 @@ func (text *Text) NSelections() int {
 //
 //   - gint: offset to the character which is located at the specified x and y
 //     coordinates of -1 in case of failure.
-//
 func (text *Text) OffsetAtPoint(x, y int, coords CoordType) int {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
@@ -10475,7 +10250,6 @@ func (text *Text) OffsetAtPoint(x, y int, coords CoordType) int {
 // The function returns the following values:
 //
 //   - rect: pointer to a AtkTextRectangle which is filled in by this function.
-//
 func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) *TextRectangle {
 	var _arg0 *C.AtkText         // out
 	var _arg1 C.gint             // out
@@ -10519,7 +10293,6 @@ func (text *Text) RangeExtents(startOffset, endOffset int, coordType CoordType) 
 //     past) of the selected region.
 //   - utf8: newly allocated string containing the selected text. Use g_free()
 //     to free the returned string.
-//
 func (text *Text) Selection(selectionNum int) (startOffset, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -10590,7 +10363,6 @@ func (text *Text) Selection(selectionNum int) (startOffset, endOffset int, utf8 
 //     bounded by the specified granularity. Use g_free() to free the returned
 //     string. Returns NULL if the offset is invalid or no implementation is
 //     available.
-//
 func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (startOffset, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText           // out
 	var _arg1 C.gint               // out
@@ -10634,7 +10406,6 @@ func (text *Text) StringAtOffset(offset int, granularity TextGranularity) (start
 //
 //   - utf8: newly allocated string containing the text from start_offset up to,
 //     but not including end_offset. Use g_free() to free the returned string.
-//
 func (text *Text) Text(startOffset, endOffset int) string {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -10673,7 +10444,6 @@ func (text *Text) Text(startOffset, endOffset int) string {
 //   - endOffset: offset of the first character after the returned substring.
 //   - utf8: newly allocated string containing the text after offset bounded by
 //     the specified boundary_type. Use g_free() to free the returned string.
-//
 func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
@@ -10742,7 +10512,6 @@ func (text *Text) TextAfterOffset(offset int, boundaryType TextBoundary) (startO
 //   - endOffset: offset of the first character after the returned substring.
 //   - utf8: newly allocated string containing the text at offset bounded by the
 //     specified boundary_type. Use g_free() to free the returned string.
-//
 func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
@@ -10787,7 +10556,6 @@ func (text *Text) TextAtOffset(offset int, boundaryType TextBoundary) (startOffs
 //   - endOffset: offset of the first character after the returned substring.
 //   - utf8: newly allocated string containing the text before offset bounded by
 //     the specified boundary_type. Use g_free() to free the returned string.
-//
 func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
 	var _arg0 *C.AtkText        // out
 	var _arg1 C.gint            // out
@@ -10830,7 +10598,6 @@ func (text *Text) TextBeforeOffset(offset int, boundaryType TextBoundary) (start
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (text *Text) RemoveSelection(selectionNum int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -10864,7 +10631,6 @@ func (text *Text) RemoveSelection(selectionNum int) bool {
 // The function returns the following values:
 //
 //   - ok: whether scrolling was successful.
-//
 func (text *Text) ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool {
 	var _arg0 *C.AtkText      // out
 	var _arg1 C.gint          // out
@@ -10907,7 +10673,6 @@ func (text *Text) ScrollSubstringTo(startOffset, endOffset int, typ ScrollType) 
 // The function returns the following values:
 //
 //   - ok: whether scrolling was successful.
-//
 func (text *Text) ScrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool {
 	var _arg0 *C.AtkText     // out
 	var _arg1 C.gint         // out
@@ -10966,7 +10731,6 @@ func (text *Text) ScrollSubstringToPoint(startOffset, endOffset int, coords Coor
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (text *Text) SetCaretOffset(offset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -11004,7 +10768,6 @@ func (text *Text) SetCaretOffset(offset int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (text *Text) SetSelection(selectionNum, startOffset, endOffset int) bool {
 	var _arg0 *C.AtkText // out
 	var _arg1 C.gint     // out
@@ -11042,7 +10805,6 @@ func (text *Text) SetSelection(selectionNum, startOffset, endOffset int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (text *Text) addSelection(startOffset, endOffset int) bool {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.add_selection
@@ -11084,7 +10846,6 @@ func (text *Text) addSelection(startOffset, endOffset int) bool {
 //
 //   - textRanges: array of AtkTextRange. The last element of the array returned
 //     by this function will be NULL.
-//
 func (text *Text) boundedRanges(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_bounded_ranges
@@ -11141,7 +10902,6 @@ func (text *Text) boundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 //
 //   - gint: character offset of the position of the caret or -1 if the caret is
 //     not located inside the element or in the case of any other failure.
-//
 func (text *Text) caretOffset() int {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_caret_offset
@@ -11170,7 +10930,6 @@ func (text *Text) caretOffset() int {
 // The function returns the following values:
 //
 //   - gunichar: character at offset or 0 in the case of failure.
-//
 func (text *Text) characterAtOffset(offset int) uint32 {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_character_at_offset
@@ -11198,7 +10957,6 @@ func (text *Text) characterAtOffset(offset int) uint32 {
 // The function returns the following values:
 //
 //   - gint: number of characters or -1 in case of failure.
-//
 func (text *Text) characterCount() int {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_character_count
@@ -11236,7 +10994,6 @@ func (text *Text) characterCount() int {
 //   - y (optional): pointer for the y coordinate of the bounding box.
 //   - width (optional): pointer for the width of the bounding box.
 //   - height (optional): pointer for the height of the bounding box.
-//
 func (text *Text) characterExtents(offset int, coords CoordType) (x, y, width, height int) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_character_extents
@@ -11276,7 +11033,6 @@ func (text *Text) characterExtents(offset int, coords CoordType) (x, y, width, h
 // The function returns the following values:
 //
 //   - gint: number of selected regions, or -1 in the case of failure.
-//
 func (text *Text) nSelections() int {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_n_selections
@@ -11311,7 +11067,6 @@ func (text *Text) nSelections() int {
 //
 //   - gint: offset to the character which is located at the specified x and y
 //     coordinates of -1 in case of failure.
-//
 func (text *Text) offsetAtPoint(x, y int, coords CoordType) int {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_offset_at_point
@@ -11357,7 +11112,6 @@ func (text *Text) offsetAtPoint(x, y int, coords CoordType) int {
 // The function returns the following values:
 //
 //   - rect: pointer to a AtkTextRectangle which is filled in by this function.
-//
 func (text *Text) rangeExtents(startOffset, endOffset int, coordType CoordType) *TextRectangle {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_range_extents
@@ -11404,7 +11158,6 @@ func (text *Text) rangeExtents(startOffset, endOffset int, coordType CoordType) 
 //     past) of the selected region.
 //   - utf8: newly allocated string containing the selected text. Use g_free()
 //     to free the returned string.
-//
 func (text *Text) selection(selectionNum int) (startOffset, endOffset int, utf8 string) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_selection
@@ -11478,7 +11231,6 @@ func (text *Text) selection(selectionNum int) (startOffset, endOffset int, utf8 
 //     bounded by the specified granularity. Use g_free() to free the returned
 //     string. Returns NULL if the offset is invalid or no implementation is
 //     available.
-//
 func (text *Text) stringAtOffset(offset int, granularity TextGranularity) (startOffset, endOffset int, utf8 string) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_string_at_offset
@@ -11525,7 +11277,6 @@ func (text *Text) stringAtOffset(offset int, granularity TextGranularity) (start
 //
 //   - utf8: newly allocated string containing the text from start_offset up to,
 //     but not including end_offset. Use g_free() to free the returned string.
-//
 func (text *Text) text(startOffset, endOffset int) string {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_text
@@ -11567,7 +11318,6 @@ func (text *Text) text(startOffset, endOffset int) string {
 //   - endOffset: offset of the first character after the returned substring.
 //   - utf8: newly allocated string containing the text after offset bounded by
 //     the specified boundary_type. Use g_free() to free the returned string.
-//
 func (text *Text) textAfterOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_text_after_offset
@@ -11639,7 +11389,6 @@ func (text *Text) textAfterOffset(offset int, boundaryType TextBoundary) (startO
 //   - endOffset: offset of the first character after the returned substring.
 //   - utf8: newly allocated string containing the text at offset bounded by the
 //     specified boundary_type. Use g_free() to free the returned string.
-//
 func (text *Text) textAtOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_text_at_offset
@@ -11687,7 +11436,6 @@ func (text *Text) textAtOffset(offset int, boundaryType TextBoundary) (startOffs
 //   - endOffset: offset of the first character after the returned substring.
 //   - utf8: newly allocated string containing the text before offset bounded by
 //     the specified boundary_type. Use g_free() to free the returned string.
-//
 func (text *Text) textBeforeOffset(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.get_text_before_offset
@@ -11733,7 +11481,6 @@ func (text *Text) textBeforeOffset(offset int, boundaryType TextBoundary) (start
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (text *Text) removeSelection(selectionNum int) bool {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.remove_selection
@@ -11770,7 +11517,6 @@ func (text *Text) removeSelection(selectionNum int) bool {
 // The function returns the following values:
 //
 //   - ok: whether scrolling was successful.
-//
 func (text *Text) scrollSubstringTo(startOffset, endOffset int, typ ScrollType) bool {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.scroll_substring_to
@@ -11816,7 +11562,6 @@ func (text *Text) scrollSubstringTo(startOffset, endOffset int, typ ScrollType) 
 // The function returns the following values:
 //
 //   - ok: whether scrolling was successful.
-//
 func (text *Text) scrollSubstringToPoint(startOffset, endOffset int, coords CoordType, x, y int) bool {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.scroll_substring_to_point
@@ -11878,7 +11623,6 @@ func (text *Text) scrollSubstringToPoint(startOffset, endOffset int, coords Coor
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (text *Text) setCaretOffset(offset int) bool {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.set_caret_offset
@@ -11919,7 +11663,6 @@ func (text *Text) setCaretOffset(offset int) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if successful, FALSE otherwise.
-//
 func (text *Text) setSelection(selectionNum, startOffset, endOffset int) bool {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.set_selection
@@ -11962,8 +11705,6 @@ func (text *Text) textAttributesChanged() {
 	runtime.KeepAlive(text)
 }
 
-// The function takes the following parameters:
-//
 func (text *Text) textCaretMoved(location int) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.text_caret_moved
@@ -11983,7 +11724,6 @@ func (text *Text) textCaretMoved(location int) {
 //
 //   - position
 //   - length
-//
 func (text *Text) textChanged(position, length int) {
 	gclass := (*C.AtkTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.text_changed
@@ -12182,7 +11922,6 @@ func (obj *Value) ConnectValueChanged(f func(value float64, text string)) coregl
 // The function returns the following values:
 //
 //   - value representing the current accessible value.
-//
 func (obj *Value) CurrentValue() coreglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
@@ -12207,7 +11946,6 @@ func (obj *Value) CurrentValue() coreglib.Value {
 //
 //   - gdouble: minimum increment by which the value of this object may be
 //     changed. zero if undefined.
-//
 func (obj *Value) Increment() float64 {
 	var _arg0 *C.AtkValue // out
 	var _cret C.gdouble   // in
@@ -12231,7 +11969,6 @@ func (obj *Value) Increment() float64 {
 // The function returns the following values:
 //
 //   - value representing the maximum accessible value.
-//
 func (obj *Value) MaximumValue() coreglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
@@ -12258,7 +11995,6 @@ func (obj *Value) MaximumValue() coreglib.Value {
 //
 //   - value representing the minimum increment by which the accessible value
 //     may be changed.
-//
 func (obj *Value) MinimumIncrement() coreglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
@@ -12282,7 +12018,6 @@ func (obj *Value) MinimumIncrement() coreglib.Value {
 // The function returns the following values:
 //
 //   - value representing the minimum accessible value.
-//
 func (obj *Value) MinimumValue() coreglib.Value {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.GValue    // in
@@ -12306,7 +12041,6 @@ func (obj *Value) MinimumValue() coreglib.Value {
 //   - _range (optional): newly allocated Range that represents the minimum,
 //     maximum and descriptor (if available) of obj. NULL if that range is not
 //     defined.
-//
 func (obj *Value) Range() *Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.AtkRange // in
@@ -12338,7 +12072,6 @@ func (obj *Value) Range() *Range {
 //
 //   - sList of Range which each of the subranges defined for this object.
 //     Free the returns list with g_slist_free().
-//
 func (obj *Value) SubRanges() []*Range {
 	var _arg0 *C.AtkValue // out
 	var _cret *C.GSList   // in
@@ -12376,7 +12109,6 @@ func (obj *Value) SubRanges() []*Range {
 //   - value address of #gdouble to put the current value of obj.
 //   - text (optional) address of #gchar to put the human readable text
 //     alternative for value.
-//
 func (obj *Value) ValueAndText() (float64, string) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // in
@@ -12410,7 +12142,6 @@ func (obj *Value) ValueAndText() (float64, string) {
 // The function returns the following values:
 //
 //   - ok: TRUE if new value is successfully set, FALSE otherwise.
-//
 func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 	var _arg0 *C.AtkValue // out
 	var _arg1 *C.GValue   // out
@@ -12448,7 +12179,6 @@ func (obj *Value) SetCurrentValue(value *coreglib.Value) bool {
 // The function takes the following parameters:
 //
 //   - newValue: double which is the desired new accessible value.
-//
 func (obj *Value) SetValue(newValue float64) {
 	var _arg0 *C.AtkValue // out
 	var _arg1 C.gdouble   // out
@@ -12468,7 +12198,6 @@ func (obj *Value) SetValue(newValue float64) {
 // The function returns the following values:
 //
 //   - value representing the current accessible value.
-//
 func (obj *Value) currentValue() coreglib.Value {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_current_value
@@ -12496,7 +12225,6 @@ func (obj *Value) currentValue() coreglib.Value {
 //
 //   - gdouble: minimum increment by which the value of this object may be
 //     changed. zero if undefined.
-//
 func (obj *Value) increment() float64 {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_increment
@@ -12523,7 +12251,6 @@ func (obj *Value) increment() float64 {
 // The function returns the following values:
 //
 //   - value representing the maximum accessible value.
-//
 func (obj *Value) maximumValue() coreglib.Value {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_maximum_value
@@ -12553,7 +12280,6 @@ func (obj *Value) maximumValue() coreglib.Value {
 //
 //   - value representing the minimum increment by which the accessible value
 //     may be changed.
-//
 func (obj *Value) minimumIncrement() coreglib.Value {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_minimum_increment
@@ -12580,7 +12306,6 @@ func (obj *Value) minimumIncrement() coreglib.Value {
 // The function returns the following values:
 //
 //   - value representing the minimum accessible value.
-//
 func (obj *Value) minimumValue() coreglib.Value {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_minimum_value
@@ -12607,7 +12332,6 @@ func (obj *Value) minimumValue() coreglib.Value {
 //   - _range (optional): newly allocated Range that represents the minimum,
 //     maximum and descriptor (if available) of obj. NULL if that range is not
 //     defined.
-//
 func (obj *Value) _range() *Range {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_range
@@ -12642,7 +12366,6 @@ func (obj *Value) _range() *Range {
 //
 //   - sList of Range which each of the subranges defined for this object.
 //     Free the returns list with g_slist_free().
-//
 func (obj *Value) subRanges() []*Range {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_sub_ranges
@@ -12683,7 +12406,6 @@ func (obj *Value) subRanges() []*Range {
 //   - value address of #gdouble to put the current value of obj.
 //   - text (optional) address of #gchar to put the human readable text
 //     alternative for value.
-//
 func (obj *Value) valueAndText() (float64, string) {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_value_and_text
@@ -12720,7 +12442,6 @@ func (obj *Value) valueAndText() (float64, string) {
 // The function returns the following values:
 //
 //   - ok: TRUE if new value is successfully set, FALSE otherwise.
-//
 func (obj *Value) setCurrentValue(value *coreglib.Value) bool {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.set_current_value
@@ -12761,7 +12482,6 @@ func (obj *Value) setCurrentValue(value *coreglib.Value) bool {
 // The function takes the following parameters:
 //
 //   - newValue: double which is the desired new accessible value.
-//
 func (obj *Value) setValue(newValue float64) {
 	gclass := (*C.AtkValueIface)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.set_value
@@ -12931,7 +12651,6 @@ func marshalGObjectAccessible(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - object which is the object for which obj is the accessible object.
-//
 func (obj *GObjectAccessible) Object() *coreglib.Object {
 	var _arg0 *C.AtkGObjectAccessible // out
 	var _cret *C.GObject              // in
@@ -12957,7 +12676,6 @@ func (obj *GObjectAccessible) Object() *coreglib.Object {
 // The function returns the following values:
 //
 //   - object which is the accessible object for the obj.
-//
 func GObjectAccessibleForObject(obj *coreglib.Object) *AtkObject {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
@@ -12982,14 +12700,12 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gint: index with the hypertext document at which this link ends.
-	//
 	EndIndex func() int
 	// NAnchors gets the number of anchors associated with this hyperlink.
 	//
 	// The function returns the following values:
 	//
 	//   - gint: number of anchors associated with this hyperlink.
-	//
 	NAnchors func() int
 	// GetObject returns the item associated with this hyperlinks nth anchor.
 	// For instance, the returned Object will implement Text if link_ is a text
@@ -13004,7 +12720,6 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - object associated with this hyperlinks i-th anchor.
-	//
 	GetObject func(i int) *AtkObject
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
@@ -13012,7 +12727,6 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gint: index with the hypertext document at which this link begins.
-	//
 	StartIndex func() int
 	// URI: get a the URI associated with the anchor specified by i of link_.
 	//
@@ -13025,7 +12739,6 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8: string specifying the URI.
-	//
 	URI func(i int) string
 	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
@@ -13035,7 +12748,6 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: true if the AtkHyperlink is selected, False otherwise.
-	//
 	IsSelectedLink func() bool
 	// IsValid: since the document that a link is associated with may have
 	// changed this method returns TRUE if the link is still valid (with respect
@@ -13044,12 +12756,9 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: whether or not this link is still valid.
-	//
 	IsValid       func() bool
 	LinkActivated func()
-	// The function returns the following values:
-	//
-	LinkState func() uint
+	LinkState     func() uint
 }
 
 func defaultHyperlinkOverrides(v *Hyperlink) HyperlinkOverrides {
@@ -13160,7 +12869,6 @@ func (link_ *Hyperlink) ConnectLinkActivated(f func()) coreglib.SignalHandle {
 // The function returns the following values:
 //
 //   - gint: index with the hypertext document at which this link ends.
-//
 func (link_ *Hyperlink) EndIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
@@ -13182,7 +12890,6 @@ func (link_ *Hyperlink) EndIndex() int {
 // The function returns the following values:
 //
 //   - gint: number of anchors associated with this hyperlink.
-//
 func (link_ *Hyperlink) NAnchors() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
@@ -13212,7 +12919,6 @@ func (link_ *Hyperlink) NAnchors() int {
 // The function returns the following values:
 //
 //   - object associated with this hyperlinks i-th anchor.
-//
 func (link_ *Hyperlink) GetObject(i int) *AtkObject {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
@@ -13238,7 +12944,6 @@ func (link_ *Hyperlink) GetObject(i int) *AtkObject {
 // The function returns the following values:
 //
 //   - gint: index with the hypertext document at which this link begins.
-//
 func (link_ *Hyperlink) StartIndex() int {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gint          // in
@@ -13266,7 +12971,6 @@ func (link_ *Hyperlink) StartIndex() int {
 // The function returns the following values:
 //
 //   - utf8: string specifying the URI.
-//
 func (link_ *Hyperlink) URI(i int) string {
 	var _arg0 *C.AtkHyperlink // out
 	var _arg1 C.gint          // out
@@ -13294,7 +12998,6 @@ func (link_ *Hyperlink) URI(i int) string {
 // The function returns the following values:
 //
 //   - ok: whether or not this link displays its content inline.
-//
 func (link_ *Hyperlink) IsInline() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
@@ -13321,7 +13024,6 @@ func (link_ *Hyperlink) IsInline() bool {
 // The function returns the following values:
 //
 //   - ok: true if the AtkHyperlink is selected, False otherwise.
-//
 func (link_ *Hyperlink) IsSelectedLink() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
@@ -13347,7 +13049,6 @@ func (link_ *Hyperlink) IsSelectedLink() bool {
 // The function returns the following values:
 //
 //   - ok: whether or not this link is still valid.
-//
 func (link_ *Hyperlink) IsValid() bool {
 	var _arg0 *C.AtkHyperlink // out
 	var _cret C.gboolean      // in
@@ -13371,7 +13072,6 @@ func (link_ *Hyperlink) IsValid() bool {
 // The function returns the following values:
 //
 //   - gint: index with the hypertext document at which this link ends.
-//
 func (link_ *Hyperlink) endIndex() int {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.get_end_index
@@ -13396,7 +13096,6 @@ func (link_ *Hyperlink) endIndex() int {
 // The function returns the following values:
 //
 //   - gint: number of anchors associated with this hyperlink.
-//
 func (link_ *Hyperlink) nAnchors() int {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.get_n_anchors
@@ -13429,7 +13128,6 @@ func (link_ *Hyperlink) nAnchors() int {
 // The function returns the following values:
 //
 //   - object associated with this hyperlinks i-th anchor.
-//
 func (link_ *Hyperlink) getObject(i int) *AtkObject {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.get_object
@@ -13458,7 +13156,6 @@ func (link_ *Hyperlink) getObject(i int) *AtkObject {
 // The function returns the following values:
 //
 //   - gint: index with the hypertext document at which this link begins.
-//
 func (link_ *Hyperlink) startIndex() int {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.get_start_index
@@ -13489,7 +13186,6 @@ func (link_ *Hyperlink) startIndex() int {
 // The function returns the following values:
 //
 //   - utf8: string specifying the URI.
-//
 func (link_ *Hyperlink) urI(i int) string {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.get_uri
@@ -13521,7 +13217,6 @@ func (link_ *Hyperlink) urI(i int) string {
 // The function returns the following values:
 //
 //   - ok: true if the AtkHyperlink is selected, False otherwise.
-//
 func (link_ *Hyperlink) isSelectedLink() bool {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.is_selected_link
@@ -13550,7 +13245,6 @@ func (link_ *Hyperlink) isSelectedLink() bool {
 // The function returns the following values:
 //
 //   - ok: whether or not this link is still valid.
-//
 func (link_ *Hyperlink) isValid() bool {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.is_valid
@@ -13584,8 +13278,6 @@ func (link_ *Hyperlink) linkActivated() {
 	runtime.KeepAlive(link_)
 }
 
-// The function returns the following values:
-//
 func (link_ *Hyperlink) linkState() uint {
 	gclass := (*C.AtkHyperlinkClass)(coreglib.PeekParentClass(link_))
 	fnarg := gclass.link_state
@@ -13761,7 +13453,6 @@ func (misc *Misc) threadsLeave() {
 // The function returns the following values:
 //
 //   - misc: singleton instance of AtkMisc for this application.
-//
 func MiscGetInstance() *Misc {
 	var _cret *C.AtkMisc // in
 
@@ -13887,7 +13578,6 @@ func marshalNoOpObject(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - noOpObject: default (non-functioning stub) Object.
-//
 func NewNoOpObject(obj *coreglib.Object) *NoOpObject {
 	var _arg1 *C.GObject   // out
 	var _cret *C.AtkObject // in
@@ -13958,7 +13648,6 @@ func marshalNoOpObjectFactory(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - noOpObjectFactory: instance of an ObjectFactory.
-//
 func NewNoOpObjectFactory() *NoOpObjectFactory {
 	var _cret *C.AtkObjectFactory // in
 
@@ -13973,25 +13662,19 @@ func NewNoOpObjectFactory() *NoOpObjectFactory {
 
 // AtkObjectOverrides contains methods that are overridable.
 type AtkObjectOverrides struct {
-	// The function takes the following parameters:
-	//
 	ActiveDescendantChanged func(child *unsafe.Pointer)
 	// The function takes the following parameters:
 	//
 	//   - changeIndex
 	//   - changedChild (optional)
-	//
 	ChildrenChanged func(changeIndex uint, changedChild unsafe.Pointer)
-	// The function takes the following parameters:
-	//
-	FocusEvent func(focusIn bool)
+	FocusEvent      func(focusIn bool)
 	// Description gets the accessible description of the accessible.
 	//
 	// The function returns the following values:
 	//
 	//   - utf8: character string representing the accessible description of the
 	//     accessible.
-	//
 	Description func() string
 	// IndexInParent gets the 0-based index of this accessible in its parent;
 	// returns -1 if the accessible does not have an accessible parent.
@@ -13999,7 +13682,6 @@ type AtkObjectOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gint: integer which is the index of the accessible in its parent.
-	//
 	IndexInParent func() int
 	// Layer gets the layer of the accessible.
 	//
@@ -14008,7 +13690,6 @@ type AtkObjectOverrides struct {
 	// The function returns the following values:
 	//
 	//   - layer which is the layer of the accessible.
-	//
 	Layer func() Layer
 	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
 	// returned if the layer of the accessible is not ATK_LAYER_MDI.
@@ -14020,10 +13701,7 @@ type AtkObjectOverrides struct {
 	//   - gint which is the zorder of the accessible, i.e. the depth at which
 	//     the component is shown in relation to other components in the same
 	//     container.
-	//
 	MDIZOrder func() int
-	// The function returns the following values:
-	//
 	NChildren func() int
 	// Name gets the accessible name of the accessible.
 	//
@@ -14031,7 +13709,6 @@ type AtkObjectOverrides struct {
 	//
 	//   - utf8: character string representing the accessible name of the
 	//     object.
-	//
 	Name func() string
 	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
 	// locale of accessible.
@@ -14040,7 +13717,6 @@ type AtkObjectOverrides struct {
 	//
 	//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
 	//     accessible.
-	//
 	ObjectLocale func() string
 	// Parent gets the accessible parent of the accessible. By default this is
 	// the one assigned with atk_object_set_parent(), but it is assumed that ATK
@@ -14054,14 +13730,12 @@ type AtkObjectOverrides struct {
 	// The function returns the following values:
 	//
 	//   - object representing the accessible parent of the accessible.
-	//
 	Parent func() *AtkObject
 	// Role gets the role of the accessible.
 	//
 	// The function returns the following values:
 	//
 	//   - role which is the role of the accessible.
-	//
 	Role func() Role
 	// Initialize: this function is called when implementing subclasses of
 	// Object. It does initialization required for the new object. It is
@@ -14072,17 +13746,13 @@ type AtkObjectOverrides struct {
 	//
 	//   - data (optional) which identifies the object for which the AtkObject
 	//     was created.
-	//
-	Initialize func(data unsafe.Pointer)
-	// The function takes the following parameters:
-	//
+	Initialize     func(data unsafe.Pointer)
 	PropertyChange func(values *PropertyValues)
 	// RefRelationSet gets the RelationSet associated with the object.
 	//
 	// The function returns the following values:
 	//
 	//   - relationSet representing the relation set of the object.
-	//
 	RefRelationSet func() *RelationSet
 	// RefStateSet gets a reference to the state set of the accessible;
 	// the caller must unreference it when it is no longer needed.
@@ -14091,7 +13761,6 @@ type AtkObjectOverrides struct {
 	//
 	//   - stateSet: reference to an StateSet which is the state set of the
 	//     accessible.
-	//
 	RefStateSet func() *StateSet
 	// RemovePropertyChangeHandler removes a property change handler.
 	//
@@ -14100,7 +13769,6 @@ type AtkObjectOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - handlerId: guint which identifies the handler to be removed.
-	//
 	RemovePropertyChangeHandler func(handlerId uint)
 	// SetDescription sets the accessible description of the accessible.
 	// You can't set the description to NULL. This is reserved for the initial
@@ -14111,7 +13779,6 @@ type AtkObjectOverrides struct {
 	//
 	//   - description: character string to be set as the accessible
 	//     description.
-	//
 	SetDescription func(description string)
 	// SetName sets the accessible name of the accessible. You can't set the
 	// name to NULL. This is reserved for the initial value. In this aspect NULL
@@ -14121,7 +13788,6 @@ type AtkObjectOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - name: character string to be set as the accessible name.
-	//
 	SetName func(name string)
 	// SetParent sets the accessible parent of the accessible. parent can be
 	// NULL.
@@ -14129,20 +13795,17 @@ type AtkObjectOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - parent to be set as the accessible parent.
-	//
 	SetParent func(parent *AtkObject)
 	// SetRole sets the role of the accessible.
 	//
 	// The function takes the following parameters:
 	//
 	//   - role to be set as the role.
-	//
 	SetRole func(role Role)
 	// The function takes the following parameters:
 	//
 	//   - name
 	//   - stateSet
-	//
 	StateChange        func(name string, stateSet bool)
 	VisibleDataChanged func()
 }
@@ -14378,7 +14041,6 @@ func (object *AtkObject) ConnectVisibleDataChanged(f func()) coreglib.SignalHand
 // The function returns the following values:
 //
 //   - ok: TRUE if the relationship is added.
-//
 func (object *AtkObject) AddRelationship(relationship RelationType, target *AtkObject) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
@@ -14409,7 +14071,6 @@ func (object *AtkObject) AddRelationship(relationship RelationType, target *AtkO
 //
 //   - utf8: character string representing the accessible id of the object,
 //     or NULL if no such string was set.
-//
 func (accessible *AtkObject) AccessibleID() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -14432,7 +14093,6 @@ func (accessible *AtkObject) AccessibleID() string {
 //
 //   - utf8: character string representing the accessible description of the
 //     accessible.
-//
 func (accessible *AtkObject) Description() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -14455,7 +14115,6 @@ func (accessible *AtkObject) Description() string {
 // The function returns the following values:
 //
 //   - gint: integer which is the index of the accessible in its parent.
-//
 func (accessible *AtkObject) IndexInParent() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
@@ -14479,7 +14138,6 @@ func (accessible *AtkObject) IndexInParent() int {
 // The function returns the following values:
 //
 //   - layer which is the layer of the accessible.
-//
 func (accessible *AtkObject) Layer() Layer {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkLayer   // in
@@ -14505,7 +14163,6 @@ func (accessible *AtkObject) Layer() Layer {
 //
 //   - gint which is the zorder of the accessible, i.e. the depth at which the
 //     component is shown in relation to other components in the same container.
-//
 func (accessible *AtkObject) MDIZOrder() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
@@ -14528,7 +14185,6 @@ func (accessible *AtkObject) MDIZOrder() int {
 //
 //   - gint: integer representing the number of accessible children of the
 //     accessible.
-//
 func (accessible *AtkObject) NAccessibleChildren() int {
 	var _arg0 *C.AtkObject // out
 	var _cret C.gint       // in
@@ -14550,7 +14206,6 @@ func (accessible *AtkObject) NAccessibleChildren() int {
 // The function returns the following values:
 //
 //   - utf8: character string representing the accessible name of the object.
-//
 func (accessible *AtkObject) Name() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -14574,7 +14229,6 @@ func (accessible *AtkObject) Name() string {
 //
 //   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
 //     accessible.
-//
 func (accessible *AtkObject) ObjectLocale() string {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.gchar     // in
@@ -14603,7 +14257,6 @@ func (accessible *AtkObject) ObjectLocale() string {
 // The function returns the following values:
 //
 //   - object representing the accessible parent of the accessible.
-//
 func (accessible *AtkObject) Parent() *AtkObject {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
@@ -14625,7 +14278,6 @@ func (accessible *AtkObject) Parent() *AtkObject {
 // The function returns the following values:
 //
 //   - role which is the role of the accessible.
-//
 func (accessible *AtkObject) Role() Role {
 	var _arg0 *C.AtkObject // out
 	var _cret C.AtkRole    // in
@@ -14651,7 +14303,6 @@ func (accessible *AtkObject) Role() Role {
 //
 //   - data (optional) which identifies the object for which the AtkObject was
 //     created.
-//
 func (accessible *AtkObject) Initialize(data unsafe.Pointer) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gpointer   // out
@@ -14673,7 +14324,6 @@ func (accessible *AtkObject) Initialize(data unsafe.Pointer) {
 //
 //   - state whose state is changed.
 //   - value: gboolean which indicates whether the state is being set on or off.
-//
 func (accessible *AtkObject) NotifyStateChange(state State, value bool) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.AtkState   // out
@@ -14702,7 +14352,6 @@ func (accessible *AtkObject) NotifyStateChange(state State, value bool) {
 // The function returns the following values:
 //
 //   - object representing the accessible parent of the accessible if assigned.
-//
 func (accessible *AtkObject) PeekParent() *AtkObject {
 	var _arg0 *C.AtkObject // out
 	var _cret *C.AtkObject // in
@@ -14730,7 +14379,6 @@ func (accessible *AtkObject) PeekParent() *AtkObject {
 // The function returns the following values:
 //
 //   - object representing the specified accessible child of the accessible.
-//
 func (accessible *AtkObject) RefAccessibleChild(i int) *AtkObject {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.gint       // out
@@ -14755,7 +14403,6 @@ func (accessible *AtkObject) RefAccessibleChild(i int) *AtkObject {
 // The function returns the following values:
 //
 //   - relationSet representing the relation set of the object.
-//
 func (accessible *AtkObject) RefRelationSet() *RelationSet {
 	var _arg0 *C.AtkObject      // out
 	var _cret *C.AtkRelationSet // in
@@ -14779,7 +14426,6 @@ func (accessible *AtkObject) RefRelationSet() *RelationSet {
 //
 //   - stateSet: reference to an StateSet which is the state set of the
 //     accessible.
-//
 func (accessible *AtkObject) RefStateSet() *StateSet {
 	var _arg0 *C.AtkObject   // out
 	var _cret *C.AtkStateSet // in
@@ -14803,7 +14449,6 @@ func (accessible *AtkObject) RefStateSet() *StateSet {
 // The function takes the following parameters:
 //
 //   - handlerId: guint which identifies the handler to be removed.
-//
 func (accessible *AtkObject) RemovePropertyChangeHandler(handlerId uint) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.guint      // out
@@ -14827,7 +14472,6 @@ func (accessible *AtkObject) RemovePropertyChangeHandler(handlerId uint) {
 // The function returns the following values:
 //
 //   - ok: TRUE if the relationship is removed.
-//
 func (object *AtkObject) RemoveRelationship(relationship RelationType, target *AtkObject) bool {
 	var _arg0 *C.AtkObject      // out
 	var _arg1 C.AtkRelationType // out
@@ -14861,7 +14505,6 @@ func (object *AtkObject) RemoveRelationship(relationship RelationType, target *A
 // The function takes the following parameters:
 //
 //   - name: character string to be set as the accessible id.
-//
 func (accessible *AtkObject) SetAccessibleID(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
@@ -14883,7 +14526,6 @@ func (accessible *AtkObject) SetAccessibleID(name string) {
 // The function takes the following parameters:
 //
 //   - description: character string to be set as the accessible description.
-//
 func (accessible *AtkObject) SetDescription(description string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
@@ -14905,7 +14547,6 @@ func (accessible *AtkObject) SetDescription(description string) {
 // The function takes the following parameters:
 //
 //   - name: character string to be set as the accessible name.
-//
 func (accessible *AtkObject) SetName(name string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
@@ -14924,7 +14565,6 @@ func (accessible *AtkObject) SetName(name string) {
 // The function takes the following parameters:
 //
 //   - parent to be set as the accessible parent.
-//
 func (accessible *AtkObject) SetParent(parent *AtkObject) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.AtkObject // out
@@ -14942,7 +14582,6 @@ func (accessible *AtkObject) SetParent(parent *AtkObject) {
 // The function takes the following parameters:
 //
 //   - role to be set as the role.
-//
 func (accessible *AtkObject) SetRole(role Role) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 C.AtkRole    // out
@@ -14955,8 +14594,6 @@ func (accessible *AtkObject) SetRole(role Role) {
 	runtime.KeepAlive(role)
 }
 
-// The function takes the following parameters:
-//
 func (accessible *AtkObject) activeDescendantChanged(child *unsafe.Pointer) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.active_descendant_changed
@@ -14978,7 +14615,6 @@ func (accessible *AtkObject) activeDescendantChanged(child *unsafe.Pointer) {
 //
 //   - changeIndex
 //   - changedChild (optional)
-//
 func (accessible *AtkObject) childrenChanged(changeIndex uint, changedChild unsafe.Pointer) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.children_changed
@@ -14997,8 +14633,6 @@ func (accessible *AtkObject) childrenChanged(changeIndex uint, changedChild unsa
 	runtime.KeepAlive(changedChild)
 }
 
-// The function takes the following parameters:
-//
 func (accessible *AtkObject) focusEvent(focusIn bool) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.focus_event
@@ -15022,7 +14656,6 @@ func (accessible *AtkObject) focusEvent(focusIn bool) {
 //
 //   - utf8: character string representing the accessible description of the
 //     accessible.
-//
 func (accessible *AtkObject) description() string {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_description
@@ -15048,7 +14681,6 @@ func (accessible *AtkObject) description() string {
 // The function returns the following values:
 //
 //   - gint: integer which is the index of the accessible in its parent.
-//
 func (accessible *AtkObject) indexInParent() int {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_index_in_parent
@@ -15075,7 +14707,6 @@ func (accessible *AtkObject) indexInParent() int {
 // The function returns the following values:
 //
 //   - layer which is the layer of the accessible.
-//
 func (accessible *AtkObject) layer() Layer {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_layer
@@ -15104,7 +14735,6 @@ func (accessible *AtkObject) layer() Layer {
 //
 //   - gint which is the zorder of the accessible, i.e. the depth at which the
 //     component is shown in relation to other components in the same container.
-//
 func (accessible *AtkObject) mdizOrder() int {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_mdi_zorder
@@ -15124,8 +14754,6 @@ func (accessible *AtkObject) mdizOrder() int {
 	return _gint
 }
 
-// The function returns the following values:
-//
 func (accessible *AtkObject) nChildren() int {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_n_children
@@ -15150,7 +14778,6 @@ func (accessible *AtkObject) nChildren() int {
 // The function returns the following values:
 //
 //   - utf8: character string representing the accessible name of the object.
-//
 func (accessible *AtkObject) name() string {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_name
@@ -15177,7 +14804,6 @@ func (accessible *AtkObject) name() string {
 //
 //   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
 //     accessible.
-//
 func (accessible *AtkObject) objectLocale() string {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_object_locale
@@ -15209,7 +14835,6 @@ func (accessible *AtkObject) objectLocale() string {
 // The function returns the following values:
 //
 //   - object representing the accessible parent of the accessible.
-//
 func (accessible *AtkObject) parent() *AtkObject {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_parent
@@ -15234,7 +14859,6 @@ func (accessible *AtkObject) parent() *AtkObject {
 // The function returns the following values:
 //
 //   - role which is the role of the accessible.
-//
 func (accessible *AtkObject) role() Role {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.get_role
@@ -15263,7 +14887,6 @@ func (accessible *AtkObject) role() Role {
 //
 //   - data (optional) which identifies the object for which the AtkObject was
 //     created.
-//
 func (accessible *AtkObject) initialize(data unsafe.Pointer) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.initialize
@@ -15279,8 +14902,6 @@ func (accessible *AtkObject) initialize(data unsafe.Pointer) {
 	runtime.KeepAlive(data)
 }
 
-// The function takes the following parameters:
-//
 func (accessible *AtkObject) propertyChange(values *PropertyValues) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.property_change
@@ -15301,7 +14922,6 @@ func (accessible *AtkObject) propertyChange(values *PropertyValues) {
 // The function returns the following values:
 //
 //   - relationSet representing the relation set of the object.
-//
 func (accessible *AtkObject) refRelationSet() *RelationSet {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.ref_relation_set
@@ -15328,7 +14948,6 @@ func (accessible *AtkObject) refRelationSet() *RelationSet {
 //
 //   - stateSet: reference to an StateSet which is the state set of the
 //     accessible.
-//
 func (accessible *AtkObject) refStateSet() *StateSet {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.ref_state_set
@@ -15355,7 +14974,6 @@ func (accessible *AtkObject) refStateSet() *StateSet {
 // The function takes the following parameters:
 //
 //   - handlerId: guint which identifies the handler to be removed.
-//
 func (accessible *AtkObject) removePropertyChangeHandler(handlerId uint) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.remove_property_change_handler
@@ -15379,7 +14997,6 @@ func (accessible *AtkObject) removePropertyChangeHandler(handlerId uint) {
 // The function takes the following parameters:
 //
 //   - description: character string to be set as the accessible description.
-//
 func (accessible *AtkObject) setDescription(description string) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.set_description
@@ -15404,7 +15021,6 @@ func (accessible *AtkObject) setDescription(description string) {
 // The function takes the following parameters:
 //
 //   - name: character string to be set as the accessible name.
-//
 func (accessible *AtkObject) setName(name string) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.set_name
@@ -15426,7 +15042,6 @@ func (accessible *AtkObject) setName(name string) {
 // The function takes the following parameters:
 //
 //   - parent to be set as the accessible parent.
-//
 func (accessible *AtkObject) setParent(parent *AtkObject) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.set_parent
@@ -15447,7 +15062,6 @@ func (accessible *AtkObject) setParent(parent *AtkObject) {
 // The function takes the following parameters:
 //
 //   - role to be set as the role.
-//
 func (accessible *AtkObject) setRole(role Role) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.set_role
@@ -15467,7 +15081,6 @@ func (accessible *AtkObject) setRole(role Role) {
 //
 //   - name
 //   - stateSet
-//
 func (accessible *AtkObject) stateChange(name string, stateSet bool) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.state_change
@@ -15571,7 +15184,6 @@ func marshalObjectFactory(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - object that implements an accessibility interface on behalf of obj.
-//
 func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *AtkObject {
 	var _arg0 *C.AtkObjectFactory // out
 	var _arg1 *C.GObject          // out
@@ -15598,7 +15210,6 @@ func (factory *ObjectFactory) CreateAccessible(obj *coreglib.Object) *AtkObject 
 //
 //   - gType: type of the accessible which is created by the factory. The value
 //     G_TYPE_INVALID is returned if no type if found.
-//
 func (factory *ObjectFactory) AccessibleType() coreglib.Type {
 	var _arg0 *C.AtkObjectFactory // out
 	var _cret C.GType             // in
@@ -15646,8 +15257,6 @@ func (factory *ObjectFactory) invalidate() {
 
 // PlugOverrides contains methods that are overridable.
 type PlugOverrides struct {
-	// The function returns the following values:
-	//
 	ObjectID func() string
 }
 
@@ -15713,7 +15322,6 @@ func marshalPlug(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - plug: newly created Plug.
-//
 func NewPlug() *Plug {
 	var _cret *C.AtkObject // in
 
@@ -15737,7 +15345,6 @@ func NewPlug() *Plug {
 // The function returns the following values:
 //
 //   - utf8: unique ID for the plug.
-//
 func (plug *Plug) ID() string {
 	var _arg0 *C.AtkPlug // out
 	var _cret *C.gchar   // in
@@ -15768,7 +15375,6 @@ func (plug *Plug) ID() string {
 // The function takes the following parameters:
 //
 //   - child to be set as accessible child of plug.
-//
 func (plug *Plug) SetChild(child *AtkObject) {
 	var _arg0 *C.AtkPlug   // out
 	var _arg1 *C.AtkObject // out
@@ -15781,8 +15387,6 @@ func (plug *Plug) SetChild(child *AtkObject) {
 	runtime.KeepAlive(child)
 }
 
-// The function returns the following values:
-//
 func (obj *Plug) objectID() string {
 	gclass := (*C.AtkPlugClass)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.get_object_id
@@ -15861,7 +15465,6 @@ func marshalRegistry(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - objectFactory appropriate for creating Objects appropriate for type.
-//
 func (registry *Registry) Factory(typ coreglib.Type) *ObjectFactory {
 	var _arg0 *C.AtkRegistry      // out
 	var _arg1 C.GType             // out
@@ -15891,7 +15494,6 @@ func (registry *Registry) Factory(typ coreglib.Type) *ObjectFactory {
 // The function returns the following values:
 //
 //   - gType associated with type type.
-//
 func (registry *Registry) FactoryType(typ coreglib.Type) coreglib.Type {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
@@ -15920,7 +15522,6 @@ func (registry *Registry) FactoryType(typ coreglib.Type) coreglib.Type {
 //   - typ: Object type.
 //   - factoryType type to associate with type. Must implement AtkObject
 //     appropriate for type.
-//
 func (registry *Registry) SetFactoryType(typ, factoryType coreglib.Type) {
 	var _arg0 *C.AtkRegistry // out
 	var _arg1 C.GType        // out
@@ -15993,7 +15594,6 @@ func marshalRelation(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - relation: pointer to a new Relation.
-//
 func NewRelation(targets []*AtkObject, relationship RelationType) *Relation {
 	var _arg1 **C.AtkObject // out
 	var _arg2 C.gint
@@ -16028,7 +15628,6 @@ func NewRelation(targets []*AtkObject, relationship RelationType) *Relation {
 // The function takes the following parameters:
 //
 //   - target: Object.
-//
 func (relation *Relation) AddTarget(target *AtkObject) {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
@@ -16046,7 +15645,6 @@ func (relation *Relation) AddTarget(target *AtkObject) {
 // The function returns the following values:
 //
 //   - relationType: type of relation.
-//
 func (relation *Relation) RelationType() RelationType {
 	var _arg0 *C.AtkRelation    // out
 	var _cret C.AtkRelationType // in
@@ -16073,7 +15671,6 @@ func (relation *Relation) RelationType() RelationType {
 // The function returns the following values:
 //
 //   - ok: TRUE if the removal is successful.
-//
 func (relation *Relation) RemoveTarget(target *AtkObject) bool {
 	var _arg0 *C.AtkRelation // out
 	var _arg1 *C.AtkObject   // out
@@ -16149,7 +15746,6 @@ func marshalRelationSet(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - relationSet: new RelationSet.
-//
 func NewRelationSet() *RelationSet {
 	var _cret *C.AtkRelationSet // in
 
@@ -16170,7 +15766,6 @@ func NewRelationSet() *RelationSet {
 // The function takes the following parameters:
 //
 //   - relation: Relation.
-//
 func (set *RelationSet) Add(relation *Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
@@ -16192,7 +15787,6 @@ func (set *RelationSet) Add(relation *Relation) {
 //
 //   - relationship: RelationType.
 //   - target: Object.
-//
 func (set *RelationSet) AddRelationByType(relationship RelationType, target *AtkObject) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -16219,7 +15813,6 @@ func (set *RelationSet) AddRelationByType(relationship RelationType, target *Atk
 //
 //   - ok: TRUE if relationship is the relationship type of a relation in set,
 //     FALSE otherwise.
-//
 func (set *RelationSet) Contains(relationship RelationType) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -16253,7 +15846,6 @@ func (set *RelationSet) Contains(relationship RelationType) bool {
 //
 //   - ok: TRUE if set contains a relation with the relationship type
 //     relationship with an object target, FALSE otherwise.
-//
 func (set *RelationSet) ContainsTarget(relationship RelationType, target *AtkObject) bool {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -16283,7 +15875,6 @@ func (set *RelationSet) ContainsTarget(relationship RelationType, target *AtkObj
 // The function returns the following values:
 //
 //   - gint: integer representing the number of relations in the set.
-//
 func (set *RelationSet) NRelations() int {
 	var _arg0 *C.AtkRelationSet // out
 	var _cret C.gint            // in
@@ -16310,7 +15901,6 @@ func (set *RelationSet) NRelations() int {
 // The function returns the following values:
 //
 //   - relation which is the relation at position i in the set.
-//
 func (set *RelationSet) Relation(i int) *Relation {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.gint            // out
@@ -16339,7 +15929,6 @@ func (set *RelationSet) Relation(i int) *Relation {
 // The function returns the following values:
 //
 //   - relation which is a relation matching the specified type.
-//
 func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 C.AtkRelationType // out
@@ -16365,7 +15954,6 @@ func (set *RelationSet) RelationByType(relationship RelationType) *Relation {
 // The function takes the following parameters:
 //
 //   - relation: Relation.
-//
 func (set *RelationSet) Remove(relation *Relation) {
 	var _arg0 *C.AtkRelationSet // out
 	var _arg1 *C.AtkRelation    // out
@@ -16392,7 +15980,6 @@ type SocketOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - plugId: ID of an Plug.
-	//
 	Embed func(plugId string)
 }
 
@@ -16477,7 +16064,6 @@ func marshalSocket(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - socket: newly created Socket instance.
-//
 func NewSocket() *Socket {
 	var _cret *C.AtkObject // in
 
@@ -16502,7 +16088,6 @@ func NewSocket() *Socket {
 // The function takes the following parameters:
 //
 //   - plugId: ID of an Plug.
-//
 func (obj *Socket) Embed(plugId string) {
 	var _arg0 *C.AtkSocket // out
 	var _arg1 *C.gchar     // out
@@ -16521,7 +16106,6 @@ func (obj *Socket) Embed(plugId string) {
 // The function returns the following values:
 //
 //   - ok: TRUE if a plug is embedded in the socket.
-//
 func (obj *Socket) IsOccupied() bool {
 	var _arg0 *C.AtkSocket // out
 	var _cret C.gboolean   // in
@@ -16552,7 +16136,6 @@ func (obj *Socket) IsOccupied() bool {
 // The function takes the following parameters:
 //
 //   - plugId: ID of an Plug.
-//
 func (obj *Socket) embed(plugId string) {
 	gclass := (*C.AtkSocketClass)(coreglib.PeekParentClass(obj))
 	fnarg := gclass.embed
@@ -16620,7 +16203,6 @@ func marshalStateSet(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - stateSet: new StateSet.
-//
 func NewStateSet() *StateSet {
 	var _cret *C.AtkStateSet // in
 
@@ -16648,7 +16230,6 @@ func NewStateSet() *StateSet {
 // The function returns the following values:
 //
 //   - ok: TRUE if the state for type is not already in set.
-//
 func (set *StateSet) AddState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
@@ -16680,7 +16261,6 @@ func (set *StateSet) AddState(typ StateType) bool {
 // The function takes the following parameters:
 //
 //   - types: array of StateType.
-//
 func (set *StateSet) AddStates(types []StateType) {
 	var _arg0 *C.AtkStateSet  // out
 	var _arg1 *C.AtkStateType // out
@@ -16707,7 +16287,6 @@ func (set *StateSet) AddStates(types []StateType) {
 // The function returns the following values:
 //
 //   - stateSet: new StateSet which is the intersection of the two sets.
-//
 func (set *StateSet) AndSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
@@ -16747,7 +16326,6 @@ func (set *StateSet) ClearStates() {
 // The function returns the following values:
 //
 //   - ok: TRUE if type is the state type is in set.
-//
 func (set *StateSet) ContainsState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
@@ -16779,7 +16357,6 @@ func (set *StateSet) ContainsState(typ StateType) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if all the states for type are in set.
-//
 func (set *StateSet) ContainsStates(types []StateType) bool {
 	var _arg0 *C.AtkStateSet  // out
 	var _arg1 *C.AtkStateType // out
@@ -16810,7 +16387,6 @@ func (set *StateSet) ContainsStates(types []StateType) bool {
 // The function returns the following values:
 //
 //   - ok: TRUE if set has no states set, otherwise FALSE.
-//
 func (set *StateSet) IsEmpty() bool {
 	var _arg0 *C.AtkStateSet // out
 	var _cret C.gboolean     // in
@@ -16839,7 +16415,6 @@ func (set *StateSet) IsEmpty() bool {
 //
 //   - stateSet (optional): new StateSet which is the union of the two sets,
 //     returning NULL is empty.
-//
 func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
@@ -16875,7 +16450,6 @@ func (set *StateSet) OrSets(compareSet *StateSet) *StateSet {
 // The function returns the following values:
 //
 //   - ok: TRUE if type was the state type is in set.
-//
 func (set *StateSet) RemoveState(typ StateType) bool {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 C.AtkStateType // out
@@ -16909,7 +16483,6 @@ func (set *StateSet) RemoveState(typ StateType) bool {
 //
 //   - stateSet: new StateSet which contains the states which are in exactly one
 //     of the two sets.
-//
 func (set *StateSet) XorSets(compareSet *StateSet) *StateSet {
 	var _arg0 *C.AtkStateSet // out
 	var _arg1 *C.AtkStateSet // out
@@ -17413,7 +16986,6 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 // The function returns the following values:
 //
 //   - _range: new Range copy of src.
-//
 func (src *Range) Copy() *Range {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.AtkRange // in
@@ -17441,7 +17013,6 @@ func (src *Range) Copy() *Range {
 // The function returns the following values:
 //
 //   - utf8: human-readable description of range.
-//
 func (_range *Range) Description() string {
 	var _arg0 *C.AtkRange // out
 	var _cret *C.gchar    // in
@@ -17463,7 +17034,6 @@ func (_range *Range) Description() string {
 // The function returns the following values:
 //
 //   - gdouble: lower limit of range.
-//
 func (_range *Range) LowerLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in
@@ -17485,7 +17055,6 @@ func (_range *Range) LowerLimit() float64 {
 // The function returns the following values:
 //
 //   - gdouble: upper limit of range.
-//
 func (_range *Range) UpperLimit() float64 {
 	var _arg0 *C.AtkRange // out
 	var _cret C.gdouble   // in

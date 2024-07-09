@@ -205,7 +205,6 @@ func (p PixdataType) Has(other PixdataType) bool {
 // The function returns the following values:
 //
 //   - pixbuf: new pixbuf.
-//
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (*gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata // out
 	var _arg2 C.gboolean    // out
@@ -283,7 +282,6 @@ type pixdata struct {
 // The function takes the following parameters:
 //
 //   - stream of bytes containing a serialized Pixdata structure.
-//
 func (pixdata *Pixdata) Deserialize(stream []byte) error {
 	var _arg0 *C.GdkPixdata // out
 	var _arg2 *C.guint8     // out
@@ -319,7 +317,6 @@ func (pixdata *Pixdata) Deserialize(stream []byte) error {
 //
 //   - guint8s: a newly-allocated string containing the serialized Pixdata
 //     structure.
-//
 func (pixdata *Pixdata) Serialize() []byte {
 	var _arg0 *C.GdkPixdata // out
 	var _cret *C.guint8     // in

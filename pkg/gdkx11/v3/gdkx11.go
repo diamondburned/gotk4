@@ -75,7 +75,6 @@ func init() {
 // The function returns the following values:
 //
 //   - gint: XInput2 device ID.
-//
 func X11DeviceGetID(device *X11DeviceCore) int {
 	var _arg1 *C.GdkDevice // out
 	var _cret C.gint       // in
@@ -103,7 +102,6 @@ func X11DeviceGetID(device *X11DeviceCore) int {
 //
 //   - x11DeviceCore (optional) wrapping the device ID, or NULL if the given ID
 //     doesn’t currently represent a device.
-//
 func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceId int) *X11DeviceCore {
 	var _arg1 *C.GdkDeviceManager // out
 	var _arg2 C.gint              // out
@@ -132,7 +130,6 @@ func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceId int) *
 //
 //   - ctext: pointer stored in ctext from a call to
 //     gdk_x11_display_string_to_compound_text().
-//
 func X11FreeCompoundText(ctext *byte) {
 	var _arg1 *C.guchar // out
 
@@ -149,7 +146,6 @@ func X11FreeCompoundText(ctext *byte) {
 //   - gint returns the screen number specified by the --display command
 //     line option or the DISPLAY environment variable when gdk_init() calls
 //     XOpenDisplay().
-//
 func X11GetDefaultScreen() int {
 	var _cret C.gint // in
 
@@ -167,9 +163,6 @@ func X11GetDefaultScreen() int {
 // compositing is not available. Otherwise behaves like a transparent pattern.
 //
 // Deprecated: Don't use this function.
-//
-// The function returns the following values:
-//
 func X11GetParentRelativePattern() *cairo.Pattern {
 	var _cret *C.cairo_pattern_t // in
 
@@ -198,7 +191,6 @@ func X11GetParentRelativePattern() *cairo.Pattern {
 // The function returns the following values:
 //
 //   - guint32: time stamp.
-//
 func X11GetServerTime(window *X11Window) uint32 {
 	var _arg1 *C.GdkWindow // out
 	var _cret C.guint32    // in
@@ -241,7 +233,6 @@ func X11GrabServer() {
 //   - display: Display.
 //   - eventBase: first event type code to register.
 //   - nEvents: number of event type codes to register.
-//
 func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // out
@@ -268,7 +259,6 @@ func X11RegisterStandardEventType(display *X11Display, eventBase, nEvents int) {
 //
 //   - smClientId (optional): client id assigned by the session manager when the
 //     connection was opened, or NULL to remove the property.
-//
 func X11SetSmClientID(smClientId string) {
 	var _arg1 *C.gchar // out
 
@@ -450,7 +440,6 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - gint: x error code or 0 on success.
-//
 func (display *X11Display) ErrorTrapPop() int {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.gint        // in
@@ -503,7 +492,6 @@ func (display *X11Display) ErrorTrapPush() {
 // The function returns the following values:
 //
 //   - utf8: startup notification ID for display.
-//
 func (display *X11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.gchar      // in
@@ -527,7 +515,6 @@ func (display *X11Display) StartupNotificationID() string {
 // The function returns the following values:
 //
 //   - guint32: timestamp of the last user interaction.
-//
 func (display *X11Display) UserTime() uint32 {
 	var _arg0 *C.GdkDisplay // out
 	var _cret C.guint32     // in
@@ -572,7 +559,6 @@ func (display *X11Display) Grab() {
 //   - theme (optional): name of the cursor theme to use, or NULL to unset a
 //     previously set value.
 //   - size: cursor size to use, or 0 to keep the previous size.
-//
 func (display *X11Display) SetCursorTheme(theme string, size int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -608,7 +594,6 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 // The function takes the following parameters:
 //
 //   - startupId: startup notification ID (must be valid utf8).
-//
 func (display *X11Display) SetStartupNotificationID(startupId string) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.gchar      // out
@@ -633,7 +618,6 @@ func (display *X11Display) SetStartupNotificationID(startupId string) {
 // The function takes the following parameters:
 //
 //   - scale: new scale value.
-//
 func (display *X11Display) SetWindowScale(scale int) {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 C.gint        // out
@@ -667,7 +651,6 @@ func (display *X11Display) Ungrab() {
 //   - major: return location for the GLX major version.
 //   - minor: return location for the GLX minor version.
 //   - ok: TRUE if GLX is available.
-//
 func X11DisplayGetGLXVersion(display *gdk.Display) (major, minor int, ok bool) {
 	var _arg1 *C.GdkDisplay // out
 	var _arg2 C.gint        // in
@@ -787,7 +770,6 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - gint: index of the active keyboard group for the event.
-//
 func (keymap *X11Keymap) GroupForState(state uint) int {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
@@ -820,7 +802,6 @@ func (keymap *X11Keymap) GroupForState(state uint) int {
 // The function returns the following values:
 //
 //   - ok: TRUE if the hardware keycode is a modifier key.
-//
 func (keymap *X11Keymap) KeyIsModifier(keycode uint) bool {
 	var _arg0 *C.GdkKeymap // out
 	var _arg1 C.guint      // out
@@ -896,7 +877,6 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 // The function returns the following values:
 //
 //   - guint32: current workspace, or 0 if workspaces are not supported.
-//
 func (screen *X11Screen) CurrentDesktop() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
@@ -921,7 +901,6 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 // The function returns the following values:
 //
 //   - guint32: number of workspaces, or 0 if workspaces are not supported.
-//
 func (screen *X11Screen) NumberOfDesktops() uint32 {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.guint32    // in
@@ -943,7 +922,6 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 // The function returns the following values:
 //
 //   - gint: position of screen among the screens of its display.
-//
 func (screen *X11Screen) ScreenNumber() int {
 	var _arg0 *C.GdkScreen // out
 	var _cret C.int        // in
@@ -967,7 +945,6 @@ func (screen *X11Screen) ScreenNumber() int {
 //   - utf8: name of the window manager screen screen, or "unknown" if the
 //     window manager is unknown. The string is owned by GDK and should not be
 //     freed.
-//
 func (screen *X11Screen) WindowManagerName() string {
 	var _arg0 *C.GdkScreen // out
 	var _cret *C.char      // in
@@ -1031,7 +1008,6 @@ func marshalX11Window(p uintptr) (interface{}, error) {
 // The function returns the following values:
 //
 //   - guint32: current workspace of window.
-//
 func (window *X11Window) Desktop() uint32 {
 	var _arg0 *C.GdkWindow // out
 	var _cret C.guint32    // in
@@ -1070,7 +1046,6 @@ func (window *X11Window) MoveToCurrentDesktop() {
 // The function takes the following parameters:
 //
 //   - desktop: number of the workspace to move the window to.
-//
 func (window *X11Window) MoveToDesktop(desktop uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
@@ -1094,7 +1069,6 @@ func (window *X11Window) MoveToDesktop(desktop uint32) {
 //   - right extent.
 //   - top extent.
 //   - bottom extent.
-//
 func (window *X11Window) SetFrameExtents(left, right, top, bottom int) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.int        // out
@@ -1126,7 +1100,6 @@ func (window *X11Window) SetFrameExtents(left, right, top, bottom int) {
 // The function takes the following parameters:
 //
 //   - frameSyncEnabled: whether frame-synchronization should be enabled.
-//
 func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1151,7 +1124,6 @@ func (window *X11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 // The function takes the following parameters:
 //
 //   - hideTitlebarWhenMaximized: whether to hide the titlebar when maximized.
-//
 func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.gboolean   // out
@@ -1178,7 +1150,6 @@ func (window *X11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized 
 // The function takes the following parameters:
 //
 //   - variant: theme variant to export.
-//
 func (window *X11Window) SetThemeVariant(variant string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.char      // out
@@ -1206,7 +1177,6 @@ func (window *X11Window) SetThemeVariant(variant string) {
 // The function takes the following parameters:
 //
 //   - timestamp: XServer timestamp to which the property should be set.
-//
 func (window *X11Window) SetUserTime(timestamp uint32) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 C.guint32    // out
@@ -1227,7 +1197,6 @@ func (window *X11Window) SetUserTime(timestamp uint32) {
 //
 //   - name: property name, will be interned as an X atom.
 //   - value (optional): property value, or NULL to delete.
-//
 func (window *X11Window) SetUTF8Property(name, value string) {
 	var _arg0 *C.GdkWindow // out
 	var _arg1 *C.gchar     // out

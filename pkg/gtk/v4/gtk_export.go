@@ -1507,6 +1507,28 @@ func _gotk4_gtk4_PrintOperationPreview_ConnectReady(arg0 C.gpointer, arg1 *C.Gtk
 	f(_context)
 }
 
+//export _gotk4_gtk4_SectionModel_ConnectSectionsChanged
+func _gotk4_gtk4_SectionModel_ConnectSectionsChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
+	var f func(position, nItems uint)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(position, nItems uint))
+	}
+
+	var _position uint // out
+	var _nItems uint   // out
+
+	_position = uint(arg1)
+	_nItems = uint(arg2)
+
+	f(_position, _nItems)
+}
+
 //export _gotk4_gtk4_SelectionModel_ConnectSelectionChanged
 func _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guint, arg2 C.guint, arg3 C.guintptr) {
 	var f func(position, nItems uint)
@@ -1755,6 +1777,22 @@ func _gotk4_gtk4_Adjustment_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 
 //export _gotk4_gtk4_Adjustment_ConnectValueChanged
 func _gotk4_gtk4_Adjustment_ConnectValueChanged(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_gtk4_AppChooserButton_ConnectActivate
+func _gotk4_gtk4_AppChooserButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -3635,8 +3673,40 @@ func _gotk4_gtk4_CheckButton_ConnectToggled(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
+//export _gotk4_gtk4_ColorButton_ConnectActivate
+func _gotk4_gtk4_ColorButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 //export _gotk4_gtk4_ColorButton_ConnectColorSet
 func _gotk4_gtk4_ColorButton_ConnectColorSet(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_gtk4_ColorDialogButton_ConnectActivate
+func _gotk4_gtk4_ColorDialogButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -3671,6 +3741,17 @@ func _gotk4_gtk4_ColumnView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 
 	f(_position)
 }
 
+//export _gotk4_gtk4_ComboBoxClass_activate
+func _gotk4_gtk4_ComboBoxClass_activate(arg0 *C.GtkComboBox) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[ComboBoxOverrides](instance0)
+	if overrides.Activate == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComboBoxOverrides.Activate, got none")
+	}
+
+	overrides.Activate()
+}
+
 //export _gotk4_gtk4_ComboBoxClass_changed
 func _gotk4_gtk4_ComboBoxClass_changed(arg0 *C.GtkComboBox) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -3701,6 +3782,22 @@ func _gotk4_gtk4_ComboBoxClass_format_entry_text(arg0 *C.GtkComboBox, arg1 *C.ch
 	cret = (*C.char)(unsafe.Pointer(C.CString(utf8)))
 
 	return cret
+}
+
+//export _gotk4_gtk4_ComboBox_ConnectActivate
+func _gotk4_gtk4_ComboBox_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 //export _gotk4_gtk4_ComboBox_ConnectChanged
@@ -4146,6 +4243,22 @@ func _gotk4_gtk4_DropControllerMotion_ConnectMotion(arg0 C.gpointer, arg1 C.gdou
 	_y = float64(arg2)
 
 	f(_x, _y)
+}
+
+//export _gotk4_gtk4_DropDown_ConnectActivate
+func _gotk4_gtk4_DropDown_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 //export _gotk4_gtk4_DropTarget_ConnectAccept
@@ -5014,7 +5127,7 @@ func _gotk4_gtk4_EventControllerKey_ConnectKeyReleased(arg0 C.gpointer, arg1 C.g
 
 //export _gotk4_gtk4_EventControllerKey_ConnectModifiers
 func _gotk4_gtk4_EventControllerKey_ConnectModifiers(arg0 C.gpointer, arg1 C.GdkModifierType, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(keyval gdk.ModifierType) (ok bool)
+	var f func(state gdk.ModifierType) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -5022,14 +5135,14 @@ func _gotk4_gtk4_EventControllerKey_ConnectModifiers(arg0 C.gpointer, arg1 C.Gdk
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(keyval gdk.ModifierType) (ok bool))
+		f = closure.Func.(func(state gdk.ModifierType) (ok bool))
 	}
 
-	var _keyval gdk.ModifierType // out
+	var _state gdk.ModifierType // out
 
-	_keyval = gdk.ModifierType(arg1)
+	_state = gdk.ModifierType(arg1)
 
-	ok := f(_keyval)
+	ok := f(_state)
 
 	var _ bool
 
@@ -5669,8 +5782,40 @@ func _gotk4_gtk4_FlowBoxChild_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) 
 	f()
 }
 
+//export _gotk4_gtk4_FontButton_ConnectActivate
+func _gotk4_gtk4_FontButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 //export _gotk4_gtk4_FontButton_ConnectFontSet
 func _gotk4_gtk4_FontButton_ConnectFontSet(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
+//export _gotk4_gtk4_FontDialogButton_ConnectActivate
+func _gotk4_gtk4_FontDialogButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
@@ -6044,7 +6189,9 @@ func _gotk4_gtk4_GestureClick_ConnectUnpairedRelease(arg0 C.gpointer, arg1 C.gdo
 	_x = float64(arg1)
 	_y = float64(arg2)
 	_button = uint(arg3)
-	_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	if arg4 != nil {
+		_sequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(arg4)))
+	}
 
 	f(_x, _y, _button, _sequence)
 }
@@ -6347,6 +6494,56 @@ func _gotk4_gtk4_GridView_ConnectActivate(arg0 C.gpointer, arg1 C.guint, arg2 C.
 	f(_position)
 }
 
+//export _gotk4_gtk4_IMContextClass_activate_osk
+func _gotk4_gtk4_IMContextClass_activate_osk(arg0 *C.GtkIMContext) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[IMContextOverrides](instance0)
+	if overrides.ActivateOSK == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IMContextOverrides.ActivateOSK, got none")
+	}
+
+	overrides.ActivateOSK()
+}
+
+//export _gotk4_gtk4_IMContextClass_activate_osk_with_event
+func _gotk4_gtk4_IMContextClass_activate_osk_with_event(arg0 *C.GtkIMContext, arg1 *C.GdkEvent) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[IMContextOverrides](instance0)
+	if overrides.ActivateOSKWithEvent == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IMContextOverrides.ActivateOSKWithEvent, got none")
+	}
+
+	var _event gdk.Eventer // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Eventer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gdk.Eventer)
+			return ok
+		})
+		rv, ok := casted.(gdk.Eventer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Eventer")
+		}
+		_event = rv
+	}
+
+	ok := overrides.ActivateOSKWithEvent(_event)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_gtk4_IMContextClass_commit
 func _gotk4_gtk4_IMContextClass_commit(arg0 *C.GtkIMContext, arg1 *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -6631,15 +6828,13 @@ func _gotk4_gtk4_IMContextClass_set_surrounding(arg0 *C.GtkIMContext, arg1 *C.ch
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IMContextOverrides.SetSurrounding, got none")
 	}
 
-	var _text string     // out
-	var _len int         // out
+	var _text string
 	var _cursorIndex int // out
 
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_len = int(arg2)
+	_text = C.GoStringN(arg1, C.int(arg2))
 	_cursorIndex = int(arg3)
 
-	overrides.SetSurrounding(_text, _len, _cursorIndex)
+	overrides.SetSurrounding(_text, _cursorIndex)
 }
 
 //export _gotk4_gtk4_IMContextClass_set_surrounding_with_selection
@@ -6650,17 +6845,15 @@ func _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(arg0 *C.GtkIMCont
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IMContextOverrides.SetSurroundingWithSelection, got none")
 	}
 
-	var _text string     // out
-	var _len int         // out
+	var _text string
 	var _cursorIndex int // out
 	var _anchorIndex int // out
 
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_len = int(arg2)
+	_text = C.GoStringN(arg1, C.int(arg2))
 	_cursorIndex = int(arg3)
 	_anchorIndex = int(arg4)
 
-	overrides.SetSurroundingWithSelection(_text, _len, _cursorIndex, _anchorIndex)
+	overrides.SetSurroundingWithSelection(_text, _cursorIndex, _anchorIndex)
 }
 
 //export _gotk4_gtk4_IMContextClass_set_use_preedit
@@ -7690,6 +7883,22 @@ func _gotk4_gtk4_MediaStreamClass_update_audio(arg0 *C.GtkMediaStream, arg1 C.gb
 	overrides.UpdateAudio(_muted, _volume)
 }
 
+//export _gotk4_gtk4_MenuButton_ConnectActivate
+func _gotk4_gtk4_MenuButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
+}
+
 //export _gotk4_gtk4_NativeDialogClass_hide
 func _gotk4_gtk4_NativeDialogClass_hide(arg0 *C.GtkNativeDialog) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -7812,7 +8021,9 @@ func _gotk4_gtk4_Notebook_ConnectCreateWindow(arg0 C.gpointer, arg1 *C.GtkWidget
 
 	var _ *Notebook
 
-	cret = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	if notebook != nil {
+		cret = (*C.GtkNotebook)(unsafe.Pointer(coreglib.InternObject(notebook).Native()))
+	}
 
 	return cret
 }
@@ -8616,7 +8827,9 @@ func _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(arg0 C.gpointer, arg1 
 
 	var _ *coreglib.Object
 
-	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
+	if object != nil {
+		cret = (*C.GObject)(unsafe.Pointer(object.Native()))
+	}
 
 	return cret
 }
@@ -9404,8 +9617,8 @@ func _gotk4_gtk4_ShortcutsWindow_ConnectSearch(arg0 C.gpointer, arg1 C.guintptr)
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectBind
-func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
-	var f func(listitem *ListItem)
+func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.GObject, arg2 C.guintptr) {
+	var f func(object *coreglib.Object)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -9413,19 +9626,19 @@ func _gotk4_gtk4_SignalListItemFactory_ConnectBind(arg0 C.gpointer, arg1 *C.GtkL
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(listitem *ListItem))
+		f = closure.Func.(func(object *coreglib.Object))
 	}
 
-	var _listitem *ListItem // out
+	var _object *coreglib.Object // out
 
-	_listitem = wrapListItem(coreglib.Take(unsafe.Pointer(arg1)))
+	_object = coreglib.Take(unsafe.Pointer(arg1))
 
-	f(_listitem)
+	f(_object)
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectSetup
-func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
-	var f func(listitem *ListItem)
+func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.GObject, arg2 C.guintptr) {
+	var f func(object *coreglib.Object)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -9433,19 +9646,19 @@ func _gotk4_gtk4_SignalListItemFactory_ConnectSetup(arg0 C.gpointer, arg1 *C.Gtk
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(listitem *ListItem))
+		f = closure.Func.(func(object *coreglib.Object))
 	}
 
-	var _listitem *ListItem // out
+	var _object *coreglib.Object // out
 
-	_listitem = wrapListItem(coreglib.Take(unsafe.Pointer(arg1)))
+	_object = coreglib.Take(unsafe.Pointer(arg1))
 
-	f(_listitem)
+	f(_object)
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectTeardown
-func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
-	var f func(listitem *ListItem)
+func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.GObject, arg2 C.guintptr) {
+	var f func(object *coreglib.Object)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -9453,19 +9666,19 @@ func _gotk4_gtk4_SignalListItemFactory_ConnectTeardown(arg0 C.gpointer, arg1 *C.
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(listitem *ListItem))
+		f = closure.Func.(func(object *coreglib.Object))
 	}
 
-	var _listitem *ListItem // out
+	var _object *coreglib.Object // out
 
-	_listitem = wrapListItem(coreglib.Take(unsafe.Pointer(arg1)))
+	_object = coreglib.Take(unsafe.Pointer(arg1))
 
-	f(_listitem)
+	f(_object)
 }
 
 //export _gotk4_gtk4_SignalListItemFactory_ConnectUnbind
-func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.GtkListItem, arg2 C.guintptr) {
-	var f func(listitem *ListItem)
+func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.GObject, arg2 C.guintptr) {
+	var f func(object *coreglib.Object)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -9473,14 +9686,14 @@ func _gotk4_gtk4_SignalListItemFactory_ConnectUnbind(arg0 C.gpointer, arg1 *C.Gt
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(listitem *ListItem))
+		f = closure.Func.(func(object *coreglib.Object))
 	}
 
-	var _listitem *ListItem // out
+	var _object *coreglib.Object // out
 
-	_listitem = wrapListItem(coreglib.Take(unsafe.Pointer(arg1)))
+	_object = coreglib.Take(unsafe.Pointer(arg1))
 
-	f(_listitem)
+	f(_object)
 }
 
 //export _gotk4_gtk4_SorterClass_compare
@@ -9541,6 +9754,22 @@ func _gotk4_gtk4_Sorter_ConnectChanged(arg0 C.gpointer, arg1 C.GtkSorterChange, 
 	_change = SorterChange(arg1)
 
 	f(_change)
+}
+
+//export _gotk4_gtk4_SpinButton_ConnectActivate
+func _gotk4_gtk4_SpinButton_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 //export _gotk4_gtk4_SpinButton_ConnectChangeValue
@@ -11234,7 +11463,9 @@ func _gotk4_gtk4_TreeViewClass_row_activated(arg0 *C.GtkTreeView, arg1 *C.GtkTre
 	var _column *TreeViewColumn // out
 
 	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_column = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(arg2)))
+	if arg2 != nil {
+		_column = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(arg2)))
+	}
 
 	overrides.RowActivated(_path, _column)
 }
@@ -11568,7 +11799,9 @@ func _gotk4_gtk4_TreeView_ConnectRowActivated(arg0 C.gpointer, arg1 *C.GtkTreePa
 	var _column *TreeViewColumn // out
 
 	_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	_column = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(arg2)))
+	if arg2 != nil {
+		_column = wrapTreeViewColumn(coreglib.Take(unsafe.Pointer(arg2)))
+	}
 
 	f(_path, _column)
 }

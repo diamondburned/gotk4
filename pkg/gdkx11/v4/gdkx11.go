@@ -76,7 +76,7 @@ func (x X11DeviceType) String() string {
 //
 // The function takes the following parameters:
 //
-//   - device: Device.
+//   - device: GdkDevice.
 //
 // The function returns the following values:
 //
@@ -97,17 +97,17 @@ func X11DeviceGetID(device *X11DeviceXI2) int {
 	return _gint
 }
 
-// X11DeviceManagerLookup returns the Device that wraps the given device ID.
+// X11DeviceManagerLookup returns the GdkDevice that wraps the given device ID.
 //
 // The function takes the following parameters:
 //
-//   - deviceManager: DeviceManager.
+//   - deviceManager: GdkDeviceManager.
 //   - deviceId: device ID, as understood by the XInput2 protocol.
 //
 // The function returns the following values:
 //
-//   - x11DeviceXI2 (optional) wrapping the device ID, or NULL if the given ID
-//     doesn’t currently represent a device.
+//   - x11DeviceXI2 (optional): the GdkDevice wrapping the device ID, or NULL if
+//     the given ID doesn’t currently represent a device.
 func X11DeviceManagerLookup(deviceManager *X11DeviceManagerXI2, deviceId int) *X11DeviceXI2 {
 	var _arg1 *C.GdkX11DeviceManagerXI2 // out
 	var _arg2 C.int                     // out
@@ -149,8 +149,9 @@ func X11FreeCompoundText(ctext *byte) {
 //
 // The function takes the following parameters:
 //
-//   - surface used for communication with the server. The surface must have
-//     GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will result.
+//   - surface: GdkSurface, used for communication with the server. The surface
+//     must have GDK_PROPERTY_CHANGE_MASK in its events mask or a hang will
+//     result.
 //
 // The function returns the following values:
 //
@@ -287,7 +288,7 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 // translate, you may break GDK and/or GTK+ in interesting ways. You have been
 // warned.
 //
-// If you want this signal handler to queue a Event, you can use
+// If you want this signal handler to queue a GdkEvent, you can use
 // gdk_display_put_event().
 //
 // If you are interested in X GenericEvents, bear in mind that XGetEventData()
@@ -389,6 +390,61 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 	return _surface
 }
 
+// EglDisplay retrieves the EGL display connection object for the given GDK
+// display.
+//
+// This function returns NULL if GDK is using GLX.
+//
+// The function returns the following values:
+//
+//   - gpointer (optional): EGL display object.
+func (display *X11Display) EglDisplay() unsafe.Pointer {
+	var _arg0 *C.GdkDisplay // out
+	var _cret C.gpointer    // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	_cret = C.gdk_x11_display_get_egl_display(_arg0)
+	runtime.KeepAlive(display)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
+// EglVersion retrieves the version of the EGL implementation.
+//
+// The function returns the following values:
+//
+//   - major: return location for the EGL major version.
+//   - minor: return location for the EGL minor version.
+//   - ok: TRUE if EGL is available.
+func (display *X11Display) EglVersion() (major, minor int, ok bool) {
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 C.int         // in
+	var _arg2 C.int         // in
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	_cret = C.gdk_x11_display_get_egl_version(_arg0, &_arg1, &_arg2)
+	runtime.KeepAlive(display)
+
+	var _major int // out
+	var _minor int // out
+	var _ok bool   // out
+
+	_major = int(_arg1)
+	_minor = int(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _major, _minor, _ok
+}
+
 // GLXVersion retrieves the version of the GLX implementation.
 //
 // The function returns the following values:
@@ -455,11 +511,11 @@ func (display *X11Display) PrimaryMonitor() *gdk.Monitor {
 	return _monitor
 }
 
-// Screen retrieves the X11Screen of the display.
+// Screen retrieves the GdkX11Screen of the display.
 //
 // The function returns the following values:
 //
-//   - x11Screen: X11Screen.
+//   - x11Screen: GdkX11Screen.
 func (display *X11Display) Screen() *X11Screen {
 	var _arg0 *C.GdkDisplay   // out
 	var _cret *C.GdkX11Screen // in
@@ -477,6 +533,8 @@ func (display *X11Display) Screen() *X11Screen {
 }
 
 // StartupNotificationID gets the startup notification ID for a display.
+//
+// Deprecated: since version 4.10.
 //
 // The function returns the following values:
 //
@@ -537,10 +595,10 @@ func (display *X11Display) Grab() {
 // be taken.
 //
 // If the windowing system supports it, existing cursors created with
-// gdk_cursor_new_from_name() are updated to reflect the theme change.
-// Custom cursors constructed with gdk_cursor_new_from_texture() will have to
-// be handled by the application (GTK applications can learn about cursor theme
-// changes by listening for change notification for the corresponding Setting).
+// gdk.Cursor.NewFromName are updated to reflect the theme change. Custom
+// cursors constructed with gdk.Cursor.NewFromTexture will have to be handled
+// by the application (GTK applications can learn about cursor theme changes by
+// listening for change notification for the corresponding GtkSetting).
 //
 // The function takes the following parameters:
 //
@@ -578,6 +636,8 @@ func (display *X11Display) SetCursorTheme(theme string, size int) {
 // The startup ID is also what is used to signal that the startup
 // is complete (for example, when opening a window or when calling
 // gdk_display_notify_startup_complete()).
+//
+// Deprecated: Using gdk.Toplevel.SetStartupID() is sufficient.
 //
 // The function takes the following parameters:
 //
@@ -730,7 +790,7 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 //
 // The function returns the following values:
 //
-//   - display (optional): new display or NULL on error.
+//   - display (optional): new display.
 func X11DisplayOpen(displayName string) *gdk.Display {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkDisplay // in
@@ -764,7 +824,7 @@ func X11DisplayOpen(displayName string) *gdk.Display {
 //
 // The function takes the following parameters:
 //
-//   - display: Display.
+//   - display: GdkDisplay.
 //   - programClass: string.
 func X11DisplaySetProgramClass(display *gdk.Display, programClass string) {
 	var _arg1 *C.GdkDisplay // out
@@ -809,6 +869,17 @@ var (
 	_ gdk.GLContexter = (*X11GLContext)(nil)
 )
 
+// X11GLContexter describes types inherited from class X11GLContext.
+//
+// To get the original type, the caller must assert this to an interface or
+// another type.
+type X11GLContexter interface {
+	coreglib.Objector
+	baseX11GLContext() *X11GLContext
+}
+
+var _ X11GLContexter = (*X11GLContext)(nil)
+
 func wrapX11GLContext(obj *coreglib.Object) *X11GLContext {
 	return &X11GLContext{
 		GLContext: gdk.GLContext{
@@ -821,6 +892,15 @@ func wrapX11GLContext(obj *coreglib.Object) *X11GLContext {
 
 func marshalX11GLContext(p uintptr) (interface{}, error) {
 	return wrapX11GLContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func (v *X11GLContext) baseX11GLContext() *X11GLContext {
+	return v
+}
+
+// BaseX11GLContext returns the underlying base object.
+func BaseX11GLContext(obj X11GLContexter) *X11GLContext {
+	return obj.baseX11GLContext()
 }
 
 type X11Monitor struct {
@@ -845,12 +925,14 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 }
 
 // Workarea retrieves the size and position of the “work area” on a monitor
-// within the display coordinate space. The returned geometry is in ”application
-// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
+// within the display coordinate space.
+//
+// The returned geometry is in ”application pixels”, not in ”device pixels” (see
+// gdk.Monitor.GetScaleFactor()).
 //
 // The function returns the following values:
 //
-//   - workarea to be filled with the monitor workarea.
+//   - workarea: GdkRectangle to be filled with the monitor workarea.
 func (monitor *X11Monitor) Workarea() *gdk.Rectangle {
 	var _arg0 *C.GdkMonitor  // out
 	var _arg1 C.GdkRectangle // in
@@ -938,7 +1020,7 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 	return _guint32
 }
 
-// ScreenNumber returns the index of a X11Screen.
+// ScreenNumber returns the index of a GdkX11Screen.
 //
 // The function returns the following values:
 //
@@ -993,7 +1075,7 @@ func (screen *X11Screen) WindowManagerName() string {
 // start up before the window manager does when the user logs in, and before
 // the window manager starts gdk_x11_screen_supports_net_wm_hint() will return
 // FALSE for every property. You can monitor the window_manager_changed signal
-// on X11Screen to detect a window manager change.
+// on GdkX11Screen to detect a window manager change.
 //
 // The function takes the following parameters:
 //
@@ -1070,7 +1152,7 @@ func (surface *X11Surface) Desktop() uint32 {
 //
 // The function returns the following values:
 //
-//   - ret: group of this surface;.
+//   - ret (optional): group of this surface;.
 func (surface *X11Surface) Group() gdk.Surfacer {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkSurface // in
@@ -1082,22 +1164,21 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 
 	var _ret gdk.Surfacer // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Surfacer is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(gdk.Surfacer)
-			return ok
-		})
-		rv, ok := casted.(gdk.Surfacer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(gdk.Surfacer)
+				return ok
+			})
+			rv, ok := casted.(gdk.Surfacer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+			}
+			_ret = rv
 		}
-		_ret = rv
 	}
 
 	return _ret
@@ -1166,7 +1247,7 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 //
 // The function takes the following parameters:
 //
-//   - leader: Surface.
+//   - leader: GdkSurface.
 func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkSurface // out

@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
+	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
 // #include <stdlib.h>
@@ -34,4 +35,36 @@ func _gotk4_gsk4_ParseErrorFunc(arg1 *C.GskParseLocation, arg2 *C.GskParseLocati
 	_err = gerror.Take(unsafe.Pointer(arg3))
 
 	fn(_start, _end, _err)
+}
+
+//export _gotk4_gsk4_PathForEachFunc
+func _gotk4_gsk4_PathForEachFunc(arg1 C.GskPathOperation, arg2 *C.graphene_point_t, arg3 C.gsize, arg4 C.float, arg5 C.gpointer) (cret C.gboolean) {
+	var fn PathForEachFunc
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(PathForEachFunc)
+	}
+
+	var _op PathOperation    // out
+	var _pts *graphene.Point // out
+	var _nPts uint           // out
+	var _weight float32      // out
+
+	_op = PathOperation(arg1)
+	_pts = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	_nPts = uint(arg3)
+	_weight = float32(arg4)
+
+	ok := fn(_op, _pts, _nPts, _weight)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
 }

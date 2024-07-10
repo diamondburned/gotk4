@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"context"
 	"fmt"
 	"runtime"
 	_ "runtime/cgo"
@@ -11,8 +10,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/core/gbox"
-	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -27,7 +24,6 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(gpointer, guintptr);
 // extern void _gotk4_gdk4_Surface_ConnectLeaveMonitor(gpointer, GdkMonitor*, guintptr);
 // extern void _gotk4_gdk4_Surface_ConnectLayout(gpointer, gint, gint, guintptr);
@@ -62,7 +58,6 @@ import (
 // extern void _gotk4_gdk4_ContentProviderClass_content_changed(GdkContentProvider*);
 // extern void _gotk4_gdk4_ContentProviderClass_attach_clipboard(GdkContentProvider*, GdkClipboard*);
 // extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern gboolean _gotk4_gdk4_Surface_ConnectRender(gpointer, cairo_region_t*, guintptr);
 // extern gboolean _gotk4_gdk4_Surface_ConnectEvent(gpointer, gpointer*, guintptr);
 // extern gboolean _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(GdkContentProvider*, GAsyncResult*, GError**);
@@ -105,9 +100,6 @@ import (
 // void _gotk4_gdk4_ContentProvider_virtual_detach_clipboard(void* fnptr, GdkContentProvider* arg0, GdkClipboard* arg1) {
 //   ((void (*)(GdkContentProvider*, GdkClipboard*))(fnptr))(arg0, arg1);
 // };
-// void _gotk4_gdk4_ContentProvider_virtual_write_mime_type_async(void* fnptr, GdkContentProvider* arg0, char* arg1, GOutputStream* arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
-//   ((void (*)(GdkContentProvider*, char*, GOutputStream*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-// };
 // void _gotk4_gdk4_Paintable_virtual_snapshot(void* fnptr, GdkPaintable* arg0, GdkSnapshot* arg1, double arg2, double arg3) {
 //   ((void (*)(GdkPaintable*, GdkSnapshot*, double, double))(fnptr))(arg0, arg1, arg2, arg3);
 // };
@@ -119,6 +111,7 @@ var (
 	GTypeCrossingMode          = coreglib.Type(C.gdk_crossing_mode_get_type())
 	GTypeDevicePadFeature      = coreglib.Type(C.gdk_device_pad_feature_get_type())
 	GTypeDeviceToolType        = coreglib.Type(C.gdk_device_tool_type_get_type())
+	GTypeDmabufError           = coreglib.Type(C.gdk_dmabuf_error_get_type())
 	GTypeDragCancelReason      = coreglib.Type(C.gdk_drag_cancel_reason_get_type())
 	GTypeEventType             = coreglib.Type(C.gdk_event_type_get_type())
 	GTypeFullscreenMode        = coreglib.Type(C.gdk_fullscreen_mode_get_type())
@@ -129,14 +122,18 @@ var (
 	GTypeMemoryFormat          = coreglib.Type(C.gdk_memory_format_get_type())
 	GTypeNotifyType            = coreglib.Type(C.gdk_notify_type_get_type())
 	GTypeScrollDirection       = coreglib.Type(C.gdk_scroll_direction_get_type())
+	GTypeScrollUnit            = coreglib.Type(C.gdk_scroll_unit_get_type())
 	GTypeSubpixelLayout        = coreglib.Type(C.gdk_subpixel_layout_get_type())
 	GTypeSurfaceEdge           = coreglib.Type(C.gdk_surface_edge_get_type())
+	GTypeTextureError          = coreglib.Type(C.gdk_texture_error_get_type())
+	GTypeTitlebarGesture       = coreglib.Type(C.gdk_titlebar_gesture_get_type())
 	GTypeTouchpadGesturePhase  = coreglib.Type(C.gdk_touchpad_gesture_phase_get_type())
 	GTypeVulkanError           = coreglib.Type(C.gdk_vulkan_error_get_type())
 	GTypeAnchorHints           = coreglib.Type(C.gdk_anchor_hints_get_type())
 	GTypeAxisFlags             = coreglib.Type(C.gdk_axis_flags_get_type())
 	GTypeDragAction            = coreglib.Type(C.gdk_drag_action_get_type())
 	GTypeFrameClockPhase       = coreglib.Type(C.gdk_frame_clock_phase_get_type())
+	GTypeGLAPI                 = coreglib.Type(C.gdk_gl_api_get_type())
 	GTypeModifierType          = coreglib.Type(C.gdk_modifier_type_get_type())
 	GTypePaintableFlags        = coreglib.Type(C.gdk_paintable_flags_get_type())
 	GTypeSeatCapabilities      = coreglib.Type(C.gdk_seat_capabilities_get_type())
@@ -161,6 +158,8 @@ var (
 	GTypeDeviceTool            = coreglib.Type(C.gdk_device_tool_get_type())
 	GTypeDisplay               = coreglib.Type(C.gdk_display_get_type())
 	GTypeDisplayManager        = coreglib.Type(C.gdk_display_manager_get_type())
+	GTypeDmabufTexture         = coreglib.Type(C.gdk_dmabuf_texture_get_type())
+	GTypeDmabufTextureBuilder  = coreglib.Type(C.gdk_dmabuf_texture_builder_get_type())
 	GTypeDrag                  = coreglib.Type(C.gdk_drag_get_type())
 	GTypeDrawContext           = coreglib.Type(C.gdk_draw_context_get_type())
 	GTypeDrop                  = coreglib.Type(C.gdk_drop_get_type())
@@ -169,6 +168,7 @@ var (
 	GTypeFrameClock            = coreglib.Type(C.gdk_frame_clock_get_type())
 	GTypeGLContext             = coreglib.Type(C.gdk_gl_context_get_type())
 	GTypeGLTexture             = coreglib.Type(C.gdk_gl_texture_get_type())
+	GTypeGLTextureBuilder      = coreglib.Type(C.gdk_gl_texture_builder_get_type())
 	GTypeGrabBrokenEvent       = coreglib.Type(C.gdk_grab_broken_event_get_type())
 	GTypeKeyEvent              = coreglib.Type(C.gdk_key_event_get_type())
 	GTypeMemoryTexture         = coreglib.Type(C.gdk_memory_texture_get_type())
@@ -186,11 +186,14 @@ var (
 	GTypeVulkanContext         = coreglib.Type(C.gdk_vulkan_context_get_type())
 	GTypeContentFormats        = coreglib.Type(C.gdk_content_formats_get_type())
 	GTypeContentFormatsBuilder = coreglib.Type(C.gdk_content_formats_builder_get_type())
+	GTypeDmabufFormats         = coreglib.Type(C.gdk_dmabuf_formats_get_type())
 	GTypeEventSequence         = coreglib.Type(C.gdk_event_sequence_get_type())
+	GTypeFileList              = coreglib.Type(C.gdk_file_list_get_type())
 	GTypeFrameTimings          = coreglib.Type(C.gdk_frame_timings_get_type())
 	GTypePopupLayout           = coreglib.Type(C.gdk_popup_layout_get_type())
 	GTypeRGBA                  = coreglib.Type(C.gdk_rgba_get_type())
 	GTypeRectangle             = coreglib.Type(C.gdk_rectangle_get_type())
+	GTypeTextureDownloader     = coreglib.Type(C.gdk_texture_downloader_get_type())
 	GTypeToplevelLayout        = coreglib.Type(C.gdk_toplevel_layout_get_type())
 )
 
@@ -200,6 +203,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeCrossingMode, F: marshalCrossingMode},
 		coreglib.TypeMarshaler{T: GTypeDevicePadFeature, F: marshalDevicePadFeature},
 		coreglib.TypeMarshaler{T: GTypeDeviceToolType, F: marshalDeviceToolType},
+		coreglib.TypeMarshaler{T: GTypeDmabufError, F: marshalDmabufError},
 		coreglib.TypeMarshaler{T: GTypeDragCancelReason, F: marshalDragCancelReason},
 		coreglib.TypeMarshaler{T: GTypeEventType, F: marshalEventType},
 		coreglib.TypeMarshaler{T: GTypeFullscreenMode, F: marshalFullscreenMode},
@@ -210,14 +214,18 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeMemoryFormat, F: marshalMemoryFormat},
 		coreglib.TypeMarshaler{T: GTypeNotifyType, F: marshalNotifyType},
 		coreglib.TypeMarshaler{T: GTypeScrollDirection, F: marshalScrollDirection},
+		coreglib.TypeMarshaler{T: GTypeScrollUnit, F: marshalScrollUnit},
 		coreglib.TypeMarshaler{T: GTypeSubpixelLayout, F: marshalSubpixelLayout},
 		coreglib.TypeMarshaler{T: GTypeSurfaceEdge, F: marshalSurfaceEdge},
+		coreglib.TypeMarshaler{T: GTypeTextureError, F: marshalTextureError},
+		coreglib.TypeMarshaler{T: GTypeTitlebarGesture, F: marshalTitlebarGesture},
 		coreglib.TypeMarshaler{T: GTypeTouchpadGesturePhase, F: marshalTouchpadGesturePhase},
 		coreglib.TypeMarshaler{T: GTypeVulkanError, F: marshalVulkanError},
 		coreglib.TypeMarshaler{T: GTypeAnchorHints, F: marshalAnchorHints},
 		coreglib.TypeMarshaler{T: GTypeAxisFlags, F: marshalAxisFlags},
 		coreglib.TypeMarshaler{T: GTypeDragAction, F: marshalDragAction},
 		coreglib.TypeMarshaler{T: GTypeFrameClockPhase, F: marshalFrameClockPhase},
+		coreglib.TypeMarshaler{T: GTypeGLAPI, F: marshalGLAPI},
 		coreglib.TypeMarshaler{T: GTypeModifierType, F: marshalModifierType},
 		coreglib.TypeMarshaler{T: GTypePaintableFlags, F: marshalPaintableFlags},
 		coreglib.TypeMarshaler{T: GTypeSeatCapabilities, F: marshalSeatCapabilities},
@@ -242,6 +250,8 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeDeviceTool, F: marshalDeviceTool},
 		coreglib.TypeMarshaler{T: GTypeDisplay, F: marshalDisplay},
 		coreglib.TypeMarshaler{T: GTypeDisplayManager, F: marshalDisplayManager},
+		coreglib.TypeMarshaler{T: GTypeDmabufTexture, F: marshalDmabufTexture},
+		coreglib.TypeMarshaler{T: GTypeDmabufTextureBuilder, F: marshalDmabufTextureBuilder},
 		coreglib.TypeMarshaler{T: GTypeDrag, F: marshalDrag},
 		coreglib.TypeMarshaler{T: GTypeDrawContext, F: marshalDrawContext},
 		coreglib.TypeMarshaler{T: GTypeDrop, F: marshalDrop},
@@ -250,6 +260,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeFrameClock, F: marshalFrameClock},
 		coreglib.TypeMarshaler{T: GTypeGLContext, F: marshalGLContext},
 		coreglib.TypeMarshaler{T: GTypeGLTexture, F: marshalGLTexture},
+		coreglib.TypeMarshaler{T: GTypeGLTextureBuilder, F: marshalGLTextureBuilder},
 		coreglib.TypeMarshaler{T: GTypeGrabBrokenEvent, F: marshalGrabBrokenEvent},
 		coreglib.TypeMarshaler{T: GTypeKeyEvent, F: marshalKeyEvent},
 		coreglib.TypeMarshaler{T: GTypeMemoryTexture, F: marshalMemoryTexture},
@@ -267,11 +278,14 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeVulkanContext, F: marshalVulkanContext},
 		coreglib.TypeMarshaler{T: GTypeContentFormats, F: marshalContentFormats},
 		coreglib.TypeMarshaler{T: GTypeContentFormatsBuilder, F: marshalContentFormatsBuilder},
+		coreglib.TypeMarshaler{T: GTypeDmabufFormats, F: marshalDmabufFormats},
 		coreglib.TypeMarshaler{T: GTypeEventSequence, F: marshalEventSequence},
+		coreglib.TypeMarshaler{T: GTypeFileList, F: marshalFileList},
 		coreglib.TypeMarshaler{T: GTypeFrameTimings, F: marshalFrameTimings},
 		coreglib.TypeMarshaler{T: GTypePopupLayout, F: marshalPopupLayout},
 		coreglib.TypeMarshaler{T: GTypeRGBA, F: marshalRGBA},
 		coreglib.TypeMarshaler{T: GTypeRectangle, F: marshalRectangle},
+		coreglib.TypeMarshaler{T: GTypeTextureDownloader, F: marshalTextureDownloader},
 		coreglib.TypeMarshaler{T: GTypeToplevelLayout, F: marshalToplevelLayout},
 	})
 }
@@ -2804,6 +2818,50 @@ func (d DeviceToolType) String() string {
 	}
 }
 
+// DmabufError: error enumeration for GdkDmabufTexture.
+type DmabufError C.gint
+
+const (
+	// DmabufErrorNotAvailable: dmabuf support is not available, because the OS
+	// is not Linux, or it was explicitly disabled at compile- or runtime.
+	DmabufErrorNotAvailable DmabufError = iota
+	// DmabufErrorUnsupportedFormat: requested format is not supported.
+	DmabufErrorUnsupportedFormat
+	// DmabufErrorCreationFailed: GTK failed to create the resource for other
+	// reasons.
+	DmabufErrorCreationFailed
+)
+
+func marshalDmabufError(p uintptr) (interface{}, error) {
+	return DmabufError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for DmabufError.
+func (d DmabufError) String() string {
+	switch d {
+	case DmabufErrorNotAvailable:
+		return "NotAvailable"
+	case DmabufErrorUnsupportedFormat:
+		return "UnsupportedFormat"
+	case DmabufErrorCreationFailed:
+		return "CreationFailed"
+	default:
+		return fmt.Sprintf("DmabufError(%d)", d)
+	}
+}
+
+func DmabufErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gdk_dmabuf_error_quark()
+
+	var _quark glib.Quark // out
+
+	_quark = glib.Quark(_cret)
+
+	return _quark
+}
+
 // DragCancelReason: used in GdkDrag to the reason of a cancelled DND operation.
 type DragCancelReason C.gint
 
@@ -2900,6 +2958,9 @@ const (
 	PadStrip
 	// PadGroupMode: tablet pad group mode change.
 	PadGroupMode
+	// TouchpadHold: touchpad hold gesture event, the current state is
+	// determined by its phase field.
+	TouchpadHold
 	// EventLast marks the end of the GdkEventType enumeration.
 	EventLast
 )
@@ -2967,6 +3028,8 @@ func (e EventType) String() string {
 		return "PadStrip"
 	case PadGroupMode:
 		return "PadGroupMode"
+	case TouchpadHold:
+		return "TouchpadHold"
 	case EventLast:
 		return "EventLast"
 	default:
@@ -3051,7 +3114,8 @@ func GLErrorQuark() glib.Quark {
 	return _quark
 }
 
-// Gravity defines the reference point of a surface and is used in PopupLayout.
+// Gravity defines the reference point of a surface and is used in
+// GdkPopupLayout.
 type Gravity C.gint
 
 const (
@@ -3193,7 +3257,7 @@ func (k KeyMatch) String() string {
 	}
 }
 
-// MemoryFormat: GdkMemoryFormat describes a format that bytes can have in
+// MemoryFormat: GdkMemoryFormat describes formats that image data can have in
 // memory.
 //
 // It describes formats by listing the contents of the memory passed to it. So
@@ -3202,9 +3266,9 @@ func (k KeyMatch) String() string {
 // is represented by different GdkMemoryFormats on architectures with different
 // endiannesses.
 //
-// Its naming is modelled after VkFormat (see
-// https://www.khronos.org/registry/vulkan/specs/1.0/html/vkspec.htmlFormat for
-// details).
+// Its naming is modelled after VkFormat
+// (https://www.khronos.org/registry/vulkan/specs/1.0/html/vkspec.htmlFormat)
+// for details).
 type MemoryFormat C.gint
 
 const (
@@ -3229,6 +3293,63 @@ const (
 	MemoryR8G8B8
 	// MemoryB8G8R8: 3 bytes; for blue, green, red. The data is opaque.
 	MemoryB8G8R8
+	// MemoryR16G16B16: 3 guint16 values; for red, green, blue.
+	MemoryR16G16B16
+	// MemoryR16G16B16A16Premultiplied: 4 guint16 values; for red, green, blue,
+	// alpha. The color values are premultiplied with the alpha value.
+	MemoryR16G16B16A16Premultiplied
+	// MemoryR16G16B16A16: 4 guint16 values; for red, green, blue, alpha.
+	MemoryR16G16B16A16
+	// MemoryR16G16B16Float: 3 half-float values; for red, green, blue. The data
+	// is opaque.
+	MemoryR16G16B16Float
+	// MemoryR16G16B16A16FloatPremultiplied: 4 half-float values; for red,
+	// green, blue and alpha. The color values are premultiplied with the alpha
+	// value.
+	MemoryR16G16B16A16FloatPremultiplied
+	// MemoryR16G16B16A16Float: 4 half-float values; for red, green, blue and
+	// alpha.
+	MemoryR16G16B16A16Float
+	// MemoryR32G32B32Float: 3 float values; for red, green, blue.
+	MemoryR32G32B32Float
+	// MemoryR32G32B32A32FloatPremultiplied: 4 float values; for red, green,
+	// blue and alpha. The color values are premultiplied with the alpha value.
+	MemoryR32G32B32A32FloatPremultiplied
+	// MemoryR32G32B32A32Float: 4 float values; for red, green, blue and alpha.
+	MemoryR32G32B32A32Float
+	// MemoryG8A8Premultiplied: 2 bytes; for grayscale, alpha. The color values
+	// are premultiplied with the alpha value.
+	MemoryG8A8Premultiplied
+	// MemoryG8A8: 2 bytes; for grayscale, alpha.
+	MemoryG8A8
+	// MemoryG8: one byte; for grayscale. The data is opaque.
+	MemoryG8
+	// MemoryG16A16Premultiplied: 2 guint16 values; for grayscale, alpha.
+	// The color values are premultiplied with the alpha value.
+	MemoryG16A16Premultiplied
+	// MemoryG16A16: 2 guint16 values; for grayscale, alpha.
+	MemoryG16A16
+	// MemoryG16: one guint16 value; for grayscale. The data is opaque.
+	MemoryG16
+	// MemoryA8: one byte; for alpha.
+	MemoryA8
+	// MemoryA16: one guint16 value; for alpha.
+	MemoryA16
+	// MemoryA16Float: one half-float value; for alpha.
+	MemoryA16Float
+	// MemoryA32Float: one float value; for alpha.
+	MemoryA32Float
+	// MemoryA8B8G8R8Premultiplied: 4 bytes; for alpha, blue, green, red,
+	// The color values are premultiplied with the alpha value.
+	MemoryA8B8G8R8Premultiplied
+	// MemoryB8G8R8X8: 4 bytes; for blue, green, red, unused.
+	MemoryB8G8R8X8
+	// MemorYX8R8G8B8: 4 bytes; for unused, red, green, blue.
+	MemorYX8R8G8B8
+	// MemoryR8G8B8X8: 4 bytes; for red, green, blue, unused.
+	MemoryR8G8B8X8
+	// MemorYX8B8G8R8: 4 bytes; for unused, blue, green, red.
+	MemorYX8B8G8R8
 	// MemoryNFormats: number of formats. This value will change as more formats
 	// get added, so do not rely on its concrete integer.
 	MemoryNFormats
@@ -3259,6 +3380,54 @@ func (m MemoryFormat) String() string {
 		return "R8G8B8"
 	case MemoryB8G8R8:
 		return "B8G8R8"
+	case MemoryR16G16B16:
+		return "R16G16B16"
+	case MemoryR16G16B16A16Premultiplied:
+		return "R16G16B16A16Premultiplied"
+	case MemoryR16G16B16A16:
+		return "R16G16B16A16"
+	case MemoryR16G16B16Float:
+		return "R16G16B16Float"
+	case MemoryR16G16B16A16FloatPremultiplied:
+		return "R16G16B16A16FloatPremultiplied"
+	case MemoryR16G16B16A16Float:
+		return "R16G16B16A16Float"
+	case MemoryR32G32B32Float:
+		return "R32G32B32Float"
+	case MemoryR32G32B32A32FloatPremultiplied:
+		return "R32G32B32A32FloatPremultiplied"
+	case MemoryR32G32B32A32Float:
+		return "R32G32B32A32Float"
+	case MemoryG8A8Premultiplied:
+		return "G8A8Premultiplied"
+	case MemoryG8A8:
+		return "G8A8"
+	case MemoryG8:
+		return "G8"
+	case MemoryG16A16Premultiplied:
+		return "G16A16Premultiplied"
+	case MemoryG16A16:
+		return "G16A16"
+	case MemoryG16:
+		return "G16"
+	case MemoryA8:
+		return "A8"
+	case MemoryA16:
+		return "A16"
+	case MemoryA16Float:
+		return "A16Float"
+	case MemoryA32Float:
+		return "A32Float"
+	case MemoryA8B8G8R8Premultiplied:
+		return "A8B8G8R8Premultiplied"
+	case MemoryB8G8R8X8:
+		return "B8G8R8X8"
+	case MemorYX8R8G8B8:
+		return "X8R8G8B8"
+	case MemoryR8G8B8X8:
+		return "R8G8B8X8"
+	case MemorYX8B8G8R8:
+		return "X8B8G8R8"
 	case MemoryNFormats:
 		return "NFormats"
 	default:
@@ -3356,6 +3525,48 @@ func (s ScrollDirection) String() string {
 	}
 }
 
+// ScrollUnit specifies the unit of scroll deltas.
+//
+// When you get GDK_SCROLL_UNIT_WHEEL, a delta of 1.0 means 1 wheel detent
+// click in the south direction, 2.0 means 2 wheel detent clicks in the south
+// direction... This is the same logic for negative values but in the north
+// direction.
+//
+// If you get GDK_SCROLL_UNIT_SURFACE, are managing a scrollable view and get
+// a value of 123, you have to scroll 123 surface logical pixels right if it's
+// delta_x or down if it's delta_y. This is the same logic for negative values
+// but you have to scroll left instead of right if it's delta_x and up instead
+// of down if it's delta_y.
+//
+// 1 surface logical pixel is equal to 1 real screen pixel multiplied by the
+// final scale factor of your graphical interface (the product of the desktop
+// scale factor and eventually a custom scale factor in your app).
+type ScrollUnit C.gint
+
+const (
+	// ScrollUnitWheel: delta is in number of wheel clicks.
+	ScrollUnitWheel ScrollUnit = iota
+	// ScrollUnitSurface: delta is in surface pixels to scroll directly on
+	// screen.
+	ScrollUnitSurface
+)
+
+func marshalScrollUnit(p uintptr) (interface{}, error) {
+	return ScrollUnit(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for ScrollUnit.
+func (s ScrollUnit) String() string {
+	switch s {
+	case ScrollUnitWheel:
+		return "Wheel"
+	case ScrollUnitSurface:
+		return "Surface"
+	default:
+		return fmt.Sprintf("ScrollUnit(%d)", s)
+	}
+}
+
 // SubpixelLayout: this enumeration describes how the red, green and blue
 // components of physical pixels on an output device are laid out.
 type SubpixelLayout C.gint
@@ -3449,6 +3660,80 @@ func (s SurfaceEdge) String() string {
 	}
 }
 
+// TextureError: possible errors that can be returned by GdkTexture
+// constructors.
+type TextureError C.gint
+
+const (
+	// TextureErrorTooLarge: not enough memory to handle this image.
+	TextureErrorTooLarge TextureError = iota
+	// TextureErrorCorruptImage: image data appears corrupted.
+	TextureErrorCorruptImage
+	// TextureErrorUnsupportedContent: image contains features that cannot be
+	// loaded.
+	TextureErrorUnsupportedContent
+	// TextureErrorUnsupportedFormat: image format is not supported.
+	TextureErrorUnsupportedFormat
+)
+
+func marshalTextureError(p uintptr) (interface{}, error) {
+	return TextureError(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TextureError.
+func (t TextureError) String() string {
+	switch t {
+	case TextureErrorTooLarge:
+		return "TooLarge"
+	case TextureErrorCorruptImage:
+		return "CorruptImage"
+	case TextureErrorUnsupportedContent:
+		return "UnsupportedContent"
+	case TextureErrorUnsupportedFormat:
+		return "UnsupportedFormat"
+	default:
+		return fmt.Sprintf("TextureError(%d)", t)
+	}
+}
+
+func TextureErrorQuark() glib.Quark {
+	var _cret C.GQuark // in
+
+	_cret = C.gdk_texture_error_quark()
+
+	var _quark glib.Quark // out
+
+	_quark = glib.Quark(_cret)
+
+	return _quark
+}
+
+type TitlebarGesture C.gint
+
+const (
+	TitlebarGestureDoubleClick TitlebarGesture = 1
+	TitlebarGestureRightClick  TitlebarGesture = 2
+	TitlebarGestureMiddleClick TitlebarGesture = 3
+)
+
+func marshalTitlebarGesture(p uintptr) (interface{}, error) {
+	return TitlebarGesture(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for TitlebarGesture.
+func (t TitlebarGesture) String() string {
+	switch t {
+	case TitlebarGestureDoubleClick:
+		return "DoubleClick"
+	case TitlebarGestureRightClick:
+		return "RightClick"
+	case TitlebarGestureMiddleClick:
+		return "MiddleClick"
+	default:
+		return fmt.Sprintf("TitlebarGesture(%d)", t)
+	}
+}
+
 // TouchpadGesturePhase specifies the current state of a touchpad gesture.
 //
 // All gestures are guaranteed to begin with an event with phase
@@ -3501,7 +3786,7 @@ func (t TouchpadGesturePhase) String() string {
 	}
 }
 
-// VulkanError: error enumeration for VulkanContext.
+// VulkanError: error enumeration for GdkVulkanContext.
 type VulkanError C.gint
 
 const (
@@ -3820,7 +4105,7 @@ const (
 	// FrameClockPhaseUpdate corresponds to GdkFrameClock::update.
 	FrameClockPhaseUpdate FrameClockPhase = 0b100
 	// FrameClockPhaseLayout corresponds to GdkFrameClock::layout. Should not be
-	// handled by applicatiosn.
+	// handled by applications.
 	FrameClockPhaseLayout FrameClockPhase = 0b1000
 	// FrameClockPhasePaint corresponds to GdkFrameClock::paint.
 	FrameClockPhasePaint FrameClockPhase = 0b10000
@@ -3881,6 +4166,53 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 	return (f & other) == other
 }
 
+// GLAPI: list of the different APIs that GdkGLContext can potentially support.
+type GLAPI C.guint
+
+const (
+	// GLApiGL: openGL API.
+	GLApiGL GLAPI = 0b1
+	// GLApiGles: openGL ES API.
+	GLApiGles GLAPI = 0b10
+)
+
+func marshalGLAPI(p uintptr) (interface{}, error) {
+	return GLAPI(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+}
+
+// String returns the names in string for GLAPI.
+func (g GLAPI) String() string {
+	if g == 0 {
+		return "GLAPI(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(17)
+
+	for g != 0 {
+		next := g & (g - 1)
+		bit := g - next
+
+		switch bit {
+		case GLApiGL:
+			builder.WriteString("GL|")
+		case GLApiGles:
+			builder.WriteString("Gles|")
+		default:
+			builder.WriteString(fmt.Sprintf("GLAPI(0b%b)|", bit))
+		}
+
+		g = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if g contains other.
+func (g GLAPI) Has(other GLAPI) bool {
+	return (g & other) == other
+}
+
 // ModifierType flags to indicate the state of modifier keys and mouse buttons
 // in events.
 //
@@ -3893,6 +4225,8 @@ func (f FrameClockPhase) Has(other FrameClockPhase) bool {
 type ModifierType C.guint
 
 const (
+	// NoModifierMask: no modifier.
+	NoModifierMask ModifierType = 0b0
 	// ShiftMask: shift key.
 	ShiftMask ModifierType = 0b1
 	// LockMask: lock key (depending on the modifier mapping of the X server
@@ -3933,13 +4267,15 @@ func (m ModifierType) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(127)
+	builder.Grow(142)
 
 	for m != 0 {
 		next := m & (m - 1)
 		bit := m - next
 
 		switch bit {
+		case NoModifierMask:
+			builder.WriteString("NoModifierMask|")
 		case ShiftMask:
 			builder.WriteString("ShiftMask|")
 		case LockMask:
@@ -3985,11 +4321,11 @@ func (m ModifierType) Has(other ModifierType) bool {
 type PaintableFlags C.guint
 
 const (
-	// PaintableStaticSize: size is immutable. The gdkpaintable::invalidate-size
-	// signal will never be emitted.
+	// PaintableStaticSize: size is immutable. The
+	// gdk.Paintable::invalidate-size signal will never be emitted.
 	PaintableStaticSize PaintableFlags = 0b1
 	// PaintableStaticContents: content is immutable. The
-	// gdkpaintable::invalidate-contents signal will never be emitted.
+	// gdk.Paintable::invalidate-contents signal will never be emitted.
 	PaintableStaticContents PaintableFlags = 0b10
 )
 
@@ -4049,7 +4385,7 @@ const (
 	// SeatCapabilityAllPointing: union of all pointing capabilities.
 	SeatCapabilityAllPointing SeatCapabilities = 0b111
 	// SeatCapabilityAll: union of all capabilities.
-	SeatCapabilityAll SeatCapabilities = 0b1111
+	SeatCapabilityAll SeatCapabilities = 0b11111
 )
 
 func marshalSeatCapabilities(p uintptr) (interface{}, error) {
@@ -4144,6 +4480,8 @@ const (
 	ToplevelStateLeftTiled ToplevelState = 0b100000000000000
 	// ToplevelStateLeftResizable: whether the left edge is resizable.
 	ToplevelStateLeftResizable ToplevelState = 0b1000000000000000
+	// ToplevelStateSuspended: surface is not visible to the user.
+	ToplevelStateSuspended ToplevelState = 0b10000000000000000
 )
 
 func marshalToplevelState(p uintptr) (interface{}, error) {
@@ -4196,6 +4534,8 @@ func (t ToplevelState) String() string {
 			builder.WriteString("LeftTiled|")
 		case ToplevelStateLeftResizable:
 			builder.WriteString("LeftResizable|")
+		case ToplevelStateSuspended:
+			builder.WriteString("Suspended|")
 		default:
 			builder.WriteString(fmt.Sprintf("ToplevelState(0b%b)|", bit))
 		}
@@ -4211,10 +4551,10 @@ func (t ToplevelState) Has(other ToplevelState) bool {
 	return (t & other) == other
 }
 
-// CairoDrawFromGL: main way to draw GL content in GTK.
+// CairoDrawFromGL: main way to not draw GL content in GTK.
 //
-// It takes a render buffer ID (source_type == RENDERBUFFER) or a texture
-// id (source_type == TEXTURE) and draws it onto cr with an OVER operation,
+// It takes a render buffer ID (source_type == GL_RENDERBUFFER) or a texture
+// id (source_type == GL_TEXTURE) and draws it onto cr with an OVER operation,
 // respecting the current clip. The top left corner of the rectangle specified
 // by x, y, width and height will be drawn at the current (0,0) position of the
 // cairo_t.
@@ -4224,10 +4564,15 @@ func (t ToplevelState) Has(other ToplevelState) bool {
 // used in the general case. In the case of direct drawing to a surface with no
 // special effects applied to cr it will however use a more efficient approach.
 //
-// For RENDERBUFFER the code will always fall back to software for buffers with
-// alpha components, so make sure you use TEXTURE if using alpha.
+// For GL_RENDERBUFFER the code will always fall back to software for buffers
+// with alpha components, so make sure you use GL_TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
+//
+// Deprecated: The function is overly complex and produces broken output in
+// various combinations of arguments. If you want to draw with GL textures
+// in GTK, use gdk.GLTexture.New; if you want to use that texture in Cairo,
+// use gdk.Texture.Download() to download the data into a Cairo image surface.
 //
 // The function takes the following parameters:
 //
@@ -4278,7 +4623,7 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surfacer, source, sourceType, bu
 // The function takes the following parameters:
 //
 //   - cr: cairo context.
-//   - rectangle: Rectangle.
+//   - rectangle: GdkRectangle.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var _arg1 *C.cairo_t      // out
 	var _arg2 *C.GdkRectangle // out
@@ -4296,7 +4641,7 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 // The function takes the following parameters:
 //
 //   - cr: cairo context.
-//   - region: #cairo_region_t.
+//   - region: cairo_region_t.
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var _arg1 *C.cairo_t        // out
 	var _arg2 *C.cairo_region_t // out
@@ -4321,7 +4666,7 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 // The function returns the following values:
 //
-//   - region: cairo_region_t; must be freed with cairo_region_destroy().
+//   - region: cairo_region_t.
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var _arg1 *C.cairo_surface_t // out
 	var _cret *C.cairo_region_t  // in
@@ -4352,7 +4697,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 // The function takes the following parameters:
 //
 //   - cr: cairo context.
-//   - pixbuf: Pixbuf.
+//   - pixbuf: GdkPixbuf.
 //   - pixbufX: x coordinate of location to place upper left corner of pixbuf.
 //   - pixbufY: y coordinate of location to place upper left corner of pixbuf.
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, pixbufY float64) {
@@ -4373,12 +4718,12 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX, 
 	runtime.KeepAlive(pixbufY)
 }
 
-// CairoSetSourceRGBA sets the specified RGBA as the source color of cr.
+// CairoSetSourceRGBA sets the specified GdkRGBA as the source color of cr.
 //
 // The function takes the following parameters:
 //
 //   - cr: cairo context.
-//   - rgba: RGBA.
+//   - rgba: GdkRGBA.
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var _arg1 *C.cairo_t // out
 	var _arg2 *C.GdkRGBA // out
@@ -4391,131 +4736,34 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	runtime.KeepAlive(rgba)
 }
 
-// ContentDeserializeAsync: read content from the given input stream and
-// deserialize it, asynchronously.
-//
-// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
-// indicate a higher priority.
-//
-// When the operation is finished, callback will be called. You must then call
-// content_deserialize_finish to get the result of the operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object.
-//   - stream: GInputStream to read the serialized content from.
-//   - mimeType: mime type to deserialize from.
-//   - typ: GType to deserialize from.
-//   - ioPriority: i/O priority of the operation.
-//   - callback (optional) to call when the operation is done.
-func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mimeType string, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg5 *C.GCancellable       // out
-	var _arg1 *C.GInputStream       // out
-	var _arg2 *C.char               // out
-	var _arg3 C.GType               // out
-	var _arg4 C.int                 // out
-	var _arg6 C.GAsyncReadyCallback // out
-	var _arg7 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.GType(typ)
-	_arg4 = C.int(ioPriority)
-	if callback != nil {
-		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg7 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_content_deserialize_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(mimeType)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
-}
-
 // ContentDeserializeFinish finishes a content deserialization operation.
 //
 // The function takes the following parameters:
 //
 //   - result: GAsyncResult.
+//
+// The function returns the following values:
+//
 //   - value: return location for the result of the operation.
-func ContentDeserializeFinish(result gio.AsyncResulter, value *coreglib.Value) error {
+func ContentDeserializeFinish(result gio.AsyncResulter) (coreglib.Value, error) {
 	var _arg1 *C.GAsyncResult // out
-	var _arg2 *C.GValue       // out
+	var _arg2 C.GValue        // in
 	var _cerr *C.GError       // in
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(coreglib.InternObject(result).Native()))
-	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	C.gdk_content_deserialize_finish(_arg1, _arg2, &_cerr)
+	C.gdk_content_deserialize_finish(_arg1, &_arg2, &_cerr)
 	runtime.KeepAlive(result)
-	runtime.KeepAlive(value)
 
-	var _goerr error // out
+	var _value coreglib.Value // out
+	var _goerr error          // out
 
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg2)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
-	return _goerr
-}
-
-// ContentSerializeAsync: serialize content and write it to the given output
-// stream, asynchronously.
-//
-// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
-// indicate a higher priority.
-//
-// When the operation is finished, callback will be called. You must then call
-// content_serialize_finish to get the result of the operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional #GCancellable object.
-//   - stream: GOutputStream to write the serialized content to.
-//   - mimeType: mime type to serialize to.
-//   - value: content to serialize.
-//   - ioPriority: i/O priority of the operation.
-//   - callback (optional) to call when the operation is done.
-func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *coreglib.Value, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg5 *C.GCancellable       // out
-	var _arg1 *C.GOutputStream      // out
-	var _arg2 *C.char               // out
-	var _arg3 *C.GValue             // out
-	var _arg4 C.int                 // out
-	var _arg6 C.GAsyncReadyCallback // out
-	var _arg7 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
-	_arg4 = C.int(ioPriority)
-	if callback != nil {
-		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg7 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_content_serialize_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(mimeType)
-	runtime.KeepAlive(value)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
+	return _value, _goerr
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
@@ -4539,6 +4787,18 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+func DragSurfaceSizeGetType() coreglib.Type {
+	var _cret C.GType // in
+
+	_cret = C.gdk_drag_surface_size_get_type()
+
+	var _gType coreglib.Type // out
+
+	_gType = coreglib.Type(_cret)
+
+	return _gType
 }
 
 // EventsGetAngle returns the relative angle from event1 to event2.
@@ -4674,8 +4934,8 @@ func EventsGetDistance(event1, event2 Eventer) (float64, bool) {
 //
 // The function returns the following values:
 //
-//   - utf8: interned string for the canonicalized mime type or NULL if the
-//     string wasn't a valid mime type.
+//   - utf8 (optional): interned string for the canonicalized mime type or NULL
+//     if the string wasn't a valid mime type.
 func InternMIMEType(str string) string {
 	var _arg1 *C.char // out
 	var _cret *C.char // in
@@ -4688,7 +4948,9 @@ func InternMIMEType(str string) string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -4696,7 +4958,7 @@ func InternMIMEType(str string) string {
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
 // symbol.
 //
-// Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
+// Examples of keyvals are GDK_KEY_a, GDK_KEY_Enter, GDK_KEY_F1, etc.
 //
 // The function takes the following parameters:
 //
@@ -4822,8 +5084,7 @@ func KeyvalIsUpper(keyval uint) bool {
 //
 // The function returns the following values:
 //
-//   - utf8 (optional): string containing the name of the key, or NULL if keyval
-//     is not a valid key. The string should not be modified.
+//   - utf8 (optional): string containing the name of the key.
 func KeyvalName(keyval uint) string {
 	var _arg1 C.guint // out
 	var _cret *C.char // in
@@ -4932,6 +5193,9 @@ func KeyvalToUpper(keyval uint) uint {
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the surface contains one.
 //
+// Deprecated: Use gdk.Texture and subclasses instead cairo surfaces and
+// pixbufs.
+//
 // The function takes the following parameters:
 //
 //   - surface to copy from.
@@ -4942,8 +5206,7 @@ func KeyvalToUpper(keyval uint) uint {
 //
 // The function returns the following values:
 //
-//   - pixbuf (optional): newly-created pixbuf with a reference count of 1,
-//     or NULL on error.
+//   - pixbuf (optional): newly-created pixbuf with a reference count of 1.
 func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.cairo_surface_t // out
 	var _arg2 C.int              // out
@@ -4989,13 +5252,16 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int)
 // This should generally not be used in newly written code as later stages will
 // almost certainly convert the pixbuf back into a texture to draw it on screen.
 //
+// Deprecated: Use gdk.Texture and subclasses instead cairo surfaces and
+// pixbufs.
+//
 // The function takes the following parameters:
 //
 //   - texture: GdkTexture.
 //
 // The function returns the following values:
 //
-//   - pixbuf (optional): new Pixbuf or NULL in case of an error.
+//   - pixbuf (optional): new GdkPixbuf.
 func PixbufGetFromTexture(texture Texturer) *gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkTexture // out
 	var _cret *C.GdkPixbuf  // in
@@ -5122,7 +5388,7 @@ func UnicodeToKeyval(wc uint32) uint {
 // (current) for each given group, different groups may have different current
 // modes. The number of available modes in a group can be found out through
 // gdk.DevicePad.GetGroupNModes(), and the current mode for a given group will
-// be notified through events of type K_PAD_GROUP_MODE.
+// be notified through events of type GDK_PAD_GROUP_MODE.
 //
 // DevicePad wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -5277,7 +5543,7 @@ func (pad *DevicePad) NGroups() int {
 	return _gint
 }
 
-// DragSurface is an interface for surfaces used during DND.
+// DragSurface: GdkDragSurface is an interface for surfaces used during DND.
 //
 // DragSurface wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -5363,7 +5629,7 @@ func (dragSurface *DragSurface) Present(width, height int) bool {
 // it is suggested that you scale your paintable ignoring any potential aspect
 // ratio.
 //
-// The contents that a GdkPaintable produces may depend on the gdksnapshot
+// The contents that a GdkPaintable produces may depend on the gdk.Snapshot
 // passed to it. For example, paintables may decide to use more detailed images
 // on higher resolution screens or when OpenGL is available. A GdkPaintable will
 // however always produce the same output for the same snapshot.
@@ -5371,7 +5637,7 @@ func (dragSurface *DragSurface) Present(width, height int) bool {
 // A GdkPaintable may change its contents, meaning that it will now
 // produce a different output with the same snapshot. Once that happens,
 // it will call gdk.Paintable.InvalidateContents() which will emit the
-// gdkpaintable::invalidate-contents signal. If a paintable is known to
+// gdk.Paintable::invalidate-contents signal. If a paintable is known to
 // never change its contents, it will set the GDK_PAINTABLE_STATIC_CONTENTS
 // flag. If a consumer cannot deal with changing contents, it may call
 // gdk.Paintable.GetCurrentImage() which will return a static paintable and use
@@ -5382,7 +5648,7 @@ func (dragSurface *DragSurface) Present(width, height int) bool {
 // interface can use this information to layout thepaintable appropriately.
 // Just like the contents, the size of a paintable can change. A paintable
 // will indicate this by calling gdk.Paintable.InvalidateSize() which will
-// emit the gdkpaintable::invalidate-size signal. And just like for contents,
+// emit the gdk.Paintable::invalidate-size signal. And just like for contents,
 // if a paintable is known to never change its size, it will set the
 // GDK_PAINTABLE_STATIC_SIZE flag.
 //
@@ -5944,9 +6210,9 @@ func (paintable *Paintable) snapshot(snapshot Snapshotter, width, height float64
 // NewPaintableEmpty returns a paintable that has the given intrinsic size and
 // draws nothing.
 //
-// This is often useful for implementing the
-// PaintableInterface.get_current_image() virtual function when the paintable
-// is in an incomplete state (like a gtk.MediaStream before receiving the first
+// This is often useful for implementing the gdk.Paintable.GetCurrentImage()
+// virtual function when the paintable is in an incomplete state (like a
+// GtkMediaStream (../gtk4/class.MediaStream.html) before receiving the first
 // frame).
 //
 // The function takes the following parameters:
@@ -5981,7 +6247,7 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) *Paintable {
 // The GdkPopup is positioned relative to its parent surface.
 //
 // GdkPopups are typically used to implement menus and similar popups. They can
-// be modal, which is indicated by the gdkpopup:autohide property.
+// be modal, which is indicated by the gdk.Popup:autohide property.
 //
 // Popup wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -6010,7 +6276,7 @@ type Popupper interface {
 	RectAnchor() Gravity
 	// SurfaceAnchor gets the current popup surface anchor.
 	SurfaceAnchor() Gravity
-	// Present popup after having processed the PopupLayout rules.
+	// Present popup after having processed the GdkPopupLayout rules.
 	Present(width, height int, layout *PopupLayout) bool
 }
 
@@ -6055,7 +6321,7 @@ func (popup *Popup) Autohide() bool {
 //
 // The function returns the following values:
 //
-//   - surface: parent surface.
+//   - surface (optional): parent surface.
 func (popup *Popup) Parent() Surfacer {
 	var _arg0 *C.GdkPopup   // out
 	var _cret *C.GdkSurface // in
@@ -6067,22 +6333,21 @@ func (popup *Popup) Parent() Surfacer {
 
 	var _surface Surfacer // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Surfacer is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Surfacer)
-			return ok
-		})
-		rv, ok := casted.(Surfacer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Surfacer)
+				return ok
+			})
+			rv, ok := casted.(Surfacer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+			}
+			_surface = rv
 		}
-		_surface = rv
 	}
 
 	return _surface
@@ -6178,13 +6443,13 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 	return _gravity
 }
 
-// Present popup after having processed the PopupLayout rules.
+// Present popup after having processed the GdkPopupLayout rules.
 //
 // If the popup was previously now showing, it will be showed, otherwise it will
 // change position according to layout.
 //
 // After calling this function, the result should be handled in response to
-// the gdksurface::layout signal being emitted. The resulting popup position
+// the gdk.Surface::layout signal being emitted. The resulting popup position
 // can be queried using gdk.Popup.GetPositionX(), gdk.Popup.GetPositionY(),
 // and the resulting size will be sent as parameters in the layout signal.
 // Use gdk.Popup.GetRectAnchor() and gdk.Popup.GetSurfaceAnchor() to get the
@@ -6291,6 +6556,7 @@ type Topleveller interface {
 	// SupportsEdgeConstraints returns whether the desktop environment supports
 	// tiled window states.
 	SupportsEdgeConstraints() bool
+	TitlebarGesture(gesture TitlebarGesture) bool
 }
 
 var _ Topleveller = (*Toplevel)(nil)
@@ -6385,8 +6651,9 @@ func (toplevel *Toplevel) BeginResize(edge SurfaceEdge, device Devicer, button i
 
 // Focus sets keyboard focus to surface.
 //
-// In most cases, gtk.Window.PresentWithTime() should be used on a gtk.Window,
-// rather than calling this function.
+// In most cases, gtk_window_present_with_time()
+// (../gtk4/method.Window.present_with_time.html) should be used on a GtkWindow
+// (../gtk4/class.Window.html), rather than calling this function.
 //
 // The function takes the following parameters:
 //
@@ -6656,8 +6923,9 @@ func (toplevel *Toplevel) SetModal(modal bool) {
 
 // SetStartupID sets the startup notification ID.
 //
-// When using GTK, typically you should use gtk.Window.SetStartupID() instead of
-// this low-level function.
+// When using GTK, typically you should use gtk_window_set_startup_id()
+// (../gtk4/method.Window.set_startup_id.html) instead of this low-level
+// function.
 //
 // The function takes the following parameters:
 //
@@ -6701,7 +6969,9 @@ func (toplevel *Toplevel) SetTitle(title string) {
 // with the application surface parent. This allows the window manager to do
 // things like center surface on parent and keep surface above parent.
 //
-// See gtk.Window.SetTransientFor() if you’re using gtk.Window or gtk.Dialog.
+// See gtk_window_set_transient_for()
+// (../gtk4/method.Window.set_transient_for.html) if you’re using GtkWindow
+// (../gtk4/class.Window.html).
 //
 // The function takes the following parameters:
 //
@@ -6777,12 +7047,35 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	return _ok
 }
 
+// The function takes the following parameters:
+//
+//   - gesture: GdkTitlebarGesture.
+func (toplevel *Toplevel) TitlebarGesture(gesture TitlebarGesture) bool {
+	var _arg0 *C.GdkToplevel       // out
+	var _arg1 C.GdkTitlebarGesture // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	_arg1 = C.GdkTitlebarGesture(gesture)
+
+	_cret = C.gdk_toplevel_titlebar_gesture(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(gesture)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // AppLaunchContext: GdkAppLaunchContext handles launching an application in a
 // graphical context.
 //
 // It is an implementation of GAppLaunchContext that provides startup
-// notification and allows to launch applications on a specific screen or
-// workspace.
+// notification and allows to launch applications on a specific workspace.
 //
 // Launching an application
 //
@@ -6790,7 +7083,6 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 //
 //	context = gdk_display_get_app_launch_context (display);
 //
-//	gdk_app_launch_context_set_display (display);
 //	gdk_app_launch_context_set_timestamp (gdk_event_get_time (event));
 //
 //	if (!g_app_info_launch_default_for_uri ("http://www.gtk.org", context, &error))
@@ -6843,7 +7135,10 @@ func (context *AppLaunchContext) Display() *Display {
 //
 // This only works when running under a window manager that supports
 // multiple workspaces, as described in the Extended Window Manager Hints
-// (http://www.freedesktop.org/Standards/wm-spec).
+// (http://www.freedesktop.org/Standards/wm-spec). Specifically this sets the
+// _NET_WM_DESKTOP property described in that spec.
+//
+// This only works when using the X11 backend.
 //
 // When the workspace is not specified or desktop is set to -1, it is up to the
 // window manager to pick one, typically it will be the current workspace.
@@ -6872,7 +7167,7 @@ func (context *AppLaunchContext) SetDesktop(desktop int) {
 //
 // The function takes the following parameters:
 //
-//   - icon (optional) or NULL.
+//   - icon (optional): GIcon.
 func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.GIcon               // out
@@ -6891,7 +7186,7 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 // context.
 //
 // The icon_name will be interpreted in the same way as the Icon field in
-// desktop files. See also gdk.AppLaunchContext.SetIcon()().
+// desktop files. See also gdk.AppLaunchContext.SetIcon().
 //
 // If both icon and icon_name are set, the icon_name takes priority.
 // If neither icon or icon_name is set, the icon is taken from either the file
@@ -6900,7 +7195,7 @@ func (context *AppLaunchContext) SetIcon(icon gio.Iconner) {
 //
 // The function takes the following parameters:
 //
-//   - iconName (optional): icon name, or NULL.
+//   - iconName (optional): icon name.
 func (context *AppLaunchContext) SetIconName(iconName string) {
 	var _arg0 *C.GdkAppLaunchContext // out
 	var _arg1 *C.char                // out
@@ -7041,8 +7336,7 @@ func BaseCairoContext(obj CairoContexter) *CairoContext {
 //
 // The function returns the following values:
 //
-//   - context (optional): cairo context to be used to draw the contents of the
-//     GdkSurface. NULL is returned when context is not drawing.
+//   - context (optional): cairo context to draw on `GdkSurface.
 func (self *CairoContext) CairoCreate() *cairo.Context {
 	var _arg0 *C.GdkCairoContext // out
 	var _cret *C.cairo_t         // in
@@ -7109,8 +7403,8 @@ func (clipboard *Clipboard) ConnectChanged(f func()) coreglib.SignalHandle {
 //
 // The function returns the following values:
 //
-//   - contentProvider (optional): content of a clipboard or NULL if the
-//     clipboard does not maintain any content.
+//   - contentProvider (optional): content of a clipboard if the clipboard does
+//     not maintain any content.
 func (clipboard *Clipboard) Content() *ContentProvider {
 	var _arg0 *C.GdkClipboard       // out
 	var _cret *C.GdkContentProvider // in
@@ -7208,62 +7502,6 @@ func (clipboard *Clipboard) IsLocal() bool {
 	return _ok
 }
 
-// ReadAsync: asynchronously requests an input stream to read the clipboard's
-// contents from.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadFinish() to get the result of the operation.
-//
-// The clipboard will choose the most suitable mime type from the given list to
-// fulfill the request, preferring the ones listed first.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - mimeTypes: NULL-terminated array of mime types to choose from.
-//   - ioPriority: i/O priority of the request.
-//   - callback (optional) to call when the request is satisfied.
-func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkClipboard       // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 **C.char              // out
-	var _arg2 C.int                 // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	{
-		_arg1 = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
-		{
-			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
-			var zero *C.char
-			out[len(mimeTypes)] = zero
-			for i := range mimeTypes {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
-				defer C.free(unsafe.Pointer(out[i]))
-			}
-		}
-	}
-	_arg2 = C.int(ioPriority)
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_clipboard_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(clipboard)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(mimeTypes)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
-}
-
 // ReadFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadAsync().
@@ -7274,8 +7512,8 @@ func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, i
 //
 // The function returns the following values:
 //
-//   - outMimeType (optional): pointer to store the chosen mime type in or NULL.
-//   - inputStream (optional): GInputStream or NULL on error.
+//   - outMimeType (optional): location to store the chosen mime type.
+//   - inputStream (optional): GInputStream.
 func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -7320,43 +7558,6 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	return _outMimeType, _inputStream, _goerr
 }
 
-// ReadTextAsync: asynchronously request the clipboard contents converted to a
-// string.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadTextFinish() to get the result.
-//
-// This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
-// function or gdk.Clipboard.ReadAsync() directly if you need more control over
-// the operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - callback (optional) to call when the request is satisfied.
-func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkClipboard       // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_clipboard_read_text_async(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(clipboard)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(callback)
-}
-
 // ReadTextFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadTextAsync().
@@ -7367,7 +7568,7 @@ func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.Asyn
 //
 // The function returns the following values:
 //
-//   - utf8 (optional): new string or NULL on error.
+//   - utf8 (optional): new string.
 func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -7395,43 +7596,6 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	return _utf8, _goerr
 }
 
-// ReadTextureAsync: asynchronously request the clipboard contents converted to
-// a GdkPixbuf.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadTextureFinish() to get the result.
-//
-// This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
-// function or gdk.Clipboard.ReadAsync directly if you need more control over
-// the operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - callback (optional) to call when the request is satisfied.
-func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkClipboard       // out
-	var _arg1 *C.GCancellable       // out
-	var _arg2 C.GAsyncReadyCallback // out
-	var _arg3 C.gpointer
-
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	if callback != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg3 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_clipboard_read_texture_async(_arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(clipboard)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(callback)
-}
-
 // ReadTextureFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadTextureAsync().
@@ -7442,7 +7606,7 @@ func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.A
 //
 // The function returns the following values:
 //
-//   - texture (optional): new GdkTexture or NULL on error.
+//   - texture (optional): new GdkTexture.
 func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texturer, error) {
 	var _arg0 *C.GdkClipboard // out
 	var _arg1 *C.GAsyncResult // out
@@ -7480,51 +7644,6 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	}
 
 	return _texture, _goerr
-}
-
-// ReadValueAsync: asynchronously request the clipboard contents converted to
-// the given type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadValueFinish() to get the resulting GValue.
-//
-// For local clipboard contents that are available in the given GType,
-// the value will be copied directly. Otherwise, GDK will try to use
-// content_deserialize_async to convert the clipboard's data.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional #GCancellable object, NULL to ignore.
-//   - typ: GType to read.
-//   - ioPriority: i/O priority of the request.
-//   - callback (optional) to call when the request is satisfied.
-func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkClipboard       // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 C.GType               // out
-	var _arg2 C.int                 // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GType(typ)
-	_arg2 = C.int(ioPriority)
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_clipboard_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(clipboard)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
 }
 
 // ReadValueFinish finishes an asynchronous clipboard read.
@@ -7657,52 +7776,6 @@ func (clipboard *Clipboard) Set(value *coreglib.Value) {
 	runtime.KeepAlive(value)
 }
 
-// StoreAsync: asynchronously instructs the clipboard to store its contents
-// remotely.
-//
-// If the clipboard is not local, this function does nothing but report success.
-//
-// The callback must call gdk.Clipboard.StoreFinish().
-//
-// The purpose of this call is to preserve clipboard contents beyond the
-// lifetime of an application, so this function is typically called on exit.
-// Depending on the platform, the functionality may not be available unless a
-// "clipboard manager" is running.
-//
-// This function is called automatically when a gtk.Application is shut down,
-// so you likely don't need to call it.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - ioPriority: i/O priority of the request.
-//   - callback (optional) to call when the request is satisfied.
-func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkClipboard       // out
-	var _arg2 *C.GCancellable       // out
-	var _arg1 C.int                 // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.int(ioPriority)
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_clipboard_store_async(_arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(clipboard)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
-}
-
 // StoreFinish finishes an asynchronous clipboard store.
 //
 // See gdk.Clipboard.StoreAsync().
@@ -7768,11 +7841,11 @@ func marshalContentDeserializer(p uintptr) (interface{}, error) {
 
 // Cancellable gets the cancellable for the current operation.
 //
-// This is the GCancellable that was passed to content_deserialize_async.
+// This is the GCancellable that was passed to gdk.ContentDeserializeAsync().
 //
 // The function returns the following values:
 //
-//   - cancellable for the current operation.
+//   - cancellable (optional) for the current operation.
 func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 	var _arg0 *C.GdkContentDeserializer // out
 	var _cret *C.GCancellable           // in
@@ -7784,10 +7857,12 @@ func (deserializer *ContentDeserializer) Cancellable() *gio.Cancellable {
 
 	var _cancellable *gio.Cancellable // out
 
-	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
-		_cancellable = &gio.Cancellable{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_cancellable = &gio.Cancellable{
+				Object: obj,
+			}
 		}
 	}
 
@@ -7817,7 +7892,7 @@ func (deserializer *ContentDeserializer) GType() coreglib.Type {
 
 // InputStream gets the input stream for the current operation.
 //
-// This is the stream that was passed to content_deserialize_async.
+// This is the stream that was passed to gdk.ContentDeserializeAsync().
 //
 // The function returns the following values:
 //
@@ -7877,7 +7952,7 @@ func (deserializer *ContentDeserializer) MIMEType() string {
 
 // Priority gets the I/O priority for the current operation.
 //
-// This is the priority that was passed to [funccontent_deserialize_async].
+// This is the priority that was passed to gdk.ContentDeserializeAsync().
 //
 // The function returns the following values:
 //
@@ -8007,13 +8082,13 @@ type ContentProviderOverrides struct {
 	// The value will have been initialized to the GType the value should be
 	// provided in. This given GType does not need to be listed in the formats
 	// returned by gdk.ContentProvider.RefFormats(). However, if the given GType
-	// is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will
-	// be reported.
+	// is not supported, this operation can fail and G_IO_ERROR_NOT_SUPPORTED
+	// will be reported.
 	//
-	// The function takes the following parameters:
+	// The function returns the following values:
 	//
 	//   - value: GValue to fill.
-	Value func(value *coreglib.Value) error
+	Value func() (coreglib.Value, error)
 	// RefFormats gets the formats that the provider can provide its current
 	// contents in.
 	//
@@ -8209,7 +8284,7 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 //
 // The function takes the following parameters:
 //
-//   - providers (optional): The ContentProviders to present the union of.
+//   - providers (optional): The GdkContentProviders to present the union of.
 //
 // The function returns the following values:
 //
@@ -8255,32 +8330,32 @@ func (provider *ContentProvider) ContentChanged() {
 //
 // The value will have been initialized to the GType the value should be
 // provided in. This given GType does not need to be listed in the formats
-// returned by gdk.ContentProvider.RefFormats(). However, if the given GType
-// is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will be
+// returned by gdk.ContentProvider.RefFormats(). However, if the given GType is
+// not supported, this operation can fail and G_IO_ERROR_NOT_SUPPORTED will be
 // reported.
 //
-// The function takes the following parameters:
+// The function returns the following values:
 //
 //   - value: GValue to fill.
-func (provider *ContentProvider) Value(value *coreglib.Value) error {
+func (provider *ContentProvider) Value() (coreglib.Value, error) {
 	var _arg0 *C.GdkContentProvider // out
-	var _arg1 *C.GValue             // out
+	var _arg1 C.GValue              // in
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
+	C.gdk_content_provider_get_value(_arg0, &_arg1, &_cerr)
 	runtime.KeepAlive(provider)
-	runtime.KeepAlive(value)
 
-	var _goerr error // out
+	var _value coreglib.Value // out
+	var _goerr error          // out
 
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
-	return _goerr
+	return _value, _goerr
 }
 
 // RefFormats gets the formats that the provider can provide its current
@@ -8341,58 +8416,6 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	)
 
 	return _contentFormats
-}
-
-// WriteMIMETypeAsync: asynchronously writes the contents of provider to stream
-// in the given mime_type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
-//
-// The given mime type does not need to be listed in the formats returned
-// by gdk.ContentProvider.RefFormats(). However, if the given GType is not
-// supported, IO_ERROR_NOT_SUPPORTED will be reported.
-//
-// The given stream will not be closed.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - mimeType: mime type to provide the data in.
-//   - stream: GOutputStream to write to.
-//   - ioPriority: i/O priority of the request.
-//   - callback (optional) to call when the request is satisfied.
-func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkContentProvider // out
-	var _arg4 *C.GCancellable       // out
-	var _arg1 *C.char               // out
-	var _arg2 *C.GOutputStream      // out
-	var _arg3 C.int                 // out
-	var _arg5 C.GAsyncReadyCallback // out
-	var _arg6 C.gpointer
-
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg3 = C.int(ioPriority)
-	if callback != nil {
-		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg6 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_content_provider_write_mime_type_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(provider)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(mimeType)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
 }
 
 // WriteMIMETypeFinish finishes an asynchronous write operation.
@@ -8470,35 +8493,35 @@ func (provider *ContentProvider) detachClipboard(clipboard *Clipboard) {
 //
 // The value will have been initialized to the GType the value should be
 // provided in. This given GType does not need to be listed in the formats
-// returned by gdk.ContentProvider.RefFormats(). However, if the given GType
-// is not supported, this operation can fail and IO_ERROR_NOT_SUPPORTED will be
+// returned by gdk.ContentProvider.RefFormats(). However, if the given GType is
+// not supported, this operation can fail and G_IO_ERROR_NOT_SUPPORTED will be
 // reported.
 //
-// The function takes the following parameters:
+// The function returns the following values:
 //
 //   - value: GValue to fill.
-func (provider *ContentProvider) value(value *coreglib.Value) error {
+func (provider *ContentProvider) value() (coreglib.Value, error) {
 	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
 	fnarg := gclass.get_value
 
 	var _arg0 *C.GdkContentProvider // out
-	var _arg1 *C.GValue             // out
+	var _arg1 C.GValue              // in
 	var _cerr *C.GError             // in
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
 
-	C._gotk4_gdk4_ContentProvider_virtual_get_value(unsafe.Pointer(fnarg), _arg0, _arg1, &_cerr)
+	C._gotk4_gdk4_ContentProvider_virtual_get_value(unsafe.Pointer(fnarg), _arg0, &_arg1, &_cerr)
 	runtime.KeepAlive(provider)
-	runtime.KeepAlive(value)
 
-	var _goerr error // out
+	var _value coreglib.Value // out
+	var _goerr error          // out
 
+	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg1)))
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
 
-	return _goerr
+	return _value, _goerr
 }
 
 // refFormats gets the formats that the provider can provide its current
@@ -8567,61 +8590,6 @@ func (provider *ContentProvider) refStorableFormats() *ContentFormats {
 	return _contentFormats
 }
 
-// writeMIMETypeAsync: asynchronously writes the contents of provider to stream
-// in the given mime_type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
-//
-// The given mime type does not need to be listed in the formats returned
-// by gdk.ContentProvider.RefFormats(). However, if the given GType is not
-// supported, IO_ERROR_NOT_SUPPORTED will be reported.
-//
-// The given stream will not be closed.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - mimeType: mime type to provide the data in.
-//   - stream: GOutputStream to write to.
-//   - ioPriority: i/O priority of the request.
-//   - callback (optional) to call when the request is satisfied.
-func (provider *ContentProvider) writeMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
-	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
-	fnarg := gclass.write_mime_type_async
-
-	var _arg0 *C.GdkContentProvider // out
-	var _arg4 *C.GCancellable       // out
-	var _arg1 *C.char               // out
-	var _arg2 *C.GOutputStream      // out
-	var _arg3 C.int                 // out
-	var _arg5 C.GAsyncReadyCallback // out
-	var _arg6 C.gpointer
-
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg3 = C.int(ioPriority)
-	if callback != nil {
-		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg6 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C._gotk4_gdk4_ContentProvider_virtual_write_mime_type_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(provider)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(mimeType)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
-}
-
 // writeMIMETypeFinish finishes an asynchronous write operation.
 //
 // See gdk.ContentProvider.WriteMIMETypeAsync().
@@ -8662,7 +8630,7 @@ func (provider *ContentProvider) writeMIMETypeFinish(result gio.AsyncResulter) e
 //
 // GTK provides serializers and deserializers for common data types such as
 // text, colors, images or file lists. To register your own serialization
-// functions, use content_register_serializer.
+// functions, use gdk.ContentRegisterSerializer().
 //
 // Also see gdk.ContentDeserializer.
 type ContentSerializer struct {
@@ -8691,11 +8659,11 @@ func marshalContentSerializer(p uintptr) (interface{}, error) {
 
 // Cancellable gets the cancellable for the current operation.
 //
-// This is the GCancellable that was passed to [content_serialize_async].
+// This is the GCancellable that was passed to content_serialize_async.
 //
 // The function returns the following values:
 //
-//   - cancellable for the current operation.
+//   - cancellable (optional) for the current operation.
 func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 	var _arg0 *C.GdkContentSerializer // out
 	var _cret *C.GCancellable         // in
@@ -8707,10 +8675,12 @@ func (serializer *ContentSerializer) Cancellable() *gio.Cancellable {
 
 	var _cancellable *gio.Cancellable // out
 
-	{
-		obj := coreglib.Take(unsafe.Pointer(_cret))
-		_cancellable = &gio.Cancellable{
-			Object: obj,
+	if _cret != nil {
+		{
+			obj := coreglib.Take(unsafe.Pointer(_cret))
+			_cancellable = &gio.Cancellable{
+				Object: obj,
+			}
 		}
 	}
 
@@ -9013,9 +8983,10 @@ func (event *CrossingEvent) Mode() CrossingMode {
 // something about it.
 //
 // Cursors by themselves are not very interesting: they must be bound to a
-// window for users to see them. This is done with gdk.Surface.SetCursor() or
-// gdk.Surface.SetDeviceCursor(). Applications will typically use higher-level
-// GTK functions such as gtk.Widget.SetCursor()` instead.
+// window for users to see them. This is done with gdk.Surface.SetCursor()
+// or gdk.Surface.SetDeviceCursor(). Applications will typically
+// use higher-level GTK functions such as gtk_widget_set_cursor()
+// (../gtk4/method.Widget.set_cursor.html) instead.
 //
 // Cursors are not bound to a given gdk.Display, so they can be shared. However,
 // the appearance of cursors may vary when used on different platforms.
@@ -9123,8 +9094,8 @@ func NewCursorFromName(name string, fallback *Cursor) *Cursor {
 //   - texture providing the pixel data.
 //   - hotspotX: horizontal offset of the “hotspot” of the cursor.
 //   - hotspotY: vertical offset of the “hotspot” of the cursor.
-//   - fallback (optional): NULL or the GdkCursor to fall back to when this one
-//     cannot be supported.
+//   - fallback (optional): GdkCursor to fall back to when this one cannot be
+//     supported.
 //
 // The function returns the following values:
 //
@@ -9427,7 +9398,7 @@ func BaseDevice(obj Devicer) *Device {
 	return obj.baseDevice()
 }
 
-// ConnectChanged is emitted either when the the number of either axes or keys
+// ConnectChanged is emitted either when the number of either axes or keys
 // changes.
 //
 // On X11 this will normally happen when the physical device routing events
@@ -9474,7 +9445,7 @@ func (device *Device) CapsLockState() bool {
 //
 // The function returns the following values:
 //
-//   - deviceTool: GdkDeviceTool, or NULL.
+//   - deviceTool (optional): GdkDeviceTool.
 func (device *Device) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkDevice     // out
 	var _cret *C.GdkDeviceTool // in
@@ -9486,7 +9457,9 @@ func (device *Device) DeviceTool() *DeviceTool {
 
 	var _deviceTool *DeviceTool // out
 
-	_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_deviceTool = wrapDeviceTool(coreglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _deviceTool
 }
@@ -9662,7 +9635,7 @@ func (device *Device) NumTouches() uint {
 //
 // The function returns the following values:
 //
-//   - utf8 (optional): product ID, or NULL.
+//   - utf8 (optional): product ID.
 func (device *Device) ProductID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -9766,7 +9739,7 @@ func (device *Device) Source() InputSource {
 }
 
 // SurfaceAtPosition obtains the surface underneath device, returning the
-// location of the device in win_x and win_y
+// location of the device in win_x and win_y.
 //
 // Returns NULL if the surface tree under device is not known to GDK (for
 // example, belongs to another application).
@@ -9774,10 +9747,10 @@ func (device *Device) Source() InputSource {
 // The function returns the following values:
 //
 //   - winX (optional): return location for the X coordinate of the device
-//     location, relative to the surface origin, or NULL.
+//     location relative to the surface origin.
 //   - winY (optional): return location for the Y coordinate of the device
-//     location, relative to the surface origin, or NULL.
-//   - surface (optional): GdkSurface under the device position, or NULL.
+//     location relative to the surface origin.
+//   - surface (optional): GdkSurface under the device position.
 func (device *Device) SurfaceAtPosition() (winX, winY float64, surface Surfacer) {
 	var _arg0 *C.GdkDevice  // out
 	var _arg1 C.double      // in
@@ -9867,7 +9840,7 @@ func (device *Device) Timestamp() uint32 {
 //
 // The function returns the following values:
 //
-//   - utf8 (optional): vendor ID, or NULL.
+//   - utf8 (optional): vendor ID.
 func (device *Device) VendorID() string {
 	var _arg0 *C.GdkDevice // out
 	var _cret *C.char      // in
@@ -9955,18 +9928,18 @@ func (tool *DeviceTool) Axes() AxisFlags {
 
 // HardwareID gets the hardware ID of this tool, or 0 if it's not known.
 //
-// When non-zero, the identificator is unique for the given tool model,
-// meaning that two identical tools will share the same hardware_id, but will
-// have different serial numbers (see gdk.DeviceTool.GetSerial()).
+// When non-zero, the identifier is unique for the given tool model, meaning
+// that two identical tools will share the same hardware_id, but will have
+// different serial numbers (see gdk.DeviceTool.GetSerial()).
 //
 // This is a more concrete (and device specific) method to identify a
 // GdkDeviceTool than gdk.DeviceTool.GetToolType(), as a tablet may support
 // multiple devices with the same GdkDeviceToolType, but different hardware
-// identificators.
+// identifiers.
 //
 // The function returns the following values:
 //
-//   - guint64: hardware identificator of this tool.
+//   - guint64: hardware identifier of this tool.
 func (tool *DeviceTool) HardwareID() uint64 {
 	var _arg0 *C.GdkDeviceTool // out
 	var _cret C.guint64        // in
@@ -10115,6 +10088,56 @@ func (display *Display) Close() {
 	runtime.KeepAlive(display)
 }
 
+// CreateGLContext creates a new GdkGLContext for the GdkDisplay.
+//
+// The context is disconnected from any particular surface or surface and cannot
+// be used to draw to any surface. It can only be used to draw to non-surface
+// framebuffers like textures.
+//
+// If the creation of the GdkGLContext failed, error will be set. Before using
+// the returned GdkGLContext, you will need to call gdk.GLContext.MakeCurrent()
+// or gdk.GLContext.Realize().
+//
+// The function returns the following values:
+//
+//   - glContext: newly created GdkGLContext.
+func (self *Display) CreateGLContext() (GLContexter, error) {
+	var _arg0 *C.GdkDisplay   // out
+	var _cret *C.GdkGLContext // in
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_display_create_gl_context(_arg0, &_cerr)
+	runtime.KeepAlive(self)
+
+	var _glContext GLContexter // out
+	var _goerr error           // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.GLContexter is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(GLContexter)
+			return ok
+		})
+		rv, ok := casted.(GLContexter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
+		}
+		_glContext = rv
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _glContext, _goerr
+}
+
 // DeviceIsGrabbed returns TRUE if there is an ongoing grab on device for
 // display.
 //
@@ -10170,8 +10193,7 @@ func (display *Display) Flush() {
 //
 // The function returns the following values:
 //
-//   - appLaunchContext: new GdkAppLaunchContext for display. Free with
-//     g_object_unref() when done.
+//   - appLaunchContext: new GdkAppLaunchContext for display.
 func (display *Display) AppLaunchContext() *AppLaunchContext {
 	var _arg0 *C.GdkDisplay          // out
 	var _cret *C.GdkAppLaunchContext // in
@@ -10248,10 +10270,44 @@ func (display *Display) DefaultSeat() Seater {
 	return _seat
 }
 
+// DmabufFormats returns the dma-buf formats that are supported on this display.
+//
+// GTK may use OpenGL or Vulkan to support some formats. Calling this function
+// will then initialize them if they aren't yet.
+//
+// The formats returned by this function can be used for negotiating buffer
+// formats with producers such as v4l, pipewire or GStreamer.
+//
+// To learn more about dma-bufs, see gdk.DmabufTextureBuilder.
+//
+// The function returns the following values:
+//
+//   - dmabufFormats: GdkDmabufFormats object.
+func (display *Display) DmabufFormats() *DmabufFormats {
+	var _arg0 *C.GdkDisplay       // out
+	var _cret *C.GdkDmabufFormats // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	_cret = C.gdk_display_get_dmabuf_formats(_arg0)
+	runtime.KeepAlive(display)
+
+	var _dmabufFormats *DmabufFormats // out
+
+	_dmabufFormats = (*DmabufFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_dmabuf_formats_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_dmabufFormats)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_dmabuf_formats_unref((*C.GdkDmabufFormats)(intern.C))
+		},
+	)
+
+	return _dmabufFormats
+}
+
 // MonitorAtSurface gets the monitor in which the largest area of surface
 // resides.
-//
-// Returns a monitor close to surface if it is outside of all monitors.
 //
 // The function takes the following parameters:
 //
@@ -10259,7 +10315,7 @@ func (display *Display) DefaultSeat() Seater {
 //
 // The function returns the following values:
 //
-//   - monitor with the largest overlap with surface.
+//   - monitor (optional) with the largest overlap with surface.
 func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.GdkSurface // out
@@ -10274,7 +10330,9 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 
 	var _monitor *Monitor // out
 
-	_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_monitor = wrapMonitor(coreglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _monitor
 }
@@ -10289,7 +10347,7 @@ func (display *Display) MonitorAtSurface(surface Surfacer) *Monitor {
 //
 // The function returns the following values:
 //
-//   - listModel of GdkMonitor.
+//   - listModel: GListModel of GdkMonitor.
 func (self *Display) Monitors() *gio.ListModel {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.GListModel // in
@@ -10397,9 +10455,11 @@ func (display *Display) Setting(name string, value *coreglib.Value) bool {
 // StartupNotificationID gets the startup notification ID for a Wayland display,
 // or NULL if no ID has been defined.
 //
+// Deprecated: since version 4.10.
+//
 // The function returns the following values:
 //
-//   - utf8 (optional): startup notification ID for display, or NULL.
+//   - utf8 (optional): startup notification ID for display.
 func (display *Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay // out
 	var _cret *C.char       // in
@@ -10564,8 +10624,8 @@ func (display *Display) ListSeats() []Seater {
 //
 // The function returns the following values:
 //
-//   - keys (optional): return location for array of GdkKeymapKey, or NULL.
-//   - keyvals (optional): return location for array of keyvals, or NULL.
+//   - keys (optional): return location for array of GdkKeymapKey.
+//   - keyvals (optional): return location for array of keyvals.
 //   - ok: TRUE if there were any entries.
 func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 	var _arg0 *C.GdkDisplay   // out
@@ -10684,9 +10744,13 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 // NotifyStartupComplete indicates to the GUI environment that the application
 // has finished loading, using a given identifier.
 //
-// GTK will call this function automatically for gtk.Window
-// with custom startup-notification identifier unless
-// gtk.Window.SetAutoStartupNotification() is called to disable that feature.
+// GTK will call this function automatically for GtkWindow
+// (../gtk4/class.Window.html) with custom startup-notification
+// identifier unless gtk_window_set_auto_startup_notification()
+// (../gtk4/method.Window.set_auto_startup_notification.html) is called to
+// disable that feature.
+//
+// Deprecated: Using gdk.Toplevel.SetStartupID() is sufficient.
 //
 // The function takes the following parameters:
 //
@@ -10705,11 +10769,41 @@ func (display *Display) NotifyStartupComplete(startupId string) {
 	runtime.KeepAlive(startupId)
 }
 
-// PutEvent appends the given event onto the front of the event queue for
-// display.
+// PrepareGL checks that OpenGL is available for self and ensures that it is
+// properly initialized. When this fails, an error will be set describing the
+// error and this function returns FALSE.
 //
-// This function is only useful in very special situations and should not be
-// used by applications.
+// Note that even if this function succeeds, creating a GdkGLContext may still
+// fail.
+//
+// This function is idempotent. Calling it multiple times will just return the
+// same value or error.
+//
+// You never need to call this function, GDK will call it automatically as
+// needed. But you can use it as a check when setting up code that might make
+// use of OpenGL.
+func (self *Display) PrepareGL() error {
+	var _arg0 *C.GdkDisplay // out
+	var _cerr *C.GError     // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	C.gdk_display_prepare_gl(_arg0, &_cerr)
+	runtime.KeepAlive(self)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
+// PutEvent adds the given event to the event queue for display.
+//
+// Deprecated: This function is only useful in very special situations and
+// should not be used by applications.
 //
 // The function takes the following parameters:
 //
@@ -10743,6 +10837,34 @@ func (display *Display) SupportsInputShapes() bool {
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
 
 	_cret = C.gdk_display_supports_input_shapes(_arg0)
+	runtime.KeepAlive(display)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SupportsShadowWidth returns whether it's possible for a surface to draw
+// outside of the window area.
+//
+// If TRUE is returned the application decides if it wants to draw shadows.
+// If FALSE is returned, the compositor decides if it wants to draw shadows.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if surfaces can draw shadows or FALSE if the display does not
+//     support this functionality.
+func (display *Display) SupportsShadowWidth() bool {
+	var _arg0 *C.GdkDisplay // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	_cret = C.gdk_display_supports_shadow_width(_arg0)
 	runtime.KeepAlive(display)
 
 	var _ok bool // out
@@ -10800,11 +10922,11 @@ func (display *Display) Sync() {
 //
 // The function returns the following values:
 //
-//   - keyval (optional): return location for keyval, or NULL.
-//   - effectiveGroup (optional): return location for effective group, or NULL.
-//   - level (optional): return location for level, or NULL.
+//   - keyval (optional): return location for keyval.
+//   - effectiveGroup (optional): return location for effective group.
+//   - level (optional): return location for level.
 //   - consumed (optional): return location for modifiers that were used to
-//     determine the group or level, or NULL.
+//     determine the group or level.
 //   - ok: TRUE if there was a keyval bound to keycode/state/group.
 func (display *Display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup, level int, consumed ModifierType, ok bool) {
 	var _arg0 *C.GdkDisplay     // out
@@ -10847,8 +10969,9 @@ func (display *Display) TranslateKey(keycode uint, state ModifierType, group int
 
 // DisplayGetDefault gets the default GdkDisplay.
 //
-// This is a convenience function for: gdk_display_manager_get_default_display
-// (gdk_display_manager_get ()).
+// This is a convenience function for:
+//
+//	gdk_display_manager_get_default_display (gdk_display_manager_get ()).
 //
 // The function returns the following values:
 //
@@ -10869,20 +10992,23 @@ func DisplayGetDefault() *Display {
 
 // DisplayOpen opens a display.
 //
+// If opening the display fails, NULL is returned.
+//
 // The function takes the following parameters:
 //
-//   - displayName: name of the display to open.
+//   - displayName (optional): name of the display to open.
 //
 // The function returns the following values:
 //
-//   - display (optional): GdkDisplay, or NULL if the display could not be
-//     opened.
+//   - display (optional): GdkDisplay.
 func DisplayOpen(displayName string) *Display {
 	var _arg1 *C.char       // out
 	var _cret *C.GdkDisplay // in
 
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if displayName != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gdk_display_open(_arg1)
 	runtime.KeepAlive(displayName)
@@ -10915,7 +11041,7 @@ func DisplayOpen(displayName string) *Display {
 //
 // When writing backend-specific code that is supposed to work with multiple
 // GDK backends, you have to consider both compile time and runtime.
-// At compile time, use the K_WINDOWING_X11, K_WINDOWING_WIN32 macros,
+// At compile time, use the GDK_WINDOWING_X11, GDK_WINDOWING_WIN32 macros,
 // etc. to find out which backends are present in the GDK library you are
 // building your application against. At runtime, use type-check macros like
 // GDK_IS_X11_DISPLAY() to find out which backend is in use:
@@ -10963,7 +11089,7 @@ func (manager *DisplayManager) ConnectDisplayOpened(f func(display *Display)) co
 //
 // The function returns the following values:
 //
-//   - display (optional): GdkDisplay, or NULL if there is no default display.
+//   - display (optional): GdkDisplay.
 func (manager *DisplayManager) DefaultDisplay() *Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GdkDisplay        // in
@@ -10986,8 +11112,7 @@ func (manager *DisplayManager) DefaultDisplay() *Display {
 //
 // The function returns the following values:
 //
-//   - sList: newly allocated GSList of GdkDisplay objects. Free with
-//     g_slist_free() when you are done with it.
+//   - sList: newly allocated GSList of GdkDisplay objects.
 func (manager *DisplayManager) ListDisplays() []*Display {
 	var _arg0 *C.GdkDisplayManager // out
 	var _cret *C.GSList            // in
@@ -11014,7 +11139,7 @@ func (manager *DisplayManager) ListDisplays() []*Display {
 //
 // The function takes the following parameters:
 //
-//   - name of the display to open.
+//   - name (optional) of the display to open.
 //
 // The function returns the following values:
 //
@@ -11026,8 +11151,10 @@ func (manager *DisplayManager) OpenDisplay(name string) *Display {
 	var _cret *C.GdkDisplay        // in
 
 	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg1))
+	if name != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
 
 	_cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 	runtime.KeepAlive(manager)
@@ -11065,7 +11192,8 @@ func (manager *DisplayManager) SetDefaultDisplay(display *Display) {
 // environment variable to find out which of the supported GDK backends to use
 // (in case GDK has been compiled with multiple backends).
 //
-// Applications can use set_allowed_backends to limit what backends wil be used.
+// Applications can use set_allowed_backends to limit what backends will be
+// used.
 //
 // The function returns the following values:
 //
@@ -11080,6 +11208,696 @@ func DisplayManagerGet() *DisplayManager {
 	_displayManager = wrapDisplayManager(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _displayManager
+}
+
+// DmabufTexture: GdkTexture representing a DMA buffer.
+//
+// To create a GdkDmabufTexture, use the auxiliary gdk.DmabufTextureBuilder
+// object.
+//
+// Dma-buf textures can only be created on Linux.
+type DmabufTexture struct {
+	_ [0]func() // equal guard
+	Texture
+}
+
+var (
+	_ Texturer = (*DmabufTexture)(nil)
+)
+
+func wrapDmabufTexture(obj *coreglib.Object) *DmabufTexture {
+	return &DmabufTexture{
+		Texture: Texture{
+			Object: obj,
+			Paintable: Paintable{
+				Object: obj,
+			},
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
+			},
+		},
+	}
+}
+
+func marshalDmabufTexture(p uintptr) (interface{}, error) {
+	return wrapDmabufTexture(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// DmabufTextureBuilder: GdkDmabufTextureBuilder is a builder used to construct
+// gdk.Texture objects from DMA buffers.
+//
+// DMA buffers are commonly called **_dma-bufs_**.
+//
+// DMA buffers are a feature of the Linux kernel to enable efficient buffer
+// and memory sharing between hardware such as codecs, GPUs, displays, cameras
+// and the kernel drivers controlling them. For example, a decoder may want its
+// output to be directly shared with the display server for rendering without a
+// copy.
+//
+// Any device driver which participates in DMA buffer sharing, can do so as
+// either the exporter or importer of buffers (or both).
+//
+// The memory that is shared via DMA buffers is usually stored in non-system
+// memory (maybe in device's local memory or something else not directly
+// accessible by the CPU), and accessing this memory from the CPU may have
+// higher-than-usual overhead.
+//
+// In particular for graphics data, it is not uncommon that data consists
+// of multiple separate blocks of memory, for example one block for each of
+// the red, green and blue channels. These blocks are called **_planes_**.
+// DMA buffers can have up to four planes. Even if the memory is a single block,
+// the data can be organized in multiple planes, by specifying offsets from the
+// beginning of the data.
+//
+// DMA buffers are exposed to user-space as file descriptors allowing to pass
+// them between processes. If a DMA buffer has multiple planes, there is one
+// file descriptor per plane.
+//
+// The format of the data (for graphics data, essentially its colorspace) is
+// described by a 32-bit integer. These format identifiers are defined in the
+// header file drm_fourcc.h and commonly referred to as **_fourcc_** values,
+// since they are identified by 4 ASCII characters. Additionally, each DMA
+// buffer has a **_modifier_**, which is a 64-bit integer that describes
+// driver-specific details of the memory layout, such as tiling or compression.
+//
+// For historical reasons, some producers of dma-bufs don't provide an explicit
+// modifier, but instead return DMA_FORMAT_MOD_INVALID to indicate that their
+// modifier is **_implicit_**. GTK tries to accommodate this situation by
+// accepting DMA_FORMAT_MOD_INVALID as modifier.
+//
+// The operation of GdkDmabufTextureBuilder is quite simple: Create a
+// texture builder, set all the necessary properties, and then call
+// gdk.DmabufTextureBuilder.Build() to create the new texture.
+//
+// The required properties for a dma-buf texture are
+//
+//   - The width and height in pixels
+//
+//   - The fourcc code and modifier which identify the format and memory layout
+//     of the dma-buf
+//
+//   - The file descriptor, offset and stride for each of the planes
+//
+// GdkDmabufTextureBuilder can be used for quick one-shot construction of
+// textures as well as kept around and reused to construct multiple textures.
+//
+// # For further information, see
+//
+// * The Linux kernel documentation
+// (https://docs.kernel.org/driver-api/dma-buf.html)
+//
+// * The header file drm_fourcc.h
+// (https://gitlab.freedesktop.org/mesa/drm/-/blob/main/include/drm/drm_fourcc.h).
+type DmabufTextureBuilder struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*DmabufTextureBuilder)(nil)
+)
+
+func wrapDmabufTextureBuilder(obj *coreglib.Object) *DmabufTextureBuilder {
+	return &DmabufTextureBuilder{
+		Object: obj,
+	}
+}
+
+func marshalDmabufTextureBuilder(p uintptr) (interface{}, error) {
+	return wrapDmabufTextureBuilder(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewDmabufTextureBuilder creates a new texture builder.
+//
+// The function returns the following values:
+//
+//   - dmabufTextureBuilder: new GdkTextureBuilder.
+func NewDmabufTextureBuilder() *DmabufTextureBuilder {
+	var _cret *C.GdkDmabufTextureBuilder // in
+
+	_cret = C.gdk_dmabuf_texture_builder_new()
+
+	var _dmabufTextureBuilder *DmabufTextureBuilder // out
+
+	_dmabufTextureBuilder = wrapDmabufTextureBuilder(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _dmabufTextureBuilder
+}
+
+// Display returns the display that this texture builder is associated with.
+//
+// The function returns the following values:
+//
+//   - display: display.
+func (self *DmabufTextureBuilder) Display() *Display {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret *C.GdkDisplay              // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_display(_arg0)
+	runtime.KeepAlive(self)
+
+	var _display *Display // out
+
+	_display = wrapDisplay(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _display
+}
+
+// Fd gets the file descriptor for a plane.
+//
+// The function takes the following parameters:
+//
+//   - plane to get the fd for.
+//
+// The function returns the following values:
+//
+//   - gint: file descriptor.
+func (self *DmabufTextureBuilder) Fd(plane uint) int {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _cret C.int                      // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+
+	_cret = C.gdk_dmabuf_texture_builder_get_fd(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Fourcc gets the format previously set via
+// gdk_dmabuf_texture_builder_set_fourcc() or 0 if the format wasn't set.
+//
+// The format is specified as a fourcc code.
+//
+// The function returns the following values:
+//
+//   - guint32: format.
+func (self *DmabufTextureBuilder) Fourcc() uint32 {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret C.guint32                  // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_fourcc(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint32 uint32 // out
+
+	_guint32 = uint32(_cret)
+
+	return _guint32
+}
+
+// Height gets the height previously set via
+// gdk_dmabuf_texture_builder_set_height() or 0 if the height wasn't set.
+//
+// The function returns the following values:
+//
+//   - guint: height.
+func (self *DmabufTextureBuilder) Height() uint {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret C.uint                     // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_height(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Modifier gets the modifier value.
+//
+// The function returns the following values:
+//
+//   - guint64: modifier.
+func (self *DmabufTextureBuilder) Modifier() uint64 {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret C.guint64                  // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_modifier(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint64 uint64 // out
+
+	_guint64 = uint64(_cret)
+
+	return _guint64
+}
+
+// NPlanes gets the number of planes.
+//
+// The function returns the following values:
+//
+//   - guint: number of planes.
+func (self *DmabufTextureBuilder) NPlanes() uint {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret C.uint                     // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_n_planes(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Offset gets the offset value for a plane.
+//
+// The function takes the following parameters:
+//
+//   - plane to get the offset for.
+//
+// The function returns the following values:
+//
+//   - guint: offset.
+func (self *DmabufTextureBuilder) Offset(plane uint) uint {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _cret C.uint                     // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+
+	_cret = C.gdk_dmabuf_texture_builder_get_offset(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Premultiplied: whether the data is premultiplied.
+//
+// The function returns the following values:
+//
+//   - ok: whether the data is premultiplied.
+func (self *DmabufTextureBuilder) Premultiplied() bool {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret C.gboolean                 // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_premultiplied(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Stride gets the stride value for a plane.
+//
+// The function takes the following parameters:
+//
+//   - plane to get the stride for.
+//
+// The function returns the following values:
+//
+//   - guint: stride.
+func (self *DmabufTextureBuilder) Stride(plane uint) uint {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _cret C.uint                     // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+
+	_cret = C.gdk_dmabuf_texture_builder_get_stride(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// UpdateRegion gets the region previously set via
+// gdk_dmabuf_texture_builder_set_update_region() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - region (optional): region.
+func (self *DmabufTextureBuilder) UpdateRegion() *cairo.Region {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret *C.cairo_region_t          // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_update_region(_arg0)
+	runtime.KeepAlive(self)
+
+	var _region *cairo.Region // out
+
+	if _cret != nil {
+		{
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_region = (*cairo.Region)(unsafe.Pointer(_pp))
+		}
+		C.cairo_region_reference(_cret)
+		runtime.SetFinalizer(_region, func(v *cairo.Region) {
+			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+		})
+	}
+
+	return _region
+}
+
+// UpdateTexture gets the texture previously set via
+// gdk_dmabuf_texture_builder_set_update_texture() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - texture (optional): texture.
+func (self *DmabufTextureBuilder) UpdateTexture() Texturer {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret *C.GdkTexture              // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_update_texture(_arg0)
+	runtime.KeepAlive(self)
+
+	var _texture Texturer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Texturer)
+				return ok
+			})
+			rv, ok := casted.(Texturer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
+			}
+			_texture = rv
+		}
+	}
+
+	return _texture
+}
+
+// Width gets the width previously set via
+// gdk_dmabuf_texture_builder_set_width() or 0 if the width wasn't set.
+//
+// The function returns the following values:
+//
+//   - guint: width.
+func (self *DmabufTextureBuilder) Width() uint {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret C.uint                     // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_width(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// SetDisplay sets the display that this texture builder is associated with.
+//
+// The display is used to determine the supported dma-buf formats.
+//
+// The function takes the following parameters:
+//
+//   - display: display.
+func (self *DmabufTextureBuilder) SetDisplay(display *Display) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 *C.GdkDisplay              // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	C.gdk_dmabuf_texture_builder_set_display(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(display)
+}
+
+// SetFd sets the file descriptor for a plane.
+//
+// The function takes the following parameters:
+//
+//   - plane to set the fd for.
+//   - fd: file descriptor.
+func (self *DmabufTextureBuilder) SetFd(plane uint, fd int) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _arg2 C.int                      // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+	_arg2 = C.int(fd)
+
+	C.gdk_dmabuf_texture_builder_set_fd(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+	runtime.KeepAlive(fd)
+}
+
+// SetFourcc sets the format of the texture.
+//
+// The format is specified as a fourcc code.
+//
+// The format must be set before calling gdk.GLTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - fourcc texture's format or 0 to unset.
+func (self *DmabufTextureBuilder) SetFourcc(fourcc uint32) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.guint32                  // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint32(fourcc)
+
+	C.gdk_dmabuf_texture_builder_set_fourcc(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(fourcc)
+}
+
+// SetHeight sets the height of the texture.
+//
+// The height must be set before calling gdk.GLTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - height texture's height or 0 to unset.
+func (self *DmabufTextureBuilder) SetHeight(height uint) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(height)
+
+	C.gdk_dmabuf_texture_builder_set_height(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(height)
+}
+
+// SetModifier sets the modifier.
+//
+// The function takes the following parameters:
+//
+//   - modifier value.
+func (self *DmabufTextureBuilder) SetModifier(modifier uint64) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.guint64                  // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint64(modifier)
+
+	C.gdk_dmabuf_texture_builder_set_modifier(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(modifier)
+}
+
+// SetNPlanes sets the number of planes of the texture.
+//
+// The function takes the following parameters:
+//
+//   - nPlanes: number of planes.
+func (self *DmabufTextureBuilder) SetNPlanes(nPlanes uint) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(nPlanes)
+
+	C.gdk_dmabuf_texture_builder_set_n_planes(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(nPlanes)
+}
+
+// SetOffset sets the offset for a plane.
+//
+// The function takes the following parameters:
+//
+//   - plane to set the offset for.
+//   - offset value.
+func (self *DmabufTextureBuilder) SetOffset(plane, offset uint) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _arg2 C.uint                     // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+	_arg2 = C.uint(offset)
+
+	C.gdk_dmabuf_texture_builder_set_offset(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+	runtime.KeepAlive(offset)
+}
+
+// SetPremultiplied sets whether the data is premultiplied.
+//
+// Unless otherwise specified, all formats including alpha channels are assumed
+// to be premultiplied.
+//
+// The function takes the following parameters:
+//
+//   - premultiplied: whether the data is premultiplied.
+func (self *DmabufTextureBuilder) SetPremultiplied(premultiplied bool) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.gboolean                 // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if premultiplied {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_dmabuf_texture_builder_set_premultiplied(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(premultiplied)
+}
+
+// SetStride sets the stride for a plane.
+//
+// The stride must be set for all planes before calling
+// gdk.GLTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - plane to set the stride for.
+//   - stride value.
+func (self *DmabufTextureBuilder) SetStride(plane, stride uint) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _arg2 C.uint                     // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+	_arg2 = C.uint(stride)
+
+	C.gdk_dmabuf_texture_builder_set_stride(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+	runtime.KeepAlive(stride)
+}
+
+// SetUpdateRegion sets the region to be updated by this texture. Together
+// with gdk.DmabufTextureBuilder:update-texture this describes an update of a
+// previous texture.
+//
+// When rendering animations of large textures, it is possible that consecutive
+// textures are only updating contents in parts of the texture. It is then
+// possible to describe this update via these two properties, so that GTK can
+// avoid rerendering parts that did not change.
+//
+// An example would be a screen recording where only the mouse pointer moves.
+//
+// The function takes the following parameters:
+//
+//   - region (optional) to update.
+func (self *DmabufTextureBuilder) SetUpdateRegion(region *cairo.Region) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 *C.cairo_region_t          // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
+
+	C.gdk_dmabuf_texture_builder_set_update_region(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(region)
+}
+
+// SetUpdateTexture sets the texture to be updated by this texture. See
+// gdk.DmabufTextureBuilder.SetUpdateRegion() for an explanation.
+//
+// The function takes the following parameters:
+//
+//   - texture (optional) to update.
+func (self *DmabufTextureBuilder) SetUpdateTexture(texture Texturer) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 *C.GdkTexture              // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if texture != nil {
+		_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	}
+
+	C.gdk_dmabuf_texture_builder_set_update_texture(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(texture)
+}
+
+// SetWidth sets the width of the texture.
+//
+// The width must be set before calling gdk.GLTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - width texture's width or 0 to unset.
+func (self *DmabufTextureBuilder) SetWidth(width uint) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 C.uint                     // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(width)
+
+	C.gdk_dmabuf_texture_builder_set_width(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(width)
 }
 
 // Drag: GdkDrag object represents the source of an ongoing DND operation.
@@ -11288,7 +12106,7 @@ func (drag *Drag) Display() *Display {
 //
 // The function returns the following values:
 //
-//   - surface (optional): drag surface, or NULL.
+//   - surface (optional): drag surface.
 func (drag *Drag) DragSurface() Surfacer {
 	var _arg0 *C.GdkDrag    // out
 	var _cret *C.GdkSurface // in
@@ -11454,7 +12272,7 @@ func (drag *Drag) SetHotspot(hotX, hotY int) {
 //
 // The function returns the following values:
 //
-//   - drag (optional): newly created gdk.Drag or NULL on error.
+//   - drag (optional): newly created GdkDrag.
 func DragBegin(surface Surfacer, device Devicer, content *ContentProvider, actions DragAction, dx, dy float64) Dragger {
 	var _arg1 *C.GdkSurface         // out
 	var _arg2 *C.GdkDevice          // out
@@ -11564,13 +12382,13 @@ func BaseDrawContext(obj DrawContexter) *DrawContext {
 // Note that the region passed to this function is the minimum region that needs
 // to be drawn and depending on implementation, windowing system and hardware in
 // use, it might be necessary to draw a larger region. Drawing implementation
-// must use [methodGdk.DrawContext.get_frame_region() to query the region that
-// must be drawn.
+// must use gdk.DrawContext.GetFrameRegion() to query the region that must be
+// drawn.
 //
 // When using GTK, the widget system automatically places calls to
 // gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the use
-// of gsk.Renderers, so application code does not need to call these functions
-// explicitly.
+// of GskRenderer (../gsk4/class.Renderer.html)s, so application code does not
+// need to call these functions explicitly.
 //
 // The function takes the following parameters:
 //
@@ -11609,7 +12427,7 @@ func (context *DrawContext) EndFrame() {
 //
 // The function returns the following values:
 //
-//   - display (optional): GdkDisplay or NULL.
+//   - display (optional): GdkDisplay.
 func (context *DrawContext) Display() *Display {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkDisplay     // in
@@ -11639,7 +12457,7 @@ func (context *DrawContext) Display() *Display {
 //
 // The function returns the following values:
 //
-//   - region (optional): cairo region or NULL if not drawing a frame.
+//   - region (optional): cairo region.
 func (context *DrawContext) FrameRegion() *cairo.Region {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.cairo_region_t // in
@@ -11669,7 +12487,7 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 //
 // The function returns the following values:
 //
-//   - surface (optional) or NULL.
+//   - surface (optional): GdkSurface.
 func (context *DrawContext) Surface() Surfacer {
 	var _arg0 *C.GdkDrawContext // out
 	var _cret *C.GdkSurface     // in
@@ -11999,57 +12817,6 @@ func (self *Drop) Surface() Surfacer {
 	return _surface
 }
 
-// ReadAsync: asynchronously read the dropped data from a GdkDrop in a format
-// that complies with one of the mime types.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - mimeTypes: pointer to an array of mime types.
-//   - ioPriority: i/O priority for the read operation.
-//   - callback (optional): GAsyncReadyCallback to call when the request is
-//     satisfied.
-func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkDrop            // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 **C.char              // out
-	var _arg2 C.int                 // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	{
-		_arg1 = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg1))
-		{
-			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
-			var zero *C.char
-			out[len(mimeTypes)] = zero
-			for i := range mimeTypes {
-				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
-				defer C.free(unsafe.Pointer(out[i]))
-			}
-		}
-	}
-	_arg2 = C.int(ioPriority)
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_drop_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(mimeTypes)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
-}
-
 // ReadFinish finishes an async drop read operation.
 //
 // Note that you must not use blocking read calls on the returned stream
@@ -12066,7 +12833,7 @@ func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority 
 // The function returns the following values:
 //
 //   - outMimeType: return location for the used mime type.
-//   - inputStream (optional): GInputStream, or NULL.
+//   - inputStream (optional): GInputStream.
 func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreamer, error) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 *C.GAsyncResult // out
@@ -12086,7 +12853,6 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	var _goerr error                   // out
 
 	_outMimeType = C.GoString((*C.gchar)(unsafe.Pointer(_arg2)))
-	defer C.free(unsafe.Pointer(_arg2))
 	if _cret != nil {
 		{
 			objptr := unsafe.Pointer(_cret)
@@ -12108,51 +12874,6 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	}
 
 	return _outMimeType, _inputStream, _goerr
-}
-
-// ReadValueAsync: asynchronously request the drag operation's contents
-// converted to the given type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Drop.ReadValueFinish() to get the resulting GValue.
-//
-// For local drag'n'drop operations that are available in the given GType,
-// the value will be copied directly. Otherwise, GDK will try to use
-// gdk.ContentDeserializeAsync() to convert the data.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - typ: GType to read.
-//   - ioPriority: i/O priority of the request.
-//   - callback (optional) to call when the request is satisfied.
-func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkDrop            // out
-	var _arg3 *C.GCancellable       // out
-	var _arg1 C.GType               // out
-	var _arg2 C.int                 // out
-	var _arg4 C.GAsyncReadyCallback // out
-	var _arg5 C.gpointer
-
-	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = C.GType(typ)
-	_arg2 = C.int(ioPriority)
-	if callback != nil {
-		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg5 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_drop_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(ioPriority)
-	runtime.KeepAlive(callback)
 }
 
 // ReadValueFinish finishes an async drop read.
@@ -12196,7 +12917,7 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, er
 // provided by gdk.Drop.GetActions(). Those actions may change in the future,
 // even depending on the actions you provide here.
 //
-// The preferred action is a hint to the drag'n'drop mechanism about which
+// The preferred action is a hint to the drag-and-drop mechanism about which
 // action to use when multiple actions are possible.
 //
 // This function should be called by drag destinations in response to
@@ -12272,6 +12993,9 @@ func BaseEvent(obj Eventer) *Event {
 
 // Axes extracts all axis values from an event.
 //
+// To find out which axes are used, use gdk.DeviceTool.GetAxes() on the device
+// tool returned by gdk.Event.GetDeviceTool().
+//
 // The function returns the following values:
 //
 //   - axes: array of values for all axes.
@@ -12301,6 +13025,9 @@ func (event *Event) Axes() ([]float64, bool) {
 
 // Axis: extract the axis value for a particular axis use from an event
 // structure.
+//
+// To find out which axes are used, use gdk.DeviceTool.GetAxes() on the device
+// tool returned by gdk.Event.GetDeviceTool().
 //
 // The function takes the following parameters:
 //
@@ -12338,7 +13065,7 @@ func (event *Event) Axis(axisUse AxisUse) (float64, bool) {
 //
 // The function returns the following values:
 //
-//   - device (optional): Device.
+//   - device (optional): GdkDevice.
 func (event *Event) Device() Devicer {
 	var _arg0 *C.GdkEvent  // out
 	var _cret *C.GdkDevice // in
@@ -12382,7 +13109,7 @@ func (event *Event) Device() Devicer {
 //
 // The function returns the following values:
 //
-//   - deviceTool (optional): current device tool, or NULL.
+//   - deviceTool (optional): current device tool.
 func (event *Event) DeviceTool() *DeviceTool {
 	var _arg0 *C.GdkEvent      // out
 	var _cret *C.GdkDeviceTool // in
@@ -12405,7 +13132,7 @@ func (event *Event) DeviceTool() *DeviceTool {
 //
 // The function returns the following values:
 //
-//   - display (optional): Display.
+//   - display (optional): GdkDisplay.
 func (event *Event) Display() *Display {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkDisplay // in
@@ -12424,7 +13151,7 @@ func (event *Event) Display() *Display {
 	return _display
 }
 
-// EventSequence retuns the event sequence to which the event belongs.
+// EventSequence returns the event sequence to which the event belongs.
 //
 // Related touch events are connected in a sequence. Other events typically
 // don't have event sequence information.
@@ -12476,7 +13203,7 @@ func (event *Event) EventType() EventType {
 // the application because they occurred in the same frame as event.
 //
 // Note that only motion and scroll events record history, and motion events do
-// it only if one of the mouse buttons is down.
+// it only if one of the mouse buttons is down, or the device has a tool.
 //
 // The function returns the following values:
 //
@@ -12555,6 +13282,8 @@ func (event *Event) PointerEmulated() bool {
 
 // Position: extract the event surface relative x/y coordinates from an event.
 //
+// This position is in surface coordinates (coordinates.html).
+//
 // The function returns the following values:
 //
 //   - x: location to put event surface x coordinate.
@@ -12588,7 +13317,7 @@ func (event *Event) Position() (x, y float64, ok bool) {
 //
 // The function returns the following values:
 //
-//   - seat (optional): Seat.
+//   - seat (optional): GdkSeat.
 func (event *Event) Seat() Seater {
 	var _arg0 *C.GdkEvent // out
 	var _cret *C.GdkSeat  // in
@@ -12624,7 +13353,7 @@ func (event *Event) Seat() Seater {
 //
 // The function returns the following values:
 //
-//   - surface associated with the event.
+//   - surface (optional): GdkSurface associated with the event.
 func (event *Event) Surface() Surfacer {
 	var _arg0 *C.GdkEvent   // out
 	var _cret *C.GdkSurface // in
@@ -12636,22 +13365,21 @@ func (event *Event) Surface() Surfacer {
 
 	var _surface Surfacer // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gdk.Surfacer is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Surfacer)
-			return ok
-		})
-		rv, ok := casted.(Surfacer)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Surfacer)
+				return ok
+			})
+			rv, ok := casted.(Surfacer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Surfacer")
+			}
+			_surface = rv
 		}
-		_surface = rv
 	}
 
 	return _surface
@@ -12775,9 +13503,9 @@ func (event *FocusEvent) In() bool {
 // for the synchronization being implemented, the clock will process a
 // frame and emit signals for each phase that has been requested. (See the
 // signals of the GdkFrameClock class for documentation of the phases.
-// GDK_FRAME_CLOCK_PHASE_UPDATE and the gdkframeclock::update signal are most
+// GDK_FRAME_CLOCK_PHASE_UPDATE and the gdk.FrameClock::update signal are most
 // interesting for application writers, and are used to update the animations,
-// using the frame time given by gdk.FrameClock.GetFrameTime.
+// using the frame time given by gdk.FrameClock.GetFrameTime().
 //
 // The frame time is reported in microseconds and generally in the same
 // timescale as g_get_monotonic_time(), however, it is not the same as
@@ -12786,7 +13514,7 @@ func (event *FocusEvent) In() bool {
 // all calls to gdk.FrameClock.GetFrameTime() that are called at a “similar”
 // time get the same value. This means that if different animations are
 // timed by looking at the difference in time between an initial value from
-// gdk.FrameClock.GetFrameTime() and the value inside the gdkframeclock::update
+// gdk.FrameClock.GetFrameTime() and the value inside the gdk.FrameClock::update
 // signal of the clock, they will stay exactly synchronized.
 type FrameClock struct {
 	_ [0]func() // equal guard
@@ -12862,8 +13590,8 @@ func (frameClock *FrameClock) ConnectLayout(f func()) coreglib.SignalHandle {
 // processing of the frame.
 //
 // The frame is repainted. GDK normally handles this internally and emits
-// gdk.Surface::render signals which are turned into gtk.Widget::snapshot
-// signals by GTK.
+// gdk.Surface::render signals which are turned into GtkWidget::snapshot
+// (../gtk4/signal.Widget.snapshot.html) signals by GTK.
 func (frameClock *FrameClock) ConnectPaint(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(frameClock, "paint", false, unsafe.Pointer(C._gotk4_gdk4_FrameClock_ConnectPaint), f)
 }
@@ -12881,7 +13609,8 @@ func (frameClock *FrameClock) ConnectResumeEvents(f func()) coreglib.SignalHandl
 //
 // Animations should be updated using gdk.FrameClock.GetFrameTime().
 // Applications can connect directly to this signal, or use
-// gtk.Widget.AddTickCallback() as a more convenient interface.
+// gtk_widget_add_tick_callback() (../gtk4/method.Widget.add_tick_callback.html)
+// as a more convenient interface.
 func (frameClock *FrameClock) ConnectUpdate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(frameClock, "update", false, unsafe.Pointer(C._gotk4_gdk4_FrameClock_ConnectUpdate), f)
 }
@@ -13094,7 +13823,7 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 // current frame or a recent frame.
 //
 // The GdkFrameTimings object may not yet be complete: see
-// gdk.FrameTimings.GetComplete().
+// gdk.FrameTimings.GetComplete() and gdk.FrameClock.GetHistoryStart().
 //
 // The function takes the following parameters:
 //
@@ -13103,7 +13832,7 @@ func (frameClock *FrameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn
 // The function returns the following values:
 //
 //   - frameTimings (optional): GdkFrameTimings object for the specified frame,
-//     or NULL if it is not available. See gdk.FrameClock.GetHistoryStart().
+//     or NULL if it is not available.
 func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	var _arg0 *C.GdkFrameClock   // out
 	var _arg1 C.gint64           // out
@@ -13161,7 +13890,7 @@ func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 // draw context.
 //
 // GdkGLContexts are created for a surface using gdk.Surface.CreateGLContext(),
-// and the context will match the the characteristics of the surface.
+// and the context will match the characteristics of the surface.
 //
 // A GdkGLContext is not tied to any particular normal framebuffer. For
 // instance, it cannot draw to the surface back buffer. The GDK repaint system
@@ -13236,13 +13965,57 @@ func marshalGLContext(p uintptr) (interface{}, error) {
 	return wrapGLContext(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (context *GLContext) baseGLContext() *GLContext {
-	return context
+func (self *GLContext) baseGLContext() *GLContext {
+	return self
 }
 
 // BaseGLContext returns the underlying base object.
 func BaseGLContext(obj GLContexter) *GLContext {
 	return obj.baseGLContext()
+}
+
+// AllowedApis gets the allowed APIs set via gdk_gl_context_set_allowed_apis().
+//
+// The function returns the following values:
+//
+//   - glapI: allowed APIs.
+func (self *GLContext) AllowedApis() GLAPI {
+	var _arg0 *C.GdkGLContext // out
+	var _cret C.GdkGLAPI      // in
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_context_get_allowed_apis(_arg0)
+	runtime.KeepAlive(self)
+
+	var _glapI GLAPI // out
+
+	_glapI = GLAPI(_cret)
+
+	return _glapI
+}
+
+// Api gets the API currently in use.
+//
+// If the renderer has not been realized yet, 0 is returned.
+//
+// The function returns the following values:
+//
+//   - glapI: currently used API.
+func (self *GLContext) Api() GLAPI {
+	var _arg0 *C.GdkGLContext // out
+	var _cret C.GdkGLAPI      // in
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_context_get_api(_arg0)
+	runtime.KeepAlive(self)
+
+	var _glapI GLAPI // out
+
+	_glapI = GLAPI(_cret)
+
+	return _glapI
 }
 
 // DebugEnabled retrieves whether the context is doing extra validations and
@@ -13275,7 +14048,7 @@ func (context *GLContext) DebugEnabled() bool {
 //
 // The function returns the following values:
 //
-//   - display (optional): GdkDisplay or NULL.
+//   - display (optional): GdkDisplay.
 func (context *GLContext) Display() *Display {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkDisplay   // in
@@ -13319,7 +14092,10 @@ func (context *GLContext) ForwardCompatible() bool {
 	return _ok
 }
 
-// RequiredVersion retrieves required OpenGL version.
+// RequiredVersion retrieves required OpenGL version set as a requirement
+// for the context realization. It will not change even if a greater
+// OpenGL version is supported and used after the context is realized. See
+// gdk.GLContext.GetVersion() for the real version in use.
 //
 // See gdk.GLContext.SetRequiredVersion().
 //
@@ -13346,11 +14122,17 @@ func (context *GLContext) RequiredVersion() (major, minor int) {
 	return _major, _minor
 }
 
-// SharedContext retrieves the GdkGLContext that this context share data with.
+// SharedContext: used to retrieves the GdkGLContext that this context share
+// data with.
+//
+// As many contexts can share data now and no single shared context exists
+// anymore, this function has been deprecated and now always returns NULL.
+//
+// Deprecated: Use gdk.GLContext.IsShared() to check if contexts can be shared.
 //
 // The function returns the following values:
 //
-//   - glContext (optional): GdkGLContext or NULL.
+//   - glContext (optional): NULL.
 func (context *GLContext) SharedContext() GLContexter {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkGLContext // in
@@ -13386,7 +14168,7 @@ func (context *GLContext) SharedContext() GLContexter {
 //
 // The function returns the following values:
 //
-//   - surface (optional): GdkSurface or NULL.
+//   - surface (optional): GdkSurface.
 func (context *GLContext) Surface() Surfacer {
 	var _arg0 *C.GdkGLContext // out
 	var _cret *C.GdkSurface   // in
@@ -13422,7 +14204,8 @@ func (context *GLContext) Surface() Surfacer {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if the GdkGLContext is using an OpenGL ES profile.
+//   - ok: TRUE if the GdkGLContext is using an OpenGL ES profile; FALSE if
+//     other profile is in use of if the context has not yet been realized.
 func (context *GLContext) UseES() bool {
 	var _arg0 *C.GdkGLContext // out
 	var _cret C.gboolean      // in
@@ -13506,6 +14289,47 @@ func (context *GLContext) IsLegacy() bool {
 	return _ok
 }
 
+// IsShared checks if the two GL contexts can share resources.
+//
+// When they can, the texture IDs from other can be used in self. This is
+// particularly useful when passing GdkGLTexture objects between different
+// contexts.
+//
+// Contexts created for the same display with the same properties will always
+// be compatible, even if they are created for different surfaces. For other
+// contexts it depends on the GL backend.
+//
+// Both contexts must be realized for this check to succeed. If either one is
+// not, this function will return FALSE.
+//
+// The function takes the following parameters:
+//
+//   - other: GdkGLContext that should be compatible with self.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the two GL contexts are compatible.
+func (self *GLContext) IsShared(other GLContexter) bool {
+	var _arg0 *C.GdkGLContext // out
+	var _arg1 *C.GdkGLContext // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(other).Native()))
+
+	_cret = C.gdk_gl_context_is_shared(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // MakeCurrent makes the context the current one.
 func (context *GLContext) MakeCurrent() {
 	var _arg0 *C.GdkGLContext // out
@@ -13535,6 +14359,30 @@ func (context *GLContext) Realize() error {
 	}
 
 	return _goerr
+}
+
+// SetAllowedApis sets the allowed APIs. When gdk_gl_context_realize() is
+// called, only the allowed APIs will be tried. If you set this to 0, realizing
+// will always fail.
+//
+// If you set it on a realized context, the property will not have any effect.
+// It is only relevant during gdk_gl_context_realize().
+//
+// By default, all APIs are allowed.
+//
+// The function takes the following parameters:
+//
+//   - apis: allowed APIs.
+func (self *GLContext) SetAllowedApis(apis GLAPI) {
+	var _arg0 *C.GdkGLContext // out
+	var _arg1 C.GdkGLAPI      // out
+
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkGLAPI(apis)
+
+	C.gdk_gl_context_set_allowed_apis(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(apis)
 }
 
 // SetDebugEnabled sets whether the GdkGLContext should perform extra
@@ -13594,7 +14442,10 @@ func (context *GLContext) SetForwardCompatible(compatible bool) {
 //
 // Setting major and minor to zero will use the default values.
 //
-// The GdkGLContext must not be realized or made current prior to calling this
+// Setting major and minor lower than the minimum versions required by GTK will
+// result in the context choosing the minimum version.
+//
+// The context must not be realized or made current prior to calling this
 // function.
 //
 // The function takes the following parameters:
@@ -13658,7 +14509,7 @@ func GLContextClearCurrent() {
 //
 // The function returns the following values:
 //
-//   - glContext (optional): current GdkGLContext, or NULL.
+//   - glContext (optional): current GdkGLContext.
 func GLContextGetCurrent() GLContexter {
 	var _cret *C.GdkGLContext // in
 
@@ -13703,6 +14554,11 @@ func wrapGLTexture(obj *coreglib.Object) *GLTexture {
 			Paintable: Paintable{
 				Object: obj,
 			},
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
+			},
 		},
 	}
 }
@@ -13722,6 +14578,501 @@ func (self *GLTexture) Release() {
 
 	C.gdk_gl_texture_release(_arg0)
 	runtime.KeepAlive(self)
+}
+
+// GLTextureBuilder: GdkGLTextureBuilder is a builder used to construct
+// gdk.Texture objects from GL textures.
+//
+// The operation is quite simple: Create a texture builder,
+// set all the necessary properties - keep in mind that the
+// properties gdk.GLTextureBuilder:context, gdk.GLTextureBuilder:id,
+// gdk.GLTextureBuilder:width, and gdk.GLTextureBuilder:height are mandatory -
+// and then call gdk.GLTextureBuilder.Build() to create the new texture.
+//
+// GdkGLTextureBuilder can be used for quick one-shot construction of textures
+// as well as kept around and reused to construct multiple textures.
+type GLTextureBuilder struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*GLTextureBuilder)(nil)
+)
+
+func wrapGLTextureBuilder(obj *coreglib.Object) *GLTextureBuilder {
+	return &GLTextureBuilder{
+		Object: obj,
+	}
+}
+
+func marshalGLTextureBuilder(p uintptr) (interface{}, error) {
+	return wrapGLTextureBuilder(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewGLTextureBuilder creates a new texture builder.
+//
+// The function returns the following values:
+//
+//   - glTextureBuilder: new GdkTextureBuilder.
+func NewGLTextureBuilder() *GLTextureBuilder {
+	var _cret *C.GdkGLTextureBuilder // in
+
+	_cret = C.gdk_gl_texture_builder_new()
+
+	var _glTextureBuilder *GLTextureBuilder // out
+
+	_glTextureBuilder = wrapGLTextureBuilder(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _glTextureBuilder
+}
+
+// Context gets the context previously set via
+// gdk_gl_texture_builder_set_context() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - glContext (optional): context.
+func (self *GLTextureBuilder) Context() GLContexter {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret *C.GdkGLContext        // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_context(_arg0)
+	runtime.KeepAlive(self)
+
+	var _glContext GLContexter // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(GLContexter)
+				return ok
+			})
+			rv, ok := casted.(GLContexter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.GLContexter")
+			}
+			_glContext = rv
+		}
+	}
+
+	return _glContext
+}
+
+// Format gets the format previously set via
+// gdk_gl_texture_builder_set_format().
+//
+// The function returns the following values:
+//
+//   - memoryFormat: format.
+func (self *GLTextureBuilder) Format() MemoryFormat {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret C.GdkMemoryFormat      // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_format(_arg0)
+	runtime.KeepAlive(self)
+
+	var _memoryFormat MemoryFormat // out
+
+	_memoryFormat = MemoryFormat(_cret)
+
+	return _memoryFormat
+}
+
+// HasMipmap gets whether the texture has a mipmap.
+//
+// The function returns the following values:
+//
+//   - ok: whether the texture has a mipmap.
+func (self *GLTextureBuilder) HasMipmap() bool {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret C.gboolean             // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_has_mipmap(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Height gets the height previously set via gdk_gl_texture_builder_set_height()
+// or 0 if the height wasn't set.
+//
+// The function returns the following values:
+//
+//   - gint: height.
+func (self *GLTextureBuilder) Height() int {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret C.int                  // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_height(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// ID gets the texture id previously set via gdk_gl_texture_builder_set_id() or
+// 0 if the id wasn't set.
+//
+// The function returns the following values:
+//
+//   - guint: id.
+func (self *GLTextureBuilder) ID() uint {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret C.guint                // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_id(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Sync gets the GLsync previously set via gdk_gl_texture_builder_set_sync().
+//
+// The function returns the following values:
+//
+//   - gpointer (optional): GLSync.
+func (self *GLTextureBuilder) Sync() unsafe.Pointer {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret C.gpointer             // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_sync(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gpointer unsafe.Pointer // out
+
+	_gpointer = (unsafe.Pointer)(unsafe.Pointer(_cret))
+
+	return _gpointer
+}
+
+// UpdateRegion gets the region previously set via
+// gdk_gl_texture_builder_set_update_region() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - region (optional): region.
+func (self *GLTextureBuilder) UpdateRegion() *cairo.Region {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret *C.cairo_region_t      // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_update_region(_arg0)
+	runtime.KeepAlive(self)
+
+	var _region *cairo.Region // out
+
+	if _cret != nil {
+		{
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_region = (*cairo.Region)(unsafe.Pointer(_pp))
+		}
+		C.cairo_region_reference(_cret)
+		runtime.SetFinalizer(_region, func(v *cairo.Region) {
+			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+		})
+	}
+
+	return _region
+}
+
+// UpdateTexture gets the texture previously set via
+// gdk_gl_texture_builder_set_update_texture() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - texture (optional): texture.
+func (self *GLTextureBuilder) UpdateTexture() Texturer {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret *C.GdkTexture          // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_update_texture(_arg0)
+	runtime.KeepAlive(self)
+
+	var _texture Texturer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Texturer)
+				return ok
+			})
+			rv, ok := casted.(Texturer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
+			}
+			_texture = rv
+		}
+	}
+
+	return _texture
+}
+
+// Width gets the width previously set via gdk_gl_texture_builder_set_width() or
+// 0 if the width wasn't set.
+//
+// The function returns the following values:
+//
+//   - gint: width.
+func (self *GLTextureBuilder) Width() int {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret C.int                  // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_width(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SetContext sets the context to be used for the texture. This is the context
+// that owns the texture.
+//
+// The context must be set before calling gdk.GLTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - context (optional) the texture beongs to or NULL to unset.
+func (self *GLTextureBuilder) SetContext(context GLContexter) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 *C.GdkGLContext        // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if context != nil {
+		_arg1 = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	}
+
+	C.gdk_gl_texture_builder_set_context(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(context)
+}
+
+// SetFormat sets the format of the texture. The default is
+// GDK_MEMORY_R8G8B8A8_PREMULTIPLIED.
+//
+// The format is the preferred format the texture data should be
+// downloaded to. The format must be supported by the GL version of
+// gdk.GLTextureBuilder:context.
+//
+// GDK's texture download code assumes that the format corresponds to the
+// storage parameters of the GL texture in an obvious way. For example,
+// a format of GDK_MEMORY_R16G16B16A16_PREMULTIPLIED is expected to be stored
+// as GL_RGBA16 texture, and GDK_MEMORY_G8A8 is expected to be stored as GL_RG8
+// texture.
+//
+// Setting the right format is particularly useful when using high bit
+// depth textures to preserve the bit depth, to set the correct value for
+// unpremultiplied textures and to make sure opaque textures are treated as
+// such.
+//
+// Non-RGBA textures need to have swizzling parameters set up properly to be
+// usable in GSK's shaders.
+//
+// The function takes the following parameters:
+//
+//   - format texture's format.
+func (self *GLTextureBuilder) SetFormat(format MemoryFormat) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 C.GdkMemoryFormat      // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkMemoryFormat(format)
+
+	C.gdk_gl_texture_builder_set_format(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(format)
+}
+
+// SetHasMipmap sets whether the texture has a mipmap. This allows the renderer
+// and other users of the generated texture to use a higher quality downscaling.
+//
+// Typically, the glGenerateMipmap function is used to generate a mimap.
+//
+// The function takes the following parameters:
+//
+//   - hasMipmap: whether the texture has a mipmap.
+func (self *GLTextureBuilder) SetHasMipmap(hasMipmap bool) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 C.gboolean             // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if hasMipmap {
+		_arg1 = C.TRUE
+	}
+
+	C.gdk_gl_texture_builder_set_has_mipmap(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(hasMipmap)
+}
+
+// SetHeight sets the height of the texture.
+//
+// The height must be set before calling gdk.GLTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - height texture's height or 0 to unset.
+func (self *GLTextureBuilder) SetHeight(height int) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 C.int                  // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(height)
+
+	C.gdk_gl_texture_builder_set_height(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(height)
+}
+
+// SetID sets the texture id of the texture. The texture id must remain
+// unmodified until the texture was finalized. See gdk.GLTextureBuilder.Build()
+// for a longer discussion.
+//
+// The id must be set before calling gdk.GLTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - id: texture id to be used for creating the texture.
+func (self *GLTextureBuilder) SetID(id uint) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 C.guint                // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(id)
+
+	C.gdk_gl_texture_builder_set_id(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(id)
+}
+
+// SetSync sets the GLSync object to use for the texture.
+//
+// GTK will wait on this object before using the created GdkTexture.
+//
+// The destroy function that is passed to gdk.GLTextureBuilder.Build() is
+// responsible for freeing the sync object when it is no longer needed.
+// The texture builder does not destroy it and it is the callers responsibility
+// to make sure it doesn't leak.
+//
+// The function takes the following parameters:
+//
+//   - sync (optional): GLSync object.
+func (self *GLTextureBuilder) SetSync(sync unsafe.Pointer) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 C.gpointer             // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(sync))
+
+	C.gdk_gl_texture_builder_set_sync(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(sync)
+}
+
+// SetUpdateRegion sets the region to be updated by this texture. Together with
+// gdk.GLTextureBuilder:update-texture this describes an update of a previous
+// texture.
+//
+// When rendering animations of large textures, it is possible that consecutive
+// textures are only updating contents in parts of the texture. It is then
+// possible to describe this update via these two properties, so that GTK can
+// avoid rerendering parts that did not change.
+//
+// An example would be a screen recording where only the mouse pointer moves.
+//
+// The function takes the following parameters:
+//
+//   - region (optional) to update.
+func (self *GLTextureBuilder) SetUpdateRegion(region *cairo.Region) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 *C.cairo_region_t      // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
+
+	C.gdk_gl_texture_builder_set_update_region(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(region)
+}
+
+// SetUpdateTexture sets the texture to be updated by this texture. See
+// gdk.GLTextureBuilder.SetUpdateRegion() for an explanation.
+//
+// The function takes the following parameters:
+//
+//   - texture (optional) to update.
+func (self *GLTextureBuilder) SetUpdateTexture(texture Texturer) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 *C.GdkTexture          // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if texture != nil {
+		_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	}
+
+	C.gdk_gl_texture_builder_set_update_texture(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(texture)
+}
+
+// SetWidth sets the width of the texture.
+//
+// The width must be set before calling gdk.GLTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - width texture's width or 0 to unset.
+func (self *GLTextureBuilder) SetWidth(width int) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 C.int                  // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(width)
+
+	C.gdk_gl_texture_builder_set_width(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(width)
 }
 
 // GrabBrokenEvent: event related to a broken windowing system grab.
@@ -14045,6 +15396,11 @@ func wrapMemoryTexture(obj *coreglib.Object) *MemoryTexture {
 			Paintable: Paintable{
 				Object: obj,
 			},
+			LoadableIcon: gio.LoadableIcon{
+				Icon: gio.Icon{
+					Object: obj,
+				},
+			},
 		},
 	}
 }
@@ -14055,7 +15411,7 @@ func marshalMemoryTexture(p uintptr) (interface{}, error) {
 
 // NewMemoryTexture creates a new texture for a blob of image data.
 //
-// The GBytes must contain stride x height pixels in the given format.
+// The GBytes must contain stride × height pixels in the given format.
 //
 // The function takes the following parameters:
 //
@@ -14129,6 +15485,10 @@ func (monitor *Monitor) ConnectInvalidate(f func()) coreglib.SignalHandle {
 
 // Connector gets the name of the monitor's connector, if available.
 //
+// These are strings such as "eDP-1", or "HDMI-2". They depend on software and
+// hardware configuration, and should not be relied on as stable identifiers of
+// a specific monitor.
+//
 // The function returns the following values:
 //
 //   - utf8 (optional): name of the connector.
@@ -14139,6 +15499,31 @@ func (monitor *Monitor) Connector() string {
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
 
 	_cret = C.gdk_monitor_get_connector(_arg0)
+	runtime.KeepAlive(monitor)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
+// Description gets a string describing the monitor, if available.
+//
+// This can be used to identify a monitor in the UI.
+//
+// The function returns the following values:
+//
+//   - utf8 (optional): monitor description.
+func (monitor *Monitor) Description() string {
+	var _arg0 *C.GdkMonitor // out
+	var _cret *C.char       // in
+
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+
+	_cret = C.gdk_monitor_get_description(_arg0)
 	runtime.KeepAlive(monitor)
 
 	var _utf8 string // out
@@ -14175,7 +15560,7 @@ func (monitor *Monitor) Display() *Display {
 // coordinate space.
 //
 // The returned geometry is in ”application pixels”, not in ”device pixels” (see
-// gdk.Monitor.GetScaleFactor()).
+// gdk.Monitor.GetScale()).
 //
 // The function returns the following values:
 //
@@ -14226,7 +15611,7 @@ func (monitor *Monitor) HeightMm() int {
 //
 // The function returns the following values:
 //
-//   - utf8 (optional): name of the manufacturer, or NULL.
+//   - utf8 (optional): name of the manufacturer.
 func (monitor *Monitor) Manufacturer() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
@@ -14249,7 +15634,7 @@ func (monitor *Monitor) Manufacturer() string {
 //
 // The function returns the following values:
 //
-//   - utf8 (optional): monitor model, or NULL.
+//   - utf8 (optional): monitor model.
 func (monitor *Monitor) Model() string {
 	var _arg0 *C.GdkMonitor // out
 	var _cret *C.char       // in
@@ -14289,6 +15674,32 @@ func (monitor *Monitor) RefreshRate() int {
 	_gint = int(_cret)
 
 	return _gint
+}
+
+// Scale gets the internal scale factor that maps from monitor coordinates to
+// device pixels.
+//
+// This can be used if you want to create pixel based data for a particular
+// monitor, but most of the time you’re drawing to a surface where it is better
+// to use gdk.Surface.GetScale() instead.
+//
+// The function returns the following values:
+//
+//   - gdouble: scale.
+func (monitor *Monitor) Scale() float64 {
+	var _arg0 *C.GdkMonitor // out
+	var _cret C.double      // in
+
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+
+	_cret = C.gdk_monitor_get_scale(_arg0)
+	runtime.KeepAlive(monitor)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
 }
 
 // ScaleFactor gets the internal scale factor that maps from monitor coordinates
@@ -14552,6 +15963,8 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 //
 // The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
 //
+// For the representation unit of these deltas, see gdk.ScrollEvent.GetUnit().
+//
 // The function returns the following values:
 //
 //   - deltaX: return location for x scroll delta.
@@ -14594,6 +16007,30 @@ func (event *ScrollEvent) Direction() ScrollDirection {
 	_scrollDirection = ScrollDirection(_cret)
 
 	return _scrollDirection
+}
+
+// Unit extracts the scroll delta unit of a scroll event.
+//
+// The unit will always be GDK_SCROLL_UNIT_WHEEL if the scroll direction is not
+// GDK_SCROLL_SMOOTH.
+//
+// The function returns the following values:
+//
+//   - scrollUnit: scroll unit.
+func (event *ScrollEvent) Unit() ScrollUnit {
+	var _arg0 *C.GdkEvent     // out
+	var _cret C.GdkScrollUnit // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_scroll_event_get_unit(_arg0)
+	runtime.KeepAlive(event)
+
+	var _scrollUnit ScrollUnit // out
+
+	_scrollUnit = ScrollUnit(_cret)
+
+	return _scrollUnit
 }
 
 // IsStop: check whether a scroll event is a stop scroll event.
@@ -14682,7 +16119,7 @@ func (seat *Seat) ConnectDeviceRemoved(f func(device Devicer)) coreglib.SignalHa
 // ConnectToolAdded is emitted whenever a new tool is made known to the seat.
 //
 // The tool may later be assigned to a device (i.e. on proximity with a tablet).
-// The device will emit the [signalGdkDevice::tool-changed] signal accordingly.
+// The device will emit the gdk.Device::tool-changed signal accordingly.
 //
 // A same tool may be used by several devices.
 func (seat *Seat) ConnectToolAdded(f func(tool *DeviceTool)) coreglib.SignalHandle {
@@ -14891,7 +16328,8 @@ func (seat *Seat) Tools() []*DeviceTool {
 
 // Snapshot: base type for snapshot operations.
 //
-// The subclass of GdkSnapshot used by GTK is gtk.Snapshot.
+// The subclass of GdkSnapshot used by GTK is GtkSnapshot
+// (../gtk4/class.Snapshot.html).
 type Snapshot struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -14934,7 +16372,7 @@ func BaseSnapshot(obj Snapshotter) *Snapshot {
 // Surface: GdkSurface is a rectangular region on the screen.
 //
 // It’s a low-level object, used to implement high-level objects such as
-// gtk.Window or gtk.Dialog in GTK.
+// GtkWindow (../gtk4/class.Window.html).
 //
 // The surfaces you see in practice are either gdk.Toplevel or gdk.Popup,
 // and those interfaces provide much of the required API to interact with these
@@ -15128,7 +16566,7 @@ func (surface *Surface) CreateCairoContext() CairoContexter {
 //
 // The function returns the following values:
 //
-//   - glContext: newly created GdkGLContext, or NULL on error.
+//   - glContext: newly created GdkGLContext.
 func (surface *Surface) CreateGLContext() (GLContexter, error) {
 	var _arg0 *C.GdkSurface   // out
 	var _cret *C.GdkGLContext // in
@@ -15181,6 +16619,8 @@ func (surface *Surface) CreateGLContext() (GLContexter, error) {
 // to a “nil” surface if other is already in an error state or any other error
 // occurs.
 //
+// Deprecated: Create a suitable cairo image surface yourself.
+//
 // The function takes the following parameters:
 //
 //   - content for the new surface.
@@ -15219,13 +16659,14 @@ func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, heigh
 	return _ret
 }
 
-// CreateVulkanContext creates a new GdkVulkanContext for rendering on surface.
+// CreateVulkanContext sets an error and returns NULL.
 //
-// If the creation of the GdkVulkanContext failed, error will be set.
+// Deprecated: GTK does not expose any Vulkan internals. This function is a
+// leftover that was accidentally exposed.
 //
 // The function returns the following values:
 //
-//   - vulkanContext: newly created GdkVulkanContext, or NULL on error.
+//   - vulkanContext: NULL.
 func (surface *Surface) CreateVulkanContext() (VulkanContexter, error) {
 	var _arg0 *C.GdkSurface       // out
 	var _cret *C.GdkVulkanContext // in
@@ -15286,11 +16727,11 @@ func (surface *Surface) Destroy() {
 // If the return value is NULL then there is no custom cursor set on the
 // surface, and it is using the cursor for its parent surface.
 //
+// Use gdk.Surface.SetCursor() to unset the cursor of the surface.
+//
 // The function returns the following values:
 //
-//   - cursor (optional): GdkCursor, or NULL. The returned object is owned
-//     by the GdkSurface and should not be unreferenced directly. Use
-//     gdk.Surface.SetCursor() to unset the cursor of the surface.
+//   - cursor (optional): GdkCursor.
 func (surface *Surface) Cursor() *Cursor {
 	var _arg0 *C.GdkSurface // out
 	var _cret *C.GdkCursor  // in
@@ -15315,15 +16756,15 @@ func (surface *Surface) Cursor() *Cursor {
 // If the return value is NULL then there is no custom cursor set on the
 // specified surface, and it is using the cursor for its parent surface.
 //
+// Use gdk.Surface.SetCursor() to unset the cursor of the surface.
+//
 // The function takes the following parameters:
 //
 //   - device: pointer GdkDevice.
 //
 // The function returns the following values:
 //
-//   - cursor (optional): GdkCursor, or NULL. The returned object is owned
-//     by the GdkSurface and should not be unreferenced directly. Use
-//     gdk.Surface.SetCursor() to unset the cursor of the surface.
+//   - cursor (optional): GdkCursor.
 func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 	var _arg0 *C.GdkSurface // out
 	var _arg1 *C.GdkDevice  // out
@@ -15356,9 +16797,9 @@ func (surface *Surface) DeviceCursor(device Devicer) *Cursor {
 //
 // The function returns the following values:
 //
-//   - x (optional): return locatio for the X coordinate of device, or NULL.
-//   - y (optional): return location for the Y coordinate of device, or NULL.
-//   - mask (optional): return location for the modifier mask, or NULL.
+//   - x (optional): return location for the X coordinate of device.
+//   - y (optional): return location for the Y coordinate of device.
+//   - mask (optional): return location for the modifier mask.
 //   - ok: TRUE if the device is over the surface.
 func (surface *Surface) DevicePosition(device Devicer) (x, y float64, mask ModifierType, ok bool) {
 	var _arg0 *C.GdkSurface     // out
@@ -15500,6 +16941,37 @@ func (surface *Surface) Mapped() bool {
 	return _ok
 }
 
+// Scale returns the internal scale that maps from surface coordinates to the
+// actual device pixels.
+//
+// When the scale is bigger than 1, the windowing system prefers to get buffers
+// with a resolution that is bigger than the surface size (e.g. to show the
+// surface on a high-resolution display, or in a magnifier).
+//
+// Compare with gdk.Surface.GetScaleFactor(), which returns the next larger
+// integer.
+//
+// The scale may change during the lifetime of the surface.
+//
+// The function returns the following values:
+//
+//   - gdouble: scale.
+func (surface *Surface) Scale() float64 {
+	var _arg0 *C.GdkSurface // out
+	var _cret C.double      // in
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+
+	_cret = C.gdk_surface_get_scale(_arg0)
+	runtime.KeepAlive(surface)
+
+	var _gdouble float64 // out
+
+	_gdouble = float64(_cret)
+
+	return _gdouble
+}
+
 // ScaleFactor returns the internal scale factor that maps from surface
 // coordinates to the actual device pixels.
 //
@@ -15510,7 +16982,7 @@ func (surface *Surface) Mapped() bool {
 // the scale value can be used to determine whether to use a pixel resource with
 // higher resolution data.
 //
-// The scale of a surface may change during runtime.
+// The scale factor may change during the lifetime of the surface.
 //
 // The function returns the following values:
 //
@@ -15557,9 +17029,10 @@ func (surface *Surface) Width() int {
 
 // Hide the surface.
 //
-// For toplevel surfaces, withdraws them, so they will no longer be known to the
-// window manager; for all surfaces, unmaps them, so they won’t be displayed.
-// Normally done automatically as part of gtk.Widget.Hide().
+// For toplevel surfaces, withdraws them, so they will no longer be known
+// to the window manager; for all surfaces, unmaps them, so they won’t be
+// displayed. Normally done automatically as part of gtk_widget_hide()
+// (../gtk4/method.Widget.hide.html).
 func (surface *Surface) Hide() {
 	var _arg0 *C.GdkSurface // out
 
@@ -15713,12 +17186,12 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 //
 // GTK will update this property automatically if the surface background is
 // opaque, as we know where the opaque regions are. If your surface background
-// is not opaque, please update this property in your WidgetClass.css_changed()
-// handler.
+// is not opaque, please update this property in your GtkWidgetClass.css_changed
+// (../gtk4/vfunc.Widget.css_changed.html) handler.
 //
 // The function takes the following parameters:
 //
-//   - region (optional): region, or NULL.
+//   - region (optional): region, or NULL to make the entire surface opaque.
 func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
@@ -15738,19 +17211,21 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 // It is primarily meant for pixel data that will not change over multiple
 // frames, and will be used for a long time.
 //
-// There are various ways to create GdkTexture objects from a GdkPixbuf,
-// or a Cairo surface, or other pixel data.
+// There are various ways to create GdkTexture objects from a gdkpixbuf.Pixbuf,
+// or from bytes stored in memory, a file, or a gio.Resource.
 //
 // The ownership of the pixel data is transferred to the GdkTexture instance;
 // you can only make a copy of it, via gdk.Texture.Download().
 //
 // GdkTexture is an immutable object: That means you cannot change anything
-// about it other than increasing the reference count via g_object_ref().
+// about it other than increasing the reference count via gobject.Object.Ref(),
+// and consequently, it is a thread-safe object.
 type Texture struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
 
 	Paintable
+	gio.LoadableIcon
 }
 
 var (
@@ -15774,6 +17249,11 @@ func wrapTexture(obj *coreglib.Object) *Texture {
 		Paintable: Paintable{
 			Object: obj,
 		},
+		LoadableIcon: gio.LoadableIcon{
+			Icon: gio.Icon{
+				Object: obj,
+			},
+		},
 	}
 }
 
@@ -15781,8 +17261,8 @@ func marshalTexture(p uintptr) (interface{}, error) {
 	return wrapTexture(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (texture *Texture) baseTexture() *Texture {
-	return texture
+func (self *Texture) baseTexture() *Texture {
+	return self
 }
 
 // BaseTexture returns the underlying base object.
@@ -15791,6 +17271,10 @@ func BaseTexture(obj Texturer) *Texture {
 }
 
 // NewTextureForPixbuf creates a new texture object representing the GdkPixbuf.
+//
+// This function is threadsafe, so that you can e.g. use GTask and
+// gio.Task.RunInThread() to avoid blocking the main thread while loading a big
+// image.
 //
 // The function takes the following parameters:
 //
@@ -15815,12 +17299,55 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 	return _texture
 }
 
-// NewTextureFromFile creates a new texture by loading an image from a file.
+// NewTextureFromBytes creates a new texture by loading an image from memory,
 //
-// The file format is detected automatically. The supported formats are PNG and
-// JPEG, though more formats might be available.
+// The file format is detected automatically. The supported formats are PNG,
+// JPEG and TIFF, though more formats might be available.
 //
 // If NULL is returned, then error will be set.
+//
+// This function is threadsafe, so that you can e.g. use GTask and
+// gio.Task.RunInThread() to avoid blocking the main thread while loading a big
+// image.
+//
+// The function takes the following parameters:
+//
+//   - bytes: GBytes containing the data to load.
+//
+// The function returns the following values:
+//
+//   - texture: newly-created GdkTexture.
+func NewTextureFromBytes(bytes *glib.Bytes) (*Texture, error) {
+	var _arg1 *C.GBytes     // out
+	var _cret *C.GdkTexture // in
+	var _cerr *C.GError     // in
+
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+
+	_cret = C.gdk_texture_new_from_bytes(_arg1, &_cerr)
+	runtime.KeepAlive(bytes)
+
+	var _texture *Texture // out
+	var _goerr error      // out
+
+	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _texture, _goerr
+}
+
+// NewTextureFromFile creates a new texture by loading an image from a file.
+//
+// The file format is detected automatically. The supported formats are PNG,
+// JPEG and TIFF, though more formats might be available.
+//
+// If NULL is returned, then error will be set.
+//
+// This function is threadsafe, so that you can e.g. use GTask and
+// gio.Task.RunInThread() to avoid blocking the main thread while loading a big
+// image.
 //
 // The function takes the following parameters:
 //
@@ -15828,7 +17355,7 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 //
 // The function returns the following values:
 //
-//   - texture: newly-created GdkTexture or NULL if an error occurred.
+//   - texture: newly-created GdkTexture.
 func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	var _arg1 *C.GFile      // out
 	var _cret *C.GdkTexture // in
@@ -15850,6 +17377,46 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 	return _texture, _goerr
 }
 
+// NewTextureFromFilename creates a new texture by loading an image from a file.
+//
+// The file format is detected automatically. The supported formats are PNG,
+// JPEG and TIFF, though more formats might be available.
+//
+// If NULL is returned, then error will be set.
+//
+// This function is threadsafe, so that you can e.g. use GTask and
+// gio.Task.RunInThread() to avoid blocking the main thread while loading a big
+// image.
+//
+// The function takes the following parameters:
+//
+//   - path: filename to load.
+//
+// The function returns the following values:
+//
+//   - texture: newly-created GdkTexture.
+func NewTextureFromFilename(path string) (*Texture, error) {
+	var _arg1 *C.char       // out
+	var _cret *C.GdkTexture // in
+	var _cerr *C.GError     // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_texture_new_from_filename(_arg1, &_cerr)
+	runtime.KeepAlive(path)
+
+	var _texture *Texture // out
+	var _goerr error      // out
+
+	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _texture, _goerr
+}
+
 // NewTextureFromResource creates a new texture by loading an image from a
 // resource.
 //
@@ -15859,6 +17426,10 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 // It is a fatal error if resource_path does not specify a valid image resource
 // and the program will abort if that happens. If you are unsure about the
 // validity of a resource, use gdk.Texture.NewFromFile to load it.
+//
+// This function is threadsafe, so that you can e.g. use GTask and
+// gio.Task.RunInThread() to avoid blocking the main thread while loading a big
+// image.
 //
 // The function takes the following parameters:
 //
@@ -15882,6 +17453,35 @@ func NewTextureFromResource(resourcePath string) *Texture {
 	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
+}
+
+// Format gets the memory format most closely associated with the data of the
+// texture.
+//
+// Note that it may not be an exact match for texture data stored on the GPU or
+// with compression.
+//
+// The format can give an indication about the bit depth and opacity of the
+// texture and is useful to determine the best format for downloading the
+// texture.
+//
+// The function returns the following values:
+//
+//   - memoryFormat: preferred format for the texture's data.
+func (self *Texture) Format() MemoryFormat {
+	var _arg0 *C.GdkTexture     // out
+	var _cret C.GdkMemoryFormat // in
+
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_texture_get_format(_arg0)
+	runtime.KeepAlive(self)
+
+	var _memoryFormat MemoryFormat // out
+
+	_memoryFormat = MemoryFormat(_cret)
+
+	return _memoryFormat
 }
 
 // Height returns the height of the texture, in pixels.
@@ -15928,9 +17528,10 @@ func (texture *Texture) Width() int {
 
 // SaveToPNG: store the given texture to the filename as a PNG file.
 //
-// This is a utility function intended for debugging and testing. If you want
-// more control over formats, proper error handling or want to store to a GFile
-// or other location, you might want to look into using the gdk-pixbuf library.
+// This is a utility function intended for debugging and testing.
+// If you want more control over formats, proper error handling or
+// want to store to a gio.File or other location, you might want to use
+// gdk.Texture.SaveToPNGBytes() or look into the gdk-pixbuf library.
 //
 // The function takes the following parameters:
 //
@@ -15959,6 +17560,114 @@ func (texture *Texture) SaveToPNG(filename string) bool {
 	}
 
 	return _ok
+}
+
+// SaveToPNGBytes: store the given texture in memory as a PNG file.
+//
+// Use gdk.Texture.NewFromBytes to read it back.
+//
+// If you want to serialize a texture, this is a convenient and portable way to
+// do that.
+//
+// If you need more control over the generated image, such as attaching
+// metadata, you should look into an image handling library such as the
+// gdk-pixbuf library.
+//
+// If you are dealing with high dynamic range float data, you might also want to
+// consider gdk.Texture.SaveToTIFFBytes() instead.
+//
+// The function returns the following values:
+//
+//   - bytes: newly allocated GBytes containing PNG data.
+func (texture *Texture) SaveToPNGBytes() *glib.Bytes {
+	var _arg0 *C.GdkTexture // out
+	var _cret *C.GBytes     // in
+
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+
+	_cret = C.gdk_texture_save_to_png_bytes(_arg0)
+	runtime.KeepAlive(texture)
+
+	var _bytes *glib.Bytes // out
+
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
+}
+
+// SaveToTIFF: store the given texture to the filename as a TIFF file.
+//
+// GTK will attempt to store data without loss.
+//
+// The function takes the following parameters:
+//
+//   - filename to store to.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if saving succeeded, FALSE on failure.
+func (texture *Texture) SaveToTIFF(filename string) bool {
+	var _arg0 *C.GdkTexture // out
+	var _arg1 *C.char       // out
+	var _cret C.gboolean    // in
+
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_texture_save_to_tiff(_arg0, _arg1)
+	runtime.KeepAlive(texture)
+	runtime.KeepAlive(filename)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// SaveToTIFFBytes: store the given texture in memory as a TIFF file.
+//
+// Use gdk.Texture.NewFromBytes to read it back.
+//
+// This function is intended to store a representation of the texture's data
+// that is as accurate as possible. This is particularly relevant when working
+// with high dynamic range images and floating-point texture data.
+//
+// If that is not your concern and you are interested in a smaller size and a
+// more portable format, you might want to use gdk.Texture.SaveToPNGBytes().
+//
+// The function returns the following values:
+//
+//   - bytes: newly allocated GBytes containing TIFF data.
+func (texture *Texture) SaveToTIFFBytes() *glib.Bytes {
+	var _arg0 *C.GdkTexture // out
+	var _cret *C.GBytes     // in
+
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+
+	_cret = C.gdk_texture_save_to_tiff_bytes(_arg0)
+	runtime.KeepAlive(texture)
+
+	var _bytes *glib.Bytes // out
+
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _bytes
 }
 
 // TouchEvent: event related to a touch-based device.
@@ -16146,7 +17855,7 @@ func (event *TouchpadEvent) PinchScale() float64 {
 // platform-specific Vulkan draw context.
 //
 // GdkVulkanContexts are created for a surface using
-// gdk.Surface.CreateVulkanContext(), and the context will match the the
+// gdk.Surface.CreateVulkanContext(), and the context will match the
 // characteristics of the surface.
 //
 // Support for GdkVulkanContext is platform-specific and context creation can
@@ -16238,7 +17947,7 @@ func (v *VulkanContext) ConnectImagesUpdated(f func()) coreglib.SignalHandle {
 //
 // GdkContentFormats is an immutable struct. After creation, you cannot change
 // the types it represents. Instead, new GdkContentFormats have to be created.
-// The gdk.ContentFormatsBuilder` structure is meant to help in this endeavor.
+// The gdk.ContentFormatsBuilder structure is meant to help in this endeavor.
 //
 // An instance of this type is always passed by reference.
 type ContentFormats struct {
@@ -16319,7 +18028,7 @@ func NewContentFormatsForGType(typ coreglib.Type) *ContentFormats {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if the #GType was found.
+//   - ok: TRUE if the GType was found.
 func (formats *ContentFormats) ContainGType(typ coreglib.Type) bool {
 	var _arg0 *C.GdkContentFormats // out
 	var _arg1 C.GType              // out
@@ -16374,13 +18083,13 @@ func (formats *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 // GTypes gets the GTypes included in formats.
 //
-// Note that formats may not contain any #GTypes, in particular when they are
+// Note that formats may not contain any GTypes, in particular when they are
 // empty. In that case NULL will be returned.
 //
 // The function returns the following values:
 //
 //   - gTypes (optional): G_TYPE_INVALID-terminated array of types included in
-//     formats or NULL if none.
+//     formats.
 func (formats *ContentFormats) GTypes() []coreglib.Type {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret *C.GType             // in
@@ -16414,7 +18123,7 @@ func (formats *ContentFormats) GTypes() []coreglib.Type {
 // The function returns the following values:
 //
 //   - utf8s (optional): NULL-terminated array of interned strings of mime types
-//     included in formats or NULL if none.
+//     included in formats.
 func (formats *ContentFormats) MIMETypes() []string {
 	var _arg0 *C.GdkContentFormats // out
 	var _cret **C.char             // in
@@ -16534,6 +18243,8 @@ func (first *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 }
 
 // String prints the given formats into a human-readable string.
+//
+// The resulting string can be parsed with gdk.ContentFormats().Parse.
 //
 // This is a small wrapper around gdk.ContentFormats.Print() to help when
 // debugging.
@@ -16705,6 +18416,46 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	return _contentFormats
 }
 
+// ContentFormatsParse parses the given string into GdkContentFormats and
+// returns the formats.
+//
+// Strings printed via gdk.ContentFormats.ToString() can be read in again
+// successfully using this function.
+//
+// If string does not describe valid content formats, NULL is returned.
+//
+// The function takes the following parameters:
+//
+//   - str: string to parse.
+//
+// The function returns the following values:
+//
+//   - contentFormats (optional): content formats if string is valid.
+func ContentFormatsParse(str string) *ContentFormats {
+	var _arg1 *C.char              // out
+	var _cret *C.GdkContentFormats // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gdk_content_formats_parse(_arg1)
+	runtime.KeepAlive(str)
+
+	var _contentFormats *ContentFormats // out
+
+	if _cret != nil {
+		_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
+			},
+		)
+	}
+
+	return _contentFormats
+}
+
 // ContentFormatsBuilder: GdkContentFormatsBuilder is an auxiliary struct used
 // to create new GdkContentFormats, and should not be kept around.
 //
@@ -16829,7 +18580,7 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	return _contentFormats
 }
 
-// ContentProviderClass class structure for ContentProvider.
+// ContentProviderClass class structure for GdkContentProvider.
 //
 // An instance of this type is always passed by reference.
 type ContentProviderClass struct {
@@ -16839,6 +18590,166 @@ type ContentProviderClass struct {
 // contentProviderClass is the struct that's finalized.
 type contentProviderClass struct {
 	native *C.GdkContentProviderClass
+}
+
+// DmabufFormats: GdkDmabufFormats struct provides information about supported
+// DMA buffer formats.
+//
+// You can query whether a given format is supported with
+// gdk.DmabufFormats.Contains() and you can iterate over the list
+// of all supported formats with gdk.DmabufFormats.GetNFormats() and
+// gdk.DmabufFormats.GetFormat().
+//
+// The list of supported formats is sorted by preference, with the best formats
+// coming first.
+//
+// The list may contains (format, modifier) pairs where the modifier is
+// DMA_FORMAT_MOD_INVALID, indicating that **_implicit modifiers_** may be used
+// with this format.
+//
+// See gdk.DmabufTextureBuilder for more information about DMA buffers.
+//
+// Note that DMA buffers only exist on Linux.
+//
+// An instance of this type is always passed by reference.
+type DmabufFormats struct {
+	*dmabufFormats
+}
+
+// dmabufFormats is the struct that's finalized.
+type dmabufFormats struct {
+	native *C.GdkDmabufFormats
+}
+
+func marshalDmabufFormats(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &DmabufFormats{&dmabufFormats{(*C.GdkDmabufFormats)(b)}}, nil
+}
+
+// Contains returns whether a given format is contained in formats.
+//
+// The function takes the following parameters:
+//
+//   - fourcc: format code.
+//   - modifier: format modifier.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the format specified by the arguments is part of formats.
+func (formats *DmabufFormats) Contains(fourcc uint32, modifier uint64) bool {
+	var _arg0 *C.GdkDmabufFormats // out
+	var _arg1 C.guint32           // out
+	var _arg2 C.guint64           // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GdkDmabufFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+	_arg1 = C.guint32(fourcc)
+	_arg2 = C.guint64(modifier)
+
+	_cret = C.gdk_dmabuf_formats_contains(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(formats)
+	runtime.KeepAlive(fourcc)
+	runtime.KeepAlive(modifier)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Equal returns whether formats1 and formats2 contain the same dmabuf formats,
+// in the same order.
+//
+// The function takes the following parameters:
+//
+//   - formats2 (optional): another GdkDmabufFormats.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if formats1 and formats2 are equal.
+func (formats1 *DmabufFormats) Equal(formats2 *DmabufFormats) bool {
+	var _arg0 *C.GdkDmabufFormats // out
+	var _arg1 *C.GdkDmabufFormats // out
+	var _cret C.gboolean          // in
+
+	if formats1 != nil {
+		_arg0 = (*C.GdkDmabufFormats)(gextras.StructNative(unsafe.Pointer(formats1)))
+	}
+	if formats2 != nil {
+		_arg1 = (*C.GdkDmabufFormats)(gextras.StructNative(unsafe.Pointer(formats2)))
+	}
+
+	_cret = C.gdk_dmabuf_formats_equal(_arg0, _arg1)
+	runtime.KeepAlive(formats1)
+	runtime.KeepAlive(formats2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Format gets the fourcc code and modifier for a format that is contained in
+// formats.
+//
+// The function takes the following parameters:
+//
+//   - idx: index of the format to return.
+//
+// The function returns the following values:
+//
+//   - fourcc: return location for the format code.
+//   - modifier: return location for the format modifier.
+func (formats *DmabufFormats) Format(idx uint) (uint32, uint64) {
+	var _arg0 *C.GdkDmabufFormats // out
+	var _arg1 C.gsize             // out
+	var _arg2 C.guint32           // in
+	var _arg3 C.guint64           // in
+
+	_arg0 = (*C.GdkDmabufFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+	_arg1 = C.gsize(idx)
+
+	C.gdk_dmabuf_formats_get_format(_arg0, _arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(formats)
+	runtime.KeepAlive(idx)
+
+	var _fourcc uint32   // out
+	var _modifier uint64 // out
+
+	_fourcc = uint32(_arg2)
+	_modifier = uint64(_arg3)
+
+	return _fourcc, _modifier
+}
+
+// NFormats returns the number of formats that the formats object contains.
+//
+// Note that DMA buffers are a Linux concept, so on other platforms,
+// gdk.DmabufFormats.GetNFormats() will always return zero.
+//
+// The function returns the following values:
+//
+//   - gsize: number of formats.
+func (formats *DmabufFormats) NFormats() uint {
+	var _arg0 *C.GdkDmabufFormats // out
+	var _cret C.gsize             // in
+
+	_arg0 = (*C.GdkDmabufFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+
+	_cret = C.gdk_dmabuf_formats_get_n_formats(_arg0)
+	runtime.KeepAlive(formats)
+
+	var _gsize uint // out
+
+	_gsize = uint(_cret)
+
+	return _gsize
 }
 
 // EventSequence: GdkEventSequence is an opaque type representing a sequence of
@@ -16857,6 +18768,118 @@ type eventSequence struct {
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
 	return &EventSequence{&eventSequence{(*C.GdkEventSequence)(b)}}, nil
+}
+
+// FileList: opaque type representing a list of files.
+//
+// An instance of this type is always passed by reference.
+type FileList struct {
+	*fileList
+}
+
+// fileList is the struct that's finalized.
+type fileList struct {
+	native *C.GdkFileList
+}
+
+func marshalFileList(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &FileList{&fileList{(*C.GdkFileList)(b)}}, nil
+}
+
+// NewFileListFromArray constructs a struct FileList.
+func NewFileListFromArray(files []gio.Filer) *FileList {
+	var _arg1 **C.GFile // out
+	var _arg2 C.gsize
+	var _cret *C.GdkFileList // in
+
+	_arg2 = (C.gsize)(len(files))
+	_arg1 = (**C.GFile)(C.calloc(C.size_t(len(files)), C.size_t(unsafe.Sizeof(uint(0)))))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((**C.GFile)(_arg1), len(files))
+		for i := range files {
+			out[i] = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(files[i]).Native()))
+		}
+	}
+
+	_cret = C.gdk_file_list_new_from_array(_arg1, _arg2)
+	runtime.KeepAlive(files)
+
+	var _fileList *FileList // out
+
+	_fileList = (*FileList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fileList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _fileList
+}
+
+// NewFileListFromList constructs a struct FileList.
+func NewFileListFromList(files []gio.Filer) *FileList {
+	var _arg1 *C.GSList      // out
+	var _cret *C.GdkFileList // in
+
+	for i := len(files) - 1; i >= 0; i-- {
+		src := files[i]
+		var dst *C.GFile // out
+		dst = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(src).Native()))
+		_arg1 = C.g_slist_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+	}
+	defer C.g_slist_free(_arg1)
+
+	_cret = C.gdk_file_list_new_from_list(_arg1)
+	runtime.KeepAlive(files)
+
+	var _fileList *FileList // out
+
+	_fileList = (*FileList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_fileList)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.free(intern.C)
+		},
+	)
+
+	return _fileList
+}
+
+// Files retrieves the list of files inside a GdkFileList.
+//
+// This function is meant for language bindings.
+//
+// The function returns the following values:
+//
+//   - sList files inside the list.
+func (fileList *FileList) Files() []*gio.File {
+	var _arg0 *C.GdkFileList // out
+	var _cret *C.GSList      // in
+
+	_arg0 = (*C.GdkFileList)(gextras.StructNative(unsafe.Pointer(fileList)))
+
+	_cret = C.gdk_file_list_get_files(_arg0)
+	runtime.KeepAlive(fileList)
+
+	var _sList []*gio.File // out
+
+	_sList = make([]*gio.File, 0, gextras.SListSize(unsafe.Pointer(_cret)))
+	gextras.MoveSList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
+		src := (*C.GFile)(v)
+		var dst *gio.File // out
+		{
+			obj := coreglib.Take(unsafe.Pointer(src))
+			dst = &gio.File{
+				Object: obj,
+			}
+		}
+		_sList = append(_sList, dst)
+	})
+
+	return _sList
 }
 
 // FrameTimings: GdkFrameTimings object holds timing information for a single
@@ -17140,12 +19163,12 @@ func (k *KeymapKey) SetLevel(level int) {
 // PaintableInterface: list of functions that can be implemented for the
 // GdkPaintable interface.
 //
-// Note that apart from the PaintableInterface.snapshot() function, no virtual
+// Note that apart from the gdk.Paintable.Snapshot() function, no virtual
 // function of this interface is mandatory to implement, though it is a good
-// idea to implement PaintableInterface.get_current_image() for non-static
-// paintables and PaintableInterface.get_flags() if the image is not dynamic
-// as the default implementation returns no flags and that will make the
-// implementation likely quite slow.
+// idea to implement gdk.Paintable.GetCurrentImage() for non-static paintables
+// and gdk.Paintable.GetFlags() if the image is not dynamic as the default
+// implementation returns no flags and that will make the implementation likely
+// quite slow.
 //
 // An instance of this type is always passed by reference.
 type PaintableInterface struct {
@@ -17184,10 +19207,11 @@ type paintableInterface struct {
 // Ultimatively, it is up to the windowing system to determine the position
 // and size of the popup. You can learn about the result by calling
 // gdk.Popup.GetPositionX(), gdk.Popup.GetPositionY(), gdk.Popup.GetRectAnchor()
-// and gdk.Popup.GetSurfaceAnchor() after the popup has been presented. This can
-// be used to adjust the rendering. For example, gtk.Popover changes its arrow
-// position accordingly. But you have to be careful avoid changing the size of
-// the popover, or it has to be presented again.
+// and gdk.Popup.GetSurfaceAnchor() after the popup has been presented.
+// This can be used to adjust the rendering. For example, GtkPopover
+// (../gtk4/class.Popover.html) changes its arrow position accordingly. But you
+// have to be careful avoid changing the size of the popover, or it has to be
+// presented again.
 //
 // An instance of this type is always passed by reference.
 type PopupLayout struct {
@@ -17800,7 +19824,7 @@ func (rgba *RGBA) IsOpaque() bool {
 //
 // The string can be either one of:
 //
-// - A standard name (Taken from the X11 rgb.txt file).
+// - A standard name (Taken from the CSS specification).
 //
 // - A hexadecimal value in the form “\#rgb”, “\#rrggbb”, “\#rrrgggbbb” or
 // ”\#rrrrggggbbbb”
@@ -17812,6 +19836,10 @@ func (rgba *RGBA) IsOpaque() bool {
 // opacity)
 //
 // - A RGBA color in the form “rgba(r,g,b,a)”
+//
+// - A HSL color in the form "hsl(hue, saturation, lightness)"
+//
+// - A HSLA color in the form "hsla(hue, saturation, lightness, alpha)"
 //
 // Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
@@ -17990,7 +20018,7 @@ func (r *Rectangle) SetHeight(height int) {
 	*valptr = C.int(height)
 }
 
-// ContainsPoint returns UE if rect contains the point described by x and y.
+// ContainsPoint returns TRUE if rect contains the point described by x and y.
 //
 // The function takes the following parameters:
 //
@@ -17999,7 +20027,7 @@ func (r *Rectangle) SetHeight(height int) {
 //
 // The function returns the following values:
 //
-//   - ok if rect contains the point.
+//   - ok: TRUE if rect contains the point.
 func (rect *Rectangle) ContainsPoint(x int, y int) bool {
 	var _arg0 *C.GdkRectangle // out
 	var _arg1 C.int           // out
@@ -18068,8 +20096,7 @@ func (rect1 *Rectangle) Equal(rect2 *Rectangle) bool {
 //
 // The function returns the following values:
 //
-//   - dest (optional): return location for the intersection of src1 and src2,
-//     or NULL.
+//   - dest (optional): return location for the intersection of src1 and src2.
 //   - ok: TRUE if the rectangles intersect.
 func (src1 *Rectangle) Intersect(src2 *Rectangle) (*Rectangle, bool) {
 	var _arg0 *C.GdkRectangle // out
@@ -18130,7 +20157,221 @@ func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	return _dest
 }
 
-// TimeCoord stores a single event in a motion history.
+// TextureDownloader: GdkTextureDownloader is used to download the contents of a
+// gdk.Texture.
+//
+// It is intended to be created as a short-term object for a single download,
+// but can be used for multiple downloads of different textures or with
+// different settings.
+//
+// GdkTextureDownloader can be used to convert data between different formats.
+// Create a GdkTexture for the existing format and then download it in a
+// different format.
+//
+// An instance of this type is always passed by reference.
+type TextureDownloader struct {
+	*textureDownloader
+}
+
+// textureDownloader is the struct that's finalized.
+type textureDownloader struct {
+	native *C.GdkTextureDownloader
+}
+
+func marshalTextureDownloader(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &TextureDownloader{&textureDownloader{(*C.GdkTextureDownloader)(b)}}, nil
+}
+
+// NewTextureDownloader constructs a struct TextureDownloader.
+func NewTextureDownloader(texture Texturer) *TextureDownloader {
+	var _arg1 *C.GdkTexture           // out
+	var _cret *C.GdkTextureDownloader // in
+
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+
+	_cret = C.gdk_texture_downloader_new(_arg1)
+	runtime.KeepAlive(texture)
+
+	var _textureDownloader *TextureDownloader // out
+
+	_textureDownloader = (*TextureDownloader)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_textureDownloader)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_texture_downloader_free((*C.GdkTextureDownloader)(intern.C))
+		},
+	)
+
+	return _textureDownloader
+}
+
+// Copy creates a copy of the downloader.
+//
+// This function is meant for language bindings.
+//
+// The function returns the following values:
+//
+//   - textureDownloader: copy of the downloader.
+func (self *TextureDownloader) Copy() *TextureDownloader {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _cret *C.GdkTextureDownloader // in
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_texture_downloader_copy(_arg0)
+	runtime.KeepAlive(self)
+
+	var _textureDownloader *TextureDownloader // out
+
+	_textureDownloader = (*TextureDownloader)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_textureDownloader)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_texture_downloader_free((*C.GdkTextureDownloader)(intern.C))
+		},
+	)
+
+	return _textureDownloader
+}
+
+// DownloadBytes downloads the given texture pixels into a GBytes. The rowstride
+// will be stored in the stride value.
+//
+// This function will abort if it tries to download a large texture and fails
+// to allocate memory. If you think that may happen, you should handle memory
+// allocation yourself and use gdk.TextureDownloader.DownloadInto() once
+// allocation succeeded.
+//
+// The function returns the following values:
+//
+//   - outStride: stride of the resulting data in bytes.
+//   - bytes: downloaded pixels.
+func (self *TextureDownloader) DownloadBytes() (uint, *glib.Bytes) {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _arg1 C.gsize                 // in
+	var _cret *C.GBytes               // in
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_texture_downloader_download_bytes(_arg0, &_arg1)
+	runtime.KeepAlive(self)
+
+	var _outStride uint    // out
+	var _bytes *glib.Bytes // out
+
+	_outStride = uint(_arg1)
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _outStride, _bytes
+}
+
+// Format gets the format that the data will be downloaded in.
+//
+// The function returns the following values:
+//
+//   - memoryFormat: format of the download.
+func (self *TextureDownloader) Format() MemoryFormat {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _cret C.GdkMemoryFormat       // in
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_texture_downloader_get_format(_arg0)
+	runtime.KeepAlive(self)
+
+	var _memoryFormat MemoryFormat // out
+
+	_memoryFormat = MemoryFormat(_cret)
+
+	return _memoryFormat
+}
+
+// Texture gets the texture that the downloader will download.
+//
+// The function returns the following values:
+//
+//   - texture to download.
+func (self *TextureDownloader) Texture() Texturer {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _cret *C.GdkTexture           // in
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_texture_downloader_get_texture(_arg0)
+	runtime.KeepAlive(self)
+
+	var _texture Texturer // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Texturer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Texturer)
+			return ok
+		})
+		rv, ok := casted.(Texturer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
+		}
+		_texture = rv
+	}
+
+	return _texture
+}
+
+// SetFormat sets the format the downloader will download.
+//
+// By default, GDK_MEMORY_DEFAULT is set.
+//
+// The function takes the following parameters:
+//
+//   - format to use.
+func (self *TextureDownloader) SetFormat(format MemoryFormat) {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _arg1 C.GdkMemoryFormat       // out
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.GdkMemoryFormat(format)
+
+	C.gdk_texture_downloader_set_format(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(format)
+}
+
+// SetTexture changes the texture the downloader will download.
+//
+// The function takes the following parameters:
+//
+//   - texture: new texture to download.
+func (self *TextureDownloader) SetTexture(texture Texturer) {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _arg1 *C.GdkTexture           // out
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+
+	C.gdk_texture_downloader_set_texture(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(texture)
+}
+
+// TimeCoord: GdkTimeCoord stores a single event in a motion history.
+//
+// To check whether an axis is present, check whether the corresponding flag
+// from the gdk.AxisFlags enumeration is set in the flags To access individual
+// axis values, use the values of the values of the gdk.AxisUse enumerations as
+// indices.
 //
 // An instance of this type is always passed by reference.
 type TimeCoord struct {
@@ -18150,7 +20391,7 @@ func (t *TimeCoord) Time() uint32 {
 	return _v
 }
 
-// Flags indicating what axes are present.
+// Flags indicating what axes are present, see gdk.AxisFlags.
 func (t *TimeCoord) Flags() AxisFlags {
 	valptr := &t.native.flags
 	var _v AxisFlags // out
@@ -18158,7 +20399,7 @@ func (t *TimeCoord) Flags() AxisFlags {
 	return _v
 }
 
-// Axes axis values.
+// Axes axis values, indexed by gdk.AxisUse.
 func (t *TimeCoord) Axes() [12]float64 {
 	valptr := &t.native.axes
 	var _v [12]float64 // out
@@ -18214,7 +20455,7 @@ func NewToplevelLayout() *ToplevelLayout {
 	return _toplevelLayout
 }
 
-// Copy: create a new ToplevelLayout and copy the contents of layout into it.
+// Copy: create a new GdkToplevelLayout and copy the contents of layout into it.
 //
 // The function returns the following values:
 //
@@ -18245,7 +20486,7 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 //
 // The function takes the following parameters:
 //
-//   - other ToplevelLayout.
+//   - other GdkToplevelLayout.
 //
 // The function returns the following values:
 //

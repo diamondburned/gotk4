@@ -2029,7 +2029,7 @@ func NewMatrixAlloc() *Matrix {
 // specification (http://dev.w3.org/csswg/css-transforms/); specifically,
 // the decomposition code is based on the equivalent code published
 // in "Graphics Gems II", edited by Jim Arvo, and available online
-// (http://tog.acm.org/resources/GraphicsGems/gemsii/unmatrix.c).
+// (http://web.archive.org/web/20150512160205/http://tog.acm.org/resources/GraphicsGems/gemsii/unmatrix.c).
 //
 // The function returns the following values:
 //

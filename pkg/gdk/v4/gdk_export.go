@@ -115,14 +115,12 @@ func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.GdkContentProvider, arg1
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ContentProviderOverrides.Value, got none")
 	}
 
-	var _value *coreglib.Value // out
+	value, _goerr := overrides.Value()
 
-	_value = coreglib.ValueFromNative(unsafe.Pointer(arg1))
-
-	_goerr := overrides.Value(_value)
-
+	var _ coreglib.Value
 	var _ error
 
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}

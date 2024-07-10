@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"runtime"
 	_ "runtime/cgo"
+	"strings"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
@@ -25,17 +26,25 @@ import (
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
 // extern void _gotk4_gsk4_ParseErrorFunc(GskParseLocation*, GskParseLocation*, GError*, gpointer);
+// extern gboolean _gotk4_gsk4_PathForEachFunc(GskPathOperation, graphene_point_t*, gsize, float, gpointer);
 import "C"
 
 // GType values.
 var (
 	GTypeBlendMode                   = coreglib.Type(C.gsk_blend_mode_get_type())
 	GTypeCorner                      = coreglib.Type(C.gsk_corner_get_type())
+	GTypeFillRule                    = coreglib.Type(C.gsk_fill_rule_get_type())
 	GTypeGLUniformType               = coreglib.Type(C.gsk_gl_uniform_type_get_type())
+	GTypeLineCap                     = coreglib.Type(C.gsk_line_cap_get_type())
+	GTypeLineJoin                    = coreglib.Type(C.gsk_line_join_get_type())
+	GTypeMaskMode                    = coreglib.Type(C.gsk_mask_mode_get_type())
+	GTypePathDirection               = coreglib.Type(C.gsk_path_direction_get_type())
+	GTypePathOperation               = coreglib.Type(C.gsk_path_operation_get_type())
 	GTypeRenderNodeType              = coreglib.Type(C.gsk_render_node_type_get_type())
 	GTypeScalingFilter               = coreglib.Type(C.gsk_scaling_filter_get_type())
 	GTypeSerializationError          = coreglib.Type(C.gsk_serialization_error_get_type())
 	GTypeTransformCategory           = coreglib.Type(C.gsk_transform_category_get_type())
+	GTypePathForEachFlags            = coreglib.Type(C.gsk_path_foreach_flags_get_type())
 	GTypeBlendNode                   = coreglib.Type(C.gsk_blend_node_get_type())
 	GTypeBlurNode                    = coreglib.Type(C.gsk_blur_node_get_type())
 	GTypeBorderNode                  = coreglib.Type(C.gsk_border_node_get_type())
@@ -48,10 +57,13 @@ var (
 	GTypeContainerNode               = coreglib.Type(C.gsk_container_node_get_type())
 	GTypeCrossFadeNode               = coreglib.Type(C.gsk_cross_fade_node_get_type())
 	GTypeDebugNode                   = coreglib.Type(C.gsk_debug_node_get_type())
+	GTypeFillNode                    = coreglib.Type(C.gsk_fill_node_get_type())
 	GTypeGLShader                    = coreglib.Type(C.gsk_gl_shader_get_type())
 	GTypeGLShaderNode                = coreglib.Type(C.gsk_gl_shader_node_get_type())
 	GTypeInsetShadowNode             = coreglib.Type(C.gsk_inset_shadow_node_get_type())
 	GTypeLinearGradientNode          = coreglib.Type(C.gsk_linear_gradient_node_get_type())
+	GTypeMaskNode                    = coreglib.Type(C.gsk_mask_node_get_type())
+	GTypeNGLRenderer                 = coreglib.Type(C.gsk_ngl_renderer_get_type())
 	GTypeOpacityNode                 = coreglib.Type(C.gsk_opacity_node_get_type())
 	GTypeOutsetShadowNode            = coreglib.Type(C.gsk_outset_shadow_node_get_type())
 	GTypeRadialGradientNode          = coreglib.Type(C.gsk_radial_gradient_node_get_type())
@@ -62,10 +74,18 @@ var (
 	GTypeRepeatingRadialGradientNode = coreglib.Type(C.gsk_repeating_radial_gradient_node_get_type())
 	GTypeRoundedClipNode             = coreglib.Type(C.gsk_rounded_clip_node_get_type())
 	GTypeShadowNode                  = coreglib.Type(C.gsk_shadow_node_get_type())
+	GTypeStrokeNode                  = coreglib.Type(C.gsk_stroke_node_get_type())
+	GTypeSubsurfaceNode              = coreglib.Type(C.gsk_subsurface_node_get_type())
 	GTypeTextNode                    = coreglib.Type(C.gsk_text_node_get_type())
 	GTypeTextureNode                 = coreglib.Type(C.gsk_texture_node_get_type())
+	GTypeTextureScaleNode            = coreglib.Type(C.gsk_texture_scale_node_get_type())
 	GTypeTransformNode               = coreglib.Type(C.gsk_transform_node_get_type())
+	GTypePath                        = coreglib.Type(C.gsk_path_get_type())
+	GTypePathBuilder                 = coreglib.Type(C.gsk_path_builder_get_type())
+	GTypePathMeasure                 = coreglib.Type(C.gsk_path_measure_get_type())
+	GTypePathPoint                   = coreglib.Type(C.gsk_path_point_get_type())
 	GTypeShaderArgsBuilder           = coreglib.Type(C.gsk_shader_args_builder_get_type())
+	GTypeStroke                      = coreglib.Type(C.gsk_stroke_get_type())
 	GTypeTransform                   = coreglib.Type(C.gsk_transform_get_type())
 )
 
@@ -73,11 +93,18 @@ func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeBlendMode, F: marshalBlendMode},
 		coreglib.TypeMarshaler{T: GTypeCorner, F: marshalCorner},
+		coreglib.TypeMarshaler{T: GTypeFillRule, F: marshalFillRule},
 		coreglib.TypeMarshaler{T: GTypeGLUniformType, F: marshalGLUniformType},
+		coreglib.TypeMarshaler{T: GTypeLineCap, F: marshalLineCap},
+		coreglib.TypeMarshaler{T: GTypeLineJoin, F: marshalLineJoin},
+		coreglib.TypeMarshaler{T: GTypeMaskMode, F: marshalMaskMode},
+		coreglib.TypeMarshaler{T: GTypePathDirection, F: marshalPathDirection},
+		coreglib.TypeMarshaler{T: GTypePathOperation, F: marshalPathOperation},
 		coreglib.TypeMarshaler{T: GTypeRenderNodeType, F: marshalRenderNodeType},
 		coreglib.TypeMarshaler{T: GTypeScalingFilter, F: marshalScalingFilter},
 		coreglib.TypeMarshaler{T: GTypeSerializationError, F: marshalSerializationError},
 		coreglib.TypeMarshaler{T: GTypeTransformCategory, F: marshalTransformCategory},
+		coreglib.TypeMarshaler{T: GTypePathForEachFlags, F: marshalPathForEachFlags},
 		coreglib.TypeMarshaler{T: GTypeBlendNode, F: marshalBlendNode},
 		coreglib.TypeMarshaler{T: GTypeBlurNode, F: marshalBlurNode},
 		coreglib.TypeMarshaler{T: GTypeBorderNode, F: marshalBorderNode},
@@ -90,10 +117,13 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeContainerNode, F: marshalContainerNode},
 		coreglib.TypeMarshaler{T: GTypeCrossFadeNode, F: marshalCrossFadeNode},
 		coreglib.TypeMarshaler{T: GTypeDebugNode, F: marshalDebugNode},
+		coreglib.TypeMarshaler{T: GTypeFillNode, F: marshalFillNode},
 		coreglib.TypeMarshaler{T: GTypeGLShader, F: marshalGLShader},
 		coreglib.TypeMarshaler{T: GTypeGLShaderNode, F: marshalGLShaderNode},
 		coreglib.TypeMarshaler{T: GTypeInsetShadowNode, F: marshalInsetShadowNode},
 		coreglib.TypeMarshaler{T: GTypeLinearGradientNode, F: marshalLinearGradientNode},
+		coreglib.TypeMarshaler{T: GTypeMaskNode, F: marshalMaskNode},
+		coreglib.TypeMarshaler{T: GTypeNGLRenderer, F: marshalNGLRenderer},
 		coreglib.TypeMarshaler{T: GTypeOpacityNode, F: marshalOpacityNode},
 		coreglib.TypeMarshaler{T: GTypeOutsetShadowNode, F: marshalOutsetShadowNode},
 		coreglib.TypeMarshaler{T: GTypeRadialGradientNode, F: marshalRadialGradientNode},
@@ -104,10 +134,18 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeRepeatingRadialGradientNode, F: marshalRepeatingRadialGradientNode},
 		coreglib.TypeMarshaler{T: GTypeRoundedClipNode, F: marshalRoundedClipNode},
 		coreglib.TypeMarshaler{T: GTypeShadowNode, F: marshalShadowNode},
+		coreglib.TypeMarshaler{T: GTypeStrokeNode, F: marshalStrokeNode},
+		coreglib.TypeMarshaler{T: GTypeSubsurfaceNode, F: marshalSubsurfaceNode},
 		coreglib.TypeMarshaler{T: GTypeTextNode, F: marshalTextNode},
 		coreglib.TypeMarshaler{T: GTypeTextureNode, F: marshalTextureNode},
+		coreglib.TypeMarshaler{T: GTypeTextureScaleNode, F: marshalTextureScaleNode},
 		coreglib.TypeMarshaler{T: GTypeTransformNode, F: marshalTransformNode},
+		coreglib.TypeMarshaler{T: GTypePath, F: marshalPath},
+		coreglib.TypeMarshaler{T: GTypePathBuilder, F: marshalPathBuilder},
+		coreglib.TypeMarshaler{T: GTypePathMeasure, F: marshalPathMeasure},
+		coreglib.TypeMarshaler{T: GTypePathPoint, F: marshalPathPoint},
 		coreglib.TypeMarshaler{T: GTypeShaderArgsBuilder, F: marshalShaderArgsBuilder},
+		coreglib.TypeMarshaler{T: GTypeStroke, F: marshalStroke},
 		coreglib.TypeMarshaler{T: GTypeTransform, F: marshalTransform},
 	})
 }
@@ -116,7 +154,7 @@ func init() {
 //
 // The implementation of each blend mode is deferred to the rendering pipeline.
 //
-// See https://www.w3.org/TR/compositing-1/#blending for more information on
+// See <https://www.w3.org/TR/compositing-1/#blending> for more information on
 // blending and blend modes.
 type BlendMode C.gint
 
@@ -213,7 +251,7 @@ func (b BlendMode) String() string {
 	}
 }
 
-// Corner: corner indices used by RoundedRect.
+// Corner: corner indices used by GskRoundedRect.
 type Corner C.gint
 
 const (
@@ -244,6 +282,49 @@ func (c Corner) String() string {
 		return "BottomLeft"
 	default:
 		return fmt.Sprintf("Corner(%d)", c)
+	}
+}
+
+// FillRule: GskFillRule is used to select how paths are filled.
+//
+// Whether or not a point is included in the fill is determined by taking a
+// ray from that point to infinity and looking at intersections with the path.
+// The ray can be in any direction, as long as it doesn't pass through the end
+// point of a segment or have a tricky intersection such as intersecting tangent
+// to the path.
+//
+// (Note that filling is not actually implemented in this way. This is just a
+// description of the rule that is applied.)
+//
+// New entries may be added in future versions.
+type FillRule C.gint
+
+const (
+	// FillRuleWinding: if the path crosses the ray from left-to-right,
+	// counts +1. If the path crosses the ray from right to left, counts -1.
+	// (Left and right are determined from the perspective of looking along the
+	// ray from the starting point.) If the total count is non-zero, the point
+	// will be filled.
+	FillRuleWinding FillRule = iota
+	// FillRuleEvenOdd counts the total number of intersections, without regard
+	// to the orientation of the contour. If the total number of intersections
+	// is odd, the point will be filled.
+	FillRuleEvenOdd
+)
+
+func marshalFillRule(p uintptr) (interface{}, error) {
+	return FillRule(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for FillRule.
+func (f FillRule) String() string {
+	switch f {
+	case FillRuleWinding:
+		return "Winding"
+	case FillRuleEvenOdd:
+		return "EvenOdd"
+	default:
+		return fmt.Sprintf("FillRule(%d)", f)
 	}
 }
 
@@ -301,6 +382,223 @@ func (g GLUniformType) String() string {
 	}
 }
 
+// LineCap specifies how to render the start and end points of contours or
+// dashes when stroking.
+//
+// The default line cap style is GSK_LINE_CAP_BUTT.
+//
+// New entries may be added in future versions.
+//
+// <figure> <picture> <source srcset="caps-dark.png"
+// media="(prefers-color-scheme: dark)"> <img alt="Line Cap Styles"
+// src="caps-light.png"> </picture> <figcaption>GSK_LINE_CAP_BUTT,
+// GSK_LINE_CAP_ROUND, GSK_LINE_CAP_SQUARE</figcaption> </figure>.
+type LineCap C.gint
+
+const (
+	// LineCapButt: start and stop the line exactly at the start and end point.
+	LineCapButt LineCap = iota
+	// LineCapRound: use a round ending, the center of the circle is the start
+	// or end point.
+	LineCapRound
+	// LineCapSquare: use squared ending, the center of the square is the start
+	// or end point.
+	LineCapSquare
+)
+
+func marshalLineCap(p uintptr) (interface{}, error) {
+	return LineCap(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for LineCap.
+func (l LineCap) String() string {
+	switch l {
+	case LineCapButt:
+		return "Butt"
+	case LineCapRound:
+		return "Round"
+	case LineCapSquare:
+		return "Square"
+	default:
+		return fmt.Sprintf("LineCap(%d)", l)
+	}
+}
+
+// LineJoin specifies how to render the junction of two lines when stroking.
+//
+// The default line join style is GSK_LINE_JOIN_MITER.
+//
+// New entries may be added in future versions.
+//
+// <figure> <picture> <source srcset="join-dark.png"
+// media="(prefers-color-scheme: dark)"> <img alt="Line Join Styles"
+// src="join-light.png"> </picture> <figcaption>GSK_LINE_JOINT_MITER,
+// GSK_LINE_JOINT_ROUND, GSK_LINE_JOIN_BEVEL</figcaption> </figure>.
+type LineJoin C.gint
+
+const (
+	// LineJoinMiter: use a sharp angled corner.
+	LineJoinMiter LineJoin = iota
+	// LineJoinRound: use a round join, the center of the circle is the join
+	// point.
+	LineJoinRound
+	// LineJoinBevel: use a cut-off join, the join is cut off at half the line
+	// width from the joint point.
+	LineJoinBevel
+)
+
+func marshalLineJoin(p uintptr) (interface{}, error) {
+	return LineJoin(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for LineJoin.
+func (l LineJoin) String() string {
+	switch l {
+	case LineJoinMiter:
+		return "Miter"
+	case LineJoinRound:
+		return "Round"
+	case LineJoinBevel:
+		return "Bevel"
+	default:
+		return fmt.Sprintf("LineJoin(%d)", l)
+	}
+}
+
+// MaskMode: mask modes available for mask nodes.
+type MaskMode C.gint
+
+const (
+	// MaskModeAlpha: use the alpha channel of the mask.
+	MaskModeAlpha MaskMode = iota
+	// MaskModeInvertedAlpha: use the inverted alpha channel of the mask.
+	MaskModeInvertedAlpha
+	// MaskModeLuminance: use the luminance of the mask, multiplied by mask
+	// alpha.
+	MaskModeLuminance
+	// MaskModeInvertedLuminance: use the inverted luminance of the mask,
+	// multiplied by mask alpha.
+	MaskModeInvertedLuminance
+)
+
+func marshalMaskMode(p uintptr) (interface{}, error) {
+	return MaskMode(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for MaskMode.
+func (m MaskMode) String() string {
+	switch m {
+	case MaskModeAlpha:
+		return "Alpha"
+	case MaskModeInvertedAlpha:
+		return "InvertedAlpha"
+	case MaskModeLuminance:
+		return "Luminance"
+	case MaskModeInvertedLuminance:
+		return "InvertedLuminance"
+	default:
+		return fmt.Sprintf("MaskMode(%d)", m)
+	}
+}
+
+// PathDirection values of the GskPathDirection enum are used to pick one of the
+// four tangents at a given point on the path.
+//
+// Note that the directions for GSK_PATH_FROM_START/GSK_PATH_TO_END and
+// GSK_PATH_TO_START/GSK_PATH_FROM_END will coincide for smooth points. Only
+// sharp turns will exhibit four different directions.
+//
+// <picture> <source srcset="directions-dark.png" media="(prefers-color-scheme:
+// dark)"> <img alt="Path Tangents" src="directions-light.png"> </picture>.
+type PathDirection C.gint
+
+const (
+	// PathFromStart: tangent in path direction of the incoming side of the
+	// path.
+	PathFromStart PathDirection = iota
+	// PathToStart: tangent against path direction of the incoming side of the
+	// path.
+	PathToStart
+	// PathToEnd: tangent in path direction of the outgoing side of the path.
+	PathToEnd
+	// PathFromEnd: tangent against path direction of the outgoing side of the
+	// path.
+	PathFromEnd
+)
+
+func marshalPathDirection(p uintptr) (interface{}, error) {
+	return PathDirection(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for PathDirection.
+func (p PathDirection) String() string {
+	switch p {
+	case PathFromStart:
+		return "FromStart"
+	case PathToStart:
+		return "ToStart"
+	case PathToEnd:
+		return "ToEnd"
+	case PathFromEnd:
+		return "FromEnd"
+	default:
+		return fmt.Sprintf("PathDirection(%d)", p)
+	}
+}
+
+// PathOperation: path operations are used to describe the segments of a
+// GskPath.
+//
+// More values may be added in the future.
+type PathOperation C.gint
+
+const (
+	// PathMove: move-to operation, with 1 point describing the target point.
+	PathMove PathOperation = iota
+	// PathClose: close operation ending the current contour with a line back to
+	// the starting point. Two points describe the start and end of the line.
+	PathClose
+	// PathLine: line-to operation, with 2 points describing the start and end
+	// point of a straight line.
+	PathLine
+	// PathQuad: curve-to operation describing a quadratic Bézier curve with 3
+	// points describing the start point, the control point and the end point of
+	// the curve.
+	PathQuad
+	// PathCubic: curve-to operation describing a cubic Bézier curve with 4
+	// points describing the start point, the two control points and the end
+	// point of the curve.
+	PathCubic
+	// PathConic: rational quadratic Bézier curve with 3 points describing the
+	// start point, control point and end point of the curve. A weight for the
+	// curve will be passed, too.
+	PathConic
+)
+
+func marshalPathOperation(p uintptr) (interface{}, error) {
+	return PathOperation(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for PathOperation.
+func (p PathOperation) String() string {
+	switch p {
+	case PathMove:
+		return "Move"
+	case PathClose:
+		return "Close"
+	case PathLine:
+		return "Line"
+	case PathQuad:
+		return "Quad"
+	case PathCubic:
+		return "Cubic"
+	case PathConic:
+		return "Conic"
+	default:
+		return fmt.Sprintf("PathOperation(%d)", p)
+	}
+}
+
 // RenderNodeType: type of a node determines what the node is rendering.
 type RenderNodeType C.gint
 
@@ -309,7 +607,7 @@ const (
 	NotARenderNodeType RenderNodeType = iota
 	// ContainerNodeType: node containing a stack of children.
 	ContainerNodeType
-	// CairoNodeType: node drawing a #cairo_surface_t.
+	// CairoNodeType: node drawing a cairo_surface_t.
 	CairoNodeType
 	// ColorNodeType: node drawing a single color rectangle.
 	ColorNodeType
@@ -327,7 +625,7 @@ const (
 	ConicGradientNodeType
 	// BorderNodeType: node stroking a border around an area.
 	BorderNodeType
-	// TextureNodeType: node drawing a Texture.
+	// TextureNodeType: node drawing a GdkTexture.
 	TextureNodeType
 	// InsetShadowNodeType: node drawing an inset shadow.
 	InsetShadowNodeType
@@ -360,6 +658,17 @@ const (
 	DebugNodeType
 	// GLShaderNodeType: node that uses OpenGL fragment shaders to render.
 	GLShaderNodeType
+	// TextureScaleNodeType: node drawing a GdkTexture scaled and filtered.
+	TextureScaleNodeType
+	// MaskNodeType: node that masks one child with another.
+	MaskNodeType
+	// FillNodeType: node that fills a path.
+	FillNodeType
+	// StrokeNodeType: node that strokes a path.
+	StrokeNodeType
+	// SubsurfaceNodeType: node that possibly redirects part of the scene graph
+	// to a subsurface.
+	SubsurfaceNodeType
 )
 
 func marshalRenderNodeType(p uintptr) (interface{}, error) {
@@ -421,6 +730,16 @@ func (r RenderNodeType) String() string {
 		return "DebugNode"
 	case GLShaderNodeType:
 		return "GLShaderNode"
+	case TextureScaleNodeType:
+		return "TextureScaleNode"
+	case MaskNodeType:
+		return "MaskNode"
+	case FillNodeType:
+		return "FillNode"
+	case StrokeNodeType:
+		return "StrokeNode"
+	case SubsurfaceNodeType:
+		return "SubsurfaceNode"
 	default:
 		return fmt.Sprintf("RenderNodeType(%d)", r)
 	}
@@ -564,9 +883,205 @@ func (t TransformCategory) String() string {
 	}
 }
 
+// PathForEachFlags flags that can be passed to gsk_path_foreach() to influence
+// what kinds of operations the path is decomposed into.
+//
+// By default, gsk.Path.ForEach() will only emit a path with all operations
+// flattened to straight lines to allow for maximum compatibility. The only
+// operations emitted will be GSK_PATH_MOVE, GSK_PATH_LINE and GSK_PATH_CLOSE.
+type PathForEachFlags C.guint
+
+const (
+	// PathForEachAllowOnlyLines: default behavior, only allow lines.
+	PathForEachAllowOnlyLines PathForEachFlags = 0b0
+	// PathForEachAllowQuad: allow emission of GSK_PATH_QUAD operations.
+	PathForEachAllowQuad PathForEachFlags = 0b1
+	// PathForEachAllowCubic: allow emission of GSK_PATH_CUBIC operations.
+	PathForEachAllowCubic PathForEachFlags = 0b10
+	// PathForEachAllowConic: allow emission of GSK_PATH_CONIC operations.
+	PathForEachAllowConic PathForEachFlags = 0b100
+)
+
+func marshalPathForEachFlags(p uintptr) (interface{}, error) {
+	return PathForEachFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+}
+
+// String returns the names in string for PathForEachFlags.
+func (p PathForEachFlags) String() string {
+	if p == 0 {
+		return "PathForEachFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(90)
+
+	for p != 0 {
+		next := p & (p - 1)
+		bit := p - next
+
+		switch bit {
+		case PathForEachAllowOnlyLines:
+			builder.WriteString("OnlyLines|")
+		case PathForEachAllowQuad:
+			builder.WriteString("Quad|")
+		case PathForEachAllowCubic:
+			builder.WriteString("Cubic|")
+		case PathForEachAllowConic:
+			builder.WriteString("Conic|")
+		default:
+			builder.WriteString(fmt.Sprintf("PathForEachFlags(0b%b)|", bit))
+		}
+
+		p = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if p contains other.
+func (p PathForEachFlags) Has(other PathForEachFlags) bool {
+	return (p & other) == other
+}
+
 // ParseErrorFunc: type of callback that is called when an error occurs during
 // node deserialization.
 type ParseErrorFunc func(start, end *ParseLocation, err error)
+
+// PathForEachFunc: prototype of the callback to iterate through the operations
+// of a path.
+//
+// For each operation, the callback is given the op itself, the points that
+// the operation is applied to in pts, and a weight for conic curves. The n_pts
+// argument is somewhat redundant, since the number of points can be inferred
+// from the operation.
+//
+// Each contour of the path starts with a GSK_PATH_MOVE operation. Closed
+// contours end with a GSK_PATH_CLOSE operation.
+type PathForEachFunc func(op PathOperation, pts *graphene.Point, nPts uint, weight float32) (ok bool)
+
+// ValueDupRenderNode retrieves the GskRenderNode stored inside the given value,
+// and acquires a reference to it.
+//
+// The function takes the following parameters:
+//
+//   - value: gobject.Value initialized with type GSK_TYPE_RENDER_NODE.
+//
+// The function returns the following values:
+//
+//   - renderNode (optional): GskRenderNode.
+func ValueDupRenderNode(value *coreglib.Value) RenderNoder {
+	var _arg1 *C.GValue        // out
+	var _cret *C.GskRenderNode // in
+
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	_cret = C.gsk_value_dup_render_node(_arg1)
+	runtime.KeepAlive(value)
+
+	var _renderNode RenderNoder // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.AssumeOwnership(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(RenderNoder)
+				return ok
+			})
+			rv, ok := casted.(RenderNoder)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gsk.RenderNoder")
+			}
+			_renderNode = rv
+		}
+	}
+
+	return _renderNode
+}
+
+// ValueGetRenderNode retrieves the GskRenderNode stored inside the given value.
+//
+// The function takes the following parameters:
+//
+//   - value: GValue initialized with type GSK_TYPE_RENDER_NODE.
+//
+// The function returns the following values:
+//
+//   - renderNode (optional): GskRenderNode.
+func ValueGetRenderNode(value *coreglib.Value) RenderNoder {
+	var _arg1 *C.GValue        // out
+	var _cret *C.GskRenderNode // in
+
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+
+	_cret = C.gsk_value_get_render_node(_arg1)
+	runtime.KeepAlive(value)
+
+	var _renderNode RenderNoder // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(RenderNoder)
+				return ok
+			})
+			rv, ok := casted.(RenderNoder)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gsk.RenderNoder")
+			}
+			_renderNode = rv
+		}
+	}
+
+	return _renderNode
+}
+
+// ValueSetRenderNode stores the given GskRenderNode inside value.
+//
+// The gobject.Value will acquire a reference to the node.
+//
+// The function takes the following parameters:
+//
+//   - value: gobject.Value initialized with type GSK_TYPE_RENDER_NODE.
+//   - node: GskRenderNode.
+func ValueSetRenderNode(value *coreglib.Value, node RenderNoder) {
+	var _arg1 *C.GValue        // out
+	var _arg2 *C.GskRenderNode // out
+
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg2 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	C.gsk_value_set_render_node(_arg1, _arg2)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(node)
+}
+
+// ValueTakeRenderNode stores the given GskRenderNode inside value.
+//
+// This function transfers the ownership of the node to the GValue.
+//
+// The function takes the following parameters:
+//
+//   - value: gobject.Value initialized with type GSK_TYPE_RENDER_NODE.
+//   - node (optional): GskRenderNode.
+func ValueTakeRenderNode(value *coreglib.Value, node RenderNoder) {
+	var _arg1 *C.GValue        // out
+	var _arg2 *C.GskRenderNode // out
+
+	_arg1 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	if node != nil {
+		_arg2 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(node).Native()))
+	}
+
+	C.gsk_value_take_render_node(_arg1, _arg2)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(node)
+}
 
 // BlendNode: render node applying a blending function between its two child
 // nodes.
@@ -747,7 +1262,7 @@ func marshalBlurNode(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - child node to blur.
-//   - radius: blur radius.
+//   - radius: blur radius. Must be positive.
 //
 // The function returns the following values:
 //
@@ -858,7 +1373,7 @@ func marshalBorderNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//   - outline describing the outline of the border.
+//   - outline: GskRoundedRect describing the outline of the border.
 //   - borderWidth: stroke width of the border on the top, right, bottom and
 //     left side respectively.
 //   - borderColor: color used on the top, right, bottom and left side.
@@ -898,8 +1413,8 @@ func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]
 //
 // The function returns the following values:
 //
-//   - rgbA: array of 4 RGBA structs for the top, right, bottom and left color
-//     of the border.
+//   - rgbA: array of 4 GdkRGBA structs for the top, right, bottom and left
+//     color of the border.
 func (node *BorderNode) Colors() *gdk.RGBA {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GdkRGBA       // in
@@ -1246,11 +1761,12 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 // NewColorMatrixNode creates a GskRenderNode that will drawn the child with
 // color_matrix.
 //
-// In particular, the node will transform the operation
+// In particular, the node will transform colors by applying
 //
-//	pixel = color_matrix * pixel + color_offset
+//	pixel = transpose(color_matrix) * pixel + color_offset
 //
-// for every pixel.
+// for every pixel. The transformation operates on unpremultiplied colors,
+// with color components ordered R, G, B, A.
 //
 // The function takes the following parameters:
 //
@@ -2018,6 +2534,150 @@ func (node *DebugNode) Message() string {
 	return _utf8
 }
 
+// FillNode: render node filling the area given by gsk.Path and gsk.FillRule
+// with the child node.
+type FillNode struct {
+	_ [0]func() // equal guard
+	RenderNode
+}
+
+var (
+	_ RenderNoder = (*FillNode)(nil)
+)
+
+func wrapFillNode(obj *coreglib.Object) *FillNode {
+	return &FillNode{
+		RenderNode: RenderNode{
+			Object: obj,
+		},
+	}
+}
+
+func marshalFillNode(p uintptr) (interface{}, error) {
+	return wrapFillNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewFillNode creates a GskRenderNode that will fill the child in the area
+// given by path and fill_rule.
+//
+// The function takes the following parameters:
+//
+//   - child: node to fill the area with.
+//   - path describing the area to fill.
+//   - fillRule: fill rule to use.
+//
+// The function returns the following values:
+//
+//   - fillNode: new GskRenderNode.
+func NewFillNode(child RenderNoder, path *Path, fillRule FillRule) *FillNode {
+	var _arg1 *C.GskRenderNode // out
+	var _arg2 *C.GskPath       // out
+	var _arg3 C.GskFillRule    // out
+	var _cret *C.GskRenderNode // in
+
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg3 = C.GskFillRule(fillRule)
+
+	_cret = C.gsk_fill_node_new(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(fillRule)
+
+	var _fillNode *FillNode // out
+
+	_fillNode = wrapFillNode(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _fillNode
+}
+
+// Child gets the child node that is getting drawn by the given node.
+//
+// The function returns the following values:
+//
+//   - renderNode: child that is getting drawn.
+func (node *FillNode) Child() RenderNoder {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskRenderNode // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_fill_node_get_child(_arg0)
+	runtime.KeepAlive(node)
+
+	var _renderNode RenderNoder // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(RenderNoder)
+			return ok
+		})
+		rv, ok := casted.(RenderNoder)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gsk.RenderNoder")
+		}
+		_renderNode = rv
+	}
+
+	return _renderNode
+}
+
+// FillRule retrieves the fill rule used to determine how the path is filled.
+//
+// The function returns the following values:
+//
+//   - fillRule: GskFillRule.
+func (node *FillNode) FillRule() FillRule {
+	var _arg0 *C.GskRenderNode // out
+	var _cret C.GskFillRule    // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_fill_node_get_fill_rule(_arg0)
+	runtime.KeepAlive(node)
+
+	var _fillRule FillRule // out
+
+	_fillRule = FillRule(_cret)
+
+	return _fillRule
+}
+
+// Path retrieves the path used to describe the area filled with the contents of
+// the node.
+//
+// The function returns the following values:
+//
+//   - path: GskPath.
+func (node *FillNode) Path() *Path {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskPath       // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_fill_node_get_path(_arg0)
+	runtime.KeepAlive(node)
+
+	var _path *Path // out
+
+	_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gsk_path_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_path)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_path_unref((*C.GskPath)(intern.C))
+		},
+	)
+
+	return _path
+}
+
 // GLShaderOverrides contains methods that are overridable.
 type GLShaderOverrides struct {
 }
@@ -2094,14 +2754,14 @@ func defaultGLShaderOverrides(v *GLShader) GLShaderOverrides {
 //	uniform sampler2D u_texture1;
 //	uniform sampler2D u_texture2;
 //
-// GTK uses the the "gsk" namespace in the symbols it uses in the shader,
-// so your code should not use any symbols with the prefix gsk or GSK. There are
-// some helper functions declared that you can use:
+// GTK uses the "gsk" namespace in the symbols it uses in the shader, so your
+// code should not use any symbols with the prefix gsk or GSK. There are some
+// helper functions declared that you can use:
 //
 //	vec4 GskTexture(sampler2D sampler, vec2 texCoords);
 //
 // This samples a texture (e.g. u_texture1) at the specified coordinates, and
-// containes some helper ifdefs to ensure that it works on all OpenGL versions.
+// contains some helper ifdefs to ensure that it works on all OpenGL versions.
 //
 // You can compile the shader yourself using gsk.GLShader.Compile(), otherwise
 // the GSK renderer will do it when it handling the glshader node. If errors
@@ -2571,7 +3231,7 @@ func (shader *GLShader) NUniforms() int {
 //
 // The function returns the following values:
 //
-//   - utf8: resource path for the shader, or NULL if none.
+//   - utf8 (optional): resource path for the shader.
 func (shader *GLShader) Resource() string {
 	var _arg0 *C.GskGLShader // out
 	var _cret *C.char        // in
@@ -2583,7 +3243,9 @@ func (shader *GLShader) Resource() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -2745,11 +3407,11 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//   - shader: GLShader.
+//   - shader: GskGLShader.
 //   - bounds: rectangle to render the shader into.
 //   - args arguments for the uniforms.
-//   - children: array of child nodes, these will be rendered to textures and
-//     used as input.
+//   - children (optional): array of child nodes, these will be rendered to
+//     textures and used as input.
 //
 // The function returns the following values:
 //
@@ -2765,13 +3427,15 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 	_arg1 = (*C.GskGLShader)(unsafe.Pointer(coreglib.InternObject(shader).Native()))
 	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
 	_arg3 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(args)))
-	_arg5 = (C.guint)(len(children))
-	_arg4 = (**C.GskRenderNode)(C.calloc(C.size_t(len(children)), C.size_t(unsafe.Sizeof(uint(0)))))
-	defer C.free(unsafe.Pointer(_arg4))
-	{
-		out := unsafe.Slice((**C.GskRenderNode)(_arg4), len(children))
-		for i := range children {
-			out[i] = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(children[i]).Native()))
+	if children != nil {
+		_arg5 = (C.guint)(len(children))
+		_arg4 = (**C.GskRenderNode)(C.calloc(C.size_t(len(children)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg4))
+		{
+			out := unsafe.Slice((**C.GskRenderNode)(_arg4), len(children))
+			for i := range children {
+				out[i] = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(children[i]).Native()))
+			}
 		}
 	}
 
@@ -2792,7 +3456,7 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 //
 // The function returns the following values:
 //
-//   - bytes with the uniform arguments.
+//   - bytes: GBytes with the uniform arguments.
 func (node *GLShaderNode) Args() *glib.Bytes {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GBytes        // in
@@ -2885,7 +3549,7 @@ func (node *GLShaderNode) NChildren() uint {
 //
 // The function returns the following values:
 //
-//   - glShader: GLShader shader.
+//   - glShader: GskGLShader shader.
 func (node *GLShaderNode) Shader() *GLShader {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GskGLShader   // in
@@ -3259,6 +3923,193 @@ func (node *LinearGradientNode) Start() *graphene.Point {
 	return _point
 }
 
+// MaskNode: render node masking one child node with another.
+type MaskNode struct {
+	_ [0]func() // equal guard
+	RenderNode
+}
+
+var (
+	_ RenderNoder = (*MaskNode)(nil)
+)
+
+func wrapMaskNode(obj *coreglib.Object) *MaskNode {
+	return &MaskNode{
+		RenderNode: RenderNode{
+			Object: obj,
+		},
+	}
+}
+
+func marshalMaskNode(p uintptr) (interface{}, error) {
+	return wrapMaskNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewMaskNode creates a GskRenderNode that will mask a given node by another.
+//
+// The mask_mode determines how the 'mask values' are derived from the colors of
+// the mask. Applying the mask consists of multiplying the 'mask value' with the
+// alpha of the source.
+//
+// The function takes the following parameters:
+//
+//   - source node to be drawn.
+//   - mask: node to be used as mask.
+//   - maskMode: mask mode to use.
+//
+// The function returns the following values:
+//
+//   - maskNode: new GskRenderNode.
+func NewMaskNode(source, mask RenderNoder, maskMode MaskMode) *MaskNode {
+	var _arg1 *C.GskRenderNode // out
+	var _arg2 *C.GskRenderNode // out
+	var _arg3 C.GskMaskMode    // out
+	var _cret *C.GskRenderNode // in
+
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg2 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(mask).Native()))
+	_arg3 = C.GskMaskMode(maskMode)
+
+	_cret = C.gsk_mask_node_new(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(mask)
+	runtime.KeepAlive(maskMode)
+
+	var _maskNode *MaskNode // out
+
+	_maskNode = wrapMaskNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _maskNode
+}
+
+// Mask retrieves the mask GskRenderNode child of the node.
+//
+// The function returns the following values:
+//
+//   - renderNode: mask child node.
+func (node *MaskNode) Mask() RenderNoder {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskRenderNode // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_mask_node_get_mask(_arg0)
+	runtime.KeepAlive(node)
+
+	var _renderNode RenderNoder // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(RenderNoder)
+			return ok
+		})
+		rv, ok := casted.(RenderNoder)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gsk.RenderNoder")
+		}
+		_renderNode = rv
+	}
+
+	return _renderNode
+}
+
+// MaskMode retrieves the mask mode used by node.
+//
+// The function returns the following values:
+//
+//   - maskMode: mask mode.
+func (node *MaskNode) MaskMode() MaskMode {
+	var _arg0 *C.GskRenderNode // out
+	var _cret C.GskMaskMode    // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_mask_node_get_mask_mode(_arg0)
+	runtime.KeepAlive(node)
+
+	var _maskMode MaskMode // out
+
+	_maskMode = MaskMode(_cret)
+
+	return _maskMode
+}
+
+// Source retrieves the source GskRenderNode child of the node.
+//
+// The function returns the following values:
+//
+//   - renderNode: source child node.
+func (node *MaskNode) Source() RenderNoder {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskRenderNode // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_mask_node_get_source(_arg0)
+	runtime.KeepAlive(node)
+
+	var _renderNode RenderNoder // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(RenderNoder)
+			return ok
+		})
+		rv, ok := casted.(RenderNoder)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gsk.RenderNoder")
+		}
+		_renderNode = rv
+	}
+
+	return _renderNode
+}
+
+type NGLRenderer struct {
+	_ [0]func() // equal guard
+	Renderer
+}
+
+var (
+	_ Rendererer = (*NGLRenderer)(nil)
+)
+
+func wrapNGLRenderer(obj *coreglib.Object) *NGLRenderer {
+	return &NGLRenderer{
+		Renderer: Renderer{
+			Object: obj,
+		},
+	}
+}
+
+func marshalNGLRenderer(p uintptr) (interface{}, error) {
+	return wrapNGLRenderer(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+func NewNGLRenderer() *NGLRenderer {
+	var _cret *C.GskRenderer // in
+
+	_cret = C.gsk_ngl_renderer_new()
+
+	var _nglRenderer *NGLRenderer // out
+
+	_nglRenderer = wrapNGLRenderer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _nglRenderer
+}
+
 // OpacityNode: render node controlling the opacity of its single child node.
 type OpacityNode struct {
 	_ [0]func() // equal guard
@@ -3588,7 +4439,7 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 // NewRadialGradientNode creates a GskRenderNode that draws a radial gradient.
 //
 // The radial gradient starts around center. The size of the gradient is
-// dictated by hradius in horizontal orientation and by vradius in vertial
+// dictated by hradius in horizontal orientation and by vradius in vertical
 // orientation.
 //
 // The function takes the following parameters:
@@ -3720,7 +4571,7 @@ func (node *RadialGradientNode) End() float32 {
 	return _gfloat
 }
 
-// Hradius retrieves the horizonal radius for the gradient.
+// Hradius retrieves the horizontal radius for the gradient.
 //
 // The function returns the following values:
 //
@@ -3805,7 +4656,7 @@ func (node *RadialGradientNode) Vradius() float32 {
 }
 
 // RenderNode: GskRenderNode is the basic block in a scene graph to be rendered
-// using GskRenderer.
+// using gsk.Renderer.
 //
 // Each node has a parent, except the top-level node; each node may have
 // children nodes.
@@ -3860,7 +4711,7 @@ func BaseRenderNode(obj RenderNoder) *RenderNode {
 //
 // Typically, you'll use this function to implement fallback rendering of
 // GskRenderNodes on an intermediate Cairo context, instead of using the drawing
-// context associated to a GdkSurface's rendering buffer.
+// context associated to a gdk.Surface's rendering buffer.
 //
 // For advanced nodes that cannot be supported using Cairo, in particular for
 // nodes doing 3D operations, this function may fail.
@@ -3936,7 +4787,7 @@ func (node *RenderNode) NodeType() RenderNodeType {
 //
 // The function returns the following values:
 //
-//   - bytes representing the node.
+//   - bytes: GBytes representing the node.
 func (node *RenderNode) Serialize() *glib.Bytes {
 	var _arg0 *C.GskRenderNode // out
 	var _cret *C.GBytes        // in
@@ -3960,7 +4811,7 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 }
 
 // WriteToFile: this function is equivalent to calling
-// gsk_render_node_serialize() followed by g_file_set_contents().
+// gsk.RenderNode.Serialize() followed by glib.FileSetContents().
 //
 // See those two functions for details on the arguments.
 //
@@ -3993,18 +4844,18 @@ func (node *RenderNode) WriteToFile(filename string) error {
 }
 
 // RenderNodeDeserialize loads data previously created via
-// gsk_render_node_serialize().
+// gsk.RenderNode.Serialize().
 //
 // For a discussion of the supported format, see that function.
 //
 // The function takes the following parameters:
 //
 //   - bytes containing the data.
-//   - errorFunc (optional): callback on parsing errors or NULL.
+//   - errorFunc (optional): callback on parsing errors.
 //
 // The function returns the following values:
 //
-//   - renderNode (optional): new GskRenderNode or NULL on error.
+//   - renderNode (optional): new GskRenderNode.
 func RenderNodeDeserialize(bytes *glib.Bytes, errorFunc ParseErrorFunc) RenderNoder {
 	var _arg1 *C.GBytes           // out
 	var _arg2 C.GskParseErrorFunc // out
@@ -4190,16 +5041,25 @@ func (renderer *Renderer) IsRealized() bool {
 // Realize creates the resources needed by the renderer to render the scene
 // graph.
 //
+// Since GTK 4.6, the surface may be NULL, which allows using renderers
+// without having to create a surface. Since GTK 4.14, it is recommended to use
+// gsk.Renderer.RealizeForDisplay() instead.
+//
+// Note that it is mandatory to call gsk.Renderer.Unrealize() before destroying
+// the renderer.
+//
 // The function takes the following parameters:
 //
-//   - surface: GdkSurface renderer will be used on.
+//   - surface (optional): GdkSurface renderer will be used on.
 func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	var _arg0 *C.GskRenderer // out
 	var _arg1 *C.GdkSurface  // out
 	var _cerr *C.GError      // in
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	if surface != nil {
+		_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+	}
 
 	C.gsk_renderer_realize(_arg0, _arg1, &_cerr)
 	runtime.KeepAlive(renderer)
@@ -4214,8 +5074,41 @@ func (renderer *Renderer) Realize(surface gdk.Surfacer) error {
 	return _goerr
 }
 
+// RealizeForDisplay creates the resources needed by the renderer to render the
+// scene graph.
+//
+// Note that it is mandatory to call gsk.Renderer.Unrealize() before destroying
+// the renderer.
+//
+// The function takes the following parameters:
+//
+//   - display: GdkDisplay renderer will be used on.
+func (renderer *Renderer) RealizeForDisplay(display *gdk.Display) error {
+	var _arg0 *C.GskRenderer // out
+	var _arg1 *C.GdkDisplay  // out
+	var _cerr *C.GError      // in
+
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(coreglib.InternObject(display).Native()))
+
+	C.gsk_renderer_realize_for_display(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(renderer)
+	runtime.KeepAlive(display)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
 // Render renders the scene graph, described by a tree of GskRenderNode
-// instances, ensuring that the given region gets redrawn.
+// instances to the renderer's surface, ensuring that the given region gets
+// redrawn.
+//
+// If the renderer has no associated surface, this function does nothing.
 //
 // Renderers must ensure that changes of the contents given by the root node
 // as well as the area given by region are redrawn. They are however free to
@@ -4529,7 +5422,7 @@ func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 // radial gradient.
 //
 // The radial gradient starts around center. The size of the gradient is
-// dictated by hradius in horizontal orientation and by vradius in vertial
+// dictated by hradius in horizontal orientation and by vradius in vertical
 // orientation.
 //
 // The function takes the following parameters:
@@ -4639,7 +5532,7 @@ func NewRoundedClipNode(child RenderNoder, clip *RoundedRect) *RoundedClipNode {
 
 	var _roundedClipNode *RoundedClipNode // out
 
-	_roundedClipNode = wrapRoundedClipNode(coreglib.Take(unsafe.Pointer(_cret)))
+	_roundedClipNode = wrapRoundedClipNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _roundedClipNode
 }
@@ -4850,6 +5743,211 @@ func (node *ShadowNode) Shadow(i uint) *Shadow {
 	return _shadow
 }
 
+// StrokeNode: render node that will fill the area determined by stroking the
+// the given gsk.Path using the gsk.Stroke attributes.
+type StrokeNode struct {
+	_ [0]func() // equal guard
+	RenderNode
+}
+
+var (
+	_ RenderNoder = (*StrokeNode)(nil)
+)
+
+func wrapStrokeNode(obj *coreglib.Object) *StrokeNode {
+	return &StrokeNode{
+		RenderNode: RenderNode{
+			Object: obj,
+		},
+	}
+}
+
+func marshalStrokeNode(p uintptr) (interface{}, error) {
+	return wrapStrokeNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewStrokeNode creates a RenderNode that will fill the outline generated by
+// stroking the given path using the attributes defined in stroke.
+//
+// The area is filled with child.
+//
+// The function takes the following parameters:
+//
+//   - child: node to stroke the area with.
+//   - path describing the area to stroke.
+//   - stroke attributes to use.
+//
+// The function returns the following values:
+//
+//   - strokeNode: new RenderNode.
+func NewStrokeNode(child RenderNoder, path *Path, stroke *Stroke) *StrokeNode {
+	var _arg1 *C.GskRenderNode // out
+	var _arg2 *C.GskPath       // out
+	var _arg3 *C.GskStroke     // out
+	var _cret *C.GskRenderNode // in
+
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(child).Native()))
+	_arg2 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg3 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(stroke)))
+
+	_cret = C.gsk_stroke_node_new(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(child)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(stroke)
+
+	var _strokeNode *StrokeNode // out
+
+	_strokeNode = wrapStrokeNode(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _strokeNode
+}
+
+// Child gets the child node that is getting drawn by the given node.
+//
+// The function returns the following values:
+//
+//   - renderNode: child that is getting drawn.
+func (node *StrokeNode) Child() RenderNoder {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskRenderNode // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_stroke_node_get_child(_arg0)
+	runtime.KeepAlive(node)
+
+	var _renderNode RenderNoder // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(RenderNoder)
+			return ok
+		})
+		rv, ok := casted.(RenderNoder)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gsk.RenderNoder")
+		}
+		_renderNode = rv
+	}
+
+	return _renderNode
+}
+
+// Path retrieves the path that will be stroked with the contents of the node.
+//
+// The function returns the following values:
+//
+//   - path: Path.
+func (node *StrokeNode) Path() *Path {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskPath       // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_stroke_node_get_path(_arg0)
+	runtime.KeepAlive(node)
+
+	var _path *Path // out
+
+	_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gsk_path_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_path)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_path_unref((*C.GskPath)(intern.C))
+		},
+	)
+
+	return _path
+}
+
+// Stroke retrieves the stroke attributes used in this node.
+//
+// The function returns the following values:
+//
+//   - stroke: Stroke.
+func (node *StrokeNode) Stroke() *Stroke {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskStroke     // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_stroke_node_get_stroke(_arg0)
+	runtime.KeepAlive(node)
+
+	var _stroke *Stroke // out
+
+	_stroke = (*Stroke)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
+	return _stroke
+}
+
+// SubsurfaceNode: render node that potentially diverts a part of the scene
+// graph to a subsurface.
+type SubsurfaceNode struct {
+	_ [0]func() // equal guard
+	RenderNode
+}
+
+var (
+	_ RenderNoder = (*SubsurfaceNode)(nil)
+)
+
+func wrapSubsurfaceNode(obj *coreglib.Object) *SubsurfaceNode {
+	return &SubsurfaceNode{
+		RenderNode: RenderNode{
+			Object: obj,
+		},
+	}
+}
+
+func marshalSubsurfaceNode(p uintptr) (interface{}, error) {
+	return wrapSubsurfaceNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// Child gets the child node that is getting drawn by the given node.
+//
+// The function returns the following values:
+//
+//   - renderNode: child GskRenderNode.
+func (node *SubsurfaceNode) Child() RenderNoder {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GskRenderNode // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_subsurface_node_get_child(_arg0)
+	runtime.KeepAlive(node)
+
+	var _renderNode RenderNoder // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gsk.RenderNoder is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(RenderNoder)
+			return ok
+		})
+		rv, ok := casted.(RenderNoder)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gsk.RenderNoder")
+		}
+		_renderNode = rv
+	}
+
+	return _renderNode
+}
+
 // TextNode: render node drawing a set of glyphs.
 type TextNode struct {
 	_ [0]func() // equal guard
@@ -4878,8 +5976,8 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//   - font containing the glyphs.
-//   - glyphs to render.
+//   - font: PangoFont containing the glyphs.
+//   - glyphs: PangoGlyphString to render.
 //   - color: foreground color to render with.
 //   - offset of the baseline.
 //
@@ -5064,7 +6162,7 @@ func (node *TextNode) HasColorGlyphs() bool {
 	return _ok
 }
 
-// TextureNode: render node for a Texture.
+// TextureNode: render node for a GdkTexture.
 type TextureNode struct {
 	_ [0]func() // equal guard
 	RenderNode
@@ -5088,6 +6186,9 @@ func marshalTextureNode(p uintptr) (interface{}, error) {
 
 // NewTextureNode creates a GskRenderNode that will render the given texture
 // into the area given by bounds.
+//
+// Note that GSK applies linear filtering when textures are scaled and
+// transformed. See gsk.TextureScaleNode for a way to influence filtering.
 //
 // The function takes the following parameters:
 //
@@ -5128,6 +6229,128 @@ func (node *TextureNode) Texture() gdk.Texturer {
 	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
 
 	_cret = C.gsk_texture_node_get_texture(_arg0)
+	runtime.KeepAlive(node)
+
+	var _texture gdk.Texturer // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Texturer is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gdk.Texturer)
+			return ok
+		})
+		rv, ok := casted.(gdk.Texturer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
+		}
+		_texture = rv
+	}
+
+	return _texture
+}
+
+// TextureScaleNode: render node for a GdkTexture.
+type TextureScaleNode struct {
+	_ [0]func() // equal guard
+	RenderNode
+}
+
+var (
+	_ RenderNoder = (*TextureScaleNode)(nil)
+)
+
+func wrapTextureScaleNode(obj *coreglib.Object) *TextureScaleNode {
+	return &TextureScaleNode{
+		RenderNode: RenderNode{
+			Object: obj,
+		},
+	}
+}
+
+func marshalTextureScaleNode(p uintptr) (interface{}, error) {
+	return wrapTextureScaleNode(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewTextureScaleNode creates a node that scales the texture to the size given
+// by the bounds using the filter and then places it at the bounds' position.
+//
+// Note that further scaling and other transformations which are applied to the
+// node will apply linear filtering to the resulting texture, as usual.
+//
+// This node is intended for tight control over scaling applied to a texture,
+// such as in image editors and requires the application to be aware of the
+// whole render tree as further transforms may be applied that conflict with the
+// desired effect of this node.
+//
+// The function takes the following parameters:
+//
+//   - texture to scale.
+//   - bounds: size of the texture to scale to.
+//   - filter: how to scale the texture.
+//
+// The function returns the following values:
+//
+//   - textureScaleNode: new GskRenderNode.
+func NewTextureScaleNode(texture gdk.Texturer, bounds *graphene.Rect, filter ScalingFilter) *TextureScaleNode {
+	var _arg1 *C.GdkTexture      // out
+	var _arg2 *C.graphene_rect_t // out
+	var _arg3 C.GskScalingFilter // out
+	var _cret *C.GskRenderNode   // in
+
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	_arg2 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(bounds)))
+	_arg3 = C.GskScalingFilter(filter)
+
+	_cret = C.gsk_texture_scale_node_new(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(texture)
+	runtime.KeepAlive(bounds)
+	runtime.KeepAlive(filter)
+
+	var _textureScaleNode *TextureScaleNode // out
+
+	_textureScaleNode = wrapTextureScaleNode(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _textureScaleNode
+}
+
+// Filter retrieves the GskScalingFilter used when creating this GskRenderNode.
+//
+// The function returns the following values:
+//
+//   - scalingFilter: GskScalingFilter.
+func (node *TextureScaleNode) Filter() ScalingFilter {
+	var _arg0 *C.GskRenderNode   // out
+	var _cret C.GskScalingFilter // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_texture_scale_node_get_filter(_arg0)
+	runtime.KeepAlive(node)
+
+	var _scalingFilter ScalingFilter // out
+
+	_scalingFilter = ScalingFilter(_cret)
+
+	return _scalingFilter
+}
+
+// Texture retrieves the GdkTexture used when creating this GskRenderNode.
+//
+// The function returns the following values:
+//
+//   - texture: GdkTexture.
+func (node *TextureScaleNode) Texture() gdk.Texturer {
+	var _arg0 *C.GskRenderNode // out
+	var _cret *C.GdkTexture    // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(node).Native()))
+
+	_cret = C.gsk_texture_scale_node_get_texture(_arg0)
 	runtime.KeepAlive(node)
 
 	var _texture gdk.Texturer // out
@@ -5420,6 +6643,1857 @@ func (p *ParseLocation) SetLineBytes(lineBytes uint) {
 func (p *ParseLocation) SetLineChars(lineChars uint) {
 	valptr := &p.native.line_chars
 	*valptr = C.gsize(lineChars)
+}
+
+// Path: GskPath describes lines and curves that are more complex than simple
+// rectangles.
+//
+// Paths can used for rendering (filling or stroking) and for animations (e.g.
+// as trajectories).
+//
+// GskPath is an immutable, opaque, reference-counted struct. After creation,
+// you cannot change the types it represents. Instead, new GskPath objects
+// have to be created. The gsk.PathBuilder structure is meant to help in this
+// endeavor.
+//
+// Conceptually, a path consists of zero or more contours (continuous, connected
+// curves), each of which may or may not be closed. Contours are typically
+// constructed from Bézier segments.
+//
+// <picture> <source srcset="path-dark.png" media="(prefers-color-scheme:
+// dark)"> <img alt="A Path" src="path-light.png"> </picture>
+//
+// An instance of this type is always passed by reference.
+type Path struct {
+	*path
+}
+
+// path is the struct that's finalized.
+type path struct {
+	native *C.GskPath
+}
+
+func marshalPath(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Path{&path{(*C.GskPath)(b)}}, nil
+}
+
+// ForEach calls func for every operation of the path.
+//
+// Note that this may only approximate self, because paths can contain
+// optimizations for various specialized contours, and depending on the flags,
+// the path may be decomposed into simpler curves than the ones that it
+// contained originally.
+//
+// This function serves two purposes:
+//
+// - When the flags allow everything, it provides access to the raw, unmodified
+// data of the path.
+//
+// - When the flags disallow certain operations, it provides an approximation of
+// the path using just the allowed operations.
+//
+// The function takes the following parameters:
+//
+//   - flags to pass to the foreach function. See gsk.PathForEachFlags for
+//     details about flags.
+//   - fn: function to call for operations.
+//
+// The function returns the following values:
+//
+//   - ok: FALSE if func returned FALSE, TRUE` otherwise.
+func (self *Path) ForEach(flags PathForEachFlags, fn PathForEachFunc) bool {
+	var _arg0 *C.GskPath            // out
+	var _arg1 C.GskPathForeachFlags // out
+	var _arg2 C.GskPathForeachFunc  // out
+	var _arg3 C.gpointer
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.GskPathForeachFlags(flags)
+	_arg2 = (*[0]byte)(C._gotk4_gsk4_PathForEachFunc)
+	_arg3 = C.gpointer(gbox.Assign(fn))
+	defer gbox.Delete(uintptr(_arg3))
+
+	_cret = C.gsk_path_foreach(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(fn)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Bounds computes the bounds of the given path.
+//
+// The returned bounds may be larger than necessary, because this function aims
+// to be fast, not accurate. The bounds are guaranteed to contain the path.
+//
+// It is possible that the returned rectangle has 0 width and/or height.
+// This can happen when the path only describes a point or an axis-aligned line.
+//
+// If the path is empty, FALSE is returned and bounds are set to
+// graphene_rect_zero(). This is different from the case where the path is a
+// single point at the origin, where the bounds will also be set to the zero
+// rectangle but TRUE will be returned.
+//
+// The function returns the following values:
+//
+//   - bounds of the given path.
+//   - ok: TRUE if the path has bounds, FALSE if the path is known to be empty
+//     and have no bounds.
+func (self *Path) Bounds() (*graphene.Rect, bool) {
+	var _arg0 *C.GskPath        // out
+	var _arg1 C.graphene_rect_t // in
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_get_bounds(_arg0, &_arg1)
+	runtime.KeepAlive(self)
+
+	var _bounds *graphene.Rect // out
+	var _ok bool               // out
+
+	_bounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _bounds, _ok
+}
+
+// ClosestPoint computes the closest point on the path to the given point and
+// sets the result to it.
+//
+// If there is no point closer than the given threshold, FALSE is returned.
+//
+// The function takes the following parameters:
+//
+//   - point: point.
+//   - threshold: maximum allowed distance.
+//
+// The function returns the following values:
+//
+//   - result: return location for the closest point.
+//   - distance (optional): return location for the distance.
+//   - ok: TRUE if point was set to the closest point on self, FALSE if no point
+//     is closer than threshold.
+func (self *Path) ClosestPoint(point *graphene.Point, threshold float32) (*PathPoint, float32, bool) {
+	var _arg0 *C.GskPath          // out
+	var _arg1 *C.graphene_point_t // out
+	var _arg2 C.float             // out
+	var _arg3 C.GskPathPoint      // in
+	var _arg4 C.float             // in
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg2 = C.float(threshold)
+
+	_cret = C.gsk_path_get_closest_point(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(point)
+	runtime.KeepAlive(threshold)
+
+	var _result *PathPoint // out
+	var _distance float32  // out
+	var _ok bool           // out
+
+	_result = (*PathPoint)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_distance = float32(_arg4)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _result, _distance, _ok
+}
+
+// EndPoint gets the end point of the path.
+//
+// An empty path has no points, so FALSE is returned in this case.
+//
+// The function returns the following values:
+//
+//   - result: return location for point.
+//   - ok: TRUE if result was filled.
+func (self *Path) EndPoint() (*PathPoint, bool) {
+	var _arg0 *C.GskPath     // out
+	var _arg1 C.GskPathPoint // in
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_get_end_point(_arg0, &_arg1)
+	runtime.KeepAlive(self)
+
+	var _result *PathPoint // out
+	var _ok bool           // out
+
+	_result = (*PathPoint)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _result, _ok
+}
+
+// StartPoint gets the start point of the path.
+//
+// An empty path has no points, so FALSE is returned in this case.
+//
+// The function returns the following values:
+//
+//   - result: return location for point.
+//   - ok: TRUE if result was filled.
+func (self *Path) StartPoint() (*PathPoint, bool) {
+	var _arg0 *C.GskPath     // out
+	var _arg1 C.GskPathPoint // in
+	var _cret C.gboolean     // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_get_start_point(_arg0, &_arg1)
+	runtime.KeepAlive(self)
+
+	var _result *PathPoint // out
+	var _ok bool           // out
+
+	_result = (*PathPoint)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _result, _ok
+}
+
+// StrokeBounds computes the bounds for stroking the given path with the
+// parameters in stroke.
+//
+// The returned bounds may be larger than necessary, because this function
+// aims to be fast, not accurate. The bounds are guaranteed to contain the area
+// affected by the stroke, including protrusions like miters.
+//
+// The function takes the following parameters:
+//
+//   - stroke parameters.
+//
+// The function returns the following values:
+//
+//   - bounds to fill in.
+//   - ok: TRUE if the path has bounds, FALSE if the path is known to be empty
+//     and have no bounds.
+func (self *Path) StrokeBounds(stroke *Stroke) (*graphene.Rect, bool) {
+	var _arg0 *C.GskPath        // out
+	var _arg1 *C.GskStroke      // out
+	var _arg2 C.graphene_rect_t // in
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(stroke)))
+
+	_cret = C.gsk_path_get_stroke_bounds(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stroke)
+
+	var _bounds *graphene.Rect // out
+	var _ok bool               // out
+
+	_bounds = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _bounds, _ok
+}
+
+// InFill returns whether the given point is inside the area that would be
+// affected if the path was filled according to fill_rule.
+//
+// Note that this function assumes that filling a contour implicitly closes it.
+//
+// The function takes the following parameters:
+//
+//   - point to test.
+//   - fillRule: fill rule to follow.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if point is inside.
+func (self *Path) InFill(point *graphene.Point, fillRule FillRule) bool {
+	var _arg0 *C.GskPath          // out
+	var _arg1 *C.graphene_point_t // out
+	var _arg2 C.GskFillRule       // out
+	var _cret C.gboolean          // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg2 = C.GskFillRule(fillRule)
+
+	_cret = C.gsk_path_in_fill(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(point)
+	runtime.KeepAlive(fillRule)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsClosed returns if the path represents a single closed contour.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the path is closed.
+func (self *Path) IsClosed() bool {
+	var _arg0 *C.GskPath // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_is_closed(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// IsEmpty checks if the path is empty, i.e. contains no lines or curves.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the path is empty.
+func (self *Path) IsEmpty() bool {
+	var _arg0 *C.GskPath // out
+	var _cret C.gboolean // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_is_empty(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ToCairo appends the given path to the given cairo context for drawing with
+// Cairo.
+//
+// This may cause some suboptimal conversions to be performed as Cairo does not
+// support all features of GskPath.
+//
+// This function does not clear the existing Cairo path. Call cairo_new_path()
+// if you want this.
+//
+// The function takes the following parameters:
+//
+//   - cr: cairo context.
+func (self *Path) ToCairo(cr *cairo.Context) {
+	var _arg0 *C.GskPath // out
+	var _arg1 *C.cairo_t // out
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+
+	C.gsk_path_to_cairo(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(cr)
+}
+
+// String converts the path into a string that is suitable for printing.
+//
+// You can use this function in a debugger to get a quick overview of the path.
+//
+// This is a wrapper around gsk.Path.Print(), see that function for details.
+//
+// The function returns the following values:
+//
+//   - utf8: new string for self.
+func (self *Path) String() string {
+	var _arg0 *C.GskPath // out
+	var _cret *C.char    // in
+
+	_arg0 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_to_string(_arg0)
+	runtime.KeepAlive(self)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// PathParse: this is a convenience function that constructs a GskPath from a
+// serialized form.
+//
+// The string is expected to be in (a superset of) SVG path syntax
+// (https://www.w3.org/TR/SVG11/paths.htmlData), as e.g. produced by
+// gsk.Path.ToString().
+//
+// A high-level summary of the syntax:
+//
+// - M x y Move to (x, y)
+//
+// - L x y Add a line from the current point to (x, y)
+//
+// - Q x1 y1 x2 y2 Add a quadratic Bézier from the current point to (x2, y2),
+// with control point (x1, y1)
+//
+// - C x1 y1 x2 y2 x3 y3 Add a cubic Bézier from the current point to (x3, y3),
+// with control points (x1, y1) and (x2, y2)
+//
+// - Z Close the contour by drawing a line back to the start point
+//
+// - H x Add a horizontal line from the current point to the given x value
+//
+// - V y Add a vertical line from the current point to the given y value
+//
+// - T x2 y2 Add a quadratic Bézier, using the reflection of the previous
+// segments' control point as control point
+//
+// - S x2 y2 x3 y3 Add a cubic Bézier, using the reflection of the previous
+// segments' second control point as first control point
+//
+// - A rx ry r l s x y Add an elliptical arc from the current point to (x, y)
+// with radii rx and ry. See the SVG documentation for how the other parameters
+// influence the arc.
+//
+// - O x1 y1 x2 y2 w Add a rational quadratic Bézier from the current point to
+// (x2, y2) with control point (x1, y1) and weight w.
+//
+// All the commands have lowercase variants that interpret coordinates relative
+// to the current point.
+//
+// The O command is an extension that is not supported in SVG.
+//
+// The function takes the following parameters:
+//
+//   - str: string.
+//
+// The function returns the following values:
+//
+//   - path (optional): new GskPath, or NULL if string could not be parsed.
+func PathParse(str string) *Path {
+	var _arg1 *C.char    // out
+	var _cret *C.GskPath // in
+
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	_cret = C.gsk_path_parse(_arg1)
+	runtime.KeepAlive(str)
+
+	var _path *Path // out
+
+	if _cret != nil {
+		_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_path)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_path_unref((*C.GskPath)(intern.C))
+			},
+		)
+	}
+
+	return _path
+}
+
+// PathBuilder: GskPathBuilder is an auxiliary object for constructing GskPath
+// objects.
+//
+// A path is constructed like this:
+//
+//	GskPath *
+//	construct_path (void)
+//	{
+//	  GskPathBuilder *builder;
+//
+//	  builder = gsk_path_builder_new ();
+//
+//	  // add contours to the path here
+//
+//	  return gsk_path_builder_free_to_path (builder);
+//
+// Adding contours to the path can be done in two ways. The easiest
+// option is to use the gsk_path_builder_add_* group of functions that
+// add predefined contours to the current path, either common shapes
+// like gsk.PathBuilder.AddCircle() or by adding from other paths like
+// gsk.PathBuilder.AddPath().
+//
+// The gsk_path_builder_add_* methods always add complete contours, and do not
+// use or modify the current point.
+//
+// The other option is to define each line and curve manually with the
+// gsk_path_builder_*_to group of functions. You start with a call to
+// gsk.PathBuilder.MoveTo() to set the starting point and then use multiple
+// calls to any of the drawing functions to move the pen along the plane.
+// Once you are done, you can call gsk.PathBuilder.Close() to close the path by
+// connecting it back with a line to the starting point.
+//
+// This is similar to how paths are drawn in Cairo.
+//
+// Note that GskPathBuilder will reduce the degree of added Bézier curves as
+// much as possible, to simplify rendering.
+//
+// An instance of this type is always passed by reference.
+type PathBuilder struct {
+	*pathBuilder
+}
+
+// pathBuilder is the struct that's finalized.
+type pathBuilder struct {
+	native *C.GskPathBuilder
+}
+
+func marshalPathBuilder(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &PathBuilder{&pathBuilder{(*C.GskPathBuilder)(b)}}, nil
+}
+
+// NewPathBuilder constructs a struct PathBuilder.
+func NewPathBuilder() *PathBuilder {
+	var _cret *C.GskPathBuilder // in
+
+	_cret = C.gsk_path_builder_new()
+
+	var _pathBuilder *PathBuilder // out
+
+	_pathBuilder = (*PathBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_pathBuilder)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_path_builder_unref((*C.GskPathBuilder)(intern.C))
+		},
+	)
+
+	return _pathBuilder
+}
+
+// AddCircle adds a circle with the center and radius.
+//
+// The path is going around the circle in clockwise direction.
+//
+// If radius is zero, the contour will be a closed point.
+//
+// The function takes the following parameters:
+//
+//   - center of the circle.
+//   - radius of the circle.
+func (self *PathBuilder) AddCircle(center *graphene.Point, radius float32) {
+	var _arg0 *C.GskPathBuilder   // out
+	var _arg1 *C.graphene_point_t // out
+	var _arg2 C.float             // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(center)))
+	_arg2 = C.float(radius)
+
+	C.gsk_path_builder_add_circle(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(center)
+	runtime.KeepAlive(radius)
+}
+
+// AddLayout adds the outlines for the glyphs in layout to the builder.
+//
+// The function takes the following parameters:
+//
+//   - layout: pango layout to add.
+func (self *PathBuilder) AddLayout(layout *pango.Layout) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 *C.PangoLayout    // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.PangoLayout)(unsafe.Pointer(coreglib.InternObject(layout).Native()))
+
+	C.gsk_path_builder_add_layout(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(layout)
+}
+
+// AddPath appends all of path to the builder.
+//
+// The function takes the following parameters:
+//
+//   - path to append.
+func (self *PathBuilder) AddPath(path *Path) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 *C.GskPath        // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+
+	C.gsk_path_builder_add_path(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(path)
+}
+
+// AddRect adds rect as a new contour to the path built by the builder.
+//
+// The path is going around the rectangle in clockwise direction.
+//
+// If the the width or height are 0, the path will be a closed horizontal or
+// vertical line. If both are 0, it'll be a closed dot.
+//
+// The function takes the following parameters:
+//
+//   - rect: rectangle to create a path for.
+func (self *PathBuilder) AddRect(rect *graphene.Rect) {
+	var _arg0 *C.GskPathBuilder  // out
+	var _arg1 *C.graphene_rect_t // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(rect)))
+
+	C.gsk_path_builder_add_rect(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(rect)
+}
+
+// AddReversePath appends all of path to the builder, in reverse order.
+//
+// The function takes the following parameters:
+//
+//   - path to append.
+func (self *PathBuilder) AddReversePath(path *Path) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 *C.GskPath        // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+
+	C.gsk_path_builder_add_reverse_path(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(path)
+}
+
+// AddRoundedRect adds rect as a new contour to the path built in self.
+//
+// The path is going around the rectangle in clockwise direction.
+//
+// The function takes the following parameters:
+//
+//   - rect: rounded rect.
+func (self *PathBuilder) AddRoundedRect(rect *RoundedRect) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 *C.GskRoundedRect // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GskRoundedRect)(gextras.StructNative(unsafe.Pointer(rect)))
+
+	C.gsk_path_builder_add_rounded_rect(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(rect)
+}
+
+// AddSegment adds to self the segment of path from start to end.
+//
+// If start is equal to or after end, the path will first add the segment from
+// start to the end of the path, and then add the segment from the beginning to
+// end. If the path is closed, these segments will be connected.
+//
+// Note that this method always adds a path with the given start point and end
+// point. To add a closed path, use gsk.PathBuilder.AddPath().
+//
+// The function takes the following parameters:
+//
+//   - path: GskPath to take the segment to.
+//   - start: point on path to start at.
+//   - end: point on path to end at.
+func (self *PathBuilder) AddSegment(path *Path, start *PathPoint, end *PathPoint) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 *C.GskPath        // out
+	var _arg2 *C.GskPathPoint   // out
+	var _arg3 *C.GskPathPoint   // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg2 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg3 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(end)))
+
+	C.gsk_path_builder_add_segment(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+}
+
+// ArcTo adds an elliptical arc from the current point to x2, y2 with x1,
+// y1 determining the tangent directions.
+//
+// After this, x2, y2 will be the new current point.
+//
+// Note: Two points and their tangents do not determine a unique ellipse,
+// so GSK just picks one. If you need more precise control, use
+// gsk.PathBuilder.ConicTo() or gsk.PathBuilder.SVGArcTo().
+//
+// <picture> <source srcset="arc-dark.png" media="(prefers-color-scheme:
+// dark)"> <img alt="Arc To" src="arc-light.png"> </picture>.
+//
+// The function takes the following parameters:
+//
+//   - x1: x coordinate of first control point.
+//   - y1: y coordinate of first control point.
+//   - x2: x coordinate of second control point.
+//   - y2: y coordinate of second control point.
+func (self *PathBuilder) ArcTo(x1 float32, y1 float32, x2 float32, y2 float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+
+	C.gsk_path_builder_arc_to(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+}
+
+// Close ends the current contour with a line back to the start point.
+//
+// Note that this is different from calling gsk.PathBuilder.LineTo() with the
+// start point in that the contour will be closed. A closed contour behaves
+// differently from an open one. When stroking, its start and end point are
+// considered connected, so they will be joined via the line join, and not ended
+// with line caps.
+func (self *PathBuilder) Close() {
+	var _arg0 *C.GskPathBuilder // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+
+	C.gsk_path_builder_close(_arg0)
+	runtime.KeepAlive(self)
+}
+
+// ConicTo adds a conic curve
+// (https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline) from the
+// current point to x2, y2 with the given weight and x1, y1 as the control
+// point.
+//
+// The weight determines how strongly the curve is pulled towards the control
+// point. A conic with weight 1 is identical to a quadratic Bézier curve with
+// the same points.
+//
+// Conic curves can be used to draw ellipses and circles. They are also known as
+// rational quadratic Bézier curves.
+//
+// After this, x2, y2 will be the new current point.
+//
+// <picture> <source srcset="conic-dark.png" media="(prefers-color-scheme:
+// dark)"> <img alt="Conic To" src="conic-light.png"> </picture>.
+//
+// The function takes the following parameters:
+//
+//   - x1: x coordinate of control point.
+//   - y1: y coordinate of control point.
+//   - x2: x coordinate of the end of the curve.
+//   - y2: y coordinate of the end of the curve.
+//   - weight of the control point, must be greater than zero.
+func (self *PathBuilder) ConicTo(x1 float32, y1 float32, x2 float32, y2 float32, weight float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+	var _arg5 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+	_arg5 = C.float(weight)
+
+	C.gsk_path_builder_conic_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(weight)
+}
+
+// CubicTo adds a cubic Bézier curve
+// (https://en.wikipedia.org/wiki/BC3A9zier_curve) from the current point to x3,
+// y3 with x1, y1 and x2, y2 as the control points.
+//
+// After this, x3, y3 will be the new current point.
+//
+// <picture> <source srcset="cubic-dark.png" media="(prefers-color-scheme:
+// dark)"> <img alt="Cubic To" src="cubic-light.png"> </picture>.
+//
+// The function takes the following parameters:
+//
+//   - x1: x coordinate of first control point.
+//   - y1: y coordinate of first control point.
+//   - x2: x coordinate of second control point.
+//   - y2: y coordinate of second control point.
+//   - x3: x coordinate of the end of the curve.
+//   - y3: y coordinate of the end of the curve.
+func (self *PathBuilder) CubicTo(x1 float32, y1 float32, x2 float32, y2 float32, x3 float32, y3 float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+	var _arg5 C.float           // out
+	var _arg6 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+	_arg5 = C.float(x3)
+	_arg6 = C.float(y3)
+
+	C.gsk_path_builder_cubic_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(x3)
+	runtime.KeepAlive(y3)
+}
+
+// CurrentPoint gets the current point.
+//
+// The current point is used for relative drawing commands and updated after
+// every operation.
+//
+// When the builder is created, the default current point is set to 0, 0. Note
+// that this is different from cairo, which starts out without a current point.
+//
+// The function returns the following values:
+//
+//   - point: current point.
+func (self *PathBuilder) CurrentPoint() *graphene.Point {
+	var _arg0 *C.GskPathBuilder   // out
+	var _cret *C.graphene_point_t // in
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_builder_get_current_point(_arg0)
+	runtime.KeepAlive(self)
+
+	var _point *graphene.Point // out
+
+	_point = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+
+	return _point
+}
+
+// HtmlArcTo implements arc-to according to the HTML Canvas spec.
+//
+// A convenience function that implements the HTML arc_to
+// (https://html.spec.whatwg.org/multipage/canvas.html#dom-context-2d-arcto-dev)
+// functionality.
+//
+// After this, the current point will be the point where the circle with the
+// given radius touches the line from x1, y1 to x2, y2.
+//
+// The function takes the following parameters:
+//
+//   - x1: x coordinate of first control point.
+//   - y1: y coordinate of first control point.
+//   - x2: x coordinate of second control point.
+//   - y2: y coordinate of second control point.
+//   - radius radius of the circle.
+func (self *PathBuilder) HtmlArcTo(x1 float32, y1 float32, x2 float32, y2 float32, radius float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+	var _arg5 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+	_arg5 = C.float(radius)
+
+	C.gsk_path_builder_html_arc_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(radius)
+}
+
+// LineTo draws a line from the current point to x, y and makes it the new
+// current point.
+//
+// <picture> <source srcset="line-dark.png" media="(prefers-color-scheme:
+// dark)"> <img alt="Line To" src="line-light.png"> </picture>.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+func (self *PathBuilder) LineTo(x float32, y float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+
+	C.gsk_path_builder_line_to(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// MoveTo starts a new contour by placing the pen at x, y.
+//
+// If this function is called twice in succession, the first call will result
+// in a contour made up of a single point. The second call will start a new
+// contour.
+//
+// The function takes the following parameters:
+//
+//   - x coordinate.
+//   - y coordinate.
+func (self *PathBuilder) MoveTo(x float32, y float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+
+	C.gsk_path_builder_move_to(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// QuadTo adds a quadratic Bézier curve
+// (https://en.wikipedia.org/wiki/BC3A9zier_curve) from the current point to x2,
+// y2 with x1, y1 as the control point.
+//
+// After this, x2, y2 will be the new current point.
+//
+// <picture> <source srcset="quad-dark.png" media="(prefers-color-scheme:
+// dark)"> <img alt="Quad To" src="quad-light.png"> </picture>.
+//
+// The function takes the following parameters:
+//
+//   - x1: x coordinate of control point.
+//   - y1: y coordinate of control point.
+//   - x2: x coordinate of the end of the curve.
+//   - y2: y coordinate of the end of the curve.
+func (self *PathBuilder) QuadTo(x1 float32, y1 float32, x2 float32, y2 float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+
+	C.gsk_path_builder_quad_to(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+}
+
+// RelArcTo adds an elliptical arc from the current point to x2, y2 with x1,
+// y1 determining the tangent directions.
+//
+// All coordinates are given relative to the current point.
+//
+// This is the relative version of gsk.PathBuilder.ArcTo().
+//
+// The function takes the following parameters:
+//
+//   - x1: x coordinate of first control point.
+//   - y1: y coordinate of first control point.
+//   - x2: x coordinate of second control point.
+//   - y2: y coordinate of second control point.
+func (self *PathBuilder) RelArcTo(x1 float32, y1 float32, x2 float32, y2 float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+
+	C.gsk_path_builder_rel_arc_to(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+}
+
+// RelConicTo adds a conic curve
+// (https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline) from the
+// current point to x2, y2 with the given weight and x1, y1 as the control
+// point.
+//
+// All coordinates are given relative to the current point.
+//
+// This is the relative version of gsk.PathBuilder.ConicTo().
+//
+// The function takes the following parameters:
+//
+//   - x1: x offset of control point.
+//   - y1: y offset of control point.
+//   - x2: x offset of the end of the curve.
+//   - y2: y offset of the end of the curve.
+//   - weight of the curve, must be greater than zero.
+func (self *PathBuilder) RelConicTo(x1 float32, y1 float32, x2 float32, y2 float32, weight float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+	var _arg5 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+	_arg5 = C.float(weight)
+
+	C.gsk_path_builder_rel_conic_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(weight)
+}
+
+// RelCubicTo adds a cubic Bézier curve
+// (https://en.wikipedia.org/wiki/BC3A9zier_curve) from the current point to x3,
+// y3 with x1, y1 and x2, y2 as the control points.
+//
+// All coordinates are given relative to the current point.
+//
+// This is the relative version of gsk.PathBuilder.CubicTo().
+//
+// The function takes the following parameters:
+//
+//   - x1: x offset of first control point.
+//   - y1: y offset of first control point.
+//   - x2: x offset of second control point.
+//   - y2: y offset of second control point.
+//   - x3: x offset of the end of the curve.
+//   - y3: y offset of the end of the curve.
+func (self *PathBuilder) RelCubicTo(x1 float32, y1 float32, x2 float32, y2 float32, x3 float32, y3 float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+	var _arg5 C.float           // out
+	var _arg6 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+	_arg5 = C.float(x3)
+	_arg6 = C.float(y3)
+
+	C.gsk_path_builder_rel_cubic_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(x3)
+	runtime.KeepAlive(y3)
+}
+
+// RelHtmlArcTo implements arc-to according to the HTML Canvas spec.
+//
+// All coordinates are given relative to the current point.
+//
+// This is the relative version of gsk.PathBuilder.HtmlArcTo().
+//
+// The function takes the following parameters:
+//
+//   - x1: x coordinate of first control point.
+//   - y1: y coordinate of first control point.
+//   - x2: x coordinate of second control point.
+//   - y2: y coordinate of second control point.
+//   - radius radius of the circle.
+func (self *PathBuilder) RelHtmlArcTo(x1 float32, y1 float32, x2 float32, y2 float32, radius float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+	var _arg5 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+	_arg5 = C.float(radius)
+
+	C.gsk_path_builder_rel_html_arc_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+	runtime.KeepAlive(radius)
+}
+
+// RelLineTo draws a line from the current point to a point offset from it by x,
+// y and makes it the new current point.
+//
+// This is the relative version of gsk.PathBuilder.LineTo().
+//
+// The function takes the following parameters:
+//
+//   - x offset.
+//   - y offset.
+func (self *PathBuilder) RelLineTo(x float32, y float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+
+	C.gsk_path_builder_rel_line_to(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// RelMoveTo starts a new contour by placing the pen at x, y relative to the
+// current point.
+//
+// This is the relative version of gsk.PathBuilder.MoveTo().
+//
+// The function takes the following parameters:
+//
+//   - x offset.
+//   - y offset.
+func (self *PathBuilder) RelMoveTo(x float32, y float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+
+	C.gsk_path_builder_rel_move_to(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// RelQuadTo adds a quadratic Bézier curve
+// (https://en.wikipedia.org/wiki/BC3A9zier_curve) from the current point to x2,
+// y2 with x1, y1 the control point.
+//
+// All coordinates are given relative to the current point.
+//
+// This is the relative version of gsk.PathBuilder.QuadTo().
+//
+// The function takes the following parameters:
+//
+//   - x1: x offset of control point.
+//   - y1: y offset of control point.
+//   - x2: x offset of the end of the curve.
+//   - y2: y offset of the end of the curve.
+func (self *PathBuilder) RelQuadTo(x1 float32, y1 float32, x2 float32, y2 float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(x1)
+	_arg2 = C.float(y1)
+	_arg3 = C.float(x2)
+	_arg4 = C.float(y2)
+
+	C.gsk_path_builder_rel_quad_to(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(x1)
+	runtime.KeepAlive(y1)
+	runtime.KeepAlive(x2)
+	runtime.KeepAlive(y2)
+}
+
+// RelSVGArcTo implements arc-to according to the SVG spec.
+//
+// All coordinates are given relative to the current point.
+//
+// This is the relative version of gsk.PathBuilder.SVGArcTo().
+//
+// The function takes the following parameters:
+//
+//   - rx: x radius.
+//   - ry: y radius.
+//   - xAxisRotation: rotation of the ellipsis.
+//   - largeArc: whether to add the large arc.
+//   - positiveSweep: whether to sweep in the positive direction.
+//   - x: x coordinate of the endpoint.
+//   - y: y coordinate of the endpoint.
+func (self *PathBuilder) RelSVGArcTo(rx float32, ry float32, xAxisRotation float32, largeArc bool, positiveSweep bool, x float32, y float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.gboolean        // out
+	var _arg5 C.gboolean        // out
+	var _arg6 C.float           // out
+	var _arg7 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(rx)
+	_arg2 = C.float(ry)
+	_arg3 = C.float(xAxisRotation)
+	if largeArc {
+		_arg4 = C.TRUE
+	}
+	if positiveSweep {
+		_arg5 = C.TRUE
+	}
+	_arg6 = C.float(x)
+	_arg7 = C.float(y)
+
+	C.gsk_path_builder_rel_svg_arc_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(rx)
+	runtime.KeepAlive(ry)
+	runtime.KeepAlive(xAxisRotation)
+	runtime.KeepAlive(largeArc)
+	runtime.KeepAlive(positiveSweep)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// SVGArcTo implements arc-to according to the SVG spec.
+//
+// A convenience function that implements the SVG arc_to
+// (https://www.w3.org/TR/SVG11/paths.htmlDataEllipticalArcCommands)
+// functionality.
+//
+// After this, x, y will be the new current point.
+//
+// The function takes the following parameters:
+//
+//   - rx: x radius.
+//   - ry: y radius.
+//   - xAxisRotation: rotation of the ellipsis.
+//   - largeArc: whether to add the large arc.
+//   - positiveSweep: whether to sweep in the positive direction.
+//   - x: x coordinate of the endpoint.
+//   - y: y coordinate of the endpoint.
+func (self *PathBuilder) SVGArcTo(rx float32, ry float32, xAxisRotation float32, largeArc bool, positiveSweep bool, x float32, y float32) {
+	var _arg0 *C.GskPathBuilder // out
+	var _arg1 C.float           // out
+	var _arg2 C.float           // out
+	var _arg3 C.float           // out
+	var _arg4 C.gboolean        // out
+	var _arg5 C.gboolean        // out
+	var _arg6 C.float           // out
+	var _arg7 C.float           // out
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(rx)
+	_arg2 = C.float(ry)
+	_arg3 = C.float(xAxisRotation)
+	if largeArc {
+		_arg4 = C.TRUE
+	}
+	if positiveSweep {
+		_arg5 = C.TRUE
+	}
+	_arg6 = C.float(x)
+	_arg7 = C.float(y)
+
+	C.gsk_path_builder_svg_arc_to(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(rx)
+	runtime.KeepAlive(ry)
+	runtime.KeepAlive(xAxisRotation)
+	runtime.KeepAlive(largeArc)
+	runtime.KeepAlive(positiveSweep)
+	runtime.KeepAlive(x)
+	runtime.KeepAlive(y)
+}
+
+// ToPath creates a new GskPath from the given builder.
+//
+// The given GskPathBuilder is reset once this function returns; you cannot call
+// this function multiple times on the same builder instance.
+//
+// This function is intended primarily for language bindings. C code should use
+// gsk.PathBuilder.FreeToPath().
+//
+// The function returns the following values:
+//
+//   - path: newly created GskPath with all the contours added to the builder.
+func (self *PathBuilder) ToPath() *Path {
+	var _arg0 *C.GskPathBuilder // out
+	var _cret *C.GskPath        // in
+
+	_arg0 = (*C.GskPathBuilder)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_builder_to_path(_arg0)
+	runtime.KeepAlive(self)
+
+	var _path *Path // out
+
+	_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_path)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_path_unref((*C.GskPath)(intern.C))
+		},
+	)
+
+	return _path
+}
+
+// PathMeasure: GskPathMeasure is an object that allows measurements on GskPaths
+// such as determining the length of the path.
+//
+// Many measuring operations require sampling the path length at intermediate
+// points. Therefore, a GskPathMeasure has a tolerance that determines what
+// precision is required for such approximations.
+//
+// A GskPathMeasure struct is a reference counted struct and should be treated
+// as opaque.
+//
+// An instance of this type is always passed by reference.
+type PathMeasure struct {
+	*pathMeasure
+}
+
+// pathMeasure is the struct that's finalized.
+type pathMeasure struct {
+	native *C.GskPathMeasure
+}
+
+func marshalPathMeasure(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &PathMeasure{&pathMeasure{(*C.GskPathMeasure)(b)}}, nil
+}
+
+// NewPathMeasure constructs a struct PathMeasure.
+func NewPathMeasure(path *Path) *PathMeasure {
+	var _arg1 *C.GskPath        // out
+	var _cret *C.GskPathMeasure // in
+
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+
+	_cret = C.gsk_path_measure_new(_arg1)
+	runtime.KeepAlive(path)
+
+	var _pathMeasure *PathMeasure // out
+
+	_pathMeasure = (*PathMeasure)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_pathMeasure)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_path_measure_unref((*C.GskPathMeasure)(intern.C))
+		},
+	)
+
+	return _pathMeasure
+}
+
+// NewPathMeasureWithTolerance constructs a struct PathMeasure.
+func NewPathMeasureWithTolerance(path *Path, tolerance float32) *PathMeasure {
+	var _arg1 *C.GskPath        // out
+	var _arg2 C.float           // out
+	var _cret *C.GskPathMeasure // in
+
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg2 = C.float(tolerance)
+
+	_cret = C.gsk_path_measure_new_with_tolerance(_arg1, _arg2)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(tolerance)
+
+	var _pathMeasure *PathMeasure // out
+
+	_pathMeasure = (*PathMeasure)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_pathMeasure)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_path_measure_unref((*C.GskPathMeasure)(intern.C))
+		},
+	)
+
+	return _pathMeasure
+}
+
+// Length gets the length of the path being measured.
+//
+// The length is cached, so this function does not do any work.
+//
+// The function returns the following values:
+//
+//   - gfloat: length of the path measured by self.
+func (self *PathMeasure) Length() float32 {
+	var _arg0 *C.GskPathMeasure // out
+	var _cret C.float           // in
+
+	_arg0 = (*C.GskPathMeasure)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_measure_get_length(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// Path returns the path that the measure was created for.
+//
+// The function returns the following values:
+//
+//   - path of self.
+func (self *PathMeasure) Path() *Path {
+	var _arg0 *C.GskPathMeasure // out
+	var _cret *C.GskPath        // in
+
+	_arg0 = (*C.GskPathMeasure)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_measure_get_path(_arg0)
+	runtime.KeepAlive(self)
+
+	var _path *Path // out
+
+	_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gsk_path_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_path)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_path_unref((*C.GskPath)(intern.C))
+		},
+	)
+
+	return _path
+}
+
+// Point sets result to the point at the given distance into the path.
+//
+// An empty path has no points, so FALSE is returned in that case.
+//
+// The function takes the following parameters:
+//
+//   - distance: distance.
+//
+// The function returns the following values:
+//
+//   - result: return location for the result.
+//   - ok: TRUE if result was set.
+func (self *PathMeasure) Point(distance float32) (*PathPoint, bool) {
+	var _arg0 *C.GskPathMeasure // out
+	var _arg1 C.float           // out
+	var _arg2 C.GskPathPoint    // in
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GskPathMeasure)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(distance)
+
+	_cret = C.gsk_path_measure_get_point(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(distance)
+
+	var _result *PathPoint // out
+	var _ok bool           // out
+
+	_result = (*PathPoint)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _result, _ok
+}
+
+// Tolerance returns the tolerance that the measure was created with.
+//
+// The function returns the following values:
+//
+//   - gfloat: tolerance of self.
+func (self *PathMeasure) Tolerance() float32 {
+	var _arg0 *C.GskPathMeasure // out
+	var _cret C.float           // in
+
+	_arg0 = (*C.GskPathMeasure)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_path_measure_get_tolerance(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// PathPoint: GskPathPoint is an opaque type representing a point on a path.
+//
+// It can be queried for properties of the path at that point, such as its
+// tangent or its curvature.
+//
+// To obtain a GskPathPoint, use gsk.Path.GetClosestPoint(),
+// gsk.Path.GetStartPoint(), gsk.Path.GetEndPoint() or
+// gsk.PathMeasure.GetPoint().
+//
+// Note that GskPathPoint structs are meant to be stack-allocated, and don't
+// hold a reference to the path object they are obtained from. It is the callers
+// responsibility to keep a reference to the path as long as the GskPathPoint is
+// used.
+//
+// An instance of this type is always passed by reference.
+type PathPoint struct {
+	*pathPoint
+}
+
+// pathPoint is the struct that's finalized.
+type pathPoint struct {
+	native *C.GskPathPoint
+}
+
+func marshalPathPoint(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &PathPoint{&pathPoint{(*C.GskPathPoint)(b)}}, nil
+}
+
+// Compare returns whether point1 is before or after point2.
+//
+// The function takes the following parameters:
+//
+//   - point2: another GskPathPoint.
+//
+// The function returns the following values:
+//
+//   - gint: -1 if point1 is before point2, 1 if point1 is after point2,
+//     0 if they are equal.
+func (point1 *PathPoint) Compare(point2 *PathPoint) int {
+	var _arg0 *C.GskPathPoint // out
+	var _arg1 *C.GskPathPoint // out
+	var _cret C.int           // in
+
+	_arg0 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point1)))
+	_arg1 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point2)))
+
+	_cret = C.gsk_path_point_compare(_arg0, _arg1)
+	runtime.KeepAlive(point1)
+	runtime.KeepAlive(point2)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+func (point *PathPoint) Copy() *PathPoint {
+	var _arg0 *C.GskPathPoint // out
+	var _cret *C.GskPathPoint // in
+
+	_arg0 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point)))
+
+	_cret = C.gsk_path_point_copy(_arg0)
+	runtime.KeepAlive(point)
+
+	var _pathPoint *PathPoint // out
+
+	_pathPoint = (*PathPoint)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_pathPoint)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_path_point_free((*C.GskPathPoint)(intern.C))
+		},
+	)
+
+	return _pathPoint
+}
+
+// Equal returns whether the two path points refer to the same location on all
+// paths.
+//
+// Note that the start- and endpoint of a closed contour will compare nonequal
+// according to this definition. Use gsk.Path.IsClosed() to find out if the
+// start- and endpoint of a concrete path refer to the same location.
+//
+// The function takes the following parameters:
+//
+//   - point2: another GskPathPoint.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if point1 and point2 are equal.
+func (point1 *PathPoint) Equal(point2 *PathPoint) bool {
+	var _arg0 *C.GskPathPoint // out
+	var _arg1 *C.GskPathPoint // out
+	var _cret C.gboolean      // in
+
+	_arg0 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point1)))
+	_arg1 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point2)))
+
+	_cret = C.gsk_path_point_equal(_arg0, _arg1)
+	runtime.KeepAlive(point1)
+	runtime.KeepAlive(point2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Curvature calculates the curvature of the path at the point.
+//
+// Optionally, returns the center of the osculating circle as well. The
+// curvature is the inverse of the radius of the osculating circle.
+//
+// Lines have a curvature of zero (indicating an osculating circle of infinite
+// radius. In this case, the center is not modified.
+//
+// # Circles with a radius of zero have INFINITY as curvature
+//
+// Note that certain points on a path may not have a single curvature, such as
+// sharp turns. At such points, there are two curvatures -- the (limit of) the
+// curvature of the path going into the point, and the (limit of) the curvature
+// of the path coming out of it. The direction argument lets you choose which
+// one to get.
+//
+// <picture> <source srcset="curvature-dark.png" media="(prefers-color-scheme:
+// dark)"> <img alt="Osculating circle" src="curvature-light.png"> </picture>.
+//
+// The function takes the following parameters:
+//
+//   - path that point is on.
+//   - direction for which to return the curvature.
+//
+// The function returns the following values:
+//
+//   - center (optional): return location for the center of the osculating
+//     circle.
+//   - gfloat: curvature of the path at the given point.
+func (point *PathPoint) Curvature(path *Path, direction PathDirection) (*graphene.Point, float32) {
+	var _arg0 *C.GskPathPoint    // out
+	var _arg1 *C.GskPath         // out
+	var _arg2 C.GskPathDirection // out
+	var _arg3 C.graphene_point_t // in
+	var _cret C.float            // in
+
+	_arg0 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg2 = C.GskPathDirection(direction)
+
+	_cret = C.gsk_path_point_get_curvature(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(point)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(direction)
+
+	var _center *graphene.Point // out
+	var _gfloat float32         // out
+
+	_center = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+	_gfloat = float32(_cret)
+
+	return _center, _gfloat
+}
+
+// Distance returns the distance from the beginning of the path to point.
+//
+// The function takes the following parameters:
+//
+//   - measure: GskPathMeasure for the path.
+//
+// The function returns the following values:
+//
+//   - gfloat: distance of point.
+func (point *PathPoint) Distance(measure *PathMeasure) float32 {
+	var _arg0 *C.GskPathPoint   // out
+	var _arg1 *C.GskPathMeasure // out
+	var _cret C.float           // in
+
+	_arg0 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.GskPathMeasure)(gextras.StructNative(unsafe.Pointer(measure)))
+
+	_cret = C.gsk_path_point_get_distance(_arg0, _arg1)
+	runtime.KeepAlive(point)
+	runtime.KeepAlive(measure)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// Position gets the position of the point.
+//
+// The function takes the following parameters:
+//
+//   - path that point is on.
+//
+// The function returns the following values:
+//
+//   - position: return location for the coordinates of the point.
+func (point *PathPoint) Position(path *Path) *graphene.Point {
+	var _arg0 *C.GskPathPoint    // out
+	var _arg1 *C.GskPath         // out
+	var _arg2 C.graphene_point_t // in
+
+	_arg0 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+
+	C.gsk_path_point_get_position(_arg0, _arg1, &_arg2)
+	runtime.KeepAlive(point)
+	runtime.KeepAlive(path)
+
+	var _position *graphene.Point // out
+
+	_position = (*graphene.Point)(gextras.NewStructNative(unsafe.Pointer((&_arg2))))
+
+	return _position
+}
+
+// Rotation gets the direction of the tangent at a given point.
+//
+// This is a convenience variant of gsk.PathPoint.GetTangent() that returns
+// the angle between the tangent and the X axis. The angle can e.g. be used in
+// gtk_snapshot_rotate() (../gtk4/method.Snapshot.rotate.html).
+//
+// The function takes the following parameters:
+//
+//   - path that point is on.
+//   - direction for which to return the rotation.
+//
+// The function returns the following values:
+//
+//   - gfloat: angle between the tangent and the X axis, in degrees.
+func (point *PathPoint) Rotation(path *Path, direction PathDirection) float32 {
+	var _arg0 *C.GskPathPoint    // out
+	var _arg1 *C.GskPath         // out
+	var _arg2 C.GskPathDirection // out
+	var _cret C.float            // in
+
+	_arg0 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg2 = C.GskPathDirection(direction)
+
+	_cret = C.gsk_path_point_get_rotation(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(point)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(direction)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// Tangent gets the tangent of the path at the point.
+//
+// Note that certain points on a path may not have a single tangent, such as
+// sharp turns. At such points, there are two tangents -- the direction of the
+// path going into the point, and the direction coming out of it. The direction
+// argument lets you choose which one to get.
+//
+// If the path is just a single point (e.g. a circle with radius zero), then
+// tangent is set to 0, 0.
+//
+// If you want to orient something in the direction of the path,
+// gsk.PathPoint.GetRotation() may be more convenient to use.
+//
+// The function takes the following parameters:
+//
+//   - path that point is on.
+//   - direction for which to return the tangent.
+//
+// The function returns the following values:
+//
+//   - tangent: return location for the tangent at the point.
+func (point *PathPoint) Tangent(path *Path, direction PathDirection) *graphene.Vec2 {
+	var _arg0 *C.GskPathPoint    // out
+	var _arg1 *C.GskPath         // out
+	var _arg2 C.GskPathDirection // out
+	var _arg3 C.graphene_vec2_t  // in
+
+	_arg0 = (*C.GskPathPoint)(gextras.StructNative(unsafe.Pointer(point)))
+	_arg1 = (*C.GskPath)(gextras.StructNative(unsafe.Pointer(path)))
+	_arg2 = C.GskPathDirection(direction)
+
+	C.gsk_path_point_get_tangent(_arg0, _arg1, _arg2, &_arg3)
+	runtime.KeepAlive(point)
+	runtime.KeepAlive(path)
+	runtime.KeepAlive(direction)
+
+	var _tangent *graphene.Vec2 // out
+
+	_tangent = (*graphene.Vec2)(gextras.NewStructNative(unsafe.Pointer((&_arg3))))
+
+	return _tangent
 }
 
 // RoundedRect: rectangular region with rounded corners.
@@ -5801,7 +8875,7 @@ func (self *RoundedRect) Shrink(top float32, right float32, bottom float32, left
 	return _roundedRect
 }
 
-// ShaderArgsBuilder: object to build the uniforms data for a GLShader.
+// ShaderArgsBuilder: object to build the uniforms data for a GskGLShader.
 //
 // An instance of this type is always passed by reference.
 type ShaderArgsBuilder struct {
@@ -6107,6 +9181,394 @@ func (s *Shadow) SetRadius(radius float32) {
 	*valptr = C.float(radius)
 }
 
+// Stroke: GskStroke struct collects the parameters that influence the operation
+// of stroking a path.
+//
+// An instance of this type is always passed by reference.
+type Stroke struct {
+	*stroke
+}
+
+// stroke is the struct that's finalized.
+type stroke struct {
+	native *C.GskStroke
+}
+
+func marshalStroke(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &Stroke{&stroke{(*C.GskStroke)(b)}}, nil
+}
+
+// NewStroke constructs a struct Stroke.
+func NewStroke(lineWidth float32) *Stroke {
+	var _arg1 C.float      // out
+	var _cret *C.GskStroke // in
+
+	_arg1 = C.float(lineWidth)
+
+	_cret = C.gsk_stroke_new(_arg1)
+	runtime.KeepAlive(lineWidth)
+
+	var _stroke *Stroke // out
+
+	_stroke = (*Stroke)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_stroke)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_stroke_free((*C.GskStroke)(intern.C))
+		},
+	)
+
+	return _stroke
+}
+
+// Copy creates a copy of the given other stroke.
+//
+// The function returns the following values:
+//
+//   - stroke: new GskStroke. Use gsk.Stroke.Free() to free it.
+func (other *Stroke) Copy() *Stroke {
+	var _arg0 *C.GskStroke // out
+	var _cret *C.GskStroke // in
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(other)))
+
+	_cret = C.gsk_stroke_copy(_arg0)
+	runtime.KeepAlive(other)
+
+	var _stroke *Stroke // out
+
+	_stroke = (*Stroke)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_stroke)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gsk_stroke_free((*C.GskStroke)(intern.C))
+		},
+	)
+
+	return _stroke
+}
+
+// Dash gets the dash array in use or NULL if dashing is disabled.
+//
+// The function returns the following values:
+//
+//   - gfloats (optional): The dash array or NULL if the dash array is empty.
+func (self *Stroke) Dash() []float32 {
+	var _arg0 *C.GskStroke // out
+	var _cret *C.float     // in
+	var _arg1 C.gsize      // in
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_stroke_get_dash(_arg0, &_arg1)
+	runtime.KeepAlive(self)
+
+	var _gfloats []float32 // out
+
+	if _cret != nil {
+		_gfloats = make([]float32, _arg1)
+		copy(_gfloats, unsafe.Slice((*float32)(unsafe.Pointer(_cret)), _arg1))
+	}
+
+	return _gfloats
+}
+
+// DashOffset returns the dash_offset of a GskStroke.
+func (self *Stroke) DashOffset() float32 {
+	var _arg0 *C.GskStroke // out
+	var _cret C.float      // in
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_stroke_get_dash_offset(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// LineCap gets the line cap used.
+//
+// See gsk.LineCap for details.
+//
+// The function returns the following values:
+//
+//   - lineCap: line cap.
+func (self *Stroke) LineCap() LineCap {
+	var _arg0 *C.GskStroke // out
+	var _cret C.GskLineCap // in
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_stroke_get_line_cap(_arg0)
+	runtime.KeepAlive(self)
+
+	var _lineCap LineCap // out
+
+	_lineCap = LineCap(_cret)
+
+	return _lineCap
+}
+
+// LineJoin gets the line join used.
+//
+// See gsk.LineJoin for details.
+//
+// The function returns the following values:
+//
+//   - lineJoin: line join.
+func (self *Stroke) LineJoin() LineJoin {
+	var _arg0 *C.GskStroke  // out
+	var _cret C.GskLineJoin // in
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_stroke_get_line_join(_arg0)
+	runtime.KeepAlive(self)
+
+	var _lineJoin LineJoin // out
+
+	_lineJoin = LineJoin(_cret)
+
+	return _lineJoin
+}
+
+// LineWidth gets the line width used.
+//
+// The function returns the following values:
+//
+//   - gfloat: line width.
+func (self *Stroke) LineWidth() float32 {
+	var _arg0 *C.GskStroke // out
+	var _cret C.float      // in
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_stroke_get_line_width(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// MiterLimit returns the miter limit of a GskStroke.
+func (self *Stroke) MiterLimit() float32 {
+	var _arg0 *C.GskStroke // out
+	var _cret C.float      // in
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gsk_stroke_get_miter_limit(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gfloat float32 // out
+
+	_gfloat = float32(_cret)
+
+	return _gfloat
+}
+
+// SetDash sets the dash pattern to use by this stroke.
+//
+// A dash pattern is specified by an array of alternating non-negative values.
+// Each value provides the length of alternate "on" and "off" portions of the
+// stroke.
+//
+// Each "on" segment will have caps applied as if the segment were a separate
+// contour. In particular, it is valid to use an "on" length of 0 with
+// GSK_LINE_CAP_ROUND or GSK_LINE_CAP_SQUARE to draw dots or squares along a
+// path.
+//
+// If n_dash is 0, if all elements in dash are 0, or if there are negative
+// values in dash, then dashing is disabled.
+//
+// If n_dash is 1, an alternating "on" and "off" pattern with the single dash
+// length provided is assumed.
+//
+// If n_dash is uneven, the dash array will be used with the first element in
+// dash defining an "on" or "off" in alternating passes through the array.
+//
+// You can specify a starting offset into the dash with
+// gsk.Stroke.SetDashOffset().
+//
+// The function takes the following parameters:
+//
+//   - dash (optional): the array of dashes.
+func (self *Stroke) SetDash(dash []float32) {
+	var _arg0 *C.GskStroke // out
+	var _arg1 *C.float     // out
+	var _arg2 C.gsize
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg2 = (C.gsize)(len(dash))
+	if len(dash) > 0 {
+		_arg1 = (*C.float)(unsafe.Pointer(&dash[0]))
+	}
+
+	C.gsk_stroke_set_dash(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(dash)
+}
+
+// SetDashOffset sets the offset into the dash pattern where dashing should
+// begin.
+//
+// This is an offset into the length of the path, not an index into the array
+// values of the dash array.
+//
+// See gsk.Stroke.SetDash() for more details on dashing.
+//
+// The function takes the following parameters:
+//
+//   - offset into the dash pattern.
+func (self *Stroke) SetDashOffset(offset float32) {
+	var _arg0 *C.GskStroke // out
+	var _arg1 C.float      // out
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(offset)
+
+	C.gsk_stroke_set_dash_offset(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(offset)
+}
+
+// SetLineCap sets the line cap to be used when stroking.
+//
+// See gsk.LineCap for details.
+//
+// The function takes the following parameters:
+//
+//   - lineCap: GskLineCap.
+func (self *Stroke) SetLineCap(lineCap LineCap) {
+	var _arg0 *C.GskStroke // out
+	var _arg1 C.GskLineCap // out
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.GskLineCap(lineCap)
+
+	C.gsk_stroke_set_line_cap(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(lineCap)
+}
+
+// SetLineJoin sets the line join to be used when stroking.
+//
+// See gsk.LineJoin for details.
+//
+// The function takes the following parameters:
+//
+//   - lineJoin: line join to use.
+func (self *Stroke) SetLineJoin(lineJoin LineJoin) {
+	var _arg0 *C.GskStroke  // out
+	var _arg1 C.GskLineJoin // out
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.GskLineJoin(lineJoin)
+
+	C.gsk_stroke_set_line_join(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(lineJoin)
+}
+
+// SetLineWidth sets the line width to be used when stroking.
+//
+// The line width must be > 0.
+//
+// The function takes the following parameters:
+//
+//   - lineWidth: width of the line in pixels.
+func (self *Stroke) SetLineWidth(lineWidth float32) {
+	var _arg0 *C.GskStroke // out
+	var _arg1 C.float      // out
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(lineWidth)
+
+	C.gsk_stroke_set_line_width(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(lineWidth)
+}
+
+// SetMiterLimit sets the limit for the distance from the corner where sharp
+// turns of joins get cut off.
+//
+// The miter limit is in units of line width and must be non-negative.
+//
+// For joins of type GSK_LINE_JOIN_MITER that exceed the miter limit, the join
+// gets rendered as if it was of type GSK_LINE_JOIN_BEVEL.
+//
+// The function takes the following parameters:
+//
+//   - limit: miter limit.
+func (self *Stroke) SetMiterLimit(limit float32) {
+	var _arg0 *C.GskStroke // out
+	var _arg1 C.float      // out
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = C.float(limit)
+
+	C.gsk_stroke_set_miter_limit(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(limit)
+}
+
+// ToCairo: helper function that sets the stroke parameters of cr from the
+// values found in self.
+//
+// The function takes the following parameters:
+//
+//   - cr: cairo context to configure.
+func (self *Stroke) ToCairo(cr *cairo.Context) {
+	var _arg0 *C.GskStroke // out
+	var _arg1 *C.cairo_t   // out
+
+	_arg0 = (*C.GskStroke)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+
+	C.gsk_stroke_to_cairo(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(cr)
+}
+
+// StrokeEqual checks if 2 strokes are identical.
+//
+// The function takes the following parameters:
+//
+//   - stroke1 (optional): first GskStroke.
+//   - stroke2 (optional): second GskStroke.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the 2 strokes are equal, FALSE otherwise.
+func StrokeEqual(stroke1, stroke2 unsafe.Pointer) bool {
+	var _arg1 C.gconstpointer // out
+	var _arg2 C.gconstpointer // out
+	var _cret C.gboolean      // in
+
+	_arg1 = (C.gconstpointer)(unsafe.Pointer(stroke1))
+	_arg2 = (C.gconstpointer)(unsafe.Pointer(stroke2))
+
+	_cret = C.gsk_stroke_equal(_arg1, _arg2)
+	runtime.KeepAlive(stroke1)
+	runtime.KeepAlive(stroke2)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Transform: GskTransform is an object to describe transform matrices.
 //
 // Unlike graphene_matrix_t, GskTransform retains the steps in how a transform
@@ -6217,8 +9679,7 @@ func (self *Transform) Category() TransformCategory {
 //
 // The function returns the following values:
 //
-//   - transform (optional): inverted transform or NULL if the transform cannot
-//     be inverted.
+//   - transform (optional): inverted transform.
 func (self *Transform) Invert() *Transform {
 	var _arg0 *C.GskTransform // out
 	var _cret *C.GskTransform // in
@@ -6322,7 +9783,8 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	return _transform
 }
 
-// Rotate rotates next angle degrees in 2D - or in 3D-speak, around the z axis.
+// Rotate rotates next angle degrees in 2D - or in 3D-speak, around the Z axis.
+// The rotation happens around the origin point of (0, 0).
 //
 // The function takes the following parameters:
 //
@@ -6330,7 +9792,7 @@ func (next *Transform) Perspective(depth float32) *Transform {
 //
 // The function returns the following values:
 //
-//   - transform: new transform.
+//   - transform (optional): new transform.
 func (next *Transform) Rotate(angle float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
@@ -6347,13 +9809,15 @@ func (next *Transform) Rotate(angle float32) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
+	}
 
 	return _transform
 }
@@ -6369,7 +9833,7 @@ func (next *Transform) Rotate(angle float32) *Transform {
 //
 // The function returns the following values:
 //
-//   - transform: new transform.
+//   - transform (optional): new transform.
 func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _arg0 *C.GskTransform    // out
 	var _arg1 C.float            // out
@@ -6389,13 +9853,15 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
+	}
 
 	return _transform
 }
@@ -6411,7 +9877,7 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 //
 // The function returns the following values:
 //
-//   - transform: new transform.
+//   - transform (optional): new transform.
 func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
@@ -6431,13 +9897,15 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
+	}
 
 	return _transform
 }
@@ -6452,7 +9920,7 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 //
 // The function returns the following values:
 //
-//   - transform: new transform.
+//   - transform (optional): new transform.
 func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 C.float         // out
@@ -6475,13 +9943,57 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
+	}
+
+	return _transform
+}
+
+// Skew applies a skew transform.
+//
+// The function takes the following parameters:
+//
+//   - skewX: skew factor, in degrees, on the X axis.
+//   - skewY: skew factor, in degrees, on the Y axis.
+//
+// The function returns the following values:
+//
+//   - transform (optional): new transform.
+func (next *Transform) Skew(skewX float32, skewY float32) *Transform {
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // out
+	var _arg2 C.float         // out
+	var _cret *C.GskTransform // in
+
+	if next != nil {
+		_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(next)))
+	}
+	_arg1 = C.float(skewX)
+	_arg2 = C.float(skewY)
+
+	_cret = C.gsk_transform_skew(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(next)
+	runtime.KeepAlive(skewX)
+	runtime.KeepAlive(skewY)
+
+	var _transform *Transform // out
+
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
+	}
 
 	return _transform
 }
@@ -6539,10 +10051,82 @@ func (self *Transform) To2D() (outXx float32, outYx float32, outXy float32, outY
 	return _outXx, _outYx, _outXy, _outYy, _outDx, _outDy
 }
 
-// ToAffine converts a GskTransform to 2D affine transformation factors.
+// To2DComponents converts a GskTransform to 2D transformation factors.
+//
+// To recreate an equivalent transform from the factors returned by this
+// function, use
+//
+//	gsk_transform_skew (
+//	    gsk_transform_scale (
+//	        gsk_transform_rotate (
+//	            gsk_transform_translate (NULL, &GRAPHENE_POINT_T (dx, dy)),
+//	            angle),
+//	        scale_x, scale_y),
+//	    skew_x, skew_y)
 //
 // self must be a 2D transformation. If you are not sure, use
-// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_AFFINE to check.
+//
+//	gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D
+//
+// to check.
+//
+// The function returns the following values:
+//
+//   - outSkewX: return location for the skew factor in the x direction.
+//   - outSkewY: return location for the skew factor in the y direction.
+//   - outScaleX: return location for the scale factor in the x direction.
+//   - outScaleY: return location for the scale factor in the y direction.
+//   - outAngle: return location for the rotation angle.
+//   - outDx: return location for the translation in the x direction.
+//   - outDy: return location for the translation in the y direction.
+func (self *Transform) To2DComponents() (outSkewX float32, outSkewY float32, outScaleX float32, outScaleY float32, outAngle float32, outDx float32, outDy float32) {
+	var _arg0 *C.GskTransform // out
+	var _arg1 C.float         // in
+	var _arg2 C.float         // in
+	var _arg3 C.float         // in
+	var _arg4 C.float         // in
+	var _arg5 C.float         // in
+	var _arg6 C.float         // in
+	var _arg7 C.float         // in
+
+	_arg0 = (*C.GskTransform)(gextras.StructNative(unsafe.Pointer(self)))
+
+	C.gsk_transform_to_2d_components(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6, &_arg7)
+	runtime.KeepAlive(self)
+
+	var _outSkewX float32  // out
+	var _outSkewY float32  // out
+	var _outScaleX float32 // out
+	var _outScaleY float32 // out
+	var _outAngle float32  // out
+	var _outDx float32     // out
+	var _outDy float32     // out
+
+	_outSkewX = float32(_arg1)
+	_outSkewY = float32(_arg2)
+	_outScaleX = float32(_arg3)
+	_outScaleY = float32(_arg4)
+	_outAngle = float32(_arg5)
+	_outDx = float32(_arg6)
+	_outDy = float32(_arg7)
+
+	return _outSkewX, _outSkewY, _outScaleX, _outScaleY, _outAngle, _outDx, _outDy
+}
+
+// ToAffine converts a GskTransform to 2D affine transformation factors.
+//
+// To recreate an equivalent transform from the factors returned by this
+// function, use
+//
+//	gsk_transform_scale (gsk_transform_translate (NULL,
+//	                                              &GRAPHENE_POINT_T (dx, dy)),
+//	                     sx, sy)
+//
+// self must be a 2D affine transformation. If you are not sure, use
+//
+//	gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_AFFINE
+//
+// to check.
 //
 // The function returns the following values:
 //
@@ -6631,7 +10215,10 @@ func (self *Transform) String() string {
 // ToTranslate converts a GskTransform to a translation operation.
 //
 // self must be a 2D transformation. If you are not sure, use
-// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_TRANSLATE to check.
+//
+//	gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_TRANSLATE
+//
+// to check.
 //
 // The function returns the following values:
 //
@@ -6664,7 +10251,7 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 //
 // The function returns the following values:
 //
-//   - transform: new transform.
+//   - transform (optional): new transform.
 func (next *Transform) Transform(other *Transform) *Transform {
 	var _arg0 *C.GskTransform // out
 	var _arg1 *C.GskTransform // out
@@ -6683,13 +10270,15 @@ func (next *Transform) Transform(other *Transform) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
+	}
 
 	return _transform
 }
@@ -6760,7 +10349,7 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 //
 // The function returns the following values:
 //
-//   - transform: new transform.
+//   - transform (optional): new transform.
 func (next *Transform) Translate(point *graphene.Point) *Transform {
 	var _arg0 *C.GskTransform     // out
 	var _arg1 *C.graphene_point_t // out
@@ -6777,13 +10366,15 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
+	}
 
 	return _transform
 }
@@ -6796,7 +10387,7 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 //
 // The function returns the following values:
 //
-//   - transform: new transform.
+//   - transform (optional): new transform.
 func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	var _arg0 *C.GskTransform       // out
 	var _arg1 *C.graphene_point3d_t // out
@@ -6813,13 +10404,15 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 
 	var _transform *Transform // out
 
-	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_transform)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gsk_transform_unref((*C.GskTransform)(intern.C))
+			},
+		)
+	}
 
 	return _transform
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
@@ -73,8 +74,9 @@ func ContextGetFontOptions(context *pango.Context) *cairo.FontOptions {
 	return _fontOptions
 }
 
-// ContextGetResolution gets the resolution for the context. See
-// pangocairo.ContextSetResolution().
+// ContextGetResolution gets the resolution for the context.
+//
+// See pangocairo.ContextSetResolution().
 //
 // The function takes the following parameters:
 //
@@ -193,7 +195,7 @@ func ContextSetShapeRenderer(context *pango.Context, fn ShapeRendererFunc) {
 //
 // The function returns the following values:
 //
-//   - context: newly created PangoContext. Free with g_object_unref().
+//   - context: newly created PangoContext.
 func CreateContext(cr *cairo.Context) *pango.Context {
 	var _arg1 *C.cairo_t      // out
 	var _cret *C.PangoContext // in
@@ -234,7 +236,7 @@ func CreateContext(cr *cairo.Context) *pango.Context {
 //
 // The function returns the following values:
 //
-//   - layout: newly created PangoLayout. Free with g_object_unref().
+//   - layout: newly created PangoLayout.
 func CreateLayout(cr *cairo.Context) *pango.Layout {
 	var _arg1 *C.cairo_t     // out
 	var _cret *C.PangoLayout // in
@@ -612,6 +614,9 @@ func wrapFontMap(obj *coreglib.Object) *FontMap {
 	return &FontMap{
 		FontMap: pango.FontMap{
 			Object: obj,
+			ListModel: gio.ListModel{
+				Object: obj,
+			},
 		},
 	}
 }
@@ -652,11 +657,11 @@ func (fontmap *FontMap) Resolution() float64 {
 // Note that since Pango 1.32.6, the default fontmap is per-thread.
 // This function only changes the default fontmap for the current thread.
 // Default fontmaps of existing threads are not changed. Default fontmaps of any
-// new threads will still be created using pangocairo.FontMap.New.
+// new threads will still be created using pangocairo.FontMap().New.
 //
 // A value of NULL for fontmap will cause the current default font map to
 // be released and a new default font map to be created on demand, using
-// pangocairo.FontMap.New.
+// pangocairo.FontMap().New.
 func (fontmap *FontMap) SetDefault() {
 	var _arg0 *C.PangoCairoFontMap // out
 

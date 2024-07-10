@@ -39,6 +39,34 @@ func _gotk4_glib2_CompareDataFunc(arg1 C.gconstpointer, arg2 C.gconstpointer, ar
 	return cret
 }
 
+//export _gotk4_glib2_EqualFuncFull
+func _gotk4_glib2_EqualFuncFull(arg1 C.gconstpointer, arg2 C.gconstpointer, arg3 C.gpointer) (cret C.gboolean) {
+	var fn EqualFuncFull
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(EqualFuncFull)
+	}
+
+	var _a unsafe.Pointer // out
+	var _b unsafe.Pointer // out
+
+	_a = (unsafe.Pointer)(unsafe.Pointer(arg1))
+	_b = (unsafe.Pointer)(unsafe.Pointer(arg2))
+
+	ok := fn(_a, _b)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_glib2_Func
 func _gotk4_glib2_Func(arg1 C.gpointer, arg2 C.gpointer) {
 	var fn Func
@@ -181,15 +209,15 @@ func _gotk4_glib2_SourceFunc(arg1 C.gpointer) (cret C.gboolean) {
 	return cret
 }
 
-//export _gotk4_glib2_SpawnChildSetupFunc
-func _gotk4_glib2_SpawnChildSetupFunc(arg1 C.gpointer) {
-	var fn SpawnChildSetupFunc
+//export _gotk4_glib2_SourceOnceFunc
+func _gotk4_glib2_SourceOnceFunc(arg1 C.gpointer) {
+	var fn SourceOnceFunc
 	{
 		v := gbox.Get(uintptr(arg1))
 		if v == nil {
 			panic(`callback not found`)
 		}
-		fn = v.(SpawnChildSetupFunc)
+		fn = v.(SourceOnceFunc)
 	}
 
 	fn()

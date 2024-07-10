@@ -51,17 +51,17 @@ func TestGIRDirs(t *testing.T) {
 		{
 			[]string{"gtk4"},
 			map[string]string{
-				"gtk4": "/nix/store/niw855nnjgqbq2s0iqxrk9xs5mr10rz8-gtk4-4.2.1-dev/share/gir-1.0",
+				"gtk4": "/nix/store/j2vgh4x3wmxrycvwkbnp74vh32yip9i5-gtk4-4.14.4-dev/share/gir-1.0",
 			},
 		},
 		{
 			[]string{"gtk4", "pango", "cairo", "glib-2.0", "gdk-3.0"},
 			map[string]string{
-				"gtk4":     "/nix/store/niw855nnjgqbq2s0iqxrk9xs5mr10rz8-gtk4-4.2.1-dev/share/gir-1.0",
-				"pango":    "/nix/store/c52730cidby7p2qwwq8cf91anqrni6lg-pango-1.48.4-dev/share/gir-1.0",
-				"cairo":    "/nix/store/gp87jysb40b919z8s7ixcilwdsiyl0rp-cairo-1.16.0-dev/share/gir-1.0",
-				"glib-2.0": "/nix/store/d9zs9xg86lhqjqni0v8h2ibdrjb57fn4-glib-2.68.2-dev/share/gir-1.0",
-				"gdk-3.0":  "/nix/store/vsk1qc1na4izgz461vxkvn655yvarfr7-gtk+3-3.24.27-dev/share/gir-1.0",
+				"gtk4":     "/nix/store/j2vgh4x3wmxrycvwkbnp74vh32yip9i5-gtk4-4.14.4-dev/share/gir-1.0",
+				"pango":    "/nix/store/fmqv9zpvf9fkb8n384ramhhbp8k20rnw-pango-1.52.2-dev/share/gir-1.0",
+				"cairo":    "/nix/store/0i4xfw9ylgmg8f7z6rwwmfbin3ckyli5-cairo-1.18.0-dev/share/gir-1.0",
+				"glib-2.0": "/nix/store/kd2a4kyia0lai7n7hn657mpcr2gykw00-glib-2.80.2-dev/share/gir-1.0",
+				"gdk-3.0":  "/nix/store/kd2a4kyia0lai7n7hn657mpcr2gykw00-glib-2.80.2-dev/share/gir-1.0",
 			},
 		},
 	}

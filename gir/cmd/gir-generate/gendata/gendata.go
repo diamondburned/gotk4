@@ -50,6 +50,7 @@ var PkgExceptions = []string{
 // the given Packages list. It is manually updated.
 var PkgGenerated = []string{
 	"atk",
+	// "atspi",
 	"gdk",
 	"gdkpixbuf",
 	"gdkpixdata",
@@ -68,6 +69,7 @@ var PkgGenerated = []string{
 // GenerateExceptions contains the keys of the underneath ImportOverrides map.
 var GenerateExceptions = []string{
 	"cairo-1",
+	"Atspi-2", // Missing AtspiDevice
 }
 
 // ImportOverrides is the list of imports to defer to another library, usually
@@ -79,10 +81,12 @@ var ImportOverrides = map[string]string{}
 // Packages lists pkg-config packages and optionally the namespaces to be
 // generated. If the list of namespaces is nil, then everything is generated.
 var Packages = []genmain.Package{
-	{Name: "gobject-introspection-1.0", Namespaces: []string{
+	{Name: "glib-2.0", Namespaces: []string{
 		"GLib-2",
 		"GObject-2",
 		"Gio-2",
+	}},
+	{Name: "gobject-introspection-1.0", Namespaces: []string{
 		"cairo-1",
 	}},
 	{Name: "gdk-pixbuf-2.0"},
@@ -119,6 +123,7 @@ var Preprocessors = []Preprocessor{
 	RenameEnumMembers("Pango-1.AttrType", "ATTR_(.*)", "ATTR_TYPE_$1"),
 	RenameEnumMembers("Gsk-4.RenderNodeType", ".*", "${0}_TYPE"),
 	RenameEnumMembers("Gdk-3.EventType", ".*", "${0}_TYPE"),
+	RenameEnumMembers("Gtk-4.GraphicsOffloadEnabled", ".*", "${0}_TYPE"),
 	// See #28.
 	RemoveCIncludes("Gio-2.0.gir", "gio/gdesktopappinfo.h"),
 	// These probably shouldn't be built on Windows.
@@ -276,6 +281,7 @@ var ConversionProcessors = []ConversionProcessor{
 // namespace, and the values are list of names.
 var Filters = []FilterMatcher{
 	AbsoluteFilter("C.cairo_image_surface_create"),
+	AbsoluteFilter("C.gsk_path_builder_add_cairo_path"),
 
 	// This seems to be macro-guarded between x86 and arm64.
 	AbsoluteFilter("GLib.VA_COPY_AS_ARRAY"),
@@ -309,6 +315,9 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.domain"),
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.flags"),
 	AbsoluteFilter("GdkPixbuf.PixbufFormat.disabled"),
+	// Incomplete GArray implementation
+	AbsoluteFilter("Atk.Document.get_text_selections"),
+	AbsoluteFilter("Atk.Document.set_text_selections"),
 	// Dangerous.
 	AbsoluteFilter("GLib.IOChannel.read"),
 	AbsoluteFilter("GLib.Bytes.new_take"),
@@ -386,6 +395,10 @@ var Filters = []FilterMatcher{
 	AbsoluteFilter("C.gtk_print_capabilities_get_type"),
 	AbsoluteFilter("C.GdkPixbufAnimationClass"),
 	AbsoluteFilter("C.GdkPixbufAnimationIterClass"),
+	AbsoluteFilter("C.GThreadedResolverClass"),
+	AbsoluteFilter("C.g_threaded_resolver_get_type"),
+	AbsoluteFilter("C.GtkFileChooserWidgetAccessibleClass"),
+	AbsoluteFilter("C.gtk_file_chooser_widget_accessible_get_type"),
 
 	// Missing.
 	AbsoluteFilter("Gtk-3.HeaderBarAccessibleClass"),

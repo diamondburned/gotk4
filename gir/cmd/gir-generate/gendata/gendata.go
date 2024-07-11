@@ -211,63 +211,6 @@ var Preprocessors = []Preprocessor{
 			}
 		}
 	}),
-
-	modifyBufferInsert("Gtk-4.TextBuffer.insert"),
-	modifyBufferInsert("Gtk-4.TextBuffer.insert_markup"),
-	modifyBufferInsert("Gtk-4.TextBuffer.insert_at_cursor"),
-	modifyBufferInsert("Gtk-4.TextBuffer.insert_interactive"),
-	modifyBufferInsert("Gtk-4.TextBuffer.insert_interactive_at_cursor"),
-	modifyBufferInsert("Gtk-4.TextBuffer.set_text"),
-
-	modifyBufferInsert("Gtk-3.TextBuffer.insert"),
-	modifyBufferInsert("Gtk-3.TextBuffer.insert_markup"),
-	modifyBufferInsert("Gtk-3.TextBuffer.insert_at_cursor"),
-	modifyBufferInsert("Gtk-3.TextBuffer.insert_interactive"),
-	modifyBufferInsert("Gtk-3.TextBuffer.insert_interactive_at_cursor"),
-	modifyBufferInsert("Gtk-3.TextBuffer.set_text"),
-}
-
-func modifyBufferInsert(name string) Preprocessor {
-	names := []string{"text", "markup"}
-
-	return ModifyCallable(name, func(c *gir.CallableAttrs) {
-		var p *gir.ParameterAttrs
-
-		for _, name := range names {
-			if p = FindParameter(c, name); p != nil {
-				break
-			}
-		}
-
-		if p == nil {
-			return
-		}
-
-		lenIx := findTextLenParam(c.Parameters.Parameters)
-		if lenIx == -1 {
-			return
-		}
-
-		p.Type = nil
-		p.Array = &gir.Array{
-			CType:          "const char*",
-			Type:           &gir.Type{Name: "gchar"},
-			Length:         &lenIx,
-			ZeroTerminated: new(bool), // false
-		}
-	})
-}
-
-func findTextLenParam(params []gir.Parameter) int {
-	const doc = "length of"
-
-	for i, param := range params {
-		if param.Doc != nil && strings.Contains(param.Doc.String, doc) {
-			return i
-		}
-	}
-
-	return -1
 }
 
 var ConversionProcessors = []ConversionProcessor{

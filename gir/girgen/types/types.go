@@ -586,3 +586,29 @@ func GuessParameterOutput(param *gir.Parameter) string {
 	param.Direction = "in"
 	return "in"
 }
+
+// Convert char* to array with an associated length parameter
+// Based on detect_length https://github.com/gtk-rs/gir/blob/master/src/analysis/function_parameters.rs
+func DetectLengthParameters(params []gir.Parameter) {
+	for i, param := range params {
+		if i == 0 ||
+			GuessParameterOutput(&param) != "in" ||
+			param.Name != "length" && !strings.HasSuffix(param.Name, "len") {
+			continue
+		}
+
+		data := &params[i-1]
+		if data.Type == nil || data.Type.CType != "const gchar*" && data.Type.CType != "const char*" {
+			continue
+		}
+
+		ii := i
+		data.Array = &gir.Array{
+			CType:          data.Type.CType,
+			Type:           &gir.Type{Name: "gchar"},
+			Length:         &ii,
+			ZeroTerminated: new(bool), // false
+		}
+		data.Type = nil
+	}
+}

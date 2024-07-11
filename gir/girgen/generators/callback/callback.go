@@ -243,6 +243,8 @@ func (g *Generator) renderBlock() bool {
 	if g.Parameters != nil && len(g.Parameters.Parameters) > 0 {
 		callbackValues = make([]typeconv.ConversionValue, 0, len(g.Parameters.Parameters)+2)
 
+		types.DetectLengthParameters(g.Parameters.Parameters)
+
 		for i, param := range g.Parameters.Parameters {
 			// Skip generating the closure parameter.
 			if param.Skip || (g.Closure != nil && i == *g.Closure) {

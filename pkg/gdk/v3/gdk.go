@@ -2533,7 +2533,7 @@ const KEY_zerosuperior = 16785520
 const KEY_zstroke = 16777654
 const MAJOR_VERSION = 3
 const MAX_TIMECOORD_AXES = 128
-const MICRO_VERSION = 27
+const MICRO_VERSION = 42
 const MINOR_VERSION = 24
 
 // PARENT_RELATIVE: special value, indicating that the background for a window
@@ -7355,9 +7355,11 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int)
 }
 
 // PixbufGetFromWindow transfers image data from a Window and converts it to an
-// RGB(A) representation inside a Pixbuf. In other words, copies image data from
-// a server-side drawable to a client-side RGB(A) buffer. This allows you to
-// efficiently read individual pixels on the client side.
+// RGB(A) representation inside a Pixbuf.
+//
+// In other words, copies image data from a server-side drawable to a
+// client-side RGB(A) buffer. This allows you to efficiently read individual
+// pixels on the client side.
 //
 // This function will create an RGB pixbuf with 8 bits per channel with the size
 // specified by the width and height arguments scaled by the scale factor of
@@ -7377,8 +7379,10 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX, srcY, width, height int)
 // If memory can’t be allocated for the return value, NULL will be returned
 // instead.
 //
-// (In short, there are several ways this function can fail, and if it fails it
-// returns NULL; so check the return value.).
+// In short, there are several ways this function can fail, and if it fails it
+// returns NULL; so check the return value.
+//
+// You should rarely, if ever, need to call this function.
 //
 // The function takes the following parameters:
 //
@@ -8488,6 +8492,9 @@ func (context *AppLaunchContext) SetIconName(iconName string) {
 
 // SetScreen sets the screen on which applications will be launched when using
 // this context. See also gdk_app_launch_context_set_display().
+//
+// Note that, typically, a Screen represents a logical screen, not a physical
+// monitor.
 //
 // If both screen and display are set, the screen takes priority. If neither
 // screen or display are set, the default screen and display are used.

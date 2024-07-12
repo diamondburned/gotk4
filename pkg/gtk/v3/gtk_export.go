@@ -936,14 +936,13 @@ func _gotk4_gtk3_TextBufferSerializeFunc(arg1 *C.GtkTextBuffer, arg2 *C.GtkTextB
 	_start = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	_end = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 
-	length, guint8 := fn(_registerBuffer, _contentBuffer, _start, _end)
+	guint8s := fn(_registerBuffer, _contentBuffer, _start, _end)
 
-	var _ uint
-	var _ *byte
+	var _ []byte
 
-	*arg5 = C.gsize(length)
-	if guint8 != nil {
-		cret = (*C.guint8)(unsafe.Pointer(guint8))
+	*arg5 = (C.gsize)(len(guint8s))
+	if len(guint8s) > 0 {
+		cret = (*C.guint8)(unsafe.Pointer(&guint8s[0]))
 	}
 
 	return cret
@@ -8309,15 +8308,13 @@ func _gotk4_gtk3_IMContextClass_set_surrounding(arg0 *C.GtkIMContext, arg1 *C.gc
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IMContextOverrides.SetSurrounding, got none")
 	}
 
-	var _text string     // out
-	var _len int         // out
+	var _text string
 	var _cursorIndex int // out
 
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_len = int(arg2)
+	_text = C.GoStringN(arg1, C.int(arg2))
 	_cursorIndex = int(arg3)
 
-	overrides.SetSurrounding(_text, _len, _cursorIndex)
+	overrides.SetSurrounding(_text, _cursorIndex)
 }
 
 //export _gotk4_gtk3_IMContextClass_set_use_preedit

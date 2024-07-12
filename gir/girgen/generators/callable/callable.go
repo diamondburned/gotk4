@@ -244,6 +244,8 @@ func (g *Generator) renderDynamicLinkedBlock() bool {
 		// Copy the parameters list so we can freely mutate it.
 		parameters := types.ResolveParameters(g.gen, g.Parameters.Parameters)
 
+		types.DetectLengthParameters(parameters)
+
 		// Preprocess the values to normalize an edge case; see comment below.
 		for i, value := range parameters {
 			if value.AnyType.Array == nil || value.AnyType.Array.Length == nil {

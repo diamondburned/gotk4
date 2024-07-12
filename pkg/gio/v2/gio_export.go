@@ -20,40 +20,6 @@ import (
 // #include <glib-object.h>
 import "C"
 
-//export _gotk4_gio2_AsyncReadyCallback
-func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.GAsyncResult, arg3 C.gpointer) {
-	var fn AsyncReadyCallback
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(AsyncReadyCallback)
-	}
-
-	var _res AsyncResulter // out
-
-	{
-		objptr := unsafe.Pointer(arg2)
-		if objptr == nil {
-			panic("object of type gio.AsyncResulter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AsyncResulter)
-			return ok
-		})
-		rv, ok := casted.(AsyncResulter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
-		}
-		_res = rv
-	}
-
-	fn(_res)
-}
-
 //export _gotk4_gio2_BusAcquiredCallback
 func _gotk4_gio2_BusAcquiredCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
 	var fn BusAcquiredCallback
@@ -154,34 +120,6 @@ func _gotk4_gio2_BusNameVanishedCallback(arg1 *C.GDBusConnection, arg2 *C.gchar,
 	_name = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 
 	fn(_connection, _name)
-}
-
-//export _gotk4_gio2_CancellableSourceFunc
-func _gotk4_gio2_CancellableSourceFunc(arg1 *C.GCancellable, arg2 C.gpointer) (cret C.gboolean) {
-	var fn CancellableSourceFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(CancellableSourceFunc)
-	}
-
-	var _cancellable context.Context // out
-
-	if arg1 != nil {
-		_cancellable = gcancel.NewCancellableContext(unsafe.Pointer(arg1))
-	}
-
-	ok := fn(_cancellable)
-
-	var _ bool
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
 }
 
 //export _gotk4_gio2_DBusInterfaceGetPropertyFunc
@@ -333,36 +271,6 @@ func _gotk4_gio2_DBusMessageFilterFunction(arg1 *C.GDBusConnection, arg2 *C.GDBu
 		cret = (*C.GDBusMessage)(unsafe.Pointer(coreglib.InternObject(dBusMessage).Native()))
 		C.g_object_ref(C.gpointer(coreglib.InternObject(dBusMessage).Native()))
 	}
-
-	return cret
-}
-
-//export _gotk4_gio2_DBusProxyTypeFunc
-func _gotk4_gio2_DBusProxyTypeFunc(arg1 *C.GDBusObjectManagerClient, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) (cret C.GType) {
-	var fn DBusProxyTypeFunc
-	{
-		v := gbox.Get(uintptr(arg4))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(DBusProxyTypeFunc)
-	}
-
-	var _manager *DBusObjectManagerClient // out
-	var _objectPath string                // out
-	var _interfaceName string             // out
-
-	_manager = wrapDBusObjectManagerClient(coreglib.Take(unsafe.Pointer(arg1)))
-	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
-	if arg3 != nil {
-		_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	}
-
-	gType := fn(_manager, _objectPath, _interfaceName)
-
-	var _ coreglib.Type
-
-	cret = C.GType(gType)
 
 	return cret
 }
@@ -520,150 +428,6 @@ func _gotk4_gio2_DBusSubtreeIntrospectFunc(arg1 *C.GDBusConnection, arg2 *C.gcha
 	return cret
 }
 
-//export _gotk4_gio2_DatagramBasedSourceFunc
-func _gotk4_gio2_DatagramBasedSourceFunc(arg1 *C.GDatagramBased, arg2 C.GIOCondition, arg3 C.gpointer) (cret C.gboolean) {
-	var fn DatagramBasedSourceFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(DatagramBasedSourceFunc)
-	}
-
-	var _datagramBased DatagramBasedder // out
-	var _condition glib.IOCondition     // out
-
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.DatagramBasedder is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(DatagramBasedder)
-			return ok
-		})
-		rv, ok := casted.(DatagramBasedder)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.DatagramBasedder")
-		}
-		_datagramBased = rv
-	}
-	_condition = glib.IOCondition(arg2)
-
-	ok := fn(_datagramBased, _condition)
-
-	var _ bool
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_FileMeasureProgressCallback
-func _gotk4_gio2_FileMeasureProgressCallback(arg1 C.gboolean, arg2 C.guint64, arg3 C.guint64, arg4 C.guint64, arg5 C.gpointer) {
-	var fn FileMeasureProgressCallback
-	{
-		v := gbox.Get(uintptr(arg5))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(FileMeasureProgressCallback)
-	}
-
-	var _reporting bool     // out
-	var _currentSize uint64 // out
-	var _numDirs uint64     // out
-	var _numFiles uint64    // out
-
-	if arg1 != 0 {
-		_reporting = true
-	}
-	_currentSize = uint64(arg2)
-	_numDirs = uint64(arg3)
-	_numFiles = uint64(arg4)
-
-	fn(_reporting, _currentSize, _numDirs, _numFiles)
-}
-
-//export _gotk4_gio2_FileProgressCallback
-func _gotk4_gio2_FileProgressCallback(arg1 C.goffset, arg2 C.goffset, arg3 C.gpointer) {
-	var fn FileProgressCallback
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(FileProgressCallback)
-	}
-
-	var _currentNumBytes int64 // out
-	var _totalNumBytes int64   // out
-
-	_currentNumBytes = int64(arg1)
-	_totalNumBytes = int64(arg2)
-
-	fn(_currentNumBytes, _totalNumBytes)
-}
-
-//export _gotk4_gio2_FileReadMoreCallback
-func _gotk4_gio2_FileReadMoreCallback(arg1 *C.char, arg2 C.goffset, arg3 C.gpointer) (cret C.gboolean) {
-	var fn FileReadMoreCallback
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(FileReadMoreCallback)
-	}
-
-	var _fileContents string // out
-	var _fileSize int64      // out
-
-	_fileContents = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
-	_fileSize = int64(arg2)
-
-	ok := fn(_fileContents, _fileSize)
-
-	var _ bool
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_PollableSourceFunc
-func _gotk4_gio2_PollableSourceFunc(arg1 *C.GObject, arg2 C.gpointer) (cret C.gboolean) {
-	var fn PollableSourceFunc
-	{
-		v := gbox.Get(uintptr(arg2))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(PollableSourceFunc)
-	}
-
-	var _pollableStream *coreglib.Object // out
-
-	_pollableStream = coreglib.Take(unsafe.Pointer(arg1))
-
-	ok := fn(_pollableStream)
-
-	var _ bool
-
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
 //export _gotk4_gio2_SettingsBindGetMapping
 func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C.gpointer) (cret C.gboolean) {
 	var fn SettingsBindGetMapping
@@ -753,34 +517,6 @@ func _gotk4_gio2_SettingsGetMapping(arg1 *C.GVariant, arg2 *C.gpointer, arg3 C.g
 	var _ bool
 
 	*arg2 = (C.gpointer)(unsafe.Pointer(result))
-	if ok {
-		cret = C.TRUE
-	}
-
-	return cret
-}
-
-//export _gotk4_gio2_SocketSourceFunc
-func _gotk4_gio2_SocketSourceFunc(arg1 *C.GSocket, arg2 C.GIOCondition, arg3 C.gpointer) (cret C.gboolean) {
-	var fn SocketSourceFunc
-	{
-		v := gbox.Get(uintptr(arg3))
-		if v == nil {
-			panic(`callback not found`)
-		}
-		fn = v.(SocketSourceFunc)
-	}
-
-	var _socket *Socket             // out
-	var _condition glib.IOCondition // out
-
-	_socket = wrapSocket(coreglib.Take(unsafe.Pointer(arg1)))
-	_condition = glib.IOCondition(arg2)
-
-	ok := fn(_socket, _condition)
-
-	var _ bool
-
 	if ok {
 		cret = C.TRUE
 	}
@@ -1573,6 +1309,46 @@ func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, 
 	overrides.LaunchFailed(_startupNotifyId)
 }
 
+//export _gotk4_gio2_AppLaunchContextClass_launch_started
+func _gotk4_gio2_AppLaunchContextClass_launch_started(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GVariant) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[AppLaunchContextOverrides](instance0)
+	if overrides.LaunchStarted == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AppLaunchContextOverrides.LaunchStarted, got none")
+	}
+
+	var _info AppInfor              // out
+	var _platformData *glib.Variant // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(AppInfor)
+			return ok
+		})
+		rv, ok := casted.(AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_info = rv
+	}
+	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+	C.g_variant_ref(arg2)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_platformData)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_variant_unref((*C.GVariant)(intern.C))
+		},
+	)
+
+	overrides.LaunchStarted(_info, _platformData)
+}
+
 //export _gotk4_gio2_AppLaunchContextClass_launched
 func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -1631,6 +1407,53 @@ func _gotk4_gio2_AppLaunchContext_ConnectLaunchFailed(arg0 C.gpointer, arg1 *C.g
 	_startupNotifyId = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 
 	f(_startupNotifyId)
+}
+
+//export _gotk4_gio2_AppLaunchContext_ConnectLaunchStarted
+func _gotk4_gio2_AppLaunchContext_ConnectLaunchStarted(arg0 C.gpointer, arg1 *C.GAppInfo, arg2 *C.GVariant, arg3 C.guintptr) {
+	var f func(info AppInfor, platformData *glib.Variant)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(info AppInfor, platformData *glib.Variant))
+	}
+
+	var _info AppInfor              // out
+	var _platformData *glib.Variant // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gio.AppInfor is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(AppInfor)
+			return ok
+		})
+		rv, ok := casted.(AppInfor)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
+		}
+		_info = rv
+	}
+	if arg2 != nil {
+		_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
+		C.g_variant_ref(arg2)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_platformData)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
+
+	f(_info, _platformData)
 }
 
 //export _gotk4_gio2_AppLaunchContext_ConnectLaunched
@@ -2123,6 +1946,17 @@ func _gotk4_gio2_Application_ConnectStartup(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
+//export _gotk4_gio2_ApplicationCommandLineClass_done
+func _gotk4_gio2_ApplicationCommandLineClass_done(arg0 *C.GApplicationCommandLine) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[ApplicationCommandLineOverrides](instance0)
+	if overrides.Done == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationCommandLineOverrides.Done, got none")
+	}
+
+	overrides.Done()
+}
+
 //export _gotk4_gio2_ApplicationCommandLineClass_get_stdin
 func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.GApplicationCommandLine) (cret *C.GInputStream) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -2436,6 +2270,23 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.GDBusInterfac
 	var _ *glib.Variant
 
 	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+
+	return cret
+}
+
+//export _gotk4_gio2_DBusInterfaceSkeletonClass_get_vtable
+func _gotk4_gio2_DBusInterfaceSkeletonClass_get_vtable(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GDBusInterfaceVTable) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[DBusInterfaceSkeletonOverrides](instance0)
+	if overrides.Vtable == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusInterfaceSkeletonOverrides.Vtable, got none")
+	}
+
+	dBusInterfaceVTable := overrides.Vtable()
+
+	var _ *DBusInterfaceVTable
+
+	cret = (*C.GDBusInterfaceVTable)(gextras.StructNative(unsafe.Pointer(dBusInterfaceVTable)))
 
 	return cret
 }
@@ -2783,6 +2634,57 @@ func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusC
 	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
 
 	ok := f(_connection)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DebugControllerDBusClass_authorize
+func _gotk4_gio2_DebugControllerDBusClass_authorize(arg0 *C.GDebugControllerDBus, arg1 *C.GDBusMethodInvocation) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[DebugControllerDBusOverrides](instance0)
+	if overrides.Authorize == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DebugControllerDBusOverrides.Authorize, got none")
+	}
+
+	var _invocation *DBusMethodInvocation // out
+
+	_invocation = wrapDBusMethodInvocation(coreglib.Take(unsafe.Pointer(arg1)))
+
+	ok := overrides.Authorize(_invocation)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_DebugControllerDBus_ConnectAuthorize
+func _gotk4_gio2_DebugControllerDBus_ConnectAuthorize(arg0 C.gpointer, arg1 *C.GDBusMethodInvocation, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(invocation *DBusMethodInvocation) (ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(invocation *DBusMethodInvocation) (ok bool))
+	}
+
+	var _invocation *DBusMethodInvocation // out
+
+	_invocation = wrapDBusMethodInvocation(coreglib.Take(unsafe.Pointer(arg1)))
+
+	ok := f(_invocation)
 
 	var _ bool
 
@@ -5535,8 +5437,10 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumera
 	var _ SocketAddresser
 	var _ error
 
-	cret = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(socketAddress).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddress).Native()))
+	if socketAddress != nil {
+		cret = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(socketAddress).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddress).Native()))
+	}
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
@@ -5577,8 +5481,10 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddress
 	var _ SocketAddresser
 	var _ error
 
-	cret = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(socketAddress).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddress).Native()))
+	if socketAddress != nil {
+		cret = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(socketAddress).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(socketAddress).Native()))
+	}
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
 	}
@@ -6037,6 +5943,26 @@ func _gotk4_gio2_TlsConnectionClass_get_binding_data(arg0 *C.GTlsConnection, arg
 
 	if _goerr != nil && _cerr != nil {
 		*_cerr = (*C.GError)(gerror.New(_goerr))
+	}
+
+	return cret
+}
+
+//export _gotk4_gio2_TlsConnectionClass_get_negotiated_protocol
+func _gotk4_gio2_TlsConnectionClass_get_negotiated_protocol(arg0 *C.GTlsConnection) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[TLSConnectionOverrides](instance0)
+	if overrides.NegotiatedProtocol == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSConnectionOverrides.NegotiatedProtocol, got none")
+	}
+
+	utf8 := overrides.NegotiatedProtocol()
+
+	var _ string
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
 	}
 
 	return cret
@@ -6749,17 +6675,14 @@ func _gotk4_gio2_TlsPasswordClass_get_value(arg0 *C.GTlsPassword, arg1 *C.gsize)
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSPasswordOverrides.Value, got none")
 	}
 
-	var _length *uint // out
+	guint8s := overrides.Value()
 
-	if arg1 != nil {
-		_length = (*uint)(unsafe.Pointer(arg1))
+	var _ []byte
+
+	*arg1 = (C.gsize)(len(guint8s))
+	if len(guint8s) > 0 {
+		cret = (*C.guchar)(unsafe.Pointer(&guint8s[0]))
 	}
-
-	guint8 := overrides.Value(_length)
-
-	var _ *byte
-
-	cret = (*C.guchar)(unsafe.Pointer(guint8))
 
 	return cret
 }

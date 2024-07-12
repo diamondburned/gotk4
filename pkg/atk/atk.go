@@ -47,8 +47,11 @@ import (
 // extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
 // extern void _gotk4_atk1_Object_ConnectStateChange(gpointer, gchar*, gboolean, guintptr);
 // extern void _gotk4_atk1_Object_ConnectPropertyChange(gpointer, gpointer*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectNotification(gpointer, gchar*, gint, guintptr);
 // extern void _gotk4_atk1_Object_ConnectFocusEvent(gpointer, gboolean, guintptr);
 // extern void _gotk4_atk1_Object_ConnectChildrenChanged(gpointer, guint, gpointer*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectAttributeChanged(gpointer, gchar*, gchar*, guintptr);
+// extern void _gotk4_atk1_Object_ConnectAnnouncement(gpointer, gchar*, guintptr);
 // extern void _gotk4_atk1_Object_ConnectActiveDescendantChanged(gpointer, gpointer*, guintptr);
 // extern void _gotk4_atk1_ObjectFactoryClass_invalidate(AtkObjectFactory*);
 // extern void _gotk4_atk1_ObjectClass_visible_data_changed(AtkObject*);
@@ -72,6 +75,7 @@ import (
 // extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadComplete(gpointer, guintptr);
+// extern void _gotk4_atk1_Document_ConnectDocumentAttributeChanged(gpointer, gchar*, gchar*, guintptr);
 // extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, AtkRectangle*, guintptr);
 // extern guint _gotk4_atk1_HyperlinkClass_link_state(AtkHyperlink*);
 // extern gint _gotk4_atk1_ObjectClass_get_n_children(AtkObject*);
@@ -610,6 +614,7 @@ var (
 	GTypeCoordType           = coreglib.Type(C.atk_coord_type_get_type())
 	GTypeKeyEventType        = coreglib.Type(C.atk_key_event_type_get_type())
 	GTypeLayer               = coreglib.Type(C.atk_layer_get_type())
+	GTypeLive                = coreglib.Type(C.atk_live_get_type())
 	GTypeRelationType        = coreglib.Type(C.atk_relation_type_get_type())
 	GTypeRole                = coreglib.Type(C.atk_role_get_type())
 	GTypeScrollType          = coreglib.Type(C.atk_scroll_type_get_type())
@@ -659,6 +664,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeCoordType, F: marshalCoordType},
 		coreglib.TypeMarshaler{T: GTypeKeyEventType, F: marshalKeyEventType},
 		coreglib.TypeMarshaler{T: GTypeLayer, F: marshalLayer},
+		coreglib.TypeMarshaler{T: GTypeLive, F: marshalLive},
 		coreglib.TypeMarshaler{T: GTypeRelationType, F: marshalRelationType},
 		coreglib.TypeMarshaler{T: GTypeRole, F: marshalRole},
 		coreglib.TypeMarshaler{T: GTypeScrollType, F: marshalScrollType},
@@ -707,7 +713,7 @@ func init() {
 // BINARY_AGE: like atk_get_binary_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const BINARY_AGE = 23610
+const BINARY_AGE = 25210
 
 // INTERFACE_AGE: like atk_get_interface_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
@@ -727,7 +733,7 @@ const MICRO_VERSION = 0
 // MINOR_VERSION: like atk_get_minor_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MINOR_VERSION = 36
+const MINOR_VERSION = 52
 
 // VERSION_MIN_REQUIRED: macro that should be defined by the user prior
 // to including the atk/atk.h header. The definition should be one of the
@@ -748,6 +754,12 @@ const VERSION_MIN_REQUIRED = 2
 // atk_object_get_attributes().
 type AttributeSet = coreglib.SList
 
+// State describes a single state of an object.
+//
+// An AtkState describes a single state of an object. The full set of states
+// that apply to an object at a given time are contained in its StateSet.
+//
+// See atk_object_ref_state_set and atk_object_notify_state_change.
 type State = uint64
 
 // CoordType specifies how xy coordinates are to be interpreted.
@@ -865,6 +877,39 @@ func (l Layer) String() string {
 		return "Window"
 	default:
 		return fmt.Sprintf("Layer(%d)", l)
+	}
+}
+
+// Live: enumeration used to indicate a type of live region and how assertive
+// it should be in terms of speaking notifications. Currently, this is only used
+// for "notification" events, but it may be used for additional purposes in the
+// future.
+type Live C.gint
+
+const (
+	// LiveNone: no live region.
+	LiveNone Live = iota
+	// LivePolite: this live region should be considered polite.
+	LivePolite
+	// LiveAssertive: this live region should be considered assertive.
+	LiveAssertive
+)
+
+func marshalLive(p uintptr) (interface{}, error) {
+	return Live(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for Live.
+func (l Live) String() string {
+	switch l {
+	case LiveNone:
+		return "None"
+	case LivePolite:
+		return "Polite"
+	case LiveAssertive:
+		return "Assertive"
+	default:
+		return fmt.Sprintf("Live(%d)", l)
 	}
 }
 
@@ -1526,6 +1571,9 @@ const (
 	// and/or ATK_ROLE_CONTENT_INSERTION children, in any order, to indicate
 	// what the actual change is. (Since: 2.36).
 	RoleSuggestion
+	// RolePushButtonMenu: specialized push button to open a menu. (Since:
+	// 2.46).
+	RolePushButtonMenu
 	// RoleLastDefined: not a valid role, used for finding end of the
 	// enumeration.
 	RoleLastDefined
@@ -1792,6 +1840,8 @@ func (r Role) String() string {
 		return "Mark"
 	case RoleSuggestion:
 		return "Suggestion"
+	case RolePushButtonMenu:
+		return "PushButtonMenu"
 	case RoleLastDefined:
 		return "LastDefined"
 	default:
@@ -2188,6 +2238,8 @@ const (
 	// user, as is the case with labels and containers, ATK_STATE_READ_ONLY
 	// should not be applied. See also ATK_STATE_EDITABLE. Since: ATK-2-16.
 	StateReadOnly
+	// StateCollapsed indicates this object is collapsed. Since: ATK-2.38.
+	StateCollapsed
 	// StateLastDefined: not a valid state, used for finding end of enumeration.
 	StateLastDefined
 )
@@ -2285,6 +2337,8 @@ func (s StateType) String() string {
 		return "HasTooltip"
 	case StateReadOnly:
 		return "ReadOnly"
+	case StateCollapsed:
+		return "Collapsed"
 	case StateLastDefined:
 		return "LastDefined"
 	default:
@@ -3249,6 +3303,9 @@ func RemoveKeyEventListener(listenerId uint) {
 	runtime.KeepAlive(listenerId)
 }
 
+// Action: ATK interface provided by UI components which the user can
+// activate/interact with.
+//
 // Action should be implemented by instances of Object classes with which
 // the user can interact directly, i.e. buttons, checkboxes, scrollbars, e.g.
 // components which are not "passive" providers of UI information.
@@ -3827,6 +3884,9 @@ func (action *Action) setDescription(i int, desc string) bool {
 	return _ok
 }
 
+// Component: ATK interface provided by UI components which occupy a physical
+// area on the screen. which the user can activate/interact with.
+//
 // Component should be implemented by most if not all UI elements with an
 // actual on-screen presence, i.e. components which can be said to have a
 // screen-coordinate bounding box. Virtually all widgets will need to have
@@ -3891,7 +3951,7 @@ type Componenter interface {
 	// SetSize: set the size of the component in terms of width and height.
 	SetSize(width, height int) bool
 
-	// Bounds-changed: 'bounds-changed" signal is emitted when the bposition or
+	// Bounds-changed: 'bounds-changed" signal is emitted when the position or
 	// size of the component changes.
 	ConnectBoundsChanged(func(arg1 *Rectangle)) coreglib.SignalHandle
 }
@@ -3908,8 +3968,8 @@ func marshalComponent(p uintptr) (interface{}, error) {
 	return wrapComponent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ConnectBoundsChanged: 'bounds-changed" signal is emitted when the bposition
-// or size of the component changes.
+// ConnectBoundsChanged: 'bounds-changed" signal is emitted when the position or
+// size of the component changes.
 func (component *Component) ConnectBoundsChanged(f func(arg1 *Rectangle)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(component, "bounds-changed", false, unsafe.Pointer(C._gotk4_atk1_Component_ConnectBoundsChanged), f)
 }
@@ -4988,12 +5048,15 @@ func (component *Component) setSize(width, height int) bool {
 	return _ok
 }
 
-// Document interface should be supported by any object whose content is a
-// representation or view of a document. The AtkDocument interface should appear
-// on the toplevel container for the document content; however AtkDocument
-// instances may be nested (i.e. an AtkDocument may be a descendant of another
-// AtkDocument) in those cases where one document contains "embedded content"
-// which can reasonably be considered a document in its own right.
+// Document: ATK interface which represents the toplevel container for document
+// content.
+//
+// The AtkDocument interface should be supported by any object whose content
+// is a representation or view of a document. The AtkDocument interface
+// should appear on the toplevel container for the document content; however
+// AtkDocument instances may be nested (i.e. an AtkDocument may be a descendant
+// of another AtkDocument) in those cases where one document contains "embedded
+// content" which can reasonably be considered a document in its own right.
 //
 // Document wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -5028,6 +5091,10 @@ type Documenter interface {
 	// document.
 	SetAttributeValue(attributeName, attributeValue string) bool
 
+	// Document-attribute-changed: "document-attribute-changed" signal should be
+	// emitted when there is a change to one of the document attributes returned
+	// by atk_document_get_attributes.
+	ConnectDocumentAttributeChanged(func(arg1, arg2 string)) coreglib.SignalHandle
 	// Load-complete: 'load-complete' signal is emitted when a pending load of a
 	// static document has completed.
 	ConnectLoadComplete(func()) coreglib.SignalHandle
@@ -5053,6 +5120,13 @@ func wrapDocument(obj *coreglib.Object) *Document {
 
 func marshalDocument(p uintptr) (interface{}, error) {
 	return wrapDocument(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ConnectDocumentAttributeChanged: "document-attribute-changed" signal should
+// be emitted when there is a change to one of the document attributes returned
+// by atk_document_get_attributes.
+func (document *Document) ConnectDocumentAttributeChanged(f func(arg1, arg2 string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(document, "document-attribute-changed", false, unsafe.Pointer(C._gotk4_atk1_Document_ConnectDocumentAttributeChanged), f)
 }
 
 // ConnectLoadComplete: 'load-complete' signal is emitted when a pending load of
@@ -5504,6 +5578,9 @@ func (document *Document) setDocumentAttribute(attributeName, attributeValue str
 	return _ok
 }
 
+// EditableText: ATK interface implemented by components containing
+// user-editable text content.
+//
 // EditableText should be implemented by UI components which contain text
 // which the user can edit, via the Object corresponding to that component (see
 // Object).
@@ -5511,7 +5588,7 @@ func (document *Document) setDocumentAttribute(attributeName, attributeValue str
 // EditableText is a subclass of Text, and as such, an object which implements
 // EditableText is by definition an Text implementor as well.
 //
-// See also: Text.
+// See atktext.
 //
 // EditableText wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -5537,7 +5614,7 @@ type EditableTexter interface {
 	// DeleteText: delete text start_pos up to, but not including end_pos.
 	DeleteText(startPos, endPos int)
 	// InsertText: insert text at a given position.
-	InsertText(str string, length int, position *int)
+	InsertText(str string, position *int)
 	// PasteText: paste text from clipboard to specified position.
 	PasteText(position int)
 	// SetTextContents: set text contents of text.
@@ -5626,26 +5703,25 @@ func (text *EditableText) DeleteText(startPos, endPos int) {
 // The function takes the following parameters:
 //
 //   - str: text to insert.
-//   - length of text to insert, in bytes.
 //   - position: caller initializes this to the position at which to insert the
 //     text. After the call it points at the position after the newly inserted
 //     text.
-func (text *EditableText) InsertText(str string, length int, position *int) {
+func (text *EditableText) InsertText(str string, position *int) {
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
-	var _arg2 C.gint             // out
-	var _arg3 *C.gint            // out
+	var _arg2 C.gint
+	var _arg3 *C.gint // out
 
 	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	_arg2 = (C.gint)(len(str))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(str) + 1)), C.size_t(C.sizeof_gchar)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(length)
 	_arg3 = (*C.gint)(unsafe.Pointer(position))
 
 	C.atk_editable_text_insert_text(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)
-	runtime.KeepAlive(length)
 	runtime.KeepAlive(position)
 }
 
@@ -5763,29 +5839,28 @@ func (text *EditableText) deleteText(startPos, endPos int) {
 // The function takes the following parameters:
 //
 //   - str: text to insert.
-//   - length of text to insert, in bytes.
 //   - position: caller initializes this to the position at which to insert the
 //     text. After the call it points at the position after the newly inserted
 //     text.
-func (text *EditableText) insertText(str string, length int, position *int) {
+func (text *EditableText) insertText(str string, position *int) {
 	gclass := (*C.AtkEditableTextIface)(coreglib.PeekParentClass(text))
 	fnarg := gclass.insert_text
 
 	var _arg0 *C.AtkEditableText // out
 	var _arg1 *C.gchar           // out
-	var _arg2 C.gint             // out
-	var _arg3 *C.gint            // out
+	var _arg2 C.gint
+	var _arg3 *C.gint // out
 
 	_arg0 = (*C.AtkEditableText)(unsafe.Pointer(coreglib.InternObject(text).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(str)))
+	_arg2 = (C.gint)(len(str))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(str) + 1)), C.size_t(C.sizeof_gchar)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(str)), str)
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(length)
 	_arg3 = (*C.gint)(unsafe.Pointer(position))
 
 	C._gotk4_atk1_EditableText_virtual_insert_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(text)
 	runtime.KeepAlive(str)
-	runtime.KeepAlive(length)
 	runtime.KeepAlive(position)
 }
 
@@ -5830,30 +5905,11 @@ func (text *EditableText) setTextContents(str string) {
 	runtime.KeepAlive(str)
 }
 
-// HyperlinkImpl allows AtkObjects to refer to their associated AtkHyperlink
-// instance, if one exists. AtkHyperlinkImpl differs from AtkHyperlink in that
-// AtkHyperlinkImpl is an interface, whereas AtkHyperlink is a object type.
-// The AtkHyperlinkImpl interface allows a client to query an AtkObject for
-// the availability of an associated AtkHyperlink instance, and obtain that
-// instance. It is thus particularly useful in cases where embedded content
-// or inline content within a text object is present, since the embedding text
-// object implements AtkHypertext and the inline/embedded objects are exposed
-// as children which implement AtkHyperlinkImpl, in addition to their being
-// obtainable via AtkHypertext:getLink followed by AtkHyperlink:getObject.
-//
-// The AtkHyperlinkImpl interface should be supported by objects exposed within
-// the hierarchy as children of an AtkHypertext container which correspond
-// to "links" or embedded content within the text. HTML anchors are not, for
-// instance, normally exposed this way, but embedded images and components which
-// appear inline in the content of a text object are. The AtkHyperlinkIface
-// interface allows a means of determining which children are hyperlinks in this
-// sense of the word, and for obtaining their corresponding AtkHyperlink object,
-// from which the embedding range, URI, etc. can be obtained.
-//
-// To some extent this interface exists because, for historical reasons,
-// AtkHyperlink was defined as an object type, not an interface. Thus, in order
-// to interact with AtkObjects via AtkHyperlink semantics, a new interface was
-// required.
+// HyperlinkImpl: queryable interface which allows AtkHyperlink instances
+// associated with an AtkObject to be obtained. AtkHyperlinkImpl corresponds
+// to AT-SPI's Hyperlink interface, and differs from AtkHyperlink in that
+// AtkHyperlink is an object type, rather than an interface, and thus cannot be
+// directly queried. FTW.
 //
 // HyperlinkImpl wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -5933,8 +5989,11 @@ func (impl *HyperlinkImpl) hyperlink() *Hyperlink {
 	return _hyperlink
 }
 
-// Hypertext: interface used for objects which implement linking between
-// multiple resource or content locations, or multiple 'markers' within a single
+// Hypertext: ATK interface which provides standard mechanism for manipulating
+// hyperlinks.
+//
+// An interface used for objects which implement linking between multiple
+// resource or content locations, or multiple 'markers' within a single
 // document. A Hypertext instance is associated with one or more Hyperlinks,
 // which are associated with particular offsets within the Hypertext's included
 // content. While this interface is derived from Text, there is no requirement
@@ -6169,6 +6228,9 @@ func (hypertext *Hypertext) linkSelected(linkIndex int) {
 	runtime.KeepAlive(linkIndex)
 }
 
+// Image: ATK Interface implemented by components which expose image or pixmap
+// content on-screen.
+//
 // Image should be implemented by Object subtypes on behalf of components which
 // display image/pixmap information onscreen, and which provide information
 // (other than just widget borders, etc.) via that image content. For instance,
@@ -6575,6 +6637,9 @@ func BaseImplementorIface(obj ImplementorIfacer) *ImplementorIface {
 	return obj.baseImplementorIface()
 }
 
+// Selection: ATK interface implemented by container objects whose Object
+// children can be selected.
+//
 // Selection should be implemented by UI components with children which are
 // exposed by #atk_object_ref_child and #atk_object_get_n_children, if the use
 // of the parent UI component ordinarily involves selection of one or more of
@@ -7096,9 +7161,11 @@ func (selection *Selection) selectionChanged() {
 	runtime.KeepAlive(selection)
 }
 
-// StreamableContent: interface whereby an object allows its backing content
-// to be streamed to clients. Typical implementors would be images or icons,
-// HTML content, or multimedia display/rendering widgets.
+// StreamableContent: ATK interface which provides access to streamable content.
+//
+// An interface whereby an object allows its backing content to be streamed
+// to clients. Typical implementors would be images or icons, HTML content,
+// or multimedia display/rendering widgets.
 //
 // Negotiation of content type is allowed. Clients may examine the backing data
 // and transform, convert, or parse the content in order to present it in an
@@ -7413,6 +7480,9 @@ func (streamable *StreamableContent) urI(mimeType string) string {
 	return _utf8
 }
 
+// Table: ATK interface implemented for UI components which contain tabular or
+// row/column information.
+//
 // Table should be implemented by components which present elements ordered via
 // rows and columns. It may also be used to present tree-structured information
 // if the nodes of the trees can be said to contain multiple "columns".
@@ -9460,11 +9530,14 @@ func (table *Table) setSummary(accessible *AtkObject) {
 	runtime.KeepAlive(accessible)
 }
 
-// TableCell: being Table a component which present elements ordered via rows
-// and columns, an TableCell is the interface which each of those elements,
-// so "cells" should implement.
+// TableCell: ATK interface implemented for a cell inside a two-dimentional
+// Table
 //
-// See also Table.
+// Being Table a component which present elements ordered via rows and columns,
+// an TableCell is the interface which each of those elements, so "cells" should
+// implement.
+//
+// See atktable.
 //
 // TableCell wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -9804,6 +9877,8 @@ func (cell *TableCell) table() *AtkObject {
 	return _object
 }
 
+// Text: ATK interface implemented by components with text content.
+//
 // Text should be implemented by Objects on behalf of widgets that have text
 // content which is either attributed or otherwise non-trivial. Objects whose
 // text content is simple, unattributed, and very brief may expose that
@@ -11720,6 +11795,10 @@ func (text *Text) textCaretMoved(location int) {
 	runtime.KeepAlive(location)
 }
 
+// textChanged: signal handler which is executed when there is a text change.
+// This virtual function is deprecated sice 2.9.4 and it should not be
+// overriden.
+//
 // The function takes the following parameters:
 //
 //   - position
@@ -11754,6 +11833,9 @@ func (text *Text) textSelectionChanged() {
 	runtime.KeepAlive(text)
 }
 
+// Value: ATK interface implemented by valuators and components which display or
+// select a value from a bounded range of values.
+//
 // Value should be implemented for components which either display a value
 // from a bounded range, or which allow the user to specify a value from a
 // bounded range, or both. For instance, most sliders and range controls,
@@ -12501,8 +12583,13 @@ func (obj *Value) setValue(newValue float64) {
 type WindowOverrider interface {
 }
 
+// Window: ATK Interface provided by UI components that represent a top-level
+// window.
+//
 // Window should be implemented by the UI elements that represent a top-level
 // window, such as the main window of an application or dialog.
+//
+// See atkobject.
 //
 // Window wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -12605,10 +12692,13 @@ func defaultGObjectAccessibleOverrides(v *GObjectAccessible) GObjectAccessibleOv
 	return GObjectAccessibleOverrides{}
 }
 
-// GObjectAccessible: this object class is derived from AtkObject. It can be
-// used as a basis for implementing accessible objects for GObjects which
-// are not derived from GtkWidget. One example of its use is in providing an
-// accessible object for GnomeCanvasItem in the GAIL library.
+// GObjectAccessible: this object class is derived from AtkObject and can be
+// used as a basis implementing accessible objects.
+//
+// This object class is derived from AtkObject. It can be used as a basis for
+// implementing accessible objects for GObjects which are not derived from
+// GtkWidget. One example of its use is in providing an accessible object for
+// GnomeCanvasItem in the GAIL library.
 type GObjectAccessible struct {
 	_ [0]func() // equal guard
 	AtkObject
@@ -12775,11 +12865,14 @@ func defaultHyperlinkOverrides(v *Hyperlink) HyperlinkOverrides {
 	}
 }
 
-// Hyperlink: ATK object which encapsulates a link or set of links (for
-// instance in the case of client-side image maps) in a hypertext document.
-// It may implement the AtkAction interface. AtkHyperlink may also be used to
-// refer to inline embedded content, since it allows specification of a start
-// and end offset within the host AtkHypertext object.
+// Hyperlink: ATK object which encapsulates a link or set of links in a
+// hypertext document.
+//
+// An ATK object which encapsulates a link or set of links (for instance in the
+// case of client-side image maps) in a hypertext document. It may implement
+// the AtkAction interface. AtkHyperlink may also be used to refer to inline
+// embedded content, since it allows specification of a start and end offset
+// within the host AtkHypertext object.
 type Hyperlink struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -13326,7 +13419,9 @@ func defaultMiscOverrides(v *Misc) MiscOverrides {
 	}
 }
 
-// Misc: set of utility functions for thread locking. This interface and all his
+// Misc: set of ATK utility functions for thread locking
+//
+// A set of utility functions for thread locking. This interface and all his
 // related methods are deprecated since 2.12.
 type Misc struct {
 	_ [0]func() // equal guard
@@ -13473,9 +13568,12 @@ func defaultNoOpObjectOverrides(v *NoOpObject) NoOpObjectOverrides {
 	return NoOpObjectOverrides{}
 }
 
-// NoOpObject is an AtkObject which purports to implement all ATK interfaces.
-// It is the type of AtkObject which is created if an accessible object is
-// requested for an object type for which no factory type is specified.
+// NoOpObject: atkObject which purports to implement all ATK interfaces.
+//
+// An AtkNoOpObject is an AtkObject which purports to implement all ATK
+// interfaces. It is the type of AtkObject which is created if an accessible
+// object is requested for an object type for which no factory type is
+// specified.
 type NoOpObject struct {
 	_ [0]func() // equal guard
 	AtkObject
@@ -13603,8 +13701,10 @@ func defaultNoOpObjectFactoryOverrides(v *NoOpObjectFactory) NoOpObjectFactoryOv
 }
 
 // NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject.
-// An instance of this is created by an AtkRegistry if no factory type has not
-// been specified to create an accessible object of a particular type.
+//
+// The AtkObjectFactory which creates an AtkNoOpObject. An instance of this is
+// created by an AtkRegistry if no factory type has not been specified to create
+// an accessible object of a particular type.
 type NoOpObjectFactory struct {
 	_ [0]func() // equal guard
 	ObjectFactory
@@ -13668,7 +13768,11 @@ type AtkObjectOverrides struct {
 	//   - changeIndex
 	//   - changedChild (optional)
 	ChildrenChanged func(changeIndex uint, changedChild unsafe.Pointer)
-	FocusEvent      func(focusIn bool)
+	// FocusEvent: signal handler which is executed when there is a focus event
+	// for an object. This virtual function is deprecated since 2.9.4 and it
+	// should not be overriden. Use the Object::state-change "focused" signal
+	// instead.
+	FocusEvent func(focusIn bool)
 	// Description gets the accessible description of the accessible.
 	//
 	// The function returns the following values:
@@ -13838,8 +13942,10 @@ func defaultAtkObjectOverrides(v *AtkObject) AtkObjectOverrides {
 	}
 }
 
-// AtkObject: this class is the primary class for accessibility support via
-// the Accessibility ToolKit (ATK). Objects which are instances of Object (or
+// AtkObject: base object class for the Accessibility Toolkit API.
+//
+// This class is the primary class for accessibility support via the
+// Accessibility ToolKit (ATK). Objects which are instances of Object (or
 // instances of AtkObject-derived types) are queried for properties which
 // relate basic (and generic) properties of a UI component such as name and
 // description. Instances of Object may also be queried as to whether they
@@ -13853,7 +13959,7 @@ func defaultAtkObjectOverrides(v *AtkObject) AtkObjectOverrides {
 // ancestor class, or in the case of custom widgets, if the inherited Object
 // implementation is insufficient, via instances of a new Object subclass.
 //
-// See also: ObjectFactory, Registry. (GTK+ users see also Accessible).
+// See atkobjectfactory, atkregistry. (GTK+ users see also Accessible).
 type AtkObject struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -13991,8 +14097,22 @@ func (object *AtkObject) ConnectActiveDescendantChanged(f func(arg1 *AtkObject))
 	return coreglib.ConnectGeneratedClosure(object, "active-descendant-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectActiveDescendantChanged), f)
 }
 
+// ConnectAnnouncement: "announcement" signal can be emitted to pass an
+// announcement on to be read by a screen reader.
+//
+// Depcrecated (2.50): Use AtkObject::notification instead.
+func (object *AtkObject) ConnectAnnouncement(f func(arg1 string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "announcement", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectAnnouncement), f)
+}
+
+// ConnectAttributeChanged: "attribute-changed" signal should be emitted when
+// one of an object's attributes changes.
+func (object *AtkObject) ConnectAttributeChanged(f func(arg1, arg2 string)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "attribute-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectAttributeChanged), f)
+}
+
 // ConnectChildrenChanged: signal "children-changed" is emitted when a child is
-// added or removed form an object. It supports two details: "add" and "remove".
+// added or removed from an object. It supports two details: "add" and "remove".
 func (object *AtkObject) ConnectChildrenChanged(f func(arg1 uint, arg2 *AtkObject)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "children-changed", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectChildrenChanged), f)
 }
@@ -14001,6 +14121,12 @@ func (object *AtkObject) ConnectChildrenChanged(f func(arg1 uint, arg2 *AtkObjec
 // lost focus.
 func (object *AtkObject) ConnectFocusEvent(f func(arg1 bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(object, "focus-event", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectFocusEvent), f)
+}
+
+// ConnectNotification: "notification" signal can be emitted to pass an
+// announcement on to be read by a screen reader.
+func (object *AtkObject) ConnectNotification(f func(arg1 string, arg2 int)) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(object, "notification", false, unsafe.Pointer(C._gotk4_atk1_Object_ConnectNotification), f)
 }
 
 // ConnectPropertyChange: signal "property-change" is emitted when an object's
@@ -14100,6 +14226,28 @@ func (accessible *AtkObject) Description() string {
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
 
 	_cret = C.atk_object_get_description(_arg0)
+	runtime.KeepAlive(accessible)
+
+	var _utf8 string // out
+
+	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+
+	return _utf8
+}
+
+// HelpText gets the help text associated with the accessible.
+//
+// The function returns the following values:
+//
+//   - utf8: character string representing the help text or the object, or NULL
+//     if no such string was set.
+func (accessible *AtkObject) HelpText() string {
+	var _arg0 *C.AtkObject // out
+	var _cret *C.gchar     // in
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+
+	_cret = C.atk_object_get_help_text(_arg0)
 	runtime.KeepAlive(accessible)
 
 	var _utf8 string // out
@@ -14504,18 +14652,18 @@ func (object *AtkObject) RemoveRelationship(relationship RelationType, target *A
 //
 // The function takes the following parameters:
 //
-//   - name: character string to be set as the accessible id.
-func (accessible *AtkObject) SetAccessibleID(name string) {
+//   - id: character string to be set as the accessible id.
+func (accessible *AtkObject) SetAccessibleID(id string) {
 	var _arg0 *C.AtkObject // out
 	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(id)))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.atk_object_set_accessible_id(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
-	runtime.KeepAlive(name)
+	runtime.KeepAlive(id)
 }
 
 // SetDescription sets the accessible description of the accessible. You can't
@@ -14537,6 +14685,26 @@ func (accessible *AtkObject) SetDescription(description string) {
 	C.atk_object_set_description(_arg0, _arg1)
 	runtime.KeepAlive(accessible)
 	runtime.KeepAlive(description)
+}
+
+// SetHelpText sets the help text associated with the accessible. This can be
+// used to expose context-sensitive information to help a user understand how to
+// interact with the object.
+//
+// The function takes the following parameters:
+//
+//   - helpText: character string to be set as the accessible's help text.
+func (accessible *AtkObject) SetHelpText(helpText string) {
+	var _arg0 *C.AtkObject // out
+	var _arg1 *C.gchar     // out
+
+	_arg0 = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(accessible).Native()))
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(helpText)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.atk_object_set_help_text(_arg0, _arg1)
+	runtime.KeepAlive(accessible)
+	runtime.KeepAlive(helpText)
 }
 
 // SetName sets the accessible name of the accessible. You can't set the name to
@@ -14633,6 +14801,9 @@ func (accessible *AtkObject) childrenChanged(changeIndex uint, changedChild unsa
 	runtime.KeepAlive(changedChild)
 }
 
+// focusEvent: signal handler which is executed when there is a focus event for
+// an object. This virtual function is deprecated since 2.9.4 and it should not
+// be overriden. Use the Object::state-change "focused" signal instead.
 func (accessible *AtkObject) focusEvent(focusIn bool) {
 	gclass := (*C.AtkObjectClass)(coreglib.PeekParentClass(accessible))
 	fnarg := gclass.focus_event
@@ -15129,8 +15300,11 @@ func defaultObjectFactoryOverrides(v *ObjectFactory) ObjectFactoryOverrides {
 	}
 }
 
-// ObjectFactory: this class is the base object class for a factory used
-// to create an accessible object for a specific GType. The function
+// ObjectFactory: base object class for a factory used to create accessible
+// objects for objects of a specific GType.
+//
+// This class is the base object class for a factory used to
+// create an accessible object for a specific GType. The function
 // atk_registry_set_factory_type() is normally called to store in the registry
 // the factory type to be used to create an accessible of a particular GType.
 type ObjectFactory struct {
@@ -15266,7 +15440,9 @@ func defaultPlugOverrides(v *Plug) PlugOverrides {
 	}
 }
 
-// Plug: see Socket.
+// Plug: toplevel for embedding into other processes
+//
+// See atksocket.
 type Plug struct {
 	_ [0]func() // equal guard
 	AtkObject
@@ -15415,7 +15591,10 @@ func defaultRegistryOverrides(v *Registry) RegistryOverrides {
 	return RegistryOverrides{}
 }
 
-// Registry is normally used to create appropriate ATK "peers" for user
+// Registry: object used to store the GType of the factories used to create an
+// accessible object for an object of a particular GType.
+//
+// The AtkRegistry is normally used to create appropriate ATK "peers" for user
 // interface components. Application developers usually need only interact
 // with the AtkRegistry by associating appropriate ATK implementation classes
 // with GObject classes via the atk_registry_set_factory_type call, passing the
@@ -15545,7 +15724,10 @@ func defaultRelationOverrides(v *Relation) RelationOverrides {
 	return RelationOverrides{}
 }
 
-// Relation describes a relation between an object and one or more other
+// Relation: object used to describe a relation between a object and one or more
+// other objects.
+//
+// An AtkRelation describes a relation between an object and one or more other
 // objects. The actual relations that an object has with other objects are
 // defined as an AtkRelationSet, which is a set of AtkRelations.
 type Relation struct {
@@ -15700,9 +15882,12 @@ func defaultRelationSetOverrides(v *RelationSet) RelationSetOverrides {
 	return RelationSetOverrides{}
 }
 
-// RelationSet held by an object establishes its relationships with objects
-// beyond the normal "parent/child" hierarchical relationships that all user
-// interface objects have. AtkRelationSets establish whether objects are
+// RelationSet: set of AtkRelations, normally the set of AtkRelations which an
+// AtkObject has.
+//
+// The AtkRelationSet held by an object establishes its relationships with
+// objects beyond the normal "parent/child" hierarchical relationships that all
+// user interface objects have. AtkRelationSets establish whether objects are
 // labelled or controlled by other components, share group membership with other
 // components (for instance within a radio-button group), or share content which
 // "flows" between them, among other types of possible relationships.
@@ -15989,8 +16174,10 @@ func defaultSocketOverrides(v *Socket) SocketOverrides {
 	}
 }
 
-// Socket: together with Plug, Socket provides the ability to embed accessibles
-// from one process into another in a fashion that is transparent to assistive
+// Socket: container for AtkPlug objects from other processes
+//
+// Together with Plug, Socket provides the ability to embed accessibles from
+// one process into another in a fashion that is transparent to assistive
 // technologies. Socket works as the container of Plug, embedding it using the
 // method atk_socket_embed(). Any accessible contained in the Plug will appear
 // to the assistive technologies as being inside the application that created
@@ -16009,6 +16196,8 @@ func defaultSocketOverrides(v *Socket) SocketOverrides {
 // atk_object_get_n_accessible_children() and atk_object_ref_accessible_child().
 // All the logic related to those functions will be implemented by the IPC
 // layer.
+//
+// See atkplug.
 type Socket struct {
 	_ [0]func() // equal guard
 	AtkObject
@@ -16160,7 +16349,9 @@ func defaultStateSetOverrides(v *StateSet) StateSetOverrides {
 	return StateSetOverrides{}
 }
 
-// StateSet is a read-only representation of the full set of States that
+// StateSet contains the states of an object.
+//
+// An AtkStateSet is a read-only representation of the full set of States that
 // apply to an object at a given time. This set is not meant to be modified,
 // but rather created when #atk_object_ref_state_set() is called.
 type StateSet struct {
@@ -16510,10 +16701,11 @@ func defaultUtilOverrides(v *Util) UtilOverrides {
 	return UtilOverrides{}
 }
 
-// Util: set of ATK utility functions which are used to support event
-// registration of various types, and obtaining the 'root' accessible of a
-// process and information about the current ATK implementation and toolkit
-// version.
+// Util: set of ATK utility functions for event and toolkit support.
+//
+// A set of ATK utility functions which are used to support event registration
+// of various types, and obtaining the 'root' accessible of a process and
+// information about the current ATK implementation and toolkit version.
 type Util struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -16931,6 +17123,8 @@ func (p *PropertyValues) PropertyName() string {
 	return _v
 }
 
+// Range: given range or subrange, to be used with Value
+//
 // Range are used on Value, in order to represent the full range of a given
 // component (for example an slider or a range control), or to define each
 // individual subrange this full range is splitted if available. See Value
@@ -17427,6 +17621,102 @@ func (t *TextRectangle) SetWidth(width int) {
 func (t *TextRectangle) SetHeight(height int) {
 	valptr := &t.native.height
 	*valptr = C.gint(height)
+}
+
+// TextSelection: this structure represents a single text selection within a
+// document. This selection is defined by two points in the content, where
+// each one is defined by an AtkObject supporting the AtkText interface and a
+// character offset relative to it.
+//
+// The end object must appear after the start object in the accessibility tree,
+// i.e. the end object must be reachable from the start object by navigating
+// forward (next, first child etc).
+//
+// This struct also contains a start_is_active boolean, to communicate if the
+// start of the selection is the active point or not.
+//
+// The active point corresponds to the user's focus or point of interest.
+// The user moves the active point to expand or collapse the range. The anchor
+// point is the other point of the range and typically remains constant. In
+// most cases, anchor is the start of the range and active is the end. However,
+// when selecting backwards (e.g. pressing shift+left arrow in a text field),
+// the start of the range is the active point, as the user moves this to
+// manipulate the selection.
+//
+// An instance of this type is always passed by reference.
+type TextSelection struct {
+	*textSelection
+}
+
+// textSelection is the struct that's finalized.
+type textSelection struct {
+	native *C.AtkTextSelection
+}
+
+// StartObject: atkText containing the start of the selection.
+func (t *TextSelection) StartObject() *AtkObject {
+	valptr := &t.native.start_object
+	var _v *AtkObject // out
+	_v = wrapObject(coreglib.Take(unsafe.Pointer(*valptr)))
+	return _v
+}
+
+// StartOffset: text offset of the beginning of the selection within
+// start_object.
+func (t *TextSelection) StartOffset() int {
+	valptr := &t.native.start_offset
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// EndObject: atkText containing the end of the selection.
+func (t *TextSelection) EndObject() *AtkObject {
+	valptr := &t.native.end_object
+	var _v *AtkObject // out
+	_v = wrapObject(coreglib.Take(unsafe.Pointer(*valptr)))
+	return _v
+}
+
+// EndOffset: text offset of the end of the selection within end_object.
+func (t *TextSelection) EndOffset() int {
+	valptr := &t.native.end_offset
+	var _v int // out
+	_v = int(*valptr)
+	return _v
+}
+
+// StartIsActive: gboolean indicating whether the start of the selection is the
+// active point.
+func (t *TextSelection) StartIsActive() bool {
+	valptr := &t.native.start_is_active
+	var _v bool // out
+	if *valptr != 0 {
+		_v = true
+	}
+	return _v
+}
+
+// StartOffset: text offset of the beginning of the selection within
+// start_object.
+func (t *TextSelection) SetStartOffset(startOffset int) {
+	valptr := &t.native.start_offset
+	*valptr = C.gint(startOffset)
+}
+
+// EndOffset: text offset of the end of the selection within end_object.
+func (t *TextSelection) SetEndOffset(endOffset int) {
+	valptr := &t.native.end_offset
+	*valptr = C.gint(endOffset)
+}
+
+// StartIsActive: gboolean indicating whether the start of the selection is the
+// active point.
+func (t *TextSelection) SetStartIsActive(startIsActive bool) {
+	valptr := &t.native.start_is_active
+	if startIsActive {
+		*valptr = C.TRUE
+	}
 }
 
 // UtilClass: instance of this type is always passed by reference.

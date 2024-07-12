@@ -27,7 +27,6 @@ import (
 // #include <stdlib.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 // #include <glib-object.h>
-// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gdkpixbuf2_PixbufLoader_ConnectSizePrepared(gpointer, gint, gint, guintptr);
 // extern void _gotk4_gdkpixbuf2_PixbufLoader_ConnectClosed(gpointer, guintptr);
 // extern void _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated(gpointer, gint, gint, gint, gint, guintptr);
@@ -36,7 +35,6 @@ import (
 // extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(GdkPixbufLoader*);
 // extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(GdkPixbufLoader*, int, int, int, int);
 // extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(GdkPixbufLoader*);
-// extern void _gotk4_gdkpixbuf2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern gboolean _gotk4_gdkpixbuf2_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
 // void _gotk4_gdkpixbuf2_PixbufLoader_virtual_area_prepared(void* fnptr, GdkPixbufLoader* arg0) {
 //   ((void (*)(GdkPixbufLoader*))(fnptr))(arg0);
@@ -91,7 +89,7 @@ const PIXBUF_MAJOR = 2
 
 // PIXBUF_MICRO: micro version of gdk-pixbuf library, that is the "2" in "0.8.2"
 // for example.
-const PIXBUF_MICRO = 6
+const PIXBUF_MICRO = 12
 
 // PIXBUF_MINOR: minor version of gdk-pixbuf library, that is the "8" in "0.8.2"
 // for example.
@@ -100,7 +98,7 @@ const PIXBUF_MINOR = 42
 // PIXBUF_VERSION contains the full version of GdkPixbuf as a string.
 //
 // This is the version being compiled against; contrast with gdk_pixbuf_version.
-const PIXBUF_VERSION = "2.42.6"
+const PIXBUF_VERSION = "2.42.12"
 
 // Colorspace: this enumeration defines the color spaces that are supported by
 // the gdk-pixbuf library.
@@ -1175,7 +1173,7 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 //
 // The function returns the following values:
 //
-//   - pixbuf: newly-created pixbuf.
+//   - pixbuf (optional): newly-created pixbuf.
 func NewPixbufFromXPMData(data []string) *Pixbuf {
 	var _arg1 **C.char     // out
 	var _cret *C.GdkPixbuf // in
@@ -1199,7 +1197,9 @@ func NewPixbufFromXPMData(data []string) *Pixbuf {
 
 	var _pixbuf *Pixbuf // out
 
-	_pixbuf = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pixbuf = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _pixbuf
 }
@@ -1225,7 +1225,7 @@ func NewPixbufFromXPMData(data []string) *Pixbuf {
 //
 // The function returns the following values:
 //
-//   - ret: newly-created pixbuf.
+//   - ret (optional): newly-created pixbuf.
 func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r, g, b byte) *Pixbuf {
 	var _arg0 *C.GdkPixbuf // out
 	var _arg1 C.gboolean   // out
@@ -1251,7 +1251,9 @@ func (pixbuf *Pixbuf) AddAlpha(substituteColor bool, r, g, b byte) *Pixbuf {
 
 	var _ret *Pixbuf // out
 
-	_ret = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_ret = wrapPixbuf(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
 
 	return _ret
 }
@@ -1871,8 +1873,8 @@ func (pixbuf *Pixbuf) Options() map[string]string {
 // This function will cause an implicit copy of the pixbuf data if the pixbuf
 // was created from read-only data.
 //
-// Please see the section on image data (#image-data) for information about how
-// the pixel data is stored in memory.
+// Please see the section on image data (class.Pixbuf.html#image-data) for
+// information about how the pixel data is stored in memory.
 //
 // The function returns the following values:
 //
@@ -2370,85 +2372,6 @@ func (pixbuf *Pixbuf) SaveToStreamv(ctx context.Context, stream gio.OutputStream
 	return _goerr
 }
 
-// SaveToStreamvAsync saves pixbuf to an output stream asynchronously.
-//
-// For more details see gdk_pixbuf_save_to_streamv(), which is the synchronous
-// version of this function.
-//
-// When the operation is finished, callback will be called in the main thread.
-//
-// You can then call gdk_pixbuf_save_to_stream_finish() to get the result of the
-// operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - stream: GOutputStream to which to save the pixbuf.
-//   - typ: name of file format.
-//   - optionKeys (optional): name of options to set.
-//   - optionValues (optional) values for named options.
-//   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//     saved.
-func (pixbuf *Pixbuf) SaveToStreamvAsync(ctx context.Context, stream gio.OutputStreamer, typ string, optionKeys, optionValues []string, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkPixbuf          // out
-	var _arg5 *C.GCancellable       // out
-	var _arg1 *C.GOutputStream      // out
-	var _arg2 *C.gchar              // out
-	var _arg3 **C.gchar             // out
-	var _arg4 **C.gchar             // out
-	var _arg6 C.GAsyncReadyCallback // out
-	var _arg7 C.gpointer
-
-	_arg0 = (*C.GdkPixbuf)(unsafe.Pointer(coreglib.InternObject(pixbuf).Native()))
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(typ)))
-	defer C.free(unsafe.Pointer(_arg2))
-	{
-		_arg3 = (**C.gchar)(C.calloc(C.size_t((len(optionKeys) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg3))
-		{
-			out := unsafe.Slice(_arg3, len(optionKeys)+1)
-			var zero *C.gchar
-			out[len(optionKeys)] = zero
-			for i := range optionKeys {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(optionKeys[i])))
-				defer C.free(unsafe.Pointer(out[i]))
-			}
-		}
-	}
-	{
-		_arg4 = (**C.gchar)(C.calloc(C.size_t((len(optionValues) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
-		defer C.free(unsafe.Pointer(_arg4))
-		{
-			out := unsafe.Slice(_arg4, len(optionValues)+1)
-			var zero *C.gchar
-			out[len(optionValues)] = zero
-			for i := range optionValues {
-				out[i] = (*C.gchar)(unsafe.Pointer(C.CString(optionValues[i])))
-				defer C.free(unsafe.Pointer(out[i]))
-			}
-		}
-	}
-	if callback != nil {
-		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg7 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_pixbuf_save_to_streamv_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(pixbuf)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(optionKeys)
-	runtime.KeepAlive(optionValues)
-	runtime.KeepAlive(callback)
-}
-
 // Savev: vector version of gdk_pixbuf_save().
 //
 // Saves pixbuf to a file in type, which is currently "jpeg", "png", "tiff",
@@ -2763,46 +2686,6 @@ func PixbufGetFileInfo(filename string) (width, height int, pixbufFormat *Pixbuf
 	return _width, _height, _pixbufFormat
 }
 
-// PixbufGetFileInfoAsync: asynchronously parses an image file far enough to
-// determine its format and size.
-//
-// For more details see gdk_pixbuf_get_file_info(), which is the synchronous
-// version of this function.
-//
-// When the operation is finished, callback will be called in the main thread.
-// You can then call gdk_pixbuf_get_file_info_finish() to get the result of the
-// operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - filename: name of the file to identify.
-//   - callback (optional): GAsyncReadyCallback to call when the file info is
-//     available.
-func PixbufGetFileInfoAsync(ctx context.Context, filename string, callback gio.AsyncReadyCallback) {
-	var _arg2 *C.GCancellable       // out
-	var _arg1 *C.gchar              // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(filename)))
-	defer C.free(unsafe.Pointer(_arg1))
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_pixbuf_get_file_info_async(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(filename)
-	runtime.KeepAlive(callback)
-}
-
 // PixbufGetFileInfoFinish finishes an asynchronous pixbuf parsing operation
 // started with gdk_pixbuf_get_file_info_async().
 //
@@ -2902,98 +2785,6 @@ func PixbufInitModules(path string) error {
 	}
 
 	return _goerr
-}
-
-// NewPixbufFromStreamAsync creates a new pixbuf by asynchronously loading an
-// image from an input stream.
-//
-// For more details see gdk_pixbuf_new_from_stream(), which is the synchronous
-// version of this function.
-//
-// When the operation is finished, callback will be called in the main thread.
-// You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
-// the operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - stream: GInputStream from which to load the pixbuf.
-//   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//     loaded.
-func NewPixbufFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
-	var _arg2 *C.GCancellable       // out
-	var _arg1 *C.GInputStream       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_pixbuf_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(callback)
-}
-
-// NewPixbufFromStreamAtScaleAsync creates a new pixbuf by asynchronously
-// loading an image from an input stream.
-//
-// For more details see gdk_pixbuf_new_from_stream_at_scale(), which is the
-// synchronous version of this function.
-//
-// When the operation is finished, callback will be called in the main thread.
-// You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
-// the operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional GCancellable object, NULL to ignore.
-//   - stream: GInputStream from which to load the pixbuf.
-//   - width the image should have or -1 to not constrain the width.
-//   - height the image should have or -1 to not constrain the height.
-//   - preserveAspectRatio: TRUE to preserve the image's aspect ratio.
-//   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//     loaded.
-func NewPixbufFromStreamAtScaleAsync(ctx context.Context, stream gio.InputStreamer, width, height int, preserveAspectRatio bool, callback gio.AsyncReadyCallback) {
-	var _arg5 *C.GCancellable       // out
-	var _arg1 *C.GInputStream       // out
-	var _arg2 C.gint                // out
-	var _arg3 C.gint                // out
-	var _arg4 C.gboolean            // out
-	var _arg6 C.GAsyncReadyCallback // out
-	var _arg7 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	_arg2 = C.gint(width)
-	_arg3 = C.gint(height)
-	if preserveAspectRatio {
-		_arg4 = C.TRUE
-	}
-	if callback != nil {
-		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg7 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_pixbuf_new_from_stream_at_scale_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(preserveAspectRatio)
-	runtime.KeepAlive(callback)
 }
 
 // PixbufSaveToStreamFinish finishes an asynchronous pixbuf save operation
@@ -3370,45 +3161,6 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 	}
 
 	return _ok
-}
-
-// NewPixbufAnimationFromStreamAsync creates a new animation by asynchronously
-// loading an image from an input stream.
-//
-// For more details see gdk_pixbuf_new_from_stream(), which is the synchronous
-// version of this function.
-//
-// When the operation is finished, callback will be called in the main thread.
-// You can then call gdk_pixbuf_animation_new_from_stream_finish() to get the
-// result of the operation.
-//
-// The function takes the following parameters:
-//
-//   - ctx (optional): optional #GCancellable object.
-//   - stream from which to load the animation.
-//   - callback (optional): GAsyncReadyCallback to call when the pixbuf is
-//     loaded.
-func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStreamer, callback gio.AsyncReadyCallback) {
-	var _arg2 *C.GCancellable       // out
-	var _arg1 *C.GInputStream       // out
-	var _arg3 C.GAsyncReadyCallback // out
-	var _arg4 C.gpointer
-
-	{
-		cancellable := gcancel.GCancellableFromContext(ctx)
-		defer runtime.KeepAlive(cancellable)
-		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-	}
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
-	if callback != nil {
-		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
-		_arg4 = C.gpointer(gbox.AssignOnce(callback))
-	}
-
-	C.gdk_pixbuf_animation_new_from_stream_async(_arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(ctx)
-	runtime.KeepAlive(stream)
-	runtime.KeepAlive(callback)
 }
 
 // PixbufAnimationIter: opaque object representing an iterator which points to a
@@ -4285,8 +4037,8 @@ func marshalPixbufFormat(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//   - pixbufFormat: newly allocated copy of a GdkPixbufFormat. Use
-//     gdk_pixbuf_format_free() to free the resources when done.
+//   - pixbufFormat (optional): newly allocated copy of a GdkPixbufFormat.
+//     Use gdk_pixbuf_format_free() to free the resources when done.
 func (format *PixbufFormat) Copy() *PixbufFormat {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.GdkPixbufFormat // in
@@ -4298,13 +4050,15 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 
 	var _pixbufFormat *PixbufFormat // out
 
-	_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_pixbufFormat)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_pixbuf_format_free((*C.GdkPixbufFormat)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_pixbufFormat)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gdk_pixbuf_format_free((*C.GdkPixbufFormat)(intern.C))
+			},
+		)
+	}
 
 	return _pixbufFormat
 }
@@ -4313,7 +4067,7 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 //
 // The function returns the following values:
 //
-//   - utf8: description of the format.
+//   - utf8 (optional): description of the format.
 func (format *PixbufFormat) Description() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -4325,8 +4079,10 @@ func (format *PixbufFormat) Description() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -4336,7 +4092,7 @@ func (format *PixbufFormat) Description() string {
 //
 // The function returns the following values:
 //
-//   - utf8s: array of filename extensions.
+//   - utf8s (optional): array of filename extensions.
 func (format *PixbufFormat) Extensions() []string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret **C.gchar          // in
@@ -4348,19 +4104,21 @@ func (format *PixbufFormat) Extensions() []string {
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
+		{
+			var i int
+			var z *C.gchar
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
 		}
 	}
 
@@ -4375,7 +4133,7 @@ func (format *PixbufFormat) Extensions() []string {
 //
 // The function returns the following values:
 //
-//   - utf8: string describing the license of the pixbuf format.
+//   - utf8 (optional): string describing the license of the pixbuf format.
 func (format *PixbufFormat) License() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -4387,8 +4145,10 @@ func (format *PixbufFormat) License() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }
@@ -4397,7 +4157,7 @@ func (format *PixbufFormat) License() string {
 //
 // The function returns the following values:
 //
-//   - utf8s: array of mime types.
+//   - utf8s (optional): array of mime types.
 func (format *PixbufFormat) MIMETypes() []string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret **C.gchar          // in
@@ -4409,19 +4169,21 @@ func (format *PixbufFormat) MIMETypes() []string {
 
 	var _utf8s []string // out
 
-	defer C.free(unsafe.Pointer(_cret))
-	{
-		var i int
-		var z *C.gchar
-		for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
-			i++
-		}
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
+		{
+			var i int
+			var z *C.gchar
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
 
-		src := unsafe.Slice(_cret, i)
-		_utf8s = make([]string, i)
-		for i := range src {
-			_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
-			defer C.free(unsafe.Pointer(src[i]))
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
 		}
 	}
 
@@ -4432,7 +4194,7 @@ func (format *PixbufFormat) MIMETypes() []string {
 //
 // The function returns the following values:
 //
-//   - utf8: name of the format.
+//   - utf8 (optional): name of the format.
 func (format *PixbufFormat) Name() string {
 	var _arg0 *C.GdkPixbufFormat // out
 	var _cret *C.gchar           // in
@@ -4444,8 +4206,10 @@ func (format *PixbufFormat) Name() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+		defer C.free(unsafe.Pointer(_cret))
+	}
 
 	return _utf8
 }

@@ -80,6 +80,28 @@ func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRect
 	f(_arg1)
 }
 
+//export _gotk4_atk1_Document_ConnectDocumentAttributeChanged
+func _gotk4_atk1_Document_ConnectDocumentAttributeChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(arg1, arg2 string)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 string))
+	}
+
+	var _arg1 string // out
+	var _arg2 string // out
+
+	_arg1 = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_arg2 = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_arg1, _arg2)
+}
+
 //export _gotk4_atk1_Document_ConnectLoadComplete
 func _gotk4_atk1_Document_ConnectLoadComplete(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
@@ -1203,6 +1225,48 @@ func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.
 	f(_arg1)
 }
 
+//export _gotk4_atk1_Object_ConnectAnnouncement
+func _gotk4_atk1_Object_ConnectAnnouncement(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) {
+	var f func(arg1 string)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 string))
+	}
+
+	var _arg1 string // out
+
+	_arg1 = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	f(_arg1)
+}
+
+//export _gotk4_atk1_Object_ConnectAttributeChanged
+func _gotk4_atk1_Object_ConnectAttributeChanged(arg0 C.gpointer, arg1 *C.gchar, arg2 *C.gchar, arg3 C.guintptr) {
+	var f func(arg1, arg2 string)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1, arg2 string))
+	}
+
+	var _arg1 string // out
+	var _arg2 string // out
+
+	_arg1 = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_arg2 = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	f(_arg1, _arg2)
+}
+
 //export _gotk4_atk1_Object_ConnectChildrenChanged
 func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, arg2 *C.gpointer, arg3 C.guintptr) {
 	var f func(arg1 uint, arg2 *AtkObject)
@@ -1245,6 +1309,28 @@ func _gotk4_atk1_Object_ConnectFocusEvent(arg0 C.gpointer, arg1 C.gboolean, arg2
 	}
 
 	f(_arg1)
+}
+
+//export _gotk4_atk1_Object_ConnectNotification
+func _gotk4_atk1_Object_ConnectNotification(arg0 C.gpointer, arg1 *C.gchar, arg2 C.gint, arg3 C.guintptr) {
+	var f func(arg1 string, arg2 int)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(arg1 string, arg2 int))
+	}
+
+	var _arg1 string // out
+	var _arg2 int    // out
+
+	_arg1 = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	_arg2 = int(arg2)
+
+	f(_arg1, _arg2)
 }
 
 //export _gotk4_atk1_Object_ConnectPropertyChange

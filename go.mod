@@ -1,6 +1,6 @@
 module github.com/diamondburned/gotk4
 
-go 1.21.0
+go 1.22.0
 
 require (
 	github.com/alecthomas/assert/v2 v2.8.1

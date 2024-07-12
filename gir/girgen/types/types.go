@@ -602,11 +602,10 @@ func DetectLengthParameters(params []gir.Parameter) {
 			continue
 		}
 
-		ii := i
 		data.Array = &gir.Array{
 			CType:          data.Type.CType,
 			Type:           &gir.Type{Name: "gchar"},
-			Length:         &ii,
+			Length:         &i,
 			ZeroTerminated: new(bool), // false
 		}
 		data.Type = nil

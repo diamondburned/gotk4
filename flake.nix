@@ -34,12 +34,6 @@
 						overlays = [
 							# gotk4-nix.overlays.patchedGo
 							gotk4-nix.overlays.patchelf
-							(self: super: {
-								inherit (pkgs)
-									go
-									gopls
-									gotools;
-							})
 						];
 					};
 				};

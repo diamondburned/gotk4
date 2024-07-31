@@ -4,6 +4,7 @@ package gendata
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -12,6 +13,7 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	. "github.com/diamondburned/gotk4/gir/girgen/types"
 	. "github.com/diamondburned/gotk4/gir/girgen/types/typeconv"
+	"github.com/diamondburned/gotk4/gir/internal/ptr"
 )
 
 const Module = "github.com/diamondburned/gotk4/pkg"
@@ -210,6 +212,20 @@ var Preprocessors = []Preprocessor{
 				method.ReturnValue.Nullable = true
 			}
 		}
+	}),
+
+	// Fix GAsyncReadyCallback missing the closure bit for the user_data
+	// parameter.
+	PreprocessorFunc(func(repos gir.Repositories) {
+		callback := repos.FindFullType("Gio-2.AsyncReadyCallback").Type.(*gir.Callback)
+
+		userDataIx := slices.IndexFunc(
+			callback.Parameters.Parameters,
+			func(p gir.Parameter) bool { return p.Name == "data" },
+		)
+
+		userData := &callback.Parameters.Parameters[userDataIx]
+		userData.Closure = ptr.To(userDataIx)
 	}),
 }
 

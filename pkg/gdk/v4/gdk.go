@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"context"
 	"fmt"
 	"runtime"
 	_ "runtime/cgo"
@@ -10,6 +11,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gcancel"
 	"github.com/diamondburned/gotk4/pkg/core/gerror"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
@@ -24,6 +27,7 @@ import (
 // #include <stdlib.h>
 // #include <gdk/gdk.h>
 // #include <glib-object.h>
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gdk4_VulkanContext_ConnectImagesUpdated(gpointer, guintptr);
 // extern void _gotk4_gdk4_Surface_ConnectLeaveMonitor(gpointer, GdkMonitor*, guintptr);
 // extern void _gotk4_gdk4_Surface_ConnectLayout(gpointer, gint, gint, guintptr);
@@ -58,6 +62,7 @@ import (
 // extern void _gotk4_gdk4_ContentProviderClass_content_changed(GdkContentProvider*);
 // extern void _gotk4_gdk4_ContentProviderClass_attach_clipboard(GdkContentProvider*, GdkClipboard*);
 // extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern gboolean _gotk4_gdk4_Surface_ConnectRender(gpointer, cairo_region_t*, guintptr);
 // extern gboolean _gotk4_gdk4_Surface_ConnectEvent(gpointer, gpointer*, guintptr);
 // extern gboolean _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(GdkContentProvider*, GAsyncResult*, GError**);
@@ -99,6 +104,9 @@ import (
 // };
 // void _gotk4_gdk4_ContentProvider_virtual_detach_clipboard(void* fnptr, GdkContentProvider* arg0, GdkClipboard* arg1) {
 //   ((void (*)(GdkContentProvider*, GdkClipboard*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gdk4_ContentProvider_virtual_write_mime_type_async(void* fnptr, GdkContentProvider* arg0, char* arg1, GOutputStream* arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GdkContentProvider*, char*, GOutputStream*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 // };
 // void _gotk4_gdk4_Paintable_virtual_snapshot(void* fnptr, GdkPaintable* arg0, GdkSnapshot* arg1, double arg2, double arg3) {
 //   ((void (*)(GdkPaintable*, GdkSnapshot*, double, double))(fnptr))(arg0, arg1, arg2, arg3);
@@ -4736,6 +4744,56 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	runtime.KeepAlive(rgba)
 }
 
+// ContentDeserializeAsync: read content from the given input stream and
+// deserialize it, asynchronously.
+//
+// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
+// indicate a higher priority.
+//
+// When the operation is finished, callback will be called. You must then call
+// gdk.ContentDeserializeFinish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object.
+//   - stream: GInputStream to read the serialized content from.
+//   - mimeType: mime type to deserialize from.
+//   - typ: GType to deserialize from.
+//   - ioPriority: i/O priority of the operation.
+//   - callback (optional) to call when the operation is done.
+func ContentDeserializeAsync(ctx context.Context, stream gio.InputStreamer, mimeType string, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.GInputStream       // out
+	var _arg2 *C.char               // out
+	var _arg3 C.GType               // out
+	var _arg4 C.int                 // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GType(typ)
+	_arg4 = C.int(ioPriority)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_content_deserialize_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ContentDeserializeFinish finishes a content deserialization operation.
 //
 // The function takes the following parameters:
@@ -4764,6 +4822,56 @@ func ContentDeserializeFinish(result gio.AsyncResulter) (coreglib.Value, error) 
 	}
 
 	return _value, _goerr
+}
+
+// ContentSerializeAsync: serialize content and write it to the given output
+// stream, asynchronously.
+//
+// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
+// indicate a higher priority.
+//
+// When the operation is finished, callback will be called. You must then call
+// gdk.ContentSerializeFinish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object.
+//   - stream: GOutputStream to write the serialized content to.
+//   - mimeType: mime type to serialize to.
+//   - value: content to serialize.
+//   - ioPriority: i/O priority of the operation.
+//   - callback (optional) to call when the operation is done.
+func ContentSerializeAsync(ctx context.Context, stream gio.OutputStreamer, mimeType string, value *coreglib.Value, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.GOutputStream      // out
+	var _arg2 *C.char               // out
+	var _arg3 *C.GValue             // out
+	var _arg4 C.int                 // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg2 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
+	_arg4 = C.int(ioPriority)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_content_serialize_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(value)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
@@ -7502,6 +7610,62 @@ func (clipboard *Clipboard) IsLocal() bool {
 	return _ok
 }
 
+// ReadAsync: asynchronously requests an input stream to read the clipboard's
+// contents from.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Clipboard.ReadFinish() to get the result of the operation.
+//
+// The clipboard will choose the most suitable mime type from the given list to
+// fulfill the request, preferring the ones listed first.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object.
+//   - mimeTypes: NULL-terminated array of mime types to choose from.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (clipboard *Clipboard) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkClipboard       // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 **C.char              // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	{
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
+			var zero *C.char
+			out[len(mimeTypes)] = zero
+			for i := range mimeTypes {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_clipboard_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(mimeTypes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadAsync().
@@ -7558,6 +7722,43 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 	return _outMimeType, _inputStream, _goerr
 }
 
+// ReadTextAsync: asynchronously request the clipboard contents converted to a
+// string.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Clipboard.ReadTextFinish() to get the result.
+//
+// This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
+// function or gdk.Clipboard.ReadAsync() directly if you need more control over
+// the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object.
+//   - callback (optional) to call when the request is satisfied.
+func (clipboard *Clipboard) ReadTextAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkClipboard       // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_clipboard_read_text_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
 // ReadTextFinish finishes an asynchronous clipboard read.
 //
 // See gdk.Clipboard.ReadTextAsync().
@@ -7594,6 +7795,43 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 	}
 
 	return _utf8, _goerr
+}
+
+// ReadTextureAsync: asynchronously request the clipboard contents converted to
+// a GdkPixbuf.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Clipboard.ReadTextureFinish() to get the result.
+//
+// This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
+// function or gdk.Clipboard.ReadAsync() directly if you need more control over
+// the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - callback (optional) to call when the request is satisfied.
+func (clipboard *Clipboard) ReadTextureAsync(ctx context.Context, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkClipboard       // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_clipboard_read_texture_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // ReadTextureFinish finishes an asynchronous clipboard read.
@@ -7644,6 +7882,51 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 	}
 
 	return _texture, _goerr
+}
+
+// ReadValueAsync: asynchronously request the clipboard contents converted to
+// the given type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Clipboard.ReadValueFinish() to get the resulting GValue.
+//
+// For local clipboard contents that are available in the given GType,
+// the value will be copied directly. Otherwise, GDK will try to use
+// content_deserialize_async to convert the clipboard's data.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object.
+//   - typ: GType to read.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (clipboard *Clipboard) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkClipboard       // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GType               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GType(typ)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_clipboard_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadValueFinish finishes an asynchronous clipboard read.
@@ -7774,6 +8057,53 @@ func (clipboard *Clipboard) Set(value *coreglib.Value) {
 	C.gdk_clipboard_set_value(_arg0, _arg1)
 	runtime.KeepAlive(clipboard)
 	runtime.KeepAlive(value)
+}
+
+// StoreAsync: asynchronously instructs the clipboard to store its contents
+// remotely.
+//
+// If the clipboard is not local, this function does nothing but report success.
+//
+// The callback must call gdk.Clipboard.StoreFinish().
+//
+// The purpose of this call is to preserve clipboard contents beyond the
+// lifetime of an application, so this function is typically called on exit.
+// Depending on the platform, the functionality may not be available unless a
+// "clipboard manager" is running.
+//
+// This function is called automatically when a GtkApplication
+// (../gtk4/class.Application.html) is shut down, so you likely don't need to
+// call it.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (clipboard *Clipboard) StoreAsync(ctx context.Context, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkClipboard       // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_clipboard_store_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(clipboard)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // StoreFinish finishes an asynchronous clipboard store.
@@ -8418,6 +8748,58 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	return _contentFormats
 }
 
+// WriteMIMETypeAsync: asynchronously writes the contents of provider to stream
+// in the given mime_type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
+//
+// The given mime type does not need to be listed in the formats returned
+// by gdk.ContentProvider.RefFormats(). However, if the given GType is not
+// supported, G_IO_ERROR_NOT_SUPPORTED will be reported.
+//
+// The given stream will not be closed.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - mimeType: mime type to provide the data in.
+//   - stream: GOutputStream to write to.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (provider *ContentProvider) WriteMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkContentProvider // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.GOutputStream      // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_content_provider_write_mime_type_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // WriteMIMETypeFinish finishes an asynchronous write operation.
 //
 // See gdk.ContentProvider.WriteMIMETypeAsync().
@@ -8588,6 +8970,61 @@ func (provider *ContentProvider) refStorableFormats() *ContentFormats {
 	)
 
 	return _contentFormats
+}
+
+// writeMIMETypeAsync: asynchronously writes the contents of provider to stream
+// in the given mime_type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
+//
+// The given mime type does not need to be listed in the formats returned
+// by gdk.ContentProvider.RefFormats(). However, if the given GType is not
+// supported, G_IO_ERROR_NOT_SUPPORTED will be reported.
+//
+// The given stream will not be closed.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - mimeType: mime type to provide the data in.
+//   - stream: GOutputStream to write to.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (provider *ContentProvider) writeMIMETypeAsync(ctx context.Context, mimeType string, stream gio.OutputStreamer, ioPriority int, callback gio.AsyncReadyCallback) {
+	gclass := (*C.GdkContentProviderClass)(coreglib.PeekParentClass(provider))
+	fnarg := gclass.write_mime_type_async
+
+	var _arg0 *C.GdkContentProvider // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.GOutputStream      // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(coreglib.InternObject(provider).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(mimeType)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gdk4_ContentProvider_virtual_write_mime_type_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(provider)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(mimeType)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // writeMIMETypeFinish finishes an asynchronous write operation.
@@ -12817,6 +13254,57 @@ func (self *Drop) Surface() Surfacer {
 	return _surface
 }
 
+// ReadAsync: asynchronously read the dropped data from a GdkDrop in a format
+// that complies with one of the mime types.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object.
+//   - mimeTypes: pointer to an array of mime types.
+//   - ioPriority: i/O priority for the read operation.
+//   - callback (optional): GAsyncReadyCallback to call when the request is
+//     satisfied.
+func (self *Drop) ReadAsync(ctx context.Context, mimeTypes []string, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkDrop            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 **C.char              // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	{
+		_arg1 = (**C.char)(C.calloc(C.size_t((len(mimeTypes) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		defer C.free(unsafe.Pointer(_arg1))
+		{
+			out := unsafe.Slice(_arg1, len(mimeTypes)+1)
+			var zero *C.char
+			out[len(mimeTypes)] = zero
+			for i := range mimeTypes {
+				out[i] = (*C.char)(unsafe.Pointer(C.CString(mimeTypes[i])))
+				defer C.free(unsafe.Pointer(out[i]))
+			}
+		}
+	}
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_drop_read_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(mimeTypes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadFinish finishes an async drop read operation.
 //
 // Note that you must not use blocking read calls on the returned stream
@@ -12874,6 +13362,51 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 	}
 
 	return _outMimeType, _inputStream, _goerr
+}
+
+// ReadValueAsync: asynchronously request the drag operation's contents
+// converted to the given type.
+//
+// When the operation is finished callback will be called. You must then call
+// gdk.Drop.ReadValueFinish() to get the resulting GValue.
+//
+// For local drag-and-drop operations that are available in the given GType,
+// the value will be copied directly. Otherwise, GDK will try to use
+// gdk.ContentDeserializeAsync() to convert the data.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional GCancellable object, NULL to ignore.
+//   - typ: GType to read.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (self *Drop) ReadValueAsync(ctx context.Context, typ coreglib.Type, ioPriority int, callback gio.AsyncReadyCallback) {
+	var _arg0 *C.GdkDrop            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GType               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GdkDrop)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GType(typ)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.gdk_drop_read_value_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(typ)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadValueFinish finishes an async drop read.

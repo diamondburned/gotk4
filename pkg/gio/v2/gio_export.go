@@ -20,6 +20,40 @@ import (
 // #include <glib-object.h>
 import "C"
 
+//export _gotk4_gio2_AsyncReadyCallback
+func _gotk4_gio2_AsyncReadyCallback(arg1 *C.GObject, arg2 *C.GAsyncResult, arg3 C.gpointer) {
+	var fn AsyncReadyCallback
+	{
+		v := gbox.Get(uintptr(arg3))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(AsyncReadyCallback)
+	}
+
+	var _res AsyncResulter // out
+
+	{
+		objptr := unsafe.Pointer(arg2)
+		if objptr == nil {
+			panic("object of type gio.AsyncResulter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(AsyncResulter)
+			return ok
+		})
+		rv, ok := casted.(AsyncResulter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AsyncResulter")
+		}
+		_res = rv
+	}
+
+	fn(_res)
+}
+
 //export _gotk4_gio2_BusAcquiredCallback
 func _gotk4_gio2_BusAcquiredCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3 C.gpointer) {
 	var fn BusAcquiredCallback

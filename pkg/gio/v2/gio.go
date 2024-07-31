@@ -111,6 +111,7 @@ import (
 // extern void _gotk4_gio2_DBusConnection_ConnectClosed(gpointer, gboolean, GError*, guintptr);
 // extern void _gotk4_gio2_Cancellable_ConnectCancelled(gpointer, guintptr);
 // extern void _gotk4_gio2_CancellableClass_cancelled(GCancellable*);
+// extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gio2_Application_ConnectStartup(gpointer, guintptr);
 // extern void _gotk4_gio2_Application_ConnectShutdown(gpointer, guintptr);
 // extern void _gotk4_gio2_Application_ConnectOpen(gpointer, GFile**, gint, gchar*, guintptr);
@@ -1368,6 +1369,9 @@ import (
 // void _gotk4_gio2_Action_virtual_change_state(void* fnptr, GAction* arg0, GVariant* arg1) {
 //   ((void (*)(GAction*, GVariant*))(fnptr))(arg0, arg1);
 // };
+// void _gotk4_gio2_AppInfo_virtual_launch_uris_async(void* fnptr, GAppInfo* arg0, GList* arg1, GAppLaunchContext* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GAppInfo*, GList*, GAppLaunchContext*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
 // void _gotk4_gio2_AppLaunchContext_virtual_launch_failed(void* fnptr, GAppLaunchContext* arg0, char* arg1) {
 //   ((void (*)(GAppLaunchContext*, char*))(fnptr))(arg0, arg1);
 // };
@@ -1416,6 +1420,12 @@ import (
 // void _gotk4_gio2_Application_virtual_startup(void* fnptr, GApplication* arg0) {
 //   ((void (*)(GApplication*))(fnptr))(arg0);
 // };
+// void _gotk4_gio2_AsyncInitable_virtual_init_async(void* fnptr, GAsyncInitable* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GAsyncInitable*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_BufferedInputStream_virtual_fill_async(void* fnptr, GBufferedInputStream* arg0, gssize arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GBufferedInputStream*, gssize, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
 // void _gotk4_gio2_Cancellable_virtual_cancelled(void* fnptr, GCancellable* arg0) {
 //   ((void (*)(GCancellable*))(fnptr))(arg0);
 // };
@@ -1452,8 +1462,14 @@ import (
 // void _gotk4_gio2_DBusProxy_virtual_g_signal(void* fnptr, GDBusProxy* arg0, gchar* arg1, gchar* arg2, GVariant* arg3) {
 //   ((void (*)(GDBusProxy*, gchar*, gchar*, GVariant*))(fnptr))(arg0, arg1, arg2, arg3);
 // };
+// void _gotk4_gio2_DTLSConnection_virtual_handshake_async(void* fnptr, GDtlsConnection* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GDtlsConnection*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
 // void _gotk4_gio2_DTLSConnection_virtual_set_advertised_protocols(void* fnptr, GDtlsConnection* arg0, gchar** arg1) {
 //   ((void (*)(GDtlsConnection*, gchar**))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_DTLSConnection_virtual_shutdown_async(void* fnptr, GDtlsConnection* arg0, gboolean arg1, gboolean arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GDtlsConnection*, gboolean, gboolean, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
 // };
 // void _gotk4_gio2_Drive_virtual_changed(void* fnptr, GDrive* arg0) {
 //   ((void (*)(GDrive*))(fnptr))(arg0);
@@ -1461,17 +1477,140 @@ import (
 // void _gotk4_gio2_Drive_virtual_disconnected(void* fnptr, GDrive* arg0) {
 //   ((void (*)(GDrive*))(fnptr))(arg0);
 // };
+// void _gotk4_gio2_Drive_virtual_eject(void* fnptr, GDrive* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GDrive*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
 // void _gotk4_gio2_Drive_virtual_eject_button(void* fnptr, GDrive* arg0) {
 //   ((void (*)(GDrive*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_Drive_virtual_eject_with_operation(void* fnptr, GDrive* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GDrive*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Drive_virtual_poll_for_media(void* fnptr, GDrive* arg0, GCancellable* arg1, GAsyncReadyCallback arg2, gpointer arg3) {
+//   ((void (*)(GDrive*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gio2_Drive_virtual_start(void* fnptr, GDrive* arg0, GDriveStartFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GDrive*, GDriveStartFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Drive_virtual_stop(void* fnptr, GDrive* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GDrive*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
 // };
 // void _gotk4_gio2_Drive_virtual_stop_button(void* fnptr, GDrive* arg0) {
 //   ((void (*)(GDrive*))(fnptr))(arg0);
 // };
+// void _gotk4_gio2_FileEnumerator_virtual_close_async(void* fnptr, GFileEnumerator* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFileEnumerator*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_FileEnumerator_virtual_next_files_async(void* fnptr, GFileEnumerator* arg0, int arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFileEnumerator*, int, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_FileIOStream_virtual_query_info_async(void* fnptr, GFileIOStream* arg0, char* arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFileIOStream*, char*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_FileInputStream_virtual_query_info_async(void* fnptr, GFileInputStream* arg0, char* arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFileInputStream*, char*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
 // void _gotk4_gio2_FileMonitor_virtual_changed(void* fnptr, GFileMonitor* arg0, GFile* arg1, GFile* arg2, GFileMonitorEvent arg3) {
 //   ((void (*)(GFileMonitor*, GFile*, GFile*, GFileMonitorEvent))(fnptr))(arg0, arg1, arg2, arg3);
 // };
+// void _gotk4_gio2_FileOutputStream_virtual_query_info_async(void* fnptr, GFileOutputStream* arg0, char* arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFileOutputStream*, char*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_append_to_async(void* fnptr, GFile* arg0, GFileCreateFlags arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GFileCreateFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_create_async(void* fnptr, GFile* arg0, GFileCreateFlags arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GFileCreateFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_create_readwrite_async(void* fnptr, GFile* arg0, GFileCreateFlags arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GFileCreateFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_delete_file_async(void* fnptr, GFile* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFile*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_File_virtual_eject_mountable(void* fnptr, GFile* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFile*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_File_virtual_eject_mountable_with_operation(void* fnptr, GFile* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_enumerate_children_async(void* fnptr, GFile* arg0, char* arg1, GFileQueryInfoFlags arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GFile*, char*, GFileQueryInfoFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_File_virtual_find_enclosing_mount_async(void* fnptr, GFile* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFile*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_File_virtual_make_directory_async(void* fnptr, GFile* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFile*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_File_virtual_make_symbolic_link_async(void* fnptr, GFile* arg0, char* arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, char*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_mount_enclosing_volume(void* fnptr, GFile* arg0, GMountMountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GMountMountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_mount_mountable(void* fnptr, GFile* arg0, GMountMountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GMountMountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_open_readwrite_async(void* fnptr, GFile* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFile*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_File_virtual_poll_mountable(void* fnptr, GFile* arg0, GCancellable* arg1, GAsyncReadyCallback arg2, gpointer arg3) {
+//   ((void (*)(GFile*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gio2_File_virtual_query_filesystem_info_async(void* fnptr, GFile* arg0, char* arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, char*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_query_info_async(void* fnptr, GFile* arg0, char* arg1, GFileQueryInfoFlags arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GFile*, char*, GFileQueryInfoFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_File_virtual_read_async(void* fnptr, GFile* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFile*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_File_virtual_replace_async(void* fnptr, GFile* arg0, char* arg1, gboolean arg2, GFileCreateFlags arg3, int arg4, GCancellable* arg5, GAsyncReadyCallback arg6, gpointer arg7) {
+//   ((void (*)(GFile*, char*, gboolean, GFileCreateFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+// };
+// void _gotk4_gio2_File_virtual_replace_readwrite_async(void* fnptr, GFile* arg0, char* arg1, gboolean arg2, GFileCreateFlags arg3, int arg4, GCancellable* arg5, GAsyncReadyCallback arg6, gpointer arg7) {
+//   ((void (*)(GFile*, char*, gboolean, GFileCreateFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+// };
+// void _gotk4_gio2_File_virtual_set_attributes_async(void* fnptr, GFile* arg0, GFileInfo* arg1, GFileQueryInfoFlags arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GFile*, GFileInfo*, GFileQueryInfoFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_File_virtual_set_display_name_async(void* fnptr, GFile* arg0, char* arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, char*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_start_mountable(void* fnptr, GFile* arg0, GDriveStartFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GDriveStartFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_stop_mountable(void* fnptr, GFile* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_File_virtual_trash_async(void* fnptr, GFile* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFile*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_File_virtual_unmount_mountable(void* fnptr, GFile* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GFile*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_File_virtual_unmount_mountable_with_operation(void* fnptr, GFile* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GFile*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
 // void _gotk4_gio2_FilenameCompleter_virtual_got_completion_data(void* fnptr, GFilenameCompleter* arg0) {
 //   ((void (*)(GFilenameCompleter*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_IOStream_virtual_close_async(void* fnptr, GIOStream* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GIOStream*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_InputStream_virtual_close_async(void* fnptr, GInputStream* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GInputStream*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_InputStream_virtual_read_async(void* fnptr, GInputStream* arg0, void* arg1, gsize arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GInputStream*, void*, gsize, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_InputStream_virtual_skip_async(void* fnptr, GInputStream* arg0, gsize arg1, int arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GInputStream*, gsize, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_LoadableIcon_virtual_load_async(void* fnptr, GLoadableIcon* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GLoadableIcon*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
 // };
 // void _gotk4_gio2_MemoryMonitor_virtual_low_memory_warning(void* fnptr, GMemoryMonitor* arg0, GMemoryMonitorWarningLevel arg1) {
 //   ((void (*)(GMemoryMonitor*, GMemoryMonitorWarningLevel))(fnptr))(arg0, arg1);
@@ -1500,20 +1639,83 @@ import (
 // void _gotk4_gio2_Mount_virtual_changed(void* fnptr, GMount* arg0) {
 //   ((void (*)(GMount*))(fnptr))(arg0);
 // };
+// void _gotk4_gio2_Mount_virtual_eject(void* fnptr, GMount* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GMount*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Mount_virtual_eject_with_operation(void* fnptr, GMount* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GMount*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Mount_virtual_guess_content_type(void* fnptr, GMount* arg0, gboolean arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GMount*, gboolean, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
 // void _gotk4_gio2_Mount_virtual_pre_unmount(void* fnptr, GMount* arg0) {
 //   ((void (*)(GMount*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_Mount_virtual_remount(void* fnptr, GMount* arg0, GMountMountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GMount*, GMountMountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Mount_virtual_unmount(void* fnptr, GMount* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GMount*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Mount_virtual_unmount_with_operation(void* fnptr, GMount* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GMount*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
 // };
 // void _gotk4_gio2_Mount_virtual_unmounted(void* fnptr, GMount* arg0) {
 //   ((void (*)(GMount*))(fnptr))(arg0);
 // };
+// void _gotk4_gio2_NetworkMonitor_virtual_can_reach_async(void* fnptr, GNetworkMonitor* arg0, GSocketConnectable* arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GNetworkMonitor*, GSocketConnectable*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
 // void _gotk4_gio2_NetworkMonitor_virtual_network_changed(void* fnptr, GNetworkMonitor* arg0, gboolean arg1) {
 //   ((void (*)(GNetworkMonitor*, gboolean))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_OutputStream_virtual_close_async(void* fnptr, GOutputStream* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GOutputStream*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_OutputStream_virtual_flush_async(void* fnptr, GOutputStream* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GOutputStream*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_OutputStream_virtual_splice_async(void* fnptr, GOutputStream* arg0, GInputStream* arg1, GOutputStreamSpliceFlags arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GOutputStream*, GInputStream*, GOutputStreamSpliceFlags, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_OutputStream_virtual_write_async(void* fnptr, GOutputStream* arg0, void* arg1, gsize arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GOutputStream*, void*, gsize, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_OutputStream_virtual_writev_async(void* fnptr, GOutputStream* arg0, GOutputVector* arg1, gsize arg2, int arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GOutputStream*, GOutputVector*, gsize, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_Permission_virtual_acquire_async(void* fnptr, GPermission* arg0, GCancellable* arg1, GAsyncReadyCallback arg2, gpointer arg3) {
+//   ((void (*)(GPermission*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gio2_Permission_virtual_release_async(void* fnptr, GPermission* arg0, GCancellable* arg1, GAsyncReadyCallback arg2, gpointer arg3) {
+//   ((void (*)(GPermission*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gio2_ProxyResolver_virtual_lookup_async(void* fnptr, GProxyResolver* arg0, gchar* arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GProxyResolver*, gchar*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Proxy_virtual_connect_async(void* fnptr, GProxy* arg0, GIOStream* arg1, GProxyAddress* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GProxy*, GIOStream*, GProxyAddress*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
 // };
 // void _gotk4_gio2_RemoteActionGroup_virtual_activate_action_full(void* fnptr, GRemoteActionGroup* arg0, gchar* arg1, GVariant* arg2, GVariant* arg3) {
 //   ((void (*)(GRemoteActionGroup*, gchar*, GVariant*, GVariant*))(fnptr))(arg0, arg1, arg2, arg3);
 // };
 // void _gotk4_gio2_RemoteActionGroup_virtual_change_action_state_full(void* fnptr, GRemoteActionGroup* arg0, gchar* arg1, GVariant* arg2, GVariant* arg3) {
 //   ((void (*)(GRemoteActionGroup*, gchar*, GVariant*, GVariant*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// void _gotk4_gio2_Resolver_virtual_lookup_by_address_async(void* fnptr, GResolver* arg0, GInetAddress* arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GResolver*, GInetAddress*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Resolver_virtual_lookup_by_name_async(void* fnptr, GResolver* arg0, gchar* arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GResolver*, gchar*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Resolver_virtual_lookup_by_name_with_flags_async(void* fnptr, GResolver* arg0, gchar* arg1, GResolverNameLookupFlags arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GResolver*, gchar*, GResolverNameLookupFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Resolver_virtual_lookup_records_async(void* fnptr, GResolver* arg0, gchar* arg1, GResolverRecordType arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GResolver*, gchar*, GResolverRecordType, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Resolver_virtual_lookup_service_async(void* fnptr, GResolver* arg0, gchar* arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GResolver*, gchar*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
 // };
 // void _gotk4_gio2_Resolver_virtual_reload(void* fnptr, GResolver* arg0) {
 //   ((void (*)(GResolver*))(fnptr))(arg0);
@@ -1523,6 +1725,9 @@ import (
 // };
 // void _gotk4_gio2_Settings_virtual_writable_changed(void* fnptr, GSettings* arg0, gchar* arg1) {
 //   ((void (*)(GSettings*, gchar*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_SocketAddressEnumerator_virtual_next_async(void* fnptr, GSocketAddressEnumerator* arg0, GCancellable* arg1, GAsyncReadyCallback arg2, gpointer arg3) {
+//   ((void (*)(GSocketAddressEnumerator*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3);
 // };
 // void _gotk4_gio2_SocketClient_virtual_event(void* fnptr, GSocketClient* arg0, GSocketClientEvent arg1, GSocketConnectable* arg2, GIOStream* arg3) {
 //   ((void (*)(GSocketClient*, GSocketClientEvent, GSocketConnectable*, GIOStream*))(fnptr))(arg0, arg1, arg2, arg3);
@@ -1538,6 +1743,27 @@ import (
 // };
 // void _gotk4_gio2_TLSClientConnection_virtual_copy_session_state(void* fnptr, GTlsClientConnection* arg0, GTlsClientConnection* arg1) {
 //   ((void (*)(GTlsClientConnection*, GTlsClientConnection*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gio2_TLSConnection_virtual_handshake_async(void* fnptr, GTlsConnection* arg0, int arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GTlsConnection*, int, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_TLSDatabase_virtual_lookup_certificate_for_handle_async(void* fnptr, GTlsDatabase* arg0, gchar* arg1, GTlsInteraction* arg2, GTlsDatabaseLookupFlags arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GTlsDatabase*, gchar*, GTlsInteraction*, GTlsDatabaseLookupFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_TLSDatabase_virtual_lookup_certificate_issuer_async(void* fnptr, GTlsDatabase* arg0, GTlsCertificate* arg1, GTlsInteraction* arg2, GTlsDatabaseLookupFlags arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GTlsDatabase*, GTlsCertificate*, GTlsInteraction*, GTlsDatabaseLookupFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_TLSDatabase_virtual_lookup_certificates_issued_by_async(void* fnptr, GTlsDatabase* arg0, GByteArray* arg1, GTlsInteraction* arg2, GTlsDatabaseLookupFlags arg3, GCancellable* arg4, GAsyncReadyCallback arg5, gpointer arg6) {
+//   ((void (*)(GTlsDatabase*, GByteArray*, GTlsInteraction*, GTlsDatabaseLookupFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+// };
+// void _gotk4_gio2_TLSDatabase_virtual_verify_chain_async(void* fnptr, GTlsDatabase* arg0, GTlsCertificate* arg1, gchar* arg2, GSocketConnectable* arg3, GTlsInteraction* arg4, GTlsDatabaseVerifyFlags arg5, GCancellable* arg6, GAsyncReadyCallback arg7, gpointer arg8) {
+//   ((void (*)(GTlsDatabase*, GTlsCertificate*, gchar*, GSocketConnectable*, GTlsInteraction*, GTlsDatabaseVerifyFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8);
+// };
+// void _gotk4_gio2_TLSInteraction_virtual_ask_password_async(void* fnptr, GTlsInteraction* arg0, GTlsPassword* arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GTlsInteraction*, GTlsPassword*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_TLSInteraction_virtual_request_certificate_async(void* fnptr, GTlsInteraction* arg0, GTlsConnection* arg1, GTlsCertificateRequestFlags arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GTlsInteraction*, GTlsConnection*, GTlsCertificateRequestFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
 // };
 // void _gotk4_gio2_VFS_virtual_add_writable_namespaces(void* fnptr, GVfs* arg0, GFileAttributeInfoList* arg1) {
 //   ((void (*)(GVfs*, GFileAttributeInfoList*))(fnptr))(arg0, arg1);
@@ -1586,6 +1812,15 @@ import (
 // };
 // void _gotk4_gio2_Volume_virtual_changed(void* fnptr, GVolume* arg0) {
 //   ((void (*)(GVolume*))(fnptr))(arg0);
+// };
+// void _gotk4_gio2_Volume_virtual_eject(void* fnptr, GVolume* arg0, GMountUnmountFlags arg1, GCancellable* arg2, GAsyncReadyCallback arg3, gpointer arg4) {
+//   ((void (*)(GVolume*, GMountUnmountFlags, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
+// };
+// void _gotk4_gio2_Volume_virtual_eject_with_operation(void* fnptr, GVolume* arg0, GMountUnmountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GVolume*, GMountUnmountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// void _gotk4_gio2_Volume_virtual_mount_fn(void* fnptr, GVolume* arg0, GMountMountFlags arg1, GMountOperation* arg2, GCancellable* arg3, GAsyncReadyCallback arg4, gpointer arg5) {
+//   ((void (*)(GVolume*, GMountMountFlags, GMountOperation*, GCancellable*, GAsyncReadyCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
 // };
 // void _gotk4_gio2_Volume_virtual_removed(void* fnptr, GVolume* arg0) {
 //   ((void (*)(GVolume*))(fnptr))(arg0);
@@ -7843,6 +8078,18 @@ func (t TLSPasswordFlags) Has(other TLSPasswordFlags) bool {
 	return (t & other) == other
 }
 
+// AsyncReadyCallback: type definition for a function that will be called back
+// when an asynchronous operation within GIO has been completed. ReadyCallback
+// callbacks from #GTask are guaranteed to be invoked in a later iteration of
+// the [thread-default main context][g-main-context-push-thread-default] where
+// the #GTask was created. All other users of ReadyCallback must likewise call
+// it asynchronously in a later iteration of the main context.
+//
+// The asynchronous operation is guaranteed to have held a reference to
+// source_object from the time when the *_async() function was called, until
+// after this callback returns.
+type AsyncReadyCallback func(res AsyncResulter)
+
 // BusAcquiredCallback: invoked when a connection to a message bus has been
 // obtained.
 type BusAcquiredCallback func(connection *DBusConnection, name string)
@@ -8009,6 +8256,42 @@ type SettingsGetMapping func(value *glib.Variant) (result unsafe.Pointer, ok boo
 // The client should return a reference to the new file that has been created
 // for uri, or NULL to continue with the default implementation.
 type VFSFileLookupFunc func(vfs *VFS, identifier string) (file *File)
+
+// BusGet: asynchronously connects to the message bus specified by bus_type.
+//
+// When the operation is finished, callback will be invoked. You can then call
+// g_bus_get_finish() to get the result of the operation.
+//
+// This is an asynchronous failable function. See g_bus_get_sync() for the
+// synchronous version.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - busType: Type.
+//   - callback (optional) to call when the request is satisfied.
+func BusGet(ctx context.Context, busType BusType, callback AsyncReadyCallback) {
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GBusType            // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GBusType(busType)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_bus_get(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(busType)
+	runtime.KeepAlive(callback)
+}
 
 // BusGetFinish finishes an operation started with g_bus_get().
 //
@@ -8765,6 +9048,47 @@ func DBusAddressGetForBusSync(ctx context.Context, busType BusType) (string, err
 	}
 
 	return _utf8, _goerr
+}
+
+// DBusAddressGetStream: asynchronously connects to an endpoint
+// specified by address and sets up the connection so it is in
+// a state to run the client-side of the D-Bus authentication
+// conversation. address must be in the D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// When the operation is finished, callback will be invoked. You can then call
+// g_dbus_address_get_stream_finish() to get the result of the operation.
+//
+// This is an asynchronous failable function. See
+// g_dbus_address_get_stream_sync() for the synchronous version.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - address: valid D-Bus address.
+//   - callback (optional) to call when the request is satisfied.
+func DBusAddressGetStream(ctx context.Context, address string, callback AsyncReadyCallback) {
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(callback)
 }
 
 // DBusAddressGetStreamFinish finishes an operation started with
@@ -10010,6 +10334,40 @@ func ResourcesUnregister(resource *Resource) {
 
 	C.g_resources_unregister(_arg1)
 	runtime.KeepAlive(resource)
+}
+
+// SimpleAsyncReportGErrorInIdle reports an error in an idle function. Similar
+// to g_simple_async_report_error_in_idle(), but takes a #GError rather than
+// building a new one.
+//
+// Deprecated: Use g_task_report_error().
+//
+// The function takes the following parameters:
+//
+//   - object (optional) or NULL.
+//   - callback (optional): ReadyCallback.
+//   - err to report.
+func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyCallback, err error) {
+	var _arg1 *C.GObject            // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+	var _arg4 *C.GError // out
+
+	if object != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+	if err != nil {
+		_arg4 = (*C.GError)(gerror.New(err))
+	}
+
+	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(object)
+	runtime.KeepAlive(callback)
+	runtime.KeepAlive(err)
 }
 
 // Action: GAction represents a single named action.
@@ -12477,6 +12835,8 @@ type AppInfor interface {
 	Launch(files []Filer, context *AppLaunchContext) error
 	// LaunchURIs launches the application.
 	LaunchURIs(uris []string, context *AppLaunchContext) error
+	// LaunchURIsAsync: async version of g_app_info_launch_uris().
+	LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback)
 	// LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
 	LaunchURIsFinish(result AsyncResulter) error
 	// RemoveSupportsType removes a supported type from an application,
@@ -12994,6 +13354,59 @@ func (appinfo *AppInfo) LaunchURIs(uris []string, context *AppLaunchContext) err
 	}
 
 	return _goerr
+}
+
+// LaunchURIsAsync: async version of g_app_info_launch_uris().
+//
+// The callback is invoked immediately after the application launch,
+// but it waits for activation in case of D-Bus–activated applications and also
+// provides extended error information for sandboxed applications, see notes for
+// g_app_info_launch_default_for_uri_async().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): #GCancellable.
+//   - uris (optional) containing URIs to launch.
+//   - context (optional) or NULL.
+//   - callback (optional) to call when the request is done.
+func (appinfo *AppInfo) LaunchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
+	var _arg0 *C.GAppInfo           // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GList              // out
+	var _arg2 *C.GAppLaunchContext  // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if uris != nil {
+		for i := len(uris) - 1; i >= 0; i-- {
+			src := uris[i]
+			var dst *C.gchar // out
+			dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+			defer C.free(unsafe.Pointer(dst))
+			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_list_free(_arg1)
+	}
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_app_info_launch_uris_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uris)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(callback)
 }
 
 // LaunchURIsFinish finishes a g_app_info_launch_uris_async() operation.
@@ -13737,6 +14150,62 @@ func (appinfo *AppInfo) launchURIs(uris []string, context *AppLaunchContext) err
 	return _goerr
 }
 
+// launchURIsAsync: async version of g_app_info_launch_uris().
+//
+// The callback is invoked immediately after the application launch,
+// but it waits for activation in case of D-Bus–activated applications and also
+// provides extended error information for sandboxed applications, see notes for
+// g_app_info_launch_default_for_uri_async().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): #GCancellable.
+//   - uris (optional) containing URIs to launch.
+//   - context (optional) or NULL.
+//   - callback (optional) to call when the request is done.
+func (appinfo *AppInfo) launchURIsAsync(ctx context.Context, uris []string, context *AppLaunchContext, callback AsyncReadyCallback) {
+	gclass := (*C.GAppInfoIface)(coreglib.PeekParentClass(appinfo))
+	fnarg := gclass.launch_uris_async
+
+	var _arg0 *C.GAppInfo           // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GList              // out
+	var _arg2 *C.GAppLaunchContext  // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GAppInfo)(unsafe.Pointer(coreglib.InternObject(appinfo).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if uris != nil {
+		for i := len(uris) - 1; i >= 0; i-- {
+			src := uris[i]
+			var dst *C.gchar // out
+			dst = (*C.gchar)(unsafe.Pointer(C.CString(src)))
+			defer C.free(unsafe.Pointer(dst))
+			_arg1 = C.g_list_prepend(_arg1, C.gpointer(unsafe.Pointer(dst)))
+		}
+		defer C.g_list_free(_arg1)
+	}
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_AppInfo_virtual_launch_uris_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(appinfo)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uris)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(callback)
+}
+
 // launchURIsFinish finishes a g_app_info_launch_uris_async() operation.
 //
 // The function takes the following parameters:
@@ -14117,6 +14586,44 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) *AppInfo
 	return _appInfo
 }
 
+// AppInfoGetDefaultForTypeAsync: asynchronously gets the default Info for a
+// given content type.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - contentType: content type to find a Info for.
+//   - mustSupportUris: if TRUE, the Info is expected to support URIs.
+//   - callback (optional) to call when the request is done.
+func AppInfoGetDefaultForTypeAsync(ctx context.Context, contentType string, mustSupportUris bool, callback AsyncReadyCallback) {
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(contentType)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if mustSupportUris {
+		_arg2 = C.TRUE
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_app_info_get_default_for_type_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contentType)
+	runtime.KeepAlive(mustSupportUris)
+	runtime.KeepAlive(callback)
+}
+
 // AppInfoGetDefaultForTypeFinish finishes a default Info lookup started by
 // g_app_info_get_default_for_type_async().
 //
@@ -14178,6 +14685,40 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) *AppInfo {
 	}
 
 	return _appInfo
+}
+
+// AppInfoGetDefaultForURISchemeAsync: asynchronously gets the default
+// application for handling URIs with the given URI scheme. A URI scheme is
+// the initial part of the URI, up to but not including the ':', e.g. "http",
+// "ftp" or "sip".
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - uriScheme: string containing a URI scheme.
+//   - callback (optional) to call when the request is done.
+func AppInfoGetDefaultForURISchemeAsync(ctx context.Context, uriScheme string, callback AsyncReadyCallback) {
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uriScheme)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_app_info_get_default_for_uri_scheme_async(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uriScheme)
+	runtime.KeepAlive(callback)
 }
 
 // AppInfoGetDefaultForURISchemeFinish finishes a default Info lookup started by
@@ -14317,6 +14858,52 @@ func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) error {
 	}
 
 	return _goerr
+}
+
+// AppInfoLaunchDefaultForURIAsync: async version of
+// g_app_info_launch_default_for_uri().
+//
+// This version is useful if you are interested in receiving error information
+// in the case where the application is sandboxed and the portal may present an
+// application chooser dialog to the user.
+//
+// This is also useful if you want to be sure that the D-Bus–activated
+// applications are really started before termination and if you are interested
+// in receiving error information from their activation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): #GCancellable.
+//   - uri to show.
+//   - context (optional): optional LaunchContext.
+//   - callback (optional) to call when the request is done.
+func AppInfoLaunchDefaultForURIAsync(ctx context.Context, uri string, context *AppLaunchContext, callback AsyncReadyCallback) {
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.GAppLaunchContext  // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if context != nil {
+		_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_app_info_launch_default_for_uri_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(context)
+	runtime.KeepAlive(callback)
 }
 
 // AppInfoLaunchDefaultForURIFinish finishes an asynchronous
@@ -14477,6 +15064,9 @@ var (
 type AsyncInitabler interface {
 	coreglib.Objector
 
+	// InitAsync starts asynchronous initialization of the object implementing
+	// the interface.
+	InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	InitFinish(res AsyncResulter) error
 	// NewFinish finishes the async construction for the various
@@ -14495,6 +15085,73 @@ func wrapAsyncInitable(obj *coreglib.Object) *AsyncInitable {
 
 func marshalAsyncInitable(p uintptr) (interface{}, error) {
 	return wrapAsyncInitable(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// InitAsync starts asynchronous initialization of the object implementing the
+// interface. This must be done before any real use of the object after initial
+// construction. If the object also implements #GInitable you can optionally
+// call g_initable_init() instead.
+//
+// This method is intended for language bindings. If writing in C,
+// g_async_initable_new_async() should typically be used instead.
+//
+// When the initialization is finished, callback will be called. You can then
+// call g_async_initable_init_finish() to get the result of the initialization.
+//
+// Implementations may also support cancellation. If cancellable is not NULL,
+// then initialization can be cancelled by triggering the cancellable
+// object from another thread. If the operation was cancelled, the error
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL,
+// and the object doesn't support cancellable initialization, the error
+// G_IO_ERROR_NOT_SUPPORTED will be returned.
+//
+// As with #GInitable, if the object is not initialized, or initialization
+// returns with an error, then all operations on the object except
+// g_object_ref() and g_object_unref() are considered to be invalid, and have
+// undefined behaviour. They will often fail with g_critical() or g_warning(),
+// but this must not be relied on.
+//
+// Callers should not assume that a class which implements Initable can be
+// initialized multiple times; for more information, see g_initable_init(). If
+// a class explicitly supports being initialized multiple times, implementation
+// requires yielding all subsequent calls to init_async() on the results of the
+// first call.
+//
+// For classes that also support the #GInitable interface, the default
+// implementation of this method will run the g_initable_init() function in a
+// thread, so if you want to support asynchronous initialization via threads,
+// just implement the Initable interface without overriding any interface
+// methods.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the operation.
+//   - callback (optional) to call when the request is satisfied.
+func (initable *AsyncInitable) InitAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GAsyncInitable     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_async_initable_init_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(initable)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // InitFinish finishes asynchronous initialization and returns the result.
@@ -14557,6 +15214,76 @@ func (initable *AsyncInitable) NewFinish(res AsyncResulter) (*coreglib.Object, e
 	}
 
 	return _object, _goerr
+}
+
+// initAsync starts asynchronous initialization of the object implementing the
+// interface. This must be done before any real use of the object after initial
+// construction. If the object also implements #GInitable you can optionally
+// call g_initable_init() instead.
+//
+// This method is intended for language bindings. If writing in C,
+// g_async_initable_new_async() should typically be used instead.
+//
+// When the initialization is finished, callback will be called. You can then
+// call g_async_initable_init_finish() to get the result of the initialization.
+//
+// Implementations may also support cancellation. If cancellable is not NULL,
+// then initialization can be cancelled by triggering the cancellable
+// object from another thread. If the operation was cancelled, the error
+// G_IO_ERROR_CANCELLED will be returned. If cancellable is not NULL,
+// and the object doesn't support cancellable initialization, the error
+// G_IO_ERROR_NOT_SUPPORTED will be returned.
+//
+// As with #GInitable, if the object is not initialized, or initialization
+// returns with an error, then all operations on the object except
+// g_object_ref() and g_object_unref() are considered to be invalid, and have
+// undefined behaviour. They will often fail with g_critical() or g_warning(),
+// but this must not be relied on.
+//
+// Callers should not assume that a class which implements Initable can be
+// initialized multiple times; for more information, see g_initable_init(). If
+// a class explicitly supports being initialized multiple times, implementation
+// requires yielding all subsequent calls to init_async() on the results of the
+// first call.
+//
+// For classes that also support the #GInitable interface, the default
+// implementation of this method will run the g_initable_init() function in a
+// thread, so if you want to support asynchronous initialization via threads,
+// just implement the Initable interface without overriding any interface
+// methods.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the operation.
+//   - callback (optional) to call when the request is satisfied.
+func (initable *AsyncInitable) initAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GAsyncInitableIface)(coreglib.PeekParentClass(initable))
+	fnarg := gclass.init_async
+
+	var _arg0 *C.GAsyncInitable     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(coreglib.InternObject(initable).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_AsyncInitable_virtual_init_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(initable)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // initFinish finishes asynchronous initialization and returns the result.
@@ -17103,8 +17830,12 @@ type Driver interface {
 	CanStartDegraded() bool
 	// CanStop checks if a drive can be stopped.
 	CanStop() bool
+	// Eject: asynchronously ejects a drive.
+	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a drive.
 	EjectFinish(result AsyncResulter) error
+	// EjectWithOperation ejects a drive.
+	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a drive.
 	EjectWithOperationFinish(result AsyncResulter) error
 	// EnumerateIdentifiers gets the kinds of identifiers that drive has.
@@ -17135,11 +17866,18 @@ type Driver interface {
 	// IsRemovable checks if the #GDrive and/or its media is considered
 	// removable by the user.
 	IsRemovable() bool
+	// PollForMedia: asynchronously polls drive to see if media has been
+	// inserted or removed.
+	PollForMedia(ctx context.Context, callback AsyncReadyCallback)
 	// PollForMediaFinish finishes an operation started with
 	// g_drive_poll_for_media() on a drive.
 	PollForMediaFinish(result AsyncResulter) error
+	// Start: asynchronously starts a drive.
+	Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StartFinish finishes starting a drive.
 	StartFinish(result AsyncResulter) error
+	// Stop: asynchronously stops a drive.
+	Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StopFinish finishes stopping a drive.
 	StopFinish(result AsyncResulter) error
 
@@ -17307,6 +18045,44 @@ func (drive *Drive) CanStop() bool {
 	return _ok
 }
 
+// Eject: asynchronously ejects a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_eject_finish() to obtain the result of the operation.
+//
+// Deprecated: Use g_drive_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
+func (drive *Drive) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // EjectFinish finishes ejecting a drive.
 //
 // Deprecated: Use g_drive_eject_with_operation_finish() instead.
@@ -17333,6 +18109,47 @@ func (drive *Drive) EjectFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// EjectWithOperation ejects a drive. This is an asynchronous operation, and is
+// finished by calling g_drive_eject_with_operation_finish() with the drive and
+// Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (drive *Drive) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectWithOperationFinish finishes ejecting a drive. If any errors occurred
@@ -17696,6 +18513,39 @@ func (drive *Drive) IsRemovable() bool {
 	return _ok
 }
 
+// PollForMedia: asynchronously polls drive to see if media has been inserted or
+// removed.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_poll_for_media_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) or NULL.
+func (drive *Drive) PollForMedia(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_poll_for_media(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
 // PollForMediaFinish finishes an operation started with
 // g_drive_poll_for_media() on a drive.
 //
@@ -17723,6 +18573,48 @@ func (drive *Drive) PollForMediaFinish(result AsyncResulter) error {
 	return _goerr
 }
 
+// Start: asynchronously starts a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_start_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the start operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (drive *Drive) Start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GDriveStartFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_start(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
 // StartFinish finishes starting a drive.
 //
 // The function takes the following parameters:
@@ -17747,6 +18639,48 @@ func (drive *Drive) StartFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// Stop: asynchronously stops a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_stop_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for stopping.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (drive *Drive) Stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_drive_stop(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StopFinish finishes stopping a drive.
@@ -17933,6 +18867,47 @@ func (drive *Drive) disconnected() {
 	runtime.KeepAlive(drive)
 }
 
+// Eject: asynchronously ejects a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_eject_finish() to obtain the result of the operation.
+//
+// Deprecated: Use g_drive_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
+func (drive *Drive) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.eject
+
+	var _arg0 *C.GDrive             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Drive_virtual_eject(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // ejectButton: signal emitted when the physical eject button (if any) of a
 // drive have been pressed.
 func (drive *Drive) ejectButton() {
@@ -17976,6 +18951,50 @@ func (drive *Drive) ejectFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// ejectWithOperation ejects a drive. This is an asynchronous operation, and is
+// finished by calling g_drive_eject_with_operation_finish() with the drive and
+// Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (drive *Drive) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.eject_with_operation
+
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Drive_virtual_eject_with_operation(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // ejectWithOperationFinish finishes ejecting a drive. If any errors occurred
@@ -18381,6 +19400,42 @@ func (drive *Drive) isRemovable() bool {
 	return _ok
 }
 
+// pollForMedia: asynchronously polls drive to see if media has been inserted or
+// removed.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_poll_for_media_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) or NULL.
+func (drive *Drive) pollForMedia(ctx context.Context, callback AsyncReadyCallback) {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.poll_for_media
+
+	var _arg0 *C.GDrive             // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Drive_virtual_poll_for_media(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
 // pollForMediaFinish finishes an operation started with
 // g_drive_poll_for_media() on a drive.
 //
@@ -18411,6 +19466,51 @@ func (drive *Drive) pollForMediaFinish(result AsyncResulter) error {
 	return _goerr
 }
 
+// Start: asynchronously starts a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_start_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the start operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (drive *Drive) start(ctx context.Context, flags DriveStartFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.start
+
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GDriveStartFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Drive_virtual_start(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
 // startFinish finishes starting a drive.
 //
 // The function takes the following parameters:
@@ -18438,6 +19538,51 @@ func (drive *Drive) startFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// Stop: asynchronously stops a drive.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_drive_stop_finish() to obtain the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for stopping.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (drive *Drive) stop(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GDriveIface)(coreglib.PeekParentClass(drive))
+	fnarg := gclass.stop
+
+	var _arg0 *C.GDrive             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDrive)(unsafe.Pointer(coreglib.InternObject(drive).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Drive_virtual_stop(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(drive)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // stopButton: signal emitted when the physical stop button (if any) of a drive
@@ -18701,6 +19846,8 @@ type DTLSConnectioner interface {
 
 	// Close the DTLS connection.
 	Close(ctx context.Context) error
+	// CloseAsync: asynchronously close the DTLS connection.
+	CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// CloseFinish: finish an asynchronous TLS close operation.
 	CloseFinish(result AsyncResulter) error
 	// EmitAcceptCertificate: used by Connection implementations to emit the
@@ -18741,6 +19888,8 @@ type DTLSConnectioner interface {
 	RequireCloseNotify() bool
 	// Handshake attempts a TLS handshake on conn.
 	Handshake(ctx context.Context) error
+	// HandshakeAsync: asynchronously performs a TLS handshake on conn.
+	HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	HandshakeFinish(result AsyncResulter) error
 	// SetAdvertisedProtocols sets the list of application-layer protocols to
@@ -18763,6 +19912,9 @@ type DTLSConnectioner interface {
 	SetRequireCloseNotify(requireCloseNotify bool)
 	// Shutdown: shut down part or all of a DTLS connection.
 	Shutdown(ctx context.Context, shutdownRead, shutdownWrite bool) error
+	// ShutdownAsync: asynchronously shut down part or all of the DTLS
+	// connection.
+	ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback)
 	// ShutdownFinish: finish an asynchronous TLS shutdown operation.
 	ShutdownFinish(result AsyncResulter) error
 
@@ -18871,6 +20023,40 @@ func (conn *DTLSConnection) Close(ctx context.Context) error {
 	}
 
 	return _goerr
+}
+
+// CloseAsync: asynchronously close the DTLS connection. See
+// g_dtls_connection_close() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the close operation is complete.
+func (conn *DTLSConnection) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GDtlsConnection    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dtls_connection_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // CloseFinish: finish an asynchronous TLS close operation. See
@@ -19329,6 +20515,40 @@ func (conn *DTLSConnection) Handshake(ctx context.Context) error {
 	return _goerr
 }
 
+// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
+// g_dtls_connection_handshake() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the handshake is complete.
+func (conn *DTLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GDtlsConnection    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dtls_connection_handshake_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_dtls_connection_handshake() for more information.
 //
@@ -19599,6 +20819,52 @@ func (conn *DTLSConnection) Shutdown(ctx context.Context, shutdownRead, shutdown
 	return _goerr
 }
 
+// ShutdownAsync: asynchronously shut down part or all of the DTLS connection.
+// See g_dtls_connection_shutdown() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - shutdownRead: TRUE to stop reception of incoming datagrams.
+//   - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the shutdown operation is complete.
+func (conn *DTLSConnection) ShutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GDtlsConnection    // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 C.gboolean            // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if shutdownRead {
+		_arg1 = C.TRUE
+	}
+	if shutdownWrite {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dtls_connection_shutdown_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(shutdownRead)
+	runtime.KeepAlive(shutdownWrite)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ShutdownFinish: finish an asynchronous TLS shutdown operation. See
 // g_dtls_connection_shutdown() for more information.
 //
@@ -19784,6 +21050,43 @@ func (conn *DTLSConnection) handshake(ctx context.Context) error {
 	return _goerr
 }
 
+// handshakeAsync: asynchronously performs a TLS handshake on conn. See
+// g_dtls_connection_handshake() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the handshake is complete.
+func (conn *DTLSConnection) handshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
+	fnarg := gclass.handshake_async
+
+	var _arg0 *C.GDtlsConnection    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_DTLSConnection_virtual_handshake_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // handshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_dtls_connection_handshake() for more information.
 //
@@ -19915,6 +21218,55 @@ func (conn *DTLSConnection) shutdown(ctx context.Context, shutdownRead, shutdown
 	}
 
 	return _goerr
+}
+
+// shutdownAsync: asynchronously shut down part or all of the DTLS connection.
+// See g_dtls_connection_shutdown() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - shutdownRead: TRUE to stop reception of incoming datagrams.
+//   - shutdownWrite: TRUE to stop sending outgoing datagrams.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the shutdown operation is complete.
+func (conn *DTLSConnection) shutdownAsync(ctx context.Context, shutdownRead, shutdownWrite bool, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GDtlsConnectionInterface)(coreglib.PeekParentClass(conn))
+	fnarg := gclass.shutdown_async
+
+	var _arg0 *C.GDtlsConnection    // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 C.gboolean            // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GDtlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if shutdownRead {
+		_arg1 = C.TRUE
+	}
+	if shutdownWrite {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_DTLSConnection_virtual_shutdown_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(shutdownRead)
+	runtime.KeepAlive(shutdownWrite)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // shutdownFinish: finish an asynchronous TLS shutdown operation. See
@@ -20145,6 +21497,8 @@ type Filer interface {
 
 	// AppendTo gets an output stream for appending data to the file.
 	AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
+	// AppendToAsync: asynchronously opens file for appending.
+	AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// AppendToFinish finishes an asynchronous file append operation started
 	// with g_file_append_to_async().
 	AppendToFinish(res AsyncResulter) (*FileOutputStream, error)
@@ -20157,36 +21511,53 @@ type Filer interface {
 	CopyFinish(res AsyncResulter) error
 	// Create creates a new file and returns an output stream for writing to it.
 	Create(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error)
+	// CreateAsync: asynchronously creates a new file and returns an output
+	// stream for writing to it.
+	CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// CreateFinish finishes an asynchronous file create operation started with
 	// g_file_create_async().
 	CreateFinish(res AsyncResulter) (*FileOutputStream, error)
 	// CreateReadwrite creates a new file and returns a stream for reading and
 	// writing to it.
 	CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error)
+	// CreateReadwriteAsync: asynchronously creates a new file and returns a
+	// stream for reading and writing to it.
+	CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// CreateReadwriteFinish finishes an asynchronous file create operation
 	// started with g_file_create_readwrite_async().
 	CreateReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
 	// Delete deletes a file.
 	Delete(ctx context.Context) error
+	// DeleteAsync: asynchronously delete a file.
+	DeleteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// DeleteFinish finishes deleting a file started with g_file_delete_async().
 	DeleteFinish(result AsyncResulter) error
 	// Dup duplicates a #GFile handle.
 	Dup() *File
+	// EjectMountable starts an asynchronous eject on a mountable.
+	EjectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectMountableFinish finishes an asynchronous eject operation started by
 	// g_file_eject_mountable().
 	EjectMountableFinish(result AsyncResulter) error
+	// EjectMountableWithOperation starts an asynchronous eject on a mountable.
+	EjectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectMountableWithOperationFinish finishes an asynchronous eject
 	// operation started by g_file_eject_mountable_with_operation().
 	EjectMountableWithOperationFinish(result AsyncResulter) error
 	// EnumerateChildren gets the requested information about the files in a
 	// directory.
 	EnumerateChildren(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error)
+	// EnumerateChildrenAsync: asynchronously gets the requested information
+	// about the files in a directory.
+	EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// EnumerateChildrenFinish finishes an async enumerate children operation.
 	EnumerateChildrenFinish(res AsyncResulter) (*FileEnumerator, error)
 	// Equal checks if the two given #GFiles refer to the same file.
 	Equal(file2 Filer) bool
 	// FindEnclosingMount gets a #GMount for the #GFile.
 	FindEnclosingMount(ctx context.Context) (*Mount, error)
+	// FindEnclosingMountAsync: asynchronously gets the mount for the file.
+	FindEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// FindEnclosingMountFinish finishes an asynchronous find mount request.
 	FindEnclosingMountFinish(res AsyncResulter) (*Mount, error)
 	// Basename gets the base name (the last component of the path) for a given
@@ -20220,11 +21591,15 @@ type Filer interface {
 	IsNative() bool
 	// LoadBytes loads the contents of file and returns it as #GBytes.
 	LoadBytes(ctx context.Context) (string, *glib.Bytes, error)
+	// LoadBytesAsync: asynchronously loads the contents of file as #GBytes.
+	LoadBytesAsync(ctx context.Context, callback AsyncReadyCallback)
 	// LoadBytesFinish completes an asynchronous request to
 	// g_file_load_bytes_async().
 	LoadBytesFinish(result AsyncResulter) (string, *glib.Bytes, error)
 	// LoadContents loads the content of the file into memory.
 	LoadContents(ctx context.Context) ([]byte, string, error)
+	// LoadContentsAsync starts an asynchronous load of the file's contents.
+	LoadContentsAsync(ctx context.Context, callback AsyncReadyCallback)
 	// LoadContentsFinish finishes an asynchronous load of the file's contents.
 	LoadContentsFinish(res AsyncResulter) ([]byte, string, error)
 	// LoadPartialContentsFinish finishes an asynchronous partial load operation
@@ -20232,6 +21607,8 @@ type Filer interface {
 	LoadPartialContentsFinish(res AsyncResulter) ([]byte, string, error)
 	// MakeDirectory creates a directory.
 	MakeDirectory(ctx context.Context) error
+	// MakeDirectoryAsync: asynchronously creates a directory.
+	MakeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// MakeDirectoryFinish finishes an asynchronous directory creation, started
 	// with g_file_make_directory_async().
 	MakeDirectoryFinish(result AsyncResulter) error
@@ -20241,6 +21618,9 @@ type Filer interface {
 	// MakeSymbolicLink creates a symbolic link named file which contains the
 	// string symlink_value.
 	MakeSymbolicLink(ctx context.Context, symlinkValue string) error
+	// MakeSymbolicLinkAsync: asynchronously creates a symbolic link named file
+	// which contains the string symlink_value.
+	MakeSymbolicLinkAsync(ctx context.Context, symlinkValue string, ioPriority int, callback AsyncReadyCallback)
 	// MakeSymbolicLinkFinish finishes an asynchronous symbolic link creation,
 	// started with g_file_make_symbolic_link_async().
 	MakeSymbolicLinkFinish(result AsyncResulter) error
@@ -20254,9 +21634,14 @@ type Filer interface {
 	MonitorDirectory(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
 	// MonitorFile obtains a file monitor for the given file.
 	MonitorFile(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error)
+	// MountEnclosingVolume starts a mount_operation, mounting the volume that
+	// contains the file location.
+	MountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountEnclosingVolumeFinish finishes a mount operation started by
 	// g_file_mount_enclosing_volume().
 	MountEnclosingVolumeFinish(result AsyncResulter) error
+	// MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE.
+	MountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountMountableFinish finishes a mount operation.
 	MountMountableFinish(result AsyncResulter) (*File, error)
 	// MoveFinish finishes an asynchronous file movement, started with
@@ -20264,17 +21649,24 @@ type Filer interface {
 	MoveFinish(result AsyncResulter) error
 	// OpenReadwrite opens an existing file for reading and writing.
 	OpenReadwrite(ctx context.Context) (*FileIOStream, error)
+	// OpenReadwriteAsync: asynchronously opens file for reading and writing.
+	OpenReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// OpenReadwriteFinish finishes an asynchronous file read operation started
 	// with g_file_open_readwrite_async().
 	OpenReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
 	// PeekPath: exactly like g_file_get_path(), but caches the result via
 	// g_object_set_qdata_full().
 	PeekPath() string
+	// PollMountable polls a file of type G_FILE_TYPE_MOUNTABLE.
+	PollMountable(ctx context.Context, callback AsyncReadyCallback)
 	// PollMountableFinish finishes a poll operation.
 	PollMountableFinish(result AsyncResulter) error
 	// QueryDefaultHandler returns the Info that is registered as the default
 	// application to handle the file specified by file.
 	QueryDefaultHandler(ctx context.Context) (*AppInfo, error)
+	// QueryDefaultHandlerAsync: async version of
+	// g_file_query_default_handler().
+	QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
 	// operation.
 	QueryDefaultHandlerFinish(result AsyncResulter) (*AppInfo, error)
@@ -20286,10 +21678,16 @@ type Filer interface {
 	// information about the filesystem the file is on, rather than the file
 	// itself.
 	QueryFilesystemInfo(ctx context.Context, attributes string) (*FileInfo, error)
+	// QueryFilesystemInfoAsync: asynchronously gets the requested information
+	// about the filesystem that the specified file is on.
+	QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback)
 	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
 	QueryFilesystemInfoFinish(res AsyncResulter) (*FileInfo, error)
 	// QueryInfo gets the requested information about specified file.
 	QueryInfo(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error)
+	// QueryInfoAsync: asynchronously gets the requested information about
+	// specified file.
+	QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// QueryInfoFinish finishes an asynchronous file info query.
 	QueryInfoFinish(res AsyncResulter) (*FileInfo, error)
 	// QuerySettableAttributes: obtain the list of settable attributes for the
@@ -20300,15 +21698,26 @@ type Filer interface {
 	QueryWritableNamespaces(ctx context.Context) (*FileAttributeInfoList, error)
 	// Read opens a file for reading.
 	Read(ctx context.Context) (*FileInputStream, error)
+	// ReadAsync: asynchronously opens file for reading.
+	ReadAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// ReadFinish finishes an asynchronous file read operation started with
 	// g_file_read_async().
 	ReadFinish(res AsyncResulter) (*FileInputStream, error)
 	// Replace returns an output stream for overwriting the file, possibly
 	// creating a backup copy of the file first.
 	Replace(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error)
+	// ReplaceAsync: asynchronously overwrites the file, replacing the contents,
+	// possibly creating a backup copy of the file first.
+	ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// ReplaceContents replaces the contents of file with contents of length
 	// bytes.
 	ReplaceContents(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags) (string, error)
+	// ReplaceContentsAsync starts an asynchronous replacement of file with the
+	// given contents of length bytes.
+	ReplaceContentsAsync(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
+	// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but
+	// takes a #GBytes input instead.
+	ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback)
 	// ReplaceContentsFinish finishes an asynchronous replace of the given file.
 	ReplaceContentsFinish(res AsyncResulter) (string, error)
 	// ReplaceFinish finishes an asynchronous file replace operation started
@@ -20317,6 +21726,10 @@ type Filer interface {
 	// ReplaceReadwrite returns an output stream for overwriting the file in
 	// readwrite mode, possibly creating a backup copy of the file first.
 	ReplaceReadwrite(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error)
+	// ReplaceReadwriteAsync: asynchronously overwrites the file in read-write
+	// mode, replacing the contents, possibly creating a backup copy of the file
+	// first.
+	ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback)
 	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
 	// started with g_file_replace_readwrite_async().
 	ReplaceReadwriteFinish(res AsyncResulter) (*FileIOStream, error)
@@ -20344,6 +21757,8 @@ type Filer interface {
 	// SetAttributeUint64 sets attribute of type G_FILE_ATTRIBUTE_TYPE_UINT64 to
 	// value.
 	SetAttributeUint64(ctx context.Context, attribute string, value uint64, flags FileQueryInfoFlags) error
+	// SetAttributesAsync: asynchronously sets the attributes of file with info.
+	SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback)
 	// SetAttributesFinish finishes setting an attribute started in
 	// g_file_set_attributes_async().
 	SetAttributesFinish(result AsyncResulter) (*FileInfo, error)
@@ -20352,11 +21767,18 @@ type Filer interface {
 	SetAttributesFromInfo(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error
 	// SetDisplayName renames file to the specified display name.
 	SetDisplayName(ctx context.Context, displayName string) (*File, error)
+	// SetDisplayNameAsync: asynchronously sets the display name for a given
+	// #GFile.
+	SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback)
 	// SetDisplayNameFinish finishes setting a display name started with
 	// g_file_set_display_name_async().
 	SetDisplayNameFinish(res AsyncResulter) (*File, error)
+	// StartMountable starts a file of type G_FILE_TYPE_MOUNTABLE.
+	StartMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback)
 	// StartMountableFinish finishes a start operation.
 	StartMountableFinish(result AsyncResulter) error
+	// StopMountable stops a file of type G_FILE_TYPE_MOUNTABLE.
+	StopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// StopMountableFinish finishes a stop operation, see
 	// g_file_stop_mountable() for details.
 	StopMountableFinish(result AsyncResulter) error
@@ -20365,12 +21787,19 @@ type Filer interface {
 	SupportsThreadContexts() bool
 	// Trash sends file to the "Trashcan", if possible.
 	Trash(ctx context.Context) error
+	// TrashAsync: asynchronously sends file to the Trash location, if possible.
+	TrashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback)
 	// TrashFinish finishes an asynchronous file trashing operation, started
 	// with g_file_trash_async().
 	TrashFinish(result AsyncResulter) error
+	// UnmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
+	UnmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// UnmountMountableFinish finishes an unmount operation, see
 	// g_file_unmount_mountable() for details.
 	UnmountMountableFinish(result AsyncResulter) error
+	// UnmountMountableWithOperation unmounts a file of type
+	// G_FILE_TYPE_MOUNTABLE.
+	UnmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// UnmountMountableWithOperationFinish finishes an unmount operation,
 	// see g_file_unmount_mountable_with_operation() for details.
 	UnmountMountableWithOperationFinish(result AsyncResulter) error
@@ -20442,6 +21871,49 @@ func (file *File) AppendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 	}
 
 	return _fileOutputStream, _goerr
+}
+
+// AppendToAsync: asynchronously opens file for appending.
+//
+// For more details, see g_file_append_to() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_append_to_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) AppendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_append_to_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // AppendToFinish finishes an asynchronous file append operation started with
@@ -20657,6 +22129,50 @@ func (file *File) Create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 	return _fileOutputStream, _goerr
 }
 
+// CreateAsync: asynchronously creates a new file and returns an output stream
+// for writing to it. The file must not already exist.
+//
+// For more details, see g_file_create() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_create_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) CreateAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_create_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // CreateFinish finishes an asynchronous file create operation started with
 // g_file_create_async().
 //
@@ -20753,6 +22269,50 @@ func (file *File) CreateReadwrite(ctx context.Context, flags FileCreateFlags) (*
 	return _fileIOStream, _goerr
 }
 
+// CreateReadwriteAsync: asynchronously creates a new file and returns a stream
+// for reading and writing to it. The file must not already exist.
+//
+// For more details, see g_file_create_readwrite() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_create_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) CreateReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_create_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // CreateReadwriteFinish finishes an asynchronous file create operation started
 // with g_file_create_readwrite_async().
 //
@@ -20837,6 +22397,41 @@ func (file *File) Delete(ctx context.Context) error {
 	return _goerr
 }
 
+// DeleteAsync: asynchronously delete a file. If the file is a directory,
+// it will only be deleted if it is empty. This has the same semantics as
+// g_unlink().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) DeleteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_delete_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // DeleteFinish finishes deleting a file started with g_file_delete_async().
 //
 // The function takes the following parameters:
@@ -20893,6 +22488,47 @@ func (file *File) Dup() *File {
 	return _ret
 }
 
+// EjectMountable starts an asynchronous eject on a mountable. When this
+// operation has completed, callback will be called with user_user data, and the
+// operation can be finalized with g_file_eject_mountable_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// Deprecated: Use g_file_eject_mountable_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) EjectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_eject_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // EjectMountableFinish finishes an asynchronous eject operation started by
 // g_file_eject_mountable().
 //
@@ -20920,6 +22556,52 @@ func (file *File) EjectMountableFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// EjectMountableWithOperation starts an asynchronous eject on a
+// mountable. When this operation has completed, callback will be
+// called with user_user data, and the operation can be finalized with
+// g_file_eject_mountable_with_operation_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) EjectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_eject_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectMountableWithOperationFinish finishes an asynchronous eject operation
@@ -21015,6 +22697,56 @@ func (file *File) EnumerateChildren(ctx context.Context, attributes string, flag
 	}
 
 	return _fileEnumerator, _goerr
+}
+
+// EnumerateChildrenAsync: asynchronously gets the requested information about
+// the files in a directory. The result is a Enumerator object that will give
+// out Info objects for all the files in the directory.
+//
+// For more details, see g_file_enumerate_children() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_enumerate_children_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: attribute query string.
+//   - flags: set of QueryInfoFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) EnumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_enumerate_children_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // EnumerateChildrenFinish finishes an async enumerate children operation.
@@ -21131,6 +22863,45 @@ func (file *File) FindEnclosingMount(ctx context.Context) (*Mount, error) {
 	}
 
 	return _mount, _goerr
+}
+
+// FindEnclosingMountAsync: asynchronously gets the mount for the file.
+//
+// For more details, see g_file_find_enclosing_mount() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_find_enclosing_mount_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) FindEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_find_enclosing_mount_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // FindEnclosingMountFinish finishes an asynchronous find mount request.
@@ -21703,6 +23474,44 @@ func (file *File) LoadBytes(ctx context.Context) (string, *glib.Bytes, error) {
 	return _etagOut, _bytes, _goerr
 }
 
+// LoadBytesAsync: asynchronously loads the contents of file as #GBytes.
+//
+// If file is a resource:// based URI, the resulting bytes will reference the
+// embedded resource instead of a copy. Otherwise, this is equivalent to calling
+// g_file_load_contents_async() and g_bytes_new_take().
+//
+// callback should call g_file_load_bytes_finish() to get the result of this
+// asynchronous operation.
+//
+// See g_file_load_bytes() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) LoadBytesAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_load_bytes_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
 // LoadBytesFinish completes an asynchronous request to
 // g_file_load_bytes_async().
 //
@@ -21811,6 +23620,46 @@ func (file *File) LoadContents(ctx context.Context) ([]byte, string, error) {
 	}
 
 	return _contents, _etagOut, _goerr
+}
+
+// LoadContentsAsync starts an asynchronous load of the file's contents.
+//
+// For more details, see g_file_load_contents() which is the synchronous version
+// of this call.
+//
+// When the load operation has completed, callback will be called with user
+// data. To finish the operation, call g_file_load_contents_finish() with the
+// Result returned by the callback.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) LoadContentsAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_load_contents_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // LoadContentsFinish finishes an asynchronous load of the file's contents.
@@ -21951,6 +23800,39 @@ func (file *File) MakeDirectory(ctx context.Context) error {
 	return _goerr
 }
 
+// MakeDirectoryAsync: asynchronously creates a directory.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) MakeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_make_directory_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // MakeDirectoryFinish finishes an asynchronous directory creation, started with
 // g_file_make_directory_async().
 //
@@ -22058,6 +23940,45 @@ func (file *File) MakeSymbolicLink(ctx context.Context, symlinkValue string) err
 	}
 
 	return _goerr
+}
+
+// MakeSymbolicLinkAsync: asynchronously creates a symbolic link named file
+// which contains the string symlink_value.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - symlinkValue: string with the path for the target of the new symlink.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) MakeSymbolicLinkAsync(ctx context.Context, symlinkValue string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(symlinkValue)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_make_symbolic_link_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(symlinkValue)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // MakeSymbolicLinkFinish finishes an asynchronous symbolic link creation,
@@ -22332,6 +24253,54 @@ func (file *File) MonitorFile(ctx context.Context, flags FileMonitorFlags) (File
 	return _fileMonitor, _goerr
 }
 
+// MountEnclosingVolume starts a mount_operation, mounting the volume that
+// contains the file location.
+//
+// When this operation has completed, callback will be called
+// with user_user data, and the operation can be finalized with
+// g_file_mount_enclosing_volume_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation or NULL to avoid user interaction.
+//   - callback (optional) to call when the request is satisfied, or NULL.
+func (location *File) MountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(location).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_mount_enclosing_volume(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
 // MountEnclosingVolumeFinish finishes a mount operation started by
 // g_file_mount_enclosing_volume().
 //
@@ -22357,6 +24326,54 @@ func (location *File) MountEnclosingVolumeFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// MountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE. Using
+// mount_operation, you can request callbacks when, for instance, passwords are
+// needed during authentication.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) MountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_mount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // MountMountableFinish finishes a mount operation. See g_file_mount_mountable()
@@ -22473,6 +24490,45 @@ func (file *File) OpenReadwrite(ctx context.Context) (*FileIOStream, error) {
 	return _fileIOStream, _goerr
 }
 
+// OpenReadwriteAsync: asynchronously opens file for reading and writing.
+//
+// For more details, see g_file_open_readwrite() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_open_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) OpenReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_open_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // OpenReadwriteFinish finishes an asynchronous file read operation started with
 // g_file_open_readwrite_async().
 //
@@ -22535,6 +24591,42 @@ func (file *File) PeekPath() string {
 	}
 
 	return _filename
+}
+
+// PollMountable polls a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) to call when the request is satisfied, or NULL.
+func (file *File) PollMountable(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_poll_mountable(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // PollMountableFinish finishes a poll operation. See g_file_poll_mountable()
@@ -22608,6 +24700,39 @@ func (file *File) QueryDefaultHandler(ctx context.Context) (*AppInfo, error) {
 	}
 
 	return _appInfo, _goerr
+}
+
+// QueryDefaultHandlerAsync: async version of g_file_query_default_handler().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is done.
+func (file *File) QueryDefaultHandlerAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_query_default_handler_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // QueryDefaultHandlerFinish finishes a g_file_query_default_handler_async()
@@ -22806,6 +24931,52 @@ func (file *File) QueryFilesystemInfo(ctx context.Context, attributes string) (*
 	return _fileInfo, _goerr
 }
 
+// QueryFilesystemInfoAsync: asynchronously gets the requested information about
+// the filesystem that the specified file is on. The result is a Info object
+// that contains key-value attributes (such as type or size for the file).
+//
+// For more details, see g_file_query_filesystem_info() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_query_info_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: attribute query string.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) QueryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_query_filesystem_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
 // See g_file_query_filesystem_info_async().
 //
@@ -22911,6 +25082,56 @@ func (file *File) QueryInfo(ctx context.Context, attributes string, flags FileQu
 	}
 
 	return _fileInfo, _goerr
+}
+
+// QueryInfoAsync: asynchronously gets the requested information about specified
+// file. The result is a Info object that contains key-value attributes (such as
+// type or size for the file).
+//
+// For more details, see g_file_query_info() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_query_info_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: attribute query string.
+//   - flags: set of QueryInfoFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) QueryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // QueryInfoFinish finishes an asynchronous file info query. See
@@ -23099,6 +25320,45 @@ func (file *File) Read(ctx context.Context) (*FileInputStream, error) {
 	return _fileInputStream, _goerr
 }
 
+// ReadAsync: asynchronously opens file for reading.
+//
+// For more details, see g_file_read() which is the synchronous version of this
+// call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_read_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) ReadAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_read_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadFinish finishes an asynchronous file read operation started with
 // g_file_read_async().
 //
@@ -23226,6 +25486,64 @@ func (file *File) Replace(ctx context.Context, etag string, makeBackup bool, fla
 	return _fileOutputStream, _goerr
 }
 
+// ReplaceAsync: asynchronously overwrites the file, replacing the contents,
+// possibly creating a backup copy of the file first.
+//
+// For more details, see g_file_replace() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_replace_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - etag (optional): entity tag (#entity-tags) for the current #GFile,
+//     or NULL to ignore.
+//   - makeBackup: TRUE if a backup should be created.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) ReplaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.GFileCreateFlags    // out
+	var _arg4 C.int                 // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if etag != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+	_arg4 = C.int(ioPriority)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReplaceContents replaces the contents of file with contents of length bytes.
 //
 // If etag is specified (not NULL), any existing file must have that etag,
@@ -23306,6 +25624,134 @@ func (file *File) ReplaceContents(ctx context.Context, contents, etag string, ma
 	}
 
 	return _newEtag, _goerr
+}
+
+// ReplaceContentsAsync starts an asynchronous replacement of file with the
+// given contents of length bytes. etag will replace the document's current
+// entity tag.
+//
+// When this operation has completed, callback will be called
+// with user_user data, and the operation can be finalized with
+// g_file_replace_contents_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// If make_backup is TRUE, this function will attempt to make a backup of file.
+//
+// Note that no copy of contents will be made, so it must stay valid until
+// callback is called. See g_file_replace_contents_bytes_async() for a #GBytes
+// version that will automatically hold a reference to the contents (without
+// copying) for the duration of the call.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - contents: string of contents to replace the file with.
+//   - etag (optional): new entity tag (#entity-tags) for the file, or NULL.
+//   - makeBackup: TRUE if a backup should be created.
+//   - flags: set of CreateFlags.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) ReplaceContentsAsync(ctx context.Context, contents, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile        // out
+	var _arg6 *C.GCancellable // out
+	var _arg1 *C.char         // out
+	var _arg2 C.gsize
+	var _arg3 *C.char               // out
+	var _arg4 C.gboolean            // out
+	var _arg5 C.GFileCreateFlags    // out
+	var _arg7 C.GAsyncReadyCallback // out
+	var _arg8 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(contents))
+	_arg1 = (*C.char)(C.calloc(C.size_t((len(contents) + 1)), C.size_t(C.sizeof_char)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(contents)), contents)
+	defer C.free(unsafe.Pointer(_arg1))
+	if etag != "" {
+		_arg3 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg3))
+	}
+	if makeBackup {
+		_arg4 = C.TRUE
+	}
+	_arg5 = C.GFileCreateFlags(flags)
+	if callback != nil {
+		_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg8 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_contents_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contents)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
+// ReplaceContentsBytesAsync: same as g_file_replace_contents_async() but takes
+// a #GBytes input instead. This function will keep a ref on contents until
+// the operation is done. Unlike g_file_replace_contents_async() this allows
+// forgetting about the content without waiting for the callback.
+//
+// When this operation has completed, callback will be called
+// with user_user data, and the operation can be finalized with
+// g_file_replace_contents_finish().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - contents: #GBytes.
+//   - etag (optional): new entity tag (#entity-tags) for the file, or NULL.
+//   - makeBackup: TRUE if a backup should be created.
+//   - flags: set of CreateFlags.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) ReplaceContentsBytesAsync(ctx context.Context, contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.GBytes             // out
+	var _arg2 *C.char               // out
+	var _arg3 C.gboolean            // out
+	var _arg4 C.GFileCreateFlags    // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(contents)))
+	if etag != "" {
+		_arg2 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	if makeBackup {
+		_arg3 = C.TRUE
+	}
+	_arg4 = C.GFileCreateFlags(flags)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_contents_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(contents)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // ReplaceContentsFinish finishes an asynchronous replace of the given file.
@@ -23446,6 +25892,64 @@ func (file *File) ReplaceReadwrite(ctx context.Context, etag string, makeBackup 
 	}
 
 	return _fileIOStream, _goerr
+}
+
+// ReplaceReadwriteAsync: asynchronously overwrites the file in read-write mode,
+// replacing the contents, possibly creating a backup copy of the file first.
+//
+// For more details, see g_file_replace_readwrite() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_replace_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - etag (optional): entity tag (#entity-tags) for the current #GFile,
+//     or NULL to ignore.
+//   - makeBackup: TRUE if a backup should be created.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) ReplaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.GFileCreateFlags    // out
+	var _arg4 C.int                 // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if etag != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+	_arg4 = C.int(ioPriority)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_replace_readwrite_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReplaceReadwriteFinish finishes an asynchronous file replace operation
@@ -23864,6 +26368,53 @@ func (file *File) SetAttributeUint64(ctx context.Context, attribute string, valu
 	return _goerr
 }
 
+// SetAttributesAsync: asynchronously sets the attributes of file with info.
+//
+// For more details, see g_file_set_attributes_from_info(), which is the
+// synchronous version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_set_attributes_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - info: Info.
+//   - flags: QueryInfoFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) SetAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.GFileInfo          // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_set_attributes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // SetAttributesFinish finishes setting an attribute started in
 // g_file_set_attributes_async().
 //
@@ -24003,6 +26554,50 @@ func (file *File) SetDisplayName(ctx context.Context, displayName string) (*File
 	return _ret, _goerr
 }
 
+// SetDisplayNameAsync: asynchronously sets the display name for a given #GFile.
+//
+// For more details, see g_file_set_display_name() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_set_display_name_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - displayName: string.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) SetDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_set_display_name_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(displayName)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // SetDisplayNameFinish finishes setting a display name started with
 // g_file_set_display_name_async().
 //
@@ -24037,6 +26632,54 @@ func (file *File) SetDisplayNameFinish(res AsyncResulter) (*File, error) {
 	return _ret, _goerr
 }
 
+// StartMountable starts a file of type G_FILE_TYPE_MOUNTABLE. Using
+// start_operation, you can request callbacks when, for instance, passwords are
+// needed during authentication.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - startOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) to call when the request is satisfied, or NULL.
+func (file *File) StartMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GDriveStartFlags(flags)
+	if startOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(startOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_start_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(startOperation)
+	runtime.KeepAlive(callback)
+}
+
 // StartMountableFinish finishes a start operation. See g_file_start_mountable()
 // for details.
 //
@@ -24065,6 +26708,52 @@ func (file *File) StartMountableFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// StopMountable stops a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_stop_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//   - callback (optional) to call when the request is satisfied, or NULL.
+func (file *File) StopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_stop_mountable(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // StopMountableFinish finishes a stop operation, see g_file_stop_mountable()
@@ -24162,6 +26851,39 @@ func (file *File) Trash(ctx context.Context) error {
 	return _goerr
 }
 
+// TrashAsync: asynchronously sends file to the Trash location, if possible.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) TrashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_trash_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // TrashFinish finishes an asynchronous file trashing operation, started with
 // g_file_trash_async().
 //
@@ -24187,6 +26909,48 @@ func (file *File) TrashFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// UnmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_unmount_mountable_finish() to get the result of the operation.
+//
+// Deprecated: Use g_file_unmount_mountable_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) UnmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_unmount_mountable(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountMountableFinish finishes an unmount operation, see
@@ -24219,6 +26983,52 @@ func (file *File) UnmountMountableFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// UnmountMountableWithOperation unmounts a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_unmount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) UnmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_unmount_mountable_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountMountableWithOperationFinish finishes an unmount operation, see
@@ -24308,6 +27118,52 @@ func (file *File) appendTo(ctx context.Context, flags FileCreateFlags) (*FileOut
 	}
 
 	return _fileOutputStream, _goerr
+}
+
+// appendToAsync: asynchronously opens file for appending.
+//
+// For more details, see g_file_append_to() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_append_to_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) appendToAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.append_to_async
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_append_to_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // appendToFinish finishes an asynchronous file append operation started with
@@ -24437,6 +27293,53 @@ func (file *File) create(ctx context.Context, flags FileCreateFlags) (*FileOutpu
 	return _fileOutputStream, _goerr
 }
 
+// createAsync: asynchronously creates a new file and returns an output stream
+// for writing to it. The file must not already exist.
+//
+// For more details, see g_file_create() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_create_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) createAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.create_async
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_create_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // createFinish finishes an asynchronous file create operation started with
 // g_file_create_async().
 //
@@ -24539,6 +27442,53 @@ func (file *File) createReadwrite(ctx context.Context, flags FileCreateFlags) (*
 	return _fileIOStream, _goerr
 }
 
+// createReadwriteAsync: asynchronously creates a new file and returns a stream
+// for reading and writing to it. The file must not already exist.
+//
+// For more details, see g_file_create_readwrite() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_create_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) createReadwriteAsync(ctx context.Context, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.create_readwrite_async
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GFileCreateFlags    // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GFileCreateFlags(flags)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_create_readwrite_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // createReadwriteFinish finishes an asynchronous file create operation started
 // with g_file_create_readwrite_async().
 //
@@ -24629,6 +27579,44 @@ func (file *File) deleteFile(ctx context.Context) error {
 	return _goerr
 }
 
+// deleteFileAsync: asynchronously delete a file. If the file is a directory,
+// it will only be deleted if it is empty. This has the same semantics as
+// g_unlink().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) deleteFileAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.delete_file_async
+
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_delete_file_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // deleteFileFinish finishes deleting a file started with g_file_delete_async().
 //
 // The function takes the following parameters:
@@ -24691,6 +27679,50 @@ func (file *File) dup() *File {
 	return _ret
 }
 
+// ejectMountable starts an asynchronous eject on a mountable. When this
+// operation has completed, callback will be called with user_user data, and the
+// operation can be finalized with g_file_eject_mountable_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// Deprecated: Use g_file_eject_mountable_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) ejectMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.eject_mountable
+
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_eject_mountable(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // ejectMountableFinish finishes an asynchronous eject operation started by
 // g_file_eject_mountable().
 //
@@ -24721,6 +27753,55 @@ func (file *File) ejectMountableFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// ejectMountableWithOperation starts an asynchronous eject on a
+// mountable. When this operation has completed, callback will be
+// called with user_user data, and the operation can be finalized with
+// g_file_eject_mountable_with_operation_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) ejectMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.eject_mountable_with_operation
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_eject_mountable_with_operation(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // ejectMountableWithOperationFinish finishes an asynchronous eject operation
@@ -24822,6 +27903,59 @@ func (file *File) enumerateChildren(ctx context.Context, attributes string, flag
 	}
 
 	return _fileEnumerator, _goerr
+}
+
+// enumerateChildrenAsync: asynchronously gets the requested information about
+// the files in a directory. The result is a Enumerator object that will give
+// out Info objects for all the files in the directory.
+//
+// For more details, see g_file_enumerate_children() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_enumerate_children_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: attribute query string.
+//   - flags: set of QueryInfoFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) enumerateChildrenAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.enumerate_children_async
+
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_enumerate_children_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // enumerateChildrenFinish finishes an async enumerate children operation.
@@ -24947,6 +28081,48 @@ func (file *File) findEnclosingMount(ctx context.Context) (*Mount, error) {
 	}
 
 	return _mount, _goerr
+}
+
+// findEnclosingMountAsync: asynchronously gets the mount for the file.
+//
+// For more details, see g_file_find_enclosing_mount() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_find_enclosing_mount_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) findEnclosingMountAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.find_enclosing_mount_async
+
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_find_enclosing_mount_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // findEnclosingMountFinish finishes an asynchronous find mount request.
@@ -25425,6 +28601,42 @@ func (file *File) makeDirectory(ctx context.Context) error {
 	return _goerr
 }
 
+// makeDirectoryAsync: asynchronously creates a directory.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) makeDirectoryAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.make_directory_async
+
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_make_directory_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // makeDirectoryFinish finishes an asynchronous directory creation, started with
 // g_file_make_directory_async().
 //
@@ -25496,6 +28708,48 @@ func (file *File) makeSymbolicLink(ctx context.Context, symlinkValue string) err
 	}
 
 	return _goerr
+}
+
+// makeSymbolicLinkAsync: asynchronously creates a symbolic link named file
+// which contains the string symlink_value.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - symlinkValue: string with the path for the target of the new symlink.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) makeSymbolicLinkAsync(ctx context.Context, symlinkValue string, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.make_symbolic_link_async
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(symlinkValue)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_make_symbolic_link_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(symlinkValue)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // makeSymbolicLinkFinish finishes an asynchronous symbolic link creation,
@@ -25719,6 +28973,57 @@ func (file *File) monitorFile(ctx context.Context, flags FileMonitorFlags) (File
 	return _fileMonitor, _goerr
 }
 
+// mountEnclosingVolume starts a mount_operation, mounting the volume that
+// contains the file location.
+//
+// When this operation has completed, callback will be called
+// with user_user data, and the operation can be finalized with
+// g_file_mount_enclosing_volume_finish().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation or NULL to avoid user interaction.
+//   - callback (optional) to call when the request is satisfied, or NULL.
+func (location *File) mountEnclosingVolume(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(location))
+	fnarg := gclass.mount_enclosing_volume
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(location).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_mount_enclosing_volume(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(location)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
 // mountEnclosingVolumeFinish finishes a mount operation started by
 // g_file_mount_enclosing_volume().
 //
@@ -25747,6 +29052,57 @@ func (location *File) mountEnclosingVolumeFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// mountMountable mounts a file of type G_FILE_TYPE_MOUNTABLE. Using
+// mount_operation, you can request callbacks when, for instance, passwords are
+// needed during authentication.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) mountMountable(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.mount_mountable
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_mount_mountable(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // mountMountableFinish finishes a mount operation. See g_file_mount_mountable()
@@ -25872,6 +29228,48 @@ func (file *File) openReadwrite(ctx context.Context) (*FileIOStream, error) {
 	return _fileIOStream, _goerr
 }
 
+// openReadwriteAsync: asynchronously opens file for reading and writing.
+//
+// For more details, see g_file_open_readwrite() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_open_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) openReadwriteAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.open_readwrite_async
+
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_open_readwrite_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // openReadwriteFinish finishes an asynchronous file read operation started with
 // g_file_open_readwrite_async().
 //
@@ -25908,6 +29306,45 @@ func (file *File) openReadwriteFinish(res AsyncResulter) (*FileIOStream, error) 
 	}
 
 	return _fileIOStream, _goerr
+}
+
+// pollMountable polls a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) to call when the request is satisfied, or NULL.
+func (file *File) pollMountable(ctx context.Context, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.poll_mountable
+
+	var _arg0 *C.GFile              // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_poll_mountable(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // pollMountableFinish finishes a poll operation. See g_file_poll_mountable()
@@ -26055,6 +29492,55 @@ func (file *File) queryFilesystemInfo(ctx context.Context, attributes string) (*
 	return _fileInfo, _goerr
 }
 
+// queryFilesystemInfoAsync: asynchronously gets the requested information about
+// the filesystem that the specified file is on. The result is a Info object
+// that contains key-value attributes (such as type or size for the file).
+//
+// For more details, see g_file_query_filesystem_info() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_query_info_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: attribute query string.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) queryFilesystemInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.query_filesystem_info_async
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_query_filesystem_info_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // queryFilesystemInfoFinish finishes an asynchronous filesystem info query.
 // See g_file_query_filesystem_info_async().
 //
@@ -26166,6 +29652,59 @@ func (file *File) queryInfo(ctx context.Context, attributes string, flags FileQu
 	}
 
 	return _fileInfo, _goerr
+}
+
+// queryInfoAsync: asynchronously gets the requested information about specified
+// file. The result is a Info object that contains key-value attributes (such as
+// type or size for the file).
+//
+// For more details, see g_file_query_info() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_query_info_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: attribute query string.
+//   - flags: set of QueryInfoFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) queryInfoAsync(ctx context.Context, attributes string, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.query_info_async
+
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_query_info_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // queryInfoFinish finishes an asynchronous file info query. See
@@ -26313,6 +29852,48 @@ func (file *File) queryWritableNamespaces(ctx context.Context) (*FileAttributeIn
 	}
 
 	return _fileAttributeInfoList, _goerr
+}
+
+// readAsync: asynchronously opens file for reading.
+//
+// For more details, see g_file_read() which is the synchronous version of this
+// call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_read_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) readAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.read_async
+
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_read_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // readFinish finishes an asynchronous file read operation started with
@@ -26499,6 +30080,67 @@ func (file *File) replace(ctx context.Context, etag string, makeBackup bool, fla
 	return _fileOutputStream, _goerr
 }
 
+// replaceAsync: asynchronously overwrites the file, replacing the contents,
+// possibly creating a backup copy of the file first.
+//
+// For more details, see g_file_replace() which is the synchronous version of
+// this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_replace_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - etag (optional): entity tag (#entity-tags) for the current #GFile,
+//     or NULL to ignore.
+//   - makeBackup: TRUE if a backup should be created.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) replaceAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.replace_async
+
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.GFileCreateFlags    // out
+	var _arg4 C.int                 // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if etag != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+	_arg4 = C.int(ioPriority)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_replace_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // replaceFinish finishes an asynchronous file replace operation started with
 // g_file_replace_async().
 //
@@ -26603,6 +30245,67 @@ func (file *File) replaceReadwrite(ctx context.Context, etag string, makeBackup 
 	}
 
 	return _fileIOStream, _goerr
+}
+
+// replaceReadwriteAsync: asynchronously overwrites the file in read-write mode,
+// replacing the contents, possibly creating a backup copy of the file first.
+//
+// For more details, see g_file_replace_readwrite() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_replace_readwrite_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - etag (optional): entity tag (#entity-tags) for the current #GFile,
+//     or NULL to ignore.
+//   - makeBackup: TRUE if a backup should be created.
+//   - flags: set of CreateFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) replaceReadwriteAsync(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.replace_readwrite_async
+
+	var _arg0 *C.GFile              // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.gboolean            // out
+	var _arg3 C.GFileCreateFlags    // out
+	var _arg4 C.int                 // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if etag != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(etag)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	if makeBackup {
+		_arg2 = C.TRUE
+	}
+	_arg3 = C.GFileCreateFlags(flags)
+	_arg4 = C.int(ioPriority)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_replace_readwrite_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(etag)
+	runtime.KeepAlive(makeBackup)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // replaceReadwriteFinish finishes an asynchronous file replace operation
@@ -26737,6 +30440,56 @@ func (file *File) setAttribute(ctx context.Context, attribute string, typ FileAt
 	}
 
 	return _goerr
+}
+
+// setAttributesAsync: asynchronously sets the attributes of file with info.
+//
+// For more details, see g_file_set_attributes_from_info(), which is the
+// synchronous version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_set_attributes_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - info: Info.
+//   - flags: QueryInfoFlags.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) setAttributesAsync(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.set_attributes_async
+
+	var _arg0 *C.GFile              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.GFileInfo          // out
+	var _arg2 C.GFileQueryInfoFlags // out
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(coreglib.InternObject(info).Native()))
+	_arg2 = C.GFileQueryInfoFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_set_attributes_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // setAttributesFinish finishes setting an attribute started in
@@ -26887,6 +30640,53 @@ func (file *File) setDisplayName(ctx context.Context, displayName string) (*File
 	return _ret, _goerr
 }
 
+// setDisplayNameAsync: asynchronously sets the display name for a given #GFile.
+//
+// For more details, see g_file_set_display_name() which is the synchronous
+// version of this call.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_set_display_name_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - displayName: string.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) setDisplayNameAsync(ctx context.Context, displayName string, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.set_display_name_async
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(displayName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_set_display_name_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(displayName)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // setDisplayNameFinish finishes setting a display name started with
 // g_file_set_display_name_async().
 //
@@ -26924,6 +30724,57 @@ func (file *File) setDisplayNameFinish(res AsyncResulter) (*File, error) {
 	return _ret, _goerr
 }
 
+// startMountable starts a file of type G_FILE_TYPE_MOUNTABLE. Using
+// start_operation, you can request callbacks when, for instance, passwords are
+// needed during authentication.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_mount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - startOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) to call when the request is satisfied, or NULL.
+func (file *File) startMountable(ctx context.Context, flags DriveStartFlags, startOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.start_mountable
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GDriveStartFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GDriveStartFlags(flags)
+	if startOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(startOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_start_mountable(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(startOperation)
+	runtime.KeepAlive(callback)
+}
+
 // startMountableFinish finishes a start operation. See g_file_start_mountable()
 // for details.
 //
@@ -26955,6 +30806,55 @@ func (file *File) startMountableFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// stopMountable stops a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_stop_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//   - callback (optional) to call when the request is satisfied, or NULL.
+func (file *File) stopMountable(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.stop_mountable
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_stop_mountable(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // stopMountableFinish finishes a stop operation, see g_file_stop_mountable()
@@ -27032,6 +30932,42 @@ func (file *File) trash(ctx context.Context) error {
 	return _goerr
 }
 
+// trashAsync: asynchronously sends file to the Trash location, if possible.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (file *File) trashAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.trash_async
+
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_trash_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // trashFinish finishes an asynchronous file trashing operation, started with
 // g_file_trash_async().
 //
@@ -27060,6 +30996,51 @@ func (file *File) trashFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// unmountMountable unmounts a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_unmount_mountable_finish() to get the result of the operation.
+//
+// Deprecated: Use g_file_unmount_mountable_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) unmountMountable(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.unmount_mountable
+
+	var _arg0 *C.GFile              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_unmount_mountable(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // unmountMountableFinish finishes an unmount operation, see
@@ -27095,6 +31076,55 @@ func (file *File) unmountMountableFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// unmountMountableWithOperation unmounts a file of type G_FILE_TYPE_MOUNTABLE.
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be returned.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_file_unmount_mountable_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional): Operation, or NULL to avoid user interaction.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (file *File) unmountMountableWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIface)(coreglib.PeekParentClass(file))
+	fnarg := gclass.unmount_mountable_with_operation
+
+	var _arg0 *C.GFile              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_File_virtual_unmount_mountable_with_operation(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // unmountMountableWithOperationFinish finishes an unmount operation, see
@@ -27354,6 +31384,93 @@ func NewFileTmp(tmpl string) (*FileIOStream, *File, error) {
 	}
 
 	return _iostream, _file, _goerr
+}
+
+// NewFileTmpAsync: asynchronously opens a file in the preferred directory for
+// temporary files (as returned by g_get_tmp_dir()) as g_file_new_tmp().
+//
+// tmpl should be a string in the GLib file name encoding containing a sequence
+// of six 'X' characters, and containing no directory components. If it is NULL,
+// a default template is used.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - tmpl (optional): template for the file name, as in g_file_open_tmp(),
+//     or NULL for a default template.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is done.
+func NewFileTmpAsync(ctx context.Context, tmpl string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if tmpl != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(tmpl)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_new_tmp_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(tmpl)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
+// NewFileTmpDirAsync: asynchronously creates a directory in the preferred
+// directory for temporary files (as returned by g_get_tmp_dir()) as
+// g_dir_make_tmp().
+//
+// tmpl should be a string in the GLib file name encoding containing a sequence
+// of six 'X' characters, and containing no directory components. If it is NULL,
+// a default template is used.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - tmpl (optional): template for the file name, as in g_dir_make_tmp(),
+//     or NULL for a default template.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is done.
+func NewFileTmpDirAsync(ctx context.Context, tmpl string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if tmpl != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(tmpl)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_new_tmp_dir_async(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(tmpl)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // NewFileTmpDirFinish finishes a temporary directory creation started by
@@ -28355,6 +32472,8 @@ type LoadableIconner interface {
 
 	// Load loads a loadable icon.
 	Load(ctx context.Context, size int) (string, InputStreamer, error)
+	// LoadAsync loads an icon asynchronously.
+	LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback)
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
 	LoadFinish(res AsyncResulter) (string, InputStreamer, error)
@@ -28438,6 +32557,41 @@ func (icon *LoadableIcon) Load(ctx context.Context, size int) (string, InputStre
 	}
 
 	return _typ, _inputStream, _goerr
+}
+
+// LoadAsync loads an icon asynchronously. To finish this function, see
+// g_loadable_icon_load_finish(). For the synchronous, blocking version of this
+// function, see g_loadable_icon_load().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - size: integer.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (icon *LoadableIcon) LoadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
+	var _arg0 *C.GLoadableIcon      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(size)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_loadable_icon_load_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(callback)
 }
 
 // LoadFinish finishes an asynchronous icon load started in
@@ -28565,6 +32719,44 @@ func (icon *LoadableIcon) load(ctx context.Context, size int) (string, InputStre
 	}
 
 	return _typ, _inputStream, _goerr
+}
+
+// loadAsync loads an icon asynchronously. To finish this function, see
+// g_loadable_icon_load_finish(). For the synchronous, blocking version of this
+// function, see g_loadable_icon_load().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - size: integer.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (icon *LoadableIcon) loadAsync(ctx context.Context, size int, callback AsyncReadyCallback) {
+	gclass := (*C.GLoadableIconIface)(coreglib.PeekParentClass(icon))
+	fnarg := gclass.load_async
+
+	var _arg0 *C.GLoadableIcon      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(coreglib.InternObject(icon).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(size)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_LoadableIcon_virtual_load_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(icon)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(size)
+	runtime.KeepAlive(callback)
 }
 
 // loadFinish finishes an asynchronous icon load started in
@@ -28796,8 +32988,12 @@ type Mounter interface {
 	CanEject() bool
 	// CanUnmount checks if mount can be unmounted.
 	CanUnmount() bool
+	// Eject ejects a mount.
+	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a mount.
 	EjectFinish(result AsyncResulter) error
+	// EjectWithOperation ejects a mount.
+	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a mount.
 	EjectWithOperationFinish(result AsyncResulter) error
 	// DefaultLocation gets the default location of mount.
@@ -28818,18 +33014,26 @@ type Mounter interface {
 	UUID() string
 	// Volume gets the volume for the mount.
 	Volume() *Volume
+	// GuessContentType tries to guess the type of content stored on mount.
+	GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback)
 	// GuessContentTypeFinish finishes guessing content types of mount.
 	GuessContentTypeFinish(result AsyncResulter) ([]string, error)
 	// GuessContentTypeSync tries to guess the type of content stored on mount.
 	GuessContentTypeSync(ctx context.Context, forceRescan bool) ([]string, error)
 	// IsShadowed determines if mount is shadowed.
 	IsShadowed() bool
+	// Remount remounts a mount.
+	Remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// RemountFinish finishes remounting a mount.
 	RemountFinish(result AsyncResulter) error
 	// Shadow increments the shadow count on mount.
 	Shadow()
+	// Unmount unmounts a mount.
+	Unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// UnmountFinish finishes unmounting a mount.
 	UnmountFinish(result AsyncResulter) error
+	// UnmountWithOperation unmounts a mount.
+	UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// UnmountWithOperationFinish finishes unmounting a mount.
 	UnmountWithOperationFinish(result AsyncResulter) error
 	// Unshadow decrements the shadow count on mount.
@@ -28923,6 +33127,43 @@ func (mount *Mount) CanUnmount() bool {
 	return _ok
 }
 
+// Eject ejects a mount. This is an asynchronous operation, and is finished by
+// calling g_mount_eject_finish() with the mount and Result data returned in the
+// callback.
+//
+// Deprecated: Use g_mount_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
+func (mount *Mount) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_mount_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // EjectFinish finishes ejecting a mount. If any errors occurred during
 // the operation, error will be set to contain the errors and FALSE will be
 // returned.
@@ -28951,6 +33192,47 @@ func (mount *Mount) EjectFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// EjectWithOperation ejects a mount. This is an asynchronous operation, and is
+// finished by calling g_mount_eject_with_operation_finish() with the mount and
+// Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (mount *Mount) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_mount_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectWithOperationFinish finishes ejecting a mount. If any errors occurred
@@ -29198,6 +33480,52 @@ func (mount *Mount) Volume() *Volume {
 	return _volume
 }
 
+// GuessContentType tries to guess the type of content stored on
+// mount. Returns one or more textual identifiers of well-known
+// content types (typically prefixed with "x-content/"), e.g.
+// x-content/image-dcf for camera memory cards. See the shared-mime-info
+// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+// specification for more on x-content types.
+//
+// This is an asynchronous operation (see g_mount_guess_content_type_sync()
+// for the synchronous version), and is finished by calling
+// g_mount_guess_content_type_finish() with the mount and Result data returned
+// in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - forceRescan: whether to force a rescan of the content. Otherwise a cached
+//     result will be used if available.
+//   - callback (optional): ReadyCallback.
+func (mount *Mount) GuessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.gboolean            // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if forceRescan {
+		_arg1 = C.TRUE
+	}
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_mount_guess_content_type(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(forceRescan)
+	runtime.KeepAlive(callback)
+}
+
 // GuessContentTypeFinish finishes guessing content types of mount.
 // If any errors occurred during the operation, error will be set to contain
 // the errors and FALSE will be returned. In particular, you may get an
@@ -29358,6 +33686,52 @@ func (mount *Mount) IsShadowed() bool {
 	return _ok
 }
 
+// Remount remounts a mount. This is an asynchronous operation, and is finished
+// by calling g_mount_remount_finish() with the mount and Results data returned
+// in the callback.
+//
+// Remounting is useful when some setting affecting the operation of the volume
+// has been changed, as these may need a remount to take affect. While this is
+// semantically equivalent with unmounting and then remounting not all backends
+// might need to actually be unmounted.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (mount *Mount) Remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_mount_remount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
 // RemountFinish finishes remounting a mount. If any errors occurred during
 // the operation, error will be set to contain the errors and FALSE will be
 // returned.
@@ -29399,6 +33773,43 @@ func (mount *Mount) Shadow() {
 	runtime.KeepAlive(mount)
 }
 
+// Unmount unmounts a mount. This is an asynchronous operation, and is finished
+// by calling g_mount_unmount_finish() with the mount and Result data returned
+// in the callback.
+//
+// Deprecated: Use g_mount_unmount_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - callback (optional) or NULL.
+func (mount *Mount) Unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_mount_unmount(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // UnmountFinish finishes unmounting a mount. If any errors occurred during
 // the operation, error will be set to contain the errors and FALSE will be
 // returned.
@@ -29427,6 +33838,47 @@ func (mount *Mount) UnmountFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// UnmountWithOperation unmounts a mount. This is an asynchronous operation,
+// and is finished by calling g_mount_unmount_with_operation_finish() with the
+// mount and Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (mount *Mount) UnmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GMount             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_mount_unmount_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // UnmountWithOperationFinish finishes unmounting a mount. If any errors
@@ -29535,6 +33987,46 @@ func (mount *Mount) changed() {
 	runtime.KeepAlive(mount)
 }
 
+// Eject ejects a mount. This is an asynchronous operation, and is finished by
+// calling g_mount_eject_finish() with the mount and Result data returned in the
+// callback.
+//
+// Deprecated: Use g_mount_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
+func (mount *Mount) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.eject
+
+	var _arg0 *C.GMount             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Mount_virtual_eject(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // ejectFinish finishes ejecting a mount. If any errors occurred during
 // the operation, error will be set to contain the errors and FALSE will be
 // returned.
@@ -29566,6 +34058,50 @@ func (mount *Mount) ejectFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// ejectWithOperation ejects a mount. This is an asynchronous operation, and is
+// finished by calling g_mount_eject_with_operation_finish() with the mount and
+// Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (mount *Mount) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.eject_with_operation
+
+	var _arg0 *C.GMount             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Mount_virtual_eject_with_operation(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // ejectWithOperationFinish finishes ejecting a mount. If any errors occurred
@@ -29843,6 +34379,55 @@ func (mount *Mount) volume() *Volume {
 	return _volume
 }
 
+// guessContentType tries to guess the type of content stored on
+// mount. Returns one or more textual identifiers of well-known
+// content types (typically prefixed with "x-content/"), e.g.
+// x-content/image-dcf for camera memory cards. See the shared-mime-info
+// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+// specification for more on x-content types.
+//
+// This is an asynchronous operation (see g_mount_guess_content_type_sync()
+// for the synchronous version), and is finished by calling
+// g_mount_guess_content_type_finish() with the mount and Result data returned
+// in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - forceRescan: whether to force a rescan of the content. Otherwise a cached
+//     result will be used if available.
+//   - callback (optional): ReadyCallback.
+func (mount *Mount) guessContentType(ctx context.Context, forceRescan bool, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.guess_content_type
+
+	var _arg0 *C.GMount             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.gboolean            // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if forceRescan {
+		_arg1 = C.TRUE
+	}
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Mount_virtual_guess_content_type(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(forceRescan)
+	runtime.KeepAlive(callback)
+}
+
 // guessContentTypeFinish finishes guessing content types of mount.
 // If any errors occurred during the operation, error will be set to contain
 // the errors and FALSE will be returned. In particular, you may get an
@@ -29982,6 +34567,55 @@ func (mount *Mount) preUnmount() {
 	runtime.KeepAlive(mount)
 }
 
+// Remount remounts a mount. This is an asynchronous operation, and is finished
+// by calling g_mount_remount_finish() with the mount and Results data returned
+// in the callback.
+//
+// Remounting is useful when some setting affecting the operation of the volume
+// has been changed, as these may need a remount to take affect. While this is
+// semantically equivalent with unmounting and then remounting not all backends
+// might need to actually be unmounted.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (mount *Mount) remount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.remount
+
+	var _arg0 *C.GMount             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Mount_virtual_remount(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
+}
+
 // remountFinish finishes remounting a mount. If any errors occurred during
 // the operation, error will be set to contain the errors and FALSE will be
 // returned.
@@ -30011,6 +34645,46 @@ func (mount *Mount) remountFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// Unmount unmounts a mount. This is an asynchronous operation, and is finished
+// by calling g_mount_unmount_finish() with the mount and Result data returned
+// in the callback.
+//
+// Deprecated: Use g_mount_unmount_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - callback (optional) or NULL.
+func (mount *Mount) unmount(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.unmount
+
+	var _arg0 *C.GMount             // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Mount_virtual_unmount(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // unmountFinish finishes unmounting a mount. If any errors occurred during
@@ -30044,6 +34718,50 @@ func (mount *Mount) unmountFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// unmountWithOperation unmounts a mount. This is an asynchronous operation,
+// and is finished by calling g_mount_unmount_with_operation_finish() with the
+// mount and Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (mount *Mount) unmountWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GMountIface)(coreglib.PeekParentClass(mount))
+	fnarg := gclass.unmount_with_operation
+
+	var _arg0 *C.GMount             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GMount)(unsafe.Pointer(coreglib.InternObject(mount).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Mount_virtual_unmount_with_operation(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(mount)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // unmountWithOperationFinish finishes unmounting a mount. If any errors
@@ -30114,6 +34832,10 @@ type NetworkMonitorrer interface {
 	// CanReach attempts to determine whether or not the host pointed to by
 	// connectable can be reached, without actually trying to connect to it.
 	CanReach(ctx context.Context, connectable SocketConnectabler) error
+	// CanReachAsync: asynchronously attempts to determine whether or not the
+	// host pointed to by connectable can be reached, without actually trying to
+	// connect to it.
+	CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test.
 	CanReachFinish(result AsyncResulter) error
 	// Connectivity gets a more detailed networking state than
@@ -30193,6 +34915,46 @@ func (monitor *NetworkMonitor) CanReach(ctx context.Context, connectable SocketC
 	}
 
 	return _goerr
+}
+
+// CanReachAsync: asynchronously attempts to determine whether or not the host
+// pointed to by connectable can be reached, without actually trying to connect
+// to it.
+//
+// For more details, see g_network_monitor_can_reach().
+//
+// When the operation is finished, callback will be called. You can then call
+// g_network_monitor_can_reach_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - connectable: Connectable.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (monitor *NetworkMonitor) CanReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
+	var _arg0 *C.GNetworkMonitor    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_network_monitor_can_reach_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connectable)
+	runtime.KeepAlive(callback)
 }
 
 // CanReachFinish finishes an async network connectivity test. See
@@ -30360,6 +35122,49 @@ func (monitor *NetworkMonitor) canReach(ctx context.Context, connectable SocketC
 	}
 
 	return _goerr
+}
+
+// canReachAsync: asynchronously attempts to determine whether or not the host
+// pointed to by connectable can be reached, without actually trying to connect
+// to it.
+//
+// For more details, see g_network_monitor_can_reach().
+//
+// When the operation is finished, callback will be called. You can then call
+// g_network_monitor_can_reach_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - connectable: Connectable.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (monitor *NetworkMonitor) canReachAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
+	gclass := (*C.GNetworkMonitorInterface)(coreglib.PeekParentClass(monitor))
+	fnarg := gclass.can_reach_async
+
+	var _arg0 *C.GNetworkMonitor    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(coreglib.InternObject(monitor).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_NetworkMonitor_virtual_can_reach_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(monitor)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connectable)
+	runtime.KeepAlive(callback)
 }
 
 // canReachFinish finishes an async network connectivity test. See
@@ -31508,6 +36313,8 @@ type Proxier interface {
 	// necessary handshake to connect to proxy_address, and if required,
 	// wraps the OStream to handle proxy payload.
 	ConnectProxy(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error)
+	// ConnectAsync asynchronous version of g_proxy_connect().
+	ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback)
 	// ConnectFinish: see g_proxy_connect().
 	ConnectFinish(result AsyncResulter) (IOStreamer, error)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
@@ -31590,6 +36397,43 @@ func (proxy *Proxy) ConnectProxy(ctx context.Context, connection IOStreamer, pro
 	}
 
 	return _ioStream, _goerr
+}
+
+// ConnectAsync asynchronous version of g_proxy_connect().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): #GCancellable.
+//   - connection: OStream.
+//   - proxyAddress: Address.
+//   - callback (optional): ReadyCallback.
+func (proxy *Proxy) ConnectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback) {
+	var _arg0 *C.GProxy             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GIOStream          // out
+	var _arg2 *C.GProxyAddress      // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_proxy_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(proxy)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(proxyAddress)
+	runtime.KeepAlive(callback)
 }
 
 // ConnectFinish: see g_proxy_connect().
@@ -31737,6 +36581,46 @@ func (proxy *Proxy) connectProxy(ctx context.Context, connection IOStreamer, pro
 	return _ioStream, _goerr
 }
 
+// connectAsync asynchronous version of g_proxy_connect().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): #GCancellable.
+//   - connection: OStream.
+//   - proxyAddress: Address.
+//   - callback (optional): ReadyCallback.
+func (proxy *Proxy) connectAsync(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress, callback AsyncReadyCallback) {
+	gclass := (*C.GProxyInterface)(coreglib.PeekParentClass(proxy))
+	fnarg := gclass.connect_async
+
+	var _arg0 *C.GProxy             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GIOStream          // out
+	var _arg2 *C.GProxyAddress      // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(coreglib.InternObject(proxyAddress).Native()))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Proxy_virtual_connect_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(proxy)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(proxyAddress)
+	runtime.KeepAlive(callback)
+}
+
 // connectFinish: see g_proxy_connect().
 //
 // The function takes the following parameters:
@@ -31878,6 +36762,8 @@ type ProxyResolverer interface {
 	// Lookup looks into the system proxy configuration to determine what proxy,
 	// if any, to use to connect to uri.
 	Lookup(ctx context.Context, uri string) ([]string, error)
+	// LookupAsync asynchronous lookup of proxy.
+	LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete.
 	LookupFinish(result AsyncResulter) ([]string, error)
@@ -31986,6 +36872,41 @@ func (resolver *ProxyResolver) Lookup(ctx context.Context, uri string) ([]string
 	}
 
 	return _utf8s, _goerr
+}
+
+// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup() for
+// more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - uri: URI representing the destination to connect to.
+//   - callback (optional) to call after resolution completes.
+func (resolver *ProxyResolver) LookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
+	var _arg0 *C.GProxyResolver     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_proxy_resolver_lookup_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(callback)
 }
 
 // LookupFinish: call this function to obtain the array of proxy URIs when
@@ -32135,6 +37056,44 @@ func (resolver *ProxyResolver) lookup(ctx context.Context, uri string) ([]string
 	}
 
 	return _utf8s, _goerr
+}
+
+// lookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup() for
+// more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - uri: URI representing the destination to connect to.
+//   - callback (optional) to call after resolution completes.
+func (resolver *ProxyResolver) lookupAsync(ctx context.Context, uri string, callback AsyncReadyCallback) {
+	gclass := (*C.GProxyResolverInterface)(coreglib.PeekParentClass(resolver))
+	fnarg := gclass.lookup_async
+
+	var _arg0 *C.GProxyResolver     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_ProxyResolver_virtual_lookup_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(callback)
 }
 
 // lookupFinish: call this function to obtain the array of proxy URIs when
@@ -34097,8 +39056,12 @@ type Volumer interface {
 	CanEject() bool
 	// CanMount checks if a volume can be mounted.
 	CanMount() bool
+	// Eject ejects a volume.
+	Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback)
 	// EjectFinish finishes ejecting a volume.
 	EjectFinish(result AsyncResulter) error
+	// EjectWithOperation ejects a volume.
+	EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// EjectWithOperationFinish finishes ejecting a volume.
 	EjectWithOperationFinish(result AsyncResulter) error
 	// EnumerateIdentifiers gets the kinds of identifiers (#volume-identifiers)
@@ -34113,8 +39076,8 @@ type Volumer interface {
 	Icon() *Icon
 	// Identifier gets the identifier of the given kind for volume.
 	Identifier(kind string) string
-	// Mount gets the mount for the volume.
-	Mount() *Mount
+	// GetMount gets the mount for the volume.
+	GetMount() *Mount
 	// Name gets the name of volume.
 	Name() string
 	// SortKey gets the sort key for volume, if any.
@@ -34123,6 +39086,8 @@ type Volumer interface {
 	SymbolicIcon() *Icon
 	// UUID gets the UUID for the volume.
 	UUID() string
+	// Mount mounts a volume.
+	Mount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback)
 	// MountFinish finishes mounting a volume.
 	MountFinish(result AsyncResulter) error
 	// ShouldAutomount returns whether the volume should be automatically
@@ -34205,6 +39170,43 @@ func (volume *Volume) CanMount() bool {
 	return _ok
 }
 
+// Eject ejects a volume. This is an asynchronous operation, and is finished by
+// calling g_volume_eject_finish() with the volume and Result returned in the
+// callback.
+//
+// Deprecated: Use g_volume_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
+func (volume *Volume) Eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GVolume            // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_volume_eject(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // EjectFinish finishes ejecting a volume. If any errors occurred during
 // the operation, error will be set to contain the errors and FALSE will be
 // returned.
@@ -34233,6 +39235,47 @@ func (volume *Volume) EjectFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// EjectWithOperation ejects a volume. This is an asynchronous operation,
+// and is finished by calling g_volume_eject_with_operation_finish() with the
+// volume and Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (volume *Volume) EjectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GVolume            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_volume_eject_with_operation(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // EjectWithOperationFinish finishes ejecting a volume. If any errors occurred
@@ -34419,13 +39462,13 @@ func (volume *Volume) Identifier(kind string) string {
 	return _utf8
 }
 
-// Mount gets the mount for the volume.
+// GetMount gets the mount for the volume.
 //
 // The function returns the following values:
 //
 //   - mount (optional) or NULL if volume isn't mounted. The returned object
 //     should be unreffed with g_object_unref() when no longer needed.
-func (volume *Volume) Mount() *Mount {
+func (volume *Volume) GetMount() *Mount {
 	var _arg0 *C.GVolume // out
 	var _cret *C.GMount  // in
 
@@ -34537,6 +39580,47 @@ func (volume *Volume) UUID() string {
 	}
 
 	return _utf8
+}
+
+// Mount mounts a volume. This is an asynchronous operation, and is finished by
+// calling g_volume_mount_finish() with the volume and Result returned in the
+// callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (volume *Volume) Mount(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	var _arg0 *C.GVolume            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_volume_mount(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // MountFinish finishes mounting a volume. If any errors occurred during
@@ -34659,6 +39743,46 @@ func (volume *Volume) changed() {
 	runtime.KeepAlive(volume)
 }
 
+// Eject ejects a volume. This is an asynchronous operation, and is finished by
+// calling g_volume_eject_finish() with the volume and Result returned in the
+// callback.
+//
+// Deprecated: Use g_volume_eject_with_operation() instead.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - callback (optional) or NULL.
+func (volume *Volume) eject(ctx context.Context, flags MountUnmountFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.eject
+
+	var _arg0 *C.GVolume            // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Volume_virtual_eject(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // ejectFinish finishes ejecting a volume. If any errors occurred during
 // the operation, error will be set to contain the errors and FALSE will be
 // returned.
@@ -34690,6 +39814,50 @@ func (volume *Volume) ejectFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// ejectWithOperation ejects a volume. This is an asynchronous operation,
+// and is finished by calling g_volume_eject_with_operation_finish() with the
+// volume and Result data returned in the callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the unmount if required for eject.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (volume *Volume) ejectWithOperation(ctx context.Context, flags MountUnmountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.eject_with_operation
+
+	var _arg0 *C.GVolume            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountUnmountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Volume_virtual_eject_with_operation(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // ejectWithOperationFinish finishes ejecting a volume. If any errors occurred
@@ -35062,6 +40230,50 @@ func (volume *Volume) mountFinish(result AsyncResulter) error {
 	}
 
 	return _goerr
+}
+
+// mountFn mounts a volume. This is an asynchronous operation, and is finished
+// by calling g_volume_mount_finish() with the volume and Result returned in the
+// callback.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - flags affecting the operation.
+//   - mountOperation (optional) or NULL to avoid user interaction.
+//   - callback (optional) or NULL.
+func (volume *Volume) mountFn(ctx context.Context, flags MountMountFlags, mountOperation *MountOperation, callback AsyncReadyCallback) {
+	gclass := (*C.GVolumeIface)(coreglib.PeekParentClass(volume))
+	fnarg := gclass.mount_fn
+
+	var _arg0 *C.GVolume            // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GVolume)(unsafe.Pointer(coreglib.InternObject(volume).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GMountMountFlags(flags)
+	if mountOperation != nil {
+		_arg2 = (*C.GMountOperation)(unsafe.Pointer(coreglib.InternObject(mountOperation).Native()))
+	}
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Volume_virtual_mount_fn(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(volume)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(mountOperation)
+	runtime.KeepAlive(callback)
 }
 
 // Removed signal that is emitted when the #GVolume have been removed. If the
@@ -38896,6 +44108,48 @@ func (stream *BufferedInputStream) Fill(ctx context.Context, count int) (int, er
 	return _gssize, _goerr
 }
 
+// FillAsync reads data into stream's buffer asynchronously, up to count size.
+// io_priority can be used to prioritize reads. For the synchronous version of
+// this function, see g_buffered_input_stream_fill().
+//
+// If count is -1 then the attempted read size is equal to the number of bytes
+// that are required to fill the buffer.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object.
+//   - count: number of bytes that will be read from the stream.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback.
+func (stream *BufferedInputStream) FillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg3 *C.GCancellable         // out
+	var _arg1 C.gssize                // out
+	var _arg2 C.int                   // out
+	var _arg4 C.GAsyncReadyCallback   // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gssize(count)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_buffered_input_stream_fill_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // FillFinish finishes an asynchronous read.
 //
 // The function takes the following parameters:
@@ -39167,6 +44421,51 @@ func (stream *BufferedInputStream) fill(ctx context.Context, count int) (int, er
 	}
 
 	return _gssize, _goerr
+}
+
+// fillAsync reads data into stream's buffer asynchronously, up to count size.
+// io_priority can be used to prioritize reads. For the synchronous version of
+// this function, see g_buffered_input_stream_fill().
+//
+// If count is -1 then the attempted read size is equal to the number of bytes
+// that are required to fill the buffer.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object.
+//   - count: number of bytes that will be read from the stream.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback.
+func (stream *BufferedInputStream) fillAsync(ctx context.Context, count, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GBufferedInputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.fill_async
+
+	var _arg0 *C.GBufferedInputStream // out
+	var _arg3 *C.GCancellable         // out
+	var _arg1 C.gssize                // out
+	var _arg2 C.int                   // out
+	var _arg4 C.GAsyncReadyCallback   // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GBufferedInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gssize(count)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_BufferedInputStream_virtual_fill_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // fillFinish finishes an asynchronous read.
@@ -41047,6 +46346,122 @@ func (connection *DBusConnection) AddFilter(filterFunction DBusMessageFilterFunc
 	return _guint
 }
 
+// Call: asynchronously invokes the method_name method on the interface_name
+// D-Bus interface on the remote object at object_path owned by bus_name.
+//
+// If connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
+// If cancellable is canceled, the operation will fail with
+// G_IO_ERROR_CANCELLED. If parameters contains a value not compatible with the
+// D-Bus protocol, the operation fails with G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If reply_type is non-NULL then the reply will be checked for having this
+// type and an error will be raised if it does not match. Said another way,
+// if you give a reply_type then any non-NULL return value will be of this type.
+// Unless it’s G_VARIANT_TYPE_UNIT, the reply_type will be a tuple containing
+// one or more values.
+//
+// If the parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//	g_dbus_connection_call (connection,
+//	                        "org.freedesktop.StringThings",
+//	                        "/org/freedesktop/StringThings",
+//	                        "org.freedesktop.StringThings",
+//	                        "TwoStrings",
+//	                        g_variant_new ("(ss)",
+//	                                       "Thing One",
+//	                                       "Thing Two"),
+//	                        NULL,
+//	                        G_DBUS_CALL_FLAGS_NONE,
+//	                        -1,
+//	                        NULL,
+//	                        (GAsyncReadyCallback) two_strings_done,
+//	                        NULL);
+//
+// This is an asynchronous method. When the operation is finished,
+// callback will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_connection_call_finish() to
+// get the result of the operation. See g_dbus_connection_call_sync() for the
+// synchronous version of this function.
+//
+// If callback is NULL then the D-Bus method call message will be sent with the
+// G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - busName (optional): unique or well-known bus name or NULL if connection
+//     is not a message bus connection.
+//   - objectPath: path of remote object.
+//   - interfaceName d-Bus interface to invoke method on.
+//   - methodName: name of the method to invoke.
+//   - parameters (optional) tuple with parameters for the method or NULL if not
+//     passing parameters.
+//   - replyType (optional): expected type of the reply (which will be a tuple),
+//     or NULL.
+//   - flags from the BusCallFlags enumeration.
+//   - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//     G_MAXINT for no timeout.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result of the method invocation.
+func (connection *DBusConnection) Call(ctx context.Context, busName, objectPath, interfaceName, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusConnection     // out
+	var _arg9 *C.GCancellable        // out
+	var _arg1 *C.gchar               // out
+	var _arg2 *C.gchar               // out
+	var _arg3 *C.gchar               // out
+	var _arg4 *C.gchar               // out
+	var _arg5 *C.GVariant            // out
+	var _arg6 *C.GVariantType        // out
+	var _arg7 C.GDBusCallFlags       // out
+	var _arg8 C.gint                 // out
+	var _arg10 C.GAsyncReadyCallback // out
+	var _arg11 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if busName != "" {
+		_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(busName)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
+	defer C.free(unsafe.Pointer(_arg4))
+	if parameters != nil {
+		_arg5 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	}
+	if replyType != nil {
+		_arg6 = (*C.GVariantType)(gextras.StructNative(unsafe.Pointer(replyType)))
+	}
+	_arg7 = C.GDBusCallFlags(flags)
+	_arg8 = C.gint(timeoutMsec)
+	if callback != nil {
+		_arg10 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg11 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_connection_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(busName)
+	runtime.KeepAlive(objectPath)
+	runtime.KeepAlive(interfaceName)
+	runtime.KeepAlive(methodName)
+	runtime.KeepAlive(parameters)
+	runtime.KeepAlive(replyType)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(timeoutMsec)
+	runtime.KeepAlive(callback)
+}
+
 // CallFinish finishes an operation started with g_dbus_connection_call().
 //
 // The function takes the following parameters:
@@ -41204,6 +46619,56 @@ func (connection *DBusConnection) CallSync(ctx context.Context, busName, objectP
 	}
 
 	return _variant, _goerr
+}
+
+// Close closes connection. Note that this never causes the process to exit
+// (this might only happen if the other end of a shared message bus connection
+// disconnects, see BusConnection:exit-on-close).
+//
+// Once the connection is closed, operations such as sending a message
+// will return with the error G_IO_ERROR_CLOSED. Closing a connection will
+// not automatically flush the connection so queued messages may be lost.
+// Use g_dbus_connection_flush() if you need such guarantees.
+//
+// If connection is already closed, this method fails with G_IO_ERROR_CLOSED.
+//
+// When connection has been closed, the BusConnection::closed signal is emitted
+// in the [thread-default main context][g-main-context-push-thread-default] of
+// the thread that connection was constructed in.
+//
+// This is an asynchronous method. When the operation is finished,
+// callback will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_connection_close_finish() to
+// get the result of the operation. See g_dbus_connection_close_sync() for the
+// synchronous version.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result.
+func (connection *DBusConnection) Close(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusConnection    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_connection_close(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // CloseFinish finishes an operation started with g_dbus_connection_close().
@@ -41429,6 +46894,48 @@ func (connection *DBusConnection) ExportMenuModel(objectPath string, menu MenuMo
 	}
 
 	return _guint, _goerr
+}
+
+// Flush: asynchronously flushes connection, that is, writes all queued
+// outgoing message to the transport and then flushes the transport (using
+// g_output_stream_flush_async()). This is useful in programs that wants to emit
+// a D-Bus signal and then exit immediately. Without flushing the connection,
+// there is no guaranteed that the message has been sent to the networking
+// buffers in the OS kernel.
+//
+// This is an asynchronous method. When the operation is finished,
+// callback will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_connection_flush_finish() to
+// get the result of the operation. See g_dbus_connection_flush_sync() for the
+// synchronous version.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result.
+func (connection *DBusConnection) Flush(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusConnection    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_connection_flush(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // FlushFinish finishes an operation started with g_dbus_connection_flush().
@@ -41859,6 +47366,89 @@ func (connection *DBusConnection) SendMessage(message *DBusMessage, flags DBusSe
 	return _outSerial, _goerr
 }
 
+// SendMessageWithReply: asynchronously sends message to the peer represented by
+// connection.
+//
+// Unless flags contain the G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag,
+// the serial number will be assigned by connection and set on message via
+// g_dbus_message_set_serial(). If out_serial is not NULL, then the serial
+// number used will be written to this location prior to submitting the message
+// to the underlying transport. While it has a volatile qualifier, this is a
+// historical artifact and the argument passed to it should not be volatile.
+//
+// If connection is closed then the operation will fail with G_IO_ERROR_CLOSED.
+// If cancellable is canceled, the operation will fail with
+// G_IO_ERROR_CANCELLED. If message is not well-formed, the operation fails with
+// G_IO_ERROR_INVALID_ARGUMENT.
+//
+// This is an asynchronous method. When the operation is
+// finished, callback will be invoked in the [thread-default
+// main context][g-main-context-push-thread-default] of the
+// thread you are calling this method from. You can then call
+// g_dbus_connection_send_message_with_reply_finish() to get the result of
+// the operation. See g_dbus_connection_send_message_with_reply_sync() for the
+// synchronous version.
+//
+// Note that message must be unlocked, unless flags contain the
+// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+//
+// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for
+// an example of how to use this low-level API to send and receive UNIX file
+// descriptors.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - message: BusMessage.
+//   - flags affecting how the message is sent.
+//   - timeoutMsec: timeout in milliseconds, -1 to use the default timeout or
+//     G_MAXINT for no timeout.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result.
+//
+// The function returns the following values:
+//
+//   - outSerial (optional): return location for serial number assigned to
+//     message when sending it or NULL.
+func (connection *DBusConnection) SendMessageWithReply(ctx context.Context, message *DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, callback AsyncReadyCallback) uint32 {
+	var _arg0 *C.GDBusConnection      // out
+	var _arg5 *C.GCancellable         // out
+	var _arg1 *C.GDBusMessage         // out
+	var _arg2 C.GDBusSendMessageFlags // out
+	var _arg3 C.gint                  // out
+	var _arg4 C.guint32               // in
+	var _arg6 C.GAsyncReadyCallback   // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GDBusMessage)(unsafe.Pointer(coreglib.InternObject(message).Native()))
+	_arg2 = C.GDBusSendMessageFlags(flags)
+	_arg3 = C.gint(timeoutMsec)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_connection_send_message_with_reply(_arg0, _arg1, _arg2, _arg3, &_arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(message)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(timeoutMsec)
+	runtime.KeepAlive(callback)
+
+	var _outSerial uint32 // out
+
+	_outSerial = uint32(_arg4)
+
+	return _outSerial
+}
+
 // SendMessageWithReplyFinish finishes an operation started with
 // g_dbus_connection_send_message_with_reply().
 //
@@ -42280,6 +47870,128 @@ func (connection *DBusConnection) UnregisterSubtree(registrationId uint) bool {
 	}
 
 	return _ok
+}
+
+// NewDBusConnection: asynchronously sets up a D-Bus connection for exchanging
+// D-Bus messages with the end represented by stream.
+//
+// If stream is a Connection, then the corresponding #GSocket will be put into
+// non-blocking mode.
+//
+// The D-Bus connection will interact with stream from a worker thread. As a
+// result, the caller should not interact with stream after this method has been
+// called, except by calling g_object_unref() on it.
+//
+// If observer is not NULL it may be used to control the authentication process.
+//
+// When the operation is finished, callback will be invoked. You can then call
+// g_dbus_connection_new_finish() to get the result of the operation.
+//
+// This is an asynchronous failable constructor. See
+// g_dbus_connection_new_sync() for the synchronous version.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - stream: OStream.
+//   - guid (optional): GUID to use if authenticating as a server or NULL.
+//   - flags describing how to make the connection.
+//   - observer (optional) or NULL.
+//   - callback (optional) to call when the request is satisfied.
+func NewDBusConnection(ctx context.Context, stream IOStreamer, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
+	var _arg5 *C.GCancellable        // out
+	var _arg1 *C.GIOStream           // out
+	var _arg2 *C.gchar               // out
+	var _arg3 C.GDBusConnectionFlags // out
+	var _arg4 *C.GDBusAuthObserver   // out
+	var _arg6 C.GAsyncReadyCallback  // out
+	var _arg7 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	if guid != "" {
+		_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(guid)))
+		defer C.free(unsafe.Pointer(_arg2))
+	}
+	_arg3 = C.GDBusConnectionFlags(flags)
+	if observer != nil {
+		_arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
+	}
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_connection_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(guid)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(observer)
+	runtime.KeepAlive(callback)
+}
+
+// NewDBusConnectionForAddress: asynchronously connects and sets up a
+// D-Bus client connection for exchanging D-Bus messages with an endpoint
+// specified by address which must be in the D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// This constructor can only be used to initiate client-side connections - use
+// g_dbus_connection_new() if you need to act as the server. In particular,
+// flags cannot contain the G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER,
+// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS or
+// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flags.
+//
+// When the operation is finished, callback will be invoked. You can then
+// call g_dbus_connection_new_for_address_finish() to get the result of the
+// operation.
+//
+// If observer is not NULL it may be used to control the authentication process.
+//
+// This is an asynchronous failable constructor. See
+// g_dbus_connection_new_for_address_sync() for the synchronous version.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - address d-Bus address.
+//   - flags describing how to make the connection.
+//   - observer (optional) or NULL.
+//   - callback (optional) to call when the request is satisfied.
+func NewDBusConnectionForAddress(ctx context.Context, address string, flags DBusConnectionFlags, observer *DBusAuthObserver, callback AsyncReadyCallback) {
+	var _arg4 *C.GCancellable        // out
+	var _arg1 *C.gchar               // out
+	var _arg2 C.GDBusConnectionFlags // out
+	var _arg3 *C.GDBusAuthObserver   // out
+	var _arg5 C.GAsyncReadyCallback  // out
+	var _arg6 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(address)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GDBusConnectionFlags(flags)
+	if observer != nil {
+		_arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(coreglib.InternObject(observer).Native()))
+	}
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_connection_new_for_address(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(observer)
+	runtime.KeepAlive(callback)
 }
 
 // DBusInterfaceSkeletonOverrides contains methods that are overridable.
@@ -45843,6 +51555,95 @@ func NewDBusProxySync(ctx context.Context, connection *DBusConnection, flags DBu
 	return _dBusProxy, _goerr
 }
 
+// Call: asynchronously invokes the method_name method on proxy.
+//
+// If method_name contains any dots, then name is split into interface and
+// method name parts. This allows using proxy for invoking methods on other
+// interfaces.
+//
+// If the BusConnection associated with proxy is closed then the operation
+// will fail with G_IO_ERROR_CLOSED. If cancellable is canceled, the
+// operation will fail with G_IO_ERROR_CANCELLED. If parameters contains a
+// value not compatible with the D-Bus protocol, the operation fails with
+// G_IO_ERROR_INVALID_ARGUMENT.
+//
+// If the parameters #GVariant is floating, it is consumed. This allows
+// convenient 'inline' use of g_variant_new(), e.g.:
+//
+//	g_dbus_proxy_call (proxy,
+//	                   "TwoStrings",
+//	                   g_variant_new ("(ss)",
+//	                                  "Thing One",
+//	                                  "Thing Two"),
+//	                   G_DBUS_CALL_FLAGS_NONE,
+//	                   -1,
+//	                   NULL,
+//	                   (GAsyncReadyCallback) two_strings_done,
+//	                   &data);
+//
+// If proxy has an expected interface (see BusProxy:g-interface-info) and
+// method_name is referenced by it, then the return value is checked against the
+// return type.
+//
+// This is an asynchronous method. When the operation is finished,
+// callback will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this method from. You can then call g_dbus_proxy_call_finish() to get the
+// result of the operation. See g_dbus_proxy_call_sync() for the synchronous
+// version of this method.
+//
+// If callback is NULL then the D-Bus method call message will be sent with the
+// G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - methodName: name of method to invoke.
+//   - parameters (optional) tuple with parameters for the signal or NULL if not
+//     passing parameters.
+//   - flags flags from the BusCallFlags enumeration.
+//   - timeoutMsec: timeout in milliseconds (with G_MAXINT meaning "infinite")
+//     or -1 to use the proxy default timeout.
+//   - callback (optional) to call when the request is satisfied or NULL if you
+//     don't care about the result of the method invocation.
+func (proxy *DBusProxy) Call(ctx context.Context, methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, callback AsyncReadyCallback) {
+	var _arg0 *C.GDBusProxy         // out
+	var _arg5 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GVariant           // out
+	var _arg3 C.GDBusCallFlags      // out
+	var _arg4 C.gint                // out
+	var _arg6 C.GAsyncReadyCallback // out
+	var _arg7 C.gpointer
+
+	_arg0 = (*C.GDBusProxy)(unsafe.Pointer(coreglib.InternObject(proxy).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(methodName)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if parameters != nil {
+		_arg2 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(parameters)))
+	}
+	_arg3 = C.GDBusCallFlags(flags)
+	_arg4 = C.gint(timeoutMsec)
+	if callback != nil {
+		_arg6 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg7 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_proxy_call(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	runtime.KeepAlive(proxy)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(methodName)
+	runtime.KeepAlive(parameters)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(timeoutMsec)
+	runtime.KeepAlive(callback)
+}
+
 // CallFinish finishes an operation started with g_dbus_proxy_call().
 //
 // The function takes the following parameters:
@@ -46379,6 +52180,150 @@ func (proxy *DBusProxy) gSignal(senderName, signalName string, parameters *glib.
 	runtime.KeepAlive(senderName)
 	runtime.KeepAlive(signalName)
 	runtime.KeepAlive(parameters)
+}
+
+// NewDBusProxy creates a proxy for accessing interface_name on the remote
+// object at object_path owned by name at connection and asynchronously loads
+// D-Bus properties unless the G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is
+// used. Connect to the BusProxy::g-properties-changed signal to get notified
+// about property changes.
+//
+// If the G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets
+// up match rules for signals. Connect to the BusProxy::g-signal signal to
+// handle signals from the remote object.
+//
+// If both G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+// G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+// guaranteed to complete immediately without blocking.
+//
+// If name is a well-known name and the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and
+// G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION flags aren't set and no
+// name owner currently exists, the message bus will be requested to launch a
+// name owner for the name.
+//
+// This is a failable asynchronous constructor - when the proxy is ready,
+// callback will be invoked and you can use g_dbus_proxy_new_finish() to get the
+// result.
+//
+// See g_dbus_proxy_new_sync() and for a synchronous version of this
+// constructor.
+//
+// BusProxy is used in this [example][gdbus-wellknown-proxy].
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - connection: BusConnection.
+//   - flags flags used when constructing the proxy.
+//   - info (optional) specifying the minimal interface that proxy conforms to
+//     or NULL.
+//   - name (optional) bus name (well-known or unique) or NULL if connection is
+//     not a message bus connection.
+//   - objectPath: object path.
+//   - interfaceName d-Bus interface name.
+//   - callback (optional): callback function to invoke when the proxy is ready.
+func NewDBusProxy(ctx context.Context, connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
+	var _arg7 *C.GCancellable       // out
+	var _arg1 *C.GDBusConnection    // out
+	var _arg2 C.GDBusProxyFlags     // out
+	var _arg3 *C.GDBusInterfaceInfo // out
+	var _arg4 *C.gchar              // out
+	var _arg5 *C.gchar              // out
+	var _arg6 *C.gchar              // out
+	var _arg8 C.GAsyncReadyCallback // out
+	var _arg9 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = C.GDBusProxyFlags(flags)
+	if info != nil {
+		_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	}
+	if name != "" {
+		_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+		defer C.free(unsafe.Pointer(_arg4))
+	}
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg6))
+	if callback != nil {
+		_arg8 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg9 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_proxy_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(objectPath)
+	runtime.KeepAlive(interfaceName)
+	runtime.KeepAlive(callback)
+}
+
+// NewDBusProxyForBus: like g_dbus_proxy_new() but takes a Type instead of a
+// BusConnection.
+//
+// BusProxy is used in this [example][gdbus-wellknown-proxy].
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - busType: Type.
+//   - flags flags used when constructing the proxy.
+//   - info (optional) specifying the minimal interface that proxy conforms to
+//     or NULL.
+//   - name bus name (well-known or unique).
+//   - objectPath: object path.
+//   - interfaceName d-Bus interface name.
+//   - callback (optional): callback function to invoke when the proxy is ready.
+func NewDBusProxyForBus(ctx context.Context, busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name, objectPath, interfaceName string, callback AsyncReadyCallback) {
+	var _arg7 *C.GCancellable       // out
+	var _arg1 C.GBusType            // out
+	var _arg2 C.GDBusProxyFlags     // out
+	var _arg3 *C.GDBusInterfaceInfo // out
+	var _arg4 *C.gchar              // out
+	var _arg5 *C.gchar              // out
+	var _arg6 *C.gchar              // out
+	var _arg8 C.GAsyncReadyCallback // out
+	var _arg9 C.gpointer
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.GBusType(busType)
+	_arg2 = C.GDBusProxyFlags(flags)
+	if info != nil {
+		_arg3 = (*C.GDBusInterfaceInfo)(gextras.StructNative(unsafe.Pointer(info)))
+	}
+	_arg4 = (*C.gchar)(unsafe.Pointer(C.CString(name)))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(unsafe.Pointer(C.CString(objectPath)))
+	defer C.free(unsafe.Pointer(_arg5))
+	_arg6 = (*C.gchar)(unsafe.Pointer(C.CString(interfaceName)))
+	defer C.free(unsafe.Pointer(_arg6))
+	if callback != nil {
+		_arg8 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg9 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_dbus_proxy_new_for_bus(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(busType)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(info)
+	runtime.KeepAlive(name)
+	runtime.KeepAlive(objectPath)
+	runtime.KeepAlive(interfaceName)
+	runtime.KeepAlive(callback)
 }
 
 // DBusServer: GDBusServer is a helper for listening to and accepting
@@ -46990,6 +52935,43 @@ func (stream *DataInputStream) ReadLine(ctx context.Context) (uint, []byte, erro
 	return _length, _guint8s, _goerr
 }
 
+// ReadLineAsync asynchronous version of g_data_input_stream_read_line().
+// It is an error to have two outstanding calls to this function.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_data_input_stream_read_line_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (stream *DataInputStream) ReadLineAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GDataInputStream   // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.gint                // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gint(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_data_input_stream_read_line_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadLineFinish: finish an asynchronous call started by
 // g_data_input_stream_read_line_async(). Note the warning about string encoding
 // in g_data_input_stream_read_line() applies here as well.
@@ -47340,6 +53322,59 @@ func (stream *DataInputStream) ReadUntil(ctx context.Context, stopChars string) 
 	return _length, _utf8, _goerr
 }
 
+// ReadUntilAsync asynchronous version of g_data_input_stream_read_until().
+// It is an error to have two outstanding calls to this function.
+//
+// Note that, in contrast to g_data_input_stream_read_until(), this function
+// does not consume the stop character that it finds. You must read it for
+// yourself.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_data_input_stream_read_until_finish() to get the result of the operation.
+//
+// Don't use this function in new code. Its functionality is inconsistent with
+// g_data_input_stream_read_until(). Both functions will be marked as deprecated
+// in a future release. Use g_data_input_stream_read_upto_async() instead.
+//
+// Deprecated: Use g_data_input_stream_read_upto_async() instead, which has more
+// consistent behaviour regarding the stop character.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stopChars characters to terminate the read.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (stream *DataInputStream) ReadUntilAsync(ctx context.Context, stopChars string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GDataInputStream   // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.gint                // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(stopChars)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_data_input_stream_read_until_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stopChars)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadUntilFinish: finish an asynchronous call started by
 // g_data_input_stream_read_until_async().
 //
@@ -47443,6 +53478,57 @@ func (stream *DataInputStream) ReadUpto(ctx context.Context, stopChars string) (
 	}
 
 	return _length, _utf8, _goerr
+}
+
+// ReadUptoAsync asynchronous version of g_data_input_stream_read_upto().
+// It is an error to have two outstanding calls to this function.
+//
+// In contrast to g_data_input_stream_read_until(), this function does not
+// consume the stop character. You have to use g_data_input_stream_read_byte()
+// to get it before calling g_data_input_stream_read_upto() again.
+//
+// Note that stop_chars may contain '\0' if stop_chars_len is specified.
+//
+// When the operation is finished, callback will be called. You can then call
+// g_data_input_stream_read_upto_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stopChars characters to terminate the read.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the request is satisfied.
+func (stream *DataInputStream) ReadUptoAsync(ctx context.Context, stopChars string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GDataInputStream // out
+	var _arg4 *C.GCancellable     // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gssize
+	var _arg3 C.gint                // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gssize)(len(stopChars))
+	_arg1 = (*C.gchar)(C.calloc(C.size_t((len(stopChars) + 1)), C.size_t(C.sizeof_gchar)))
+	copy(unsafe.Slice((*byte)(unsafe.Pointer(_arg1)), len(stopChars)), stopChars)
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = C.gint(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_data_input_stream_read_upto_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stopChars)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadUptoFinish: finish an asynchronous call started by
@@ -48665,6 +54751,44 @@ func (enumerator *FileEnumerator) Close(ctx context.Context) error {
 	return _goerr
 }
 
+// CloseAsync: asynchronously closes the file enumerator.
+//
+// If cancellable is not NULL, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
+// g_file_enumerator_close_finish().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (enumerator *FileEnumerator) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_enumerator_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // CloseFinish finishes closing a file enumerator, started from
 // g_file_enumerator_close_async().
 //
@@ -48933,6 +55057,105 @@ func (enumerator *FileEnumerator) NextFile(ctx context.Context) (*FileInfo, erro
 	return _fileInfo, _goerr
 }
 
+// NextFilesAsync: request information for a number of files from the enumerator
+// asynchronously. When all I/O for the operation is finished the callback will
+// be called with the requested information.
+//
+// See the documentation of Enumerator for information about the order of
+// returned files.
+//
+// Once the end of the enumerator is reached, or if an error occurs, the
+// callback will be called with an empty list. In this case, the previous call
+// to g_file_enumerator_next_files_async() will typically have returned fewer
+// than num_files items.
+//
+// If a request is cancelled the callback will be called with
+// G_IO_ERROR_CANCELLED.
+//
+// This leads to the following pseudo-code usage:
+//
+//	g_autoptr(GFile) dir = get_directory ();
+//	g_autoptr(GFileEnumerator) enumerator = NULL;
+//	g_autolist(GFileInfo) files = NULL;
+//	g_autoptr(GError) local_error = NULL;
+//
+//	enumerator = yield g_file_enumerate_children_async (dir,
+//	                                                    G_FILE_ATTRIBUTE_STANDARD_NAME ","
+//	                                                    G_FILE_ATTRIBUTE_STANDARD_TYPE,
+//	                                                    G_FILE_QUERY_INFO_NONE,
+//	                                                    G_PRIORITY_DEFAULT,
+//	                                                    cancellable,
+//	                                                    …,
+//	                                                    &local_error);
+//	if (enumerator == NULL)
+//	  g_error ("Error enumerating: s", local_error->message);
+//
+//	// Loop until no files are returned, either because the end of the enumerator
+//	// has been reached, or an error was returned.
+//	do
+//	  {
+//	    files = yield g_file_enumerator_next_files_async (enumerator,
+//	                                                      5,  // number of files to request
+//	                                                      G_PRIORITY_DEFAULT,
+//	                                                      cancellable,
+//	                                                      …,
+//	                                                      &local_error);
+//
+//	    // Process the returned files, but don’t assume that exactly 5 were returned.
+//	    for (GList *l = files; l != NULL; l = l->next)
+//	      {
+//	        GFileInfo *info = l->data;
+//	        handle_file_info (info);
+//	      }
+//	  }
+//	while (files != NULL);
+//
+//	if (local_error != NULL &&
+//	    !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+//	  g_error ("Error while enumerating: s", local_error->message);
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - numFiles: number of file info objects to request.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (enumerator *FileEnumerator) NextFilesAsync(ctx context.Context, numFiles, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(numFiles)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_enumerator_next_files_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(numFiles)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // NextFilesFinish finishes the asynchronous operation started with
 // g_file_enumerator_next_files_async().
 //
@@ -48991,6 +55214,47 @@ func (enumerator *FileEnumerator) SetPending(pending bool) {
 	C.g_file_enumerator_set_pending(_arg0, _arg1)
 	runtime.KeepAlive(enumerator)
 	runtime.KeepAlive(pending)
+}
+
+// closeAsync: asynchronously closes the file enumerator.
+//
+// If cancellable is not NULL, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
+// g_file_enumerator_close_finish().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (enumerator *FileEnumerator) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileEnumeratorClass)(coreglib.PeekParentClass(enumerator))
+	fnarg := gclass.close_async
+
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_FileEnumerator_virtual_close_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // closeFinish finishes closing a file enumerator, started from
@@ -49110,6 +55374,108 @@ func (enumerator *FileEnumerator) nextFile(ctx context.Context) (*FileInfo, erro
 	}
 
 	return _fileInfo, _goerr
+}
+
+// nextFilesAsync: request information for a number of files from the enumerator
+// asynchronously. When all I/O for the operation is finished the callback will
+// be called with the requested information.
+//
+// See the documentation of Enumerator for information about the order of
+// returned files.
+//
+// Once the end of the enumerator is reached, or if an error occurs, the
+// callback will be called with an empty list. In this case, the previous call
+// to g_file_enumerator_next_files_async() will typically have returned fewer
+// than num_files items.
+//
+// If a request is cancelled the callback will be called with
+// G_IO_ERROR_CANCELLED.
+//
+// This leads to the following pseudo-code usage:
+//
+//	g_autoptr(GFile) dir = get_directory ();
+//	g_autoptr(GFileEnumerator) enumerator = NULL;
+//	g_autolist(GFileInfo) files = NULL;
+//	g_autoptr(GError) local_error = NULL;
+//
+//	enumerator = yield g_file_enumerate_children_async (dir,
+//	                                                    G_FILE_ATTRIBUTE_STANDARD_NAME ","
+//	                                                    G_FILE_ATTRIBUTE_STANDARD_TYPE,
+//	                                                    G_FILE_QUERY_INFO_NONE,
+//	                                                    G_PRIORITY_DEFAULT,
+//	                                                    cancellable,
+//	                                                    …,
+//	                                                    &local_error);
+//	if (enumerator == NULL)
+//	  g_error ("Error enumerating: s", local_error->message);
+//
+//	// Loop until no files are returned, either because the end of the enumerator
+//	// has been reached, or an error was returned.
+//	do
+//	  {
+//	    files = yield g_file_enumerator_next_files_async (enumerator,
+//	                                                      5,  // number of files to request
+//	                                                      G_PRIORITY_DEFAULT,
+//	                                                      cancellable,
+//	                                                      …,
+//	                                                      &local_error);
+//
+//	    // Process the returned files, but don’t assume that exactly 5 were returned.
+//	    for (GList *l = files; l != NULL; l = l->next)
+//	      {
+//	        GFileInfo *info = l->data;
+//	        handle_file_info (info);
+//	      }
+//	  }
+//	while (files != NULL);
+//
+//	if (local_error != NULL &&
+//	    !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+//	  g_error ("Error while enumerating: s", local_error->message);
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - numFiles: number of file info objects to request.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (enumerator *FileEnumerator) nextFilesAsync(ctx context.Context, numFiles, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileEnumeratorClass)(coreglib.PeekParentClass(enumerator))
+	fnarg := gclass.next_files_async
+
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(numFiles)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_FileEnumerator_virtual_next_files_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(numFiles)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // nextFilesFinish finishes the asynchronous operation started with
@@ -49411,6 +55777,50 @@ func (stream *FileIOStream) QueryInfo(ctx context.Context, attributes string) (*
 	return _fileInfo, _goerr
 }
 
+// QueryInfoAsync: asynchronously queries the stream for a Info. When completed,
+// callback will be called with a Result which can be used to finish the
+// operation with g_file_io_stream_query_info_finish().
+//
+// For the synchronous version of this function, see
+// g_file_io_stream_query_info().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: I/O priority (iface.AsyncResult.html#io-priority) of the
+//     request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *FileIOStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFileIOStream      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_io_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_io_stream_query_info_async().
 //
@@ -49573,6 +55983,53 @@ func (stream *FileIOStream) queryInfo(ctx context.Context, attributes string) (*
 	}
 
 	return _fileInfo, _goerr
+}
+
+// queryInfoAsync: asynchronously queries the stream for a Info. When completed,
+// callback will be called with a Result which can be used to finish the
+// operation with g_file_io_stream_query_info_finish().
+//
+// For the synchronous version of this function, see
+// g_file_io_stream_query_info().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: I/O priority (iface.AsyncResult.html#io-priority) of the
+//     request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *FileIOStream) queryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileIOStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.query_info_async
+
+	var _arg0 *C.GFileIOStream      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_FileIOStream_virtual_query_info_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // queryInfoFinish finalizes the asynchronous query started by
@@ -51870,6 +58327,53 @@ func (stream *FileInputStream) QueryInfo(ctx context.Context, attributes string)
 	return _fileInfo, _goerr
 }
 
+// QueryInfoAsync queries the stream information asynchronously. When
+// the operation is finished callback will be called. You can then call
+// g_file_input_stream_query_info_finish() to get the result of the operation.
+//
+// For the synchronous version of this function, see
+// g_file_input_stream_query_info().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be set.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *FileInputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFileInputStream   // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_input_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // QueryInfoFinish finishes an asynchronous info query operation.
 //
 // The function takes the following parameters:
@@ -51971,6 +58475,56 @@ func (stream *FileInputStream) queryInfo(ctx context.Context, attributes string)
 	}
 
 	return _fileInfo, _goerr
+}
+
+// queryInfoAsync queries the stream information asynchronously. When
+// the operation is finished callback will be called. You can then call
+// g_file_input_stream_query_info_finish() to get the result of the operation.
+//
+// For the synchronous version of this function, see
+// g_file_input_stream_query_info().
+//
+// If cancellable is not NULL, then the operation can be cancelled by triggering
+// the cancellable object from another thread. If the operation was cancelled,
+// the error G_IO_ERROR_CANCELLED will be set.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *FileInputStream) queryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileInputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.query_info_async
+
+	var _arg0 *C.GFileInputStream   // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_FileInputStream_virtual_query_info_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // queryInfoFinish finishes an asynchronous info query operation.
@@ -52593,6 +59147,50 @@ func (stream *FileOutputStream) QueryInfo(ctx context.Context, attributes string
 	return _fileInfo, _goerr
 }
 
+// QueryInfoAsync: asynchronously queries the stream for a Info. When completed,
+// callback will be called with a Result which can be used to finish the
+// operation with g_file_output_stream_query_info_finish().
+//
+// For the synchronous version of this function, see
+// g_file_output_stream_query_info().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: I/O priority (iface.AsyncResult.html#io-priority) of the
+//     request.
+//   - callback (optional) to call when the request is satisfied.
+func (stream *FileOutputStream) QueryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GFileOutputStream  // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_file_output_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_output_stream_query_info_async().
 //
@@ -52755,6 +59353,53 @@ func (stream *FileOutputStream) queryInfo(ctx context.Context, attributes string
 	}
 
 	return _fileInfo, _goerr
+}
+
+// queryInfoAsync: asynchronously queries the stream for a Info. When completed,
+// callback will be called with a Result which can be used to finish the
+// operation with g_file_output_stream_query_info_finish().
+//
+// For the synchronous version of this function, see
+// g_file_output_stream_query_info().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - attributes: file attribute query string.
+//   - ioPriority: I/O priority (iface.AsyncResult.html#io-priority) of the
+//     request.
+//   - callback (optional) to call when the request is satisfied.
+func (stream *FileOutputStream) queryInfoAsync(ctx context.Context, attributes string, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GFileOutputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.query_info_async
+
+	var _arg0 *C.GFileOutputStream  // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(attributes)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_FileOutputStream_virtual_query_info_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(attributes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // queryInfoFinish finalizes the asynchronous query started by
@@ -53598,6 +60243,47 @@ func (stream *IOStream) Close(ctx context.Context) error {
 	return _goerr
 }
 
+// CloseAsync requests an asynchronous close of the stream, releasing resources
+// related to it. When the operation is finished callback will be called. You
+// can then call g_io_stream_close_finish() to get the result of the operation.
+//
+// For behaviour details see g_io_stream_close().
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *IOStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GIOStream          // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_io_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // CloseFinish closes a stream.
 //
 // The function takes the following parameters:
@@ -53763,6 +60449,96 @@ func (stream *IOStream) SetPending() error {
 	}
 
 	return _goerr
+}
+
+// SpliceAsync: asynchronously splice the output stream of stream1 to the input
+// stream of stream2, and splice the output stream of stream2 to the input
+// stream of stream1.
+//
+// When the operation is finished callback will be called. You can then call
+// g_io_stream_splice_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - stream2: OStream.
+//   - flags: set of OStreamSpliceFlags.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream1 *IOStream) SpliceAsync(ctx context.Context, stream2 IOStreamer, flags IOStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GIOStream           // out
+	var _arg4 *C.GCancellable        // out
+	var _arg1 *C.GIOStream           // out
+	var _arg2 C.GIOStreamSpliceFlags // out
+	var _arg3 C.int                  // out
+	var _arg5 C.GAsyncReadyCallback  // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream1).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream2).Native()))
+	_arg2 = C.GIOStreamSpliceFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_io_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream1)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(stream2)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
+// closeAsync requests an asynchronous close of the stream, releasing resources
+// related to it. When the operation is finished callback will be called. You
+// can then call g_io_stream_close_finish() to get the result of the operation.
+//
+// For behaviour details see g_io_stream_close().
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *IOStream) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GIOStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.close_async
+
+	var _arg0 *C.GIOStream          // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_IOStream_virtual_close_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // closeFinish closes a stream.
@@ -55125,6 +61901,48 @@ func (stream *InputStream) Close(ctx context.Context) error {
 	return _goerr
 }
 
+// CloseAsync requests an asynchronous closes of the stream, releasing resources
+// related to it. When the operation is finished callback will be called.
+// You can then call g_input_stream_close_finish() to get the result of the
+// operation.
+//
+// For behaviour details see g_input_stream_close().
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *InputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream       // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_input_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // CloseFinish finishes closing a stream asynchronously, started from
 // g_input_stream_close_async().
 //
@@ -55329,6 +62147,57 @@ func (stream *InputStream) ReadAll(ctx context.Context, buffer []byte) (uint, er
 	return _bytesRead, _goerr
 }
 
+// ReadAllAsync: request an asynchronous read of count bytes from the stream
+// into the buffer starting at buffer.
+//
+// This is the asynchronous equivalent of g_input_stream_read_all().
+//
+// Call g_input_stream_read_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer: a buffer to read data into (which should be at least count bytes
+//     long).
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *InputStream) ReadAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.void         // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_input_stream_read_all_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // ReadAllFinish finishes an asynchronous stream read operation started with
 // g_input_stream_read_all_async().
 //
@@ -55369,6 +62238,71 @@ func (stream *InputStream) ReadAllFinish(result AsyncResulter) (uint, error) {
 	}
 
 	return _bytesRead, _goerr
+}
+
+// ReadAsync: request an asynchronous read of count bytes from the stream into
+// the buffer starting at buffer. When the operation is finished callback will
+// be called. You can then call g_input_stream_read_finish() to get the result
+// of the operation.
+//
+// During an async request no other sync and async calls are allowed on stream,
+// and will result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer will be passed to the
+// callback. It is not an error if this is not the same as the requested size,
+// as it can happen e.g. near the end of a file, but generally we try to read
+// as many bytes as requested. Zero is returned on end of file (or if count is
+// zero), but never otherwise.
+//
+// Any outstanding i/o request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer: a buffer to read data into (which should be at least count bytes
+//     long).
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *InputStream) ReadAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.void         // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_input_stream_read_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadBytes: like g_input_stream_read(), this tries to read count bytes
@@ -55436,6 +62370,61 @@ func (stream *InputStream) ReadBytes(ctx context.Context, count uint) (*glib.Byt
 	}
 
 	return _bytes, _goerr
+}
+
+// ReadBytesAsync: request an asynchronous read of count bytes from the stream
+// into a new #GBytes. When the operation is finished callback will be called.
+// You can then call g_input_stream_read_bytes_finish() to get the result of the
+// operation.
+//
+// During an async request no other sync and async calls are allowed on stream,
+// and will result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the new #GBytes will be passed to the callback. It is not an
+// error if this is smaller than the requested size, as it can happen e.g. near
+// the end of a file, but generally we try to read as many bytes as requested.
+// Zero is returned on end of file (or if count is zero), but never otherwise.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - count: number of bytes that will be read from the stream.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *InputStream) ReadBytesAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream       // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.gsize               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_input_stream_read_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // ReadBytesFinish finishes an asynchronous stream read-into-#GBytes operation.
@@ -55585,6 +62574,65 @@ func (stream *InputStream) Skip(ctx context.Context, count uint) (int, error) {
 	return _gssize, _goerr
 }
 
+// SkipAsync: request an asynchronous skip of count bytes from the stream.
+// When the operation is finished callback will be called. You can then call
+// g_input_stream_skip_finish() to get the result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes skipped will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. near the end of a file, but generally we try to skip as many
+// bytes as requested. Zero is returned on end of file (or if count is zero),
+// but never otherwise.
+//
+// Any outstanding i/o request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one, you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - count: number of bytes that will be skipped from the stream.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *InputStream) SkipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GInputStream       // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.gsize               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_input_stream_skip_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // SkipFinish finishes a stream skip operation.
 //
 // The function takes the following parameters:
@@ -55616,6 +62664,51 @@ func (stream *InputStream) SkipFinish(result AsyncResulter) (int, error) {
 	}
 
 	return _gssize, _goerr
+}
+
+// closeAsync requests an asynchronous closes of the stream, releasing resources
+// related to it. When the operation is finished callback will be called.
+// You can then call g_input_stream_close_finish() to get the result of the
+// operation.
+//
+// For behaviour details see g_input_stream_close().
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *InputStream) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.close_async
+
+	var _arg0 *C.GInputStream       // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_InputStream_virtual_close_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // closeFinish finishes closing a stream asynchronously, started from
@@ -55674,6 +62767,74 @@ func (stream *InputStream) closeFn(ctx context.Context) error {
 	}
 
 	return _goerr
+}
+
+// readAsync: request an asynchronous read of count bytes from the stream into
+// the buffer starting at buffer. When the operation is finished callback will
+// be called. You can then call g_input_stream_read_finish() to get the result
+// of the operation.
+//
+// During an async request no other sync and async calls are allowed on stream,
+// and will result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer will be passed to the
+// callback. It is not an error if this is not the same as the requested size,
+// as it can happen e.g. near the end of a file, but generally we try to read
+// as many bytes as requested. Zero is returned on end of file (or if count is
+// zero), but never otherwise.
+//
+// Any outstanding i/o request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer (optional): a buffer to read data into (which should be at least
+//     count bytes long).
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *InputStream) readAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.read_async
+
+	var _arg0 *C.GInputStream // out
+	var _arg4 *C.GCancellable // out
+	var _arg1 *C.void         // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_InputStream_virtual_read_async(unsafe.Pointer(fnarg), _arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // readFinish finishes an asynchronous stream read operation.
@@ -55768,6 +62929,68 @@ func (stream *InputStream) skip(ctx context.Context, count uint) (int, error) {
 	}
 
 	return _gssize, _goerr
+}
+
+// skipAsync: request an asynchronous skip of count bytes from the stream.
+// When the operation is finished callback will be called. You can then call
+// g_input_stream_skip_finish() to get the result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes skipped will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. near the end of a file, but generally we try to skip as many
+// bytes as requested. Zero is returned on end of file (or if count is zero),
+// but never otherwise.
+//
+// Any outstanding i/o request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one, you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - count: number of bytes that will be skipped from the stream.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *InputStream) skipAsync(ctx context.Context, count uint, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GInputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.skip_async
+
+	var _arg0 *C.GInputStream       // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 C.gsize               // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_InputStream_virtual_skip_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(count)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // skipFinish finishes a stream skip operation.
@@ -61032,6 +68255,48 @@ func (stream *OutputStream) Close(ctx context.Context) error {
 	return _goerr
 }
 
+// CloseAsync requests an asynchronous close of the stream, releasing resources
+// related to it. When the operation is finished callback will be called.
+// You can then call g_output_stream_close_finish() to get the result of the
+// operation.
+//
+// For behaviour details see g_output_stream_close().
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) CloseAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // CloseFinish closes an output stream.
 //
 // The function takes the following parameters:
@@ -61094,6 +68359,43 @@ func (stream *OutputStream) Flush(ctx context.Context) error {
 	}
 
 	return _goerr
+}
+
+// FlushAsync forces an asynchronous write of all user-space buffered data for
+// the given stream. For behaviour details see g_output_stream_flush().
+//
+// When the operation is finished callback will be called. You can then call
+// g_output_stream_flush_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) FlushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_flush_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // FlushFinish finishes flushing an output stream.
@@ -61261,6 +68563,52 @@ func (stream *OutputStream) Splice(ctx context.Context, source InputStreamer, fl
 	return _gssize, _goerr
 }
 
+// SpliceAsync splices a stream asynchronously. When the operation is finished
+// callback will be called. You can then call g_output_stream_splice_finish() to
+// get the result of the operation.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_splice().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - source: Stream.
+//   - flags: set of StreamSpliceFlags.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) SpliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream           // out
+	var _arg4 *C.GCancellable            // out
+	var _arg1 *C.GInputStream            // out
+	var _arg2 C.GOutputStreamSpliceFlags // out
+	var _arg3 C.int                      // out
+	var _arg5 C.GAsyncReadyCallback      // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg2 = C.GOutputStreamSpliceFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_splice_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // SpliceFinish finishes an asynchronous stream splice operation.
 //
 // The function takes the following parameters:
@@ -61422,6 +68770,61 @@ func (stream *OutputStream) WriteAll(ctx context.Context, buffer []byte) (uint, 
 	return _bytesWritten, _goerr
 }
 
+// WriteAllAsync: request an asynchronous write of count bytes from buffer
+// into the stream. When the operation is finished callback will be called.
+// You can then call g_output_stream_write_all_finish() to get the result of the
+// operation.
+//
+// This is the asynchronous version of g_output_stream_write_all().
+//
+// Call g_output_stream_write_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// Note that no copy of buffer will be made, so it must stay valid until
+// callback is called.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer containing the data to write.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) WriteAllAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
+	var _arg1 *C.void          // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_write_all_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // WriteAllFinish finishes an asynchronous stream write operation started with
 // g_output_stream_write_all_async().
 //
@@ -61462,6 +68865,80 @@ func (stream *OutputStream) WriteAllFinish(result AsyncResulter) (uint, error) {
 	}
 
 	return _bytesWritten, _goerr
+}
+
+// WriteAsync: request an asynchronous write of count bytes from buffer into the
+// stream. When the operation is finished callback will be called. You can then
+// call g_output_stream_write_finish() to get the result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes written will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
+//
+// You are guaranteed that this method will never fail with
+// G_IO_ERROR_WOULD_BLOCK - if stream can't accept more data, the method will
+// just wait until this changes.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_write().
+//
+// Note that no copy of buffer will be made, so it must stay valid until
+// callback is called. See g_output_stream_write_bytes_async() for a #GBytes
+// version that will automatically hold a reference to the contents (without
+// copying) for the duration of the call.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer containing the data to write.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) WriteAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
+	var _arg1 *C.void          // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_write_async(_arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WriteBytes: wrapper function for g_output_stream_write() which takes a
@@ -61512,6 +68989,54 @@ func (stream *OutputStream) WriteBytes(ctx context.Context, bytes *glib.Bytes) (
 	}
 
 	return _gssize, _goerr
+}
+
+// WriteBytesAsync: this function is similar to g_output_stream_write_async(),
+// but takes a #GBytes as input. Due to the refcounted nature of #GBytes,
+// this allows the stream to avoid taking a copy of the data.
+//
+// However, note that this function may still perform partial writes,
+// just like g_output_stream_write_async(). If that occurs, to continue writing,
+// you will need to create a new #GBytes containing just the remaining bytes,
+// using g_bytes_new_from_bytes(). Passing the same #GBytes instance multiple
+// times potentially can result in duplicated data in the output stream.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_write_bytes().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - bytes to write.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) WriteBytesAsync(ctx context.Context, bytes *glib.Bytes, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.GBytes             // out
+	var _arg2 C.int                 // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+	_arg2 = C.int(ioPriority)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_write_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(bytes)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // WriteBytesFinish finishes a stream write-from-#GBytes operation.
@@ -61724,6 +69249,67 @@ func (stream *OutputStream) WritevAll(ctx context.Context, vectors []OutputVecto
 	return _bytesWritten, _goerr
 }
 
+// WritevAllAsync: request an asynchronous write of the bytes contained in the
+// n_vectors vectors into the stream. When the operation is finished callback
+// will be called. You can then call g_output_stream_writev_all_finish() to get
+// the result of the operation.
+//
+// This is the asynchronous version of g_output_stream_writev_all().
+//
+// Call g_output_stream_writev_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// Note that no copy of vectors will be made, so it must stay valid until
+// callback is called. The content of the individual elements of vectors might
+// be changed by this function.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - vectors: buffer containing the Vectors to write.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) WritevAllAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
+	var _arg1 *C.GOutputVector // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(vectors))
+	_arg1 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GOutputVector)(_arg1), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_writev_all_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(vectors)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // WritevAllFinish finishes an asynchronous stream write operation started with
 // g_output_stream_writev_all_async().
 //
@@ -61766,6 +69352,81 @@ func (stream *OutputStream) WritevAllFinish(result AsyncResulter) (uint, error) 
 	return _bytesWritten, _goerr
 }
 
+// WritevAsync: request an asynchronous write of the bytes contained in
+// n_vectors vectors into the stream. When the operation is finished callback
+// will be called. You can then call g_output_stream_writev_finish() to get the
+// result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// On success, the number of bytes written will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
+//
+// You are guaranteed that this method will never fail with
+// G_IO_ERROR_WOULD_BLOCK — if stream can't accept more data, the method will
+// just wait until this changes.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_writev().
+//
+// Note that no copy of vectors will be made, so it must stay valid until
+// callback is called.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - vectors: buffer containing the Vectors to write.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) WritevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
+	var _arg1 *C.GOutputVector // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(vectors))
+	_arg1 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GOutputVector)(_arg1), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_output_stream_writev_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(vectors)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // WritevFinish finishes a stream writev operation.
 //
 // The function takes the following parameters:
@@ -61798,6 +69459,51 @@ func (stream *OutputStream) WritevFinish(result AsyncResulter) (uint, error) {
 	}
 
 	return _bytesWritten, _goerr
+}
+
+// closeAsync requests an asynchronous close of the stream, releasing resources
+// related to it. When the operation is finished callback will be called.
+// You can then call g_output_stream_close_finish() to get the result of the
+// operation.
+//
+// For behaviour details see g_output_stream_close().
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional cancellable object.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) closeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.close_async
+
+	var _arg0 *C.GOutputStream      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_OutputStream_virtual_close_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // closeFinish closes an output stream.
@@ -61898,6 +69604,46 @@ func (stream *OutputStream) flush(ctx context.Context) error {
 	return _goerr
 }
 
+// flushAsync forces an asynchronous write of all user-space buffered data for
+// the given stream. For behaviour details see g_output_stream_flush().
+//
+// When the operation is finished callback will be called. You can then call
+// g_output_stream_flush_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) flushAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.flush_async
+
+	var _arg0 *C.GOutputStream      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_OutputStream_virtual_flush_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // flushFinish finishes flushing an output stream.
 //
 // The function takes the following parameters:
@@ -61978,6 +69724,55 @@ func (stream *OutputStream) splice(ctx context.Context, source InputStreamer, fl
 	return _gssize, _goerr
 }
 
+// spliceAsync splices a stream asynchronously. When the operation is finished
+// callback will be called. You can then call g_output_stream_splice_finish() to
+// get the result of the operation.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_splice().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - source: Stream.
+//   - flags: set of StreamSpliceFlags.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) spliceAsync(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.splice_async
+
+	var _arg0 *C.GOutputStream           // out
+	var _arg4 *C.GCancellable            // out
+	var _arg1 *C.GInputStream            // out
+	var _arg2 C.GOutputStreamSpliceFlags // out
+	var _arg3 C.int                      // out
+	var _arg5 C.GAsyncReadyCallback      // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(coreglib.InternObject(source).Native()))
+	_arg2 = C.GOutputStreamSpliceFlags(flags)
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_OutputStream_virtual_splice_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(source)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // spliceFinish finishes an asynchronous stream splice operation.
 //
 // The function takes the following parameters:
@@ -62014,6 +69809,83 @@ func (stream *OutputStream) spliceFinish(result AsyncResulter) (int, error) {
 	}
 
 	return _gssize, _goerr
+}
+
+// writeAsync: request an asynchronous write of count bytes from buffer into the
+// stream. When the operation is finished callback will be called. You can then
+// call g_output_stream_write_finish() to get the result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// A value of count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes written will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
+//
+// You are guaranteed that this method will never fail with
+// G_IO_ERROR_WOULD_BLOCK - if stream can't accept more data, the method will
+// just wait until this changes.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_write().
+//
+// Note that no copy of buffer will be made, so it must stay valid until
+// callback is called. See g_output_stream_write_bytes_async() for a #GBytes
+// version that will automatically hold a reference to the contents (without
+// copying) for the duration of the call.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - buffer (optional) containing the data to write.
+//   - ioPriority: io priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) writeAsync(ctx context.Context, buffer []byte, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.write_async
+
+	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
+	var _arg1 *C.void          // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(buffer))
+	if len(buffer) > 0 {
+		_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_OutputStream_virtual_write_async(unsafe.Pointer(fnarg), _arg0, unsafe.Pointer(_arg1), _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // writeFinish finishes a stream write operation.
@@ -62116,6 +69988,84 @@ func (stream *OutputStream) writeFn(ctx context.Context, buffer []byte) (int, er
 	}
 
 	return _gssize, _goerr
+}
+
+// writevAsync: request an asynchronous write of the bytes contained in
+// n_vectors vectors into the stream. When the operation is finished callback
+// will be called. You can then call g_output_stream_writev_finish() to get the
+// result of the operation.
+//
+// During an async request no other sync and async calls are allowed, and will
+// result in G_IO_ERROR_PENDING errors.
+//
+// On success, the number of bytes written will be passed to the callback.
+// It is not an error if this is not the same as the requested size, as it can
+// happen e.g. on a partial I/O error, but generally we try to write as many
+// bytes as requested.
+//
+// You are guaranteed that this method will never fail with
+// G_IO_ERROR_WOULD_BLOCK — if stream can't accept more data, the method will
+// just wait until this changes.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority. Default
+// priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+//
+// For the synchronous, blocking version of this function, see
+// g_output_stream_writev().
+//
+// Note that no copy of vectors will be made, so it must stay valid until
+// callback is called.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - vectors: buffer containing the Vectors to write.
+//   - ioPriority: i/O priority of the request.
+//   - callback (optional): ReadyCallback to call when the request is satisfied.
+func (stream *OutputStream) writevAsync(ctx context.Context, vectors []OutputVector, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GOutputStreamClass)(coreglib.PeekParentClass(stream))
+	fnarg := gclass.writev_async
+
+	var _arg0 *C.GOutputStream // out
+	var _arg4 *C.GCancellable  // out
+	var _arg1 *C.GOutputVector // out
+	var _arg2 C.gsize
+	var _arg3 C.int                 // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GOutputStream)(unsafe.Pointer(coreglib.InternObject(stream).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg2 = (C.gsize)(len(vectors))
+	_arg1 = (*C.GOutputVector)(C.calloc(C.size_t(len(vectors)), C.size_t(C.sizeof_GOutputVector)))
+	defer C.free(unsafe.Pointer(_arg1))
+	{
+		out := unsafe.Slice((*C.GOutputVector)(_arg1), len(vectors))
+		for i := range vectors {
+			out[i] = *(*C.GOutputVector)(gextras.StructNative(unsafe.Pointer((&vectors[i]))))
+		}
+	}
+	_arg3 = C.int(ioPriority)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_OutputStream_virtual_writev_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(stream)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(vectors)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // writevFinish finishes a stream writev operation.
@@ -62434,6 +70384,37 @@ func (permission *Permission) Acquire(ctx context.Context) error {
 	return _goerr
 }
 
+// AcquireAsync attempts to acquire the permission represented by permission.
+//
+// This is the first half of the asynchronous version of g_permission_acquire().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when done.
+func (permission *Permission) AcquireAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
 // AcquireFinish collects the result of attempting to acquire the permission
 // represented by permission.
 //
@@ -62618,6 +70599,37 @@ func (permission *Permission) Release(ctx context.Context) error {
 	return _goerr
 }
 
+// ReleaseAsync attempts to release the permission represented by permission.
+//
+// This is the first half of the asynchronous version of g_permission_release().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when done.
+func (permission *Permission) ReleaseAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
 // ReleaseFinish collects the result of attempting to release the permission
 // represented by permission.
 //
@@ -62693,6 +70705,40 @@ func (permission *Permission) acquire(ctx context.Context) error {
 	}
 
 	return _goerr
+}
+
+// acquireAsync attempts to acquire the permission represented by permission.
+//
+// This is the first half of the asynchronous version of g_permission_acquire().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when done.
+func (permission *Permission) acquireAsync(ctx context.Context, callback AsyncReadyCallback) {
+	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
+	fnarg := gclass.acquire_async
+
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Permission_virtual_acquire_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // acquireFinish collects the result of attempting to acquire the permission
@@ -62773,6 +70819,40 @@ func (permission *Permission) release(ctx context.Context) error {
 	}
 
 	return _goerr
+}
+
+// releaseAsync attempts to release the permission represented by permission.
+//
+// This is the first half of the asynchronous version of g_permission_release().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional) to call when done.
+func (permission *Permission) releaseAsync(ctx context.Context, callback AsyncReadyCallback) {
+	gclass := (*C.GPermissionClass)(coreglib.PeekParentClass(permission))
+	fnarg := gclass.release_async
+
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GPermission)(unsafe.Pointer(coreglib.InternObject(permission).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Permission_virtual_release_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(permission)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // releaseFinish collects the result of attempting to release the permission
@@ -63638,6 +71718,41 @@ func (resolver *Resolver) LookupByAddress(ctx context.Context, address *InetAddr
 	return _utf8, _goerr
 }
 
+// LookupByAddressAsync begins asynchronously reverse-resolving address to
+// determine its associated hostname, and eventually calls callback, which must
+// call g_resolver_lookup_by_address_finish() to get the final result.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - address to reverse-resolve.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) LookupByAddressAsync(ctx context.Context, address *InetAddress, callback AsyncReadyCallback) {
+	var _arg0 *C.GResolver          // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GInetAddress       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_resolver_lookup_by_address_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(callback)
+}
+
 // LookupByAddressFinish retrieves the result of a previous call to
 // g_resolver_lookup_by_address_async().
 //
@@ -63747,6 +71862,43 @@ func (resolver *Resolver) LookupByName(ctx context.Context, hostname string) ([]
 	return _list, _goerr
 }
 
+// LookupByNameAsync begins asynchronously resolving hostname to determine
+// its associated IP address(es), and eventually calls callback,
+// which must call g_resolver_lookup_by_name_finish() to get the result.
+// See g_resolver_lookup_by_name() for more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - hostname to look up the address of.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) LookupByNameAsync(ctx context.Context, hostname string, callback AsyncReadyCallback) {
+	var _arg0 *C.GResolver          // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_resolver_lookup_by_name_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(callback)
+}
+
 // LookupByNameFinish retrieves the result of a call to
 // g_resolver_lookup_by_name_async().
 //
@@ -63846,6 +71998,47 @@ func (resolver *Resolver) LookupByNameWithFlags(ctx context.Context, hostname st
 	}
 
 	return _list, _goerr
+}
+
+// LookupByNameWithFlagsAsync begins asynchronously resolving hostname to
+// determine its associated IP address(es), and eventually calls callback, which
+// must call g_resolver_lookup_by_name_with_flags_finish() to get the result.
+// See g_resolver_lookup_by_name() for more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - hostname to look up the address of.
+//   - flags: extra NameLookupFlags for the lookup.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) LookupByNameWithFlagsAsync(ctx context.Context, hostname string, flags ResolverNameLookupFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GResolver               // out
+	var _arg3 *C.GCancellable            // out
+	var _arg1 *C.gchar                   // out
+	var _arg2 C.GResolverNameLookupFlags // out
+	var _arg4 C.GAsyncReadyCallback      // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResolverNameLookupFlags(flags)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_resolver_lookup_by_name_with_flags_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // LookupByNameWithFlagsFinish retrieves the result of a call to
@@ -63959,6 +72152,47 @@ func (resolver *Resolver) LookupRecords(ctx context.Context, rrname string, reco
 	}
 
 	return _list, _goerr
+}
+
+// LookupRecordsAsync begins asynchronously performing a DNS lookup
+// for the given rrname, and eventually calls callback, which must
+// call g_resolver_lookup_records_finish() to get the final result. See
+// g_resolver_lookup_records() for more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - rrname: DNS name to look up the record for.
+//   - recordType: type of DNS record to look up.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) LookupRecordsAsync(ctx context.Context, rrname string, recordType ResolverRecordType, callback AsyncReadyCallback) {
+	var _arg0 *C.GResolver          // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GResolverRecordType // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(rrname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResolverRecordType(recordType)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_resolver_lookup_records_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(rrname)
+	runtime.KeepAlive(recordType)
+	runtime.KeepAlive(callback)
 }
 
 // LookupRecordsFinish retrieves the result of a previous call to
@@ -64095,6 +72329,53 @@ func (resolver *Resolver) LookupService(ctx context.Context, service, protocol, 
 	}
 
 	return _list, _goerr
+}
+
+// LookupServiceAsync begins asynchronously performing a DNS SRV lookup for
+// the given service and protocol in the given domain, and eventually calls
+// callback, which must call g_resolver_lookup_service_finish() to get the final
+// result. See g_resolver_lookup_service() for more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - service type to look up (eg, "ldap").
+//   - protocol: networking protocol to use for service (eg, "tcp").
+//   - domain: DNS domain to look up the service in.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) LookupServiceAsync(ctx context.Context, service, protocol, domain string, callback AsyncReadyCallback) {
+	var _arg0 *C.GResolver          // out
+	var _arg4 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.gchar              // out
+	var _arg3 *C.gchar              // out
+	var _arg5 C.GAsyncReadyCallback // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(protocol)))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg3))
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_resolver_lookup_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(service)
+	runtime.KeepAlive(protocol)
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(callback)
 }
 
 // LookupServiceFinish retrieves the result of a previous call to
@@ -64237,6 +72518,44 @@ func (resolver *Resolver) lookupByAddress(ctx context.Context, address *InetAddr
 	return _utf8, _goerr
 }
 
+// lookupByAddressAsync begins asynchronously reverse-resolving address to
+// determine its associated hostname, and eventually calls callback, which must
+// call g_resolver_lookup_by_address_finish() to get the final result.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - address to reverse-resolve.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) lookupByAddressAsync(ctx context.Context, address *InetAddress, callback AsyncReadyCallback) {
+	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
+	fnarg := gclass.lookup_by_address_async
+
+	var _arg0 *C.GResolver          // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GInetAddress       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Resolver_virtual_lookup_by_address_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(callback)
+}
+
 // lookupByAddressFinish retrieves the result of a previous call to
 // g_resolver_lookup_by_address_async().
 //
@@ -64352,6 +72671,46 @@ func (resolver *Resolver) lookupByName(ctx context.Context, hostname string) ([]
 	return _list, _goerr
 }
 
+// lookupByNameAsync begins asynchronously resolving hostname to determine
+// its associated IP address(es), and eventually calls callback,
+// which must call g_resolver_lookup_by_name_finish() to get the result.
+// See g_resolver_lookup_by_name() for more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - hostname to look up the address of.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) lookupByNameAsync(ctx context.Context, hostname string, callback AsyncReadyCallback) {
+	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
+	fnarg := gclass.lookup_by_name_async
+
+	var _arg0 *C.GResolver          // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Resolver_virtual_lookup_by_name_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(callback)
+}
+
 // lookupByNameFinish retrieves the result of a call to
 // g_resolver_lookup_by_name_async().
 //
@@ -64457,6 +72816,50 @@ func (resolver *Resolver) lookupByNameWithFlags(ctx context.Context, hostname st
 	}
 
 	return _list, _goerr
+}
+
+// lookupByNameWithFlagsAsync begins asynchronously resolving hostname to
+// determine its associated IP address(es), and eventually calls callback, which
+// must call g_resolver_lookup_by_name_with_flags_finish() to get the result.
+// See g_resolver_lookup_by_name() for more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - hostname to look up the address of.
+//   - flags: extra NameLookupFlags for the lookup.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) lookupByNameWithFlagsAsync(ctx context.Context, hostname string, flags ResolverNameLookupFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
+	fnarg := gclass.lookup_by_name_with_flags_async
+
+	var _arg0 *C.GResolver               // out
+	var _arg3 *C.GCancellable            // out
+	var _arg1 *C.gchar                   // out
+	var _arg2 C.GResolverNameLookupFlags // out
+	var _arg4 C.GAsyncReadyCallback      // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResolverNameLookupFlags(flags)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Resolver_virtual_lookup_by_name_with_flags_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostname)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // lookupByNameWithFlagsFinish retrieves the result of a call to
@@ -64578,6 +72981,50 @@ func (resolver *Resolver) lookupRecords(ctx context.Context, rrname string, reco
 	return _list, _goerr
 }
 
+// lookupRecordsAsync begins asynchronously performing a DNS lookup
+// for the given rrname, and eventually calls callback, which must
+// call g_resolver_lookup_records_finish() to get the final result. See
+// g_resolver_lookup_records() for more details.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - rrname: DNS name to look up the record for.
+//   - recordType: type of DNS record to look up.
+//   - callback (optional) to call after resolution completes.
+func (resolver *Resolver) lookupRecordsAsync(ctx context.Context, rrname string, recordType ResolverRecordType, callback AsyncReadyCallback) {
+	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
+	fnarg := gclass.lookup_records_async
+
+	var _arg0 *C.GResolver          // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GResolverRecordType // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(rrname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GResolverRecordType(recordType)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Resolver_virtual_lookup_records_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(rrname)
+	runtime.KeepAlive(recordType)
+	runtime.KeepAlive(callback)
+}
+
 // lookupRecordsFinish retrieves the result of a previous call to
 // g_resolver_lookup_records_async(). Returns a non-empty list of records as
 // #GVariant tuples. See RecordType for information on what the records contain.
@@ -64632,6 +73079,41 @@ func (resolver *Resolver) lookupRecordsFinish(result AsyncResulter) ([]*glib.Var
 	}
 
 	return _list, _goerr
+}
+
+// The function takes the following parameters:
+//
+//   - ctx (optional)
+//   - rrname
+//   - callback (optional)
+func (resolver *Resolver) lookupServiceAsync(ctx context.Context, rrname string, callback AsyncReadyCallback) {
+	gclass := (*C.GResolverClass)(coreglib.PeekParentClass(resolver))
+	fnarg := gclass.lookup_service_async
+
+	var _arg0 *C.GResolver          // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GResolver)(unsafe.Pointer(coreglib.InternObject(resolver).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(rrname)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_Resolver_virtual_lookup_service_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(resolver)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(rrname)
+	runtime.KeepAlive(callback)
 }
 
 // lookupServiceFinish retrieves the result of a previous call to
@@ -67479,6 +75961,99 @@ func wrapSimpleAsyncResult(obj *coreglib.Object) *SimpleAsyncResult {
 
 func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	return wrapSimpleAsyncResult(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewSimpleAsyncResult creates a AsyncResult.
+//
+// The common convention is to create the AsyncResult in the function that
+// starts the asynchronous operation and use that same function as the
+// source_tag.
+//
+// If your operation supports cancellation with #GCancellable (which it
+// probably should) then you should provide the user's cancellable to
+// g_simple_async_result_set_check_cancellable() immediately after this function
+// returns.
+//
+// Deprecated: Use g_task_new() instead.
+//
+// The function takes the following parameters:
+//
+//   - sourceObject (optional) or NULL.
+//   - callback (optional): ReadyCallback.
+//   - sourceTag (optional) asynchronous function.
+//
+// The function returns the following values:
+//
+//   - simpleAsyncResult: AsyncResult.
+func NewSimpleAsyncResult(sourceObject *coreglib.Object, callback AsyncReadyCallback, sourceTag unsafe.Pointer) *SimpleAsyncResult {
+	var _arg1 *C.GObject            // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+	var _arg4 C.gpointer            // out
+	var _cret *C.GSimpleAsyncResult // in
+
+	if sourceObject != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
+
+	_cret = C.g_simple_async_result_new(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(sourceObject)
+	runtime.KeepAlive(callback)
+	runtime.KeepAlive(sourceTag)
+
+	var _simpleAsyncResult *SimpleAsyncResult // out
+
+	_simpleAsyncResult = wrapSimpleAsyncResult(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _simpleAsyncResult
+}
+
+// NewSimpleAsyncResultFromError creates a AsyncResult from an error condition.
+//
+// Deprecated: Use g_task_new() and g_task_return_error() instead.
+//
+// The function takes the following parameters:
+//
+//   - sourceObject (optional) or NULL.
+//   - callback (optional): ReadyCallback.
+//   - err: #GError.
+//
+// The function returns the following values:
+//
+//   - simpleAsyncResult: AsyncResult.
+func NewSimpleAsyncResultFromError(sourceObject *coreglib.Object, callback AsyncReadyCallback, err error) *SimpleAsyncResult {
+	var _arg1 *C.GObject            // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+	var _arg4 *C.GError             // out
+	var _cret *C.GSimpleAsyncResult // in
+
+	if sourceObject != nil {
+		_arg1 = (*C.GObject)(unsafe.Pointer(sourceObject.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+	if err != nil {
+		_arg4 = (*C.GError)(gerror.New(err))
+	}
+
+	_cret = C.g_simple_async_result_new_from_error(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(sourceObject)
+	runtime.KeepAlive(callback)
+	runtime.KeepAlive(err)
+
+	var _simpleAsyncResult *SimpleAsyncResult // out
+
+	_simpleAsyncResult = wrapSimpleAsyncResult(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _simpleAsyncResult
 }
 
 // Complete completes an asynchronous I/O job immediately. Must be called
@@ -71106,6 +79681,40 @@ func (enumerator *SocketAddressEnumerator) Next(ctx context.Context) (SocketAddr
 	return _socketAddress, _goerr
 }
 
+// NextAsync: asynchronously retrieves the next Address from enumerator and then
+// calls callback, which must call g_socket_address_enumerator_next_finish() to
+// get the result.
+//
+// It is an error to call this multiple times before the previous callback has
+// finished.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) to call when the request is satisfied.
+func (enumerator *SocketAddressEnumerator) NextAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketAddressEnumerator // out
+	var _arg1 *C.GCancellable             // out
+	var _arg2 C.GAsyncReadyCallback       // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_address_enumerator_next_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
 // NextFinish retrieves the result of a completed call
 // to g_socket_address_enumerator_next_async(). See
 // g_socket_address_enumerator_next() for more information about error handling.
@@ -71221,6 +79830,43 @@ func (enumerator *SocketAddressEnumerator) next(ctx context.Context) (SocketAddr
 	}
 
 	return _socketAddress, _goerr
+}
+
+// nextAsync: asynchronously retrieves the next Address from enumerator and then
+// calls callback, which must call g_socket_address_enumerator_next_finish() to
+// get the result.
+//
+// It is an error to call this multiple times before the previous callback has
+// finished.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - callback (optional) to call when the request is satisfied.
+func (enumerator *SocketAddressEnumerator) nextAsync(ctx context.Context, callback AsyncReadyCallback) {
+	gclass := (*C.GSocketAddressEnumeratorClass)(coreglib.PeekParentClass(enumerator))
+	fnarg := gclass.next_async
+
+	var _arg0 *C.GSocketAddressEnumerator // out
+	var _arg1 *C.GCancellable             // out
+	var _arg2 C.GAsyncReadyCallback       // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(coreglib.InternObject(enumerator).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_SocketAddressEnumerator_virtual_next_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(enumerator)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // nextFinish retrieves the result of a completed call
@@ -71508,6 +80154,50 @@ func (client *SocketClient) ConnectSocketClient(ctx context.Context, connectable
 	return _socketConnection, _goerr
 }
 
+// ConnectAsync: this is the asynchronous version of g_socket_client_connect().
+//
+// You may wish to prefer the asynchronous version even in synchronous
+// command line programs because, since 2.60, it implements RFC 8305
+// (https://tools.ietf.org/html/rfc8305) "Happy Eyeballs" recommendations to
+// work around long connection timeouts in networks where IPv6 is broken by
+// performing an IPv4 connection simultaneously without waiting for IPv6 to
+// time out, which is not supported by the synchronous call. (This is not an API
+// guarantee, and may change in the future.)
+//
+// When the operation is finished callback will be called. You can then call
+// g_socket_client_connect_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - connectable specifying the remote address.
+//   - callback (optional): ReadyCallback.
+func (client *SocketClient) ConnectAsync(ctx context.Context, connectable SocketConnectabler, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketClient      // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(connectable).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_client_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connectable)
+	runtime.KeepAlive(callback)
+}
+
 // ConnectFinish finishes an async connect operation. See
 // g_socket_client_connect_async().
 //
@@ -71616,6 +80306,48 @@ func (client *SocketClient) ConnectToHost(ctx context.Context, hostAndPort strin
 	return _socketConnection, _goerr
 }
 
+// ConnectToHostAsync: this is the asynchronous version of
+// g_socket_client_connect_to_host().
+//
+// When the operation is finished callback will be called. You can then call
+// g_socket_client_connect_to_host_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - hostAndPort: name and optionally the port of the host to connect to.
+//   - defaultPort: default port to connect to.
+//   - callback (optional): ReadyCallback.
+func (client *SocketClient) ConnectToHostAsync(ctx context.Context, hostAndPort string, defaultPort uint16, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(hostAndPort)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_client_connect_to_host_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(hostAndPort)
+	runtime.KeepAlive(defaultPort)
+	runtime.KeepAlive(callback)
+}
+
 // ConnectToHostFinish finishes an async connect operation. See
 // g_socket_client_connect_to_host_async().
 //
@@ -71707,6 +80439,46 @@ func (client *SocketClient) ConnectToService(ctx context.Context, domain, servic
 	}
 
 	return _socketConnection, _goerr
+}
+
+// ConnectToServiceAsync: this is the asynchronous version of
+// g_socket_client_connect_to_service().
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - domain name.
+//   - service: name of the service to connect to.
+//   - callback (optional): ReadyCallback.
+func (client *SocketClient) ConnectToServiceAsync(ctx context.Context, domain, service string, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.gchar              // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(domain)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(service)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_client_connect_to_service_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(domain)
+	runtime.KeepAlive(service)
+	runtime.KeepAlive(callback)
 }
 
 // ConnectToServiceFinish finishes an async connect operation. See
@@ -71805,6 +80577,48 @@ func (client *SocketClient) ConnectToURI(ctx context.Context, uri string, defaul
 	}
 
 	return _socketConnection, _goerr
+}
+
+// ConnectToURIAsync: this is the asynchronous version of
+// g_socket_client_connect_to_uri().
+//
+// When the operation is finished callback will be called. You can then call
+// g_socket_client_connect_to_uri_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - uri: network uri.
+//   - defaultPort: default port to connect to.
+//   - callback (optional): ReadyCallback.
+func (client *SocketClient) ConnectToURIAsync(ctx context.Context, uri string, defaultPort uint16, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketClient      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _arg4 C.GAsyncReadyCallback // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GSocketClient)(unsafe.Pointer(coreglib.InternObject(client).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(uri)))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(defaultPort)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_client_connect_to_uri_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(client)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(uri)
+	runtime.KeepAlive(defaultPort)
+	runtime.KeepAlive(callback)
 }
 
 // ConnectToURIFinish finishes an async connect operation. See
@@ -72405,6 +81219,49 @@ func (connection *SocketConnection) ConnectSocketConnection(ctx context.Context,
 	}
 
 	return _goerr
+}
+
+// ConnectAsync: asynchronously connect connection to the specified remote
+// address.
+//
+// This clears the #GSocket:blocking flag on connection's underlying socket if
+// it is currently set.
+//
+// If #GSocket:timeout is set, the operation will time out and return
+// G_IO_ERROR_TIMED_OUT after that period. Otherwise, it will continue
+// indefinitely until operating system timeouts (if any) are hit.
+//
+// Use g_socket_connection_connect_finish() to retrieve the result.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): GCancellable or NULL.
+//   - address specifying the remote address.
+//   - callback (optional): ReadyCallback.
+func (connection *SocketConnection) ConnectAsync(ctx context.Context, address SocketAddresser, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketConnection  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GSocketAddress     // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GSocketConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(coreglib.InternObject(address).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_connection_connect_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(address)
+	runtime.KeepAlive(callback)
 }
 
 // ConnectFinish gets the result of a g_socket_connection_connect_async() call.
@@ -73162,6 +82019,38 @@ func (listener *SocketListener) Accept(ctx context.Context) (*coreglib.Object, *
 	return _sourceObject, _socketConnection, _goerr
 }
 
+// AcceptAsync: this is the asynchronous version of g_socket_listener_accept().
+//
+// When the operation is finished callback will be called. You can then call
+// g_socket_listener_accept_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional): ReadyCallback.
+func (listener *SocketListener) AcceptAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketListener    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_listener_accept_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
+}
+
 // AcceptFinish finishes an async accept operation. See
 // g_socket_listener_accept_async().
 //
@@ -73255,6 +82144,39 @@ func (listener *SocketListener) AcceptSocket(ctx context.Context) (*coreglib.Obj
 	}
 
 	return _sourceObject, _socket, _goerr
+}
+
+// AcceptSocketAsync: this is the asynchronous version of
+// g_socket_listener_accept_socket().
+//
+// When the operation is finished callback will be called. You can then call
+// g_socket_listener_accept_socket_finish() to get the result of the operation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - callback (optional): ReadyCallback.
+func (listener *SocketListener) AcceptSocketAsync(ctx context.Context, callback AsyncReadyCallback) {
+	var _arg0 *C.GSocketListener    // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GSocketListener)(unsafe.Pointer(coreglib.InternObject(listener).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_socket_listener_accept_socket_async(_arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(listener)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(callback)
 }
 
 // AcceptSocketFinish finishes an async accept operation. See
@@ -74314,6 +83236,61 @@ func marshalTask(p uintptr) (interface{}, error) {
 	return wrapTask(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// NewTask creates a #GTask acting on source_object, which will eventually
+// be used to invoke callback in the current [thread-default main
+// context][g-main-context-push-thread-default].
+//
+// Call this in the "start" method of your asynchronous method, and pass
+// the #GTask around throughout the asynchronous operation. You can use
+// g_task_set_task_data() to attach task-specific data to the object, which you
+// can retrieve later via g_task_get_task_data().
+//
+// By default, if cancellable is cancelled, then the return value of the
+// task will always be G_IO_ERROR_CANCELLED, even if the task had already
+// completed before the cancellation. This allows for simplified handling in
+// cases where cancellation may imply that other objects that the task depends
+// on have been destroyed. If you do not want this behavior, you can use
+// g_task_set_check_cancellable() to change it.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+//   - sourceObject (optional) that owns this task, or NULL.
+//   - callback (optional): ReadyCallback.
+//
+// The function returns the following values:
+//
+//   - task: #GTask.
+func NewTask(ctx context.Context, sourceObject *coreglib.Object, callback AsyncReadyCallback) *Task {
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.gpointer            // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+	var _cret *C.GTask // in
+
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	_cret = C.g_task_new(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(sourceObject)
+	runtime.KeepAlive(callback)
+
+	var _task *Task // out
+
+	_task = wrapTask(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _task
+}
+
 // Cancellable gets task's #GCancellable.
 //
 // The function returns the following values:
@@ -75064,6 +84041,45 @@ func TaskIsValid(result AsyncResulter, sourceObject *coreglib.Object) bool {
 	}
 
 	return _ok
+}
+
+// TaskReportError creates a #GTask and then immediately calls
+// g_task_return_error() on it. Use this in the wrapper function of an
+// asynchronous method when you want to avoid even calling the virtual method.
+// You can then use g_async_result_is_tagged() in the finish method wrapper to
+// check if the result there is tagged as having been created by the wrapper
+// method, and deal with it appropriately if so.
+//
+// See also g_task_report_new_error().
+//
+// The function takes the following parameters:
+//
+//   - sourceObject (optional) that owns this task, or NULL.
+//   - callback (optional): ReadyCallback.
+//   - sourceTag (optional): opaque pointer indicating the source of this task.
+//   - err: error to report.
+func TaskReportError(sourceObject *coreglib.Object, callback AsyncReadyCallback, sourceTag unsafe.Pointer, err error) {
+	var _arg1 C.gpointer            // out
+	var _arg2 C.GAsyncReadyCallback // out
+	var _arg3 C.gpointer
+	var _arg4 C.gpointer // out
+	var _arg5 *C.GError  // out
+
+	_arg1 = C.gpointer(unsafe.Pointer(sourceObject.Native()))
+	if callback != nil {
+		_arg2 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg3 = C.gpointer(gbox.AssignOnce(callback))
+	}
+	_arg4 = (C.gpointer)(unsafe.Pointer(sourceTag))
+	if err != nil {
+		_arg5 = (*C.GError)(gerror.New(err))
+	}
+
+	C.g_task_report_error(_arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(sourceObject)
+	runtime.KeepAlive(callback)
+	runtime.KeepAlive(sourceTag)
+	runtime.KeepAlive(err)
 }
 
 // TCPConnectionOverrides contains methods that are overridable.
@@ -77332,6 +86348,40 @@ func (conn *TLSConnection) Handshake(ctx context.Context) error {
 	return _goerr
 }
 
+// HandshakeAsync: asynchronously performs a TLS handshake on conn. See
+// g_tls_connection_handshake() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the handshake is complete.
+func (conn *TLSConnection) HandshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	var _arg0 *C.GTlsConnection     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_tls_connection_handshake_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
+}
+
 // HandshakeFinish: finish an asynchronous TLS handshake operation. See
 // g_tls_connection_handshake() for more information.
 //
@@ -77734,6 +86784,43 @@ func (conn *TLSConnection) handshake(ctx context.Context) error {
 	}
 
 	return _goerr
+}
+
+// handshakeAsync: asynchronously performs a TLS handshake on conn. See
+// g_tls_connection_handshake() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - ioPriority: [I/O priority][io-priority] of the request.
+//   - callback (optional) to call when the handshake is complete.
+func (conn *TLSConnection) handshakeAsync(ctx context.Context, ioPriority int, callback AsyncReadyCallback) {
+	gclass := (*C.GTlsConnectionClass)(coreglib.PeekParentClass(conn))
+	fnarg := gclass.handshake_async
+
+	var _arg0 *C.GTlsConnection     // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 C.int                 // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GTlsConnection)(unsafe.Pointer(coreglib.InternObject(conn).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.int(ioPriority)
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_TLSConnection_virtual_handshake_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(conn)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(ioPriority)
+	runtime.KeepAlive(callback)
 }
 
 // handshakeFinish: finish an asynchronous TLS handshake operation. See
@@ -78236,6 +87323,52 @@ func (self *TLSDatabase) LookupCertificateForHandle(ctx context.Context, handle 
 	return _tlsCertificate, _goerr
 }
 
+// LookupCertificateForHandleAsync: asynchronously look up a certificate by its
+// handle in the database. See g_tls_database_lookup_certificate_for_handle()
+// for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - handle: certificate handle.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup.
+//   - callback (optional) to call when the operation completes.
+func (self *TLSDatabase) LookupCertificateForHandleAsync(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg4 *C.GCancellable           // out
+	var _arg1 *C.gchar                  // out
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg5 C.GAsyncReadyCallback     // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(handle)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if interaction != nil {
+		_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	}
+	_arg3 = C.GTlsDatabaseLookupFlags(flags)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_tls_database_lookup_certificate_for_handle_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(handle)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // LookupCertificateForHandleFinish: finish an asynchronous lookup of a
 // certificate by its handle. See g_tls_database_lookup_certificate_for_handle()
 // for more information.
@@ -78377,6 +87510,51 @@ func (self *TLSDatabase) LookupCertificateIssuer(ctx context.Context, certificat
 	return _tlsCertificate, _goerr
 }
 
+// LookupCertificateIssuerAsync: asynchronously look up the issuer of
+// certificate in the database. See g_tls_database_lookup_certificate_issuer()
+// for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - certificate: Certificate.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags which affect the lookup operation.
+//   - callback (optional) to call when the operation completes.
+func (self *TLSDatabase) LookupCertificateIssuerAsync(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg4 *C.GCancellable           // out
+	var _arg1 *C.GTlsCertificate        // out
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg5 C.GAsyncReadyCallback     // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
+	if interaction != nil {
+		_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	}
+	_arg3 = C.GTlsDatabaseLookupFlags(flags)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_tls_database_lookup_certificate_issuer_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(certificate)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 // operation. See g_tls_database_lookup_certificate_issuer() for more
 // information.
@@ -78510,6 +87688,59 @@ func (self *TLSDatabase) LookupCertificatesIssuedBy(ctx context.Context, issuerR
 	}
 
 	return _list, _goerr
+}
+
+// LookupCertificatesIssuedByAsync: asynchronously look up
+// certificates issued by this issuer in the database. See
+// g_tls_database_lookup_certificates_issued_by() for more information.
+//
+// The database may choose to hold a reference to the issuer byte array for
+// the duration of this asynchronous operation. The byte array should not be
+// modified during this time.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - issuerRawDn which holds the DER encoded issuer DN.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup operation.
+//   - callback (optional) to call when the operation completes.
+func (self *TLSDatabase) LookupCertificatesIssuedByAsync(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg4 *C.GCancellable           // out
+	var _arg1 *C.GByteArray             // out
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg5 C.GAsyncReadyCallback     // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.g_byte_array_sized_new(C.guint(len(issuerRawDn)))
+	if len(issuerRawDn) > 0 {
+		_arg1 = C.g_byte_array_append(_arg1, (*C.guint8)(&issuerRawDn[0]), C.guint(len(issuerRawDn)))
+	}
+	defer C.g_byte_array_unref(_arg1)
+	if interaction != nil {
+		_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	}
+	_arg3 = C.GTlsDatabaseLookupFlags(flags)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_tls_database_lookup_certificates_issued_by_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(issuerRawDn)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
@@ -78686,6 +87917,62 @@ func (self *TLSDatabase) VerifyChain(ctx context.Context, chain TLSCertificater,
 	return _tlsCertificateFlags, _goerr
 }
 
+// VerifyChainAsync: asynchronously determines the validity of a certificate
+// chain after looking up and adding any missing certificates to the chain.
+// See g_tls_database_verify_chain() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - chain: Certificate chain.
+//   - purpose that this certificate chain will be used for.
+//   - identity (optional): expected peer identity.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags: additional verify flags.
+//   - callback (optional) to call when the operation completes.
+func (self *TLSDatabase) VerifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg6 *C.GCancellable           // out
+	var _arg1 *C.GTlsCertificate        // out
+	var _arg2 *C.gchar                  // out
+	var _arg3 *C.GSocketConnectable     // out
+	var _arg4 *C.GTlsInteraction        // out
+	var _arg5 C.GTlsDatabaseVerifyFlags // out
+	var _arg7 C.GAsyncReadyCallback     // out
+	var _arg8 C.gpointer
+
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(chain).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(purpose)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if identity != nil {
+		_arg3 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
+	}
+	if interaction != nil {
+		_arg4 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	}
+	_arg5 = C.GTlsDatabaseVerifyFlags(flags)
+	if callback != nil {
+		_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg8 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_tls_database_verify_chain_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(chain)
+	runtime.KeepAlive(purpose)
+	runtime.KeepAlive(identity)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // VerifyChainFinish: finish an asynchronous verify chain operation. See
 // g_tls_database_verify_chain() for more information.
 //
@@ -78852,6 +88139,55 @@ func (self *TLSDatabase) lookupCertificateForHandle(ctx context.Context, handle 
 	return _tlsCertificate, _goerr
 }
 
+// lookupCertificateForHandleAsync: asynchronously look up a certificate by its
+// handle in the database. See g_tls_database_lookup_certificate_for_handle()
+// for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - handle: certificate handle.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup.
+//   - callback (optional) to call when the operation completes.
+func (self *TLSDatabase) lookupCertificateForHandleAsync(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.lookup_certificate_for_handle_async
+
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg4 *C.GCancellable           // out
+	var _arg1 *C.gchar                  // out
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg5 C.GAsyncReadyCallback     // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.gchar)(unsafe.Pointer(C.CString(handle)))
+	defer C.free(unsafe.Pointer(_arg1))
+	if interaction != nil {
+		_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	}
+	_arg3 = C.GTlsDatabaseLookupFlags(flags)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_TLSDatabase_virtual_lookup_certificate_for_handle_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(handle)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // lookupCertificateForHandleFinish: finish an asynchronous lookup of a
 // certificate by its handle. See g_tls_database_lookup_certificate_for_handle()
 // for more information.
@@ -78999,6 +88335,54 @@ func (self *TLSDatabase) lookupCertificateIssuer(ctx context.Context, certificat
 	return _tlsCertificate, _goerr
 }
 
+// lookupCertificateIssuerAsync: asynchronously look up the issuer of
+// certificate in the database. See g_tls_database_lookup_certificate_issuer()
+// for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - certificate: Certificate.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags which affect the lookup operation.
+//   - callback (optional) to call when the operation completes.
+func (self *TLSDatabase) lookupCertificateIssuerAsync(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.lookup_certificate_issuer_async
+
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg4 *C.GCancellable           // out
+	var _arg1 *C.GTlsCertificate        // out
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg5 C.GAsyncReadyCallback     // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(certificate).Native()))
+	if interaction != nil {
+		_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	}
+	_arg3 = C.GTlsDatabaseLookupFlags(flags)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_TLSDatabase_virtual_lookup_certificate_issuer_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(certificate)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // lookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 // operation. See g_tls_database_lookup_certificate_issuer() for more
 // information.
@@ -79138,6 +88522,62 @@ func (self *TLSDatabase) lookupCertificatesIssuedBy(ctx context.Context, issuerR
 	}
 
 	return _list, _goerr
+}
+
+// lookupCertificatesIssuedByAsync: asynchronously look up
+// certificates issued by this issuer in the database. See
+// g_tls_database_lookup_certificates_issued_by() for more information.
+//
+// The database may choose to hold a reference to the issuer byte array for
+// the duration of this asynchronous operation. The byte array should not be
+// modified during this time.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - issuerRawDn which holds the DER encoded issuer DN.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags flags which affect the lookup operation.
+//   - callback (optional) to call when the operation completes.
+func (self *TLSDatabase) lookupCertificatesIssuedByAsync(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.lookup_certificates_issued_by_async
+
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg4 *C.GCancellable           // out
+	var _arg1 *C.GByteArray             // out
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg5 C.GAsyncReadyCallback     // out
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = C.g_byte_array_sized_new(C.guint(len(issuerRawDn)))
+	if len(issuerRawDn) > 0 {
+		_arg1 = C.g_byte_array_append(_arg1, (*C.guint8)(&issuerRawDn[0]), C.guint(len(issuerRawDn)))
+	}
+	defer C.g_byte_array_unref(_arg1)
+	if interaction != nil {
+		_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	}
+	_arg3 = C.GTlsDatabaseLookupFlags(flags)
+	if callback != nil {
+		_arg5 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg6 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_TLSDatabase_virtual_lookup_certificates_issued_by_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(issuerRawDn)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // lookupCertificatesIssuedByFinish: finish an asynchronous lookup of
@@ -79318,6 +88758,65 @@ func (self *TLSDatabase) verifyChain(ctx context.Context, chain TLSCertificater,
 	}
 
 	return _tlsCertificateFlags, _goerr
+}
+
+// verifyChainAsync: asynchronously determines the validity of a certificate
+// chain after looking up and adding any missing certificates to the chain.
+// See g_tls_database_verify_chain() for more information.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional) or NULL.
+//   - chain: Certificate chain.
+//   - purpose that this certificate chain will be used for.
+//   - identity (optional): expected peer identity.
+//   - interaction (optional): used to interact with the user if necessary.
+//   - flags: additional verify flags.
+//   - callback (optional) to call when the operation completes.
+func (self *TLSDatabase) verifyChainAsync(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GTlsDatabaseClass)(coreglib.PeekParentClass(self))
+	fnarg := gclass.verify_chain_async
+
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg6 *C.GCancellable           // out
+	var _arg1 *C.GTlsCertificate        // out
+	var _arg2 *C.gchar                  // out
+	var _arg3 *C.GSocketConnectable     // out
+	var _arg4 *C.GTlsInteraction        // out
+	var _arg5 C.GTlsDatabaseVerifyFlags // out
+	var _arg7 C.GAsyncReadyCallback     // out
+	var _arg8 C.gpointer
+
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(coreglib.InternObject(chain).Native()))
+	_arg2 = (*C.gchar)(unsafe.Pointer(C.CString(purpose)))
+	defer C.free(unsafe.Pointer(_arg2))
+	if identity != nil {
+		_arg3 = (*C.GSocketConnectable)(unsafe.Pointer(coreglib.InternObject(identity).Native()))
+	}
+	if interaction != nil {
+		_arg4 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	}
+	_arg5 = C.GTlsDatabaseVerifyFlags(flags)
+	if callback != nil {
+		_arg7 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg8 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_TLSDatabase_virtual_verify_chain_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(chain)
+	runtime.KeepAlive(purpose)
+	runtime.KeepAlive(identity)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // verifyChainFinish: finish an asynchronous verify chain operation. See
@@ -79596,6 +89095,53 @@ func (interaction *TLSInteraction) AskPassword(ctx context.Context, password *TL
 	return _tlsInteractionResult, _goerr
 }
 
+// AskPasswordAsync: run asynchronous interaction to ask the user for a
+// password. In general, g_tls_interaction_invoke_ask_password() should be used
+// instead of this function.
+//
+// Derived subclasses usually implement a password prompt, although they may
+// also choose to provide a password from elsewhere. The password value will be
+// filled in and then callback will be called. Alternatively the user may abort
+// this password request, which will usually abort the TLS connection.
+//
+// If the interaction is cancelled by the cancellation object, or by the user
+// then G_TLS_INTERACTION_FAILED will be returned with an error that contains
+// a G_IO_ERROR_CANCELLED error code. Certain implementations may not support
+// immediate cancellation.
+//
+// Certain implementations may not support immediate cancellation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable cancellation object.
+//   - password: Password object.
+//   - callback (optional) will be called when the interaction completes.
+func (interaction *TLSInteraction) AskPasswordAsync(ctx context.Context, password *TLSPassword, callback AsyncReadyCallback) {
+	var _arg0 *C.GTlsInteraction    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GTlsPassword       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(coreglib.InternObject(password).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_tls_interaction_ask_password_async(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(callback)
+}
+
 // AskPasswordFinish: complete an ask password user interaction request. This
 // should be once the g_tls_interaction_ask_password_async() completion callback
 // is called.
@@ -79822,6 +89368,51 @@ func (interaction *TLSInteraction) RequestCertificate(ctx context.Context, conne
 	return _tlsInteractionResult, _goerr
 }
 
+// RequestCertificateAsync: run asynchronous interaction to ask the
+// user for a certificate to use with the connection. In general,
+// g_tls_interaction_invoke_request_certificate() should be used instead of this
+// function.
+//
+// Derived subclasses usually implement a certificate selector, although they
+// may also choose to provide a certificate from elsewhere. callback will be
+// called when the operation completes. Alternatively the user may abort this
+// certificate request, which will usually abort the TLS connection.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable cancellation object.
+//   - connection: Connection object.
+//   - flags providing more information about the request.
+//   - callback (optional) will be called when the interaction completes.
+func (interaction *TLSInteraction) RequestCertificateAsync(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags, callback AsyncReadyCallback) {
+	var _arg0 *C.GTlsInteraction            // out
+	var _arg3 *C.GCancellable               // out
+	var _arg1 *C.GTlsConnection             // out
+	var _arg2 C.GTlsCertificateRequestFlags // out
+	var _arg4 C.GAsyncReadyCallback         // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = C.GTlsCertificateRequestFlags(flags)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C.g_tls_interaction_request_certificate_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
+}
+
 // RequestCertificateFinish: complete a request certificate
 // user interaction request. This should be once the
 // g_tls_interaction_request_certificate_async() completion callback is called.
@@ -79919,6 +89510,56 @@ func (interaction *TLSInteraction) askPassword(ctx context.Context, password *TL
 	}
 
 	return _tlsInteractionResult, _goerr
+}
+
+// askPasswordAsync: run asynchronous interaction to ask the user for a
+// password. In general, g_tls_interaction_invoke_ask_password() should be used
+// instead of this function.
+//
+// Derived subclasses usually implement a password prompt, although they may
+// also choose to provide a password from elsewhere. The password value will be
+// filled in and then callback will be called. Alternatively the user may abort
+// this password request, which will usually abort the TLS connection.
+//
+// If the interaction is cancelled by the cancellation object, or by the user
+// then G_TLS_INTERACTION_FAILED will be returned with an error that contains
+// a G_IO_ERROR_CANCELLED error code. Certain implementations may not support
+// immediate cancellation.
+//
+// Certain implementations may not support immediate cancellation.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable cancellation object.
+//   - password: Password object.
+//   - callback (optional) will be called when the interaction completes.
+func (interaction *TLSInteraction) askPasswordAsync(ctx context.Context, password *TLSPassword, callback AsyncReadyCallback) {
+	gclass := (*C.GTlsInteractionClass)(coreglib.PeekParentClass(interaction))
+	fnarg := gclass.ask_password_async
+
+	var _arg0 *C.GTlsInteraction    // out
+	var _arg2 *C.GCancellable       // out
+	var _arg1 *C.GTlsPassword       // out
+	var _arg3 C.GAsyncReadyCallback // out
+	var _arg4 C.gpointer
+
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GTlsPassword)(unsafe.Pointer(coreglib.InternObject(password).Native()))
+	if callback != nil {
+		_arg3 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg4 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_TLSInteraction_virtual_ask_password_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(password)
+	runtime.KeepAlive(callback)
 }
 
 // askPasswordFinish: complete an ask password user interaction request. This
@@ -80029,6 +89670,54 @@ func (interaction *TLSInteraction) requestCertificate(ctx context.Context, conne
 	}
 
 	return _tlsInteractionResult, _goerr
+}
+
+// requestCertificateAsync: run asynchronous interaction to ask the
+// user for a certificate to use with the connection. In general,
+// g_tls_interaction_invoke_request_certificate() should be used instead of this
+// function.
+//
+// Derived subclasses usually implement a certificate selector, although they
+// may also choose to provide a certificate from elsewhere. callback will be
+// called when the operation completes. Alternatively the user may abort this
+// certificate request, which will usually abort the TLS connection.
+//
+// The function takes the following parameters:
+//
+//   - ctx (optional): optional #GCancellable cancellation object.
+//   - connection: Connection object.
+//   - flags providing more information about the request.
+//   - callback (optional) will be called when the interaction completes.
+func (interaction *TLSInteraction) requestCertificateAsync(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags, callback AsyncReadyCallback) {
+	gclass := (*C.GTlsInteractionClass)(coreglib.PeekParentClass(interaction))
+	fnarg := gclass.request_certificate_async
+
+	var _arg0 *C.GTlsInteraction            // out
+	var _arg3 *C.GCancellable               // out
+	var _arg1 *C.GTlsConnection             // out
+	var _arg2 C.GTlsCertificateRequestFlags // out
+	var _arg4 C.GAsyncReadyCallback         // out
+	var _arg5 C.gpointer
+
+	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(coreglib.InternObject(interaction).Native()))
+	{
+		cancellable := gcancel.GCancellableFromContext(ctx)
+		defer runtime.KeepAlive(cancellable)
+		_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	}
+	_arg1 = (*C.GTlsConnection)(unsafe.Pointer(coreglib.InternObject(connection).Native()))
+	_arg2 = C.GTlsCertificateRequestFlags(flags)
+	if callback != nil {
+		_arg4 = (*[0]byte)(C._gotk4_gio2_AsyncReadyCallback)
+		_arg5 = C.gpointer(gbox.AssignOnce(callback))
+	}
+
+	C._gotk4_gio2_TLSInteraction_virtual_request_certificate_async(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	runtime.KeepAlive(interaction)
+	runtime.KeepAlive(ctx)
+	runtime.KeepAlive(connection)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(callback)
 }
 
 // requestCertificateFinish: complete a request certificate

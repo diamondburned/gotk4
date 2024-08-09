@@ -1,21 +1,27 @@
 package test
 
 import (
+	"runtime"
 	"testing"
 
-	"github.com/diamondburned/gotk4/pkg/gtk/v4"
+	"github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 func TestObjectData(t *testing.T) {
-	gtk.Init()
+	testObjectData(t)
 
-	label := gtk.NewLabel("label")
+	runtime.GC()
+}
 
-	label.SetObjectData("foo", "bar")
+func testObjectData(t *testing.T) {
+	app := gio.NewApplication("foo.bar", gio.ApplicationFlagsNone)
 
-	if label.ObjectData("foo") != "bar" {
+	glib.Bind(app, "foo")
+
+	if value := glib.Bounded[string](app); value == nil || *value != "foo" {
 		t.Fatal("returned data did not match expected data")
 	}
 
-	label.StealObjectData("foo")
+	glib.Unbind[string](app)
 }

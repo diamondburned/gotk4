@@ -589,9 +589,6 @@ type Objector interface {
 	NotifyProperty(string, func()) SignalHandle
 	ObjectProperty(string) interface{}
 	SetObjectProperty(string, interface{})
-	ObjectData(string) interface{}
-	SetObjectData(string, interface{})
-	StealObjectData(name string) interface{}
 	FreezeNotify()
 	ThawNotify()
 	StopEmission(string)
@@ -869,41 +866,6 @@ func (v *Object) NotifyProperty(property string, f func()) SignalHandle {
 		v, "notify::"+property, false,
 		unsafe.Pointer(C._gotk4_notifyHandlerTramp), f,
 	)
-}
-
-// Gets a named field from the objects table of associations
-func (v *Object) ObjectData(name string) interface{} {
-	cstr := C.CString(name)
-	defer C.free(unsafe.Pointer(cstr))
-
-	ptr := C.g_object_get_data(v.native(), (*C.gchar)(cstr))
-	runtime.KeepAlive(v)
-
-	return gbox.Get(uintptr(ptr))
-}
-
-// Each object carries around a table of associations from strings to pointers. This function lets you set an association.
-func (v *Object) SetObjectData(name string, value interface{}) {
-	cstr := C.CString(name)
-	defer C.free(unsafe.Pointer(cstr))
-
-	ptr := C.gpointer(gbox.Assign(value))
-
-	C.g_object_set_data(v.native(), (*C.gchar)(cstr), ptr)
-	runtime.KeepAlive(v)
-}
-
-// Remove a specified datum from the object’s data associations
-func (v *Object) StealObjectData(name string) interface{} {
-	cstr := C.CString(name)
-	defer C.free(unsafe.Pointer(cstr))
-
-	ptr := C.g_object_steal_data(v.native(), (*C.gchar)(cstr))
-	defer gbox.Delete(uintptr(ptr))
-
-	runtime.KeepAlive(v)
-
-	return gbox.Get(uintptr(ptr))
 }
 
 // FreezeNotify increases the freeze count on object. If the freeze count is

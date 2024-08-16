@@ -109,4 +109,6 @@ static void init_i18n(const char *domain, const char *dir) {
 
 static const char *localize(const char *string) { return _(string); }
 
+extern void _gotk4_data_destroy(gpointer ptr);
+
 #endif

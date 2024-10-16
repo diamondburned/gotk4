@@ -4,7 +4,6 @@ import (
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
-	"github.com/diamondburned/gotk4/gir/girgen/strcases"
 	"github.com/diamondburned/gotk4/gir/girgen/types"
 
 	ifacegen "github.com/diamondburned/gotk4/gir/girgen/generators/iface"
@@ -12,38 +11,6 @@ import (
 
 var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ $wrapper := .Tree.WrapName false }}
-
-	{{ if .GLibTypeStruct }}
-	{{ if .IsClass }}
-	// {{ .StructName }}Overrides contains methods that are overridable.
-	type {{ .StructName }}Overrides struct {
-		{{ range .GLibTypeStruct.VirtualMethods -}}
-		{{ if $.IsInSameFile . -}}
-		{{- GoDoc .Go 1 TrailingNewLine -}}
-		{{- .Go.Name }} func{{ .Go.Tail }}
-		{{ end -}}
-		{{ end -}}
-	}
-
-	func default{{ .StructName }}Overrides(v *{{ .StructName }}) {{ .StructName }}Overrides{
-		return {{ .StructName }}Overrides{
-			{{ range .GLibTypeStruct.VirtualMethods -}}
-			{{ .Go.Name }}: v.{{ UnexportPascal .Go.Name }},
-			{{ end -}}
-		}
-	}
-	{{ else }}
-	// {{ .StructName }}Overrider contains methods that are overridable.
-	type {{ .StructName }}Overrider interface {
-		{{ range .GLibTypeStruct.VirtualMethods -}}
-		{{ if $.IsInSameFile . -}}
-		{{- GoDoc .Go 1 TrailingNewLine -}}
-		{{- .Go.Name }}{{ .Go.Tail }}
-		{{ end -}}
-		{{ end -}}
-	}
-	{{ end }}
-	{{ end }}
 
 	{{ GoDoc . 0 (OverrideSelfName .StructName) }}
 	{{ if not .IsClass -}}
@@ -109,72 +76,6 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ end }}
 
 	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
-	{{ end }}
-
-	{{ if .GLibTypeStruct }}
-	{{ if .IsClass }}
-
-	{{ Import . "unsafe" }}
-
-	func init() {
-		coreglib.RegisterClassInfo[*{{ .StructName }}, *{{ .GLibTypeStruct.Name }}, {{ .StructName }}Overrides](
-			GType{{ .StructName }},
-			init{{ .GLibTypeStruct.Name }},
-			{{ $wrapper }},
-			default{{ .StructName }}Overrides,
-		)
-	}
-
-	func init{{ .GLibTypeStruct.Name }}(gclass unsafe.Pointer, overrides {{ .StructName }}Overrides, classInitFunc func(*{{ .GLibTypeStruct.Name }})) {
-		{{- if .GLibTypeStruct.VirtualMethods }}
-		{{- if .IsRuntimeLinkMode }}
-			{{- ImportCore . "girepository" -}}
-			classt := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
-			pclass := unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GType{{ .StructName }})))
-
-			{{ range .GLibTypeStruct.VirtualMethods }}
-			if overrides.{{ .Go.Name }} != nil {
-				o := classt.StructFieldOffset({{ Quote .FieldName }})
-				*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(pclass), o)) = unsafe.Pointer(C.{{ .C.Name }})
-			}
-			{{ end -}}
-		{{- else }}
-			pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GType{{ .StructName }}))))
-			{{ range .GLibTypeStruct.VirtualMethods }}
-			if overrides.{{ .Go.Name }} != nil {
-				pclass.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
-			}
-			{{ end }}
-		{{ end -}}
-		{{ end -}}
-
-		if classInitFunc != nil {
-			{{-  ImportCore . "gextras"  -}}
-			class := (*{{ .GLibTypeStruct.Name }})(gextras.NewStructNative(gclass))
-			classInitFunc(class)
-		}
-	}
-
-	{{ else }}
-	func ifaceInit{{ .InterfaceName }}(gifacePtr, data C.gpointer) {
-		{{- Import . "unsafe" -}}
-		{{- if .GLibTypeStruct.VirtualMethods }}
-
-		{{- if .IsRuntimeLinkMode}}
-			iface := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
-			{{- range .GLibTypeStruct.VirtualMethods}}
-			*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset({{ Quote .FieldName }}))) = unsafe.Pointer(C.{{ .C.Name }})
-			{{- end }}
-		{{- else }}
-			iface := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gifacePtr))
-			{{- range .GLibTypeStruct.VirtualMethods }}
-			iface.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
-			{{- end }}
-		{{- end }}
-
-		{{- end }}
-	}
-	{{ end }}
 	{{ end }}
 
 	func {{ $wrapper }}(obj *coreglib.Object) *{{ .StructName }} {
@@ -288,13 +189,6 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 		parent.Resolved.ImportImpl(gen, writer.Header())
 	}
 
-	// These conditions should follow what's in the template.
-	if igen.GLibTypeStruct != nil {
-		if gen.LinkMode() == types.RuntimeLinkMode && len(igen.GLibTypeStruct.VirtualMethods) > 0 {
-			writer.Header().ImportCore("girepository")
-		}
-	}
-
 	data := ifacegenData{
 		Generator:      igen,
 		ImplInterfaces: igen.ImplInterfaces(),
@@ -321,25 +215,6 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 			"Method":     method,
 			"StructName": igen.StructName,
 		})
-	}
-
-	for _, virtual := range igen.VirtualMethods {
-		// Unexport virtual method calls.
-		virtual.Name = strcases.UnexportPascal(virtual.Name)
-
-		writer.Header().ApplyFrom(&virtual.Header)
-		writer.Pen().WriteTmpl(methodInterfaceTmpl, gotmpl.M{
-			"Method":     virtual,
-			"StructName": igen.StructName,
-		})
-	}
-
-	if igen.GLibTypeStruct != nil {
-		for _, virtual := range igen.GLibTypeStruct.VirtualMethods {
-			writer := FileWriterExportedFromType(gen, virtual)
-			writer.Header().ApplyFrom(virtual.C.Header)
-			writer.Pen().WriteTmpl(virtualExportedInterfaceTmpl, virtual)
-		}
 	}
 
 	for _, signal := range igen.Signals {

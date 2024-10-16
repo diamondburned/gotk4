@@ -32,24 +32,8 @@ import (
 // extern void _gotk4_gdkpixbuf2_PixbufLoader_ConnectClosed(gpointer, guintptr);
 // extern void _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaUpdated(gpointer, gint, gint, gint, gint, guintptr);
 // extern void _gotk4_gdkpixbuf2_PixbufLoader_ConnectAreaPrepared(gpointer, guintptr);
-// extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared(GdkPixbufLoader*, int, int);
-// extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(GdkPixbufLoader*);
-// extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(GdkPixbufLoader*, int, int, int, int);
-// extern void _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(GdkPixbufLoader*);
 // extern void _gotk4_gdkpixbuf2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern gboolean _gotk4_gdkpixbuf2_PixbufSaveFunc(gchar*, gsize, GError**, gpointer);
-// void _gotk4_gdkpixbuf2_PixbufLoader_virtual_area_prepared(void* fnptr, GdkPixbufLoader* arg0) {
-//   ((void (*)(GdkPixbufLoader*))(fnptr))(arg0);
-// };
-// void _gotk4_gdkpixbuf2_PixbufLoader_virtual_area_updated(void* fnptr, GdkPixbufLoader* arg0, int arg1, int arg2, int arg3, int arg4) {
-//   ((void (*)(GdkPixbufLoader*, int, int, int, int))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gdkpixbuf2_PixbufLoader_virtual_closed(void* fnptr, GdkPixbufLoader* arg0) {
-//   ((void (*)(GdkPixbufLoader*))(fnptr))(arg0);
-// };
-// void _gotk4_gdkpixbuf2_PixbufLoader_virtual_size_prepared(void* fnptr, GdkPixbufLoader* arg0, int arg1, int arg2) {
-//   ((void (*)(GdkPixbufLoader*, int, int))(fnptr))(arg0, arg1, arg2);
-// };
 import "C"
 
 // GType values.
@@ -3648,35 +3632,6 @@ func (iter *PixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 	return _ok
 }
 
-// PixbufLoaderOverrides contains methods that are overridable.
-type PixbufLoaderOverrides struct {
-	AreaPrepared func()
-	// The function takes the following parameters:
-	//
-	//   - x
-	//   - y
-	//   - width
-	//   - height
-	//
-	AreaUpdated func(x, y, width, height int)
-	Closed      func()
-	// The function takes the following parameters:
-	//
-	//   - width
-	//   - height
-	//
-	SizePrepared func(width, height int)
-}
-
-func defaultPixbufLoaderOverrides(v *PixbufLoader) PixbufLoaderOverrides {
-	return PixbufLoaderOverrides{
-		AreaPrepared: v.areaPrepared,
-		AreaUpdated:  v.areaUpdated,
-		Closed:       v.closed,
-		SizePrepared: v.sizePrepared,
-	}
-}
-
 // PixbufLoader: incremental image loader.
 //
 // GdkPixbufLoader provides a way for applications to drive the process
@@ -3726,40 +3681,6 @@ type PixbufLoader struct {
 var (
 	_ coreglib.Objector = (*PixbufLoader)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*PixbufLoader, *PixbufLoaderClass, PixbufLoaderOverrides](
-		GTypePixbufLoader,
-		initPixbufLoaderClass,
-		wrapPixbufLoader,
-		defaultPixbufLoaderOverrides,
-	)
-}
-
-func initPixbufLoaderClass(gclass unsafe.Pointer, overrides PixbufLoaderOverrides, classInitFunc func(*PixbufLoaderClass)) {
-	pclass := (*C.GdkPixbufLoaderClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypePixbufLoader))))
-
-	if overrides.AreaPrepared != nil {
-		pclass.area_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared)
-	}
-
-	if overrides.AreaUpdated != nil {
-		pclass.area_updated = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated)
-	}
-
-	if overrides.Closed != nil {
-		pclass.closed = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_closed)
-	}
-
-	if overrides.SizePrepared != nil {
-		pclass.size_prepared = (*[0]byte)(C._gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared)
-	}
-
-	if classInitFunc != nil {
-		class := (*PixbufLoaderClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapPixbufLoader(obj *coreglib.Object) *PixbufLoader {
 	return &PixbufLoader{
@@ -4130,84 +4051,6 @@ func (loader *PixbufLoader) WriteBytes(buffer *glib.Bytes) error {
 	}
 
 	return _goerr
-}
-
-func (loader *PixbufLoader) areaPrepared() {
-	gclass := (*C.GdkPixbufLoaderClass)(coreglib.PeekParentClass(loader))
-	fnarg := gclass.area_prepared
-
-	var _arg0 *C.GdkPixbufLoader // out
-
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(coreglib.InternObject(loader).Native()))
-
-	C._gotk4_gdkpixbuf2_PixbufLoader_virtual_area_prepared(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(loader)
-}
-
-// The function takes the following parameters:
-//
-//   - x
-//   - y
-//   - width
-//   - height
-//
-func (loader *PixbufLoader) areaUpdated(x, y, width, height int) {
-	gclass := (*C.GdkPixbufLoaderClass)(coreglib.PeekParentClass(loader))
-	fnarg := gclass.area_updated
-
-	var _arg0 *C.GdkPixbufLoader // out
-	var _arg1 C.int              // out
-	var _arg2 C.int              // out
-	var _arg3 C.int              // out
-	var _arg4 C.int              // out
-
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(coreglib.InternObject(loader).Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-	_arg3 = C.int(width)
-	_arg4 = C.int(height)
-
-	C._gotk4_gdkpixbuf2_PixbufLoader_virtual_area_updated(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(loader)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-func (loader *PixbufLoader) closed() {
-	gclass := (*C.GdkPixbufLoaderClass)(coreglib.PeekParentClass(loader))
-	fnarg := gclass.closed
-
-	var _arg0 *C.GdkPixbufLoader // out
-
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(coreglib.InternObject(loader).Native()))
-
-	C._gotk4_gdkpixbuf2_PixbufLoader_virtual_closed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(loader)
-}
-
-// The function takes the following parameters:
-//
-//   - width
-//   - height
-//
-func (loader *PixbufLoader) sizePrepared(width, height int) {
-	gclass := (*C.GdkPixbufLoaderClass)(coreglib.PeekParentClass(loader))
-	fnarg := gclass.size_prepared
-
-	var _arg0 *C.GdkPixbufLoader // out
-	var _arg1 C.int              // out
-	var _arg2 C.int              // out
-
-	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(coreglib.InternObject(loader).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	C._gotk4_gdkpixbuf2_PixbufLoader_virtual_size_prepared(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(loader)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
 }
 
 // PixbufSimpleAnim: opaque struct representing a simple animation.

@@ -26,27 +26,24 @@ func CanGenerate(gen types.FileGenerator, v interface{}) bool {
 type Generator struct {
 	Root gir.TypeFindResult
 
-	Name           string
-	CType          string
-	GLibGetType    string
-	GLibTypeStruct *TypeStruct
-	InfoAttrs      *gir.InfoAttrs
-	InfoElements   *gir.InfoElements
+	Name         string
+	CType        string
+	GLibGetType  string
+	InfoAttrs    *gir.InfoAttrs
+	InfoElements *gir.InfoElements
 
 	InterfaceName string
 	StructName    string
 
-	VirtualMethods Methods
-	Methods        Methods // for big interface
-	Constructors   Methods
-	Signals        []Signal
+	Methods      Methods // for big interface
+	Constructors Methods
+	Signals      []Signal
 
 	Tree types.Tree
 
 	// Abstract bool
 
-	methods  []gir.Method
-	virtuals []gir.VirtualMethod
+	methods []gir.Method
 
 	header file.Header
 	gen    types.FileGenerator
@@ -103,12 +100,10 @@ func (g *Generator) Reset() {
 
 	g.Tree.Reset()
 	g.Methods.reset(0)
-	g.VirtualMethods.reset(0)
 
 	*g = Generator{
-		Tree:           g.Tree,
-		Methods:        g.Methods,
-		VirtualMethods: g.VirtualMethods,
+		Tree:    g.Tree,
+		Methods: g.Methods,
 
 		header: g.header,
 		cgen:   g.cgen,
@@ -179,7 +174,6 @@ func (g *Generator) init(typ interface{}) bool {
 		g.InfoElements = &typ.InfoElements
 
 		g.methods = typ.Methods
-		g.virtuals = typ.VirtualMethods
 
 		if types.Filter(g.gen, typ.Name, typ.CType) {
 			g.Logln(logger.Debug, "class is filtered")
@@ -203,7 +197,6 @@ func (g *Generator) init(typ interface{}) bool {
 		g.InfoElements = &typ.InfoElements
 
 		g.methods = typ.Methods
-		g.virtuals = typ.VirtualMethods
 
 		if types.Filter(g.gen, typ.Name, typ.CType) {
 			g.Logln(logger.Debug, "interface is filtered")
@@ -302,16 +295,7 @@ func (g *Generator) Use(typ interface{}) bool {
 	}
 
 	g.Methods.setMethods(g, g.methods)
-	g.VirtualMethods.setVirtuals(g, g.virtuals)
-
 	g.renameGetters(g.Methods)
-	g.renameGetters(g.VirtualMethods)
-
-	if g.GLibTypeStruct != nil {
-		if !g.GLibTypeStruct.Init() {
-			g.GLibTypeStruct = nil
-		}
-	}
 
 	callbackGen := callback.NewGenerator(g.gen)
 	callbackGen.Parent = g.Root.Type
@@ -461,8 +445,6 @@ func (g *Generator) checkTypeStruct(girName string) {
 		g.Logln(logger.Skip, "type-struct skipped since disgused type record in runtime link mode")
 		return
 	}
-
-	g.GLibTypeStruct = newTypeStruct(g, result)
 }
 
 func (g *Generator) ImplInterfaces() []string {

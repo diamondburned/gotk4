@@ -2062,14 +2062,6 @@ func (node *DebugNode) Message() string {
 	return _utf8
 }
 
-// GLShaderOverrides contains methods that are overridable.
-type GLShaderOverrides struct {
-}
-
-func defaultGLShaderOverrides(v *GLShader) GLShaderOverrides {
-	return GLShaderOverrides{}
-}
-
 // GLShader: GskGLShader is a snippet of GLSL that is meant to run in the
 // fragment shader of the rendering pipeline.
 //
@@ -2177,22 +2169,6 @@ type GLShader struct {
 var (
 	_ coreglib.Objector = (*GLShader)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*GLShader, *GLShaderClass, GLShaderOverrides](
-		GTypeGLShader,
-		initGLShaderClass,
-		wrapGLShader,
-		defaultGLShaderOverrides,
-	)
-}
-
-func initGLShaderClass(gclass unsafe.Pointer, overrides GLShaderOverrides, classInitFunc func(*GLShaderClass)) {
-	if classInitFunc != nil {
-		class := (*GLShaderClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapGLShader(obj *coreglib.Object) *GLShader {
 	return &GLShader{

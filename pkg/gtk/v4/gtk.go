@@ -35,9 +35,6 @@ import (
 // extern void _gotk4_gtk4_Window_ConnectKeysChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_Window_ConnectActivateFocus(gpointer, guintptr);
 // extern void _gotk4_gtk4_Window_ConnectActivateDefault(gpointer, guintptr);
-// extern void _gotk4_gtk4_WindowClass_keys_changed(GtkWindow*);
-// extern void _gotk4_gtk4_WindowClass_activate_focus(GtkWindow*);
-// extern void _gotk4_gtk4_WindowClass_activate_default(GtkWindow*);
 // extern void _gotk4_gtk4_Widget_ConnectUnrealize(gpointer, guintptr);
 // extern void _gotk4_gtk4_Widget_ConnectUnmap(gpointer, guintptr);
 // extern void _gotk4_gtk4_Widget_ConnectStateFlagsChanged(gpointer, GtkStateFlags, guintptr);
@@ -48,22 +45,6 @@ import (
 // extern void _gotk4_gtk4_Widget_ConnectHide(gpointer, guintptr);
 // extern void _gotk4_gtk4_Widget_ConnectDirectionChanged(gpointer, GtkTextDirection, guintptr);
 // extern void _gotk4_gtk4_Widget_ConnectDestroy(gpointer, guintptr);
-// extern void _gotk4_gtk4_WidgetClass_unroot(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_unrealize(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_unmap(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_system_setting_changed(GtkWidget*, GtkSystemSetting);
-// extern void _gotk4_gtk4_WidgetClass_state_flags_changed(GtkWidget*, GtkStateFlags);
-// extern void _gotk4_gtk4_WidgetClass_snapshot(GtkWidget*, GtkSnapshot*);
-// extern void _gotk4_gtk4_WidgetClass_size_allocate(GtkWidget*, int, int, int);
-// extern void _gotk4_gtk4_WidgetClass_show(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_set_focus_child(GtkWidget*, GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_root(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_realize(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_move_focus(GtkWidget*, GtkDirectionType);
-// extern void _gotk4_gtk4_WidgetClass_measure(GtkWidget*, GtkOrientation, int, int*, int*, int*, int*);
-// extern void _gotk4_gtk4_WidgetClass_map(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_hide(GtkWidget*);
-// extern void _gotk4_gtk4_WidgetClass_direction_changed(GtkWidget*, GtkTextDirection);
 // extern void _gotk4_gtk4_TreeView_ConnectRowExpanded(gpointer, GtkTreeIter*, GtkTreePath*, guintptr);
 // extern void _gotk4_gtk4_TreeView_ConnectRowCollapsed(gpointer, GtkTreeIter*, GtkTreePath*, guintptr);
 // extern void _gotk4_gtk4_TreeView_ConnectRowActivated(gpointer, GtkTreePath*, GtkTreeViewColumn*, guintptr);
@@ -71,11 +52,6 @@ import (
 // extern void _gotk4_gtk4_TreeView_ConnectColumnsChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer);
 // extern void _gotk4_gtk4_TreeViewColumn_ConnectClicked(gpointer, guintptr);
-// extern void _gotk4_gtk4_TreeViewClass_row_expanded(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
-// extern void _gotk4_gtk4_TreeViewClass_row_collapsed(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
-// extern void _gotk4_gtk4_TreeViewClass_row_activated(GtkTreeView*, GtkTreePath*, GtkTreeViewColumn*);
-// extern void _gotk4_gtk4_TreeViewClass_cursor_changed(GtkTreeView*);
-// extern void _gotk4_gtk4_TreeViewClass_columns_changed(GtkTreeView*);
 // extern void _gotk4_gtk4_TreeSortable_ConnectSortColumnChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_TreeSelection_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_TreeSelectionForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
@@ -85,10 +61,8 @@ import (
 // extern void _gotk4_gtk4_TreeModel_ConnectRowDeleted(gpointer, GtkTreePath*, guintptr);
 // extern void _gotk4_gtk4_TreeModel_ConnectRowChanged(gpointer, GtkTreePath*, GtkTreeIter*, guintptr);
 // extern void _gotk4_gtk4_TreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, int, gpointer);
-// extern void _gotk4_gtk4_TreeModelFilterClass_modify(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*, GValue*, int);
 // extern void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern void _gotk4_gtk4_ToggleButton_ConnectToggled(gpointer, guintptr);
-// extern void _gotk4_gtk4_ToggleButtonClass_toggled(GtkToggleButton*);
 // extern void _gotk4_gtk4_Text_ConnectToggleOverwrite(gpointer, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectPreeditChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_Text_ConnectPasteClipboard(gpointer, guintptr);
@@ -114,17 +88,6 @@ import (
 // extern void _gotk4_gtk4_TextView_ConnectCutClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk4_TextView_ConnectCopyClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk4_TextView_ConnectBackspace(gpointer, guintptr);
-// extern void _gotk4_gtk4_TextViewClass_toggle_overwrite(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_snapshot_layer(GtkTextView*, GtkTextViewLayer, GtkSnapshot*);
-// extern void _gotk4_gtk4_TextViewClass_set_anchor(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_paste_clipboard(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_move_cursor(GtkTextView*, GtkMovementStep, int, gboolean);
-// extern void _gotk4_gtk4_TextViewClass_insert_emoji(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_insert_at_cursor(GtkTextView*, char*);
-// extern void _gotk4_gtk4_TextViewClass_delete_from_cursor(GtkTextView*, GtkDeleteType, int);
-// extern void _gotk4_gtk4_TextViewClass_cut_clipboard(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_copy_clipboard(GtkTextView*);
-// extern void _gotk4_gtk4_TextViewClass_backspace(GtkTextView*);
 // extern void _gotk4_gtk4_TextTagTable_ConnectTagRemoved(gpointer, GtkTextTag*, guintptr);
 // extern void _gotk4_gtk4_TextTagTable_ConnectTagChanged(gpointer, GtkTextTag*, gboolean, guintptr);
 // extern void _gotk4_gtk4_TextTagTable_ConnectTagAdded(gpointer, GtkTextTag*, guintptr);
@@ -144,24 +107,8 @@ import (
 // extern void _gotk4_gtk4_TextBuffer_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_TextBuffer_ConnectBeginUserAction(gpointer, guintptr);
 // extern void _gotk4_gtk4_TextBuffer_ConnectApplyTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
-// extern void _gotk4_gtk4_TextBufferClass_undo(GtkTextBuffer*);
-// extern void _gotk4_gtk4_TextBufferClass_remove_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
-// extern void _gotk4_gtk4_TextBufferClass_redo(GtkTextBuffer*);
-// extern void _gotk4_gtk4_TextBufferClass_paste_done(GtkTextBuffer*, GdkClipboard*);
-// extern void _gotk4_gtk4_TextBufferClass_modified_changed(GtkTextBuffer*);
-// extern void _gotk4_gtk4_TextBufferClass_mark_set(GtkTextBuffer*, GtkTextIter*, GtkTextMark*);
-// extern void _gotk4_gtk4_TextBufferClass_mark_deleted(GtkTextBuffer*, GtkTextMark*);
-// extern void _gotk4_gtk4_TextBufferClass_insert_text(GtkTextBuffer*, GtkTextIter*, char*, int);
-// extern void _gotk4_gtk4_TextBufferClass_insert_paintable(GtkTextBuffer*, GtkTextIter*, GdkPaintable*);
-// extern void _gotk4_gtk4_TextBufferClass_insert_child_anchor(GtkTextBuffer*, GtkTextIter*, GtkTextChildAnchor*);
-// extern void _gotk4_gtk4_TextBufferClass_end_user_action(GtkTextBuffer*);
-// extern void _gotk4_gtk4_TextBufferClass_delete_range(GtkTextBuffer*, GtkTextIter*, GtkTextIter*);
-// extern void _gotk4_gtk4_TextBufferClass_changed(GtkTextBuffer*);
-// extern void _gotk4_gtk4_TextBufferClass_begin_user_action(GtkTextBuffer*);
-// extern void _gotk4_gtk4_TextBufferClass_apply_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
 // extern void _gotk4_gtk4_Switch_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged(gpointer, guintptr);
-// extern void _gotk4_gtk4_StyleContextClass_changed(GtkStyleContext*);
 // extern void _gotk4_gtk4_Statusbar_ConnectTextPushed(gpointer, guint, gchar*, guintptr);
 // extern void _gotk4_gtk4_Statusbar_ConnectTextPopped(gpointer, guint, gchar*, guintptr);
 // extern void _gotk4_gtk4_SpinButton_ConnectWrapped(gpointer, guintptr);
@@ -184,20 +131,13 @@ import (
 // extern void _gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut(gpointer, GtkDirectionType, guintptr);
 // extern void _gotk4_gtk4_ScrolledWindow_ConnectEdgeReached(gpointer, GtkPositionType, guintptr);
 // extern void _gotk4_gtk4_ScrolledWindow_ConnectEdgeOvershot(gpointer, GtkPositionType, guintptr);
-// extern void _gotk4_gtk4_ScaleClass_get_layout_offsets(GtkScale*, int*, int*);
 // extern void _gotk4_gtk4_ScaleButton_ConnectValueChanged(gpointer, gdouble, guintptr);
 // extern void _gotk4_gtk4_ScaleButton_ConnectPopup(gpointer, guintptr);
 // extern void _gotk4_gtk4_ScaleButton_ConnectPopdown(gpointer, guintptr);
-// extern void _gotk4_gtk4_ScaleButtonClass_value_changed(GtkScaleButton*, double);
 // extern void _gotk4_gtk4_RecentManager_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gtk4_RecentManagerClass_changed(GtkRecentManager*);
 // extern void _gotk4_gtk4_Range_ConnectValueChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_Range_ConnectMoveSlider(gpointer, GtkScrollType, guintptr);
 // extern void _gotk4_gtk4_Range_ConnectAdjustBounds(gpointer, gdouble, guintptr);
-// extern void _gotk4_gtk4_RangeClass_value_changed(GtkRange*);
-// extern void _gotk4_gtk4_RangeClass_move_slider(GtkRange*, GtkScrollType);
-// extern void _gotk4_gtk4_RangeClass_get_range_border(GtkRange*, GtkBorder*);
-// extern void _gotk4_gtk4_RangeClass_adjust_bounds(GtkRange*, double);
 // extern void _gotk4_gtk4_PrintSettingsFunc(char*, char*, gpointer);
 // extern void _gotk4_gtk4_PrintOperation_ConnectUpdateCustomWidget(gpointer, GtkWidget*, GtkPageSetup*, GtkPrintSettings*, guintptr);
 // extern void _gotk4_gtk4_PrintOperation_ConnectStatusChanged(gpointer, guintptr);
@@ -209,18 +149,8 @@ import (
 // extern void _gotk4_gtk4_PrintOperation_ConnectBeginPrint(gpointer, GtkPrintContext*, guintptr);
 // extern void _gotk4_gtk4_PrintOperationPreview_ConnectReady(gpointer, GtkPrintContext*, guintptr);
 // extern void _gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize(gpointer, GtkPrintContext*, GtkPageSetup*, guintptr);
-// extern void _gotk4_gtk4_PrintOperationClass_update_custom_widget(GtkPrintOperation*, GtkWidget*, GtkPageSetup*, GtkPrintSettings*);
-// extern void _gotk4_gtk4_PrintOperationClass_status_changed(GtkPrintOperation*);
-// extern void _gotk4_gtk4_PrintOperationClass_request_page_setup(GtkPrintOperation*, GtkPrintContext*, int, GtkPageSetup*);
-// extern void _gotk4_gtk4_PrintOperationClass_end_print(GtkPrintOperation*, GtkPrintContext*);
-// extern void _gotk4_gtk4_PrintOperationClass_draw_page(GtkPrintOperation*, GtkPrintContext*, int);
-// extern void _gotk4_gtk4_PrintOperationClass_done(GtkPrintOperation*, GtkPrintOperationResult);
-// extern void _gotk4_gtk4_PrintOperationClass_custom_widget_apply(GtkPrintOperation*, GtkWidget*);
-// extern void _gotk4_gtk4_PrintOperationClass_begin_print(GtkPrintOperation*, GtkPrintContext*);
 // extern void _gotk4_gtk4_Popover_ConnectClosed(gpointer, guintptr);
 // extern void _gotk4_gtk4_Popover_ConnectActivateDefault(gpointer, guintptr);
-// extern void _gotk4_gtk4_PopoverClass_closed(GtkPopover*);
-// extern void _gotk4_gtk4_PopoverClass_activate_default(GtkPopover*);
 // extern void _gotk4_gtk4_PasswordEntry_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_PageSetupDoneFunc(GtkPageSetup*, gpointer);
 // extern void _gotk4_gtk4_Notebook_ConnectSwitchPage(gpointer, GtkWidget*, guint, guintptr);
@@ -229,17 +159,7 @@ import (
 // extern void _gotk4_gtk4_Notebook_ConnectPageAdded(gpointer, GtkWidget*, guint, guintptr);
 // extern void _gotk4_gtk4_Notebook_ConnectMoveFocusOut(gpointer, GtkDirectionType, guintptr);
 // extern void _gotk4_gtk4_NativeDialog_ConnectResponse(gpointer, gint, guintptr);
-// extern void _gotk4_gtk4_NativeDialogClass_show(GtkNativeDialog*);
-// extern void _gotk4_gtk4_NativeDialogClass_response(GtkNativeDialog*, int);
-// extern void _gotk4_gtk4_NativeDialogClass_hide(GtkNativeDialog*);
 // extern void _gotk4_gtk4_MenuButtonCreatePopupFunc(GtkMenuButton*, gpointer);
-// extern void _gotk4_gtk4_MediaStreamClass_update_audio(GtkMediaStream*, gboolean, double);
-// extern void _gotk4_gtk4_MediaStreamClass_unrealize(GtkMediaStream*, GdkSurface*);
-// extern void _gotk4_gtk4_MediaStreamClass_seek(GtkMediaStream*, gint64);
-// extern void _gotk4_gtk4_MediaStreamClass_realize(GtkMediaStream*, GdkSurface*);
-// extern void _gotk4_gtk4_MediaStreamClass_pause(GtkMediaStream*);
-// extern void _gotk4_gtk4_MediaFileClass_open(GtkMediaFile*);
-// extern void _gotk4_gtk4_MediaFileClass_close(GtkMediaFile*);
 // extern void _gotk4_gtk4_ListView_ConnectActivate(gpointer, guint, guintptr);
 // extern void _gotk4_gtk4_ListBox_ConnectUnselectAll(gpointer, guintptr);
 // extern void _gotk4_gtk4_ListBox_ConnectToggleCursorRow(gpointer, guintptr);
@@ -251,13 +171,8 @@ import (
 // extern void _gotk4_gtk4_ListBox_ConnectActivateCursorRow(gpointer, guintptr);
 // extern void _gotk4_gtk4_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 // extern void _gotk4_gtk4_ListBoxRow_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk4_ListBoxRowClass_activate(GtkListBoxRow*);
 // extern void _gotk4_gtk4_ListBoxForEachFunc(GtkListBox*, GtkListBoxRow*, gpointer);
 // extern void _gotk4_gtk4_LevelBar_ConnectOffsetChanged(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk4_LayoutManagerClass_unroot(GtkLayoutManager*);
-// extern void _gotk4_gtk4_LayoutManagerClass_root(GtkLayoutManager*);
-// extern void _gotk4_gtk4_LayoutManagerClass_measure(GtkLayoutManager*, GtkWidget*, GtkOrientation, int, int*, int*, int*, int*);
-// extern void _gotk4_gtk4_LayoutManagerClass_allocate(GtkLayoutManager*, GtkWidget*, int, int, int);
 // extern void _gotk4_gtk4_Label_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, guintptr);
 // extern void _gotk4_gtk4_Label_ConnectCopyClipboard(gpointer, guintptr);
 // extern void _gotk4_gtk4_Label_ConnectActivateCurrentLink(gpointer, guintptr);
@@ -275,19 +190,6 @@ import (
 // extern void _gotk4_gtk4_IMContext_ConnectPreeditEnd(gpointer, guintptr);
 // extern void _gotk4_gtk4_IMContext_ConnectPreeditChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_IMContext_ConnectCommit(gpointer, gchar*, guintptr);
-// extern void _gotk4_gtk4_IMContextClass_set_use_preedit(GtkIMContext*, gboolean);
-// extern void _gotk4_gtk4_IMContextClass_set_surrounding_with_selection(GtkIMContext*, char*, int, int, int);
-// extern void _gotk4_gtk4_IMContextClass_set_surrounding(GtkIMContext*, char*, int, int);
-// extern void _gotk4_gtk4_IMContextClass_set_cursor_location(GtkIMContext*, GdkRectangle*);
-// extern void _gotk4_gtk4_IMContextClass_set_client_widget(GtkIMContext*, GtkWidget*);
-// extern void _gotk4_gtk4_IMContextClass_reset(GtkIMContext*);
-// extern void _gotk4_gtk4_IMContextClass_preedit_start(GtkIMContext*);
-// extern void _gotk4_gtk4_IMContextClass_preedit_end(GtkIMContext*);
-// extern void _gotk4_gtk4_IMContextClass_preedit_changed(GtkIMContext*);
-// extern void _gotk4_gtk4_IMContextClass_get_preedit_string(GtkIMContext*, char**, PangoAttrList**, int*);
-// extern void _gotk4_gtk4_IMContextClass_focus_out(GtkIMContext*);
-// extern void _gotk4_gtk4_IMContextClass_focus_in(GtkIMContext*);
-// extern void _gotk4_gtk4_IMContextClass_commit(GtkIMContext*, char*);
 // extern void _gotk4_gtk4_GridView_ConnectActivate(gpointer, guint, guintptr);
 // extern void _gotk4_gtk4_Gesture_ConnectUpdate(gpointer, GdkEventSequence*, guintptr);
 // extern void _gotk4_gtk4_Gesture_ConnectSequenceStateChanged(gpointer, GdkEventSequence*, GtkEventSequenceState, guintptr);
@@ -312,8 +214,6 @@ import (
 // extern void _gotk4_gtk4_GestureClick_ConnectReleased(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GestureClick_ConnectPressed(gpointer, gint, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_GLArea_ConnectResize(gpointer, gint, gint, guintptr);
-// extern void _gotk4_gtk4_GLAreaClass_resize(GtkGLArea*, int, int);
-// extern void _gotk4_gtk4_FrameClass_compute_child_allocation(GtkFrame*, GtkAllocation*);
 // extern void _gotk4_gtk4_FontChooser_ConnectFontActivated(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_FontButton_ConnectFontSet(gpointer, guintptr);
 // extern void _gotk4_gtk4_FlowBox_ConnectUnselectAll(gpointer, guintptr);
@@ -324,7 +224,6 @@ import (
 // extern void _gotk4_gtk4_FlowBox_ConnectActivateCursorChild(gpointer, guintptr);
 // extern void _gotk4_gtk4_FlowBoxForEachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer);
 // extern void _gotk4_gtk4_FlowBoxChild_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk4_FlowBoxChildClass_activate(GtkFlowBoxChild*);
 // extern void _gotk4_gtk4_Filter_ConnectChanged(gpointer, GtkFilterChange, guintptr);
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectUpFolder(gpointer, guintptr);
 // extern void _gotk4_gtk4_FileChooserWidget_ConnectShowHidden(gpointer, guintptr);
@@ -354,11 +253,8 @@ import (
 // extern void _gotk4_gtk4_Entry_ConnectIconPress(gpointer, GtkEntryIconPosition, guintptr);
 // extern void _gotk4_gtk4_Entry_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_EntryCompletion_ConnectNoMatches(gpointer, guintptr);
-// extern void _gotk4_gtk4_EntryClass_activate(GtkEntry*);
 // extern void _gotk4_gtk4_EntryBuffer_ConnectInsertedText(gpointer, guint, gchar*, guint, guintptr);
 // extern void _gotk4_gtk4_EntryBuffer_ConnectDeletedText(gpointer, guint, guint, guintptr);
-// extern void _gotk4_gtk4_EntryBufferClass_inserted_text(GtkEntryBuffer*, guint, char*, guint);
-// extern void _gotk4_gtk4_EntryBufferClass_deleted_text(GtkEntryBuffer*, guint, guint);
 // extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_EditableTextWidget_ConnectDeleteText(gpointer, gint, gint, guintptr);
 // extern void _gotk4_gtk4_EditableTextWidget_ConnectChanged(gpointer, guintptr);
@@ -369,39 +265,24 @@ import (
 // extern void _gotk4_gtk4_DropControllerMotion_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
 // extern void _gotk4_gtk4_DrawingArea_ConnectResize(gpointer, gint, gint, guintptr);
 // extern void _gotk4_gtk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer);
-// extern void _gotk4_gtk4_DrawingAreaClass_resize(GtkDrawingArea*, int, int);
 // extern void _gotk4_gtk4_DragSource_ConnectDragEnd(gpointer, GdkDrag*, gboolean, guintptr);
 // extern void _gotk4_gtk4_DragSource_ConnectDragBegin(gpointer, GdkDrag*, guintptr);
 // extern void _gotk4_gtk4_Dialog_ConnectResponse(gpointer, gint, guintptr);
 // extern void _gotk4_gtk4_Dialog_ConnectClose(gpointer, guintptr);
-// extern void _gotk4_gtk4_DialogClass_response(GtkDialog*, int);
-// extern void _gotk4_gtk4_DialogClass_close(GtkDialog*);
 // extern void _gotk4_gtk4_CssProvider_ConnectParsingError(gpointer, GtkCssSection*, GError*, guintptr);
 // extern void _gotk4_gtk4_ComboBox_ConnectPopup(gpointer, guintptr);
 // extern void _gotk4_gtk4_ComboBox_ConnectMoveActive(gpointer, GtkScrollType, guintptr);
 // extern void _gotk4_gtk4_ComboBox_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gtk4_ComboBoxClass_changed(GtkComboBox*);
 // extern void _gotk4_gtk4_ColumnView_ConnectActivate(gpointer, guint, guintptr);
 // extern void _gotk4_gtk4_ColorChooser_ConnectColorActivated(gpointer, GdkRGBA*, guintptr);
 // extern void _gotk4_gtk4_ColorButton_ConnectColorSet(gpointer, guintptr);
 // extern void _gotk4_gtk4_CheckButton_ConnectToggled(gpointer, guintptr);
 // extern void _gotk4_gtk4_CheckButton_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk4_CheckButtonClass_toggled(GtkCheckButton*);
-// extern void _gotk4_gtk4_CheckButtonClass_activate(GtkCheckButton*);
 // extern void _gotk4_gtk4_CellRenderer_ConnectEditingStarted(gpointer, GtkCellEditable*, gchar*, guintptr);
 // extern void _gotk4_gtk4_CellRenderer_ConnectEditingCanceled(gpointer, guintptr);
 // extern void _gotk4_gtk4_CellRendererToggle_ConnectToggled(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_CellRendererText_ConnectEdited(gpointer, gchar*, gchar*, guintptr);
-// extern void _gotk4_gtk4_CellRendererTextClass_edited(GtkCellRendererText*, char*, char*);
 // extern void _gotk4_gtk4_CellRendererCombo_ConnectChanged(gpointer, gchar*, GtkTreeIter*, guintptr);
-// extern void _gotk4_gtk4_CellRendererClass_snapshot(GtkCellRenderer*, GtkSnapshot*, GtkWidget*, GdkRectangle*, GdkRectangle*, GtkCellRendererState);
-// extern void _gotk4_gtk4_CellRendererClass_get_preferred_width_for_height(GtkCellRenderer*, GtkWidget*, int, int*, int*);
-// extern void _gotk4_gtk4_CellRendererClass_get_preferred_width(GtkCellRenderer*, GtkWidget*, int*, int*);
-// extern void _gotk4_gtk4_CellRendererClass_get_preferred_height_for_width(GtkCellRenderer*, GtkWidget*, int, int*, int*);
-// extern void _gotk4_gtk4_CellRendererClass_get_preferred_height(GtkCellRenderer*, GtkWidget*, int*, int*);
-// extern void _gotk4_gtk4_CellRendererClass_get_aligned_area(GtkCellRenderer*, GtkWidget*, GtkCellRendererState, GdkRectangle*, GdkRectangle*);
-// extern void _gotk4_gtk4_CellRendererClass_editing_started(GtkCellRenderer*, GtkCellEditable*, char*);
-// extern void _gotk4_gtk4_CellRendererClass_editing_canceled(GtkCellRenderer*);
 // extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited(gpointer, gchar*, guint, GdkModifierType, guint, guintptr);
 // extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
@@ -411,18 +292,6 @@ import (
 // extern void _gotk4_gtk4_CellArea_ConnectFocusChanged(gpointer, GtkCellRenderer*, gchar*, guintptr);
 // extern void _gotk4_gtk4_CellArea_ConnectApplyAttributes(gpointer, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean, guintptr);
 // extern void _gotk4_gtk4_CellArea_ConnectAddEditable(gpointer, GtkCellRenderer*, GtkCellEditable*, GdkRectangle*, gchar*, guintptr);
-// extern void _gotk4_gtk4_CellAreaContextClass_reset(GtkCellAreaContext*);
-// extern void _gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height(GtkCellAreaContext*, int, int*, int*);
-// extern void _gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width(GtkCellAreaContext*, int, int*, int*);
-// extern void _gotk4_gtk4_CellAreaContextClass_allocate(GtkCellAreaContext*, int, int);
-// extern void _gotk4_gtk4_CellAreaClass_snapshot(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GtkSnapshot*, GdkRectangle*, GdkRectangle*, GtkCellRendererState, gboolean);
-// extern void _gotk4_gtk4_CellAreaClass_remove(GtkCellArea*, GtkCellRenderer*);
-// extern void _gotk4_gtk4_CellAreaClass_get_preferred_width_for_height(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int, int*, int*);
-// extern void _gotk4_gtk4_CellAreaClass_get_preferred_width(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int*, int*);
-// extern void _gotk4_gtk4_CellAreaClass_get_preferred_height_for_width(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int, int*, int*);
-// extern void _gotk4_gtk4_CellAreaClass_get_preferred_height(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int*, int*);
-// extern void _gotk4_gtk4_CellAreaClass_apply_attributes(GtkCellArea*, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean);
-// extern void _gotk4_gtk4_CellAreaClass_add(GtkCellArea*, GtkCellRenderer*);
 // extern void _gotk4_gtk4_Calendar_ConnectPrevYear(gpointer, guintptr);
 // extern void _gotk4_gtk4_Calendar_ConnectPrevMonth(gpointer, guintptr);
 // extern void _gotk4_gtk4_Calendar_ConnectNextYear(gpointer, guintptr);
@@ -430,8 +299,6 @@ import (
 // extern void _gotk4_gtk4_Calendar_ConnectDaySelected(gpointer, guintptr);
 // extern void _gotk4_gtk4_Button_ConnectClicked(gpointer, guintptr);
 // extern void _gotk4_gtk4_Button_ConnectActivate(gpointer, guintptr);
-// extern void _gotk4_gtk4_ButtonClass_clicked(GtkButton*);
-// extern void _gotk4_gtk4_ButtonClass_activate(GtkButton*);
 // extern void _gotk4_gtk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gtk4_Assistant_ConnectPrepare(gpointer, GtkWidget*, guintptr);
 // extern void _gotk4_gtk4_Assistant_ConnectEscape(gpointer, guintptr);
@@ -441,43 +308,27 @@ import (
 // extern void _gotk4_gtk4_Application_ConnectWindowRemoved(gpointer, GtkWindow*, guintptr);
 // extern void _gotk4_gtk4_Application_ConnectWindowAdded(gpointer, GtkWindow*, guintptr);
 // extern void _gotk4_gtk4_Application_ConnectQueryEnd(gpointer, guintptr);
-// extern void _gotk4_gtk4_ApplicationClass_window_removed(GtkApplication*, GtkWindow*);
-// extern void _gotk4_gtk4_ApplicationClass_window_added(GtkApplication*, GtkWindow*);
 // extern void _gotk4_gtk4_AppChooserWidget_ConnectApplicationSelected(gpointer, GAppInfo*, guintptr);
 // extern void _gotk4_gtk4_AppChooserWidget_ConnectApplicationActivated(gpointer, GAppInfo*, guintptr);
 // extern void _gotk4_gtk4_AppChooserButton_ConnectCustomItemActivated(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_AppChooserButton_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_Adjustment_ConnectValueChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_Adjustment_ConnectChanged(gpointer, guintptr);
-// extern void _gotk4_gtk4_AdjustmentClass_value_changed(GtkAdjustment*);
-// extern void _gotk4_gtk4_AdjustmentClass_changed(GtkAdjustment*);
 // extern void _gotk4_gtk4_ATContext_ConnectStateChange(gpointer, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern int _gotk4_gtk4_TreeIterCompareFunc(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, gpointer);
 // extern int _gotk4_gtk4_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
 // extern int _gotk4_gtk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
-// extern int _gotk4_gtk4_CellAreaClass_event(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkEvent*, GdkRectangle*, GtkCellRendererState);
 // extern int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
-// extern guint _gotk4_gtk4_EntryBufferClass_insert_text(GtkEntryBuffer*, guint, char*, guint);
-// extern guint _gotk4_gtk4_EntryBufferClass_get_length(GtkEntryBuffer*);
-// extern guint _gotk4_gtk4_EntryBufferClass_delete_text(GtkEntryBuffer*, guint, guint);
 // extern gpointer _gotk4_gtk4_MapListModelMapFunc(gpointer, gpointer);
 // extern gint _gotk4_gtk4_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern gchar* _gotk4_gtk4_ComboBox_ConnectFormatEntryText(gpointer, gchar*, guintptr);
 // extern gboolean _gotk4_gtk4_Window_ConnectEnableDebugging(gpointer, gboolean, guintptr);
 // extern gboolean _gotk4_gtk4_Window_ConnectCloseRequest(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_WindowClass_enable_debugging(GtkWindow*, gboolean);
-// extern gboolean _gotk4_gtk4_WindowClass_close_request(GtkWindow*);
 // extern gboolean _gotk4_gtk4_Widget_ConnectQueryTooltip(gpointer, gint, gint, gboolean, GtkTooltip*, guintptr);
 // extern gboolean _gotk4_gtk4_Widget_ConnectMnemonicActivate(gpointer, gboolean, guintptr);
 // extern gboolean _gotk4_gtk4_Widget_ConnectKeynavFailed(gpointer, GtkDirectionType, guintptr);
-// extern gboolean _gotk4_gtk4_WidgetClass_query_tooltip(GtkWidget*, int, int, gboolean, GtkTooltip*);
-// extern gboolean _gotk4_gtk4_WidgetClass_mnemonic_activate(GtkWidget*, gboolean);
-// extern gboolean _gotk4_gtk4_WidgetClass_keynav_failed(GtkWidget*, GtkDirectionType);
-// extern gboolean _gotk4_gtk4_WidgetClass_grab_focus(GtkWidget*);
-// extern gboolean _gotk4_gtk4_WidgetClass_focus(GtkWidget*, GtkDirectionType);
-// extern gboolean _gotk4_gtk4_WidgetClass_contains(GtkWidget*, double, double);
 // extern gboolean _gotk4_gtk4_TreeView_ConnectUnselectAll(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_TreeView_ConnectToggleCursorRow(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_TreeView_ConnectTestExpandRow(gpointer, GtkTreeIter*, GtkTreePath*, guintptr);
@@ -491,23 +342,11 @@ import (
 // extern gboolean _gotk4_gtk4_TreeViewSearchEqualFunc(GtkTreeModel*, int, char*, GtkTreeIter*, gpointer);
 // extern gboolean _gotk4_gtk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern gboolean _gotk4_gtk4_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer);
-// extern gboolean _gotk4_gtk4_TreeViewClass_unselect_all(GtkTreeView*);
-// extern gboolean _gotk4_gtk4_TreeViewClass_toggle_cursor_row(GtkTreeView*);
-// extern gboolean _gotk4_gtk4_TreeViewClass_test_expand_row(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
-// extern gboolean _gotk4_gtk4_TreeViewClass_test_collapse_row(GtkTreeView*, GtkTreeIter*, GtkTreePath*);
-// extern gboolean _gotk4_gtk4_TreeViewClass_start_interactive_search(GtkTreeView*);
-// extern gboolean _gotk4_gtk4_TreeViewClass_select_cursor_row(GtkTreeView*, gboolean);
-// extern gboolean _gotk4_gtk4_TreeViewClass_select_cursor_parent(GtkTreeView*);
-// extern gboolean _gotk4_gtk4_TreeViewClass_select_all(GtkTreeView*);
-// extern gboolean _gotk4_gtk4_TreeViewClass_move_cursor(GtkTreeView*, GtkMovementStep, int, gboolean, gboolean);
-// extern gboolean _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row(GtkTreeView*, gboolean, gboolean, gboolean);
 // extern gboolean _gotk4_gtk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
 // extern gboolean _gotk4_gtk4_TreeModelForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 // extern gboolean _gotk4_gtk4_TreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
-// extern gboolean _gotk4_gtk4_TreeModelFilterClass_visible(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*);
 // extern gboolean _gotk4_gtk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
 // extern gboolean _gotk4_gtk4_TextView_ConnectExtendSelection(gpointer, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*, guintptr);
-// extern gboolean _gotk4_gtk4_TextViewClass_extend_selection(GtkTextView*, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*);
 // extern gboolean _gotk4_gtk4_TextCharPredicate(gunichar, gpointer);
 // extern gboolean _gotk4_gtk4_Switch_ConnectStateSet(gpointer, gboolean, guintptr);
 // extern gboolean _gotk4_gtk4_SpinButton_ConnectOutput(gpointer, guintptr);
@@ -515,11 +354,8 @@ import (
 // extern gboolean _gotk4_gtk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer);
 // extern gboolean _gotk4_gtk4_ScrolledWindow_ConnectScrollChild(gpointer, GtkScrollType, gboolean, guintptr);
 // extern gboolean _gotk4_gtk4_Range_ConnectChangeValue(gpointer, GtkScrollType, gdouble, guintptr);
-// extern gboolean _gotk4_gtk4_RangeClass_change_value(GtkRange*, GtkScrollType, double);
 // extern gboolean _gotk4_gtk4_PrintOperation_ConnectPreview(gpointer, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*, guintptr);
 // extern gboolean _gotk4_gtk4_PrintOperation_ConnectPaginate(gpointer, GtkPrintContext*, guintptr);
-// extern gboolean _gotk4_gtk4_PrintOperationClass_preview(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*);
-// extern gboolean _gotk4_gtk4_PrintOperationClass_paginate(GtkPrintOperation*, GtkPrintContext*);
 // extern gboolean _gotk4_gtk4_Paned_ConnectToggleHandleFocus(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_Paned_ConnectMoveHandle(gpointer, GtkScrollType, guintptr);
 // extern gboolean _gotk4_gtk4_Paned_ConnectCycleHandleFocus(gpointer, gboolean, guintptr);
@@ -531,7 +367,6 @@ import (
 // extern gboolean _gotk4_gtk4_Notebook_ConnectReorderTab(gpointer, GtkDirectionType, gboolean, guintptr);
 // extern gboolean _gotk4_gtk4_Notebook_ConnectFocusTab(gpointer, GtkNotebookTab, guintptr);
 // extern gboolean _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(gpointer, gint, guintptr);
-// extern gboolean _gotk4_gtk4_MediaStreamClass_play(GtkMediaStream*);
 // extern gboolean _gotk4_gtk4_ListBoxFilterFunc(GtkListBoxRow*, gpointer);
 // extern gboolean _gotk4_gtk4_LinkButton_ConnectActivateLink(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_Label_ConnectActivateLink(gpointer, gchar*, guintptr);
@@ -539,17 +374,10 @@ import (
 // extern gboolean _gotk4_gtk4_IconView_ConnectActivateCursorItem(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_IMContext_ConnectRetrieveSurrounding(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(gpointer, gint, gint, guintptr);
-// extern gboolean _gotk4_gtk4_IMContextClass_retrieve_surrounding(GtkIMContext*);
-// extern gboolean _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(GtkIMContext*, char**, int*, int*);
-// extern gboolean _gotk4_gtk4_IMContextClass_get_surrounding(GtkIMContext*, char**, int*);
-// extern gboolean _gotk4_gtk4_IMContextClass_filter_keypress(GtkIMContext*, GdkEvent*);
-// extern gboolean _gotk4_gtk4_IMContextClass_delete_surrounding(GtkIMContext*, int, int);
 // extern gboolean _gotk4_gtk4_GLArea_ConnectRender(gpointer, GdkGLContext*, guintptr);
-// extern gboolean _gotk4_gtk4_GLAreaClass_render(GtkGLArea*, GdkGLContext*);
 // extern gboolean _gotk4_gtk4_FontFilterFunc(PangoFontFamily*, PangoFontFace*, gpointer);
 // extern gboolean _gotk4_gtk4_FlowBox_ConnectMoveCursor(gpointer, GtkMovementStep, gint, gboolean, gboolean, guintptr);
 // extern gboolean _gotk4_gtk4_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer);
-// extern gboolean _gotk4_gtk4_FilterClass_match(GtkFilter*, gpointer);
 // extern gboolean _gotk4_gtk4_EventControllerScroll_ConnectScroll(gpointer, gdouble, gdouble, guintptr);
 // extern gboolean _gotk4_gtk4_EventControllerLegacy_ConnectEvent(gpointer, GdkEvent*, guintptr);
 // extern gboolean _gotk4_gtk4_EventControllerKey_ConnectModifiers(gpointer, GdkModifierType, guintptr);
@@ -565,30 +393,13 @@ import (
 // extern gboolean _gotk4_gtk4_DragSource_ConnectDragCancel(gpointer, GdkDrag*, GdkDragCancelReason, guintptr);
 // extern gboolean _gotk4_gtk4_CustomFilterFunc(gpointer, gpointer);
 // extern gboolean _gotk4_gtk4_ComboBox_ConnectPopdown(gpointer, guintptr);
-// extern gboolean _gotk4_gtk4_CellRendererClass_activate(GtkCellRenderer*, GdkEvent*, GtkWidget*, char*, GdkRectangle*, GdkRectangle*, GtkCellRendererState);
 // extern gboolean _gotk4_gtk4_CellCallback(GtkCellRenderer*, gpointer);
-// extern gboolean _gotk4_gtk4_CellAreaClass_is_activatable(GtkCellArea*);
-// extern gboolean _gotk4_gtk4_CellAreaClass_focus(GtkCellArea*, GtkDirectionType);
-// extern gboolean _gotk4_gtk4_CellAreaClass_activate(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkRectangle*, GtkCellRendererState, gboolean);
 // extern gboolean _gotk4_gtk4_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
 // extern gboolean _gotk4_gtk4_AboutDialog_ConnectActivateLink(gpointer, gchar*, guintptr);
 // extern char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
-// extern char* _gotk4_gtk4_EntryBufferClass_get_text(GtkEntryBuffer*, gsize*);
-// extern char* _gotk4_gtk4_ComboBoxClass_format_entry_text(GtkComboBox*, char*);
 // extern GtkWidget* _gotk4_gtk4_ListBoxCreateWidgetFunc(gpointer, gpointer);
 // extern GtkWidget* _gotk4_gtk4_FlowBoxCreateWidgetFunc(gpointer, gpointer);
-// extern GtkSorterOrder _gotk4_gtk4_SorterClass_get_order(GtkSorter*);
-// extern GtkSizeRequestMode _gotk4_gtk4_WidgetClass_get_request_mode(GtkWidget*);
-// extern GtkSizeRequestMode _gotk4_gtk4_LayoutManagerClass_get_request_mode(GtkLayoutManager*, GtkWidget*);
-// extern GtkSizeRequestMode _gotk4_gtk4_CellRendererClass_get_request_mode(GtkCellRenderer*);
-// extern GtkSizeRequestMode _gotk4_gtk4_CellAreaClass_get_request_mode(GtkCellArea*);
-// extern GtkOrdering _gotk4_gtk4_SorterClass_compare(GtkSorter*, gpointer, gpointer);
 // extern GtkNotebook* _gotk4_gtk4_Notebook_ConnectCreateWindow(gpointer, GtkWidget*, guintptr);
-// extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(GtkLayoutManager*, GtkWidget*, GtkWidget*);
-// extern GtkFilterMatch _gotk4_gtk4_FilterClass_get_strictness(GtkFilter*);
-// extern GtkCellEditable* _gotk4_gtk4_CellRendererClass_start_editing(GtkCellRenderer*, GdkEvent*, GtkWidget*, char*, GdkRectangle*, GdkRectangle*, GtkCellRendererState);
-// extern GtkCellAreaContext* _gotk4_gtk4_CellAreaClass_create_context(GtkCellArea*);
-// extern GtkCellAreaContext* _gotk4_gtk4_CellAreaClass_copy_context(GtkCellArea*, GtkCellAreaContext*);
 // extern GdkGLContext* _gotk4_gtk4_GLArea_ConnectCreateContext(gpointer, guintptr);
 // extern GdkDragAction _gotk4_gtk4_DropTarget_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 // extern GdkDragAction _gotk4_gtk4_DropTarget_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
@@ -597,861 +408,12 @@ import (
 // extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
 // extern GObject* _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(gpointer, guintptr);
 // extern GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
-// GList* _gotk4_gtk4_CellLayout_virtual_get_cells(void* fnptr, GtkCellLayout* arg0) {
-//   return ((GList* (*)(GtkCellLayout*))(fnptr))(arg0);
-// };
-// GObject* _gotk4_gtk4_Buildable_virtual_get_internal_child(void* fnptr, GtkBuildable* arg0, GtkBuilder* arg1, char* arg2) {
-//   return ((GObject* (*)(GtkBuildable*, GtkBuilder*, char*))(fnptr))(arg0, arg1, arg2);
-// };
-// GType _gotk4_gtk4_BuilderScope_virtual_get_type_from_function(void* fnptr, GtkBuilderScope* arg0, GtkBuilder* arg1, char* arg2) {
-//   return ((GType (*)(GtkBuilderScope*, GtkBuilder*, char*))(fnptr))(arg0, arg1, arg2);
-// };
-// GType _gotk4_gtk4_BuilderScope_virtual_get_type_from_name(void* fnptr, GtkBuilderScope* arg0, GtkBuilder* arg1, char* arg2) {
-//   return ((GType (*)(GtkBuilderScope*, GtkBuilder*, char*))(fnptr))(arg0, arg1, arg2);
-// };
-// GType _gotk4_gtk4_TreeModel_virtual_get_column_type(void* fnptr, GtkTreeModel* arg0, int arg1) {
-//   return ((GType (*)(GtkTreeModel*, int))(fnptr))(arg0, arg1);
-// };
-// GVariant* _gotk4_gtk4_Actionable_virtual_get_action_target_value(void* fnptr, GtkActionable* arg0) {
-//   return ((GVariant* (*)(GtkActionable*))(fnptr))(arg0);
-// };
-// GdkContentProvider* _gotk4_gtk4_TreeDragSource_virtual_drag_data_get(void* fnptr, GtkTreeDragSource* arg0, GtkTreePath* arg1) {
-//   return ((GdkContentProvider* (*)(GtkTreeDragSource*, GtkTreePath*))(fnptr))(arg0, arg1);
-// };
-// GtkBitset* _gotk4_gtk4_SelectionModel_virtual_get_selection_in_range(void* fnptr, GtkSelectionModel* arg0, guint arg1, guint arg2) {
-//   return ((GtkBitset* (*)(GtkSelectionModel*, guint, guint))(fnptr))(arg0, arg1, arg2);
-// };
-// GtkCellArea* _gotk4_gtk4_CellLayout_virtual_get_area(void* fnptr, GtkCellLayout* arg0) {
-//   return ((GtkCellArea* (*)(GtkCellLayout*))(fnptr))(arg0);
-// };
-// GtkCellAreaContext* _gotk4_gtk4_CellArea_virtual_copy_context(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1) {
-//   return ((GtkCellAreaContext* (*)(GtkCellArea*, GtkCellAreaContext*))(fnptr))(arg0, arg1);
-// };
-// GtkCellAreaContext* _gotk4_gtk4_CellArea_virtual_create_context(void* fnptr, GtkCellArea* arg0) {
-//   return ((GtkCellAreaContext* (*)(GtkCellArea*))(fnptr))(arg0);
-// };
-// GtkCellEditable* _gotk4_gtk4_CellRenderer_virtual_start_editing(void* fnptr, GtkCellRenderer* arg0, GdkEvent* arg1, GtkWidget* arg2, char* arg3, GdkRectangle* arg4, GdkRectangle* arg5, GtkCellRendererState arg6) {
-//   return ((GtkCellEditable* (*)(GtkCellRenderer*, GdkEvent*, GtkWidget*, char*, GdkRectangle*, GdkRectangle*, GtkCellRendererState))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-// };
-// GtkEditable* _gotk4_gtk4_EditableTextWidget_virtual_get_delegate(void* fnptr, GtkEditable* arg0) {
-//   return ((GtkEditable* (*)(GtkEditable*))(fnptr))(arg0);
-// };
-// GtkFilterMatch _gotk4_gtk4_Filter_virtual_get_strictness(void* fnptr, GtkFilter* arg0) {
-//   return ((GtkFilterMatch (*)(GtkFilter*))(fnptr))(arg0);
-// };
-// GtkLayoutChild* _gotk4_gtk4_LayoutManager_virtual_create_layout_child(void* fnptr, GtkLayoutManager* arg0, GtkWidget* arg1, GtkWidget* arg2) {
-//   return ((GtkLayoutChild* (*)(GtkLayoutManager*, GtkWidget*, GtkWidget*))(fnptr))(arg0, arg1, arg2);
-// };
-// GtkOrdering _gotk4_gtk4_Sorter_virtual_compare(void* fnptr, GtkSorter* arg0, gpointer arg1, gpointer arg2) {
-//   return ((GtkOrdering (*)(GtkSorter*, gpointer, gpointer))(fnptr))(arg0, arg1, arg2);
-// };
-// GtkSizeRequestMode _gotk4_gtk4_CellArea_virtual_get_request_mode(void* fnptr, GtkCellArea* arg0) {
-//   return ((GtkSizeRequestMode (*)(GtkCellArea*))(fnptr))(arg0);
-// };
-// GtkSizeRequestMode _gotk4_gtk4_CellRenderer_virtual_get_request_mode(void* fnptr, GtkCellRenderer* arg0) {
-//   return ((GtkSizeRequestMode (*)(GtkCellRenderer*))(fnptr))(arg0);
-// };
-// GtkSizeRequestMode _gotk4_gtk4_LayoutManager_virtual_get_request_mode(void* fnptr, GtkLayoutManager* arg0, GtkWidget* arg1) {
-//   return ((GtkSizeRequestMode (*)(GtkLayoutManager*, GtkWidget*))(fnptr))(arg0, arg1);
-// };
-// GtkSizeRequestMode _gotk4_gtk4_Widget_virtual_get_request_mode(void* fnptr, GtkWidget* arg0) {
-//   return ((GtkSizeRequestMode (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// GtkSorterOrder _gotk4_gtk4_Sorter_virtual_get_order(void* fnptr, GtkSorter* arg0) {
-//   return ((GtkSorterOrder (*)(GtkSorter*))(fnptr))(arg0);
-// };
-// GtkTreeModelFlags _gotk4_gtk4_TreeModel_virtual_get_flags(void* fnptr, GtkTreeModel* arg0) {
-//   return ((GtkTreeModelFlags (*)(GtkTreeModel*))(fnptr))(arg0);
-// };
-// GtkTreePath* _gotk4_gtk4_TreeModel_virtual_get_path(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1) {
-//   return ((GtkTreePath* (*)(GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1);
-// };
 // GtkWidget* _gotk4_gtk4_dialog_new2(const gchar* title, GtkWindow* parent, GtkDialogFlags flags) {
 // 	return gtk_dialog_new_with_buttons(title, parent, flags, NULL, NULL);
 // }
 // GtkWidget* _gotk4_gtk_message_dialog_new2(GtkWindow* parent, GtkDialogFlags flags, GtkMessageType type, GtkButtonsType buttons) {
 // 	return gtk_message_dialog_new_with_markup(parent, flags, type, buttons, NULL);
 // }
-// PangoFontFace* _gotk4_gtk4_FontChooser_virtual_get_font_face(void* fnptr, GtkFontChooser* arg0) {
-//   return ((PangoFontFace* (*)(GtkFontChooser*))(fnptr))(arg0);
-// };
-// PangoFontFamily* _gotk4_gtk4_FontChooser_virtual_get_font_family(void* fnptr, GtkFontChooser* arg0) {
-//   return ((PangoFontFamily* (*)(GtkFontChooser*))(fnptr))(arg0);
-// };
-// PangoFontMap* _gotk4_gtk4_FontChooser_virtual_get_font_map(void* fnptr, GtkFontChooser* arg0) {
-//   return ((PangoFontMap* (*)(GtkFontChooser*))(fnptr))(arg0);
-// };
-// char* _gotk4_gtk4_Actionable_virtual_get_action_name(void* fnptr, GtkActionable* arg0) {
-//   return ((char* (*)(GtkActionable*))(fnptr))(arg0);
-// };
-// char* _gotk4_gtk4_Buildable_virtual_get_id(void* fnptr, GtkBuildable* arg0) {
-//   return ((char* (*)(GtkBuildable*))(fnptr))(arg0);
-// };
-// char* _gotk4_gtk4_ComboBox_virtual_format_entry_text(void* fnptr, GtkComboBox* arg0, char* arg1) {
-//   return ((char* (*)(GtkComboBox*, char*))(fnptr))(arg0, arg1);
-// };
-// char* _gotk4_gtk4_EditableTextWidget_virtual_get_text(void* fnptr, GtkEditable* arg0) {
-//   return ((char* (*)(GtkEditable*))(fnptr))(arg0);
-// };
-// char* _gotk4_gtk4_EntryBuffer_virtual_get_text(void* fnptr, GtkEntryBuffer* arg0, gsize* arg1) {
-//   return ((char* (*)(GtkEntryBuffer*, gsize*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_Buildable_virtual_custom_tag_start(void* fnptr, GtkBuildable* arg0, GtkBuilder* arg1, GObject* arg2, char* arg3, GtkBuildableParser* arg4, gpointer* arg5) {
-//   return ((gboolean (*)(GtkBuildable*, GtkBuilder*, GObject*, char*, GtkBuildableParser*, gpointer*))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
-// };
-// gboolean _gotk4_gtk4_CellArea_virtual_activate(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1, GtkWidget* arg2, GdkRectangle* arg3, GtkCellRendererState arg4, gboolean arg5) {
-//   return ((gboolean (*)(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkRectangle*, GtkCellRendererState, gboolean))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
-// };
-// gboolean _gotk4_gtk4_CellArea_virtual_focus(void* fnptr, GtkCellArea* arg0, GtkDirectionType arg1) {
-//   return ((gboolean (*)(GtkCellArea*, GtkDirectionType))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_CellArea_virtual_is_activatable(void* fnptr, GtkCellArea* arg0) {
-//   return ((gboolean (*)(GtkCellArea*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_CellRenderer_virtual_activate(void* fnptr, GtkCellRenderer* arg0, GdkEvent* arg1, GtkWidget* arg2, char* arg3, GdkRectangle* arg4, GdkRectangle* arg5, GtkCellRendererState arg6) {
-//   return ((gboolean (*)(GtkCellRenderer*, GdkEvent*, GtkWidget*, char*, GdkRectangle*, GdkRectangle*, GtkCellRendererState))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-// };
-// gboolean _gotk4_gtk4_EditableTextWidget_virtual_get_selection_bounds(void* fnptr, GtkEditable* arg0, int* arg1, int* arg2) {
-//   return ((gboolean (*)(GtkEditable*, int*, int*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_Filter_virtual_match(void* fnptr, GtkFilter* arg0, gpointer arg1) {
-//   return ((gboolean (*)(GtkFilter*, gpointer))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_GLArea_virtual_render(void* fnptr, GtkGLArea* arg0, GdkGLContext* arg1) {
-//   return ((gboolean (*)(GtkGLArea*, GdkGLContext*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_IMContext_virtual_delete_surrounding(void* fnptr, GtkIMContext* arg0, int arg1, int arg2) {
-//   return ((gboolean (*)(GtkIMContext*, int, int))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_IMContext_virtual_filter_keypress(void* fnptr, GtkIMContext* arg0, GdkEvent* arg1) {
-//   return ((gboolean (*)(GtkIMContext*, GdkEvent*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_IMContext_virtual_get_surrounding(void* fnptr, GtkIMContext* arg0, char** arg1, int* arg2) {
-//   return ((gboolean (*)(GtkIMContext*, char**, int*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_IMContext_virtual_get_surrounding_with_selection(void* fnptr, GtkIMContext* arg0, char** arg1, int* arg2, int* arg3) {
-//   return ((gboolean (*)(GtkIMContext*, char**, int*, int*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// gboolean _gotk4_gtk4_IMContext_virtual_retrieve_surrounding(void* fnptr, GtkIMContext* arg0) {
-//   return ((gboolean (*)(GtkIMContext*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_MediaStream_virtual_play(void* fnptr, GtkMediaStream* arg0) {
-//   return ((gboolean (*)(GtkMediaStream*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_PrintOperationPreview_virtual_is_selected(void* fnptr, GtkPrintOperationPreview* arg0, int arg1) {
-//   return ((gboolean (*)(GtkPrintOperationPreview*, int))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_PrintOperation_virtual_paginate(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1) {
-//   return ((gboolean (*)(GtkPrintOperation*, GtkPrintContext*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_PrintOperation_virtual_preview(void* fnptr, GtkPrintOperation* arg0, GtkPrintOperationPreview* arg1, GtkPrintContext* arg2, GtkWindow* arg3) {
-//   return ((gboolean (*)(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// gboolean _gotk4_gtk4_Range_virtual_change_value(void* fnptr, GtkRange* arg0, GtkScrollType arg1, double arg2) {
-//   return ((gboolean (*)(GtkRange*, GtkScrollType, double))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_Scrollable_virtual_get_border(void* fnptr, GtkScrollable* arg0, GtkBorder* arg1) {
-//   return ((gboolean (*)(GtkScrollable*, GtkBorder*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_SelectionModel_virtual_is_selected(void* fnptr, GtkSelectionModel* arg0, guint arg1) {
-//   return ((gboolean (*)(GtkSelectionModel*, guint))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_SelectionModel_virtual_select_all(void* fnptr, GtkSelectionModel* arg0) {
-//   return ((gboolean (*)(GtkSelectionModel*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_SelectionModel_virtual_select_item(void* fnptr, GtkSelectionModel* arg0, guint arg1, gboolean arg2) {
-//   return ((gboolean (*)(GtkSelectionModel*, guint, gboolean))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_SelectionModel_virtual_select_range(void* fnptr, GtkSelectionModel* arg0, guint arg1, guint arg2, gboolean arg3) {
-//   return ((gboolean (*)(GtkSelectionModel*, guint, guint, gboolean))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// gboolean _gotk4_gtk4_SelectionModel_virtual_set_selection(void* fnptr, GtkSelectionModel* arg0, GtkBitset* arg1, GtkBitset* arg2) {
-//   return ((gboolean (*)(GtkSelectionModel*, GtkBitset*, GtkBitset*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_SelectionModel_virtual_unselect_all(void* fnptr, GtkSelectionModel* arg0) {
-//   return ((gboolean (*)(GtkSelectionModel*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_SelectionModel_virtual_unselect_item(void* fnptr, GtkSelectionModel* arg0, guint arg1) {
-//   return ((gboolean (*)(GtkSelectionModel*, guint))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_SelectionModel_virtual_unselect_range(void* fnptr, GtkSelectionModel* arg0, guint arg1, guint arg2) {
-//   return ((gboolean (*)(GtkSelectionModel*, guint, guint))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TextView_virtual_extend_selection(void* fnptr, GtkTextView* arg0, GtkTextExtendSelection arg1, GtkTextIter* arg2, GtkTextIter* arg3, GtkTextIter* arg4) {
-//   return ((gboolean (*)(GtkTextView*, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// gboolean _gotk4_gtk4_TreeDragDest_virtual_drag_data_received(void* fnptr, GtkTreeDragDest* arg0, GtkTreePath* arg1, GValue* arg2) {
-//   return ((gboolean (*)(GtkTreeDragDest*, GtkTreePath*, GValue*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeDragDest_virtual_row_drop_possible(void* fnptr, GtkTreeDragDest* arg0, GtkTreePath* arg1, GValue* arg2) {
-//   return ((gboolean (*)(GtkTreeDragDest*, GtkTreePath*, GValue*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeDragSource_virtual_drag_data_delete(void* fnptr, GtkTreeDragSource* arg0, GtkTreePath* arg1) {
-//   return ((gboolean (*)(GtkTreeDragSource*, GtkTreePath*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_TreeDragSource_virtual_row_draggable(void* fnptr, GtkTreeDragSource* arg0, GtkTreePath* arg1) {
-//   return ((gboolean (*)(GtkTreeDragSource*, GtkTreePath*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_TreeModelFilter_virtual_visible(void* fnptr, GtkTreeModelFilter* arg0, GtkTreeModel* arg1, GtkTreeIter* arg2) {
-//   return ((gboolean (*)(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeModel_virtual_get_iter(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1, GtkTreePath* arg2) {
-//   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*, GtkTreePath*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeModel_virtual_iter_children(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1, GtkTreeIter* arg2) {
-//   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeModel_virtual_iter_has_child(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1) {
-//   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_TreeModel_virtual_iter_next(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1) {
-//   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_TreeModel_virtual_iter_nth_child(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1, GtkTreeIter* arg2, int arg3) {
-//   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, int))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// gboolean _gotk4_gtk4_TreeModel_virtual_iter_parent(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1, GtkTreeIter* arg2) {
-//   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeModel_virtual_iter_previous(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1) {
-//   return ((gboolean (*)(GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_TreeSortable_virtual_get_sort_column_id(void* fnptr, GtkTreeSortable* arg0, int* arg1, GtkSortType* arg2) {
-//   return ((gboolean (*)(GtkTreeSortable*, int*, GtkSortType*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeSortable_virtual_has_default_sort_func(void* fnptr, GtkTreeSortable* arg0) {
-//   return ((gboolean (*)(GtkTreeSortable*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_expand_collapse_cursor_row(void* fnptr, GtkTreeView* arg0, gboolean arg1, gboolean arg2, gboolean arg3) {
-//   return ((gboolean (*)(GtkTreeView*, gboolean, gboolean, gboolean))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_move_cursor(void* fnptr, GtkTreeView* arg0, GtkMovementStep arg1, int arg2, gboolean arg3, gboolean arg4) {
-//   return ((gboolean (*)(GtkTreeView*, GtkMovementStep, int, gboolean, gboolean))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_select_all(void* fnptr, GtkTreeView* arg0) {
-//   return ((gboolean (*)(GtkTreeView*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_select_cursor_parent(void* fnptr, GtkTreeView* arg0) {
-//   return ((gboolean (*)(GtkTreeView*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_select_cursor_row(void* fnptr, GtkTreeView* arg0, gboolean arg1) {
-//   return ((gboolean (*)(GtkTreeView*, gboolean))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_start_interactive_search(void* fnptr, GtkTreeView* arg0) {
-//   return ((gboolean (*)(GtkTreeView*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_test_collapse_row(void* fnptr, GtkTreeView* arg0, GtkTreeIter* arg1, GtkTreePath* arg2) {
-//   return ((gboolean (*)(GtkTreeView*, GtkTreeIter*, GtkTreePath*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_test_expand_row(void* fnptr, GtkTreeView* arg0, GtkTreeIter* arg1, GtkTreePath* arg2) {
-//   return ((gboolean (*)(GtkTreeView*, GtkTreeIter*, GtkTreePath*))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_toggle_cursor_row(void* fnptr, GtkTreeView* arg0) {
-//   return ((gboolean (*)(GtkTreeView*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_TreeView_virtual_unselect_all(void* fnptr, GtkTreeView* arg0) {
-//   return ((gboolean (*)(GtkTreeView*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_Widget_virtual_contains(void* fnptr, GtkWidget* arg0, double arg1, double arg2) {
-//   return ((gboolean (*)(GtkWidget*, double, double))(fnptr))(arg0, arg1, arg2);
-// };
-// gboolean _gotk4_gtk4_Widget_virtual_focus(void* fnptr, GtkWidget* arg0, GtkDirectionType arg1) {
-//   return ((gboolean (*)(GtkWidget*, GtkDirectionType))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_Widget_virtual_grab_focus(void* fnptr, GtkWidget* arg0) {
-//   return ((gboolean (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_Widget_virtual_keynav_failed(void* fnptr, GtkWidget* arg0, GtkDirectionType arg1) {
-//   return ((gboolean (*)(GtkWidget*, GtkDirectionType))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_Widget_virtual_mnemonic_activate(void* fnptr, GtkWidget* arg0, gboolean arg1) {
-//   return ((gboolean (*)(GtkWidget*, gboolean))(fnptr))(arg0, arg1);
-// };
-// gboolean _gotk4_gtk4_Widget_virtual_query_tooltip(void* fnptr, GtkWidget* arg0, int arg1, int arg2, gboolean arg3, GtkTooltip* arg4) {
-//   return ((gboolean (*)(GtkWidget*, int, int, gboolean, GtkTooltip*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// gboolean _gotk4_gtk4_Window_virtual_close_request(void* fnptr, GtkWindow* arg0) {
-//   return ((gboolean (*)(GtkWindow*))(fnptr))(arg0);
-// };
-// gboolean _gotk4_gtk4_Window_virtual_enable_debugging(void* fnptr, GtkWindow* arg0, gboolean arg1) {
-//   return ((gboolean (*)(GtkWindow*, gboolean))(fnptr))(arg0, arg1);
-// };
-// guint _gotk4_gtk4_EntryBuffer_virtual_delete_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, guint arg2) {
-//   return ((guint (*)(GtkEntryBuffer*, guint, guint))(fnptr))(arg0, arg1, arg2);
-// };
-// guint _gotk4_gtk4_EntryBuffer_virtual_get_length(void* fnptr, GtkEntryBuffer* arg0) {
-//   return ((guint (*)(GtkEntryBuffer*))(fnptr))(arg0);
-// };
-// guint _gotk4_gtk4_EntryBuffer_virtual_insert_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, char* arg2, guint arg3) {
-//   return ((guint (*)(GtkEntryBuffer*, guint, char*, guint))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// int _gotk4_gtk4_CellArea_virtual_event(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1, GtkWidget* arg2, GdkEvent* arg3, GdkRectangle* arg4, GtkCellRendererState arg5) {
-//   return ((int (*)(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkEvent*, GdkRectangle*, GtkCellRendererState))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
-// };
-// int _gotk4_gtk4_FontChooser_virtual_get_font_size(void* fnptr, GtkFontChooser* arg0) {
-//   return ((int (*)(GtkFontChooser*))(fnptr))(arg0);
-// };
-// int _gotk4_gtk4_TreeModel_virtual_get_n_columns(void* fnptr, GtkTreeModel* arg0) {
-//   return ((int (*)(GtkTreeModel*))(fnptr))(arg0);
-// };
-// int _gotk4_gtk4_TreeModel_virtual_iter_n_children(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1) {
-//   return ((int (*)(GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Actionable_virtual_set_action_name(void* fnptr, GtkActionable* arg0, char* arg1) {
-//   ((void (*)(GtkActionable*, char*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Actionable_virtual_set_action_target_value(void* fnptr, GtkActionable* arg0, GVariant* arg1) {
-//   ((void (*)(GtkActionable*, GVariant*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Adjustment_virtual_changed(void* fnptr, GtkAdjustment* arg0) {
-//   ((void (*)(GtkAdjustment*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Adjustment_virtual_value_changed(void* fnptr, GtkAdjustment* arg0) {
-//   ((void (*)(GtkAdjustment*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Application_virtual_window_added(void* fnptr, GtkApplication* arg0, GtkWindow* arg1) {
-//   ((void (*)(GtkApplication*, GtkWindow*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Application_virtual_window_removed(void* fnptr, GtkApplication* arg0, GtkWindow* arg1) {
-//   ((void (*)(GtkApplication*, GtkWindow*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Buildable_virtual_add_child(void* fnptr, GtkBuildable* arg0, GtkBuilder* arg1, GObject* arg2, char* arg3) {
-//   ((void (*)(GtkBuildable*, GtkBuilder*, GObject*, char*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_Buildable_virtual_custom_finished(void* fnptr, GtkBuildable* arg0, GtkBuilder* arg1, GObject* arg2, char* arg3, gpointer arg4) {
-//   ((void (*)(GtkBuildable*, GtkBuilder*, GObject*, char*, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_Buildable_virtual_custom_tag_end(void* fnptr, GtkBuildable* arg0, GtkBuilder* arg1, GObject* arg2, char* arg3, gpointer arg4) {
-//   ((void (*)(GtkBuildable*, GtkBuilder*, GObject*, char*, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_Buildable_virtual_parser_finished(void* fnptr, GtkBuildable* arg0, GtkBuilder* arg1) {
-//   ((void (*)(GtkBuildable*, GtkBuilder*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Buildable_virtual_set_buildable_property(void* fnptr, GtkBuildable* arg0, GtkBuilder* arg1, char* arg2, GValue* arg3) {
-//   ((void (*)(GtkBuildable*, GtkBuilder*, char*, GValue*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_Buildable_virtual_set_id(void* fnptr, GtkBuildable* arg0, char* arg1) {
-//   ((void (*)(GtkBuildable*, char*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Button_virtual_activate(void* fnptr, GtkButton* arg0) {
-//   ((void (*)(GtkButton*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Button_virtual_clicked(void* fnptr, GtkButton* arg0) {
-//   ((void (*)(GtkButton*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_CellAreaContext_virtual_allocate(void* fnptr, GtkCellAreaContext* arg0, int arg1, int arg2) {
-//   ((void (*)(GtkCellAreaContext*, int, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_CellAreaContext_virtual_get_preferred_height_for_width(void* fnptr, GtkCellAreaContext* arg0, int arg1, int* arg2, int* arg3) {
-//   ((void (*)(GtkCellAreaContext*, int, int*, int*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_CellAreaContext_virtual_get_preferred_width_for_height(void* fnptr, GtkCellAreaContext* arg0, int arg1, int* arg2, int* arg3) {
-//   ((void (*)(GtkCellAreaContext*, int, int*, int*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_CellAreaContext_virtual_reset(void* fnptr, GtkCellAreaContext* arg0) {
-//   ((void (*)(GtkCellAreaContext*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_CellArea_virtual_add(void* fnptr, GtkCellArea* arg0, GtkCellRenderer* arg1) {
-//   ((void (*)(GtkCellArea*, GtkCellRenderer*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_CellArea_virtual_apply_attributes(void* fnptr, GtkCellArea* arg0, GtkTreeModel* arg1, GtkTreeIter* arg2, gboolean arg3, gboolean arg4) {
-//   ((void (*)(GtkCellArea*, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_CellArea_virtual_foreach(void* fnptr, GtkCellArea* arg0, GtkCellCallback arg1, gpointer arg2) {
-//   ((void (*)(GtkCellArea*, GtkCellCallback, gpointer))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_CellArea_virtual_foreach_alloc(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1, GtkWidget* arg2, GdkRectangle* arg3, GdkRectangle* arg4, GtkCellAllocCallback arg5, gpointer arg6) {
-//   ((void (*)(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkRectangle*, GdkRectangle*, GtkCellAllocCallback, gpointer))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-// };
-// void _gotk4_gtk4_CellArea_virtual_get_preferred_height(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1, GtkWidget* arg2, int* arg3, int* arg4) {
-//   ((void (*)(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_CellArea_virtual_get_preferred_height_for_width(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1, GtkWidget* arg2, int arg3, int* arg4, int* arg5) {
-//   ((void (*)(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
-// };
-// void _gotk4_gtk4_CellArea_virtual_get_preferred_width(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1, GtkWidget* arg2, int* arg3, int* arg4) {
-//   ((void (*)(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_CellArea_virtual_get_preferred_width_for_height(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1, GtkWidget* arg2, int arg3, int* arg4, int* arg5) {
-//   ((void (*)(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, int, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
-// };
-// void _gotk4_gtk4_CellArea_virtual_remove(void* fnptr, GtkCellArea* arg0, GtkCellRenderer* arg1) {
-//   ((void (*)(GtkCellArea*, GtkCellRenderer*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_CellArea_virtual_snapshot(void* fnptr, GtkCellArea* arg0, GtkCellAreaContext* arg1, GtkWidget* arg2, GtkSnapshot* arg3, GdkRectangle* arg4, GdkRectangle* arg5, GtkCellRendererState arg6, gboolean arg7) {
-//   ((void (*)(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GtkSnapshot*, GdkRectangle*, GdkRectangle*, GtkCellRendererState, gboolean))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-// };
-// void _gotk4_gtk4_CellEditable_virtual_editing_done(void* fnptr, GtkCellEditable* arg0) {
-//   ((void (*)(GtkCellEditable*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_CellEditable_virtual_remove_widget(void* fnptr, GtkCellEditable* arg0) {
-//   ((void (*)(GtkCellEditable*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_CellEditable_virtual_start_editing(void* fnptr, GtkCellEditable* arg0, GdkEvent* arg1) {
-//   ((void (*)(GtkCellEditable*, GdkEvent*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_CellLayout_virtual_add_attribute(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, char* arg2, int arg3) {
-//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, char*, int))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_CellLayout_virtual_clear(void* fnptr, GtkCellLayout* arg0) {
-//   ((void (*)(GtkCellLayout*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_CellLayout_virtual_clear_attributes(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1) {
-//   ((void (*)(GtkCellLayout*, GtkCellRenderer*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_CellLayout_virtual_pack_end(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, gboolean arg2) {
-//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, gboolean))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_CellLayout_virtual_pack_start(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, gboolean arg2) {
-//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, gboolean))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_CellLayout_virtual_reorder(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, int arg2) {
-//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_CellLayout_virtual_set_cell_data_func(void* fnptr, GtkCellLayout* arg0, GtkCellRenderer* arg1, GtkCellLayoutDataFunc arg2, gpointer arg3, GDestroyNotify arg4) {
-//   ((void (*)(GtkCellLayout*, GtkCellRenderer*, GtkCellLayoutDataFunc, gpointer, GDestroyNotify))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_CellRendererText_virtual_edited(void* fnptr, GtkCellRendererText* arg0, char* arg1, char* arg2) {
-//   ((void (*)(GtkCellRendererText*, char*, char*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_CellRenderer_virtual_editing_canceled(void* fnptr, GtkCellRenderer* arg0) {
-//   ((void (*)(GtkCellRenderer*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_CellRenderer_virtual_editing_started(void* fnptr, GtkCellRenderer* arg0, GtkCellEditable* arg1, char* arg2) {
-//   ((void (*)(GtkCellRenderer*, GtkCellEditable*, char*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_CellRenderer_virtual_get_aligned_area(void* fnptr, GtkCellRenderer* arg0, GtkWidget* arg1, GtkCellRendererState arg2, GdkRectangle* arg3, GdkRectangle* arg4) {
-//   ((void (*)(GtkCellRenderer*, GtkWidget*, GtkCellRendererState, GdkRectangle*, GdkRectangle*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_CellRenderer_virtual_get_preferred_height(void* fnptr, GtkCellRenderer* arg0, GtkWidget* arg1, int* arg2, int* arg3) {
-//   ((void (*)(GtkCellRenderer*, GtkWidget*, int*, int*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_CellRenderer_virtual_get_preferred_height_for_width(void* fnptr, GtkCellRenderer* arg0, GtkWidget* arg1, int arg2, int* arg3, int* arg4) {
-//   ((void (*)(GtkCellRenderer*, GtkWidget*, int, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_CellRenderer_virtual_get_preferred_width(void* fnptr, GtkCellRenderer* arg0, GtkWidget* arg1, int* arg2, int* arg3) {
-//   ((void (*)(GtkCellRenderer*, GtkWidget*, int*, int*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_CellRenderer_virtual_get_preferred_width_for_height(void* fnptr, GtkCellRenderer* arg0, GtkWidget* arg1, int arg2, int* arg3, int* arg4) {
-//   ((void (*)(GtkCellRenderer*, GtkWidget*, int, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_CellRenderer_virtual_snapshot(void* fnptr, GtkCellRenderer* arg0, GtkSnapshot* arg1, GtkWidget* arg2, GdkRectangle* arg3, GdkRectangle* arg4, GtkCellRendererState arg5) {
-//   ((void (*)(GtkCellRenderer*, GtkSnapshot*, GtkWidget*, GdkRectangle*, GdkRectangle*, GtkCellRendererState))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
-// };
-// void _gotk4_gtk4_CheckButton_virtual_activate(void* fnptr, GtkCheckButton* arg0) {
-//   ((void (*)(GtkCheckButton*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_CheckButton_virtual_toggled(void* fnptr, GtkCheckButton* arg0) {
-//   ((void (*)(GtkCheckButton*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_ColorChooser_virtual_add_palette(void* fnptr, GtkColorChooser* arg0, GtkOrientation arg1, int arg2, int arg3, GdkRGBA* arg4) {
-//   ((void (*)(GtkColorChooser*, GtkOrientation, int, int, GdkRGBA*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_ColorChooser_virtual_color_activated(void* fnptr, GtkColorChooser* arg0, GdkRGBA* arg1) {
-//   ((void (*)(GtkColorChooser*, GdkRGBA*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_ColorChooser_virtual_get_rgba(void* fnptr, GtkColorChooser* arg0, GdkRGBA* arg1) {
-//   ((void (*)(GtkColorChooser*, GdkRGBA*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_ColorChooser_virtual_set_rgba(void* fnptr, GtkColorChooser* arg0, GdkRGBA* arg1) {
-//   ((void (*)(GtkColorChooser*, GdkRGBA*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_ComboBox_virtual_changed(void* fnptr, GtkComboBox* arg0) {
-//   ((void (*)(GtkComboBox*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Dialog_virtual_close(void* fnptr, GtkDialog* arg0) {
-//   ((void (*)(GtkDialog*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Dialog_virtual_response(void* fnptr, GtkDialog* arg0, int arg1) {
-//   ((void (*)(GtkDialog*, int))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_DrawingArea_virtual_resize(void* fnptr, GtkDrawingArea* arg0, int arg1, int arg2) {
-//   ((void (*)(GtkDrawingArea*, int, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_EditableTextWidget_virtual_changed(void* fnptr, GtkEditable* arg0) {
-//   ((void (*)(GtkEditable*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_EditableTextWidget_virtual_delete_text(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
-//   ((void (*)(GtkEditable*, int, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_EditableTextWidget_virtual_do_delete_text(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
-//   ((void (*)(GtkEditable*, int, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_EditableTextWidget_virtual_set_selection_bounds(void* fnptr, GtkEditable* arg0, int arg1, int arg2) {
-//   ((void (*)(GtkEditable*, int, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_EntryBuffer_virtual_deleted_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, guint arg2) {
-//   ((void (*)(GtkEntryBuffer*, guint, guint))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_EntryBuffer_virtual_inserted_text(void* fnptr, GtkEntryBuffer* arg0, guint arg1, char* arg2, guint arg3) {
-//   ((void (*)(GtkEntryBuffer*, guint, char*, guint))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_Entry_virtual_activate(void* fnptr, GtkEntry* arg0) {
-//   ((void (*)(GtkEntry*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_FlowBoxChild_virtual_activate(void* fnptr, GtkFlowBoxChild* arg0) {
-//   ((void (*)(GtkFlowBoxChild*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_FontChooser_virtual_font_activated(void* fnptr, GtkFontChooser* arg0, char* arg1) {
-//   ((void (*)(GtkFontChooser*, char*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_FontChooser_virtual_set_filter_func(void* fnptr, GtkFontChooser* arg0, GtkFontFilterFunc arg1, gpointer arg2, GDestroyNotify arg3) {
-//   ((void (*)(GtkFontChooser*, GtkFontFilterFunc, gpointer, GDestroyNotify))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_FontChooser_virtual_set_font_map(void* fnptr, GtkFontChooser* arg0, PangoFontMap* arg1) {
-//   ((void (*)(GtkFontChooser*, PangoFontMap*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Frame_virtual_compute_child_allocation(void* fnptr, GtkFrame* arg0, GtkAllocation* arg1) {
-//   ((void (*)(GtkFrame*, GtkAllocation*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_GLArea_virtual_resize(void* fnptr, GtkGLArea* arg0, int arg1, int arg2) {
-//   ((void (*)(GtkGLArea*, int, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_IMContext_virtual_commit(void* fnptr, GtkIMContext* arg0, char* arg1) {
-//   ((void (*)(GtkIMContext*, char*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_IMContext_virtual_focus_in(void* fnptr, GtkIMContext* arg0) {
-//   ((void (*)(GtkIMContext*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_IMContext_virtual_focus_out(void* fnptr, GtkIMContext* arg0) {
-//   ((void (*)(GtkIMContext*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_IMContext_virtual_get_preedit_string(void* fnptr, GtkIMContext* arg0, char** arg1, PangoAttrList** arg2, int* arg3) {
-//   ((void (*)(GtkIMContext*, char**, PangoAttrList**, int*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_IMContext_virtual_preedit_changed(void* fnptr, GtkIMContext* arg0) {
-//   ((void (*)(GtkIMContext*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_IMContext_virtual_preedit_end(void* fnptr, GtkIMContext* arg0) {
-//   ((void (*)(GtkIMContext*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_IMContext_virtual_preedit_start(void* fnptr, GtkIMContext* arg0) {
-//   ((void (*)(GtkIMContext*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_IMContext_virtual_reset(void* fnptr, GtkIMContext* arg0) {
-//   ((void (*)(GtkIMContext*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_IMContext_virtual_set_client_widget(void* fnptr, GtkIMContext* arg0, GtkWidget* arg1) {
-//   ((void (*)(GtkIMContext*, GtkWidget*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_IMContext_virtual_set_cursor_location(void* fnptr, GtkIMContext* arg0, GdkRectangle* arg1) {
-//   ((void (*)(GtkIMContext*, GdkRectangle*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_IMContext_virtual_set_surrounding(void* fnptr, GtkIMContext* arg0, char* arg1, int arg2, int arg3) {
-//   ((void (*)(GtkIMContext*, char*, int, int))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_IMContext_virtual_set_surrounding_with_selection(void* fnptr, GtkIMContext* arg0, char* arg1, int arg2, int arg3, int arg4) {
-//   ((void (*)(GtkIMContext*, char*, int, int, int))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_IMContext_virtual_set_use_preedit(void* fnptr, GtkIMContext* arg0, gboolean arg1) {
-//   ((void (*)(GtkIMContext*, gboolean))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_LayoutManager_virtual_allocate(void* fnptr, GtkLayoutManager* arg0, GtkWidget* arg1, int arg2, int arg3, int arg4) {
-//   ((void (*)(GtkLayoutManager*, GtkWidget*, int, int, int))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_LayoutManager_virtual_measure(void* fnptr, GtkLayoutManager* arg0, GtkWidget* arg1, GtkOrientation arg2, int arg3, int* arg4, int* arg5, int* arg6, int* arg7) {
-//   ((void (*)(GtkLayoutManager*, GtkWidget*, GtkOrientation, int, int*, int*, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-// };
-// void _gotk4_gtk4_LayoutManager_virtual_root(void* fnptr, GtkLayoutManager* arg0) {
-//   ((void (*)(GtkLayoutManager*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_LayoutManager_virtual_unroot(void* fnptr, GtkLayoutManager* arg0) {
-//   ((void (*)(GtkLayoutManager*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_ListBoxRow_virtual_activate(void* fnptr, GtkListBoxRow* arg0) {
-//   ((void (*)(GtkListBoxRow*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_MediaFile_virtual_close(void* fnptr, GtkMediaFile* arg0) {
-//   ((void (*)(GtkMediaFile*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_MediaFile_virtual_open(void* fnptr, GtkMediaFile* arg0) {
-//   ((void (*)(GtkMediaFile*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_MediaStream_virtual_pause(void* fnptr, GtkMediaStream* arg0) {
-//   ((void (*)(GtkMediaStream*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_MediaStream_virtual_realize(void* fnptr, GtkMediaStream* arg0, GdkSurface* arg1) {
-//   ((void (*)(GtkMediaStream*, GdkSurface*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_MediaStream_virtual_seek(void* fnptr, GtkMediaStream* arg0, gint64 arg1) {
-//   ((void (*)(GtkMediaStream*, gint64))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_MediaStream_virtual_unrealize(void* fnptr, GtkMediaStream* arg0, GdkSurface* arg1) {
-//   ((void (*)(GtkMediaStream*, GdkSurface*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_MediaStream_virtual_update_audio(void* fnptr, GtkMediaStream* arg0, gboolean arg1, double arg2) {
-//   ((void (*)(GtkMediaStream*, gboolean, double))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_NativeDialog_virtual_hide(void* fnptr, GtkNativeDialog* arg0) {
-//   ((void (*)(GtkNativeDialog*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_NativeDialog_virtual_response(void* fnptr, GtkNativeDialog* arg0, int arg1) {
-//   ((void (*)(GtkNativeDialog*, int))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_NativeDialog_virtual_show(void* fnptr, GtkNativeDialog* arg0) {
-//   ((void (*)(GtkNativeDialog*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Popover_virtual_activate_default(void* fnptr, GtkPopover* arg0) {
-//   ((void (*)(GtkPopover*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Popover_virtual_closed(void* fnptr, GtkPopover* arg0) {
-//   ((void (*)(GtkPopover*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_PrintOperationPreview_virtual_end_preview(void* fnptr, GtkPrintOperationPreview* arg0) {
-//   ((void (*)(GtkPrintOperationPreview*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_PrintOperationPreview_virtual_got_page_size(void* fnptr, GtkPrintOperationPreview* arg0, GtkPrintContext* arg1, GtkPageSetup* arg2) {
-//   ((void (*)(GtkPrintOperationPreview*, GtkPrintContext*, GtkPageSetup*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_PrintOperationPreview_virtual_ready(void* fnptr, GtkPrintOperationPreview* arg0, GtkPrintContext* arg1) {
-//   ((void (*)(GtkPrintOperationPreview*, GtkPrintContext*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_PrintOperationPreview_virtual_render_page(void* fnptr, GtkPrintOperationPreview* arg0, int arg1) {
-//   ((void (*)(GtkPrintOperationPreview*, int))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_PrintOperation_virtual_begin_print(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1) {
-//   ((void (*)(GtkPrintOperation*, GtkPrintContext*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_PrintOperation_virtual_custom_widget_apply(void* fnptr, GtkPrintOperation* arg0, GtkWidget* arg1) {
-//   ((void (*)(GtkPrintOperation*, GtkWidget*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_PrintOperation_virtual_done(void* fnptr, GtkPrintOperation* arg0, GtkPrintOperationResult arg1) {
-//   ((void (*)(GtkPrintOperation*, GtkPrintOperationResult))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_PrintOperation_virtual_draw_page(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1, int arg2) {
-//   ((void (*)(GtkPrintOperation*, GtkPrintContext*, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_PrintOperation_virtual_end_print(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1) {
-//   ((void (*)(GtkPrintOperation*, GtkPrintContext*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_PrintOperation_virtual_request_page_setup(void* fnptr, GtkPrintOperation* arg0, GtkPrintContext* arg1, int arg2, GtkPageSetup* arg3) {
-//   ((void (*)(GtkPrintOperation*, GtkPrintContext*, int, GtkPageSetup*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_PrintOperation_virtual_status_changed(void* fnptr, GtkPrintOperation* arg0) {
-//   ((void (*)(GtkPrintOperation*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_PrintOperation_virtual_update_custom_widget(void* fnptr, GtkPrintOperation* arg0, GtkWidget* arg1, GtkPageSetup* arg2, GtkPrintSettings* arg3) {
-//   ((void (*)(GtkPrintOperation*, GtkWidget*, GtkPageSetup*, GtkPrintSettings*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_Range_virtual_adjust_bounds(void* fnptr, GtkRange* arg0, double arg1) {
-//   ((void (*)(GtkRange*, double))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Range_virtual_get_range_border(void* fnptr, GtkRange* arg0, GtkBorder* arg1) {
-//   ((void (*)(GtkRange*, GtkBorder*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Range_virtual_move_slider(void* fnptr, GtkRange* arg0, GtkScrollType arg1) {
-//   ((void (*)(GtkRange*, GtkScrollType))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Range_virtual_value_changed(void* fnptr, GtkRange* arg0) {
-//   ((void (*)(GtkRange*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_RecentManager_virtual_changed(void* fnptr, GtkRecentManager* arg0) {
-//   ((void (*)(GtkRecentManager*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_ScaleButton_virtual_value_changed(void* fnptr, GtkScaleButton* arg0, double arg1) {
-//   ((void (*)(GtkScaleButton*, double))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Scale_virtual_get_layout_offsets(void* fnptr, GtkScale* arg0, int* arg1, int* arg2) {
-//   ((void (*)(GtkScale*, int*, int*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_ShortcutManager_virtual_add_controller(void* fnptr, GtkShortcutManager* arg0, GtkShortcutController* arg1) {
-//   ((void (*)(GtkShortcutManager*, GtkShortcutController*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_ShortcutManager_virtual_remove_controller(void* fnptr, GtkShortcutManager* arg0, GtkShortcutController* arg1) {
-//   ((void (*)(GtkShortcutManager*, GtkShortcutController*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_StyleContext_virtual_changed(void* fnptr, GtkStyleContext* arg0) {
-//   ((void (*)(GtkStyleContext*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_apply_tag(void* fnptr, GtkTextBuffer* arg0, GtkTextTag* arg1, GtkTextIter* arg2, GtkTextIter* arg3) {
-//   ((void (*)(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_begin_user_action(void* fnptr, GtkTextBuffer* arg0) {
-//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_changed(void* fnptr, GtkTextBuffer* arg0) {
-//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_delete_range(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, GtkTextIter* arg2) {
-//   ((void (*)(GtkTextBuffer*, GtkTextIter*, GtkTextIter*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_end_user_action(void* fnptr, GtkTextBuffer* arg0) {
-//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_insert_child_anchor(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, GtkTextChildAnchor* arg2) {
-//   ((void (*)(GtkTextBuffer*, GtkTextIter*, GtkTextChildAnchor*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_insert_paintable(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, GdkPaintable* arg2) {
-//   ((void (*)(GtkTextBuffer*, GtkTextIter*, GdkPaintable*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_insert_text(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, char* arg2, int arg3) {
-//   ((void (*)(GtkTextBuffer*, GtkTextIter*, char*, int))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_mark_deleted(void* fnptr, GtkTextBuffer* arg0, GtkTextMark* arg1) {
-//   ((void (*)(GtkTextBuffer*, GtkTextMark*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_mark_set(void* fnptr, GtkTextBuffer* arg0, GtkTextIter* arg1, GtkTextMark* arg2) {
-//   ((void (*)(GtkTextBuffer*, GtkTextIter*, GtkTextMark*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_modified_changed(void* fnptr, GtkTextBuffer* arg0) {
-//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_paste_done(void* fnptr, GtkTextBuffer* arg0, GdkClipboard* arg1) {
-//   ((void (*)(GtkTextBuffer*, GdkClipboard*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_redo(void* fnptr, GtkTextBuffer* arg0) {
-//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_remove_tag(void* fnptr, GtkTextBuffer* arg0, GtkTextTag* arg1, GtkTextIter* arg2, GtkTextIter* arg3) {
-//   ((void (*)(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_TextBuffer_virtual_undo(void* fnptr, GtkTextBuffer* arg0) {
-//   ((void (*)(GtkTextBuffer*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextView_virtual_backspace(void* fnptr, GtkTextView* arg0) {
-//   ((void (*)(GtkTextView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextView_virtual_copy_clipboard(void* fnptr, GtkTextView* arg0) {
-//   ((void (*)(GtkTextView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextView_virtual_cut_clipboard(void* fnptr, GtkTextView* arg0) {
-//   ((void (*)(GtkTextView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextView_virtual_delete_from_cursor(void* fnptr, GtkTextView* arg0, GtkDeleteType arg1, int arg2) {
-//   ((void (*)(GtkTextView*, GtkDeleteType, int))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TextView_virtual_insert_at_cursor(void* fnptr, GtkTextView* arg0, char* arg1) {
-//   ((void (*)(GtkTextView*, char*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_TextView_virtual_insert_emoji(void* fnptr, GtkTextView* arg0) {
-//   ((void (*)(GtkTextView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextView_virtual_move_cursor(void* fnptr, GtkTextView* arg0, GtkMovementStep arg1, int arg2, gboolean arg3) {
-//   ((void (*)(GtkTextView*, GtkMovementStep, int, gboolean))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_TextView_virtual_paste_clipboard(void* fnptr, GtkTextView* arg0) {
-//   ((void (*)(GtkTextView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextView_virtual_set_anchor(void* fnptr, GtkTextView* arg0) {
-//   ((void (*)(GtkTextView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TextView_virtual_snapshot_layer(void* fnptr, GtkTextView* arg0, GtkTextViewLayer arg1, GtkSnapshot* arg2) {
-//   ((void (*)(GtkTextView*, GtkTextViewLayer, GtkSnapshot*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TextView_virtual_toggle_overwrite(void* fnptr, GtkTextView* arg0) {
-//   ((void (*)(GtkTextView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_ToggleButton_virtual_toggled(void* fnptr, GtkToggleButton* arg0) {
-//   ((void (*)(GtkToggleButton*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TreeModelFilter_virtual_modify(void* fnptr, GtkTreeModelFilter* arg0, GtkTreeModel* arg1, GtkTreeIter* arg2, GValue* arg3, int arg4) {
-//   ((void (*)(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*, GValue*, int))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_TreeModel_virtual_get_value(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1, int arg2, GValue* arg3) {
-//   ((void (*)(GtkTreeModel*, GtkTreeIter*, int, GValue*))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_TreeModel_virtual_ref_node(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1) {
-//   ((void (*)(GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_TreeModel_virtual_row_changed(void* fnptr, GtkTreeModel* arg0, GtkTreePath* arg1, GtkTreeIter* arg2) {
-//   ((void (*)(GtkTreeModel*, GtkTreePath*, GtkTreeIter*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TreeModel_virtual_row_deleted(void* fnptr, GtkTreeModel* arg0, GtkTreePath* arg1) {
-//   ((void (*)(GtkTreeModel*, GtkTreePath*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_TreeModel_virtual_row_has_child_toggled(void* fnptr, GtkTreeModel* arg0, GtkTreePath* arg1, GtkTreeIter* arg2) {
-//   ((void (*)(GtkTreeModel*, GtkTreePath*, GtkTreeIter*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TreeModel_virtual_row_inserted(void* fnptr, GtkTreeModel* arg0, GtkTreePath* arg1, GtkTreeIter* arg2) {
-//   ((void (*)(GtkTreeModel*, GtkTreePath*, GtkTreeIter*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TreeModel_virtual_unref_node(void* fnptr, GtkTreeModel* arg0, GtkTreeIter* arg1) {
-//   ((void (*)(GtkTreeModel*, GtkTreeIter*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_TreeSortable_virtual_set_default_sort_func(void* fnptr, GtkTreeSortable* arg0, GtkTreeIterCompareFunc arg1, gpointer arg2, GDestroyNotify arg3) {
-//   ((void (*)(GtkTreeSortable*, GtkTreeIterCompareFunc, gpointer, GDestroyNotify))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_TreeSortable_virtual_set_sort_column_id(void* fnptr, GtkTreeSortable* arg0, int arg1, GtkSortType arg2) {
-//   ((void (*)(GtkTreeSortable*, int, GtkSortType))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TreeSortable_virtual_set_sort_func(void* fnptr, GtkTreeSortable* arg0, int arg1, GtkTreeIterCompareFunc arg2, gpointer arg3, GDestroyNotify arg4) {
-//   ((void (*)(GtkTreeSortable*, int, GtkTreeIterCompareFunc, gpointer, GDestroyNotify))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gtk4_TreeSortable_virtual_sort_column_changed(void* fnptr, GtkTreeSortable* arg0) {
-//   ((void (*)(GtkTreeSortable*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TreeView_virtual_columns_changed(void* fnptr, GtkTreeView* arg0) {
-//   ((void (*)(GtkTreeView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TreeView_virtual_cursor_changed(void* fnptr, GtkTreeView* arg0) {
-//   ((void (*)(GtkTreeView*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_TreeView_virtual_row_activated(void* fnptr, GtkTreeView* arg0, GtkTreePath* arg1, GtkTreeViewColumn* arg2) {
-//   ((void (*)(GtkTreeView*, GtkTreePath*, GtkTreeViewColumn*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TreeView_virtual_row_collapsed(void* fnptr, GtkTreeView* arg0, GtkTreeIter* arg1, GtkTreePath* arg2) {
-//   ((void (*)(GtkTreeView*, GtkTreeIter*, GtkTreePath*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_TreeView_virtual_row_expanded(void* fnptr, GtkTreeView* arg0, GtkTreeIter* arg1, GtkTreePath* arg2) {
-//   ((void (*)(GtkTreeView*, GtkTreeIter*, GtkTreePath*))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gtk4_Widget_virtual_direction_changed(void* fnptr, GtkWidget* arg0, GtkTextDirection arg1) {
-//   ((void (*)(GtkWidget*, GtkTextDirection))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Widget_virtual_hide(void* fnptr, GtkWidget* arg0) {
-//   ((void (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Widget_virtual_map(void* fnptr, GtkWidget* arg0) {
-//   ((void (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Widget_virtual_measure(void* fnptr, GtkWidget* arg0, GtkOrientation arg1, int arg2, int* arg3, int* arg4, int* arg5, int* arg6) {
-//   ((void (*)(GtkWidget*, GtkOrientation, int, int*, int*, int*, int*))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
-// };
-// void _gotk4_gtk4_Widget_virtual_move_focus(void* fnptr, GtkWidget* arg0, GtkDirectionType arg1) {
-//   ((void (*)(GtkWidget*, GtkDirectionType))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Widget_virtual_realize(void* fnptr, GtkWidget* arg0) {
-//   ((void (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Widget_virtual_root(void* fnptr, GtkWidget* arg0) {
-//   ((void (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Widget_virtual_set_focus_child(void* fnptr, GtkWidget* arg0, GtkWidget* arg1) {
-//   ((void (*)(GtkWidget*, GtkWidget*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Widget_virtual_show(void* fnptr, GtkWidget* arg0) {
-//   ((void (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Widget_virtual_size_allocate(void* fnptr, GtkWidget* arg0, int arg1, int arg2, int arg3) {
-//   ((void (*)(GtkWidget*, int, int, int))(fnptr))(arg0, arg1, arg2, arg3);
-// };
-// void _gotk4_gtk4_Widget_virtual_snapshot(void* fnptr, GtkWidget* arg0, GtkSnapshot* arg1) {
-//   ((void (*)(GtkWidget*, GtkSnapshot*))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Widget_virtual_state_flags_changed(void* fnptr, GtkWidget* arg0, GtkStateFlags arg1) {
-//   ((void (*)(GtkWidget*, GtkStateFlags))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Widget_virtual_system_setting_changed(void* fnptr, GtkWidget* arg0, GtkSystemSetting arg1) {
-//   ((void (*)(GtkWidget*, GtkSystemSetting))(fnptr))(arg0, arg1);
-// };
-// void _gotk4_gtk4_Widget_virtual_unmap(void* fnptr, GtkWidget* arg0) {
-//   ((void (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Widget_virtual_unrealize(void* fnptr, GtkWidget* arg0) {
-//   ((void (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Widget_virtual_unroot(void* fnptr, GtkWidget* arg0) {
-//   ((void (*)(GtkWidget*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Window_virtual_activate_default(void* fnptr, GtkWindow* arg0) {
-//   ((void (*)(GtkWindow*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Window_virtual_activate_focus(void* fnptr, GtkWindow* arg0) {
-//   ((void (*)(GtkWindow*))(fnptr))(arg0);
-// };
-// void _gotk4_gtk4_Window_virtual_keys_changed(void* fnptr, GtkWindow* arg0) {
-//   ((void (*)(GtkWindow*))(fnptr))(arg0);
-// };
 import "C"
 
 // GType values.
@@ -10658,141 +9620,6 @@ func (actionable *Actionable) SetDetailedActionName(detailedActionName string) {
 	runtime.KeepAlive(detailedActionName)
 }
 
-// actionName gets the action name for actionable.
-//
-// The function returns the following values:
-//
-//   - utf8 (optional): action name, or NULL if none is set.
-//
-func (actionable *Actionable) actionName() string {
-	gclass := (*C.GtkActionableInterface)(coreglib.PeekParentClass(actionable))
-	fnarg := gclass.get_action_name
-
-	var _arg0 *C.GtkActionable // out
-	var _cret *C.char          // in
-
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-
-	_cret = C._gotk4_gtk4_Actionable_virtual_get_action_name(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(actionable)
-
-	var _utf8 string // out
-
-	if _cret != nil {
-		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	}
-
-	return _utf8
-}
-
-// actionTargetValue gets the current target value of actionable.
-//
-// The function returns the following values:
-//
-//   - variant (optional): current target value.
-//
-func (actionable *Actionable) actionTargetValue() *glib.Variant {
-	gclass := (*C.GtkActionableInterface)(coreglib.PeekParentClass(actionable))
-	fnarg := gclass.get_action_target_value
-
-	var _arg0 *C.GtkActionable // out
-	var _cret *C.GVariant      // in
-
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-
-	_cret = C._gotk4_gtk4_Actionable_virtual_get_action_target_value(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(actionable)
-
-	var _variant *glib.Variant // out
-
-	if _cret != nil {
-		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		C.g_variant_ref(_cret)
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
-		)
-	}
-
-	return _variant
-}
-
-// setActionName specifies the name of the action with which this widget should
-// be associated.
-//
-// If action_name is NULL then the widget will be unassociated from any previous
-// action.
-//
-// Usually this function is used when the widget is located (or will be located)
-// within the hierarchy of a GtkApplicationWindow.
-//
-// Names are of the form “win.save” or “app.quit” for actions on the containing
-// GtkApplicationWindow or its associated GtkApplication, respectively. This is
-// the same form used for actions in the GMenu associated with the window.
-//
-// The function takes the following parameters:
-//
-//   - actionName (optional): action name, or NULL.
-//
-func (actionable *Actionable) setActionName(actionName string) {
-	gclass := (*C.GtkActionableInterface)(coreglib.PeekParentClass(actionable))
-	fnarg := gclass.set_action_name
-
-	var _arg0 *C.GtkActionable // out
-	var _arg1 *C.char          // out
-
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-	if actionName != "" {
-		_arg1 = (*C.char)(unsafe.Pointer(C.CString(actionName)))
-		defer C.free(unsafe.Pointer(_arg1))
-	}
-
-	C._gotk4_gtk4_Actionable_virtual_set_action_name(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(actionable)
-	runtime.KeepAlive(actionName)
-}
-
-// setActionTargetValue sets the target value of an actionable widget.
-//
-// If target_value is NULL then the target value is unset.
-//
-// The target value has two purposes. First, it is used as the parameter to
-// activation of the action associated with the GtkActionable widget. Second,
-// it is used to determine if the widget should be rendered as “active” — the
-// widget is active if the state is equal to the given target.
-//
-// Consider the example of associating a set of buttons with a GAction with
-// string state in a typical “radio button” situation. Each button will be
-// associated with the same action, but with a different target value for that
-// action. Clicking on a particular button will activate the action with the
-// target of that button, which will typically cause the action’s state to
-// change to that value. Since the action’s state is now equal to the target
-// value of the button, the button will now be rendered as active (and the other
-// buttons, with different targets, rendered inactive).
-//
-// The function takes the following parameters:
-//
-//   - targetValue (optional) to set as the target value, or NULL.
-//
-func (actionable *Actionable) setActionTargetValue(targetValue *glib.Variant) {
-	gclass := (*C.GtkActionableInterface)(coreglib.PeekParentClass(actionable))
-	fnarg := gclass.set_action_target_value
-
-	var _arg0 *C.GtkActionable // out
-	var _arg1 *C.GVariant      // out
-
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(coreglib.InternObject(actionable).Native()))
-	if targetValue != nil {
-		_arg1 = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(targetValue)))
-	}
-
-	C._gotk4_gtk4_Actionable_virtual_set_action_target_value(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(actionable)
-	runtime.KeepAlive(targetValue)
-}
-
 // AppChooser: GtkAppChooser is an interface for widgets which allow the user to
 // choose an application.
 //
@@ -10995,289 +9822,6 @@ func (buildable *Buildable) BuildableID() string {
 	return _utf8
 }
 
-// addChild adds a child to buildable. type is an optional string describing how
-// the child should be added.
-//
-// The function takes the following parameters:
-//
-//   - builder: Builder.
-//   - child to add.
-//   - typ (optional): kind of child or NULL.
-//
-func (buildable *Buildable) addChild(builder *Builder, child *coreglib.Object, typ string) {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.add_child
-
-	var _arg0 *C.GtkBuildable // out
-	var _arg1 *C.GtkBuilder   // out
-	var _arg2 *C.GObject      // out
-	var _arg3 *C.char         // out
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	if typ != "" {
-		_arg3 = (*C.char)(unsafe.Pointer(C.CString(typ)))
-		defer C.free(unsafe.Pointer(_arg3))
-	}
-
-	C._gotk4_gtk4_Buildable_virtual_add_child(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buildable)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(typ)
-}
-
-// customFinished: similar to gtk_buildable_parser_finished() but is called once
-// for each custom tag handled by the buildable.
-//
-// The function takes the following parameters:
-//
-//   - builder: Builder.
-//   - child (optional) object or NULL for non-child tags.
-//   - tagname: name of the tag.
-//   - data (optional): user data created in custom_tag_start.
-//
-func (buildable *Buildable) customFinished(builder *Builder, child *coreglib.Object, tagname string, data unsafe.Pointer) {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.custom_finished
-
-	var _arg0 *C.GtkBuildable // out
-	var _arg1 *C.GtkBuilder   // out
-	var _arg2 *C.GObject      // out
-	var _arg3 *C.char         // out
-	var _arg4 C.gpointer      // out
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	if child != nil {
-		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	}
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.gpointer)(unsafe.Pointer(data))
-
-	C._gotk4_gtk4_Buildable_virtual_custom_finished(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(buildable)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(tagname)
-	runtime.KeepAlive(data)
-}
-
-// customTagEnd: called at the end of each custom element handled by the
-// buildable.
-//
-// The function takes the following parameters:
-//
-//   - builder used to construct this object.
-//   - child (optional) object or NULL for non-child tags.
-//   - tagname: name of tag.
-//   - data (optional): user data that will be passed in to parser functions.
-//
-func (buildable *Buildable) customTagEnd(builder *Builder, child *coreglib.Object, tagname string, data unsafe.Pointer) {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.custom_tag_end
-
-	var _arg0 *C.GtkBuildable // out
-	var _arg1 *C.GtkBuilder   // out
-	var _arg2 *C.GObject      // out
-	var _arg3 *C.char         // out
-	var _arg4 C.gpointer      // out
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	if child != nil {
-		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	}
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (C.gpointer)(unsafe.Pointer(data))
-
-	C._gotk4_gtk4_Buildable_virtual_custom_tag_end(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(buildable)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(tagname)
-	runtime.KeepAlive(data)
-}
-
-// customTagStart: called for each unknown element under <child>.
-//
-// The function takes the following parameters:
-//
-//   - builder used to construct this object.
-//   - child (optional) object or NULL for non-child tags.
-//   - tagname: name of tag.
-//
-// The function returns the following values:
-//
-//   - parser to fill in.
-//   - data (optional): return location for user data that will be passed in to
-//     parser functions.
-//   - ok: TRUE if an object has a custom implementation, FALSE if it doesn't.
-//
-func (buildable *Buildable) customTagStart(builder *Builder, child *coreglib.Object, tagname string) (*BuildableParser, unsafe.Pointer, bool) {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.custom_tag_start
-
-	var _arg0 *C.GtkBuildable      // out
-	var _arg1 *C.GtkBuilder        // out
-	var _arg2 *C.GObject           // out
-	var _arg3 *C.char              // out
-	var _arg4 C.GtkBuildableParser // in
-	var _arg5 C.gpointer           // in
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	if child != nil {
-		_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	}
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(tagname)))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	_cret = C._gotk4_gtk4_Buildable_virtual_custom_tag_start(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(buildable)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(child)
-	runtime.KeepAlive(tagname)
-
-	var _parser *BuildableParser // out
-	var _data unsafe.Pointer     // out
-	var _ok bool                 // out
-
-	_parser = (*BuildableParser)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
-	_data = (unsafe.Pointer)(unsafe.Pointer(_arg5))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _parser, _data, _ok
-}
-
-// The function returns the following values:
-//
-func (buildable *Buildable) iD() string {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.get_id
-
-	var _arg0 *C.GtkBuildable // out
-	var _cret *C.char         // in
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-
-	_cret = C._gotk4_gtk4_Buildable_virtual_get_id(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(buildable)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// internalChild retrieves the internal child called childname of the buildable
-// object.
-//
-// The function takes the following parameters:
-//
-//   - builder: Builder.
-//   - childname: name of child.
-//
-// The function returns the following values:
-//
-//   - object: internal child of the buildable object.
-//
-func (buildable *Buildable) internalChild(builder *Builder, childname string) *coreglib.Object {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.get_internal_child
-
-	var _arg0 *C.GtkBuildable // out
-	var _arg1 *C.GtkBuilder   // out
-	var _arg2 *C.char         // out
-	var _cret *C.GObject      // in
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(childname)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C._gotk4_gtk4_Buildable_virtual_get_internal_child(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(buildable)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(childname)
-
-	var _object *coreglib.Object // out
-
-	_object = coreglib.Take(unsafe.Pointer(_cret))
-
-	return _object
-}
-
-// The function takes the following parameters:
-//
-func (buildable *Buildable) parserFinished(builder *Builder) {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.parser_finished
-
-	var _arg0 *C.GtkBuildable // out
-	var _arg1 *C.GtkBuilder   // out
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-
-	C._gotk4_gtk4_Buildable_virtual_parser_finished(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(buildable)
-	runtime.KeepAlive(builder)
-}
-
-// The function takes the following parameters:
-//
-//   - builder
-//   - name
-//   - value
-//
-func (buildable *Buildable) setBuildableProperty(builder *Builder, name string, value *coreglib.Value) {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.set_buildable_property
-
-	var _arg0 *C.GtkBuildable // out
-	var _arg1 *C.GtkBuilder   // out
-	var _arg2 *C.char         // out
-	var _arg3 *C.GValue       // out
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(name)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
-
-	C._gotk4_gtk4_Buildable_virtual_set_buildable_property(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buildable)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(name)
-	runtime.KeepAlive(value)
-}
-
-// The function takes the following parameters:
-//
-func (buildable *Buildable) setID(id string) {
-	gclass := (*C.GtkBuildableIface)(coreglib.PeekParentClass(buildable))
-	fnarg := gclass.set_id
-
-	var _arg0 *C.GtkBuildable // out
-	var _arg1 *C.char         // out
-
-	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(coreglib.InternObject(buildable).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(id)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C._gotk4_gtk4_Buildable_virtual_set_id(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(buildable)
-	runtime.KeepAlive(id)
-}
-
 // BuilderScope: GtkBuilderScope is an interface to provide language binding
 // support to GtkBuilder.
 //
@@ -11330,72 +9874,6 @@ func (v *BuilderScope) baseBuilderScope() *BuilderScope {
 // BaseBuilderScope returns the underlying base object.
 func BaseBuilderScope(obj BuilderScoper) *BuilderScope {
 	return obj.baseBuilderScope()
-}
-
-// The function takes the following parameters:
-//
-//   - builder
-//   - functionName
-//
-// The function returns the following values:
-//
-func (self *BuilderScope) typeFromFunction(builder *Builder, functionName string) coreglib.Type {
-	gclass := (*C.GtkBuilderScopeInterface)(coreglib.PeekParentClass(self))
-	fnarg := gclass.get_type_from_function
-
-	var _arg0 *C.GtkBuilderScope // out
-	var _arg1 *C.GtkBuilder      // out
-	var _arg2 *C.char            // out
-	var _cret C.GType            // in
-
-	_arg0 = (*C.GtkBuilderScope)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(functionName)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C._gotk4_gtk4_BuilderScope_virtual_get_type_from_function(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(functionName)
-
-	var _gType coreglib.Type // out
-
-	_gType = coreglib.Type(_cret)
-
-	return _gType
-}
-
-// The function takes the following parameters:
-//
-//   - builder
-//   - typeName
-//
-// The function returns the following values:
-//
-func (self *BuilderScope) typeFromName(builder *Builder, typeName string) coreglib.Type {
-	gclass := (*C.GtkBuilderScopeInterface)(coreglib.PeekParentClass(self))
-	fnarg := gclass.get_type_from_name
-
-	var _arg0 *C.GtkBuilderScope // out
-	var _arg1 *C.GtkBuilder      // out
-	var _arg2 *C.char            // out
-	var _cret C.GType            // in
-
-	_arg0 = (*C.GtkBuilderScope)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(coreglib.InternObject(builder).Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(typeName)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	_cret = C._gotk4_gtk4_BuilderScope_virtual_get_type_from_name(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(builder)
-	runtime.KeepAlive(typeName)
-
-	var _gType coreglib.Type // out
-
-	_gType = coreglib.Type(_cret)
-
-	return _gType
 }
 
 // CellEditable: interface for widgets that can be used for editing cells
@@ -11537,65 +10015,6 @@ func (cellEditable *CellEditable) StartEditing(event gdk.Eventer) {
 	}
 
 	C.gtk_cell_editable_start_editing(_arg0, _arg1)
-	runtime.KeepAlive(cellEditable)
-	runtime.KeepAlive(event)
-}
-
-// editingDone emits the CellEditable::editing-done signal.
-func (cellEditable *CellEditable) editingDone() {
-	gclass := (*C.GtkCellEditableIface)(coreglib.PeekParentClass(cellEditable))
-	fnarg := gclass.editing_done
-
-	var _arg0 *C.GtkCellEditable // out
-
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
-
-	C._gotk4_gtk4_CellEditable_virtual_editing_done(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(cellEditable)
-}
-
-// removeWidget emits the CellEditable::remove-widget signal.
-func (cellEditable *CellEditable) removeWidget() {
-	gclass := (*C.GtkCellEditableIface)(coreglib.PeekParentClass(cellEditable))
-	fnarg := gclass.remove_widget
-
-	var _arg0 *C.GtkCellEditable // out
-
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
-
-	C._gotk4_gtk4_CellEditable_virtual_remove_widget(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(cellEditable)
-}
-
-// startEditing begins editing on a cell_editable.
-//
-// The CellRenderer for the cell creates and returns a CellEditable from
-// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
-//
-// gtk_cell_editable_start_editing() can then set up cell_editable suitably for
-// editing a cell, e.g. making the Esc key emit CellEditable::editing-done.
-//
-// Note that the cell_editable is created on-demand for the current edit; its
-// lifetime is temporary and does not persist across other edits and/or cells.
-//
-// The function takes the following parameters:
-//
-//   - event (optional) that began the editing process, or NULL if editing was
-//     initiated programmatically.
-//
-func (cellEditable *CellEditable) startEditing(event gdk.Eventer) {
-	gclass := (*C.GtkCellEditableIface)(coreglib.PeekParentClass(cellEditable))
-	fnarg := gclass.start_editing
-
-	var _arg0 *C.GtkCellEditable // out
-	var _arg1 *C.GdkEvent        // out
-
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(cellEditable).Native()))
-	if event != nil {
-		_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	}
-
-	C._gotk4_gtk4_CellEditable_virtual_start_editing(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(cellEditable)
 	runtime.KeepAlive(event)
 }
@@ -11999,295 +10418,6 @@ func (cellLayout *CellLayout) SetCellDataFunc(cell CellRendererer, fn CellLayout
 	runtime.KeepAlive(fn)
 }
 
-// addAttribute adds an attribute mapping to the list in cell_layout.
-//
-// The column is the column of the model to get a value from, and the attribute
-// is the parameter on cell to be set from the value. So for example if column
-// 2 of the model contains strings, you could have the “text” attribute of a
-// CellRendererText get its values from column 2.
-//
-// The function takes the following parameters:
-//
-//   - cell: CellRenderer.
-//   - attribute on the renderer.
-//   - column position on the model to get the attribute from.
-//
-func (cellLayout *CellLayout) addAttribute(cell CellRendererer, attribute string, column int) {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.add_attribute
-
-	var _arg0 *C.GtkCellLayout   // out
-	var _arg1 *C.GtkCellRenderer // out
-	var _arg2 *C.char            // out
-	var _arg3 C.int              // out
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(attribute)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(column)
-
-	C._gotk4_gtk4_CellLayout_virtual_add_attribute(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(cellLayout)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(attribute)
-	runtime.KeepAlive(column)
-}
-
-// Clear unsets all the mappings on all renderers on cell_layout and removes all
-// renderers from cell_layout.
-func (cellLayout *CellLayout) clear() {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.clear
-
-	var _arg0 *C.GtkCellLayout // out
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-
-	C._gotk4_gtk4_CellLayout_virtual_clear(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(cellLayout)
-}
-
-// clearAttributes clears all existing attributes previously set with
-// gtk_cell_layout_set_attributes().
-//
-// The function takes the following parameters:
-//
-//   - cell to clear the attribute mapping on.
-//
-func (cellLayout *CellLayout) clearAttributes(cell CellRendererer) {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.clear_attributes
-
-	var _arg0 *C.GtkCellLayout   // out
-	var _arg1 *C.GtkCellRenderer // out
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	C._gotk4_gtk4_CellLayout_virtual_clear_attributes(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(cellLayout)
-	runtime.KeepAlive(cell)
-}
-
-// Area returns the underlying CellArea which might be cell_layout if called on
-// a CellArea or might be NULL if no CellArea is used by cell_layout.
-//
-// The function returns the following values:
-//
-//   - cellArea (optional): cell area used by cell_layout, or NULL in case no
-//     cell area is used.
-//
-func (cellLayout *CellLayout) area() CellAreaer {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.get_area
-
-	var _arg0 *C.GtkCellLayout // out
-	var _cret *C.GtkCellArea   // in
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-
-	_cret = C._gotk4_gtk4_CellLayout_virtual_get_area(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(cellLayout)
-
-	var _cellArea CellAreaer // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(CellAreaer)
-				return ok
-			})
-			rv, ok := casted.(CellAreaer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellAreaer")
-			}
-			_cellArea = rv
-		}
-	}
-
-	return _cellArea
-}
-
-// Cells returns the cell renderers which have been added to cell_layout.
-//
-// The function returns the following values:
-//
-//   - list: a list of cell renderers. The list, but not the renderers has been
-//     newly allocated and should be freed with g_list_free() when no longer
-//     needed.
-//
-func (cellLayout *CellLayout) cells() []CellRendererer {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.get_cells
-
-	var _arg0 *C.GtkCellLayout // out
-	var _cret *C.GList         // in
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-
-	_cret = C._gotk4_gtk4_CellLayout_virtual_get_cells(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(cellLayout)
-
-	var _list []CellRendererer // out
-
-	_list = make([]CellRendererer, 0, gextras.ListSize(unsafe.Pointer(_cret)))
-	gextras.MoveList(unsafe.Pointer(_cret), true, func(v unsafe.Pointer) {
-		src := (*C.GtkCellRenderer)(v)
-		var dst CellRendererer // out
-		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gtk.CellRendererer is nil")
-			}
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(CellRendererer)
-				return ok
-			})
-			rv, ok := casted.(CellRendererer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.CellRendererer")
-			}
-			dst = rv
-		}
-		_list = append(_list, dst)
-	})
-
-	return _list
-}
-
-// packEnd adds the cell to the end of cell_layout. If expand is FALSE, then the
-// cell is allocated no more space than it needs. Any unused space is divided
-// evenly between cells for which expand is TRUE.
-//
-// Note that reusing the same cell renderer is not supported.
-//
-// The function takes the following parameters:
-//
-//   - cell: CellRenderer.
-//   - expand: TRUE if cell is to be given extra space allocated to cell_layout.
-//
-func (cellLayout *CellLayout) packEnd(cell CellRendererer, expand bool) {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.pack_end
-
-	var _arg0 *C.GtkCellLayout   // out
-	var _arg1 *C.GtkCellRenderer // out
-	var _arg2 C.gboolean         // out
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	if expand {
-		_arg2 = C.TRUE
-	}
-
-	C._gotk4_gtk4_CellLayout_virtual_pack_end(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(cellLayout)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(expand)
-}
-
-// packStart packs the cell into the beginning of cell_layout. If expand is
-// FALSE, then the cell is allocated no more space than it needs. Any unused
-// space is divided evenly between cells for which expand is TRUE.
-//
-// Note that reusing the same cell renderer is not supported.
-//
-// The function takes the following parameters:
-//
-//   - cell: CellRenderer.
-//   - expand: TRUE if cell is to be given extra space allocated to cell_layout.
-//
-func (cellLayout *CellLayout) packStart(cell CellRendererer, expand bool) {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.pack_start
-
-	var _arg0 *C.GtkCellLayout   // out
-	var _arg1 *C.GtkCellRenderer // out
-	var _arg2 C.gboolean         // out
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	if expand {
-		_arg2 = C.TRUE
-	}
-
-	C._gotk4_gtk4_CellLayout_virtual_pack_start(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(cellLayout)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(expand)
-}
-
-// Reorder re-inserts cell at position.
-//
-// Note that cell has already to be packed into cell_layout for this to function
-// properly.
-//
-// The function takes the following parameters:
-//
-//   - cell to reorder.
-//   - position: new position to insert cell at.
-//
-func (cellLayout *CellLayout) reorder(cell CellRendererer, position int) {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.reorder
-
-	var _arg0 *C.GtkCellLayout   // out
-	var _arg1 *C.GtkCellRenderer // out
-	var _arg2 C.int              // out
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg2 = C.int(position)
-
-	C._gotk4_gtk4_CellLayout_virtual_reorder(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(cellLayout)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(position)
-}
-
-// setCellDataFunc sets the CellLayoutDataFunc to use for cell_layout.
-//
-// This function is used instead of the standard attributes mapping for setting
-// the column value, and should set the value of cell_layout’s cell renderer(s)
-// as appropriate.
-//
-// func may be NULL to remove a previously set function.
-//
-// The function takes the following parameters:
-//
-//   - cell: CellRenderer.
-//   - fn (optional) to use, or NULL.
-//
-func (cellLayout *CellLayout) setCellDataFunc(cell CellRendererer, fn CellLayoutDataFunc) {
-	gclass := (*C.GtkCellLayoutIface)(coreglib.PeekParentClass(cellLayout))
-	fnarg := gclass.set_cell_data_func
-
-	var _arg0 *C.GtkCellLayout        // out
-	var _arg1 *C.GtkCellRenderer      // out
-	var _arg2 C.GtkCellLayoutDataFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(coreglib.InternObject(cellLayout).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	if fn != nil {
-		_arg2 = (*[0]byte)(C._gotk4_gtk4_CellLayoutDataFunc)
-		_arg3 = C.gpointer(gbox.Assign(fn))
-		_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C._gotk4_gtk4_CellLayout_virtual_set_cell_data_func(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(cellLayout)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(fn)
-}
-
 // ColorChooser: GtkColorChooser is an interface that is implemented by widgets
 // for choosing colors.
 //
@@ -12485,123 +10615,6 @@ func (chooser *ColorChooser) SetUseAlpha(useAlpha bool) {
 	C.gtk_color_chooser_set_use_alpha(_arg0, _arg1)
 	runtime.KeepAlive(chooser)
 	runtime.KeepAlive(useAlpha)
-}
-
-// addPalette adds a palette to the color chooser.
-//
-// If orientation is horizontal, the colors are grouped in rows, with
-// colors_per_line colors in each row. If horizontal is FALSE, the colors are
-// grouped in columns instead.
-//
-// The default color palette of gtk.ColorChooserWidget has 45 colors, organized
-// in columns of 5 colors (this includes some grays).
-//
-// The layout of the color chooser widget works best when the palettes have 9-10
-// columns.
-//
-// Calling this function for the first time has the side effect of removing the
-// default color palette from the color chooser.
-//
-// If colors is NULL, removes all previously added palettes.
-//
-// The function takes the following parameters:
-//
-//   - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
-//     displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
-//   - colorsPerLine: number of colors to show in each row/column.
-//   - colors (optional) of the palette, or NULL.
-//
-func (chooser *ColorChooser) addPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
-	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))
-	fnarg := gclass.add_palette
-
-	var _arg0 *C.GtkColorChooser // out
-	var _arg1 C.GtkOrientation   // out
-	var _arg2 C.int              // out
-	var _arg4 *C.GdkRGBA         // out
-	var _arg3 C.int
-
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = C.int(colorsPerLine)
-	_arg3 = (C.int)(len(colors))
-	_arg4 = (*C.GdkRGBA)(C.calloc(C.size_t(len(colors)), C.size_t(C.sizeof_GdkRGBA)))
-	defer C.free(unsafe.Pointer(_arg4))
-	{
-		out := unsafe.Slice((*C.GdkRGBA)(_arg4), len(colors))
-		for i := range colors {
-			out[i] = *(*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer((&colors[i]))))
-		}
-	}
-
-	C._gotk4_gtk4_ColorChooser_virtual_add_palette(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(chooser)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(colorsPerLine)
-	runtime.KeepAlive(colors)
-}
-
-// The function takes the following parameters:
-//
-func (chooser *ColorChooser) colorActivated(color *gdk.RGBA) {
-	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))
-	fnarg := gclass.color_activated
-
-	var _arg0 *C.GtkColorChooser // out
-	var _arg1 *C.GdkRGBA         // out
-
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
-
-	C._gotk4_gtk4_ColorChooser_virtual_color_activated(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(chooser)
-	runtime.KeepAlive(color)
-}
-
-// rgbA gets the currently-selected color.
-//
-// The function returns the following values:
-//
-//   - color: GdkRGBA to fill in with the current color.
-//
-func (chooser *ColorChooser) rgbA() *gdk.RGBA {
-	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))
-	fnarg := gclass.get_rgba
-
-	var _arg0 *C.GtkColorChooser // out
-	var _arg1 C.GdkRGBA          // in
-
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-
-	C._gotk4_gtk4_ColorChooser_virtual_get_rgba(unsafe.Pointer(fnarg), _arg0, &_arg1)
-	runtime.KeepAlive(chooser)
-
-	var _color *gdk.RGBA // out
-
-	_color = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-
-	return _color
-}
-
-// setRGBA sets the color.
-//
-// The function takes the following parameters:
-//
-//   - color: new color.
-//
-func (chooser *ColorChooser) setRGBA(color *gdk.RGBA) {
-	gclass := (*C.GtkColorChooserInterface)(coreglib.PeekParentClass(chooser))
-	fnarg := gclass.set_rgba
-
-	var _arg0 *C.GtkColorChooser // out
-	var _arg1 *C.GdkRGBA         // out
-
-	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.GdkRGBA)(gextras.StructNative(unsafe.Pointer(color)))
-
-	C._gotk4_gtk4_ColorChooser_virtual_set_rgba(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(chooser)
-	runtime.KeepAlive(color)
 }
 
 // ConstraintTarget: GtkConstraintTarget interface is implemented by objects
@@ -13413,210 +11426,6 @@ func (editable *EditableTextWidget) SetWidthChars(nChars int) {
 	C.gtk_editable_set_width_chars(_arg0, _arg1)
 	runtime.KeepAlive(editable)
 	runtime.KeepAlive(nChars)
-}
-
-func (editable *EditableTextWidget) changed() {
-	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
-	fnarg := gclass.changed
-
-	var _arg0 *C.GtkEditable // out
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	C._gotk4_gtk4_EditableTextWidget_virtual_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(editable)
-}
-
-// deleteText deletes a sequence of characters.
-//
-// The characters that are deleted are those characters at positions from
-// start_pos up to, but not including end_pos. If end_pos is negative, then the
-// characters deleted are those from start_pos to the end of the text.
-//
-// Note that the positions are specified in characters, not bytes.
-//
-// The function takes the following parameters:
-//
-//   - startPos: start position.
-//   - endPos: end position.
-//
-func (editable *EditableTextWidget) deleteText(startPos, endPos int) {
-	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
-	fnarg := gclass.delete_text
-
-	var _arg0 *C.GtkEditable // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(startPos)
-	_arg2 = C.int(endPos)
-
-	C._gotk4_gtk4_EditableTextWidget_virtual_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(editable)
-	runtime.KeepAlive(startPos)
-	runtime.KeepAlive(endPos)
-}
-
-// doDeleteText deletes a sequence of characters.
-//
-// The characters that are deleted are those characters at positions from
-// start_pos up to, but not including end_pos. If end_pos is negative, then the
-// characters deleted are those from start_pos to the end of the text.
-//
-// Note that the positions are specified in characters, not bytes.
-//
-// The function takes the following parameters:
-//
-//   - startPos: start position.
-//   - endPos: end position.
-//
-func (editable *EditableTextWidget) doDeleteText(startPos, endPos int) {
-	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
-	fnarg := gclass.do_delete_text
-
-	var _arg0 *C.GtkEditable // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(startPos)
-	_arg2 = C.int(endPos)
-
-	C._gotk4_gtk4_EditableTextWidget_virtual_do_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(editable)
-	runtime.KeepAlive(startPos)
-	runtime.KeepAlive(endPos)
-}
-
-// Delegate gets the GtkEditable that editable is delegating its implementation
-// to.
-//
-// Typically, the delegate is a gtk.Text widget.
-//
-// The function returns the following values:
-//
-//   - ret (optional): delegate GtkEditable.
-//
-func (editable *EditableTextWidget) delegate() *EditableTextWidget {
-	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
-	fnarg := gclass.get_delegate
-
-	var _arg0 *C.GtkEditable // out
-	var _cret *C.GtkEditable // in
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	_cret = C._gotk4_gtk4_EditableTextWidget_virtual_get_delegate(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(editable)
-
-	var _ret *EditableTextWidget // out
-
-	if _cret != nil {
-		_ret = wrapEditableTextWidget(coreglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _ret
-}
-
-// selectionBounds retrieves the selection bound of the editable.
-//
-// start_pos will be filled with the start of the selection and end_pos with
-// end. If no text was selected both will be identical and FALSE will be
-// returned.
-//
-// Note that positions are specified in characters, not bytes.
-//
-// The function returns the following values:
-//
-//   - startPos (optional): location to store the starting position, or NULL.
-//   - endPos (optional): location to store the end position, or NULL.
-//   - ok: TRUE if there is a non-empty selection, FALSE otherwise.
-//
-func (editable *EditableTextWidget) selectionBounds() (startPos, endPos int, ok bool) {
-	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
-	fnarg := gclass.get_selection_bounds
-
-	var _arg0 *C.GtkEditable // out
-	var _arg1 C.int          // in
-	var _arg2 C.int          // in
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	_cret = C._gotk4_gtk4_EditableTextWidget_virtual_get_selection_bounds(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(editable)
-
-	var _startPos int // out
-	var _endPos int   // out
-	var _ok bool      // out
-
-	_startPos = int(_arg1)
-	_endPos = int(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _startPos, _endPos, _ok
-}
-
-// Text retrieves the contents of editable.
-//
-// The returned string is owned by GTK and must not be modified or freed.
-//
-// The function returns the following values:
-//
-//   - utf8: pointer to the contents of the editable.
-//
-func (editable *EditableTextWidget) text() string {
-	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
-	fnarg := gclass.get_text
-
-	var _arg0 *C.GtkEditable // out
-	var _cret *C.char        // in
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-
-	_cret = C._gotk4_gtk4_EditableTextWidget_virtual_get_text(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(editable)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// setSelectionBounds selects a region of text.
-//
-// The characters that are selected are those characters at positions from
-// start_pos up to, but not including end_pos. If end_pos is negative, then the
-// characters selected are those characters from start_pos to the end of the
-// text.
-//
-// Note that positions are specified in characters, not bytes.
-//
-// The function takes the following parameters:
-//
-//   - startPos: start of region.
-//   - endPos: end of region.
-//
-func (editable *EditableTextWidget) setSelectionBounds(startPos, endPos int) {
-	gclass := (*C.GtkEditableInterface)(coreglib.PeekParentClass(editable))
-	fnarg := gclass.set_selection_bounds
-
-	var _arg0 *C.GtkEditable // out
-	var _arg1 C.int          // out
-	var _arg2 C.int          // out
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg1 = C.int(startPos)
-	_arg2 = C.int(endPos)
-
-	C._gotk4_gtk4_EditableTextWidget_virtual_set_selection_bounds(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(editable)
-	runtime.KeepAlive(startPos)
-	runtime.KeepAlive(endPos)
 }
 
 // FileChooser: GtkFileChooser is an interface that can be implemented by file
@@ -15094,253 +12903,6 @@ func (fontchooser *FontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	runtime.KeepAlive(showPreviewEntry)
 }
 
-// The function takes the following parameters:
-//
-func (chooser *FontChooser) fontActivated(fontname string) {
-	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(chooser))
-	fnarg := gclass.font_activated
-
-	var _arg0 *C.GtkFontChooser // out
-	var _arg1 *C.char           // out
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(chooser).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(fontname)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C._gotk4_gtk4_FontChooser_virtual_font_activated(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(chooser)
-	runtime.KeepAlive(fontname)
-}
-
-// fontFace gets the PangoFontFace representing the selected font group details
-// (i.e. family, slant, weight, width, etc).
-//
-// If the selected font is not installed, returns NULL.
-//
-// The function returns the following values:
-//
-//   - fontFace (optional): PangoFontFace representing the selected font group
-//     details, or NULL. The returned object is owned by fontchooser and must
-//     not be modified or freed.
-//
-func (fontchooser *FontChooser) fontFace() pango.FontFacer {
-	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
-	fnarg := gclass.get_font_face
-
-	var _arg0 *C.GtkFontChooser // out
-	var _cret *C.PangoFontFace  // in
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	_cret = C._gotk4_gtk4_FontChooser_virtual_get_font_face(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(fontchooser)
-
-	var _fontFace pango.FontFacer // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(pango.FontFacer)
-				return ok
-			})
-			rv, ok := casted.(pango.FontFacer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFacer")
-			}
-			_fontFace = rv
-		}
-	}
-
-	return _fontFace
-}
-
-// fontFamily gets the PangoFontFamily representing the selected font family.
-//
-// Font families are a collection of font faces.
-//
-// If the selected font is not installed, returns NULL.
-//
-// The function returns the following values:
-//
-//   - fontFamily (optional): PangoFontFamily representing the selected font
-//     family, or NULL. The returned object is owned by fontchooser and must not
-//     be modified or freed.
-//
-func (fontchooser *FontChooser) fontFamily() pango.FontFamilier {
-	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
-	fnarg := gclass.get_font_family
-
-	var _arg0 *C.GtkFontChooser  // out
-	var _cret *C.PangoFontFamily // in
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	_cret = C._gotk4_gtk4_FontChooser_virtual_get_font_family(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(fontchooser)
-
-	var _fontFamily pango.FontFamilier // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.Take(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(pango.FontFamilier)
-				return ok
-			})
-			rv, ok := casted.(pango.FontFamilier)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontFamilier")
-			}
-			_fontFamily = rv
-		}
-	}
-
-	return _fontFamily
-}
-
-// fontMap gets the custom font map of this font chooser widget, or NULL if it
-// does not have one.
-//
-// The function returns the following values:
-//
-//   - fontMap (optional): PangoFontMap, or NULL.
-//
-func (fontchooser *FontChooser) fontMap() pango.FontMapper {
-	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
-	fnarg := gclass.get_font_map
-
-	var _arg0 *C.GtkFontChooser // out
-	var _cret *C.PangoFontMap   // in
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	_cret = C._gotk4_gtk4_FontChooser_virtual_get_font_map(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(fontchooser)
-
-	var _fontMap pango.FontMapper // out
-
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(pango.FontMapper)
-				return ok
-			})
-			rv, ok := casted.(pango.FontMapper)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching pango.FontMapper")
-			}
-			_fontMap = rv
-		}
-	}
-
-	return _fontMap
-}
-
-// fontSize: selected font size.
-//
-// The function returns the following values:
-//
-//   - gint: n integer representing the selected font size, or -1 if no font
-//     size is selected.
-//
-func (fontchooser *FontChooser) fontSize() int {
-	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
-	fnarg := gclass.get_font_size
-
-	var _arg0 *C.GtkFontChooser // out
-	var _cret C.int             // in
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-
-	_cret = C._gotk4_gtk4_FontChooser_virtual_get_font_size(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(fontchooser)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// setFilterFunc adds a filter function that decides which fonts to display in
-// the font chooser.
-//
-// The function takes the following parameters:
-//
-//   - filter (optional): GtkFontFilterFunc, or NULL.
-//
-func (fontchooser *FontChooser) setFilterFunc(filter FontFilterFunc) {
-	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
-	fnarg := gclass.set_filter_func
-
-	var _arg0 *C.GtkFontChooser   // out
-	var _arg1 C.GtkFontFilterFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	if filter != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_FontFilterFunc)
-		_arg2 = C.gpointer(gbox.Assign(filter))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
-
-	C._gotk4_gtk4_FontChooser_virtual_set_filter_func(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(fontchooser)
-	runtime.KeepAlive(filter)
-}
-
-// setFontMap sets a custom font map to use for this font chooser widget.
-//
-// A custom font map can be used to present application-specific fonts instead
-// of or in addition to the normal system fonts.
-//
-//    FcConfig *config;
-//    PangoFontMap *fontmap;
-//
-//    config = FcInitLoadConfigAndFonts ();
-//    FcConfigAppFontAddFile (config, my_app_font_file);
-//
-//    fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
-//    pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
-//
-//    gtk_font_chooser_set_font_map (font_chooser, fontmap);
-//
-// Note that other GTK widgets will only be able to use the application-specific
-// font if it is present in the font map they use:
-//
-//    context = gtk_widget_get_pango_context (label);
-//    pango_context_set_font_map (context, fontmap);.
-//
-// The function takes the following parameters:
-//
-//   - fontmap (optional): PangoFontMap.
-//
-func (fontchooser *FontChooser) setFontMap(fontmap pango.FontMapper) {
-	gclass := (*C.GtkFontChooserIface)(coreglib.PeekParentClass(fontchooser))
-	fnarg := gclass.set_font_map
-
-	var _arg0 *C.GtkFontChooser // out
-	var _arg1 *C.PangoFontMap   // out
-
-	_arg0 = (*C.GtkFontChooser)(unsafe.Pointer(coreglib.InternObject(fontchooser).Native()))
-	if fontmap != nil {
-		_arg1 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
-	}
-
-	C._gotk4_gtk4_FontChooser_virtual_set_font_map(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(fontchooser)
-	runtime.KeepAlive(fontmap)
-}
-
 // NativeSurface: GtkNative is the interface implemented by all widgets that
 // have their own GdkSurface.
 //
@@ -15566,10 +13128,6 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
 	return _native
 }
 
-// OrientableOverrider contains methods that are overridable.
-type OrientableOverrider interface {
-}
-
 // Orientable: GtkOrientable interface is implemented by all widgets that can be
 // oriented horizontally or vertically.
 //
@@ -15598,9 +13156,6 @@ type Orientabler interface {
 }
 
 var _ Orientabler = (*Orientable)(nil)
-
-func ifaceInitOrientabler(gifacePtr, data C.gpointer) {
-}
 
 func wrapOrientable(obj *coreglib.Object) *Orientable {
 	return &Orientable{
@@ -15786,126 +13341,6 @@ func (preview *PrintOperationPreview) RenderPage(pageNr int) {
 	_arg1 = C.int(pageNr)
 
 	C.gtk_print_operation_preview_render_page(_arg0, _arg1)
-	runtime.KeepAlive(preview)
-	runtime.KeepAlive(pageNr)
-}
-
-// endPreview ends a preview.
-//
-// This function must be called to finish a custom print preview.
-func (preview *PrintOperationPreview) endPreview() {
-	gclass := (*C.GtkPrintOperationPreviewIface)(coreglib.PeekParentClass(preview))
-	fnarg := gclass.end_preview
-
-	var _arg0 *C.GtkPrintOperationPreview // out
-
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-
-	C._gotk4_gtk4_PrintOperationPreview_virtual_end_preview(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(preview)
-}
-
-// The function takes the following parameters:
-//
-//   - context
-//   - pageSetup
-//
-func (preview *PrintOperationPreview) gotPageSize(context *PrintContext, pageSetup *PageSetup) {
-	gclass := (*C.GtkPrintOperationPreviewIface)(coreglib.PeekParentClass(preview))
-	fnarg := gclass.got_page_size
-
-	var _arg0 *C.GtkPrintOperationPreview // out
-	var _arg1 *C.GtkPrintContext          // out
-	var _arg2 *C.GtkPageSetup             // out
-
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(coreglib.InternObject(pageSetup).Native()))
-
-	C._gotk4_gtk4_PrintOperationPreview_virtual_got_page_size(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(preview)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(pageSetup)
-}
-
-// isSelected returns whether the given page is included in the set of pages
-// that have been selected for printing.
-//
-// The function takes the following parameters:
-//
-//   - pageNr: page number.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the page has been selected for printing.
-//
-func (preview *PrintOperationPreview) isSelected(pageNr int) bool {
-	gclass := (*C.GtkPrintOperationPreviewIface)(coreglib.PeekParentClass(preview))
-	fnarg := gclass.is_selected
-
-	var _arg0 *C.GtkPrintOperationPreview // out
-	var _arg1 C.int                       // out
-	var _cret C.gboolean                  // in
-
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-	_arg1 = C.int(pageNr)
-
-	_cret = C._gotk4_gtk4_PrintOperationPreview_virtual_is_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(preview)
-	runtime.KeepAlive(pageNr)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-func (preview *PrintOperationPreview) ready(context *PrintContext) {
-	gclass := (*C.GtkPrintOperationPreviewIface)(coreglib.PeekParentClass(preview))
-	fnarg := gclass.ready
-
-	var _arg0 *C.GtkPrintOperationPreview // out
-	var _arg1 *C.GtkPrintContext          // out
-
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_PrintOperationPreview_virtual_ready(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(preview)
-	runtime.KeepAlive(context)
-}
-
-// renderPage renders a page to the preview.
-//
-// This is using the print context that was passed to the
-// gtk.PrintOperation::preview handler together with preview.
-//
-// A custom print preview should use this function to render the currently
-// selected page.
-//
-// Note that this function requires a suitable cairo context to be associated
-// with the print context.
-//
-// The function takes the following parameters:
-//
-//   - pageNr: page to render.
-//
-func (preview *PrintOperationPreview) renderPage(pageNr int) {
-	gclass := (*C.GtkPrintOperationPreviewIface)(coreglib.PeekParentClass(preview))
-	fnarg := gclass.render_page
-
-	var _arg0 *C.GtkPrintOperationPreview // out
-	var _arg1 C.int                       // out
-
-	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-	_arg1 = C.int(pageNr)
-
-	C._gotk4_gtk4_PrintOperationPreview_virtual_render_page(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(preview)
 	runtime.KeepAlive(pageNr)
 }
@@ -16345,42 +13780,6 @@ func (scrollable *Scrollable) SetVScrollPolicy(policy ScrollablePolicy) {
 	C.gtk_scrollable_set_vscroll_policy(_arg0, _arg1)
 	runtime.KeepAlive(scrollable)
 	runtime.KeepAlive(policy)
-}
-
-// Border returns the size of a non-scrolling border around the outside of the
-// scrollable.
-//
-// An example for this would be treeview headers. GTK can use this information
-// to display overlaid graphics, like the overshoot indication, at the right
-// position.
-//
-// The function returns the following values:
-//
-//   - border: return location for the results.
-//   - ok: TRUE if border has been set.
-//
-func (scrollable *Scrollable) border() (*Border, bool) {
-	gclass := (*C.GtkScrollableInterface)(coreglib.PeekParentClass(scrollable))
-	fnarg := gclass.get_border
-
-	var _arg0 *C.GtkScrollable // out
-	var _arg1 C.GtkBorder      // in
-	var _cret C.gboolean       // in
-
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(coreglib.InternObject(scrollable).Native()))
-
-	_cret = C._gotk4_gtk4_Scrollable_virtual_get_border(unsafe.Pointer(fnarg), _arg0, &_arg1)
-	runtime.KeepAlive(scrollable)
-
-	var _border *Border // out
-	var _ok bool        // out
-
-	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _border, _ok
 }
 
 // SelectionModel: GtkSelectionModel is an interface that add support for
@@ -16886,371 +14285,6 @@ func (model *SelectionModel) UnselectRange(position, nItems uint) bool {
 	return _ok
 }
 
-// selectionInRange gets the set of selected items in a range.
-//
-// This function is an optimization for gtk.SelectionModel.GetSelection() when
-// you are only interested in part of the model's selected state. A common use
-// case is in response to the gtk.SelectionModel::selection-changed signal.
-//
-// The function takes the following parameters:
-//
-//   - position: start of the queired range.
-//   - nItems: number of items in the queried range.
-//
-// The function returns the following values:
-//
-//   - bitset: GtkBitset that matches the selection state for the given range
-//     with all other values being undefined. The bitset must not be modified.
-//
-func (model *SelectionModel) selectionInRange(position, nItems uint) *Bitset {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.get_selection_in_range
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _arg1 C.guint              // out
-	var _arg2 C.guint              // out
-	var _cret *C.GtkBitset         // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nItems)
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_get_selection_in_range(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(nItems)
-
-	var _bitset *Bitset // out
-
-	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_bitset)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
-	)
-
-	return _bitset
-}
-
-// isSelected checks if the given item is selected.
-//
-// The function takes the following parameters:
-//
-//   - position of the item to query.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the item is selected.
-//
-func (model *SelectionModel) isSelected(position uint) bool {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.is_selected
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _arg1 C.guint              // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_is_selected(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(position)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// selectAll requests to select all items in the model.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if this action was supported and no fallback should be tried.
-//     This does not mean that all items are now selected.
-//
-func (model *SelectionModel) selectAll() bool {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.select_all
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_select_all(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(model)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// selectItem requests to select an item in the model.
-//
-// The function takes the following parameters:
-//
-//   - position of the item to select.
-//   - unselectRest: whether previously selected items should be unselected.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if this action was supported and no fallback should be tried.
-//     This does not mean the item was selected.
-//
-func (model *SelectionModel) selectItem(position uint, unselectRest bool) bool {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.select_item
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _arg1 C.guint              // out
-	var _arg2 C.gboolean           // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-	if unselectRest {
-		_arg2 = C.TRUE
-	}
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_select_item(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(unselectRest)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// selectRange requests to select a range of items in the model.
-//
-// The function takes the following parameters:
-//
-//   - position: first item to select.
-//   - nItems: number of items to select.
-//   - unselectRest: whether previously selected items should be unselected.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if this action was supported and no fallback should be tried.
-//     This does not mean the range was selected.
-//
-func (model *SelectionModel) selectRange(position, nItems uint, unselectRest bool) bool {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.select_range
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _arg1 C.guint              // out
-	var _arg2 C.guint              // out
-	var _arg3 C.gboolean           // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nItems)
-	if unselectRest {
-		_arg3 = C.TRUE
-	}
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_select_range(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(nItems)
-	runtime.KeepAlive(unselectRest)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// setSelection: make selection changes.
-//
-// This is the most advanced selection updating method that allows the most
-// fine-grained control over selection changes. If you can, you should try the
-// simpler versions, as implementations are more likely to implement support for
-// those.
-//
-// Requests that the selection state of all positions set in mask be updated to
-// the respective value in the selected bitmask.
-//
-// In pseudocode, it would look something like this:
-//
-//    for (i = 0; i < n_items; i++)
-//      {
-//        // don't change values not in the mask
-//        if (!gtk_bitset_contains (mask, i))
-//          continue;
-//
-//        if (gtk_bitset_contains (selected, i))
-//          select_item (i);
-//        else
-//          unselect_item (i);
-//      }
-//
-//    gtk_selection_model_selection_changed (model,
-//                                           first_changed_item,
-//                                           n_changed_items);
-//
-// mask and selected must not be modified. They may refer to the same bitset,
-// which would mean that every item in the set should be selected.
-//
-// The function takes the following parameters:
-//
-//   - selected: bitmask specifying if items should be selected or unselected.
-//   - mask specifying which items should be updated.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if this action was supported and no fallback should be tried.
-//     This does not mean that all items were updated according to the inputs.
-//
-func (model *SelectionModel) setSelection(selected, mask *Bitset) bool {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.set_selection
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _arg1 *C.GtkBitset         // out
-	var _arg2 *C.GtkBitset         // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(selected)))
-	_arg2 = (*C.GtkBitset)(gextras.StructNative(unsafe.Pointer(mask)))
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_set_selection(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(selected)
-	runtime.KeepAlive(mask)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// unselectAll requests to unselect all items in the model.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if this action was supported and no fallback should be tried.
-//     This does not mean that all items are now unselected.
-//
-func (model *SelectionModel) unselectAll() bool {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.unselect_all
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_unselect_all(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(model)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// unselectItem requests to unselect an item in the model.
-//
-// The function takes the following parameters:
-//
-//   - position of the item to unselect.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if this action was supported and no fallback should be tried.
-//     This does not mean the item was unselected.
-//
-func (model *SelectionModel) unselectItem(position uint) bool {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.unselect_item
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _arg1 C.guint              // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_unselect_item(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(position)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// unselectRange requests to unselect a range of items in the model.
-//
-// The function takes the following parameters:
-//
-//   - position: first item to unselect.
-//   - nItems: number of items to unselect.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if this action was supported and no fallback should be tried.
-//     This does not mean the range was unselected.
-//
-func (model *SelectionModel) unselectRange(position, nItems uint) bool {
-	gclass := (*C.GtkSelectionModelInterface)(coreglib.PeekParentClass(model))
-	fnarg := gclass.unselect_range
-
-	var _arg0 *C.GtkSelectionModel // out
-	var _arg1 C.guint              // out
-	var _arg2 C.guint              // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(coreglib.InternObject(model).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nItems)
-
-	_cret = C._gotk4_gtk4_SelectionModel_virtual_unselect_range(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(model)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(nItems)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // ShortcutManager: GtkShortcutManager interface is used to implement shortcut
 // scopes.
 //
@@ -17301,40 +14335,6 @@ func (v *ShortcutManager) baseShortcutManager() *ShortcutManager {
 // BaseShortcutManager returns the underlying base object.
 func BaseShortcutManager(obj ShortcutManagerer) *ShortcutManager {
 	return obj.baseShortcutManager()
-}
-
-// The function takes the following parameters:
-//
-func (self *ShortcutManager) addController(controller *ShortcutController) {
-	gclass := (*C.GtkShortcutManagerInterface)(coreglib.PeekParentClass(self))
-	fnarg := gclass.add_controller
-
-	var _arg0 *C.GtkShortcutManager    // out
-	var _arg1 *C.GtkShortcutController // out
-
-	_arg0 = (*C.GtkShortcutManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkShortcutController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-
-	C._gotk4_gtk4_ShortcutManager_virtual_add_controller(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(controller)
-}
-
-// The function takes the following parameters:
-//
-func (self *ShortcutManager) removeController(controller *ShortcutController) {
-	gclass := (*C.GtkShortcutManagerInterface)(coreglib.PeekParentClass(self))
-	fnarg := gclass.remove_controller
-
-	var _arg0 *C.GtkShortcutManager    // out
-	var _arg1 *C.GtkShortcutController // out
-
-	_arg0 = (*C.GtkShortcutManager)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkShortcutController)(unsafe.Pointer(coreglib.InternObject(controller).Native()))
-
-	C._gotk4_gtk4_ShortcutManager_virtual_remove_controller(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(controller)
 }
 
 // StyleProvider: GtkStyleProvider is an interface for style information used by
@@ -17503,90 +14503,6 @@ func (dragDest *TreeDragDest) RowDropPossible(destPath *TreePath, value *coregli
 	return _ok
 }
 
-// dragDataReceived asks the TreeDragDest to insert a row before the path dest,
-// deriving the contents of the row from value. If dest is outside the tree so
-// that inserting before it is impossible, FALSE will be returned. Also, FALSE
-// may be returned if the new row is not created for some model-specific reason.
-// Should robustly handle a dest no longer found in the model!.
-//
-// The function takes the following parameters:
-//
-//   - dest: row to drop in front of.
-//   - value: data to drop.
-//
-// The function returns the following values:
-//
-//   - ok: whether a new row was created before position dest.
-//
-func (dragDest *TreeDragDest) dragDataReceived(dest *TreePath, value *coreglib.Value) bool {
-	gclass := (*C.GtkTreeDragDestIface)(coreglib.PeekParentClass(dragDest))
-	fnarg := gclass.drag_data_received
-
-	var _arg0 *C.GtkTreeDragDest // out
-	var _arg1 *C.GtkTreePath     // out
-	var _arg2 *C.GValue          // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(dest)))
-	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
-
-	_cret = C._gotk4_gtk4_TreeDragDest_virtual_drag_data_received(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(dragDest)
-	runtime.KeepAlive(dest)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// rowDropPossible determines whether a drop is possible before the given
-// dest_path, at the same depth as dest_path. i.e., can we drop the data in
-// value at that location. dest_path does not have to exist; the return value
-// will almost certainly be FALSE if the parent of dest_path doesn’t exist,
-// though.
-//
-// The function takes the following parameters:
-//
-//   - destPath: destination row.
-//   - value: data being dropped.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if a drop is possible before dest_path.
-//
-func (dragDest *TreeDragDest) rowDropPossible(destPath *TreePath, value *coreglib.Value) bool {
-	gclass := (*C.GtkTreeDragDestIface)(coreglib.PeekParentClass(dragDest))
-	fnarg := gclass.row_drop_possible
-
-	var _arg0 *C.GtkTreeDragDest // out
-	var _arg1 *C.GtkTreePath     // out
-	var _arg2 *C.GValue          // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkTreeDragDest)(unsafe.Pointer(coreglib.InternObject(dragDest).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(destPath)))
-	_arg2 = (*C.GValue)(unsafe.Pointer(value.Native()))
-
-	_cret = C._gotk4_gtk4_TreeDragDest_virtual_row_drop_possible(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(dragDest)
-	runtime.KeepAlive(destPath)
-	runtime.KeepAlive(value)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // TreeDragSource: interface for Drag-and-Drop destinations in GtkTreeView.
 //
 // TreeDragSource wraps an interface. This means the user can get the
@@ -17719,119 +14635,6 @@ func (dragSource *TreeDragSource) RowDraggable(path *TreePath) bool {
 	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
 
 	_cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)
-	runtime.KeepAlive(dragSource)
-	runtime.KeepAlive(path)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// dragDataDelete asks the TreeDragSource to delete the row at path, because it
-// was moved somewhere else via drag-and-drop. Returns FALSE if the deletion
-// fails because path no longer exists, or for some model-specific reason.
-// Should robustly handle a path no longer found in the model!.
-//
-// The function takes the following parameters:
-//
-//   - path: row that was being dragged.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the row was successfully deleted.
-//
-func (dragSource *TreeDragSource) dragDataDelete(path *TreePath) bool {
-	gclass := (*C.GtkTreeDragSourceIface)(coreglib.PeekParentClass(dragSource))
-	fnarg := gclass.drag_data_delete
-
-	var _arg0 *C.GtkTreeDragSource // out
-	var _arg1 *C.GtkTreePath       // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	_cret = C._gotk4_gtk4_TreeDragSource_virtual_drag_data_delete(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(dragSource)
-	runtime.KeepAlive(path)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// dragDataGet asks the TreeDragSource to return a ContentProvider representing
-// the row at path. Should robustly handle a path no longer found in the model!.
-//
-// The function takes the following parameters:
-//
-//   - path: row that was dragged.
-//
-// The function returns the following values:
-//
-//   - contentProvider (optional) for the given path or NULL if none exists.
-//
-func (dragSource *TreeDragSource) dragDataGet(path *TreePath) *gdk.ContentProvider {
-	gclass := (*C.GtkTreeDragSourceIface)(coreglib.PeekParentClass(dragSource))
-	fnarg := gclass.drag_data_get
-
-	var _arg0 *C.GtkTreeDragSource  // out
-	var _arg1 *C.GtkTreePath        // out
-	var _cret *C.GdkContentProvider // in
-
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	_cret = C._gotk4_gtk4_TreeDragSource_virtual_drag_data_get(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(dragSource)
-	runtime.KeepAlive(path)
-
-	var _contentProvider *gdk.ContentProvider // out
-
-	if _cret != nil {
-		{
-			obj := coreglib.AssumeOwnership(unsafe.Pointer(_cret))
-			_contentProvider = &gdk.ContentProvider{
-				Object: obj,
-			}
-		}
-	}
-
-	return _contentProvider
-}
-
-// rowDraggable asks the TreeDragSource whether a particular row can be used
-// as the source of a DND operation. If the source doesn’t implement this
-// interface, the row is assumed draggable.
-//
-// The function takes the following parameters:
-//
-//   - path: row on which user is initiating a drag.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the row can be dragged.
-//
-func (dragSource *TreeDragSource) rowDraggable(path *TreePath) bool {
-	gclass := (*C.GtkTreeDragSourceIface)(coreglib.PeekParentClass(dragSource))
-	fnarg := gclass.row_draggable
-
-	var _arg0 *C.GtkTreeDragSource // out
-	var _arg1 *C.GtkTreePath       // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(coreglib.InternObject(dragSource).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	_cret = C._gotk4_gtk4_TreeDragSource_virtual_row_draggable(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(dragSource)
 	runtime.KeepAlive(path)
 
@@ -18960,660 +15763,6 @@ func (treeModel *TreeModel) UnrefNode(iter *TreeIter) {
 	runtime.KeepAlive(iter)
 }
 
-// columnType returns the type of the column.
-//
-// The function takes the following parameters:
-//
-//   - index_: column index.
-//
-// The function returns the following values:
-//
-//   - gType: type of the column.
-//
-func (treeModel *TreeModel) columnType(index_ int) coreglib.Type {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.get_column_type
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 C.int           // out
-	var _cret C.GType         // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = C.int(index_)
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_get_column_type(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(index_)
-
-	var _gType coreglib.Type // out
-
-	_gType = coreglib.Type(_cret)
-
-	return _gType
-}
-
-// Flags returns a set of flags supported by this interface.
-//
-// The flags are a bitwise combination of TreeModelFlags. The flags supported
-// should not change during the lifetime of the tree_model.
-//
-// The function returns the following values:
-//
-//   - treeModelFlags flags supported by this interface.
-//
-func (treeModel *TreeModel) flags() TreeModelFlags {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.get_flags
-
-	var _arg0 *C.GtkTreeModel     // out
-	var _cret C.GtkTreeModelFlags // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_get_flags(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeModel)
-
-	var _treeModelFlags TreeModelFlags // out
-
-	_treeModelFlags = TreeModelFlags(_cret)
-
-	return _treeModelFlags
-}
-
-// Iter sets iter to a valid iterator pointing to path. If path does not exist,
-// iter is set to an invalid iterator and FALSE is returned.
-//
-// The function takes the following parameters:
-//
-//   - path: TreePath-struct.
-//
-// The function returns the following values:
-//
-//   - iter: uninitialized TreeIter-struct.
-//   - ok: TRUE, if iter was set.
-//
-func (treeModel *TreeModel) iter(path *TreePath) (*TreeIter, bool) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.get_iter
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 *C.GtkTreePath  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_get_iter(unsafe.Pointer(fnarg), _arg0, &_arg1, _arg2)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(path)
-
-	var _iter *TreeIter // out
-	var _ok bool        // out
-
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _iter, _ok
-}
-
-// nColumns returns the number of columns supported by tree_model.
-//
-// The function returns the following values:
-//
-//   - gint: number of columns.
-//
-func (treeModel *TreeModel) nColumns() int {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.get_n_columns
-
-	var _arg0 *C.GtkTreeModel // out
-	var _cret C.int           // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_get_n_columns(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeModel)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Path returns a newly-created TreePath-struct referenced by iter.
-//
-// This path should be freed with gtk_tree_path_free().
-//
-// The function takes the following parameters:
-//
-//   - iter: TreeIter-struct.
-//
-// The function returns the following values:
-//
-//   - treePath: newly-created TreePath-struct.
-//
-func (treeModel *TreeModel) path(iter *TreeIter) *TreePath {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.get_path
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _cret *C.GtkTreePath  // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_get_path(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-
-	var _treePath *TreePath // out
-
-	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_treePath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
-	)
-
-	return _treePath
-}
-
-// Value initializes and sets value to that at column.
-//
-// When done with value, g_value_unset() needs to be called to free any
-// allocated memory.
-//
-// The function takes the following parameters:
-//
-//   - iter: TreeIter-struct.
-//   - column to lookup the value at.
-//
-// The function returns the following values:
-//
-//   - value: empty #GValue to set.
-//
-func (treeModel *TreeModel) value(iter *TreeIter, column int) coreglib.Value {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.get_value
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _arg2 C.int           // out
-	var _arg3 C.GValue        // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = C.int(column)
-
-	C._gotk4_gtk4_TreeModel_virtual_get_value(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(column)
-
-	var _value coreglib.Value // out
-
-	_value = *coreglib.ValueFromNative(unsafe.Pointer((&_arg3)))
-
-	return _value
-}
-
-// iterChildren sets iter to point to the first child of parent.
-//
-// If parent has no children, FALSE is returned and iter is set to be invalid.
-// parent will remain a valid node after this function has been called.
-//
-// If parent is NULL returns the first node, equivalent to
-// gtk_tree_model_get_iter_first (tree_model, iter);.
-//
-// The function takes the following parameters:
-//
-//   - parent (optional) or NULL.
-//
-// The function returns the following values:
-//
-//   - iter: new TreeIter-struct to be set to the child.
-//   - ok: TRUE, if iter has been set to the first child.
-//
-func (treeModel *TreeModel) iterChildren(parent *TreeIter) (*TreeIter, bool) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.iter_children
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 *C.GtkTreeIter  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	if parent != nil {
-		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
-	}
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_iter_children(unsafe.Pointer(fnarg), _arg0, &_arg1, _arg2)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(parent)
-
-	var _iter *TreeIter // out
-	var _ok bool        // out
-
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _iter, _ok
-}
-
-// iterHasChild returns TRUE if iter has children, FALSE otherwise.
-//
-// The function takes the following parameters:
-//
-//   - iter to test for children.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if iter has children.
-//
-func (treeModel *TreeModel) iterHasChild(iter *TreeIter) bool {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.iter_has_child
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_iter_has_child(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// iterNChildren returns the number of children that iter has.
-//
-// As a special case, if iter is NULL, then the number of toplevel nodes is
-// returned.
-//
-// The function takes the following parameters:
-//
-//   - iter (optional) or NULL.
-//
-// The function returns the following values:
-//
-//   - gint: number of children of iter.
-//
-func (treeModel *TreeModel) iterNChildren(iter *TreeIter) int {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.iter_n_children
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _cret C.int           // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	if iter != nil {
-		_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	}
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_iter_n_children(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// iterNext sets iter to point to the node following it at the current level.
-//
-// If there is no next iter, FALSE is returned and iter is set to be invalid.
-//
-// The function takes the following parameters:
-//
-//   - iter: TreeIter-struct.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if iter has been changed to the next node.
-//
-func (treeModel *TreeModel) iterNext(iter *TreeIter) bool {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.iter_next
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_iter_next(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// iterNthChild sets iter to be the child of parent, using the given index.
-//
-// The first index is 0. If n is too big, or parent has no children, iter is set
-// to an invalid iterator and FALSE is returned. parent will remain a valid node
-// after this function has been called. As a special case, if parent is NULL,
-// then the n-th root node is set.
-//
-// The function takes the following parameters:
-//
-//   - parent (optional) to get the child from, or NULL.
-//   - n: index of the desired child.
-//
-// The function returns the following values:
-//
-//   - iter to set to the nth child.
-//   - ok: TRUE, if parent has an n-th child.
-//
-func (treeModel *TreeModel) iterNthChild(parent *TreeIter, n int) (*TreeIter, bool) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.iter_nth_child
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 *C.GtkTreeIter  // out
-	var _arg3 C.int           // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	if parent != nil {
-		_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(parent)))
-	}
-	_arg3 = C.int(n)
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_iter_nth_child(unsafe.Pointer(fnarg), _arg0, &_arg1, _arg2, _arg3)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(parent)
-	runtime.KeepAlive(n)
-
-	var _iter *TreeIter // out
-	var _ok bool        // out
-
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _iter, _ok
-}
-
-// iterParent sets iter to be the parent of child.
-//
-// If child is at the toplevel, and doesn’t have a parent, then iter is set to
-// an invalid iterator and FALSE is returned. child will remain a valid node
-// after this function has been called.
-//
-// iter will be initialized before the lookup is performed, so child and iter
-// cannot point to the same memory location.
-//
-// The function takes the following parameters:
-//
-//   - child: TreeIter-struct.
-//
-// The function returns the following values:
-//
-//   - iter: new TreeIter-struct to set to the parent.
-//   - ok: TRUE, if iter is set to the parent of child.
-//
-func (treeModel *TreeModel) iterParent(child *TreeIter) (*TreeIter, bool) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.iter_parent
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 C.GtkTreeIter   // in
-	var _arg2 *C.GtkTreeIter  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(child)))
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_iter_parent(unsafe.Pointer(fnarg), _arg0, &_arg1, _arg2)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(child)
-
-	var _iter *TreeIter // out
-	var _ok bool        // out
-
-	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _iter, _ok
-}
-
-// iterPrevious sets iter to point to the previous node at the current level.
-//
-// If there is no previous iter, FALSE is returned and iter is set to be
-// invalid.
-//
-// The function takes the following parameters:
-//
-//   - iter: TreeIter-struct.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if iter has been changed to the previous node.
-//
-func (treeModel *TreeModel) iterPrevious(iter *TreeIter) bool {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.iter_previous
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreeIter  // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	_cret = C._gotk4_gtk4_TreeModel_virtual_iter_previous(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// refNode lets the tree ref the node.
-//
-// This is an optional method for models to implement. To be more specific,
-// models may ignore this call as it exists primarily for performance reasons.
-//
-// This function is primarily meant as a way for views to let caching models
-// know when nodes are being displayed (and hence, whether or not to cache that
-// node). Being displayed means a node is in an expanded branch, regardless
-// of whether the node is currently visible in the viewport. For example,
-// a file-system based model would not want to keep the entire file-hierarchy in
-// memory, just the sections that are currently being displayed by every current
-// view.
-//
-// A model should be expected to be able to get an iter independent of its
-// reffed state.
-//
-// The function takes the following parameters:
-//
-//   - iter: TreeIter-struct.
-//
-func (treeModel *TreeModel) refNode(iter *TreeIter) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.ref_node
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreeIter  // out
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C._gotk4_gtk4_TreeModel_virtual_ref_node(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-}
-
-// rowChanged emits the TreeModel::row-changed signal on tree_model.
-//
-// The function takes the following parameters:
-//
-//   - path pointing to the changed row.
-//   - iter: valid TreeIter-struct pointing to the changed row.
-//
-func (treeModel *TreeModel) rowChanged(path *TreePath, iter *TreeIter) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.row_changed
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreePath  // out
-	var _arg2 *C.GtkTreeIter  // out
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C._gotk4_gtk4_TreeModel_virtual_row_changed(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(path)
-	runtime.KeepAlive(iter)
-}
-
-// rowDeleted emits the TreeModel::row-deleted signal on tree_model.
-//
-// This should be called by models after a row has been removed. The location
-// pointed to by path should be the location that the row previously was at.
-// It may not be a valid location anymore.
-//
-// Nodes that are deleted are not unreffed, this means that any outstanding
-// references on the deleted node should not be released.
-//
-// The function takes the following parameters:
-//
-//   - path pointing to the previous location of the deleted row.
-//
-func (treeModel *TreeModel) rowDeleted(path *TreePath) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.row_deleted
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreePath  // out
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	C._gotk4_gtk4_TreeModel_virtual_row_deleted(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(path)
-}
-
-// rowHasChildToggled emits the TreeModel::row-has-child-toggled signal on
-// tree_model. This should be called by models after the child state of a node
-// changes.
-//
-// The function takes the following parameters:
-//
-//   - path pointing to the changed row.
-//   - iter: valid TreeIter-struct pointing to the changed row.
-//
-func (treeModel *TreeModel) rowHasChildToggled(path *TreePath, iter *TreeIter) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.row_has_child_toggled
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreePath  // out
-	var _arg2 *C.GtkTreeIter  // out
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C._gotk4_gtk4_TreeModel_virtual_row_has_child_toggled(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(path)
-	runtime.KeepAlive(iter)
-}
-
-// rowInserted emits the TreeModel::row-inserted signal on tree_model.
-//
-// The function takes the following parameters:
-//
-//   - path pointing to the inserted row.
-//   - iter: valid TreeIter-struct pointing to the inserted row.
-//
-func (treeModel *TreeModel) rowInserted(path *TreePath, iter *TreeIter) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.row_inserted
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreePath  // out
-	var _arg2 *C.GtkTreeIter  // out
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C._gotk4_gtk4_TreeModel_virtual_row_inserted(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(path)
-	runtime.KeepAlive(iter)
-}
-
-// unrefNode lets the tree unref the node.
-//
-// This is an optional method for models to implement. To be more specific,
-// models may ignore this call as it exists primarily for performance reasons.
-// For more information on what this means, see gtk_tree_model_ref_node().
-//
-// Please note that nodes that are deleted are not unreffed.
-//
-// The function takes the following parameters:
-//
-//   - iter: TreeIter-struct.
-//
-func (treeModel *TreeModel) unrefNode(iter *TreeIter) {
-	gclass := (*C.GtkTreeModelIface)(coreglib.PeekParentClass(treeModel))
-	fnarg := gclass.unref_node
-
-	var _arg0 *C.GtkTreeModel // out
-	var _arg1 *C.GtkTreeIter  // out
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	C._gotk4_gtk4_TreeModel_virtual_unref_node(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-}
-
 // TreeSortable: interface for sortable models used by GtkTreeView
 //
 // TreeSortable is an interface to be implemented by tree models which support
@@ -19833,184 +15982,6 @@ func (sortable *TreeSortable) SortColumnChanged() {
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
 
 	C.gtk_tree_sortable_sort_column_changed(_arg0)
-	runtime.KeepAlive(sortable)
-}
-
-// sortColumnID fills in sort_column_id and order with the
-// current sort column and the order. It returns TRUE unless the
-// sort_column_id is GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
-// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
-//
-// The function returns the following values:
-//
-//   - sortColumnId: sort column id to be filled in.
-//   - order to be filled in.
-//   - ok: TRUE if the sort column is not one of the special sort column ids.
-//
-func (sortable *TreeSortable) sortColumnID() (int, SortType, bool) {
-	gclass := (*C.GtkTreeSortableIface)(coreglib.PeekParentClass(sortable))
-	fnarg := gclass.get_sort_column_id
-
-	var _arg0 *C.GtkTreeSortable // out
-	var _arg1 C.int              // in
-	var _arg2 C.GtkSortType      // in
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-
-	_cret = C._gotk4_gtk4_TreeSortable_virtual_get_sort_column_id(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(sortable)
-
-	var _sortColumnId int // out
-	var _order SortType   // out
-	var _ok bool          // out
-
-	_sortColumnId = int(_arg1)
-	_order = SortType(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _sortColumnId, _order, _ok
-}
-
-// hasDefaultSortFunc returns TRUE if the model has a default sort function.
-// This is used primarily by GtkTreeViewColumns in order to determine if a model
-// can go back to the default state, or not.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE, if the model has a default sort function.
-//
-func (sortable *TreeSortable) hasDefaultSortFunc() bool {
-	gclass := (*C.GtkTreeSortableIface)(coreglib.PeekParentClass(sortable))
-	fnarg := gclass.has_default_sort_func
-
-	var _arg0 *C.GtkTreeSortable // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-
-	_cret = C._gotk4_gtk4_TreeSortable_virtual_has_default_sort_func(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(sortable)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// setDefaultSortFunc sets the default comparison function used when
-// sorting to be sort_func. If the current sort column id of sortable is
-// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, then the model will sort using this
-// function.
-//
-// If sort_func is NULL, then there will be no default comparison function.
-// This means that once the model has been sorted, it can’t go back to the
-// default state. In this case, when the current sort column id of sortable is
-// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, the model will be unsorted.
-//
-// The function takes the following parameters:
-//
-//   - sortFunc: comparison function.
-//
-func (sortable *TreeSortable) setDefaultSortFunc(sortFunc TreeIterCompareFunc) {
-	gclass := (*C.GtkTreeSortableIface)(coreglib.PeekParentClass(sortable))
-	fnarg := gclass.set_default_sort_func
-
-	var _arg0 *C.GtkTreeSortable       // out
-	var _arg1 C.GtkTreeIterCompareFunc // out
-	var _arg2 C.gpointer
-	var _arg3 C.GDestroyNotify
-
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_TreeIterCompareFunc)
-	_arg2 = C.gpointer(gbox.Assign(sortFunc))
-	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C._gotk4_gtk4_TreeSortable_virtual_set_default_sort_func(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(sortable)
-	runtime.KeepAlive(sortFunc)
-}
-
-// setSortColumnID sets the current sort column to be sort_column_id.
-// The sortable will resort itself to reflect this change, after emitting a
-// TreeSortable::sort-column-changed signal. sort_column_id may either be a
-// regular column id, or one of the following special values:
-//
-// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function will be
-// used, if it is set
-//
-// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur.
-//
-// The function takes the following parameters:
-//
-//   - sortColumnId: sort column id to set.
-//   - order: sort order of the column.
-//
-func (sortable *TreeSortable) setSortColumnID(sortColumnId int, order SortType) {
-	gclass := (*C.GtkTreeSortableIface)(coreglib.PeekParentClass(sortable))
-	fnarg := gclass.set_sort_column_id
-
-	var _arg0 *C.GtkTreeSortable // out
-	var _arg1 C.int              // out
-	var _arg2 C.GtkSortType      // out
-
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-	_arg1 = C.int(sortColumnId)
-	_arg2 = C.GtkSortType(order)
-
-	C._gotk4_gtk4_TreeSortable_virtual_set_sort_column_id(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(sortable)
-	runtime.KeepAlive(sortColumnId)
-	runtime.KeepAlive(order)
-}
-
-// setSortFunc sets the comparison function used when sorting to be sort_func.
-// If the current sort column id of sortable is the same as sort_column_id,
-// then the model will sort using this function.
-//
-// The function takes the following parameters:
-//
-//   - sortColumnId: sort column id to set the function for.
-//   - sortFunc: comparison function.
-//
-func (sortable *TreeSortable) setSortFunc(sortColumnId int, sortFunc TreeIterCompareFunc) {
-	gclass := (*C.GtkTreeSortableIface)(coreglib.PeekParentClass(sortable))
-	fnarg := gclass.set_sort_func
-
-	var _arg0 *C.GtkTreeSortable       // out
-	var _arg1 C.int                    // out
-	var _arg2 C.GtkTreeIterCompareFunc // out
-	var _arg3 C.gpointer
-	var _arg4 C.GDestroyNotify
-
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-	_arg1 = C.int(sortColumnId)
-	_arg2 = (*[0]byte)(C._gotk4_gtk4_TreeIterCompareFunc)
-	_arg3 = C.gpointer(gbox.Assign(sortFunc))
-	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-
-	C._gotk4_gtk4_TreeSortable_virtual_set_sort_func(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(sortable)
-	runtime.KeepAlive(sortColumnId)
-	runtime.KeepAlive(sortFunc)
-}
-
-// sortColumnChanged emits a TreeSortable::sort-column-changed signal on
-// sortable.
-func (sortable *TreeSortable) sortColumnChanged() {
-	gclass := (*C.GtkTreeSortableIface)(coreglib.PeekParentClass(sortable))
-	fnarg := gclass.sort_column_changed
-
-	var _arg0 *C.GtkTreeSortable // out
-
-	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(coreglib.InternObject(sortable).Native()))
-
-	C._gotk4_gtk4_TreeSortable_virtual_sort_column_changed(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(sortable)
 }
 
@@ -21410,19 +17381,6 @@ func ActivateActionGet() *ActivateAction {
 	return _activateAction
 }
 
-// AdjustmentOverrides contains methods that are overridable.
-type AdjustmentOverrides struct {
-	Changed      func()
-	ValueChanged func()
-}
-
-func defaultAdjustmentOverrides(v *Adjustment) AdjustmentOverrides {
-	return AdjustmentOverrides{
-		Changed:      v.changed,
-		ValueChanged: v.valueChanged,
-	}
-}
-
 // Adjustment: GtkAdjustment is a model for a numeric value.
 //
 // The `GtkAdjustment has an associated lower and upper bound. It also contains
@@ -21439,32 +17397,6 @@ type Adjustment struct {
 }
 
 var ()
-
-func init() {
-	coreglib.RegisterClassInfo[*Adjustment, *AdjustmentClass, AdjustmentOverrides](
-		GTypeAdjustment,
-		initAdjustmentClass,
-		wrapAdjustment,
-		defaultAdjustmentOverrides,
-	)
-}
-
-func initAdjustmentClass(gclass unsafe.Pointer, overrides AdjustmentOverrides, classInitFunc func(*AdjustmentClass)) {
-	pclass := (*C.GtkAdjustmentClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeAdjustment))))
-
-	if overrides.Changed != nil {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk4_AdjustmentClass_changed)
-	}
-
-	if overrides.ValueChanged != nil {
-		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_AdjustmentClass_value_changed)
-	}
-
-	if classInitFunc != nil {
-		class := (*AdjustmentClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapAdjustment(obj *coreglib.Object) *Adjustment {
 	return &Adjustment{
@@ -21901,30 +17833,6 @@ func (adjustment *Adjustment) SetValue(value float64) {
 	C.gtk_adjustment_set_value(_arg0, _arg1)
 	runtime.KeepAlive(adjustment)
 	runtime.KeepAlive(value)
-}
-
-func (adjustment *Adjustment) changed() {
-	gclass := (*C.GtkAdjustmentClass)(coreglib.PeekParentClass(adjustment))
-	fnarg := gclass.changed
-
-	var _arg0 *C.GtkAdjustment // out
-
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-
-	C._gotk4_gtk4_Adjustment_virtual_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(adjustment)
-}
-
-func (adjustment *Adjustment) valueChanged() {
-	gclass := (*C.GtkAdjustmentClass)(coreglib.PeekParentClass(adjustment))
-	fnarg := gclass.value_changed
-
-	var _arg0 *C.GtkAdjustment // out
-
-	_arg0 = (*C.GtkAdjustment)(unsafe.Pointer(coreglib.InternObject(adjustment).Native()))
-
-	C._gotk4_gtk4_Adjustment_virtual_value_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(adjustment)
 }
 
 // AlternativeTrigger: GtkShortcutTrigger that combines two triggers.
@@ -23149,23 +19057,6 @@ func (self *AppChooserWidget) SetShowRecommended(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// ApplicationOverrides contains methods that are overridable.
-type ApplicationOverrides struct {
-	// The function takes the following parameters:
-	//
-	WindowAdded func(window *Window)
-	// The function takes the following parameters:
-	//
-	WindowRemoved func(window *Window)
-}
-
-func defaultApplicationOverrides(v *Application) ApplicationOverrides {
-	return ApplicationOverrides{
-		WindowAdded:   v.windowAdded,
-		WindowRemoved: v.windowRemoved,
-	}
-}
-
 // Application: GtkApplication is a high-level API for writing applications.
 //
 // It supports many aspects of writing a GTK application in a convenient
@@ -23233,32 +19124,6 @@ type Application struct {
 var (
 	_ coreglib.Objector = (*Application)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Application, *ApplicationClass, ApplicationOverrides](
-		GTypeApplication,
-		initApplicationClass,
-		wrapApplication,
-		defaultApplicationOverrides,
-	)
-}
-
-func initApplicationClass(gclass unsafe.Pointer, overrides ApplicationOverrides, classInitFunc func(*ApplicationClass)) {
-	pclass := (*C.GtkApplicationClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeApplication))))
-
-	if overrides.WindowAdded != nil {
-		pclass.window_added = (*[0]byte)(C._gotk4_gtk4_ApplicationClass_window_added)
-	}
-
-	if overrides.WindowRemoved != nil {
-		pclass.window_removed = (*[0]byte)(C._gotk4_gtk4_ApplicationClass_window_removed)
-	}
-
-	if classInitFunc != nil {
-		class := (*ApplicationClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapApplication(obj *coreglib.Object) *Application {
 	return &Application{
@@ -23904,48 +19769,6 @@ func (application *Application) Uninhibit(cookie uint) {
 	runtime.KeepAlive(cookie)
 }
 
-// The function takes the following parameters:
-//
-func (application *Application) windowAdded(window *Window) {
-	gclass := (*C.GtkApplicationClass)(coreglib.PeekParentClass(application))
-	fnarg := gclass.window_added
-
-	var _arg0 *C.GtkApplication // out
-	var _arg1 *C.GtkWindow      // out
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	C._gotk4_gtk4_Application_virtual_window_added(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(application)
-	runtime.KeepAlive(window)
-}
-
-// The function takes the following parameters:
-//
-func (application *Application) windowRemoved(window *Window) {
-	gclass := (*C.GtkApplicationClass)(coreglib.PeekParentClass(application))
-	fnarg := gclass.window_removed
-
-	var _arg0 *C.GtkApplication // out
-	var _arg1 *C.GtkWindow      // out
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(coreglib.InternObject(application).Native()))
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	C._gotk4_gtk4_Application_virtual_window_removed(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(application)
-	runtime.KeepAlive(window)
-}
-
-// ApplicationWindowOverrides contains methods that are overridable.
-type ApplicationWindowOverrides struct {
-}
-
-func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOverrides {
-	return ApplicationWindowOverrides{}
-}
-
 // ApplicationWindow: GtkApplicationWindow is a GtkWindow subclass that
 // integrates with GtkApplication.
 //
@@ -24024,22 +19847,6 @@ var (
 	_ coreglib.Objector = (*ApplicationWindow)(nil)
 	_ Widgetter         = (*ApplicationWindow)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ApplicationWindow, *ApplicationWindowClass, ApplicationWindowOverrides](
-		GTypeApplicationWindow,
-		initApplicationWindowClass,
-		wrapApplicationWindow,
-		defaultApplicationWindowOverrides,
-	)
-}
-
-func initApplicationWindowClass(gclass unsafe.Pointer, overrides ApplicationWindowOverrides, classInitFunc func(*ApplicationWindowClass)) {
-	if classInitFunc != nil {
-		class := (*ApplicationWindowClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapApplicationWindow(obj *coreglib.Object) *ApplicationWindow {
 	return &ApplicationWindow{
@@ -25346,14 +21153,6 @@ func (page *AssistantPage) Child() Widgetter {
 	return _widget
 }
 
-// BinLayoutOverrides contains methods that are overridable.
-type BinLayoutOverrides struct {
-}
-
-func defaultBinLayoutOverrides(v *BinLayout) BinLayoutOverrides {
-	return BinLayoutOverrides{}
-}
-
 // BinLayout: GtkBinLayout is a GtkLayoutManager subclass useful for create
 // "bins" of widgets.
 //
@@ -25369,22 +21168,6 @@ type BinLayout struct {
 var (
 	_ LayoutManagerer = (*BinLayout)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*BinLayout, *BinLayoutClass, BinLayoutOverrides](
-		GTypeBinLayout,
-		initBinLayoutClass,
-		wrapBinLayout,
-		defaultBinLayoutOverrides,
-	)
-}
-
-func initBinLayoutClass(gclass unsafe.Pointer, overrides BinLayoutOverrides, classInitFunc func(*BinLayoutClass)) {
-	if classInitFunc != nil {
-		class := (*BinLayoutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapBinLayout(obj *coreglib.Object) *BinLayout {
 	return &BinLayout{
@@ -25416,14 +21199,6 @@ func NewBinLayout() *BinLayout {
 	return _binLayout
 }
 
-// BookmarkListOverrides contains methods that are overridable.
-type BookmarkListOverrides struct {
-}
-
-func defaultBookmarkListOverrides(v *BookmarkList) BookmarkListOverrides {
-	return BookmarkListOverrides{}
-}
-
 // BookmarkList: GtkBookmarkList is a list model that wraps GBookmarkFile.
 //
 // It presents a GListModel and fills it asynchronously with the GFileInfos
@@ -25441,22 +21216,6 @@ type BookmarkList struct {
 var (
 	_ coreglib.Objector = (*BookmarkList)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*BookmarkList, *BookmarkListClass, BookmarkListOverrides](
-		GTypeBookmarkList,
-		initBookmarkListClass,
-		wrapBookmarkList,
-		defaultBookmarkListOverrides,
-	)
-}
-
-func initBookmarkListClass(gclass unsafe.Pointer, overrides BookmarkListOverrides, classInitFunc func(*BookmarkListClass)) {
-	if classInitFunc != nil {
-		class := (*BookmarkListClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapBookmarkList(obj *coreglib.Object) *BookmarkList {
 	return &BookmarkList{
@@ -25647,14 +21406,6 @@ func (self *BookmarkList) SetIOPriority(ioPriority int) {
 	runtime.KeepAlive(ioPriority)
 }
 
-// BoolFilterOverrides contains methods that are overridable.
-type BoolFilterOverrides struct {
-}
-
-func defaultBoolFilterOverrides(v *BoolFilter) BoolFilterOverrides {
-	return BoolFilterOverrides{}
-}
-
 // BoolFilter: GtkBoolFilter evaluates a boolean GtkExpression to determine
 // whether to include items.
 type BoolFilter struct {
@@ -25665,22 +21416,6 @@ type BoolFilter struct {
 var (
 	_ coreglib.Objector = (*BoolFilter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*BoolFilter, *BoolFilterClass, BoolFilterOverrides](
-		GTypeBoolFilter,
-		initBoolFilterClass,
-		wrapBoolFilter,
-		defaultBoolFilterOverrides,
-	)
-}
-
-func initBoolFilterClass(gclass unsafe.Pointer, overrides BoolFilterOverrides, classInitFunc func(*BoolFilterClass)) {
-	if classInitFunc != nil {
-		class := (*BoolFilterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapBoolFilter(obj *coreglib.Object) *BoolFilter {
 	return &BoolFilter{
@@ -25828,14 +21563,6 @@ func (self *BoolFilter) SetInvert(invert bool) {
 	runtime.KeepAlive(invert)
 }
 
-// BoxOverrides contains methods that are overridable.
-type BoxOverrides struct {
-}
-
-func defaultBoxOverrides(v *Box) BoxOverrides {
-	return BoxOverrides{}
-}
-
 // Box: GtkBox widget arranges child widgets into a single row or column.
 //
 // !An example GtkBox (box.png)
@@ -25880,22 +21607,6 @@ var (
 	_ Widgetter         = (*Box)(nil)
 	_ coreglib.Objector = (*Box)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Box, *BoxClass, BoxOverrides](
-		GTypeBox,
-		initBoxClass,
-		wrapBox,
-		defaultBoxOverrides,
-	)
-}
-
-func initBoxClass(gclass unsafe.Pointer, overrides BoxOverrides, classInitFunc func(*BoxClass)) {
-	if classInitFunc != nil {
-		class := (*BoxClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapBox(obj *coreglib.Object) *Box {
 	return &Box{
@@ -26198,14 +21909,6 @@ func (box *Box) SetSpacing(spacing int) {
 	runtime.KeepAlive(spacing)
 }
 
-// BoxLayoutOverrides contains methods that are overridable.
-type BoxLayoutOverrides struct {
-}
-
-func defaultBoxLayoutOverrides(v *BoxLayout) BoxLayoutOverrides {
-	return BoxLayoutOverrides{}
-}
-
 // BoxLayout: GtkBoxLayout is a layout manager that arranges children in a
 // single row or column.
 //
@@ -26231,22 +21934,6 @@ var (
 	_ LayoutManagerer   = (*BoxLayout)(nil)
 	_ coreglib.Objector = (*BoxLayout)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*BoxLayout, *BoxLayoutClass, BoxLayoutOverrides](
-		GTypeBoxLayout,
-		initBoxLayoutClass,
-		wrapBoxLayout,
-		defaultBoxLayoutOverrides,
-	)
-}
-
-func initBoxLayoutClass(gclass unsafe.Pointer, overrides BoxLayoutOverrides, classInitFunc func(*BoxLayoutClass)) {
-	if classInitFunc != nil {
-		class := (*BoxLayoutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapBoxLayout(obj *coreglib.Object) *BoxLayout {
 	return &BoxLayout{
@@ -27377,14 +23064,6 @@ func (builder *Builder) ValueFromStringType(typ coreglib.Type, str string) (core
 	return _value, _goerr
 }
 
-// BuilderCScopeOverrides contains methods that are overridable.
-type BuilderCScopeOverrides struct {
-}
-
-func defaultBuilderCScopeOverrides(v *BuilderCScope) BuilderCScopeOverrides {
-	return BuilderCScopeOverrides{}
-}
-
 // BuilderCScope: GtkBuilderScope implementation for the C language.
 //
 // GtkBuilderCScope instances use symbols explicitly added to builder with prior
@@ -27409,22 +23088,6 @@ type BuilderCScope struct {
 var (
 	_ coreglib.Objector = (*BuilderCScope)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*BuilderCScope, *BuilderCScopeClass, BuilderCScopeOverrides](
-		GTypeBuilderCScope,
-		initBuilderCScopeClass,
-		wrapBuilderCScope,
-		defaultBuilderCScopeOverrides,
-	)
-}
-
-func initBuilderCScopeClass(gclass unsafe.Pointer, overrides BuilderCScopeOverrides, classInitFunc func(*BuilderCScopeClass)) {
-	if classInitFunc != nil {
-		class := (*BuilderCScopeClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapBuilderCScope(obj *coreglib.Object) *BuilderCScope {
 	return &BuilderCScope{
@@ -27650,19 +23313,6 @@ func (self *BuilderListItemFactory) Scope() *BuilderScope {
 	return _builderScope
 }
 
-// ButtonOverrides contains methods that are overridable.
-type ButtonOverrides struct {
-	Activate func()
-	Clicked  func()
-}
-
-func defaultButtonOverrides(v *Button) ButtonOverrides {
-	return ButtonOverrides{
-		Activate: v.activate,
-		Clicked:  v.clicked,
-	}
-}
-
 // Button: GtkButton widget is generally used to trigger a callback function
 // that is called when the button is pressed.
 //
@@ -27704,32 +23354,6 @@ var (
 	_ Widgetter         = (*Button)(nil)
 	_ coreglib.Objector = (*Button)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Button, *ButtonClass, ButtonOverrides](
-		GTypeButton,
-		initButtonClass,
-		wrapButton,
-		defaultButtonOverrides,
-	)
-}
-
-func initButtonClass(gclass unsafe.Pointer, overrides ButtonOverrides, classInitFunc func(*ButtonClass)) {
-	pclass := (*C.GtkButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeButton))))
-
-	if overrides.Activate != nil {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk4_ButtonClass_activate)
-	}
-
-	if overrides.Clicked != nil {
-		pclass.clicked = (*[0]byte)(C._gotk4_gtk4_ButtonClass_clicked)
-	}
-
-	if classInitFunc != nil {
-		class := (*ButtonClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapButton(obj *coreglib.Object) *Button {
 	return &Button{
@@ -28153,30 +23777,6 @@ func (button *Button) SetUseUnderline(useUnderline bool) {
 	C.gtk_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(useUnderline)
-}
-
-func (button *Button) activate() {
-	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
-	fnarg := gclass.activate
-
-	var _arg0 *C.GtkButton // out
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	C._gotk4_gtk4_Button_virtual_activate(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(button)
-}
-
-func (button *Button) clicked() {
-	gclass := (*C.GtkButtonClass)(coreglib.PeekParentClass(button))
-	fnarg := gclass.clicked
-
-	var _arg0 *C.GtkButton // out
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-
-	C._gotk4_gtk4_Button_virtual_clicked(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(button)
 }
 
 // CClosureExpression: variant of GtkClosureExpression using a C closure.
@@ -28644,269 +24244,6 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	return _callbackAction
 }
 
-// CellAreaOverrides contains methods that are overridable.
-type CellAreaOverrides struct {
-	// Activate activates area, usually by activating the currently focused
-	// cell, however some subclasses which embed widgets in the area can also
-	// activate a widget if it currently has the focus.
-	//
-	// The function takes the following parameters:
-	//
-	//   - context in context with the current row data.
-	//   - widget that area is rendering on.
-	//   - cellArea: size and location of area relative to widget’s allocation.
-	//   - flags flags for area for this row of data.
-	//   - editOnly: if TRUE then only cell renderers that are
-	//     GTK_CELL_RENDERER_MODE_EDITABLE will be activated.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: whether area was successfully activated.
-	//
-	Activate func(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
-	// Add adds renderer to area with the default child cell properties.
-	//
-	// The function takes the following parameters:
-	//
-	//   - renderer to add to area.
-	//
-	Add func(renderer CellRendererer)
-	// ApplyAttributes applies any connected attributes to the renderers in area
-	// by pulling the values from tree_model.
-	//
-	// The function takes the following parameters:
-	//
-	//   - treeModel to pull values from.
-	//   - iter in tree_model to apply values for.
-	//   - isExpander: whether iter has children.
-	//   - isExpanded: whether iter is expanded in the view and children are
-	//     visible.
-	//
-	ApplyAttributes func(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool)
-	// CopyContext: this is sometimes needed for cases where rows need to
-	// share alignments in one orientation but may be separately grouped in the
-	// opposing orientation.
-	//
-	// For instance, IconView creates all icons (rows) to have the same
-	// width and the cells theirin to have the same horizontal alignments.
-	// However each row of icons may have a separate collective height. IconView
-	// uses this to request the heights of each row based on a context which was
-	// already used to request all the row widths that are to be displayed.
-	//
-	// The function takes the following parameters:
-	//
-	//   - context to copy.
-	//
-	// The function returns the following values:
-	//
-	//   - cellAreaContext: newly created CellAreaContext copy of context.
-	//
-	CopyContext func(context *CellAreaContext) *CellAreaContext
-	// CreateContext creates a CellAreaContext to be used with area for all
-	// purposes. CellAreaContext stores geometry information for rows for which
-	// it was operated on, it is important to use the same context for the same
-	// row of data at all times (i.e. one should render and handle events with
-	// the same CellAreaContext which was used to request the size of those rows
-	// of data).
-	//
-	// The function returns the following values:
-	//
-	//   - cellAreaContext: newly created CellAreaContext which can be used with
-	//     area.
-	//
-	CreateContext func() *CellAreaContext
-	// Event delegates event handling to a CellArea.
-	//
-	// The function takes the following parameters:
-	//
-	//   - context for this row of data.
-	//   - widget that area is rendering to.
-	//   - event to handle.
-	//   - cellArea: widget relative coordinates for area.
-	//   - flags for area in this row.
-	//
-	// The function returns the following values:
-	//
-	//   - gint: TRUE if the event was handled by area.
-	//
-	Event func(context *CellAreaContext, widget Widgetter, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) int
-	// Focus: this should be called by the area’s owning layout widget when
-	// focus is to be passed to area, or moved within area for a given direction
-	// and row data.
-	//
-	// Implementing CellArea classes should implement this method to receive and
-	// navigate focus in its own way particular to how it lays out cells.
-	//
-	// The function takes the following parameters:
-	//
-	//   - direction: DirectionType.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if focus remains inside area as a result of this call.
-	//
-	Focus func(direction DirectionType) bool
-	// PreferredHeight retrieves a cell area’s initial minimum and natural
-	// height.
-	//
-	// area will store some geometrical information in context along the way;
-	// when requesting sizes over an arbitrary number of rows, it’s not
-	// important to check the minimum_height and natural_height of this call but
-	// rather to consult gtk_cell_area_context_get_preferred_height() after a
-	// series of requests.
-	//
-	// The function takes the following parameters:
-	//
-	//   - context to perform this request with.
-	//   - widget where area will be rendering.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumHeight (optional): location to store the minimum height,
-	//     or NULL.
-	//   - naturalHeight (optional): location to store the natural height,
-	//     or NULL.
-	//
-	PreferredHeight func(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int)
-	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
-	// height if it would be given the specified width.
-	//
-	// area stores some geometrical information in context along the way while
-	// calling gtk_cell_area_get_preferred_width(). It’s important to perform a
-	// series of gtk_cell_area_get_preferred_width() requests with context first
-	// and then call gtk_cell_area_get_preferred_height_for_width() on each cell
-	// area individually to get the height for width of each fully requested
-	// row.
-	//
-	// If at some point, the width of a single row changes, it should
-	// be requested with gtk_cell_area_get_preferred_width() again and
-	// then the full width of the requested rows checked again with
-	// gtk_cell_area_context_get_preferred_width().
-	//
-	// The function takes the following parameters:
-	//
-	//   - context which has already been requested for widths.
-	//   - widget where area will be rendering.
-	//   - width for which to check the height of this area.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumHeight (optional): location to store the minimum height,
-	//     or NULL.
-	//   - naturalHeight (optional): location to store the natural height,
-	//     or NULL.
-	//
-	PreferredHeightForWidth func(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int)
-	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
-	//
-	// area will store some geometrical information in context along the way;
-	// when requesting sizes over an arbitrary number of rows, it’s not
-	// important to check the minimum_width and natural_width of this call but
-	// rather to consult gtk_cell_area_context_get_preferred_width() after a
-	// series of requests.
-	//
-	// The function takes the following parameters:
-	//
-	//   - context to perform this request with.
-	//   - widget where area will be rendering.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumWidth (optional): location to store the minimum width,
-	//     or NULL.
-	//   - naturalWidth (optional): location to store the natural width,
-	//     or NULL.
-	//
-	PreferredWidth func(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int)
-	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
-	// if it would be given the specified height.
-	//
-	// area stores some geometrical information in context along the way while
-	// calling gtk_cell_area_get_preferred_height(). It’s important to perform
-	// a series of gtk_cell_area_get_preferred_height() requests with context
-	// first and then call gtk_cell_area_get_preferred_width_for_height() on
-	// each cell area individually to get the height for width of each fully
-	// requested row.
-	//
-	// If at some point, the height of a single row changes, it should
-	// be requested with gtk_cell_area_get_preferred_height() again and
-	// then the full height of the requested rows checked again with
-	// gtk_cell_area_context_get_preferred_height().
-	//
-	// The function takes the following parameters:
-	//
-	//   - context which has already been requested for widths.
-	//   - widget where area will be rendering.
-	//   - height for which to check the width of this area.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumWidth (optional): location to store the minimum width,
-	//     or NULL.
-	//   - naturalWidth (optional): location to store the natural width,
-	//     or NULL.
-	//
-	PreferredWidthForHeight func(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int)
-	// RequestMode gets whether the area prefers a height-for-width layout or a
-	// width-for-height layout.
-	//
-	// The function returns the following values:
-	//
-	//   - sizeRequestMode preferred by area.
-	//
-	RequestMode func() SizeRequestMode
-	// IsActivatable returns whether the area can do anything when activated,
-	// after applying new attributes to area.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: whether area can do anything when activated.
-	//
-	IsActivatable func() bool
-	// Remove removes renderer from area.
-	//
-	// The function takes the following parameters:
-	//
-	//   - renderer to remove from area.
-	//
-	Remove func(renderer CellRendererer)
-	// Snapshot snapshots area’s cells according to area’s layout onto at the
-	// given coordinates.
-	//
-	// The function takes the following parameters:
-	//
-	//   - context for this row of data.
-	//   - widget that area is rendering to.
-	//   - snapshot to draw to.
-	//   - backgroundArea: widget relative coordinates for area’s background.
-	//   - cellArea: widget relative coordinates for area.
-	//   - flags for area in this row.
-	//   - paintFocus: whether area should paint focus on focused cells for
-	//     focused rows or not.
-	//
-	Snapshot func(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
-}
-
-func defaultCellAreaOverrides(v *CellArea) CellAreaOverrides {
-	return CellAreaOverrides{
-		Activate:                v.activate,
-		Add:                     v.add,
-		ApplyAttributes:         v.applyAttributes,
-		CopyContext:             v.copyContext,
-		CreateContext:           v.createContext,
-		Event:                   v.event,
-		Focus:                   v.focus,
-		PreferredHeight:         v.preferredHeight,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidth:          v.preferredWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		RequestMode:             v.requestMode,
-		IsActivatable:           v.isActivatable,
-		Remove:                  v.remove,
-		Snapshot:                v.snapshot,
-	}
-}
-
 // CellArea: abstract class for laying out GtkCellRenderers
 //
 // The CellArea is an abstract class for CellLayout widgets (also referred to as
@@ -29052,84 +24389,6 @@ type CellAreaer interface {
 }
 
 var _ CellAreaer = (*CellArea)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*CellArea, *CellAreaClass, CellAreaOverrides](
-		GTypeCellArea,
-		initCellAreaClass,
-		wrapCellArea,
-		defaultCellAreaOverrides,
-	)
-}
-
-func initCellAreaClass(gclass unsafe.Pointer, overrides CellAreaOverrides, classInitFunc func(*CellAreaClass)) {
-	pclass := (*C.GtkCellAreaClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCellArea))))
-
-	if overrides.Activate != nil {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_activate)
-	}
-
-	if overrides.Add != nil {
-		pclass.add = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_add)
-	}
-
-	if overrides.ApplyAttributes != nil {
-		pclass.apply_attributes = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_apply_attributes)
-	}
-
-	if overrides.CopyContext != nil {
-		pclass.copy_context = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_copy_context)
-	}
-
-	if overrides.CreateContext != nil {
-		pclass.create_context = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_create_context)
-	}
-
-	if overrides.Event != nil {
-		pclass.event = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_event)
-	}
-
-	if overrides.Focus != nil {
-		pclass.focus = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_focus)
-	}
-
-	if overrides.PreferredHeight != nil {
-		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_preferred_height)
-	}
-
-	if overrides.PreferredHeightForWidth != nil {
-		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_preferred_height_for_width)
-	}
-
-	if overrides.PreferredWidth != nil {
-		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_preferred_width)
-	}
-
-	if overrides.PreferredWidthForHeight != nil {
-		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_preferred_width_for_height)
-	}
-
-	if overrides.RequestMode != nil {
-		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_get_request_mode)
-	}
-
-	if overrides.IsActivatable != nil {
-		pclass.is_activatable = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_is_activatable)
-	}
-
-	if overrides.Remove != nil {
-		pclass.remove = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_remove)
-	}
-
-	if overrides.Snapshot != nil {
-		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_CellAreaClass_snapshot)
-	}
-
-	if classInitFunc != nil {
-		class := (*CellAreaClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapCellArea(obj *coreglib.Object) *CellArea {
 	return &CellArea{
@@ -30574,670 +25833,6 @@ func (area *CellArea) StopEditing(canceled bool) {
 	runtime.KeepAlive(canceled)
 }
 
-// Activate activates area, usually by activating the currently focused cell,
-// however some subclasses which embed widgets in the area can also activate a
-// widget if it currently has the focus.
-//
-// The function takes the following parameters:
-//
-//   - context in context with the current row data.
-//   - widget that area is rendering on.
-//   - cellArea: size and location of area relative to widget’s allocation.
-//   - flags flags for area for this row of data.
-//   - editOnly: if TRUE then only cell renderers that are
-//     GTK_CELL_RENDERER_MODE_EDITABLE will be activated.
-//
-// The function returns the following values:
-//
-//   - ok: whether area was successfully activated.
-//
-func (area *CellArea) activate(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.activate
-
-	var _arg0 *C.GtkCellArea         // out
-	var _arg1 *C.GtkCellAreaContext  // out
-	var _arg2 *C.GtkWidget           // out
-	var _arg3 *C.GdkRectangle        // out
-	var _arg4 C.GtkCellRendererState // out
-	var _arg5 C.gboolean             // out
-	var _cret C.gboolean             // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	_arg4 = C.GtkCellRendererState(flags)
-	if editOnly {
-		_arg5 = C.TRUE
-	}
-
-	_cret = C._gotk4_gtk4_CellArea_virtual_activate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(cellArea)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(editOnly)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Add adds renderer to area with the default child cell properties.
-//
-// The function takes the following parameters:
-//
-//   - renderer to add to area.
-//
-func (area *CellArea) add(renderer CellRendererer) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.add
-
-	var _arg0 *C.GtkCellArea     // out
-	var _arg1 *C.GtkCellRenderer // out
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-
-	C._gotk4_gtk4_CellArea_virtual_add(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(renderer)
-}
-
-// applyAttributes applies any connected attributes to the renderers in area by
-// pulling the values from tree_model.
-//
-// The function takes the following parameters:
-//
-//   - treeModel to pull values from.
-//   - iter in tree_model to apply values for.
-//   - isExpander: whether iter has children.
-//   - isExpanded: whether iter is expanded in the view and children are
-//     visible.
-//
-func (area *CellArea) applyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.apply_attributes
-
-	var _arg0 *C.GtkCellArea  // out
-	var _arg1 *C.GtkTreeModel // out
-	var _arg2 *C.GtkTreeIter  // out
-	var _arg3 C.gboolean      // out
-	var _arg4 C.gboolean      // out
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(treeModel).Native()))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	if isExpander {
-		_arg3 = C.TRUE
-	}
-	if isExpanded {
-		_arg4 = C.TRUE
-	}
-
-	C._gotk4_gtk4_CellArea_virtual_apply_attributes(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(treeModel)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(isExpander)
-	runtime.KeepAlive(isExpanded)
-}
-
-// copyContext: this is sometimes needed for cases where rows need to share
-// alignments in one orientation but may be separately grouped in the opposing
-// orientation.
-//
-// For instance, IconView creates all icons (rows) to have the same width and
-// the cells theirin to have the same horizontal alignments. However each row of
-// icons may have a separate collective height. IconView uses this to request
-// the heights of each row based on a context which was already used to request
-// all the row widths that are to be displayed.
-//
-// The function takes the following parameters:
-//
-//   - context to copy.
-//
-// The function returns the following values:
-//
-//   - cellAreaContext: newly created CellAreaContext copy of context.
-//
-func (area *CellArea) copyContext(context *CellAreaContext) *CellAreaContext {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.copy_context
-
-	var _arg0 *C.GtkCellArea        // out
-	var _arg1 *C.GtkCellAreaContext // out
-	var _cret *C.GtkCellAreaContext // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C._gotk4_gtk4_CellArea_virtual_copy_context(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-
-	var _cellAreaContext *CellAreaContext // out
-
-	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _cellAreaContext
-}
-
-// createContext creates a CellAreaContext to be used with area for all
-// purposes. CellAreaContext stores geometry information for rows for which it
-// was operated on, it is important to use the same context for the same row of
-// data at all times (i.e. one should render and handle events with the same
-// CellAreaContext which was used to request the size of those rows of data).
-//
-// The function returns the following values:
-//
-//   - cellAreaContext: newly created CellAreaContext which can be used with
-//     area.
-//
-func (area *CellArea) createContext() *CellAreaContext {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.create_context
-
-	var _arg0 *C.GtkCellArea        // out
-	var _cret *C.GtkCellAreaContext // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	_cret = C._gotk4_gtk4_CellArea_virtual_create_context(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(area)
-
-	var _cellAreaContext *CellAreaContext // out
-
-	_cellAreaContext = wrapCellAreaContext(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _cellAreaContext
-}
-
-// Event delegates event handling to a CellArea.
-//
-// The function takes the following parameters:
-//
-//   - context for this row of data.
-//   - widget that area is rendering to.
-//   - event to handle.
-//   - cellArea: widget relative coordinates for area.
-//   - flags for area in this row.
-//
-// The function returns the following values:
-//
-//   - gint: TRUE if the event was handled by area.
-//
-func (area *CellArea) event(context *CellAreaContext, widget Widgetter, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) int {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.event
-
-	var _arg0 *C.GtkCellArea         // out
-	var _arg1 *C.GtkCellAreaContext  // out
-	var _arg2 *C.GtkWidget           // out
-	var _arg3 *C.GdkEvent            // out
-	var _arg4 *C.GdkRectangle        // out
-	var _arg5 C.GtkCellRendererState // out
-	var _cret C.int                  // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	_arg5 = C.GtkCellRendererState(flags)
-
-	_cret = C._gotk4_gtk4_CellArea_virtual_event(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(event)
-	runtime.KeepAlive(cellArea)
-	runtime.KeepAlive(flags)
-
-	var _gint int // out
-
-	_gint = int(_cret)
-
-	return _gint
-}
-
-// Focus: this should be called by the area’s owning layout widget when focus
-// is to be passed to area, or moved within area for a given direction and row
-// data.
-//
-// Implementing CellArea classes should implement this method to receive and
-// navigate focus in its own way particular to how it lays out cells.
-//
-// The function takes the following parameters:
-//
-//   - direction: DirectionType.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if focus remains inside area as a result of this call.
-//
-func (area *CellArea) focus(direction DirectionType) bool {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.focus
-
-	var _arg0 *C.GtkCellArea     // out
-	var _arg1 C.GtkDirectionType // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = C.GtkDirectionType(direction)
-
-	_cret = C._gotk4_gtk4_CellArea_virtual_focus(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(direction)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// forEach calls callback for every CellRenderer in area.
-//
-// The function takes the following parameters:
-//
-//   - callback to call.
-//
-func (area *CellArea) forEach(callback CellCallback) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.foreach
-
-	var _arg0 *C.GtkCellArea    // out
-	var _arg1 C.GtkCellCallback // out
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*[0]byte)(C._gotk4_gtk4_CellCallback)
-	_arg2 = C.gpointer(gbox.Assign(callback))
-	defer gbox.Delete(uintptr(_arg2))
-
-	C._gotk4_gtk4_CellArea_virtual_foreach(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(callback)
-}
-
-// forEachAlloc calls callback for every CellRenderer in area with the allocated
-// rectangle inside cell_area.
-//
-// The function takes the following parameters:
-//
-//   - context for this row of data.
-//   - widget that area is rendering to.
-//   - cellArea: widget relative coordinates and size for area.
-//   - backgroundArea: widget relative coordinates of the background area.
-//   - callback to call.
-//
-func (area *CellArea) forEachAlloc(context *CellAreaContext, widget Widgetter, cellArea, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.foreach_alloc
-
-	var _arg0 *C.GtkCellArea         // out
-	var _arg1 *C.GtkCellAreaContext  // out
-	var _arg2 *C.GtkWidget           // out
-	var _arg3 *C.GdkRectangle        // out
-	var _arg4 *C.GdkRectangle        // out
-	var _arg5 C.GtkCellAllocCallback // out
-	var _arg6 C.gpointer
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
-	_arg5 = (*[0]byte)(C._gotk4_gtk4_CellAllocCallback)
-	_arg6 = C.gpointer(gbox.Assign(callback))
-	defer gbox.Delete(uintptr(_arg6))
-
-	C._gotk4_gtk4_CellArea_virtual_foreach_alloc(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(cellArea)
-	runtime.KeepAlive(backgroundArea)
-	runtime.KeepAlive(callback)
-}
-
-// preferredHeight retrieves a cell area’s initial minimum and natural height.
-//
-// area will store some geometrical information in context along the way;
-// when requesting sizes over an arbitrary number of rows, it’s not important
-// to check the minimum_height and natural_height of this call but rather
-// to consult gtk_cell_area_context_get_preferred_height() after a series of
-// requests.
-//
-// The function takes the following parameters:
-//
-//   - context to perform this request with.
-//   - widget where area will be rendering.
-//
-// The function returns the following values:
-//
-//   - minimumHeight (optional): location to store the minimum height, or NULL.
-//   - naturalHeight (optional): location to store the natural height, or NULL.
-//
-func (area *CellArea) preferredHeight(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.get_preferred_height
-
-	var _arg0 *C.GtkCellArea        // out
-	var _arg1 *C.GtkCellAreaContext // out
-	var _arg2 *C.GtkWidget          // out
-	var _arg3 C.int                 // in
-	var _arg4 C.int                 // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_CellArea_virtual_get_preferred_height(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-
-	var _minimumHeight int // out
-	var _naturalHeight int // out
-
-	_minimumHeight = int(_arg3)
-	_naturalHeight = int(_arg4)
-
-	return _minimumHeight, _naturalHeight
-}
-
-// preferredHeightForWidth retrieves a cell area’s minimum and natural height if
-// it would be given the specified width.
-//
-// area stores some geometrical information in context along the way while
-// calling gtk_cell_area_get_preferred_width(). It’s important to perform a
-// series of gtk_cell_area_get_preferred_width() requests with context first and
-// then call gtk_cell_area_get_preferred_height_for_width() on each cell area
-// individually to get the height for width of each fully requested row.
-//
-// If at some point, the width of a single row changes, it should
-// be requested with gtk_cell_area_get_preferred_width() again and
-// then the full width of the requested rows checked again with
-// gtk_cell_area_context_get_preferred_width().
-//
-// The function takes the following parameters:
-//
-//   - context which has already been requested for widths.
-//   - widget where area will be rendering.
-//   - width for which to check the height of this area.
-//
-// The function returns the following values:
-//
-//   - minimumHeight (optional): location to store the minimum height, or NULL.
-//   - naturalHeight (optional): location to store the natural height, or NULL.
-//
-func (area *CellArea) preferredHeightForWidth(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.get_preferred_height_for_width
-
-	var _arg0 *C.GtkCellArea        // out
-	var _arg1 *C.GtkCellAreaContext // out
-	var _arg2 *C.GtkWidget          // out
-	var _arg3 C.int                 // out
-	var _arg4 C.int                 // in
-	var _arg5 C.int                 // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = C.int(width)
-
-	C._gotk4_gtk4_CellArea_virtual_get_preferred_height_for_width(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(width)
-
-	var _minimumHeight int // out
-	var _naturalHeight int // out
-
-	_minimumHeight = int(_arg4)
-	_naturalHeight = int(_arg5)
-
-	return _minimumHeight, _naturalHeight
-}
-
-// preferredWidth retrieves a cell area’s initial minimum and natural width.
-//
-// area will store some geometrical information in context along the way;
-// when requesting sizes over an arbitrary number of rows, it’s not important to
-// check the minimum_width and natural_width of this call but rather to consult
-// gtk_cell_area_context_get_preferred_width() after a series of requests.
-//
-// The function takes the following parameters:
-//
-//   - context to perform this request with.
-//   - widget where area will be rendering.
-//
-// The function returns the following values:
-//
-//   - minimumWidth (optional): location to store the minimum width, or NULL.
-//   - naturalWidth (optional): location to store the natural width, or NULL.
-//
-func (area *CellArea) preferredWidth(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.get_preferred_width
-
-	var _arg0 *C.GtkCellArea        // out
-	var _arg1 *C.GtkCellAreaContext // out
-	var _arg2 *C.GtkWidget          // out
-	var _arg3 C.int                 // in
-	var _arg4 C.int                 // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_CellArea_virtual_get_preferred_width(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-
-	var _minimumWidth int // out
-	var _naturalWidth int // out
-
-	_minimumWidth = int(_arg3)
-	_naturalWidth = int(_arg4)
-
-	return _minimumWidth, _naturalWidth
-}
-
-// preferredWidthForHeight retrieves a cell area’s minimum and natural width if
-// it would be given the specified height.
-//
-// area stores some geometrical information in context along the way while
-// calling gtk_cell_area_get_preferred_height(). It’s important to perform a
-// series of gtk_cell_area_get_preferred_height() requests with context first
-// and then call gtk_cell_area_get_preferred_width_for_height() on each cell
-// area individually to get the height for width of each fully requested row.
-//
-// If at some point, the height of a single row changes, it should
-// be requested with gtk_cell_area_get_preferred_height() again and
-// then the full height of the requested rows checked again with
-// gtk_cell_area_context_get_preferred_height().
-//
-// The function takes the following parameters:
-//
-//   - context which has already been requested for widths.
-//   - widget where area will be rendering.
-//   - height for which to check the width of this area.
-//
-// The function returns the following values:
-//
-//   - minimumWidth (optional): location to store the minimum width, or NULL.
-//   - naturalWidth (optional): location to store the natural width, or NULL.
-//
-func (area *CellArea) preferredWidthForHeight(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.get_preferred_width_for_height
-
-	var _arg0 *C.GtkCellArea        // out
-	var _arg1 *C.GtkCellAreaContext // out
-	var _arg2 *C.GtkWidget          // out
-	var _arg3 C.int                 // out
-	var _arg4 C.int                 // in
-	var _arg5 C.int                 // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = C.int(height)
-
-	C._gotk4_gtk4_CellArea_virtual_get_preferred_width_for_height(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(height)
-
-	var _minimumWidth int // out
-	var _naturalWidth int // out
-
-	_minimumWidth = int(_arg4)
-	_naturalWidth = int(_arg5)
-
-	return _minimumWidth, _naturalWidth
-}
-
-// requestMode gets whether the area prefers a height-for-width layout or a
-// width-for-height layout.
-//
-// The function returns the following values:
-//
-//   - sizeRequestMode preferred by area.
-//
-func (area *CellArea) requestMode() SizeRequestMode {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.get_request_mode
-
-	var _arg0 *C.GtkCellArea       // out
-	var _cret C.GtkSizeRequestMode // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	_cret = C._gotk4_gtk4_CellArea_virtual_get_request_mode(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(area)
-
-	var _sizeRequestMode SizeRequestMode // out
-
-	_sizeRequestMode = SizeRequestMode(_cret)
-
-	return _sizeRequestMode
-}
-
-// isActivatable returns whether the area can do anything when activated,
-// after applying new attributes to area.
-//
-// The function returns the following values:
-//
-//   - ok: whether area can do anything when activated.
-//
-func (area *CellArea) isActivatable() bool {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.is_activatable
-
-	var _arg0 *C.GtkCellArea // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-
-	_cret = C._gotk4_gtk4_CellArea_virtual_is_activatable(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(area)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Remove removes renderer from area.
-//
-// The function takes the following parameters:
-//
-//   - renderer to remove from area.
-//
-func (area *CellArea) remove(renderer CellRendererer) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.remove
-
-	var _arg0 *C.GtkCellArea     // out
-	var _arg1 *C.GtkCellRenderer // out
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(renderer).Native()))
-
-	C._gotk4_gtk4_CellArea_virtual_remove(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(renderer)
-}
-
-// Snapshot snapshots area’s cells according to area’s layout onto at the given
-// coordinates.
-//
-// The function takes the following parameters:
-//
-//   - context for this row of data.
-//   - widget that area is rendering to.
-//   - snapshot to draw to.
-//   - backgroundArea: widget relative coordinates for area’s background.
-//   - cellArea: widget relative coordinates for area.
-//   - flags for area in this row.
-//   - paintFocus: whether area should paint focus on focused cells for focused
-//     rows or not.
-//
-func (area *CellArea) snapshot(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
-	gclass := (*C.GtkCellAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.snapshot
-
-	var _arg0 *C.GtkCellArea         // out
-	var _arg1 *C.GtkCellAreaContext  // out
-	var _arg2 *C.GtkWidget           // out
-	var _arg3 *C.GtkSnapshot         // out
-	var _arg4 *C.GdkRectangle        // out
-	var _arg5 *C.GdkRectangle        // out
-	var _arg6 C.GtkCellRendererState // out
-	var _arg7 C.gboolean             // out
-
-	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = (*C.GtkSnapshot)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
-	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	_arg6 = C.GtkCellRendererState(flags)
-	if paintFocus {
-		_arg7 = C.TRUE
-	}
-
-	C._gotk4_gtk4_CellArea_virtual_snapshot(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(snapshot)
-	runtime.KeepAlive(backgroundArea)
-	runtime.KeepAlive(cellArea)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(paintFocus)
-}
-
 // CellAreaBox: cell area that renders GtkCellRenderers into a row or a column
 //
 // The CellAreaBox renders cell renderers into a row or a column depending on
@@ -31431,93 +26026,6 @@ func (box *CellAreaBox) SetSpacing(spacing int) {
 	runtime.KeepAlive(spacing)
 }
 
-// CellAreaContextOverrides contains methods that are overridable.
-type CellAreaContextOverrides struct {
-	// Allocate allocates a width and/or a height for all rows which are to be
-	// rendered with context.
-	//
-	// Usually allocation is performed only horizontally or sometimes vertically
-	// since a group of rows are usually rendered side by side vertically
-	// or horizontally and share either the same width or the same height.
-	// Sometimes they are allocated in both horizontal and vertical orientations
-	// producing a homogeneous effect of the rows. This is generally the case
-	// for TreeView when TreeView:fixed-height-mode is enabled.
-	//
-	// The function takes the following parameters:
-	//
-	//   - width: allocated width for all TreeModel rows rendered with context,
-	//     or -1.
-	//   - height: allocated height for all TreeModel rows rendered with
-	//     context, or -1.
-	//
-	Allocate func(width, height int)
-	// PreferredHeightForWidth gets the accumulative preferred height for width
-	// for all rows which have been requested for the same said width with this
-	// context.
-	//
-	// After gtk_cell_area_context_reset() is called and/or before ever
-	// requesting the size of a CellArea, the returned values are -1.
-	//
-	// The function takes the following parameters:
-	//
-	//   - width: proposed width for allocation.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumHeight (optional): location to store the minimum height,
-	//     or NULL.
-	//   - naturalHeight (optional): location to store the natural height,
-	//     or NULL.
-	//
-	PreferredHeightForWidth func(width int) (minimumHeight, naturalHeight int)
-	// PreferredWidthForHeight gets the accumulative preferred width for height
-	// for all rows which have been requested for the same said height with this
-	// context.
-	//
-	// After gtk_cell_area_context_reset() is called and/or before ever
-	// requesting the size of a CellArea, the returned values are -1.
-	//
-	// The function takes the following parameters:
-	//
-	//   - height: proposed height for allocation.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumWidth (optional): location to store the minimum width,
-	//     or NULL.
-	//   - naturalWidth (optional): location to store the natural width,
-	//     or NULL.
-	//
-	PreferredWidthForHeight func(height int) (minimumWidth, naturalWidth int)
-	// Reset resets any previously cached request and allocation data.
-	//
-	// When underlying TreeModel data changes its important to reset the
-	// context if the content size is allowed to shrink. If the content
-	// size is only allowed to grow (this is usually an option for views
-	// rendering large data stores as a measure of optimization), then only
-	// the row that changed or was inserted needs to be (re)requested with
-	// gtk_cell_area_get_preferred_width().
-	//
-	// When the new overall size of the context requires that the allocated size
-	// changes (or whenever this allocation changes at all), the variable row
-	// sizes need to be re-requested for every row.
-	//
-	// For instance, if the rows are displayed all with the same
-	// width from top to bottom then a change in the allocated width
-	// necessitates a recalculation of all the displayed row heights using
-	// gtk_cell_area_get_preferred_height_for_width().
-	Reset func()
-}
-
-func defaultCellAreaContextOverrides(v *CellAreaContext) CellAreaContextOverrides {
-	return CellAreaContextOverrides{
-		Allocate:                v.allocate,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		Reset:                   v.reset,
-	}
-}
-
 // CellAreaContext stores geometrical information for a series of rows in a
 // GtkCellArea
 //
@@ -31539,40 +26047,6 @@ type CellAreaContext struct {
 var (
 	_ coreglib.Objector = (*CellAreaContext)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*CellAreaContext, *CellAreaContextClass, CellAreaContextOverrides](
-		GTypeCellAreaContext,
-		initCellAreaContextClass,
-		wrapCellAreaContext,
-		defaultCellAreaContextOverrides,
-	)
-}
-
-func initCellAreaContextClass(gclass unsafe.Pointer, overrides CellAreaContextOverrides, classInitFunc func(*CellAreaContextClass)) {
-	pclass := (*C.GtkCellAreaContextClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCellAreaContext))))
-
-	if overrides.Allocate != nil {
-		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_allocate)
-	}
-
-	if overrides.PreferredHeightForWidth != nil {
-		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_get_preferred_height_for_width)
-	}
-
-	if overrides.PreferredWidthForHeight != nil {
-		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_get_preferred_width_for_height)
-	}
-
-	if overrides.Reset != nil {
-		pclass.reset = (*[0]byte)(C._gotk4_gtk4_CellAreaContextClass_reset)
-	}
-
-	if classInitFunc != nil {
-		class := (*CellAreaContextClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapCellAreaContext(obj *coreglib.Object) *CellAreaContext {
 	return &CellAreaContext{
@@ -31906,318 +26380,6 @@ func (context *CellAreaContext) Reset() {
 	runtime.KeepAlive(context)
 }
 
-// Allocate allocates a width and/or a height for all rows which are to be
-// rendered with context.
-//
-// Usually allocation is performed only horizontally or sometimes vertically
-// since a group of rows are usually rendered side by side vertically or
-// horizontally and share either the same width or the same height. Sometimes
-// they are allocated in both horizontal and vertical orientations producing a
-// homogeneous effect of the rows. This is generally the case for TreeView when
-// TreeView:fixed-height-mode is enabled.
-//
-// The function takes the following parameters:
-//
-//   - width: allocated width for all TreeModel rows rendered with context,
-//     or -1.
-//   - height: allocated height for all TreeModel rows rendered with context,
-//     or -1.
-//
-func (context *CellAreaContext) allocate(width, height int) {
-	gclass := (*C.GtkCellAreaContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.allocate
-
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // out
-	var _arg2 C.int                 // out
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	C._gotk4_gtk4_CellAreaContext_virtual_allocate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
-// preferredHeightForWidth gets the accumulative preferred height for width for
-// all rows which have been requested for the same said width with this context.
-//
-// After gtk_cell_area_context_reset() is called and/or before ever requesting
-// the size of a CellArea, the returned values are -1.
-//
-// The function takes the following parameters:
-//
-//   - width: proposed width for allocation.
-//
-// The function returns the following values:
-//
-//   - minimumHeight (optional): location to store the minimum height, or NULL.
-//   - naturalHeight (optional): location to store the natural height, or NULL.
-//
-func (context *CellAreaContext) preferredHeightForWidth(width int) (minimumHeight, naturalHeight int) {
-	gclass := (*C.GtkCellAreaContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.get_preferred_height_for_width
-
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // out
-	var _arg2 C.int                 // in
-	var _arg3 C.int                 // in
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.int(width)
-
-	C._gotk4_gtk4_CellAreaContext_virtual_get_preferred_height_for_width(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(width)
-
-	var _minimumHeight int // out
-	var _naturalHeight int // out
-
-	_minimumHeight = int(_arg2)
-	_naturalHeight = int(_arg3)
-
-	return _minimumHeight, _naturalHeight
-}
-
-// preferredWidthForHeight gets the accumulative preferred width for height
-// for all rows which have been requested for the same said height with this
-// context.
-//
-// After gtk_cell_area_context_reset() is called and/or before ever requesting
-// the size of a CellArea, the returned values are -1.
-//
-// The function takes the following parameters:
-//
-//   - height: proposed height for allocation.
-//
-// The function returns the following values:
-//
-//   - minimumWidth (optional): location to store the minimum width, or NULL.
-//   - naturalWidth (optional): location to store the natural width, or NULL.
-//
-func (context *CellAreaContext) preferredWidthForHeight(height int) (minimumWidth, naturalWidth int) {
-	gclass := (*C.GtkCellAreaContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.get_preferred_width_for_height
-
-	var _arg0 *C.GtkCellAreaContext // out
-	var _arg1 C.int                 // out
-	var _arg2 C.int                 // in
-	var _arg3 C.int                 // in
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.int(height)
-
-	C._gotk4_gtk4_CellAreaContext_virtual_get_preferred_width_for_height(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(height)
-
-	var _minimumWidth int // out
-	var _naturalWidth int // out
-
-	_minimumWidth = int(_arg2)
-	_naturalWidth = int(_arg3)
-
-	return _minimumWidth, _naturalWidth
-}
-
-// Reset resets any previously cached request and allocation data.
-//
-// When underlying TreeModel data changes its important to reset the context if
-// the content size is allowed to shrink. If the content size is only allowed
-// to grow (this is usually an option for views rendering large data stores as
-// a measure of optimization), then only the row that changed or was inserted
-// needs to be (re)requested with gtk_cell_area_get_preferred_width().
-//
-// When the new overall size of the context requires that the allocated size
-// changes (or whenever this allocation changes at all), the variable row sizes
-// need to be re-requested for every row.
-//
-// For instance, if the rows are displayed all with the same
-// width from top to bottom then a change in the allocated width
-// necessitates a recalculation of all the displayed row heights using
-// gtk_cell_area_get_preferred_height_for_width().
-func (context *CellAreaContext) reset() {
-	gclass := (*C.GtkCellAreaContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.reset
-
-	var _arg0 *C.GtkCellAreaContext // out
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_CellAreaContext_virtual_reset(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
-}
-
-// CellRendererOverrides contains methods that are overridable.
-type CellRendererOverrides struct {
-	// Activate passes an activate event to the cell renderer for possible
-	// processing. Some cell renderers may use events; for example,
-	// CellRendererToggle toggles when it gets a mouse click.
-	//
-	// The function takes the following parameters:
-	//
-	//   - event: Event.
-	//   - widget that received the event.
-	//   - path: widget-dependent string representation of the event location;
-	//     e.g. for TreeView, a string representation of TreePath.
-	//   - backgroundArea: background area as passed to
-	//     gtk_cell_renderer_render().
-	//   - cellArea: cell area as passed to gtk_cell_renderer_render().
-	//   - flags: render flags.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if the event was consumed/handled.
-	//
-	Activate        func(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
-	EditingCanceled func()
-	// The function takes the following parameters:
-	//
-	//   - editable
-	//   - path
-	//
-	EditingStarted func(editable CellEditabler, path string)
-	// AlignedArea gets the aligned area used by cell inside cell_area. Used for
-	// finding the appropriate edit and focus rectangle.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget this cell will be rendering to.
-	//   - flags: render flags.
-	//   - cellArea: cell area which would be passed to
-	//     gtk_cell_renderer_render().
-	//
-	// The function returns the following values:
-	//
-	//   - alignedArea: return location for the space inside cell_area that
-	//     would actually be used to render.
-	//
-	AlignedArea func(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) *gdk.Rectangle
-	// PreferredHeight retrieves a renderer’s natural size when rendered to
-	// widget.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget this cell will be rendering to.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumSize (optional): location to store the minimum size, or NULL.
-	//   - naturalSize (optional): location to store the natural size, or NULL.
-	//
-	PreferredHeight func(widget Widgetter) (minimumSize, naturalSize int)
-	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
-	// height if it were rendered to widget with the specified width.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget this cell will be rendering to.
-	//   - width: size which is available for allocation.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumHeight (optional): location for storing the minimum size,
-	//     or NULL.
-	//   - naturalHeight (optional): location for storing the preferred size,
-	//     or NULL.
-	//
-	PreferredHeightForWidth func(widget Widgetter, width int) (minimumHeight, naturalHeight int)
-	// PreferredWidth retrieves a renderer’s natural size when rendered to
-	// widget.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget this cell will be rendering to.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumSize (optional): location to store the minimum size, or NULL.
-	//   - naturalSize (optional): location to store the natural size, or NULL.
-	//
-	PreferredWidth func(widget Widgetter) (minimumSize, naturalSize int)
-	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
-	// width if it were rendered to widget with the specified height.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget this cell will be rendering to.
-	//   - height: size which is available for allocation.
-	//
-	// The function returns the following values:
-	//
-	//   - minimumWidth (optional): location for storing the minimum size,
-	//     or NULL.
-	//   - naturalWidth (optional): location for storing the preferred size,
-	//     or NULL.
-	//
-	PreferredWidthForHeight func(widget Widgetter, height int) (minimumWidth, naturalWidth int)
-	// RequestMode gets whether the cell renderer prefers a height-for-width
-	// layout or a width-for-height layout.
-	//
-	// The function returns the following values:
-	//
-	//   - sizeRequestMode preferred by this renderer.
-	//
-	RequestMode func() SizeRequestMode
-	// Snapshot invokes the virtual render function of the CellRenderer.
-	// The three passed-in rectangles are areas in cr. Most renderers will
-	// draw within cell_area; the xalign, yalign, xpad, and ypad fields of the
-	// CellRenderer should be honored with respect to cell_area. background_area
-	// includes the blank space around the cell, and also the area containing
-	// the tree expander; so the background_area rectangles for all cells tile
-	// to cover the entire window.
-	//
-	// The function takes the following parameters:
-	//
-	//   - snapshot to draw to.
-	//   - widget owning window.
-	//   - backgroundArea: entire cell area (including tree expanders and maybe
-	//     padding on the sides).
-	//   - cellArea: area normally rendered by a cell renderer.
-	//   - flags that affect rendering.
-	//
-	Snapshot func(snapshot *Snapshot, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState)
-	// StartEditing starts editing the contents of this cell, through a new
-	// CellEditable widget created by the CellRendererClass.start_editing
-	// virtual function.
-	//
-	// The function takes the following parameters:
-	//
-	//   - event (optional): Event.
-	//   - widget that received the event.
-	//   - path: widget-dependent string representation of the event location;
-	//     e.g. for TreeView, a string representation of TreePath.
-	//   - backgroundArea: background area as passed to
-	//     gtk_cell_renderer_render().
-	//   - cellArea: cell area as passed to gtk_cell_renderer_render().
-	//   - flags: render flags.
-	//
-	// The function returns the following values:
-	//
-	//   - cellEditable (optional): new CellEditable for editing this cell,
-	//     or NULL if editing is not possible.
-	//
-	StartEditing func(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
-}
-
-func defaultCellRendererOverrides(v *CellRenderer) CellRendererOverrides {
-	return CellRendererOverrides{
-		Activate:                v.activate,
-		EditingCanceled:         v.editingCanceled,
-		EditingStarted:          v.editingStarted,
-		AlignedArea:             v.alignedArea,
-		PreferredHeight:         v.preferredHeight,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidth:          v.preferredWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		RequestMode:             v.requestMode,
-		Snapshot:                v.snapshot,
-		StartEditing:            v.startEditing,
-	}
-}
-
 // CellRenderer: object for rendering a single cell
 //
 // The CellRenderer is a base class of a set of objects used for rendering a
@@ -32269,68 +26431,6 @@ type CellRendererer interface {
 }
 
 var _ CellRendererer = (*CellRenderer)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*CellRenderer, *CellRendererClass, CellRendererOverrides](
-		GTypeCellRenderer,
-		initCellRendererClass,
-		wrapCellRenderer,
-		defaultCellRendererOverrides,
-	)
-}
-
-func initCellRendererClass(gclass unsafe.Pointer, overrides CellRendererOverrides, classInitFunc func(*CellRendererClass)) {
-	pclass := (*C.GtkCellRendererClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCellRenderer))))
-
-	if overrides.Activate != nil {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_activate)
-	}
-
-	if overrides.EditingCanceled != nil {
-		pclass.editing_canceled = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_editing_canceled)
-	}
-
-	if overrides.EditingStarted != nil {
-		pclass.editing_started = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_editing_started)
-	}
-
-	if overrides.AlignedArea != nil {
-		pclass.get_aligned_area = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_aligned_area)
-	}
-
-	if overrides.PreferredHeight != nil {
-		pclass.get_preferred_height = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_height)
-	}
-
-	if overrides.PreferredHeightForWidth != nil {
-		pclass.get_preferred_height_for_width = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_height_for_width)
-	}
-
-	if overrides.PreferredWidth != nil {
-		pclass.get_preferred_width = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_width)
-	}
-
-	if overrides.PreferredWidthForHeight != nil {
-		pclass.get_preferred_width_for_height = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_preferred_width_for_height)
-	}
-
-	if overrides.RequestMode != nil {
-		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_get_request_mode)
-	}
-
-	if overrides.Snapshot != nil {
-		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_snapshot)
-	}
-
-	if overrides.StartEditing != nil {
-		pclass.start_editing = (*[0]byte)(C._gotk4_gtk4_CellRendererClass_start_editing)
-	}
-
-	if classInitFunc != nil {
-		class := (*CellRendererClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapCellRenderer(obj *coreglib.Object) *CellRenderer {
 	return &CellRenderer{
@@ -33202,429 +27302,6 @@ func (cell *CellRenderer) StopEditing(canceled bool) {
 	runtime.KeepAlive(canceled)
 }
 
-// Activate passes an activate event to the cell renderer for possible
-// processing. Some cell renderers may use events; for example,
-// CellRendererToggle toggles when it gets a mouse click.
-//
-// The function takes the following parameters:
-//
-//   - event: Event.
-//   - widget that received the event.
-//   - path: widget-dependent string representation of the event location; e.g.
-//     for TreeView, a string representation of TreePath.
-//   - backgroundArea: background area as passed to gtk_cell_renderer_render().
-//   - cellArea: cell area as passed to gtk_cell_renderer_render().
-//   - flags: render flags.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the event was consumed/handled.
-//
-func (cell *CellRenderer) activate(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.activate
-
-	var _arg0 *C.GtkCellRenderer     // out
-	var _arg1 *C.GdkEvent            // out
-	var _arg2 *C.GtkWidget           // out
-	var _arg3 *C.char                // out
-	var _arg4 *C.GdkRectangle        // out
-	var _arg5 *C.GdkRectangle        // out
-	var _arg6 C.GtkCellRendererState // out
-	var _cret C.gboolean             // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
-	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	_arg6 = C.GtkCellRendererState(flags)
-
-	_cret = C._gotk4_gtk4_CellRenderer_virtual_activate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(event)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(path)
-	runtime.KeepAlive(backgroundArea)
-	runtime.KeepAlive(cellArea)
-	runtime.KeepAlive(flags)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-func (cell *CellRenderer) editingCanceled() {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.editing_canceled
-
-	var _arg0 *C.GtkCellRenderer // out
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	C._gotk4_gtk4_CellRenderer_virtual_editing_canceled(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(cell)
-}
-
-// The function takes the following parameters:
-//
-//   - editable
-//   - path
-//
-func (cell *CellRenderer) editingStarted(editable CellEditabler, path string) {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.editing_started
-
-	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.GtkCellEditable // out
-	var _arg2 *C.char            // out
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.GtkCellEditable)(unsafe.Pointer(coreglib.InternObject(editable).Native()))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C._gotk4_gtk4_CellRenderer_virtual_editing_started(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(editable)
-	runtime.KeepAlive(path)
-}
-
-// alignedArea gets the aligned area used by cell inside cell_area. Used for
-// finding the appropriate edit and focus rectangle.
-//
-// The function takes the following parameters:
-//
-//   - widget this cell will be rendering to.
-//   - flags: render flags.
-//   - cellArea: cell area which would be passed to gtk_cell_renderer_render().
-//
-// The function returns the following values:
-//
-//   - alignedArea: return location for the space inside cell_area that would
-//     actually be used to render.
-//
-func (cell *CellRenderer) alignedArea(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) *gdk.Rectangle {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.get_aligned_area
-
-	var _arg0 *C.GtkCellRenderer     // out
-	var _arg1 *C.GtkWidget           // out
-	var _arg2 C.GtkCellRendererState // out
-	var _arg3 *C.GdkRectangle        // out
-	var _arg4 C.GdkRectangle         // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.GtkCellRendererState(flags)
-	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-
-	C._gotk4_gtk4_CellRenderer_virtual_get_aligned_area(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, &_arg4)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(flags)
-	runtime.KeepAlive(cellArea)
-
-	var _alignedArea *gdk.Rectangle // out
-
-	_alignedArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer((&_arg4))))
-
-	return _alignedArea
-}
-
-// preferredHeight retrieves a renderer’s natural size when rendered to widget.
-//
-// The function takes the following parameters:
-//
-//   - widget this cell will be rendering to.
-//
-// The function returns the following values:
-//
-//   - minimumSize (optional): location to store the minimum size, or NULL.
-//   - naturalSize (optional): location to store the natural size, or NULL.
-//
-func (cell *CellRenderer) preferredHeight(widget Widgetter) (minimumSize, naturalSize int) {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.get_preferred_height
-
-	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.GtkWidget       // out
-	var _arg2 C.int              // in
-	var _arg3 C.int              // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_CellRenderer_virtual_get_preferred_height(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(widget)
-
-	var _minimumSize int // out
-	var _naturalSize int // out
-
-	_minimumSize = int(_arg2)
-	_naturalSize = int(_arg3)
-
-	return _minimumSize, _naturalSize
-}
-
-// preferredHeightForWidth retrieves a cell renderers’s minimum and natural
-// height if it were rendered to widget with the specified width.
-//
-// The function takes the following parameters:
-//
-//   - widget this cell will be rendering to.
-//   - width: size which is available for allocation.
-//
-// The function returns the following values:
-//
-//   - minimumHeight (optional): location for storing the minimum size, or NULL.
-//   - naturalHeight (optional): location for storing the preferred size,
-//     or NULL.
-//
-func (cell *CellRenderer) preferredHeightForWidth(widget Widgetter, width int) (minimumHeight, naturalHeight int) {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.get_preferred_height_for_width
-
-	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.GtkWidget       // out
-	var _arg2 C.int              // out
-	var _arg3 C.int              // in
-	var _arg4 C.int              // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.int(width)
-
-	C._gotk4_gtk4_CellRenderer_virtual_get_preferred_height_for_width(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(width)
-
-	var _minimumHeight int // out
-	var _naturalHeight int // out
-
-	_minimumHeight = int(_arg3)
-	_naturalHeight = int(_arg4)
-
-	return _minimumHeight, _naturalHeight
-}
-
-// preferredWidth retrieves a renderer’s natural size when rendered to widget.
-//
-// The function takes the following parameters:
-//
-//   - widget this cell will be rendering to.
-//
-// The function returns the following values:
-//
-//   - minimumSize (optional): location to store the minimum size, or NULL.
-//   - naturalSize (optional): location to store the natural size, or NULL.
-//
-func (cell *CellRenderer) preferredWidth(widget Widgetter) (minimumSize, naturalSize int) {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.get_preferred_width
-
-	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.GtkWidget       // out
-	var _arg2 C.int              // in
-	var _arg3 C.int              // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_CellRenderer_virtual_get_preferred_width(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(widget)
-
-	var _minimumSize int // out
-	var _naturalSize int // out
-
-	_minimumSize = int(_arg2)
-	_naturalSize = int(_arg3)
-
-	return _minimumSize, _naturalSize
-}
-
-// preferredWidthForHeight retrieves a cell renderers’s minimum and natural
-// width if it were rendered to widget with the specified height.
-//
-// The function takes the following parameters:
-//
-//   - widget this cell will be rendering to.
-//   - height: size which is available for allocation.
-//
-// The function returns the following values:
-//
-//   - minimumWidth (optional): location for storing the minimum size, or NULL.
-//   - naturalWidth (optional): location for storing the preferred size,
-//     or NULL.
-//
-func (cell *CellRenderer) preferredWidthForHeight(widget Widgetter, height int) (minimumWidth, naturalWidth int) {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.get_preferred_width_for_height
-
-	var _arg0 *C.GtkCellRenderer // out
-	var _arg1 *C.GtkWidget       // out
-	var _arg2 C.int              // out
-	var _arg3 C.int              // in
-	var _arg4 C.int              // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.int(height)
-
-	C._gotk4_gtk4_CellRenderer_virtual_get_preferred_width_for_height(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(height)
-
-	var _minimumWidth int // out
-	var _naturalWidth int // out
-
-	_minimumWidth = int(_arg3)
-	_naturalWidth = int(_arg4)
-
-	return _minimumWidth, _naturalWidth
-}
-
-// requestMode gets whether the cell renderer prefers a height-for-width layout
-// or a width-for-height layout.
-//
-// The function returns the following values:
-//
-//   - sizeRequestMode preferred by this renderer.
-//
-func (cell *CellRenderer) requestMode() SizeRequestMode {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.get_request_mode
-
-	var _arg0 *C.GtkCellRenderer   // out
-	var _cret C.GtkSizeRequestMode // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-
-	_cret = C._gotk4_gtk4_CellRenderer_virtual_get_request_mode(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(cell)
-
-	var _sizeRequestMode SizeRequestMode // out
-
-	_sizeRequestMode = SizeRequestMode(_cret)
-
-	return _sizeRequestMode
-}
-
-// Snapshot invokes the virtual render function of the CellRenderer. The three
-// passed-in rectangles are areas in cr. Most renderers will draw within
-// cell_area; the xalign, yalign, xpad, and ypad fields of the CellRenderer
-// should be honored with respect to cell_area. background_area includes the
-// blank space around the cell, and also the area containing the tree expander;
-// so the background_area rectangles for all cells tile to cover the entire
-// window.
-//
-// The function takes the following parameters:
-//
-//   - snapshot to draw to.
-//   - widget owning window.
-//   - backgroundArea: entire cell area (including tree expanders and maybe
-//     padding on the sides).
-//   - cellArea: area normally rendered by a cell renderer.
-//   - flags that affect rendering.
-//
-func (cell *CellRenderer) snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.snapshot
-
-	var _arg0 *C.GtkCellRenderer     // out
-	var _arg1 *C.GtkSnapshot         // out
-	var _arg2 *C.GtkWidget           // out
-	var _arg3 *C.GdkRectangle        // out
-	var _arg4 *C.GdkRectangle        // out
-	var _arg5 C.GtkCellRendererState // out
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	_arg1 = (*C.GtkSnapshot)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
-	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	_arg5 = C.GtkCellRendererState(flags)
-
-	C._gotk4_gtk4_CellRenderer_virtual_snapshot(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(snapshot)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(backgroundArea)
-	runtime.KeepAlive(cellArea)
-	runtime.KeepAlive(flags)
-}
-
-// startEditing starts editing the contents of this cell, through a new
-// CellEditable widget created by the CellRendererClass.start_editing virtual
-// function.
-//
-// The function takes the following parameters:
-//
-//   - event (optional): Event.
-//   - widget that received the event.
-//   - path: widget-dependent string representation of the event location; e.g.
-//     for TreeView, a string representation of TreePath.
-//   - backgroundArea: background area as passed to gtk_cell_renderer_render().
-//   - cellArea: cell area as passed to gtk_cell_renderer_render().
-//   - flags: render flags.
-//
-// The function returns the following values:
-//
-//   - cellEditable (optional): new CellEditable for editing this cell, or NULL
-//     if editing is not possible.
-//
-func (cell *CellRenderer) startEditing(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable {
-	gclass := (*C.GtkCellRendererClass)(coreglib.PeekParentClass(cell))
-	fnarg := gclass.start_editing
-
-	var _arg0 *C.GtkCellRenderer     // out
-	var _arg1 *C.GdkEvent            // out
-	var _arg2 *C.GtkWidget           // out
-	var _arg3 *C.char                // out
-	var _arg4 *C.GdkRectangle        // out
-	var _arg5 *C.GdkRectangle        // out
-	var _arg6 C.GtkCellRendererState // out
-	var _cret *C.GtkCellEditable     // in
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(coreglib.InternObject(cell).Native()))
-	if event != nil {
-		_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-	}
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg3 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(backgroundArea)))
-	_arg5 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(cellArea)))
-	_arg6 = C.GtkCellRendererState(flags)
-
-	_cret = C._gotk4_gtk4_CellRenderer_virtual_start_editing(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-	runtime.KeepAlive(cell)
-	runtime.KeepAlive(event)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(path)
-	runtime.KeepAlive(backgroundArea)
-	runtime.KeepAlive(cellArea)
-	runtime.KeepAlive(flags)
-
-	var _cellEditable *CellEditable // out
-
-	if _cret != nil {
-		_cellEditable = wrapCellEditable(coreglib.Take(unsafe.Pointer(_cret)))
-	}
-
-	return _cellEditable
-}
-
 // CellRendererAccel renders a keyboard accelerator in a cell
 //
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
@@ -33978,22 +27655,6 @@ func NewCellRendererSpinner() *CellRendererSpinner {
 	return _cellRendererSpinner
 }
 
-// CellRendererTextOverrides contains methods that are overridable.
-type CellRendererTextOverrides struct {
-	// The function takes the following parameters:
-	//
-	//   - path
-	//   - newText
-	//
-	Edited func(path, newText string)
-}
-
-func defaultCellRendererTextOverrides(v *CellRendererText) CellRendererTextOverrides {
-	return CellRendererTextOverrides{
-		Edited: v.edited,
-	}
-}
-
 // CellRendererText renders text in a cell
 //
 // A CellRendererText renders a given text in its cell, using the font, color
@@ -34010,28 +27671,6 @@ type CellRendererText struct {
 var (
 	_ CellRendererer = (*CellRendererText)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*CellRendererText, *CellRendererTextClass, CellRendererTextOverrides](
-		GTypeCellRendererText,
-		initCellRendererTextClass,
-		wrapCellRendererText,
-		defaultCellRendererTextOverrides,
-	)
-}
-
-func initCellRendererTextClass(gclass unsafe.Pointer, overrides CellRendererTextOverrides, classInitFunc func(*CellRendererTextClass)) {
-	pclass := (*C.GtkCellRendererTextClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCellRendererText))))
-
-	if overrides.Edited != nil {
-		pclass.edited = (*[0]byte)(C._gotk4_gtk4_CellRendererTextClass_edited)
-	}
-
-	if classInitFunc != nil {
-		class := (*CellRendererTextClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapCellRendererText(obj *coreglib.Object) *CellRendererText {
 	return &CellRendererText{
@@ -34101,31 +27740,6 @@ func (renderer *CellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	C.gtk_cell_renderer_text_set_fixed_height_from_font(_arg0, _arg1)
 	runtime.KeepAlive(renderer)
 	runtime.KeepAlive(numberOfRows)
-}
-
-// The function takes the following parameters:
-//
-//   - path
-//   - newText
-//
-func (cellRendererText *CellRendererText) edited(path, newText string) {
-	gclass := (*C.GtkCellRendererTextClass)(coreglib.PeekParentClass(cellRendererText))
-	fnarg := gclass.edited
-
-	var _arg0 *C.GtkCellRendererText // out
-	var _arg1 *C.char                // out
-	var _arg2 *C.char                // out
-
-	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(coreglib.InternObject(cellRendererText).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(newText)))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	C._gotk4_gtk4_CellRendererText_virtual_edited(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(cellRendererText)
-	runtime.KeepAlive(path)
-	runtime.KeepAlive(newText)
 }
 
 // CellRendererToggle renders a toggle button in a cell
@@ -35039,14 +28653,6 @@ func (self *CenterBox) SetStartWidget(child Widgetter) {
 	runtime.KeepAlive(child)
 }
 
-// CenterLayoutOverrides contains methods that are overridable.
-type CenterLayoutOverrides struct {
-}
-
-func defaultCenterLayoutOverrides(v *CenterLayout) CenterLayoutOverrides {
-	return CenterLayoutOverrides{}
-}
-
 // CenterLayout: GtkCenterLayout is a layout manager that manages up to three
 // children.
 //
@@ -35063,22 +28669,6 @@ type CenterLayout struct {
 var (
 	_ LayoutManagerer = (*CenterLayout)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*CenterLayout, *CenterLayoutClass, CenterLayoutOverrides](
-		GTypeCenterLayout,
-		initCenterLayoutClass,
-		wrapCenterLayout,
-		defaultCenterLayoutOverrides,
-	)
-}
-
-func initCenterLayoutClass(gclass unsafe.Pointer, overrides CenterLayoutOverrides, classInitFunc func(*CenterLayoutClass)) {
-	if classInitFunc != nil {
-		class := (*CenterLayoutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapCenterLayout(obj *coreglib.Object) *CenterLayout {
 	return &CenterLayout{
@@ -35367,19 +28957,6 @@ func (self *CenterLayout) SetStartWidget(widget Widgetter) {
 	runtime.KeepAlive(widget)
 }
 
-// CheckButtonOverrides contains methods that are overridable.
-type CheckButtonOverrides struct {
-	Activate func()
-	Toggled  func()
-}
-
-func defaultCheckButtonOverrides(v *CheckButton) CheckButtonOverrides {
-	return CheckButtonOverrides{
-		Activate: v.activate,
-		Toggled:  v.toggled,
-	}
-}
-
 // CheckButton: GtkCheckButton places a label next to an indicator.
 //
 // !Example GtkCheckButtons (check-button.png)
@@ -35440,32 +29017,6 @@ var (
 	_ Widgetter         = (*CheckButton)(nil)
 	_ coreglib.Objector = (*CheckButton)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*CheckButton, *CheckButtonClass, CheckButtonOverrides](
-		GTypeCheckButton,
-		initCheckButtonClass,
-		wrapCheckButton,
-		defaultCheckButtonOverrides,
-	)
-}
-
-func initCheckButtonClass(gclass unsafe.Pointer, overrides CheckButtonOverrides, classInitFunc func(*CheckButtonClass)) {
-	pclass := (*C.GtkCheckButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeCheckButton))))
-
-	if overrides.Activate != nil {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk4_CheckButtonClass_activate)
-	}
-
-	if overrides.Toggled != nil {
-		pclass.toggled = (*[0]byte)(C._gotk4_gtk4_CheckButtonClass_toggled)
-	}
-
-	if classInitFunc != nil {
-		class := (*CheckButtonClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapCheckButton(obj *coreglib.Object) *CheckButton {
 	return &CheckButton{
@@ -35826,30 +29377,6 @@ func (self *CheckButton) SetUseUnderline(setting bool) {
 	C.gtk_check_button_set_use_underline(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(setting)
-}
-
-func (checkButton *CheckButton) activate() {
-	gclass := (*C.GtkCheckButtonClass)(coreglib.PeekParentClass(checkButton))
-	fnarg := gclass.activate
-
-	var _arg0 *C.GtkCheckButton // out
-
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(coreglib.InternObject(checkButton).Native()))
-
-	C._gotk4_gtk4_CheckButton_virtual_activate(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(checkButton)
-}
-
-func (checkButton *CheckButton) toggled() {
-	gclass := (*C.GtkCheckButtonClass)(coreglib.PeekParentClass(checkButton))
-	fnarg := gclass.toggled
-
-	var _arg0 *C.GtkCheckButton // out
-
-	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(coreglib.InternObject(checkButton).Native()))
-
-	C._gotk4_gtk4_CheckButton_virtual_toggled(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(checkButton)
 }
 
 // ClosureExpression: expression using a custom GClosure to compute the value
@@ -37345,23 +30872,6 @@ func (self *ColumnViewColumn) SetVisible(visible bool) {
 	runtime.KeepAlive(visible)
 }
 
-// ComboBoxOverrides contains methods that are overridable.
-type ComboBoxOverrides struct {
-	Changed func()
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	FormatEntryText func(path string) string
-}
-
-func defaultComboBoxOverrides(v *ComboBox) ComboBoxOverrides {
-	return ComboBoxOverrides{
-		Changed:         v.changed,
-		FormatEntryText: v.formatEntryText,
-	}
-}
-
 // ComboBox: GtkComboBox is a widget that allows the user to choose from a list
 // of valid choices.
 //
@@ -37429,32 +30939,6 @@ var (
 	_ Widgetter         = (*ComboBox)(nil)
 	_ coreglib.Objector = (*ComboBox)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ComboBox, *ComboBoxClass, ComboBoxOverrides](
-		GTypeComboBox,
-		initComboBoxClass,
-		wrapComboBox,
-		defaultComboBoxOverrides,
-	)
-}
-
-func initComboBoxClass(gclass unsafe.Pointer, overrides ComboBoxOverrides, classInitFunc func(*ComboBoxClass)) {
-	pclass := (*C.GtkComboBoxClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeComboBox))))
-
-	if overrides.Changed != nil {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk4_ComboBoxClass_changed)
-	}
-
-	if overrides.FormatEntryText != nil {
-		pclass.format_entry_text = (*[0]byte)(C._gotk4_gtk4_ComboBoxClass_format_entry_text)
-	}
-
-	if classInitFunc != nil {
-		class := (*ComboBoxClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapComboBox(obj *coreglib.Object) *ComboBox {
 	return &ComboBox{
@@ -38230,46 +31714,6 @@ func (comboBox *ComboBox) SetRowSeparatorFunc(fn TreeViewRowSeparatorFunc) {
 	runtime.KeepAlive(fn)
 }
 
-func (comboBox *ComboBox) changed() {
-	gclass := (*C.GtkComboBoxClass)(coreglib.PeekParentClass(comboBox))
-	fnarg := gclass.changed
-
-	var _arg0 *C.GtkComboBox // out
-
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-
-	C._gotk4_gtk4_ComboBox_virtual_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(comboBox)
-}
-
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
-func (comboBox *ComboBox) formatEntryText(path string) string {
-	gclass := (*C.GtkComboBoxClass)(coreglib.PeekParentClass(comboBox))
-	fnarg := gclass.format_entry_text
-
-	var _arg0 *C.GtkComboBox // out
-	var _arg1 *C.char        // out
-	var _cret *C.char        // in
-
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(coreglib.InternObject(comboBox).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(path)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	_cret = C._gotk4_gtk4_ComboBox_virtual_format_entry_text(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(comboBox)
-	runtime.KeepAlive(path)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
-
-	return _utf8
-}
-
 // ComboBoxText: GtkComboBoxText is a simple variant of GtkComboBox for
 // text-only use cases.
 //
@@ -38709,14 +32153,6 @@ func (expression *ConstantExpression) Value() *coreglib.Value {
 	return _value
 }
 
-// ConstraintOverrides contains methods that are overridable.
-type ConstraintOverrides struct {
-}
-
-func defaultConstraintOverrides(v *Constraint) ConstraintOverrides {
-	return ConstraintOverrides{}
-}
-
 // Constraint: GtkConstraint describes a constraint between attributes of two
 // widgets, expressed as a linear equation.
 //
@@ -38738,22 +32174,6 @@ type Constraint struct {
 var (
 	_ coreglib.Objector = (*Constraint)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Constraint, *ConstraintClass, ConstraintOverrides](
-		GTypeConstraint,
-		initConstraintClass,
-		wrapConstraint,
-		defaultConstraintOverrides,
-	)
-}
-
-func initConstraintClass(gclass unsafe.Pointer, overrides ConstraintOverrides, classInitFunc func(*ConstraintClass)) {
-	if classInitFunc != nil {
-		class := (*ConstraintClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapConstraint(obj *coreglib.Object) *Constraint {
 	return &Constraint{
@@ -39135,14 +32555,6 @@ func (constraint *Constraint) IsRequired() bool {
 	return _ok
 }
 
-// ConstraintGuideOverrides contains methods that are overridable.
-type ConstraintGuideOverrides struct {
-}
-
-func defaultConstraintGuideOverrides(v *ConstraintGuide) ConstraintGuideOverrides {
-	return ConstraintGuideOverrides{}
-}
-
 // ConstraintGuide: GtkConstraintGuide is an invisible layout element in a
 // GtkConstraintLayout.
 //
@@ -39164,22 +32576,6 @@ type ConstraintGuide struct {
 var (
 	_ coreglib.Objector = (*ConstraintGuide)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ConstraintGuide, *ConstraintGuideClass, ConstraintGuideOverrides](
-		GTypeConstraintGuide,
-		initConstraintGuideClass,
-		wrapConstraintGuide,
-		defaultConstraintGuideOverrides,
-	)
-}
-
-func initConstraintGuideClass(gclass unsafe.Pointer, overrides ConstraintGuideOverrides, classInitFunc func(*ConstraintGuideClass)) {
-	if classInitFunc != nil {
-		class := (*ConstraintGuideClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapConstraintGuide(obj *coreglib.Object) *ConstraintGuide {
 	return &ConstraintGuide{
@@ -39454,14 +32850,6 @@ func (guide *ConstraintGuide) SetStrength(strength ConstraintStrength) {
 	runtime.KeepAlive(strength)
 }
 
-// ConstraintLayoutOverrides contains methods that are overridable.
-type ConstraintLayoutOverrides struct {
-}
-
-func defaultConstraintLayoutOverrides(v *ConstraintLayout) ConstraintLayoutOverrides {
-	return ConstraintLayoutOverrides{}
-}
-
 // ConstraintLayout: layout manager using constraints to describe relations
 // between widgets.
 //
@@ -39622,22 +33010,6 @@ var (
 	_ LayoutManagerer   = (*ConstraintLayout)(nil)
 	_ coreglib.Objector = (*ConstraintLayout)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ConstraintLayout, *ConstraintLayoutClass, ConstraintLayoutOverrides](
-		GTypeConstraintLayout,
-		initConstraintLayoutClass,
-		wrapConstraintLayout,
-		defaultConstraintLayoutOverrides,
-	)
-}
-
-func initConstraintLayoutClass(gclass unsafe.Pointer, overrides ConstraintLayoutOverrides, classInitFunc func(*ConstraintLayoutClass)) {
-	if classInitFunc != nil {
-		class := (*ConstraintLayoutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapConstraintLayout(obj *coreglib.Object) *ConstraintLayout {
 	return &ConstraintLayout{
@@ -39993,14 +33365,6 @@ func (layout *ConstraintLayout) RemoveGuide(guide *ConstraintGuide) {
 	runtime.KeepAlive(guide)
 }
 
-// ConstraintLayoutChildOverrides contains methods that are overridable.
-type ConstraintLayoutChildOverrides struct {
-}
-
-func defaultConstraintLayoutChildOverrides(v *ConstraintLayoutChild) ConstraintLayoutChildOverrides {
-	return ConstraintLayoutChildOverrides{}
-}
-
 // ConstraintLayoutChild: GtkLayoutChild subclass for children in a
 // GtkConstraintLayout.
 type ConstraintLayoutChild struct {
@@ -40011,22 +33375,6 @@ type ConstraintLayoutChild struct {
 var (
 	_ LayoutChilder = (*ConstraintLayoutChild)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ConstraintLayoutChild, *ConstraintLayoutChildClass, ConstraintLayoutChildOverrides](
-		GTypeConstraintLayoutChild,
-		initConstraintLayoutChildClass,
-		wrapConstraintLayoutChild,
-		defaultConstraintLayoutChildOverrides,
-	)
-}
-
-func initConstraintLayoutChildClass(gclass unsafe.Pointer, overrides ConstraintLayoutChildOverrides, classInitFunc func(*ConstraintLayoutChildClass)) {
-	if classInitFunc != nil {
-		class := (*ConstraintLayoutChildClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapConstraintLayoutChild(obj *coreglib.Object) *ConstraintLayoutChild {
 	return &ConstraintLayoutChild{
@@ -40270,14 +33618,6 @@ func (provider *CSSProvider) String() string {
 	return _utf8
 }
 
-// CustomFilterOverrides contains methods that are overridable.
-type CustomFilterOverrides struct {
-}
-
-func defaultCustomFilterOverrides(v *CustomFilter) CustomFilterOverrides {
-	return CustomFilterOverrides{}
-}
-
 // CustomFilter: GtkCustomFilter determines whether to include items with a
 // callback.
 type CustomFilter struct {
@@ -40288,22 +33628,6 @@ type CustomFilter struct {
 var (
 	_ coreglib.Objector = (*CustomFilter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*CustomFilter, *CustomFilterClass, CustomFilterOverrides](
-		GTypeCustomFilter,
-		initCustomFilterClass,
-		wrapCustomFilter,
-		defaultCustomFilterOverrides,
-	)
-}
-
-func initCustomFilterClass(gclass unsafe.Pointer, overrides CustomFilterOverrides, classInitFunc func(*CustomFilterClass)) {
-	if classInitFunc != nil {
-		class := (*CustomFilterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapCustomFilter(obj *coreglib.Object) *CustomFilter {
 	return &CustomFilter{
@@ -40386,14 +33710,6 @@ func (self *CustomFilter) SetFilterFunc(matchFunc CustomFilterFunc) {
 	runtime.KeepAlive(matchFunc)
 }
 
-// CustomLayoutOverrides contains methods that are overridable.
-type CustomLayoutOverrides struct {
-}
-
-func defaultCustomLayoutOverrides(v *CustomLayout) CustomLayoutOverrides {
-	return CustomLayoutOverrides{}
-}
-
 // CustomLayout: GtkCustomLayout uses closures for size negotiation.
 //
 // A GtkCustomLayout uses closures matching to the old GtkWidget virtual
@@ -40408,22 +33724,6 @@ var (
 	_ LayoutManagerer = (*CustomLayout)(nil)
 )
 
-func init() {
-	coreglib.RegisterClassInfo[*CustomLayout, *CustomLayoutClass, CustomLayoutOverrides](
-		GTypeCustomLayout,
-		initCustomLayoutClass,
-		wrapCustomLayout,
-		defaultCustomLayoutOverrides,
-	)
-}
-
-func initCustomLayoutClass(gclass unsafe.Pointer, overrides CustomLayoutOverrides, classInitFunc func(*CustomLayoutClass)) {
-	if classInitFunc != nil {
-		class := (*CustomLayoutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
-
 func wrapCustomLayout(obj *coreglib.Object) *CustomLayout {
 	return &CustomLayout{
 		LayoutManager: LayoutManager{
@@ -40436,14 +33736,6 @@ func marshalCustomLayout(p uintptr) (interface{}, error) {
 	return wrapCustomLayout(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// CustomSorterOverrides contains methods that are overridable.
-type CustomSorterOverrides struct {
-}
-
-func defaultCustomSorterOverrides(v *CustomSorter) CustomSorterOverrides {
-	return CustomSorterOverrides{}
-}
-
 // CustomSorter: GtkCustomSorter is a GtkSorter implementation that sorts via a
 // callback function.
 type CustomSorter struct {
@@ -40454,22 +33746,6 @@ type CustomSorter struct {
 var (
 	_ coreglib.Objector = (*CustomSorter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*CustomSorter, *CustomSorterClass, CustomSorterOverrides](
-		GTypeCustomSorter,
-		initCustomSorterClass,
-		wrapCustomSorter,
-		defaultCustomSorterOverrides,
-	)
-}
-
-func initCustomSorterClass(gclass unsafe.Pointer, overrides CustomSorterOverrides, classInitFunc func(*CustomSorterClass)) {
-	if classInitFunc != nil {
-		class := (*CustomSorterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapCustomSorter(obj *coreglib.Object) *CustomSorter {
 	return &CustomSorter{
@@ -40547,27 +33823,6 @@ func (self *CustomSorter) SetSortFunc(sortFunc glib.CompareDataFunc) {
 	C.gtk_custom_sorter_set_sort_func(_arg0, _arg1, _arg2, _arg3)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(sortFunc)
-}
-
-// DialogOverrides contains methods that are overridable.
-type DialogOverrides struct {
-	Close func()
-	// Response emits the ::response signal with the given response ID.
-	//
-	// Used to indicate that the user has responded to the dialog in some way.
-	//
-	// The function takes the following parameters:
-	//
-	//   - responseId: response ID.
-	//
-	Response func(responseId int)
-}
-
-func defaultDialogOverrides(v *Dialog) DialogOverrides {
-	return DialogOverrides{
-		Close:    v.close,
-		Response: v.response,
-	}
 }
 
 // Dialog dialogs are a convenient way to prompt the user for a small amount of
@@ -40692,32 +33947,6 @@ var (
 	_ Widgetter         = (*Dialog)(nil)
 	_ coreglib.Objector = (*Dialog)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Dialog, *DialogClass, DialogOverrides](
-		GTypeDialog,
-		initDialogClass,
-		wrapDialog,
-		defaultDialogOverrides,
-	)
-}
-
-func initDialogClass(gclass unsafe.Pointer, overrides DialogOverrides, classInitFunc func(*DialogClass)) {
-	pclass := (*C.GtkDialogClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeDialog))))
-
-	if overrides.Close != nil {
-		pclass.close = (*[0]byte)(C._gotk4_gtk4_DialogClass_close)
-	}
-
-	if overrides.Response != nil {
-		pclass.response = (*[0]byte)(C._gotk4_gtk4_DialogClass_response)
-	}
-
-	if classInitFunc != nil {
-		class := (*DialogClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapDialog(obj *coreglib.Object) *Dialog {
 	return &Dialog{
@@ -41083,49 +34312,6 @@ func (dialog *Dialog) SetResponseSensitive(responseId int, setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-func (dialog *Dialog) close() {
-	gclass := (*C.GtkDialogClass)(coreglib.PeekParentClass(dialog))
-	fnarg := gclass.close
-
-	var _arg0 *C.GtkDialog // out
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-
-	C._gotk4_gtk4_Dialog_virtual_close(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(dialog)
-}
-
-// Response emits the ::response signal with the given response ID.
-//
-// Used to indicate that the user has responded to the dialog in some way.
-//
-// The function takes the following parameters:
-//
-//   - responseId: response ID.
-//
-func (dialog *Dialog) response(responseId int) {
-	gclass := (*C.GtkDialogClass)(coreglib.PeekParentClass(dialog))
-	fnarg := gclass.response
-
-	var _arg0 *C.GtkDialog // out
-	var _arg1 C.int        // out
-
-	_arg0 = (*C.GtkDialog)(unsafe.Pointer(coreglib.InternObject(dialog).Native()))
-	_arg1 = C.int(responseId)
-
-	C._gotk4_gtk4_Dialog_virtual_response(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(dialog)
-	runtime.KeepAlive(responseId)
-}
-
-// DirectoryListOverrides contains methods that are overridable.
-type DirectoryListOverrides struct {
-}
-
-func defaultDirectoryListOverrides(v *DirectoryList) DirectoryListOverrides {
-	return DirectoryListOverrides{}
-}
-
 // DirectoryList: GtkDirectoryList is a list model that wraps
 // g_file_enumerate_children_async().
 //
@@ -41158,22 +34344,6 @@ type DirectoryList struct {
 var (
 	_ coreglib.Objector = (*DirectoryList)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*DirectoryList, *DirectoryListClass, DirectoryListOverrides](
-		GTypeDirectoryList,
-		initDirectoryListClass,
-		wrapDirectoryList,
-		defaultDirectoryListOverrides,
-	)
-}
-
-func initDirectoryListClass(gclass unsafe.Pointer, overrides DirectoryListOverrides, classInitFunc func(*DirectoryListClass)) {
-	if classInitFunc != nil {
-		class := (*DirectoryListClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapDirectoryList(obj *coreglib.Object) *DirectoryList {
 	return &DirectoryList{
@@ -41482,14 +34652,6 @@ func (self *DirectoryList) SetMonitored(monitored bool) {
 	runtime.KeepAlive(monitored)
 }
 
-// DragIconOverrides contains methods that are overridable.
-type DragIconOverrides struct {
-}
-
-func defaultDragIconOverrides(v *DragIcon) DragIconOverrides {
-	return DragIconOverrides{}
-}
-
 // DragIcon: GtkDragIcon is a GtkRoot implementation for drag icons.
 //
 // A drag icon moves with the pointer during a Drag-and-Drop operation and is
@@ -41513,22 +34675,6 @@ var (
 	_ Widgetter         = (*DragIcon)(nil)
 	_ coreglib.Objector = (*DragIcon)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*DragIcon, *DragIconClass, DragIconOverrides](
-		GTypeDragIcon,
-		initDragIconClass,
-		wrapDragIcon,
-		defaultDragIconOverrides,
-	)
-}
-
-func initDragIconClass(gclass unsafe.Pointer, overrides DragIconOverrides, classInitFunc func(*DragIconClass)) {
-	if classInitFunc != nil {
-		class := (*DragIconClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapDragIcon(obj *coreglib.Object) *DragIcon {
 	return &DragIcon{
@@ -42087,22 +35233,6 @@ func (source *DragSource) SetIcon(paintable gdk.Paintabler, hotX, hotY int) {
 	runtime.KeepAlive(hotY)
 }
 
-// DrawingAreaOverrides contains methods that are overridable.
-type DrawingAreaOverrides struct {
-	// The function takes the following parameters:
-	//
-	//   - width
-	//   - height
-	//
-	Resize func(width, height int)
-}
-
-func defaultDrawingAreaOverrides(v *DrawingArea) DrawingAreaOverrides {
-	return DrawingAreaOverrides{
-		Resize: v.resize,
-	}
-}
-
 // DrawingArea: GtkDrawingArea is a widget that allows drawing with cairo.
 //
 // !An example GtkDrawingArea (drawingarea.png)
@@ -42187,28 +35317,6 @@ type DrawingArea struct {
 var (
 	_ Widgetter = (*DrawingArea)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*DrawingArea, *DrawingAreaClass, DrawingAreaOverrides](
-		GTypeDrawingArea,
-		initDrawingAreaClass,
-		wrapDrawingArea,
-		defaultDrawingAreaOverrides,
-	)
-}
-
-func initDrawingAreaClass(gclass unsafe.Pointer, overrides DrawingAreaOverrides, classInitFunc func(*DrawingAreaClass)) {
-	pclass := (*C.GtkDrawingAreaClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeDrawingArea))))
-
-	if overrides.Resize != nil {
-		pclass.resize = (*[0]byte)(C._gotk4_gtk4_DrawingAreaClass_resize)
-	}
-
-	if classInitFunc != nil {
-		class := (*DrawingAreaClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapDrawingArea(obj *coreglib.Object) *DrawingArea {
 	return &DrawingArea{
@@ -42390,29 +35498,6 @@ func (self *DrawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc) {
 	runtime.KeepAlive(drawFunc)
 }
 
-// The function takes the following parameters:
-//
-//   - width
-//   - height
-//
-func (area *DrawingArea) resize(width, height int) {
-	gclass := (*C.GtkDrawingAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.resize
-
-	var _arg0 *C.GtkDrawingArea // out
-	var _arg1 C.int             // out
-	var _arg2 C.int             // out
-
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	C._gotk4_gtk4_DrawingArea_virtual_resize(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-}
-
 // DropControllerMotion: GtkDropControllerMotion is an event controller tracking
 // the pointer during Drag-and-Drop operations.
 //
@@ -42565,14 +35650,6 @@ func (self *DropControllerMotion) IsPointer() bool {
 	return _ok
 }
 
-// DropDownOverrides contains methods that are overridable.
-type DropDownOverrides struct {
-}
-
-func defaultDropDownOverrides(v *DropDown) DropDownOverrides {
-	return DropDownOverrides{}
-}
-
 // DropDown: GtkDropDown is a widget that allows the user to choose an item from
 // a list of options.
 //
@@ -42608,22 +35685,6 @@ type DropDown struct {
 var (
 	_ Widgetter = (*DropDown)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*DropDown, *DropDownClass, DropDownOverrides](
-		GTypeDropDown,
-		initDropDownClass,
-		wrapDropDown,
-		defaultDropDownOverrides,
-	)
-}
-
-func initDropDownClass(gclass unsafe.Pointer, overrides DropDownOverrides, classInitFunc func(*DropDownClass)) {
-	if classInitFunc != nil {
-		class := (*DropDownClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapDropDown(obj *coreglib.Object) *DropDown {
 	return &DropDown{
@@ -43731,14 +36792,6 @@ func (self *DropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
 	runtime.KeepAlive(formats)
 }
 
-// EditableLabelOverrides contains methods that are overridable.
-type EditableLabelOverrides struct {
-}
-
-func defaultEditableLabelOverrides(v *EditableLabel) EditableLabelOverrides {
-	return EditableLabelOverrides{}
-}
-
 // EditableLabel: GtkEditableLabel is a label that allows users to edit the text
 // by switching to an “edit mode”.
 //
@@ -43775,22 +36828,6 @@ var (
 	_ Widgetter         = (*EditableLabel)(nil)
 	_ coreglib.Objector = (*EditableLabel)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*EditableLabel, *EditableLabelClass, EditableLabelOverrides](
-		GTypeEditableLabel,
-		initEditableLabelClass,
-		wrapEditableLabel,
-		defaultEditableLabelOverrides,
-	)
-}
-
-func initEditableLabelClass(gclass unsafe.Pointer, overrides EditableLabelOverrides, classInitFunc func(*EditableLabelClass)) {
-	if classInitFunc != nil {
-		class := (*EditableLabelClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapEditableLabel(obj *coreglib.Object) *EditableLabel {
 	return &EditableLabel{
@@ -44023,17 +37060,6 @@ func NewEmojiChooser() *EmojiChooser {
 	return _emojiChooser
 }
 
-// EntryOverrides contains methods that are overridable.
-type EntryOverrides struct {
-	Activate func()
-}
-
-func defaultEntryOverrides(v *Entry) EntryOverrides {
-	return EntryOverrides{
-		Activate: v.activate,
-	}
-}
-
 // Entry: GtkEntry is a single line text entry widget.
 //
 // !An example GtkEntry (entry.png)
@@ -44130,28 +37156,6 @@ var (
 	_ Widgetter         = (*Entry)(nil)
 	_ coreglib.Objector = (*Entry)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Entry, *EntryClass, EntryOverrides](
-		GTypeEntry,
-		initEntryClass,
-		wrapEntry,
-		defaultEntryOverrides,
-	)
-}
-
-func initEntryClass(gclass unsafe.Pointer, overrides EntryOverrides, classInitFunc func(*EntryClass)) {
-	pclass := (*C.GtkEntryClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeEntry))))
-
-	if overrides.Activate != nil {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk4_EntryClass_activate)
-	}
-
-	if classInitFunc != nil {
-		class := (*EntryClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapEntry(obj *coreglib.Object) *Entry {
 	return &Entry{
@@ -45808,99 +38812,6 @@ func (entry *Entry) UnsetInvisibleChar() {
 	runtime.KeepAlive(entry)
 }
 
-func (entry *Entry) activate() {
-	gclass := (*C.GtkEntryClass)(coreglib.PeekParentClass(entry))
-	fnarg := gclass.activate
-
-	var _arg0 *C.GtkEntry // out
-
-	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
-
-	C._gotk4_gtk4_Entry_virtual_activate(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(entry)
-}
-
-// EntryBufferOverrides contains methods that are overridable.
-type EntryBufferOverrides struct {
-	// DeleteText deletes a sequence of characters from the buffer.
-	//
-	// n_chars characters are deleted starting at position. If n_chars is
-	// negative, then all characters until the end of the text are deleted.
-	//
-	// If position or n_chars are out of bounds, then they are coerced to sane
-	// values.
-	//
-	// Note that the positions are specified in characters, not bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//   - position at which to delete text.
-	//   - nChars: number of characters to delete.
-	//
-	// The function returns the following values:
-	//
-	//   - guint: number of characters deleted.
-	//
-	DeleteText func(position, nChars uint) uint
-	// The function takes the following parameters:
-	//
-	//   - position
-	//   - nChars
-	//
-	DeletedText func(position, nChars uint)
-	// Length retrieves the length in characters of the buffer.
-	//
-	// The function returns the following values:
-	//
-	//   - guint: number of characters in the buffer.
-	//
-	Length func() uint
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	Text func(nBytes *uint) string
-	// InsertText inserts n_chars characters of chars into the contents of the
-	// buffer, at position position.
-	//
-	// If n_chars is negative, then characters from chars will be inserted until
-	// a null-terminator is found. If position or n_chars are out of bounds,
-	// or the maximum buffer text length is exceeded, then they are coerced to
-	// sane values.
-	//
-	// Note that the position and length are in characters, not in bytes.
-	//
-	// The function takes the following parameters:
-	//
-	//   - position at which to insert text.
-	//   - chars: text to insert into the buffer.
-	//   - nChars: length of the text in characters, or -1.
-	//
-	// The function returns the following values:
-	//
-	//   - guint: number of characters actually inserted.
-	//
-	InsertText func(position uint, chars string, nChars uint) uint
-	// The function takes the following parameters:
-	//
-	//   - position
-	//   - chars
-	//   - nChars
-	//
-	InsertedText func(position uint, chars string, nChars uint)
-}
-
-func defaultEntryBufferOverrides(v *EntryBuffer) EntryBufferOverrides {
-	return EntryBufferOverrides{
-		DeleteText:   v.deleteText,
-		DeletedText:  v.deletedText,
-		Length:       v.length,
-		Text:         v.text,
-		InsertText:   v.insertText,
-		InsertedText: v.insertedText,
-	}
-}
-
 // EntryBuffer: GtkEntryBuffer hold the text displayed in a GtkText widget.
 //
 // A single GtkEntryBuffer object can be shared by multiple widgets which will
@@ -45919,48 +38830,6 @@ type EntryBuffer struct {
 var (
 	_ coreglib.Objector = (*EntryBuffer)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*EntryBuffer, *EntryBufferClass, EntryBufferOverrides](
-		GTypeEntryBuffer,
-		initEntryBufferClass,
-		wrapEntryBuffer,
-		defaultEntryBufferOverrides,
-	)
-}
-
-func initEntryBufferClass(gclass unsafe.Pointer, overrides EntryBufferOverrides, classInitFunc func(*EntryBufferClass)) {
-	pclass := (*C.GtkEntryBufferClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeEntryBuffer))))
-
-	if overrides.DeleteText != nil {
-		pclass.delete_text = (*[0]byte)(C._gotk4_gtk4_EntryBufferClass_delete_text)
-	}
-
-	if overrides.DeletedText != nil {
-		pclass.deleted_text = (*[0]byte)(C._gotk4_gtk4_EntryBufferClass_deleted_text)
-	}
-
-	if overrides.Length != nil {
-		pclass.get_length = (*[0]byte)(C._gotk4_gtk4_EntryBufferClass_get_length)
-	}
-
-	if overrides.Text != nil {
-		pclass.get_text = (*[0]byte)(C._gotk4_gtk4_EntryBufferClass_get_text)
-	}
-
-	if overrides.InsertText != nil {
-		pclass.insert_text = (*[0]byte)(C._gotk4_gtk4_EntryBufferClass_insert_text)
-	}
-
-	if overrides.InsertedText != nil {
-		pclass.inserted_text = (*[0]byte)(C._gotk4_gtk4_EntryBufferClass_inserted_text)
-	}
-
-	if classInitFunc != nil {
-		class := (*EntryBufferClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapEntryBuffer(obj *coreglib.Object) *EntryBuffer {
 	return &EntryBuffer{
@@ -46299,200 +39168,6 @@ func (buffer *EntryBuffer) SetText(chars string, nChars int) {
 
 	C.gtk_entry_buffer_set_text(_arg0, _arg1, _arg2)
 	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(chars)
-	runtime.KeepAlive(nChars)
-}
-
-// deleteText deletes a sequence of characters from the buffer.
-//
-// n_chars characters are deleted starting at position. If n_chars is negative,
-// then all characters until the end of the text are deleted.
-//
-// If position or n_chars are out of bounds, then they are coerced to sane
-// values.
-//
-// Note that the positions are specified in characters, not bytes.
-//
-// The function takes the following parameters:
-//
-//   - position at which to delete text.
-//   - nChars: number of characters to delete.
-//
-// The function returns the following values:
-//
-//   - guint: number of characters deleted.
-//
-func (buffer *EntryBuffer) deleteText(position, nChars uint) uint {
-	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.delete_text
-
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.guint           // out
-	var _arg2 C.guint           // out
-	var _cret C.guint           // in
-
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nChars)
-
-	_cret = C._gotk4_gtk4_EntryBuffer_virtual_delete_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(nChars)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// The function takes the following parameters:
-//
-//   - position
-//   - nChars
-//
-func (buffer *EntryBuffer) deletedText(position, nChars uint) {
-	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.deleted_text
-
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.guint           // out
-	var _arg2 C.guint           // out
-
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = C.guint(nChars)
-
-	C._gotk4_gtk4_EntryBuffer_virtual_deleted_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(nChars)
-}
-
-// Length retrieves the length in characters of the buffer.
-//
-// The function returns the following values:
-//
-//   - guint: number of characters in the buffer.
-//
-func (buffer *EntryBuffer) length() uint {
-	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.get_length
-
-	var _arg0 *C.GtkEntryBuffer // out
-	var _cret C.guint           // in
-
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	_cret = C._gotk4_gtk4_EntryBuffer_virtual_get_length(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(buffer)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
-func (buffer *EntryBuffer) text(nBytes *uint) string {
-	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.get_text
-
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 *C.gsize          // out
-	var _cret *C.char           // in
-
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.gsize)(unsafe.Pointer(nBytes))
-
-	_cret = C._gotk4_gtk4_EntryBuffer_virtual_get_text(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(nBytes)
-
-	var _utf8 string // out
-
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-
-	return _utf8
-}
-
-// insertText inserts n_chars characters of chars into the contents of the
-// buffer, at position position.
-//
-// If n_chars is negative, then characters from chars will be inserted until a
-// null-terminator is found. If position or n_chars are out of bounds, or the
-// maximum buffer text length is exceeded, then they are coerced to sane values.
-//
-// Note that the position and length are in characters, not in bytes.
-//
-// The function takes the following parameters:
-//
-//   - position at which to insert text.
-//   - chars: text to insert into the buffer.
-//   - nChars: length of the text in characters, or -1.
-//
-// The function returns the following values:
-//
-//   - guint: number of characters actually inserted.
-//
-func (buffer *EntryBuffer) insertText(position uint, chars string, nChars uint) uint {
-	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.insert_text
-
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.guint           // out
-	var _arg2 *C.char           // out
-	var _arg3 C.guint           // out
-	var _cret C.guint           // in
-
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(chars)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.guint(nChars)
-
-	_cret = C._gotk4_gtk4_EntryBuffer_virtual_insert_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(position)
-	runtime.KeepAlive(chars)
-	runtime.KeepAlive(nChars)
-
-	var _guint uint // out
-
-	_guint = uint(_cret)
-
-	return _guint
-}
-
-// The function takes the following parameters:
-//
-//   - position
-//   - chars
-//   - nChars
-//
-func (buffer *EntryBuffer) insertedText(position uint, chars string, nChars uint) {
-	gclass := (*C.GtkEntryBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.inserted_text
-
-	var _arg0 *C.GtkEntryBuffer // out
-	var _arg1 C.guint           // out
-	var _arg2 *C.char           // out
-	var _arg3 C.guint           // out
-
-	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = C.guint(position)
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(chars)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.guint(nChars)
-
-	C._gotk4_gtk4_EntryBuffer_virtual_inserted_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(position)
 	runtime.KeepAlive(chars)
 	runtime.KeepAlive(nChars)
 }
@@ -49324,14 +41999,6 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	return wrapFileChooserDialog(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// FileChooserNativeOverrides contains methods that are overridable.
-type FileChooserNativeOverrides struct {
-}
-
-func defaultFileChooserNativeOverrides(v *FileChooserNative) FileChooserNativeOverrides {
-	return FileChooserNativeOverrides{}
-}
-
 // FileChooserNative: GtkFileChooserNative is an abstraction of a dialog
 // suitable for use with “File Open” or “File Save as” commands.
 //
@@ -49484,22 +42151,6 @@ var (
 	_ NativeDialogger   = (*FileChooserNative)(nil)
 	_ coreglib.Objector = (*FileChooserNative)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*FileChooserNative, *FileChooserNativeClass, FileChooserNativeOverrides](
-		GTypeFileChooserNative,
-		initFileChooserNativeClass,
-		wrapFileChooserNative,
-		defaultFileChooserNativeOverrides,
-	)
-}
-
-func initFileChooserNativeClass(gclass unsafe.Pointer, overrides FileChooserNativeOverrides, classInitFunc func(*FileChooserNativeClass)) {
-	if classInitFunc != nil {
-		class := (*FileChooserNativeClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapFileChooserNative(obj *coreglib.Object) *FileChooserNative {
 	return &FileChooserNative{
@@ -50197,42 +42848,6 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 	return _variant
 }
 
-// FilterOverrides contains methods that are overridable.
-type FilterOverrides struct {
-	// Strictness gets the known strictness of filters. If the strictness is not
-	// known, GTK_FILTER_MATCH_SOME is returned.
-	//
-	// This value may change after emission of the Filter::changed signal.
-	//
-	// This function is meant purely for optimization purposes, filters can
-	// choose to omit implementing it, but FilterListModel uses it.
-	//
-	// The function returns the following values:
-	//
-	//   - filterMatch strictness of self.
-	//
-	Strictness func() FilterMatch
-	// Match checks if the given item is matched by the filter or not.
-	//
-	// The function takes the following parameters:
-	//
-	//   - item (optional) to check.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if the filter matches the item and a filter model should
-	//     keep it, FALSE if not.
-	//
-	Match func(item *coreglib.Object) bool
-}
-
-func defaultFilterOverrides(v *Filter) FilterOverrides {
-	return FilterOverrides{
-		Strictness: v.strictness,
-		Match:      v.match,
-	}
-}
-
 // Filter: GtkFilter object describes the filtering to be performed by a
 // GtkFilterListModel.
 //
@@ -50259,32 +42874,6 @@ type Filter struct {
 var (
 	_ coreglib.Objector = (*Filter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Filter, *FilterClass, FilterOverrides](
-		GTypeFilter,
-		initFilterClass,
-		wrapFilter,
-		defaultFilterOverrides,
-	)
-}
-
-func initFilterClass(gclass unsafe.Pointer, overrides FilterOverrides, classInitFunc func(*FilterClass)) {
-	pclass := (*C.GtkFilterClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeFilter))))
-
-	if overrides.Strictness != nil {
-		pclass.get_strictness = (*[0]byte)(C._gotk4_gtk4_FilterClass_get_strictness)
-	}
-
-	if overrides.Match != nil {
-		pclass.match = (*[0]byte)(C._gotk4_gtk4_FilterClass_match)
-	}
-
-	if classInitFunc != nil {
-		class := (*FilterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapFilter(obj *coreglib.Object) *Filter {
 	return &Filter{
@@ -50394,80 +42983,6 @@ func (self *Filter) Match(item *coreglib.Object) bool {
 	return _ok
 }
 
-// Strictness gets the known strictness of filters. If the strictness is not
-// known, GTK_FILTER_MATCH_SOME is returned.
-//
-// This value may change after emission of the Filter::changed signal.
-//
-// This function is meant purely for optimization purposes, filters can choose
-// to omit implementing it, but FilterListModel uses it.
-//
-// The function returns the following values:
-//
-//   - filterMatch strictness of self.
-//
-func (self *Filter) strictness() FilterMatch {
-	gclass := (*C.GtkFilterClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.get_strictness
-
-	var _arg0 *C.GtkFilter     // out
-	var _cret C.GtkFilterMatch // in
-
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C._gotk4_gtk4_Filter_virtual_get_strictness(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(self)
-
-	var _filterMatch FilterMatch // out
-
-	_filterMatch = FilterMatch(_cret)
-
-	return _filterMatch
-}
-
-// Match checks if the given item is matched by the filter or not.
-//
-// The function takes the following parameters:
-//
-//   - item (optional) to check.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the filter matches the item and a filter model should keep
-//     it, FALSE if not.
-//
-func (self *Filter) match(item *coreglib.Object) bool {
-	gclass := (*C.GtkFilterClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.match
-
-	var _arg0 *C.GtkFilter // out
-	var _arg1 C.gpointer   // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.gpointer(unsafe.Pointer(item.Native()))
-
-	_cret = C._gotk4_gtk4_Filter_virtual_match(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(item)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// FilterListModelOverrides contains methods that are overridable.
-type FilterListModelOverrides struct {
-}
-
-func defaultFilterListModelOverrides(v *FilterListModel) FilterListModelOverrides {
-	return FilterListModelOverrides{}
-}
-
 // FilterListModel: GtkFilterListModel is a list model that filters the elements
 // of the underlying model according to a GtkFilter.
 //
@@ -50487,22 +43002,6 @@ type FilterListModel struct {
 var (
 	_ coreglib.Objector = (*FilterListModel)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*FilterListModel, *FilterListModelClass, FilterListModelOverrides](
-		GTypeFilterListModel,
-		initFilterListModelClass,
-		wrapFilterListModel,
-		defaultFilterListModelOverrides,
-	)
-}
-
-func initFilterListModelClass(gclass unsafe.Pointer, overrides FilterListModelOverrides, classInitFunc func(*FilterListModelClass)) {
-	if classInitFunc != nil {
-		class := (*FilterListModelClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapFilterListModel(obj *coreglib.Object) *FilterListModel {
 	return &FilterListModel{
@@ -50746,14 +43245,6 @@ func (self *FilterListModel) SetModel(model gio.ListModeller) {
 	runtime.KeepAlive(model)
 }
 
-// FixedOverrides contains methods that are overridable.
-type FixedOverrides struct {
-}
-
-func defaultFixedOverrides(v *Fixed) FixedOverrides {
-	return FixedOverrides{}
-}
-
 // Fixed: GtkFixed places its child widgets at fixed positions and with fixed
 // sizes.
 //
@@ -50797,22 +43288,6 @@ type Fixed struct {
 var (
 	_ Widgetter = (*Fixed)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Fixed, *FixedClass, FixedOverrides](
-		GTypeFixed,
-		initFixedClass,
-		wrapFixed,
-		defaultFixedOverrides,
-	)
-}
-
-func initFixedClass(gclass unsafe.Pointer, overrides FixedOverrides, classInitFunc func(*FixedClass)) {
-	if classInitFunc != nil {
-		class := (*FixedClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapFixed(obj *coreglib.Object) *Fixed {
 	return &Fixed{
@@ -51031,14 +43506,6 @@ func (fixed *Fixed) SetChildTransform(widget Widgetter, transform *gsk.Transform
 	runtime.KeepAlive(transform)
 }
 
-// FixedLayoutOverrides contains methods that are overridable.
-type FixedLayoutOverrides struct {
-}
-
-func defaultFixedLayoutOverrides(v *FixedLayout) FixedLayoutOverrides {
-	return FixedLayoutOverrides{}
-}
-
 // FixedLayout: GtkFixedLayout is a layout manager which can place child widgets
 // at fixed positions.
 //
@@ -51077,22 +43544,6 @@ var (
 	_ LayoutManagerer = (*FixedLayout)(nil)
 )
 
-func init() {
-	coreglib.RegisterClassInfo[*FixedLayout, *FixedLayoutClass, FixedLayoutOverrides](
-		GTypeFixedLayout,
-		initFixedLayoutClass,
-		wrapFixedLayout,
-		defaultFixedLayoutOverrides,
-	)
-}
-
-func initFixedLayoutClass(gclass unsafe.Pointer, overrides FixedLayoutOverrides, classInitFunc func(*FixedLayoutClass)) {
-	if classInitFunc != nil {
-		class := (*FixedLayoutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
-
 func wrapFixedLayout(obj *coreglib.Object) *FixedLayout {
 	return &FixedLayout{
 		LayoutManager: LayoutManager{
@@ -51123,14 +43574,6 @@ func NewFixedLayout() *FixedLayout {
 	return _fixedLayout
 }
 
-// FixedLayoutChildOverrides contains methods that are overridable.
-type FixedLayoutChildOverrides struct {
-}
-
-func defaultFixedLayoutChildOverrides(v *FixedLayoutChild) FixedLayoutChildOverrides {
-	return FixedLayoutChildOverrides{}
-}
-
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.
 type FixedLayoutChild struct {
 	_ [0]func() // equal guard
@@ -51140,22 +43583,6 @@ type FixedLayoutChild struct {
 var (
 	_ LayoutChilder = (*FixedLayoutChild)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*FixedLayoutChild, *FixedLayoutChildClass, FixedLayoutChildOverrides](
-		GTypeFixedLayoutChild,
-		initFixedLayoutChildClass,
-		wrapFixedLayoutChild,
-		defaultFixedLayoutChildOverrides,
-	)
-}
-
-func initFixedLayoutChildClass(gclass unsafe.Pointer, overrides FixedLayoutChildOverrides, classInitFunc func(*FixedLayoutChildClass)) {
-	if classInitFunc != nil {
-		class := (*FixedLayoutChildClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapFixedLayoutChild(obj *coreglib.Object) *FixedLayoutChild {
 	return &FixedLayoutChild{
@@ -51218,14 +43645,6 @@ func (child *FixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	runtime.KeepAlive(transform)
 }
 
-// FlattenListModelOverrides contains methods that are overridable.
-type FlattenListModelOverrides struct {
-}
-
-func defaultFlattenListModelOverrides(v *FlattenListModel) FlattenListModelOverrides {
-	return FlattenListModelOverrides{}
-}
-
 // FlattenListModel: GtkFlattenListModel is a list model that concatenates other
 // list models.
 //
@@ -51241,22 +43660,6 @@ type FlattenListModel struct {
 var (
 	_ coreglib.Objector = (*FlattenListModel)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*FlattenListModel, *FlattenListModelClass, FlattenListModelOverrides](
-		GTypeFlattenListModel,
-		initFlattenListModelClass,
-		wrapFlattenListModel,
-		defaultFlattenListModelOverrides,
-	)
-}
-
-func initFlattenListModelClass(gclass unsafe.Pointer, overrides FlattenListModelOverrides, classInitFunc func(*FlattenListModelClass)) {
-	if classInitFunc != nil {
-		class := (*FlattenListModelClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapFlattenListModel(obj *coreglib.Object) *FlattenListModel {
 	return &FlattenListModel{
@@ -52270,17 +44673,6 @@ func (box *FlowBox) UnselectChild(child *FlowBoxChild) {
 	runtime.KeepAlive(child)
 }
 
-// FlowBoxChildOverrides contains methods that are overridable.
-type FlowBoxChildOverrides struct {
-	Activate func()
-}
-
-func defaultFlowBoxChildOverrides(v *FlowBoxChild) FlowBoxChildOverrides {
-	return FlowBoxChildOverrides{
-		Activate: v.activate,
-	}
-}
-
 // FlowBoxChild: GtkFlowBoxChild is the kind of widget that can be added to a
 // GtkFlowBox.
 type FlowBoxChild struct {
@@ -52291,28 +44683,6 @@ type FlowBoxChild struct {
 var (
 	_ Widgetter = (*FlowBoxChild)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*FlowBoxChild, *FlowBoxChildClass, FlowBoxChildOverrides](
-		GTypeFlowBoxChild,
-		initFlowBoxChildClass,
-		wrapFlowBoxChild,
-		defaultFlowBoxChildOverrides,
-	)
-}
-
-func initFlowBoxChildClass(gclass unsafe.Pointer, overrides FlowBoxChildOverrides, classInitFunc func(*FlowBoxChildClass)) {
-	pclass := (*C.GtkFlowBoxChildClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeFlowBoxChild))))
-
-	if overrides.Activate != nil {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk4_FlowBoxChildClass_activate)
-	}
-
-	if classInitFunc != nil {
-		class := (*FlowBoxChildClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapFlowBoxChild(obj *coreglib.Object) *FlowBoxChild {
 	return &FlowBoxChild{
@@ -52500,18 +44870,6 @@ func (self *FlowBoxChild) SetChild(child Widgetter) {
 
 	C.gtk_flow_box_child_set_child(_arg0, _arg1)
 	runtime.KeepAlive(self)
-	runtime.KeepAlive(child)
-}
-
-func (child *FlowBoxChild) activate() {
-	gclass := (*C.GtkFlowBoxChildClass)(coreglib.PeekParentClass(child))
-	fnarg := gclass.activate
-
-	var _arg0 *C.GtkFlowBoxChild // out
-
-	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-
-	C._gotk4_gtk4_FlowBoxChild_virtual_activate(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(child)
 }
 
@@ -52997,19 +45355,6 @@ func NewFontChooserWidget() *FontChooserWidget {
 	return _fontChooserWidget
 }
 
-// FrameOverrides contains methods that are overridable.
-type FrameOverrides struct {
-	// The function takes the following parameters:
-	//
-	ComputeChildAllocation func(allocation *Allocation)
-}
-
-func defaultFrameOverrides(v *Frame) FrameOverrides {
-	return FrameOverrides{
-		ComputeChildAllocation: v.computeChildAllocation,
-	}
-}
-
 // Frame: GtkFrame is a widget that surrounds its child with a decorative frame
 // and an optional label.
 //
@@ -53057,28 +45402,6 @@ type Frame struct {
 var (
 	_ Widgetter = (*Frame)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Frame, *FrameClass, FrameOverrides](
-		GTypeFrame,
-		initFrameClass,
-		wrapFrame,
-		defaultFrameOverrides,
-	)
-}
-
-func initFrameClass(gclass unsafe.Pointer, overrides FrameOverrides, classInitFunc func(*FrameClass)) {
-	pclass := (*C.GtkFrameClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeFrame))))
-
-	if overrides.ComputeChildAllocation != nil {
-		pclass.compute_child_allocation = (*[0]byte)(C._gotk4_gtk4_FrameClass_compute_child_allocation)
-	}
-
-	if classInitFunc != nil {
-		class := (*FrameClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapFrame(obj *coreglib.Object) *Frame {
 	return &Frame{
@@ -53345,47 +45668,6 @@ func (frame *Frame) SetLabelWidget(labelWidget Widgetter) {
 	runtime.KeepAlive(labelWidget)
 }
 
-// The function takes the following parameters:
-//
-func (frame *Frame) computeChildAllocation(allocation *Allocation) {
-	gclass := (*C.GtkFrameClass)(coreglib.PeekParentClass(frame))
-	fnarg := gclass.compute_child_allocation
-
-	var _arg0 *C.GtkFrame      // out
-	var _arg1 *C.GtkAllocation // out
-
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(coreglib.InternObject(frame).Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(allocation)))
-	type _ = *Allocation
-	type _ = *gdk.Rectangle
-
-	C._gotk4_gtk4_Frame_virtual_compute_child_allocation(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(frame)
-	runtime.KeepAlive(allocation)
-}
-
-// GLAreaOverrides contains methods that are overridable.
-type GLAreaOverrides struct {
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	Render func(context gdk.GLContexter) bool
-	// The function takes the following parameters:
-	//
-	//   - width
-	//   - height
-	//
-	Resize func(width, height int)
-}
-
-func defaultGLAreaOverrides(v *GLArea) GLAreaOverrides {
-	return GLAreaOverrides{
-		Render: v.render,
-		Resize: v.resize,
-	}
-}
-
 // GLArea: GtkGLArea is a widget that allows drawing with OpenGL.
 //
 // !An example GtkGLArea (glarea.png)
@@ -53491,32 +45773,6 @@ type GLArea struct {
 var (
 	_ Widgetter = (*GLArea)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*GLArea, *GLAreaClass, GLAreaOverrides](
-		GTypeGLArea,
-		initGLAreaClass,
-		wrapGLArea,
-		defaultGLAreaOverrides,
-	)
-}
-
-func initGLAreaClass(gclass unsafe.Pointer, overrides GLAreaOverrides, classInitFunc func(*GLAreaClass)) {
-	pclass := (*C.GtkGLAreaClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeGLArea))))
-
-	if overrides.Render != nil {
-		pclass.render = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_render)
-	}
-
-	if overrides.Resize != nil {
-		pclass.resize = (*[0]byte)(C._gotk4_gtk4_GLAreaClass_resize)
-	}
-
-	if classInitFunc != nil {
-		class := (*GLAreaClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapGLArea(obj *coreglib.Object) *GLArea {
 	return &GLArea{
@@ -53981,57 +46237,6 @@ func (area *GLArea) SetUseES(useEs bool) {
 	C.gtk_gl_area_set_use_es(_arg0, _arg1)
 	runtime.KeepAlive(area)
 	runtime.KeepAlive(useEs)
-}
-
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
-func (area *GLArea) render(context gdk.GLContexter) bool {
-	gclass := (*C.GtkGLAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.render
-
-	var _arg0 *C.GtkGLArea    // out
-	var _arg1 *C.GdkGLContext // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = (*C.GdkGLContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C._gotk4_gtk4_GLArea_virtual_render(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(context)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-//   - width
-//   - height
-//
-func (area *GLArea) resize(width, height int) {
-	gclass := (*C.GtkGLAreaClass)(coreglib.PeekParentClass(area))
-	fnarg := gclass.resize
-
-	var _arg0 *C.GtkGLArea // out
-	var _arg1 C.int        // out
-	var _arg2 C.int        // out
-
-	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(coreglib.InternObject(area).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-
-	C._gotk4_gtk4_GLArea_virtual_resize(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(area)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
 }
 
 // Gesture: GtkGesture is the base class for gesture recognition.
@@ -55936,14 +48141,6 @@ func (gesture *GestureZoom) ScaleDelta() float64 {
 	return _gdouble
 }
 
-// GridOverrides contains methods that are overridable.
-type GridOverrides struct {
-}
-
-func defaultGridOverrides(v *Grid) GridOverrides {
-	return GridOverrides{}
-}
-
 // Grid: GtkGrid is a container which arranges its child widgets in rows and
 // columns.
 //
@@ -56035,22 +48232,6 @@ var (
 	_ Widgetter         = (*Grid)(nil)
 	_ coreglib.Objector = (*Grid)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Grid, *GridClass, GridOverrides](
-		GTypeGrid,
-		initGridClass,
-		wrapGrid,
-		defaultGridOverrides,
-	)
-}
-
-func initGridClass(gclass unsafe.Pointer, overrides GridOverrides, classInitFunc func(*GridClass)) {
-	if classInitFunc != nil {
-		class := (*GridClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapGrid(obj *coreglib.Object) *Grid {
 	return &Grid{
@@ -56673,14 +48854,6 @@ func (grid *Grid) SetRowSpacing(spacing uint) {
 	runtime.KeepAlive(spacing)
 }
 
-// GridLayoutOverrides contains methods that are overridable.
-type GridLayoutOverrides struct {
-}
-
-func defaultGridLayoutOverrides(v *GridLayout) GridLayoutOverrides {
-	return GridLayoutOverrides{}
-}
-
 // GridLayout: GtkGridLayout is a layout manager which arranges child widgets in
 // rows and columns.
 //
@@ -56703,22 +48876,6 @@ type GridLayout struct {
 var (
 	_ LayoutManagerer = (*GridLayout)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*GridLayout, *GridLayoutClass, GridLayoutOverrides](
-		GTypeGridLayout,
-		initGridLayoutClass,
-		wrapGridLayout,
-		defaultGridLayoutOverrides,
-	)
-}
-
-func initGridLayoutClass(gclass unsafe.Pointer, overrides GridLayoutOverrides, classInitFunc func(*GridLayoutClass)) {
-	if classInitFunc != nil {
-		class := (*GridLayoutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapGridLayout(obj *coreglib.Object) *GridLayout {
 	return &GridLayout{
@@ -57021,14 +49178,6 @@ func (grid *GridLayout) SetRowSpacing(spacing uint) {
 	runtime.KeepAlive(spacing)
 }
 
-// GridLayoutChildOverrides contains methods that are overridable.
-type GridLayoutChildOverrides struct {
-}
-
-func defaultGridLayoutChildOverrides(v *GridLayoutChild) GridLayoutChildOverrides {
-	return GridLayoutChildOverrides{}
-}
-
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.
 type GridLayoutChild struct {
 	_ [0]func() // equal guard
@@ -57038,22 +49187,6 @@ type GridLayoutChild struct {
 var (
 	_ LayoutChilder = (*GridLayoutChild)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*GridLayoutChild, *GridLayoutChildClass, GridLayoutChildOverrides](
-		GTypeGridLayoutChild,
-		initGridLayoutChildClass,
-		wrapGridLayoutChild,
-		defaultGridLayoutChildOverrides,
-	)
-}
-
-func initGridLayoutChildClass(gclass unsafe.Pointer, overrides GridLayoutChildOverrides, classInitFunc func(*GridLayoutChildClass)) {
-	if classInitFunc != nil {
-		class := (*GridLayoutChildClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapGridLayoutChild(obj *coreglib.Object) *GridLayoutChild {
 	return &GridLayoutChild{
@@ -57973,242 +50106,6 @@ func (bar *HeaderBar) SetTitleWidget(titleWidget Widgetter) {
 	runtime.KeepAlive(titleWidget)
 }
 
-// IMContextOverrides contains methods that are overridable.
-type IMContextOverrides struct {
-	// The function takes the following parameters:
-	//
-	Commit func(str string)
-	// DeleteSurrounding asks the widget that the input context is attached
-	// to delete characters around the cursor position by emitting the
-	// GtkIMContext::delete_surrounding signal.
-	//
-	// Note that offset and n_chars are in characters not in bytes which differs
-	// from the usage other places in IMContext.
-	//
-	// In order to use this function, you should first call
-	// gtk_im_context_get_surrounding() to get the current context, and call
-	// this function immediately afterwards to make sure that you know what
-	// you are deleting. You should also account for the fact that even if the
-	// signal was handled, the input context might not have deleted all the
-	// characters that were requested to be deleted.
-	//
-	// This function is used by an input method that wants to make subsitutions
-	// in the existing text in response to new input. It is not useful for
-	// applications.
-	//
-	// The function takes the following parameters:
-	//
-	//   - offset from cursor position in chars; a negative value means start
-	//     before the cursor.
-	//   - nChars: number of characters to delete.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if the signal was handled.
-	//
-	DeleteSurrounding func(offset, nChars int) bool
-	// FilterKeypress: allow an input method to internally handle key press and
-	// release events.
-	//
-	// If this function returns TRUE, then no further processing should be done
-	// for this key event.
-	//
-	// The function takes the following parameters:
-	//
-	//   - event: key event.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if the input method handled the key event.
-	//
-	FilterKeypress func(event gdk.Eventer) bool
-	// FocusIn: notify the input method that the widget to which this input
-	// context corresponds has gained focus.
-	//
-	// The input method may, for example, change the displayed feedback to
-	// reflect this change.
-	FocusIn func()
-	// FocusOut: notify the input method that the widget to which this input
-	// context corresponds has lost focus.
-	//
-	// The input method may, for example, change the displayed feedback or reset
-	// the contexts state to reflect this change.
-	FocusOut func()
-	// PreeditString: retrieve the current preedit string for the input context,
-	// and a list of attributes to apply to the string.
-	//
-	// This string should be displayed inserted at the insertion point.
-	//
-	// The function returns the following values:
-	//
-	//   - str: location to store the retrieved string. The string retrieved
-	//     must be freed with g_free().
-	//   - attrs: location to store the retrieved attribute list.
-	//     When you are done with this list, you must unreference it with
-	//     pango_attr_list_unref().
-	//   - cursorPos: location to store position of cursor (in characters)
-	//     within the preedit string.
-	//
-	PreeditString func() (string, *pango.AttrList, int)
-	// Surrounding retrieves context around the insertion point.
-	//
-	// Input methods typically want context in order to constrain input text
-	// based on existing text; this is important for languages such as Thai
-	// where only some sequences of characters are allowed.
-	//
-	// This function is implemented by emitting the
-	// gtk.IMContext::retrieve-surrounding signal on the input method;
-	// in response to this signal, a widget should provide as much
-	// context as is available, up to an entire paragraph, by calling
-	// gtk.IMContext.SetSurrounding().
-	//
-	// Note that there is no obligation for a widget to respond to the
-	// ::retrieve-surrounding signal, so input methods must be prepared to
-	// function without context.
-	//
-	// Deprecated: Use gtk.IMContext.GetSurroundingWithSelection() instead.
-	//
-	// The function returns the following values:
-	//
-	//   - text: location to store a UTF-8 encoded string of text holding
-	//     context around the insertion point. If the function returns TRUE,
-	//     then you must free the result stored in this location with g_free().
-	//   - cursorIndex: location to store byte index of the insertion cursor
-	//     within text.
-	//   - ok: TRUE if surrounding text was provided; in this case you must free
-	//     the result stored in text.
-	//
-	Surrounding func() (string, int, bool)
-	// SurroundingWithSelection retrieves context around the insertion point.
-	//
-	// Input methods typically want context in order to constrain input text
-	// based on existing text; this is important for languages such as Thai
-	// where only some sequences of characters are allowed.
-	//
-	// This function is implemented by emitting the
-	// gtk.IMContext::retrieve-surrounding signal on the input method;
-	// in response to this signal, a widget should provide as much
-	// context as is available, up to an entire paragraph, by calling
-	// gtk.IMContext.SetSurroundingWithSelection().
-	//
-	// Note that there is no obligation for a widget to respond to the
-	// ::retrieve-surrounding signal, so input methods must be prepared to
-	// function without context.
-	//
-	// The function returns the following values:
-	//
-	//   - text: location to store a UTF-8 encoded string of text holding
-	//     context around the insertion point. If the function returns TRUE,
-	//     then you must free the result stored in this location with g_free().
-	//   - cursorIndex: location to store byte index of the insertion cursor
-	//     within text.
-	//   - anchorIndex: location to store byte index of the selection bound
-	//     within text.
-	//   - ok: TRUE if surrounding text was provided; in this case you must free
-	//     the result stored in text.
-	//
-	SurroundingWithSelection func() (text string, cursorIndex, anchorIndex int, ok bool)
-	PreeditChanged           func()
-	PreeditEnd               func()
-	PreeditStart             func()
-	// Reset: notify the input method that a change such as a change in cursor
-	// position has been made.
-	//
-	// This will typically cause the input method to clear the preedit state.
-	Reset func()
-	// The function returns the following values:
-	//
-	RetrieveSurrounding func() bool
-	// SetClientWidget: set the client widget for the input context.
-	//
-	// This is the GtkWidget holding the input focus. This widget is used in
-	// order to correctly position status windows, and may also be used for
-	// purposes internal to the input method.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget (optional): client widget. This may be NULL to indicate that
-	//     the previous client widget no longer exists.
-	//
-	SetClientWidget func(widget Widgetter)
-	// SetCursorLocation: notify the input method that a change in cursor
-	// position has been made.
-	//
-	// The location is relative to the client window.
-	//
-	// The function takes the following parameters:
-	//
-	//   - area: new location.
-	//
-	SetCursorLocation func(area *gdk.Rectangle)
-	// SetSurrounding sets surrounding context around the insertion point and
-	// preedit string.
-	//
-	// This function is expected to be called in response to the
-	// gtk.IMContext::retrieve-surrounding signal, and will likely have no
-	// effect if called at other times.
-	//
-	// Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
-	//
-	// The function takes the following parameters:
-	//
-	//   - text surrounding the insertion point, as UTF-8. the preedit string
-	//     should not be included within text.
-	//   - len: length of text, or -1 if text is nul-terminated.
-	//   - cursorIndex: byte index of the insertion cursor within text.
-	//
-	SetSurrounding func(text string, len, cursorIndex int)
-	// SetSurroundingWithSelection sets surrounding context around the insertion
-	// point and preedit string. This function is expected to be called in
-	// response to the GtkIMContext::retrieve_surrounding signal, and will
-	// likely have no effect if called at other times.
-	//
-	// The function takes the following parameters:
-	//
-	//   - text surrounding the insertion point, as UTF-8. the preedit string
-	//     should not be included within text.
-	//   - len: length of text, or -1 if text is nul-terminated.
-	//   - cursorIndex: byte index of the insertion cursor within text.
-	//   - anchorIndex: byte index of the selection bound within text.
-	//
-	SetSurroundingWithSelection func(text string, len, cursorIndex, anchorIndex int)
-	// SetUsePreedit sets whether the IM context should use the preedit string
-	// to display feedback.
-	//
-	// If use_preedit is FALSE (default is TRUE), then the IM context may use
-	// some other method to display feedback, such as displaying it in a child
-	// of the root window.
-	//
-	// The function takes the following parameters:
-	//
-	//   - usePreedit: whether the IM context should use the preedit string.
-	//
-	SetUsePreedit func(usePreedit bool)
-}
-
-func defaultIMContextOverrides(v *IMContext) IMContextOverrides {
-	return IMContextOverrides{
-		Commit:                      v.commit,
-		DeleteSurrounding:           v.deleteSurrounding,
-		FilterKeypress:              v.filterKeypress,
-		FocusIn:                     v.focusIn,
-		FocusOut:                    v.focusOut,
-		PreeditString:               v.preeditString,
-		Surrounding:                 v.surrounding,
-		SurroundingWithSelection:    v.surroundingWithSelection,
-		PreeditChanged:              v.preeditChanged,
-		PreeditEnd:                  v.preeditEnd,
-		PreeditStart:                v.preeditStart,
-		Reset:                       v.reset,
-		RetrieveSurrounding:         v.retrieveSurrounding,
-		SetClientWidget:             v.setClientWidget,
-		SetCursorLocation:           v.setCursorLocation,
-		SetSurrounding:              v.setSurrounding,
-		SetSurroundingWithSelection: v.setSurroundingWithSelection,
-		SetUsePreedit:               v.setUsePreedit,
-	}
-}
-
 // IMContext: GtkIMContext defines the interface for GTK input methods.
 //
 // GtkIMContext is used by GTK text input widgets like GtkText to map from key
@@ -58263,96 +50160,6 @@ type IMContexter interface {
 }
 
 var _ IMContexter = (*IMContext)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*IMContext, *IMContextClass, IMContextOverrides](
-		GTypeIMContext,
-		initIMContextClass,
-		wrapIMContext,
-		defaultIMContextOverrides,
-	)
-}
-
-func initIMContextClass(gclass unsafe.Pointer, overrides IMContextOverrides, classInitFunc func(*IMContextClass)) {
-	pclass := (*C.GtkIMContextClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeIMContext))))
-
-	if overrides.Commit != nil {
-		pclass.commit = (*[0]byte)(C._gotk4_gtk4_IMContextClass_commit)
-	}
-
-	if overrides.DeleteSurrounding != nil {
-		pclass.delete_surrounding = (*[0]byte)(C._gotk4_gtk4_IMContextClass_delete_surrounding)
-	}
-
-	if overrides.FilterKeypress != nil {
-		pclass.filter_keypress = (*[0]byte)(C._gotk4_gtk4_IMContextClass_filter_keypress)
-	}
-
-	if overrides.FocusIn != nil {
-		pclass.focus_in = (*[0]byte)(C._gotk4_gtk4_IMContextClass_focus_in)
-	}
-
-	if overrides.FocusOut != nil {
-		pclass.focus_out = (*[0]byte)(C._gotk4_gtk4_IMContextClass_focus_out)
-	}
-
-	if overrides.PreeditString != nil {
-		pclass.get_preedit_string = (*[0]byte)(C._gotk4_gtk4_IMContextClass_get_preedit_string)
-	}
-
-	if overrides.Surrounding != nil {
-		pclass.get_surrounding = (*[0]byte)(C._gotk4_gtk4_IMContextClass_get_surrounding)
-	}
-
-	if overrides.SurroundingWithSelection != nil {
-		pclass.get_surrounding_with_selection = (*[0]byte)(C._gotk4_gtk4_IMContextClass_get_surrounding_with_selection)
-	}
-
-	if overrides.PreeditChanged != nil {
-		pclass.preedit_changed = (*[0]byte)(C._gotk4_gtk4_IMContextClass_preedit_changed)
-	}
-
-	if overrides.PreeditEnd != nil {
-		pclass.preedit_end = (*[0]byte)(C._gotk4_gtk4_IMContextClass_preedit_end)
-	}
-
-	if overrides.PreeditStart != nil {
-		pclass.preedit_start = (*[0]byte)(C._gotk4_gtk4_IMContextClass_preedit_start)
-	}
-
-	if overrides.Reset != nil {
-		pclass.reset = (*[0]byte)(C._gotk4_gtk4_IMContextClass_reset)
-	}
-
-	if overrides.RetrieveSurrounding != nil {
-		pclass.retrieve_surrounding = (*[0]byte)(C._gotk4_gtk4_IMContextClass_retrieve_surrounding)
-	}
-
-	if overrides.SetClientWidget != nil {
-		pclass.set_client_widget = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_client_widget)
-	}
-
-	if overrides.SetCursorLocation != nil {
-		pclass.set_cursor_location = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_cursor_location)
-	}
-
-	if overrides.SetSurrounding != nil {
-		pclass.set_surrounding = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_surrounding)
-	}
-
-	if overrides.SetSurroundingWithSelection != nil {
-		pclass.set_surrounding_with_selection = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_surrounding_with_selection)
-	}
-
-	if overrides.SetUsePreedit != nil {
-		pclass.set_use_preedit = (*[0]byte)(C._gotk4_gtk4_IMContextClass_set_use_preedit)
-	}
-
-	if classInitFunc != nil {
-		class := (*IMContextClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapIMContext(obj *coreglib.Object) *IMContext {
 	return &IMContext{
@@ -58890,550 +50697,6 @@ func (context *IMContext) SetUsePreedit(usePreedit bool) {
 	runtime.KeepAlive(usePreedit)
 }
 
-// The function takes the following parameters:
-//
-func (context *IMContext) commit(str string) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.commit
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.char         // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C._gotk4_gtk4_IMContext_virtual_commit(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(str)
-}
-
-// deleteSurrounding asks the widget that the input context is attached
-// to delete characters around the cursor position by emitting the
-// GtkIMContext::delete_surrounding signal.
-//
-// Note that offset and n_chars are in characters not in bytes which differs
-// from the usage other places in IMContext.
-//
-// In order to use this function, you should first call
-// gtk_im_context_get_surrounding() to get the current context, and call this
-// function immediately afterwards to make sure that you know what you are
-// deleting. You should also account for the fact that even if the signal was
-// handled, the input context might not have deleted all the characters that
-// were requested to be deleted.
-//
-// This function is used by an input method that wants to make subsitutions
-// in the existing text in response to new input. It is not useful for
-// applications.
-//
-// The function takes the following parameters:
-//
-//   - offset from cursor position in chars; a negative value means start before
-//     the cursor.
-//   - nChars: number of characters to delete.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the signal was handled.
-//
-func (context *IMContext) deleteSurrounding(offset, nChars int) bool {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.delete_surrounding
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 C.int           // out
-	var _arg2 C.int           // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = C.int(offset)
-	_arg2 = C.int(nChars)
-
-	_cret = C._gotk4_gtk4_IMContext_virtual_delete_surrounding(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(offset)
-	runtime.KeepAlive(nChars)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// filterKeypress: allow an input method to internally handle key press and
-// release events.
-//
-// If this function returns TRUE, then no further processing should be done for
-// this key event.
-//
-// The function takes the following parameters:
-//
-//   - event: key event.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the input method handled the key event.
-//
-func (context *IMContext) filterKeypress(event gdk.Eventer) bool {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.filter_keypress
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.GdkEvent     // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
-
-	_cret = C._gotk4_gtk4_IMContext_virtual_filter_keypress(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(event)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// focusIn: notify the input method that the widget to which this input context
-// corresponds has gained focus.
-//
-// The input method may, for example, change the displayed feedback to reflect
-// this change.
-func (context *IMContext) focusIn() {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.focus_in
-
-	var _arg0 *C.GtkIMContext // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_IMContext_virtual_focus_in(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
-}
-
-// focusOut: notify the input method that the widget to which this input context
-// corresponds has lost focus.
-//
-// The input method may, for example, change the displayed feedback or reset the
-// contexts state to reflect this change.
-func (context *IMContext) focusOut() {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.focus_out
-
-	var _arg0 *C.GtkIMContext // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_IMContext_virtual_focus_out(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
-}
-
-// preeditString: retrieve the current preedit string for the input context,
-// and a list of attributes to apply to the string.
-//
-// This string should be displayed inserted at the insertion point.
-//
-// The function returns the following values:
-//
-//   - str: location to store the retrieved string. The string retrieved must be
-//     freed with g_free().
-//   - attrs: location to store the retrieved attribute list. When you are done
-//     with this list, you must unreference it with pango_attr_list_unref().
-//   - cursorPos: location to store position of cursor (in characters) within
-//     the preedit string.
-//
-func (context *IMContext) preeditString() (string, *pango.AttrList, int) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.get_preedit_string
-
-	var _arg0 *C.GtkIMContext  // out
-	var _arg1 *C.char          // in
-	var _arg2 *C.PangoAttrList // in
-	var _arg3 C.int            // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_IMContext_virtual_get_preedit_string(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(context)
-
-	var _str string            // out
-	var _attrs *pango.AttrList // out
-	var _cursorPos int         // out
-
-	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_attrs)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-		},
-	)
-	_cursorPos = int(_arg3)
-
-	return _str, _attrs, _cursorPos
-}
-
-// Surrounding retrieves context around the insertion point.
-//
-// Input methods typically want context in order to constrain input text based
-// on existing text; this is important for languages such as Thai where only
-// some sequences of characters are allowed.
-//
-// This function is implemented by emitting the
-// gtk.IMContext::retrieve-surrounding signal on the input method; in response
-// to this signal, a widget should provide as much context as is available,
-// up to an entire paragraph, by calling gtk.IMContext.SetSurrounding().
-//
-// Note that there is no obligation for a widget to respond to the
-// ::retrieve-surrounding signal, so input methods must be prepared to function
-// without context.
-//
-// Deprecated: Use gtk.IMContext.GetSurroundingWithSelection() instead.
-//
-// The function returns the following values:
-//
-//   - text: location to store a UTF-8 encoded string of text holding context
-//     around the insertion point. If the function returns TRUE, then you must
-//     free the result stored in this location with g_free().
-//   - cursorIndex: location to store byte index of the insertion cursor within
-//     text.
-//   - ok: TRUE if surrounding text was provided; in this case you must free the
-//     result stored in text.
-//
-func (context *IMContext) surrounding() (string, int, bool) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.get_surrounding
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.char         // in
-	var _arg2 C.int           // in
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C._gotk4_gtk4_IMContext_virtual_get_surrounding(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(context)
-
-	var _text string     // out
-	var _cursorIndex int // out
-	var _ok bool         // out
-
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_cursorIndex = int(_arg2)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _text, _cursorIndex, _ok
-}
-
-// surroundingWithSelection retrieves context around the insertion point.
-//
-// Input methods typically want context in order to constrain input text based
-// on existing text; this is important for languages such as Thai where only
-// some sequences of characters are allowed.
-//
-// This function is implemented by emitting the
-// gtk.IMContext::retrieve-surrounding signal on the input method;
-// in response to this signal, a widget should provide as much
-// context as is available, up to an entire paragraph, by calling
-// gtk.IMContext.SetSurroundingWithSelection().
-//
-// Note that there is no obligation for a widget to respond to the
-// ::retrieve-surrounding signal, so input methods must be prepared to function
-// without context.
-//
-// The function returns the following values:
-//
-//   - text: location to store a UTF-8 encoded string of text holding context
-//     around the insertion point. If the function returns TRUE, then you must
-//     free the result stored in this location with g_free().
-//   - cursorIndex: location to store byte index of the insertion cursor within
-//     text.
-//   - anchorIndex: location to store byte index of the selection bound within
-//     text.
-//   - ok: TRUE if surrounding text was provided; in this case you must free the
-//     result stored in text.
-//
-func (context *IMContext) surroundingWithSelection() (text string, cursorIndex, anchorIndex int, ok bool) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.get_surrounding_with_selection
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.char         // in
-	var _arg2 C.int           // in
-	var _arg3 C.int           // in
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C._gotk4_gtk4_IMContext_virtual_get_surrounding_with_selection(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2, &_arg3)
-	runtime.KeepAlive(context)
-
-	var _text string     // out
-	var _cursorIndex int // out
-	var _anchorIndex int // out
-	var _ok bool         // out
-
-	_text = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_cursorIndex = int(_arg2)
-	_anchorIndex = int(_arg3)
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _text, _cursorIndex, _anchorIndex, _ok
-}
-
-func (context *IMContext) preeditChanged() {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.preedit_changed
-
-	var _arg0 *C.GtkIMContext // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_IMContext_virtual_preedit_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
-}
-
-func (context *IMContext) preeditEnd() {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.preedit_end
-
-	var _arg0 *C.GtkIMContext // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_IMContext_virtual_preedit_end(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
-}
-
-func (context *IMContext) preeditStart() {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.preedit_start
-
-	var _arg0 *C.GtkIMContext // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_IMContext_virtual_preedit_start(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
-}
-
-// Reset: notify the input method that a change such as a change in cursor
-// position has been made.
-//
-// This will typically cause the input method to clear the preedit state.
-func (context *IMContext) reset() {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.reset
-
-	var _arg0 *C.GtkIMContext // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_IMContext_virtual_reset(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
-}
-
-// The function returns the following values:
-//
-func (context *IMContext) retrieveSurrounding() bool {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.retrieve_surrounding
-
-	var _arg0 *C.GtkIMContext // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C._gotk4_gtk4_IMContext_virtual_retrieve_surrounding(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// setClientWidget: set the client widget for the input context.
-//
-// This is the GtkWidget holding the input focus. This widget is used in order
-// to correctly position status windows, and may also be used for purposes
-// internal to the input method.
-//
-// The function takes the following parameters:
-//
-//   - widget (optional): client widget. This may be NULL to indicate that the
-//     previous client widget no longer exists.
-//
-func (context *IMContext) setClientWidget(widget Widgetter) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.set_client_widget
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.GtkWidget    // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	if widget != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	}
-
-	C._gotk4_gtk4_IMContext_virtual_set_client_widget(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(widget)
-}
-
-// setCursorLocation: notify the input method that a change in cursor position
-// has been made.
-//
-// The location is relative to the client window.
-//
-// The function takes the following parameters:
-//
-//   - area: new location.
-//
-func (context *IMContext) setCursorLocation(area *gdk.Rectangle) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.set_cursor_location
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.GdkRectangle // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.GdkRectangle)(gextras.StructNative(unsafe.Pointer(area)))
-
-	C._gotk4_gtk4_IMContext_virtual_set_cursor_location(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(area)
-}
-
-// setSurrounding sets surrounding context around the insertion point and
-// preedit string.
-//
-// This function is expected to be called in response to the
-// gtk.IMContext::retrieve-surrounding signal, and will likely have no effect if
-// called at other times.
-//
-// Deprecated: Use gtk.IMContext.SetSurroundingWithSelection() instead.
-//
-// The function takes the following parameters:
-//
-//   - text surrounding the insertion point, as UTF-8. the preedit string should
-//     not be included within text.
-//   - len: length of text, or -1 if text is nul-terminated.
-//   - cursorIndex: byte index of the insertion cursor within text.
-//
-func (context *IMContext) setSurrounding(text string, len, cursorIndex int) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.set_surrounding
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.char         // out
-	var _arg2 C.int           // out
-	var _arg3 C.int           // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(len)
-	_arg3 = C.int(cursorIndex)
-
-	C._gotk4_gtk4_IMContext_virtual_set_surrounding(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(text)
-	runtime.KeepAlive(len)
-	runtime.KeepAlive(cursorIndex)
-}
-
-// setSurroundingWithSelection sets surrounding context around the insertion
-// point and preedit string. This function is expected to be called in response
-// to the GtkIMContext::retrieve_surrounding signal, and will likely have no
-// effect if called at other times.
-//
-// The function takes the following parameters:
-//
-//   - text surrounding the insertion point, as UTF-8. the preedit string should
-//     not be included within text.
-//   - len: length of text, or -1 if text is nul-terminated.
-//   - cursorIndex: byte index of the insertion cursor within text.
-//   - anchorIndex: byte index of the selection bound within text.
-//
-func (context *IMContext) setSurroundingWithSelection(text string, len, cursorIndex, anchorIndex int) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.set_surrounding_with_selection
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 *C.char         // out
-	var _arg2 C.int           // out
-	var _arg3 C.int           // out
-	var _arg4 C.int           // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(text)))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(len)
-	_arg3 = C.int(cursorIndex)
-	_arg4 = C.int(anchorIndex)
-
-	C._gotk4_gtk4_IMContext_virtual_set_surrounding_with_selection(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(text)
-	runtime.KeepAlive(len)
-	runtime.KeepAlive(cursorIndex)
-	runtime.KeepAlive(anchorIndex)
-}
-
-// setUsePreedit sets whether the IM context should use the preedit string to
-// display feedback.
-//
-// If use_preedit is FALSE (default is TRUE), then the IM context may use some
-// other method to display feedback, such as displaying it in a child of the
-// root window.
-//
-// The function takes the following parameters:
-//
-//   - usePreedit: whether the IM context should use the preedit string.
-//
-func (context *IMContext) setUsePreedit(usePreedit bool) {
-	gclass := (*C.GtkIMContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.set_use_preedit
-
-	var _arg0 *C.GtkIMContext // out
-	var _arg1 C.gboolean      // out
-
-	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	if usePreedit {
-		_arg1 = C.TRUE
-	}
-
-	C._gotk4_gtk4_IMContext_virtual_set_use_preedit(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(usePreedit)
-}
-
-// IMContextSimpleOverrides contains methods that are overridable.
-type IMContextSimpleOverrides struct {
-}
-
-func defaultIMContextSimpleOverrides(v *IMContextSimple) IMContextSimpleOverrides {
-	return IMContextSimpleOverrides{}
-}
-
 // IMContextSimple: GtkIMContextSimple is an input method supporting table-based
 // input methods.
 //
@@ -59465,22 +50728,6 @@ type IMContextSimple struct {
 var (
 	_ IMContexter = (*IMContextSimple)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*IMContextSimple, *IMContextSimpleClass, IMContextSimpleOverrides](
-		GTypeIMContextSimple,
-		initIMContextSimpleClass,
-		wrapIMContextSimple,
-		defaultIMContextSimpleOverrides,
-	)
-}
-
-func initIMContextSimpleClass(gclass unsafe.Pointer, overrides IMContextSimpleOverrides, classInitFunc func(*IMContextSimpleClass)) {
-	if classInitFunc != nil {
-		class := (*IMContextSimpleClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapIMContextSimple(obj *coreglib.Object) *IMContextSimple {
 	return &IMContextSimple{
@@ -59531,14 +50778,6 @@ func (contextSimple *IMContextSimple) AddComposeFile(composeFile string) {
 	runtime.KeepAlive(composeFile)
 }
 
-// IMMulticontextOverrides contains methods that are overridable.
-type IMMulticontextOverrides struct {
-}
-
-func defaultIMMulticontextOverrides(v *IMMulticontext) IMMulticontextOverrides {
-	return IMMulticontextOverrides{}
-}
-
 // IMMulticontext: GtkIMMulticontext is input method supporting multiple,
 // switchable input methods.
 //
@@ -59553,22 +50792,6 @@ type IMMulticontext struct {
 var (
 	_ IMContexter = (*IMMulticontext)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*IMMulticontext, *IMMulticontextClass, IMMulticontextOverrides](
-		GTypeIMMulticontext,
-		initIMMulticontextClass,
-		wrapIMMulticontext,
-		defaultIMMulticontextOverrides,
-	)
-}
-
-func initIMMulticontextClass(gclass unsafe.Pointer, overrides IMMulticontextOverrides, classInitFunc func(*IMMulticontextClass)) {
-	if classInitFunc != nil {
-		class := (*IMMulticontextClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapIMMulticontext(obj *coreglib.Object) *IMMulticontext {
 	return &IMMulticontext{
@@ -64999,14 +56222,6 @@ func (self *Label) SetYAlign(yalign float32) {
 	runtime.KeepAlive(yalign)
 }
 
-// LayoutChildOverrides contains methods that are overridable.
-type LayoutChildOverrides struct {
-}
-
-func defaultLayoutChildOverrides(v *LayoutChild) LayoutChildOverrides {
-	return LayoutChildOverrides{}
-}
-
 // LayoutChild: GtkLayoutChild is the base class for objects that are meant to
 // hold layout properties.
 //
@@ -65035,22 +56250,6 @@ type LayoutChilder interface {
 }
 
 var _ LayoutChilder = (*LayoutChild)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*LayoutChild, *LayoutChildClass, LayoutChildOverrides](
-		GTypeLayoutChild,
-		initLayoutChildClass,
-		wrapLayoutChild,
-		defaultLayoutChildOverrides,
-	)
-}
-
-func initLayoutChildClass(gclass unsafe.Pointer, overrides LayoutChildOverrides, classInitFunc func(*LayoutChildClass)) {
-	if classInitFunc != nil {
-		class := (*LayoutChildClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapLayoutChild(obj *coreglib.Object) *LayoutChild {
 	return &LayoutChild{
@@ -65148,78 +56347,6 @@ func (layoutChild *LayoutChild) LayoutManager() LayoutManagerer {
 	return _layoutManager
 }
 
-// LayoutManagerOverrides contains methods that are overridable.
-type LayoutManagerOverrides struct {
-	// Allocate assigns the given width, height, and baseline to a widget,
-	// and computes the position and sizes of the children of the widget using
-	// the layout management policy of manager.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget: GtkWidget using manager.
-	//   - width: new width of the widget.
-	//   - height: new height of the widget.
-	//   - baseline position of the widget, or -1.
-	//
-	Allocate func(widget Widgetter, width, height, baseline int)
-	// CreateLayoutChild: create a LayoutChild instance for the given for_child
-	// widget.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget using the manager.
-	//   - forChild: child of widget.
-	//
-	// The function returns the following values:
-	//
-	//   - layoutChild: LayoutChild.
-	//
-	CreateLayoutChild func(widget, forChild Widgetter) LayoutChilder
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	RequestMode func(widget Widgetter) SizeRequestMode
-	// Measure measures the size of the widget using manager, for the given
-	// orientation and size.
-	//
-	// See the gtk.Widget documentation on layout management for more details.
-	//
-	// The function takes the following parameters:
-	//
-	//   - widget: GtkWidget using manager.
-	//   - orientation to measure.
-	//   - forSize: size for the opposite of orientation; for instance, if the
-	//     orientation is GTK_ORIENTATION_HORIZONTAL, this is the height of the
-	//     widget; if the orientation is GTK_ORIENTATION_VERTICAL, this is the
-	//     width of the widget. This allows to measure the height for the given
-	//     width, and the width for the given height. Use -1 if the size is not
-	//     known.
-	//
-	// The function returns the following values:
-	//
-	//   - minimum (optional) size for the given size and orientation.
-	//   - natural (optional): natural, or preferred size for the given size and
-	//     orientation.
-	//   - minimumBaseline (optional): baseline position for the minimum size.
-	//   - naturalBaseline (optional): baseline position for the natural size.
-	//
-	Measure func(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
-	Root    func()
-	Unroot  func()
-}
-
-func defaultLayoutManagerOverrides(v *LayoutManager) LayoutManagerOverrides {
-	return LayoutManagerOverrides{
-		Allocate:          v.allocate,
-		CreateLayoutChild: v.createLayoutChild,
-		RequestMode:       v.requestMode,
-		Measure:           v.measure,
-		Root:              v.root,
-		Unroot:            v.unroot,
-	}
-}
-
 // LayoutManager: layout managers are delegate classes that handle the preferred
 // size and the allocation of a widget.
 //
@@ -65284,48 +56411,6 @@ type LayoutManagerer interface {
 }
 
 var _ LayoutManagerer = (*LayoutManager)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*LayoutManager, *LayoutManagerClass, LayoutManagerOverrides](
-		GTypeLayoutManager,
-		initLayoutManagerClass,
-		wrapLayoutManager,
-		defaultLayoutManagerOverrides,
-	)
-}
-
-func initLayoutManagerClass(gclass unsafe.Pointer, overrides LayoutManagerOverrides, classInitFunc func(*LayoutManagerClass)) {
-	pclass := (*C.GtkLayoutManagerClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeLayoutManager))))
-
-	if overrides.Allocate != nil {
-		pclass.allocate = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_allocate)
-	}
-
-	if overrides.CreateLayoutChild != nil {
-		pclass.create_layout_child = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_create_layout_child)
-	}
-
-	if overrides.RequestMode != nil {
-		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_get_request_mode)
-	}
-
-	if overrides.Measure != nil {
-		pclass.measure = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_measure)
-	}
-
-	if overrides.Root != nil {
-		pclass.root = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_root)
-	}
-
-	if overrides.Unroot != nil {
-		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_LayoutManagerClass_unroot)
-	}
-
-	if classInitFunc != nil {
-		class := (*LayoutManagerClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapLayoutManager(obj *coreglib.Object) *LayoutManager {
 	return &LayoutManager{
@@ -65557,204 +56642,6 @@ func (manager *LayoutManager) Measure(widget Widgetter, orientation Orientation,
 	_naturalBaseline = int(_arg7)
 
 	return _minimum, _natural, _minimumBaseline, _naturalBaseline
-}
-
-// Allocate assigns the given width, height, and baseline to a widget,
-// and computes the position and sizes of the children of the widget using the
-// layout management policy of manager.
-//
-// The function takes the following parameters:
-//
-//   - widget: GtkWidget using manager.
-//   - width: new width of the widget.
-//   - height: new height of the widget.
-//   - baseline position of the widget, or -1.
-//
-func (manager *LayoutManager) allocate(widget Widgetter, width, height, baseline int) {
-	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
-	fnarg := gclass.allocate
-
-	var _arg0 *C.GtkLayoutManager // out
-	var _arg1 *C.GtkWidget        // out
-	var _arg2 C.int               // out
-	var _arg3 C.int               // out
-	var _arg4 C.int               // out
-
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.int(width)
-	_arg3 = C.int(height)
-	_arg4 = C.int(baseline)
-
-	C._gotk4_gtk4_LayoutManager_virtual_allocate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(baseline)
-}
-
-// createLayoutChild: create a LayoutChild instance for the given for_child
-// widget.
-//
-// The function takes the following parameters:
-//
-//   - widget using the manager.
-//   - forChild: child of widget.
-//
-// The function returns the following values:
-//
-//   - layoutChild: LayoutChild.
-//
-func (manager *LayoutManager) createLayoutChild(widget, forChild Widgetter) LayoutChilder {
-	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
-	fnarg := gclass.create_layout_child
-
-	var _arg0 *C.GtkLayoutManager // out
-	var _arg1 *C.GtkWidget        // out
-	var _arg2 *C.GtkWidget        // out
-	var _cret *C.GtkLayoutChild   // in
-
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(forChild).Native()))
-
-	_cret = C._gotk4_gtk4_LayoutManager_virtual_create_layout_child(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(forChild)
-
-	var _layoutChild LayoutChilder // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.LayoutChilder is nil")
-		}
-
-		object := coreglib.AssumeOwnership(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(LayoutChilder)
-			return ok
-		})
-		rv, ok := casted.(LayoutChilder)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.LayoutChilder")
-		}
-		_layoutChild = rv
-	}
-
-	return _layoutChild
-}
-
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
-func (manager *LayoutManager) requestMode(widget Widgetter) SizeRequestMode {
-	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
-	fnarg := gclass.get_request_mode
-
-	var _arg0 *C.GtkLayoutManager  // out
-	var _arg1 *C.GtkWidget         // out
-	var _cret C.GtkSizeRequestMode // in
-
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C._gotk4_gtk4_LayoutManager_virtual_get_request_mode(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(widget)
-
-	var _sizeRequestMode SizeRequestMode // out
-
-	_sizeRequestMode = SizeRequestMode(_cret)
-
-	return _sizeRequestMode
-}
-
-// Measure measures the size of the widget using manager, for the given
-// orientation and size.
-//
-// See the gtk.Widget documentation on layout management for more details.
-//
-// The function takes the following parameters:
-//
-//   - widget: GtkWidget using manager.
-//   - orientation to measure.
-//   - forSize: size for the opposite of orientation; for instance, if the
-//     orientation is GTK_ORIENTATION_HORIZONTAL, this is the height of the
-//     widget; if the orientation is GTK_ORIENTATION_VERTICAL, this is the width
-//     of the widget. This allows to measure the height for the given width,
-//     and the width for the given height. Use -1 if the size is not known.
-//
-// The function returns the following values:
-//
-//   - minimum (optional) size for the given size and orientation.
-//   - natural (optional): natural, or preferred size for the given size and
-//     orientation.
-//   - minimumBaseline (optional): baseline position for the minimum size.
-//   - naturalBaseline (optional): baseline position for the natural size.
-//
-func (manager *LayoutManager) measure(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int) {
-	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
-	fnarg := gclass.measure
-
-	var _arg0 *C.GtkLayoutManager // out
-	var _arg1 *C.GtkWidget        // out
-	var _arg2 C.GtkOrientation    // out
-	var _arg3 C.int               // out
-	var _arg4 C.int               // in
-	var _arg5 C.int               // in
-	var _arg6 C.int               // in
-	var _arg7 C.int               // in
-
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = C.GtkOrientation(orientation)
-	_arg3 = C.int(forSize)
-
-	C._gotk4_gtk4_LayoutManager_virtual_measure(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
-	runtime.KeepAlive(manager)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(forSize)
-
-	var _minimum int         // out
-	var _natural int         // out
-	var _minimumBaseline int // out
-	var _naturalBaseline int // out
-
-	_minimum = int(_arg4)
-	_natural = int(_arg5)
-	_minimumBaseline = int(_arg6)
-	_naturalBaseline = int(_arg7)
-
-	return _minimum, _natural, _minimumBaseline, _naturalBaseline
-}
-
-func (manager *LayoutManager) root() {
-	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
-	fnarg := gclass.root
-
-	var _arg0 *C.GtkLayoutManager // out
-
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	C._gotk4_gtk4_LayoutManager_virtual_root(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(manager)
-}
-
-func (manager *LayoutManager) unroot() {
-	gclass := (*C.GtkLayoutManagerClass)(coreglib.PeekParentClass(manager))
-	fnarg := gclass.unroot
-
-	var _arg0 *C.GtkLayoutManager // out
-
-	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	C._gotk4_gtk4_LayoutManager_virtual_unroot(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(manager)
 }
 
 // LevelBar: GtkLevelBar is a widget that can be used as a level indicator.
@@ -67449,17 +58336,6 @@ func (box *ListBox) UnselectRow(row *ListBoxRow) {
 	runtime.KeepAlive(row)
 }
 
-// ListBoxRowOverrides contains methods that are overridable.
-type ListBoxRowOverrides struct {
-	Activate func()
-}
-
-func defaultListBoxRowOverrides(v *ListBoxRow) ListBoxRowOverrides {
-	return ListBoxRowOverrides{
-		Activate: v.activate,
-	}
-}
-
 // ListBoxRow: GtkListBoxRow is the kind of widget that can be added to a
 // GtkListBox.
 type ListBoxRow struct {
@@ -67474,28 +58350,6 @@ var (
 	_ Widgetter         = (*ListBoxRow)(nil)
 	_ coreglib.Objector = (*ListBoxRow)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ListBoxRow, *ListBoxRowClass, ListBoxRowOverrides](
-		GTypeListBoxRow,
-		initListBoxRowClass,
-		wrapListBoxRow,
-		defaultListBoxRowOverrides,
-	)
-}
-
-func initListBoxRowClass(gclass unsafe.Pointer, overrides ListBoxRowOverrides, classInitFunc func(*ListBoxRowClass)) {
-	pclass := (*C.GtkListBoxRowClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeListBoxRow))))
-
-	if overrides.Activate != nil {
-		pclass.activate = (*[0]byte)(C._gotk4_gtk4_ListBoxRowClass_activate)
-	}
-
-	if classInitFunc != nil {
-		class := (*ListBoxRowClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapListBoxRow(obj *coreglib.Object) *ListBoxRow {
 	return &ListBoxRow{
@@ -67847,18 +58701,6 @@ func (row *ListBoxRow) SetSelectable(selectable bool) {
 	runtime.KeepAlive(selectable)
 }
 
-func (row *ListBoxRow) activate() {
-	gclass := (*C.GtkListBoxRowClass)(coreglib.PeekParentClass(row))
-	fnarg := gclass.activate
-
-	var _arg0 *C.GtkListBoxRow // out
-
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(coreglib.InternObject(row).Native()))
-
-	C._gotk4_gtk4_ListBoxRow_virtual_activate(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(row)
-}
-
 // ListItem: GtkListItem is used by list widgets to represent items in a
 // GListModel.
 //
@@ -68204,14 +59046,6 @@ func marshalListItemFactory(p uintptr) (interface{}, error) {
 	return wrapListItemFactory(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// ListStoreOverrides contains methods that are overridable.
-type ListStoreOverrides struct {
-}
-
-func defaultListStoreOverrides(v *ListStore) ListStoreOverrides {
-	return ListStoreOverrides{}
-}
-
 // ListStore: list-like data structure that can be used with the GtkTreeView
 //
 // The ListStore object is a list model for use with a TreeView widget.
@@ -68263,22 +59097,6 @@ type ListStore struct {
 var (
 	_ coreglib.Objector = (*ListStore)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ListStore, *ListStoreClass, ListStoreOverrides](
-		GTypeListStore,
-		initListStoreClass,
-		wrapListStore,
-		defaultListStoreOverrides,
-	)
-}
-
-func initListStoreClass(gclass unsafe.Pointer, overrides ListStoreOverrides, classInitFunc func(*ListStoreClass)) {
-	if classInitFunc != nil {
-		class := (*ListStoreClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapListStore(obj *coreglib.Object) *ListStore {
 	return &ListStore{
@@ -69422,14 +60240,6 @@ func (button *LockButton) SetPermission(permission gio.Permissioner) {
 	runtime.KeepAlive(permission)
 }
 
-// MapListModelOverrides contains methods that are overridable.
-type MapListModelOverrides struct {
-}
-
-func defaultMapListModelOverrides(v *MapListModel) MapListModelOverrides {
-	return MapListModelOverrides{}
-}
-
 // MapListModel: GtkMapListModel maps the items in a list model to different
 // items.
 //
@@ -69468,22 +60278,6 @@ type MapListModel struct {
 var (
 	_ coreglib.Objector = (*MapListModel)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*MapListModel, *MapListModelClass, MapListModelOverrides](
-		GTypeMapListModel,
-		initMapListModelClass,
-		wrapMapListModel,
-		defaultMapListModelOverrides,
-	)
-}
-
-func initMapListModelClass(gclass unsafe.Pointer, overrides MapListModelOverrides, classInitFunc func(*MapListModelClass)) {
-	if classInitFunc != nil {
-		class := (*MapListModelClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapMapListModel(obj *coreglib.Object) *MapListModel {
 	return &MapListModel{
@@ -69648,14 +60442,6 @@ func (self *MapListModel) SetModel(model gio.ListModeller) {
 	runtime.KeepAlive(model)
 }
 
-// MediaControlsOverrides contains methods that are overridable.
-type MediaControlsOverrides struct {
-}
-
-func defaultMediaControlsOverrides(v *MediaControls) MediaControlsOverrides {
-	return MediaControlsOverrides{}
-}
-
 // MediaControls: GtkMediaControls is a widget to show controls for a video.
 //
 // !An example GtkMediaControls (media-controls.png)
@@ -69669,22 +60455,6 @@ type MediaControls struct {
 var (
 	_ Widgetter = (*MediaControls)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*MediaControls, *MediaControlsClass, MediaControlsOverrides](
-		GTypeMediaControls,
-		initMediaControlsClass,
-		wrapMediaControls,
-		defaultMediaControlsOverrides,
-	)
-}
-
-func initMediaControlsClass(gclass unsafe.Pointer, overrides MediaControlsOverrides, classInitFunc func(*MediaControlsClass)) {
-	if classInitFunc != nil {
-		class := (*MediaControlsClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapMediaControls(obj *coreglib.Object) *MediaControls {
 	return &MediaControls{
@@ -69796,19 +60566,6 @@ func (controls *MediaControls) SetMediaStream(stream MediaStreamer) {
 	runtime.KeepAlive(stream)
 }
 
-// MediaFileOverrides contains methods that are overridable.
-type MediaFileOverrides struct {
-	Close func()
-	Open  func()
-}
-
-func defaultMediaFileOverrides(v *MediaFile) MediaFileOverrides {
-	return MediaFileOverrides{
-		Close: v.close,
-		Open:  v.open,
-	}
-}
-
 // MediaFile: GtkMediaFile implements GtkMediaStream for files.
 //
 // This provides a simple way to play back video files with GTK.
@@ -69836,32 +60593,6 @@ type MediaFiler interface {
 }
 
 var _ MediaFiler = (*MediaFile)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*MediaFile, *MediaFileClass, MediaFileOverrides](
-		GTypeMediaFile,
-		initMediaFileClass,
-		wrapMediaFile,
-		defaultMediaFileOverrides,
-	)
-}
-
-func initMediaFileClass(gclass unsafe.Pointer, overrides MediaFileOverrides, classInitFunc func(*MediaFileClass)) {
-	pclass := (*C.GtkMediaFileClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeMediaFile))))
-
-	if overrides.Close != nil {
-		pclass.close = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_close)
-	}
-
-	if overrides.Open != nil {
-		pclass.open = (*[0]byte)(C._gotk4_gtk4_MediaFileClass_open)
-	}
-
-	if classInitFunc != nil {
-		class := (*MediaFileClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapMediaFile(obj *coreglib.Object) *MediaFile {
 	return &MediaFile{
@@ -70197,105 +60928,6 @@ func (self *MediaFile) SetResource(resourcePath string) {
 	runtime.KeepAlive(resourcePath)
 }
 
-func (self *MediaFile) close() {
-	gclass := (*C.GtkMediaFileClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.close
-
-	var _arg0 *C.GtkMediaFile // out
-
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	C._gotk4_gtk4_MediaFile_virtual_close(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(self)
-}
-
-func (self *MediaFile) open() {
-	gclass := (*C.GtkMediaFileClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.open
-
-	var _arg0 *C.GtkMediaFile // out
-
-	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	C._gotk4_gtk4_MediaFile_virtual_open(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(self)
-}
-
-// MediaStreamOverrides contains methods that are overridable.
-type MediaStreamOverrides struct {
-	// Pause pauses playback of the stream.
-	//
-	// If the stream is not playing, do nothing.
-	Pause func()
-	// The function returns the following values:
-	//
-	Play func() bool
-	// Realize: called by users to attach the media stream to a GdkSurface they
-	// manage.
-	//
-	// The stream can then access the resources of surface for its rendering
-	// purposes. In particular, media streams might want to create a
-	// GdkGLContext or sync to the GdkFrameClock.
-	//
-	// Whoever calls this function is responsible for calling
-	// gtk.MediaStream.Unrealize() before either the stream or surface get
-	// destroyed.
-	//
-	// Multiple calls to this function may happen from different users of the
-	// video, even with the same surface. Each of these calls must be followed
-	// by its own call to gtk.MediaStream.Unrealize().
-	//
-	// It is not required to call this function to make a media stream work.
-	//
-	// The function takes the following parameters:
-	//
-	//   - surface: GdkSurface.
-	//
-	Realize func(surface gdk.Surfacer)
-	// Seek: start a seek operation on self to timestamp.
-	//
-	// If timestamp is out of range, it will be clamped.
-	//
-	// Seek operations may not finish instantly. While a seek operation is in
-	// process, the gtk.MediaStream:seeking property will be set.
-	//
-	// When calling gtk_media_stream_seek() during an ongoing seek operation,
-	// the new seek will override any pending seek.
-	//
-	// The function takes the following parameters:
-	//
-	//   - timestamp to seek to.
-	//
-	Seek func(timestamp int64)
-	// Unrealize undoes a previous call to gtk_media_stream_realize().
-	//
-	// This causes the stream to release all resources it had allocated from
-	// surface.
-	//
-	// The function takes the following parameters:
-	//
-	//   - surface: GdkSurface the stream was realized with.
-	//
-	Unrealize func(surface gdk.Surfacer)
-	// The function takes the following parameters:
-	//
-	//   - muted
-	//   - volume
-	//
-	UpdateAudio func(muted bool, volume float64)
-}
-
-func defaultMediaStreamOverrides(v *MediaStream) MediaStreamOverrides {
-	return MediaStreamOverrides{
-		Pause:       v.pause,
-		Play:        v.play,
-		Realize:     v.realize,
-		Seek:        v.seek,
-		Unrealize:   v.unrealize,
-		UpdateAudio: v.updateAudio,
-	}
-}
-
 // MediaStream: GtkMediaStream is the integration point for media playback
 // inside GTK.
 //
@@ -70330,48 +60962,6 @@ type MediaStreamer interface {
 }
 
 var _ MediaStreamer = (*MediaStream)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*MediaStream, *MediaStreamClass, MediaStreamOverrides](
-		GTypeMediaStream,
-		initMediaStreamClass,
-		wrapMediaStream,
-		defaultMediaStreamOverrides,
-	)
-}
-
-func initMediaStreamClass(gclass unsafe.Pointer, overrides MediaStreamOverrides, classInitFunc func(*MediaStreamClass)) {
-	pclass := (*C.GtkMediaStreamClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeMediaStream))))
-
-	if overrides.Pause != nil {
-		pclass.pause = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_pause)
-	}
-
-	if overrides.Play != nil {
-		pclass.play = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_play)
-	}
-
-	if overrides.Realize != nil {
-		pclass.realize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_realize)
-	}
-
-	if overrides.Seek != nil {
-		pclass.seek = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_seek)
-	}
-
-	if overrides.Unrealize != nil {
-		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_unrealize)
-	}
-
-	if overrides.UpdateAudio != nil {
-		pclass.update_audio = (*[0]byte)(C._gotk4_gtk4_MediaStreamClass_update_audio)
-	}
-
-	if classInitFunc != nil {
-		class := (*MediaStreamClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapMediaStream(obj *coreglib.Object) *MediaStream {
 	return &MediaStream{
@@ -71091,158 +61681,6 @@ func (self *MediaStream) Update(timestamp int64) {
 	C.gtk_media_stream_update(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(timestamp)
-}
-
-// Pause pauses playback of the stream.
-//
-// If the stream is not playing, do nothing.
-func (self *MediaStream) pause() {
-	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.pause
-
-	var _arg0 *C.GtkMediaStream // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	C._gotk4_gtk4_MediaStream_virtual_pause(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(self)
-}
-
-// The function returns the following values:
-//
-func (self *MediaStream) play() bool {
-	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.play
-
-	var _arg0 *C.GtkMediaStream // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C._gotk4_gtk4_MediaStream_virtual_play(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(self)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Realize: called by users to attach the media stream to a GdkSurface they
-// manage.
-//
-// The stream can then access the resources of surface for its rendering
-// purposes. In particular, media streams might want to create a GdkGLContext or
-// sync to the GdkFrameClock.
-//
-// Whoever calls this function is responsible for calling
-// gtk.MediaStream.Unrealize() before either the stream or surface get
-// destroyed.
-//
-// Multiple calls to this function may happen from different users of the video,
-// even with the same surface. Each of these calls must be followed by its own
-// call to gtk.MediaStream.Unrealize().
-//
-// It is not required to call this function to make a media stream work.
-//
-// The function takes the following parameters:
-//
-//   - surface: GdkSurface.
-//
-func (self *MediaStream) realize(surface gdk.Surfacer) {
-	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.realize
-
-	var _arg0 *C.GtkMediaStream // out
-	var _arg1 *C.GdkSurface     // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-
-	C._gotk4_gtk4_MediaStream_virtual_realize(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(surface)
-}
-
-// Seek: start a seek operation on self to timestamp.
-//
-// If timestamp is out of range, it will be clamped.
-//
-// Seek operations may not finish instantly. While a seek operation is in
-// process, the gtk.MediaStream:seeking property will be set.
-//
-// When calling gtk_media_stream_seek() during an ongoing seek operation,
-// the new seek will override any pending seek.
-//
-// The function takes the following parameters:
-//
-//   - timestamp to seek to.
-//
-func (self *MediaStream) seek(timestamp int64) {
-	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.seek
-
-	var _arg0 *C.GtkMediaStream // out
-	var _arg1 C.gint64          // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.gint64(timestamp)
-
-	C._gotk4_gtk4_MediaStream_virtual_seek(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(timestamp)
-}
-
-// Unrealize undoes a previous call to gtk_media_stream_realize().
-//
-// This causes the stream to release all resources it had allocated from
-// surface.
-//
-// The function takes the following parameters:
-//
-//   - surface: GdkSurface the stream was realized with.
-//
-func (self *MediaStream) unrealize(surface gdk.Surfacer) {
-	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.unrealize
-
-	var _arg0 *C.GtkMediaStream // out
-	var _arg1 *C.GdkSurface     // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-
-	C._gotk4_gtk4_MediaStream_virtual_unrealize(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(surface)
-}
-
-// The function takes the following parameters:
-//
-//   - muted
-//   - volume
-//
-func (self *MediaStream) updateAudio(muted bool, volume float64) {
-	gclass := (*C.GtkMediaStreamClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.update_audio
-
-	var _arg0 *C.GtkMediaStream // out
-	var _arg1 C.gboolean        // out
-	var _arg2 C.double          // out
-
-	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	if muted {
-		_arg1 = C.TRUE
-	}
-	_arg2 = C.double(volume)
-
-	C._gotk4_gtk4_MediaStream_virtual_update_audio(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(muted)
-	runtime.KeepAlive(volume)
 }
 
 // MenuButton: GtkMenuButton widget is used to display a popup when clicked.
@@ -72047,14 +62485,6 @@ func (self *MnemonicTrigger) Keyval() uint {
 	return _guint
 }
 
-// MountOperationOverrides contains methods that are overridable.
-type MountOperationOverrides struct {
-}
-
-func defaultMountOperationOverrides(v *MountOperation) MountOperationOverrides {
-	return MountOperationOverrides{}
-}
-
 // MountOperation: GtkMountOperation is an implementation of GMountOperation.
 //
 // The functions and objects described here make working with GTK and GIO more
@@ -72075,22 +62505,6 @@ type MountOperation struct {
 var (
 	_ coreglib.Objector = (*MountOperation)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*MountOperation, *MountOperationClass, MountOperationOverrides](
-		GTypeMountOperation,
-		initMountOperationClass,
-		wrapMountOperation,
-		defaultMountOperationOverrides,
-	)
-}
-
-func initMountOperationClass(gclass unsafe.Pointer, overrides MountOperationOverrides, classInitFunc func(*MountOperationClass)) {
-	if classInitFunc != nil {
-		class := (*MountOperationClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapMountOperation(obj *coreglib.Object) *MountOperation {
 	return &MountOperation{
@@ -72341,14 +62755,6 @@ func (self *MultiFilter) Remove(position uint) {
 	runtime.KeepAlive(position)
 }
 
-// MultiSelectionOverrides contains methods that are overridable.
-type MultiSelectionOverrides struct {
-}
-
-func defaultMultiSelectionOverrides(v *MultiSelection) MultiSelectionOverrides {
-	return MultiSelectionOverrides{}
-}
-
 // MultiSelection: GtkMultiSelection is a GtkSelectionModel that allows
 // selecting multiple elements.
 type MultiSelection struct {
@@ -72361,22 +62767,6 @@ type MultiSelection struct {
 var (
 	_ coreglib.Objector = (*MultiSelection)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*MultiSelection, *MultiSelectionClass, MultiSelectionOverrides](
-		GTypeMultiSelection,
-		initMultiSelectionClass,
-		wrapMultiSelection,
-		defaultMultiSelectionOverrides,
-	)
-}
-
-func initMultiSelectionClass(gclass unsafe.Pointer, overrides MultiSelectionOverrides, classInitFunc func(*MultiSelectionClass)) {
-	if classInitFunc != nil {
-		class := (*MultiSelectionClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapMultiSelection(obj *coreglib.Object) *MultiSelection {
 	return &MultiSelection{
@@ -72471,14 +62861,6 @@ func (self *MultiSelection) SetModel(model gio.ListModeller) {
 	runtime.KeepAlive(model)
 }
 
-// MultiSorterOverrides contains methods that are overridable.
-type MultiSorterOverrides struct {
-}
-
-func defaultMultiSorterOverrides(v *MultiSorter) MultiSorterOverrides {
-	return MultiSorterOverrides{}
-}
-
 // MultiSorter: GtkMultiSorter combines multiple sorters by trying them in turn.
 //
 // If the first sorter compares two items as equal, the second is tried next,
@@ -72495,22 +62877,6 @@ type MultiSorter struct {
 var (
 	_ coreglib.Objector = (*MultiSorter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*MultiSorter, *MultiSorterClass, MultiSorterOverrides](
-		GTypeMultiSorter,
-		initMultiSorterClass,
-		wrapMultiSorter,
-		defaultMultiSorterOverrides,
-	)
-}
-
-func initMultiSorterClass(gclass unsafe.Pointer, overrides MultiSorterOverrides, classInitFunc func(*MultiSorterClass)) {
-	if classInitFunc != nil {
-		class := (*MultiSorterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapMultiSorter(obj *coreglib.Object) *MultiSorter {
 	return &MultiSorter{
@@ -72672,36 +63038,6 @@ func (self *NamedAction) ActionName() string {
 	return _utf8
 }
 
-// NativeDialogOverrides contains methods that are overridable.
-type NativeDialogOverrides struct {
-	// Hide hides the dialog if it is visible, aborting any interaction.
-	//
-	// Once this is called the gtk.NativeDialog::response signal will *not* be
-	// emitted until after the next call to gtk.NativeDialog.Show().
-	//
-	// If the dialog is not visible this does nothing.
-	Hide func()
-	// The function takes the following parameters:
-	//
-	Response func(responseId int)
-	// Show shows the dialog on the display.
-	//
-	// When the user accepts the state of the dialog the dialog will be
-	// automatically hidden and the gtk.NativeDialog::response signal will be
-	// emitted.
-	//
-	// Multiple calls while the dialog is visible will be ignored.
-	Show func()
-}
-
-func defaultNativeDialogOverrides(v *NativeDialog) NativeDialogOverrides {
-	return NativeDialogOverrides{
-		Hide:     v.hide,
-		Response: v.response,
-		Show:     v.show,
-	}
-}
-
 // NativeDialog: native dialogs are platform dialogs that don't use GtkDialog.
 //
 // They are used in order to integrate better with a platform, by looking the
@@ -72735,36 +63071,6 @@ type NativeDialogger interface {
 }
 
 var _ NativeDialogger = (*NativeDialog)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*NativeDialog, *NativeDialogClass, NativeDialogOverrides](
-		GTypeNativeDialog,
-		initNativeDialogClass,
-		wrapNativeDialog,
-		defaultNativeDialogOverrides,
-	)
-}
-
-func initNativeDialogClass(gclass unsafe.Pointer, overrides NativeDialogOverrides, classInitFunc func(*NativeDialogClass)) {
-	pclass := (*C.GtkNativeDialogClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeNativeDialog))))
-
-	if overrides.Hide != nil {
-		pclass.hide = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_hide)
-	}
-
-	if overrides.Response != nil {
-		pclass.response = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_response)
-	}
-
-	if overrides.Show != nil {
-		pclass.show = (*[0]byte)(C._gotk4_gtk4_NativeDialogClass_show)
-	}
-
-	if classInitFunc != nil {
-		class := (*NativeDialogClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapNativeDialog(obj *coreglib.Object) *NativeDialog {
 	return &NativeDialog{
@@ -73016,60 +63322,6 @@ func (self *NativeDialog) Show() {
 	runtime.KeepAlive(self)
 }
 
-// Hide hides the dialog if it is visible, aborting any interaction.
-//
-// Once this is called the gtk.NativeDialog::response signal will *not* be
-// emitted until after the next call to gtk.NativeDialog.Show().
-//
-// If the dialog is not visible this does nothing.
-func (self *NativeDialog) hide() {
-	gclass := (*C.GtkNativeDialogClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.hide
-
-	var _arg0 *C.GtkNativeDialog // out
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	C._gotk4_gtk4_NativeDialog_virtual_hide(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(self)
-}
-
-// The function takes the following parameters:
-//
-func (self *NativeDialog) response(responseId int) {
-	gclass := (*C.GtkNativeDialogClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.response
-
-	var _arg0 *C.GtkNativeDialog // out
-	var _arg1 C.int              // out
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.int(responseId)
-
-	C._gotk4_gtk4_NativeDialog_virtual_response(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(responseId)
-}
-
-// Show shows the dialog on the display.
-//
-// When the user accepts the state of the dialog the dialog will be
-// automatically hidden and the gtk.NativeDialog::response signal will be
-// emitted.
-//
-// Multiple calls while the dialog is visible will be ignored.
-func (self *NativeDialog) show() {
-	gclass := (*C.GtkNativeDialogClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.show
-
-	var _arg0 *C.GtkNativeDialog // out
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	C._gotk4_gtk4_NativeDialog_virtual_show(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(self)
-}
-
 // NeverTrigger: GtkShortcutTrigger that never triggers.
 type NeverTrigger struct {
 	_ [0]func() // equal guard
@@ -73113,14 +63365,6 @@ func NeverTriggerGet() *NeverTrigger {
 	return _neverTrigger
 }
 
-// NoSelectionOverrides contains methods that are overridable.
-type NoSelectionOverrides struct {
-}
-
-func defaultNoSelectionOverrides(v *NoSelection) NoSelectionOverrides {
-	return NoSelectionOverrides{}
-}
-
 // NoSelection: GtkNoSelection is a GtkSelectionModel that does not allow
 // selecting anything.
 //
@@ -73136,22 +63380,6 @@ type NoSelection struct {
 var (
 	_ coreglib.Objector = (*NoSelection)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*NoSelection, *NoSelectionClass, NoSelectionOverrides](
-		GTypeNoSelection,
-		initNoSelectionClass,
-		wrapNoSelection,
-		defaultNoSelectionOverrides,
-	)
-}
-
-func initNoSelectionClass(gclass unsafe.Pointer, overrides NoSelectionOverrides, classInitFunc func(*NoSelectionClass)) {
-	if classInitFunc != nil {
-		class := (*NoSelectionClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapNoSelection(obj *coreglib.Object) *NoSelection {
 	return &NoSelection{
@@ -74825,14 +65053,6 @@ func NothingActionGet() *NothingAction {
 	return _nothingAction
 }
 
-// NumericSorterOverrides contains methods that are overridable.
-type NumericSorterOverrides struct {
-}
-
-func defaultNumericSorterOverrides(v *NumericSorter) NumericSorterOverrides {
-	return NumericSorterOverrides{}
-}
-
 // NumericSorter: GtkNumericSorter is a GtkSorter that compares numbers.
 //
 // To obtain the numbers to compare, this sorter evaluates a gtk.Expression.
@@ -74844,22 +65064,6 @@ type NumericSorter struct {
 var (
 	_ coreglib.Objector = (*NumericSorter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*NumericSorter, *NumericSorterClass, NumericSorterOverrides](
-		GTypeNumericSorter,
-		initNumericSorterClass,
-		wrapNumericSorter,
-		defaultNumericSorterOverrides,
-	)
-}
-
-func initNumericSorterClass(gclass unsafe.Pointer, overrides NumericSorterOverrides, classInitFunc func(*NumericSorterClass)) {
-	if classInitFunc != nil {
-		class := (*NumericSorterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapNumericSorter(obj *coreglib.Object) *NumericSorter {
 	return &NumericSorter{
@@ -75401,14 +65605,6 @@ func (overlay *Overlay) SetMeasureOverlay(widget Widgetter, measure bool) {
 	runtime.KeepAlive(measure)
 }
 
-// OverlayLayoutOverrides contains methods that are overridable.
-type OverlayLayoutOverrides struct {
-}
-
-func defaultOverlayLayoutOverrides(v *OverlayLayout) OverlayLayoutOverrides {
-	return OverlayLayoutOverrides{}
-}
-
 // OverlayLayout: GtkOverlayLayout is the layout manager used by GtkOverlay.
 //
 // It places widgets as overlays on top of the main child.
@@ -75423,22 +65619,6 @@ type OverlayLayout struct {
 var (
 	_ LayoutManagerer = (*OverlayLayout)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*OverlayLayout, *OverlayLayoutClass, OverlayLayoutOverrides](
-		GTypeOverlayLayout,
-		initOverlayLayoutClass,
-		wrapOverlayLayout,
-		defaultOverlayLayoutOverrides,
-	)
-}
-
-func initOverlayLayoutClass(gclass unsafe.Pointer, overrides OverlayLayoutOverrides, classInitFunc func(*OverlayLayoutClass)) {
-	if classInitFunc != nil {
-		class := (*OverlayLayoutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapOverlayLayout(obj *coreglib.Object) *OverlayLayout {
 	return &OverlayLayout{
@@ -75470,14 +65650,6 @@ func NewOverlayLayout() *OverlayLayout {
 	return _overlayLayout
 }
 
-// OverlayLayoutChildOverrides contains methods that are overridable.
-type OverlayLayoutChildOverrides struct {
-}
-
-func defaultOverlayLayoutChildOverrides(v *OverlayLayoutChild) OverlayLayoutChildOverrides {
-	return OverlayLayoutChildOverrides{}
-}
-
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a
 // GtkOverlayLayout.
 type OverlayLayoutChild struct {
@@ -75488,22 +65660,6 @@ type OverlayLayoutChild struct {
 var (
 	_ LayoutChilder = (*OverlayLayoutChild)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*OverlayLayoutChild, *OverlayLayoutChildClass, OverlayLayoutChildOverrides](
-		GTypeOverlayLayoutChild,
-		initOverlayLayoutChildClass,
-		wrapOverlayLayoutChild,
-		defaultOverlayLayoutChildOverrides,
-	)
-}
-
-func initOverlayLayoutChildClass(gclass unsafe.Pointer, overrides OverlayLayoutChildOverrides, classInitFunc func(*OverlayLayoutChildClass)) {
-	if classInitFunc != nil {
-		class := (*OverlayLayoutChildClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapOverlayLayoutChild(obj *coreglib.Object) *OverlayLayoutChild {
 	return &OverlayLayoutChild{
@@ -77357,14 +67513,6 @@ func (entry *PasswordEntry) SetShowPeekIcon(showPeekIcon bool) {
 	runtime.KeepAlive(showPeekIcon)
 }
 
-// PictureOverrides contains methods that are overridable.
-type PictureOverrides struct {
-}
-
-func defaultPictureOverrides(v *Picture) PictureOverrides {
-	return PictureOverrides{}
-}
-
 // Picture: GtkPicture widget displays a GdkPaintable.
 //
 // !An example GtkPicture (picture.png)
@@ -77416,22 +67564,6 @@ type Picture struct {
 var (
 	_ Widgetter = (*Picture)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Picture, *PictureClass, PictureOverrides](
-		GTypePicture,
-		initPictureClass,
-		wrapPicture,
-		defaultPictureOverrides,
-	)
-}
-
-func initPictureClass(gclass unsafe.Pointer, overrides PictureOverrides, classInitFunc func(*PictureClass)) {
-	if classInitFunc != nil {
-		class := (*PictureClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapPicture(obj *coreglib.Object) *Picture {
 	return &Picture{
@@ -77977,19 +68109,6 @@ func (self *Picture) SetResource(resourcePath string) {
 	runtime.KeepAlive(resourcePath)
 }
 
-// PopoverOverrides contains methods that are overridable.
-type PopoverOverrides struct {
-	ActivateDefault func()
-	Closed          func()
-}
-
-func defaultPopoverOverrides(v *Popover) PopoverOverrides {
-	return PopoverOverrides{
-		ActivateDefault: v.activateDefault,
-		Closed:          v.closed,
-	}
-}
-
 // Popover: GtkPopover is a bubble-like context popup.
 //
 // !An example GtkPopover (popover.png)
@@ -78073,32 +68192,6 @@ var (
 	_ Widgetter         = (*Popover)(nil)
 	_ coreglib.Objector = (*Popover)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Popover, *PopoverClass, PopoverOverrides](
-		GTypePopover,
-		initPopoverClass,
-		wrapPopover,
-		defaultPopoverOverrides,
-	)
-}
-
-func initPopoverClass(gclass unsafe.Pointer, overrides PopoverOverrides, classInitFunc func(*PopoverClass)) {
-	pclass := (*C.GtkPopoverClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypePopover))))
-
-	if overrides.ActivateDefault != nil {
-		pclass.activate_default = (*[0]byte)(C._gotk4_gtk4_PopoverClass_activate_default)
-	}
-
-	if overrides.Closed != nil {
-		pclass.closed = (*[0]byte)(C._gotk4_gtk4_PopoverClass_closed)
-	}
-
-	if classInitFunc != nil {
-		class := (*PopoverClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapPopover(obj *coreglib.Object) *Popover {
 	return &Popover{
@@ -78634,30 +68727,6 @@ func (popover *Popover) SetPosition(position PositionType) {
 	C.gtk_popover_set_position(_arg0, _arg1)
 	runtime.KeepAlive(popover)
 	runtime.KeepAlive(position)
-}
-
-func (popover *Popover) activateDefault() {
-	gclass := (*C.GtkPopoverClass)(coreglib.PeekParentClass(popover))
-	fnarg := gclass.activate_default
-
-	var _arg0 *C.GtkPopover // out
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-
-	C._gotk4_gtk4_Popover_virtual_activate_default(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(popover)
-}
-
-func (popover *Popover) closed() {
-	gclass := (*C.GtkPopoverClass)(coreglib.PeekParentClass(popover))
-	fnarg := gclass.closed
-
-	var _arg0 *C.GtkPopover // out
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(coreglib.InternObject(popover).Native()))
-
-	C._gotk4_gtk4_Popover_virtual_closed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(popover)
 }
 
 // PopoverMenu: GtkPopoverMenu is a subclass of GtkPopover that implements menu
@@ -79638,72 +69707,6 @@ func (context *PrintContext) SetCairoContext(cr *cairo.Context, dpiX, dpiY float
 	runtime.KeepAlive(dpiY)
 }
 
-// PrintOperationOverrides contains methods that are overridable.
-type PrintOperationOverrides struct {
-	// The function takes the following parameters:
-	//
-	BeginPrint func(context *PrintContext)
-	// The function takes the following parameters:
-	//
-	CustomWidgetApply func(widget Widgetter)
-	// The function takes the following parameters:
-	//
-	Done func(result PrintOperationResult)
-	// The function takes the following parameters:
-	//
-	//   - context
-	//   - pageNr
-	//
-	DrawPage func(context *PrintContext, pageNr int)
-	// The function takes the following parameters:
-	//
-	EndPrint func(context *PrintContext)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	Paginate func(context *PrintContext) bool
-	// The function takes the following parameters:
-	//
-	//   - preview
-	//   - context
-	//   - parent
-	//
-	// The function returns the following values:
-	//
-	Preview func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
-	// The function takes the following parameters:
-	//
-	//   - context
-	//   - pageNr
-	//   - setup
-	//
-	RequestPageSetup func(context *PrintContext, pageNr int, setup *PageSetup)
-	StatusChanged    func()
-	// The function takes the following parameters:
-	//
-	//   - widget
-	//   - setup
-	//   - settings
-	//
-	UpdateCustomWidget func(widget Widgetter, setup *PageSetup, settings *PrintSettings)
-}
-
-func defaultPrintOperationOverrides(v *PrintOperation) PrintOperationOverrides {
-	return PrintOperationOverrides{
-		BeginPrint:         v.beginPrint,
-		CustomWidgetApply:  v.customWidgetApply,
-		Done:               v.done,
-		DrawPage:           v.drawPage,
-		EndPrint:           v.endPrint,
-		Paginate:           v.paginate,
-		Preview:            v.preview,
-		RequestPageSetup:   v.requestPageSetup,
-		StatusChanged:      v.statusChanged,
-		UpdateCustomWidget: v.updateCustomWidget,
-	}
-}
-
 // PrintOperation: GtkPrintOperation is the high-level, portable printing API.
 //
 // It looks a bit different than other GTK dialogs such as the GtkFileChooser,
@@ -79772,64 +69775,6 @@ type PrintOperation struct {
 var (
 	_ coreglib.Objector = (*PrintOperation)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*PrintOperation, *PrintOperationClass, PrintOperationOverrides](
-		GTypePrintOperation,
-		initPrintOperationClass,
-		wrapPrintOperation,
-		defaultPrintOperationOverrides,
-	)
-}
-
-func initPrintOperationClass(gclass unsafe.Pointer, overrides PrintOperationOverrides, classInitFunc func(*PrintOperationClass)) {
-	pclass := (*C.GtkPrintOperationClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypePrintOperation))))
-
-	if overrides.BeginPrint != nil {
-		pclass.begin_print = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_begin_print)
-	}
-
-	if overrides.CustomWidgetApply != nil {
-		pclass.custom_widget_apply = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_custom_widget_apply)
-	}
-
-	if overrides.Done != nil {
-		pclass.done = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_done)
-	}
-
-	if overrides.DrawPage != nil {
-		pclass.draw_page = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_draw_page)
-	}
-
-	if overrides.EndPrint != nil {
-		pclass.end_print = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_end_print)
-	}
-
-	if overrides.Paginate != nil {
-		pclass.paginate = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_paginate)
-	}
-
-	if overrides.Preview != nil {
-		pclass.preview = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_preview)
-	}
-
-	if overrides.RequestPageSetup != nil {
-		pclass.request_page_setup = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_request_page_setup)
-	}
-
-	if overrides.StatusChanged != nil {
-		pclass.status_changed = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_status_changed)
-	}
-
-	if overrides.UpdateCustomWidget != nil {
-		pclass.update_custom_widget = (*[0]byte)(C._gotk4_gtk4_PrintOperationClass_update_custom_widget)
-	}
-
-	if classInitFunc != nil {
-		class := (*PrintOperationClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapPrintOperation(obj *coreglib.Object) *PrintOperation {
 	return &PrintOperation{
@@ -80784,229 +70729,6 @@ func (op *PrintOperation) SetUseFullPage(fullPage bool) {
 	C.gtk_print_operation_set_use_full_page(_arg0, _arg1)
 	runtime.KeepAlive(op)
 	runtime.KeepAlive(fullPage)
-}
-
-// The function takes the following parameters:
-//
-func (operation *PrintOperation) beginPrint(context *PrintContext) {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.begin_print
-
-	var _arg0 *C.GtkPrintOperation // out
-	var _arg1 *C.GtkPrintContext   // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_PrintOperation_virtual_begin_print(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(context)
-}
-
-// The function takes the following parameters:
-//
-func (operation *PrintOperation) customWidgetApply(widget Widgetter) {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.custom_widget_apply
-
-	var _arg0 *C.GtkPrintOperation // out
-	var _arg1 *C.GtkWidget         // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_PrintOperation_virtual_custom_widget_apply(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(widget)
-}
-
-// The function takes the following parameters:
-//
-func (operation *PrintOperation) done(result PrintOperationResult) {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.done
-
-	var _arg0 *C.GtkPrintOperation      // out
-	var _arg1 C.GtkPrintOperationResult // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = C.GtkPrintOperationResult(result)
-
-	C._gotk4_gtk4_PrintOperation_virtual_done(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(result)
-}
-
-// The function takes the following parameters:
-//
-//   - context
-//   - pageNr
-//
-func (operation *PrintOperation) drawPage(context *PrintContext, pageNr int) {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.draw_page
-
-	var _arg0 *C.GtkPrintOperation // out
-	var _arg1 *C.GtkPrintContext   // out
-	var _arg2 C.int                // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = C.int(pageNr)
-
-	C._gotk4_gtk4_PrintOperation_virtual_draw_page(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(pageNr)
-}
-
-// The function takes the following parameters:
-//
-func (operation *PrintOperation) endPrint(context *PrintContext) {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.end_print
-
-	var _arg0 *C.GtkPrintOperation // out
-	var _arg1 *C.GtkPrintContext   // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_PrintOperation_virtual_end_print(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(context)
-}
-
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
-func (operation *PrintOperation) paginate(context *PrintContext) bool {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.paginate
-
-	var _arg0 *C.GtkPrintOperation // out
-	var _arg1 *C.GtkPrintContext   // out
-	var _cret C.gboolean           // in
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	_cret = C._gotk4_gtk4_PrintOperation_virtual_paginate(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(context)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-//   - preview
-//   - context
-//   - parent
-//
-// The function returns the following values:
-//
-func (operation *PrintOperation) preview(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.preview
-
-	var _arg0 *C.GtkPrintOperation        // out
-	var _arg1 *C.GtkPrintOperationPreview // out
-	var _arg2 *C.GtkPrintContext          // out
-	var _arg3 *C.GtkWindow                // out
-	var _cret C.gboolean                  // in
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(coreglib.InternObject(preview).Native()))
-	_arg2 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg3 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(parent).Native()))
-
-	_cret = C._gotk4_gtk4_PrintOperation_virtual_preview(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(preview)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(parent)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-//   - context
-//   - pageNr
-//   - setup
-//
-func (operation *PrintOperation) requestPageSetup(context *PrintContext, pageNr int, setup *PageSetup) {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.request_page_setup
-
-	var _arg0 *C.GtkPrintOperation // out
-	var _arg1 *C.GtkPrintContext   // out
-	var _arg2 C.int                // out
-	var _arg3 *C.GtkPageSetup      // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = (*C.GtkPrintContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-	_arg2 = C.int(pageNr)
-	_arg3 = (*C.GtkPageSetup)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-
-	C._gotk4_gtk4_PrintOperation_virtual_request_page_setup(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(context)
-	runtime.KeepAlive(pageNr)
-	runtime.KeepAlive(setup)
-}
-
-func (operation *PrintOperation) statusChanged() {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.status_changed
-
-	var _arg0 *C.GtkPrintOperation // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-
-	C._gotk4_gtk4_PrintOperation_virtual_status_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(operation)
-}
-
-// The function takes the following parameters:
-//
-//   - widget
-//   - setup
-//   - settings
-//
-func (operation *PrintOperation) updateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings) {
-	gclass := (*C.GtkPrintOperationClass)(coreglib.PeekParentClass(operation))
-	fnarg := gclass.update_custom_widget
-
-	var _arg0 *C.GtkPrintOperation // out
-	var _arg1 *C.GtkWidget         // out
-	var _arg2 *C.GtkPageSetup      // out
-	var _arg3 *C.GtkPrintSettings  // out
-
-	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(coreglib.InternObject(operation).Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(coreglib.InternObject(setup).Native()))
-	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(coreglib.InternObject(settings).Native()))
-
-	C._gotk4_gtk4_PrintOperation_virtual_update_custom_widget(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(operation)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(setup)
-	runtime.KeepAlive(settings)
 }
 
 // PrintSettings: GtkPrintSettings object represents the settings of a print
@@ -83405,38 +73127,6 @@ func (expression *PropertyExpression) GetExpression() Expressioner {
 	return _ret
 }
 
-// RangeOverrides contains methods that are overridable.
-type RangeOverrides struct {
-	// The function takes the following parameters:
-	//
-	AdjustBounds func(newValue float64)
-	// The function takes the following parameters:
-	//
-	//   - scroll
-	//   - newValue
-	//
-	// The function returns the following values:
-	//
-	ChangeValue func(scroll ScrollType, newValue float64) bool
-	// The function takes the following parameters:
-	//
-	RangeBorder func(border_ *Border)
-	// The function takes the following parameters:
-	//
-	MoveSlider   func(scroll ScrollType)
-	ValueChanged func()
-}
-
-func defaultRangeOverrides(v *Range) RangeOverrides {
-	return RangeOverrides{
-		AdjustBounds: v.adjustBounds,
-		ChangeValue:  v.changeValue,
-		RangeBorder:  v.rangeBorder,
-		MoveSlider:   v.moveSlider,
-		ValueChanged: v.valueChanged,
-	}
-}
-
 // Range: GtkRange is the common base class for widgets which visualize an
 // adjustment.
 //
@@ -83457,44 +73147,6 @@ var (
 	_ Widgetter         = (*Range)(nil)
 	_ coreglib.Objector = (*Range)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Range, *RangeClass, RangeOverrides](
-		GTypeRange,
-		initRangeClass,
-		wrapRange,
-		defaultRangeOverrides,
-	)
-}
-
-func initRangeClass(gclass unsafe.Pointer, overrides RangeOverrides, classInitFunc func(*RangeClass)) {
-	pclass := (*C.GtkRangeClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeRange))))
-
-	if overrides.AdjustBounds != nil {
-		pclass.adjust_bounds = (*[0]byte)(C._gotk4_gtk4_RangeClass_adjust_bounds)
-	}
-
-	if overrides.ChangeValue != nil {
-		pclass.change_value = (*[0]byte)(C._gotk4_gtk4_RangeClass_change_value)
-	}
-
-	if overrides.RangeBorder != nil {
-		pclass.get_range_border = (*[0]byte)(C._gotk4_gtk4_RangeClass_get_range_border)
-	}
-
-	if overrides.MoveSlider != nil {
-		pclass.move_slider = (*[0]byte)(C._gotk4_gtk4_RangeClass_move_slider)
-	}
-
-	if overrides.ValueChanged != nil {
-		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_RangeClass_value_changed)
-	}
-
-	if classInitFunc != nil {
-		class := (*RangeClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapRange(obj *coreglib.Object) *Range {
 	return &Range{
@@ -84100,114 +73752,6 @@ func (_range *Range) SetValue(value float64) {
 	runtime.KeepAlive(value)
 }
 
-// The function takes the following parameters:
-//
-func (_range *Range) adjustBounds(newValue float64) {
-	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
-	fnarg := gclass.adjust_bounds
-
-	var _arg0 *C.GtkRange // out
-	var _arg1 C.double    // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = C.double(newValue)
-
-	C._gotk4_gtk4_Range_virtual_adjust_bounds(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(newValue)
-}
-
-// The function takes the following parameters:
-//
-//   - scroll
-//   - newValue
-//
-// The function returns the following values:
-//
-func (_range *Range) changeValue(scroll ScrollType, newValue float64) bool {
-	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
-	fnarg := gclass.change_value
-
-	var _arg0 *C.GtkRange     // out
-	var _arg1 C.GtkScrollType // out
-	var _arg2 C.double        // out
-	var _cret C.gboolean      // in
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = C.GtkScrollType(scroll)
-	_arg2 = C.double(newValue)
-
-	_cret = C._gotk4_gtk4_Range_virtual_change_value(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(scroll)
-	runtime.KeepAlive(newValue)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-func (_range *Range) rangeBorder(border_ *Border) {
-	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
-	fnarg := gclass.get_range_border
-
-	var _arg0 *C.GtkRange  // out
-	var _arg1 *C.GtkBorder // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = (*C.GtkBorder)(gextras.StructNative(unsafe.Pointer(border_)))
-
-	C._gotk4_gtk4_Range_virtual_get_range_border(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(border_)
-}
-
-// The function takes the following parameters:
-//
-func (_range *Range) moveSlider(scroll ScrollType) {
-	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
-	fnarg := gclass.move_slider
-
-	var _arg0 *C.GtkRange     // out
-	var _arg1 C.GtkScrollType // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-	_arg1 = C.GtkScrollType(scroll)
-
-	C._gotk4_gtk4_Range_virtual_move_slider(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(_range)
-	runtime.KeepAlive(scroll)
-}
-
-func (_range *Range) valueChanged() {
-	gclass := (*C.GtkRangeClass)(coreglib.PeekParentClass(_range))
-	fnarg := gclass.value_changed
-
-	var _arg0 *C.GtkRange // out
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(coreglib.InternObject(_range).Native()))
-
-	C._gotk4_gtk4_Range_virtual_value_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(_range)
-}
-
-// RecentManagerOverrides contains methods that are overridable.
-type RecentManagerOverrides struct {
-	Changed func()
-}
-
-func defaultRecentManagerOverrides(v *RecentManager) RecentManagerOverrides {
-	return RecentManagerOverrides{
-		Changed: v.changed,
-	}
-}
-
 // RecentManager: GtkRecentManager manages and looks up recently used files.
 //
 // Each recently used file is identified by its URI, and has meta-data
@@ -84265,28 +73809,6 @@ type RecentManager struct {
 var (
 	_ coreglib.Objector = (*RecentManager)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*RecentManager, *RecentManagerClass, RecentManagerOverrides](
-		GTypeRecentManager,
-		initRecentManagerClass,
-		wrapRecentManager,
-		defaultRecentManagerOverrides,
-	)
-}
-
-func initRecentManagerClass(gclass unsafe.Pointer, overrides RecentManagerOverrides, classInitFunc func(*RecentManagerClass)) {
-	pclass := (*C.GtkRecentManagerClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeRecentManager))))
-
-	if overrides.Changed != nil {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk4_RecentManagerClass_changed)
-	}
-
-	if classInitFunc != nil {
-		class := (*RecentManagerClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapRecentManager(obj *coreglib.Object) *RecentManager {
 	return &RecentManager{
@@ -84639,18 +74161,6 @@ func (manager *RecentManager) RemoveItem(uri string) error {
 	return _goerr
 }
 
-func (manager *RecentManager) changed() {
-	gclass := (*C.GtkRecentManagerClass)(coreglib.PeekParentClass(manager))
-	fnarg := gclass.changed
-
-	var _arg0 *C.GtkRecentManager // out
-
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(coreglib.InternObject(manager).Native()))
-
-	C._gotk4_gtk4_RecentManager_virtual_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(manager)
-}
-
 // RecentManagerGetDefault gets a unique instance of GtkRecentManager that you
 // can share in your application without caring about memory management.
 //
@@ -84961,31 +74471,6 @@ func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
 	runtime.KeepAlive(transition)
 }
 
-// ScaleOverrides contains methods that are overridable.
-type ScaleOverrides struct {
-	// LayoutOffsets obtains the coordinates where the scale will draw the
-	// PangoLayout representing the text in the scale.
-	//
-	// Remember when using the PangoLayout function you need to convert to and
-	// from pixels using PANGO_PIXELS() or PANGO_SCALE.
-	//
-	// If the gtkscale:draw-value property is FALSE, the return values are
-	// undefined.
-	//
-	// The function returns the following values:
-	//
-	//   - x (optional): location to store X offset of layout, or NULL.
-	//   - y (optional): location to store Y offset of layout, or NULL.
-	//
-	LayoutOffsets func() (x, y int)
-}
-
-func defaultScaleOverrides(v *Scale) ScaleOverrides {
-	return ScaleOverrides{
-		LayoutOffsets: v.layoutOffsets,
-	}
-}
-
 // Scale: GtkScale is a slider control used to select a numeric value.
 //
 // !An example GtkScale (scales.png)
@@ -85071,28 +74556,6 @@ var (
 	_ Widgetter         = (*Scale)(nil)
 	_ coreglib.Objector = (*Scale)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Scale, *ScaleClass, ScaleOverrides](
-		GTypeScale,
-		initScaleClass,
-		wrapScale,
-		defaultScaleOverrides,
-	)
-}
-
-func initScaleClass(gclass unsafe.Pointer, overrides ScaleOverrides, classInitFunc func(*ScaleClass)) {
-	pclass := (*C.GtkScaleClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeScale))))
-
-	if overrides.LayoutOffsets != nil {
-		pclass.get_layout_offsets = (*[0]byte)(C._gotk4_gtk4_ScaleClass_get_layout_offsets)
-	}
-
-	if classInitFunc != nil {
-		class := (*ScaleClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapScale(obj *coreglib.Object) *Scale {
 	return &Scale{
@@ -85538,55 +75001,6 @@ func (scale *Scale) SetValuePos(pos PositionType) {
 	runtime.KeepAlive(pos)
 }
 
-// layoutOffsets obtains the coordinates where the scale will draw the
-// PangoLayout representing the text in the scale.
-//
-// Remember when using the PangoLayout function you need to convert to and from
-// pixels using PANGO_PIXELS() or PANGO_SCALE.
-//
-// If the gtkscale:draw-value property is FALSE, the return values are
-// undefined.
-//
-// The function returns the following values:
-//
-//   - x (optional): location to store X offset of layout, or NULL.
-//   - y (optional): location to store Y offset of layout, or NULL.
-//
-func (scale *Scale) layoutOffsets() (x, y int) {
-	gclass := (*C.GtkScaleClass)(coreglib.PeekParentClass(scale))
-	fnarg := gclass.get_layout_offsets
-
-	var _arg0 *C.GtkScale // out
-	var _arg1 C.int       // in
-	var _arg2 C.int       // in
-
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(coreglib.InternObject(scale).Native()))
-
-	C._gotk4_gtk4_Scale_virtual_get_layout_offsets(unsafe.Pointer(fnarg), _arg0, &_arg1, &_arg2)
-	runtime.KeepAlive(scale)
-
-	var _x int // out
-	var _y int // out
-
-	_x = int(_arg1)
-	_y = int(_arg2)
-
-	return _x, _y
-}
-
-// ScaleButtonOverrides contains methods that are overridable.
-type ScaleButtonOverrides struct {
-	// The function takes the following parameters:
-	//
-	ValueChanged func(value float64)
-}
-
-func defaultScaleButtonOverrides(v *ScaleButton) ScaleButtonOverrides {
-	return ScaleButtonOverrides{
-		ValueChanged: v.valueChanged,
-	}
-}
-
 // ScaleButton: GtkScaleButton provides a button which pops up a scale widget.
 //
 // This kind of widget is commonly used for volume controls in multimedia
@@ -85609,28 +75023,6 @@ var (
 	_ Widgetter         = (*ScaleButton)(nil)
 	_ coreglib.Objector = (*ScaleButton)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ScaleButton, *ScaleButtonClass, ScaleButtonOverrides](
-		GTypeScaleButton,
-		initScaleButtonClass,
-		wrapScaleButton,
-		defaultScaleButtonOverrides,
-	)
-}
-
-func initScaleButtonClass(gclass unsafe.Pointer, overrides ScaleButtonOverrides, classInitFunc func(*ScaleButtonClass)) {
-	pclass := (*C.GtkScaleButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeScaleButton))))
-
-	if overrides.ValueChanged != nil {
-		pclass.value_changed = (*[0]byte)(C._gotk4_gtk4_ScaleButtonClass_value_changed)
-	}
-
-	if classInitFunc != nil {
-		class := (*ScaleButtonClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapScaleButton(obj *coreglib.Object) *ScaleButton {
 	return &ScaleButton{
@@ -85938,23 +75330,6 @@ func (button *ScaleButton) SetValue(value float64) {
 	_arg1 = C.double(value)
 
 	C.gtk_scale_button_set_value(_arg0, _arg1)
-	runtime.KeepAlive(button)
-	runtime.KeepAlive(value)
-}
-
-// The function takes the following parameters:
-//
-func (button *ScaleButton) valueChanged(value float64) {
-	gclass := (*C.GtkScaleButtonClass)(coreglib.PeekParentClass(button))
-	fnarg := gclass.value_changed
-
-	var _arg0 *C.GtkScaleButton // out
-	var _arg1 C.double          // out
-
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(coreglib.InternObject(button).Native()))
-	_arg1 = C.double(value)
-
-	C._gotk4_gtk4_ScaleButton_virtual_value_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(button)
 	runtime.KeepAlive(value)
 }
@@ -87634,14 +77009,6 @@ func (entry *SearchEntry) SetKeyCaptureWidget(widget Widgetter) {
 	runtime.KeepAlive(widget)
 }
 
-// SelectionFilterModelOverrides contains methods that are overridable.
-type SelectionFilterModelOverrides struct {
-}
-
-func defaultSelectionFilterModelOverrides(v *SelectionFilterModel) SelectionFilterModelOverrides {
-	return SelectionFilterModelOverrides{}
-}
-
 // SelectionFilterModel: GtkSelectionFilterModel is a list model that presents
 // the selection from a GtkSelectionModel.
 type SelectionFilterModel struct {
@@ -87654,22 +77021,6 @@ type SelectionFilterModel struct {
 var (
 	_ coreglib.Objector = (*SelectionFilterModel)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*SelectionFilterModel, *SelectionFilterModelClass, SelectionFilterModelOverrides](
-		GTypeSelectionFilterModel,
-		initSelectionFilterModelClass,
-		wrapSelectionFilterModel,
-		defaultSelectionFilterModelOverrides,
-	)
-}
-
-func initSelectionFilterModelClass(gclass unsafe.Pointer, overrides SelectionFilterModelOverrides, classInitFunc func(*SelectionFilterModelClass)) {
-	if classInitFunc != nil {
-		class := (*SelectionFilterModelClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapSelectionFilterModel(obj *coreglib.Object) *SelectionFilterModel {
 	return &SelectionFilterModel{
@@ -87967,14 +77318,6 @@ func SettingsGetForDisplay(display *gdk.Display) *Settings {
 	return _settings
 }
 
-// ShortcutOverrides contains methods that are overridable.
-type ShortcutOverrides struct {
-}
-
-func defaultShortcutOverrides(v *Shortcut) ShortcutOverrides {
-	return ShortcutOverrides{}
-}
-
 // Shortcut: GtkShortcut describes a keyboard shortcut.
 //
 // It contains a description of how to trigger the shortcut via a
@@ -87997,22 +77340,6 @@ type Shortcut struct {
 var (
 	_ coreglib.Objector = (*Shortcut)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Shortcut, *ShortcutClass, ShortcutOverrides](
-		GTypeShortcut,
-		initShortcutClass,
-		wrapShortcut,
-		defaultShortcutOverrides,
-	)
-}
-
-func initShortcutClass(gclass unsafe.Pointer, overrides ShortcutOverrides, classInitFunc func(*ShortcutClass)) {
-	if classInitFunc != nil {
-		class := (*ShortcutClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapShortcut(obj *coreglib.Object) *Shortcut {
 	return &Shortcut{
@@ -89585,14 +78912,6 @@ func NewSignalListItemFactory() *SignalListItemFactory {
 	return _signalListItemFactory
 }
 
-// SingleSelectionOverrides contains methods that are overridable.
-type SingleSelectionOverrides struct {
-}
-
-func defaultSingleSelectionOverrides(v *SingleSelection) SingleSelectionOverrides {
-	return SingleSelectionOverrides{}
-}
-
 // SingleSelection: GtkSingleSelection is a GtkSelectionModel that allows
 // selecting a single item.
 //
@@ -89610,22 +78929,6 @@ type SingleSelection struct {
 var (
 	_ coreglib.Objector = (*SingleSelection)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*SingleSelection, *SingleSelectionClass, SingleSelectionOverrides](
-		GTypeSingleSelection,
-		initSingleSelectionClass,
-		wrapSingleSelection,
-		defaultSingleSelectionOverrides,
-	)
-}
-
-func initSingleSelectionClass(gclass unsafe.Pointer, overrides SingleSelectionOverrides, classInitFunc func(*SingleSelectionClass)) {
-	if classInitFunc != nil {
-		class := (*SingleSelectionClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapSingleSelection(obj *coreglib.Object) *SingleSelection {
 	return &SingleSelection{
@@ -90138,14 +79441,6 @@ func (sizeGroup *SizeGroup) SetMode(mode SizeGroupMode) {
 	runtime.KeepAlive(mode)
 }
 
-// SliceListModelOverrides contains methods that are overridable.
-type SliceListModelOverrides struct {
-}
-
-func defaultSliceListModelOverrides(v *SliceListModel) SliceListModelOverrides {
-	return SliceListModelOverrides{}
-}
-
 // SliceListModel: GtkSliceListModel is a list model that presents a slice of
 // another model.
 //
@@ -90162,22 +79457,6 @@ type SliceListModel struct {
 var (
 	_ coreglib.Objector = (*SliceListModel)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*SliceListModel, *SliceListModelClass, SliceListModelOverrides](
-		GTypeSliceListModel,
-		initSliceListModelClass,
-		wrapSliceListModel,
-		defaultSliceListModelOverrides,
-	)
-}
-
-func initSliceListModelClass(gclass unsafe.Pointer, overrides SliceListModelOverrides, classInitFunc func(*SliceListModelClass)) {
-	if classInitFunc != nil {
-		class := (*SliceListModelClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapSliceListModel(obj *coreglib.Object) *SliceListModel {
 	return &SliceListModel{
@@ -91651,14 +80930,6 @@ func (snapshot *Snapshot) Translate3D(point *graphene.Point3D) {
 	runtime.KeepAlive(point)
 }
 
-// SortListModelOverrides contains methods that are overridable.
-type SortListModelOverrides struct {
-}
-
-func defaultSortListModelOverrides(v *SortListModel) SortListModelOverrides {
-	return SortListModelOverrides{}
-}
-
 // SortListModel: GtkSortListModel is a list model that sorts the elements of
 // the underlying model according to a GtkSorter.
 //
@@ -91679,22 +80950,6 @@ type SortListModel struct {
 var (
 	_ coreglib.Objector = (*SortListModel)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*SortListModel, *SortListModelClass, SortListModelOverrides](
-		GTypeSortListModel,
-		initSortListModelClass,
-		wrapSortListModel,
-		defaultSortListModelOverrides,
-	)
-}
-
-func initSortListModelClass(gclass unsafe.Pointer, overrides SortListModelOverrides, classInitFunc func(*SortListModelClass)) {
-	if classInitFunc != nil {
-		class := (*SortListModelClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapSortListModel(obj *coreglib.Object) *SortListModel {
 	return &SortListModel{
@@ -91937,51 +81192,6 @@ func (self *SortListModel) SetSorter(sorter *Sorter) {
 	runtime.KeepAlive(sorter)
 }
 
-// SorterOverrides contains methods that are overridable.
-type SorterOverrides struct {
-	// Compare compares two given items according to the sort order implemented
-	// by the sorter.
-	//
-	// Sorters implement a partial order:
-	//
-	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-	// then a ≤ c
-	//
-	// The sorter may signal it conforms to additional constraints via the
-	// return value of gtk.Sorter.GetOrder().
-	//
-	// The function takes the following parameters:
-	//
-	//   - item1 (optional): first item to compare.
-	//   - item2 (optional): second item to compare.
-	//
-	// The function returns the following values:
-	//
-	//   - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER
-	//     if item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
-	//
-	Compare func(item1, item2 *coreglib.Object) Ordering
-	// Order gets the order that self conforms to.
-	//
-	// See gtk.SorterOrder for details of the possible return values.
-	//
-	// This function is intended to allow optimizations.
-	//
-	// The function returns the following values:
-	//
-	//   - sorterOrder: order.
-	//
-	Order func() SorterOrder
-}
-
-func defaultSorterOverrides(v *Sorter) SorterOverrides {
-	return SorterOverrides{
-		Compare: v.compare,
-		Order:   v.order,
-	}
-}
-
 // Sorter: GtkSorter is an object to describe sorting criteria.
 //
 // # Its primary user is gtk.SortListModel
@@ -92009,32 +81219,6 @@ type Sorter struct {
 var (
 	_ coreglib.Objector = (*Sorter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Sorter, *SorterClass, SorterOverrides](
-		GTypeSorter,
-		initSorterClass,
-		wrapSorter,
-		defaultSorterOverrides,
-	)
-}
-
-func initSorterClass(gclass unsafe.Pointer, overrides SorterOverrides, classInitFunc func(*SorterClass)) {
-	pclass := (*C.GtkSorterClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeSorter))))
-
-	if overrides.Compare != nil {
-		pclass.compare = (*[0]byte)(C._gotk4_gtk4_SorterClass_compare)
-	}
-
-	if overrides.Order != nil {
-		pclass.get_order = (*[0]byte)(C._gotk4_gtk4_SorterClass_get_order)
-	}
-
-	if classInitFunc != nil {
-		class := (*SorterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapSorter(obj *coreglib.Object) *Sorter {
 	return &Sorter{
@@ -92150,82 +81334,6 @@ func (self *Sorter) Order() SorterOrder {
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
 
 	_cret = C.gtk_sorter_get_order(_arg0)
-	runtime.KeepAlive(self)
-
-	var _sorterOrder SorterOrder // out
-
-	_sorterOrder = SorterOrder(_cret)
-
-	return _sorterOrder
-}
-
-// Compare compares two given items according to the sort order implemented by
-// the sorter.
-//
-// Sorters implement a partial order:
-//
-// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-// then a ≤ c
-//
-// The sorter may signal it conforms to additional constraints via the return
-// value of gtk.Sorter.GetOrder().
-//
-// The function takes the following parameters:
-//
-//   - item1 (optional): first item to compare.
-//   - item2 (optional): second item to compare.
-//
-// The function returns the following values:
-//
-//   - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER if
-//     item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
-//
-func (self *Sorter) compare(item1, item2 *coreglib.Object) Ordering {
-	gclass := (*C.GtkSorterClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.compare
-
-	var _arg0 *C.GtkSorter  // out
-	var _arg1 C.gpointer    // out
-	var _arg2 C.gpointer    // out
-	var _cret C.GtkOrdering // in
-
-	_arg0 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = C.gpointer(unsafe.Pointer(item1.Native()))
-	_arg2 = C.gpointer(unsafe.Pointer(item2.Native()))
-
-	_cret = C._gotk4_gtk4_Sorter_virtual_compare(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(item1)
-	runtime.KeepAlive(item2)
-
-	var _ordering Ordering // out
-
-	_ordering = Ordering(_cret)
-
-	return _ordering
-}
-
-// Order gets the order that self conforms to.
-//
-// See gtk.SorterOrder for details of the possible return values.
-//
-// This function is intended to allow optimizations.
-//
-// The function returns the following values:
-//
-//   - sorterOrder: order.
-//
-func (self *Sorter) order() SorterOrder {
-	gclass := (*C.GtkSorterClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.get_order
-
-	var _arg0 *C.GtkSorter     // out
-	var _cret C.GtkSorterOrder // in
-
-	_arg0 = (*C.GtkSorter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-
-	_cret = C._gotk4_gtk4_Sorter_virtual_get_order(unsafe.Pointer(fnarg), _arg0)
 	runtime.KeepAlive(self)
 
 	var _sorterOrder SorterOrder // out
@@ -94745,14 +83853,6 @@ func (statusbar *Statusbar) RemoveAll(contextId uint) {
 	runtime.KeepAlive(contextId)
 }
 
-// StringFilterOverrides contains methods that are overridable.
-type StringFilterOverrides struct {
-}
-
-func defaultStringFilterOverrides(v *StringFilter) StringFilterOverrides {
-	return StringFilterOverrides{}
-}
-
 // StringFilter: GtkStringFilter determines whether to include items by
 // comparing strings to a fixed search term.
 //
@@ -94774,22 +83874,6 @@ type StringFilter struct {
 var (
 	_ coreglib.Objector = (*StringFilter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*StringFilter, *StringFilterClass, StringFilterOverrides](
-		GTypeStringFilter,
-		initStringFilterClass,
-		wrapStringFilter,
-		defaultStringFilterOverrides,
-	)
-}
-
-func initStringFilterClass(gclass unsafe.Pointer, overrides StringFilterOverrides, classInitFunc func(*StringFilterClass)) {
-	if classInitFunc != nil {
-		class := (*StringFilterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapStringFilter(obj *coreglib.Object) *StringFilter {
 	return &StringFilter{
@@ -95025,14 +84109,6 @@ func (self *StringFilter) SetSearch(search string) {
 	runtime.KeepAlive(search)
 }
 
-// StringListOverrides contains methods that are overridable.
-type StringListOverrides struct {
-}
-
-func defaultStringListOverrides(v *StringList) StringListOverrides {
-	return StringListOverrides{}
-}
-
 // StringList: GtkStringList is a list model that wraps an array of strings.
 //
 // The objects in the model have a "string" property.
@@ -95067,22 +84143,6 @@ type StringList struct {
 var (
 	_ coreglib.Objector = (*StringList)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*StringList, *StringListClass, StringListOverrides](
-		GTypeStringList,
-		initStringListClass,
-		wrapStringList,
-		defaultStringListOverrides,
-	)
-}
-
-func initStringListClass(gclass unsafe.Pointer, overrides StringListOverrides, classInitFunc func(*StringListClass)) {
-	if classInitFunc != nil {
-		class := (*StringListClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapStringList(obj *coreglib.Object) *StringList {
 	return &StringList{
@@ -95286,14 +84346,6 @@ func (self *StringList) Take(str string) {
 	runtime.KeepAlive(str)
 }
 
-// StringObjectOverrides contains methods that are overridable.
-type StringObjectOverrides struct {
-}
-
-func defaultStringObjectOverrides(v *StringObject) StringObjectOverrides {
-	return StringObjectOverrides{}
-}
-
 // StringObject: GtkStringObject is the type of items in a GtkStringList.
 //
 // A GtkStringObject is a wrapper around a const char*; it has a
@@ -95306,22 +84358,6 @@ type StringObject struct {
 var (
 	_ coreglib.Objector = (*StringObject)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*StringObject, *StringObjectClass, StringObjectOverrides](
-		GTypeStringObject,
-		initStringObjectClass,
-		wrapStringObject,
-		defaultStringObjectOverrides,
-	)
-}
-
-func initStringObjectClass(gclass unsafe.Pointer, overrides StringObjectOverrides, classInitFunc func(*StringObjectClass)) {
-	if classInitFunc != nil {
-		class := (*StringObjectClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapStringObject(obj *coreglib.Object) *StringObject {
 	return &StringObject{
@@ -95382,14 +84418,6 @@ func (self *StringObject) String() string {
 	return _utf8
 }
 
-// StringSorterOverrides contains methods that are overridable.
-type StringSorterOverrides struct {
-}
-
-func defaultStringSorterOverrides(v *StringSorter) StringSorterOverrides {
-	return StringSorterOverrides{}
-}
-
 // StringSorter: GtkStringSorter is a GtkSorter that compares strings.
 //
 // It does the comparison in a linguistically correct way using the current
@@ -95405,22 +84433,6 @@ type StringSorter struct {
 var (
 	_ coreglib.Objector = (*StringSorter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*StringSorter, *StringSorterClass, StringSorterOverrides](
-		GTypeStringSorter,
-		initStringSorterClass,
-		wrapStringSorter,
-		defaultStringSorterOverrides,
-	)
-}
-
-func initStringSorterClass(gclass unsafe.Pointer, overrides StringSorterOverrides, classInitFunc func(*StringSorterClass)) {
-	if classInitFunc != nil {
-		class := (*StringSorterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapStringSorter(obj *coreglib.Object) *StringSorter {
 	return &StringSorter{
@@ -95572,17 +84584,6 @@ func (self *StringSorter) SetIgnoreCase(ignoreCase bool) {
 	runtime.KeepAlive(ignoreCase)
 }
 
-// StyleContextOverrides contains methods that are overridable.
-type StyleContextOverrides struct {
-	Changed func()
-}
-
-func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
-	return StyleContextOverrides{
-		Changed: v.changed,
-	}
-}
-
 // StyleContext: GtkStyleContext stores styling information affecting a widget.
 //
 // In order to construct the final style information, GtkStyleContext
@@ -95627,28 +84628,6 @@ type StyleContext struct {
 var (
 	_ coreglib.Objector = (*StyleContext)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*StyleContext, *StyleContextClass, StyleContextOverrides](
-		GTypeStyleContext,
-		initStyleContextClass,
-		wrapStyleContext,
-		defaultStyleContextOverrides,
-	)
-}
-
-func initStyleContextClass(gclass unsafe.Pointer, overrides StyleContextOverrides, classInitFunc func(*StyleContextClass)) {
-	pclass := (*C.GtkStyleContextClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeStyleContext))))
-
-	if overrides.Changed != nil {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk4_StyleContextClass_changed)
-	}
-
-	if classInitFunc != nil {
-		class := (*StyleContextClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapStyleContext(obj *coreglib.Object) *StyleContext {
 	return &StyleContext{
@@ -96116,18 +85095,6 @@ func (context *StyleContext) String(flags StyleContextPrintFlags) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-func (context *StyleContext) changed() {
-	gclass := (*C.GtkStyleContextClass)(coreglib.PeekParentClass(context))
-	fnarg := gclass.changed
-
-	var _arg0 *C.GtkStyleContext // out
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(coreglib.InternObject(context).Native()))
-
-	C._gotk4_gtk4_StyleContext_virtual_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(context)
 }
 
 // StyleContextAddProviderForDisplay adds a global style provider to display,
@@ -97470,143 +86437,6 @@ func (self *Text) UnsetInvisibleChar() {
 	runtime.KeepAlive(self)
 }
 
-// TextBufferOverrides contains methods that are overridable.
-type TextBufferOverrides struct {
-	// ApplyTag emits the “apply-tag” signal on buffer.
-	//
-	// The default handler for the signal applies tag to the given range.
-	// start and end do not have to be in order.
-	//
-	// The function takes the following parameters:
-	//
-	//   - tag: GtkTextTag.
-	//   - start: one bound of range to be tagged.
-	//   - end: other bound of range to be tagged.
-	//
-	ApplyTag func(tag *TextTag, start, end *TextIter)
-	// BeginUserAction: called to indicate that the buffer operations between
-	// here and a call to gtk_text_buffer_end_user_action() are part of a single
-	// user-visible operation.
-	//
-	// The operations between gtk_text_buffer_begin_user_action() and
-	// gtk_text_buffer_end_user_action() can then be grouped when
-	// creating an undo stack. GtkTextBuffer maintains a count of calls to
-	// gtk_text_buffer_begin_user_action() that have not been closed with a call
-	// to gtk_text_buffer_end_user_action(), and emits the “begin-user-action”
-	// and “end-user-action” signals only for the outermost pair of calls.
-	// This allows you to build user actions from other user actions.
-	//
-	// The “interactive” buffer mutation functions, such as
-	// gtk.TextBuffer.InsertInteractive(), automatically call begin/end user
-	// action around the buffer operations they perform, so there's no need to
-	// add extra calls if you user action consists solely of a single call to
-	// one of those functions.
-	BeginUserAction func()
-	Changed         func()
-	// The function takes the following parameters:
-	//
-	//   - start
-	//   - end
-	//
-	DeleteRange func(start, end *TextIter)
-	// EndUserAction ends a user-visible operation.
-	//
-	// Should be paired with a call to gtk.TextBuffer.BeginUserAction().
-	// See that function for a full explanation.
-	EndUserAction func()
-	// InsertChildAnchor inserts a child widget anchor into the text buffer at
-	// iter.
-	//
-	// The anchor will be counted as one character in character counts,
-	// and when obtaining the buffer contents as a string, will be represented
-	// by the Unicode “object replacement character” 0xFFFC. Note that the
-	// “slice” variants for obtaining portions of the buffer as a string include
-	// this character for child anchors, but the “text” variants do not. E.g.
-	// see gtk.TextBuffer.GetSlice() and gtk.TextBuffer.GetText().
-	//
-	// Consider gtk.TextBuffer.CreateChildAnchor() as a more convenient
-	// alternative to this function. The buffer will add a reference to the
-	// anchor, so you can unref it after insertion.
-	//
-	// The function takes the following parameters:
-	//
-	//   - iter: location to insert the anchor.
-	//   - anchor: GtkTextChildAnchor.
-	//
-	InsertChildAnchor func(iter *TextIter, anchor *TextChildAnchor)
-	// InsertPaintable inserts an image into the text buffer at iter.
-	//
-	// The image will be counted as one character in character counts,
-	// and when obtaining the buffer contents as a string, will be represented
-	// by the Unicode “object replacement character” 0xFFFC. Note that the
-	// “slice” variants for obtaining portions of the buffer as a string include
-	// this character for paintable, but the “text” variants do not. e.g.
-	// see gtk.TextBuffer.GetSlice() and gtk.TextBuffer.GetText().
-	//
-	// The function takes the following parameters:
-	//
-	//   - iter: location to insert the paintable.
-	//   - paintable: GdkPaintable.
-	//
-	InsertPaintable func(iter *TextIter, paintable gdk.Paintabler)
-	// The function takes the following parameters:
-	//
-	//   - pos
-	//   - newText
-	//   - newTextLength
-	//
-	InsertText func(pos *TextIter, newText string, newTextLength int)
-	// The function takes the following parameters:
-	//
-	MarkDeleted func(mark *TextMark)
-	// The function takes the following parameters:
-	//
-	//   - location
-	//   - mark
-	//
-	MarkSet         func(location *TextIter, mark *TextMark)
-	ModifiedChanged func()
-	// The function takes the following parameters:
-	//
-	PasteDone func(clipboard *gdk.Clipboard)
-	// Redo redoes the next redoable action on the buffer, if there is one.
-	Redo func()
-	// RemoveTag emits the “remove-tag” signal.
-	//
-	// The default handler for the signal removes all occurrences of tag from
-	// the given range. start and end don’t have to be in order.
-	//
-	// The function takes the following parameters:
-	//
-	//   - tag: GtkTextTag.
-	//   - start: one bound of range to be untagged.
-	//   - end: other bound of range to be untagged.
-	//
-	RemoveTag func(tag *TextTag, start, end *TextIter)
-	// Undo undoes the last undoable action on the buffer, if there is one.
-	Undo func()
-}
-
-func defaultTextBufferOverrides(v *TextBuffer) TextBufferOverrides {
-	return TextBufferOverrides{
-		ApplyTag:          v.applyTag,
-		BeginUserAction:   v.beginUserAction,
-		Changed:           v.changed,
-		DeleteRange:       v.deleteRange,
-		EndUserAction:     v.endUserAction,
-		InsertChildAnchor: v.insertChildAnchor,
-		InsertPaintable:   v.insertPaintable,
-		InsertText:        v.insertText,
-		MarkDeleted:       v.markDeleted,
-		MarkSet:           v.markSet,
-		ModifiedChanged:   v.modifiedChanged,
-		PasteDone:         v.pasteDone,
-		Redo:              v.redo,
-		RemoveTag:         v.removeTag,
-		Undo:              v.undo,
-	}
-}
-
 // TextBuffer stores text and attributes for display in a GtkTextView.
 //
 // You may wish to begin by reading the text widget conceptual overview
@@ -97620,84 +86450,6 @@ type TextBuffer struct {
 var (
 	_ coreglib.Objector = (*TextBuffer)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TextBuffer, *TextBufferClass, TextBufferOverrides](
-		GTypeTextBuffer,
-		initTextBufferClass,
-		wrapTextBuffer,
-		defaultTextBufferOverrides,
-	)
-}
-
-func initTextBufferClass(gclass unsafe.Pointer, overrides TextBufferOverrides, classInitFunc func(*TextBufferClass)) {
-	pclass := (*C.GtkTextBufferClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTextBuffer))))
-
-	if overrides.ApplyTag != nil {
-		pclass.apply_tag = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_apply_tag)
-	}
-
-	if overrides.BeginUserAction != nil {
-		pclass.begin_user_action = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_begin_user_action)
-	}
-
-	if overrides.Changed != nil {
-		pclass.changed = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_changed)
-	}
-
-	if overrides.DeleteRange != nil {
-		pclass.delete_range = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_delete_range)
-	}
-
-	if overrides.EndUserAction != nil {
-		pclass.end_user_action = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_end_user_action)
-	}
-
-	if overrides.InsertChildAnchor != nil {
-		pclass.insert_child_anchor = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_child_anchor)
-	}
-
-	if overrides.InsertPaintable != nil {
-		pclass.insert_paintable = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_paintable)
-	}
-
-	if overrides.InsertText != nil {
-		pclass.insert_text = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_insert_text)
-	}
-
-	if overrides.MarkDeleted != nil {
-		pclass.mark_deleted = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_mark_deleted)
-	}
-
-	if overrides.MarkSet != nil {
-		pclass.mark_set = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_mark_set)
-	}
-
-	if overrides.ModifiedChanged != nil {
-		pclass.modified_changed = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_modified_changed)
-	}
-
-	if overrides.PasteDone != nil {
-		pclass.paste_done = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_paste_done)
-	}
-
-	if overrides.Redo != nil {
-		pclass.redo = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_redo)
-	}
-
-	if overrides.RemoveTag != nil {
-		pclass.remove_tag = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_remove_tag)
-	}
-
-	if overrides.Undo != nil {
-		pclass.undo = (*[0]byte)(C._gotk4_gtk4_TextBufferClass_undo)
-	}
-
-	if classInitFunc != nil {
-		class := (*TextBufferClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTextBuffer(obj *coreglib.Object) *TextBuffer {
 	return &TextBuffer{
@@ -99914,349 +88666,6 @@ func (buffer *TextBuffer) Undo() {
 	runtime.KeepAlive(buffer)
 }
 
-// applyTag emits the “apply-tag” signal on buffer.
-//
-// The default handler for the signal applies tag to the given range. start and
-// end do not have to be in order.
-//
-// The function takes the following parameters:
-//
-//   - tag: GtkTextTag.
-//   - start: one bound of range to be tagged.
-//   - end: other bound of range to be tagged.
-//
-func (buffer *TextBuffer) applyTag(tag *TextTag, start, end *TextIter) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.apply_tag
-
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextTag    // out
-	var _arg2 *C.GtkTextIter   // out
-	var _arg3 *C.GtkTextIter   // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
-
-	C._gotk4_gtk4_TextBuffer_virtual_apply_tag(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(tag)
-	runtime.KeepAlive(start)
-	runtime.KeepAlive(end)
-}
-
-// beginUserAction: called to indicate that the buffer operations between
-// here and a call to gtk_text_buffer_end_user_action() are part of a single
-// user-visible operation.
-//
-// The operations between gtk_text_buffer_begin_user_action() and
-// gtk_text_buffer_end_user_action() can then be grouped when
-// creating an undo stack. GtkTextBuffer maintains a count of calls to
-// gtk_text_buffer_begin_user_action() that have not been closed with a call
-// to gtk_text_buffer_end_user_action(), and emits the “begin-user-action” and
-// “end-user-action” signals only for the outermost pair of calls. This allows
-// you to build user actions from other user actions.
-//
-// The “interactive” buffer mutation functions, such as
-// gtk.TextBuffer.InsertInteractive(), automatically call begin/end user action
-// around the buffer operations they perform, so there's no need to add extra
-// calls if you user action consists solely of a single call to one of those
-// functions.
-func (buffer *TextBuffer) beginUserAction() {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.begin_user_action
-
-	var _arg0 *C.GtkTextBuffer // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_begin_user_action(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(buffer)
-}
-
-func (buffer *TextBuffer) changed() {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.changed
-
-	var _arg0 *C.GtkTextBuffer // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(buffer)
-}
-
-// The function takes the following parameters:
-//
-//   - start
-//   - end
-//
-func (buffer *TextBuffer) deleteRange(start, end *TextIter) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.delete_range
-
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextIter   // out
-	var _arg2 *C.GtkTextIter   // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
-
-	C._gotk4_gtk4_TextBuffer_virtual_delete_range(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(start)
-	runtime.KeepAlive(end)
-}
-
-// endUserAction ends a user-visible operation.
-//
-// Should be paired with a call to gtk.TextBuffer.BeginUserAction(). See that
-// function for a full explanation.
-func (buffer *TextBuffer) endUserAction() {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.end_user_action
-
-	var _arg0 *C.GtkTextBuffer // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_end_user_action(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(buffer)
-}
-
-// insertChildAnchor inserts a child widget anchor into the text buffer at iter.
-//
-// The anchor will be counted as one character in character counts, and when
-// obtaining the buffer contents as a string, will be represented by the Unicode
-// “object replacement character” 0xFFFC. Note that the “slice” variants for
-// obtaining portions of the buffer as a string include this character for child
-// anchors, but the “text” variants do not. E.g. see gtk.TextBuffer.GetSlice()
-// and gtk.TextBuffer.GetText().
-//
-// Consider gtk.TextBuffer.CreateChildAnchor() as a more convenient alternative
-// to this function. The buffer will add a reference to the anchor, so you can
-// unref it after insertion.
-//
-// The function takes the following parameters:
-//
-//   - iter: location to insert the anchor.
-//   - anchor: GtkTextChildAnchor.
-//
-func (buffer *TextBuffer) insertChildAnchor(iter *TextIter, anchor *TextChildAnchor) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.insert_child_anchor
-
-	var _arg0 *C.GtkTextBuffer      // out
-	var _arg1 *C.GtkTextIter        // out
-	var _arg2 *C.GtkTextChildAnchor // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GtkTextChildAnchor)(unsafe.Pointer(coreglib.InternObject(anchor).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_insert_child_anchor(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(anchor)
-}
-
-// insertPaintable inserts an image into the text buffer at iter.
-//
-// The image will be counted as one character in character counts, and when
-// obtaining the buffer contents as a string, will be represented by the Unicode
-// “object replacement character” 0xFFFC. Note that the “slice” variants for
-// obtaining portions of the buffer as a string include this character for
-// paintable, but the “text” variants do not. e.g. see gtk.TextBuffer.GetSlice()
-// and gtk.TextBuffer.GetText().
-//
-// The function takes the following parameters:
-//
-//   - iter: location to insert the paintable.
-//   - paintable: GdkPaintable.
-//
-func (buffer *TextBuffer) insertPaintable(iter *TextIter, paintable gdk.Paintabler) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.insert_paintable
-
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextIter   // out
-	var _arg2 *C.GdkPaintable  // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GdkPaintable)(unsafe.Pointer(coreglib.InternObject(paintable).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_insert_paintable(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(paintable)
-}
-
-// The function takes the following parameters:
-//
-//   - pos
-//   - newText
-//   - newTextLength
-//
-func (buffer *TextBuffer) insertText(pos *TextIter, newText string, newTextLength int) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.insert_text
-
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextIter   // out
-	var _arg2 *C.char          // out
-	var _arg3 C.int            // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(pos)))
-	_arg2 = (*C.char)(unsafe.Pointer(C.CString(newText)))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = C.int(newTextLength)
-
-	C._gotk4_gtk4_TextBuffer_virtual_insert_text(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(pos)
-	runtime.KeepAlive(newText)
-	runtime.KeepAlive(newTextLength)
-}
-
-// The function takes the following parameters:
-//
-func (buffer *TextBuffer) markDeleted(mark *TextMark) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.mark_deleted
-
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextMark   // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextMark)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_mark_deleted(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(mark)
-}
-
-// The function takes the following parameters:
-//
-//   - location
-//   - mark
-//
-func (buffer *TextBuffer) markSet(location *TextIter, mark *TextMark) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.mark_set
-
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextIter   // out
-	var _arg2 *C.GtkTextMark   // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(location)))
-	_arg2 = (*C.GtkTextMark)(unsafe.Pointer(coreglib.InternObject(mark).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_mark_set(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(location)
-	runtime.KeepAlive(mark)
-}
-
-func (buffer *TextBuffer) modifiedChanged() {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.modified_changed
-
-	var _arg0 *C.GtkTextBuffer // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_modified_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(buffer)
-}
-
-// The function takes the following parameters:
-//
-func (buffer *TextBuffer) pasteDone(clipboard *gdk.Clipboard) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.paste_done
-
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GdkClipboard  // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GdkClipboard)(unsafe.Pointer(coreglib.InternObject(clipboard).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_paste_done(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(clipboard)
-}
-
-// Redo redoes the next redoable action on the buffer, if there is one.
-func (buffer *TextBuffer) redo() {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.redo
-
-	var _arg0 *C.GtkTextBuffer // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_redo(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(buffer)
-}
-
-// removeTag emits the “remove-tag” signal.
-//
-// The default handler for the signal removes all occurrences of tag from the
-// given range. start and end don’t have to be in order.
-//
-// The function takes the following parameters:
-//
-//   - tag: GtkTextTag.
-//   - start: one bound of range to be untagged.
-//   - end: other bound of range to be untagged.
-//
-func (buffer *TextBuffer) removeTag(tag *TextTag, start, end *TextIter) {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.remove_tag
-
-	var _arg0 *C.GtkTextBuffer // out
-	var _arg1 *C.GtkTextTag    // out
-	var _arg2 *C.GtkTextIter   // out
-	var _arg3 *C.GtkTextIter   // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(coreglib.InternObject(tag).Native()))
-	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
-
-	C._gotk4_gtk4_TextBuffer_virtual_remove_tag(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(buffer)
-	runtime.KeepAlive(tag)
-	runtime.KeepAlive(start)
-	runtime.KeepAlive(end)
-}
-
-// Undo undoes the last undoable action on the buffer, if there is one.
-func (buffer *TextBuffer) undo() {
-	gclass := (*C.GtkTextBufferClass)(coreglib.PeekParentClass(buffer))
-	fnarg := gclass.undo
-
-	var _arg0 *C.GtkTextBuffer // out
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
-
-	C._gotk4_gtk4_TextBuffer_virtual_undo(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(buffer)
-}
-
-// TextChildAnchorOverrides contains methods that are overridable.
-type TextChildAnchorOverrides struct {
-}
-
-func defaultTextChildAnchorOverrides(v *TextChildAnchor) TextChildAnchorOverrides {
-	return TextChildAnchorOverrides{}
-}
-
 // TextChildAnchor: GtkTextChildAnchor is a spot in a GtkTextBuffer where child
 // widgets can be “anchored”.
 //
@@ -100269,22 +88678,6 @@ type TextChildAnchor struct {
 var (
 	_ coreglib.Objector = (*TextChildAnchor)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TextChildAnchor, *TextChildAnchorClass, TextChildAnchorOverrides](
-		GTypeTextChildAnchor,
-		initTextChildAnchorClass,
-		wrapTextChildAnchor,
-		defaultTextChildAnchorOverrides,
-	)
-}
-
-func initTextChildAnchorClass(gclass unsafe.Pointer, overrides TextChildAnchorOverrides, classInitFunc func(*TextChildAnchorClass)) {
-	if classInitFunc != nil {
-		class := (*TextChildAnchorClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTextChildAnchor(obj *coreglib.Object) *TextChildAnchor {
 	return &TextChildAnchor{
@@ -100395,14 +88788,6 @@ func (anchor *TextChildAnchor) Widgets() []Widgetter {
 	return _widgets
 }
 
-// TextMarkOverrides contains methods that are overridable.
-type TextMarkOverrides struct {
-}
-
-func defaultTextMarkOverrides(v *TextMark) TextMarkOverrides {
-	return TextMarkOverrides{}
-}
-
 // TextMark: GtkTextMark is a position in a GtkTextbuffer that is preserved
 // across modifications.
 //
@@ -100441,22 +88826,6 @@ type TextMark struct {
 var (
 	_ coreglib.Objector = (*TextMark)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TextMark, *TextMarkClass, TextMarkOverrides](
-		GTypeTextMark,
-		initTextMarkClass,
-		wrapTextMark,
-		defaultTextMarkOverrides,
-	)
-}
-
-func initTextMarkClass(gclass unsafe.Pointer, overrides TextMarkOverrides, classInitFunc func(*TextMarkClass)) {
-	if classInitFunc != nil {
-		class := (*TextMarkClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTextMark(obj *coreglib.Object) *TextMark {
 	return &TextMark{
@@ -100654,14 +89023,6 @@ func (mark *TextMark) SetVisible(setting bool) {
 	runtime.KeepAlive(setting)
 }
 
-// TextTagOverrides contains methods that are overridable.
-type TextTagOverrides struct {
-}
-
-func defaultTextTagOverrides(v *TextTag) TextTagOverrides {
-	return TextTagOverrides{}
-}
-
 // TextTag: tag that can be applied to text contained in a GtkTextBuffer.
 //
 // You may wish to begin by reading the text widget conceptual overview
@@ -100687,22 +89048,6 @@ type TextTag struct {
 var (
 	_ coreglib.Objector = (*TextTag)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TextTag, *TextTagClass, TextTagOverrides](
-		GTypeTextTag,
-		initTextTagClass,
-		wrapTextTag,
-		defaultTextTagOverrides,
-	)
-}
-
-func initTextTagClass(gclass unsafe.Pointer, overrides TextTagOverrides, classInitFunc func(*TextTagClass)) {
-	if classInitFunc != nil {
-		class := (*TextTagClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTextTag(obj *coreglib.Object) *TextTag {
 	return &TextTag{
@@ -101037,66 +89382,6 @@ func (table *TextTagTable) Remove(tag *TextTag) {
 	runtime.KeepAlive(tag)
 }
 
-// TextViewOverrides contains methods that are overridable.
-type TextViewOverrides struct {
-	Backspace     func()
-	CopyClipboard func()
-	CutClipboard  func()
-	// The function takes the following parameters:
-	//
-	//   - typ
-	//   - count
-	//
-	DeleteFromCursor func(typ DeleteType, count int)
-	// The function takes the following parameters:
-	//
-	//   - granularity
-	//   - location
-	//   - start
-	//   - end
-	//
-	// The function returns the following values:
-	//
-	ExtendSelection func(granularity TextExtendSelection, location, start, end *TextIter) bool
-	// The function takes the following parameters:
-	//
-	InsertAtCursor func(str string)
-	InsertEmoji    func()
-	// The function takes the following parameters:
-	//
-	//   - step
-	//   - count
-	//   - extendSelection
-	//
-	MoveCursor     func(step MovementStep, count int, extendSelection bool)
-	PasteClipboard func()
-	SetAnchor      func()
-	// The function takes the following parameters:
-	//
-	//   - layer
-	//   - snapshot
-	//
-	SnapshotLayer   func(layer TextViewLayer, snapshot *Snapshot)
-	ToggleOverwrite func()
-}
-
-func defaultTextViewOverrides(v *TextView) TextViewOverrides {
-	return TextViewOverrides{
-		Backspace:        v.backspace,
-		CopyClipboard:    v.copyClipboard,
-		CutClipboard:     v.cutClipboard,
-		DeleteFromCursor: v.deleteFromCursor,
-		ExtendSelection:  v.extendSelection,
-		InsertAtCursor:   v.insertAtCursor,
-		InsertEmoji:      v.insertEmoji,
-		MoveCursor:       v.moveCursor,
-		PasteClipboard:   v.pasteClipboard,
-		SetAnchor:        v.setAnchor,
-		SnapshotLayer:    v.snapshotLayer,
-		ToggleOverwrite:  v.toggleOverwrite,
-	}
-}
-
 // TextView: widget that displays the contents of a gtk.TextBuffer.
 //
 // !An example GtkTextview (multiline-text.png)
@@ -101141,72 +89426,6 @@ var (
 	_ Widgetter         = (*TextView)(nil)
 	_ coreglib.Objector = (*TextView)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TextView, *TextViewClass, TextViewOverrides](
-		GTypeTextView,
-		initTextViewClass,
-		wrapTextView,
-		defaultTextViewOverrides,
-	)
-}
-
-func initTextViewClass(gclass unsafe.Pointer, overrides TextViewOverrides, classInitFunc func(*TextViewClass)) {
-	pclass := (*C.GtkTextViewClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTextView))))
-
-	if overrides.Backspace != nil {
-		pclass.backspace = (*[0]byte)(C._gotk4_gtk4_TextViewClass_backspace)
-	}
-
-	if overrides.CopyClipboard != nil {
-		pclass.copy_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_copy_clipboard)
-	}
-
-	if overrides.CutClipboard != nil {
-		pclass.cut_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_cut_clipboard)
-	}
-
-	if overrides.DeleteFromCursor != nil {
-		pclass.delete_from_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_delete_from_cursor)
-	}
-
-	if overrides.ExtendSelection != nil {
-		pclass.extend_selection = (*[0]byte)(C._gotk4_gtk4_TextViewClass_extend_selection)
-	}
-
-	if overrides.InsertAtCursor != nil {
-		pclass.insert_at_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_insert_at_cursor)
-	}
-
-	if overrides.InsertEmoji != nil {
-		pclass.insert_emoji = (*[0]byte)(C._gotk4_gtk4_TextViewClass_insert_emoji)
-	}
-
-	if overrides.MoveCursor != nil {
-		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_move_cursor)
-	}
-
-	if overrides.PasteClipboard != nil {
-		pclass.paste_clipboard = (*[0]byte)(C._gotk4_gtk4_TextViewClass_paste_clipboard)
-	}
-
-	if overrides.SetAnchor != nil {
-		pclass.set_anchor = (*[0]byte)(C._gotk4_gtk4_TextViewClass_set_anchor)
-	}
-
-	if overrides.SnapshotLayer != nil {
-		pclass.snapshot_layer = (*[0]byte)(C._gotk4_gtk4_TextViewClass_snapshot_layer)
-	}
-
-	if overrides.ToggleOverwrite != nil {
-		pclass.toggle_overwrite = (*[0]byte)(C._gotk4_gtk4_TextViewClass_toggle_overwrite)
-	}
-
-	if classInitFunc != nil {
-		class := (*TextViewClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTextView(obj *coreglib.Object) *TextView {
 	return &TextView{
@@ -103458,239 +91677,6 @@ func (textView *TextView) WindowToBufferCoords(win TextWindowType, windowX, wind
 	return _bufferX, _bufferY
 }
 
-func (textView *TextView) backspace() {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.backspace
-
-	var _arg0 *C.GtkTextView // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-
-	C._gotk4_gtk4_TextView_virtual_backspace(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(textView)
-}
-
-func (textView *TextView) copyClipboard() {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.copy_clipboard
-
-	var _arg0 *C.GtkTextView // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-
-	C._gotk4_gtk4_TextView_virtual_copy_clipboard(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(textView)
-}
-
-func (textView *TextView) cutClipboard() {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.cut_clipboard
-
-	var _arg0 *C.GtkTextView // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-
-	C._gotk4_gtk4_TextView_virtual_cut_clipboard(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(textView)
-}
-
-// The function takes the following parameters:
-//
-//   - typ
-//   - count
-//
-func (textView *TextView) deleteFromCursor(typ DeleteType, count int) {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.delete_from_cursor
-
-	var _arg0 *C.GtkTextView  // out
-	var _arg1 C.GtkDeleteType // out
-	var _arg2 C.int           // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-	_arg1 = C.GtkDeleteType(typ)
-	_arg2 = C.int(count)
-
-	C._gotk4_gtk4_TextView_virtual_delete_from_cursor(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(textView)
-	runtime.KeepAlive(typ)
-	runtime.KeepAlive(count)
-}
-
-// The function takes the following parameters:
-//
-//   - granularity
-//   - location
-//   - start
-//   - end
-//
-// The function returns the following values:
-//
-func (textView *TextView) extendSelection(granularity TextExtendSelection, location, start, end *TextIter) bool {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.extend_selection
-
-	var _arg0 *C.GtkTextView           // out
-	var _arg1 C.GtkTextExtendSelection // out
-	var _arg2 *C.GtkTextIter           // out
-	var _arg3 *C.GtkTextIter           // out
-	var _arg4 *C.GtkTextIter           // out
-	var _cret C.gboolean               // in
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-	_arg1 = C.GtkTextExtendSelection(granularity)
-	_arg2 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(location)))
-	_arg3 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(start)))
-	_arg4 = (*C.GtkTextIter)(gextras.StructNative(unsafe.Pointer(end)))
-
-	_cret = C._gotk4_gtk4_TextView_virtual_extend_selection(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(textView)
-	runtime.KeepAlive(granularity)
-	runtime.KeepAlive(location)
-	runtime.KeepAlive(start)
-	runtime.KeepAlive(end)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-func (textView *TextView) insertAtCursor(str string) {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.insert_at_cursor
-
-	var _arg0 *C.GtkTextView // out
-	var _arg1 *C.char        // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-	_arg1 = (*C.char)(unsafe.Pointer(C.CString(str)))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	C._gotk4_gtk4_TextView_virtual_insert_at_cursor(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(textView)
-	runtime.KeepAlive(str)
-}
-
-func (textView *TextView) insertEmoji() {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.insert_emoji
-
-	var _arg0 *C.GtkTextView // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-
-	C._gotk4_gtk4_TextView_virtual_insert_emoji(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(textView)
-}
-
-// The function takes the following parameters:
-//
-//   - step
-//   - count
-//   - extendSelection
-//
-func (textView *TextView) moveCursor(step MovementStep, count int, extendSelection bool) {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.move_cursor
-
-	var _arg0 *C.GtkTextView    // out
-	var _arg1 C.GtkMovementStep // out
-	var _arg2 C.int             // out
-	var _arg3 C.gboolean        // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-	_arg1 = C.GtkMovementStep(step)
-	_arg2 = C.int(count)
-	if extendSelection {
-		_arg3 = C.TRUE
-	}
-
-	C._gotk4_gtk4_TextView_virtual_move_cursor(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(textView)
-	runtime.KeepAlive(step)
-	runtime.KeepAlive(count)
-	runtime.KeepAlive(extendSelection)
-}
-
-func (textView *TextView) pasteClipboard() {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.paste_clipboard
-
-	var _arg0 *C.GtkTextView // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-
-	C._gotk4_gtk4_TextView_virtual_paste_clipboard(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(textView)
-}
-
-func (textView *TextView) setAnchor() {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.set_anchor
-
-	var _arg0 *C.GtkTextView // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-
-	C._gotk4_gtk4_TextView_virtual_set_anchor(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(textView)
-}
-
-// The function takes the following parameters:
-//
-//   - layer
-//   - snapshot
-//
-func (textView *TextView) snapshotLayer(layer TextViewLayer, snapshot *Snapshot) {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.snapshot_layer
-
-	var _arg0 *C.GtkTextView     // out
-	var _arg1 C.GtkTextViewLayer // out
-	var _arg2 *C.GtkSnapshot     // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-	_arg1 = C.GtkTextViewLayer(layer)
-	_arg2 = (*C.GtkSnapshot)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-
-	C._gotk4_gtk4_TextView_virtual_snapshot_layer(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(textView)
-	runtime.KeepAlive(layer)
-	runtime.KeepAlive(snapshot)
-}
-
-func (textView *TextView) toggleOverwrite() {
-	gclass := (*C.GtkTextViewClass)(coreglib.PeekParentClass(textView))
-	fnarg := gclass.toggle_overwrite
-
-	var _arg0 *C.GtkTextView // out
-
-	_arg0 = (*C.GtkTextView)(unsafe.Pointer(coreglib.InternObject(textView).Native()))
-
-	C._gotk4_gtk4_TextView_virtual_toggle_overwrite(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(textView)
-}
-
-// ToggleButtonOverrides contains methods that are overridable.
-type ToggleButtonOverrides struct {
-	// Toggled emits the ::toggled signal on the GtkToggleButton.
-	//
-	// There is no good reason for an application ever to call this function.
-	Toggled func()
-}
-
-func defaultToggleButtonOverrides(v *ToggleButton) ToggleButtonOverrides {
-	return ToggleButtonOverrides{
-		Toggled: v.toggled,
-	}
-}
-
 // ToggleButton: GtkToggleButton is a button which remains “pressed-in” when
 // clicked.
 //
@@ -103764,28 +91750,6 @@ var (
 	_ Widgetter         = (*ToggleButton)(nil)
 	_ coreglib.Objector = (*ToggleButton)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*ToggleButton, *ToggleButtonClass, ToggleButtonOverrides](
-		GTypeToggleButton,
-		initToggleButtonClass,
-		wrapToggleButton,
-		defaultToggleButtonOverrides,
-	)
-}
-
-func initToggleButtonClass(gclass unsafe.Pointer, overrides ToggleButtonOverrides, classInitFunc func(*ToggleButtonClass)) {
-	pclass := (*C.GtkToggleButtonClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeToggleButton))))
-
-	if overrides.Toggled != nil {
-		pclass.toggled = (*[0]byte)(C._gotk4_gtk4_ToggleButtonClass_toggled)
-	}
-
-	if classInitFunc != nil {
-		class := (*ToggleButtonClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapToggleButton(obj *coreglib.Object) *ToggleButton {
 	return &ToggleButton{
@@ -104007,21 +91971,6 @@ func (toggleButton *ToggleButton) Toggled() {
 	runtime.KeepAlive(toggleButton)
 }
 
-// Toggled emits the ::toggled signal on the GtkToggleButton.
-//
-// There is no good reason for an application ever to call this function.
-func (toggleButton *ToggleButton) toggled() {
-	gclass := (*C.GtkToggleButtonClass)(coreglib.PeekParentClass(toggleButton))
-	fnarg := gclass.toggled
-
-	var _arg0 *C.GtkToggleButton // out
-
-	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(coreglib.InternObject(toggleButton).Native()))
-
-	C._gotk4_gtk4_ToggleButton_virtual_toggled(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(toggleButton)
-}
-
 // Tooltip: GtkTooltip is an object representing a widget tooltip.
 //
 // Basic tooltips can be realized simply by using gtk.Widget.SetTooltipText() or
@@ -104224,14 +92173,6 @@ func (tooltip *Tooltip) SetTipArea(rect *gdk.Rectangle) {
 	runtime.KeepAlive(rect)
 }
 
-// TreeExpanderOverrides contains methods that are overridable.
-type TreeExpanderOverrides struct {
-}
-
-func defaultTreeExpanderOverrides(v *TreeExpander) TreeExpanderOverrides {
-	return TreeExpanderOverrides{}
-}
-
 // TreeExpander: GtkTreeExpander is a widget that provides an expander for a
 // list.
 //
@@ -104277,22 +92218,6 @@ type TreeExpander struct {
 var (
 	_ Widgetter = (*TreeExpander)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TreeExpander, *TreeExpanderClass, TreeExpanderOverrides](
-		GTypeTreeExpander,
-		initTreeExpanderClass,
-		wrapTreeExpander,
-		defaultTreeExpanderOverrides,
-	)
-}
-
-func initTreeExpanderClass(gclass unsafe.Pointer, overrides TreeExpanderOverrides, classInitFunc func(*TreeExpanderClass)) {
-	if classInitFunc != nil {
-		class := (*TreeExpanderClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTreeExpander(obj *coreglib.Object) *TreeExpander {
 	return &TreeExpander{
@@ -104463,14 +92388,6 @@ func (self *TreeExpander) SetListRow(listRow *TreeListRow) {
 	runtime.KeepAlive(listRow)
 }
 
-// TreeListModelOverrides contains methods that are overridable.
-type TreeListModelOverrides struct {
-}
-
-func defaultTreeListModelOverrides(v *TreeListModel) TreeListModelOverrides {
-	return TreeListModelOverrides{}
-}
-
 // TreeListModel: GtkTreeListModel is a list model that can create child models
 // on demand.
 type TreeListModel struct {
@@ -104483,22 +92400,6 @@ type TreeListModel struct {
 var (
 	_ coreglib.Objector = (*TreeListModel)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TreeListModel, *TreeListModelClass, TreeListModelOverrides](
-		GTypeTreeListModel,
-		initTreeListModelClass,
-		wrapTreeListModel,
-		defaultTreeListModelOverrides,
-	)
-}
-
-func initTreeListModelClass(gclass unsafe.Pointer, overrides TreeListModelOverrides, classInitFunc func(*TreeListModelClass)) {
-	if classInitFunc != nil {
-		class := (*TreeListModelClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTreeListModel(obj *coreglib.Object) *TreeListModel {
 	return &TreeListModel{
@@ -104755,14 +92656,6 @@ func (self *TreeListModel) SetAutoexpand(autoexpand bool) {
 	runtime.KeepAlive(autoexpand)
 }
 
-// TreeListRowOverrides contains methods that are overridable.
-type TreeListRowOverrides struct {
-}
-
-func defaultTreeListRowOverrides(v *TreeListRow) TreeListRowOverrides {
-	return TreeListRowOverrides{}
-}
-
 // TreeListRow: GtkTreeListRow is used by GtkTreeListModel to represent items.
 //
 // It allows navigating the model as a tree and modify the state of rows.
@@ -104782,22 +92675,6 @@ type TreeListRow struct {
 var (
 	_ coreglib.Objector = (*TreeListRow)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TreeListRow, *TreeListRowClass, TreeListRowOverrides](
-		GTypeTreeListRow,
-		initTreeListRowClass,
-		wrapTreeListRow,
-		defaultTreeListRowOverrides,
-	)
-}
-
-func initTreeListRowClass(gclass unsafe.Pointer, overrides TreeListRowOverrides, classInitFunc func(*TreeListRowClass)) {
-	if classInitFunc != nil {
-		class := (*TreeListRowClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTreeListRow(obj *coreglib.Object) *TreeListRow {
 	return &TreeListRow{
@@ -105059,14 +92936,6 @@ func (self *TreeListRow) SetExpanded(expanded bool) {
 	runtime.KeepAlive(expanded)
 }
 
-// TreeListRowSorterOverrides contains methods that are overridable.
-type TreeListRowSorterOverrides struct {
-}
-
-func defaultTreeListRowSorterOverrides(v *TreeListRowSorter) TreeListRowSorterOverrides {
-	return TreeListRowSorterOverrides{}
-}
-
 // TreeListRowSorter: GtkTreeListRowSorter is a special-purpose sorter that will
 // apply a given sorter to the levels in a tree.
 //
@@ -105086,22 +92955,6 @@ type TreeListRowSorter struct {
 var (
 	_ coreglib.Objector = (*TreeListRowSorter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TreeListRowSorter, *TreeListRowSorterClass, TreeListRowSorterOverrides](
-		GTypeTreeListRowSorter,
-		initTreeListRowSorterClass,
-		wrapTreeListRowSorter,
-		defaultTreeListRowSorterOverrides,
-	)
-}
-
-func initTreeListRowSorterClass(gclass unsafe.Pointer, overrides TreeListRowSorterOverrides, classInitFunc func(*TreeListRowSorterClass)) {
-	if classInitFunc != nil {
-		class := (*TreeListRowSorterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTreeListRowSorter(obj *coreglib.Object) *TreeListRowSorter {
 	return &TreeListRowSorter{
@@ -105195,33 +93048,6 @@ func (self *TreeListRowSorter) SetSorter(sorter *Sorter) {
 	runtime.KeepAlive(sorter)
 }
 
-// TreeModelFilterOverrides contains methods that are overridable.
-type TreeModelFilterOverrides struct {
-	// The function takes the following parameters:
-	//
-	//   - childModel
-	//   - iter
-	//   - value
-	//   - column
-	//
-	Modify func(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int)
-	// The function takes the following parameters:
-	//
-	//   - childModel
-	//   - iter
-	//
-	// The function returns the following values:
-	//
-	Visible func(childModel TreeModeller, iter *TreeIter) bool
-}
-
-func defaultTreeModelFilterOverrides(v *TreeModelFilter) TreeModelFilterOverrides {
-	return TreeModelFilterOverrides{
-		Modify:  v.modify,
-		Visible: v.visible,
-	}
-}
-
 // TreeModelFilter: gtkTreeModel which hides parts of an underlying tree model
 //
 // A TreeModelFilter is a tree model which wraps another tree model, and can do
@@ -105296,32 +93122,6 @@ type TreeModelFilter struct {
 var (
 	_ coreglib.Objector = (*TreeModelFilter)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TreeModelFilter, *TreeModelFilterClass, TreeModelFilterOverrides](
-		GTypeTreeModelFilter,
-		initTreeModelFilterClass,
-		wrapTreeModelFilter,
-		defaultTreeModelFilterOverrides,
-	)
-}
-
-func initTreeModelFilterClass(gclass unsafe.Pointer, overrides TreeModelFilterOverrides, classInitFunc func(*TreeModelFilterClass)) {
-	pclass := (*C.GtkTreeModelFilterClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTreeModelFilter))))
-
-	if overrides.Modify != nil {
-		pclass.modify = (*[0]byte)(C._gotk4_gtk4_TreeModelFilterClass_modify)
-	}
-
-	if overrides.Visible != nil {
-		pclass.visible = (*[0]byte)(C._gotk4_gtk4_TreeModelFilterClass_visible)
-	}
-
-	if classInitFunc != nil {
-		class := (*TreeModelFilterClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTreeModelFilter(obj *coreglib.Object) *TreeModelFilter {
 	return &TreeModelFilter{
@@ -105658,79 +93458,6 @@ func (filter *TreeModelFilter) SetVisibleFunc(fn TreeModelFilterVisibleFunc) {
 	runtime.KeepAlive(fn)
 }
 
-// The function takes the following parameters:
-//
-//   - childModel
-//   - iter
-//   - value
-//   - column
-//
-func (self *TreeModelFilter) modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int) {
-	gclass := (*C.GtkTreeModelFilterClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.modify
-
-	var _arg0 *C.GtkTreeModelFilter // out
-	var _arg1 *C.GtkTreeModel       // out
-	var _arg2 *C.GtkTreeIter        // out
-	var _arg3 *C.GValue             // out
-	var _arg4 C.int                 // out
-
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(childModel).Native()))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg3 = (*C.GValue)(unsafe.Pointer(value.Native()))
-	_arg4 = C.int(column)
-
-	C._gotk4_gtk4_TreeModelFilter_virtual_modify(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(childModel)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(value)
-	runtime.KeepAlive(column)
-}
-
-// The function takes the following parameters:
-//
-//   - childModel
-//   - iter
-//
-// The function returns the following values:
-//
-func (self *TreeModelFilter) visible(childModel TreeModeller, iter *TreeIter) bool {
-	gclass := (*C.GtkTreeModelFilterClass)(coreglib.PeekParentClass(self))
-	fnarg := gclass.visible
-
-	var _arg0 *C.GtkTreeModelFilter // out
-	var _arg1 *C.GtkTreeModel       // out
-	var _arg2 *C.GtkTreeIter        // out
-	var _cret C.gboolean            // in
-
-	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(coreglib.InternObject(self).Native()))
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(coreglib.InternObject(childModel).Native()))
-	_arg2 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-
-	_cret = C._gotk4_gtk4_TreeModelFilter_virtual_visible(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(self)
-	runtime.KeepAlive(childModel)
-	runtime.KeepAlive(iter)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// TreeModelSortOverrides contains methods that are overridable.
-type TreeModelSortOverrides struct {
-}
-
-func defaultTreeModelSortOverrides(v *TreeModelSort) TreeModelSortOverrides {
-	return TreeModelSortOverrides{}
-}
-
 // TreeModelSort: gtkTreeModel which makes an underlying tree model sortable
 //
 // The TreeModelSort is a model which implements the TreeSortable interface.
@@ -105799,22 +93526,6 @@ type TreeModelSort struct {
 var (
 	_ coreglib.Objector = (*TreeModelSort)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TreeModelSort, *TreeModelSortClass, TreeModelSortOverrides](
-		GTypeTreeModelSort,
-		initTreeModelSortClass,
-		wrapTreeModelSort,
-		defaultTreeModelSortOverrides,
-	)
-}
-
-func initTreeModelSortClass(gclass unsafe.Pointer, overrides TreeModelSortOverrides, classInitFunc func(*TreeModelSortClass)) {
-	if classInitFunc != nil {
-		class := (*TreeModelSortClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTreeModelSort(obj *coreglib.Object) *TreeModelSort {
 	return &TreeModelSort{
@@ -106570,14 +94281,6 @@ func (selection *TreeSelection) UnselectRange(startPath, endPath *TreePath) {
 	runtime.KeepAlive(endPath)
 }
 
-// TreeStoreOverrides contains methods that are overridable.
-type TreeStoreOverrides struct {
-}
-
-func defaultTreeStoreOverrides(v *TreeStore) TreeStoreOverrides {
-	return TreeStoreOverrides{}
-}
-
 // TreeStore: tree-like data structure that can be used with the GtkTreeView
 //
 // The TreeStore object is a list model for use with a TreeView widget.
@@ -106615,22 +94318,6 @@ type TreeStore struct {
 var (
 	_ coreglib.Objector = (*TreeStore)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TreeStore, *TreeStoreClass, TreeStoreOverrides](
-		GTypeTreeStore,
-		initTreeStoreClass,
-		wrapTreeStore,
-		defaultTreeStoreOverrides,
-	)
-}
-
-func initTreeStoreClass(gclass unsafe.Pointer, overrides TreeStoreOverrides, classInitFunc func(*TreeStoreClass)) {
-	if classInitFunc != nil {
-		class := (*TreeStoreClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTreeStore(obj *coreglib.Object) *TreeStore {
 	return &TreeStore{
@@ -107278,107 +94965,6 @@ func (treeStore *TreeStore) Swap(a, b *TreeIter) {
 	runtime.KeepAlive(b)
 }
 
-// TreeViewOverrides contains methods that are overridable.
-type TreeViewOverrides struct {
-	ColumnsChanged func()
-	CursorChanged  func()
-	// The function takes the following parameters:
-	//
-	//   - logical
-	//   - expand
-	//   - openAll
-	//
-	// The function returns the following values:
-	//
-	ExpandCollapseCursorRow func(logical, expand, openAll bool) bool
-	// The function takes the following parameters:
-	//
-	//   - step
-	//   - count
-	//   - extend
-	//   - modify
-	//
-	// The function returns the following values:
-	//
-	MoveCursor func(step MovementStep, count int, extend, modify bool) bool
-	// RowActivated activates the cell determined by path and column.
-	//
-	// The function takes the following parameters:
-	//
-	//   - path to be activated.
-	//   - column to be activated.
-	//
-	RowActivated func(path *TreePath, column *TreeViewColumn)
-	// The function takes the following parameters:
-	//
-	//   - iter
-	//   - path
-	//
-	RowCollapsed func(iter *TreeIter, path *TreePath)
-	// The function takes the following parameters:
-	//
-	//   - iter
-	//   - path
-	//
-	RowExpanded func(iter *TreeIter, path *TreePath)
-	// The function returns the following values:
-	//
-	SelectAll func() bool
-	// The function returns the following values:
-	//
-	SelectCursorParent func() bool
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	SelectCursorRow func(startEditing bool) bool
-	// The function returns the following values:
-	//
-	StartInteractiveSearch func() bool
-	// The function takes the following parameters:
-	//
-	//   - iter
-	//   - path
-	//
-	// The function returns the following values:
-	//
-	TestCollapseRow func(iter *TreeIter, path *TreePath) bool
-	// The function takes the following parameters:
-	//
-	//   - iter
-	//   - path
-	//
-	// The function returns the following values:
-	//
-	TestExpandRow func(iter *TreeIter, path *TreePath) bool
-	// The function returns the following values:
-	//
-	ToggleCursorRow func() bool
-	// The function returns the following values:
-	//
-	UnselectAll func() bool
-}
-
-func defaultTreeViewOverrides(v *TreeView) TreeViewOverrides {
-	return TreeViewOverrides{
-		ColumnsChanged:          v.columnsChanged,
-		CursorChanged:           v.cursorChanged,
-		ExpandCollapseCursorRow: v.expandCollapseCursorRow,
-		MoveCursor:              v.moveCursor,
-		RowActivated:            v.rowActivated,
-		RowCollapsed:            v.rowCollapsed,
-		RowExpanded:             v.rowExpanded,
-		SelectAll:               v.selectAll,
-		SelectCursorParent:      v.selectCursorParent,
-		SelectCursorRow:         v.selectCursorRow,
-		StartInteractiveSearch:  v.startInteractiveSearch,
-		TestCollapseRow:         v.testCollapseRow,
-		TestExpandRow:           v.testExpandRow,
-		ToggleCursorRow:         v.toggleCursorRow,
-		UnselectAll:             v.unselectAll,
-	}
-}
-
 // TreeView: widget for displaying both trees and lists
 //
 // Widget that displays any object that implements the gtk.TreeModel interface.
@@ -107476,84 +95062,6 @@ var (
 	_ Widgetter         = (*TreeView)(nil)
 	_ coreglib.Objector = (*TreeView)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*TreeView, *TreeViewClass, TreeViewOverrides](
-		GTypeTreeView,
-		initTreeViewClass,
-		wrapTreeView,
-		defaultTreeViewOverrides,
-	)
-}
-
-func initTreeViewClass(gclass unsafe.Pointer, overrides TreeViewOverrides, classInitFunc func(*TreeViewClass)) {
-	pclass := (*C.GtkTreeViewClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeTreeView))))
-
-	if overrides.ColumnsChanged != nil {
-		pclass.columns_changed = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_columns_changed)
-	}
-
-	if overrides.CursorChanged != nil {
-		pclass.cursor_changed = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_cursor_changed)
-	}
-
-	if overrides.ExpandCollapseCursorRow != nil {
-		pclass.expand_collapse_cursor_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row)
-	}
-
-	if overrides.MoveCursor != nil {
-		pclass.move_cursor = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_move_cursor)
-	}
-
-	if overrides.RowActivated != nil {
-		pclass.row_activated = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_row_activated)
-	}
-
-	if overrides.RowCollapsed != nil {
-		pclass.row_collapsed = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_row_collapsed)
-	}
-
-	if overrides.RowExpanded != nil {
-		pclass.row_expanded = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_row_expanded)
-	}
-
-	if overrides.SelectAll != nil {
-		pclass.select_all = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_select_all)
-	}
-
-	if overrides.SelectCursorParent != nil {
-		pclass.select_cursor_parent = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_select_cursor_parent)
-	}
-
-	if overrides.SelectCursorRow != nil {
-		pclass.select_cursor_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_select_cursor_row)
-	}
-
-	if overrides.StartInteractiveSearch != nil {
-		pclass.start_interactive_search = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_start_interactive_search)
-	}
-
-	if overrides.TestCollapseRow != nil {
-		pclass.test_collapse_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_test_collapse_row)
-	}
-
-	if overrides.TestExpandRow != nil {
-		pclass.test_expand_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_test_expand_row)
-	}
-
-	if overrides.ToggleCursorRow != nil {
-		pclass.toggle_cursor_row = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_toggle_cursor_row)
-	}
-
-	if overrides.UnselectAll != nil {
-		pclass.unselect_all = (*[0]byte)(C._gotk4_gtk4_TreeViewClass_unselect_all)
-	}
-
-	if classInitFunc != nil {
-		class := (*TreeViewClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapTreeView(obj *coreglib.Object) *TreeView {
 	return &TreeView{
@@ -110288,404 +97796,6 @@ func (treeView *TreeView) UnsetRowsDragSource() {
 	runtime.KeepAlive(treeView)
 }
 
-func (treeView *TreeView) columnsChanged() {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.columns_changed
-
-	var _arg0 *C.GtkTreeView // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-
-	C._gotk4_gtk4_TreeView_virtual_columns_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeView)
-}
-
-func (treeView *TreeView) cursorChanged() {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.cursor_changed
-
-	var _arg0 *C.GtkTreeView // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-
-	C._gotk4_gtk4_TreeView_virtual_cursor_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeView)
-}
-
-// The function takes the following parameters:
-//
-//   - logical
-//   - expand
-//   - openAll
-//
-// The function returns the following values:
-//
-func (treeView *TreeView) expandCollapseCursorRow(logical, expand, openAll bool) bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.expand_collapse_cursor_row
-
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 C.gboolean     // out
-	var _arg2 C.gboolean     // out
-	var _arg3 C.gboolean     // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-	if logical {
-		_arg1 = C.TRUE
-	}
-	if expand {
-		_arg2 = C.TRUE
-	}
-	if openAll {
-		_arg3 = C.TRUE
-	}
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_expand_collapse_cursor_row(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(treeView)
-	runtime.KeepAlive(logical)
-	runtime.KeepAlive(expand)
-	runtime.KeepAlive(openAll)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-//   - step
-//   - count
-//   - extend
-//   - modify
-//
-// The function returns the following values:
-//
-func (treeView *TreeView) moveCursor(step MovementStep, count int, extend, modify bool) bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.move_cursor
-
-	var _arg0 *C.GtkTreeView    // out
-	var _arg1 C.GtkMovementStep // out
-	var _arg2 C.int             // out
-	var _arg3 C.gboolean        // out
-	var _arg4 C.gboolean        // out
-	var _cret C.gboolean        // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-	_arg1 = C.GtkMovementStep(step)
-	_arg2 = C.int(count)
-	if extend {
-		_arg3 = C.TRUE
-	}
-	if modify {
-		_arg4 = C.TRUE
-	}
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_move_cursor(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(treeView)
-	runtime.KeepAlive(step)
-	runtime.KeepAlive(count)
-	runtime.KeepAlive(extend)
-	runtime.KeepAlive(modify)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// rowActivated activates the cell determined by path and column.
-//
-// The function takes the following parameters:
-//
-//   - path to be activated.
-//   - column to be activated.
-//
-func (treeView *TreeView) rowActivated(path *TreePath, column *TreeViewColumn) {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.row_activated
-
-	var _arg0 *C.GtkTreeView       // out
-	var _arg1 *C.GtkTreePath       // out
-	var _arg2 *C.GtkTreeViewColumn // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-	_arg1 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-	_arg2 = (*C.GtkTreeViewColumn)(unsafe.Pointer(coreglib.InternObject(column).Native()))
-
-	C._gotk4_gtk4_TreeView_virtual_row_activated(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(treeView)
-	runtime.KeepAlive(path)
-	runtime.KeepAlive(column)
-}
-
-// The function takes the following parameters:
-//
-//   - iter
-//   - path
-//
-func (treeView *TreeView) rowCollapsed(iter *TreeIter, path *TreePath) {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.row_collapsed
-
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 *C.GtkTreeIter // out
-	var _arg2 *C.GtkTreePath // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	C._gotk4_gtk4_TreeView_virtual_row_collapsed(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(treeView)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(path)
-}
-
-// The function takes the following parameters:
-//
-//   - iter
-//   - path
-//
-func (treeView *TreeView) rowExpanded(iter *TreeIter, path *TreePath) {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.row_expanded
-
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 *C.GtkTreeIter // out
-	var _arg2 *C.GtkTreePath // out
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	C._gotk4_gtk4_TreeView_virtual_row_expanded(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(treeView)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(path)
-}
-
-// The function returns the following values:
-//
-func (treeView *TreeView) selectAll() bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.select_all
-
-	var _arg0 *C.GtkTreeView // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_select_all(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeView)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function returns the following values:
-//
-func (treeView *TreeView) selectCursorParent() bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.select_cursor_parent
-
-	var _arg0 *C.GtkTreeView // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_select_cursor_parent(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeView)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
-func (treeView *TreeView) selectCursorRow(startEditing bool) bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.select_cursor_row
-
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 C.gboolean     // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-	if startEditing {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_select_cursor_row(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(treeView)
-	runtime.KeepAlive(startEditing)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function returns the following values:
-//
-func (treeView *TreeView) startInteractiveSearch() bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.start_interactive_search
-
-	var _arg0 *C.GtkTreeView // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_start_interactive_search(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeView)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-//   - iter
-//   - path
-//
-// The function returns the following values:
-//
-func (treeView *TreeView) testCollapseRow(iter *TreeIter, path *TreePath) bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.test_collapse_row
-
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 *C.GtkTreeIter // out
-	var _arg2 *C.GtkTreePath // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_test_collapse_row(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(treeView)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(path)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-//   - iter
-//   - path
-//
-// The function returns the following values:
-//
-func (treeView *TreeView) testExpandRow(iter *TreeIter, path *TreePath) bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.test_expand_row
-
-	var _arg0 *C.GtkTreeView // out
-	var _arg1 *C.GtkTreeIter // out
-	var _arg2 *C.GtkTreePath // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-	_arg1 = (*C.GtkTreeIter)(gextras.StructNative(unsafe.Pointer(iter)))
-	_arg2 = (*C.GtkTreePath)(gextras.StructNative(unsafe.Pointer(path)))
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_test_expand_row(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(treeView)
-	runtime.KeepAlive(iter)
-	runtime.KeepAlive(path)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function returns the following values:
-//
-func (treeView *TreeView) toggleCursorRow() bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.toggle_cursor_row
-
-	var _arg0 *C.GtkTreeView // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_toggle_cursor_row(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeView)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function returns the following values:
-//
-func (treeView *TreeView) unselectAll() bool {
-	gclass := (*C.GtkTreeViewClass)(coreglib.PeekParentClass(treeView))
-	fnarg := gclass.unselect_all
-
-	var _arg0 *C.GtkTreeView // out
-	var _cret C.gboolean     // in
-
-	_arg0 = (*C.GtkTreeView)(unsafe.Pointer(coreglib.InternObject(treeView).Native()))
-
-	_cret = C._gotk4_gtk4_TreeView_virtual_unselect_all(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(treeView)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
 // TreeViewColumn: visible column in a GtkTreeView widget
 //
 // The GtkTreeViewColumn object represents a visible column in a TreeView
@@ -111966,14 +99076,6 @@ func (treeColumn *TreeViewColumn) SetWidget(widget Widgetter) {
 	runtime.KeepAlive(widget)
 }
 
-// VideoOverrides contains methods that are overridable.
-type VideoOverrides struct {
-}
-
-func defaultVideoOverrides(v *Video) VideoOverrides {
-	return VideoOverrides{}
-}
-
 // Video: GtkVideo is a widget to show a GtkMediaStream with media controls.
 //
 // !An example GtkVideo (video.png)
@@ -111995,22 +99097,6 @@ type Video struct {
 var (
 	_ Widgetter = (*Video)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Video, *VideoClass, VideoOverrides](
-		GTypeVideo,
-		initVideoClass,
-		wrapVideo,
-		defaultVideoOverrides,
-	)
-}
-
-func initVideoClass(gclass unsafe.Pointer, overrides VideoOverrides, classInitFunc func(*VideoClass)) {
-	if classInitFunc != nil {
-		class := (*VideoClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapVideo(obj *coreglib.Object) *Video {
 	return &Video{
@@ -112681,254 +99767,6 @@ func NewVolumeButton() *VolumeButton {
 	return _volumeButton
 }
 
-// WidgetOverrides contains methods that are overridable.
-type WidgetOverrides struct {
-	// Contains tests if the point at (x, y) is contained in widget.
-	//
-	// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
-	// assumed to be the top left of widget's content area.
-	//
-	// The function takes the following parameters:
-	//
-	//   - x: x coordinate to test, relative to widget's origin.
-	//   - y: y coordinate to test, relative to widget's origin.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if widget contains (x, y).
-	//
-	Contains func(x, y float64) bool
-	// The function takes the following parameters:
-	//
-	DirectionChanged func(previousDirection TextDirection)
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	Focus func(direction DirectionType) bool
-	// RequestMode gets whether the widget prefers a height-for-width layout or
-	// a width-for-height layout.
-	//
-	// Single-child widgets generally propagate the preference of their child,
-	// more complex widgets need to request something either in context of their
-	// children or in context of their allocation capabilities.
-	//
-	// The function returns the following values:
-	//
-	//   - sizeRequestMode: GtkSizeRequestMode preferred by widget.
-	//
-	RequestMode func() SizeRequestMode
-	// GrabFocus causes widget to have the keyboard focus for the GtkWindow it's
-	// inside.
-	//
-	// If widget is not focusable, or its ::grab_focus implementation cannot
-	// transfer the focus to a descendant of widget that is focusable, it will
-	// not take focus and FALSE will be returned.
-	//
-	// Calling gtk.Widget.GrabFocus() on an already focused widget is allowed,
-	// should not have an effect, and return TRUE.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if focus is now inside widget.
-	//
-	GrabFocus func() bool
-	// Hide reverses the effects of gtk_widget_show().
-	//
-	// This is causing the widget to be hidden (invisible to the user).
-	Hide func()
-	// KeynavFailed emits the ::keynav-failed signal on the widget.
-	//
-	// This function should be called whenever keyboard navigation within a
-	// single widget hits a boundary.
-	//
-	// The return value of this function should be interpreted in a way similar
-	// to the return value of gtk.Widget.ChildFocus(). When TRUE is returned,
-	// stay in the widget, the failed keyboard navigation is OK and/or there
-	// is nowhere we can/should move the focus to. When FALSE is returned,
-	// the caller should continue with keyboard navigation outside the widget,
-	// e.g. by calling gtk.Widget.ChildFocus() on the widget’s toplevel.
-	//
-	// The default gtk.Widget::keynav-failed handler returns FALSE for
-	// GTK_DIR_TAB_FORWARD and GTK_DIR_TAB_BACKWARD. For the other values of
-	// DirectionType it returns TRUE.
-	//
-	// Whenever the default handler returns TRUE, it also calls
-	// gtk.Widget.ErrorBell() to notify the user of the failed keyboard
-	// navigation.
-	//
-	// A use case for providing an own implementation of ::keynav-failed (either
-	// by connecting to it or by overriding it) would be a row of gtk.Entry
-	// widgets where the user should be able to navigate the entire row with the
-	// cursor keys, as e.g. known from user interfaces that require entering
-	// license keys.
-	//
-	// The function takes the following parameters:
-	//
-	//   - direction of focus movement.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if stopping keyboard navigation is fine, FALSE if the
-	//     emitting widget should try to handle the keyboard navigation attempt
-	//     in its parent container(s).
-	//
-	KeynavFailed func(direction DirectionType) bool
-	// Map causes a widget to be mapped if it isn’t already.
-	//
-	// This function is only for use in widget implementations.
-	Map func()
-	// Measure measures widget in the orientation orientation and for the given
-	// for_size.
-	//
-	// As an example, if orientation is GTK_ORIENTATION_HORIZONTAL and for_size
-	// is 300, this functions will compute the minimum and natural width of
-	// widget if it is allocated at a height of 300 pixels.
-	//
-	// See GtkWidget’s geometry management section
-	// (class.Widget.html#height-for-width-geometry-management) for a more
-	// details on implementing WidgetClass.measure().
-	//
-	// The function takes the following parameters:
-	//
-	//   - orientation to measure.
-	//   - forSize: size for the opposite of orientation, i.e. if orientation
-	//     is GTK_ORIENTATION_HORIZONTAL, this is the height the widget should
-	//     be measured with. The GTK_ORIENTATION_VERTICAL case is analogous.
-	//     This way, both height-for-width and width-for-height requests can be
-	//     implemented. If no size is known, -1 can be passed.
-	//
-	// The function returns the following values:
-	//
-	//   - minimum (optional): location to store the minimum size, or NULL.
-	//   - natural (optional): location to store the natural size, or NULL.
-	//   - minimumBaseline (optional): location to store the baseline position
-	//     for the minimum size, or NULL.
-	//   - naturalBaseline (optional): location to store the baseline position
-	//     for the natural size, or NULL.
-	//
-	Measure func(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
-	// MnemonicActivate emits the GtkWidget::mnemonic-activate signal.
-	//
-	// The function takes the following parameters:
-	//
-	//   - groupCycling: TRUE if there are other widgets with the same mnemonic.
-	//
-	// The function returns the following values:
-	//
-	//   - ok: TRUE if the signal has been handled.
-	//
-	MnemonicActivate func(groupCycling bool) bool
-	// The function takes the following parameters:
-	//
-	MoveFocus func(direction DirectionType)
-	// The function takes the following parameters:
-	//
-	//   - x
-	//   - y
-	//   - keyboardTooltip
-	//   - tooltip
-	//
-	// The function returns the following values:
-	//
-	QueryTooltip func(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
-	// Realize creates the GDK resources associated with a widget.
-	//
-	// Normally realization happens implicitly; if you show a widget and all
-	// its parent containers, then the widget will be realized and mapped
-	// automatically.
-	//
-	// Realizing a widget requires all the widget’s parent widgets to be
-	// realized; calling this function realizes the widget’s parents in addition
-	// to widget itself. If a widget is not yet inside a toplevel window when
-	// you realize it, bad things will happen.
-	//
-	// This function is primarily used in widget implementations, and isn’t
-	// very useful otherwise. Many times when you think you might need it,
-	// a better approach is to connect to a signal that will be called after the
-	// widget is realized automatically, such as gtk.Widget::realize.
-	Realize func()
-	Root    func()
-	// SetFocusChild: set child as the current focus child of widget.
-	//
-	// The previous focus child will be unset.
-	//
-	// This function is only suitable for widget implementations. If you want a
-	// certain widget to get the input focus, call gtk.Widget.GrabFocus() on it.
-	//
-	// The function takes the following parameters:
-	//
-	//   - child (optional): direct child widget of widget or NULL to unset the
-	//     focus child of widget.
-	//
-	SetFocusChild func(child Widgetter)
-	// Show flags a widget to be displayed.
-	//
-	// Any widget that isn’t shown will not appear on the screen.
-	//
-	// Remember that you have to show the containers containing a widget,
-	// in addition to the widget itself, before it will appear onscreen.
-	//
-	// When a toplevel container is shown, it is immediately realized and
-	// mapped; other shown widgets are realized and mapped when their toplevel
-	// container is realized and mapped.
-	Show func()
-	// The function takes the following parameters:
-	//
-	//   - width
-	//   - height
-	//   - baseline
-	//
-	SizeAllocate func(width, height, baseline int)
-	// The function takes the following parameters:
-	//
-	Snapshot func(snapshot *Snapshot)
-	// The function takes the following parameters:
-	//
-	StateFlagsChanged func(previousStateFlags StateFlags)
-	// The function takes the following parameters:
-	//
-	SystemSettingChanged func(settings SystemSetting)
-	// Unmap causes a widget to be unmapped if it’s currently mapped.
-	//
-	// This function is only for use in widget implementations.
-	Unmap func()
-	// Unrealize causes a widget to be unrealized (frees all GDK resources
-	// associated with the widget).
-	//
-	// This function is only useful in widget implementations.
-	Unrealize func()
-	Unroot    func()
-}
-
-func defaultWidgetOverrides(v *Widget) WidgetOverrides {
-	return WidgetOverrides{
-		Contains:             v.contains,
-		DirectionChanged:     v.directionChanged,
-		Focus:                v.focus,
-		RequestMode:          v.requestMode,
-		GrabFocus:            v.grabFocus,
-		Hide:                 v.hide,
-		KeynavFailed:         v.keynavFailed,
-		Map:                  v._map,
-		Measure:              v.measure,
-		MnemonicActivate:     v.mnemonicActivate,
-		MoveFocus:            v.moveFocus,
-		QueryTooltip:         v.queryTooltip,
-		Realize:              v.realize,
-		Root:                 v.root,
-		SetFocusChild:        v.setFocusChild,
-		Show:                 v.show,
-		SizeAllocate:         v.sizeAllocate,
-		Snapshot:             v.snapshot,
-		StateFlagsChanged:    v.stateFlagsChanged,
-		SystemSettingChanged: v.systemSettingChanged,
-		Unmap:                v.unmap,
-		Unrealize:            v.unrealize,
-		Unroot:               v.unroot,
-	}
-}
-
 // Widget: base class for all widgets.
 //
 // GtkWidget is the base class all widgets in GTK derive from. It manages the
@@ -113289,116 +100127,6 @@ type Widgetter interface {
 }
 
 var _ Widgetter = (*Widget)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*Widget, *WidgetClass, WidgetOverrides](
-		GTypeWidget,
-		initWidgetClass,
-		wrapWidget,
-		defaultWidgetOverrides,
-	)
-}
-
-func initWidgetClass(gclass unsafe.Pointer, overrides WidgetOverrides, classInitFunc func(*WidgetClass)) {
-	pclass := (*C.GtkWidgetClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeWidget))))
-
-	if overrides.Contains != nil {
-		pclass.contains = (*[0]byte)(C._gotk4_gtk4_WidgetClass_contains)
-	}
-
-	if overrides.DirectionChanged != nil {
-		pclass.direction_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_direction_changed)
-	}
-
-	if overrides.Focus != nil {
-		pclass.focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_focus)
-	}
-
-	if overrides.RequestMode != nil {
-		pclass.get_request_mode = (*[0]byte)(C._gotk4_gtk4_WidgetClass_get_request_mode)
-	}
-
-	if overrides.GrabFocus != nil {
-		pclass.grab_focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_grab_focus)
-	}
-
-	if overrides.Hide != nil {
-		pclass.hide = (*[0]byte)(C._gotk4_gtk4_WidgetClass_hide)
-	}
-
-	if overrides.KeynavFailed != nil {
-		pclass.keynav_failed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_keynav_failed)
-	}
-
-	if overrides.Map != nil {
-		pclass._map = (*[0]byte)(C._gotk4_gtk4_WidgetClass_map)
-	}
-
-	if overrides.Measure != nil {
-		pclass.measure = (*[0]byte)(C._gotk4_gtk4_WidgetClass_measure)
-	}
-
-	if overrides.MnemonicActivate != nil {
-		pclass.mnemonic_activate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_mnemonic_activate)
-	}
-
-	if overrides.MoveFocus != nil {
-		pclass.move_focus = (*[0]byte)(C._gotk4_gtk4_WidgetClass_move_focus)
-	}
-
-	if overrides.QueryTooltip != nil {
-		pclass.query_tooltip = (*[0]byte)(C._gotk4_gtk4_WidgetClass_query_tooltip)
-	}
-
-	if overrides.Realize != nil {
-		pclass.realize = (*[0]byte)(C._gotk4_gtk4_WidgetClass_realize)
-	}
-
-	if overrides.Root != nil {
-		pclass.root = (*[0]byte)(C._gotk4_gtk4_WidgetClass_root)
-	}
-
-	if overrides.SetFocusChild != nil {
-		pclass.set_focus_child = (*[0]byte)(C._gotk4_gtk4_WidgetClass_set_focus_child)
-	}
-
-	if overrides.Show != nil {
-		pclass.show = (*[0]byte)(C._gotk4_gtk4_WidgetClass_show)
-	}
-
-	if overrides.SizeAllocate != nil {
-		pclass.size_allocate = (*[0]byte)(C._gotk4_gtk4_WidgetClass_size_allocate)
-	}
-
-	if overrides.Snapshot != nil {
-		pclass.snapshot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_snapshot)
-	}
-
-	if overrides.StateFlagsChanged != nil {
-		pclass.state_flags_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_state_flags_changed)
-	}
-
-	if overrides.SystemSettingChanged != nil {
-		pclass.system_setting_changed = (*[0]byte)(C._gotk4_gtk4_WidgetClass_system_setting_changed)
-	}
-
-	if overrides.Unmap != nil {
-		pclass.unmap = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unmap)
-	}
-
-	if overrides.Unrealize != nil {
-		pclass.unrealize = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unrealize)
-	}
-
-	if overrides.Unroot != nil {
-		pclass.unroot = (*[0]byte)(C._gotk4_gtk4_WidgetClass_unroot)
-	}
-
-	if classInitFunc != nil {
-		class := (*WidgetClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapWidget(obj *coreglib.Object) *Widget {
 	return &Widget{
@@ -118222,615 +104950,6 @@ func (widget *Widget) UnsetStateFlags(flags StateFlags) {
 	runtime.KeepAlive(flags)
 }
 
-// Contains tests if the point at (x, y) is contained in widget.
-//
-// The coordinates for (x, y) must be in widget coordinates, so (0, 0) is
-// assumed to be the top left of widget's content area.
-//
-// The function takes the following parameters:
-//
-//   - x: x coordinate to test, relative to widget's origin.
-//   - y: y coordinate to test, relative to widget's origin.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if widget contains (x, y).
-//
-func (widget *Widget) contains(x, y float64) bool {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.contains
-
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.double     // out
-	var _arg2 C.double     // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.double(x)
-	_arg2 = C.double(y)
-
-	_cret = C._gotk4_gtk4_Widget_virtual_contains(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-func (widget *Widget) directionChanged(previousDirection TextDirection) {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.direction_changed
-
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkTextDirection // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkTextDirection(previousDirection)
-
-	C._gotk4_gtk4_Widget_virtual_direction_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(previousDirection)
-}
-
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
-func (widget *Widget) focus(direction DirectionType) bool {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.focus
-
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkDirectionType // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkDirectionType(direction)
-
-	_cret = C._gotk4_gtk4_Widget_virtual_focus(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(direction)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// requestMode gets whether the widget prefers a height-for-width layout or a
-// width-for-height layout.
-//
-// Single-child widgets generally propagate the preference of their child,
-// more complex widgets need to request something either in context of their
-// children or in context of their allocation capabilities.
-//
-// The function returns the following values:
-//
-//   - sizeRequestMode: GtkSizeRequestMode preferred by widget.
-//
-func (widget *Widget) requestMode() SizeRequestMode {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.get_request_mode
-
-	var _arg0 *C.GtkWidget         // out
-	var _cret C.GtkSizeRequestMode // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C._gotk4_gtk4_Widget_virtual_get_request_mode(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-
-	var _sizeRequestMode SizeRequestMode // out
-
-	_sizeRequestMode = SizeRequestMode(_cret)
-
-	return _sizeRequestMode
-}
-
-// grabFocus causes widget to have the keyboard focus for the GtkWindow it's
-// inside.
-//
-// If widget is not focusable, or its ::grab_focus implementation cannot
-// transfer the focus to a descendant of widget that is focusable, it will not
-// take focus and FALSE will be returned.
-//
-// Calling gtk.Widget.GrabFocus() on an already focused widget is allowed,
-// should not have an effect, and return TRUE.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if focus is now inside widget.
-//
-func (widget *Widget) grabFocus() bool {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.grab_focus
-
-	var _arg0 *C.GtkWidget // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	_cret = C._gotk4_gtk4_Widget_virtual_grab_focus(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Hide reverses the effects of gtk_widget_show().
-//
-// This is causing the widget to be hidden (invisible to the user).
-func (widget *Widget) hide() {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.hide
-
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_hide(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-}
-
-// keynavFailed emits the ::keynav-failed signal on the widget.
-//
-// This function should be called whenever keyboard navigation within a single
-// widget hits a boundary.
-//
-// The return value of this function should be interpreted in a way similar
-// to the return value of gtk.Widget.ChildFocus(). When TRUE is returned,
-// stay in the widget, the failed keyboard navigation is OK and/or there is
-// nowhere we can/should move the focus to. When FALSE is returned, the caller
-// should continue with keyboard navigation outside the widget, e.g. by calling
-// gtk.Widget.ChildFocus() on the widget’s toplevel.
-//
-// The default gtk.Widget::keynav-failed handler returns FALSE for
-// GTK_DIR_TAB_FORWARD and GTK_DIR_TAB_BACKWARD. For the other values of
-// DirectionType it returns TRUE.
-//
-// Whenever the default handler returns TRUE, it also calls
-// gtk.Widget.ErrorBell() to notify the user of the failed keyboard navigation.
-//
-// A use case for providing an own implementation of ::keynav-failed (either
-// by connecting to it or by overriding it) would be a row of gtk.Entry widgets
-// where the user should be able to navigate the entire row with the cursor
-// keys, as e.g. known from user interfaces that require entering license keys.
-//
-// The function takes the following parameters:
-//
-//   - direction of focus movement.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if stopping keyboard navigation is fine, FALSE if the emitting
-//     widget should try to handle the keyboard navigation attempt in its parent
-//     container(s).
-//
-func (widget *Widget) keynavFailed(direction DirectionType) bool {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.keynav_failed
-
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkDirectionType // out
-	var _cret C.gboolean         // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkDirectionType(direction)
-
-	_cret = C._gotk4_gtk4_Widget_virtual_keynav_failed(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(direction)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Map causes a widget to be mapped if it isn’t already.
-//
-// This function is only for use in widget implementations.
-func (widget *Widget) _map() {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass._map
-
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_map(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Measure measures widget in the orientation orientation and for the given
-// for_size.
-//
-// As an example, if orientation is GTK_ORIENTATION_HORIZONTAL and for_size is
-// 300, this functions will compute the minimum and natural width of widget if
-// it is allocated at a height of 300 pixels.
-//
-// See GtkWidget’s geometry management section
-// (class.Widget.html#height-for-width-geometry-management) for a more details
-// on implementing WidgetClass.measure().
-//
-// The function takes the following parameters:
-//
-//   - orientation to measure.
-//   - forSize: size for the opposite of orientation, i.e. if orientation is
-//     GTK_ORIENTATION_HORIZONTAL, this is the height the widget should be
-//     measured with. The GTK_ORIENTATION_VERTICAL case is analogous. This way,
-//     both height-for-width and width-for-height requests can be implemented.
-//     If no size is known, -1 can be passed.
-//
-// The function returns the following values:
-//
-//   - minimum (optional): location to store the minimum size, or NULL.
-//   - natural (optional): location to store the natural size, or NULL.
-//   - minimumBaseline (optional): location to store the baseline position for
-//     the minimum size, or NULL.
-//   - naturalBaseline (optional): location to store the baseline position for
-//     the natural size, or NULL.
-//
-func (widget *Widget) measure(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int) {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.measure
-
-	var _arg0 *C.GtkWidget     // out
-	var _arg1 C.GtkOrientation // out
-	var _arg2 C.int            // out
-	var _arg3 C.int            // in
-	var _arg4 C.int            // in
-	var _arg5 C.int            // in
-	var _arg6 C.int            // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkOrientation(orientation)
-	_arg2 = C.int(forSize)
-
-	C._gotk4_gtk4_Widget_virtual_measure(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_arg6)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(orientation)
-	runtime.KeepAlive(forSize)
-
-	var _minimum int         // out
-	var _natural int         // out
-	var _minimumBaseline int // out
-	var _naturalBaseline int // out
-
-	_minimum = int(_arg3)
-	_natural = int(_arg4)
-	_minimumBaseline = int(_arg5)
-	_naturalBaseline = int(_arg6)
-
-	return _minimum, _natural, _minimumBaseline, _naturalBaseline
-}
-
-// mnemonicActivate emits the GtkWidget::mnemonic-activate signal.
-//
-// The function takes the following parameters:
-//
-//   - groupCycling: TRUE if there are other widgets with the same mnemonic.
-//
-// The function returns the following values:
-//
-//   - ok: TRUE if the signal has been handled.
-//
-func (widget *Widget) mnemonicActivate(groupCycling bool) bool {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.mnemonic_activate
-
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.gboolean   // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	if groupCycling {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C._gotk4_gtk4_Widget_virtual_mnemonic_activate(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(groupCycling)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-func (widget *Widget) moveFocus(direction DirectionType) {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.move_focus
-
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkDirectionType // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkDirectionType(direction)
-
-	C._gotk4_gtk4_Widget_virtual_move_focus(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(direction)
-}
-
-// The function takes the following parameters:
-//
-//   - x
-//   - y
-//   - keyboardTooltip
-//   - tooltip
-//
-// The function returns the following values:
-//
-func (widget *Widget) queryTooltip(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.query_tooltip
-
-	var _arg0 *C.GtkWidget  // out
-	var _arg1 C.int         // out
-	var _arg2 C.int         // out
-	var _arg3 C.gboolean    // out
-	var _arg4 *C.GtkTooltip // out
-	var _cret C.gboolean    // in
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-	if keyboardTooltip {
-		_arg3 = C.TRUE
-	}
-	_arg4 = (*C.GtkTooltip)(unsafe.Pointer(coreglib.InternObject(tooltip).Native()))
-
-	_cret = C._gotk4_gtk4_Widget_virtual_query_tooltip(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(x)
-	runtime.KeepAlive(y)
-	runtime.KeepAlive(keyboardTooltip)
-	runtime.KeepAlive(tooltip)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Realize creates the GDK resources associated with a widget.
-//
-// Normally realization happens implicitly; if you show a widget and all its
-// parent containers, then the widget will be realized and mapped automatically.
-//
-// Realizing a widget requires all the widget’s parent widgets to be realized;
-// calling this function realizes the widget’s parents in addition to widget
-// itself. If a widget is not yet inside a toplevel window when you realize it,
-// bad things will happen.
-//
-// This function is primarily used in widget implementations, and isn’t very
-// useful otherwise. Many times when you think you might need it, a better
-// approach is to connect to a signal that will be called after the widget is
-// realized automatically, such as gtk.Widget::realize.
-func (widget *Widget) realize() {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.realize
-
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_realize(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-}
-
-func (widget *Widget) root() {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.root
-
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_root(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-}
-
-// setFocusChild: set child as the current focus child of widget.
-//
-// The previous focus child will be unset.
-//
-// This function is only suitable for widget implementations. If you want a
-// certain widget to get the input focus, call gtk.Widget.GrabFocus() on it.
-//
-// The function takes the following parameters:
-//
-//   - child (optional): direct child widget of widget or NULL to unset the
-//     focus child of widget.
-//
-func (widget *Widget) setFocusChild(child Widgetter) {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.set_focus_child
-
-	var _arg0 *C.GtkWidget // out
-	var _arg1 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	if child != nil {
-		_arg1 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(child).Native()))
-	}
-
-	C._gotk4_gtk4_Widget_virtual_set_focus_child(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(child)
-}
-
-// Show flags a widget to be displayed.
-//
-// Any widget that isn’t shown will not appear on the screen.
-//
-// Remember that you have to show the containers containing a widget,
-// in addition to the widget itself, before it will appear onscreen.
-//
-// When a toplevel container is shown, it is immediately realized and mapped;
-// other shown widgets are realized and mapped when their toplevel container is
-// realized and mapped.
-func (widget *Widget) show() {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.show
-
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_show(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-}
-
-// The function takes the following parameters:
-//
-//   - width
-//   - height
-//   - baseline
-//
-func (widget *Widget) sizeAllocate(width, height, baseline int) {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.size_allocate
-
-	var _arg0 *C.GtkWidget // out
-	var _arg1 C.int        // out
-	var _arg2 C.int        // out
-	var _arg3 C.int        // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.int(width)
-	_arg2 = C.int(height)
-	_arg3 = C.int(baseline)
-
-	C._gotk4_gtk4_Widget_virtual_size_allocate(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-	runtime.KeepAlive(baseline)
-}
-
-// The function takes the following parameters:
-//
-func (widget *Widget) snapshot(snapshot *Snapshot) {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.snapshot
-
-	var _arg0 *C.GtkWidget   // out
-	var _arg1 *C.GtkSnapshot // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = (*C.GtkSnapshot)(unsafe.Pointer(coreglib.InternObject(snapshot).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_snapshot(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(snapshot)
-}
-
-// The function takes the following parameters:
-//
-func (widget *Widget) stateFlagsChanged(previousStateFlags StateFlags) {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.state_flags_changed
-
-	var _arg0 *C.GtkWidget    // out
-	var _arg1 C.GtkStateFlags // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkStateFlags(previousStateFlags)
-
-	C._gotk4_gtk4_Widget_virtual_state_flags_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(previousStateFlags)
-}
-
-// The function takes the following parameters:
-//
-func (widget *Widget) systemSettingChanged(settings SystemSetting) {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.system_setting_changed
-
-	var _arg0 *C.GtkWidget       // out
-	var _arg1 C.GtkSystemSetting // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-	_arg1 = C.GtkSystemSetting(settings)
-
-	C._gotk4_gtk4_Widget_virtual_system_setting_changed(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(widget)
-	runtime.KeepAlive(settings)
-}
-
-// Unmap causes a widget to be unmapped if it’s currently mapped.
-//
-// This function is only for use in widget implementations.
-func (widget *Widget) unmap() {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.unmap
-
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_unmap(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-}
-
-// Unrealize causes a widget to be unrealized (frees all GDK resources
-// associated with the widget).
-//
-// This function is only useful in widget implementations.
-func (widget *Widget) unrealize() {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.unrealize
-
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_unrealize(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-}
-
-func (widget *Widget) unroot() {
-	gclass := (*C.GtkWidgetClass)(coreglib.PeekParentClass(widget))
-	fnarg := gclass.unroot
-
-	var _arg0 *C.GtkWidget // out
-
-	_arg0 = (*C.GtkWidget)(unsafe.Pointer(coreglib.InternObject(widget).Native()))
-
-	C._gotk4_gtk4_Widget_virtual_unroot(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(widget)
-}
-
 // WidgetGetDefaultDirection obtains the current default reading direction.
 //
 // See gtk.Widget().SetDefaultDirection.
@@ -118868,14 +104987,6 @@ func WidgetSetDefaultDirection(dir TextDirection) {
 	runtime.KeepAlive(dir)
 }
 
-// WidgetPaintableOverrides contains methods that are overridable.
-type WidgetPaintableOverrides struct {
-}
-
-func defaultWidgetPaintableOverrides(v *WidgetPaintable) WidgetPaintableOverrides {
-	return WidgetPaintableOverrides{}
-}
-
 // WidgetPaintable: GtkWidgetPaintable is a GdkPaintable that displays the
 // contents of a widget.
 //
@@ -118905,22 +105016,6 @@ type WidgetPaintable struct {
 var (
 	_ coreglib.Objector = (*WidgetPaintable)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*WidgetPaintable, *WidgetPaintableClass, WidgetPaintableOverrides](
-		GTypeWidgetPaintable,
-		initWidgetPaintableClass,
-		wrapWidgetPaintable,
-		defaultWidgetPaintableOverrides,
-	)
-}
-
-func initWidgetPaintableClass(gclass unsafe.Pointer, overrides WidgetPaintableOverrides, classInitFunc func(*WidgetPaintableClass)) {
-	if classInitFunc != nil {
-		class := (*WidgetPaintableClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapWidgetPaintable(obj *coreglib.Object) *WidgetPaintable {
 	return &WidgetPaintable{
@@ -119020,31 +105115,6 @@ func (self *WidgetPaintable) SetWidget(widget Widgetter) {
 	runtime.KeepAlive(widget)
 }
 
-// WindowOverrides contains methods that are overridable.
-type WindowOverrides struct {
-	ActivateDefault func()
-	ActivateFocus   func()
-	// The function returns the following values:
-	//
-	CloseRequest func() bool
-	// The function takes the following parameters:
-	//
-	// The function returns the following values:
-	//
-	EnableDebugging func(toggle bool) bool
-	KeysChanged     func()
-}
-
-func defaultWindowOverrides(v *Window) WindowOverrides {
-	return WindowOverrides{
-		ActivateDefault: v.activateDefault,
-		ActivateFocus:   v.activateFocus,
-		CloseRequest:    v.closeRequest,
-		EnableDebugging: v.enableDebugging,
-		KeysChanged:     v.keysChanged,
-	}
-}
-
 // Window: GtkWindow is a toplevel window which can contain other widgets.
 //
 // !An example GtkWindow (window.png)
@@ -119103,44 +105173,6 @@ var (
 	_ Widgetter         = (*Window)(nil)
 	_ coreglib.Objector = (*Window)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*Window, *WindowClass, WindowOverrides](
-		GTypeWindow,
-		initWindowClass,
-		wrapWindow,
-		defaultWindowOverrides,
-	)
-}
-
-func initWindowClass(gclass unsafe.Pointer, overrides WindowOverrides, classInitFunc func(*WindowClass)) {
-	pclass := (*C.GtkWindowClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeWindow))))
-
-	if overrides.ActivateDefault != nil {
-		pclass.activate_default = (*[0]byte)(C._gotk4_gtk4_WindowClass_activate_default)
-	}
-
-	if overrides.ActivateFocus != nil {
-		pclass.activate_focus = (*[0]byte)(C._gotk4_gtk4_WindowClass_activate_focus)
-	}
-
-	if overrides.CloseRequest != nil {
-		pclass.close_request = (*[0]byte)(C._gotk4_gtk4_WindowClass_close_request)
-	}
-
-	if overrides.EnableDebugging != nil {
-		pclass.enable_debugging = (*[0]byte)(C._gotk4_gtk4_WindowClass_enable_debugging)
-	}
-
-	if overrides.KeysChanged != nil {
-		pclass.keys_changed = (*[0]byte)(C._gotk4_gtk4_WindowClass_keys_changed)
-	}
-
-	if classInitFunc != nil {
-		class := (*WindowClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapWindow(obj *coreglib.Object) *Window {
 	return &Window{
@@ -120647,95 +106679,6 @@ func (window *Window) Unminimize() {
 	runtime.KeepAlive(window)
 }
 
-func (window *Window) activateDefault() {
-	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
-	fnarg := gclass.activate_default
-
-	var _arg0 *C.GtkWindow // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	C._gotk4_gtk4_Window_virtual_activate_default(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(window)
-}
-
-func (window *Window) activateFocus() {
-	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
-	fnarg := gclass.activate_focus
-
-	var _arg0 *C.GtkWindow // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	C._gotk4_gtk4_Window_virtual_activate_focus(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(window)
-}
-
-// The function returns the following values:
-//
-func (window *Window) closeRequest() bool {
-	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
-	fnarg := gclass.close_request
-
-	var _arg0 *C.GtkWindow // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	_cret = C._gotk4_gtk4_Window_virtual_close_request(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(window)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// The function takes the following parameters:
-//
-// The function returns the following values:
-//
-func (window *Window) enableDebugging(toggle bool) bool {
-	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
-	fnarg := gclass.enable_debugging
-
-	var _arg0 *C.GtkWindow // out
-	var _arg1 C.gboolean   // out
-	var _cret C.gboolean   // in
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	if toggle {
-		_arg1 = C.TRUE
-	}
-
-	_cret = C._gotk4_gtk4_Window_virtual_enable_debugging(unsafe.Pointer(fnarg), _arg0, _arg1)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(toggle)
-
-	var _ok bool // out
-
-	if _cret != 0 {
-		_ok = true
-	}
-
-	return _ok
-}
-
-func (window *Window) keysChanged() {
-	gclass := (*C.GtkWindowClass)(coreglib.PeekParentClass(window))
-	fnarg := gclass.keys_changed
-
-	var _arg0 *C.GtkWindow // out
-
-	_arg0 = (*C.GtkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-
-	C._gotk4_gtk4_Window_virtual_keys_changed(unsafe.Pointer(fnarg), _arg0)
-	runtime.KeepAlive(window)
-}
-
 // WindowGetDefaultIconName returns the fallback icon name for windows.
 //
 // The returned string is owned by GTK and should not be modified. It is only
@@ -120899,14 +106842,6 @@ func WindowSetInteractiveDebugging(enable bool) {
 	runtime.KeepAlive(enable)
 }
 
-// WindowControlsOverrides contains methods that are overridable.
-type WindowControlsOverrides struct {
-}
-
-func defaultWindowControlsOverrides(v *WindowControls) WindowControlsOverrides {
-	return WindowControlsOverrides{}
-}
-
 // WindowControls: GtkWindowControls shows window frame controls.
 //
 // Typical window frame controls are minimize, maximize and close buttons,
@@ -120960,22 +106895,6 @@ type WindowControls struct {
 var (
 	_ Widgetter = (*WindowControls)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*WindowControls, *WindowControlsClass, WindowControlsOverrides](
-		GTypeWindowControls,
-		initWindowControlsClass,
-		wrapWindowControls,
-		defaultWindowControlsOverrides,
-	)
-}
-
-func initWindowControlsClass(gclass unsafe.Pointer, overrides WindowControlsOverrides, classInitFunc func(*WindowControlsClass)) {
-	if classInitFunc != nil {
-		class := (*WindowControlsClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapWindowControls(obj *coreglib.Object) *WindowControls {
 	return &WindowControls{
@@ -121152,14 +107071,6 @@ func (self *WindowControls) SetSide(side PackType) {
 	runtime.KeepAlive(side)
 }
 
-// WindowGroupOverrides contains methods that are overridable.
-type WindowGroupOverrides struct {
-}
-
-func defaultWindowGroupOverrides(v *WindowGroup) WindowGroupOverrides {
-	return WindowGroupOverrides{}
-}
-
 // WindowGroup: GtkWindowGroup makes group of windows behave like separate
 // applications.
 //
@@ -121184,22 +107095,6 @@ type WindowGroup struct {
 var (
 	_ coreglib.Objector = (*WindowGroup)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*WindowGroup, *WindowGroupClass, WindowGroupOverrides](
-		GTypeWindowGroup,
-		initWindowGroupClass,
-		wrapWindowGroup,
-		defaultWindowGroupOverrides,
-	)
-}
-
-func initWindowGroupClass(gclass unsafe.Pointer, overrides WindowGroupOverrides, classInitFunc func(*WindowGroupClass)) {
-	if classInitFunc != nil {
-		class := (*WindowGroupClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapWindowGroup(obj *coreglib.Object) *WindowGroup {
 	return &WindowGroup{
@@ -121295,14 +107190,6 @@ func (windowGroup *WindowGroup) RemoveWindow(window *Window) {
 	runtime.KeepAlive(window)
 }
 
-// WindowHandleOverrides contains methods that are overridable.
-type WindowHandleOverrides struct {
-}
-
-func defaultWindowHandleOverrides(v *WindowHandle) WindowHandleOverrides {
-	return WindowHandleOverrides{}
-}
-
 // WindowHandle: GtkWindowHandle is a titlebar area widget.
 //
 // When added into a window, it can be dragged to move the window, and handles
@@ -121323,22 +107210,6 @@ type WindowHandle struct {
 var (
 	_ Widgetter = (*WindowHandle)(nil)
 )
-
-func init() {
-	coreglib.RegisterClassInfo[*WindowHandle, *WindowHandleClass, WindowHandleOverrides](
-		GTypeWindowHandle,
-		initWindowHandleClass,
-		wrapWindowHandle,
-		defaultWindowHandleOverrides,
-	)
-}
-
-func initWindowHandleClass(gclass unsafe.Pointer, overrides WindowHandleOverrides, classInitFunc func(*WindowHandleClass)) {
-	if classInitFunc != nil {
-		class := (*WindowHandleClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapWindowHandle(obj *coreglib.Object) *WindowHandle {
 	return &WindowHandle{

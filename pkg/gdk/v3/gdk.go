@@ -27,8 +27,6 @@ import (
 // #include <glib-object.h>
 // extern void callbackDelete(gpointer);
 // extern void _gotk4_gdk3_Window_ConnectMovedToRect(gpointer, gpointer, gpointer, gboolean, gboolean, guintptr);
-// extern void _gotk4_gdk3_WindowClass_to_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
-// extern void _gotk4_gdk3_WindowClass_from_embedder(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*);
 // extern void _gotk4_gdk3_Seat_ConnectToolRemoved(gpointer, GdkDeviceTool*, guintptr);
 // extern void _gotk4_gdk3_Seat_ConnectToolAdded(gpointer, GdkDeviceTool*, guintptr);
 // extern void _gotk4_gdk3_Seat_ConnectDeviceRemoved(gpointer, GdkDevice*, guintptr);
@@ -69,17 +67,7 @@ import (
 // extern gboolean _gotk4_gdk3_WindowChildFunc(GdkWindow*, gpointer);
 // extern gboolean _gotk4_gdk3_SourceFunc(gpointer);
 // extern cairo_surface_t* _gotk4_gdk3_Window_ConnectCreateSurface(gpointer, gint, gint, guintptr);
-// extern cairo_surface_t* _gotk4_gdk3_WindowClass_create_surface(GdkWindow*, gint, gint);
 // extern GdkWindow* _gotk4_gdk3_Window_ConnectPickEmbeddedChild(gpointer, gdouble, gdouble, guintptr);
-// cairo_surface_t* _gotk4_gdk3_Window_virtual_create_surface(void* fnptr, GdkWindow* arg0, gint arg1, gint arg2) {
-//   return ((cairo_surface_t* (*)(GdkWindow*, gint, gint))(fnptr))(arg0, arg1, arg2);
-// };
-// void _gotk4_gdk3_Window_virtual_from_embedder(void* fnptr, GdkWindow* arg0, gdouble arg1, gdouble arg2, gdouble* arg3, gdouble* arg4) {
-//   ((void (*)(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
-// void _gotk4_gdk3_Window_virtual_to_embedder(void* fnptr, GdkWindow* arg0, gdouble arg1, gdouble arg2, gdouble* arg3, gdouble* arg4) {
-//   ((void (*)(GdkWindow*, gdouble, gdouble, gdouble*, gdouble*))(fnptr))(arg0, arg1, arg2, arg3, arg4);
-// };
 import "C"
 
 // GType values.
@@ -16205,42 +16193,6 @@ func VisualGetSystem() *Visual {
 	return _visual
 }
 
-// WindowOverrides contains methods that are overridable.
-type WindowOverrides struct {
-	// The function takes the following parameters:
-	//
-	//   - width
-	//   - height
-	//
-	// The function returns the following values:
-	//
-	CreateSurface func(width, height int) *cairo.Surface
-	// The function takes the following parameters:
-	//
-	//   - embedderX
-	//   - embedderY
-	//   - offscreenX
-	//   - offscreenY
-	//
-	FromEmbedder func(embedderX, embedderY float64, offscreenX, offscreenY *float64)
-	// The function takes the following parameters:
-	//
-	//   - offscreenX
-	//   - offscreenY
-	//   - embedderX
-	//   - embedderY
-	//
-	ToEmbedder func(offscreenX, offscreenY float64, embedderX, embedderY *float64)
-}
-
-func defaultWindowOverrides(v *Window) WindowOverrides {
-	return WindowOverrides{
-		CreateSurface: v.createSurface,
-		FromEmbedder:  v.fromEmbedder,
-		ToEmbedder:    v.toEmbedder,
-	}
-}
-
 type Window struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -16260,36 +16212,6 @@ type Windower interface {
 }
 
 var _ Windower = (*Window)(nil)
-
-func init() {
-	coreglib.RegisterClassInfo[*Window, *WindowClass, WindowOverrides](
-		GTypeWindow,
-		initWindowClass,
-		wrapWindow,
-		defaultWindowOverrides,
-	)
-}
-
-func initWindowClass(gclass unsafe.Pointer, overrides WindowOverrides, classInitFunc func(*WindowClass)) {
-	pclass := (*C.GdkWindowClass)(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GTypeWindow))))
-
-	if overrides.CreateSurface != nil {
-		pclass.create_surface = (*[0]byte)(C._gotk4_gdk3_WindowClass_create_surface)
-	}
-
-	if overrides.FromEmbedder != nil {
-		pclass.from_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_from_embedder)
-	}
-
-	if overrides.ToEmbedder != nil {
-		pclass.to_embedder = (*[0]byte)(C._gotk4_gdk3_WindowClass_to_embedder)
-	}
-
-	if classInitFunc != nil {
-		class := (*WindowClass)(gextras.NewStructNative(gclass))
-		classInitFunc(class)
-	}
-}
 
 func wrapWindow(obj *coreglib.Object) *Window {
 	return &Window{
@@ -20843,103 +20765,6 @@ func (window *Window) Withdraw() {
 
 	C.gdk_window_withdraw(_arg0)
 	runtime.KeepAlive(window)
-}
-
-// The function takes the following parameters:
-//
-//   - width
-//   - height
-//
-// The function returns the following values:
-//
-func (window *Window) createSurface(width, height int) *cairo.Surface {
-	gclass := (*C.GdkWindowClass)(coreglib.PeekParentClass(window))
-	fnarg := gclass.create_surface
-
-	var _arg0 *C.GdkWindow       // out
-	var _arg1 C.gint             // out
-	var _arg2 C.gint             // out
-	var _cret *C.cairo_surface_t // in
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = C.gint(width)
-	_arg2 = C.gint(height)
-
-	_cret = C._gotk4_gdk3_Window_virtual_create_surface(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(width)
-	runtime.KeepAlive(height)
-
-	var _surface *cairo.Surface // out
-
-	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
-
-	return _surface
-}
-
-// The function takes the following parameters:
-//
-//   - embedderX
-//   - embedderY
-//   - offscreenX
-//   - offscreenY
-//
-func (window *Window) fromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64) {
-	gclass := (*C.GdkWindowClass)(coreglib.PeekParentClass(window))
-	fnarg := gclass.from_embedder
-
-	var _arg0 *C.GdkWindow // out
-	var _arg1 C.gdouble    // out
-	var _arg2 C.gdouble    // out
-	var _arg3 *C.gdouble   // out
-	var _arg4 *C.gdouble   // out
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = C.gdouble(embedderX)
-	_arg2 = C.gdouble(embedderY)
-	_arg3 = (*C.gdouble)(unsafe.Pointer(offscreenX))
-	_arg4 = (*C.gdouble)(unsafe.Pointer(offscreenY))
-
-	C._gotk4_gdk3_Window_virtual_from_embedder(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(embedderX)
-	runtime.KeepAlive(embedderY)
-	runtime.KeepAlive(offscreenX)
-	runtime.KeepAlive(offscreenY)
-}
-
-// The function takes the following parameters:
-//
-//   - offscreenX
-//   - offscreenY
-//   - embedderX
-//   - embedderY
-//
-func (window *Window) toEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64) {
-	gclass := (*C.GdkWindowClass)(coreglib.PeekParentClass(window))
-	fnarg := gclass.to_embedder
-
-	var _arg0 *C.GdkWindow // out
-	var _arg1 C.gdouble    // out
-	var _arg2 C.gdouble    // out
-	var _arg3 *C.gdouble   // out
-	var _arg4 *C.gdouble   // out
-
-	_arg0 = (*C.GdkWindow)(unsafe.Pointer(coreglib.InternObject(window).Native()))
-	_arg1 = C.gdouble(offscreenX)
-	_arg2 = C.gdouble(offscreenY)
-	_arg3 = (*C.gdouble)(unsafe.Pointer(embedderX))
-	_arg4 = (*C.gdouble)(unsafe.Pointer(embedderY))
-
-	C._gotk4_gdk3_Window_virtual_to_embedder(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3, _arg4)
-	runtime.KeepAlive(window)
-	runtime.KeepAlive(offscreenX)
-	runtime.KeepAlive(offscreenY)
-	runtime.KeepAlive(embedderX)
-	runtime.KeepAlive(embedderY)
 }
 
 // WindowAtPointer obtains the window underneath the mouse pointer,

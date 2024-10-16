@@ -424,8 +424,6 @@ func (g *Generator) renderDynamicLinkedBlock() bool {
 }
 
 func (g *Generator) renderRuntimeLinkedBlock() bool {
-	return false // TODO
-
 	const (
 		secInputDecl = iota
 		secInputConv

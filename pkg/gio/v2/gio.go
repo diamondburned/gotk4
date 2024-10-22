@@ -32187,7 +32187,7 @@ var (
 // DBusInterfaceSkeletonner describes types inherited from class DBusInterfaceSkeleton.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseDBusInterfaceSkeleton].
 type DBusInterfaceSkeletonner interface {
 	coreglib.Objector
 	baseDBusInterfaceSkeleton() *DBusInterfaceSkeleton
@@ -40971,7 +40971,7 @@ var (
 // FileMonitorrer describes types inherited from class FileMonitor.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFileMonitor].
 type FileMonitorrer interface {
 	coreglib.Objector
 	baseFileMonitor() *FileMonitor
@@ -41492,7 +41492,7 @@ var (
 // FilterInputStreamer describes types inherited from class FilterInputStream.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFilterInputStream].
 type FilterInputStreamer interface {
 	coreglib.Objector
 	baseFilterInputStream() *FilterInputStream
@@ -41621,7 +41621,7 @@ var (
 // FilterOutputStreamer describes types inherited from class FilterOutputStream.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFilterOutputStream].
 type FilterOutputStreamer interface {
 	coreglib.Objector
 	baseFilterOutputStream() *FilterOutputStream
@@ -41790,7 +41790,7 @@ var (
 // IOStreamer describes types inherited from class IOStream.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseIOStream].
 type IOStreamer interface {
 	coreglib.Objector
 	baseIOStream() *IOStream
@@ -43091,7 +43091,7 @@ var (
 // InputStreamer describes types inherited from class InputStream.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseInputStream].
 type InputStreamer interface {
 	coreglib.Objector
 	baseInputStream() *InputStream
@@ -45009,7 +45009,7 @@ var (
 // MenuAttributeIterer describes types inherited from class MenuAttributeIter.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseMenuAttributeIter].
 type MenuAttributeIterer interface {
 	coreglib.Objector
 	baseMenuAttributeIter() *MenuAttributeIter
@@ -45771,7 +45771,7 @@ var (
 // MenuLinkIterer describes types inherited from class MenuLinkIter.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseMenuLinkIter].
 type MenuLinkIterer interface {
 	coreglib.Objector
 	baseMenuLinkIter() *MenuLinkIter
@@ -46082,7 +46082,7 @@ var (
 // MenuModeller describes types inherited from class MenuModel.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseMenuModel].
 type MenuModeller interface {
 	coreglib.Objector
 	baseMenuModel() *MenuModel
@@ -47014,7 +47014,7 @@ var (
 // NativeVolumeMonitorrer describes types inherited from class NativeVolumeMonitor.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseNativeVolumeMonitor].
 type NativeVolumeMonitorrer interface {
 	coreglib.Objector
 	baseNativeVolumeMonitor() *NativeVolumeMonitor
@@ -47810,7 +47810,7 @@ var (
 // OutputStreamer describes types inherited from class OutputStream.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseOutputStream].
 type OutputStreamer interface {
 	coreglib.Objector
 	baseOutputStream() *OutputStream
@@ -49162,7 +49162,7 @@ var (
 // Permissioner describes types inherited from class Permission.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BasePermission].
 type Permissioner interface {
 	coreglib.Objector
 	basePermission() *Permission
@@ -49938,7 +49938,7 @@ var (
 // Resolverer describes types inherited from class Resolver.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseResolver].
 type Resolverer interface {
 	coreglib.Objector
 	baseResolver() *Resolver
@@ -56467,7 +56467,7 @@ var (
 // SocketAddresser describes types inherited from class SocketAddress.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseSocketAddress].
 type SocketAddresser interface {
 	coreglib.Objector
 	baseSocketAddress() *SocketAddress
@@ -56636,7 +56636,7 @@ var (
 // SocketAddressEnumeratorrer describes types inherited from class SocketAddressEnumerator.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseSocketAddressEnumerator].
 type SocketAddressEnumeratorrer interface {
 	coreglib.Objector
 	baseSocketAddressEnumerator() *SocketAddressEnumerator
@@ -58356,7 +58356,7 @@ var (
 // SocketControlMessager describes types inherited from class SocketControlMessage.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseSocketControlMessage].
 type SocketControlMessager interface {
 	coreglib.Objector
 	baseSocketControlMessage() *SocketControlMessage
@@ -60946,7 +60946,7 @@ var (
 // TLSCertificater describes types inherited from class TLSCertificate.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseTLSCertificate].
 type TLSCertificater interface {
 	coreglib.Objector
 	baseTLSCertificate() *TLSCertificate
@@ -61373,7 +61373,7 @@ var (
 // TLSConnectioner describes types inherited from class TLSConnection.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseTLSConnection].
 type TLSConnectioner interface {
 	coreglib.Objector
 	baseTLSConnection() *TLSConnection
@@ -62155,7 +62155,7 @@ var (
 // TLSDatabaser describes types inherited from class TLSDatabase.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseTLSDatabase].
 type TLSDatabaser interface {
 	coreglib.Objector
 	baseTLSDatabase() *TLSDatabase

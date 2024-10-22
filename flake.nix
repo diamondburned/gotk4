@@ -21,6 +21,11 @@
 		flake-utils.lib.eachDefaultSystem (system:
 			let
 				pkgs = nixpkgs.legacyPackages.${system};
+				cmds = with pkgs; [
+					(writeShellScriptBin
+						"gir-generate"
+						"go run github.com/diamondburned/gotk4/gir/cmd/gir-generate \"$@\"")
+				];
 			in
 			{
 				devShells.default = import "${gotk4-nix}/shell.nix" {
@@ -38,6 +43,7 @@
 							})
 						];
 					};
+					buildInputs = _: ([] ++ cmds);
 				};
 				packages.dockerEnv = let
 					env = pkgs.writeShellScriptBin "docker-env" ''

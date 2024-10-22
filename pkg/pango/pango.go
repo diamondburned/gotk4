@@ -5373,7 +5373,7 @@ var (
 // Fonter describes types inherited from class Font.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFont].
 type Fonter interface {
 	coreglib.Objector
 	baseFont() *Font
@@ -5719,7 +5719,7 @@ var (
 // FontFacer describes types inherited from class FontFace.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFontFace].
 type FontFacer interface {
 	coreglib.Objector
 	baseFontFace() *FontFace
@@ -5921,7 +5921,7 @@ var (
 // FontFamilier describes types inherited from class FontFamily.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFontFamily].
 type FontFamilier interface {
 	coreglib.Objector
 	baseFontFamily() *FontFamily
@@ -6154,7 +6154,7 @@ var (
 // FontMapper describes types inherited from class FontMap.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFontMap].
 type FontMapper interface {
 	coreglib.Objector
 	baseFontMap() *FontMap
@@ -6474,7 +6474,7 @@ var (
 // Fontsetter describes types inherited from class Fontset.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFontset].
 type Fontsetter interface {
 	coreglib.Objector
 	baseFontset() *Fontset
@@ -8569,7 +8569,7 @@ var (
 // Rendererer describes types inherited from class Renderer.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseRenderer].
 type Rendererer interface {
 	coreglib.Objector
 	baseRenderer() *Renderer

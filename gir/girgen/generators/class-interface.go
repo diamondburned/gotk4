@@ -42,7 +42,7 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ $needsPrivate = true -}}
 	//
 	// To get the original type, the caller must assert this to an interface or
-	// another type.
+	// another type or use [Base{{ .StructName }}].
 	type {{ .InterfaceName }} interface {
 		coreglib.Objector
 		base{{ .StructName }}() *{{ .StructName }}

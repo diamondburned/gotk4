@@ -6835,7 +6835,7 @@ var (
 // CairoContexter describes types inherited from class CairoContext.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseCairoContext].
 type CairoContexter interface {
 	coreglib.Objector
 	baseCairoContext() *CairoContext
@@ -8956,7 +8956,7 @@ var (
 // Devicer describes types inherited from class Device.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseDevice].
 type Devicer interface {
 	coreglib.Objector
 	baseDevice() *Device
@@ -10708,7 +10708,7 @@ var (
 // Dragger describes types inherited from class Drag.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseDrag].
 type Dragger interface {
 	coreglib.Objector
 	baseDrag() *Drag
@@ -11137,7 +11137,7 @@ var (
 // DrawContexter describes types inherited from class DrawContext.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseDrawContext].
 type DrawContexter interface {
 	coreglib.Objector
 	baseDrawContext() *DrawContext
@@ -11376,7 +11376,7 @@ var (
 // Dropper describes types inherited from class Drop.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseDrop].
 type Dropper interface {
 	coreglib.Objector
 	baseDrop() *Drop
@@ -11875,7 +11875,7 @@ var (
 // Eventer describes types inherited from class Event.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseEvent].
 type Eventer interface {
 	coreglib.Objector
 	baseEvent() *Event
@@ -12448,7 +12448,7 @@ var (
 // FrameClocker describes types inherited from class FrameClock.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFrameClock].
 type FrameClocker interface {
 	coreglib.Objector
 	baseFrameClock() *FrameClock
@@ -12872,7 +12872,7 @@ var (
 // GLContexter describes types inherited from class GLContext.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseGLContext].
 type GLContexter interface {
 	coreglib.Objector
 	baseGLContext() *GLContext
@@ -14338,7 +14338,7 @@ var (
 // Seater describes types inherited from class Seat.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseSeat].
 type Seater interface {
 	coreglib.Objector
 	baseSeat() *Seat
@@ -14608,7 +14608,7 @@ var (
 // Snapshotter describes types inherited from class Snapshot.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseSnapshot].
 type Snapshotter interface {
 	coreglib.Objector
 	baseSnapshot() *Snapshot
@@ -14656,7 +14656,7 @@ var (
 // Surfacer describes types inherited from class Surface.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseSurface].
 type Surfacer interface {
 	coreglib.Objector
 	baseSurface() *Surface
@@ -15484,7 +15484,7 @@ var (
 // Texturer describes types inherited from class Texture.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseTexture].
 type Texturer interface {
 	coreglib.Objector
 	baseTexture() *Texture
@@ -15903,7 +15903,7 @@ var (
 // VulkanContexter describes types inherited from class VulkanContext.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseVulkanContext].
 type VulkanContexter interface {
 	coreglib.Objector
 	baseVulkanContext() *VulkanContext

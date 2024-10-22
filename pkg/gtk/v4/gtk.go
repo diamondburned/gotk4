@@ -16003,7 +16003,7 @@ var (
 // ATContexter describes types inherited from class ATContext.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseATContext].
 type ATContexter interface {
 	coreglib.Objector
 	baseATContext() *ATContext
@@ -24382,7 +24382,7 @@ var (
 // CellAreaer describes types inherited from class CellArea.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseCellArea].
 type CellAreaer interface {
 	coreglib.Objector
 	baseCellArea() *CellArea
@@ -26424,7 +26424,7 @@ var ()
 // CellRendererer describes types inherited from class CellRenderer.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseCellRenderer].
 type CellRendererer interface {
 	coreglib.Objector
 	baseCellRenderer() *CellRenderer
@@ -39877,7 +39877,7 @@ var (
 // EventControllerer describes types inherited from class EventController.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseEventController].
 type EventControllerer interface {
 	coreglib.Objector
 	baseEventController() *EventController
@@ -41538,7 +41538,7 @@ var (
 // Expressioner describes types inherited from class Expression.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseExpression].
 type Expressioner interface {
 	coreglib.Objector
 	baseExpression() *Expression
@@ -46339,7 +46339,7 @@ var (
 // Gesturer describes types inherited from class Gesture.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseGesture].
 type Gesturer interface {
 	coreglib.Objector
 	baseGesture() *Gesture
@@ -50153,7 +50153,7 @@ var (
 // IMContexter describes types inherited from class IMContext.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseIMContext].
 type IMContexter interface {
 	coreglib.Objector
 	baseIMContext() *IMContext
@@ -56243,7 +56243,7 @@ var (
 // LayoutChilder describes types inherited from class LayoutChild.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseLayoutChild].
 type LayoutChilder interface {
 	coreglib.Objector
 	baseLayoutChild() *LayoutChild
@@ -56404,7 +56404,7 @@ var (
 // LayoutManagerer describes types inherited from class LayoutManager.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseLayoutManager].
 type LayoutManagerer interface {
 	coreglib.Objector
 	baseLayoutManager() *LayoutManager
@@ -57408,7 +57408,7 @@ var (
 // ListBaser describes types inherited from class ListBase.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseListBase].
 type ListBaser interface {
 	coreglib.Objector
 	baseListBase() *ListBase
@@ -60586,7 +60586,7 @@ var (
 // MediaFiler describes types inherited from class MediaFile.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseMediaFile].
 type MediaFiler interface {
 	coreglib.Objector
 	baseMediaFile() *MediaFile
@@ -60955,7 +60955,7 @@ var (
 // MediaStreamer describes types inherited from class MediaStream.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseMediaStream].
 type MediaStreamer interface {
 	coreglib.Objector
 	baseMediaStream() *MediaStream
@@ -62678,7 +62678,7 @@ var (
 // MultiFilterer describes types inherited from class MultiFilter.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseMultiFilter].
 type MultiFilterer interface {
 	coreglib.Objector
 	baseMultiFilter() *MultiFilter
@@ -63064,7 +63064,7 @@ var (
 // NativeDialogger describes types inherited from class NativeDialog.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseNativeDialog].
 type NativeDialogger interface {
 	coreglib.Objector
 	baseNativeDialog() *NativeDialog
@@ -77593,7 +77593,7 @@ var (
 // ShortcutActioner describes types inherited from class ShortcutAction.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseShortcutAction].
 type ShortcutActioner interface {
 	coreglib.Objector
 	baseShortcutAction() *ShortcutAction
@@ -78178,7 +78178,7 @@ var (
 // ShortcutTriggerer describes types inherited from class ShortcutTrigger.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseShortcutTrigger].
 type ShortcutTriggerer interface {
 	coreglib.Objector
 	baseShortcutTrigger() *ShortcutTrigger
@@ -100120,7 +100120,7 @@ var (
 // Widgetter describes types inherited from class Widget.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseWidget].
 type Widgetter interface {
 	coreglib.Objector
 	baseWidget() *Widget

@@ -8617,7 +8617,7 @@ var (
 // Cursorrer describes types inherited from class Cursor.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseCursor].
 type Cursorrer interface {
 	coreglib.Objector
 	baseCursor() *Cursor
@@ -9054,7 +9054,7 @@ var (
 // Devicer describes types inherited from class Device.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseDevice].
 type Devicer interface {
 	coreglib.Objector
 	baseDevice() *Device
@@ -10195,7 +10195,7 @@ var (
 // DeviceManagerer describes types inherited from class DeviceManager.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseDeviceManager].
 type DeviceManagerer interface {
 	coreglib.Objector
 	baseDeviceManager() *DeviceManager
@@ -12585,7 +12585,7 @@ var (
 // FrameClocker describes types inherited from class FrameClock.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseFrameClock].
 type FrameClocker interface {
 	coreglib.Objector
 	baseFrameClock() *FrameClock
@@ -12963,7 +12963,7 @@ var (
 // GLContexter describes types inherited from class GLContext.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseGLContext].
 type GLContexter interface {
 	coreglib.Objector
 	baseGLContext() *GLContext
@@ -15404,7 +15404,7 @@ var (
 // Seater describes types inherited from class Seat.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseSeat].
 type Seater interface {
 	coreglib.Objector
 	baseSeat() *Seat
@@ -16205,7 +16205,7 @@ var (
 // Windower describes types inherited from class Window.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseWindow].
 type Windower interface {
 	coreglib.Objector
 	baseWindow() *Window

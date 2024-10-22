@@ -3903,7 +3903,7 @@ var (
 // RenderNoder describes types inherited from class RenderNode.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseRenderNode].
 type RenderNoder interface {
 	coreglib.Objector
 	baseRenderNode() *RenderNode
@@ -4145,7 +4145,7 @@ var (
 // Rendererer describes types inherited from class Renderer.
 //
 // To get the original type, the caller must assert this to an interface or
-// another type.
+// another type or use [BaseRenderer].
 type Rendererer interface {
 	coreglib.Objector
 	baseRenderer() *Renderer

@@ -10,8 +10,6 @@ import "C"
 import (
 	"fmt"
 	"log"
-	"reflect"
-	"strings"
 	"sync"
 	"unsafe"
 
@@ -110,14 +108,6 @@ func (k infoKey) String() string {
 		name = k[0] + "." + k[1] + "." + k[2]
 	}
 	return name
-}
-
-func cpyCStr(cptr *C.gchar, gostr string) (next *C.gchar) {
-	cbytes := unsafe.Slice((*byte)(unsafe.Pointer(cptr)), len(gostr)+1)
-	copy(cbytes, []byte(gostr))
-	cbytes[len(gostr)] = 0
-
-	return (*C.gchar)(unsafe.Add(unsafe.Pointer(cptr), len(cbytes)))
 }
 
 func (k infoCKey) free() {
@@ -297,21 +287,4 @@ func invokeFunc(info *Info, in, out []Argument) Argument {
 	}
 
 	return ret
-}
-
-func trimNull(str string) string {
-	return strings.TrimSuffix(str, "\x00")
-}
-
-func unsafeCStr(gostr *string) *C.gchar {
-	if len(*gostr) == 0 {
-		return nil
-	}
-
-	if (*gostr)[len(*gostr)-1] != 0 {
-		log.Panicf("Go string %q should be null-terminated with \\x00", *gostr)
-	}
-
-	header := (*reflect.StringHeader)(unsafe.Pointer(gostr))
-	return (*C.gchar)(unsafe.Pointer(header.Data))
 }

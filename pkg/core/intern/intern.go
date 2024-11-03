@@ -7,6 +7,7 @@ import "C"
 
 import (
 	"fmt"
+	"log/slog"
 	"runtime"
 	"runtime/debug"
 	"runtime/pprof"
@@ -69,8 +70,8 @@ func sink(v interface{}) {
 }
 
 var (
-	traceObjects  = gdebug.NewDebugLoggerNullable("trace-objects")
-	toggleRefs    = gdebug.NewDebugLoggerNullable("toggle-refs")
+	traceObjects  = gdebug.HasKey("trace-objects")
+	toggleRefs    = gdebug.HasKey("toggle-refs")
 	objectProfile *pprof.Profile
 )
 
@@ -80,8 +81,12 @@ func init() {
 	}
 }
 
-func objInfo(obj unsafe.Pointer) string {
-	return fmt.Sprintf("%p (%s):", obj, C.GoString(C.gotk4_object_type_name(C.gpointer(obj))))
+func objInfo(obj unsafe.Pointer) slog.Attr {
+	return slog.Group(
+		"gobject",
+		slog.String("ptr", fmt.Sprintf("%p", obj)),
+		slog.String("type", C.GoString(C.gotk4_object_type_name(C.gpointer(obj)))),
+		slog.Int("refs", objRefCount(obj)))
 }
 
 func objRefCount(obj unsafe.Pointer) int {
@@ -103,8 +108,11 @@ func newBox(obj unsafe.Pointer) *Box {
 		objectProfile.Add(obj, 3)
 	}
 
-	if traceObjects != nil {
-		traceObjects.Printf("%p: %s", obj, debug.Stack())
+	if traceObjects {
+		slog.Debug(
+			"allocating new box for object",
+			"stack", string(debug.Stack()),
+			objInfo(obj))
 	}
 
 	// Force box on the heap. Objects on the stack can move, but not objects on
@@ -170,9 +178,10 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	//
 	shared.strong[gobject] = box
 
-	if toggleRefs != nil {
-		toggleRefs.Println(objInfo(gobject),
-			"Get: will introduce new box, current ref =", objRefCount(gobject))
+	if toggleRefs {
+		slog.Debug(
+			"Get: will introduce new box for object",
+			objInfo(gobject))
 	}
 
 	shared.mu.Unlock()
@@ -181,6 +190,12 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 		(*C.GObject)(gobject),
 		(*[0]byte)(C.goToggleNotify), nil,
 	)
+
+	if toggleRefs {
+		slog.Debug(
+			"Get: added toggle reference to object",
+			objInfo(gobject))
+	}
 
 	// We should already have a strong reference. Sink the object in case. This
 	// will force the reference to be truly strong.
@@ -191,9 +206,10 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 		// Then, we need to unref it to balance the ref_sink.
 		C.g_object_unref(C.gpointer(gobject))
 
-		if toggleRefs != nil {
-			toggleRefs.Println(objInfo(gobject),
-				"Get: ref_sink'd the object, current ref =", objRefCount(gobject))
+		if toggleRefs {
+			slog.Debug(
+				"Get: ref_sink'd the object",
+				objInfo(gobject))
 		}
 	}
 
@@ -201,16 +217,12 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	// meaning the strong reference is now ours. That means we need to replace
 	// it, not add.
 	if !take {
-		if toggleRefs != nil {
-			toggleRefs.Println(objInfo(gobject),
-				"Get: not taking, so unrefing the object, current ref =", objRefCount(gobject))
-		}
 		C.g_object_unref(C.gpointer(gobject))
-	}
-
-	if toggleRefs != nil {
-		toggleRefs.Println(objInfo(gobject),
-			"Get: introduced new box, current ref =", objRefCount(gobject))
+		if toggleRefs {
+			slog.Debug(
+				"Get: not taking, so unref'd the object",
+				objInfo(gobject))
+		}
 	}
 
 	// Undo the initial ref_sink.
@@ -246,8 +258,10 @@ func finalizeBox(dummy *boxDummy) {
 		// out it hates being finalized in goFinishRemovingToggleRef, so we just
 		// don't call it there and let the GC do its thing.
 
-		if traceObjects != nil {
-			traceObjects.Printf("%p: finalizeBox: unknown object", dummy.gobject)
+		if traceObjects {
+			slog.Debug(
+				"finalizeBox: unknown object, possible bug?",
+				"gobject.ptr", fmt.Sprintf("%p", dummy.gobject))
 		}
 
 		return
@@ -261,10 +275,10 @@ func finalizeBox(dummy *boxDummy) {
 		// If the box is already finalizing, then we don't need to do anything.
 		// Repeat this until box is gone from the registry.
 
-		if toggleRefs != nil {
-			toggleRefs.Printf(
-				"%p: finalizeBox: already finalizing, waiting for goFinishRemovingToggleRef",
-				dummy.gobject)
+		if toggleRefs {
+			slog.Debug(
+				"finalizeBox: already finalizing, waiting for goFinishRemovingToggleRef",
+				"gobject.ptr", fmt.Sprintf("%p", dummy.gobject))
 		}
 
 		return
@@ -275,10 +289,10 @@ func finalizeBox(dummy *boxDummy) {
 		// be referenced from the C side, and those closures might access this
 		// object. Don't free.
 
-		if toggleRefs != nil {
-			toggleRefs.Println(
-				objInfo(dummy.gobject),
-				"finalizeBox: moving finalize to next GC cycle since object is still strong")
+		if toggleRefs {
+			slog.Debug(
+				"finalizeBox: moving finalize to next GC cycle since object is still strong",
+				objInfo(dummy.gobject))
 		}
 
 		return
@@ -289,9 +303,9 @@ func finalizeBox(dummy *boxDummy) {
 
 	// Do this before we dispatch the remove_toggle_ref, because the
 	// remove_toggle_ref might destroy the object.
-	var objInfoS string
-	if toggleRefs != nil {
-		objInfoS = objInfo(dummy.gobject)
+	var prevObjInfo slog.Attr
+	if toggleRefs {
+		prevObjInfo = objInfo(dummy.gobject)
 	}
 
 	// Do this in the main loop instead. This is because finalizers are
@@ -302,10 +316,10 @@ func finalizeBox(dummy *boxDummy) {
 		(*[0]byte)(C.gotk4_intern_remove_toggle_ref),
 		C.gpointer(dummy.gobject))
 
-	if toggleRefs != nil {
-		toggleRefs.Printf(
-			"%s finalizeBox: remove_toggle_ref queued for next main loop iteration for box %p",
-			objInfoS, box)
+	if toggleRefs {
+		slog.Debug(
+			"finalizeBox: remove_toggle_ref queued for next main loop iteration",
+			prevObjInfo)
 	}
 }
 
@@ -338,8 +352,12 @@ func makeStrong(gobject unsafe.Pointer) *Box {
 	// TODO: double mutex check, similar to ShouldFree.
 
 	box, strong := gets(gobject)
-	if toggleRefs != nil {
-		toggleRefs.Println(objInfo(gobject), "makeStrong: obtained box", box, "strong =", strong)
+	if toggleRefs {
+		slog.Debug(
+			"makeStrong: obtained box",
+			"strong", strong,
+			"box", box != nil,
+			objInfo(gobject))
 	}
 	if box == nil {
 		return nil
@@ -362,8 +380,12 @@ func makeStrong(gobject unsafe.Pointer) *Box {
 //go:nosplit
 func makeWeak(gobject unsafe.Pointer) *Box {
 	box, strong := gets(gobject)
-	if toggleRefs != nil {
-		toggleRefs.Println(objInfo(gobject), "makeWeak: obtained box", box, "strong =", strong)
+	if toggleRefs {
+		slog.Debug(
+			"makeWeak: obtained box",
+			"strong", strong,
+			"box", box != nil,
+			objInfo(gobject))
 	}
 	if box == nil {
 		return nil

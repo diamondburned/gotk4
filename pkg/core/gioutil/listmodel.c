@@ -1,3 +1,6 @@
+#define G_LOG_USE_STRUCTURED
+#define G_LOG_DOMAIN "Gotk4GboxObject"
+
 #include "listmodel.h"
 
 #define GDK_ARRAY_ELEMENT_TYPE Gotk4GboxObject *
@@ -20,8 +23,7 @@ static void gotk4_gbox_object_finalize(GObject *object) {
 
   g_warn_if_fail(self->id != 0);
   callbackDelete(self->id);
-  g_log_structured("Gotk4GboxObject", G_LOG_LEVEL_DEBUG,  //
-                   "MESSAGE", "Freed gbox object %d in gotk4_gbox_object_finalize", self->id);
+  g_debug("Freed gbox object %p in gotk4_gbox_object_finalize", (void *)self->id);
 
   G_OBJECT_CLASS(gotk4_gbox_object_parent_class)->finalize(object);
 }
@@ -34,6 +36,7 @@ static void gotk4_gbox_object_class_init(Gotk4GboxObjectClass *klass) {
 Gotk4GboxObject *gotk4_gbox_object_new(guintptr id) {
   Gotk4GboxObject *self = g_object_new(GOTK4_TYPE_GBOX_OBJECT, NULL);
   self->id = id;
+  g_debug("Created gbox object %p in gotk4_gbox_object_new", (void *)id);
   return self;
 }
 
@@ -60,7 +63,15 @@ static gpointer gotk4_gbox_list_get_item(GListModel *list, guint index) {
   if (index >= objects_get_size(&self->items)) {
     return NULL;
   }
-  return g_object_ref(objects_get(&self->items, index));
+
+  Gotk4GboxObject *item = objects_get(&self->items, index);
+  guint old_ref_count = item->parent_instance.ref_count;
+  item = g_object_ref(item);
+
+  g_debug("Adding new reference onto object %p, ref=%d->%d", (void *)item->id, old_ref_count,
+          item->parent_instance.ref_count);
+
+  return item;
 }
 
 static void gotk4_gbox_list_list_model_init(GListModelInterface *iface) {
@@ -105,8 +116,7 @@ void gotk4_gbox_list_splice(Gotk4GboxList *self, guint position, guint n_removal
   for (guint i = 0; i < n_additions; i++) {
     *objects_index(&self->items, position + i) = gotk4_gbox_object_new(additions[i]);
   }
-  g_log_structured("Gotk4GboxList", G_LOG_LEVEL_DEBUG,  //
-                   "MESSAGE", "Added %d objects using splice()", n_additions);
+  g_debug("Added %d objects using splice()", n_additions);
 
   if (n_removals || n_additions) {
     g_list_model_items_changed(G_LIST_MODEL(self), position, n_removals, n_additions);
@@ -117,8 +127,7 @@ void gotk4_gbox_list_append(Gotk4GboxList *self, guintptr id) {
   g_return_if_fail(GOTK4_IS_GBOX_LIST(self));
 
   objects_append(&self->items, gotk4_gbox_object_new(id));
-  g_log_structured("Gotk4GboxList", G_LOG_LEVEL_DEBUG,  //
-                   "MESSAGE", "Added 1 object using append()");
+  g_debug("Added 1 object using append()");
 
   g_list_model_items_changed(G_LIST_MODEL(self), objects_get_size(&self->items) - 1, 0, 1);
 }

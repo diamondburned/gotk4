@@ -18,11 +18,10 @@ static void gotk4_gbox_object_init(Gotk4GboxObject *self) { self->id = 0; }
 static void gotk4_gbox_object_finalize(GObject *object) {
   Gotk4GboxObject *self = GOTK4_GBOX_OBJECT(object);
 
-  g_warn_if_fail(self->id == 0);
+  g_warn_if_fail(self->id != 0);
   callbackDelete(self->id);
   g_log_structured("Gotk4GboxObject", G_LOG_LEVEL_DEBUG,  //
-                   "GBOX_ID", self->id,                   //
-                   "MESSAGE", "Freed gbox object in gotk4_gbox_object_finalize");
+                   "MESSAGE", "Freed gbox object %d in gotk4_gbox_object_finalize", self->id);
 
   G_OBJECT_CLASS(gotk4_gbox_object_parent_class)->finalize(object);
 }
@@ -35,11 +34,6 @@ static void gotk4_gbox_object_class_init(Gotk4GboxObjectClass *klass) {
 Gotk4GboxObject *gotk4_gbox_object_new(guintptr id) {
   Gotk4GboxObject *self = g_object_new(GOTK4_TYPE_GBOX_OBJECT, NULL);
   self->id = id;
-
-  g_log_structured("Gotk4GboxObject", G_LOG_LEVEL_DEBUG,  //
-                   "GBOX_ID", self->id,                   //
-                   "MESSAGE", "Created gbox object in gotk4_gbox_object_new");
-
   return self;
 }
 

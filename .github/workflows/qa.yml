@@ -47,6 +47,8 @@ jobs:
     name: "${{ github.event_name }} / test"
     runs-on: ubuntu-latest
     steps:
+    - name: Install xfvb
+      run: sudo apt-get install -y xvfb x11-xserver-utils
     - uses: actions/checkout@v3
     - uses: diamondburned/cache-install@main
       with:
@@ -65,7 +67,7 @@ jobs:
 
     - run: go test ./...
 
-    - run: cd pkg && go test ./...
+    - run: cd pkg && xvfb-run -a go test ./...
 
   docker:
     name: "${{ github.event_name }} / docker"

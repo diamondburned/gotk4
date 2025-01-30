@@ -318,6 +318,7 @@ func AnyTypeIsVoid(any gir.AnyType) bool {
 var cgoPrimitiveTypes = map[string]string{
 	"long long": "longlong",
 
+	"unsigned char":      "uchar",
 	"unsigned int":       "uint",
 	"unsigned short":     "ushort",
 	"unsigned long":      "ulong",

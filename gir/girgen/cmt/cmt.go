@@ -275,6 +275,12 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 
 	cmt := convertMarkdownStringToGoDoc(docBuilder.String())
 
+	// used links are printed underneath the comment by printer.Text(), which breaks the syntax
+	// TODO: add the link to the comment somehow
+	for _, link := range cmt.Links {
+		link.Used = false
+	}
+
 	if synopsize {
 		printer := &comment.Printer{
 			TextWidth: -1, // don't wrap yet

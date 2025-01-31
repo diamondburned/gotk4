@@ -338,6 +338,12 @@ func (g *Generator) Use(typ interface{}) bool {
 	}
 
 	for i, sig := range signals {
+		// signals with the G_SIGNAL_ACTION flag are there to be freely emitted by user code. They also can
+		// be thought of as methods on generic objects.
+		if sig.Action {
+			continue // TODO: generate a type safe call for emit instead, similar to how we do for connect
+		}
+
 		// A signal has 2 implied parameters: the instance (0th) parameter and
 		// the final user_data parameter.
 		param := &gir.Parameters{

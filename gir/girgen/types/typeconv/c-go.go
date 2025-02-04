@@ -445,6 +445,53 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		}
 		return true
 
+	case "Gst.MiniObject", "Gst.Structure", "Gst.Caps", "Gst.Buffer", "Gst.BufferList", "Gst.Memory", "Gst.Message", "Gst.Query", "Gst.Sample":
+		value.header.Import("runtime")
+		value.header.Import("unsafe")
+		value.header.ImportCore("gextras")
+
+		// Require 1 pointer to avoid weird copies.
+		value.vtmpl(`
+			<.Out.Set> = <.OutCast 1>(gextras.NewStructNative(unsafe.Pointer(<.InNamePtr 1>)))
+		`)
+		if value.fail {
+			value.Logln(logger.Debug, "record set fail")
+			return false
+		}
+
+		if value.TransferOwnership.TransferOwnership == "none" {
+			value.vtmpl("C.gst_mini_object_ref((*C.GstMiniObject)(unsafe.Pointer(<.InNamePtr 1>)))")
+		}
+
+		if value.TransferOwnership.TransferOwnership != "borrow" {
+			value.vtmpl(`
+				runtime.SetFinalizer(
+					gextras.StructIntern(unsafe.Pointer(<.OutInPtr 1><.OutName>)),
+					func(intern *struct{ C unsafe.Pointer }) {
+						C.gst_mini_object_unref((*C.GstMiniObject)(intern.C))
+					})
+			`)
+		}
+
+		if value.TransferOwnership.TransferOwnership == "borrow" && len(conv.Results) == 0 {
+			panic("result should borrow even though callable has no param")
+		}
+
+		if value.TransferOwnership.TransferOwnership == "borrow" {
+			// the returned value must keep the instance alive, which is the first passed param, aka the receiver
+			value.vtmpl(fmt.Sprintf(`
+				runtime.SetFinalizer( // value is borrowed, don't clean up the receiver until dropped
+					gextras.StructIntern(unsafe.Pointer(<.OutInPtr 1><.OutName>)),
+					func(_ *struct{ C unsafe.Pointer }) {
+						runtime.KeepAlive(%s)
+					},
+				)`,
+				conv.Results[0].InName,
+			))
+		}
+
+		return true
+
 	case "GObject.Object", "GObject.InitiallyUnowned":
 		return value.cgoSetObject(conv)
 

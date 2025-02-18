@@ -68,22 +68,14 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ $needsPrivate := false }}
 
-	{{ if .Abstract }}
-
-	{{ if .IsClass }}
-	// {{ .InterfaceName }} describes types inherited from class {{ .StructName }}.
-	{{ $needsPrivate = true -}}
+	// {{ .InterfaceName }} describes types inherited from {{ .StructName }}.
 	//
 	// To get the original type, the caller must assert this to an interface or
 	// another type.
 	type {{ .InterfaceName }} interface {
-		coreglib.Objector
-		base{{ .StructName }}() *{{ .StructName }}
-	}
-	{{ else }}
-	// {{ .InterfaceName }} describes {{ .StructName }}'s interface methods.
-	type {{ .InterfaceName }} interface {
-		coreglib.Objector
+		{{- range .ParentNames }}
+		{{ . }}
+		{{- end }}
 
 		{{ if .Methods -}}
 
@@ -101,15 +93,13 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 		{{- end}}
 
-		{{ if not .Methods -}}
+		{{ if or (not .Methods) .IsClass -}}
 		{{ $needsPrivate = true -}}
 		base{{ .StructName }}() *{{ .StructName }}
 		{{ end -}}
 	}
-	{{ end }}
 
 	var _ {{ .InterfaceName }} = (*{{ .StructName }})(nil)
-	{{ end }}
 
 	{{ if .GLibTypeStruct }}
 	{{ if .IsClass }}

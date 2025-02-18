@@ -486,6 +486,21 @@ func (g *Generator) ImplInterfaces() []string {
 	return names
 }
 
+func (g *Generator) ParentNames() []string {
+	parents := g.Tree.Requires
+	names := make([]string, len(parents))
+
+	for i, parent := range parents {
+		namespace := parent.NeedsNamespace(g.gen.Namespace())
+		if namespace {
+			parent.ImportPubl(g.gen, &g.header)
+		}
+		names[i] = parent.PublicType(namespace)
+	}
+
+	return names
+}
+
 // IsInSameFile returns true if the given GIR item is in the same file. It's
 // guessed using the InfoElements field in the given value.
 func (g *Generator) IsInSameFile(v interface{}) bool {

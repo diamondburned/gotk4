@@ -80,10 +80,8 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 		{{ if .Methods -}}
 
 		{{ range .Methods }}
-		{{ if $.IsInSameFile . -}}
-		{{- Synopsis . 1 TrailingNewLine }}
+		{{ Synopsis . 1 TrailingNewLine }}
 		{{- .Name }}{{ .Tail }}
-		{{- end }}
 		{{- end }}
 
 		{{ range .Signals }}

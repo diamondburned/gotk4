@@ -222,11 +222,11 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 			value.p.Linef("var len C.gsize")
 			// If we're fully getting the backing array, then we can just steal
 			// it (since we own it now), which is less copying.
-			value.p.Linef("p := C.g_byte_array_steal(&%s, &len)", value.In.Name)
-			value.p.Linef("%s = unsafe.Slice((*byte)(p), uint(len))", value.Out.Set)
-			value.p.Linef("runtime.SetFinalizer(&%s, func(v *[]byte) {", value.OutName)
-			value.p.Linef("  C.free(unsafe.Pointer(&(*v)[0]))")
-			value.p.Linef("})")
+			value.p.Linef("p := (*byte)(C.g_byte_array_steal(&%s, &len))", value.In.Name)
+			value.p.Linef("%s = unsafe.Slice(p, uint(len))", value.Out.Set)
+			value.p.Linef("runtime.AddCleanup(&%s, func(v *[]byte) {", value.OutName)
+			value.p.Linef("  C.free(unsafe.Pointer(p))")
+			value.p.Linef("}, p)")
 			value.p.Ascend()
 			return true
 		}
@@ -437,11 +437,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		// Set this to be freed if we have the ownership now.
 		if value.ShouldFree() {
 			value.header.Import("runtime")
-
-			// https://pkg.go.dev/github.com/diamondburned/gotk4/pkg/core/glib?utm_source=godoc#Value
-			value.p.Linef("runtime.SetFinalizer(%s, func(v *coreglib.Value) {", value.OutName)
-			value.p.Linef("  C.g_value_unset((*C.GValue)(unsafe.Pointer(v.Native())))")
-			value.p.Linef("})")
+			value.p.Linef("runtime.AddCleanup(%s, C.g_value_unset, (*C.GValue)(unsafe.Pointer(v.Native())))", value.OutName)
 		}
 		return true
 
@@ -502,11 +498,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			value.p.Linef("C.%s(%s)", ref, value.InNamePtr(1))
 		}
 
-		value.p.Linef("runtime.SetFinalizer(%s%s, func(v %s%s) {",
+		value.p.Linef("runtime.AddCleanup(%s%s, func(v %s%s) {",
 			value.OutInPtr(1), value.OutName, value.OutPtr(1), value.Out.Type)
 		value.p.Linef("C.%s((%s%s)(unsafe.Pointer(v.Native())))",
 			unref, value.InPtr(1), value.In.Type)
-		value.p.Linef("})")
+		value.p.Linef("}, %s%s)", value.OutInPtr(1), value.OutName)
 
 		return true
 	}
@@ -642,17 +638,12 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		// We can take ownership if the type can be reference-counted anyway.
 		if value.ShouldFree() || unref {
 			value.header.Import("runtime")
-			value.vtmpl(`
-				runtime.SetFinalizer(
-					gextras.StructIntern(unsafe.Pointer(<.OutInPtr 1><.OutName>)),
-					func(intern *struct{ C unsafe.Pointer }) {
-			`)
-			if value.fail {
-				value.Logln(logger.Debug, "SetFinalizer set fail")
-			}
-
-			value.p.Linef("    %s", types.RecordPrintFree(value.conv.fgen, value.Resolved.Extern, "intern.C"))
+			value.p.Linef("runtime.AddCleanup(")
+			value.p.Linef("  gextras.StructIntern(unsafe.Pointer(%s%s)),", value.OutInPtr(1), value.OutName)
+			value.p.Linef("  func(ptr unsafe.Pointer) {")
+			value.p.Linef("    %s", types.RecordPrintFree(value.conv.fgen, value.Resolved.Extern, "ptr"))
 			value.p.Linef("  },")
+			value.p.Linef("  unsafe.Pointer(%s),", value.InNamePtr(1))
 			value.p.Linef(")")
 		}
 

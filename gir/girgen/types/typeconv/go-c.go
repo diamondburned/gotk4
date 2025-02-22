@@ -651,18 +651,6 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.vtmpl(
 			"<.Out.Set> = <.OutCast 1>(gextras.StructNative(unsafe.Pointer(<.InNamePtr 1>)))",
 		)
-
-		// If ShouldFree is true, then ideally, we'll be freeing the C copy of
-		// the value once we're done. However, since the C code is taking
-		// ownership, we can't do that, since the Finalizer won't know that and
-		// free the record. Instead, if we cannot free the data once we're done,
-		// then we detach the finalizer so Go can't.
-		if !value.ShouldFree() && types.RecordHasRef(v) == nil {
-			value.header.Import("runtime")
-			value.vtmpl(
-				"runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(<.InNamePtr 1>)), nil)",
-			)
-		}
 		return true
 
 	case *gir.Callback:

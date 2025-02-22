@@ -6,7 +6,6 @@ package intern
 import "C"
 
 import (
-	"fmt"
 	"log/slog"
 	"runtime"
 	"runtime/debug"
@@ -14,8 +13,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"unsafe"
+	"weak"
 
-	"github.com/KarpelesLab/weak"
 	"github.com/diamondburned/gotk4/pkg/core/closure"
 	"github.com/diamondburned/gotk4/pkg/core/gdebug"
 
@@ -26,14 +25,9 @@ import (
 
 // Box is an opaque type holding extra data.
 type Box struct {
-	dummy    *boxDummy
-	closures atomic.Pointer[closure.Registry]
-	gobject  unsafe.Pointer
-	finalize bool
-}
-
-type boxDummy struct {
-	gobject unsafe.Pointer
+	closures   atomic.Pointer[closure.Registry]
+	gobject    unsafe.Pointer
+	finalizing atomic.Bool
 }
 
 // Object returns Box's C GObject pointer.
@@ -82,27 +76,92 @@ func init() {
 }
 
 func objInfo(obj unsafe.Pointer) slog.Attr {
-	return slog.Group(
-		"gobject",
-		slog.String("ptr", fmt.Sprintf("%p", obj)),
-		slog.String("type", C.GoString(C.gotk4_object_type_name(C.gpointer(obj)))),
-		slog.Int("refs", objRefCount(obj)))
+	return gdebug.ObjectInfo(obj)
 }
 
-func objRefCount(obj unsafe.Pointer) int {
-	return int(C.g_atomic_int_get((*C.gint)(unsafe.Pointer(&(*C.GObject)(obj).ref_count))))
+/*
+func boxFinalizerKeepAlive(box *Box) {
+	shared.mu.RLock()
+	defer shared.mu.RUnlock()
+
+	if resurrected, _ := gets(box.gobject); resurrected != nil {
+		// We managed to resurrect a weakly referenced object, so it's still
+		// being used somewhere. We'll keep the box alive.
+		// Until this stops happening, AddCleanup will never be called.
+		runtime.SetFinalizer(box, boxFinalizerKeepAlive)
+	}
 }
+*/
 
 // newBox creates a zero-value instance of Box.
 func newBox(obj unsafe.Pointer) *Box {
 	box := &Box{}
 	box.gobject = obj
 
-	// Cheat Go's GC by adding a finalizer to a dummy pointer that is inside Box
-	// but is not Box itself.
-	box.dummy = &boxDummy{gobject: obj}
-	sink(box.dummy)
-	runtime.SetFinalizer(box.dummy, finalizeBox)
+	// runtime.SetFinalizer(box, boxFinalizerKeepAlive)
+
+	// runtime.AddCleanup(box, func(obj unsafe.Pointer) {
+	// 	if toggleRefs {
+	// 		slog.Debug(
+	// 			"cleaning up object",
+	// 			"box", TryGet(obj) != nil,
+	// 			objInfo(obj))
+	// 	}
+	//
+	// 	C.g_object_remove_toggle_ref((*C.GObject)(obj), (*[0]byte)(C.goToggleNotify), nil)
+	//
+	// 	if objectProfile != nil {
+	// 		objectProfile.Remove(obj)
+	// 	}
+	// }, obj)
+
+	runtime.SetFinalizer(box, func(box *Box) {
+		box.finalizing.Store(true)
+
+		obj := box.gobject
+
+		var objInfoSaved slog.Attr
+		if toggleRefs {
+			objInfoSaved = objInfo(obj)
+		}
+
+		shared.mu.Lock()
+
+		if toggleRefs {
+			slog.Debug(
+				"cleaning up object",
+				"box", box != nil,
+				objInfoSaved)
+		}
+
+		// weak.Pointer's behavior is to be invalidated by the time the
+		// finalizer is called, so we temporarily resurrect the box so that
+		// destroy signal handlers can obtain it. We'll purge it from the
+		// registry after the destroy callbacks.
+		shared.weak[obj] = weak.Make(box)
+
+		shared.mu.Unlock()
+
+		C.g_object_remove_toggle_ref((*C.GObject)(obj), (*[0]byte)(C.goToggleNotify), nil)
+
+		if objectProfile != nil {
+			objectProfile.Remove(obj)
+		}
+
+		if toggleRefs {
+			shared.mu.RLock()
+			defer shared.mu.RUnlock()
+
+			_, weak := shared.weak[obj]
+			_, strong := shared.strong[obj]
+
+			slog.Debug(
+				"post-finalizer aftermath for box",
+				"is_weak", weak,
+				"is_strong", strong,
+				objInfoSaved)
+		}
+	})
 
 	if objectProfile != nil {
 		objectProfile.Add(obj, 3)
@@ -129,11 +188,11 @@ var shared = struct {
 	// weak stores *Box while the object is in Go's heap. The finalizer will
 	// move *Box to strong if the reference is toggled. This is only the case,
 	// because the finalizer will not run otherwise.
-	weak *weak.Map[unsafe.Pointer, Box]
+	weak map[unsafe.Pointer]weak.Pointer[Box]
 	// strong stores *Box while the object is still referenced by C but not Go.
 	strong map[unsafe.Pointer]*Box
 }{
-	weak:   weak.NewMap[unsafe.Pointer, Box](),
+	weak:   make(map[unsafe.Pointer]weak.Pointer[Box], 1024),
 	strong: make(map[unsafe.Pointer]*Box, 1024),
 }
 
@@ -231,26 +290,16 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	return box
 }
 
-// Free explicitly frees the box permanently. It must not be resurrected after
-// this.
-//
-// Deprecated: this function is no longer needed.
-func Free(box *Box) {
-	panic("not implemented")
-}
-
 // finalizeBox only delays its finalization until GLib notifies us a toggle. It
 // does so for as long as an object is stored only in the Go heap. Once the
 // object is also shared, the toggle notifier will strongly reference the Box.
-func finalizeBox(dummy *boxDummy) {
-	if dummy == nil {
-		panic("bug: finalizeBox called with nil dummy")
-	}
 
+/*
+func finalizeGObject(gobject unsafe.Pointer) {
 	shared.mu.Lock()
 	defer shared.mu.Unlock()
 
-	box, strong := gets(dummy.gobject)
+	box, strong := gets(gobject)
 	if box == nil {
 		// Silently ignore unknown objects.
 		//
@@ -322,6 +371,7 @@ func finalizeBox(dummy *boxDummy) {
 			prevObjInfo)
 	}
 }
+*/
 
 //go:nosplit
 func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
@@ -329,16 +379,18 @@ func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
 		return strong, true
 	}
 
-	if weak := shared.weak.Get(gobject); weak != nil {
-		// If forObject is false, then that probably means this was called
-		// inside goMarshal while the Go object is still alive, otherwise
-		// toggleNotify would've moved it over. We don't have to worry about
-		// this being freed as long as we acquire the mutex.
-		//
-		// TODO: does this actually resurrect the value properly? We have a
-		// mutex to guard this which is also used in the finalizer, so it
-		// shouldn't explode, but still.
-		return weak, false
+	if weakPtr, ok := shared.weak[gobject]; ok {
+		if weak := weakPtr.Value(); weak != nil {
+			// If forObject is false, then that probably means this was called
+			// inside goMarshal while the Go object is still alive, otherwise
+			// toggleNotify would've moved it over. We don't have to worry about
+			// this being freed as long as we acquire the mutex.
+			//
+			// TODO: does this actually resurrect the value properly? We have a
+			// mutex to guard this which is also used in the finalizer, so it
+			// shouldn't explode, but still.
+			return weak, false
+		}
 	}
 
 	return nil, false
@@ -365,10 +417,7 @@ func makeStrong(gobject unsafe.Pointer) *Box {
 
 	if !strong {
 		shared.strong[gobject] = box
-		shared.weak.Delete(gobject)
-
-		// Clear weak.Map's finalizer.
-		runtime.SetFinalizer(box, nil)
+		delete(shared.weak, gobject)
 	}
 
 	return box
@@ -392,7 +441,7 @@ func makeWeak(gobject unsafe.Pointer) *Box {
 	}
 
 	if strong {
-		shared.weak.Set(gobject, box)
+		shared.weak[gobject] = weak.Make(box)
 		delete(shared.strong, gobject)
 	}
 

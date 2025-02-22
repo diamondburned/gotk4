@@ -209,9 +209,7 @@ func ParamSpecTake(ptr unsafe.Pointer, take bool) *ParamSpec {
 	if !take {
 		C.g_param_spec_ref(p.intern)
 	}
-	runtime.SetFinalizer(p.paramSpec, func(p *paramSpec) {
-		C.g_param_spec_unref(p.intern)
-	})
+	runtime.AddCleanup(p.paramSpec, func(p *C.GParamSpec) { C.g_param_spec_unref(p) }, p.intern)
 	return p
 }
 

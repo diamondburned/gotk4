@@ -816,7 +816,7 @@ func (value *ValueConverted) OutInNamePtr(want int) string {
 }
 
 // OutInPtr returns the left-hand side for the output name and type SPECIFICALLY
-// for inputting the output name elsewhere, like giving it to SetFinalizer.
+// for inputting the output name elsewhere, like giving it to AddCleanup.
 func (value *ValueConverted) OutInPtr(want int) string {
 	has := types.CountPtr(value.Out.Type)
 	return value._ptr(has, want)

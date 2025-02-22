@@ -14,6 +14,7 @@ import "C"
 import (
 	"errors"
 	"log"
+	"log/slog"
 	"reflect"
 	"runtime"
 	"sync"
@@ -21,6 +22,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/core/closure"
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/gdebug"
 	"github.com/diamondburned/gotk4/pkg/core/intern"
 )
 
@@ -451,32 +453,6 @@ func SourceRemove(src SourceHandle) bool {
 	return gobool(C.g_source_remove(C.guint(src)))
 }
 
-// WipeAllClosures wipes all the Go closures associated with the given object
-// away. BE EXTREMELY CAREFUL WHEN USING THIS FUNCTION! If not careful, your
-// program WILL crash!
-//
-// There is only one specific use case for this function: if your object has
-// closures connected to it where these closures capture the object itself, then
-// it might create a cyclic dependency on the GC, preventing its finalizer from
-// ever running. This will cause the program to leak memory. As a temporary
-// hack, this function is introduced for cases where the programmer knows for
-// sure that the object will never be used again, and it is significant enough
-// of a leak that having a workaround is better than not.
-//
-// Deprecated: this function is dangerous and should not be used. Using this
-// function now causes a panic.
-func WipeAllClosures(objector Objector) {
-	panic("WipeAllClosures is deprecated and should not be used")
-}
-
-// Destroy destroys the Go reference to the given object. The object must not be
-// used ever again; it is the caller's responsibility to ensure that it will
-// never be used again. Resurrecting the object again is undefined behavior.
-func Destroy(objector Objector) {
-	v := BaseObject(objector)
-	v.destroy()
-}
-
 // SignalHandle is the ID of a signal handler.
 type SignalHandle uint
 
@@ -505,6 +481,7 @@ func ConnectGeneratedClosure(
 	userData := C.gpointer(gbox.Assign(data))
 
 	gclosure := C.g_cclosure_new(C.GCallback(tramp), userData, (*[0]byte)(C._gotk4_removeGeneratedClosure))
+	// C.g_closure_add_invalidate_notifier(gclosure, userData, (*[0]byte)(C._gotk4_removeGeneratedClosure))
 
 	// Hold the GClosure reference.
 	data.GClosure = uintptr(unsafe.Pointer(gclosure))
@@ -531,29 +508,28 @@ func ConnectGeneratedClosure(
 func ConnectedGeneratedClosure(closureData uintptr) *closure.FuncStack {
 	data, _ := gbox.Get(closureData).(*generatedClosureData)
 	if data == nil {
-		return nil
+		slog.Error(
+			"ConnectedGeneratedClosure: closure data not found in gbox",
+			"data", closureData)
+		panic("fatal error during callback")
 	}
 
 	// Get the function value associated with this callback closure.
 	box := intern.TryGet(unsafe.Pointer(data.GObject))
 	if box == nil {
-		log.Printf(
-			"gotk4: warning: object %s %v cannot be resurrected",
-			typeFromObject(unsafe.Pointer(data.GObject)),
-			unsafe.Pointer(data.GObject),
-		)
-		return nil
+		slog.Error(
+			"ConnectedGeneratedClosure: object cannot be resurrected for callback",
+			gdebug.ObjectInfo(unsafe.Pointer(data.GObject)))
+		panic("fatal error during callback")
 	}
 
 	fs := box.Closures().Load(unsafe.Pointer(data.GClosure))
 	if fs == nil {
-		log.Printf(
-			"gotk4: warning: object %s %v missing closure %v",
-			typeFromObject(unsafe.Pointer(data.GObject)),
-			unsafe.Pointer(data.GObject),
-			unsafe.Pointer(data.GClosure),
-		)
-		return nil
+		slog.Error(
+			"ConnectedGeneratedClosure: closure not found",
+			"n_closures", box.Closures().Len(),
+			gdebug.ObjectInfo(unsafe.Pointer(data.GObject)))
+		panic("fatal error during callback")
 	}
 
 	return fs
@@ -660,10 +636,6 @@ func newObject(ptr unsafe.Pointer, take bool) *Object {
 	return &Object{
 		box: intern.Get(ptr, take),
 	}
-}
-
-func (v *Object) destroy() {
-	intern.Free(v.box)
 }
 
 // Cast casts v to the concrete Go type (e.g. *Object to *gtk.Entry).
@@ -1025,7 +997,7 @@ func marshalValue(p uintptr) (interface{}, error) {
 	}
 
 	v := &value{(*C.GValue)(unsafe.Pointer(c))}
-	runtime.SetFinalizer(v, (*value).unset)
+	runtime.AddCleanup(v, func(v *C.GValue) { C.g_value_unset(v) }, v.gvalue)
 
 	return &Value{v}, nil
 }
@@ -1058,7 +1030,7 @@ func AllocateValue() *Value {
 	//An allocated GValue is not guaranteed to hold a value that can be unset
 	//We need to double check before unsetting, to prevent:
 	//`g_value_unset: assertion 'G_IS_VALUE (value)' failed`
-	runtime.SetFinalizer(v.value, (*value).unset)
+	runtime.AddCleanup(v.value, func(v *C.GValue) { C.g_value_unset(v) }, v.gvalue)
 
 	return v
 }

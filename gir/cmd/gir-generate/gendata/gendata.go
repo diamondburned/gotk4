@@ -404,11 +404,10 @@ func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 			}
 
 			_variant := (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-			runtime.SetFinalizer(
+			runtime.AddCleanup(
 				gextras.StructIntern(unsafe.Pointer(_variant)),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_variant_unref((*C.GVariant)(intern.C))
-				},
+				C.g_variant_unref,
+				(*C.GVariant)(unsafe.Pointer(_cret)),
 			)
 			return _variant, nil
 		}
@@ -428,11 +427,10 @@ func GLibVariantIter(nsgen *girgen.NamespaceGenerator) error {
 				}
 
 				variant := (*Variant)(gextras.NewStructNative(unsafe.Pointer(item)))
-				runtime.SetFinalizer(
+				runtime.AddCleanup(
 					gextras.StructIntern(unsafe.Pointer(variant)),
-					func(intern *struct{ C unsafe.Pointer }) {
-						C.g_variant_unref((*C.GVariant)(intern.C))
-					},
+					C.g_variant_unref,
+					(*C.GVariant)(unsafe.Pointer(item)),
 				)
 
 				return variant
@@ -563,11 +561,10 @@ func GioArrayUseBytes(nsgen *girgen.NamespaceGenerator) error {
 			)
 
 			_bytes := (*Bytes)(gextras.NewStructNative(unsafe.Pointer(v)))
-			runtime.SetFinalizer(
+			runtime.AddCleanup(
 				gextras.StructIntern(unsafe.Pointer(_bytes)),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.g_bytes_unref((*C.GBytes)(intern.C))
-				},
+				C.g_bytes_unref,
+				(*C.GBytes)(unsafe.Pointer(v)),
 			)
 
 			return _bytes

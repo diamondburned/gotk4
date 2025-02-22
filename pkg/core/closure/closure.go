@@ -33,3 +33,14 @@ func (r *Registry) Load(gclosure unsafe.Pointer) *FuncStack {
 func (r *Registry) Delete(gclosure unsafe.Pointer) {
 	r.reg.Delete(uintptr(gclosure))
 }
+
+// Len returns the number of closures in the registry.
+// Use this for debugging purposes only.
+func (r *Registry) Len() int {
+	var i int
+	r.reg.Range(func(_, _ interface{}) bool {
+		i++
+		return true
+	})
+	return i
+}

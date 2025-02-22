@@ -10957,11 +10957,10 @@ func TreeGetRowDragData(value *coreglib.Value) (*TreeModel, *TreePath, bool) {
 	}
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg3),
 		)
 	}
 	if _cret != 0 {
@@ -12232,11 +12231,10 @@ func (self *AccessibleText) contents(start, end uint) *glib.Bytes {
 	var _bytes *glib.Bytes // out
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -12285,11 +12283,10 @@ func (self *AccessibleText) contentsAt(offset uint, granularity AccessibleTextGr
 	_start = uint(_arg3)
 	_end = uint(_arg4)
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _start, _end, _bytes
@@ -12525,11 +12522,10 @@ func (actionable *Actionable) ActionTargetValue() *glib.Variant {
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_variant_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -12672,11 +12668,10 @@ func (actionable *Actionable) actionTargetValue() *glib.Variant {
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_variant_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16740,11 +16735,10 @@ func (fontchooser *FontChooser) FontDesc() *pango.FontDescription {
 
 	if _cret != nil {
 		_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -18779,11 +18773,10 @@ func (model *SelectionModel) Selection() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_bitset_unref((*C.GtkBitset)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bitset
@@ -18822,11 +18815,10 @@ func (model *SelectionModel) SelectionInRange(position, nItems uint) *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_bitset_unref((*C.GtkBitset)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bitset
@@ -19178,11 +19170,10 @@ func (model *SelectionModel) selectionInRange(position, nItems uint) *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_bitset_unref((*C.GtkBitset)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bitset
@@ -20836,11 +20827,10 @@ func (treeModel *TreeModel) Path(iter *TreeIter) *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _treePath
@@ -21558,11 +21548,10 @@ func (treeModel *TreeModel) path(iter *TreeIter) *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _treePath
@@ -30676,11 +30665,10 @@ func (self *BuilderListItemFactory) Bytes() *glib.Bytes {
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_bytes_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -31483,11 +31471,10 @@ func (self *Calendar) Date() *glib.DateTime {
 	var _dateTime *glib.DateTime // out
 
 	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _dateTime
@@ -38130,11 +38117,10 @@ func (cellView *CellView) DisplayedRow() *TreePath {
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -40177,11 +40163,10 @@ func (self *ColorDialog) ChooseRGBAFinish(result gio.AsyncResulter) (*gdk.RGBA, 
 
 	if _cret != nil {
 		_rgbA = (*gdk.RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_rgbA)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_rgba_free((*C.GdkRGBA)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_rgba_free((*C.GdkRGBA)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 	if _cerr != nil {
@@ -48692,11 +48677,10 @@ func (self *DropTarget) Formats() *gdk.ContentFormats {
 	if _cret != nil {
 		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gdk_content_formats_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -49044,11 +49028,10 @@ func (self *DropTargetAsync) Formats() *gdk.ContentFormats {
 
 	if _cret != nil {
 		_contentFormats = (*gdk.ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -49730,11 +49713,10 @@ func (entry *Entry) Attributes() *pango.AttrList {
 	if _cret != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_attr_list_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -54297,11 +54279,10 @@ func (self *Expression) Bind(target *coreglib.Object, property string, this_ *co
 
 	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_expression_watch_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _expressionWatch
@@ -54445,11 +54426,10 @@ func (self *Expression) Watch(this_ *coreglib.Object, notify ExpressionNotify) *
 
 	_expressionWatch = (*ExpressionWatch)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gtk_expression_watch_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_expressionWatch)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_expression_watch_unref((*C.GtkExpressionWatch)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _expressionWatch
@@ -56436,11 +56416,10 @@ func (filter *FileFilter) ToGVariant() *glib.Variant {
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -57511,11 +57490,10 @@ func (fixed *Fixed) ChildTransform(widget Widgetter) *gsk.Transform {
 	if _cret != nil {
 		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gsk_transform_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -57773,11 +57751,10 @@ func (child *FixedLayoutChild) Transform() *gsk.Transform {
 	if _cret != nil {
 		_transform = (*gsk.Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gsk_transform_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -60028,20 +60005,18 @@ func (self *FontDialog) ChooseFontAndFeaturesFinish(result gio.AsyncResulter) (*
 	var _goerr error                     // out
 
 	_fontDesc = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDesc)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_arg2),
 	)
 	_fontFeatures = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
 	defer C.free(unsafe.Pointer(_arg3))
 	_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_language)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_arg4),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -60078,11 +60053,10 @@ func (self *FontDialog) ChooseFontFinish(result gio.AsyncResulter) (*pango.FontD
 
 	if _cret != nil {
 		_fontDescription = (*pango.FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 	if _cerr != nil {
@@ -60171,11 +60145,10 @@ func (self *FontDialog) Language() *pango.Language {
 
 	if _cret != nil {
 		_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_language)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
+			func(ptr unsafe.Pointer) { C.free(ptr) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -60535,11 +60508,10 @@ func (self *FontDialogButton) Language() *pango.Language {
 
 	if _cret != nil {
 		_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_language)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
+			func(ptr unsafe.Pointer) { C.free(ptr) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -63236,11 +63208,10 @@ func (gesture *GestureSingle) CurrentSequence() *gdk.EventSequence {
 
 	if _cret != nil {
 		_eventSequence = (*gdk.EventSequence)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_eventSequence)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
+			func(ptr unsafe.Pointer) { C.free(ptr) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -63502,11 +63473,10 @@ func (gesture *GestureStylus) Backlog() ([]gdk.TimeCoord, bool) {
 		_backlog = make([]gdk.TimeCoord, _arg2)
 		for i := 0; i < int(_arg2); i++ {
 			_backlog[i] = *(*gdk.TimeCoord)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-			runtime.SetFinalizer(
+			runtime.AddCleanup(
 				gextras.StructIntern(unsafe.Pointer(&_backlog[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.free(intern.C)
-				},
+				func(ptr unsafe.Pointer) { C.free(ptr) },
+				unsafe.Pointer((&src[i])),
 			)
 		}
 	}
@@ -66712,11 +66682,10 @@ func (context *IMContext) PreeditString() (string, *pango.AttrList, int) {
 	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attrs)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+		unsafe.Pointer(_arg2),
 	)
 	_cursorPos = int(_arg3)
 
@@ -67188,11 +67157,10 @@ func (context *IMContext) preeditString() (string, *pango.AttrList, int) {
 	_str = C.GoString((*C.gchar)(unsafe.Pointer(_arg1)))
 	defer C.free(unsafe.Pointer(_arg1))
 	_attrs = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attrs)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+		unsafe.Pointer(_arg2),
 	)
 	_cursorPos = int(_arg3)
 
@@ -69057,11 +69025,10 @@ func (iconView *IconView) Cursor() (*TreePath, CellRendererer, bool) {
 
 	if _arg1 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg1),
 		)
 	}
 	if _arg2 != nil {
@@ -69124,11 +69091,10 @@ func (iconView *IconView) DestItemAtPos(dragX, dragY int) (*TreePath, IconViewDr
 
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg3),
 		)
 	}
 	_pos = IconViewDropPosition(_arg4)
@@ -69163,11 +69129,10 @@ func (iconView *IconView) DragDestItem() (*TreePath, IconViewDropPosition) {
 
 	if _arg1 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg1),
 		)
 	}
 	_pos = IconViewDropPosition(_arg2)
@@ -69213,11 +69178,10 @@ func (iconView *IconView) ItemAtPos(x, y int) (*TreePath, CellRendererer, bool) 
 
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg3),
 		)
 	}
 	if _arg4 != nil {
@@ -69479,11 +69443,10 @@ func (iconView *IconView) PathAtPos(x, y int) *TreePath {
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -69599,11 +69562,10 @@ func (iconView *IconView) SelectedItems() []*TreePath {
 		src := (*C.GtkTreePath)(v)
 		var dst *TreePath // out
 		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_list = append(_list, dst)
 	})
@@ -69763,11 +69725,10 @@ func (iconView *IconView) TooltipContext(x, y int, keyboardTip bool) (*TreeModel
 	}
 	if _arg5 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg5),
 		)
 	}
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
@@ -69807,20 +69768,18 @@ func (iconView *IconView) VisibleRange() (startPath, endPath *TreePath, ok bool)
 
 	if _arg1 != nil {
 		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_startPath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg1),
 		)
 	}
 	if _arg2 != nil {
 		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_endPath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg2),
 		)
 	}
 	if _cret != 0 {
@@ -71765,11 +71724,10 @@ func (self *Inscription) Attributes() *pango.AttrList {
 	if _cret != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_attr_list_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -72645,11 +72603,10 @@ func (self *Label) Attributes() *pango.AttrList {
 	if _cret != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_attr_list_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -73092,11 +73049,10 @@ func (self *Label) Tabs() *pango.TabArray {
 
 	if _cret != nil {
 		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_tab_array_free((*C.PangoTabArray)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -85995,11 +85951,10 @@ func (setup *PageSetup) ToGVariant() *glib.Variant {
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -88977,9 +88932,11 @@ func (context *PrintContext) CairoContext() *cairo.Context {
 
 	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
 	C.cairo_reference(_cret)
-	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_ret,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _ret
 }
@@ -89727,11 +89684,10 @@ func (self *PrintDialog) SetupFinish(result gio.AsyncResulter) (*PrintSetup, err
 
 	if _cret != nil {
 		_printSetup = (*PrintSetup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_printSetup)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_print_setup_unref((*C.GtkPrintSetup)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_print_setup_unref((*C.GtkPrintSetup)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 	if _cerr != nil {
@@ -91789,11 +91745,10 @@ func (settings *PrintSettings) PageRanges() []PageRange {
 		_pageRanges = make([]PageRange, _arg1)
 		for i := 0; i < int(_arg1); i++ {
 			_pageRanges[i] = *(*PageRange)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-			runtime.SetFinalizer(
+			runtime.AddCleanup(
 				gextras.StructIntern(unsafe.Pointer(&_pageRanges[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.free(intern.C)
-				},
+				func(ptr unsafe.Pointer) { C.free(ptr) },
+				unsafe.Pointer((&src[i])),
 			)
 		}
 	}
@@ -91870,11 +91825,10 @@ func (settings *PrintSettings) PaperSize() *PaperSize {
 
 	if _cret != nil {
 		_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_paperSize)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -92858,11 +92812,10 @@ func (settings *PrintSettings) ToGVariant() *glib.Variant {
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -94435,11 +94388,10 @@ func (manager *RecentManager) Items() []*RecentInfo {
 		src := (*C.GtkRecentInfo)(v)
 		var dst *RecentInfo // out
 		dst = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_recent_info_unref((*C.GtkRecentInfo)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_list = append(_list, dst)
 	})
@@ -94511,11 +94463,10 @@ func (manager *RecentManager) LookupItem(uri string) (*RecentInfo, error) {
 
 	if _cret != nil {
 		_recentInfo = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_recentInfo)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_recent_info_unref((*C.GtkRecentInfo)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 	if _cerr != nil {
@@ -98252,11 +98203,10 @@ func (self *Shortcut) Arguments() *glib.Variant {
 	if _cret != nil {
 		_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_variant_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -100667,9 +100617,11 @@ func (snapshot *Snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	var _context *cairo.Context // out
 
 	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_context, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_context,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _context
 }
@@ -107216,11 +107168,10 @@ func (self *Text) Attributes() *pango.AttrList {
 	if _cret != nil {
 		_attrList = (*pango.AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_attr_list_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -112945,11 +112896,10 @@ func (textView *TextView) Tabs() *pango.TabArray {
 
 	if _cret != nil {
 		_tabArray = (*pango.TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_tab_array_free((*C.PangoTabArray)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -115998,11 +115948,10 @@ func (filter *TreeModelFilter) ConvertChildPathToPath(childPath *TreePath) *Tree
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -116071,11 +116020,10 @@ func (filter *TreeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *Tre
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -116529,11 +116477,10 @@ func (treeModelSort *TreeModelSort) ConvertChildPathToPath(childPath *TreePath) 
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -116602,11 +116549,10 @@ func (treeModelSort *TreeModelSort) ConvertPathToChildPath(sortedPath *TreePath)
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -116859,11 +116805,10 @@ func (selection *TreeSelection) SelectedRows() (*TreeModel, []*TreePath) {
 		src := (*C.GtkTreePath)(v)
 		var dst *TreePath // out
 		dst = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_list = append(_list, dst)
 	})
@@ -119063,11 +119008,10 @@ func (treeView *TreeView) Cursor() (*TreePath, *TreeViewColumn) {
 
 	if _arg1 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg1),
 		)
 	}
 	if _arg2 != nil {
@@ -119118,11 +119062,10 @@ func (treeView *TreeView) DestRowAtPos(dragX, dragY int) (*TreePath, TreeViewDro
 
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg3),
 		)
 	}
 	_pos = TreeViewDropPosition(_arg4)
@@ -119156,11 +119099,10 @@ func (treeView *TreeView) DragDestRow() (*TreePath, TreeViewDropPosition) {
 
 	if _arg1 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg1),
 		)
 	}
 	_pos = TreeViewDropPosition(_arg2)
@@ -119531,11 +119473,10 @@ func (treeView *TreeView) PathAtPos(x, y int) (path *TreePath, column *TreeViewC
 
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg3),
 		)
 	}
 	if _arg4 != nil {
@@ -119785,11 +119726,10 @@ func (treeView *TreeView) TooltipContext(x, y int, keyboardTip bool) (*TreeModel
 	}
 	if _arg5 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg5),
 		)
 	}
 	_iter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer((&_arg6))))
@@ -119829,20 +119769,18 @@ func (treeView *TreeView) VisibleRange() (startPath, endPath *TreePath, ok bool)
 
 	if _arg1 != nil {
 		_startPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg1)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_startPath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg1),
 		)
 	}
 	if _arg2 != nil {
 		_endPath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_endPath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg2),
 		)
 	}
 	if _cret != 0 {
@@ -120029,11 +119967,10 @@ func (treeView *TreeView) IsBlankAtPos(x, y int) (path *TreePath, column *TreeVi
 
 	if _arg3 != nil {
 		_path = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_arg3),
 		)
 	}
 	if _arg4 != nil {
@@ -132519,11 +132456,10 @@ func NewAccessibleListFromArray(accessibles []Accessibler) *AccessibleList {
 	var _accessibleList *AccessibleList // out
 
 	_accessibleList = (*AccessibleList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_accessibleList)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _accessibleList
@@ -132548,11 +132484,10 @@ func NewAccessibleListFromList(list []Accessibler) *AccessibleList {
 	var _accessibleList *AccessibleList // out
 
 	_accessibleList = (*AccessibleList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_accessibleList)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _accessibleList
@@ -132792,11 +132727,10 @@ func NewBitsetEmpty() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_bitset_unref((*C.GtkBitset)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bitset
@@ -132818,11 +132752,10 @@ func NewBitsetRange(start uint, nItems uint) *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_bitset_unref((*C.GtkBitset)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bitset
@@ -132980,11 +132913,10 @@ func (self *Bitset) Copy() *Bitset {
 	var _bitset *Bitset // out
 
 	_bitset = (*Bitset)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bitset)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_bitset_unref((*C.GtkBitset)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_bitset_unref((*C.GtkBitset)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bitset
@@ -133762,11 +133694,10 @@ func NewBorder() *Border {
 	var _border *Border // out
 
 	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_border)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_border_free((*C.GtkBorder)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_border_free((*C.GtkBorder)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _border
@@ -133845,11 +133776,10 @@ func (border_ *Border) Copy() *Border {
 	var _border *Border // out
 
 	_border = (*Border)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_border)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_border_free((*C.GtkBorder)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_border_free((*C.GtkBorder)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _border
@@ -134324,11 +134254,10 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 	var _cssSection *CSSSection // out
 
 	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_cssSection)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_css_section_unref((*C.GtkCssSection)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _cssSection
@@ -134411,11 +134340,10 @@ func (section *CSSSection) Parent() *CSSSection {
 	if _cret != nil {
 		_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gtk_css_section_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_cssSection)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_css_section_unref((*C.GtkCssSection)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -135458,11 +135386,10 @@ func NewPaperSize(name string) *PaperSize {
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _paperSize
@@ -135495,11 +135422,10 @@ func NewPaperSizeCustom(name string, displayName string, width float64, height f
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _paperSize
@@ -135518,11 +135444,10 @@ func NewPaperSizeFromGVariant(variant *glib.Variant) *PaperSize {
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _paperSize
@@ -135548,11 +135473,10 @@ func NewPaperSizeFromIPP(ippName string, width float64, height float64) *PaperSi
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _paperSize
@@ -135579,11 +135503,10 @@ func NewPaperSizeFromKeyFile(keyFile *glib.KeyFile, groupName string) (*PaperSiz
 	var _goerr error          // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -135616,11 +135539,10 @@ func NewPaperSizeFromPPD(ppdName string, ppdDisplayName string, width float64, h
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _paperSize
@@ -135643,11 +135565,10 @@ func (other *PaperSize) Copy() *PaperSize {
 	var _paperSize *PaperSize // out
 
 	_paperSize = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_paperSize)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _paperSize
@@ -136003,11 +135924,10 @@ func (paperSize *PaperSize) ToGVariant() *glib.Variant {
 
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -136082,11 +136002,10 @@ func PaperSizeGetPaperSizes(includeCustom bool) []*PaperSize {
 		src := (*C.GtkPaperSize)(v)
 		var dst *PaperSize // out
 		dst = (*PaperSize)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_paper_size_free((*C.GtkPaperSize)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_paper_size_free((*C.GtkPaperSize)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_list = append(_list, dst)
 	})
@@ -136479,11 +136398,10 @@ func (info *RecentInfo) Added() *glib.DateTime {
 
 	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_date_time_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _dateTime
@@ -136556,11 +136474,10 @@ func (info *RecentInfo) ApplicationInfo(appName string) (string, uint, *glib.Dat
 	_count = uint(_arg3)
 	_stamp = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
 	C.g_date_time_ref(_arg4)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_stamp)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+		unsafe.Pointer(_arg4),
 	)
 	if _cret != 0 {
 		_ok = true
@@ -136749,11 +136666,10 @@ func (info *RecentInfo) Modified() *glib.DateTime {
 
 	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_date_time_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _dateTime
@@ -136879,11 +136795,10 @@ func (info *RecentInfo) Visited() *glib.DateTime {
 
 	_dateTime = (*glib.DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_date_time_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _dateTime
@@ -137122,11 +137037,10 @@ func NewRequisition() *Requisition {
 	var _requisition *Requisition // out
 
 	_requisition = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_requisition)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_requisition_free((*C.GtkRequisition)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_requisition_free((*C.GtkRequisition)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _requisition
@@ -137177,11 +137091,10 @@ func (requisition *Requisition) Copy() *Requisition {
 	var _ret *Requisition // out
 
 	_ret = (*Requisition)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_requisition_free((*C.GtkRequisition)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_requisition_free((*C.GtkRequisition)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ret
@@ -137251,11 +137164,10 @@ func NewScrollInfo() *ScrollInfo {
 	var _scrollInfo *ScrollInfo // out
 
 	_scrollInfo = (*ScrollInfo)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_scrollInfo)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_scroll_info_unref((*C.GtkScrollInfo)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_scroll_info_unref((*C.GtkScrollInfo)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _scrollInfo
@@ -138334,11 +138246,10 @@ func (iter *TextIter) Copy() *TextIter {
 	var _textIter *TextIter // out
 
 	_textIter = (*TextIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_textIter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_text_iter_free((*C.GtkTextIter)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_text_iter_free((*C.GtkTextIter)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _textIter
@@ -139367,11 +139278,10 @@ func (iter *TextIter) Language() *pango.Language {
 	var _language *pango.Language // out
 
 	_language = (*pango.Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_language)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _language
@@ -140470,11 +140380,10 @@ func (iter *TreeIter) Copy() *TreeIter {
 	var _treeIter *TreeIter // out
 
 	_treeIter = (*TreeIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_treeIter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_iter_free((*C.GtkTreeIter)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_tree_iter_free((*C.GtkTreeIter)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _treeIter
@@ -140575,11 +140484,10 @@ func NewTreePath() *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _treePath
@@ -140594,11 +140502,10 @@ func NewTreePathFirst() *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _treePath
@@ -140626,11 +140533,10 @@ func NewTreePathFromIndices(indices []int) *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _treePath
@@ -140651,11 +140557,10 @@ func NewTreePathFromString(path string) *TreePath {
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -140735,11 +140640,10 @@ func (path *TreePath) Copy() *TreePath {
 	var _treePath *TreePath // out
 
 	_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_treePath)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _treePath
@@ -141031,11 +140935,10 @@ func NewTreeRowReference(model TreeModeller, path *TreePath) *TreeRowReference {
 
 	if _cret != nil {
 		_treeRowReference = (*TreeRowReference)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -141062,11 +140965,10 @@ func NewTreeRowReferenceProxy(proxy *coreglib.Object, model TreeModeller, path *
 
 	if _cret != nil {
 		_treeRowReference = (*TreeRowReference)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -141092,11 +140994,10 @@ func (reference *TreeRowReference) Copy() *TreeRowReference {
 	var _treeRowReference *TreeRowReference // out
 
 	_treeRowReference = (*TreeRowReference)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_treeRowReference)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_tree_row_reference_free((*C.GtkTreeRowReference)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _treeRowReference
@@ -141146,11 +141047,10 @@ func (reference *TreeRowReference) Path() *TreePath {
 
 	if _cret != nil {
 		_treePath = (*TreePath)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_treePath)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_tree_path_free((*C.GtkTreePath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gtk_tree_path_free((*C.GtkTreePath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 

@@ -218,11 +218,10 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg1 *C.GDBusConnection, arg2 *C.gc
 	_methodName = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
 	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg6)))
 	C.g_variant_ref(arg6)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg6),
 	)
 	_invocation = wrapDBusMethodInvocation(coreglib.AssumeOwnership(unsafe.Pointer(arg7)))
 
@@ -254,11 +253,10 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 	_propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
 	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg6)))
 	C.g_variant_ref(arg6)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_value)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg6),
 	)
 
 	err, ok := fn(_connection, _sender, _objectPath, _interfaceName, _propertyName, _value)
@@ -336,11 +334,10 @@ func _gotk4_gio2_DBusSignalCallback(arg1 *C.GDBusConnection, arg2 *C.gchar, arg3
 	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
 	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg6)))
 	C.g_variant_ref(arg6)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg6),
 	)
 
 	fn(_connection, _senderName, _objectPath, _interfaceName, _signalName, _parameters)
@@ -479,11 +476,10 @@ func _gotk4_gio2_SettingsBindGetMapping(arg1 *C.GValue, arg2 *C.GVariant, arg3 C
 	_value = coreglib.ValueFromNative(unsafe.Pointer(arg1))
 	_variant = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg2),
 	)
 
 	ok := fn(_value, _variant)
@@ -538,11 +534,10 @@ func _gotk4_gio2_SettingsGetMapping(arg1 *C.GVariant, arg2 *C.gpointer, arg3 C.g
 
 	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_value)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 
 	result, ok := fn(_value)
@@ -668,11 +663,10 @@ func _gotk4_gio2_ActionGroup_ConnectActionStateChanged(arg0 C.gpointer, arg1 *C.
 	_actionName = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_value)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg2),
 	)
 
 	f(_actionName, _value)
@@ -1373,11 +1367,10 @@ func _gotk4_gio2_AppLaunchContextClass_launch_started(arg0 *C.GAppLaunchContext,
 	}
 	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg2),
 	)
 
 	overrides.LaunchStarted(_info, _platformData)
@@ -1413,11 +1406,10 @@ func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.GAppLaunchContext, arg1 
 	}
 	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg2),
 	)
 
 	overrides.Launched(_info, _platformData)
@@ -1479,11 +1471,10 @@ func _gotk4_gio2_AppLaunchContext_ConnectLaunchStarted(arg0 C.gpointer, arg1 *C.
 	if arg2 != nil {
 		_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 		C.g_variant_ref(arg2)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_platformData)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(arg2),
 		)
 	}
 
@@ -1525,11 +1516,10 @@ func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppI
 	}
 	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	C.g_variant_ref(arg2)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg2),
 	)
 
 	f(_info, _platformData)
@@ -1558,11 +1548,10 @@ func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *
 
 	_builder = (*glib.VariantBuilder)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_builder_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_builder)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_builder_unref((*C.GVariantBuilder)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_builder_unref((*C.GVariantBuilder)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 
 	overrides.AddPlatformData(_builder)
@@ -1580,11 +1569,10 @@ func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVari
 
 	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 
 	overrides.AfterEmit(_platformData)
@@ -1602,11 +1590,10 @@ func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVar
 
 	_platformData = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_platformData)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 
 	overrides.BeforeEmit(_platformData)
@@ -1687,11 +1674,10 @@ func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg
 
 	_options = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_dict_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_options)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_dict_unref((*C.GVariantDict)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 
 	gint := overrides.HandleLocalOptions(_options)
@@ -1864,11 +1850,10 @@ func _gotk4_gio2_Application_ConnectHandleLocalOptions(arg0 C.gpointer, arg1 *C.
 
 	_options = (*glib.VariantDict)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_dict_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_options)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_dict_unref((*C.GVariantDict)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 
 	gint := f(_options)
@@ -2373,11 +2358,10 @@ func _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(arg0 *C.GDB
 	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
 	C.g_variant_ref(arg5)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg5),
 	)
 
 	overrides.InterfaceProxySignal(_objectProxy, _interfaceProxy, _senderName, _signalName, _parameters)
@@ -2405,11 +2389,10 @@ func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(
 	_interfaceProxy = wrapDBusProxy(coreglib.Take(unsafe.Pointer(arg2)))
 	_changedProperties = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	C.g_variant_ref(arg3)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_changedProperties)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg3),
 	)
 	{
 		var i int
@@ -2453,11 +2436,10 @@ func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpoi
 	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg5)))
 	C.g_variant_ref(arg5)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg5),
 	)
 
 	f(_objectProxy, _interfaceProxy, _senderName, _signalName, _parameters)
@@ -2566,11 +2548,10 @@ func _gotk4_gio2_DBusProxyClass_g_signal(arg0 *C.GDBusProxy, arg1 *C.gchar, arg2
 	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	C.g_variant_ref(arg3)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg3),
 	)
 
 	overrides.GSignal(_senderName, _signalName, _parameters)
@@ -2594,11 +2575,10 @@ func _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(arg0 C.gpointer, arg1 *C.GV
 
 	_changedProperties = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_variant_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_changedProperties)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 	{
 		var i int
@@ -2640,11 +2620,10 @@ func _gotk4_gio2_DBusProxy_ConnectGSignal(arg0 C.gpointer, arg1 *C.gchar, arg2 *
 	_signalName = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
 	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg3)))
 	C.g_variant_ref(arg3)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_parameters)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(arg3),
 	)
 
 	f(_senderName, _signalName, _parameters)
@@ -5123,7 +5102,6 @@ func _gotk4_gio2_ResolverClass_lookup_service_finish(arg0 *C.GResolver, arg1 *C.
 		src := list[i]
 		var dst *C.GSrvTarget // out
 		dst = (*C.GSrvTarget)(gextras.StructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(src)), nil)
 		cret = C.g_list_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
 	}
 	if _goerr != nil && _cerr != nil {
@@ -5353,11 +5331,10 @@ func _gotk4_gio2_SimpleAction_ConnectActivate(arg0 C.gpointer, arg1 *C.GVariant,
 	if arg1 != nil {
 		_parameter = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 		C.g_variant_ref(arg1)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_parameter)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(arg1),
 		)
 	}
 
@@ -5382,11 +5359,10 @@ func _gotk4_gio2_SimpleAction_ConnectChangeState(arg0 C.gpointer, arg1 *C.GVaria
 	if arg1 != nil {
 		_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 		C.g_variant_ref(arg1)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_value)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(arg1),
 		)
 	}
 
@@ -6733,11 +6709,10 @@ func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAtt
 
 	_list = (*FileAttributeInfoList)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.g_file_attribute_info_list_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_list)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_file_attribute_info_list_unref((*C.GFileAttributeInfoList)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 
 	overrides.AddWritableNamespaces(_list)

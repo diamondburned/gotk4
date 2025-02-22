@@ -8210,11 +8210,10 @@ func NewIdleSource() *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _source
@@ -8457,11 +8456,10 @@ func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _source
@@ -9384,11 +9382,10 @@ func MainCurrentSource() *Source {
 	if _cret != nil {
 		_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_source_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_source)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_source_unref((*C.GSource)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -10791,11 +10788,10 @@ func NewTimeoutSource(interval uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _source
@@ -10831,11 +10827,10 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _source
@@ -13352,11 +13347,10 @@ func NewBookmarkFile() *BookmarkFile {
 	var _bookmarkFile *BookmarkFile // out
 
 	_bookmarkFile = (*BookmarkFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bookmarkFile)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bookmark_file_free((*C.GBookmarkFile)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bookmark_file_free((*C.GBookmarkFile)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bookmarkFile
@@ -13455,11 +13449,10 @@ func (bookmark *BookmarkFile) Copy() *BookmarkFile {
 	var _bookmarkFile *BookmarkFile // out
 
 	_bookmarkFile = (*BookmarkFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bookmarkFile)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bookmark_file_free((*C.GBookmarkFile)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bookmark_file_free((*C.GBookmarkFile)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bookmarkFile
@@ -13496,11 +13489,10 @@ func (bookmark *BookmarkFile) AddedDateTime(uri string) (*DateTime, error) {
 
 	_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_date_time_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -13567,11 +13559,10 @@ func (bookmark *BookmarkFile) ApplicationInfo(uri string, name string) (string, 
 	if _arg5 != nil {
 		_stamp = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_arg5)))
 		C.g_date_time_ref(_arg5)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_stamp)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_arg5),
 		)
 	}
 	if _cerr != nil {
@@ -13868,11 +13859,10 @@ func (bookmark *BookmarkFile) ModifiedDateTime(uri string) (*DateTime, error) {
 
 	_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_date_time_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -14009,11 +13999,10 @@ func (bookmark *BookmarkFile) VisitedDateTime(uri string) (*DateTime, error) {
 
 	_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_date_time_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dateTime)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_date_time_unref((*C.GDateTime)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -14857,11 +14846,10 @@ func NewBytes(data []byte) *Bytes {
 	var _bytes *Bytes // out
 
 	_bytes = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -15106,11 +15094,10 @@ func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
 	var _ret *Bytes // out
 
 	_ret = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ret
@@ -15162,11 +15149,10 @@ func NewChecksum(checksumType ChecksumType) *Checksum {
 
 	if _cret != nil {
 		_checksum = (*Checksum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_checksum)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_checksum_free((*C.GChecksum)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_checksum_free((*C.GChecksum)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15193,11 +15179,10 @@ func (checksum *Checksum) Copy() *Checksum {
 	var _ret *Checksum // out
 
 	_ret = (*Checksum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_checksum_free((*C.GChecksum)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_checksum_free((*C.GChecksum)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ret
@@ -15408,11 +15393,10 @@ func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute in
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15439,11 +15423,10 @@ func NewDateTimeFromISO8601(text string, defaultTz *TimeZone) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15464,11 +15447,10 @@ func NewDateTimeFromTimevalLocal(tv *TimeVal) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15489,11 +15471,10 @@ func NewDateTimeFromTimevalUTC(tv *TimeVal) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15514,11 +15495,10 @@ func NewDateTimeFromUnixLocal(t int64) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15539,11 +15519,10 @@ func NewDateTimeFromUnixLocalUsec(usecs int64) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15564,11 +15543,10 @@ func NewDateTimeFromUnixUTC(t int64) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15589,11 +15567,10 @@ func NewDateTimeFromUnixUTCUsec(usecs int64) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15629,11 +15606,10 @@ func NewDateTimeLocal(year int, month int, day int, hour int, minute int, second
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15654,11 +15630,10 @@ func NewDateTimeNow(tz *TimeZone) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15675,11 +15650,10 @@ func NewDateTimeNowLocal() *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15696,11 +15670,10 @@ func NewDateTimeNowUTC() *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15736,11 +15709,10 @@ func NewDateTimeUTC(year int, month int, day int, hour int, minute int, seconds 
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15773,11 +15745,10 @@ func (datetime *DateTime) Add(timespan TimeSpan) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15811,11 +15782,10 @@ func (datetime *DateTime) AddDays(days int) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15869,11 +15839,10 @@ func (datetime *DateTime) AddFull(years int, months int, days int, hours int, mi
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15907,11 +15876,10 @@ func (datetime *DateTime) AddHours(hours int) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15945,11 +15913,10 @@ func (datetime *DateTime) AddMinutes(minutes int) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15988,11 +15955,10 @@ func (datetime *DateTime) AddMonths(months int) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16026,11 +15992,10 @@ func (datetime *DateTime) AddSeconds(seconds float64) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16064,11 +16029,10 @@ func (datetime *DateTime) AddWeeks(weeks int) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16105,11 +16069,10 @@ func (datetime *DateTime) AddYears(years int) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16655,11 +16618,10 @@ func (datetime *DateTime) Timezone() *TimeZone {
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_time_zone_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_time_zone_unref((*C.GTimeZone)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _timeZone
@@ -16922,11 +16884,10 @@ func (datetime *DateTime) ToLocal() *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -17007,11 +16968,10 @@ func (datetime *DateTime) ToTimezone(tz *TimeZone) *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -17090,11 +17050,10 @@ func (datetime *DateTime) ToUTC() *DateTime {
 
 	if _cret != nil {
 		_dateTime = (*DateTime)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_dateTime)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_date_time_unref((*C.GDateTime)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_date_time_unref((*C.GDateTime)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -17171,11 +17130,10 @@ func NewDirOpen(path string, flags uint) (*Dir, error) {
 	var _goerr error // out
 
 	_dir = (*Dir)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dir)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_dir_unref((*C.GDir)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_dir_unref((*C.GDir)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -18268,11 +18226,10 @@ func NewHMAC(digestType ChecksumType, key []byte) *HMAC {
 
 	if _cret != nil {
 		_hmac = (*HMAC)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_hmac)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_hmac_unref((*C.GHmac)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_hmac_unref((*C.GHmac)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -18298,11 +18255,10 @@ func (hmac *HMAC) Copy() *HMAC {
 	var _ret *HMAC // out
 
 	_ret = (*HMAC)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_hmac_unref((*C.GHmac)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_hmac_unref((*C.GHmac)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ret
@@ -18427,11 +18383,10 @@ func NewIOChannelFile(filename string, mode string) (*IOChannel, error) {
 	var _goerr error          // out
 
 	_ioChannel = (*IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_io_channel_unref((*C.GIOChannel)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -18453,11 +18408,10 @@ func NewIOChannelUnix(fd int) *IOChannel {
 	var _ioChannel *IOChannel // out
 
 	_ioChannel = (*IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_io_channel_unref((*C.GIOChannel)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ioChannel
@@ -19461,11 +19415,10 @@ func NewKeyFile() *KeyFile {
 	var _keyFile *KeyFile // out
 
 	_keyFile = (*KeyFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_keyFile)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_key_file_unref((*C.GKeyFile)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_key_file_unref((*C.GKeyFile)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _keyFile
@@ -21302,11 +21255,10 @@ func NewMainContext() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_main_context_unref((*C.GMainContext)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _mainContext
@@ -21325,11 +21277,10 @@ func NewMainContextWithFlags(flags MainContextFlags) *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_main_context_unref((*C.GMainContext)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _mainContext
@@ -21421,11 +21372,10 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _source
@@ -21468,11 +21418,10 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _source
@@ -21507,11 +21456,10 @@ func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Sourc
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_source_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _source
@@ -21799,11 +21747,10 @@ func MainContextDefault() *MainContext {
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_context_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_main_context_unref((*C.GMainContext)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _mainContext
@@ -21834,11 +21781,10 @@ func MainContextGetThreadDefault() *MainContext {
 	if _cret != nil {
 		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_main_context_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_mainContext)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_main_context_unref((*C.GMainContext)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_main_context_unref((*C.GMainContext)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -21864,11 +21810,10 @@ func MainContextRefThreadDefault() *MainContext {
 	var _mainContext *MainContext // out
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_main_context_unref((*C.GMainContext)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _mainContext
@@ -21912,11 +21857,10 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	var _mainLoop *MainLoop // out
 
 	_mainLoop = (*MainLoop)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_mainLoop)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_loop_unref((*C.GMainLoop)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_main_loop_unref((*C.GMainLoop)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _mainLoop
@@ -21940,11 +21884,10 @@ func (loop *MainLoop) Context() *MainContext {
 
 	_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_main_context_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_mainContext)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_main_context_unref((*C.GMainContext)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_main_context_unref((*C.GMainContext)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _mainContext
@@ -22039,11 +21982,10 @@ func NewMappedFile(filename string, writable bool) (*MappedFile, error) {
 	var _goerr error            // out
 
 	_mappedFile = (*MappedFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_mappedFile)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_mapped_file_unref((*C.GMappedFile)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_mapped_file_unref((*C.GMappedFile)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22072,11 +22014,10 @@ func NewMappedFileFromFd(fd int, writable bool) (*MappedFile, error) {
 	var _goerr error            // out
 
 	_mappedFile = (*MappedFile)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_mappedFile)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_mapped_file_unref((*C.GMappedFile)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_mapped_file_unref((*C.GMappedFile)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -22104,11 +22045,10 @@ func (file *MappedFile) Bytes() *Bytes {
 	var _bytes *Bytes // out
 
 	_bytes = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -22826,11 +22766,10 @@ func (matchInfo *MatchInfo) Regex() *Regex {
 
 	_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_regex_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_regex)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_regex_unref((*C.GRegex)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_regex_unref((*C.GRegex)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _regex
@@ -23508,7 +23447,6 @@ func (buf *PathBuf) FreeToPath() string {
 	var _cret *C.char     // in
 
 	_arg0 = (*C.GPathBuf)(gextras.StructNative(unsafe.Pointer(buf)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(buf)), nil)
 
 	_cret = C.g_path_buf_free_to_path(_arg0)
 	runtime.KeepAlive(buf)
@@ -23879,11 +23817,10 @@ func NewPatternSpec(pattern string) *PatternSpec {
 	var _patternSpec *PatternSpec // out
 
 	_patternSpec = (*PatternSpec)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_patternSpec)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_pattern_spec_free((*C.GPatternSpec)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_pattern_spec_free((*C.GPatternSpec)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _patternSpec
@@ -23906,11 +23843,10 @@ func (pspec *PatternSpec) Copy() *PatternSpec {
 	var _patternSpec *PatternSpec // out
 
 	_patternSpec = (*PatternSpec)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_patternSpec)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_pattern_spec_free((*C.GPatternSpec)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_pattern_spec_free((*C.GPatternSpec)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _patternSpec
@@ -24552,11 +24488,10 @@ func NewRand() *Rand {
 	var _rand *Rand // out
 
 	_rand = (*Rand)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_rand)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_rand_free((*C.GRand)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_rand_free((*C.GRand)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _rand
@@ -24575,11 +24510,10 @@ func NewRandWithSeed(seed uint32) *Rand {
 	var _rand *Rand // out
 
 	_rand = (*Rand)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_rand)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_rand_free((*C.GRand)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_rand_free((*C.GRand)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _rand
@@ -24601,11 +24535,10 @@ func NewRandWithSeedArray(seed *uint32, seedLength uint) *Rand {
 	var _rand *Rand // out
 
 	_rand = (*Rand)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_rand)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_rand_free((*C.GRand)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_rand_free((*C.GRand)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _rand
@@ -24630,11 +24563,10 @@ func (rand_ *Rand) Copy() *Rand {
 	var _rand *Rand // out
 
 	_rand = (*Rand)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_rand)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_rand_free((*C.GRand)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_rand_free((*C.GRand)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _rand
@@ -24880,11 +24812,10 @@ func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions Reg
 
 	if _cret != nil {
 		_regex = (*Regex)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_regex)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_regex_unref((*C.GRegex)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_regex_unref((*C.GRegex)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 	if _cerr != nil {
@@ -25150,11 +25081,10 @@ func (regex *Regex) Match(str string, matchOptions RegexMatchFlags) (*MatchInfo,
 
 	if _arg3 != nil {
 		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_matchInfo)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_match_info_unref((*C.GMatchInfo)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_match_info_unref((*C.GMatchInfo)(ptr)) },
+			unsafe.Pointer(_arg3),
 		)
 	}
 	if _cret != 0 {
@@ -25210,11 +25140,10 @@ func (regex *Regex) MatchAll(str string, matchOptions RegexMatchFlags) (*MatchIn
 
 	if _arg3 != nil {
 		_matchInfo = (*MatchInfo)(gextras.NewStructNative(unsafe.Pointer(_arg3)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_matchInfo)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_match_info_unref((*C.GMatchInfo)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_match_info_unref((*C.GMatchInfo)(ptr)) },
+			unsafe.Pointer(_arg3),
 		)
 	}
 	if _cret != 0 {
@@ -26066,11 +25995,10 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	var _source *Source // out
 
 	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_source_unref((*C.GSource)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _source
@@ -26215,11 +26143,10 @@ func (source *Source) Context() *MainContext {
 	if _cret != nil {
 		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.g_main_context_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_mainContext)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_main_context_unref((*C.GMainContext)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_main_context_unref((*C.GMainContext)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -27054,11 +26981,10 @@ func NewTimeZone(identifier string) *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_time_zone_unref((*C.GTimeZone)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _timeZone
@@ -27081,11 +27007,10 @@ func NewTimeZoneIdentifier(identifier string) *TimeZone {
 
 	if _cret != nil {
 		_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_timeZone)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_time_zone_unref((*C.GTimeZone)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_time_zone_unref((*C.GTimeZone)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -27101,11 +27026,10 @@ func NewTimeZoneLocal() *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_time_zone_unref((*C.GTimeZone)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _timeZone
@@ -27124,11 +27048,10 @@ func NewTimeZoneOffset(seconds int32) *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_time_zone_unref((*C.GTimeZone)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _timeZone
@@ -27143,11 +27066,10 @@ func NewTimeZoneUTC() *TimeZone {
 	var _timeZone *TimeZone // out
 
 	_timeZone = (*TimeZone)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_timeZone)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_time_zone_unref((*C.GTimeZone)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_time_zone_unref((*C.GTimeZone)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _timeZone
@@ -28175,11 +28097,10 @@ func (baseUri *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
 	var _goerr error // out
 
 	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_uri)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -28316,11 +28237,10 @@ func URIBuild(flags URIFlags, scheme, userinfo, host string, port int, path, que
 	var _uri *URI // out
 
 	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_uri)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _uri
@@ -28410,11 +28330,10 @@ func URIBuildWithUser(flags URIFlags, scheme, user, password, authParams, host s
 	var _uri *URI // out
 
 	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_uri)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _uri
@@ -28810,11 +28729,10 @@ func URIParse(uriString string, flags URIFlags) (*URI, error) {
 	var _goerr error // out
 
 	_uri = (*URI)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_uri)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -29318,11 +29236,10 @@ func URIUnescapeBytes(escapedString, illegalCharacters string) (*Bytes, error) {
 	var _goerr error  // out
 
 	_bytes = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -29822,11 +29739,10 @@ func NewVariantArray(childType *VariantType, children []*Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -29848,11 +29764,10 @@ func NewVariantBoolean(value bool) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -29872,11 +29787,10 @@ func NewVariantByte(value byte) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -29898,11 +29812,10 @@ func NewVariantBytestring(str []byte) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -29932,11 +29845,10 @@ func NewVariantBytestringArray(strv []string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -29959,11 +29871,10 @@ func NewVariantDictEntry(key *Variant, value *Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -29983,11 +29894,10 @@ func NewVariantDouble(value float64) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30016,11 +29926,10 @@ func NewVariantFixedArray(elementType *VariantType, elements unsafe.Pointer, nEl
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30048,11 +29957,10 @@ func NewVariantFromBytes(typ *VariantType, bytes *Bytes, trusted bool) *Variant 
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30072,11 +29980,10 @@ func NewVariantHandle(value int32) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30096,11 +30003,10 @@ func NewVariantInt16(value int16) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30120,11 +30026,10 @@ func NewVariantInt32(value int32) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30144,11 +30049,10 @@ func NewVariantInt64(value int64) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30175,11 +30079,10 @@ func NewVariantMaybe(childType *VariantType, child *Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30200,11 +30103,10 @@ func NewVariantObjectPath(objectPath string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30234,11 +30136,10 @@ func NewVariantObjv(strv []string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30259,11 +30160,10 @@ func NewVariantSignature(signature string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30284,11 +30184,10 @@ func NewVariantString(str string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30318,11 +30217,10 @@ func NewVariantStrv(strv []string) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30351,11 +30249,10 @@ func NewVariantTuple(children []*Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30375,11 +30272,10 @@ func NewVariantUint16(value uint16) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30399,11 +30295,10 @@ func NewVariantUint32(value uint32) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30423,11 +30318,10 @@ func NewVariantUint64(value uint64) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30447,11 +30341,10 @@ func NewVariantVariant(value *Variant) *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -30490,11 +30383,10 @@ func (value *Variant) Byteswap() *Variant {
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -31003,11 +30895,10 @@ func (value *Variant) ChildValue(index_ uint) *Variant {
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -31075,11 +30966,10 @@ func (value *Variant) DataAsBytes() *Bytes {
 	var _bytes *Bytes // out
 
 	_bytes = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -31228,11 +31118,10 @@ func (value *Variant) Maybe() *Variant {
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -31280,11 +31169,10 @@ func (value *Variant) NormalForm() *Variant {
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -31570,11 +31458,10 @@ func (value *Variant) Variant() *Variant {
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -31780,11 +31667,10 @@ func (dictionary *Variant) LookupValue(key string, expectedType *VariantType) *V
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -31893,11 +31779,10 @@ func (value *Variant) RefSink() *Variant {
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -32120,11 +32005,10 @@ func NewVariantBuilder(typ *VariantType) *VariantBuilder {
 	var _variantBuilder *VariantBuilder // out
 
 	_variantBuilder = (*VariantBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variantBuilder)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_builder_unref((*C.GVariantBuilder)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_builder_unref((*C.GVariantBuilder)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variantBuilder
@@ -32202,11 +32086,10 @@ func (builder *VariantBuilder) End() *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -32351,11 +32234,10 @@ func NewVariantDict(fromAsv *Variant) *VariantDict {
 	var _variantDict *VariantDict // out
 
 	_variantDict = (*VariantDict)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variantDict)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_dict_unref((*C.GVariantDict)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_dict_unref((*C.GVariantDict)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variantDict
@@ -32437,11 +32319,10 @@ func (dict *VariantDict) End() *Variant {
 
 	_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_variant_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variant
@@ -32512,11 +32393,10 @@ func (dict *VariantDict) LookupValue(key string, expectedType *VariantType) *Var
 
 	if _cret != nil {
 		_variant = (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -32750,11 +32630,10 @@ func NewVariantType(typeString string) *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variantType)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_type_free((*C.GVariantType)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_type_free((*C.GVariantType)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variantType
@@ -32773,11 +32652,10 @@ func NewVariantTypeArray(element *VariantType) *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variantType)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_type_free((*C.GVariantType)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_type_free((*C.GVariantType)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variantType
@@ -32799,11 +32677,10 @@ func NewVariantTypeDictEntry(key *VariantType, value *VariantType) *VariantType 
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variantType)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_type_free((*C.GVariantType)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_type_free((*C.GVariantType)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variantType
@@ -32822,11 +32699,10 @@ func NewVariantTypeMaybe(element *VariantType) *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variantType)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_type_free((*C.GVariantType)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_type_free((*C.GVariantType)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variantType
@@ -32854,11 +32730,10 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variantType)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_type_free((*C.GVariantType)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_type_free((*C.GVariantType)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variantType
@@ -32884,11 +32759,10 @@ func (typ *VariantType) Copy() *VariantType {
 	var _variantType *VariantType // out
 
 	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variantType)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_type_free((*C.GVariantType)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_type_free((*C.GVariantType)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _variantType
@@ -33591,11 +33465,10 @@ func NewBytesWithGo(data []byte) *Bytes {
 	)
 
 	_bytes := (*Bytes)(gextras.NewStructNative(unsafe.Pointer(v)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(v),
 	)
 
 	return _bytes
@@ -33631,11 +33504,10 @@ func marshalVariant(p uintptr) (interface{}, error) {
 	}
 
 	_variant := (*Variant)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_variant)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 	return _variant, nil
 }
@@ -33655,11 +33527,10 @@ func (value *Variant) ForEach(f func(*Variant) (stop bool)) {
 		}
 
 		variant := (*Variant)(gextras.NewStructNative(unsafe.Pointer(item)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(variant)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(item),
 		)
 
 		return variant

@@ -431,14 +431,15 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 		value.header.NeedsExternGLib()
 		value.header.NeedsGLibObject()
 
-		value.p.LineTmpl(value, `<.Out.Set> =
-			<- .OutPtr 1>coreglib.ValueFromNative(unsafe.Pointer(<.InNamePtr 1>))`)
-
-		// Set this to be freed if we have the ownership now.
+		valueFunc := "ValueFromNative"
 		if value.ShouldFree() {
-			value.header.Import("runtime")
-			value.p.Linef("runtime.AddCleanup(%s, C.g_value_unset, (*C.GValue)(unsafe.Pointer(v.Native())))", value.OutName)
+			valueFunc = "ValueFromNativeOwned"
 		}
+
+		value.p.Printf("%s =", value.Out.Set)
+		value.p.Printf("  %scoreglib.%s(unsafe.Pointer(%s))", value.OutPtr(1), valueFunc, value.InNamePtr(1))
+		value.p.EmptyLine()
+
 		return true
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
@@ -498,11 +499,11 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			value.p.Linef("C.%s(%s)", ref, value.InNamePtr(1))
 		}
 
-		value.p.Linef("runtime.AddCleanup(%s%s, func(v %s%s) {",
-			value.OutInPtr(1), value.OutName, value.OutPtr(1), value.Out.Type)
-		value.p.Linef("C.%s((%s%s)(unsafe.Pointer(v.Native())))",
-			unref, value.InPtr(1), value.In.Type)
-		value.p.Linef("}, %s%s)", value.OutInPtr(1), value.OutName)
+		value.p.Linef("runtime.AddCleanup(")
+		value.p.Linef("  %s%s,", value.OutInPtr(1), value.OutName)
+		value.p.Linef("  func(p unsafe.Pointer) { C.%s((%s%s)(p)) },", unref, value.InPtr(1), value.In.Type)
+		value.p.Linef("  unsafe.Pointer(%s),", value.InNamePtr(1))
+		value.p.Linef(")")
 
 		return true
 	}
@@ -640,9 +641,7 @@ func (conv *Converter) cgoConverter(value *ValueConverted) bool {
 			value.header.Import("runtime")
 			value.p.Linef("runtime.AddCleanup(")
 			value.p.Linef("  gextras.StructIntern(unsafe.Pointer(%s%s)),", value.OutInPtr(1), value.OutName)
-			value.p.Linef("  func(ptr unsafe.Pointer) {")
-			value.p.Linef("    %s", types.RecordPrintFree(value.conv.fgen, value.Resolved.Extern, "ptr"))
-			value.p.Linef("  },")
+			value.p.Linef("  func(ptr unsafe.Pointer) { %s },", types.RecordPrintFree(value.conv.fgen, value.Resolved.Extern, "ptr"))
 			value.p.Linef("  unsafe.Pointer(%s),", value.InNamePtr(1))
 			value.p.Linef(")")
 		}

@@ -854,19 +854,17 @@ func _gotk4_gtk3_RecentSortFunc(arg1 *C.GtkRecentInfo, arg2 *C.GtkRecentInfo, ar
 
 	_a = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.gtk_recent_info_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_a)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_recent_info_unref((*C.GtkRecentInfo)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 	_b = (*RecentInfo)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 	C.gtk_recent_info_ref(arg2)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_b)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_recent_info_unref((*C.GtkRecentInfo)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_recent_info_unref((*C.GtkRecentInfo)(ptr)) },
+		unsafe.Pointer(arg2),
 	)
 
 	gint := fn(_a, _b)
@@ -3840,9 +3838,11 @@ func _gotk4_gtk3_CellAreaClass_render(arg0 *C.GtkCellArea, arg1 *C.GtkCellAreaCo
 	}
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg3)))
 	C.cairo_reference(arg3)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg3),
+	)
 	_backgroundArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg4)))
 	_cellArea = (*gdk.Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg5)))
 	_flags = CellRendererState(arg6)
@@ -4485,9 +4485,11 @@ func _gotk4_gtk3_CellRendererClass_render(arg0 *C.GtkCellRenderer, arg1 *C.cairo
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	{
 		objptr := unsafe.Pointer(arg2)
 		if objptr == nil {
@@ -4811,9 +4813,11 @@ func _gotk4_gtk3_CheckButtonClass_draw_indicator(arg0 *C.GtkCheckButton, arg1 *C
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 
 	overrides.DrawIndicator(_cr)
 }
@@ -4830,9 +4834,11 @@ func _gotk4_gtk3_CheckMenuItemClass_draw_indicator(arg0 *C.GtkCheckMenuItem, arg
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 
 	overrides.DrawIndicator(_cr)
 }
@@ -5403,11 +5409,10 @@ func _gotk4_gtk3_CssProviderClass_parsing_error(arg0 *C.GtkCssProvider, arg1 *C.
 
 	_section = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.gtk_css_section_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_section)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_css_section_unref((*C.GtkCssSection)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 	_err = gerror.Take(unsafe.Pointer(arg2))
 
@@ -5432,11 +5437,10 @@ func _gotk4_gtk3_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.GtkCss
 
 	_section = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.gtk_css_section_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_section)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_css_section_unref((*C.GtkCssSection)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 	_err = gerror.Take(unsafe.Pointer(arg2))
 
@@ -13399,9 +13403,11 @@ func _gotk4_gtk3_StyleClass_draw_arrow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -13454,9 +13460,11 @@ func _gotk4_gtk3_StyleClass_draw_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -13508,9 +13516,11 @@ func _gotk4_gtk3_StyleClass_draw_box_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -13562,9 +13572,11 @@ func _gotk4_gtk3_StyleClass_draw_check(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -13613,9 +13625,11 @@ func _gotk4_gtk3_StyleClass_draw_diamond(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -13662,9 +13676,11 @@ func _gotk4_gtk3_StyleClass_draw_expander(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	{
 		objptr := unsafe.Pointer(arg3)
@@ -13712,9 +13728,11 @@ func _gotk4_gtk3_StyleClass_draw_extension(arg0 *C.GtkStyle, arg1 *C.cairo_t, ar
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -13764,9 +13782,11 @@ func _gotk4_gtk3_StyleClass_draw_flat_box(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -13814,9 +13834,11 @@ func _gotk4_gtk3_StyleClass_draw_focus(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	{
 		objptr := unsafe.Pointer(arg3)
@@ -13865,9 +13887,11 @@ func _gotk4_gtk3_StyleClass_draw_handle(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -13915,9 +13939,11 @@ func _gotk4_gtk3_StyleClass_draw_hline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	{
 		objptr := unsafe.Pointer(arg3)
@@ -13963,9 +13989,11 @@ func _gotk4_gtk3_StyleClass_draw_layout(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	if arg3 != 0 {
 		_useText = true
@@ -14020,9 +14048,11 @@ func _gotk4_gtk3_StyleClass_draw_option(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -14071,9 +14101,11 @@ func _gotk4_gtk3_StyleClass_draw_resize_grip(arg0 *C.GtkStyle, arg1 *C.cairo_t, 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	{
 		objptr := unsafe.Pointer(arg3)
@@ -14122,9 +14154,11 @@ func _gotk4_gtk3_StyleClass_draw_shadow(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -14176,9 +14210,11 @@ func _gotk4_gtk3_StyleClass_draw_shadow_gap(arg0 *C.GtkStyle, arg1 *C.cairo_t, a
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -14231,9 +14267,11 @@ func _gotk4_gtk3_StyleClass_draw_slider(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -14283,9 +14321,11 @@ func _gotk4_gtk3_StyleClass_draw_spinner(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	{
 		objptr := unsafe.Pointer(arg3)
@@ -14334,9 +14374,11 @@ func _gotk4_gtk3_StyleClass_draw_tab(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C.G
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	_shadowType = ShadowType(arg3)
 	{
@@ -14383,9 +14425,11 @@ func _gotk4_gtk3_StyleClass_draw_vline(arg0 *C.GtkStyle, arg1 *C.cairo_t, arg2 C
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_stateType = StateType(arg2)
 	{
 		objptr := unsafe.Pointer(arg3)
@@ -15399,9 +15443,11 @@ func _gotk4_gtk3_TextViewClass_draw_layer(arg0 *C.GtkTextView, arg1 C.GtkTextVie
 	_layer = TextViewLayer(arg1)
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg2)))
 	C.cairo_reference(arg2)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg2),
+	)
 
 	overrides.DrawLayer(_layer, _cr)
 }
@@ -15892,9 +15938,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_activity(arg0 *C.GtkThemingEngine, ar
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -15919,9 +15967,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_arrow(arg0 *C.GtkThemingEngine, arg1 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_angle = float64(arg2)
 	_x = float64(arg3)
 	_y = float64(arg4)
@@ -15946,9 +15996,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_background(arg0 *C.GtkThemingEngine, 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -15973,9 +16025,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_check(arg0 *C.GtkThemingEngine, arg1 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -16000,9 +16054,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_expander(arg0 *C.GtkThemingEngine, ar
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -16028,9 +16084,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_extension(arg0 *C.GtkThemingEngine, a
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -16056,9 +16114,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_focus(arg0 *C.GtkThemingEngine, arg1 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -16083,9 +16143,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_frame(arg0 *C.GtkThemingEngine, arg1 
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -16113,9 +16175,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_frame_gap(arg0 *C.GtkThemingEngine, a
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -16143,9 +16207,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_handle(arg0 *C.GtkThemingEngine, arg1
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -16169,9 +16235,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_icon(arg0 *C.GtkThemingEngine, arg1 *
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	{
 		obj := coreglib.Take(unsafe.Pointer(arg2))
 		_pixbuf = &gdkpixbuf.Pixbuf{
@@ -16204,14 +16272,18 @@ func _gotk4_gtk3_ThemingEngineClass_render_icon_surface(arg0 *C.GtkThemingEngine
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(arg2)))
 	C.cairo_surface_reference(arg2)
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_surface,
+		func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+		unsafe.Pointer(arg2),
+	)
 	_x = float64(arg3)
 	_y = float64(arg4)
 
@@ -16233,9 +16305,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_layout(arg0 *C.GtkThemingEngine, arg1
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	{
@@ -16264,9 +16338,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_line(arg0 *C.GtkThemingEngine, arg1 *
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x0 = float64(arg2)
 	_y0 = float64(arg3)
 	_x1 = float64(arg4)
@@ -16291,9 +16367,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_option(arg0 *C.GtkThemingEngine, arg1
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -16319,9 +16397,11 @@ func _gotk4_gtk3_ThemingEngineClass_render_slider(arg0 *C.GtkThemingEngine, arg1
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 	_x = float64(arg2)
 	_y = float64(arg3)
 	_width = float64(arg4)
@@ -18345,9 +18425,11 @@ func _gotk4_gtk3_WidgetClass_draw(arg0 *C.GtkWidget, arg1 *C.cairo_t) (cret C.gb
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 
 	ok := overrides.Draw(_cr)
 
@@ -19061,9 +19143,11 @@ func _gotk4_gtk3_WidgetClass_queue_draw_region(arg0 *C.GtkWidget, arg1 *C.cairo_
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(arg1)
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_region,
+		func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 
 	overrides.QueueDrawRegion(_region)
 }
@@ -20029,9 +20113,11 @@ func _gotk4_gtk3_Widget_ConnectDraw(arg0 C.gpointer, arg1 *C.cairo_t, arg2 C.gui
 
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg1)))
 	C.cairo_reference(arg1)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 
 	ok := f(_cr)
 

@@ -1546,9 +1546,11 @@ func (node *CairoNode) DrawContext() *cairo.Context {
 	var _context *cairo.Context // out
 
 	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_context, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_context,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _context
 }
@@ -1571,9 +1573,11 @@ func (node *CairoNode) Surface() *cairo.Surface {
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
 	C.cairo_surface_reference(_cret)
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_surface,
+		func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _surface
 }
@@ -2668,11 +2672,10 @@ func (node *FillNode) Path() *Path {
 
 	_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_path_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_path_unref((*C.GskPath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_path_unref((*C.GskPath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _path
@@ -3268,11 +3271,10 @@ func (shader *GLShader) Source() *glib.Bytes {
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_bytes_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -3470,11 +3472,10 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_bytes_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -4800,11 +4801,10 @@ func (node *RenderNode) Serialize() *glib.Bytes {
 	var _bytes *glib.Bytes // out
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -5857,11 +5857,10 @@ func (node *StrokeNode) Path() *Path {
 
 	_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_path_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_path_unref((*C.GskPath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_path_unref((*C.GskPath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _path
@@ -6483,11 +6482,10 @@ func (node *TransformNode) Transform() *Transform {
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_transform_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _transform
@@ -7109,11 +7107,10 @@ func PathParse(str string) *Path {
 
 	if _cret != nil {
 		_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_path)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_path_unref((*C.GskPath)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_path_unref((*C.GskPath)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -7181,11 +7178,10 @@ func NewPathBuilder() *PathBuilder {
 	var _pathBuilder *PathBuilder // out
 
 	_pathBuilder = (*PathBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_pathBuilder)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_path_builder_unref((*C.GskPathBuilder)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_path_builder_unref((*C.GskPathBuilder)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _pathBuilder
@@ -8000,11 +7996,10 @@ func (self *PathBuilder) ToPath() *Path {
 	var _path *Path // out
 
 	_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_path_unref((*C.GskPath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_path_unref((*C.GskPath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _path
@@ -8048,11 +8043,10 @@ func NewPathMeasure(path *Path) *PathMeasure {
 	var _pathMeasure *PathMeasure // out
 
 	_pathMeasure = (*PathMeasure)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_pathMeasure)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_path_measure_unref((*C.GskPathMeasure)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_path_measure_unref((*C.GskPathMeasure)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _pathMeasure
@@ -8074,11 +8068,10 @@ func NewPathMeasureWithTolerance(path *Path, tolerance float32) *PathMeasure {
 	var _pathMeasure *PathMeasure // out
 
 	_pathMeasure = (*PathMeasure)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_pathMeasure)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_path_measure_unref((*C.GskPathMeasure)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_path_measure_unref((*C.GskPathMeasure)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _pathMeasure
@@ -8125,11 +8118,10 @@ func (self *PathMeasure) Path() *Path {
 
 	_path = (*Path)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gsk_path_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_path)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_path_unref((*C.GskPath)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_path_unref((*C.GskPath)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _path
@@ -8262,11 +8254,10 @@ func (point *PathPoint) Copy() *PathPoint {
 	var _pathPoint *PathPoint // out
 
 	_pathPoint = (*PathPoint)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_pathPoint)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_path_point_free((*C.GskPathPoint)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_path_point_free((*C.GskPathPoint)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _pathPoint
@@ -8910,11 +8901,10 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 	var _shaderArgsBuilder *ShaderArgsBuilder // out
 
 	_shaderArgsBuilder = (*ShaderArgsBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_shaderArgsBuilder)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_shader_args_builder_unref((*C.GskShaderArgsBuilder)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_shader_args_builder_unref((*C.GskShaderArgsBuilder)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _shaderArgsBuilder
@@ -9109,11 +9099,10 @@ func (builder *ShaderArgsBuilder) ToArgs() *glib.Bytes {
 	var _bytes *glib.Bytes // out
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -9212,11 +9201,10 @@ func NewStroke(lineWidth float32) *Stroke {
 	var _stroke *Stroke // out
 
 	_stroke = (*Stroke)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_stroke)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_stroke_free((*C.GskStroke)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_stroke_free((*C.GskStroke)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _stroke
@@ -9239,11 +9227,10 @@ func (other *Stroke) Copy() *Stroke {
 	var _stroke *Stroke // out
 
 	_stroke = (*Stroke)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_stroke)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_stroke_free((*C.GskStroke)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_stroke_free((*C.GskStroke)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _stroke
@@ -9603,11 +9590,10 @@ func NewTransform() *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _transform
@@ -9695,11 +9681,10 @@ func (self *Transform) Invert() *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -9732,11 +9717,10 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _transform
@@ -9773,11 +9757,10 @@ func (next *Transform) Perspective(depth float32) *Transform {
 	var _transform *Transform // out
 
 	_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_transform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _transform
@@ -9811,11 +9794,10 @@ func (next *Transform) Rotate(angle float32) *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -9855,11 +9837,10 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -9899,11 +9880,10 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -9945,11 +9925,10 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -9987,11 +9966,10 @@ func (next *Transform) Skew(skewX float32, skewY float32) *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -10272,11 +10250,10 @@ func (next *Transform) Transform(other *Transform) *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -10368,11 +10345,10 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -10406,11 +10382,10 @@ func (next *Transform) Translate3D(point *graphene.Point3D) *Transform {
 
 	if _cret != nil {
 		_transform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_transform)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gsk_transform_unref((*C.GskTransform)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -10449,11 +10424,10 @@ func TransformParse(str string) (*Transform, bool) {
 	var _ok bool                 // out
 
 	_outTransform = (*Transform)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_outTransform)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gsk_transform_unref((*C.GskTransform)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gsk_transform_unref((*C.GskTransform)(ptr)) },
+		unsafe.Pointer(_arg2),
 	)
 	if _cret != 0 {
 		_ok = true

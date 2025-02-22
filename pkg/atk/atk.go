@@ -7294,11 +7294,10 @@ func (streamable *StreamableContent) Stream(mimeType string) *glib.IOChannel {
 	var _ioChannel *glib.IOChannel // out
 
 	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_io_channel_unref((*C.GIOChannel)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ioChannel
@@ -7428,11 +7427,10 @@ func (streamable *StreamableContent) stream(mimeType string) *glib.IOChannel {
 	var _ioChannel *glib.IOChannel // out
 
 	_ioChannel = (*glib.IOChannel)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ioChannel)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_io_channel_unref((*C.GIOChannel)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_io_channel_unref((*C.GIOChannel)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ioChannel
@@ -10115,11 +10113,10 @@ func (text *Text) BoundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 		_textRanges = make([]*TextRange, i)
 		for i := range src {
 			_textRanges[i] = (*TextRange)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			runtime.SetFinalizer(
+			runtime.AddCleanup(
 				gextras.StructIntern(unsafe.Pointer(_textRanges[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.free(intern.C)
-				},
+				func(ptr unsafe.Pointer) { C.free(ptr) },
+				unsafe.Pointer(src[i]),
 			)
 		}
 	}
@@ -10959,11 +10956,10 @@ func (text *Text) boundedRanges(rect *TextRectangle, coordType CoordType, xClipT
 		_textRanges = make([]*TextRange, i)
 		for i := range src {
 			_textRanges[i] = (*TextRange)(gextras.NewStructNative(unsafe.Pointer(src[i])))
-			runtime.SetFinalizer(
+			runtime.AddCleanup(
 				gextras.StructIntern(unsafe.Pointer(_textRanges[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.free(intern.C)
-				},
+				func(ptr unsafe.Pointer) { C.free(ptr) },
+				unsafe.Pointer(src[i]),
 			)
 		}
 	}
@@ -12136,11 +12132,10 @@ func (obj *Value) Range() *Range {
 
 	if _cret != nil {
 		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(__range)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.atk_range_free((*C.AtkRange)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.atk_range_free((*C.AtkRange)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -12170,11 +12165,10 @@ func (obj *Value) SubRanges() []*Range {
 		src := (*C.AtkRange)(v)
 		var dst *Range // out
 		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.atk_range_free((*C.AtkRange)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.atk_range_free((*C.AtkRange)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_sList = append(_sList, dst)
 	})
@@ -12430,11 +12424,10 @@ func (obj *Value) _range() *Range {
 
 	if _cret != nil {
 		__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(__range)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.atk_range_free((*C.AtkRange)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.atk_range_free((*C.AtkRange)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -12467,11 +12460,10 @@ func (obj *Value) subRanges() []*Range {
 		src := (*C.AtkRange)(v)
 		var dst *Range // out
 		dst = (*Range)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.atk_range_free((*C.AtkRange)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.atk_range_free((*C.AtkRange)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_sList = append(_sList, dst)
 	})
@@ -17165,11 +17157,10 @@ func NewRange(lowerLimit float64, upperLimit float64, description string) *Range
 	var __range *Range // out
 
 	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(__range)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.atk_range_free((*C.AtkRange)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.atk_range_free((*C.AtkRange)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return __range
@@ -17192,11 +17183,10 @@ func (src *Range) Copy() *Range {
 	var __range *Range // out
 
 	__range = (*Range)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(__range)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.atk_range_free((*C.AtkRange)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.atk_range_free((*C.AtkRange)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return __range

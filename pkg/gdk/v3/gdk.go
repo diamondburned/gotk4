@@ -5753,9 +5753,11 @@ func CairoCreate(window Windower) *cairo.Context {
 	var _context *cairo.Context // out
 
 	_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_context, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_context,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _context
 }
@@ -5946,9 +5948,11 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_region,
+		func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _region
 }
@@ -6085,9 +6089,11 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_surface,
+		func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _surface
 }
@@ -7145,9 +7151,11 @@ func OffscreenWindowGetSurface(window Windower) *cairo.Surface {
 	if _cret != nil {
 		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
 		C.cairo_surface_reference(_cret)
-		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-		})
+		runtime.AddCleanup(
+			_surface,
+			func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+			unsafe.Pointer(_cret),
+		)
 	}
 
 	return _surface
@@ -8952,9 +8960,11 @@ func (cursor *Cursor) Surface() (xHot, yHot float64, surface *cairo.Surface) {
 	_yHot = float64(_arg2)
 	if _cret != nil {
 		_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-			C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-		})
+		runtime.AddCleanup(
+			_surface,
+			func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+			unsafe.Pointer(_cret),
+		)
 	}
 
 	return _xHot, _yHot, _surface
@@ -12273,9 +12283,11 @@ func (context *DrawingContext) CairoContext() *cairo.Context {
 
 	_ret = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
 	C.cairo_reference(_cret)
-	runtime.SetFinalizer(_ret, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_ret,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _ret
 }
@@ -12301,9 +12313,11 @@ func (context *DrawingContext) Clip() *cairo.Region {
 			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
-		runtime.SetFinalizer(_region, func(v *cairo.Region) {
-			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-		})
+		runtime.AddCleanup(
+			_region,
+			func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+			unsafe.Pointer(_cret),
+		)
 	}
 
 	return _region
@@ -12533,11 +12547,10 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	if _cret != nil {
 		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gdk_frame_timings_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_frame_timings_unref((*C.GdkFrameTimings)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_frame_timings_unref((*C.GdkFrameTimings)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -12688,11 +12701,10 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	if _cret != nil {
 		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gdk_frame_timings_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_frame_timings_unref((*C.GdkFrameTimings)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_frame_timings_unref((*C.GdkFrameTimings)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -13370,11 +13382,10 @@ func (keymap *Keymap) EntriesForKeycode(hardwareKeycode uint) ([]KeymapKey, []ui
 			_keys = make([]KeymapKey, _arg4)
 			for i := 0; i < int(_arg4); i++ {
 				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-				runtime.SetFinalizer(
+				runtime.AddCleanup(
 					gextras.StructIntern(unsafe.Pointer(&_keys[i])),
-					func(intern *struct{ C unsafe.Pointer }) {
-						C.free(intern.C)
-					},
+					func(ptr unsafe.Pointer) { C.free(ptr) },
+					unsafe.Pointer((&src[i])),
 				)
 			}
 		}
@@ -13437,11 +13448,10 @@ func (keymap *Keymap) EntriesForKeyval(keyval uint) ([]KeymapKey, bool) {
 		_keys = make([]KeymapKey, _arg3)
 		for i := 0; i < int(_arg3); i++ {
 			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-			runtime.SetFinalizer(
+			runtime.AddCleanup(
 				gextras.StructIntern(unsafe.Pointer(&_keys[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.free(intern.C)
-				},
+				func(ptr unsafe.Pointer) { C.free(ptr) },
+				unsafe.Pointer((&src[i])),
 			)
 		}
 	}
@@ -16605,9 +16615,11 @@ func (window *Window) CreateSimilarImageSurface(format cairo.Format, width, heig
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_surface,
+		func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _surface
 }
@@ -16657,9 +16669,11 @@ func (window *Window) CreateSimilarSurface(content cairo.Content, width, height 
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_surface,
+		func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _surface
 }
@@ -16940,9 +16954,11 @@ func (window *Window) BackgroundPattern() *cairo.Pattern {
 			_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 		}
 		C.cairo_pattern_reference(_cret)
-		runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
-			C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
-		})
+		runtime.AddCleanup(
+			_pattern,
+			func(p unsafe.Pointer) { C.cairo_pattern_destroy((*C.cairo_pattern_t)(p)) },
+			unsafe.Pointer(_cret),
+		)
 	}
 
 	return _pattern
@@ -17074,9 +17090,11 @@ func (window *Window) ClipRegion() *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_region,
+		func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _region
 }
@@ -18279,9 +18297,11 @@ func (window *Window) UpdateArea() *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_region,
+		func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _region
 }
@@ -18330,9 +18350,11 @@ func (window *Window) VisibleRegion() *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_region,
+		func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _region
 }
@@ -20450,9 +20472,11 @@ func (window *Window) createSurface(width, height int) *cairo.Surface {
 	var _surface *cairo.Surface // out
 
 	_surface = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_surface,
+		func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _surface
 }
@@ -20777,11 +20801,10 @@ func (color *Color) Copy() *Color {
 	var _ret *Color // out
 
 	_ret = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_color_free((*C.GdkColor)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_color_free((*C.GdkColor)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ret
@@ -21703,9 +21726,11 @@ func (e *EventExpose) Region() *cairo.Region {
 		_v = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(*valptr)
-	runtime.SetFinalizer(_v, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_v,
+		func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+		unsafe.Pointer(*valptr),
+	)
 	return _v
 }
 
@@ -24508,11 +24533,10 @@ func (rgba *RGBA) Copy() *RGBA {
 	var _rgbA *RGBA // out
 
 	_rgbA = (*RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_rgbA)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_rgba_free((*C.GdkRGBA)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_rgba_free((*C.GdkRGBA)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _rgbA
@@ -25127,11 +25151,12 @@ func CopyEventer(e Eventer) *Event {
 	original := (*C.GdkEvent)(e.underlyingEvent())
 	copied := C.gdk_event_copy(original)
 	dst := (*Event)(gextras.NewStructNative(unsafe.Pointer(copied)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(copied),
 	)
 	return dst
 }
@@ -25168,11 +25193,12 @@ func (e *Event) AsAny() *EventAny {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventAny
 	dst = (*EventAny)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25190,11 +25216,12 @@ func (e *Event) AsExpose() *EventExpose {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventExpose
 	dst = (*EventExpose)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25212,11 +25239,12 @@ func (e *Event) AsVisibility() *EventVisibility {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventVisibility
 	dst = (*EventVisibility)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25234,11 +25262,12 @@ func (e *Event) AsMotion() *EventMotion {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventMotion
 	dst = (*EventMotion)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25256,11 +25285,12 @@ func (e *Event) AsButton() *EventButton {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventButton
 	dst = (*EventButton)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25278,11 +25308,12 @@ func (e *Event) AsTouch() *EventTouch {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventTouch
 	dst = (*EventTouch)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25300,11 +25331,12 @@ func (e *Event) AsScroll() *EventScroll {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventScroll
 	dst = (*EventScroll)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25322,11 +25354,12 @@ func (e *Event) AsKey() *EventKey {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventKey
 	dst = (*EventKey)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25344,11 +25377,12 @@ func (e *Event) AsCrossing() *EventCrossing {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventCrossing
 	dst = (*EventCrossing)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25366,11 +25400,12 @@ func (e *Event) AsFocusChange() *EventFocus {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventFocus
 	dst = (*EventFocus)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25388,11 +25423,12 @@ func (e *Event) AsConfigure() *EventConfigure {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventConfigure
 	dst = (*EventConfigure)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25410,11 +25446,12 @@ func (e *Event) AsProperty() *EventProperty {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventProperty
 	dst = (*EventProperty)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25432,11 +25469,12 @@ func (e *Event) AsSelection() *EventSelection {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventSelection
 	dst = (*EventSelection)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25454,11 +25492,12 @@ func (e *Event) AsOwnerChange() *EventOwnerChange {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventOwnerChange
 	dst = (*EventOwnerChange)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25476,11 +25515,12 @@ func (e *Event) AsProximity() *EventProximity {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventProximity
 	dst = (*EventProximity)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25498,11 +25538,12 @@ func (e *Event) AsDND() *EventDND {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventDND
 	dst = (*EventDND)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25520,11 +25561,12 @@ func (e *Event) AsWindowState() *EventWindowState {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventWindowState
 	dst = (*EventWindowState)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25542,11 +25584,12 @@ func (e *Event) AsSetting() *EventSetting {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventSetting
 	dst = (*EventSetting)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25564,11 +25607,12 @@ func (e *Event) AsGrabBroken() *EventGrabBroken {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventGrabBroken
 	dst = (*EventGrabBroken)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25586,11 +25630,12 @@ func (e *Event) AsTouchpadSwipe() *EventTouchpadSwipe {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventTouchpadSwipe
 	dst = (*EventTouchpadSwipe)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25608,11 +25653,12 @@ func (e *Event) AsTouchpadPinch() *EventTouchpadPinch {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventTouchpadPinch
 	dst = (*EventTouchpadPinch)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25630,11 +25676,12 @@ func (e *Event) AsPadButton() *EventPadButton {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventPadButton
 	dst = (*EventPadButton)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25652,11 +25699,12 @@ func (e *Event) AsPadAxis() *EventPadAxis {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventPadAxis
 	dst = (*EventPadAxis)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst
@@ -25674,11 +25722,12 @@ func (e *Event) AsPadGroupMode() *EventPadGroupMode {
 	cpy := (*C.GdkEvent)(C.gdk_event_copy(e.event.native))
 	var dst *EventPadGroupMode
 	dst = (*EventPadGroupMode)(gextras.NewStructNative(unsafe.Pointer(cpy)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(dst)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_event_free((*C.GdkEvent)(intern.C))
+		func(ptr unsafe.Pointer) {
+			C.gdk_event_free((*C.GdkEvent)(ptr))
 		},
+		unsafe.Pointer(cpy),
 	)
 	runtime.KeepAlive(e.event)
 	return dst

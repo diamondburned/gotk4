@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
@@ -134,7 +133,6 @@ func _gotk4_pango1_FontClass_describe(arg0 *C.PangoFont) (cret *C.PangoFontDescr
 	var _ *FontDescription
 
 	cret = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDescription)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(fontDescription)), nil)
 
 	return cret
 }
@@ -152,7 +150,6 @@ func _gotk4_pango1_FontClass_describe_absolute(arg0 *C.PangoFont) (cret *C.Pango
 	var _ *FontDescription
 
 	cret = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDescription)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(fontDescription)), nil)
 
 	return cret
 }
@@ -263,7 +260,6 @@ func _gotk4_pango1_FontFaceClass_describe(arg0 *C.PangoFontFace) (cret *C.PangoF
 	var _ *FontDescription
 
 	cret = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(fontDescription)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(fontDescription)), nil)
 
 	return cret
 }
@@ -609,7 +605,6 @@ func _gotk4_pango1_FontsetClass_get_language(arg0 *C.PangoFontset) (cret *C.Pang
 	var _ *Language
 
 	cret = (*C.PangoLanguage)(gextras.StructNative(unsafe.Pointer(language)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(language)), nil)
 
 	return cret
 }

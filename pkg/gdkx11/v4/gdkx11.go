@@ -600,6 +600,9 @@ func (display *X11Display) Grab() {
 // by the application (GTK applications can learn about cursor theme changes by
 // listening for change notification for the corresponding GtkSetting).
 //
+// Deprecated: Use the cursor-related properties of GtkSettings
+// (../gtk4/class.Settings.html) to set the cursor theme.
+//
 // The function takes the following parameters:
 //
 //   - theme (optional): name of the cursor theme to use, or NULL to unset a

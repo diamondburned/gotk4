@@ -550,6 +550,7 @@ import (
 // extern void _gotk4_gtk3_EventControllerKey_ConnectFocusOut(gpointer, guintptr);
 // extern void _gotk4_gtk3_EventControllerKey_ConnectFocusIn(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectToggleOverwrite(gpointer, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectToggleDirection(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPreeditChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPopulatePopup(gpointer, GtkWidget*, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPasteClipboard(gpointer, guintptr);
@@ -568,6 +569,7 @@ import (
 // extern void _gotk4_gtk3_EntryCompletionClass_no_matches(GtkEntryCompletion*);
 // extern void _gotk4_gtk3_EntryCompletionClass_action_activated(GtkEntryCompletion*, gint);
 // extern void _gotk4_gtk3_EntryClass_toggle_overwrite(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_toggle_direction(GtkEntry*);
 // extern void _gotk4_gtk3_EntryClass_populate_popup(GtkEntry*, GtkWidget*);
 // extern void _gotk4_gtk3_EntryClass_paste_clipboard(GtkEntry*);
 // extern void _gotk4_gtk3_EntryClass_move_cursor(GtkEntry*, GtkMovementStep, gint, gboolean);
@@ -1900,6 +1902,9 @@ import (
 // };
 // void _gotk4_gtk3_Entry_virtual_populate_popup(void* fnptr, GtkEntry* arg0, GtkWidget* arg1) {
 //   ((void (*)(GtkEntry*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Entry_virtual_toggle_direction(void* fnptr, GtkEntry* arg0) {
+//   ((void (*)(GtkEntry*))(fnptr))(arg0);
 // };
 // void _gotk4_gtk3_Entry_virtual_toggle_overwrite(void* fnptr, GtkEntry* arg0) {
 //   ((void (*)(GtkEntry*))(fnptr))(arg0);
@@ -3594,7 +3599,7 @@ func init() {
 // BINARY_AGE: like gtk_get_binary_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const BINARY_AGE = 2442
+const BINARY_AGE = 2448
 
 // INPUT_ERROR: constant to return from a signal handler for the
 // SpinButton::input signal in case of conversion failure.
@@ -3628,7 +3633,7 @@ const MAX_COMPOSE_LEN = 7
 // MICRO_VERSION: like gtk_get_micro_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MICRO_VERSION = 42
+const MICRO_VERSION = 48
 
 // MINOR_VERSION: like gtk_get_minor_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
@@ -11399,13 +11404,13 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 }
 
 // AcceleratorParse parses a string representing an accelerator. The format
-// looks like “<Control>a” or “<Shift><Alt>F1” or “<Release>z” (the last one is
-// for key release).
+// looks like <Control>a or <Shift><Alt>F1 or <Release>z (the last one is for
+// key release).
 //
 // The parser is fairly liberal and allows lower or upper case, and also
-// abbreviations such as “<Ctl>” and “<Ctrl>”. Key names are parsed using
-// gdk_keyval_from_name(). For character keys the name is not the symbol, but
-// the lowercase name, e.g. one would use “<Ctrl>minus” instead of “<Ctrl>-”.
+// abbreviations such as <Ctl> and <Ctrl>. Key names are parsed using
+// gdk_keyval_from_name(). For character keys the name is not the symbol,
+// but the lowercase name, e.g. one would use <Ctrl>minus instead of <Ctrl>-.
 //
 // If the parse fails, accelerator_key and accelerator_mods will be set to 0
 // (zero).
@@ -53839,7 +53844,8 @@ type EntryOverrides struct {
 	// PopulatePopup class handler for the Entry::populate-popup signal.
 	// If non-NULL, this will be called to add additional entries to the context
 	// menu when it is displayed.
-	PopulatePopup func(popup Widgetter)
+	PopulatePopup   func(popup Widgetter)
+	ToggleDirection func()
 	// ToggleOverwrite class handler for the Entry::toggle-overwrite signal.
 	// The default implementation toggles overwrite mode and blinks the cursor.
 	ToggleOverwrite func()
@@ -53859,6 +53865,7 @@ func defaultEntryOverrides(v *Entry) EntryOverrides {
 		MoveCursor:       v.moveCursor,
 		PasteClipboard:   v.pasteClipboard,
 		PopulatePopup:    v.populatePopup,
+		ToggleDirection:  v.toggleDirection,
 		ToggleOverwrite:  v.toggleOverwrite,
 	}
 }
@@ -54002,6 +54009,10 @@ func initEntryClass(gclass unsafe.Pointer, overrides EntryOverrides, classInitFu
 
 	if overrides.PopulatePopup != nil {
 		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_EntryClass_populate_popup)
+	}
+
+	if overrides.ToggleDirection != nil {
+		pclass.toggle_direction = (*[0]byte)(C._gotk4_gtk3_EntryClass_toggle_direction)
 	}
 
 	if overrides.ToggleOverwrite != nil {
@@ -54174,6 +54185,10 @@ func (entry *Entry) ConnectPopulatePopup(f func(widget Widgetter)) coreglib.Sign
 // connect to this signal.
 func (entry *Entry) ConnectPreeditChanged(f func(preedit string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectPreeditChanged), f)
+}
+
+func (entry *Entry) ConnectToggleDirection(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "toggle-direction", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectToggleDirection), f)
 }
 
 // ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
@@ -56347,6 +56362,18 @@ func (entry *Entry) populatePopup(popup Widgetter) {
 	C._gotk4_gtk3_Entry_virtual_populate_popup(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(popup)
+}
+
+func (entry *Entry) toggleDirection() {
+	gclass := (*C.GtkEntryClass)(coreglib.PeekParentClass(entry))
+	fnarg := gclass.toggle_direction
+
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C._gotk4_gtk3_Entry_virtual_toggle_direction(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(entry)
 }
 
 // toggleOverwrite class handler for the Entry::toggle-overwrite signal.

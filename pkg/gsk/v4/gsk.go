@@ -63,7 +63,6 @@ var (
 	GTypeInsetShadowNode             = coreglib.Type(C.gsk_inset_shadow_node_get_type())
 	GTypeLinearGradientNode          = coreglib.Type(C.gsk_linear_gradient_node_get_type())
 	GTypeMaskNode                    = coreglib.Type(C.gsk_mask_node_get_type())
-	GTypeNGLRenderer                 = coreglib.Type(C.gsk_ngl_renderer_get_type())
 	GTypeOpacityNode                 = coreglib.Type(C.gsk_opacity_node_get_type())
 	GTypeOutsetShadowNode            = coreglib.Type(C.gsk_outset_shadow_node_get_type())
 	GTypeRadialGradientNode          = coreglib.Type(C.gsk_radial_gradient_node_get_type())
@@ -123,7 +122,6 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeInsetShadowNode, F: marshalInsetShadowNode},
 		coreglib.TypeMarshaler{T: GTypeLinearGradientNode, F: marshalLinearGradientNode},
 		coreglib.TypeMarshaler{T: GTypeMaskNode, F: marshalMaskNode},
-		coreglib.TypeMarshaler{T: GTypeNGLRenderer, F: marshalNGLRenderer},
 		coreglib.TypeMarshaler{T: GTypeOpacityNode, F: marshalOpacityNode},
 		coreglib.TypeMarshaler{T: GTypeOutsetShadowNode, F: marshalOutsetShadowNode},
 		coreglib.TypeMarshaler{T: GTypeRadialGradientNode, F: marshalRadialGradientNode},
@@ -810,6 +808,11 @@ func (s SerializationError) String() string {
 	}
 }
 
+// SerializationErrorQuark registers an error quark for gsk.RenderNode errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func SerializationErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -1933,6 +1936,9 @@ func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode {
 
 // Color retrieves the color of the given node.
 //
+// The value returned by this function will not be correct if the render node
+// was created for a non-sRGB color.
+//
 // The function returns the following values:
 //
 //   - rgbA: color of the node.
@@ -2784,7 +2790,17 @@ func defaultGLShaderOverrides(v *GLShader) GLShaderOverrides {
 //	  vec4 source2 = GskTexture(u_texture2, uv);
 //
 //	  fragColor = position * source1 + (1.0 - position) * source2;
-//	}.
+//	}
+//
+// # Deprecation
+//
+// This feature was deprecated in GTK 4.16 after the new rendering
+// infrastructure introduced in 4.14 did not support it. The lack of Vulkan
+// integration would have made it a very hard feature to support.
+//
+// If you want to use OpenGL directly, you should look at GtkGLArea
+// (../gtk4/class.GLArea.html) which uses a different approach and is still well
+// supported.
 type GLShader struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -2823,6 +2839,9 @@ func marshalGLShader(p uintptr) (interface{}, error) {
 // NewGLShaderFromBytes creates a GskGLShader that will render pixels using the
 // specified code.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - sourcecode: GLSL sourcecode for the shader, as a GBytes.
@@ -2848,6 +2867,9 @@ func NewGLShaderFromBytes(sourcecode *glib.Bytes) *GLShader {
 
 // NewGLShaderFromResource creates a GskGLShader that will render pixels using
 // the specified code.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -2885,6 +2907,9 @@ func NewGLShaderFromResource(resourcePath string) *GLShader {
 // that the widget has to be realized. Commonly you want to call this from the
 // realize signal of a widget, or during widget snapshot.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - renderer: GskRenderer.
@@ -2911,6 +2936,9 @@ func (shader *GLShader) Compile(renderer Rendererer) error {
 
 // FindUniformByName looks for a uniform by the name name, and returns the index
 // of the uniform, or -1 if it was not found.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -2942,6 +2970,9 @@ func (shader *GLShader) FindUniformByName(name string) int {
 // ArgBool gets the value of the uniform idx in the args block.
 //
 // The uniform must be of bool type.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -2979,6 +3010,9 @@ func (shader *GLShader) ArgBool(args *glib.Bytes, idx int) bool {
 //
 // The uniform must be of float type.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - args: uniform arguments.
@@ -3012,6 +3046,9 @@ func (shader *GLShader) ArgFloat(args *glib.Bytes, idx int) float32 {
 // ArgInt gets the value of the uniform idx in the args block.
 //
 // The uniform must be of int type.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -3047,6 +3084,9 @@ func (shader *GLShader) ArgInt(args *glib.Bytes, idx int) int32 {
 //
 // The uniform must be of uint type.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - args: uniform arguments.
@@ -3081,6 +3121,9 @@ func (shader *GLShader) ArgUint(args *glib.Bytes, idx int) uint32 {
 //
 // The uniform must be of vec2 type.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - args: uniform arguments.
@@ -3107,6 +3150,9 @@ func (shader *GLShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Ve
 // ArgVec3 gets the value of the uniform idx in the args block.
 //
 // The uniform must be of vec3 type.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -3135,6 +3181,9 @@ func (shader *GLShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Ve
 //
 // The uniform must be of vec4 type.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - args: uniform arguments.
@@ -3161,6 +3210,9 @@ func (shader *GLShader) ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Ve
 // ArgsSize: get the size of the data block used to specify arguments for this
 // shader.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function returns the following values:
 //
 //   - gsize: size of the data block.
@@ -3186,6 +3238,9 @@ func (shader *GLShader) ArgsSize() uint {
 // It is determined by looking at the highest u_textureN value that the shader
 // defines.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function returns the following values:
 //
 //   - gint: number of texture inputs required by shader.
@@ -3206,6 +3261,9 @@ func (shader *GLShader) NTextures() int {
 }
 
 // NUniforms: get the number of declared uniforms for this shader.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function returns the following values:
 //
@@ -3229,6 +3287,9 @@ func (shader *GLShader) NUniforms() int {
 // Resource gets the resource path for the GLSL sourcecode being used to render
 // this shader.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function returns the following values:
 //
 //   - utf8 (optional): resource path for the shader.
@@ -3251,6 +3312,9 @@ func (shader *GLShader) Resource() string {
 }
 
 // Source gets the GLSL sourcecode being used to render this shader.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function returns the following values:
 //
@@ -3281,6 +3345,9 @@ func (shader *GLShader) Source() *glib.Bytes {
 // UniformName: get the name of the declared uniform for this shader at index
 // idx.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - idx: index of the uniform.
@@ -3310,6 +3377,9 @@ func (shader *GLShader) UniformName(idx int) string {
 // UniformOffset: get the offset into the data block where data for this
 // uniforms is stored.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - idx: index of the uniform.
@@ -3338,6 +3408,9 @@ func (shader *GLShader) UniformOffset(idx int) int {
 
 // UniformType: get the type of the declared uniform for this shader at index
 // idx.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -3405,6 +3478,9 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 // gsk.GLShader.Compile() to ensure the shader will work for the renderer before
 // using it.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - shader: GskGLShader.
@@ -3454,6 +3530,9 @@ func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, 
 
 // Args gets args for the node.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function returns the following values:
 //
 //   - bytes: GBytes with the uniform arguments.
@@ -3481,6 +3560,9 @@ func (node *GLShaderNode) Args() *glib.Bytes {
 }
 
 // Child gets one of the children.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -3524,7 +3606,10 @@ func (node *GLShaderNode) Child(idx uint) RenderNoder {
 	return _renderNode
 }
 
-// NChildren returns the number of children.
+// NChildren returns the number of children
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function returns the following values:
 //
@@ -3656,6 +3741,9 @@ func (node *InsetShadowNode) BlurRadius() float32 {
 }
 
 // Color retrieves the color of the inset shadow.
+//
+// The value returned by this function will not be correct if the render node
+// was created for a non-sRGB color.
 //
 // The function returns the following values:
 //
@@ -4077,39 +4165,6 @@ func (node *MaskNode) Source() RenderNoder {
 	return _renderNode
 }
 
-type NGLRenderer struct {
-	_ [0]func() // equal guard
-	Renderer
-}
-
-var (
-	_ Rendererer = (*NGLRenderer)(nil)
-)
-
-func wrapNGLRenderer(obj *coreglib.Object) *NGLRenderer {
-	return &NGLRenderer{
-		Renderer: Renderer{
-			Object: obj,
-		},
-	}
-}
-
-func marshalNGLRenderer(p uintptr) (interface{}, error) {
-	return wrapNGLRenderer(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
-}
-
-func NewNGLRenderer() *NGLRenderer {
-	var _cret *C.GskRenderer // in
-
-	_cret = C.gsk_ngl_renderer_new()
-
-	var _nglRenderer *NGLRenderer // out
-
-	_nglRenderer = wrapNGLRenderer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
-
-	return _nglRenderer
-}
-
 // OpacityNode: render node controlling the opacity of its single child node.
 type OpacityNode struct {
 	_ [0]func() // equal guard
@@ -4310,6 +4365,9 @@ func (node *OutsetShadowNode) BlurRadius() float32 {
 }
 
 // Color retrieves the color of the outset shadow.
+//
+// The value returned by this function will not be correct if the render node
+// was created for a non-sRGB color.
 //
 // The function returns the following values:
 //
@@ -4773,6 +4831,41 @@ func (node *RenderNode) NodeType() RenderNodeType {
 	_renderNodeType = RenderNodeType(_cret)
 
 	return _renderNodeType
+}
+
+// OpaqueRect gets an opaque rectangle inside the node that GTK can determine to
+// be fully opaque.
+//
+// There is no guarantee that this is indeed the largest opaque rectangle or
+// that regions outside the rectangle are not opaque. This function is a best
+// effort with that goal.
+//
+// The rectangle will be fully contained in the bounds of the node.
+//
+// The function returns the following values:
+//
+//   - outOpaque: return location for the opaque rect.
+//   - ok: TRUE if part or all of the rendernode is opaque, FALSE if no opaque
+//     region could be found.
+func (self *RenderNode) OpaqueRect() (*graphene.Rect, bool) {
+	var _arg0 *C.GskRenderNode  // out
+	var _arg1 C.graphene_rect_t // in
+	var _cret C.gboolean        // in
+
+	_arg0 = (*C.GskRenderNode)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gsk_render_node_get_opaque_rect(_arg0, &_arg1)
+	runtime.KeepAlive(self)
+
+	var _outOpaque *graphene.Rect // out
+	var _ok bool                  // out
+
+	_outOpaque = (*graphene.Rect)(gextras.NewStructNative(unsafe.Pointer((&_arg1))))
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _outOpaque, _ok
 }
 
 // Serialize serializes the node for later deserialization via
@@ -6012,6 +6105,9 @@ func NewTextNode(font pango.Fonter, glyphs *pango.GlyphString, color *gdk.RGBA, 
 }
 
 // Color retrieves the color used by the text node.
+//
+// The value returned by this function will not be correct if the render node
+// was created for a non-sRGB color.
 //
 // The function returns the following values:
 //
@@ -8250,6 +8346,11 @@ func (point1 *PathPoint) Compare(point2 *PathPoint) int {
 	return _gint
 }
 
+// Copy copies a path point.
+//
+// The function returns the following values:
+//
+//   - pathPoint: copied point.
 func (point *PathPoint) Copy() *PathPoint {
 	var _arg0 *C.GskPathPoint // out
 	var _cret *C.GskPathPoint // in
@@ -8924,6 +9025,9 @@ func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderAr
 //
 // The uniform must be of bool type.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - idx: index of the uniform.
@@ -8972,6 +9076,9 @@ func (builder *ShaderArgsBuilder) SetFloat(idx int, value float32) {
 //
 // The uniform must be of int type.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - idx: index of the uniform.
@@ -8994,6 +9101,9 @@ func (builder *ShaderArgsBuilder) SetInt(idx int, value int32) {
 // SetUint sets the value of the uniform idx.
 //
 // The uniform must be of uint type.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -9018,6 +9128,9 @@ func (builder *ShaderArgsBuilder) SetUint(idx int, value uint32) {
 //
 // The uniform must be of vec2 type.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - idx: index of the uniform.
@@ -9041,6 +9154,9 @@ func (builder *ShaderArgsBuilder) SetVec2(idx int, value *graphene.Vec2) {
 //
 // The uniform must be of vec3 type.
 //
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
+//
 // The function takes the following parameters:
 //
 //   - idx: index of the uniform.
@@ -9063,6 +9179,9 @@ func (builder *ShaderArgsBuilder) SetVec3(idx int, value *graphene.Vec3) {
 // SetVec4 sets the value of the uniform idx.
 //
 // The uniform must be of vec4 type.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -9093,6 +9212,9 @@ func (builder *ShaderArgsBuilder) SetVec4(idx int, value *graphene.Vec4) {
 //
 // This function is intended primarily for bindings. C code should use
 // gsk.ShaderArgsBuilder.FreeToArgs().
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use GtkGLArea (../gtk4/class.GLArea.html) for OpenGL rendering.
 //
 // The function returns the following values:
 //
@@ -9275,6 +9397,10 @@ func (self *Stroke) Dash() []float32 {
 }
 
 // DashOffset returns the dash_offset of a GskStroke.
+//
+// The function returns the following values:
+//
+//   - gfloat: dash_offset.
 func (self *Stroke) DashOffset() float32 {
 	var _arg0 *C.GskStroke // out
 	var _cret C.float      // in
@@ -9359,6 +9485,10 @@ func (self *Stroke) LineWidth() float32 {
 }
 
 // MiterLimit returns the miter limit of a GskStroke.
+//
+// The function returns the following values:
+//
+//   - gfloat: miter limit.
 func (self *Stroke) MiterLimit() float32 {
 	var _arg0 *C.GskStroke // out
 	var _cret C.float      // in
@@ -9677,6 +9807,9 @@ func (self *Transform) Category() TransformCategory {
 // differentiate between those cases, you should check self is not NULL before
 // calling this function.
 //
+// This function consumes self. Use gsk.Transform.Ref() first if you want to
+// keep it around.
+//
 // The function returns the following values:
 //
 //   - transform (optional): inverted transform.
@@ -9707,6 +9840,9 @@ func (self *Transform) Invert() *Transform {
 }
 
 // Matrix multiplies next with the given matrix.
+//
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
 //
 // The function takes the following parameters:
 //
@@ -9748,6 +9884,9 @@ func (next *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 // points with positive Z values away from the origin, and those with negative Z
 // values towards the origin. Points on the z=0 plane are unchanged.
 //
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
+//
 // The function takes the following parameters:
 //
 //   - depth: distance of the z=0 plane. Lower values give a more flattened
@@ -9785,6 +9924,9 @@ func (next *Transform) Perspective(depth float32) *Transform {
 
 // Rotate rotates next angle degrees in 2D - or in 3D-speak, around the Z axis.
 // The rotation happens around the origin point of (0, 0).
+//
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
 //
 // The function takes the following parameters:
 //
@@ -9824,7 +9966,10 @@ func (next *Transform) Rotate(angle float32) *Transform {
 
 // Rotate3D rotates next angle degrees around axis.
 //
-// For a rotation in 2D space, use gsk.Transform.Rotate().
+// For a rotation in 2D space, use gsk.Transform.Rotate()
+//
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
 //
 // The function takes the following parameters:
 //
@@ -9870,6 +10015,9 @@ func (next *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 //
 // Use gsk.Transform.Scale3D() to scale in all 3 dimensions.
 //
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
+//
 // The function takes the following parameters:
 //
 //   - factorX: scaling factor on the X axis.
@@ -9911,6 +10059,9 @@ func (next *Transform) Scale(factorX float32, factorY float32) *Transform {
 }
 
 // Scale3D scales next by the given factors.
+//
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
 //
 // The function takes the following parameters:
 //
@@ -9957,6 +10108,9 @@ func (next *Transform) Scale3D(factorX float32, factorY float32, factorZ float32
 }
 
 // Skew applies a skew transform.
+//
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
 //
 // The function takes the following parameters:
 //
@@ -10245,6 +10399,9 @@ func (self *Transform) ToTranslate() (outDx float32, outDy float32) {
 
 // Transform applies all the operations from other to next.
 //
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
+//
 // The function takes the following parameters:
 //
 //   - other (optional): transform to apply.
@@ -10343,6 +10500,9 @@ func (self *Transform) TransformPoint(point *graphene.Point) *graphene.Point {
 
 // Translate translates next in 2-dimensional space by point.
 //
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
+//
 // The function takes the following parameters:
 //
 //   - point to translate the transform by.
@@ -10380,6 +10540,9 @@ func (next *Transform) Translate(point *graphene.Point) *Transform {
 }
 
 // Translate3D translates next by point.
+//
+// This function consumes next. Use gsk.Transform.Ref() first if you want to
+// keep it around.
 //
 // The function takes the following parameters:
 //

@@ -116,6 +116,7 @@ import "C"
 // GType values.
 var (
 	GTypeAxisUse               = coreglib.Type(C.gdk_axis_use_get_type())
+	GTypeCicpRange             = coreglib.Type(C.gdk_cicp_range_get_type())
 	GTypeCrossingMode          = coreglib.Type(C.gdk_crossing_mode_get_type())
 	GTypeDevicePadFeature      = coreglib.Type(C.gdk_device_pad_feature_get_type())
 	GTypeDeviceToolType        = coreglib.Type(C.gdk_device_tool_type_get_type())
@@ -154,6 +155,7 @@ var (
 	GTypeAppLaunchContext      = coreglib.Type(C.gdk_app_launch_context_get_type())
 	GTypeButtonEvent           = coreglib.Type(C.gdk_button_event_get_type())
 	GTypeCairoContext          = coreglib.Type(C.gdk_cairo_context_get_type())
+	GTypeCicpParams            = coreglib.Type(C.gdk_cicp_params_get_type())
 	GTypeClipboard             = coreglib.Type(C.gdk_clipboard_get_type())
 	GTypeContentDeserializer   = coreglib.Type(C.gdk_content_deserializer_get_type())
 	GTypeContentProvider       = coreglib.Type(C.gdk_content_provider_get_type())
@@ -180,6 +182,7 @@ var (
 	GTypeGrabBrokenEvent       = coreglib.Type(C.gdk_grab_broken_event_get_type())
 	GTypeKeyEvent              = coreglib.Type(C.gdk_key_event_get_type())
 	GTypeMemoryTexture         = coreglib.Type(C.gdk_memory_texture_get_type())
+	GTypeMemoryTextureBuilder  = coreglib.Type(C.gdk_memory_texture_builder_get_type())
 	GTypeMonitor               = coreglib.Type(C.gdk_monitor_get_type())
 	GTypeMotionEvent           = coreglib.Type(C.gdk_motion_event_get_type())
 	GTypePadEvent              = coreglib.Type(C.gdk_pad_event_get_type())
@@ -192,6 +195,7 @@ var (
 	GTypeTouchEvent            = coreglib.Type(C.gdk_touch_event_get_type())
 	GTypeTouchpadEvent         = coreglib.Type(C.gdk_touchpad_event_get_type())
 	GTypeVulkanContext         = coreglib.Type(C.gdk_vulkan_context_get_type())
+	GTypeColorState            = coreglib.Type(C.gdk_color_state_get_type())
 	GTypeContentFormats        = coreglib.Type(C.gdk_content_formats_get_type())
 	GTypeContentFormatsBuilder = coreglib.Type(C.gdk_content_formats_builder_get_type())
 	GTypeDmabufFormats         = coreglib.Type(C.gdk_dmabuf_formats_get_type())
@@ -208,6 +212,7 @@ var (
 func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeAxisUse, F: marshalAxisUse},
+		coreglib.TypeMarshaler{T: GTypeCicpRange, F: marshalCicpRange},
 		coreglib.TypeMarshaler{T: GTypeCrossingMode, F: marshalCrossingMode},
 		coreglib.TypeMarshaler{T: GTypeDevicePadFeature, F: marshalDevicePadFeature},
 		coreglib.TypeMarshaler{T: GTypeDeviceToolType, F: marshalDeviceToolType},
@@ -246,6 +251,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeAppLaunchContext, F: marshalAppLaunchContext},
 		coreglib.TypeMarshaler{T: GTypeButtonEvent, F: marshalButtonEvent},
 		coreglib.TypeMarshaler{T: GTypeCairoContext, F: marshalCairoContext},
+		coreglib.TypeMarshaler{T: GTypeCicpParams, F: marshalCicpParams},
 		coreglib.TypeMarshaler{T: GTypeClipboard, F: marshalClipboard},
 		coreglib.TypeMarshaler{T: GTypeContentDeserializer, F: marshalContentDeserializer},
 		coreglib.TypeMarshaler{T: GTypeContentProvider, F: marshalContentProvider},
@@ -272,6 +278,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeGrabBrokenEvent, F: marshalGrabBrokenEvent},
 		coreglib.TypeMarshaler{T: GTypeKeyEvent, F: marshalKeyEvent},
 		coreglib.TypeMarshaler{T: GTypeMemoryTexture, F: marshalMemoryTexture},
+		coreglib.TypeMarshaler{T: GTypeMemoryTextureBuilder, F: marshalMemoryTextureBuilder},
 		coreglib.TypeMarshaler{T: GTypeMonitor, F: marshalMonitor},
 		coreglib.TypeMarshaler{T: GTypeMotionEvent, F: marshalMotionEvent},
 		coreglib.TypeMarshaler{T: GTypePadEvent, F: marshalPadEvent},
@@ -284,6 +291,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeTouchEvent, F: marshalTouchEvent},
 		coreglib.TypeMarshaler{T: GTypeTouchpadEvent, F: marshalTouchpadEvent},
 		coreglib.TypeMarshaler{T: GTypeVulkanContext, F: marshalVulkanContext},
+		coreglib.TypeMarshaler{T: GTypeColorState, F: marshalColorState},
 		coreglib.TypeMarshaler{T: GTypeContentFormats, F: marshalContentFormats},
 		coreglib.TypeMarshaler{T: GTypeContentFormatsBuilder, F: marshalContentFormatsBuilder},
 		coreglib.TypeMarshaler{T: GTypeDmabufFormats, F: marshalDmabufFormats},
@@ -2045,6 +2053,11 @@ const KEY_checkmark = 2803
 const KEY_circle = 3023
 const KEY_club = 2796
 const KEY_colon = 58
+const KEY_combining_acute = 16777985
+const KEY_combining_belowdot = 16778019
+const KEY_combining_grave = 16777984
+const KEY_combining_hook = 16777993
+const KEY_combining_tilde = 16777987
 const KEY_comma = 44
 const KEY_containsas = 16785931
 const KEY_copyright = 169
@@ -2061,6 +2074,7 @@ const KEY_dead_A = 65153
 const KEY_dead_E = 65155
 const KEY_dead_I = 65157
 const KEY_dead_O = 65159
+const KEY_dead_SCHWA = 65163
 const KEY_dead_U = 65161
 const KEY_dead_a = 65152
 const KEY_dead_abovecomma = 65124
@@ -2091,6 +2105,7 @@ const KEY_dead_doublegrave = 65126
 const KEY_dead_e = 65154
 const KEY_dead_grave = 65104
 const KEY_dead_greek = 65164
+const KEY_dead_hamza = 65165
 const KEY_dead_hook = 65121
 const KEY_dead_horn = 65122
 const KEY_dead_i = 65156
@@ -2103,6 +2118,7 @@ const KEY_dead_o = 65158
 const KEY_dead_ogonek = 65116
 const KEY_dead_perispomeni = 65107
 const KEY_dead_psili = 65124
+const KEY_dead_schwa = 65162
 const KEY_dead_semivoiced_sound = 65119
 const KEY_dead_small_schwa = 65162
 const KEY_dead_stroke = 65123
@@ -2197,6 +2213,8 @@ const KEY_gcircumflex = 760
 const KEY_grave = 96
 const KEY_greater = 62
 const KEY_greaterthanequal = 2238
+const KEY_guillemetleft = 171
+const KEY_guillemetright = 187
 const KEY_guillemotleft = 171
 const KEY_guillemotright = 187
 const KEY_h = 104
@@ -2440,6 +2458,7 @@ const KEY_openstar = 2789
 const KEY_opentribulletdown = 2788
 const KEY_opentribulletup = 2787
 const KEY_ordfeminine = 170
+const KEY_ordmasculine = 186
 const KEY_oslash = 248
 const KEY_otilde = 245
 const KEY_overbar = 3008
@@ -2686,6 +2705,38 @@ func (a AxisUse) String() string {
 	}
 }
 
+// CicpRange values of this enumeration describe whether image data uses the
+// full range of 8-bit values.
+//
+// In digital broadcasting, it is common to reserve the lowest and highest
+// values. Typically the allowed values for the narrow range are 16-235 for Y
+// and 16-240 for u,v (when dealing with YUV data).
+type CicpRange C.gint
+
+const (
+	// CicpRangeNarrow values use the range of 16-235 (for Y) and 16-240 for u
+	// and v.
+	CicpRangeNarrow CicpRange = iota
+	// CicpRangeFull values use the full range.
+	CicpRangeFull
+)
+
+func marshalCicpRange(p uintptr) (interface{}, error) {
+	return CicpRange(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for CicpRange.
+func (c CicpRange) String() string {
+	switch c {
+	case CicpRangeNarrow:
+		return "Narrow"
+	case CicpRangeFull:
+		return "Full"
+	default:
+		return fmt.Sprintf("CicpRange(%d)", c)
+	}
+}
+
 // CrossingMode specifies the crossing mode for enter and leave events.
 type CrossingMode C.gint
 
@@ -2858,6 +2909,11 @@ func (d DmabufError) String() string {
 	}
 }
 
+// DmabufErrorQuark registers an error quark for gdk.DmabufTexture errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func DmabufErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -3110,6 +3166,11 @@ func (g GLError) String() string {
 	}
 }
 
+// GLErrorQuark registers an error quark for gdk.GLContext errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func GLErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -3704,6 +3765,11 @@ func (t TextureError) String() string {
 	}
 }
 
+// TextureErrorQuark registers an error quark for gdk.Texture errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func TextureErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -3716,11 +3782,16 @@ func TextureErrorQuark() glib.Quark {
 	return _quark
 }
 
+// TitlebarGesture: kind of title bar gesture to emit with
+// gdk.Toplevel.TitlebarGesture().
 type TitlebarGesture C.gint
 
 const (
+	// TitlebarGestureDoubleClick: double click gesture.
 	TitlebarGestureDoubleClick TitlebarGesture = 1
-	TitlebarGestureRightClick  TitlebarGesture = 2
+	// TitlebarGestureRightClick: right click gesture.
+	TitlebarGestureRightClick TitlebarGesture = 2
+	// TitlebarGestureMiddleClick: middle click gesture.
 	TitlebarGestureMiddleClick TitlebarGesture = 3
 )
 
@@ -3821,6 +3892,11 @@ func (v VulkanError) String() string {
 	}
 }
 
+// VulkanErrorQuark registers an error quark for gdk.VulkanContext errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func VulkanErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -4237,14 +4313,14 @@ const (
 	NoModifierMask ModifierType = 0b0
 	// ShiftMask: shift key.
 	ShiftMask ModifierType = 0b1
-	// LockMask: lock key (depending on the modifier mapping of the X server
-	// this may either be CapsLock or ShiftLock).
+	// LockMask: lock key (depending on the Windowing System configuration,
+	// this may either be <kbd>CapsLock</kbd> or <kbd>ShiftLock</kbd>).
 	LockMask ModifierType = 0b10
 	// ControlMask: control key.
 	ControlMask ModifierType = 0b100
-	// AltMask: fourth modifier key (it depends on the modifier mapping of the X
-	// server which key is interpreted as this modifier, but normally it is the
-	// Alt key).
+	// AltMask: fourth modifier key (it depends on the Windowing System
+	// configuration which key is interpreted as this modifier, but normally it
+	// is the <kbd>Alt</kbd> key).
 	AltMask ModifierType = 0b1000
 	// Button1Mask: first mouse button.
 	Button1Mask ModifierType = 0b100000000
@@ -4260,7 +4336,7 @@ const (
 	SuperMask ModifierType = 0b100000000000000000000000000
 	// HyperMask: hyper modifier.
 	HyperMask ModifierType = 0b1000000000000000000000000000
-	// MetaMask: meta modifier.
+	// MetaMask: meta modifier. Maps to Command on macOS.
 	MetaMask ModifierType = 0b10000000000000000000000000000
 )
 
@@ -4750,9 +4826,6 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 // The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
 // indicate a higher priority.
 //
-// When the operation is finished, callback will be called. You must then call
-// gdk.ContentDeserializeFinish() to get the result of the operation.
-//
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional GCancellable object.
@@ -4830,9 +4903,6 @@ func ContentDeserializeFinish(result gio.AsyncResulter) (coreglib.Value, error) 
 // The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
 // indicate a higher priority.
 //
-// When the operation is finished, callback will be called. You must then call
-// gdk.ContentSerializeFinish() to get the result of the operation.
-//
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional GCancellable object.
@@ -4895,18 +4965,6 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 	}
 
 	return _goerr
-}
-
-func DragSurfaceSizeGetType() coreglib.Type {
-	var _cret C.GType // in
-
-	_cret = C.gdk_drag_surface_size_get_type()
-
-	var _gType coreglib.Type // out
-
-	_gType = coreglib.Type(_cret)
-
-	return _gType
 }
 
 // EventsGetAngle returns the relative angle from event1 to event2.
@@ -5440,18 +5498,6 @@ func SetAllowedBackends(backends string) {
 
 	C.gdk_set_allowed_backends(_arg1)
 	runtime.KeepAlive(backends)
-}
-
-func ToplevelSizeGetType() coreglib.Type {
-	var _cret C.GType // in
-
-	_cret = C.gdk_toplevel_size_get_type()
-
-	var _gType coreglib.Type // out
-
-	_gType = coreglib.Type(_cret)
-
-	return _gType
 }
 
 // UnicodeToKeyval: convert from a Unicode character to a key symbol.
@@ -6553,7 +6599,7 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 
 // Present popup after having processed the GdkPopupLayout rules.
 //
-// If the popup was previously now showing, it will be showed, otherwise it will
+// If the popup was previously not showing, it will be shown, otherwise it will
 // change position according to layout.
 //
 // After calling this function, the result should be handled in response to
@@ -6664,6 +6710,7 @@ type Topleveller interface {
 	// SupportsEdgeConstraints returns whether the desktop environment supports
 	// tiled window states.
 	SupportsEdgeConstraints() bool
+	// TitlebarGesture performs a title bar gesture.
 	TitlebarGesture(gesture TitlebarGesture) bool
 }
 
@@ -7155,9 +7202,15 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	return _ok
 }
 
+// TitlebarGesture performs a title bar gesture.
+//
 // The function takes the following parameters:
 //
 //   - gesture: GdkTitlebarGesture.
+//
+// The function returns the following values:
+//
+//   - ok: whether the gesture was performed.
 func (toplevel *Toplevel) TitlebarGesture(gesture TitlebarGesture) bool {
 	var _arg0 *C.GdkToplevel       // out
 	var _arg1 C.GdkTitlebarGesture // out
@@ -7466,6 +7519,254 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 	return _context
 }
 
+// CicpParams: GdkCicpParams struct contains the parameters that
+// define a colorstate according to the ITU-T H.273 specification
+// (https://www.itu.int/rec/T-REC-H.273/en).
+//
+// See the documentation of individual properties for supported values.
+//
+// The 'unspecified' value (2) is not treated in any special way, and must be
+// replaced by a different value before creating a color state.
+//
+// GdkCicpParams can be used as a builder object to construct a color state from
+// Cicp data with gdk.CicpParams.BuildColorState(). The function will return an
+// error if the given parameters are not supported.
+//
+// You can obtain a GdkCicpParams object from a color state with
+// gdk.ColorState.CreateCicpParams(). This can be used to create a variant of a
+// color state, by changing just one of the cicp parameters, or just to obtain
+// information about the color state.
+type CicpParams struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*CicpParams)(nil)
+)
+
+func wrapCicpParams(obj *coreglib.Object) *CicpParams {
+	return &CicpParams{
+		Object: obj,
+	}
+}
+
+func marshalCicpParams(p uintptr) (interface{}, error) {
+	return wrapCicpParams(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewCicpParams creates a new GdkCicpParams object.
+//
+// The initial values of the properties are the values for "undefined" and need
+// to be set before a color state object can be built.
+//
+// The function returns the following values:
+//
+//   - cicpParams: new GdkCicpParams.
+func NewCicpParams() *CicpParams {
+	var _cret *C.GdkCicpParams // in
+
+	_cret = C.gdk_cicp_params_new()
+
+	var _cicpParams *CicpParams // out
+
+	_cicpParams = wrapCicpParams(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _cicpParams
+}
+
+// BuildColorState creates a new GdkColorState object for the cicp parameters in
+// self.
+//
+// Note that this may fail if the cicp parameters in self are not supported by
+// GTK. In that case, NULL is returned, and error is set with an error message
+// that can be presented to the user.
+//
+// The function returns the following values:
+//
+//   - colorState (optional): newly allocated GdkColorState.
+func (self *CicpParams) BuildColorState() (*ColorState, error) {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret *C.GdkColorState // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_build_color_state(_arg0, &_cerr)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+	var _goerr error            // out
+
+	if _cret != nil {
+		_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_colorState)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+			},
+		)
+	}
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _colorState, _goerr
+}
+
+// ColorPrimaries returns the value of the color-primaries property of self.
+//
+// The function returns the following values:
+//
+//   - guint color-primaries value.
+func (self *CicpParams) ColorPrimaries() uint {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret C.guint          // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_get_color_primaries(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// MatrixCoefficients gets the matrix-coefficients property of self.
+//
+// The function returns the following values:
+//
+//   - guint matrix-coefficients value.
+func (self *CicpParams) MatrixCoefficients() uint {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret C.guint          // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_get_matrix_coefficients(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Range gets the range property of self.
+//
+// The function returns the following values:
+//
+//   - cicpRange: range value.
+func (self *CicpParams) Range() CicpRange {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret C.GdkCicpRange   // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_get_range(_arg0)
+	runtime.KeepAlive(self)
+
+	var _cicpRange CicpRange // out
+
+	_cicpRange = CicpRange(_cret)
+
+	return _cicpRange
+}
+
+// TransferFunction gets the transfer-function property of self.
+//
+// The function returns the following values:
+//
+//   - guint: transfer-function value.
+func (self *CicpParams) TransferFunction() uint {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret C.guint          // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_get_transfer_function(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// SetColorPrimaries sets the color-primaries property of self.
+//
+// The function takes the following parameters:
+//
+//   - colorPrimaries: new color primaries value.
+func (self *CicpParams) SetColorPrimaries(colorPrimaries uint) {
+	var _arg0 *C.GdkCicpParams // out
+	var _arg1 C.guint          // out
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(colorPrimaries)
+
+	C.gdk_cicp_params_set_color_primaries(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorPrimaries)
+}
+
+// SetMatrixCoefficients: self a GdkCicpParams Sets the matrix-coefficients
+// property of self.
+//
+// The function takes the following parameters:
+//
+//   - matrixCoefficients: new matrix-coefficients value.
+func (self *CicpParams) SetMatrixCoefficients(matrixCoefficients uint) {
+	var _arg0 *C.GdkCicpParams // out
+	var _arg1 C.guint          // out
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(matrixCoefficients)
+
+	C.gdk_cicp_params_set_matrix_coefficients(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(matrixCoefficients)
+}
+
+// SetRange sets the range property of self.
+//
+// The function takes the following parameters:
+//
+//   - range value.
+func (self *CicpParams) SetRange(_range CicpRange) {
+	var _arg0 *C.GdkCicpParams // out
+	var _arg1 C.GdkCicpRange   // out
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkCicpRange(_range)
+
+	C.gdk_cicp_params_set_range(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(_range)
+}
+
+// SetTransferFunction sets the transfer-function property of self.
+//
+// The function takes the following parameters:
+//
+//   - transferFunction: new transfer-function value.
+func (self *CicpParams) SetTransferFunction(transferFunction uint) {
+	var _arg0 *C.GdkCicpParams // out
+	var _arg1 C.guint          // out
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(transferFunction)
+
+	C.gdk_cicp_params_set_transfer_function(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(transferFunction)
+}
+
 // Clipboard: GdkClipboard object represents data shared between applications or
 // inside an application.
 //
@@ -7613,9 +7914,6 @@ func (clipboard *Clipboard) IsLocal() bool {
 // ReadAsync: asynchronously requests an input stream to read the clipboard's
 // contents from.
 //
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadFinish() to get the result of the operation.
-//
 // The clipboard will choose the most suitable mime type from the given list to
 // fulfill the request, preferring the ones listed first.
 //
@@ -7725,9 +8023,6 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 // ReadTextAsync: asynchronously request the clipboard contents converted to a
 // string.
 //
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadTextFinish() to get the result.
-//
 // This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
 // function or gdk.Clipboard.ReadAsync() directly if you need more control over
 // the operation.
@@ -7799,9 +8094,6 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 
 // ReadTextureAsync: asynchronously request the clipboard contents converted to
 // a GdkPixbuf.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadTextureFinish() to get the result.
 //
 // This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
 // function or gdk.Clipboard.ReadAsync() directly if you need more control over
@@ -7886,9 +8178,6 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 
 // ReadValueAsync: asynchronously request the clipboard contents converted to
 // the given type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadValueFinish() to get the resulting GValue.
 //
 // For local clipboard contents that are available in the given GType,
 // the value will be copied directly. Otherwise, GDK will try to use
@@ -8063,8 +8352,6 @@ func (clipboard *Clipboard) Set(value *coreglib.Value) {
 // remotely.
 //
 // If the clipboard is not local, this function does nothing but report success.
-//
-// The callback must call gdk.Clipboard.StoreFinish().
 //
 // The purpose of this call is to preserve clipboard contents beyond the
 // lifetime of an application, so this function is typically called on exit.
@@ -8609,7 +8896,7 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 //
 //	gdk_content_provider_new_union ((GdkContentProvider *[2]) {
 //	                                  gdk_content_provider_new_typed (G_TYPE_FILE, file),
-//	                                  gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture)
+//	                                  gdk_content_provider_new_typed (GDK_TYPE_TEXTURE, texture)
 //	                                }, 2);.
 //
 // The function takes the following parameters:
@@ -8750,9 +9037,6 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 
 // WriteMIMETypeAsync: asynchronously writes the contents of provider to stream
 // in the given mime_type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
 //
 // The given mime type does not need to be listed in the formats returned
 // by gdk.ContentProvider.RefFormats(). However, if the given GType is not
@@ -8974,9 +9258,6 @@ func (provider *ContentProvider) refStorableFormats() *ContentFormats {
 
 // writeMIMETypeAsync: asynchronously writes the contents of provider to stream
 // in the given mime_type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
 //
 // The given mime type does not need to be listed in the formats returned
 // by gdk.ContentProvider.RefFormats(). However, if the given GType is not
@@ -11783,6 +12064,36 @@ func NewDmabufTextureBuilder() *DmabufTextureBuilder {
 	return _dmabufTextureBuilder
 }
 
+// ColorState gets the color state previously set via
+// gdk_dmabuf_texture_builder_set_color_state().
+//
+// The function returns the following values:
+//
+//   - colorState (optional): color state.
+func (self *DmabufTextureBuilder) ColorState() *ColorState {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret *C.GdkColorState           // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	if _cret != nil {
+		_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_colorState)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+			},
+		)
+	}
+
+	return _colorState
+}
+
 // Display returns the display that this texture builder is associated with.
 //
 // The function returns the following values:
@@ -12089,6 +12400,29 @@ func (self *DmabufTextureBuilder) Width() uint {
 	return _guint
 }
 
+// SetColorState sets the color state for the texture.
+//
+// By default, the colorstate is NULL. In that case, GTK will choose the correct
+// colorstate based on the format. If you don't know what colorstates are,
+// this is probably the right thing.
+//
+// The function takes the following parameters:
+//
+//   - colorState (optional): GdkColorState or NULL to unset the colorstate.
+func (self *DmabufTextureBuilder) SetColorState(colorState *ColorState) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 *C.GdkColorState           // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if colorState != nil {
+		_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(colorState)))
+	}
+
+	C.gdk_dmabuf_texture_builder_set_color_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorState)
+}
+
 // SetDisplay sets the display that this texture builder is associated with.
 //
 // The display is used to determine the supported dma-buf formats.
@@ -12133,7 +12467,7 @@ func (self *DmabufTextureBuilder) SetFd(plane uint, fd int) {
 //
 // The format is specified as a fourcc code.
 //
-// The format must be set before calling gdk.GLTextureBuilder.Build().
+// The format must be set before calling gdk.DmabufTextureBuilder.Build().
 //
 // The function takes the following parameters:
 //
@@ -12152,7 +12486,7 @@ func (self *DmabufTextureBuilder) SetFourcc(fourcc uint32) {
 
 // SetHeight sets the height of the texture.
 //
-// The height must be set before calling gdk.GLTextureBuilder.Build().
+// The height must be set before calling gdk.DmabufTextureBuilder.Build().
 //
 // The function takes the following parameters:
 //
@@ -12249,7 +12583,7 @@ func (self *DmabufTextureBuilder) SetPremultiplied(premultiplied bool) {
 // SetStride sets the stride for a plane.
 //
 // The stride must be set for all planes before calling
-// gdk.GLTextureBuilder.Build().
+// gdk.DmabufTextureBuilder.Build().
 //
 // The function takes the following parameters:
 //
@@ -12320,7 +12654,7 @@ func (self *DmabufTextureBuilder) SetUpdateTexture(texture Texturer) {
 
 // SetWidth sets the width of the texture.
 //
-// The width must be set before calling gdk.GLTextureBuilder.Build().
+// The width must be set before calling gdk.DmabufTextureBuilder.Build().
 //
 // The function takes the following parameters:
 //
@@ -12827,6 +13161,9 @@ func BaseDrawContext(obj DrawContexter) *DrawContext {
 // of GskRenderer (../gsk4/class.Renderer.html)s, so application code does not
 // need to call these functions explicitly.
 //
+// Deprecated: Drawing directly to the surface is no longer recommended.
+// Use GskRenderNode and GskRenderer.
+//
 // The function takes the following parameters:
 //
 //   - region: minimum region that should be drawn.
@@ -12851,6 +13188,9 @@ func (context *DrawContext) BeginFrame(region *cairo.Region) {
 // When using a gdk.GLContext, this function may call glFlush() implicitly
 // before returning; it is not recommended to call glFlush() explicitly before
 // calling this function.
+//
+// Deprecated: Drawing directly to the surface is no longer recommended.
+// Use GskRenderNode and GskRenderer.
 func (context *DrawContext) EndFrame() {
 	var _arg0 *C.GdkDrawContext // out
 
@@ -12891,6 +13231,9 @@ func (context *DrawContext) Display() *Display {
 //
 // If context is not in between calls to gdk.DrawContext.BeginFrame() and
 // gdk.DrawContext.EndFrame(), NULL will be returned.
+//
+// Deprecated: Drawing directly to the surface is no longer recommended.
+// Use GskRenderNode and GskRenderer.
 //
 // The function returns the following values:
 //
@@ -12962,6 +13305,9 @@ func (context *DrawContext) Surface() Surfacer {
 // This is the case between calls to gdk.DrawContext.BeginFrame() and
 // gdk.DrawContext.EndFrame(). In this situation, drawing commands may be
 // effecting the contents of the context's surface.
+//
+// Deprecated: Drawing directly to the surface is no longer recommended.
+// Use GskRenderNode and GskRenderer.
 //
 // The function returns the following values:
 //
@@ -13366,9 +13712,6 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 
 // ReadValueAsync: asynchronously request the drag operation's contents
 // converted to the given type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Drop.ReadValueFinish() to get the resulting GValue.
 //
 // For local drag-and-drop operations that are available in the given GType,
 // the value will be copied directly. Otherwise, GDK will try to use
@@ -13821,7 +14164,7 @@ func (event *Event) PointerEmulated() bool {
 //
 //   - x: location to put event surface x coordinate.
 //   - y: location to put event surface y coordinate.
-//   - ok
+//   - ok: whether the positions were set.
 func (event *Event) Position() (x, y float64, ok bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
@@ -13945,10 +14288,12 @@ func (event *Event) Time() uint32 {
 // TriggersContextMenu returns whether a GdkEvent should trigger a context menu,
 // according to platform conventions.
 //
-// The right mouse button typically triggers context menus.
+// The right mouse button typically triggers context menus. On macOS,
+// Control+left mouse button also triggers.
 //
 // This function should always be used instead of simply checking for
-// event->button == GDK_BUTTON_SECONDARY.
+//
+//	event->button == GDK_BUTTON_SECONDARY.
 //
 // The function returns the following values:
 //
@@ -15160,6 +15505,34 @@ func NewGLTextureBuilder() *GLTextureBuilder {
 	return _glTextureBuilder
 }
 
+// ColorState gets the color state previously set via
+// gdk_gl_texture_builder_set_color_state().
+//
+// The function returns the following values:
+//
+//   - colorState: color state.
+func (self *GLTextureBuilder) ColorState() *ColorState {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret *C.GdkColorState       // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
 // Context gets the context previously set via
 // gdk_gl_texture_builder_set_context() or NULL if none was set.
 //
@@ -15397,6 +15770,26 @@ func (self *GLTextureBuilder) Width() int {
 	return _gint
 }
 
+// SetColorState sets the color state for the texture.
+//
+// By default, the sRGB colorstate is used. If you don't know what colorstates
+// are, this is probably the right thing.
+//
+// The function takes the following parameters:
+//
+//   - colorState: GdkColorState.
+func (self *GLTextureBuilder) SetColorState(colorState *ColorState) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 *C.GdkColorState       // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(colorState)))
+
+	C.gdk_gl_texture_builder_set_color_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorState)
+}
+
 // SetContext sets the context to be used for the texture. This is the context
 // that owns the texture.
 //
@@ -15404,7 +15797,7 @@ func (self *GLTextureBuilder) Width() int {
 //
 // The function takes the following parameters:
 //
-//   - context (optional) the texture beongs to or NULL to unset.
+//   - context (optional) the texture belongs to or NULL to unset.
 func (self *GLTextureBuilder) SetContext(context GLContexter) {
 	var _arg0 *C.GdkGLTextureBuilder // out
 	var _arg1 *C.GdkGLContext        // out
@@ -15983,6 +16376,482 @@ func NewMemoryTexture(width, height int, format MemoryFormat, bytes *glib.Bytes,
 	_memoryTexture = wrapMemoryTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryTexture
+}
+
+// MemoryTextureBuilder: GdkMemoryTextureBuilder is a builder used to construct
+// gdk.Texture objects from system memory provided via glib.Bytes.
+//
+// The operation is quite simple: Create a texture builder,
+// set all the necessary properties - keep in mind that the properties
+// gdk.MemoryTextureBuilder:bytes, gdk.MemoryTextureBuilder:stride,
+// gdk.MemoryTextureBuilder:width, and gdk.MemoryTextureBuilder:height are
+// mandatory - and then call gdk.MemoryTextureBuilder.Build() to create the new
+// texture.
+//
+// GdkMemoryTextureBuilder can be used for quick one-shot construction of
+// textures as well as kept around and reused to construct multiple textures.
+type MemoryTextureBuilder struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*MemoryTextureBuilder)(nil)
+)
+
+func wrapMemoryTextureBuilder(obj *coreglib.Object) *MemoryTextureBuilder {
+	return &MemoryTextureBuilder{
+		Object: obj,
+	}
+}
+
+func marshalMemoryTextureBuilder(p uintptr) (interface{}, error) {
+	return wrapMemoryTextureBuilder(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewMemoryTextureBuilder creates a new texture builder.
+//
+// The function returns the following values:
+//
+//   - memoryTextureBuilder: new GdkTextureBuilder.
+func NewMemoryTextureBuilder() *MemoryTextureBuilder {
+	var _cret *C.GdkMemoryTextureBuilder // in
+
+	_cret = C.gdk_memory_texture_builder_new()
+
+	var _memoryTextureBuilder *MemoryTextureBuilder // out
+
+	_memoryTextureBuilder = wrapMemoryTextureBuilder(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _memoryTextureBuilder
+}
+
+// Build builds a new GdkTexture with the values set up in the builder.
+//
+// Note that it is a programming error to call this function if any mandatory
+// property has not been set.
+//
+// It is possible to call this function multiple times to create multiple
+// textures, possibly with changing properties in between.
+//
+// The function returns the following values:
+//
+//   - texture: newly built GdkTexture.
+func (self *MemoryTextureBuilder) Build() Texturer {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.GdkTexture              // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_build(_arg0)
+	runtime.KeepAlive(self)
+
+	var _texture Texturer // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Texturer is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Texturer)
+			return ok
+		})
+		rv, ok := casted.(Texturer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
+		}
+		_texture = rv
+	}
+
+	return _texture
+}
+
+// Bytes gets the bytes previously set via
+// gdk_memory_texture_builder_set_bytes() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - bytes (optional): bytes.
+func (self *MemoryTextureBuilder) Bytes() *glib.Bytes {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.GBytes                  // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_bytes(_arg0)
+	runtime.KeepAlive(self)
+
+	var _bytes *glib.Bytes // out
+
+	if _cret != nil {
+		_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_bytes_ref(_cret)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_bytes)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
+
+	return _bytes
+}
+
+// ColorState gets the colorstate previously set via
+// gdk_memory_texture_builder_set_color_state().
+//
+// The function returns the following values:
+//
+//   - colorState: colorstate.
+func (self *MemoryTextureBuilder) ColorState() *ColorState {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.GdkColorState           // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_color_state_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// Format gets the format previously set via
+// gdk_memory_texture_builder_set_format().
+//
+// The function returns the following values:
+//
+//   - memoryFormat: format.
+func (self *MemoryTextureBuilder) Format() MemoryFormat {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret C.GdkMemoryFormat          // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_format(_arg0)
+	runtime.KeepAlive(self)
+
+	var _memoryFormat MemoryFormat // out
+
+	_memoryFormat = MemoryFormat(_cret)
+
+	return _memoryFormat
+}
+
+// Height gets the height previously set via
+// gdk_memory_texture_builder_set_height() or 0 if the height wasn't set.
+//
+// The function returns the following values:
+//
+//   - gint: height.
+func (self *MemoryTextureBuilder) Height() int {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret C.int                      // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_height(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Stride gets the stride previously set via
+// gdk_memory_texture_builder_set_stride().
+//
+// The function returns the following values:
+//
+//   - gsize: stride.
+func (self *MemoryTextureBuilder) Stride() uint {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret C.gsize                    // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_stride(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gsize uint // out
+
+	_gsize = uint(_cret)
+
+	return _gsize
+}
+
+// UpdateRegion gets the region previously set via
+// gdk_memory_texture_builder_set_update_region() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - region (optional): update region.
+func (self *MemoryTextureBuilder) UpdateRegion() *cairo.Region {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.cairo_region_t          // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_update_region(_arg0)
+	runtime.KeepAlive(self)
+
+	var _region *cairo.Region // out
+
+	if _cret != nil {
+		{
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_region = (*cairo.Region)(unsafe.Pointer(_pp))
+		}
+		C.cairo_region_reference(_cret)
+		runtime.SetFinalizer(_region, func(v *cairo.Region) {
+			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+		})
+	}
+
+	return _region
+}
+
+// UpdateTexture gets the texture previously set via
+// gdk_memory_texture_builder_set_update_texture() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - texture (optional): update texture.
+func (self *MemoryTextureBuilder) UpdateTexture() Texturer {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.GdkTexture              // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_update_texture(_arg0)
+	runtime.KeepAlive(self)
+
+	var _texture Texturer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Texturer)
+				return ok
+			})
+			rv, ok := casted.(Texturer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
+			}
+			_texture = rv
+		}
+	}
+
+	return _texture
+}
+
+// Width gets the width previously set via
+// gdk_memory_texture_builder_set_width() or 0 if the width wasn't set.
+//
+// The function returns the following values:
+//
+//   - gint: width.
+func (self *MemoryTextureBuilder) Width() int {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret C.int                      // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_width(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SetBytes sets the data to be shown but the texture.
+//
+// The bytes must be set before calling gdk.MemoryTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - bytes (optional) the texture shows or NULL to unset.
+func (self *MemoryTextureBuilder) SetBytes(bytes *glib.Bytes) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 *C.GBytes                  // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if bytes != nil {
+		_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+	}
+
+	C.gdk_memory_texture_builder_set_bytes(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(bytes)
+}
+
+// SetColorState sets the colorstate describing the data.
+//
+// By default, the sRGB colorstate is used. If you don't know what colorstates
+// are, this is probably the right thing.
+//
+// The function takes the following parameters:
+//
+//   - colorState (optional): colorstate describing the data.
+func (self *MemoryTextureBuilder) SetColorState(colorState *ColorState) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 *C.GdkColorState           // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if colorState != nil {
+		_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(colorState)))
+	}
+
+	C.gdk_memory_texture_builder_set_color_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorState)
+}
+
+// SetFormat sets the format of the bytes.
+//
+// The default is GDK_MEMORY_R8G8B8A8_PREMULTIPLIED.
+//
+// The function takes the following parameters:
+//
+//   - format texture's format.
+func (self *MemoryTextureBuilder) SetFormat(format MemoryFormat) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.GdkMemoryFormat          // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkMemoryFormat(format)
+
+	C.gdk_memory_texture_builder_set_format(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(format)
+}
+
+// SetHeight sets the height of the texture.
+//
+// The height must be set before calling gdk.MemoryTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - height texture's height or 0 to unset.
+func (self *MemoryTextureBuilder) SetHeight(height int) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.int                      // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(height)
+
+	C.gdk_memory_texture_builder_set_height(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(height)
+}
+
+// SetStride sets the rowstride of the bytes used.
+//
+// The rowstride must be set before calling gdk.MemoryTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - stride or 0 to unset.
+func (self *MemoryTextureBuilder) SetStride(stride uint) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.gsize                    // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.gsize(stride)
+
+	C.gdk_memory_texture_builder_set_stride(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stride)
+}
+
+// SetUpdateRegion sets the region to be updated by this texture.
+//
+// Together with gdk.MemoryTextureBuilder:update-texture, this describes an
+// update of a previous texture.
+//
+// When rendering animations of large textures, it is possible that consecutive
+// textures are only updating contents in parts of the texture. It is then
+// possible to describe this update via these two properties, so that GTK can
+// avoid rerendering parts that did not change.
+//
+// An example would be a screen recording where only the mouse pointer moves.
+//
+// The function takes the following parameters:
+//
+//   - region (optional) to update.
+func (self *MemoryTextureBuilder) SetUpdateRegion(region *cairo.Region) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 *C.cairo_region_t          // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
+
+	C.gdk_memory_texture_builder_set_update_region(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(region)
+}
+
+// SetUpdateTexture sets the texture to be updated by this texture.
+//
+// See gdk.MemoryTextureBuilder.SetUpdateRegion() for an explanation.
+//
+// The function takes the following parameters:
+//
+//   - texture (optional) to update.
+func (self *MemoryTextureBuilder) SetUpdateTexture(texture Texturer) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 *C.GdkTexture              // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if texture != nil {
+		_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	}
+
+	C.gdk_memory_texture_builder_set_update_texture(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(texture)
+}
+
+// SetWidth sets the width of the texture.
+//
+// The width must be set before calling gdk.MemoryTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - width texture's width or 0 to unset.
+func (self *MemoryTextureBuilder) SetWidth(width int) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.int                      // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(width)
+
+	C.gdk_memory_texture_builder_set_width(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(width)
 }
 
 // Monitor: GdkMonitor objects represent the individual outputs that are
@@ -17722,6 +18591,9 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 // is not opaque, please update this property in your GtkWidgetClass.css_changed
 // (../gtk4/vfunc.Widget.css_changed.html) handler.
 //
+// Deprecated: GDK can figure out the opaque parts of a window itself by
+// inspecting the contents that are drawn.
+//
 // The function takes the following parameters:
 //
 //   - region (optional): region, or NULL to make the entire surface opaque.
@@ -17752,7 +18624,15 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 //
 // GdkTexture is an immutable object: That means you cannot change anything
 // about it other than increasing the reference count via gobject.Object.Ref(),
-// and consequently, it is a thread-safe object.
+// and consequently, it is a threadsafe object.
+//
+// GDK provides a number of threadsafe texture loading functions:
+// gdk.Texture.NewFromResource, gdk.Texture.NewFromBytes,
+// gdk.Texture.NewFromFile, gdk.Texture.NewFromFilename,
+// gdk.Texture.NewForPixbuf. Note that these are meant for loading icons
+// and resources that are shipped with the toolkit or application. It is
+// recommended that you use a dedicated image loading framework such as glycin
+// (https://lib.rs/crates/glycin), if you need to load untrusted image data.
 type Texture struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -17986,6 +18866,34 @@ func NewTextureFromResource(resourcePath string) *Texture {
 	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
+}
+
+// ColorState returns the color state associated with the texture.
+//
+// The function returns the following values:
+//
+//   - colorState: color state of the GdkTexture.
+func (self *Texture) ColorState() *ColorState {
+	var _arg0 *C.GdkTexture    // out
+	var _cret *C.GdkColorState // in
+
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_texture_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_color_state_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
 }
 
 // Format gets the memory format most closely associated with the data of the
@@ -18393,6 +19301,9 @@ func (event *TouchpadEvent) PinchScale() float64 {
 //
 // Support for GdkVulkanContext is platform-specific and context creation can
 // fail, returning NULL context.
+//
+// Deprecated: GTK does not expose any Vulkan internals. This struct is a
+// leftover that was accidentally exposed.
 type VulkanContext struct {
 	_ [0]func() // equal guard
 	DrawContext
@@ -18449,6 +19360,223 @@ func BaseVulkanContext(obj VulkanContexter) *VulkanContext {
 // response to a change of the surface size.
 func (v *VulkanContext) ConnectImagesUpdated(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "images-updated", false, unsafe.Pointer(C._gotk4_gdk4_VulkanContext_ConnectImagesUpdated), f)
+}
+
+// ColorState: GdkColorState object provides the information to interpret colors
+// and pixels in a variety of ways.
+//
+// They are also known as *color spaces*
+// (https://en.wikipedia.org/wiki/Color_space).
+//
+// Crucially, GTK knows how to convert colors from one color state to another.
+//
+// GdkColorState objects are immutable and therefore threadsafe.
+//
+// An instance of this type is always passed by reference.
+type ColorState struct {
+	*colorState
+}
+
+// colorState is the struct that's finalized.
+type colorState struct {
+	native *C.GdkColorState
+}
+
+func marshalColorState(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &ColorState{&colorState{(*C.GdkColorState)(b)}}, nil
+}
+
+// CreateCicpParams: create a gdk.CicpParams representing the colorstate.
+//
+// It is not guaranteed that every GdkColorState can be represented with Cicp
+// parameters. If that is the case, this function returns NULL.
+//
+// The function returns the following values:
+//
+//   - cicpParams (optional): new gdk.CicpParams.
+func (self *ColorState) CreateCicpParams() *CicpParams {
+	var _arg0 *C.GdkColorState // out
+	var _cret *C.GdkCicpParams // in
+
+	_arg0 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_color_state_create_cicp_params(_arg0)
+	runtime.KeepAlive(self)
+
+	var _cicpParams *CicpParams // out
+
+	if _cret != nil {
+		_cicpParams = wrapCicpParams(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _cicpParams
+}
+
+// Equal compares two GdkColorStates for equality.
+//
+// Note that this function is not guaranteed to be perfect and two objects
+// describing the same color state may compare not equal. However, different
+// color states will never compare equal.
+//
+// The function takes the following parameters:
+//
+//   - other GdkColorStatee.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the two color states compare equal.
+func (self *ColorState) Equal(other *ColorState) bool {
+	var _arg0 *C.GdkColorState // out
+	var _arg1 *C.GdkColorState // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(other)))
+
+	_cret = C.gdk_color_state_equal(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ColorStateGetRec2100Linear returns the color state object representing the
+// linear rec2100 color space.
+//
+// This color state uses the primaries defined by BT.2020-2 and BT.2100-0 and a
+// linear transfer function.
+//
+// It is equivalent to the Cicp (class.CicpParams.html) tuple 9/8/0/1.
+//
+// See e.g. the CSS HDR Module
+// (https://drafts.csswg.org/css-color-hdr/#valdef-color-rec2100-linear) for
+// details about this colorstate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for linearized rec2100.
+func ColorStateGetRec2100Linear() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_rec2100_linear()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ColorStateGetRec2100Pq returns the color state object representing the
+// rec2100-pq color space.
+//
+// This color state uses the primaries defined by BT.2020-2 and BT.2100-0 and
+// the transfer function defined by SMPTE ST 2084 and BT.2100-2.
+//
+// It is equivalent to the Cicp (class.CicpParams.html) tuple 9/16/0/1.
+//
+// See e.g. the CSS HDR Module
+// (https://drafts.csswg.org/css-color-hdr/#valdef-color-rec2100-pq) for details
+// about this colorstate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for rec2100-pq.
+func ColorStateGetRec2100Pq() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_rec2100_pq()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ColorStateGetSrgb returns the color state object representing the sRGB color
+// space.
+//
+// This color state uses the primaries defined by BT.709-6 and the transfer
+// function defined by IEC 61966-2-1.
+//
+// It is equivalent to the Cicp (class.CicpParams.html) tuple 1/13/0/1.
+//
+// See e.g. the CSS Color Module
+// (https://www.w3.org/TR/css-color-4/#predefined-sRGB) for details about this
+// colorstate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for sRGB.
+func ColorStateGetSrgb() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_srgb()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ColorStateGetSrgbLinear returns the color state object representing the
+// linearized sRGB color space.
+//
+// This color state uses the primaries defined by BT.709-6 and a linear transfer
+// function.
+//
+// It is equivalent to the Cicp (class.CicpParams.html) tuple 1/8/0/1.
+//
+// See e.g. the CSS Color Module
+// (https://www.w3.org/TR/css-color-4/#predefined-sRGB-linear) for details about
+// this colorstate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for linearized sRGB.
+func ColorStateGetSrgbLinear() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_srgb_linear()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
 }
 
 // ContentFormats: GdkContentFormats structure is used to advertise and
@@ -20805,6 +21933,33 @@ func (self *TextureDownloader) DownloadBytes() (uint, *glib.Bytes) {
 	return _outStride, _bytes
 }
 
+// ColorState gets the color state that the data will be downloaded in.
+//
+// The function returns the following values:
+//
+//   - colorState: color state of the download.
+func (self *TextureDownloader) ColorState() *ColorState {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _cret *C.GdkColorState        // in
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_texture_downloader_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
 // Format gets the format that the data will be downloaded in.
 //
 // The function returns the following values:
@@ -20861,6 +22016,25 @@ func (self *TextureDownloader) Texture() Texturer {
 	}
 
 	return _texture
+}
+
+// SetColorState sets the color state the downloader will convert the data to.
+//
+// By default, the sRGB colorstate returned by colorstate.GetSrgb() is used.
+//
+// The function takes the following parameters:
+//
+//   - colorState: color state to use.
+func (self *TextureDownloader) SetColorState(colorState *ColorState) {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _arg1 *C.GdkColorState        // out
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(colorState)))
+
+	C.gdk_texture_downloader_set_color_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorState)
 }
 
 // SetFormat sets the format the downloader will download.

@@ -325,15 +325,15 @@ const VERSION_MAJOR = 1
 
 // VERSION_MICRO: micro component of the version of Pango available at
 // compile-time.
-const VERSION_MICRO = 2
+const VERSION_MICRO = 1
 
 // VERSION_MINOR: minor component of the version of Pango available at
 // compile-time.
-const VERSION_MINOR = 52
+const VERSION_MINOR = 56
 
 // VERSION_STRING: string literal containing the version of Pango available at
 // compile-time.
-const VERSION_STRING = "1.52.2"
+const VERSION_STRING = "1.56.1"
 
 // Glyph: PangoGlyph represents a single glyph in the output form of a string.
 type Glyph = uint32
@@ -2312,6 +2312,8 @@ const (
 	// WrapWordChar: wrap lines at word boundaries, but fall back to character
 	// boundaries if there is not enough space for a full word.
 	WrapWordChar
+	// WrapNone: do not wrap.
+	WrapNone
 )
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
@@ -2327,6 +2329,8 @@ func (w WrapMode) String() string {
 		return "Char"
 	case WrapWordChar:
 		return "WordChar"
+	case WrapNone:
+		return "None"
 	default:
 		return fmt.Sprintf("WrapMode(%d)", w)
 	}
@@ -2349,10 +2353,12 @@ const (
 	FontMaskStretch FontMask = 0b10000
 	// FontMaskSize: font size is specified.
 	FontMaskSize FontMask = 0b100000
-	// FontMaskGravity: font gravity is specified (Since: 1.16.).
+	// FontMaskGravity: font gravity is specified.
 	FontMaskGravity FontMask = 0b1000000
-	// FontMaskVariations: openType font variations are specified (Since: 1.42).
+	// FontMaskVariations: openType font variations are specified.
 	FontMaskVariations FontMask = 0b10000000
+	// FontMaskFeatures: openType font features are specified.
+	FontMaskFeatures FontMask = 0b100000000
 )
 
 func marshalFontMask(p uintptr) (interface{}, error) {
@@ -2366,7 +2372,7 @@ func (f FontMask) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(123)
+	builder.Grow(140)
 
 	for f != 0 {
 		next := f & (f - 1)
@@ -2389,6 +2395,8 @@ func (f FontMask) String() string {
 			builder.WriteString("Gravity|")
 		case FontMaskVariations:
 			builder.WriteString("Variations|")
+		case FontMaskFeatures:
+			builder.WriteString("Features|")
 		default:
 			builder.WriteString(fmt.Sprintf("FontMask(0b%b)|", bit))
 		}
@@ -8171,6 +8179,36 @@ func BaseFontMap(obj FontMapper) *FontMap {
 	return obj.baseFontMap()
 }
 
+// AddFontFile loads a font file with one or more fonts into the PangoFontMap.
+//
+// The added fonts will take precedence over preexisting fonts with the same
+// name.
+//
+// The function takes the following parameters:
+//
+//   - filename: path to the font file.
+func (fontmap *FontMap) AddFontFile(filename string) error {
+	var _arg0 *C.PangoFontMap // out
+	var _arg1 *C.char         // out
+	var _cerr *C.GError       // in
+
+	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(coreglib.InternObject(fontmap).Native()))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(filename)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.pango_font_map_add_font_file(_arg0, _arg1, &_cerr)
+	runtime.KeepAlive(fontmap)
+	runtime.KeepAlive(filename)
+
+	var _goerr error // out
+
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _goerr
+}
+
 // Changed forces a change in the context, which will cause any PangoContext
 // using this fontmap to change.
 //
@@ -10459,9 +10497,8 @@ func (layout *Layout) IsEllipsized() bool {
 
 // IsWrapped queries whether the layout had to wrap any paragraphs.
 //
-// This returns TRUE if a positive width is set on layout, ellipsization mode of
-// layout is set to PANGO_ELLIPSIZE_NONE, and there are paragraphs exceeding the
-// layout width that have to be wrapped.
+// This returns TRUE if a positive width is set on layout, and there are
+// paragraphs exceeding the layout width that have to be wrapped.
 //
 // The function returns the following values:
 //
@@ -11074,7 +11111,7 @@ func (layout *Layout) SetText(text string) {
 }
 
 // SetWidth sets the width to which the lines of the PangoLayout should wrap or
-// ellipsized.
+// get ellipsized.
 //
 // The default value is -1: no width set.
 //
@@ -13430,11 +13467,13 @@ func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 // In the resulting string, serialized attributes are separated by newlines or
 // commas. Individual attributes are serialized to a string of the form
 //
-//	START END TYPE VALUE
+//	[START END] TYPE VALUE
 //
 // Where START and END are the indices (with -1 being accepted in place of
 // MAXUINT), TYPE is the nickname of the attribute value type, e.g. _weight_ or
 // _stretch_, and the value is serialized according to its type:
+//
+// Optionally, START and END can be omitted to indicate unlimited extent.
 //
 // - enum values as nick or numeric value
 //
@@ -13457,11 +13496,10 @@ func (list *AttrList) Splice(other *AttrList, pos int, len int) {
 //
 //	0 10 foreground red, 5 15 weight bold, 0 200 font-desc "Sans 10"
 //
-//
-//
-//
 //	0 -1 weight 700
 //	0 100 family Times
+//
+//	weight bold
 //
 // To parse the returned value, use pango.AttrList().FromString.
 //
@@ -14591,6 +14629,33 @@ func (desc *FontDescription) Family() string {
 	return _utf8
 }
 
+// Features gets the features field of a font description.
+//
+// See pango.FontDescription.SetFeatures().
+//
+// The function returns the following values:
+//
+//   - utf8 (optional) features field for the font description, or NULL if not
+//     previously set. This has the same life-time as the font description
+//     itself and should not be freed.
+func (desc *FontDescription) Features() string {
+	var _arg0 *C.PangoFontDescription // out
+	var _cret *C.char                 // in
+
+	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+
+	_cret = C.pango_font_description_get_features(_arg0)
+	runtime.KeepAlive(desc)
+
+	var _utf8 string // out
+
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
+
+	return _utf8
+}
+
 // Gravity gets the gravity field of a font description.
 //
 // See pango.FontDescription.SetGravity().
@@ -14977,6 +15042,74 @@ func (desc *FontDescription) SetFamilyStatic(family string) {
 	runtime.KeepAlive(family)
 }
 
+// SetFeatures sets the features field of a font description.
+//
+// OpenType font features allow to enable or disable certain optional features
+// of a font, such as tabular numbers.
+//
+// The format of the features string is comma-separated list of feature
+// assignments, with each assignment being one of these forms:
+//
+//	FEATURE=n
+//
+// where FEATURE must be a 4 character tag that identifies and OpenType feature,
+// and n an integer (depending on the feature, the allowed values may be 0,
+// 1 or bigger numbers). Unknown features are ignored.
+//
+// Note that font features set in this way are enabled for the entire text that
+// is using the font, which is not appropriate for all OpenType features. The
+// intended use case is to select character variations (features cv01 - c99),
+// style sets (ss01 - ss20) and the like.
+//
+// Pango does not currently have a way to find supported OpenType
+// features of a font. Both harfbuzz and freetype have API for
+// this. See for example hb_ot_layout_table_get_feature_tags
+// (https://harfbuzz.github.io/harfbuzz-hb-ot-layout.html#hb-ot-layout-table-get-feature-tags).
+//
+// Features that are not supported by the font are silently ignored.
+//
+// The function takes the following parameters:
+//
+//   - features (optional): string representing the features.
+func (desc *FontDescription) SetFeatures(features string) {
+	var _arg0 *C.PangoFontDescription // out
+	var _arg1 *C.char                 // out
+
+	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	if features != "" {
+		_arg1 = (*C.char)(unsafe.Pointer(C.CString(features)))
+		defer C.free(unsafe.Pointer(_arg1))
+	}
+
+	C.pango_font_description_set_features(_arg0, _arg1)
+	runtime.KeepAlive(desc)
+	runtime.KeepAlive(features)
+}
+
+// SetFeaturesStatic sets the features field of a font description.
+//
+// This is like pango.FontDescription.SetFeatures(), except that no copy of
+// featuresis made. The caller must make sure that the string passed in stays
+// around until desc has been freed or the name is set again. This function can
+// be used if features is a static string such as a C string literal, or if desc
+// is only needed temporarily.
+//
+// The function takes the following parameters:
+//
+//   - features: string representing the features.
+func (desc *FontDescription) SetFeaturesStatic(features string) {
+	var _arg0 *C.PangoFontDescription // out
+	var _arg1 *C.char                 // out
+
+	_arg0 = (*C.PangoFontDescription)(gextras.StructNative(unsafe.Pointer(desc)))
+	_arg1 = (*C.char)(unsafe.Pointer(C.CString(features)))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	C.pango_font_description_set_features_static(_arg0, _arg1)
+	runtime.KeepAlive(desc)
+	runtime.KeepAlive(features)
+}
+
 // SetGravity sets the gravity field of a font description.
 //
 // The gravity field specifies how the glyphs should be rotated. If gravity
@@ -15250,14 +15383,13 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 //
 // The string must have the form
 //
-//	"\[FAMILY-LIST] \[STYLE-OPTIONS] \[SIZE] \[VARIATIONS]",
+//	[FAMILY-LIST] [STYLE-OPTIONS] [SIZE] [VARIATIONS] [FEATURES]
 //
 // where FAMILY-LIST is a comma-separated list of families optionally terminated
-// by a comma, STYLE_OPTIONS is a whitespace-separated list of words where each
-// word describes one of style, variant, weight, stretch, or gravity, and SIZE
-// is a decimal number (size in points) or optionally followed by the unit
-// modifier "px" for absolute size. VARIATIONS is a comma-separated list of font
-// variation specifications of the form "\axis=value" (the = sign is optional).
+// by a comma, STYLE_OPTIONS is a whitespace-separated list of words where
+// each word describes one of style, variant, weight, stretch, or gravity,
+// and SIZE is a decimal number (size in points) or optionally followed by the
+// unit modifier "px" for absolute size.
 //
 // The following words are understood as styles: "Normal", "Roman", "Oblique",
 // "Italic".
@@ -15277,6 +15409,12 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 // The following words are understood as gravity values: "Not-Rotated", "South",
 // "Upside-Down", "North", "Rotated-Left", "East", "Rotated-Right", "West".
 //
+// VARIATIONS is a comma-separated list of font variations of the form
+// @‍axis1=value,axis2=value,...
+//
+// FEATURES is a comma-separated list of font features of the form
+// \#‍feature1=value,feature2=value,...
+//
 // Any one of the options may be absent. If FAMILY-LIST is absent, then the
 // family_name field of the resulting font description will be initialized
 // to NULL. If STYLE-OPTIONS is missing, then all style options will be set
@@ -15285,7 +15423,7 @@ func (desc *FontDescription) UnsetFields(toUnset FontMask) {
 //
 // A typical example:
 //
-//	"Cantarell Italic Light 15 \wght=200".
+//	Cantarell Italic Light 15 @‍wght=200 #‍tnum=1.
 //
 // The function takes the following parameters:
 //
@@ -16763,6 +16901,33 @@ func (item *Item) Copy() *Item {
 	}
 
 	return _ret
+}
+
+// CharOffset returns the character offset of the item from the beginning of the
+// itemized text.
+//
+// If the item has not been obtained from Pango's itemization machinery, then
+// the character offset is not available. In that case, this function returns
+// -1.
+//
+// The function returns the following values:
+//
+//   - gint: character offset of the item from the beginning of the itemized
+//     text, or -1.
+func (item *Item) CharOffset() int {
+	var _arg0 *C.PangoItem // out
+	var _cret C.int        // in
+
+	_arg0 = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(item)))
+
+	_cret = C.pango_item_get_char_offset(_arg0)
+	runtime.KeepAlive(item)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }
 
 // Split modifies orig to cover only the text after split_index, and returns a
@@ -18955,11 +19120,22 @@ func (tabArray *TabArray) Sort() {
 
 // String serializes a PangoTabArray to a string.
 //
-// No guarantees are made about the format of the string, it may change between
-// Pango versions.
+// In the resulting string, serialized tabs are separated by newlines or commas.
 //
-// The intended use of this function is testing and debugging. The format is not
-// meant as a permanent storage format.
+// Individual tabs are serialized to a string of the form
+//
+//	[ALIGNMENT:]POSITION[:DECIMAL_POINT]
+//
+// Where ALIGNMENT is one of _left_, _right_, _center_ or _decimal_, and
+// POSITION is the position of the tab, optionally followed by the unit _px_.
+// If ALIGNMENT is omitted, it defaults to _left_. If ALIGNMENT is _decimal_,
+// the DECIMAL_POINT character may be specified as a Unicode codepoint.
+//
+// Note that all tabs in the array must use the same unit.
+//
+// A typical example:
+//
+//	100px 200px center:300px right:400px.
 //
 // The function returns the following values:
 //

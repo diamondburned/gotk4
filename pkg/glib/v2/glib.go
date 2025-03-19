@@ -140,6 +140,9 @@ const ASCII_DTOSTR_BUF_SIZE = 39
 //	  .address = "Default address",
 //	};.
 const ATOMIC_REF_COUNT_INIT = 1
+
+// BIG_ENDIAN specifies one of the possible types of byte order. See
+// G_BYTE_ORDER.
 const BIG_ENDIAN = 4321
 
 // CSET_A_2_Z: set of uppercase ASCII alphabet characters. Used for specifying
@@ -153,6 +156,15 @@ const CSET_DIGITS = "0123456789"
 // CSET_a_2_z: set of lowercase ASCII alphabet characters. Used for specifying
 // valid identifier characters in Config.
 const CSET_a_2_z = "abcdefghijklmnopqrstuvwxyz"
+
+// C_STD_VERSION: c standard version the code is compiling against, it's
+// normally defined with the same value of __STDC_VERSION__ for C standard
+// compatible compilers, while it uses the lowest standard version in pure MSVC,
+// given that in such compiler the definition depends on a compilation flag.
+//
+// This is granted to be undefined when compiling with a C++ compiler.
+//
+// See also: G_C_STD_CHECK_VERSION and G_CXX_STD_VERSION.
 const C_STD_VERSION = 199000
 
 // DATALIST_FLAGS_MASK: bitmask that restricts the possible flags
@@ -168,8 +180,16 @@ const DATE_BAD_JULIAN = 0
 
 // DATE_BAD_YEAR represents an invalid year.
 const DATE_BAD_YEAR = 0
+
+// DIR_SEPARATOR: directory separator character. This is '/' on UNIX machines
+// and '\' under Windows.
 const DIR_SEPARATOR = 47
+
+// DIR_SEPARATOR_S: directory separator as a string. This is "/" on UNIX
+// machines and "\" under Windows.
 const DIR_SEPARATOR_S = "/"
+
+// E: base of natural logarithms.
 const E = 2.718282
 const GINT16_FORMAT = "hi"
 const GINT16_MODIFIER = "h"
@@ -201,6 +221,9 @@ const GUINT64_FORMAT = "lu"
 const GUINTPTR_FORMAT = "lu"
 const HAVE_GINT64 = 1
 const HAVE_GNUC_VARARGS = 1
+
+// HAVE_GNUC_VISIBILITY: defined to 1 if gcc-style visibility handling is
+// supported.
 const HAVE_GNUC_VISIBILITY = 1
 const HAVE_GROWING_STACK = 0
 const HAVE_ISO_VARARGS = 1
@@ -209,7 +232,13 @@ const HAVE_ISO_VARARGS = 1
 // internal use be the #GHook implementation, i.e. 1 << G_HOOK_FLAG_USER_SHIFT
 // is the first bit which can be used for application-defined flags.
 const HOOK_FLAG_USER_SHIFT = 4
+
+// IEEE754_DOUBLE_BIAS bias by which exponents in double-precision floats are
+// offset.
 const IEEE754_DOUBLE_BIAS = 1023
+
+// IEEE754_FLOAT_BIAS bias by which exponents in single-precision floats are
+// offset.
 const IEEE754_FLOAT_BIAS = 127
 
 // KEY_FILE_DESKTOP_GROUP: name of the main group of a desktop
@@ -335,9 +364,19 @@ const KEY_FILE_DESKTOP_TYPE_DIRECTORY = "Directory"
 // KEY_FILE_DESKTOP_TYPE_LINK: value of the G_KEY_FILE_DESKTOP_KEY_TYPE,
 // key for desktop entries representing links to documents.
 const KEY_FILE_DESKTOP_TYPE_LINK = "Link"
+
+// LITTLE_ENDIAN specifies one of the possible types of byte order. See
+// G_BYTE_ORDER.
 const LITTLE_ENDIAN = 1234
+
+// LN10: natural logarithm of 10.
 const LN10 = 2.302585
+
+// LN2: natural logarithm of 2.
 const LN2 = 0.693147
+
+// LOG_2_BASE_10: multiplying the base 2 exponent by this number yields the base
+// 10 exponent.
 const LOG_2_BASE_10 = 0.301030
 
 // LOG_DOMAIN defines the log domain. See Log Domains (#log-domains).
@@ -390,7 +429,7 @@ const MAXUINT8 = 255
 //
 // Like #gtk_micro_version, but from the headers used at application compile
 // time, rather than from the library linked against at application run time.
-const MICRO_VERSION = 2
+const MICRO_VERSION = 4
 
 // MININT16: minimum value which can be held in a #gint16.
 const MININT16 = -32768
@@ -408,7 +447,7 @@ const MININT8 = -128
 //
 // Like #gtk_minor_version, but from the headers used at application compile
 // time, rather than from the library linked against at application run time.
-const MINOR_VERSION = 80
+const MINOR_VERSION = 82
 const MODULE_SUFFIX = "so"
 
 // OPTION_REMAINING: if a long option in the main group has this name,
@@ -419,13 +458,22 @@ const MODULE_SUFFIX = "so"
 //
 //	Using G_OPTION_REMAINING instead of simply scanning argv for leftover arguments has the advantage that GOption takes care of necessary encoding conversions for strings or filenames.
 const OPTION_REMAINING = ""
+
+// PDP_ENDIAN specifies one of the possible types of byte order (currently
+// unused). See G_BYTE_ORDER.
 const PDP_ENDIAN = 3412
+
+// PI: value of pi (ratio of circle's circumference to its diameter).
 const PI = 3.141593
 
 // PID_FORMAT: format specifier that can be used in printf()-style format
 // strings when printing a #GPid.
 const PID_FORMAT = "i"
+
+// PI_2: pi divided by 2.
 const PI_2 = 1.570796
+
+// PI_4: pi divided by 4.
 const PI_4 = 0.785398
 
 // POLLFD_FORMAT: format specifier that can be used in printf()-style format
@@ -435,12 +483,12 @@ const POLLFD_FORMAT = "%d"
 // PRIORITY_DEFAULT: use this for default priority event sources.
 //
 // In GLib this priority is used when adding timeout functions with
-// g_timeout_add(). In GDK this priority is used for events from the X server.
+// glib.TimeoutAdd(). In GDK this priority is used for events from the X server.
 const PRIORITY_DEFAULT = 0
 
 // PRIORITY_DEFAULT_IDLE: use this for default priority idle functions.
 //
-// In GLib this priority is used when adding idle functions with g_idle_add().
+// In GLib this priority is used when adding idle functions with glib.IdleAdd().
 const PRIORITY_DEFAULT_IDLE = 200
 
 // PRIORITY_HIGH: use this for high priority event sources.
@@ -478,20 +526,28 @@ const PRIORITY_LOW = 300
 //	  .address = "Default address",
 //	};.
 const REF_COUNT_INIT = -1
+
+// SEARCHPATH_SEPARATOR: search path separator character. This is ':' on UNIX
+// machines and ';' under Windows.
 const SEARCHPATH_SEPARATOR = 58
+
+// SEARCHPATH_SEPARATOR_S: search path separator as a string. This is ":" on
+// UNIX machines and ";" under Windows.
 const SEARCHPATH_SEPARATOR_S = ":"
 const SIZEOF_LONG = 8
 const SIZEOF_SIZE_T = 8
 const SIZEOF_SSIZE_T = 8
 const SIZEOF_VOID_P = 8
 
-// SOURCE_CONTINUE: use this macro as the return value of a Func to leave the
-// #GSource in the main loop.
+// SOURCE_CONTINUE: use this macro as the return value of a glib.SourceFunc to
+// leave the glib.Source in the main loop.
 const SOURCE_CONTINUE = true
 
-// SOURCE_REMOVE: use this macro as the return value of a Func to remove the
-// #GSource from the main loop.
+// SOURCE_REMOVE: use this macro as the return value of a glib.SourceFunc to
+// remove the glib.Source from the main loop.
 const SOURCE_REMOVE = false
+
+// SQRT2: square root of two.
 const SQRT2 = 1.414214
 
 // STR_DELIMITERS: standard delimiters, used in glib.Strdelimit().
@@ -1891,17 +1947,30 @@ func (t TokenType) String() string {
 }
 
 // TraverseType specifies the type of traversal performed by g_tree_traverse(),
-// g_node_traverse() and g_node_find(). The different orders are illustrated
-// here:
+// g_node_traverse() and g_node_find().
 //
-// - In order: A, B, C, D, E, F, G, H, I ! (Sorted_binary_tree_inorder.svg)
+// The different orders are illustrated here:
 //
-// - Pre order: F, B, A, D, C, E, G, I, H ! (Sorted_binary_tree_preorder.svg)
+// - In order: A, B, C, D, E, F, G, H, I <picture> <source
+// srcset="Sorted_binary_tree_inorder-dark.svg" media="(prefers-color-scheme:
+// dark)"> <img src="Sorted_binary_tree_inorder.svg" alt="Sorted binary tree,
+// in-order traversal"> </picture>
 //
-// - Post order: A, C, E, D, B, H, I, G, F ! (Sorted_binary_tree_postorder.svg)
+// - Pre order: F, B, A, D, C, E, G, I, H <picture> <source
+// srcset="Sorted_binary_tree_preorder-dark.svg" media="(prefers-color-scheme:
+// dark)"> <img src="Sorted_binary_tree_preorder.svg" alt="Sorted binary tree,
+// pre-order traversal"> </picture>
 //
-// - Level order: F, B, G, A, D, I, C, E, H !
-// (Sorted_binary_tree_breadth-first_traversal.svg).
+// - Post order: A, C, E, D, B, H, I, G, F <picture> <source
+// srcset="Sorted_binary_tree_postorder-dark.svg" media="(prefers-color-scheme:
+// dark)"> <img src="Sorted_binary_tree_postorder.svg" alt="Sorted binary tree,
+// post-order traversal"> </picture>
+//
+// - Level order: F, B, G, A, D, I, C, E, H <picture> <source
+// srcset="Sorted_binary_tree_breadth-first_traversal-dark.svg"
+// media="(prefers-color-scheme: dark)"> <img
+// src="Sorted_binary_tree_breadth-first_traversal.svg" alt="Sorted binary tree,
+// breadth-first level order traversal"> </picture>.
 type TraverseType C.gint
 
 const (
@@ -3819,8 +3888,8 @@ func (l LogLevelFlags) Has(other LogLevelFlags) bool {
 	return (l & other) == other
 }
 
-// MainContextFlags flags to pass to g_main_context_new_with_flags() which
-// affect the behaviour of a Context.
+// MainContextFlags flags to pass to glib.MainContext.NewWithFlags which affect
+// the behaviour of a glib.MainContext.
 type MainContextFlags C.guint
 
 const (
@@ -4778,11 +4847,15 @@ type Func func(data unsafe.Pointer)
 // which is passed to g_hash_table_foreach().
 type HFunc func(key, value unsafe.Pointer)
 
-// HRFunc specifies the type of the function passed to
-// g_hash_table_foreach_remove(). It is called with each
-// key/value pair, together with the user_data parameter passed to
-// g_hash_table_foreach_remove(). It should return TRUE if the key/value pair
-// should be removed from the Table.
+// HRFunc specifies the type of the function passed to glib.HashTable().Find,
+// glib.HashTable().ForEachRemove, and glib.HashTable().ForEachSteal.
+//
+// The function is called with each key/value pair, together with the user_data
+// parameter passed to the calling function.
+//
+// The function should return true if the key/value pair should be selected,
+// meaning it has been found or it should be removed from the glib.HashTable,
+// depending on the calling function.
 type HRFunc func(key, value unsafe.Pointer) (ok bool)
 
 // LogFunc specifies the prototype of log handler functions.
@@ -4817,18 +4890,18 @@ type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
 // chained and fall back to simpler handlers in case of failure.
 type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
 
-// SourceFunc specifies the type of function passed to g_timeout_add(),
-// g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
+// SourceFunc specifies the type of function passed to glib.TimeoutAdd(),
+// glib.TimeoutAddFull(), glib.IdleAdd(), and glib.IdleAddFull().
 //
-// When calling g_source_set_callback(), you may need to cast a function of a
-// different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
+// When calling glib.Source.SetCallback(), you may need to cast a function of a
+// different type to this type. Use glib.SOURCEFUNC() to avoid warnings about
 // incompatible function types.
 type SourceFunc func() (ok bool)
 
 // SourceOnceFunc: source function that is only called once before being removed
 // from the main context automatically.
 //
-// See: g_idle_add_once(), g_timeout_add_once().
+// See: glib.IdleAddOnce(), glib.TimeoutAddOnce().
 type SourceOnceFunc func()
 
 // The function takes the following parameters:
@@ -7154,9 +7227,9 @@ func GetCurrentDir() string {
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
 //
-// You may find g_get_real_time() to be more convenient.
+// You may find glib.GetRealTime() to be more convenient.
 //
-// Deprecated: Val is not year-2038-safe. Use g_get_real_time() instead.
+// Deprecated: Val is not year-2038-safe. Use glib.GetRealTime() instead.
 //
 // The function takes the following parameters:
 //
@@ -7586,12 +7659,12 @@ func GetRealName() string {
 
 // GetRealTime queries the system wall-clock time.
 //
-// This call is functionally equivalent to g_get_current_time() except that the
+// This call is functionally equivalent to glib.GetCurrentTime() except that the
 // return value is often more convenient than dealing with a Val.
 //
 // You should only use this call if you are actually interested in the real
-// wall-clock time. g_get_monotonic_time() is probably more useful for measuring
-// intervals.
+// wall-clock time. glib.GetMonotonicTime() is probably more useful for
+// measuring intervals.
 //
 // The function returns the following values:
 //
@@ -8194,10 +8267,11 @@ func IdleRemoveByData(data unsafe.Pointer) bool {
 
 // NewIdleSource creates a new idle source.
 //
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed. Note that the
-// default priority for idle sources is G_PRIORITY_DEFAULT_IDLE, as compared to
-// other sources which have a default priority of G_PRIORITY_DEFAULT.
+// The source will not initially be associated with any glib.MainContext and
+// must be added to one with glib.Source.Attach() before it will be executed.
+// Note that the default priority for idle sources is glib.PRIORITYDEFAULTIDLE,
+// as compared to other sources which have a default priority of
+// glib.PRIORITYDEFAULT.
 //
 // The function returns the following values:
 //
@@ -9396,11 +9470,11 @@ func MainCurrentSource() *Source {
 }
 
 // MainDepth returns the depth of the stack of calls to
-// g_main_context_dispatch() on any Context in the current thread. That is,
+// glib.MainContext.Dispatch() on any Context in the current thread. That is,
 // when called from the toplevel, it gives 0. When called from within a
-// callback from g_main_context_iteration() (or g_main_loop_run(), etc.)
-// it returns 1. When called from within a callback to a recursive call to
-// g_main_context_iteration(), it returns 2. And so forth.
+// callback from glib.MainContext.Iteration() (or glib.MainLoop.Run(),
+// etc.) it returns 1. When called from within a callback to a recursive call to
+// glib.MainContext.Iteration(), it returns 2. And so forth.
 //
 // This function is useful in a situation like the following: Imagine an
 // extremely simple "garbage collected" system.
@@ -9436,11 +9510,11 @@ func MainCurrentSource() *Source {
 //	    }
 //	  }
 //
-// There is a temptation to use g_main_depth() to solve problems with
+// There is a temptation to use glib.MainDepth() to solve problems with
 // reentrancy. For instance, while waiting for data to be received from the
 // network in response to a menu item, the menu item might be selected again.
 // It might seem that one could make the menu item's callback return immediately
-// and do nothing if g_main_depth() returns a value greater than 1. However,
+// and do nothing if glib.MainDepth() returns a value greater than 1. However,
 // this should be avoided since the user then sees selecting the menu item do
 // nothing. Furthermore, you'll find yourself adding these checks all over your
 // code, since there are doubtless many, many things that the user could do.
@@ -9774,9 +9848,10 @@ func PathSkipRoot(fileName string) string {
 }
 
 // PatternMatchSimple matches a string against a pattern given as a string.
-// If this function is to be called in a loop, it's more efficient to compile
-// the pattern once with g_pattern_spec_new() and call g_pattern_match_string()
-// repeatedly.
+//
+// If this function is to be called in a loop, it’s more efficient
+// to compile the pattern once with glib.PatternSpec.New and call
+// glib.PatternSpec.MatchString() repeatedly.
 //
 // The function takes the following parameters:
 //
@@ -9809,10 +9884,14 @@ func PatternMatchSimple(pattern, str string) bool {
 	return _ok
 }
 
-// QsortWithData: this is just like the standard C qsort() function, but the
-// comparison routine accepts a user data argument.
+// QsortWithData: this is just like the standard C qsort() (man:qsort(3))
+// function, but the comparison routine accepts a user data argument (like
+// qsort_r() (man:qsort_r(3))).
 //
-// This is guaranteed to be a stable sort since version 2.32.
+// Unlike qsort(), this is guaranteed to be a stable sort (since GLib 2.32).
+//
+// Deprecated: total_elems is too small to represent larger arrays; use
+// glib.SortArray() instead.
 //
 // The function takes the following parameters:
 //
@@ -10766,11 +10845,11 @@ func StrvGetType() coreglib.Type {
 
 // NewTimeoutSource creates a new timeout source.
 //
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed.
+// The source will not initially be associated with any glib.MainContext and
+// must be added to one with glib.Source.Attach() before it will be executed.
 //
 // The interval given is in terms of monotonic time, not wall clock time.
-// See g_get_monotonic_time().
+// See glib.GetMonotonicTime().
 //
 // The function takes the following parameters:
 //
@@ -10803,14 +10882,14 @@ func NewTimeoutSource(interval uint) *Source {
 
 // TimeoutSourceNewSeconds creates a new timeout source.
 //
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed.
+// The source will not initially be associated with any glib.MainContext and
+// must be added to one with glib.Source.Attach() before it will be executed.
 //
 // The scheduling granularity/accuracy of this timeout source will be in
 // seconds.
 //
 // The interval given is in terms of monotonic time, not wall clock time.
-// See g_get_monotonic_time().
+// See glib.GetMonotonicTime().
 //
 // The function takes the following parameters:
 //
@@ -13298,7 +13377,7 @@ func (a *Array) SetLen(len uint) {
 // pointed by the URI like its MIME type, the application that is
 // registering the bookmark and the icon that should be used to represent
 // the bookmark. The data is stored using the Desktop Bookmark Specification
-// (http://www.gnome.org/~ebassi/bookmark-spec).
+// (https://www.freedesktop.org/wiki/Specifications/desktop-bookmark-spec/).
 //
 // The syntax of the bookmark files is described in detail inside the Desktop
 // Bookmark Specification, here is a quick summary: bookmark files use a
@@ -17989,9 +18068,10 @@ func HashTableStealAll(hashTable map[unsafe.Pointer]unsafe.Pointer) {
 // You can pass NULL for lookup_key, provided the hash and equal functions of
 // hash_table are NULL-safe.
 //
-// The dictionary implementation optimizes for having all values identical to
-// their keys, for example by using g_hash_table_add(). When stealing both the
-// key and the value from such a dictionary, the value will be NULL.
+// The dictionary implementation optimizes for having all values identical
+// to their keys, for example by using g_hash_table_add(). Before 2.82,
+// when stealing both the key and the value from such a dictionary, the value
+// was NULL. Since 2.82, the returned value and key will be the same.
 //
 // The function takes the following parameters:
 //
@@ -21338,12 +21418,13 @@ func NewMainContextWithFlags(flags MainContextFlags) *MainContext {
 // Acquire tries to become the owner of the specified context. If some other
 // thread is the owner of the context, returns FALSE immediately. Ownership
 // is properly recursive: the owner can require ownership again and will
-// release ownership when g_main_context_release() is called as many times as
-// g_main_context_acquire().
+// release ownership when glib.MainContext.Release() is called as many times as
+// glib.MainContext.Acquire().
 //
 // You must be the owner of a context before you can call
-// g_main_context_prepare(), g_main_context_query(), g_main_context_check(),
-// g_main_context_dispatch(), g_main_context_release().
+// glib.MainContext.Prepare(), glib.MainContext.Query(),
+// glib.MainContext.Check(), glib.MainContext.Dispatch(),
+// glib.MainContext.Release().
 //
 // Since 2.76 context can be NULL to use the global-default main context.
 //
@@ -21373,8 +21454,8 @@ func (context *MainContext) Acquire() bool {
 
 // Dispatch dispatches all pending sources.
 //
-// You must have successfully acquired the context with g_main_context_acquire()
-// before you may call this function.
+// You must have successfully acquired the context with
+// glib.MainContext.Acquire() before you may call this function.
 //
 // Since 2.76 context can be NULL to use the global-default main context.
 func (context *MainContext) Dispatch() {
@@ -21394,7 +21475,7 @@ func (context *MainContext) Dispatch() {
 //
 // The function takes the following parameters:
 //
-//   - funcs passed to g_source_new().
+//   - funcs passed to glib.Source.New.
 //   - userData (optional): user data from the callback.
 //
 // The function returns the following values:
@@ -21438,14 +21519,14 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 // More specifically: source IDs can be reissued after a source has been
 // destroyed and therefore it is never valid to use this function with a source
 // ID which may have already been removed. An example is when scheduling an idle
-// to run in another thread with g_idle_add(): the idle may already have run and
-// been removed by the time this function is called on its (now invalid) source
-// ID. This source ID may have been reissued, leading to the operation being
-// performed against the wrong source.
+// to run in another thread with glib.IdleAdd(): the idle may already have run
+// and been removed by the time this function is called on its (now invalid)
+// source ID. This source ID may have been reissued, leading to the operation
+// being performed against the wrong source.
 //
 // The function takes the following parameters:
 //
-//   - sourceId: source ID, as returned by g_source_get_id().
+//   - sourceId: source ID, as returned by glib.Source.GetID().
 //
 // The function returns the following values:
 //
@@ -21520,9 +21601,9 @@ func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Sourc
 // InvokeFull invokes a function in such a way that context is owned during the
 // invocation of function.
 //
-// This function is the same as g_main_context_invoke() except that it lets you
-// specify the priority in case function ends up being scheduled as an idle and
-// also lets you give a Notify for data.
+// This function is the same as glib.MainContext.Invoke() except that it lets
+// you specify the priority in case function ends up being scheduled as an idle
+// and also lets you give a Notify for data.
 //
 // notify should not assume that it is called from any particular thread or with
 // any particular context acquired.
@@ -21553,8 +21634,8 @@ func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
 }
 
 // IsOwner determines whether this thread holds the (recursive) ownership of
-// this Context. This is useful to know before waiting on another thread that
-// may be blocking to get ownership of context.
+// this glib.MainContext. This is useful to know before waiting on another
+// thread that may be blocking to get ownership of context.
 //
 // The function returns the following values:
 //
@@ -21588,8 +21669,8 @@ func (context *MainContext) IsOwner() bool {
 // any), that are ready at this given moment without further waiting.
 //
 // Note that even when may_block is TRUE, it is still possible for
-// g_main_context_iteration() to return FALSE, since the wait may be interrupted
-// for other reasons than an event source becoming ready.
+// glib.MainContext.Iteration() to return FALSE, since the wait may be
+// interrupted for other reasons than an event source becoming ready.
 //
 // The function takes the following parameters:
 //
@@ -21662,10 +21743,10 @@ func (context *MainContext) PopThreadDefault() {
 }
 
 // Prepare prepares to poll sources within a main loop. The resulting
-// information for polling is determined by calling g_main_context_query ().
+// information for polling is determined by calling glib.MainContext.Query().
 //
-// You must have successfully acquired the context with g_main_context_acquire()
-// before you may call this function.
+// You must have successfully acquired the context with
+// glib.MainContext.Acquire() before you may call this function.
 //
 // The function returns the following values:
 //
@@ -21700,27 +21781,29 @@ func (context *MainContext) Prepare() (int, bool) {
 // as most [gio][gio]-based I/O) which are started in this thread to run under
 // context and deliver their results to its main loop, rather than running under
 // the global default main context in the main thread. Note that calling this
-// function changes the context returned by g_main_context_get_thread_default(),
-// not the one returned by g_main_context_default(), so it does not affect the
-// context used by functions like g_idle_add().
+// function changes the context returned by glib.MainContext().GetThreadDefault,
+// not the one returned by glib.MainContext().Default, so it does not affect the
+// context used by functions like glib.IdleAdd().
 //
-// Normally you would call this function shortly after creating a new thread,
-// passing it a Context which will be run by a Loop in that thread, to set a new
-// default context for all async operations in that thread. In this case you may
-// not need to ever call g_main_context_pop_thread_default(), assuming you want
-// the new Context to be the default for the whole lifecycle of the thread.
+// Normally you would call this function shortly after creating a
+// new thread, passing it a glib.MainContext which will be run by a
+// glib.MainLoop in that thread, to set a new default context for all
+// async operations in that thread. In this case you may not need to ever
+// call glib.MainContext.PopThreadDefault(), assuming you want the new
+// glib.MainContext to be the default for the whole lifecycle of the thread.
 //
 // If you don't have control over how the new thread was created (e.g.
 // in the new thread isn't newly created, or if the thread life cycle is
-// managed by a Pool), it is always suggested to wrap the logic that needs
-// to use the new Context inside a g_main_context_push_thread_default() /
-// g_main_context_pop_thread_default() pair, otherwise threads that are re-used
-// will end up never explicitly releasing the Context reference they hold.
+// managed by a Pool), it is always suggested to wrap the logic that needs to
+// use the new glib.MainContext inside a glib.MainContext.PushThreadDefault() /
+// glib.MainContext.PopThreadDefault() pair, otherwise threads that are re-used
+// will end up never explicitly releasing the glib.MainContext reference they
+// hold.
 //
 // In some cases you may want to schedule a single operation in a non-default
 // context, or temporarily use a non-default context in the main thread.
 // In that case, you can wrap the call to the asynchronous operation inside a
-// g_main_context_push_thread_default() / g_main_context_pop_thread_default()
+// glib.MainContext.PushThreadDefault() / glib.MainContext.PopThreadDefault()
 // pair, but it is up to you to ensure that no other asynchronous operations
 // accidentally get started while the non-default context is active.
 //
@@ -21739,12 +21822,12 @@ func (context *MainContext) PushThreadDefault() {
 }
 
 // Release releases ownership of a context previously acquired by this thread
-// with g_main_context_acquire(). If the context was acquired multiple times,
-// the ownership will be released only when g_main_context_release() is called
+// with glib.MainContext.Acquire(). If the context was acquired multiple times,
+// the ownership will be released only when glib.MainContext.Release() is called
 // as many times as it was acquired.
 //
-// You must have successfully acquired the context with g_main_context_acquire()
-// before you may call this function.
+// You must have successfully acquired the context with
+// glib.MainContext.Acquire() before you may call this function.
 func (context *MainContext) Release() {
 	var _arg0 *C.GMainContext // out
 
@@ -21756,13 +21839,13 @@ func (context *MainContext) Release() {
 	runtime.KeepAlive(context)
 }
 
-// Wakeup: if context is currently blocking in g_main_context_iteration()
+// Wakeup: if context is currently blocking in glib.MainContext.Iteration()
 // waiting for a source to become ready, cause it to stop blocking and return.
-// Otherwise, cause the next invocation of g_main_context_iteration() to return
-// without blocking.
+// Otherwise, cause the next invocation of glib.MainContext.Iteration() to
+// return without blocking.
 //
-// This API is useful for low-level control over Context; for example,
-// integrating it with main loop implementations such as Loop.
+// This API is useful for low-level control over glib.MainContext; for example,
+// integrating it with main loop implementations such as glib.MainLoop.
 //
 // Another related use for this function is when implementing a main loop with a
 // termination condition, computed from multiple threads:
@@ -21785,7 +21868,7 @@ func (context *MainContext) Wakeup() {
 // MainContextDefault returns the global-default main context. This is
 // the main context used for main loop functions when a main loop is not
 // explicitly specified, and corresponds to the "main" main loop. See also
-// g_main_context_get_thread_default().
+// glib.MainContext().GetThreadDefault.
 //
 // The function returns the following values:
 //
@@ -21812,13 +21895,14 @@ func MainContextDefault() *MainContext {
 // MainContextGetThreadDefault gets the thread-default Context for
 // this thread. Asynchronous operations that want to be able to be run
 // in contexts other than the default one should call this method or
-// g_main_context_ref_thread_default() to get a Context to add their #GSources
-// to. (Note that even in single-threaded programs applications may sometimes
-// want to temporarily push a non-default context, so it is not safe to assume
-// that this will always return NULL if you are running in the default thread.)
+// glib.MainContext().RefThreadDefault to get a glib.MainContext to add their
+// glib.Sources to. (Note that even in single-threaded programs applications may
+// sometimes want to temporarily push a non-default context, so it is not safe
+// to assume that this will always return NULL if you are running in the default
+// thread.)
 //
 // If you need to hold a reference on the context, use
-// g_main_context_ref_thread_default() instead.
+// glib.MainContext().RefThreadDefault instead.
 //
 // The function returns the following values:
 //
@@ -21845,16 +21929,16 @@ func MainContextGetThreadDefault() *MainContext {
 	return _mainContext
 }
 
-// MainContextRefThreadDefault gets the thread-default Context for this
-// thread, as with g_main_context_get_thread_default(), but also adds
-// a reference to it with g_main_context_ref(). In addition, unlike
-// g_main_context_get_thread_default(), if the thread-default context is the
-// global-default context, this will return that Context (with a ref added to
-// it) rather than returning NULL.
+// MainContextRefThreadDefault gets the thread-default glib.MainContext
+// for this thread, as with glib.MainContext().GetThreadDefault, but also
+// adds a reference to it with glib.MainContext.Ref(). In addition, unlike
+// glib.MainContext().GetThreadDefault, if the thread-default context is the
+// global-default context, this will return that glib.MainContext (with a ref
+// added to it) rather than returning NULL.
 //
 // The function returns the following values:
 //
-//   - mainContext: thread-default Context. Unref with g_main_context_unref()
+//   - mainContext: thread-default Context. Unref with glib.MainContext.Unref()
 //     when you are done with it.
 func MainContextRefThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
@@ -21922,11 +22006,11 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	return _mainLoop
 }
 
-// Context returns the Context of loop.
+// Context returns the glib.MainContext of loop.
 //
 // The function returns the following values:
 //
-//   - mainContext of loop.
+//   - mainContext: glib.MainContext of loop.
 func (loop *MainLoop) Context() *MainContext {
 	var _arg0 *C.GMainLoop    // out
 	var _cret *C.GMainContext // in
@@ -21951,7 +22035,7 @@ func (loop *MainLoop) Context() *MainContext {
 }
 
 // IsRunning checks to see if the main loop is currently being run via
-// g_main_loop_run().
+// glib.MainLoop.Run().
 //
 // The function returns the following values:
 //
@@ -21974,10 +22058,10 @@ func (loop *MainLoop) IsRunning() bool {
 	return _ok
 }
 
-// Quit stops a Loop from running. Any calls to g_main_loop_run() for the loop
-// will return.
+// Quit stops a glib.MainLoop from running. Any calls to glib.MainLoop.Run() for
+// the loop will return.
 //
-// Note that sources that have already been dispatched when g_main_loop_quit()
+// Note that sources that have already been dispatched when glib.MainLoop.Quit()
 // is called will still be executed.
 func (loop *MainLoop) Quit() {
 	var _arg0 *C.GMainLoop // out
@@ -21988,9 +22072,9 @@ func (loop *MainLoop) Quit() {
 	runtime.KeepAlive(loop)
 }
 
-// Run runs a main loop until g_main_loop_quit() is called on the loop. If this
-// is called for the thread of the loop's Context, it will process events from
-// the loop, otherwise it will simply wait.
+// Run runs a main loop until glib.MainLoop.Quit() is called on the loop. If
+// this is called for the thread of the loop's Context, it will process events
+// from the loop, otherwise it will simply wait.
 func (loop *MainLoop) Run() {
 	var _arg0 *C.GMainLoop // out
 
@@ -22123,7 +22207,7 @@ func (file *MappedFile) Bytes() *Bytes {
 //
 // The function returns the following values:
 //
-//   - utf8 contents of file, or NULL.
+//   - utf8 (optional) contents of file, or NULL.
 func (file *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.gchar       // in
@@ -22135,8 +22219,9 @@ func (file *MappedFile) Contents() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -23833,16 +23918,16 @@ func PathBufEqual(v1, v2 unsafe.Pointer) bool {
 	return _ok
 }
 
-// PatternSpec: GPatternSpec struct is the 'compiled' form of a glob-style
+// PatternSpec: GPatternSpec struct is the ‘compiled’ form of a glob-style
 // pattern.
 //
-// The glib.PatternMatchSimple() and glib.PatternSpec.Match() functions match
-// a string against a pattern containing '*' and '?' wildcards with similar
-// semantics as the standard glob() function: '*' matches an arbitrary, possibly
-// empty, string, '?' matches an arbitrary character.
+// The glib.PatternMatchSimple() and glib.PatternSpec.Match() functions match a
+// string against a pattern containing * and ? wildcards with similar semantics
+// as the standard glob() function: * matches an arbitrary, possibly empty,
+// string, ? matches an arbitrary character.
 //
-// Note that in contrast to glob(), the '/' character can be matched by the
-// wildcards, there are no '[...]' character ranges and '*' and '?' can not be
+// Note that in contrast to glob() (man:glob(3)), the / character can be matched
+// by the wildcards, there are no […] character ranges and * and ? can not be
 // escaped to include them literally in a pattern.
 //
 // When multiple strings must be matched against the same pattern, it is better
@@ -23889,7 +23974,7 @@ func NewPatternSpec(pattern string) *PatternSpec {
 	return _patternSpec
 }
 
-// Copy copies pspec in a new Spec.
+// Copy copies pspec in a new glib.PatternSpec.
 //
 // The function returns the following values:
 //
@@ -23947,29 +24032,31 @@ func (pspec1 *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 	return _ok
 }
 
-// Match matches a string against a compiled pattern. Passing the correct length
-// of the string given is mandatory. The reversed string can be omitted by
-// passing NULL, this is more efficient if the reversed version of the string to
-// be matched is not at hand, as g_pattern_match() will only construct it if the
-// compiled pattern requires reverse matches.
+// Match matches a string against a compiled pattern.
+//
+// Passing the correct length of the string given is mandatory. The
+// reversed string can be omitted by passing NULL, this is more efficient
+// if the reversed version of the string to be matched is not at hand,
+// as glib.PatternSpec.Match() will only construct it if the compiled pattern
+// requires reverse matches.
 //
 // Note that, if the user code will (possibly) match a string against a
 // multitude of patterns containing wildcards, chances are high that some
-// patterns will require a reversed string. In this case, it's more efficient
+// patterns will require a reversed string. In this case, it’s more efficient
 // to provide the reversed string to avoid multiple constructions thereof in the
-// various calls to g_pattern_match().
+// various calls to glib.PatternSpec.Match().
 //
 // Note also that the reverse of a UTF-8 encoded string can in general not be
-// obtained by g_strreverse(). This works only if the string does not contain
-// any multibyte characters. GLib offers the g_utf8_strreverse() function to
+// obtained by glib.Strreverse(). This works only if the string does not contain
+// any multibyte characters. GLib offers the glib.UTF8Strreverse() function to
 // reverse UTF-8 encoded strings.
 //
 // The function takes the following parameters:
 //
 //   - stringLength: length of string (in bytes, i.e. strlen(), not
-//     g_utf8_strlen()).
+//     glib.UTF8Strlen()).
 //   - str: UTF-8 encoded string to match.
-//   - stringReversed (optional): reverse of string or NULL.
+//   - stringReversed (optional): reverse of string.
 //
 // The function returns the following values:
 //
@@ -24005,9 +24092,10 @@ func (pspec *PatternSpec) Match(stringLength uint, str string, stringReversed st
 	return _ok
 }
 
-// MatchString matches a string against a compiled pattern. If the string is to
-// be matched against more than one pattern, consider using g_pattern_match()
-// instead while supplying the reversed string.
+// MatchString matches a string against a compiled pattern.
+//
+// If the string is to be matched against more than one pattern, consider using
+// glib.PatternSpec.Match() instead while supplying the reversed string.
 //
 // The function takes the following parameters:
 //
@@ -26077,11 +26165,11 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 }
 
 // AddChildSource adds child_source to source as a "polled" source; when source
-// is added to a Context, child_source will be automatically added with the same
-// priority, when child_source is triggered, it will cause source to dispatch
-// (in addition to calling its own callback), and when source is destroyed,
-// it will destroy child_source as well. (source will also still be dispatched
-// if its own prepare/check functions indicate that it is ready.)
+// is added to a glib.MainContext, child_source will be automatically added
+// with the same priority, when child_source is triggered, it will cause source
+// to dispatch (in addition to calling its own callback), and when source is
+// destroyed, it will destroy child_source as well. (source will also still be
+// dispatched if its own prepare/check functions indicate that it is ready.)
 //
 // If you don't need child_source to do anything on its own when it triggers,
 // you can call g_source_set_dummy_callback() on it to set a callback that does
@@ -26090,8 +26178,8 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 // source will hold a reference on child_source while child_source is attached
 // to it.
 //
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
+// This API is only intended to be used by implementations of glib.Source.
+// Do not call this API on a glib.Source that you did not create.
 //
 // The function takes the following parameters:
 //
@@ -26108,8 +26196,8 @@ func (source *Source) AddChildSource(childSource *Source) {
 	runtime.KeepAlive(childSource)
 }
 
-// Attach adds a #GSource to a context so that it will be executed within that
-// context. Remove it by calling g_source_destroy().
+// Attach adds a glib.Source to a context so that it will be executed within
+// that context. Remove it by calling glib.Source.Destroy().
 //
 // This function is safe to call from any thread, regardless of which thread the
 // context is running in.
@@ -26143,18 +26231,19 @@ func (source *Source) Attach(context *MainContext) uint {
 	return _guint
 }
 
-// Destroy removes a source from its Context, if any, and mark it as destroyed.
-// The source cannot be subsequently added to another context. It is safe to
-// call this on sources which have already been removed from their context.
+// Destroy removes a source from its glib.MainContext, if any, and mark it
+// as destroyed. The source cannot be subsequently added to another context.
+// It is safe to call this on sources which have already been removed from their
+// context.
 //
-// This does not unref the #GSource: if you still hold a reference, use
-// g_source_unref() to drop it.
+// This does not unref the glib.Source: if you still hold a reference, use
+// glib.Source.Unref() to drop it.
 //
 // This function is safe to call from any thread, regardless of which thread the
-// Context is running in.
+// glib.MainContext is running in.
 //
-// If the source is currently attached to a Context, destroying it will
-// effectively unset the callback similar to calling g_source_set_callback().
+// If the source is currently attached to a glib.MainContext, destroying it will
+// effectively unset the callback similar to calling glib.Source.SetCallback().
 // This can mean, that the data's Notify gets called right away.
 func (source *Source) Destroy() {
 	var _arg0 *C.GSource // out
@@ -26166,7 +26255,7 @@ func (source *Source) Destroy() {
 }
 
 // CanRecurse checks whether a source is allowed to be called recursively.
-// see g_source_set_can_recurse().
+// see glib.Source.SetCanRecurse().
 //
 // The function returns the following values:
 //
@@ -26189,13 +26278,14 @@ func (source *Source) CanRecurse() bool {
 	return _ok
 }
 
-// Context gets the Context with which the source is associated.
+// Context gets the glib.MainContext with which the source is associated.
 //
 // You can call this on a source that has been destroyed, provided that the
-// Context it was attached to still exists (in which case it will return that
-// Context). In particular, you can always call this function on the source
-// returned from g_main_current_source(). But calling this function on a source
-// whose Context has been destroyed is an error.
+// glib.MainContext it was attached to still exists (in which case it will
+// return that glib.MainContext). In particular, you can always call this
+// function on the source returned from glib.MainCurrentSource(). But calling
+// this function on a source whose glib.MainContext has been destroyed is an
+// error.
 //
 // The function returns the following values:
 //
@@ -26227,9 +26317,9 @@ func (source *Source) Context() *MainContext {
 }
 
 // CurrentTime: this function ignores source and is otherwise the same as
-// g_get_current_time().
+// glib.GetCurrentTime().
 //
-// Deprecated: use g_source_get_time() instead.
+// Deprecated: use glib.Source.GetTime() instead.
 //
 // The function takes the following parameters:
 //
@@ -26249,12 +26339,12 @@ func (source *Source) CurrentTime(timeval *TimeVal) {
 // ID returns the numeric ID for a particular source. The ID of a
 // source is a positive integer which is unique within a particular
 // main loop context. The reverse mapping from ID to source is done by
-// g_main_context_find_source_by_id().
+// glib.MainContext.FindSourceByID().
 //
 // You can only call this function while the source is associated to a
-// Context instance; calling this function before g_source_attach() or after
-// g_source_destroy() yields undefined behavior. The ID returned is unique
-// within the Context instance passed to g_source_attach().
+// glib.MainContext instance; calling this function before glib.Source.Attach()
+// or after glib.Source.Destroy() yields undefined behavior. The ID returned is
+// unique within the glib.MainContext instance passed to glib.Source.Attach().
 //
 // The function returns the following values:
 //
@@ -26276,7 +26366,7 @@ func (source *Source) ID() uint {
 }
 
 // Name gets a name for the source, used in debugging and profiling. The name
-// may be LL if it has never been set with g_source_set_name().
+// may be LL if it has never been set with glib.Source.SetName().
 //
 // The function returns the following values:
 //
@@ -26321,7 +26411,7 @@ func (source *Source) Priority() int {
 }
 
 // ReadyTime gets the "ready time" of source, as set by
-// g_source_set_ready_time().
+// glib.Source.SetReadyTime().
 //
 // Any time before or equal to the current monotonic time (including 0) is an
 // indication that the source will fire immediately.
@@ -26346,12 +26436,12 @@ func (source *Source) ReadyTime() int64 {
 }
 
 // Time gets the time to be used when checking this source. The advantage of
-// calling this function over calling g_get_monotonic_time() directly is that
+// calling this function over calling glib.GetMonotonicTime() directly is that
 // when checking multiple sources, GLib can cache a single value instead of
 // having to repeatedly get the system monotonic time.
 //
 // The time here is the system monotonic time, if available, or some other
-// reasonable alternative otherwise. See g_get_monotonic_time().
+// reasonable alternative otherwise. See glib.GetMonotonicTime().
 //
 // The function returns the following values:
 //
@@ -26394,10 +26484,10 @@ func (source *Source) Time() int64 {
 //	}
 //
 // Calls to this function from a thread other than the one acquired by the
-// Context the #GSource is attached to are typically redundant, as the source
-// could be destroyed immediately after this function returns. However, once a
-// source is destroyed it cannot be un-destroyed, so this function can be used
-// for opportunistic checks from any thread.
+// glib.MainContext the #GSource is attached to are typically redundant, as the
+// source could be destroyed immediately after this function returns. However,
+// once a source is destroyed it cannot be un-destroyed, so this function can be
+// used for opportunistic checks from any thread.
 //
 // The function returns the following values:
 //
@@ -26427,7 +26517,7 @@ func (source *Source) IsDestroyed() bool {
 //
 // The function takes the following parameters:
 //
-//   - childSource previously passed to g_source_add_child_source().
+//   - childSource previously passed to glib.Source.AddChildSource().
 func (source *Source) RemoveChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
@@ -26445,20 +26535,20 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 //
 // The exact type of func depends on the type of source; ie. you should not
 // count on func being called with data as its first parameter. Cast func with
-// G_SOURCE_FUNC() to avoid warnings about incompatible function types.
+// glib.SOURCEFUNC() to avoid warnings about incompatible function types.
 //
-// See [memory management of sources][mainloop-memory-management] for details on
-// how to handle memory management of data.
+// See mainloop memory management (main-loop.html#memory-management-of-sources)
+// for details on how to handle memory management of data.
 //
 // Typically, you won't use this function. Instead use functions specific to the
-// type of source you are using, such as g_idle_add() or g_timeout_add().
+// type of source you are using, such as glib.IdleAdd() or glib.TimeoutAdd().
 //
 // It is safe to call this function multiple times on a source which has already
 // been attached to a context. The changes will take effect for the next time
 // the source is dispatched after this call returns.
 //
-// Note that g_source_destroy() for a currently attached source has the effect
-// of also unsetting the callback.
+// Note that glib.Source.Destroy() for a currently attached source has the
+// effect of also unsetting the callback.
 //
 // The function takes the following parameters:
 //
@@ -26481,7 +26571,7 @@ func (source *Source) SetCallback(fn SourceFunc) {
 
 // SetCallbackIndirect sets the callback function storing the data as a
 // refcounted callback "object". This is used internally. Note that calling
-// g_source_set_callback_indirect() assumes an initial reference count on
+// glib.Source.SetCallbackIndirect() assumes an initial reference count on
 // callback_data, and thus callback_funcs->unref will eventually be called once
 // more than callback_funcs->ref.
 //
@@ -26561,11 +26651,12 @@ func (source *Source) SetFuncs(funcs *SourceFuncs) {
 // name in the "check" function of a Funcs to include details like the event
 // type in the source name.
 //
-// Use caution if changing the name while another thread may be accessing it
-// with g_source_get_name(); that function does not copy the value, and changing
-// the value will free it while the other thread may be attempting to use it.
+// Use caution if changing the name while another thread may be accessing
+// it with glib.Source.GetName(); that function does not copy the value,
+// and changing the value will free it while the other thread may be attempting
+// to use it.
 //
-// Also see g_source_set_static_name().
+// Also see glib.Source.SetStaticName().
 //
 // The function takes the following parameters:
 //
@@ -26623,7 +26714,7 @@ func (source *Source) SetPriority(priority int) {
 // undefined.
 //
 // It is a no-op to call this function on a #GSource which has already been
-// destroyed with g_source_destroy().
+// destroyed with glib.Source.Destroy().
 //
 // This API is only intended to be used by implementations of #GSource. Do not
 // call this API on a #GSource that you did not create.
@@ -26644,7 +26735,7 @@ func (source *Source) SetReadyTime(readyTime int64) {
 	runtime.KeepAlive(readyTime)
 }
 
-// SetStaticName: variant of g_source_set_name() that does not duplicate the
+// SetStaticName: variant of glib.Source.SetName() that does not duplicate the
 // name, and can only be used with string literals.
 //
 // The function takes the following parameters:
@@ -26669,7 +26760,7 @@ func (source *Source) SetStaticName(name string) {
 //
 // The function takes the following parameters:
 //
-//   - funcs passed to g_source_new().
+//   - funcs passed to glib.Source.New.
 //   - userData (optional): user data for the callback.
 //
 // The function returns the following values:
@@ -26728,17 +26819,17 @@ func SourceRemoveByUserData(userData unsafe.Pointer) bool {
 // SourceSetNameByID sets the name of a source using its ID.
 //
 // This is a convenience utility to set source names from the return value of
-// g_idle_add(), g_timeout_add(), etc.
+// glib.IdleAdd(), glib.TimeoutAdd(), etc.
 //
 // It is a programmer error to attempt to set the name of a non-existent source.
 //
 // More specifically: source IDs can be reissued after a source has been
 // destroyed and therefore it is never valid to use this function with a source
 // ID which may have already been removed. An example is when scheduling an idle
-// to run in another thread with g_idle_add(): the idle may already have run and
-// been removed by the time this function is called on its (now invalid) source
-// ID. This source ID may have been reissued, leading to the operation being
-// performed against the wrong source.
+// to run in another thread with glib.IdleAdd(): the idle may already have run
+// and been removed by the time this function is called on its (now invalid)
+// source ID. This source ID may have been reissued, leading to the operation
+// being performed against the wrong source.
 //
 // The function takes the following parameters:
 //
@@ -27767,7 +27858,7 @@ func (tuples *Tuples) Index(index_ int, field int) unsafe.Pointer {
 // the hierarchical nature of URIs means that they can either
 // be ‘relative references’ (sometimes referred to as ‘relative
 // URIs’) or ‘URIs’ (for clarity, ‘URIs’ are referred to in this
-// documentation as ‘absolute URIs’ — although in constrast to RFC 3986
+// documentation as ‘absolute URIs’ — although in contrast to RFC 3986
 // (https://tools.ietf.org/html/rfc3986#section-4.3), fragment identifiers are
 // always allowed).
 //
@@ -31823,7 +31914,7 @@ func (value *Variant) NChildren() uint {
 
 // Print pretty-prints value in the format understood by g_variant_parse().
 //
-// The format is described [here][gvariant-text].
+// The format is described here (gvariant-text-format.html).
 //
 // If type_annotate is TRUE, then type information is included in the output.
 //

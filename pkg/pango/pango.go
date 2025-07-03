@@ -325,15 +325,15 @@ const VERSION_MAJOR = 1
 
 // VERSION_MICRO: micro component of the version of Pango available at
 // compile-time.
-const VERSION_MICRO = 2
+const VERSION_MICRO = 0
 
 // VERSION_MINOR: minor component of the version of Pango available at
 // compile-time.
-const VERSION_MINOR = 52
+const VERSION_MINOR = 54
 
 // VERSION_STRING: string literal containing the version of Pango available at
 // compile-time.
-const VERSION_STRING = "1.52.2"
+const VERSION_STRING = "1.54.0"
 
 // Glyph: PangoGlyph represents a single glyph in the output form of a string.
 type Glyph = uint32
@@ -16763,6 +16763,33 @@ func (item *Item) Copy() *Item {
 	}
 
 	return _ret
+}
+
+// CharOffset returns the character offset of the item from the beginning of the
+// itemized text.
+//
+// If the item has not been obtained from Pango's itemization machinery, then
+// the character offset is not available. In that case, this function returns
+// -1.
+//
+// The function returns the following values:
+//
+//   - gint: character offset of the item from the beginning of the itemized
+//     text, or -1.
+func (item *Item) CharOffset() int {
+	var _arg0 *C.PangoItem // out
+	var _cret C.int        // in
+
+	_arg0 = (*C.PangoItem)(gextras.StructNative(unsafe.Pointer(item)))
+
+	_cret = C.pango_item_get_char_offset(_arg0)
+	runtime.KeepAlive(item)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }
 
 // Split modifies orig to cover only the text after split_index, and returns a

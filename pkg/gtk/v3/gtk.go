@@ -3594,7 +3594,7 @@ func init() {
 // BINARY_AGE: like gtk_get_binary_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const BINARY_AGE = 2442
+const BINARY_AGE = 2443
 
 // INPUT_ERROR: constant to return from a signal handler for the
 // SpinButton::input signal in case of conversion failure.
@@ -3628,7 +3628,7 @@ const MAX_COMPOSE_LEN = 7
 // MICRO_VERSION: like gtk_get_micro_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MICRO_VERSION = 42
+const MICRO_VERSION = 43
 
 // MINOR_VERSION: like gtk_get_minor_version(), but from the headers used at
 // application compile time, rather than from the library linked against at

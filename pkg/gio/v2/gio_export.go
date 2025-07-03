@@ -1276,46 +1276,47 @@ func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchC
 	var _info AppInfor // out
 	var _files []Filer // out
 
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_info = rv
-	}
-	_files = make([]Filer, 0, gextras.ListSize(unsafe.Pointer(arg2)))
-	gextras.MoveList(unsafe.Pointer(arg2), false, func(v unsafe.Pointer) {
-		src := (*C.GFile)(v)
-		var dst Filer // out
+	if arg1 != nil {
 		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Filer is nil")
-			}
+			objptr := unsafe.Pointer(arg1)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Filer)
+				_, ok := obj.(AppInfor)
 				return ok
 			})
-			rv, ok := casted.(Filer)
+			rv, ok := casted.(AppInfor)
 			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
-			dst = rv
+			_info = rv
 		}
-		_files = append(_files, dst)
-	})
+	}
+	if arg2 != nil {
+		_files = make([]Filer, 0, gextras.ListSize(unsafe.Pointer(arg2)))
+		gextras.MoveList(unsafe.Pointer(arg2), false, func(v unsafe.Pointer) {
+			src := (*C.GFile)(v)
+			var dst Filer // out
+			{
+				objptr := unsafe.Pointer(src)
+				if objptr == nil {
+					panic("object of type gio.Filer is nil")
+				}
+
+				object := coreglib.Take(objptr)
+				casted := object.WalkCast(func(obj coreglib.Objector) bool {
+					_, ok := obj.(Filer)
+					return ok
+				})
+				rv, ok := casted.(Filer)
+				if !ok {
+					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+				}
+				dst = rv
+			}
+			_files = append(_files, dst)
+		})
+	}
 
 	utf8 := overrides.StartupNotifyID(_info, _files)
 

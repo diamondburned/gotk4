@@ -73,6 +73,7 @@ Pkcs
 Sctp
 Uuid
 Simd
+Srgb
 Hmac
 Mime
 Rgba
@@ -80,10 +81,12 @@ Argb
 Vrgb
 Vbgr
 Cogl
+Cicp
 Guid
 Http
 Https
 Ascii
+Dmabuf
 Iso8601
 [LA]gpl
 [234]d

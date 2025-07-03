@@ -144,6 +144,7 @@ import (
 // extern void _gotk4_gtk4_TextBuffer_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_TextBuffer_ConnectBeginUserAction(gpointer, guintptr);
 // extern void _gotk4_gtk4_TextBuffer_ConnectApplyTag(gpointer, GtkTextTag*, GtkTextIter*, GtkTextIter*, guintptr);
+// extern void _gotk4_gtk4_TextBufferCommitNotify(GtkTextBuffer*, GtkTextBufferNotifyFlags, guint, guint, gpointer);
 // extern void _gotk4_gtk4_TextBufferClass_undo(GtkTextBuffer*);
 // extern void _gotk4_gtk4_TextBufferClass_remove_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
 // extern void _gotk4_gtk4_TextBufferClass_redo(GtkTextBuffer*);
@@ -732,6 +733,12 @@ import (
 // };
 // gboolean _gotk4_gtk4_AccessibleText_virtual_get_attributes(void* fnptr, GtkAccessibleText* arg0, unsigned int arg1, gsize* arg2, GtkAccessibleTextRange** arg3, char*** arg4, char*** arg5) {
 //   return ((gboolean (*)(GtkAccessibleText*, unsigned int, gsize*, GtkAccessibleTextRange**, char***, char***))(fnptr))(arg0, arg1, arg2, arg3, arg4, arg5);
+// };
+// gboolean _gotk4_gtk4_AccessibleText_virtual_get_extents(void* fnptr, GtkAccessibleText* arg0, unsigned int arg1, unsigned int arg2, graphene_rect_t* arg3) {
+//   return ((gboolean (*)(GtkAccessibleText*, unsigned int, unsigned int, graphene_rect_t*))(fnptr))(arg0, arg1, arg2, arg3);
+// };
+// gboolean _gotk4_gtk4_AccessibleText_virtual_get_offset(void* fnptr, GtkAccessibleText* arg0, graphene_point_t* arg1, unsigned int* arg2) {
+//   return ((gboolean (*)(GtkAccessibleText*, graphene_point_t*, unsigned int*))(fnptr))(arg0, arg1, arg2);
 // };
 // gboolean _gotk4_gtk4_AccessibleText_virtual_get_selection(void* fnptr, GtkAccessibleText* arg0, gsize* arg1, GtkAccessibleTextRange** arg2) {
 //   return ((gboolean (*)(GtkAccessibleText*, gsize*, GtkAccessibleTextRange**))(fnptr))(arg0, arg1, arg2);
@@ -1562,6 +1569,7 @@ var (
 	GTypeFilterChange                   = coreglib.Type(C.gtk_filter_change_get_type())
 	GTypeFilterMatch                    = coreglib.Type(C.gtk_filter_match_get_type())
 	GTypeFontLevel                      = coreglib.Type(C.gtk_font_level_get_type())
+	GTypeFontRendering                  = coreglib.Type(C.gtk_font_rendering_get_type())
 	GTypeGraphicsOffloadEnabled         = coreglib.Type(C.gtk_graphics_offload_enabled_get_type())
 	GTypeIconSize                       = coreglib.Type(C.gtk_icon_size_get_type())
 	GTypeIconThemeError                 = coreglib.Type(C.gtk_icon_theme_error_get_type())
@@ -1642,6 +1650,7 @@ var (
 	GTypeShortcutActionFlags            = coreglib.Type(C.gtk_shortcut_action_flags_get_type())
 	GTypeStateFlags                     = coreglib.Type(C.gtk_state_flags_get_type())
 	GTypeStyleContextPrintFlags         = coreglib.Type(C.gtk_style_context_print_flags_get_type())
+	GTypeTextBufferNotifyFlags          = coreglib.Type(C.gtk_text_buffer_notify_flags_get_type())
 	GTypeTextSearchFlags                = coreglib.Type(C.gtk_text_search_flags_get_type())
 	GTypeTreeModelFlags                 = coreglib.Type(C.gtk_tree_model_flags_get_type())
 	GTypeAccessible                     = coreglib.Type(C.gtk_accessible_get_type())
@@ -1990,6 +1999,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeFilterChange, F: marshalFilterChange},
 		coreglib.TypeMarshaler{T: GTypeFilterMatch, F: marshalFilterMatch},
 		coreglib.TypeMarshaler{T: GTypeFontLevel, F: marshalFontLevel},
+		coreglib.TypeMarshaler{T: GTypeFontRendering, F: marshalFontRendering},
 		coreglib.TypeMarshaler{T: GTypeGraphicsOffloadEnabled, F: marshalGraphicsOffloadEnabled},
 		coreglib.TypeMarshaler{T: GTypeIconSize, F: marshalIconSize},
 		coreglib.TypeMarshaler{T: GTypeIconThemeError, F: marshalIconThemeError},
@@ -2070,6 +2080,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeShortcutActionFlags, F: marshalShortcutActionFlags},
 		coreglib.TypeMarshaler{T: GTypeStateFlags, F: marshalStateFlags},
 		coreglib.TypeMarshaler{T: GTypeStyleContextPrintFlags, F: marshalStyleContextPrintFlags},
+		coreglib.TypeMarshaler{T: GTypeTextBufferNotifyFlags, F: marshalTextBufferNotifyFlags},
 		coreglib.TypeMarshaler{T: GTypeTextSearchFlags, F: marshalTextSearchFlags},
 		coreglib.TypeMarshaler{T: GTypeTreeModelFlags, F: marshalTreeModelFlags},
 		coreglib.TypeMarshaler{T: GTypeAccessible, F: marshalAccessible},
@@ -2568,7 +2579,9 @@ const ACCESSIBLE_VALUE_UNDEFINED = -1
 // BINARY_AGE: like get_binary_age, but from the headers used at application
 // compile time, rather than from the library linked against at application run
 // time.
-const BINARY_AGE = 1404
+const BINARY_AGE = 1612
+
+// IM_MODULE_EXTENSION_POINT_NAME: default name of the extension point.
 const IM_MODULE_EXTENSION_POINT_NAME = "gtk-im-module"
 
 // INPUT_ERROR: constant to return from a signal handler for the ::input signal
@@ -2580,7 +2593,7 @@ const INPUT_ERROR = -1
 // INTERFACE_AGE: like get_interface_age, but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const INTERFACE_AGE = 4
+const INTERFACE_AGE = 12
 
 // INVALID_LIST_POSITION: value used to refer to a guaranteed invalid position
 // in a GListModel.
@@ -2608,18 +2621,24 @@ const LEVEL_BAR_OFFSET_LOW = "low"
 // application compile time, rather than from the library linked against at
 // application run time.
 const MAJOR_VERSION = 4
+
+// MAX_COMPOSE_LEN evaluates to the maximum length of a compose sequence.
+//
+// This macro is longer used by GTK.
 const MAX_COMPOSE_LEN = 7
+
+// MEDIA_FILE_EXTENSION_POINT_NAME: default extension point name for media file.
 const MEDIA_FILE_EXTENSION_POINT_NAME = "gtk-media-file"
 
 // MICRO_VERSION: like get_micro_version, but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MICRO_VERSION = 4
+const MICRO_VERSION = 12
 
 // MINOR_VERSION: like get_minor_version, but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MINOR_VERSION = 14
+const MINOR_VERSION = 16
 
 // PAPER_NAME_A3: name for the A3 paper size.
 const PAPER_NAME_A3 = "iso_a3"
@@ -2641,21 +2660,56 @@ const PAPER_NAME_LEGAL = "na_legal"
 
 // PAPER_NAME_LETTER: name for the Letter paper size.
 const PAPER_NAME_LETTER = "na_letter"
+
+// PRINT_SETTINGS_COLLATE: key used by the “Print to file” printer to store
+// whether to collate the printed pages.
 const PRINT_SETTINGS_COLLATE = "collate"
+
+// PRINT_SETTINGS_DEFAULT_SOURCE: key used by the “Print to file” printer to
+// store the default source.
 const PRINT_SETTINGS_DEFAULT_SOURCE = "default-source"
+
+// PRINT_SETTINGS_DITHER: key used by the “Print to file” printer to store the
+// dither used.
 const PRINT_SETTINGS_DITHER = "dither"
+
+// PRINT_SETTINGS_DUPLEX: key used by the “Print to file” printer to store
+// whether to print the output in duplex.
 const PRINT_SETTINGS_DUPLEX = "duplex"
+
+// PRINT_SETTINGS_FINISHINGS: key used by the “Print to file” printer to store
+// the finishings.
 const PRINT_SETTINGS_FINISHINGS = "finishings"
+
+// PRINT_SETTINGS_MEDIA_TYPE: key used by the “Print to file” printer to store
+// the media type.
+//
+// The set of media types is defined in PWG 5101.1-2002 PWG.
 const PRINT_SETTINGS_MEDIA_TYPE = "media-type"
+
+// PRINT_SETTINGS_NUMBER_UP: key used by the “Print to file” printer to store
+// the number of pages per sheet.
 const PRINT_SETTINGS_NUMBER_UP = "number-up"
+
+// PRINT_SETTINGS_NUMBER_UP_LAYOUT: key used by the “Print to file” printer to
+// store the number of pages per sheet in number-up mode.
 const PRINT_SETTINGS_NUMBER_UP_LAYOUT = "number-up-layout"
+
+// PRINT_SETTINGS_N_COPIES: key used by the “Print to file” printer to store the
+// number of copies.
 const PRINT_SETTINGS_N_COPIES = "n-copies"
+
+// PRINT_SETTINGS_ORIENTATION: key used by the “Print to file” printer to store
+// the orientation.
 const PRINT_SETTINGS_ORIENTATION = "orientation"
 
 // PRINT_SETTINGS_OUTPUT_BASENAME: key used by the “Print to file” printer to
 // store the file name of the output without the path to the directory and the
 // file extension.
 const PRINT_SETTINGS_OUTPUT_BASENAME = "output-basename"
+
+// PRINT_SETTINGS_OUTPUT_BIN: key used by the “Print to file” printer to store
+// the output bin.
 const PRINT_SETTINGS_OUTPUT_BIN = "output-bin"
 
 // PRINT_SETTINGS_OUTPUT_DIR: key used by the “Print to file” printer to store
@@ -2670,22 +2724,73 @@ const PRINT_SETTINGS_OUTPUT_FILE_FORMAT = "output-file-format"
 // the URI to which the output should be written. GTK itself supports only
 // “file://” URIs.
 const PRINT_SETTINGS_OUTPUT_URI = "output-uri"
+
+// PRINT_SETTINGS_PAGE_RANGES: key used by the “Print to file” printer to store
+// the array of page ranges to print.
 const PRINT_SETTINGS_PAGE_RANGES = "page-ranges"
+
+// PRINT_SETTINGS_PAGE_SET: key used by the “Print to file” printer to store the
+// set of pages to print.
 const PRINT_SETTINGS_PAGE_SET = "page-set"
+
+// PRINT_SETTINGS_PAPER_FORMAT: key used by the “Print to file” printer to store
+// the page format.
 const PRINT_SETTINGS_PAPER_FORMAT = "paper-format"
+
+// PRINT_SETTINGS_PAPER_HEIGHT: key used by the “Print to file” printer to store
+// the page height.
 const PRINT_SETTINGS_PAPER_HEIGHT = "paper-height"
+
+// PRINT_SETTINGS_PAPER_WIDTH: key used by the “Print to file” printer to store
+// the paper width.
 const PRINT_SETTINGS_PAPER_WIDTH = "paper-width"
+
+// PRINT_SETTINGS_PRINTER: key used by the “Print to file” printer to store the
+// printer name.
 const PRINT_SETTINGS_PRINTER = "printer"
+
+// PRINT_SETTINGS_PRINTER_LPI: key used by the “Print to file” printer to store
+// the resolution in lines per inch.
 const PRINT_SETTINGS_PRINTER_LPI = "printer-lpi"
+
+// PRINT_SETTINGS_PRINT_PAGES: key used by the “Print to file” printer to store
+// which pages to print.
 const PRINT_SETTINGS_PRINT_PAGES = "print-pages"
+
+// PRINT_SETTINGS_QUALITY: key used by the “Print to file” printer to store the
+// printing quality.
 const PRINT_SETTINGS_QUALITY = "quality"
+
+// PRINT_SETTINGS_RESOLUTION: key used by the “Print to file” printer to store
+// the resolution in DPI.
 const PRINT_SETTINGS_RESOLUTION = "resolution"
+
+// PRINT_SETTINGS_RESOLUTION_X: key used by the “Print to file” printer to store
+// the horizontal resolution in DPI.
 const PRINT_SETTINGS_RESOLUTION_X = "resolution-x"
+
+// PRINT_SETTINGS_RESOLUTION_Y: key used by the “Print to file” printer to store
+// the vertical resolution in DPI.
 const PRINT_SETTINGS_RESOLUTION_Y = "resolution-y"
+
+// PRINT_SETTINGS_REVERSE: key used by the “Print to file” printer to store
+// whether to reverse the order of the printed pages.
 const PRINT_SETTINGS_REVERSE = "reverse"
+
+// PRINT_SETTINGS_SCALE: key used by the “Print to file” printer to store the
+// scale.
 const PRINT_SETTINGS_SCALE = "scale"
+
+// PRINT_SETTINGS_USE_COLOR: key used by the “Print to file” printer to store
+// whether to print with colors.
 const PRINT_SETTINGS_USE_COLOR = "use-color"
+
+// PRINT_SETTINGS_WIN32_DRIVER_EXTRA: key used by the “Print to file” printer to
+// store 32-bit Windows extra driver.
 const PRINT_SETTINGS_WIN32_DRIVER_EXTRA = "win32-driver-extra"
+
+// PRINT_SETTINGS_WIN32_DRIVER_VERSION: key used by the “Print to file” printer
+// to store the 32-bit Windows driver version.
 const PRINT_SETTINGS_WIN32_DRIVER_VERSION = "win32-driver-version"
 
 // PRIORITY_RESIZE: use this priority for functionality related to size
@@ -2749,8 +2854,19 @@ type Allocation = gdk.Rectangle
 type AccessibleAnnouncementPriority C.gint
 
 const (
+	// AccessibleAnnouncementPriorityLow: announcement is low priority,
+	// and might be read only on the user's request.
 	AccessibleAnnouncementPriorityLow AccessibleAnnouncementPriority = iota
+	// AccessibleAnnouncementPriorityMedium: announcement is of medium priority,
+	// and is usually spoken at the next opportunity, such as at the end of
+	// speaking the current sentence or when the user pauses typing.
 	AccessibleAnnouncementPriorityMedium
+	// AccessibleAnnouncementPriorityHigh: announcement is of high priority,
+	// and is usually spoken immediately. Because an interruption might
+	// disorient users or cause them to not complete their current task, authors
+	// SHOULD NOT use high priority announcements unless the interruption is
+	// imperative. An example would be a notification about a critical battery
+	// power level.
 	AccessibleAnnouncementPriorityHigh
 )
 
@@ -2953,6 +3069,10 @@ const (
 	// AccessiblePropertyValueText defines the human readable text alternative
 	// of aria-valuenow for a range widget. Value type: string.
 	AccessiblePropertyValueText
+	// AccessiblePropertyHelpText defines a string value that provides a
+	// description of non-standard keyboard interactions of the current element.
+	// Value type: string.
+	AccessiblePropertyHelpText
 )
 
 func marshalAccessibleProperty(p uintptr) (interface{}, error) {
@@ -3000,15 +3120,23 @@ func (a AccessibleProperty) String() string {
 		return "ValueNow"
 	case AccessiblePropertyValueText:
 		return "ValueText"
+	case AccessiblePropertyHelpText:
+		return "HelpText"
 	default:
 		return fmt.Sprintf("AccessibleProperty(%d)", a)
 	}
 }
 
+// AccessiblePropertyInitValue initializes value with the appropriate type for
+// the property.
+//
+// This function is mostly meant for language bindings, in conjunction with
+// gtk_accessible_update_property_value().
+//
 // The function takes the following parameters:
 //
-//   - property
-//   - value
+//   - property: GtkAccessibleProperty.
+//   - value: uninitialized GValue.
 func AccessiblePropertyInitValue(property AccessibleProperty, value *coreglib.Value) {
 	var _arg1 C.GtkAccessibleProperty // out
 	var _arg2 *C.GValue               // out
@@ -3055,8 +3183,8 @@ const (
 	// provide additional information related to the object. Value type:
 	// reference.
 	AccessibleRelationDetails
-	// AccessibleRelationErrorMessage identifies the element that provides an
-	// error message for an object. Value type: reference.
+	// AccessibleRelationErrorMessage identifies the element (or elements) that
+	// provide an error message for an object. Value type: reference.
 	AccessibleRelationErrorMessage
 	// AccessibleRelationFlowTo identifies the next element (or elements) in
 	// an alternate reading order of content which, at the user's discretion,
@@ -3140,10 +3268,16 @@ func (a AccessibleRelation) String() string {
 	}
 }
 
+// AccessibleRelationInitValue initializes value with the appropriate type for
+// the relation.
+//
+// This function is mostly meant for language bindings, in conjunction with
+// gtk_accessible_update_relation_value().
+//
 // The function takes the following parameters:
 //
-//   - relation
-//   - value
+//   - relation: GtkAccessibleRelation.
+//   - value: uninitialized GValue.
 func AccessibleRelationInitValue(relation AccessibleRelation, value *coreglib.Value) {
 	var _arg1 C.GtkAccessibleRelation // out
 	var _arg2 *C.GValue               // out
@@ -3655,10 +3789,16 @@ func (a AccessibleState) String() string {
 	}
 }
 
+// AccessibleStateInitValue initializes value with the appropriate type for the
+// state.
+//
+// This function is mostly meant for language bindings, in conjunction with
+// gtk_accessible_update_relation_state().
+//
 // The function takes the following parameters:
 //
-//   - state
-//   - value
+//   - state: GtkAccessibleState.
+//   - value: uninitialized GValue.
 func AccessibleStateInitValue(state AccessibleState, value *coreglib.Value) {
 	var _arg1 C.GtkAccessibleState // out
 	var _arg2 *C.GValue            // out
@@ -3795,8 +3935,8 @@ func (a AccessibleTristate) String() string {
 // Baseline support is optional for containers and widgets, and is
 // only available for vertical alignment. GTK_ALIGN_BASELINE_CENTER and
 // GTK_ALIGN_BASELINE_FILL are treated similar to GTK_ALIGN_CENTER and
-// GTK_ALIGN_FILL`, except that it positions the widget to line up the
-// baselines, where that is supported.
+// GTK_ALIGN_FILL, except that it positions the widget to line up the baselines,
+// where that is supported.
 type Align C.gint
 
 const (
@@ -4124,6 +4264,11 @@ func (b BuilderError) String() string {
 	}
 }
 
+// BuilderErrorQuark registers an error quark for gtk.Builder errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func BuilderErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -4143,7 +4288,7 @@ func BuilderErrorQuark() glib.Quark {
 //
 // > Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO > and
 // GTK_BUTTONS_OK_CANCEL are discouraged by the > GNOME Human Interface
-// Guidelines (http://library.gnome.org/devel/hig-book/stable/).
+// Guidelines (https://developer.gnome.org/hig/).
 type ButtonsType C.gint
 
 const (
@@ -4462,6 +4607,11 @@ func (c ConstraintVflParserError) String() string {
 	}
 }
 
+// ConstraintVflParserErrorQuark registers an error quark for VFL error parsing.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func ConstraintVflParserErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -4715,6 +4865,12 @@ func (d DialogError) String() string {
 	}
 }
 
+// DialogErrorQuark registers an error quark for an operation that requires a
+// dialog if necessary.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func DialogErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -5086,7 +5242,36 @@ func (f FontLevel) String() string {
 	}
 }
 
-// GraphicsOffloadEnabled represents the state of graphics offlodading.
+// FontRendering values for the gtk.Settings:gtk-font-rendering setting that
+// influence how GTK renders fonts.
+type FontRendering C.gint
+
+const (
+	// FontRenderingAutomatic: set up font rendering automatically, taking
+	// factors like screen resolution and scale into account.
+	FontRenderingAutomatic FontRendering = iota
+	// FontRenderingManual: follow low-level font-related settings when
+	// configuring font rendering.
+	FontRenderingManual
+)
+
+func marshalFontRendering(p uintptr) (interface{}, error) {
+	return FontRendering(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for FontRendering.
+func (f FontRendering) String() string {
+	switch f {
+	case FontRenderingAutomatic:
+		return "Automatic"
+	case FontRenderingManual:
+		return "Manual"
+	default:
+		return fmt.Sprintf("FontRendering(%d)", f)
+	}
+}
+
+// GraphicsOffloadEnabled represents the state of graphics offloading.
 type GraphicsOffloadEnabled C.gint
 
 const (
@@ -5175,6 +5360,11 @@ func (i IconThemeError) String() string {
 	}
 }
 
+// IconThemeErrorQuark registers an error quark for gtk.IconTheme errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func IconThemeErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -6530,6 +6720,11 @@ func (r RecentManagerError) String() string {
 	}
 }
 
+// RecentManagerErrorQuark registers an error quark for recentmanager errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func RecentManagerErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -8011,6 +8206,8 @@ const (
 	DebugIconfallback DebugFlags = 0b1000000000000000000
 	// DebugInvertTextDir inverts the default text-direction.
 	DebugInvertTextDir DebugFlags = 0b10000000000000000000
+	// DebugCSS: information about deprecated CSS features.
+	DebugCSS DebugFlags = 0b100000000000000000000
 )
 
 func marshalDebugFlags(p uintptr) (interface{}, error) {
@@ -8069,6 +8266,8 @@ func (d DebugFlags) String() string {
 			builder.WriteString("Iconfallback|")
 		case DebugInvertTextDir:
 			builder.WriteString("InvertTextDir|")
+		case DebugCSS:
+			builder.WriteString("CSS|")
 		default:
 			builder.WriteString(fmt.Sprintf("DebugFlags(0b%b)|", bit))
 		}
@@ -8791,6 +8990,66 @@ func (s StyleContextPrintFlags) Has(other StyleContextPrintFlags) bool {
 	return (s & other) == other
 }
 
+// TextBufferNotifyFlags values for gtk.TextBufferCommitNotify to denote the
+// point of the notification.
+type TextBufferNotifyFlags C.guint
+
+const (
+	// TextBufferNotifyBeforeInsert: be notified before text is inserted into
+	// the underlying buffer.
+	TextBufferNotifyBeforeInsert TextBufferNotifyFlags = 0b1
+	// TextBufferNotifyAfterInsert: be notified after text has been inserted
+	// into the underlying buffer.
+	TextBufferNotifyAfterInsert TextBufferNotifyFlags = 0b10
+	// TextBufferNotifyBeforeDelete: be notified before text is deleted from the
+	// underlying buffer.
+	TextBufferNotifyBeforeDelete TextBufferNotifyFlags = 0b100
+	// TextBufferNotifyAfterDelete: be notified after text has been deleted from
+	// the underlying buffer.
+	TextBufferNotifyAfterDelete TextBufferNotifyFlags = 0b1000
+)
+
+func marshalTextBufferNotifyFlags(p uintptr) (interface{}, error) {
+	return TextBufferNotifyFlags(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+}
+
+// String returns the names in string for TextBufferNotifyFlags.
+func (t TextBufferNotifyFlags) String() string {
+	if t == 0 {
+		return "TextBufferNotifyFlags(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(113)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case TextBufferNotifyBeforeInsert:
+			builder.WriteString("BeforeInsert|")
+		case TextBufferNotifyAfterInsert:
+			builder.WriteString("AfterInsert|")
+		case TextBufferNotifyBeforeDelete:
+			builder.WriteString("BeforeDelete|")
+		case TextBufferNotifyAfterDelete:
+			builder.WriteString("AfterDelete|")
+		default:
+			builder.WriteString(fmt.Sprintf("TextBufferNotifyFlags(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if t contains other.
+func (t TextBufferNotifyFlags) Has(other TextBufferNotifyFlags) bool {
+	return (t & other) == other
+}
+
 // TextSearchFlags flags affecting how a search is done.
 //
 // If neither GTK_TEXT_SEARCH_VISIBLE_ONLY nor GTK_TEXT_SEARCH_TEXT_ONLY are
@@ -9033,12 +9292,50 @@ type MenuButtonCreatePopupFunc func(menuButton *MenuButton)
 // and also serves as destroy notify for data.
 type PageSetupDoneFunc func(pageSetup *PageSetup)
 
+// PrintSettingsFunc: function called by gtk.PrintSettings.ForEach() on every
+// key/value pair inside a gtk.PrintSettings.
 type PrintSettingsFunc func(key, value string)
 
+// ScaleFormatValueFunc: function that formats the value of a scale.
+//
+// See gtk.Scale.SetFormatValueFunc().
 type ScaleFormatValueFunc func(scale *Scale, value float64) (utf8 string)
 
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
 type ShortcutFunc func(widget Widgetter, args *glib.Variant) (ok bool)
+
+// TextBufferCommitNotify: notification callback used by
+// gtk.TextBuffer.AddCommitNotify().
+//
+// You may not modify the gtk.TextBuffer from a gtk.TextBufferCommitNotify
+// callback and that is enforced by the gtk.TextBuffer API.
+//
+// gtk.TextBufferCommitNotify may be used to be notified about changes to the
+// underlying buffer right before-or-after the changes are committed to the
+// underlying B-Tree. This is useful if you want to observe changes to the
+// buffer without other signal handlers potentially modifying state on the way
+// to the default signal handler.
+//
+// When flags is GTK_TEXT_BUFFER_NOTIFY_BEFORE_INSERT, position is set to the
+// offset in characters from the start of the buffer where the insertion will
+// occur. length is set to the number of characters to be inserted. You may not
+// yet retrieve the text until it has been inserted. You may access the text
+// from GTK_TEXT_BUFFER_NOTIFY_AFTER_INSERT using gtk.TextBuffer.GetSlice().
+//
+// When flags is GTK_TEXT_BUFFER_NOTIFY_AFTER_INSERT, position is set to offset
+// in characters where the insertion occurred and length is set to the number of
+// characters inserted.
+//
+// When flags is GTK_TEXT_BUFFER_NOTIFY_BEFORE_DELETE, position is set to offset
+// in characters where the deletion will occur and length is set to the number
+// of characters that will be removed. You may still retrieve the text from this
+// handler using position and length.
+//
+// When flags is GTK_TEXT_BUFFER_NOTIFY_AFTER_DELETE, length is set to zero to
+// denote that the delete-range has already been committed to the underlying
+// B-Tree. You may no longer retrieve the text that has been deleted from the
+// gtk.TextBuffer.
+type TextBufferCommitNotify func(buffer *TextBuffer, flags TextBufferNotifyFlags, position, length uint)
 
 // TextCharPredicate: predicate function used by
 // gtk_text_iter_forward_find_char() and gtk_text_iter_backward_find_char().
@@ -9356,7 +9653,7 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 //   - acceleratorKey (optional): return location for accelerator keyval.
 //   - acceleratorMods (optional): return location for accelerator modifier
 //     mask.
-//   - ok
+//   - ok: whether parsing succeeded.
 func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	var _arg1 *C.char           // out
 	var _arg2 C.guint           // in
@@ -9549,6 +9846,11 @@ func CheckVersion(requiredMajor, requiredMinor, requiredMicro uint) string {
 	return _utf8
 }
 
+// CSSParserErrorQuark registers an error quark for CSS parsing errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func CSSParserErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -9561,6 +9863,11 @@ func CSSParserErrorQuark() glib.Quark {
 	return _quark
 }
 
+// CSSParserWarningQuark registers an error quark for CSS parsing warnings.
+//
+// The function returns the following values:
+//
+//   - quark: warning quark.
 func CSSParserWarningQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -10581,8 +10888,7 @@ func ShowURI(parent *Window, uri string, timestamp uint32) {
 // ShowURIFull: this function launches the default application for showing a
 // given uri.
 //
-// The callback will be called when the launch is completed. It should call
-// gtk_show_uri_full_finish() to obtain the result.
+// The callback will be called when the launch is completed.
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
@@ -10632,8 +10938,8 @@ func ShowURIFull(ctx context.Context, parent *Window, uri string, timestamp uint
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
 // the operation.
 //
-// Deprecated: Use gtk.FileLauncher.LaunchFinish() or
-// gtk.URILauncher.LaunchFinish() instead.
+// Deprecated: Use gtk.FileLauncher.Launch() or gtk.URILauncher.Launch()
+// instead.
 //
 // The function takes the following parameters:
 //
@@ -10660,16 +10966,19 @@ func ShowURIFullFinish(parent *Window, result gio.AsyncResulter) error {
 	return _goerr
 }
 
+// TestAccessibleAssertionMessageRole prints an assertion message for
+// gtk_test_accessible_assert_role().
+//
 // The function takes the following parameters:
 //
-//   - domain
-//   - file
-//   - line
-//   - fn
-//   - expr
-//   - accessible
-//   - expectedRole
-//   - actualRole
+//   - domain: domain.
+//   - file name.
+//   - line in file.
+//   - fn: function name in file.
+//   - expr: expression being tested.
+//   - accessible: GtkAccessible.
+//   - expectedRole: expected GtkAccessibleRole.
+//   - actualRole: actual GtkAccessibleRole.
 func TestAccessibleAssertionMessageRole(domain, file string, line int, fn, expr string, accessible Accessibler, expectedRole, actualRole AccessibleRole) {
 	var _arg1 *C.char             // out
 	var _arg2 *C.char             // out
@@ -12368,6 +12677,85 @@ func (self *AccessibleText) defaultAttributes() (attributeNames, attributeValues
 	}
 
 	return _attributeNames, _attributeValues
+}
+
+// Extents obtains the extents of a range of text, in widget coordinates.
+//
+// The function takes the following parameters:
+//
+//   - start offset, in characters.
+//   - end offset, in characters, extents (out caller-allocates): return
+//     location for the extents.
+//   - extents
+//
+// The function returns the following values:
+//
+//   - ok: true if the extents were filled in, false otherwise.
+func (self *AccessibleText) extents(start, end uint, extents *graphene.Rect) bool {
+	gclass := (*C.GtkAccessibleTextInterface)(coreglib.PeekParentClass(self))
+	fnarg := gclass.get_extents
+
+	var _arg0 *C.GtkAccessibleText // out
+	var _arg1 C.uint               // out
+	var _arg2 C.uint               // out
+	var _arg3 *C.graphene_rect_t   // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkAccessibleText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(start)
+	_arg2 = C.uint(end)
+	_arg3 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(extents)))
+
+	_cret = C._gotk4_gtk4_AccessibleText_virtual_get_extents(unsafe.Pointer(fnarg), _arg0, _arg1, _arg2, _arg3)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+	runtime.KeepAlive(extents)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Offset gets the text offset at a given point.
+//
+// The function takes the following parameters:
+//
+//   - point in widget coordinates of self.
+//
+// The function returns the following values:
+//
+//   - offset: return location for the text offset at point.
+//   - ok: true if the offset was set, false otherwise.
+func (self *AccessibleText) offset(point *graphene.Point) (uint, bool) {
+	gclass := (*C.GtkAccessibleTextInterface)(coreglib.PeekParentClass(self))
+	fnarg := gclass.get_offset
+
+	var _arg0 *C.GtkAccessibleText // out
+	var _arg1 *C.graphene_point_t  // out
+	var _arg2 C.uint               // in
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GtkAccessibleText)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(point)))
+
+	_cret = C._gotk4_gtk4_AccessibleText_virtual_get_offset(unsafe.Pointer(fnarg), _arg0, _arg1, &_arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(point)
+
+	var _offset uint // out
+	var _ok bool     // out
+
+	_offset = uint(_arg2)
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _offset, _ok
 }
 
 // Selection retrieves the selection ranges in the accessible object.
@@ -14949,11 +15337,24 @@ func (editable *EditableTextWidget) ConnectDeleteText(f func(startPos, endPos in
 //	                                             GtkAccessiblePlatformState state)
 //	{
 //	  return gtk_editable_delegate_get_accessible_platform_state (GTK_EDITABLE (accessible), state);
-//	}.
+//	}
+//
+// Note that the widget which is the delegate *must* be a direct child of this
+// widget, otherwise your implementation of gtk.Accessible.GetPlatformState()
+// might not even be called, as the platform change will originate from the
+// parent of the delegate, and, as a result, will not work properly.
+//
+// So, if you can't ensure the direct child condition, you should give the
+// delegate the GTK_ACCESSIBLE_ROLE_TEXT_BOX role, or you can change your tree
+// to allow this function to work.
 //
 // The function takes the following parameters:
 //
 //   - state: what kind of accessible state to retrieve.
+//
+// The function returns the following values:
+//
+//   - ok: accessible platform state of the delegate.
 func (editable *EditableTextWidget) DelegateGetAccessiblePlatformState(state AccessiblePlatformState) bool {
 	var _arg0 *C.GtkEditable               // out
 	var _arg1 C.GtkAccessiblePlatformState // out
@@ -18519,6 +18920,9 @@ type SectionModeller interface {
 
 	// Section: query the section that covers the given position.
 	Section(position uint) (outStart, outEnd uint)
+	// SectionsChanged: this function emits the
+	// gtk.SectionModel::sections-changed signal to notify about changes to
+	// sections.
 	SectionsChanged(position, nItems uint)
 
 	// Sections-changed is emitted when the start-of-section state of some of
@@ -18590,10 +18994,24 @@ func (self *SectionModel) Section(position uint) (outStart, outEnd uint) {
 	return _outStart, _outEnd
 }
 
+// SectionsChanged: this function emits the gtk.SectionModel::sections-changed
+// signal to notify about changes to sections.
+//
+// It must cover all positions that used to be a section start or that are now a
+// section start. It does not have to cover all positions for which the section
+// has changed.
+//
+// The gio.ListModel::items-changed implies the effect of the
+// gtk.SectionModel::sections-changed signal for all the items it covers.
+//
+// It is recommended that when changes to the items cause section changes in
+// a larger range, that the larger range is included in the emission of the
+// gio.ListModel::items-changed instead of emitting two signals.
+//
 // The function takes the following parameters:
 //
-//   - position
-//   - nItems
+//   - position: first changed item.
+//   - nItems: number of changed items.
 func (self *SectionModel) SectionsChanged(position, nItems uint) {
 	var _arg0 *C.GtkSectionModel // out
 	var _arg1 C.guint            // out
@@ -22670,6 +23088,12 @@ func (self *ATContext) AccessibleRole() AccessibleRole {
 //	                       "title", _("About ExampleCode"),
 //	                       NULL);
 //
+// # Shortcuts and Gestures
+//
+// GtkAboutDialog supports the following keyboard shortcuts:
+//
+// - <kbd>Escape</kbd> closes the window.
+//
 // # CSS nodes
 //
 // GtkAboutDialog has a single CSS node with the name window and style class
@@ -24369,9 +24793,7 @@ func defaultAlertDialogOverrides(v *AlertDialog) AlertDialogOverrides {
 // AlertDialog: GtkAlertDialog object collects the arguments that are needed to
 // present a message to the user.
 //
-// The message is shown with the gtk.AlertDialog.Choose() function. This API
-// follows the GIO async pattern, and the result can be obtained by calling
-// gtk.AlertDialog.ChooseFinish().
+// The message is shown with the gtk.AlertDialog.Choose() function.
 //
 // If you don't need to wait for a button to be clicked, you can use
 // gtk.AlertDialog.Show().
@@ -24411,9 +24833,6 @@ func marshalAlertDialog(p uintptr) (interface{}, error) {
 }
 
 // Choose: this function shows the alert to the user.
-//
-// The callback will be called when the alert is dismissed. It should call
-// gtk.AlertDialog.ChooseFinish() to obtain the result.
 //
 // It is ok to pass NULL for the callback if the alert does not have more than
 // one button. A simpler API for this case is gtk.AlertDialog.Show().
@@ -26107,6 +26526,10 @@ func defaultApplicationOverrides(v *Application) ApplicationOverrides {
 // To create a menu item that displays the shortcuts window, associate the item
 // with the action win.show-help-overlay.
 //
+// GtkApplication will also automatically set the application id as the default
+// window icon. Use gtk.Window().SetDefaultIconName or gtk.Window:icon-name to
+// override that behavior.
+//
 // # A simple application
 //
 // A simple example
@@ -26126,8 +26549,10 @@ func defaultApplicationOverrides(v *Application) ApplicationOverrides {
 //
 // # See Also
 //
-// HowDoI: Using GtkApplication (https://wiki.gnome.org/HowDoI/GtkApplication),
-// Getting Started with GTK: Basics (getting_started.html#basics).
+// - Using GtkApplication
+// (https://developer.gnome.org/documentation/tutorials/application.html)
+//
+// - Getting Started with GTK: Basics (getting_started.html#basics).
 type Application struct {
 	_ [0]func() // equal guard
 	gio.Application
@@ -27135,7 +27560,7 @@ func (window *ApplicationWindow) SetShowMenubar(showMenubar bool) {
 //
 // # CSS nodes
 //
-// GtkAspectFrame uses a CSS node with name frame.
+// GtkAspectFrame uses a CSS node with name aspectframe.
 //
 // # Accessibility
 //
@@ -29517,7 +29942,13 @@ func (boxLayout *BoxLayout) SetSpacing(spacing uint) {
 // - GVariant (can be specified in the format understood by
 // glib.Variant().Parse)
 //
-// - pixbufs (can be specified as a filename of an image file to load)
+// - pixbufs (can be specified as an object id, a resource path or a filename
+// of an image file to load relative to the Builder file or the CWD if
+// gtk.Builder.AddFromString() was used)
+//
+// - GFile (like pixbufs, can be specified as an object id, a URI or a
+// filename of a file to load relative to the Builder file or the CWD if
+// gtk.Builder.AddFromString() was used)
 //
 // Objects can be referred to by their name and by default refer to
 // objects declared in the local XML fragment and objects exposed via
@@ -30551,8 +30982,12 @@ func NewBuilderCScope() *BuilderCScope {
 // BuilderListItemFactory: GtkBuilderListItemFactory is a GtkListItemFactory
 // that creates widgets by instantiating GtkBuilder UI templates.
 //
-// The templates must be extending GtkListItem, and typically use GtkExpressions
-// to obtain data from the items in the model.
+// The templates must extend the class that the parent widget expects. For
+// example, a factory provided to gtk.ListView:factory must have a template that
+// extends gtk.ListItem.
+//
+// Templates typically use GtkExpressions to obtain data from the items in the
+// model.
 //
 // Example:
 //
@@ -30758,6 +31193,12 @@ func defaultButtonOverrides(v *Button) ButtonOverrides {
 // The GtkButton widget can hold any valid child widget. That is, it can hold
 // almost any other standard GtkWidget. The most commonly used child is the
 // GtkLabel.
+//
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.Button::activate
 //
 // # CSS nodes
 //
@@ -31354,6 +31795,14 @@ func marshalCClosureExpression(p uintptr) (interface{}, error) {
 // calendar in most countries, it was adopted progressively between 1582 and
 // 1929. Display before these dates is likely to be historically incorrect.
 //
+// # Shortcuts and Gestures
+//
+// GtkCalendar supports the following gestures:
+//
+// - Scrolling up or down will switch to the previous or next month.
+//
+// - Date strings can be dropped for setting the current day.
+//
 // CSS nodes
 //
 //	calendar.view
@@ -31862,7 +32311,7 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 //
 // The function takes the following parameters:
 //
-//   - callback (optional) to call.
+//   - callback: callback to call when the action is activated.
 //
 // The function returns the following values:
 //
@@ -31873,11 +32322,9 @@ func NewCallbackAction(callback ShortcutFunc) *CallbackAction {
 	var _arg3 C.GDestroyNotify
 	var _cret *C.GtkShortcutAction // in
 
-	if callback != nil {
-		_arg1 = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
-		_arg2 = C.gpointer(gbox.Assign(callback))
-		_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
-	}
+	_arg1 = (*[0]byte)(C._gotk4_gtk4_ShortcutFunc)
+	_arg2 = C.gpointer(gbox.Assign(callback))
+	_arg3 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
 
 	_cret = C.gtk_callback_action_new(_arg1, _arg2, _arg3)
 	runtime.KeepAlive(callback)
@@ -39094,9 +39541,15 @@ func defaultCheckButtonOverrides(v *CheckButton) CheckButtonOverrides {
 // with a target for each button. Using the toggled signals to keep track of the
 // group changes and state is discouraged.
 //
+// # Shortcuts and Gestures
+//
+// GtkCheckButton supports the following keyboard shortcuts:
+//
+// - <kbd>␣</kbd> or <kbd>Enter</kbd> activates the button.
+//
 // CSS nodes
 //
-//	checkbutton[.text-button]
+//	checkbutton[.text-button][.grouped]
 //	├── check
 //	╰── [label]
 //
@@ -39971,6 +40424,15 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog {
 // The GtkColorChooserWidget is used in the gtk.ColorChooserDialog to provide a
 // dialog for selecting colors.
 //
+// # Actions
+//
+// GtkColorChooserWidget defines a set of built-in actions:
+//
+// - color.customize activates the color editor for the given color.
+//
+// - color.select emits the gtk.ColorChooser::color-activated signal for the
+// given color.
+//
 // # CSS names
 //
 // GtkColorChooserWidget has a single CSS node with name colorchooser.
@@ -40046,9 +40508,7 @@ func defaultColorDialogOverrides(v *ColorDialog) ColorDialogOverrides {
 // present a color chooser dialog to the user, such as a title for the dialog
 // and whether it should be modal.
 //
-// The dialog is shown with the gtk.ColorDialog.ChooseRGBA() function. This API
-// follows the GIO async pattern, and the result can be obtained by calling
-// gtk.ColorDialog.ChooseRGBAFinish().
+// The dialog is shown with the gtk.ColorDialog.ChooseRGBA() function.
 //
 // See gtk.ColorDialogButton for a convenient control that uses GtkColorDialog
 // and presents the results.
@@ -40106,9 +40566,6 @@ func NewColorDialog() *ColorDialog {
 
 // ChooseRGBA: this function initiates a color choice operation by presenting a
 // color chooser dialog to the user.
-//
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.ColorDialog.ChooseRGBAFinish() to obtain the result.
 //
 // The function takes the following parameters:
 //
@@ -40998,7 +41455,8 @@ func (self *ColumnView) RemoveColumn(column *ColumnViewColumn) {
 //
 // The function takes the following parameters:
 //
-//   - pos: position of the item.
+//   - pos: position of the item. Must be less than the number of items in the
+//     view.
 //   - column (optional) to scroll to or NULL to not scroll columns.
 //   - flags actions to perform.
 //   - scroll (optional) details of how to perform the scroll operation or NULL
@@ -41392,7 +41850,7 @@ func (self *ColumnViewCell) Position() uint {
 
 // Selected checks if the item is displayed as selected.
 //
-// The selected state is maintained by the liste widget and its model and cannot
+// The selected state is maintained by the list widget and its model and cannot
 // be set otherwise.
 //
 // The function returns the following values:
@@ -45292,6 +45750,9 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 
 // ConnectParsingError signals that a parsing error occurred.
 //
+// The expected error values are in the gtk.CSSParserError and
+// gtk.CSSParserWarning enumerations.
+//
 // The path, line and position describe the actual location of the error as
 // accurately as possible.
 //
@@ -45299,6 +45760,9 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 // Errors may however cause parts of the given data or even all of it to not be
 // parsed at all. So it is a useful idea to check that the parsing succeeds by
 // connecting to this signal.
+//
+// Errors in the gtk.CSSParserWarning enumeration should not be treated as fatal
+// errors.
 //
 // Note that this signal may be emitted at any time as the css provider may
 // opt to defer parsing parts or all of the input to a later time than when a
@@ -46732,7 +47196,7 @@ func defaultDragIconOverrides(v *DragIcon) DragIconOverrides {
 // destroyed when the drag ends.
 //
 // To set up a drag icon and associate it with an ongoing drag operation,
-// use gtk.DragIcon().GetForDrag to get the icon for a drag. You can then use it
+// use gtk.DragIcon.GetForDrag to get the icon for a drag. You can then use it
 // like any other widget and use gtk.DragIcon.SetChild() to set whatever widget
 // should be used for the drag icon.
 //
@@ -46808,6 +47272,33 @@ func wrapDragIcon(obj *coreglib.Object) *DragIcon {
 
 func marshalDragIcon(p uintptr) (interface{}, error) {
 	return wrapDragIcon(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewDragIconGetForDrag gets the GtkDragIcon in use with drag.
+//
+// If no drag icon exists yet, a new one will be created and shown.
+//
+// The function takes the following parameters:
+//
+//   - drag: GdkDrag.
+//
+// The function returns the following values:
+//
+//   - dragIcon: GtkDragIcon.
+func NewDragIconGetForDrag(drag gdk.Dragger) *DragIcon {
+	var _arg1 *C.GdkDrag   // out
+	var _cret *C.GtkWidget // in
+
+	_arg1 = (*C.GdkDrag)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
+
+	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
+	runtime.KeepAlive(drag)
+
+	var _dragIcon *DragIcon // out
+
+	_dragIcon = wrapDragIcon(coreglib.Take(unsafe.Pointer(_cret)))
+
+	return _dragIcon
 }
 
 // Child gets the widget currently used as drag icon.
@@ -46908,49 +47399,6 @@ func DragIconCreateWidgetForValue(value *coreglib.Value) Widgetter {
 			}
 			_widget = rv
 		}
-	}
-
-	return _widget
-}
-
-// DragIconGetForDrag gets the GtkDragIcon in use with drag.
-//
-// If no drag icon exists yet, a new one will be created and shown.
-//
-// The function takes the following parameters:
-//
-//   - drag: GdkDrag.
-//
-// The function returns the following values:
-//
-//   - widget: GtkDragIcon.
-func DragIconGetForDrag(drag gdk.Dragger) Widgetter {
-	var _arg1 *C.GdkDrag   // out
-	var _cret *C.GtkWidget // in
-
-	_arg1 = (*C.GdkDrag)(unsafe.Pointer(coreglib.InternObject(drag).Native()))
-
-	_cret = C.gtk_drag_icon_get_for_drag(_arg1)
-	runtime.KeepAlive(drag)
-
-	var _widget Widgetter // out
-
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
-		}
-		_widget = rv
 	}
 
 	return _widget
@@ -49131,6 +49579,22 @@ func defaultEditableLabelOverrides(v *EditableLabel) EditableLabelOverrides {
 // Enter key. The default bindings for leaving the edit mode are the Enter key
 // (to save the results) or the Escape key (to cancel the editing).
 //
+// # Shortcuts and Gestures
+//
+// GtkEditableLabel supports the following keyboard shortcuts:
+//
+// - <kbd>Enter</kbd> starts editing.
+//
+// - <kbd>Escape</kbd> stops editing.
+//
+// # Actions
+//
+// GtkEditableLabel defines a set of built-in actions:
+//
+// - editing.starts switches the widget into editing mode.
+//
+// - editing.stop switches the widget out of editing mode.
+//
 // CSS nodes
 //
 //	editablelabel[.editing]
@@ -49303,6 +49767,20 @@ func (self *EditableLabel) StopEditing(commit bool) {
 //
 // GtkEmojiChooser emits the gtk.EmojiChooser::emoji-picked signal when an Emoji
 // is selected.
+//
+// # Shortcuts and Gestures
+//
+// GtkEmojiChooser supports the following keyboard shortcuts:
+//
+// - <kbd>Ctrl</kbd>+<kbd>N</kbd> scrolls th the next section.
+//
+// - <kbd>Ctrl</kbd>+<kbd>P</kbd> scrolls th the previous section.
+//
+// # Actions
+//
+// GtkEmojiChooser defines a set of built-in actions:
+//
+// - scroll.section scrolls to the next or previous section.
 //
 // CSS nodes
 //
@@ -52747,7 +53225,7 @@ func (controller *EventController) PropagationPhase() PropagationPhase {
 //
 // The function returns the following values:
 //
-//   - widget: GtkWidget.
+//   - widget (optional): GtkWidget.
 func (controller *EventController) Widget() Widgetter {
 	var _arg0 *C.GtkEventController // out
 	var _cret *C.GtkWidget          // in
@@ -52759,22 +53237,21 @@ func (controller *EventController) Widget() Widgetter {
 
 	var _widget Widgetter // out
 
-	{
-		objptr := unsafe.Pointer(_cret)
-		if objptr == nil {
-			panic("object of type gtk.Widgetter is nil")
-		}
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
 
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(Widgetter)
-			return ok
-		})
-		rv, ok := casted.(Widgetter)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Widgetter)
+				return ok
+			})
+			rv, ok := casted.(Widgetter)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gtk.Widgetter")
+			}
+			_widget = rv
 		}
-		_widget = rv
 	}
 
 	return _widget
@@ -54170,9 +54647,9 @@ func (expander *Expander) SetUseUnderline(useUnderline bool) {
 //
 // To create a property expression, use the <lookup> element. It can have a
 // type attribute to specify the object type, and a name attribute to specify
-// the property to look up. The content of <lookup> can either be an element
-// specifying the expression to use the object, or a string that specifies the
-// name of the object to use.
+// the property to look up. The content of <lookup> can either be a string that
+// specifies the name of the object to use, an element specifying an expression
+// to provide an object, or empty to use the this object.
 //
 // Example:
 //
@@ -55054,6 +55531,38 @@ func (self *FileChooserNative) SetCancelLabel(cancelLabel string) {
 // It exposes the gtk.FileChooser interface, and you should use the methods of
 // this interface to interact with the widget.
 //
+// # Shortcuts and Gestures
+//
+// GtkFileChooserWidget supports the following keyboard shortcuts:
+//
+// - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+//
+// The following signals have default keybindings:
+//
+// - gtk.FileChooserWidget::desktop-folder
+//
+// - gtk.FileChooserWidget::down-folder
+//
+// - gtk.FileChooserWidget::home-folder
+//
+// - gtk.FileChooserWidget::location-popup
+//
+// - gtk.FileChooserWidget::location-popup-on-paste
+//
+// - gtk.FileChooserWidget::location-toggle-popup
+//
+// - gtk.FileChooserWidget::places-shortcut
+//
+// - gtk.FileChooserWidget::quick-bookmark
+//
+// - gtk.FileChooserWidget::recent-shortcut
+//
+// - gtk.FileChooserWidget::search-shortcut
+//
+// - gtk.FileChooserWidget::show-hidden
+//
+// - gtk.FileChooserWidget::up-folder
+//
 // # CSS nodes
 //
 // GtkFileChooserWidget has a single CSS node with name filechooser.
@@ -55293,10 +55802,7 @@ func defaultFileDialogOverrides(v *FileDialog) FileDialogOverrides {
 // present a file chooser dialog to the user, such as a title for the dialog and
 // whether it should be modal.
 //
-// The dialog is shown with gtk.FileDialog.Open(), gtk.FileDialog.Save(),
-// etc. These APIs follow the GIO async pattern, and the result can be
-// obtained by calling the corresponding finish function, for example
-// gtk.FileDialog.OpenFinish().
+// The dialog is shown with gtk.FileDialog.Open(), gtk.FileDialog.Save(), etc.
 type FileDialog struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -55349,6 +55855,8 @@ func NewFileDialog() *FileDialog {
 	return _fileDialog
 }
 
+// AcceptLabel retrieves the text used by the dialog on its accept button.
+//
 // The function returns the following values:
 //
 //   - utf8 (optional): label shown on the file chooser's accept button.
@@ -55552,8 +56060,7 @@ func (self *FileDialog) Title() string {
 // Open: this function initiates a file selection operation by presenting a file
 // chooser dialog to the user.
 //
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FileDialog.OpenFinish() to obtain the result.
+// The callback will be called when the dialog is dismissed.
 //
 // The function takes the following parameters:
 //
@@ -55636,8 +56143,7 @@ func (self *FileDialog) OpenFinish(result gio.AsyncResulter) (*gio.File, error) 
 // The file chooser will initially be opened in the directory
 // gtk.FileDialog:initial-folder.
 //
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FileDialog.OpenMultipleFinish() to obtain the result.
+// The callback will be called when the dialog is dismissed.
 //
 // The function takes the following parameters:
 //
@@ -55717,8 +56223,7 @@ func (self *FileDialog) OpenMultipleFinish(result gio.AsyncResulter) (*gio.ListM
 // Save: this function initiates a file save operation by presenting a file
 // chooser dialog to the user.
 //
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FileDialog.SaveFinish() to obtain the result.
+// The callback will be called when the dialog is dismissed.
 //
 // The function takes the following parameters:
 //
@@ -55802,8 +56307,7 @@ func (self *FileDialog) SaveFinish(result gio.AsyncResulter) (*gio.File, error) 
 // the parent directory of that folder, otherwise, it will be in the directory
 // gtk.FileDialog:initial-folder.
 //
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FileDialog.SelectFolderFinish() to obtain the result.
+// The callback will be called when the dialog is dismissed.
 //
 // The function takes the following parameters:
 //
@@ -55886,8 +56390,7 @@ func (self *FileDialog) SelectFolderFinish(result gio.AsyncResulter) (*gio.File,
 // The file chooser will initially be opened in the directory
 // gtk.FileDialog:initial-folder.
 //
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FileDialog.SelectMultipleFoldersFinish() to obtain the result.
+// The callback will be called when the dialog is dismissed.
 //
 // The function takes the following parameters:
 //
@@ -56461,9 +56964,7 @@ func defaultFileLauncherOverrides(v *FileLauncher) FileLauncherOverrides {
 // may or may not show an app chooser dialog or launch the default application
 // right away.
 //
-// The operation is started with the gtk.FileLauncher.Launch() function. This
-// API follows the GIO async pattern, and the result can be obtained by calling
-// gtk.FileLauncher.LaunchFinish().
+// The operation is started with the gtk.FileLauncher.Launch() function.
 //
 // To launch uris that don't represent files, use gtk.URILauncher.
 type FileLauncher struct {
@@ -56607,9 +57108,6 @@ func (self *FileLauncher) Writable() bool {
 //
 // This may present an app chooser dialog to the user.
 //
-// The callback will be called when the operation is completed. It should call
-// gtk.FileLauncher.LaunchFinish() to obtain the result.
-//
 // The function takes the following parameters:
 //
 //   - ctx (optional): GCancellable to cancel the operation.
@@ -56675,9 +57173,6 @@ func (self *FileLauncher) LaunchFinish(result gio.AsyncResulter) error {
 //
 // This is only supported native files. It will fail if file is e.g. a http://
 // uri.
-//
-// The callback will be called when the operation is completed. It should call
-// gtk.FileLauncher.OpenContainingFolderFinish() to obtain the result.
 //
 // The function takes the following parameters:
 //
@@ -57989,6 +58484,18 @@ func (self *FlattenListModel) SetModel(model gio.ListModeller) {
 // widget will automatically be inserted between the box and the widget.
 //
 // Also see gtk.ListBox.
+//
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.FlowBox::move-cursor
+//
+// - gtk.FlowBox::select-all
+//
+// - gtk.FlowBox::toggle-cursor-child
+//
+// - gtk.FlowBox::unselect-all
 //
 // CSS nodes
 //
@@ -59646,10 +60153,8 @@ func defaultFontDialogOverrides(v *FontDialog) FontDialogOverrides {
 // present a font chooser dialog to the user, such as a title for the dialog and
 // whether it should be modal.
 //
-// The dialog is shown with the gtk.FontDialog.ChooseFont() function or
-// its variants. This API follows the GIO async pattern, and the result
-// can be obtained by calling the corresponding finish function, such as
-// gtk.FontDialog.ChooseFontFinish().
+// The dialog is shown with the gtk.FontDialog.ChooseFont() function or its
+// variants.
 //
 // See gtk.FontDialogButton for a convenient control that uses GtkFontDialog and
 // presents the results.
@@ -59708,9 +60213,6 @@ func NewFontDialog() *FontDialog {
 // ChooseFace: this function initiates a font selection operation by presenting
 // a dialog to the user for selecting a font face (i.e. a font family and style,
 // but not a specific font size).
-//
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FontDialog.ChooseFaceFinish() to obtain the result.
 //
 // The function takes the following parameters:
 //
@@ -59802,9 +60304,6 @@ func (self *FontDialog) ChooseFaceFinish(result gio.AsyncResulter) (pango.FontFa
 
 // ChooseFamily: this function initiates a font selection operation by
 // presenting a dialog to the user for selecting a font family.
-//
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FontDialog.ChooseFamilyFinish() to obtain the result.
 //
 // The function takes the following parameters:
 //
@@ -59901,9 +60400,6 @@ func (self *FontDialog) ChooseFamilyFinish(result gio.AsyncResulter) (pango.Font
 // ChooseFont: this function initiates a font selection operation by presenting
 // a dialog to the user for selecting a font.
 //
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FontDialog.ChooseFontFinish() to obtain the result.
-//
 // If you want to let the user select font features as well, use
 // gtk.FontDialog.ChooseFontAndFeatures() instead.
 //
@@ -59951,9 +60447,6 @@ func (self *FontDialog) ChooseFont(ctx context.Context, parent *Window, initialV
 //
 // Font features affect how the font is rendered, for example enabling glyph
 // variants or ligatures.
-//
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.FontDialog.ChooseFontAndFeaturesFinish() to obtain the result.
 //
 // The function takes the following parameters:
 //
@@ -63791,7 +64284,7 @@ func defaultGraphicsOffloadOverrides(v *GraphicsOffload) GraphicsOffloadOverride
 // You should consider using graphics offload for your main widget if it
 // shows frequently changing content (such as a video, or a VM display)
 // and you provide the content in the form of dmabuf textures (see
-// gdk.DmabufTextureBuilder), in particular if it may be fullscreen.
+// gdk.DMABUFTextureBuilder), in particular if it may be fullscreen.
 //
 // Numerous factors can prohibit graphics offload:
 //
@@ -63801,7 +64294,7 @@ func defaultGraphicsOffloadOverrides(v *GraphicsOffload) GraphicsOffloadOverride
 // - Clipping, such as rounded corners that cause the video content to not be
 // rectangular
 //
-// - Unsupported dmabuf formats (see gdk.Display.GetDmabufFormats())
+// - Unsupported dmabuf formats (see gdk.Display.GetDMABUFFormats())
 //
 // - Translucent video content (content with an alpha channel, even if it isn't
 // used)
@@ -63893,6 +64386,31 @@ func NewGraphicsOffload(child Widgetter) *GraphicsOffload {
 	return _graphicsOffload
 }
 
+// BlackBackground returns whether the widget draws a black background.
+//
+// See gtk.GraphicsOffload.SetBlackBackground().
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if black background is drawn.
+func (self *GraphicsOffload) BlackBackground() bool {
+	var _arg0 *C.GtkGraphicsOffload // out
+	var _cret C.gboolean            // in
+
+	_arg0 = (*C.GtkGraphicsOffload)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gtk_graphics_offload_get_black_background(_arg0)
+	runtime.KeepAlive(self)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Child gets the child of self.
 //
 // The function returns the following values:
@@ -63948,6 +64466,37 @@ func (self *GraphicsOffload) Enabled() GraphicsOffloadEnabled {
 	_graphicsOffloadEnabled = GraphicsOffloadEnabled(_cret)
 
 	return _graphicsOffloadEnabled
+}
+
+// SetBlackBackground sets whether this GtkGraphicsOffload widget will draw a
+// black background.
+//
+// A main use case for this is **_letterboxing_** where black bars are visible
+// next to the content if the aspect ratio of the content does not match the
+// dimensions of the monitor.
+//
+// Using this property for letterboxing instead of CSS allows compositors to
+// show content with maximum efficiency, using direct scanout to avoid extra
+// copies in the compositor.
+//
+// On Wayland, this is implemented using the single-pixel buffer
+// (https://wayland.app/protocols/single-pixel-buffer-v1) protocol.
+//
+// The function takes the following parameters:
+//
+//   - value: whether to draw a black background behind the content.
+func (self *GraphicsOffload) SetBlackBackground(value bool) {
+	var _arg0 *C.GtkGraphicsOffload // out
+	var _arg1 C.gboolean            // out
+
+	_arg0 = (*C.GtkGraphicsOffload)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if value {
+		_arg1 = C.TRUE
+	}
+
+	C.gtk_graphics_offload_set_black_background(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(value)
 }
 
 // SetChild sets the child of self.
@@ -65250,6 +65799,13 @@ func (child *GridLayoutChild) SetRowSpan(span int) {
 // To learn more about the list widget framework, see the overview
 // (section-list-widget.html).
 //
+// # Actions
+//
+// GtkGridView defines a set of built-in actions:
+//
+// - list.activate-item activates the item at given position by emitting the the
+// gtk.GridView::activate signal.
+//
 // CSS nodes
 //
 //	gridview
@@ -65526,7 +66082,8 @@ func (self *GridView) TabBehavior() ListTabBehavior {
 //
 // The function takes the following parameters:
 //
-//   - pos: position of the item.
+//   - pos: position of the item. Must be less than the number of items in the
+//     view.
 //   - flags actions to perform.
 //   - scroll (optional) details of how to perform the scroll operation or NULL
 //     to scroll into view.
@@ -67810,7 +68367,7 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 // The function takes the following parameters:
 //
 //   - file: GFile.
-//   - size: desired icon size.
+//   - size: desired icon size, in application pixels.
 //   - scale: desired scale.
 //
 // The function returns the following values:
@@ -68244,7 +68801,9 @@ func (self *IconTheme) SearchPath() []string {
 
 // ThemeName gets the current icon theme name.
 //
-// Returns (transfer full): the current icon theme name,.
+// The function returns the following values:
+//
+//   - utf8: current icon theme name,.
 func (self *IconTheme) ThemeName() string {
 	var _arg0 *C.GtkIconTheme // out
 	var _cret *C.char         // in
@@ -68332,7 +68891,7 @@ func (self *IconTheme) HasIcon(iconName string) bool {
 // The function takes the following parameters:
 //
 //   - icon: GIcon to look up.
-//   - size: desired icon size.
+//   - size: desired icon size, in application pixels.
 //   - scale: desired scale.
 //   - direction: text direction the icon will be displayed in.
 //   - flags modifying the behavior of the icon lookup.
@@ -68392,8 +68951,8 @@ func (self *IconTheme) LookupByGIcon(icon gio.Iconner, size, scale int, directio
 // The function takes the following parameters:
 //
 //   - iconName: name of the icon to lookup.
-//   - fallbacks (optional)
-//   - size: desired icon size.
+//   - fallbacks (optional): fallback names.
+//   - size: desired icon size, in application pixels.
 //   - scale: window scale this will be displayed on.
 //   - direction: text direction the icon will be displayed in.
 //   - flags modifying the behavior of the icon lookup.
@@ -71655,6 +72214,10 @@ func defaultInscriptionOverrides(v *Inscription) InscriptionOverrides {
 //
 // Users of this widget should take care to plan behaviour for the common case
 // where the text doesn't fit exactly in the allocated space.
+//
+// # CSS nodes
+//
+// GtkInscription has a single CSS node with the name label.
 type Inscription struct {
 	_ [0]func() // equal guard
 	Widget
@@ -72294,6 +72857,50 @@ func (self *KeyvalTrigger) Modifiers() gdk.ModifierType {
 //
 // !An example GtkLabel (label.png)
 //
+// # Shortcuts and Gestures
+//
+// GtkLabel supports the following keyboard shortcuts, when the cursor is
+// visible:
+//
+// - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+//
+// - <kbd>Ctrl</kbd>+<kbd>A</kbd> or <kbd>Ctrl</kbd>+<kbd>&sol;</kbd> selects
+// all.
+//
+// - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> or
+// <kbd>Ctrl</kbd>+<kbd>&bsol;</kbd> unselects all.
+//
+// Additionally, the following signals have default keybindings:
+//
+// - gtk.Label::activate-current-link
+//
+// - gtk.Label::copy-clipboard
+//
+// - gtk.Label::move-cursor
+//
+// # Actions
+//
+// GtkLabel defines a set of built-in actions:
+//
+// - clipboard.copy copies the text to the clipboard.
+//
+// - clipboard.cut doesn't do anything, since text in labels can't be deleted.
+//
+// - clipboard.paste doesn't do anything, since text in labels can't be edited.
+//
+// - link.open opens the link, when activated on a link inside the label.
+//
+// - link.copy copies the link to the clipboard, when activated on a link inside
+// the label.
+//
+// - menu.popup opens the context menu.
+//
+// - selection.delete doesn't do anything, since text in labels can't be
+// deleted.
+//
+// - selection.select-all selects all of the text, if the label allows
+// selection.
+//
 // CSS nodes
 //
 //	label
@@ -72536,8 +73143,9 @@ func (self *Label) ConnectCopyClipboard(f func()) coreglib.SignalHandle {
 // g_signal_emit_by_name() if they need to control the cursor programmatically.
 //
 // The default bindings for this signal come in two variants, the variant with
-// the Shift modifier extends the selection, the variant without the Shift
-// modifier does not. There are too many key combinations to list them all here.
+// the <kbd>Shift</kbd> modifier extends the selection, the variant without the
+// <kbd>Shift</kbd> modifier does not. There are too many key combinations to
+// list them all here.
 //
 // - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by individual
 // characters/lines
@@ -75110,6 +75718,20 @@ func (self *LevelBar) SetValue(value float64) {
 // gtk.LinkButton::activate-link signal and returning TRUE from the signal
 // handler.
 //
+// # Shortcuts and Gestures
+//
+// GtkLinkButton supports the following keyboard shortcuts:
+//
+// - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+//
+// # Actions
+//
+// GtkLinkButton defines a set of built-in actions:
+//
+// - clipboard.copy copies the url to the clipboard.
+//
+// - menu.popup opens the context menu.
+//
 // # CSS nodes
 //
 // GtkLinkButton has a single CSS node with name button. To differentiate it
@@ -75335,6 +75957,57 @@ func (linkButton *LinkButton) SetVisited(visited bool) {
 }
 
 // ListBase: GtkListBase is the abstract base class for GTK's list widgets.
+//
+// # Shortcuts and Gestures
+//
+// GtkListBase supports the following keyboard shortcuts:
+//
+// - <kbd>Ctrl</kbd>+<kbd>A</kbd> or <kbd>Ctrl</kbd>+<kbd>&sol;</kbd> selects
+// all items.
+//
+// - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> or
+// <kbd>Ctrl</kbd>+<kbd>&bsol;</kbd> unselects all items.
+//
+// The focused item is controlled by the navigation keys below, combined
+// with the <kbd>Ctrl</kbd> modifier to prevent moving the selection, and the
+// <kbd>Shift</kbd> modifier to extend the current selection.
+//
+// - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move the focus on
+// the next item in the designed direction.
+//
+// - <kbd>Home</kbd> and <kbd>End</kbd> focus the first or last item.
+//
+// - <kbd>PgUp</kbd> and <kbd>PgDn</kbd> move the focus one page up or down.
+//
+// List item widgets support the following keyboard shortcuts:
+//
+// - <kbd>Enter</kbd> activates the item.
+//
+// - <kbd>␣</kbd> selects the item, with the same <kbd>Ctrl</kbd> and
+// <kbd>Shift</kbd> modifiers combinations as the navigation keys.
+//
+// # Actions
+//
+// GtkListBase defines a set of built-in actions:
+//
+// - list.scroll-to-item moves the visible area to the item at given position
+// with the minimum amount of scrolling required. If the item is already
+// visible, nothing happens.
+//
+// - list.select-item changes the selection.
+//
+// - list.select-all selects all items in the model, if the selection model
+// supports it.
+//
+// - list.unselect-all unselects all items in the model, if the selection model
+// supports it.
+//
+// List item widgets install the following actions:
+//
+// - listitem.select changes selection if the item is selectable.
+//
+// - listitem.scroll-to moves the visible area of the list to this item with the
+// minimum amount of scrolling required.
 type ListBase struct {
 	_ [0]func() // equal guard
 	Widget
@@ -75428,6 +76101,18 @@ func BaseListBase(obj ListBaser) *ListBase {
 // setting a child as the placeholder by specifying “placeholder” as the “type”
 // attribute of a <child> element. See gtk.ListBox.SetPlaceholder() for info.
 //
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.ListBox::move-cursor
+//
+// - gtk.ListBox::select-all
+//
+// - gtk.ListBox::toggle-cursor-row
+//
+// - gtk.ListBox::unselect-all
+//
 // CSS nodes
 //
 //	list[.separators][.rich-list][.navigation-sidebar][.boxed-list]
@@ -75482,11 +76167,24 @@ func marshalListBox(p uintptr) (interface{}, error) {
 	return wrapListBox(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
+// ConnectActivateCursorRow is emitted when the cursor row is activated.
 func (box *ListBox) ConnectActivateCursorRow(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "activate-cursor-row", false, unsafe.Pointer(C._gotk4_gtk4_ListBox_ConnectActivateCursorRow), f)
 }
 
-func (box *ListBox) ConnectMoveCursor(f func(object MovementStep, p0 int, p1, p2 bool)) coreglib.SignalHandle {
+// ConnectMoveCursor is emitted when the user initiates a cursor movement.
+//
+// The default bindings for this signal come in two variants, the variant with
+// the Shift modifier extends the selection, the variant without the Shift
+// modifier does not. There are too many key combinations to list them all here.
+//
+// - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd> move by individual
+// children
+//
+// - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the box
+//
+// - <kbd>PgUp</kbd>, <kbd>PgDn</kbd> move vertically by pages.
+func (box *ListBox) ConnectMoveCursor(f func(step MovementStep, count int, extend, modify bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "move-cursor", false, unsafe.Pointer(C._gotk4_gtk4_ListBox_ConnectMoveCursor), f)
 }
 
@@ -75520,6 +76218,9 @@ func (box *ListBox) ConnectSelectedRowsChanged(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "selected-rows-changed", false, unsafe.Pointer(C._gotk4_gtk4_ListBox_ConnectSelectedRowsChanged), f)
 }
 
+// ConnectToggleCursorRow is emitted when the cursor row is toggled.
+//
+// The default bindings for this signal is <kbd>Ctrl</kbd>+<kbd>␣</kbd>.
 func (box *ListBox) ConnectToggleCursorRow(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(box, "toggle-cursor-row", false, unsafe.Pointer(C._gotk4_gtk4_ListBox_ConnectToggleCursorRow), f)
 }
@@ -77082,7 +77783,7 @@ func (self *ListItem) Selectable() bool {
 
 // Selected checks if the item is displayed as selected.
 //
-// The selected state is maintained by the liste widget and its model and cannot
+// The selected state is maintained by the list widget and its model and cannot
 // be set otherwise.
 //
 // The function returns the following values:
@@ -78135,6 +78836,13 @@ func (store *ListStore) Swap(a, b *TreeIter) {
 //
 //	  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (sw), list);
 //
+// # Actions
+//
+// GtkListView defines a set of built-in actions:
+//
+// - list.activate-item activates the item at given position by emitting the
+// gtk.ListView::activate signal.
+//
 // CSS nodes
 //
 //	listview[.separators][.rich-list][.navigation-sidebar][.data-table]
@@ -78423,7 +79131,8 @@ func (self *ListView) TabBehavior() ListTabBehavior {
 //
 // The function takes the following parameters:
 //
-//   - pos: position of the item.
+//   - pos: position of the item. Must be less than the number of items in the
+//     view.
 //   - flags actions to perform.
 //   - scroll (optional) details of how to perform the scroll operation or NULL
 //     to scroll into view.
@@ -82828,6 +83537,37 @@ func (self *NoSelection) SetModel(model gio.ListModeller) {
 //	  </child>
 //	</object>
 //
+// # Shortcuts and Gestures
+//
+// GtkNotebook supports the following keyboard shortcuts:
+//
+// - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+//
+// - <kbd>Home</kbd> moves the focus to the first tab.
+//
+// - <kbd>End</kbd> moves the focus to the last tab.
+//
+// Additionally, the following signals have default keybindings:
+//
+// - gtk.Notebook::change-current-page
+//
+// - gtk.Notebook::focus-tab
+//
+// - gtk.Notebook::move-focus-out
+//
+// - gtk.Notebook::reorder-tab
+//
+// - gtk.Notebook::select-page
+//
+// Tabs support drag-and-drop between notebooks sharing the same group-name,
+// or to new windows by handling the ::create-window signal.
+//
+// # Actions
+//
+// GtkNotebook defines a set of built-in actions:
+//
+// - menu.popup opens the tabs context menu.
+//
 // CSS nodes
 //
 //	notebook
@@ -82909,7 +83649,13 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return wrapNotebook(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (notebook *Notebook) ConnectChangeCurrentPage(f func(object int) (ok bool)) coreglib.SignalHandle {
+// ConnectChangeCurrentPage is emitted when the current page should be changed.
+//
+// The default bindings for this signal are
+// <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>PgUp</kbd>,
+// <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>PgDn</kbd>,
+// <kbd>Ctrl</kbd>+<kbd>PgUp</kbd> and <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>.
+func (notebook *Notebook) ConnectChangeCurrentPage(f func(page int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectChangeCurrentPage), f)
 }
 
@@ -82924,11 +83670,18 @@ func (notebook *Notebook) ConnectCreateWindow(f func(page Widgetter) (notebook *
 	return coreglib.ConnectGeneratedClosure(notebook, "create-window", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectCreateWindow), f)
 }
 
-func (notebook *Notebook) ConnectFocusTab(f func(object NotebookTab) (ok bool)) coreglib.SignalHandle {
+// ConnectFocusTab is emitted when a tab should be focused.
+func (notebook *Notebook) ConnectFocusTab(f func(tab NotebookTab) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "focus-tab", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectFocusTab), f)
 }
 
-func (notebook *Notebook) ConnectMoveFocusOut(f func(object DirectionType)) coreglib.SignalHandle {
+// ConnectMoveFocusOut is emitted when focus was moved out.
+//
+// The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>Tab</kbd>,
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Tab</kbd>,
+// <kbd>Ctrl</kbd>+<kbd>←</kbd>, <kbd>Ctrl</kbd>+<kbd>→</kbd>,
+// <kbd>Ctrl</kbd>+<kbd>↑</kbd> and <kbd>Ctrl</kbd>+<kbd>↓</kbd>.
+func (notebook *Notebook) ConnectMoveFocusOut(f func(direction DirectionType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "move-focus-out", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectMoveFocusOut), f)
 }
 
@@ -82950,11 +83703,21 @@ func (notebook *Notebook) ConnectPageReordered(f func(child Widgetter, pageNum u
 	return coreglib.ConnectGeneratedClosure(notebook, "page-reordered", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectPageReordered), f)
 }
 
-func (notebook *Notebook) ConnectReorderTab(f func(object DirectionType, p0 bool) (ok bool)) coreglib.SignalHandle {
+// ConnectReorderTab is emitted when the tab should be reordered.
+//
+// The default bindings for this signal are <kbd>Alt</kbd>+<kbd>Home</kbd>,
+// <kbd>Alt</kbd>+<kbd>End</kbd>, <kbd>Alt</kbd>+<kbd>PgUp</kbd>,
+// <kbd>Alt</kbd>+<kbd>PgDn</kbd>, <kbd>Alt</kbd>+<kbd>←</kbd>,
+// <kbd>Alt</kbd>+<kbd>→</kbd>, <kbd>Alt</kbd>+<kbd>↑</kbd> and
+// <kbd>Alt</kbd>+<kbd>↓</kbd>.
+func (notebook *Notebook) ConnectReorderTab(f func(direction DirectionType, moveToLast bool) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "reorder-tab", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectReorderTab), f)
 }
 
-func (notebook *Notebook) ConnectSelectPage(f func(object bool) (ok bool)) coreglib.SignalHandle {
+// ConnectSelectPage is emitted when a page should be selected.
+//
+// The default binding for this signal is <kbd>␣</kbd>.
+func (notebook *Notebook) ConnectSelectPage(f func(moveFocus bool) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(notebook, "select-page", false, unsafe.Pointer(C._gotk4_gtk4_Notebook_ConnectSelectPage), f)
 }
 
@@ -86059,6 +86822,22 @@ func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 // The application can set the position of the slider as if it were set by the
 // user, by calling gtk.Paned.SetPosition().
 //
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.Paned::accept-position
+//
+// - gtk.Paned::cancel-position
+//
+// - gtk.Paned::cycle-child-focus
+//
+// - gtk.Paned::cycle-handle-focus
+//
+// - gtk.Paned::move-handle
+//
+// - gtk.Paned::toggle-handle-focus
+//
 // CSS nodes
 //
 //	paned
@@ -86188,6 +86967,12 @@ func (paned *Paned) ConnectCycleHandleFocus(f func(reversed bool) (ok bool)) cor
 // ConnectMoveHandle is emitted to move the handle with key bindings.
 //
 // This is a keybinding signal (class.SignalAction.html).
+//
+// The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>←</kbd>,
+// <kbd>←</kbd>, <kbd>Ctrl</kbd>+<kbd>→</kbd>, <kbd>→</kbd>,
+// <kbd>Ctrl</kbd>+<kbd>↑</kbd>, <kbd>↑</kbd>, <kbd>Ctrl</kbd>+<kbd>↓</kbd>,
+// <kbd>↓</kbd>, <kbd>PgUp</kbd>, <kbd>PgDn</kbd>, <kbd>Home</kbd>,
+// <kbd>End</kbd>.
 func (paned *Paned) ConnectMoveHandle(f func(scrollType ScrollType) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(paned, "move-handle", false, unsafe.Pointer(C._gotk4_gtk4_Paned_ConnectMoveHandle), f)
 }
@@ -87558,7 +88343,7 @@ func defaultPopoverOverrides(v *Popover) PopoverOverrides {
 //
 // # GtkPopover as menu replacement
 //
-// GtkPopover is often used to replace menus. The best was to do this is to use
+// GtkPopover is often used to replace menus. The best way to do this is to use
 // the gtk.PopoverMenu subclass which supports being populated from a GMenuModel
 // with gtk.PopoverMenu.NewFromModel.
 //
@@ -87580,6 +88365,18 @@ func defaultPopoverOverrides(v *Popover) PopoverOverrides {
 //	    <attribute name="verb-icon">edit-paste-symbolic</attribute>
 //	  </item>
 //	</section>
+//
+// # Shortcuts and Gestures
+//
+// GtkPopover supports the following keyboard shortcuts:
+//
+// - <kbd>Escape</kbd> closes the popover.
+//
+// - <kbd>Alt</kbd> makes the mnemonics visible.
+//
+// The following signals have default keybindings:
+//
+// - gtk.Popover::activate-default
 //
 // CSS nodes
 //
@@ -87698,6 +88495,8 @@ func marshalPopover(p uintptr) (interface{}, error) {
 // widget.
 //
 // This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is <kbd>Enter</kbd>.
 func (popover *Popover) ConnectActivateDefault(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(popover, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Popover_ConnectActivateDefault), f)
 }
@@ -88290,6 +89089,12 @@ func (popover *Popover) closed() {
 // Menu items will also show accelerators, which are usually
 // associated with actions via gtk.Application.SetAccelsForAction(),
 // widgetclass.AddBindingAction or gtk.ShortcutController.AddShortcut().
+//
+// # Shortcuts and Gestures
+//
+// GtkPopoverMenu supports the following keyboard shortcuts:
+//
+// - <kbd>Space</kbd> activates the default widget.
 //
 // # CSS Nodes
 //
@@ -89317,7 +90122,7 @@ func (self *PrintDialog) Modal() bool {
 //
 // The function returns the following values:
 //
-//   - pageSetup: page setup.
+//   - pageSetup (optional): page setup.
 func (self *PrintDialog) PageSetup() *PageSetup {
 	var _arg0 *C.GtkPrintDialog // out
 	var _cret *C.GtkPageSetup   // in
@@ -89329,7 +90134,9 @@ func (self *PrintDialog) PageSetup() *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _pageSetup
 }
@@ -89338,7 +90145,7 @@ func (self *PrintDialog) PageSetup() *PageSetup {
 //
 // The function returns the following values:
 //
-//   - printSettings: settings.
+//   - printSettings (optional): settings.
 func (self *PrintDialog) PrintSettings() *PrintSettings {
 	var _arg0 *C.GtkPrintDialog   // out
 	var _cret *C.GtkPrintSettings // in
@@ -89350,7 +90157,9 @@ func (self *PrintDialog) PrintSettings() *PrintSettings {
 
 	var _printSettings *PrintSettings // out
 
-	_printSettings = wrapPrintSettings(coreglib.Take(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_printSettings = wrapPrintSettings(coreglib.Take(unsafe.Pointer(_cret)))
+	}
 
 	return _printSettings
 }
@@ -89381,8 +90190,7 @@ func (self *PrintDialog) Title() string {
 // If you pass NULL as setup, then this method will present a print dialog.
 // Otherwise, it will attempt to print directly, without user interaction.
 //
-// The callback will be called when the printing is done. It should call
-// gtk.PrintDialog.PrintFinish() to obtain the results.
+// The callback will be called when the printing is done.
 //
 // The function takes the following parameters:
 //
@@ -89427,9 +90235,6 @@ func (self *PrintDialog) Print(ctx context.Context, parent *Window, setup *Print
 //
 // If you pass NULL as setup, then this method will present a print dialog.
 // Otherwise, it will attempt to print directly, without user interaction.
-//
-// The callback will be called when the printing is done. It should call
-// gtk.PrintDialog.PrintFileFinish() to obtain the results.
 //
 // The function takes the following parameters:
 //
@@ -89519,7 +90324,7 @@ func (self *PrintDialog) PrintFileFinish(result gio.AsyncResulter) error {
 //
 // The function returns the following values:
 //
-//   - outputStream (optional): gio.OutputStream.
+//   - outputStream: gio.OutputStream.
 func (self *PrintDialog) PrintFinish(result gio.AsyncResulter) (gio.OutputStreamer, error) {
 	var _arg0 *C.GtkPrintDialog // out
 	var _arg1 *C.GAsyncResult   // out
@@ -89536,21 +90341,22 @@ func (self *PrintDialog) PrintFinish(result gio.AsyncResulter) (gio.OutputStream
 	var _outputStream gio.OutputStreamer // out
 	var _goerr error                     // out
 
-	if _cret != nil {
-		{
-			objptr := unsafe.Pointer(_cret)
-
-			object := coreglib.AssumeOwnership(objptr)
-			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(gio.OutputStreamer)
-				return ok
-			})
-			rv, ok := casted.(gio.OutputStreamer)
-			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.OutputStreamer")
-			}
-			_outputStream = rv
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gio.OutputStreamer is nil")
 		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(gio.OutputStreamer)
+			return ok
+		})
+		rv, ok := casted.(gio.OutputStreamer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.OutputStreamer")
+		}
+		_outputStream = rv
 	}
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -89653,9 +90459,8 @@ func (self *PrintDialog) SetTitle(title string) {
 // Setup: this function presents a print dialog to let the user select a
 // printer, and set up print settings and page setup.
 //
-// The callback will be called when the dialog is dismissed. It should call
-// gtk.PrintDialog.SetupFinish() to obtain the results in the form of a
-// gtk.PrintSetup, that can then be passed to gtk.PrintDialog.Print() or
+// The callback will be called when the dialog is dismissed. The obtained
+// gtk.PrintSetup can then be passed to gtk.PrintDialog.Print() or
 // gtk.PrintDialog.PrintFile().
 //
 // One possible use for this method is to have the user select a printer, then
@@ -89707,8 +90512,8 @@ func (self *PrintDialog) Setup(ctx context.Context, parent *Window, callback gio
 //
 // The function returns the following values:
 //
-//   - printSetup (optional): GtkPrintSetup object that resulted from the call,
-//     or NULL if the call was not successful.
+//   - printSetup: GtkPrintSetup object that resulted from the call, or NULL if
+//     the call was not successful.
 func (self *PrintDialog) SetupFinish(result gio.AsyncResulter) (*PrintSetup, error) {
 	var _arg0 *C.GtkPrintDialog // out
 	var _arg1 *C.GAsyncResult   // out
@@ -89725,15 +90530,13 @@ func (self *PrintDialog) SetupFinish(result gio.AsyncResulter) (*PrintSetup, err
 	var _printSetup *PrintSetup // out
 	var _goerr error            // out
 
-	if _cret != nil {
-		_printSetup = (*PrintSetup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
-			gextras.StructIntern(unsafe.Pointer(_printSetup)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gtk_print_setup_unref((*C.GtkPrintSetup)(intern.C))
-			},
-		)
-	}
+	_printSetup = (*PrintSetup)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_printSetup)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_print_setup_unref((*C.GtkPrintSetup)(intern.C))
+		},
+	)
 	if _cerr != nil {
 		_goerr = gerror.Take(unsafe.Pointer(_cerr))
 	}
@@ -93455,6 +94258,12 @@ func defaultRangeOverrides(v *Range) RangeOverrides {
 // Apart from signals for monitoring the parameters of the adjustment, GtkRange
 // provides properties and methods for setting a “fill level” on range widgets.
 // See gtk.Range.SetFillLevel().
+//
+// # Shortcuts and Gestures
+//
+// The GtkRange slider is draggable. Holding the <kbd>Shift</kbd> key
+// while dragging, or initiating the drag with a long-press will enable the
+// fine-tuning mode.
 type Range struct {
 	_ [0]func() // equal guard
 	Widget
@@ -94976,6 +95785,17 @@ func defaultScaleOverrides(v *Scale) ScaleOverrides {
 // empty, its content is taken as the markup to show at the mark. It can be
 // translated with the usual ”translatable” and “context” attributes.
 //
+// # Shortcuts and Gestures
+//
+// GtkPopoverMenu supports the following keyboard shortcuts:
+//
+// - Arrow keys, <kbd>+</kbd> and <kbd>-</kbd> will increment or decrement by
+// step, or by page when combined with <kbd>Ctrl</kbd>.
+//
+// - <kbd>PgUp</kbd> and <kbd>PgDn</kbd> will increment or decrement by page.
+//
+// - <kbd>Home</kbd> and <kbd>End</kbd> will set the minimum or maximum value.
+//
 // CSS nodes
 //
 //	scale[.fine-tune][.marks-before][.marks-after]
@@ -95550,6 +96370,12 @@ func defaultScaleButtonOverrides(v *ScaleButton) ScaleButtonOverrides {
 // This kind of widget is commonly used for volume controls in multimedia
 // applications, and GTK provides a gtk.VolumeButton subclass that is tailored
 // for this use case.
+//
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.ScaleButton::popup
 //
 // CSS nodes
 //
@@ -96192,6 +97018,12 @@ func (self *Scrollbar) SetAdjustment(adjustment *Adjustment) {
 // desired although no mouse is present, this behaviour can be turned off with
 // the gtk.ScrolledWindow:overlay-scrolling property.
 //
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.ScrolledWindow::scroll-child
+//
 // # CSS nodes
 //
 // GtkScrolledWindow has a main CSS node with name scrolledwindow. It gets a
@@ -96278,8 +97110,9 @@ func (scrolledWindow *ScrolledWindow) ConnectEdgeReached(f func(pos PositionType
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
-// The default bindings for this signal are Ctrl + Tab to move forward and Ctrl
-// + Shift + Tab to move backward.
+// The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>Tab</kbd> to
+// move forward and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Tab</kbd>` to move
+// backward.
 func (scrolledWindow *ScrolledWindow) ConnectMoveFocusOut(f func(directionType DirectionType)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(scrolledWindow, "move-focus-out", false, unsafe.Pointer(C._gotk4_gtk4_ScrolledWindow_ConnectMoveFocusOut), f)
 }
@@ -97083,6 +97916,12 @@ func (scrolledWindow *ScrolledWindow) UnsetPlacement() {
 // A simple example
 // (https://gitlab.gnome.org/GNOME/gtk/tree/main/examples/search-bar.c)
 //
+// # Shortcuts and Gestures
+//
+// GtkSearchBar supports the following keyboard shortcuts:
+//
+// - <kbd>Escape</kbd> hides the search bar.
+//
 // CSS nodes
 //
 //	searchbar
@@ -97411,6 +98250,18 @@ func (bar *SearchBar) SetShowCloseButton(visible bool) {
 // GtkSearchEntry provides only minimal API and should be used with the
 // gtk.Editable API.
 //
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.SearchEntry::activate
+//
+// - gtk.SearchEntry::next-match
+//
+// - gtk.SearchEntry::previous-match
+//
+// - gtk.SearchEntry::stop-search
+//
 // CSS Nodes
 //
 //	entry.search
@@ -97479,7 +98330,7 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 
 // ConnectActivate is emitted when the entry is activated.
 //
-// The keybindings for this signal are all forms of the Enter key.
+// The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
 func (entry *SearchEntry) ConnectActivate(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "activate", false, unsafe.Pointer(C._gotk4_gtk4_SearchEntry_ConnectActivate), f)
 }
@@ -97491,7 +98342,7 @@ func (entry *SearchEntry) ConnectActivate(f func()) coreglib.SignalHandle {
 //
 // Applications should connect to it, to implement moving between matches.
 //
-// The default bindings for this signal is Ctrl-g.
+// The default bindings for this signal is <kbd>Ctrl</kbd>+<kbd>g</kbd>.
 func (entry *SearchEntry) ConnectNextMatch(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "next-match", false, unsafe.Pointer(C._gotk4_gtk4_SearchEntry_ConnectNextMatch), f)
 }
@@ -97503,7 +98354,8 @@ func (entry *SearchEntry) ConnectNextMatch(f func()) coreglib.SignalHandle {
 //
 // Applications should connect to it, to implement moving between matches.
 //
-// The default bindings for this signal is Ctrl-Shift-g.
+// The default bindings for this signal is
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd>.
 func (entry *SearchEntry) ConnectPreviousMatch(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "previous-match", false, unsafe.Pointer(C._gotk4_gtk4_SearchEntry_ConnectPreviousMatch), f)
 }
@@ -97527,7 +98379,7 @@ func (entry *SearchEntry) ConnectSearchStarted(f func()) coreglib.SignalHandle {
 // Applications should connect to it, to implement hiding the search entry in
 // this case.
 //
-// The default bindings for this signal is Escape.
+// The default bindings for this signal is <kbd>Escape</kbd>.
 func (entry *SearchEntry) ConnectStopSearch(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "stop-search", false, unsafe.Pointer(C._gotk4_gtk4_SearchEntry_ConnectStopSearch), f)
 }
@@ -99327,6 +100179,14 @@ func (self *ShortcutsGroup) AddShortcut(shortcut *ShortcutsShortcut) {
 //
 // If you need to add a group programmatically, use
 // gtk.ShortcutsSection.AddGroup().
+//
+// # Shortcuts and Gestures
+//
+// Pan gestures allow to navigate between sections.
+//
+// The following signals have default keybindings:
+//
+// - gtk.ShortcutsSection::change-current-page.
 type ShortcutsSection struct {
 	_ [0]func() // equal guard
 	Box
@@ -99367,7 +100227,11 @@ func marshalShortcutsSection(p uintptr) (interface{}, error) {
 	return wrapShortcutsSection(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-func (self *ShortcutsSection) ConnectChangeCurrentPage(f func(object int) (ok bool)) coreglib.SignalHandle {
+// ConnectChangeCurrentPage is emitted when we change the current page.
+//
+// The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>PgUp</kbd>,
+// <kbd>PgUp</kbd>, <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>, <kbd>PgDn</kbd>.
+func (self *ShortcutsSection) ConnectChangeCurrentPage(f func(offset int) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "change-current-page", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage), f)
 }
 
@@ -99480,6 +100344,14 @@ func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
 // The .ui file for this example can be found here
 // (https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-builder.ui).
 //
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.ShortcutsWindow::close
+//
+// - gtk.ShortcutsWindow::search
+//
 // # CSS nodes
 //
 // GtkShortcutsWindow has a single CSS node with the name window and style class
@@ -99547,7 +100419,7 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
-// The default binding for this signal is the Escape key.
+// The default binding for this signal is the <kbd>Escape</kbd> key.
 func (self *ShortcutsWindow) ConnectClose(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "close", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectClose), f)
 }
@@ -99556,7 +100428,7 @@ func (self *ShortcutsWindow) ConnectClose(f func()) coreglib.SignalHandle {
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
-// The default binding for this signal is Control-F.
+// The default binding for this signal is <kbd>Control</kbd>+<kbd>F</kbd>.
 func (self *ShortcutsWindow) ConnectSearch(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(self, "search", false, unsafe.Pointer(C._gotk4_gtk4_ShortcutsWindow_ConnectSearch), f)
 }
@@ -100026,8 +100898,7 @@ func (self *SingleSelection) SetAutoselect(autoselect bool) {
 // gtk_selection_model_unselect_item() is supported.
 //
 // Note that setting gtk.SingleSelection:autoselect will cause unselecting to
-// not work, so it practically makes no sense to set both at the same time the
-// same time.
+// not work, so it practically makes no sense to set both at the same time.
 //
 // The function takes the following parameters:
 //
@@ -100071,9 +100942,10 @@ func (self *SingleSelection) SetModel(model gio.ListModeller) {
 //
 // If the list does not have an item at position or GTK_INVALID_LIST_POSITION
 // is given, the behavior depends on the value of the
-// gtk.SingleSelection:autoselect property: If it is set, no change will occur
-// and the old item will stay selected. If it is unset, the selection will be
-// unset and no item will be selected.
+// gtk.SingleSelection:autoselect property: If it is set, no change will
+// occur and the old item will stay selected. If it is unset, the selection
+// will be unset and no item will be selected. This also applies if
+// gtk.SingleSelection:can-unselect is set to FALSE.
 //
 // The function takes the following parameters:
 //
@@ -100803,10 +101675,18 @@ func (snapshot *Snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk
 	runtime.KeepAlive(blurRadius)
 }
 
+// AppendLayout creates render nodes for rendering layout in the given foregound
+// color and appends them to the current node of snapshot without changing
+// the current node. The current theme's foreground color for a widget can be
+// obtained with gtk.Widget.GetColor().
+//
+// Note that if the layout does not produce any visible output, then nodes may
+// not be added to the snapshot.
+//
 // The function takes the following parameters:
 //
-//   - layout
-//   - color
+//   - layout: PangoLayout to render.
+//   - color: foreground color to render the layout in.
 func (snapshot *Snapshot) AppendLayout(layout *pango.Layout, color *gdk.RGBA) {
 	var _arg0 *C.GtkSnapshot // out
 	var _arg1 *C.PangoLayout // out
@@ -101149,6 +102029,9 @@ func (snapshot *Snapshot) AppendTexture(texture gdk.Texturer, bounds *graphene.R
 //
 // This must be called the same number of times as the number of textures is
 // needed for the shader in gtk.Snapshot.PushGLShader().
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use gtk.GLArea for OpenGL rendering.
 func (snapshot *Snapshot) GLShaderPopTexture() {
 	var _arg0 *C.GtkSnapshot // out
 
@@ -101363,6 +102246,9 @@ func (snapshot *Snapshot) PushFill(path *gsk.Path, fillRule gsk.FillRule) {
 // These will be used directly rather than being re-rendered.
 //
 // For details on how to write shaders, see gsk.GLShader.
+//
+// Deprecated: GTK's new Vulkan-focused rendering does not support this feature.
+// Use gtk.GLArea for OpenGL rendering.
 //
 // The function takes the following parameters:
 //
@@ -102703,6 +103589,12 @@ func (self *Sorter) order() SorterOrder {
 //
 //	  gtk_window_present (GTK_WINDOW (window));
 //	}
+//
+// # Shortcuts and Gestures
+//
+// The following signals have default keybindings:
+//
+// - gtk.SpinButton::change-value
 //
 // CSS nodes
 //
@@ -106643,6 +107535,10 @@ func StyleContextRemoveProviderForDisplay(display *gdk.Display, provider StylePr
 //
 // See gtk.Switch::state-set for details.
 //
+// # Shortcuts and Gestures
+//
+// GtkSwitch supports pan and drag gestures to move the slider.
+//
 // CSS nodes
 //
 //	switch
@@ -106861,6 +107757,69 @@ func (self *Switch) SetState(state bool) {
 // gtk.SearchEntry.
 //
 // If you need multi-line editable text, look at gtk.TextView.
+//
+// # Shortcuts and Gestures
+//
+// GtkText supports the following keyboard shortcuts:
+//
+// - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+//
+// - <kbd>Ctrl</kbd>+<kbd>A</kbd> or <kbd>Ctrl</kbd>+<kbd>&sol;</kbd> selects
+// all the text.
+//
+// - <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> or
+// <kbd>Ctrl</kbd>+<kbd>&bsol;</kbd> unselects all.
+//
+// - <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes the last modification.
+//
+// - <kbd>Ctrl</kbd>+<kbd>Y</kbd> or
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> redoes the last undone
+// modification.
+//
+// Additionally, the following signals have default keybindings:
+//
+// - gtk.Text::activate
+//
+// - gtk.Text::backspace
+//
+// - gtk.Text::copy-clipboard
+//
+// - gtk.Text::cut-clipboard
+//
+// - gtk.Text::delete-from-cursor
+//
+// - gtk.Text::insert-emoji
+//
+// - gtk.Text::move-cursor
+//
+// - gtk.Text::paste-clipboard
+//
+// - gtk.Text::toggle-overwrite
+//
+// # Actions
+//
+// GtkText defines a set of built-in actions:
+//
+// - clipboard.copy copies the contents to the clipboard.
+//
+// - clipboard.cut copies the contents to the clipboard and deletes it from the
+// widget.
+//
+// - clipboard.paste inserts the contents of the clipboard into the widget.
+//
+// - menu.popup opens the context menu.
+//
+// - misc.insert-emoji opens the Emoji chooser.
+//
+// - misc.toggle-visibility toggles the GtkText:visibility property.
+//
+// - selection.delete deletes the current selection.
+//
+// - selection.select-all selects all of the widgets content.
+//
+// - text.redo redoes the last change to the contents.
+//
+// - text.undo undoes the last change to the contents.
 //
 // CSS nodes
 //
@@ -107311,6 +108270,10 @@ func (self *Text) ExtraMenu() gio.MenuModeller {
 }
 
 // InputHints gets the input hints of the GtkText.
+//
+// The function returns the following values:
+//
+//   - inputHints: input hints.
 func (self *Text) InputHints() InputHints {
 	var _arg0 *C.GtkText      // out
 	var _cret C.GtkInputHints // in
@@ -107328,6 +108291,10 @@ func (self *Text) InputHints() InputHints {
 }
 
 // InputPurpose gets the input purpose of the GtkText.
+//
+// The function returns the following values:
+//
+//   - inputPurpose: input purpose.
 func (self *Text) InputPurpose() InputPurpose {
 	var _arg0 *C.GtkText        // out
 	var _cret C.GtkInputPurpose // in
@@ -108344,6 +109311,53 @@ func NewTextBuffer(table *TextTagTable) *TextBuffer {
 	_textBuffer = wrapTextBuffer(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _textBuffer
+}
+
+// AddCommitNotify adds a gtk.TextBufferCommitNotify to be called when a change
+// is to be made to the gtk.TextBuffer.
+//
+// Functions are explicitly forbidden from making changes to the gtk.TextBuffer
+// from this callback. It is intended for tracking changes to the buffer only.
+//
+// It may be advantageous to use gtk.TextBufferCommitNotify over connecting to
+// the gtk.TextBuffer::insert-text or gtk.TextBuffer::delete-range signals to
+// avoid ordering issues with other signal handlers which may further modify the
+// gtk.TextBuffer.
+//
+// The function takes the following parameters:
+//
+//   - flags: which notifications should be dispatched to callback.
+//   - commitNotify: a gtk.TextBufferCommitNotify to call for commit
+//     notifications.
+//
+// The function returns the following values:
+//
+//   - guint: handler id which may be used to remove the commit notify callback
+//     using gtk.TextBuffer.RemoveCommitNotify().
+func (buffer *TextBuffer) AddCommitNotify(flags TextBufferNotifyFlags, commitNotify TextBufferCommitNotify) uint {
+	var _arg0 *C.GtkTextBuffer            // out
+	var _arg1 C.GtkTextBufferNotifyFlags  // out
+	var _arg2 C.GtkTextBufferCommitNotify // out
+	var _arg3 C.gpointer
+	var _arg4 C.GDestroyNotify
+	var _cret C.guint // in
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = C.GtkTextBufferNotifyFlags(flags)
+	_arg2 = (*[0]byte)(C._gotk4_gtk4_TextBufferCommitNotify)
+	_arg3 = C.gpointer(gbox.Assign(commitNotify))
+	_arg4 = (C.GDestroyNotify)((*[0]byte)(C.callbackDelete))
+
+	_cret = C.gtk_text_buffer_add_commit_notify(_arg0, _arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(flags)
+	runtime.KeepAlive(commitNotify)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
 }
 
 // AddMark adds the mark at position where.
@@ -110106,6 +111120,28 @@ func (buffer *TextBuffer) RemoveAllTags(start, end *TextIter) {
 	runtime.KeepAlive(end)
 }
 
+// RemoveCommitNotify removes the GtkTextBufferCommitNotify handler previously
+// registered with gtk.TextBuffer.AddCommitNotify().
+//
+// This may result in the user_data_destroy being called that was passed when
+// registering the commit notify functions.
+//
+// The function takes the following parameters:
+//
+//   - commitNotifyHandler: notify handler identifier returned from
+//     gtk.TextBuffer.AddCommitNotify().
+func (buffer *TextBuffer) RemoveCommitNotify(commitNotifyHandler uint) {
+	var _arg0 *C.GtkTextBuffer // out
+	var _arg1 C.guint          // out
+
+	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(coreglib.InternObject(buffer).Native()))
+	_arg1 = C.guint(commitNotifyHandler)
+
+	C.gtk_text_buffer_remove_commit_notify(_arg0, _arg1)
+	runtime.KeepAlive(buffer)
+	runtime.KeepAlive(commitNotifyHandler)
+}
+
 // RemoveSelectionClipboard removes a GdkClipboard added with
 // gtk.TextBuffer.AddSelectionClipboard().
 //
@@ -110730,6 +111766,10 @@ func NewTextChildAnchor() *TextChildAnchor {
 // Usually you would then insert it into a GtkTextBuffer with
 // gtk.TextBuffer.InsertChildAnchor().
 //
+// The function takes the following parameters:
+//
+//   - character: replacement character.
+//
 // The function returns the following values:
 //
 //   - textChildAnchor: new GtkTextChildAnchor.
@@ -111064,6 +112104,17 @@ func (mark *TextMark) Visible() bool {
 	return _ok
 }
 
+// SetVisible sets the visibility of mark.
+//
+// The insertion point is normally visible, i.e. you can see it as a vertical
+// bar. Also, the text widget uses a visible mark to indicate where a drop will
+// occur when dragging-and-dropping text. Most other marks are not visible.
+//
+// Marks are not visible by default.
+//
+// The function takes the following parameters:
+//
+//   - setting: visibility of mark.
 func (mark *TextMark) SetVisible(setting bool) {
 	var _arg0 *C.GtkTextMark // out
 	var _arg1 C.gboolean     // out
@@ -111534,11 +112585,68 @@ func defaultTextViewOverrides(v *TextView) TextViewOverrides {
 
 // TextView: widget that displays the contents of a gtk.TextBuffer.
 //
-// !An example GtkTextview (multiline-text.png)
+// !An example GtkTextView (multiline-text.png)
 //
 // You may wish to begin by reading the conceptual overview
 // (section-text-widget.html), which gives an overview of all the objects and
 // data types related to the text widget and how they work together.
+//
+// # Shortcuts and Gestures
+//
+// GtkTextView supports the following keyboard shortcuts:
+//
+// - <kbd>Shift</kbd>+<kbd>F10</kbd> or <kbd>Menu</kbd> opens the context menu.
+//
+// - <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes the last modification.
+//
+// - <kbd>Ctrl</kbd>+<kbd>Y</kbd> or
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> redoes the last undone
+// modification.
+//
+// Additionally, the following signals have default keybindings:
+//
+// - gtk.TextView::backspace
+//
+// - gtk.TextView::copy-clipboard
+//
+// - gtk.TextView::cut-clipboard
+//
+// - gtk.TextView::delete-from-cursor
+//
+// - gtk.TextView::insert-emoji
+//
+// - gtk.TextView::move-cursor
+//
+// - gtk.TextView::paste-clipboard
+//
+// - gtk.TextView::select-all
+//
+// - gtk.TextView::toggle-cursor-visible
+//
+// - gtk.TextView::toggle-overwrite
+//
+// # Actions
+//
+// GtkTextView defines a set of built-in actions:
+//
+// - clipboard.copy copies the contents to the clipboard.
+//
+// - clipboard.cut copies the contents to the clipboard and deletes it from the
+// widget.
+//
+// - clipboard.paste inserts the contents of the clipboard into the widget.
+//
+// - menu.popup opens the context menu.
+//
+// - misc.insert-emoji opens the Emoji chooser.
+//
+// - selection.delete deletes the current selection.
+//
+// - selection.select-all selects all of the widgets content.
+//
+// - text.redo redoes the last change to the contents.
+//
+// - text.undo undoes the last change to the contents.
 //
 // CSS nodes
 //
@@ -112444,6 +113552,10 @@ func (textView *TextView) Indent() int {
 }
 
 // InputHints gets the input-hints of the GtkTextView.
+//
+// The function returns the following values:
+//
+//   - inputHints: input hints.
 func (textView *TextView) InputHints() InputHints {
 	var _arg0 *C.GtkTextView  // out
 	var _cret C.GtkInputHints // in
@@ -112461,6 +113573,10 @@ func (textView *TextView) InputHints() InputHints {
 }
 
 // InputPurpose gets the input-purpose of the GtkTextView.
+//
+// The function returns the following values:
+//
+//   - inputPurpose: input purpose.
 func (textView *TextView) InputPurpose() InputPurpose {
 	var _arg0 *C.GtkTextView    // out
 	var _cret C.GtkInputPurpose // in
@@ -114711,6 +115827,33 @@ func defaultTreeExpanderOverrides(v *TreeExpander) TreeExpanderOverrides {
 // the gtk.TreeExpander:hide-expander property to the item count of the model of
 // the treelistrow, to hide the expander for rows without children, even if the
 // row is expandable.
+//
+// # Shortcuts and Gestures
+//
+// GtkTreeExpander supports the following keyboard shortcuts:
+//
+// - <kbd>+</kbd> or <kbd>*</kbd> expands the expander.
+//
+// - <kbd>-</kbd> or <kbd>/</kbd> collapses the expander.
+//
+// - Left and right arrow keys, when combined with <kbd>Shift</kbd> or
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>, will expand or collapse, depending on the
+// locale's text direction.
+//
+// - <kbd>Ctrl</kbd>+<kbd>␣</kbd> toggles the expander state.
+//
+// The row can also expand on drag gestures.
+//
+// # Actions
+//
+// GtkTreeExpander defines a set of built-in actions:
+//
+// - listitem.expand expands the expander if it can be expanded.
+//
+// - listitem.collapse collapses the expander.
+//
+// - listitem.toggle-expand tries to expand the expander if it was collapsed or
+// collapses it if it was expanded.
 //
 // CSS nodes
 //
@@ -122762,9 +123905,7 @@ func defaultURILauncherOverrides(v *URILauncher) URILauncherOverrides {
 // may or may not show an app chooser dialog or launch the default application
 // right away.
 //
-// The operation is started with the gtk.URILauncher.Launch() function. This
-// API follows the GIO async pattern, and the result can be obtained by calling
-// gtk.URILauncher.LaunchFinish().
+// The operation is started with the gtk.URILauncher.Launch() function.
 //
 // To launch a file, use gtk.FileLauncher.
 type URILauncher struct {
@@ -122856,9 +123997,6 @@ func (self *URILauncher) URI() string {
 // Launch an application to open the uri.
 //
 // This may present an app chooser dialog to the user.
-//
-// The callback will be called when the operation is completed. It should call
-// gtk.URILauncher.LaunchFinish() to obtain the result.
 //
 // The function takes the following parameters:
 //
@@ -125958,6 +127096,8 @@ func (widget *Widget) FontMap() pango.FontMapper {
 //
 // Seee gtk.Widget.SetFontOptions().
 //
+// Deprecated: since version 4.16.
+//
 // The function returns the following values:
 //
 //   - fontOptions (optional): cairo_font_options_t of widget.
@@ -128461,6 +129601,8 @@ func (widget *Widget) SetFontMap(fontMap pango.FontMapper) {
 //
 // When not set, the default font options for the GdkDisplay will be used.
 //
+// Deprecated: since version 4.16.
+//
 // The function takes the following parameters:
 //
 //   - options (optional): cairo_font_options_t to unset any previously set
@@ -130103,6 +131245,34 @@ func defaultWindowOverrides(v *Window) WindowOverrides {
 // a child as the titlebar by specifying “titlebar” as the “type” attribute of a
 // <child> element.
 //
+// # Shortcuts and Gestures
+//
+// GtkWindow supports the following keyboard shortcuts:
+//
+// - <kbd>F10</kbd> activates the menubar, if present.
+//
+// - <kbd>Alt</kbd> makes the mnemonics visible while pressed.
+//
+// The following signals have default keybindings:
+//
+// - gtk.Window::activate-default
+//
+// - gtk.Window::activate-focus
+//
+// - gtk.Window::enable-debugging
+//
+// # Actions
+//
+// GtkWindow defines a set of built-in actions:
+//
+// - default.activate activates the default widget.
+//
+// - window.minimize minimizes the window.
+//
+// - window.toggle-maximized maximizes or restores the window.
+//
+// - window.close closes the window.
+//
 // CSS nodes
 //
 //	window.background [.csd / .solid-csd / .ssd] [.maximized / .fullscreen / .tiled]
@@ -130136,18 +131306,6 @@ func defaultWindowOverrides(v *Window) WindowOverrides {
 // Until GTK 4.10, GtkWindow used the GTK_ACCESSIBLE_ROLE_WINDOW role.
 //
 // Since GTK 4.12, GtkWindow uses the GTK_ACCESSIBLE_ROLE_APPLICATION role.
-//
-// # Actions
-//
-// GtkWindow defines a set of built-in actions:
-//
-// - default.activate: Activate the default widget.
-//
-// - window.minimize: Minimize the window.
-//
-// - window.toggle-maximized: Maximize or restore the window.
-//
-// - window.close: Close the window.
 type Window struct {
 	_ [0]func() // equal guard
 	Widget
@@ -130251,6 +131409,8 @@ func marshalWindow(p uintptr) (interface{}, error) {
 // of window.
 //
 // This is a keybinding signal (class.SignalAction.html).
+//
+// The keybindings for this signal are all forms of the <kbd>Enter</kbd> key.
 func (window *Window) ConnectActivateDefault(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "activate-default", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateDefault), f)
 }
@@ -130259,6 +131419,8 @@ func (window *Window) ConnectActivateDefault(f func()) coreglib.SignalHandle {
 // widget of window.
 //
 // This is a keybinding signal (class.SignalAction.html).
+//
+// The default binding for this signal is <kbd>␣</kbd>.
 func (window *Window) ConnectActivateFocus(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "activate-focus", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectActivateFocus), f)
 }
@@ -130277,7 +131439,9 @@ func (window *Window) ConnectCloseRequest(f func() (ok bool)) coreglib.SignalHan
 //
 // This is a keybinding signal (class.SignalAction.html).
 //
-// The default bindings for this signal are Ctrl-Shift-I and Ctrl-Shift-D.
+// The default bindings for this signal are
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> and
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>.
 func (window *Window) ConnectEnableDebugging(f func(toggle bool) (ok bool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(window, "enable-debugging", false, unsafe.Pointer(C._gotk4_gtk4_Window_ConnectEnableDebugging), f)
 }
@@ -131922,6 +133086,14 @@ func WindowSetDefaultIconName(name string) {
 //
 // The debugger offers access to the widget hierarchy of the application and to
 // useful debugging tools.
+//
+// This function allows applications that already use
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> (or
+// <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>) for their own key shortcuts to
+// add a different shortcut to open the Inspector.
+//
+// If you are not overriding the default key shortcuts for the Inspector,
+// you should not use this function.
 //
 // The function takes the following parameters:
 //
@@ -134187,7 +135359,9 @@ func (c *ConstraintLayoutClass) ParentClass() *LayoutManagerClass {
 	return _v
 }
 
-// CSSLocation: instance of this type is always passed by reference.
+// CSSLocation: description of a location inside a CSS stream.
+//
+// An instance of this type is always passed by reference.
 type CSSLocation struct {
 	*cssLocation
 }
@@ -134332,6 +135506,72 @@ func NewCSSSection(file gio.Filer, start *CSSLocation, end *CSSLocation) *CSSSec
 	)
 
 	return _cssSection
+}
+
+// NewCSSSectionWithBytes constructs a struct CSSSection.
+func NewCSSSectionWithBytes(file gio.Filer, bytes *glib.Bytes, start *CSSLocation, end *CSSLocation) *CSSSection {
+	var _arg1 *C.GFile          // out
+	var _arg2 *C.GBytes         // out
+	var _arg3 *C.GtkCssLocation // out
+	var _arg4 *C.GtkCssLocation // out
+	var _cret *C.GtkCssSection  // in
+
+	if file != nil {
+		_arg1 = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+	}
+	if bytes != nil {
+		_arg2 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+	}
+	_arg3 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(start)))
+	_arg4 = (*C.GtkCssLocation)(gextras.StructNative(unsafe.Pointer(end)))
+
+	_cret = C.gtk_css_section_new_with_bytes(_arg1, _arg2, _arg3, _arg4)
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(bytes)
+	runtime.KeepAlive(start)
+	runtime.KeepAlive(end)
+
+	var _cssSection *CSSSection // out
+
+	_cssSection = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_cssSection)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
+		},
+	)
+
+	return _cssSection
+}
+
+// Bytes gets the bytes that section was parsed from.
+//
+// The function returns the following values:
+//
+//   - bytes (optional): GBytes from which the section was parsed.
+func (section *CSSSection) Bytes() *glib.Bytes {
+	var _arg0 *C.GtkCssSection // out
+	var _cret *C.GBytes        // in
+
+	_arg0 = (*C.GtkCssSection)(gextras.StructNative(unsafe.Pointer(section)))
+
+	_cret = C.gtk_css_section_get_bytes(_arg0)
+	runtime.KeepAlive(section)
+
+	var _bytes *glib.Bytes // out
+
+	if _cret != nil {
+		_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_bytes_ref(_cret)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_bytes)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
+
+	return _bytes
 }
 
 // EndLocation returns the location in the CSS document where this section ends.
@@ -136210,7 +137450,7 @@ func marshalPrintSetup(p uintptr) (interface{}, error) {
 //
 // The function returns the following values:
 //
-//   - pageSetup (optional): page setup, or NULL.
+//   - pageSetup: page setup, or NULL.
 func (setup *PrintSetup) PageSetup() *PageSetup {
 	var _arg0 *C.GtkPrintSetup // out
 	var _cret *C.GtkPageSetup  // in
@@ -136222,9 +137462,7 @@ func (setup *PrintSetup) PageSetup() *PageSetup {
 
 	var _pageSetup *PageSetup // out
 
-	if _cret != nil {
-		_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(_cret)))
-	}
+	_pageSetup = wrapPageSetup(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _pageSetup
 }
@@ -136236,7 +137474,7 @@ func (setup *PrintSetup) PageSetup() *PageSetup {
 //
 // The function returns the following values:
 //
-//   - printSettings (optional): print settings, or NULL.
+//   - printSettings: print settings, or NULL.
 func (setup *PrintSetup) PrintSettings() *PrintSettings {
 	var _arg0 *C.GtkPrintSetup    // out
 	var _cret *C.GtkPrintSettings // in
@@ -136248,9 +137486,7 @@ func (setup *PrintSetup) PrintSettings() *PrintSettings {
 
 	var _printSettings *PrintSettings // out
 
-	if _cret != nil {
-		_printSettings = wrapPrintSettings(coreglib.Take(unsafe.Pointer(_cret)))
-	}
+	_printSettings = wrapPrintSettings(coreglib.Take(unsafe.Pointer(_cret)))
 
 	return _printSettings
 }

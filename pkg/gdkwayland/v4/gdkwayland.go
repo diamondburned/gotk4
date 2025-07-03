@@ -224,6 +224,9 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 
 // SetCursorTheme sets the cursor theme for the given display.
 //
+// Deprecated: Use the cursor-related properties of GtkSettings
+// (../gtk4/class.Settings.html) to set the cursor theme.
+//
 // The function takes the following parameters:
 //
 //   - name: new cursor theme.
